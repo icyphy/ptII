@@ -2,11 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Universe" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
-        <property name="GRScheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100000">
         </property>
         <property name="iterationTimeLowerBound" class="ptolemy.data.expr.Parameter" value="33">
@@ -38,7 +36,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 5.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 104, 887, 559}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {84, 104, 887, 559}, maximized = false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -82,6 +80,10 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 380.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{336.0, 225.0}">
+    </property>
     <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
         <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
         </property>
@@ -101,10 +103,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="615.0, 180.0">
         </property>
-        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="earth" class="ptolemy.domains.gr.lib.Sphere3D">
         <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
@@ -115,9 +113,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
         </property>
-        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="sun" class="ptolemy.domains.gr.lib.Sphere3D">
         <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 1.0, 0.0]">
@@ -128,9 +123,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 40.0">
         </property>
-        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Translate" class="ptolemy.domains.gr.lib.Translate3D">
         <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
@@ -143,22 +135,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 60.0">
         </property>
-        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Rotate" class="ptolemy.domains.gr.lib.Rotate3D">
         <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
@@ -183,37 +159,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 90.0">
         </property>
-        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="angle" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Ramp21" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 155.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="venus" class="ptolemy.domains.gr.lib.Sphere3D">
         <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 1.0, 1.0]">
@@ -224,9 +176,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="354.0, 209.0">
         </property>
-        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Translate2" class="ptolemy.domains.gr.lib.Translate3D">
         <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
@@ -239,46 +188,16 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="448.0, 345.0">
         </property>
-        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Ramp31" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.08">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 270.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Sine" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
                 </property>
@@ -299,15 +218,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Scale3D46" class="ptolemy.domains.gr.lib.Scale3D">
         <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
@@ -322,19 +233,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 355.0">
         </property>
-        <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="scaleInput" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Cosine" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="cos">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="cos">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
                 </property>
@@ -355,18 +256,10 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Sine_" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
                 </property>
@@ -387,18 +280,10 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Cosine_" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="cos">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="cos">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
                 </property>
@@ -419,91 +304,38 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Ramp64" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.4">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 120.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Scale69" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0.2">
-        </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="257.0, 178.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Scale70" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0.2">
-        </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="258.0, 120.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="AddSubtract75" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 280.0">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -511,17 +343,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="AddSubtract81" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 375.0">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -541,9 +362,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 250.0">
         </property>
-        <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>

@@ -71,10 +71,6 @@ transitions are executed.</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
     </property>
     <entity name="alternating signal" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 110.0">

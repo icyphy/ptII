@@ -2,22 +2,14 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Blending" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 461]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[26, 97]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
@@ -54,7 +46,11 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 10.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 95, 971, 577}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {26, 95, 971, 570}, maximized = false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{378.0, 230.5}">
     </property>
     <entity name="BlendingController" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 315.0">
@@ -87,10 +83,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         </port>
         <entity name="mode controller" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Mode A">
-            </property>
-            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
@@ -149,10 +141,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 95.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="Mode B" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Controller_B">
@@ -161,10 +149,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 315.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="A to B" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Controller_A, Controller_B, Blending_A_to_B">
@@ -173,10 +157,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 195.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="B to A" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Controller_B, Controller_A, Blending_B_to_A">
@@ -185,17 +165,11 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 215.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input &lt; TH">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = inputA">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-2.092155772064037">
                 </property>
@@ -205,17 +179,11 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="step &lt; STEP - 1">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = inputAtoB">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.1096197307605586">
                 </property>
@@ -225,29 +193,17 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input &gt;= TH">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = inputA">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3104669805284557">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
@@ -255,27 +211,17 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = inputAtoB">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.2995633761985674">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input &gt; -TH">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = inputB">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.102112139273259">
                 </property>
@@ -285,17 +231,11 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="step &lt; STEP - 1">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = inputBtoA">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.132739615678602">
                 </property>
@@ -305,29 +245,17 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input &lt;= -TH">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = inputB">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.07219212476109184">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <relation name="relation8" class="ptolemy.domains.fsm.kernel.Transition">
@@ -335,19 +263,11 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = inputBtoA">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.38170968341746303">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="Mode A.incomingPort" relation="relation"/>
@@ -375,16 +295,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
                 </property>
             </property>
@@ -411,13 +321,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 120.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -432,16 +335,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 30.0">
                 </property>
             </property>
@@ -466,13 +359,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 110.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -487,16 +373,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 30.0">
                 </property>
             </property>
@@ -537,25 +413,9 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
             </port>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-                </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 100.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                </port>
             </entity>
             <entity name="Blend Step" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % STEP">
@@ -568,9 +428,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -586,9 +443,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
                 <port name="step" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -631,16 +485,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 284.5">
                 </property>
             </property>
@@ -679,25 +523,9 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
             </port>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-                </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 70.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                </port>
             </entity>
             <entity name="Blend Step" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % STEP">
@@ -710,9 +538,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -728,9 +553,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
                 <port name="step" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -813,15 +635,10 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="50.0">
-            <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
-        </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Generate a sine wave.</text></svg></configure>
             </property>
@@ -832,30 +649,14 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
       </svg>
     </configure>
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="112.0, 50.0">
             </property>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
         </property>
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="1.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -871,16 +672,12 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
             </property>
             <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
         </property>
         <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -896,8 +693,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
             </property>
@@ -905,14 +700,11 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 559}}">
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 315.0">
         </property>
     </entity>
     <entity name="Control - SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={485, 20, 508, 355}}">
         </property>
@@ -926,10 +718,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 315.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -946,8 +734,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
     <entity name="Input - SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 402, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
@@ -960,10 +746,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 415.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -980,22 +762,12 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="8.0">
         </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 315.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>

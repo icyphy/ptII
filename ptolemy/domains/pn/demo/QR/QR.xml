@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="QR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="Process Network Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
@@ -72,7 +72,7 @@ of antennas used.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={97, 99, 829, 563}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {97, 99, 829, 563}, maximized = false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -94,10 +94,12 @@ of antennas used.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 410.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{307.0, 227.0}">
+    </property>
     <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 348}}">
         </property>
@@ -111,10 +113,6 @@ of antennas used.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 190.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -136,12 +134,6 @@ of antennas used.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 95.0">
         </property>
-        <port name="WP_2" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="WP_6" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Antenna Data" class="ptolemy.domains.pn.demo.QR.ND_2">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
@@ -150,12 +142,6 @@ of antennas used.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 210.0">
         </property>
-        <port name="WP_4" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="WP_8" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Vectorize" class="ptolemy.domains.pn.demo.QR.ND_3">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
@@ -164,27 +150,6 @@ of antennas used.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 95.0">
         </property>
-        <port name="RP_1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="RP_2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="RP_3" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="RP_4" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="WP_1" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="WP_11" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="WP_10" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Rotate" class="ptolemy.domains.pn.demo.QR.ND_4">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
@@ -193,39 +158,6 @@ of antennas used.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 210.0">
         </property>
-        <port name="RP_5" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="RP_6" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="RP_7" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="RP_8" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="RP_9" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="RP_10" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="WP_5" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="WP_12" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="WP_3" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="WP_7" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="WP_9" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Data Collector" class="ptolemy.domains.pn.demo.QR.ND_5">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
@@ -234,27 +166,12 @@ of antennas used.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 190.0">
         </property>
-        <port name="RP_11" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="RP_12" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="out0" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="StreamToMatrix" class="ptolemy.domains.pn.demo.QR.StreamToMatrix">
         <property name="dimension" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="427.1428527832031, 280.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
         <property name="width" class="ptolemy.data.expr.Parameter" value="300">
@@ -267,10 +184,6 @@ of antennas used.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="536.7142944335938, 280.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
     </relation>

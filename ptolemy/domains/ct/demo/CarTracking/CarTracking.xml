@@ -707,10 +707,6 @@ model is running.</text></svg></configure>
             <link port="3:SampleDelay.output" relation="relation2"/>
         </entity>
         <entity name="modal controller" class="ptolemy.domains.fsm.modal.ModalModel">
-            <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-                <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-                </property>
-            </property>
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 180.0">

@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchicalModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="DEE Director" class="ptolemy.domains.de.kernel.DEEDirector">
+    <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 55.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1027, 720}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 1027, 711}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 602]">
     </property>
@@ -29,13 +29,13 @@
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 160.0">
-        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 160.0">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -157,7 +157,7 @@ to another. Then delete this annotation.</text>
             <link port="noDelay.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="DEE Director" class="ptolemy.domains.de.kernel.DEEDirector">
+            <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 55.0">
                 </property>
             </property>
@@ -188,7 +188,7 @@ to another. Then delete this annotation.</text>
             <link port="TimedDelay.output" relation="relation2"/>
         </entity>
         <entity name="noDelay" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="DEE Director" class="ptolemy.domains.de.kernel.DEEDirector">
+            <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 311.5338541666667">
                 </property>
             </property>
@@ -232,13 +232,13 @@ to another. Then delete this annotation.</text>
     <entity name="opposite" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 235.0">
-        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 235.0">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -360,7 +360,7 @@ to another. Then delete this annotation.</text>
             <link port="noDelay.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="DEE Director" class="ptolemy.domains.de.kernel.DEEDirector">
+            <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 55.0">
                 </property>
             </property>
@@ -391,7 +391,7 @@ to another. Then delete this annotation.</text>
             <link port="TimedDelay.output" relation="relation2"/>
         </entity>
         <entity name="noDelay" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="DEE Director" class="ptolemy.domains.de.kernel.DEEDirector">
+            <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 311.5338541666667">
                 </property>
             </property>

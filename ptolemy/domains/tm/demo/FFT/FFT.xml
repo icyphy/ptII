@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FFT" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
@@ -44,7 +44,11 @@ executed in a separate thread.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, -3, 819, 570}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {69, -3, 819, 563}, maximized = false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{302.0, 227.0}">
     </property>
     <entity name="TMCompositeFacade" class="ptolemy.actor.TypedCompositeActor">
         <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.25">
@@ -56,12 +60,6 @@ executed in a separate thread.</text>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="86.0, 47.0">
             </property>
         </property>
@@ -75,43 +73,15 @@ executed in a separate thread.</text>
             </property>
         </port>
         <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
-            <property name="order" class="ptolemy.data.expr.Parameter" value="8">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 200.0">
             </property>
-            <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="input"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="output"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
-                </property>
-            </port>
         </entity>
         <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
             <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 200.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 401, 508, 355}}">
             </property>
@@ -129,10 +99,6 @@ executed in a separate thread.</text>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 200.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -148,36 +114,14 @@ executed in a separate thread.</text>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 200.0">
             </property>
-            <port name="multiply" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="divide" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
-            </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
             </property>
             <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="47.0, 248.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -201,8 +145,6 @@ executed in a separate thread.</text>
         <link port="Pulse.output" relation="relation5"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.0078125">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -212,18 +154,9 @@ executed in a separate thread.</text>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 190.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={521, 400, 508, 355}}">
         </property>
@@ -235,10 +168,6 @@ executed in a separate thread.</text>
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -259,12 +188,6 @@ executed in a separate thread.</text>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="131.0, 39.0">
             </property>
         </property>
@@ -289,28 +212,14 @@ executed in a separate thread.</text>
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="pi/64.0">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 132.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+            <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
                     </property>
@@ -331,30 +240,11 @@ executed in a separate thread.</text>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                 </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 141.0">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
             <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -366,13 +256,6 @@ executed in a separate thread.</text>
             <doc>Create a sequence of gaussian random variables</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="266.0, 204.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="Copy1:relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -398,8 +281,6 @@ executed in a separate thread.</text>
     <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={515, 28, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
@@ -410,10 +291,6 @@ executed in a separate thread.</text>
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
