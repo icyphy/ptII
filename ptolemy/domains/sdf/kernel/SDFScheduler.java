@@ -1187,7 +1187,7 @@ public class SDFScheduler extends Scheduler {
 	Receiver[][] creceivers = outputPort.getRemoteReceivers();
 
 	if (_debugging) {
-            _debug("Creating " + createdTokens + " on "
+            _debug("Creating " + createdTokens + " tokens on "
                     + outputPort.getFullName());
             _debug("source channels = " + creceivers.length);
         }
@@ -1195,8 +1195,10 @@ public class SDFScheduler extends Scheduler {
 	for(sourcechannel = 0;
             sourcechannel < creceivers.length;
             sourcechannel++) {
-	    if (_debugging) _debug("destination receivers = " +
-                    creceivers[sourcechannel].length);
+	    if (_debugging) {
+                _debug("destination receivers for channel "
+                + sourcechannel + ": " + creceivers[sourcechannel].length);
+            }
 	    int destinationreceiver;
 	    for(destinationreceiver = 0;
 		destinationreceiver < creceivers[sourcechannel].length;
@@ -1354,24 +1356,32 @@ public class SDFScheduler extends Scheduler {
      *  given receiver.  If the receiver is not contained within the port,
      *  throw an InternalErrorException.
      */
+// FIXME: Move this functionality to the kernel.
     private int _getChannel(IOPort port, Receiver receiver)
             throws IllegalActionException {
 	int width = port.getWidth();
 	Receiver[][] receivers = port.getReceivers();
 	int channel;
 	if (_debugging) {
+            _debug("-- getting channels on port " + port.getFullName());
             _debug("port width = " + width);
             _debug("number of channels = " + receivers.length);
         }
 	for(channel = 0; channel < receivers.length; channel++) {
 	    int receivernumber;
 	    if (_debugging) {
-                _debug("number of receivers = " + receivers[channel].length);
+                _debug("number of receivers in channel " + channel
+                + " = " + receivers[channel].length);
             }
 	    for(receivernumber = 0;
 		receivernumber < receivers[channel].length;
 		receivernumber++)
-		if(receivers[channel][0] == receiver) return channel;
+		if(receivers[channel][receivernumber] == receiver) {
+                    if (_debugging) {
+                        _debug("-- returning channel number:" + channel);
+                    }
+                    return channel;
+                }
 	}
 	// Hmm...  didn't find it yet.  Port might be connected on the inside,
 	// so try the inside relations.
@@ -1384,12 +1394,15 @@ public class SDFScheduler extends Scheduler {
             }
 	    for(receivernumber = 0;
 		receivernumber < receivers[channel].length;
-		receivernumber++)
-		if(receivers[channel][0] == receiver) return channel;
+		receivernumber++) {
+		if(receivers[channel][receivernumber] == receiver) {
+                    return channel;
+                }
+            }
 	}
 
 	throw new InternalErrorException("Receiver not found in the port " +
-                port.getName() + " receivers.");
+                port.getFullName());
     }
 
     /** A comparator for Named Objects.  This is currently SLOW because
