@@ -33,6 +33,7 @@ package ptolemy.data.expr;
 
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.StringUtilities;
 import ptolemy.math.Complex;
 
 import java.util.Hashtable;
@@ -126,15 +127,13 @@ public class Constants {
             // When Vergil is started up, java is called with
             // -Dptolemy.ptII.dir=${PTII}.
             _table.put("CWD",
-                    new StringToken(UtilityFunctions
-                            .getProperty("user.dir")));
+                    new StringToken(StringUtilities.getProperty("user.dir")));
             _table.put("HOME",
-                    new StringToken(UtilityFunctions
-                            .getProperty("user.home")));
+                    new StringToken(StringUtilities.getProperty("user.home")));
 
             _table.put("PTII",
-                    new StringToken(UtilityFunctions
-                            .getProperty("ptolemy.ptII.dir")));
+                    new StringToken(
+                            StringUtilities.getProperty("ptolemy.ptII.dir")));
         } catch (Exception e) {}
 
         // Type constants.
