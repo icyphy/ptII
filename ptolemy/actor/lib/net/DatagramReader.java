@@ -694,7 +694,7 @@ public class DatagramReader extends TypedAtomicActor {
 	// the new buffer size will be set.  Setting buffer here did not
 	// work because the calls to set the size and get the existing
 	// size both block if the socket is being received on.
-	// This flag is set to 1 in preinitialize().
+	// This flag is set to 1 in [pre]initialize().
         } else if (attribute == platformBufferLength && _socket != null) {
 	    synchronized(_syncBufferLength) {
 		_ChangeRequestedToPlatformBufferLength++;
@@ -916,7 +916,7 @@ public class DatagramReader extends TypedAtomicActor {
     */
 
 
-    /** Preinitialize this actor.  This method is used as a bookend
+    /** [Pre]initialize this actor.  This method is used as a bookend
      *  with wrapup() being the other end.  Resources are allocated
      *  here and released in wrapup().  Create a new datagram socket
      *  and initialize the thread that reads from that socket.  Also
@@ -928,10 +928,10 @@ public class DatagramReader extends TypedAtomicActor {
      *  <i>localSocketNumber</i> parameter has a value outside 0..65535
      *  or a socket could not be created.
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 
-        if (_debugging) _debug(this + "preinitialize has begun");
+        if (_debugging) _debug(this + "[pre]initialize has begun");
 
         // This is a key fix!  Programs in DE (such as 1plusFxC.xml)
         // Used to only run the first time after opening the XML!
@@ -981,7 +981,7 @@ public class DatagramReader extends TypedAtomicActor {
         _listenerThread.start();
         if (_debugging) _debug("Thread created & started.");
 
-        if (_debugging) _debug("preinitialize ends");
+        if (_debugging) _debug("[pre]initialize ends");
         if (_debugging) _debug("------------------");
 
     }
@@ -1040,7 +1040,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  assumption holds with only known superfluous call, the one
      *  when the user presses 'Go'] Additionally, this assumes that
      *  intentional calls to stopFire(), if they occur before or
-     *  during the preinitialize call, are backed up by a test which
+     *  during the [pre]initialize call, are backed up by a test which
      *  prevents the director from calling fire() if it has already
      *  called stopFire() with the intention of stopping that same
      *  fire().-[Tested; assumption does not hold.  I caused
@@ -1180,7 +1180,7 @@ public class DatagramReader extends TypedAtomicActor {
     private class ListenerThread extends Thread {
 
         /** Constructor.  Create a new thread to listen for packets
-         *  at the socket opened by the actor's preinitialize method.
+         *  at the socket opened by the actor's [pre]initialize method.
          */
         public ListenerThread() {
         }

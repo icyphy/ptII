@@ -385,7 +385,7 @@ public class DatagramWriter extends TypedAtomicActor {
 
     }
 
-    /** Preinitialize allocates the socket and makes use of default
+    /** [Pre]initialize allocates the socket and makes use of default
      *  parameters for the remote address and socket to which datagrams
      *  will be sent.  InetAddress.getByName does the address lookup,
      *  and can fail (see below).  The remote socket number need only
@@ -397,11 +397,11 @@ public class DatagramWriter extends TypedAtomicActor {
      *  socket number, translation of remote address fails to make IP
      *  address from address string, or the default remote socket
      *  number is beyond 16 bits.  */
-    public void preinitialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
 
-	//System.out.println("preinitialize() called in " + this);
+	//System.out.println("[pre]initialize() called in " + this);
 
-        super.preinitialize();
+        super.initialize();
         _localSocketNumber =
                 ((IntToken)(localSocketNumber.getToken())).intValue();
         if (_localSocketNumber < 0 || _localSocketNumber > 65535) {
