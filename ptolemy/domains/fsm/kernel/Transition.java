@@ -32,7 +32,9 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.kernel.ComponentRelation;
 
 import ptolemy.kernel.Port;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.StringAttribute;
@@ -513,9 +515,10 @@ public class Transition extends ComponentRelation {
     }
 
     /** Override the base class to ensure that the proposed container
-     *  is an instance of FSMActor or null. If it is, call the
-     *  base class setContainer() method. A null argument will remove
-     *  the transition from its container.
+     *  is an instance of FSMActor or null; if it is null, then
+     *  remove it from the container, and also remove any refinement(s)
+     *  that it references that are not referenced by some other
+     *  transition or state.
      *
      *  @param container The proposed container.
      *  @exception IllegalActionException If the transition would result
@@ -527,12 +530,69 @@ public class Transition extends ComponentRelation {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof FSMActor) &&
-                (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "Transition can only be contained by instances of " +
-                    "FSMActor.");
+        if (container != null) {
+            if (!(container instanceof FSMActor)) {
+                throw new IllegalActionException(container, this,
+                         "Transition can only be contained by instances of "
+                         + "FSMActor.");
+            }
+        } else {
+            // Removing this transition. See whether refinement(s) need
+            // to be removed.
+            CompositeEntity master = (CompositeEntity)getContainer();
+            // Nothing to do if there is no container.
+            if (master != null) {
+                // Remove any referenced refinements that are not also
+                // referenced by other states.
+                TypedActor[] refinements = getRefinement();
+                if (refinements != null) {
+                    for (int i = 0; i < refinements.length; i++) {
+                        TypedActor refinement = refinements[i];
+                        // By default, if no other state or transition refers
+                        // to this refinement, then we will remove it.
+                        boolean removeIt = true;
+                        Iterator states
+                                = master.entityList(State.class).iterator();
+                        while (removeIt && states.hasNext()) {
+                            State state = (State)states.next();
+                            TypedActor[] statesRefinements
+                                   = state.getRefinement();
+                            if (statesRefinements == null) continue;
+                            for (int j = 0; j < statesRefinements.length; j++) {
+                                if (statesRefinements[j] == refinement) {
+                                    removeIt = false;
+                                    break;
+                                }
+                            }
+                        }
+                        // Next check transitions.
+                        Iterator transitions = master.relationList().iterator();
+                        while (removeIt && transitions.hasNext()) {
+                            Relation transition = (Relation)transitions.next();
+                            if (transition == this
+                                    || !(transition instanceof Transition)) {
+                                continue;
+                            }
+                            TypedActor[] transitionsRefinements
+                                   = ((Transition)transition).getRefinement();
+                            if (transitionsRefinements == null) continue;
+                            for (int j = 0;
+                                    j < transitionsRefinements.length;
+                                    j++) {
+                                if (transitionsRefinements[j] == refinement) {
+                                    removeIt = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (removeIt) {
+                            ((ComponentEntity)refinement).setContainer(null);
+                        }
+                    }
+                }
+            }
         }
+
         super.setContainer(container);
     }
 
