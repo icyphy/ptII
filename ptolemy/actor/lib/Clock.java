@@ -244,7 +244,9 @@ public class Clock extends TimedSource {
         Time currentTime = getDirector().getModelTime();
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
-        if (_debugging)_debug("--- Firing at time " + currentTime + ".");
+        if (_debugging) {
+            _debug("--- Firing at time " + currentTime + ".");
+        }
 
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
@@ -371,7 +373,9 @@ public class Clock extends TimedSource {
      */
     public boolean postfire() throws IllegalActionException {
 
-        if (_debugging)_debug("Postfiring.");
+        if (_debugging) {
+            _debug("Postfiring at " + getDirector().getModelTime());
+        }
         _updateStates();
         return super.postfire();
     }
@@ -518,11 +522,5 @@ public class Clock extends TimedSource {
     // Following variables recall data from the fire to the postfire method.
     protected transient int _tentativeCycleCountIncrement;
     protected transient Time _tentativeNextFiringTime;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
 }

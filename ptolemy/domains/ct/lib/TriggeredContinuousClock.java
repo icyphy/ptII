@@ -58,8 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (hyzheng)
 */
 
-public class TriggeredContinuousClock extends ContinuousClock 
-    implements CTWaveformGenerator {
+public class TriggeredContinuousClock extends ContinuousClock {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.

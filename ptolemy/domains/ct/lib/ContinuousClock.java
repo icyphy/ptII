@@ -107,21 +107,13 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
     ////                         public methods                    ////
 
     /** Output the current value of the clock.
-     *  @exception IllegalActionException If
-     *   the value in the offsets parameter is encountered that is greater
-     *   than the period, or if there is no director.
+     *  @exception IllegalActionException If output can not send value.
      */
     public void fire() throws IllegalActionException {
-
-        if (_debugging) 
-            _debug(" --- Firing begins.");
 
         output.send(0, _currentValue);
         if (_debugging)_debug("Output: " + _currentValue + " at " + 
             getDirector().getModelTime() + ".");
-
-        if (_debugging) 
-            _debug(" --- Firing finished.");
     }
 
     /** Schedule the first firing and initialize local variables.
@@ -148,8 +140,12 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
         super.preinitialize();
     }
 
+    /** Update the state of the actor and schedule the next firing,
+     *  if appropriate.
+     *  @exception IllegalActionException If the director throws it when
+     *   scheduling the next firing.
+     */
     public boolean postfire() throws IllegalActionException {
-        
         // Since start time and stop time are registered as breakpoints.
         // If the current execution is not a discrete phase execution,
         // simply returns true.
@@ -173,7 +169,9 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
         Time currentTime = getDirector().getModelTime();
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
-        if (_debugging)_debug("--- Postfiring at time " + currentTime + ".");
+        if (_debugging) {
+            _debug("--- Postfiring at time " + currentTime + ".");
+        }
 
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
@@ -295,6 +293,9 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
             _debug(" --- Postfire returns true.");
         return true;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Boolean variables indicating the phases beside the break point.
     private boolean _tMinus;
