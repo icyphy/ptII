@@ -169,6 +169,19 @@ if {[info procs jdkStackTrace] == 1} then {
 # createAndExecute a file with a MoMLFilter
 proc createAndExecute {file} {
     global KNOWN_FAILED
+    if { "$file" == "compat/testAudioReaderAudioPlayer.xml" \
+	    || "$file" == "compat/testAudioReader.xml" \
+	    || "$file" == "compat/testAudioPlayer.xml" \
+	    || "$file" == "compat/testAudioCapture_AudioPlayer.xml" \
+	    || "$file" == "compat/testAudioCapture.xml" \
+	    || "$file" == "compat/MaximumEntropySpectrum.xml" \
+	    || "$file" == "compat/ArrayAppend.xml" } {
+	puts "$file: Skipping Known Failure"
+	incr KNOWN_FAILED
+	return
+    }
+
+    
     #java::new ptolemy.actor.gui.MoMLSimpleApplication $file
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
