@@ -364,6 +364,8 @@ public class DEDirector extends Director {
 
         boolean _timeHasNotAdvanced = true;
         while (true) {
+            _stopRequested = false;
+
             Actor actorToFire = _dequeueEvents();
             if (actorToFire == null) {
                 // There is nothing more to do.
@@ -618,6 +620,7 @@ public class DEDirector extends Director {
      *  @return A new DEReceiver.
      */
     public Receiver newReceiver() {
+        if(_debugging) _debug("Creating new DE receiver.");
 	return new DEReceiver();
     }
 
@@ -903,11 +906,11 @@ public class DEDirector extends Director {
                 // In this case we want to do a blocking read of the queue,
                 // unless we have already found an actor to fire.
                 if (actorToFire != null && _eventQueue.isEmpty()) break;
-                _stopRequested = false;
                 while (_eventQueue.isEmpty() && !_stopRequested) {
                     if (_debugging) {
                         _debug("Queue is empty. Waiting for input events.");
                     }
+                    Thread.currentThread().yield();
                     synchronized(_eventQueue) {
                         try {
                             // FIXME: If the manager gets a change request
