@@ -253,18 +253,6 @@ public class Relation extends NamedObj {
 	return (Port) _destinationPorts.remove( port.getName() );
     }
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    public int APublicMethod() {
-        return 1;
-    }
-
-
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
@@ -296,9 +284,4 @@ public class Relation extends NamedObj {
      * class might.
      */
     private UpdatableBag _buffer;
-
-    /* Private variables should not have doc comments, they should
-       have regular comments.
-     */
-    private int aPrivateVariable;
 }
