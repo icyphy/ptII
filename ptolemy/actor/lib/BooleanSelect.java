@@ -146,8 +146,6 @@ public class BooleanSelect extends TypedAtomicActor {
      *  <i>control</i> input is true, then output the token consumed from the
      *  <i>trueInput</i> port, otherwise output the token from the
      *  <i>falseInput</i> port.
-     *  This method will throw a NoTokenException if any
-     *  input channel does not have a token.
      *
      *  @exception IllegalActionException If there is no director.
      */
