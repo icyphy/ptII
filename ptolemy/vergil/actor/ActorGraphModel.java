@@ -30,18 +30,8 @@
 
 package ptolemy.vergil.actor;
 
-import ptolemy.vergil.kernel.AttributeNodeModel;
-import ptolemy.vergil.kernel.Link;
-import ptolemy.vergil.fsm.FSMGraphModel;
-import ptolemy.vergil.basic.AbstractBasicGraphModel;
-import ptolemy.vergil.basic.NamedObjNodeModel;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import diva.graph.GraphEvent;
+import diva.graph.GraphModel;
 import diva.graph.GraphUtilities;
 import diva.graph.modular.CompositeModel;
 import diva.graph.modular.CompositeNodeModel;
@@ -49,27 +39,27 @@ import diva.graph.modular.EdgeModel;
 import diva.graph.modular.MutableEdgeModel;
 import diva.graph.modular.NodeModel;
 import diva.util.NullIterator;
-
-import ptolemy.actor.Director;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.CompositeEntity;import ptolemy.kernel.util.NamedObj;
-
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
+import ptolemy.vergil.actor.ActorGraphModel.LinkModel.LinkChangeListener;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
+import ptolemy.vergil.kernel.Link;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 // NOTE: The inner classes here should be factored out as independent
 // classes, and the resulting NodeModel hierarchy should be carefully

@@ -30,14 +30,6 @@
 
 package ptolemy.vergil.actor;
 
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.actor.IOPort;
-import ptolemy.data.type.Typeable;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.IllegalActionException;
-
-import diva.graph.GraphController;
-import diva.graph.NodeRenderer;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.Site;
@@ -45,11 +37,22 @@ import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.PerimeterSite;
 import diva.canvas.connector.TerminalFigure;
 import diva.canvas.interactor.CompositeInteractor;
+import diva.canvas.interactor.Interactor;
 import diva.canvas.toolbox.BasicFigure;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
+import diva.util.java2d.Polygon2D.Double;
+import ptolemy.actor.IOPort;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.Typeable;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.*;
+import ptolemy.vergil.kernel.AttributeController;
 
-import java.awt.Color;
 import javax.swing.SwingUtilities;
+import java.awt.Color;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPortController

@@ -30,35 +30,30 @@
 
 package ptolemy.vergil.actor;
 
-import ptolemy.vergil.kernel.AnimationRenderer;
-import ptolemy.vergil.kernel.Link;
-import ptolemy.vergil.kernel.RelationController;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.basic.AbstractBasicGraphModel;
-import ptolemy.vergil.basic.NodeControllerFactory;
-import ptolemy.vergil.basic.NamedObjController;
-import ptolemy.vergil.basic.BasicGraphController;
-import java.util.List;
-
 import diva.canvas.Figure;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.graph.EdgeController;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
+import ptolemy.actor.FiringEvent.FiringEventType;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
+import ptolemy.vergil.basic.BasicGraphController;
+import ptolemy.vergil.basic.NamedObjController;
+import ptolemy.vergil.kernel.AnimationRenderer;
+import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.kernel.RelationController;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorViewerGraphController

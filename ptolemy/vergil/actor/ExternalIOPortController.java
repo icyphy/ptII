@@ -30,15 +30,6 @@
 
 package ptolemy.vergil.actor;
 
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.actor.IOPort;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.moml.Location;
-
-import diva.graph.GraphController;
-import diva.graph.NodeRenderer;
 import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
@@ -48,16 +39,25 @@ import diva.canvas.connector.PerimeterSite;
 import diva.canvas.connector.TerminalFigure;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.LabelFigure;
+import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
+import diva.util.java2d.Polygon2D.Double;
+import ptolemy.actor.IOPort;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.*;
+import ptolemy.moml.Location;
+import ptolemy.vergil.kernel.AttributeController;
 
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExternalIOPortController

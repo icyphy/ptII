@@ -30,12 +30,14 @@
 
 package ptolemy.vergil.actor;
 
-import ptolemy.actor.gui.*;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 import java.awt.Color;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphTableau

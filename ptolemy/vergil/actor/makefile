@@ -49,15 +49,16 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ActorGraphModel.java \
-	LinkController.java \
-	ExternalIOPortController.java \
-	IOPortController.java \
 	ActorController.java \
 	ActorEditorGraphController.java \
-	ActorViewerGraphController.java \
-	ActorGraphTableau.java \
 	ActorGraphFrame.java \
+	ActorGraphModel.java \
+	ActorGraphTableau.java \
+	ActorEditorGraphController.java \
+	ActorViewerGraphController.java \
+	ExternalIOPortController.java \
+	IOPortController.java \
+	LinkController.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -68,7 +69,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR) \
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
