@@ -41,6 +41,21 @@ if {[info procs enumToObjects] == "" } then {
      source enums.tcl
 }
 
+
+proc setTokenConsumptionRate {port rate} {
+    set attribute [$port getAttribute tokenConsumptionRate]
+    set parameter [java::cast ptolemy.data.expr.Parameter $attribute]
+    $parameter setExpression $rate
+    $parameter getToken
+}
+
+proc setTokenProductionRate {port rate} {
+    set attribute [$port getAttribute tokenProductionRate]
+    set parameter [java::cast ptolemy.data.expr.Parameter $attribute]
+    $parameter setExpression $rate
+    $parameter getToken
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -308,8 +323,8 @@ test SDFDirector-7.1 {Multirate and Hierarchy execution tests} {
     $c1 setDirector $d5
     set s5 [$d5 getScheduler]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
-    [java::field $a2 output] setTokenProductionRate 2
-    [java::field $a2 input] setTokenConsumptionRate 2
+    setTokenProductionRate [java::field $a2 output] 2
+    setTokenConsumptionRate [java::field $a2 input] 2
 
 
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
