@@ -204,6 +204,13 @@ public class RecordToken extends Token {
 	return new BooleanToken(true);
     }
 
+    /** Return the labels of this token as a Set.
+     *  @return A Set containing strings.
+     */
+    public Set labelSet() {
+        return _fields.keySet();
+    }
+
     /** Returns a new RecordToken representing the multiplicative identity.
      *  The returned token has the same set of labels as this one, and
      *  each field contains the multiplicative identity of the corresponding

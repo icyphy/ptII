@@ -208,7 +208,21 @@ test RecordToken-5.0 {Test isEqualTo} {
 ######################################################################
 ####
 # 
-test RecordToken-6.0 {Test one} {
+test RecordToken-6.0 {Test labelSet} {
+   iterToObjects [[$r1 labelSet] iterator]
+} {}
+
+######################################################################
+####
+# 
+test RecordToken-6.1 {Test labelSet} {
+   iterToObjects [[$r2 labelSet] iterator]
+} {name value}
+
+######################################################################
+####
+# 
+test RecordToken-7.0 {Test one} {
     # record is empty
     set l [java::new {String[]} {0} {}]
     set v [java::new {ptolemy.data.Token[]} {0} {}]
@@ -220,7 +234,7 @@ test RecordToken-6.0 {Test one} {
 ######################################################################
 ####
 # 
-test RecordToken-6.1 {Test one} {
+test RecordToken-7.1 {Test one} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::new {ptolemy.data.StringToken String} foo]
@@ -236,7 +250,7 @@ test RecordToken-6.1 {Test one} {
 ######################################################################
 ####
 # 
-test RecordToken-6.2 {Test one} {
+test RecordToken-7.2 {Test one} {
     set l [java::new {String[]} {2} {{value1} {value2}}]
 
     set v1 [java::new {ptolemy.data.IntToken int} 5]
@@ -251,7 +265,7 @@ test RecordToken-6.2 {Test one} {
 ######################################################################
 ####
 # 
-test RecordToken-7.0 {Test zero} {
+test RecordToken-8.0 {Test zero} {
     # record is empty
     set l [java::new {String[]} {0} {}]
     set v [java::new {ptolemy.data.Token[]} {0} {}]
@@ -263,7 +277,7 @@ test RecordToken-7.0 {Test zero} {
 ######################################################################
 ####
 # 
-test RecordToken-7.1 {Test zero} {
+test RecordToken-8.1 {Test zero} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::new {ptolemy.data.StringToken String} foo]
@@ -278,7 +292,7 @@ test RecordToken-7.1 {Test zero} {
 ######################################################################
 ####
 # 
-test RecordToken-7.2 {Test zero} {
+test RecordToken-8.2 {Test zero} {
     set l [java::new {String[]} {2} {{value1} {value2}}]
 
     set v1 [java::new {ptolemy.data.IntToken int} 5]
