@@ -1,10 +1,10 @@
 # Tests for the FixToken class
 #
-# @Author: Bart Kienhuis
+# @Author: Bart Kienhuis, Christopher Hylands
 #
 # @Version $Id$
 #
-# @Copyright (c) 1997-2000 The Regents of the University of California.
+# @Copyright (c) 1999-2000 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -65,7 +65,7 @@ test FixToken-1.1 {Create a non-empty instance from two strings} {
 } {fix(5.573486328125,16,4)}
 
 test FixToken-1.2 {Create a non-empty instance from two strings} {
-    set p1 [java::new ptolemy.math.Precision "(4^32)" ]
+    set p1 [java::new ptolemy.math.Precision "(32/4)" ]
     set c2 [java::call ptolemy.math.Quantizer \
 	    {round double ptolemy.math.Precision } 5.5734 $p1 ]
     set p [java::new ptolemy.data.FixToken $c2 ]
@@ -309,10 +309,10 @@ test FixToken-6.4 {Test scaleToPrecision} {
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
-    set p3 [java::new ptolemy.math.Precision "(4^12)" ]
-    set p4 [java::new ptolemy.math.Precision "(4^10)" ]
-    set p5 [java::new ptolemy.math.Precision "(4^8)" ]
-    set p6 [java::new ptolemy.math.Precision "(4^6)" ]
+    set p3 [java::new ptolemy.math.Precision "(12/4)" ]
+    set p4 [java::new ptolemy.math.Precision "(10/4)" ]
+    set p5 [java::new ptolemy.math.Precision "(8/6)" ]
+    set p6 [java::new ptolemy.math.Precision "(6/4)" ]
 
     set res1 [$r1 scaleToPrecision $p2 0 ]
     set res2 [$r1 scaleToPrecision $p3 0 ]
@@ -333,10 +333,10 @@ test FixToken-6.5 {Test scaleToPrecision} {
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
-    set p3 [java::new ptolemy.math.Precision "(4^12)" ]
-    set p4 [java::new ptolemy.math.Precision "(4^10)" ]
-    set p5 [java::new ptolemy.math.Precision "(4^8)" ]
-    set p6 [java::new ptolemy.math.Precision "(4^6)" ]
+    set p3 [java::new ptolemy.math.Precision "(12/4)" ]
+    set p4 [java::new ptolemy.math.Precision "(10/4)" ]
+    set p5 [java::new ptolemy.math.Precision "(8/6)" ]
+    set p6 [java::new ptolemy.math.Precision "(6/4)" ]
 
     set res1 [$r1 scaleToPrecision $p2 0 ]
     set res2 [$r1 scaleToPrecision $p3 0 ]
@@ -357,10 +357,11 @@ test FixToken-6.6 {Test scaleToPrecision} {
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
-    set p3 [java::new ptolemy.math.Precision "(4^12)" ]
-    set p4 [java::new ptolemy.math.Precision "(4^10)" ]
-    set p5 [java::new ptolemy.math.Precision "(4^8)" ]
-    set p6 [java::new ptolemy.math.Precision "(4^6)" ]
+
+    set p3 [java::new ptolemy.math.Precision "(12/4)" ]
+    set p4 [java::new ptolemy.math.Precision "(10/4)" ]
+    set p5 [java::new ptolemy.math.Precision "(8/6)" ]
+    set p6 [java::new ptolemy.math.Precision "(6/4)" ]
 
     set res1 [$r1 scaleToPrecision $p2 1 ]
     set res2 [$r1 scaleToPrecision $p3 1 ]
@@ -381,10 +382,10 @@ test FixToken-6.7 {Test scaleToPrecision} {
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
-    set p3 [java::new ptolemy.math.Precision "(4^12)" ]
-    set p4 [java::new ptolemy.math.Precision "(4^10)" ]
-    set p5 [java::new ptolemy.math.Precision "(4^8)" ]
-    set p6 [java::new ptolemy.math.Precision "(4^6)" ]
+    set p3 [java::new ptolemy.math.Precision "(12/4)" ]
+    set p4 [java::new ptolemy.math.Precision "(10/4)" ]
+    set p5 [java::new ptolemy.math.Precision "(8/6)" ]
+    set p6 [java::new ptolemy.math.Precision "(6/4)" ]
 
     set res1 [$r1 scaleToPrecision $p2 1 ]
     set res2 [$r1 scaleToPrecision $p3 1 ]
