@@ -325,7 +325,7 @@ public class Plot extends PlotBox {
         _maxdataset = -1;
         _firstinset = true;
         _sawfirstdataset = false;
-        _xyInvalid = false;
+        _xyInvalid = true;
         _filename = null;
 
         if (format) {
