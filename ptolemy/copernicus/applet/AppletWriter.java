@@ -128,6 +128,8 @@ public class AppletWriter extends SceneTransformer {
         System.out.println("AppletWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
+        System.out.println("AppletWriter version: $Id$");
+
 	_outputDirectory = Options.getString(options, "outDir");
 
 	// Determine where $PTII is so that we can find the right directory.
