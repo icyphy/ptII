@@ -1,6 +1,6 @@
 # Makefile for Ptolemy backtracking package
 #
-# @Version: makefile,v 1.1 2005/03/04 01:39:49 tfeng Exp
+# @Version: $id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005 The Regents of the University of California
@@ -49,7 +49,7 @@ PTPACKAGE = 	test
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = Test1Main.java
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -67,29 +67,33 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-	# This script is executed AFTER the source in test1 is compiled.
-	# First, transform the source and add prefix "ptolemy.backtrack.test" to the package name.
+all:
+	# First, compile all the sources in the test subdirectories.
+	for subdir in $(DIRS); do \
+	  $(MAKE) -C $$subdir; \
+	done
+	
+	# Transform the source and add prefix "ptolemy.backtrack.test" to the package name.
 	# The output root dir is $(ROOT).
-	# The Test1.java is now in package ptolemy.backtrack.test.test1.
 	# The transformed code is in package ptolemy.backtrack.test.ptolemy.backtrack.test.test1.
-	java \
-	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)" \
-	  ptolemy.backtrack.ast.Transformer \
-	  -prefix ptolemy.backtrack.test \
-	  -output $(ROOT) \
-	  test1/Test1.java
-	# Now, compile the test program that runs the transformed code.
-	# This test program doesn't require eclipse jars any more.
-	# ptolemy/backtrack/test/test1/Test1.java is compiled as dependency.
-	javac \
-	  -classpath "$(CLASSPATH)" \
-	  Test1Main.java
-	# Finally, run the test program. (Again, don't require eclipse.)
-	java \
-	  -classpath "$(CLASSPATH)" \
-	  ptolemy.backtrack.test.Test1Main
-	# If the output is "0 1 2 3 3 2 1 0", it is good.
+	for subdir in $(DIRS); do \
+	  java \
+	    -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)" \
+	    ptolemy.backtrack.ast.Transformer \
+	    -prefix ptolemy.backtrack.test \
+	    -output $(ROOT) \
+	    $$subdir/*.java; \
+	done
+
+	# Compile all the tests in the current directory.
+	$(MAKE) jclass
+
+	# Finally, run the test program.
+	for test in $(JSRCS); do \
+	  java \
+	    -classpath "$(CLASSPATH)" \
+	    ptolemy.backtrack.test.`basename $$test .java`; \
+	done
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
