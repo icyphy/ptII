@@ -167,6 +167,13 @@ case `basename "$0"` in
 	jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
+    mescal)
+        # Mescal UI
+	javastartupclass=mescal.MescalApplication
+	javasourcedir=mescal
+	jarfile="$ALL_JAR"
+	javaflag="$ALL_JFLAG"
+	;;	
     moml)
 	# Moml application
 	# This has no default configuration, run moml when you want
@@ -262,13 +269,6 @@ case `basename "$0"` in
 	# Ptolemy II UI
 	javastartupclass=ptolemy.vergil.VergilApplication
 	javasourcedir=ptolemy/vergil
-	jarfile="$ALL_JAR"
-	javaflag="$ALL_JFLAG"
-	;;
-    mescal)
-        # Mescal UI
-	javastartupclass=mescal.MescalApplication
-	javasourcedir=mescal
 	jarfile="$ALL_JAR"
 	javaflag="$ALL_JFLAG"
 	;;
