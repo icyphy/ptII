@@ -111,6 +111,7 @@ public class StaticSchedulingDirector extends Director {
     /** Override the base class to also listen to the scheduler, if there
      *  is one.
      *  @param listener The listener to which to send debug messages.
+     *  @see removeDebugListener(DebugListener)
      */
     public synchronized void addDebugListener(DebugListener listener) {
         super.addDebugListener(listener);
@@ -186,6 +187,7 @@ public class StaticSchedulingDirector extends Director {
      *  workspace.
      *
      *  @return The contained scheduler.
+     *  @see #setScheduler(Scheduler)
      */
     public Scheduler getScheduler() {
         try {
@@ -267,6 +269,7 @@ public class StaticSchedulingDirector extends Director {
      *  if there is one.
      *  @param listener The listener to remove from the list of listeners
      *   to which debug messages are sent.
+     *  @see #addDebugListener(DebugListener)   
      */
     public synchronized void removeDebugListener(DebugListener listener) {
         super.removeDebugListener(listener);
@@ -311,6 +314,7 @@ public class StaticSchedulingDirector extends Director {
      *   but derived classes may throw it if the scheduler is not compatible.
      *  @exception NameDuplicationException Not thrown in this base class,
      *   but derived classes may throw it if the scheduler is not compatible.
+     *  @see #getScheduler()
      */
     public void setScheduler(Scheduler scheduler)
             throws IllegalActionException, NameDuplicationException {

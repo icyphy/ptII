@@ -80,20 +80,22 @@ public class NotSchedulableException extends InvalidStateException {
     }
 
     /** Constructs an Exception with a detail message that includes the
-     *  names of an enumeration of nameables plus the an argument string.
+     *  names of an enumeration of nameables and the detail argument.
      *  @deprecated Use
      *    NotSchedulableException(Collection, Throwable, String) instead.
-     *  @param detail The message.
      *  @param actors The unschedulable actors.
+     *  @param detail The message.
      */
     public NotSchedulableException(Enumeration actors, String detail) {
         this(_list(actors), null, detail);
     }
 
     /** Constructs an Exception with a detail message that includes the
-     *  names of a Collection of nameables plus the an argument string.
-     *  @param detail The message.
+     *  names of a Collection of nameables, the causing Throwable
+     *  and the detail argument.
      *  @param actors The unschedulable actors.
+     *  @param cause The cause.   
+     *  @param detail The message.
      */
     public NotSchedulableException(Collection actors, Throwable cause,
             String detail) {

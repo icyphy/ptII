@@ -130,7 +130,8 @@ public class Firing extends ScheduleElement {
      *  method is used to set the actor that this method returns.
      *  If setActor() was never called, then throw an exception.
      *
-     * @return The actor associated with this Firing.
+     *  @return The actor associated with this Firing.
+     *  @see #setActor(Actor)
      */
     public Actor getActor() {
         return _actor;
@@ -142,6 +143,7 @@ public class Firing extends ScheduleElement {
      *  reference will overwritten.
      *
      *  @param actor The actor to associate with this firing.
+     *  @see #getActor()
      */
     public void setActor(Actor actor) {
         _incrementVersion();

@@ -96,6 +96,7 @@ public abstract class ScheduleElement {
      *  then a value of one is returned.
      *
      *  @return The iteration count for this schedule.
+     *  @see #setIterationCount(int)
      */
     public int getIterationCount() {
         return _iterationCount;
@@ -107,6 +108,7 @@ public abstract class ScheduleElement {
      *  value of one will be used.
      *
      *  @param count The iteration count for this schedule.
+     *  @see #getIterationCount()
      */
     public void setIterationCount(int count) {
         _incrementVersion();
