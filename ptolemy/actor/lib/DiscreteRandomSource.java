@@ -208,3 +208,4 @@ public class DiscreteRandomSource extends RandomSource {
 
     /** The cached matrix of value tokens. */
     protected MatrixToken _valuesMatrixToken = null;
+}
