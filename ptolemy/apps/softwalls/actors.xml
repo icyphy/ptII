@@ -12,6 +12,9 @@
 <entity name="Bias" class="ptolemy.apps.softwalls.Bias">
 <doc>A view screen with a mountain backdrop.</doc>
 </entity>
+<entity name="ImplicitSurface" class="ptolemy.apps.softwalls.ImplicitSurface">
+<doc>A view screen with a mountain backdrop.</doc>
+</entity>
 
       </group>
     ?>
