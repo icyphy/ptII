@@ -159,7 +159,7 @@ fi
 
 JXTA_DIR="${PTII}/vendors/sun/jxta"
 
-JXTA_JAR="${JXTA_DIR}/jxta.jar;${JXTA_DIR}/log4j.jar;${JXTA_DIR}/beepcore.jar;${JXTA_DIR}/jxtasecurity.jar;${JXTA_DIR}/cryptix-asn1.jar;${JXTA_DIR}/cryptix32.jar;${JXTA_DIR}/jxtaptls.jar;${JXTA_DIR}/minimalBC.jar"
+JXTA_JAR="${JXTA_DIR}/jxta.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/log4j.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/beepcore.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/jxtasecurity.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/cryptix-asn1.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/cryptix32.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/jxtaptls.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/minimalBC.jar"
 
 JXTA_JFLAG= 
 
