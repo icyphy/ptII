@@ -1,0 +1,38 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>Error Bars</title>
+</head>
+<body bgcolor="#faf0e6">
+<h1>Plot using Error Bars</h1>
+<hr>
+The plot below uses shows error bars for the data points.
+The error bars are specified in the <a href="errorbars.plt">data file</a>
+with a 4 number line:
+<pre>
+<i>x</i>,<i>y</i>,<i>ylow</i>,<i>yhigh</i>
+</pre>
+
+<p>
+<applet name="Marks" code="ptplot.PlotApplet" width=500 height=400
+    codebase="../.."	
+    archive="ptplot/ptplot.jar"
+    alt="If you had a java-enabled browser, you would see an applet here."
+>
+<param name="dataurl" value="errorbars.plt">
+<param name="background" value="faf0e6">
+   <hr>If your browser recognized the applet tag,
+    you would see an applet here.<hr>
+</applet>
+<p>
+<HR>
+<A HREF="index.html">Up</A> to the Example index -
+<A HREF="Ptplot.html">Back</A> to a JavaScript Interface to Ptplot 
+<HR>
+Copyright &#169 1998, The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>cxh@eecs.berkeley.edu</author>
+</body>
+</html>
