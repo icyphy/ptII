@@ -405,7 +405,6 @@ public class MoMLWriter extends Writer {
                                 + deferredClass + " failed because "
                                 + "it does not have a Workspace "
                                 + "constructor.\n"
-                                + "Constructors found were:\n"
                                 + possibleConstructors);
                     }
                     if (object instanceof Attribute) {
