@@ -326,11 +326,11 @@ test CTScheduler-2.8 {get the schedule again} {
 } {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S .CA.A7S .CA.ED .CA.A8} {.CA.Dyn .CA.D2 .CA.D3} {.CA.EG .CA.ED} .CA.EI {.CA.A6S .CA.A7S} {} .CA.SSC {.CA.D2 .CA.D3 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A7S .CA.A2} {.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5 .CA.A6S .CA.ED .CA.A8}}
 
 ######################################################################
-#### Test description
+#### Test toString
 #
 test CTScheduler-3.1 {get the description} {
     #Note: use above set up.
-    list [$sch description]
+    list [$sch toString]
 } {{CTSchedule {
     arithmaticActors {
 	.CA.A1

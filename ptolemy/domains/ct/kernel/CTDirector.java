@@ -497,9 +497,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     new FuzzyDoubleComparator(_timeResolution));
         }
         if(_debugging) _debug(getName(), " preinitialize actors");
-        Enumeration allactors = ca.deepGetEntities();
-        while (allactors.hasMoreElements()) {
-            Actor actor = (Actor)allactors.nextElement();
+        Iterator allactors = ca.deepEntityList().iterator();
+        while (allactors.hasNext()) {
+            Actor actor = (Actor)allactors.next();
             if(_debugging) _debug("Invoking preinitialize(): ",
                     ((NamedObj)actor).getFullName());
             actor.preinitialize();

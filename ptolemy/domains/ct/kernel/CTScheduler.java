@@ -147,98 +147,6 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return all the schedule information.
-     *  @return All the schedules.
-     */
-    public String description() {
-        String res = new String();
-        Enumeration list;
-        res += "CTSchedule {\n";
-        res += "    arithmaticActors {\n";
-        list = arithmaticActors();
-        try {
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    dynamicActors {\n";
-            list = dynamicActors();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    stateTransitionSSCActors {\n";
-            list = stateTransitionSSCActors();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    outputSSCActors {\n";
-            list = outputSSCActors();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    eventGenerators {\n";
-            list = eventGenerators();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    eventInterpreters {\n";
-            list = eventInterpreters();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    statefulActors {\n";
-            list = statefulActors();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    sinkActors {\n";
-            list = sinkActors();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    dynamicActorSchedule {\n";
-            list = dynamicActorSchedule();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    stateTransitionSchedule {\n";
-            list = stateTransitionSchedule();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "    outputSchedule {\n";
-            list = outputSchedule();
-            while(list.hasMoreElements()) {
-                res += "\t" +
-                    ((NamedObj)list.nextElement()).getFullName() + "\n";
-            }
-            res += "    }\n";
-            res += "}\n";
-        } catch (IllegalActionException ex) {
-            throw new InvalidStateException(this,
-                    "Failed to generate CT schedule.");
-        }
-        return res;
-    }
 
     /** Returns an enumeration of dynamic actors. This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -487,6 +395,100 @@ public class CTScheduler extends Scheduler{
         }
     }
 
+    /** Return all the schedule information.
+     *  @return All the schedules.
+     */
+    public String toString() {
+        String res = new String();
+        Enumeration list;
+        res += "CTSchedule {\n";
+        res += "    arithmaticActors {\n";
+        list = arithmaticActors();
+        try {
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    dynamicActors {\n";
+            list = dynamicActors();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    stateTransitionSSCActors {\n";
+            list = stateTransitionSSCActors();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    outputSSCActors {\n";
+            list = outputSSCActors();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    eventGenerators {\n";
+            list = eventGenerators();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    eventInterpreters {\n";
+            list = eventInterpreters();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    statefulActors {\n";
+            list = statefulActors();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    sinkActors {\n";
+            list = sinkActors();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    dynamicActorSchedule {\n";
+            list = dynamicActorSchedule();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    stateTransitionSchedule {\n";
+            list = stateTransitionSchedule();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "    outputSchedule {\n";
+            list = outputSchedule();
+            while(list.hasMoreElements()) {
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
+            }
+            res += "    }\n";
+            res += "}\n";
+        } catch (IllegalActionException ex) {
+            throw new InvalidStateException(this,
+                    "Failed to generate CT schedule.");
+        }
+        return res;
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -514,9 +516,9 @@ public class CTScheduler extends Scheduler{
         }
 
         CompositeActor ca = (CompositeActor) getContainer().getContainer();
-        Enumeration actors = ca.deepGetEntities();
-        while(actors.hasMoreElements()) {
-            Actor a = (Actor) actors.nextElement();
+        Iterator actors = ca.deepEntityList().iterator();
+        while(actors.hasNext()) {
+            Actor a = (Actor) actors.next();
             if (a instanceof CTStatefulActor) {
                 _stateful.insertLast(a);
             }
@@ -602,7 +604,7 @@ public class CTScheduler extends Scheduler{
         LinkedList _scheList = new LinkedList();
 
         _classifyActors();
-        DirectedAcyclicGraph g =  _toArithGraph(ca.deepGetEntities());
+        DirectedAcyclicGraph g =  _toArithGraph(ca.deepEntityList());
         DirectedAcyclicGraph gd = _toGraph(dynamicActors());
         if(!g.isAcyclic()) {
             throw new NotSchedulableException("Arithmetic loop found.");
@@ -716,35 +718,37 @@ public class CTScheduler extends Scheduler{
      *  corresponding nodes unless the source node is a dynamic actor.
      *  The existence of the director and containers is not checked
      *  in this method, so the caller should check.
+     *  @param actorlist The list of actors to be scheduled.
      *  @return A graph representation of the actors.
      */
-    protected DirectedAcyclicGraph _toArithGraph(Enumeration actors) {
+    protected DirectedAcyclicGraph _toArithGraph(List actorlist) {
         CTDirector dir = (CTDirector)getContainer();
         CompositeActor ca = (CompositeActor)(dir.getContainer());
 
         DirectedAcyclicGraph g = new DirectedAcyclicGraph();
         // Create the nodes.
-        // The actors comes from deepGetEntities, so it is impossible
+        // The actors comes from deepEntityList, so it is impossible
         // that one actor can occur twice in the Enumeration. So no
         // exceptions are caught.
-        LinkedList actorlist = new LinkedList();
-        while (actors.hasMoreElements()) {
-            Actor a = (Actor)actors.nextElement();
+        //LinkedList actorlist = new LinkedList();
+        Iterator actors = actorlist.iterator();
+        while (actors.hasNext()) {
+            Actor a = (Actor)actors.next();
             g.add(a);
-            actorlist.insertLast(a);
+            //            actorlist.insertLast(a);
         }
 
         // Create the edges.
-        Enumeration allactors = actorlist.elements();
-        while (allactors.hasMoreElements()) {
-            Actor a = (Actor) allactors.nextElement();
+        Iterator allactors = actorlist.iterator();
+        while (allactors.hasNext()) {
+            Actor a = (Actor) allactors.next();
 
             if(!(a instanceof CTDynamicActor)) {
                 // Find the successors of a
                 Enumeration successors = _successors(a);
                 while (successors.hasMoreElements()) {
                     Actor s = (Actor) successors.nextElement();
-                    if(actorlist.includes(s)) {
+                    if(actorlist.contains(s)) {
                         g.addEdge(a, s);
                     }
                 }
@@ -770,7 +774,7 @@ public class CTScheduler extends Scheduler{
 
         DirectedAcyclicGraph g = new DirectedAcyclicGraph();
         // Create the nodes.
-        // The actors comes from deepGetEntities, so it is impossible
+        // The actors comes from deepEntityList, so it is impossible
         // that one actor can occur twice in the Enumeration. So no
         // exceptions are caught.
         LinkedList actorlist = new LinkedList();

@@ -315,9 +315,9 @@ public abstract class CTSingleSolverDirector extends CTDirector {
      */
     public void updateStates() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
-        Enumeration allactors = container.deepGetEntities();
-        while(allactors.hasMoreElements()) {
-            Actor nextactor = (Actor)allactors.nextElement();
+        Iterator allactors = container.deepEntityList().iterator();
+        while(allactors.hasNext()) {
+            Actor nextactor = (Actor)allactors.next();
             nextactor.postfire();
         }
     }
@@ -478,9 +478,9 @@ public abstract class CTSingleSolverDirector extends CTDirector {
     protected boolean _prefireSystem() throws IllegalActionException {
         boolean ready = true;
         CompositeActor ca = (CompositeActor) getContainer();
-        Enumeration actors = ca.deepGetEntities();
-        while(actors.hasMoreElements()) {
-            Actor a = (Actor) actors.nextElement();
+        Iterator actors = ca.deepEntityList().iterator();
+        while(actors.hasNext()) {
+            Actor a = (Actor) actors.next();
             ready = ready && a.prefire();
             if(_debugging) _debug("Prefire "+((Nameable)a).getName() +
                     " returns" + ready);
