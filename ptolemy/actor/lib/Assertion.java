@@ -79,9 +79,6 @@ public class Assertion extends TypedAtomicActor {
 
         assertion = new Parameter(this, "assertion");
 
-        _time = new Variable(this, "time", new DoubleToken(0.0));
-        _iteration = new Variable(this, "iteration", new IntToken(1));
-
         _errorTolerance = (double)1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
 				       new DoubleToken(_errorTolerance));
@@ -133,39 +130,18 @@ public class Assertion extends TypedAtomicActor {
     public Object clone(Workspace workspace)
 	throws CloneNotSupportedException {
         Assertion newObject = (Assertion)super.clone(workspace);
-        newObject._iterationCount = 1;
-        newObject._time = (Variable)newObject.getAttribute("time");
-        newObject._iteration = (Variable)newObject.getAttribute("iteration");
         return newObject;
     }
 
-    /** Do nothing.
+    /** Update tokens in input ports.
      */
     public void fire() throws IllegalActionException {
-    }
-
-
-    /** Initialize the iteration count to 1.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _iterationCount = 1;
-        _iteration.setToken(new IntToken(_iterationCount));
-    }
-
-    /** Evaluation the assertion. Increment the iteration count.
-     *  @exception IllegalActionException If the assertion fails,
-     *  or if there is no director.
-     */
-    public boolean postfire() throws IllegalActionException {
 
         Director director = getDirector();
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
 
-        _time.setToken(new DoubleToken(director.getCurrentTime()));
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
@@ -196,6 +172,21 @@ public class Assertion extends TypedAtomicActor {
                 }
             }
         }
+    }
+
+
+    /** Initialize the actor.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+    }
+
+    /** Evaluation the assertion.
+     *  @exception IllegalActionException If the assertion fails,
+     *  or if there is no director.
+     */
+    public boolean postfire() throws IllegalActionException {
 
         BooleanToken result = (BooleanToken) assertion.getToken();
 
@@ -205,8 +196,6 @@ public class Assertion extends TypedAtomicActor {
 					     assertion.getExpression());
         }
 
-        _iterationCount++;
-        _iteration.setToken(new IntToken(_iterationCount));
         // This actor never requests termination.
         return true;
     }
@@ -294,12 +283,4 @@ public class Assertion extends TypedAtomicActor {
     // Parameter, the error tolerance, local copy
     protected double _errorTolerance;
 
-    // Variable, the time, local copy
-    private Variable _time;
-
-    // Variable, the iteration, local copy
-    private Variable _iteration;
-
-    // Variable, the iterationCount, local copy
-    private int _iterationCount = 1;
 }
