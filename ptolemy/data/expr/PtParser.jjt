@@ -47,6 +47,7 @@ package ptolemy.data.expr;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.math.Complex;
 import java.util.Hashtable;
 import collections.LinkedList;
 
@@ -95,6 +96,10 @@ The expressions recognized follow as close as possible the syntax of Java.
 In particular the operator precedences implemented here follow exactly 
 those in Java. Any type conversions that are performed are lossless. If 
 the user wants lossy conversions, explicit casts will be necessary.
+<p>
+Complex number are specified by an i or j after the imaginary part 
+of the number. Long numbers are specified by an l or L after an 
+integer number.
 <p>
 Users can register constants with the parser and also register classes
 where functions that may be called are defined. For a more 
@@ -241,6 +246,8 @@ public class PtParser {
             tmp = new StringToken((String)value);   
         } else if (value instanceof Boolean) {
             tmp = new BooleanToken(((Boolean)value).booleanValue());
+        } else if (value instanceof Complex) {
+            tmp = new ComplexToken((Complex)value);
         } else {
             throw new IllegalArgumentException("PtParser: cannot register " +
                     name + "  as a constant of the parser.");
@@ -411,6 +418,8 @@ TOKEN : /* Numeric literals */
 |
   < #OCTAL_LITERAL: "0" (["0"-"7"])* >
 |
+  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+|
   < DOUBLE:
         (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
@@ -418,7 +427,12 @@ TOKEN : /* Numeric literals */
       | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
   >
 |
-  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+  < COMPLEX:
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["i","j"])?
+      | "." (["0"-"9"])+ (<EXPONENT>)? (["f","j"])?
+      | (["0"-"9"])+ <EXPONENT> (["i","j"])?
+      | (["0"-"9"])+ (<EXPONENT>)? ["i","j"]
+  >
 }
 
 TOKEN : /*Boolean literals */
@@ -591,6 +605,22 @@ String tidied, x;
 }
 {
    ( 
+      <COMPLEX>
+	{   try 
+            {
+                x = token.image.toLowerCase();
+                len = x.length();
+                Double imag = new Double(x.substring(0, len-1 ));
+                Complex value = new Complex(0, imag.doubleValue());
+                jjtThis._ptToken = new ComplexToken(value);
+            } catch (NumberFormatException ee) {
+                String str = "Unable to convert token " + token.image;
+                throw new ParseException(str + "to a complex number.");
+            }
+        }
+   ) #PtLeafNode
+  |  
+   (
      <DOUBLE>
 	{   try 
             {
