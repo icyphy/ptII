@@ -40,17 +40,6 @@ import java.util.*;
 @version $Id$
 */
 public class PNRedirect extends PNActor{
-    /** Constructor
-     */	
-    public PNRedirect() {
-        super();
-    }
-
-    /** Constructor 
-     */
-    public PNRedirect(Workspace workspace) {
-        super(workspace);
-    }
 
     /** Constructor Adds ports to the star
      * @exception NameDuplicationException indicates that an attempt to add
@@ -87,6 +76,7 @@ public class PNRedirect extends PNActor{
                     //System.out.println(this.getName()+" writes "+data.intValue()+" to "+_output.getName());
                 }
             }
+            ((PNDirector)getDirector()).processStopped();
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+this.getName());
             return;
