@@ -19,7 +19,7 @@ cd $GENDIR
 
 
 # Generate the mail message
-mailmsg=$ADMDIR/logs/ptIInightly.mail
+mailmsg=$ADMDIR/logs/ptIInightly_mail.txt
 
 echo "`date`" > $mailmsg
 echo "The Ptolemy II nightly build is run from a bldmaster cronjob" >> $mailmsg
