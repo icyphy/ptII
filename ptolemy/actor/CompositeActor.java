@@ -38,9 +38,13 @@ initialize now clears receivers.. This helps SampleDelay inside a modal models w
 package ptolemy.actor;
 
 //import ptolemy.kernel.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.IODependence.IOInformation;
 import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Node;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -54,12 +58,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 
 
 
