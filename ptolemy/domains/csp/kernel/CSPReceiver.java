@@ -132,6 +132,18 @@ public class CSPReceiver implements ProcessReceiver {
         return tmp;
     }
 
+    /** Reset local flags.
+     */
+    public void initialize() {
+	_getWaiting = false;
+	_putWaiting = false;
+	_conditionalReceiveWaiting = false;
+        _conditionalSendWaiting = false;
+	_rendezvousComplete = false;
+	_modelFinished = false;
+	_modelPaused = false;
+    }
+
     /** Place a Token into the receiver via rendezvous. This method
      *  does not return until the rendezvous has been completed.
      *  If get has already been reached, it notifies the waiting get
@@ -499,6 +511,7 @@ public class CSPReceiver implements ProcessReceiver {
 
     // The token being transferred during the rendezvous.
     private Token _token;
+
 }
 
 
