@@ -59,7 +59,8 @@ JSRCS = \
 	NamedObjController.java \
 	NamedObjNodeModel.java \
 	NodeControllerFactory.java \
-	ParameterizedNodeController.java
+	ParameterizedNodeController.java \
+	VergilClassFactoryAttribute.java
 
 EXTRA_SRCS =	$(JSRCS)
 
