@@ -199,8 +199,8 @@ public class SDFScheduler extends Scheduler{
                 return 1;
             else
                 return 0;
-        }
-        return ((IntToken)param.getToken()).intValue();
+        } else 
+            return ((IntToken)param.getToken()).intValue();
     }
 
     /**

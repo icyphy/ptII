@@ -42,11 +42,11 @@ import collections.HashedMap;
 //////////////////////////////////////////////////////////////////////////
 //// SDFAtomicActor
 /**
-An SDFAtomicActor is an AtomicActor that is valid in the SDF domain.  This
-implies that is supports a static notion of the "Rate" of a port, as defined
-in the DataflowActor interface. i.e. a number of tokens are created or
+An SDFAtomicActor is an atomic actor that is valid in the SDF domain.  This
+implies that is supports a static notion of the "Rate" of a port. 
+i.e. a number of tokens are created or
 destroyed on a port at during any firing, and the scheduler can ask the
-Actor what this number is.   Furthermore, for SDFActors, this number is
+Actor what this number is.   Furthermore, for SDF actors, this number is
 constant for all firings and it is known before execution begins.
 
 @author Stephen Neuendorffer
@@ -92,18 +92,32 @@ public class SDFAtomicActor extends TypedAtomicActor {
         super(container, name);
     }
 
+    /** If a input port has not had its consumption rate set, then 
+     * it is assumed to be this.
+     */
+    public static final int DEFAULT_CONSUMPTION_RATE = 1;
+
+    /** If a output port has not had its production rate set, then 
+     * getTokenConsumptionRate will return this
+     */
+    public static final int DEFAULT_PRODUCTION_RATE = 1;
+
+    /** If a output port has not had its init production set, then 
+     * getTokenConsumptionRate will return this
+     */
+    public static final int DEFAULT_INIT_PRODUCTION = 0;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    
     /** Get the number of tokens that are consumed
      *  on the designated port of this Actor.   
      *
      *  @exception IllegalActionException if port is not contained in 
-     *  this actor.
-     *  @return The number of tokens consumed on the port, as supplied by
-     *  setTokenConsumptionRate.
+     *  this actor, or the port is not an input port.
+     *  @return The number of tokens consumed on the port, as specified in
+     *  the TokenConsumptionRate Parameter, or DEFAULT_CONSUMPTION_RATE if the 
+     *  parameter does not exist.
      */
     public int getTokenConsumptionRate(IOPort p)
         throws IllegalActionException {
@@ -116,17 +130,21 @@ public class SDFAtomicActor extends TypedAtomicActor {
                 p.getName() + " is not an Input Port.");
 
         Parameter param = (Parameter)p.getAttribute("Token Consumption Rate");
-        return ((IntToken)param.getToken()).intValue();
-
+        if(param != null) {
+            return ((IntToken)param.getToken()).intValue();
+        } else {
+            return DEFAULT_CONSUMPTION_RATE;
+        }
     }
 
     /** Get the number of tokens that are produced
      *  on the designated port of this Actor during initialization.
      *
      *  @exception IllegalActionException if port is not contained
-     *  in this actor.
-     *  @return The number of tokens produced on the port, as supplied by
-     *  setTokenProductionRate
+     *  in this actor, or the port is not an output port.
+     *  @return The number of tokens produced on the port, as specified in
+     *  the TokenInitProduction Parameter, or DEFAULT_INIT_PRODUCTION if the 
+     *  parameter does not exist.
      */
     public int getTokenInitProduction(IOPort p)
         throws IllegalActionException {
@@ -135,19 +153,26 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " +
                 getName());
+        if(!p.isOutput()) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not an Output Port.");
 
         Parameter param = (Parameter)p.getAttribute("Token Init Production");
-        return ((IntToken)param.getToken()).intValue();
+        if(param != null) {
+            return ((IntToken)param.getToken()).intValue();
+        } else {
+            return DEFAULT_INIT_PRODUCTION;
+        }
 
     }
 
     /** Get the number of tokens that are produced
      *  on the designated port of this Actor during each firing.
      *
-     *  @exception IllegalActionException if port is not contained 
-     *  in this actor.
-     *  @return The number of tokens produced on the port, as supplied by
-     *  setTokenProductionRate
+     *  @exception IllegalActionException If port is not contained 
+     *  in this actor, or the port is not an output port.
+     *  @return The number of tokens produced on the port, as specified in
+     *  the TokenProductionRate Parameter, or DEFAULT_PRODUCTION_RATE if the 
+     *  parameter does not exist.
      */
     public int getTokenProductionRate(IOPort p)
         throws IllegalActionException {
@@ -156,16 +181,23 @@ public class SDFAtomicActor extends TypedAtomicActor {
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " +
                 getName());
+        if(!p.isOutput()) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not an Output Port.");
 
         Parameter param = (Parameter)p.getAttribute("Token Production Rate");
-        return ((IntToken)param.getToken()).intValue();
+        if(param != null) {
+            return ((IntToken)param.getToken()).intValue();
+        } else {
+            return DEFAULT_PRODUCTION_RATE;
+        }
 
     }
 
     /** Create ports for this object.  Ports will be of type SDFIOPort, 
-     *  which provides support getArray() and sendArray
-     *  @exception NameDuplicationException if the SDFIOPort constructor
+     *  which provides support getArray() and sendArray().
+     *  @exception NameDuplicationException If the SDFIOPort constructor
      *  throws it.
+     *  @return A new instance of SDFIOPort
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
@@ -188,10 +220,10 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  on the appropriate port of this Actor during each firing.
      *
      *  @exception IllegalActionException if port is not contained 
-     *  in this actor, the rate is less than one, or the port is
+     *  in this actor, the rate is less than zero, or the port is
      *  not an input port.
      */
-    public void setTokenConsumptionRate(IOPort p,int r)
+    public void setTokenConsumptionRate(IOPort p, int r)
         throws IllegalActionException {
 
         if(r <= 0) throw new IllegalActionException(
@@ -203,8 +235,18 @@ public class SDFAtomicActor extends TypedAtomicActor {
                 p.getName() + " is not contained in Actor " +
                 getName());
         Parameter param = (Parameter)p.getAttribute("Token Consumption Rate");
-        param.setToken(new IntToken(r));
-
+        if(param != null)
+            param.setToken(new IntToken(r));
+        else {
+            try {
+                param = new Parameter(p, "Token Consumption Rate",
+                        new IntToken(r));
+            } 
+            catch (NameDuplicationException e) {
+                // This should never happen.
+                throw new InternalErrorException(e.getMessage());
+            }
+        }
     }
 
     /** Set the number of tokens that are produced
@@ -214,13 +256,13 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  scheduler to create a valid schedule from certain kinds of topologies.
      *
      *  @exception IllegalActionException if port is not contained 
-     *  in this actor, the rate is less than one, or the port is
+     *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
      */
-    public void setTokenInitProduction(IOPort p,int r)
+    public void setTokenInitProduction(IOPort p, int r)
         throws IllegalActionException {
         if(r <= 0) throw new IllegalActionException(
-                "setTokenRatePerFiring: Rate must be > 0");
+                "Rate must be > 0");
         Port pp = getPort(p.getName());
         if(!p.isOutput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Output Port.");
@@ -228,21 +270,31 @@ public class SDFAtomicActor extends TypedAtomicActor {
                 p.getName() + " is not contained in Actor " +
                 getName());
         Parameter param = (Parameter)p.getAttribute("Token Init Production");
-        param.setToken(new IntToken(r));
-
+        if(param != null)
+            param.setToken(new IntToken(r));
+        else {
+            try {
+            param = new Parameter(p, "Token Init Production",
+                        new IntToken(r));
+            } 
+            catch (NameDuplicationException e) {
+                // This should never happen.
+                throw new InternalErrorException(e.getMessage());
+            }
+        }
     }
 
     /** Set the number of tokens that are produced
-     *   on the appropriate port of this Actor during each firing.
+     *  on the appropriate port of this Actor during each firing.
      *
      *  @exception IllegalActionException if port is not contained 
-     *  in this actor, the rate is less than one, or the port is
+     *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
      */
-    public void setTokenProductionRate(IOPort p,int r)
+    public void setTokenProductionRate(IOPort p, int r)
         throws IllegalActionException {
         if(r <= 0) throw new IllegalActionException(
-                "setTokenRatePerFiring: Rate must be > 0");
+                "Rate must be > 0");
         Port pp = getPort(p.getName());
         if(!p.isOutput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Output Port.");
@@ -250,32 +302,23 @@ public class SDFAtomicActor extends TypedAtomicActor {
                 p.getName() + " is not contained in Actor " +
                 getName());
         Parameter param = (Parameter)p.getAttribute("Token Production Rate");
-        param.setToken(new IntToken(r));
+        if(param != null)
+            param.setToken(new IntToken(r));
+        else {
+            try {
+            param = new Parameter(p, "Token Production Rate",
+                        new IntToken(r));
+            } 
+            catch (NameDuplicationException e) {
+                // This should never happen.
+                throw new InternalErrorException(e.getMessage());
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
-    /** When a port is added to this object, this method creates
-     *  Parameters are created for use by 
-     *  the above methods, with appropriate default values.
-     *  @exception NameDuplicationException If any contained method throws it.
-     *  @exception IllegalActionException If any contained method throws it.
-     */
-    protected void _addPort(Port p)
-        throws IllegalActionException, NameDuplicationException {
-        super._addPort(p);
-        if(p instanceof IOPort) {
-            Parameter param;
-
-            param = new Parameter(p,"Token Consumption Rate",
-                    new IntToken(1));
-            param = new Parameter(p,"Token Production Rate",
-                    new IntToken(1));
-            param = new Parameter(p,"Token Init Production",
-                    new IntToken(0));
-        }
-    }
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
