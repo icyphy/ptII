@@ -43,12 +43,11 @@ Receiver for CSP style communication. In CSP all communication is via
 synchronous message passing, so both the the sending and receiving
 process need to rendezvous at the receiver. For rendezvous, the
 receiver is the key synchronization point. It is assumed each receiver
-has at most one
-thread trying to send to it and at most one thread trying to receive
-from it at any one time. The receiver performs the synchronization
-necessary for simple rendezvous (get() and put() operations). It
-also stores the flags that allow the ConditionalSend and ConditionalReceive
-branches to know when they can proceed.
+has at most one thread trying to send to it and at most one thread 
+trying to receive from it at any one time. The receiver performs the 
+synchronization necessary for simple rendezvous (get() and put() 
+operations). It also stores the flags that allow the ConditionalSend 
+and ConditionalReceive branches to know when they can proceed.
 <p>
 @author Neil Smyth
 @version $Id$
