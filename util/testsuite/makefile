@@ -61,6 +61,7 @@ TCL_SRCS = \
 SCRIPTS = \
 	chkextra \
 	chkjava \
+	deprecated \
 	html2ps \
 	jindent \
 	mkreview \
