@@ -101,7 +101,7 @@ test Delay-2.5 {test with type change to error condition} {
     $initialOutputs setExpression {[true, false]}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {true false 0 1 2}
+} {true false 0 1 2} {KNOW_ERROR}
 
 test Delay-3.0 {test in feedback loop} {
     $ramp setContainer [java::null]
