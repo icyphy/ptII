@@ -107,6 +107,9 @@ public class ComSystem extends SDFApplet {
             // the available space.
             plotter.place(getContentPane());
 
+	    // Set the XRange first so that the reset to original settings
+	    // button works properly.
+            plotter.plot.setXRange(0, 2.0);
             plotter.xUnit.setToken(new DoubleToken(1.0/16.0));
             plotter.width.setToken(new IntToken(32));
             plotter.persistence.setToken(new IntToken(512));
