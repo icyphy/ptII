@@ -1,4 +1,4 @@
-/* One line description of file.
+/* Reads a token from a stream and writes a token to a stream
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -28,80 +28,61 @@
 package pt.kernel;
 
 //////////////////////////////////////////////////////////////////////////
-//// NoName
+//// PNRedirect
 /** 
-Description of the class
-@author 
+
+@author Mudit Goel
 @version $Id$
-@see classname
-@see full-classname
 */
-public class NoName {
+public class PNRedirect extends PNStar{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
-    public NoName() {
+    public PNRedirect() {
+        super();
+    }
+
+    public PNRedirect(String name) {
+        super(name);
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    public int APublicMethod() {
-        return 1;
+    public void initialize(int initValue)
+            throws NameDuplicationException, GraphException {
+        _initValue = initValue;
+        _input = addInPort(this, "input");
+        _output = addOutPort(this, "output");
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
     /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
-    protected int _AProtectedMethod() {
-        return 1;
+    public void initialize(PNExecutive myExecutive, int initValue)
+            throws NameDuplicationException, GraphException {
+        _myExecutive = myExecutive;
+        initialize(initValue);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    /** Description */
-    protected int _aprotectedvariable;
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
-
-    /* Private methods should not have doc comments, they should
-     * have regular comments.
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    private int __APrivateMethod() {
-        return 1;
+    public void run() {
+        int i;
+        int data;
+        try {
+            writeTo(_output, _initValue);
+            for(i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
+                data = readFrom(_input);
+                writeTo(_output, data);
+            }
+        } catch (TerminationException e) {
+            return;
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* Private variables should not have doc comments, they should
-       have regular comments.
-     */
-    private int __aprivatevariable;
+    private int _initValue;
+    private PNInPort _input;
+    private PNOutPort _output;
+    
+
 }

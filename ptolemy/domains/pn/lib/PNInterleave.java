@@ -1,4 +1,4 @@
-/* One line description of file.
+/* This interleaves elements from two streams into one stream
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -28,80 +28,60 @@
 package pt.kernel;
 
 //////////////////////////////////////////////////////////////////////////
-//// NoName
+//// PNInterleave
 /** 
-Description of the class
-@author 
+Merges two input streams into one output stream by alternating between the two outputs.
+
+@author Mudit Goel
 @version $Id$
-@see classname
-@see full-classname
 */
-public class NoName {
+public class PNInterleave extends PNStar{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
-    public NoName() {
+    public PNInterleave() {
+        super();
+    }
+
+    /** Constructor
+     */
+    public PNInterleave(String name) {
+        super(name);
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    public int APublicMethod() {
-        return 1;
+    public void initialize(PNExecutive myExecutive) 
+            throws NameDuplicationException, GraphException {
+        _input1 = addInPort(this, "input1");
+        _input2 = addInPort(this, "input2");
+        _output = addOutPort(this, "output");
+        _myExecutive = myExecutive;
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
     /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
-    protected int _AProtectedMethod() {
-        return 1;
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    /** Description */
-    protected int _aprotectedvariable;
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
-
-    /* Private methods should not have doc comments, they should
-     * have regular comments.
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    private int __APrivateMethod() {
-        return 1;
+    public void run() {
+        int i;
+        int data;
+        try {
+            for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
+                data = readFrom(_input1);
+                writeTo(_output, data);
+                data = readFrom(_input2);
+                writeTo(_output, data);
+            }
+            _myExecutive.processStopped();
+        } catch(TerminationException e) {
+            return;
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* Private variables should not have doc comments, they should
-       have regular comments.
-     */
-    private int __aprivatevariable;
+    private PNInPort _input1;
+    private PNInPort _input2;
+    private PNOutPort _output;
+
 }

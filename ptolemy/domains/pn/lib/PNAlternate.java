@@ -1,4 +1,4 @@
-/* One line description of file.
+/* Alternates the input into two different outputs
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -28,80 +28,56 @@
 package pt.kernel;
 
 //////////////////////////////////////////////////////////////////////////
-//// NoName
+//// PNAlternate
 /** 
-Description of the class
-@author 
+@author Mudit Goel
 @version $Id$
-@see classname
-@see full-classname
 */
-public class NoName {
+public class PNAlternate extends PNStar {
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
-    public NoName() {
+    public PNAlternate() {
+	super();
     }
+
+    /** Constructor
+     */
+    public PNAlternate(String name) {
+        super(name);
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
     /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
-    public int APublicMethod() {
-        return 1;
+    public void initialize(PNExecutive myExecutive)
+            throws NameDuplicationException, GraphException {
+        _input = addInPort(this, "input");
+        _output1 = addOutPort(this, "output1");
+        _output2 = addOutPort(this, "output2");
+        _myExecutive = myExecutive;
     }
-
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    protected int _AProtectedMethod() {
-        return 1;
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    /** Description */
-    protected int _aprotectedvariable;
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
-
-    /* Private methods should not have doc comments, they should
-     * have regular comments.
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    private int __APrivateMethod() {
-        return 1;
+    
+    public void run() {
+        int data;
+        try {
+            while (true) {
+                data =  readFrom(_input);
+                writeTo(_output1, data);
+                data =  readFrom(_input);
+                writeTo(_output2, data);
+            }
+        } catch (TerminationException e) {
+            return;
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* Private variables should not have doc comments, they should
-       have regular comments.
-     */
-    private int __aprivatevariable;
+    private PNInPort _input;
+    private PNOutPort _output1;
+    private PNOutPort _output2;
 }
