@@ -31,6 +31,7 @@
 package ptolemy.actor.lib.logic;
 
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.graph.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
@@ -64,7 +65,7 @@ public class LogicalNot extends Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public LogicalNot(TypedCompositeActor container, String name)
+    public LogicalNot(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	input.setMultiport(false);
