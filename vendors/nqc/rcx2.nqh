@@ -1,0 +1,341 @@
+/*
+ * rcx.nqh - version 2.1
+ * Copyright (C) 1998,1999 Dave Baum
+ *
+ * CyberMaster definitions by Laurentino Martins
+ *
+ * This file is part of nqc, the Not Quite C compiler for the RCX
+ *
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * The Initial Developer of this code is David Baum.
+ * Portions created by David Baum are Copyright (C) 1998 David Baum.
+ * All Rights Reserved.
+ */
+ 
+/*
+ *  This file defines various system constants and macros to be used
+ *  with the RCX.  Most of the real functionality of the RCX is
+ *  defined here rather than within nqcc itself.
+ *
+ */
+
+
+// these are the standard system definitions for 2.0
+
+/**************************
+ * sensors
+ **************************/
+
+// constants for selecting sensors
+#define SENSOR_1	SensorValue(0)
+#define SENSOR_2	SensorValue(1)
+#define SENSOR_3	SensorValue(2)
+
+#ifdef __CM
+// alternative names for input sensors
+#define SENSOR_L SENSOR_1 // Left sensor
+#define SENSOR_M SENSOR_2 // Middle sensor
+#define SENSOR_R SENSOR_3 // Right sensor
+#endif
+
+#if defined(__RCX) || defined(__CM)
+// modes for SetSensorMode()
+#define SENSOR_MODE_RAW			0x00
+#define SENSOR_MODE_BOOL		0x20
+#define SENSOR_MODE_EDGE		0x40
+#define SENSOR_MODE_PULSE		0x60
+#define SENSOR_MODE_PERCENT		0x80
+#ifdef __RCX
+#define SENSOR_MODE_CELSIUS		0xa0
+#define SENSOR_MODE_FAHRENHEIT	0xc0
+#define SENSOR_MODE_ROTATION	0xe0
+#endif // __RCX
+
+void SetSensorMode(__sensor sensor, const int mode)  { asm { 0x42, &sensor : 0x03000200, mode }; }
+#endif // defined(__RCX) || defined(__CM)
+
+
+#ifdef __RCX
+// types for SetSensorType()
+#define SENSOR_TYPE_TOUCH		1
+#define SENSOR_TYPE_TEMPERATURE	2
+#define SENSOR_TYPE_LIGHT		3
+#define SENSOR_TYPE_ROTATION	4
+
+// type/mode combinations for SetSensor()
+#define _SENSOR_CFG(type,mode)	(((type)<<8) + (mode))
+#define SENSOR_TOUCH		_SENSOR_CFG(SENSOR_TYPE_TOUCH, SENSOR_MODE_BOOL)
+#define SENSOR_LIGHT		_SENSOR_CFG(SENSOR_TYPE_LIGHT, SENSOR_MODE_PERCENT)
+#define SENSOR_ROTATION		_SENSOR_CFG(SENSOR_TYPE_ROTATION, SENSOR_MODE_ROTATION)
+#define SENSOR_CELSIUS		_SENSOR_CFG(SENSOR_TYPE_TEMPERATURE, SENSOR_MODE_CELSIUS)
+#define SENSOR_FAHRENHEIT	_SENSOR_CFG(SENSOR_TYPE_TEMPERATURE, SENSOR_MODE_FAHRENHEIT)
+#define	SENSOR_PULSE		_SENSOR_CFG(SENSOR_TYPE_TOUCH, SENSOR_MODE_PULSE)
+#define SENSOR_EDGE			_SENSOR_CFG(SENSOR_TYPE_TOUCH, SENSOR_MODE_EDGE)
+
+// set a sensor's type
+void SetSensorType(__sensor sensor, const int type)	 { asm { 0x32, &sensor : 0x03000200, (type) }; }
+
+// set a sensor's type and mode using a config - e.g. SetSensor(SENSOR_1, SENSOR_LIGHT);
+void SetSensor(__sensor sensor, const int tm)	{ SetSensorType(sensor, tm>>8); SetSensorMode(sensor, tm); } 
+
+#endif
+
+
+
+/**************************
+ * ouput
+ **************************/
+
+// constants for selecting outputs
+#define OUT_A	(1 << 0)
+#define OUT_B	(1 << 1)
+#define OUT_C	(1 << 2)
+
+// output modes
+#define OUT_FLOAT	0
+#define OUT_OFF		0x40
+#define OUT_ON		0x80
+
+// output directions
+#define OUT_REV		0
+#define OUT_TOGGLE	0x40
+#define OUT_FWD		0x80
+
+// output power levels
+#define OUT_LOW		0
+#define OUT_HALF	3
+#define OUT_FULL	7
+
+// output functions
+void SetOutput(const int o, const int m)	{ asm { 0x21, (o) + (m) }; }
+void SetDirection(const int o, const int d)	{ asm { 0xe1, (o) + (d) }; }
+void SetPower(const int o, const int &p)	{ asm { 0x13, (o), &p : 0x1000015}; }
+
+void On(const int o)	{ SetOutput(o, OUT_ON); }
+void Off(const int o)	{ SetOutput(o, OUT_OFF); }
+void Float(const int o) { SetOutput(o, OUT_FLOAT); }
+void Toggle(const int o) { SetDirection(o, OUT_TOGGLE); }
+void Fwd(const int o)	{ SetDirection(o, OUT_FWD); }
+void Rev(const int o)	{ SetDirection(o, OUT_REV); }
+void OnFwd(const int o)	{ Fwd(o); On(o); }
+void OnRev(const int o)	{ Rev(o); On(o); }
+void OnFor(const int o, const int &t)	{ On(o); Wait(t); Off(o); }
+
+// CyberMaster specific stuff
+#ifdef __CM
+// alternate names for motors
+#define OUT_L OUT_A // Left motor
+#define OUT_R OUT_B // Right motor
+#define OUT_X OUT_C // External motor
+
+#define Drive(m0, m1)                     asm { 0x41, DIRSPEED(m0) | DIRSPEED(m1)<<4 }
+#define OnWait(m, n, t)                   asm { 0xc2, (m)<<4 | DIRSPEED(n), t }
+#define OnWaitDifferent(m, n0, n1, n2, t) asm { 0x53, (m)<<4 | DIRSPEED(n0), DIRSPEED(n1)<<4 | DIRSPEED(n2), t }
+
+// Aux. function: Transforms a number between -7 and 7 to a 4 bit sequence: 
+// Bits: 1..3 - Speed: 0 to 7
+// Bit : 4    - Direction: 1 if v>=0, 0 if v<0
+#define DIRSPEED(v)		((v)&8^8|((v)*(((v)>>3)*2^1))&7)
+
+
+#endif
+
+
+
+/**************************
+ * data sources
+ **************************/
+ 
+#define Timer(n)			@(0x10000 + (n))
+#define Random(n)			@(0x40000 + (n))
+#define SensorValue(n)		@(0x90000 + (n))
+#define SensorType(n)		@(0xa0000 + (n))
+
+#if defined(__RCX) || defined(__CM)
+#define SensorMode(n)		@(0xb0000 + (n))
+#endif
+
+#if defined(__RCX) || defined(__SCOUT)
+#define SensorValueRaw(n)	@(0xc0000 + (n))
+#define Message()			@(0xf0000)
+#endif
+
+#ifdef __RCX
+// RCX specific data sources
+#define Program()   		@(0x8)
+#define SensorValueBool(n)	@(0xd0000 + (n))
+#define Watch()				@(0xe0000)
+#endif
+
+#ifdef __CM
+// CM specific data sources
+#define TachoCount(n)          @(0x50000 + (n)-1) // Use OUT_x as parameter
+#define TachoSpeed(n)          @(0x60000 + (n)-1) // Use OUT_x as parameter
+#define ExternalMotorRunning() @(0x70002)         // Refered in the SDK as MotorCurrent(2). Non zero if external motor running.
+#define AGC()                  @(0x100000)        // Automatic Gain Control
+#endif
+
+
+/**************************
+ * miscellaneous
+ **************************/
+
+// wait for a condition to become true
+#define until(c)		while(!(c))
+
+// playing sounds and notes
+void PlaySound(const int x)					{	asm { 0x51, x }; }
+
+#ifdef __SCOUT
+
+void PlayTone(const int &note, const int dur)
+{
+	if (__type(note)==2)
+		asm { 0x23, &note : 0x2000004, dur };
+	else
+		asm { 0x02, &note : 0x3000001, dur};
+}
+
+#else
+void PlayTone(const int f, const int d)		{	asm { 0x23, (f), (f)>>8, (d) }; }
+#endif
+
+
+// sounds - for PlaySound()
+#define SOUND_CLICK			0
+#define SOUND_DOUBLE_BEEP	1
+#define SOUND_DOWN			2
+#define SOUND_UP			3
+#define SOUND_LOW_BEEP		4
+#define SOUND_FAST_UP		5
+
+// sleep for v ticks (10ms per tick)
+void Wait(const int &v)	{ asm { 0x43, &v : 0x0015}; }
+
+
+void ClearTimer(const int n) {	asm { 0xa1, n }; }
+void ClearSensor(__sensor sensor) { asm { 0xd1, &sensor : 0x03000200}; }
+
+void StopAllTasks()	{ asm { 0x50 }; }
+
+#if defined(__RCX) || defined(__SCOUT)
+// IR message support
+void SendMessage(const int &v)	{ asm { 0xb2, &v : 0x1000005 }; }
+void ClearMessage()				{ asm { 0x90 }; }
+
+// support for controlling the IRMode
+#define TX_POWER_LO	0
+#define TX_POWER_HI	1
+void SetTxPower(const int p)	{ asm { 0x31, p }; }
+#endif // defined(__RCX) || defined(__SCOUT)
+
+
+#ifdef __RCX
+// set the display mode
+void SelectDisplay(const int &v) { asm { 0x33, &v : 0x0005}; }
+
+// display modes - for SelectDisplay
+#define DISPLAY_WATCH		0
+#define DISPLAY_SENSOR_1	1
+#define DISPLAY_SENSOR_2	2
+#define DISPLAY_SENSOR_3	3
+#define DISPLAY_OUT_A		4
+#define DISPLAY_OUT_B		5
+#define DISPLAY_OUT_C		6
+
+// Data logging
+void CreateDatalog(const int size) { asm { 0x52, (size), (size)>>8 }; }
+void AddToDatalog(const int &v)	{ asm { 0x62, &v : 0x1004203}; }
+void UploadDatalog(const int s, const int n) { asm { 0xa4, (s), (s)>>8, (n), (n)>>8 }; }
+
+// set the system clock
+void SetWatch(const int h, const int m) 	{ asm { 0x22, h, m }; }
+
+#endif
+
+#ifdef __CM
+#define ClearTachoCounter(m) asm { 0x11, (m) }
+#endif
+
+#ifdef __SCOUT
+// counter support
+void IncCounter(const int c) { asm { 0x97, c }; }
+void DecCounter(const int c) { asm { 0xA7, c }; }
+void ClearCounter(const int c) { asm { 0xb7, c}; }
+void SetCounterLimit(const int c, const int &l) { asm { 0xd4,  c, &l : 0x0015 }; }
+
+// events
+void Event(const int e)			 { asm { 0x03, 0, e, e>>8 }; }
+void WaitEvents(const int &mask) { asm { 0xb4, &mask : 0x0015, 3, 0x27, 0x81 }; }
+
+// global output functions
+void GSetOutput(const int o, const int m)	{ asm { 0x67, (o) + (m) }; }
+void GSetDirection(const int o, const int d)	{ asm { 0x77, (o) + (d) }; }
+void GSetPower(const int o, const int &p)	{ asm { 0xa3, (o), &p : 0x1000015}; }
+void GOn(const int o)	{ GSetOutput(o, OUT_ON); }
+void GOff(const int o)	{ GSetOutput(o, OUT_OFF); }
+void GFloat(const int o) { GSetOutput(o, OUT_FLOAT); }
+void GToggle(const int o) { GSetDirection(o, OUT_TOGGLE); }
+void GFwd(const int o)	{ GSetDirection(o, OUT_FWD); }
+void GRev(const int o)	{ GSetDirection(o, OUT_REV); }
+void GOnFwd(const int o)	{ GFwd(o); GOn(o); }
+void GOnRev(const int o)	{ GRev(o); GOn(o); }
+void GOnFor(const int o, const int &t)	{ GOn(o); Wait(t); GOff(o); }
+
+// the light
+#define LIGHT_ON	0x80
+#define LIGHT_OFF	0
+void SetLight(const int x)	{ asm { 0x87, x }; }
+
+// light sensor
+void LSBlink(const int &x)	{ asm { 0xe3, &x : 0x0005 }; }
+void LSCal()				{ asm { 0xc0 }; }
+void LSHyst(const int &x)	{ asm { 0xd3, &x : 0x0005 }; }
+void LSLower(const int &x)	{ asm { 0xc3, &x : 0x0005 }; }
+void LSUpper(const int &x)	{ asm { 0xb3, &x : 0x0005 }; }
+
+// other
+void Rules(const int m, const int t, const int l, const int tm, const int fx)
+	{ asm { 0xd5, m, t, l, tm, fx }; }
+
+void Scout(const int s)			{ asm { 0x47, s}; }
+void SetFeedback(const int &x)	{ asm { 0x83, &x : 0x0005}; }
+void SetPriority(const int p)	{ asm { 0xd7, p }; }
+void Sound(const int x)			{ asm { 0x57, x }; }
+
+void SetTimerLimit(const int n, const int &x)	{ asm { 0xc4, n, &x : 0x0015 }; }
+void VLL(const int &x)		{ asm { 0xe2, &x : 0x1000005}; }
+void RTS()					{ asm { 0xf6 }; }
+
+// use these for calling subroutines...for example:
+//
+// local(0) = 1;
+// Call(3);
+//
+#define local(n)			(@((n) + 10))
+void Call(const int n)		{ asm { 0x17, n }; }
+
+// use this to read a counter
+//
+// x = Counter(0);
+//
+#define Counter(n)			@(0x150000 + (n))
+
+#endif // __SCOUT
+
+
+// initialization function
+void _init()
+{
+	SetPower(OUT_A + OUT_B + OUT_C, OUT_FULL);
+	Fwd(OUT_A + OUT_B + OUT_C);
+}
