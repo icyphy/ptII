@@ -66,9 +66,9 @@ in as an input.
 
 @see ArrayElement
 @author Paul Whitaker, Christopher Hylands
-@version $Id$ */
+@version $Id$
 @since Ptolemy II 2.0
-
+*/
 public class LookupTable extends Transformer {
 
     /** Construct an actor with the given container and name.
