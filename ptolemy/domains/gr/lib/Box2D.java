@@ -1,4 +1,4 @@
-/* An abstract base class for shaded GR Actors
+/* A class that represents a 2D rectangle in a GR model.
 
 Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
