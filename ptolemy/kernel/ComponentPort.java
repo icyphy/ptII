@@ -217,6 +217,57 @@ public class ComponentPort extends Port {
 
     /** Insert a link to the specified relation at the specified index,
      *  and notify the container by calling its connectionsChanged() method.
+     *  This method defaults to adding an inside  null link at the given index
+     *  if the relation argument is null. Otherwise it simply invokes the
+     *  insertLink) method.
+     *  <p>
+     *  The specified index can be any non-negative integer.
+     *  Any links with indices larger than or equal to the one specified
+     *  here will henceforth have indices that are larger by one.
+     *  If the index is larger than the number of existing
+     *  links (as returned by numLinks()), then empty links
+     *  are inserted (these will be null elements in the list returned
+     *  by linkedRelationsList() or in the enumeration returned by
+     *  linkedRelations()). If the specified relation is null, then
+     *  an empty inside link is inserted at the specified index.
+     *  <p>
+     *  Note that a port may be linked to the same relation more than
+     *  once, in which case the link will be reported more than once
+     *  by the linkedRelations() method.
+     *  <p>
+     *  In derived classes, the relation may be required to be an
+     *  instance of a particular subclass of Relation (this is checked
+     *  by the _checkLink() protected method).
+     *  <p>
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number.
+     *  @param index The index at which to insert the link.
+     *  @param relation The relation to link to this port.
+     *  @exception IllegalActionException If the link would cross levels of
+     *   the hierarchy, or the relation is incompatible,
+     *   or the port has no container, or the port is not in the
+     *   same workspace as the relation.
+     */
+    public void insertInsideLink(int index, Relation relation)
+            throws IllegalActionException {
+        if (relation != null) {
+            insertLink(index, relation);
+            return;
+        }
+        try {
+            _workspace.getWriteAccess();
+            // Assume an inside link
+            _insideLinks.insertLink(index, null);
+            // NOTE: _checkLink() ensures that the container is
+            // not null, and the class ensures that it is an Entity.
+            ((Entity)getContainer()).connectionsChanged(this);
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+   /** Insert a link to the specified relation at the specified index,
+     *  and notify the container by calling its connectionsChanged() method.
      *  This overrides the base class to allow inside links as well as links
      *  at the same level of the hierarchy.
      *  <p>
@@ -228,7 +279,7 @@ public class ComponentPort extends Port {
      *  are inserted (these will be null elements in the list returned
      *  by linkedRelationsList() or in the enumeration returned by
      *  linkedRelations()). If the specified relation is null, then
-     *  an empty link is inserted at the specified index.
+     *  an empty outside link is inserted at the specified index.
      *  <p>
      *  Note that a port may be linked to the same relation more than
      *  once, in which case the link will be reported more than once
@@ -249,19 +300,24 @@ public class ComponentPort extends Port {
      */
     public void insertLink(int index, Relation relation)
             throws IllegalActionException {
-        if (_workspace != relation.workspace()) {
+        if (relation != null && _workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
         try {
             _workspace.getWriteAccess();
-            _checkLink(relation);
-            if (_isInsideLinkable(relation.getContainer())) {
-                // An inside link
-                _insideLinks.insertLink(index, relation._getPortList());
+            if (relation == null) {
+                // Assume outside link
+                _relationsList.insertLink(index, null);
             } else {
-                // An outside link
-                _relationsList.insertLink(index, relation._getPortList());
+                _checkLink(relation);
+                if (_isInsideLinkable(relation.getContainer())) {
+                    // An inside link
+                    _insideLinks.insertLink(index, relation._getPortList());
+                } else {
+                    // An outside link
+                    _relationsList.insertLink(index, relation._getPortList());
+                }
             }
             // NOTE: _checkLink() ensures that the container is
             // not null, and the class ensures that it is an Entity.
@@ -784,7 +840,7 @@ public class ComponentPort extends Port {
             Relation relation = (Relation)relations.next();
             // A null link might yield a null relation here.
             if(relation != null) {
-                Iterator insidePorts = 
+                Iterator insidePorts =
                     relation.linkedPortList(this).iterator();
                 while (insidePorts.hasNext()) {
                     ComponentPort port =
