@@ -109,7 +109,7 @@ public class DebuggerModule implements Module {
      * Return the application that contains this module.
      * @return the vergil application that contains this module
      */	
-    public Application getApplication() {
+    public VergilApplication getApplication() {
         return _application;
     }
 
