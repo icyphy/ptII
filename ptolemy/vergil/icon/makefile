@@ -73,7 +73,7 @@ depend:
 	@echo "no dependencies in this directory"
 
 demo:
-	java -classpath "$(CLASSPATH)" ptolemy.vergil.icon.IconEditor
+	java -Djava.compiler=NONE -classpath "$(CLASSPATH)" ptolemy.vergil.icon.IconEditor
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
