@@ -230,3 +230,18 @@ test Const-3.1 {check out ReadFile with a multiline file} {
 } {{" bar "}}
 
 # FIXME: Need a mechanism to test a change in parameter during a run.
+
+test Const-4.1 {Check out Strings with double quotes in them} {
+    set e0 [sdfModel]
+    set const [java::new ptolemy.actor.lib.Const $e0 const]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    set p [getParameter $const value]
+    set nt [java::new ptolemy.data.StringToken \
+	    "This has a double quote \" in it and a backslashed double quote \\\" in it"]
+    $p setToken $nt
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{"This has a double quote " in it and a backslashed double quote \" in it"}}
