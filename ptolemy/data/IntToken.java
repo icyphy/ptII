@@ -331,12 +331,14 @@ public class IntToken extends ScalarToken {
 	 *  where "close" means that the distance between their values is less than
 	 *  or equal to the second argument. It is assumed that the type of
 	 *  the first argument is IntToken.
-	 *  @param token The token to compare to this token.
+	 *  @param rightArgument The token to compare to this token.
 	 *  @return A token containing true if the value of the first
 	 *   argument is close to the value of this token.
 	 */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
+        // NOTE: This code is duplicated in ptolemy.math.IntegerMatrixMath.within(); if
+        // this implementation changes, also change the corresponding implementation there.
         double right = ((IntToken)rightArgument).doubleValue();
         double left = doubleValue();
 		if (right > left + epsilon || right < left - epsilon) {
