@@ -65,10 +65,9 @@ public class Port extends NamedObj {
      * @exception pt.kernel.GraphException Attempt to connect this 
      *  port to a relation to which it's already connected.
      */	
-    public void connectToRelation(Relation relation) 
-            throws NullReferenceException {
-
-	if( relation == null )
+    public void connectToRelation(Relation relation)
+    throws NullReferenceException {
+        if( relation == null ) {
 	    throw new NullReferenceException( 
 	            "Null Relation passed to Port.connectToRelation()" );
 
@@ -81,10 +80,11 @@ public class Port extends NamedObj {
         //            throw new GraphException("Relation is already 
 	//	    associated with the port");
 	//}
-	else if(_relationsList == null) _relationsList = new CrossRefList(this);
-
+	} else {
+            if(_relationsList == null)
+                _relationsList = new CrossRefList(this);
+        }
         _relationsList.associate( relation._portList );
-
 	return;
     }
 
@@ -92,12 +92,9 @@ public class Port extends NamedObj {
     /** Disconnect this Port from all the Relations it was connected to.
      */	
     public void disconnectAllRelations() {
-
 	if( _relationsList == null ) return;
-
 	_relationsList.dissociate();
 	_relationsList = null;
-
 	return;
     }
 
@@ -107,7 +104,6 @@ public class Port extends NamedObj {
      * @param The Relation from which this port is being disconnected
      */
     public void disconnectRelation(Relation relation) {
-
         if ( _relationsList != null ) _relationsList.dissociate(relation);
         return;
     } 
@@ -118,14 +114,12 @@ public class Port extends NamedObj {
      * @return Return an enumeration of relations. 
      */
     public Enumeration enumRelations() {
-
         if (_relationsList == null) _relationsList = new CrossRefList(this);
 	return _relationsList.elements();
     }
 
 
-    /** Return the Entity which owns this Port.
-     */
+    /** Return the Entity which owns this Port. */
     public Entity getEntity() {
 	return _entity;
     }
@@ -143,31 +137,19 @@ public class Port extends NamedObj {
     }
 
 
-    /** Set the Entity which owns this Port.
-     */
+    /** Set the Entity which owns this Port. */
     public void setEntity(Entity entity) {
 	_entity = entity;
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
     
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* The Entity which owns this port.
-     */
+    // The Entity which owns this port.
     private Entity _entity = null;
 
-    /* The list of relations for this port.
-     */
+    // The list of relations for this port.
     private CrossRefList _relationsList;
     
 }
