@@ -49,7 +49,7 @@ import ptolemy.kernel.util.*;
 Generate a convolutional code by passing the information sequence to be
 transmitted through a linear finite-state shift register.
 The input port accepts a sequence of integers 0 and 1. The output port
-produces the codeword in a sequence of 0 and 1.
+produces the encoded bits in a sequence of 0 and 1.
 The initial state of the shift register is given by the <i>initial</i>
 parameter, which should be a non-negative integer.
 The <i>inputBlockSize</i> parameter, denoted by "k", is the number of
@@ -63,7 +63,7 @@ number. The i-th bit of the polynomial indicates whether the i-th
 tap of the delay line should be taken to compute the exclusive-ored
 parity. See more details in Scrambler actor on using an integer to
 define a polynomial.
-The result is produced as a sequence of length "n", where "n" is the
+The "n" parity results are produced in a sequence, where "n" is the
 length of the <i>polynomialArray</i>. The i-th bit in the sequence
 corresponds to the parity computed from the i-th polynomial. We call such
 an n-bit block of result as a <i>codeword</i>.
@@ -82,13 +82,13 @@ otherwise, some bits never get involved in computing parities.
 In the above two cases, the actor will throw an exception. However, they
 do not guarantee the codeword can be decoded sucessfully, and it is
 not always true that "the larger the polynomials are, the better."
-User should check tables for convolutional code from professional
-references, which is achieved using computer search methods.
+Users should check tables for convolutional code from professional
+references, which are achieved using computer search methods.
 <p>
 For more information on convolutional codes, see Proakis, Digital
 Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
 <p>
-b@author Rachel Zhou
+@author Rachel Zhou
 @version $Id$
 */
 
@@ -211,8 +211,8 @@ public class ConvolutionalCoder extends Transformer {
     /** Read "<i>inputBlockSize</i>" bits from the input port and shift
      *  them into the shift register. Compute the parity for each
      *  polynomial specified in <i>polynomialArray</i>. Send the results
-     *  in sequence. The n-th bit corresponds to the parity computed
-     *  using the n-th polynomial.
+     *  in sequence. The i-th bit corresponds to the parity computed
+     *  using the i-th polynomial.
      */
     public void fire() throws IllegalActionException {
 

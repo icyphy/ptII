@@ -38,7 +38,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.IntMatrixToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -59,7 +58,7 @@ actually the output rate of the decoder.
 The input port of the decoder is double type and receives signals from
 the encoder corrupted with noise. The decoder tries to "guess" the most
 likely input sequence of the encoder by searching all possibilities and
-computing the "distance" between the the codewords they produce and the
+computing the "distance" between the codewords they produce and the
 received ones. The one that makes the minimum distance is the most likely
 input sequence.
 <p>
@@ -73,18 +72,18 @@ decoding is easier, since it is based on bit-operations. Users can choose
 either mode based on the trade-off between probability of decoding error
 and computational complexity.
 <p>
-As each new corrupted codeword is received, a final decision is made on
-the most-likely input symbol of "D" firings earlier, where "D" is specified
-by the <i>delay</i> parameter. It should be a positive integer. Therefore,
-the decoder does not produce any outputs during the first "D" firings,
-and the last "D" codewords are "lost" in the decoder. The larger "D" is,
-the more likely the decoder can "guess" correctly. The trade-off is
-more waiting time and more complexity in the computation. Users who wish
-to get a complete sequence of the decoded bits should attatch "D" blocks
-of redundant inputs when they send their information bits into the
+As each new corrupted codeword is received, the decoder makes a final
+decision on the most-likely input symbol of "D" firings earlier, where "D"
+is specified by the <i>delay</i> parameter. It should be a positive integer.
+Therefore, the decoder does not produce any outputs during the first "D"
+firings, and the last "D" codewords are "lost" in the decoder.
+The larger "D" is, the more likely the decoder can "guess" correctly.
+The trade-off is more waiting time and more complexity in the computation.
+Users who wish to get a complete sequence of the decoded bits should attatch
+"D" blocks of redundant inputs when they send their information bits into the
 ConvolutionalCoder. It has been found experimentally that a proper value
 for "D" would be 5 times of the highest order of all polynomials, provided
-that the convolutional code has good distance property.
+that the convolutional code is a one that has good distance property.
 <p>
 For more information on convolutional codes and Viterbi decoder,
 see the ConvolutionalCoder actor and
@@ -173,7 +172,7 @@ public class ViterbiDecoder extends Transformer {
      *  <i>delay</i> then verify it is a positive integer; if it is
      *  <i>polynomailArray</i>, then verify that each of its elements
      *  is a positive integer.
-     *  @exception IllegalActionException If <i>inputNumber</i>,
+     *  @exception IllegalActionException If <i>inputBlockSize</i>,
      *  or <i>delay</i> is non-positive, or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
@@ -257,7 +256,7 @@ public class ViterbiDecoder extends Transformer {
             }
             _inputNumberInvalid = false;
 
-            // Compute the necessary dimensions for the truth table,
+            // Compute the necessary dimensions for the truth table and
             // the length of buffers used to store possible input sequence.
             _rowNum = 1 << (_shiftRegLength - _inputNumber);
             _colNum = 1 << _inputNumber;
@@ -283,20 +282,20 @@ public class ViterbiDecoder extends Transformer {
             // It has 2<i>k</i> possible previous states, where "k"
             // is the <i>inputBlockSize</i>.
             // Hence _truthTable[m][n][1:3] stores the truth values for
-            // the n-th possible previous state.
-            // _truthTable[m][n][2] is the corresponding input block.
+            // the n-th possible previous state for state "m".
             // _truthTable[m][n][1] is the "value" of the previous
             // shift register's states.
-            // _truthTable[m][n][0] is the corresponding codewords it
-            // produces in the encoder.
+            // _truthTable[m][n][2] is the corresponding input block.
+            // _truthTable[m][n][0] is the corresponding codewords
+            // produced from the encoder.
             for (int state = 0; state < _rowNum; state ++) {
                 for (int head = 0; head < _colNum; head ++) {
                    int reg = head << (_shiftRegLength - _inputNumber);
                    reg = reg + state;
                    int[] parity =  _calculateParity(_mask, _maskNumber, reg);
                    int outValue = 0;
-                   // store the output values as an integer
-                   //in the order of yn...y1y0
+                   // store the output values as an integer 
+                   // in the order of yn...y1y0
                    for (int i = _maskNumber - 1; i >= 0; i --) {
                        outValue = outValue << 1;
                        outValue = outValue + parity[i];
@@ -326,7 +325,7 @@ public class ViterbiDecoder extends Transformer {
                 // Compute the distance for each possible path to "state".
                 double d = _computeDistance(y,
                     _truthTable[state][colIndex][0], _maskNumber, _mode);
-                // The previous state for that path.
+                // The previous state for that possibility.
                 int oldState = _truthTable[state][colIndex][1];
                 d = _tempDistance[oldState] + d;
                 // Find the minimum distance and corresponding previous
@@ -348,7 +347,7 @@ public class ViterbiDecoder extends Transformer {
 
         }
 
-        // If allowed to make a decision, starts to send
+        // If the waiting time has reached "D", the decoder starts to send
         // the decoded bits to the output port.
         if (_flag >= _depth) {
             // make a "final" decision among minimum distances of all states.
@@ -380,8 +379,8 @@ public class ViterbiDecoder extends Transformer {
         _flag = _flag + 1;
     }
 
-    /** Initialize the actor by resetting the shift register state
-     *  equal to the value of <i>initial</i>
+    /** Initialize the actor by resetting _inputNumberInvalid to be
+     *  true, and _flag to be 0.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -390,8 +389,7 @@ public class ViterbiDecoder extends Transformer {
         _flag = 0;
     }
 
-    /** Record the most recent shift register state as the new
-     *  initial state for the next iteration.
+    /** Record the datum in buffers into their temporary versions.
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {
@@ -448,8 +446,8 @@ public class ViterbiDecoder extends Transformer {
             int truthBit = truthValue & 1;
             truthValue = truthValue >> 1;
             if (mode == true) {
-                // Euclidean distance for soft decoding.
-                // It's actually square of the Euclidean distance.
+                // Euclidean distance for soft decoding. Here we
+                // actually compute the square of the Euclidean distance.
                 distance = distance
                     + java.lang.Math.pow(y[i] - truthBit, 2);
             } else {
