@@ -45,10 +45,12 @@ Create a query with various types of entry boxes and controls.  Each type
 of entry box has a colon and space appended to the end of its label, to
 ensure uniformity.
 Here is one example of creating a query with a radio button:
+<pre>
     query = new Query();
     getContentPane().add(query);
     String[] options = {"water", "soda", "juice", "none"};
     query.addRadioButtons("radio", "Radio buttons", options, "water");
+</pre>
 
 @author  Edward A. Lee, Manda Sutijono
 @version $Id$
