@@ -517,6 +517,12 @@ public class Exec extends TypedAtomicActor {
 
             String results = _stringBuffer.toString();
             _stringBuffer = new StringBuffer();
+            try {
+                _inputStreamReader.close();
+            } catch (Exception ex) {
+                throw new InternalErrorException(null, ex, getName()
+                        + " failed to close.");
+            }
             return results;
         }
 
