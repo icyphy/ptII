@@ -720,7 +720,8 @@ public class HDFFSMDirector extends FSMDirector {
         }
         if(!isConstantAndIdentical) {
             // Has this as ChangeContext.
-            System.out.println("Found rate parameter " + parameterName + " of port " + port.getFullName() + " that changes.");
+            // System.out.println("Found rate parameter " + parameterName + " of port " + port.getFullName() + " that changes.");
+            // FIXME: Declare this somehow so that we can check it.
         }
     }        
 
