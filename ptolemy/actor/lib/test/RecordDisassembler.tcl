@@ -87,7 +87,7 @@ test RecordDisassembler-2.1 {run with one input port, has label error} {
 } {{ptolemy.kernel.util.InvalidStateException: InequalitySolver.solve: Can't update variable.
 Type conflict on port .top.disassembler.input.
 Declared type is {disRampOut:unknown}.
-The connection or type constraints, however, requires type {}}
+The connection or type constraints, however, requires type {}}}
 
 test RecordDisassembler-2.2 {correct above label error} {
     $disRampOut setName fromRamp
