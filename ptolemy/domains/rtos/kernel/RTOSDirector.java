@@ -44,7 +44,8 @@ import ptolemy.actor.util.CalendarQueue;
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 //FIXME: -- Need to support use real time (for pure event).
 //       -- Need to fully support disabled actors.
@@ -196,11 +197,12 @@ public class RTOSDirector extends Director {
     public void initialize() throws IllegalActionException {
         
         super.initialize();
-        // FIXME:
-        // Request a firing to the outer director if the queue is not empty.
-        //if (_isEmbedded() && !_eventQueue.isEmpty()) {
-        //    _requestFiring();
-        //}
+        
+        if (_isEmbedded() && !_pureEventQueue.isEmpty()) {
+            double nextPureEventTime = 
+                ((DEEvent)_pureEventQueue.get()).timeStamp();
+            _requestFiringAt(nextPureEventTime);
+        }
     }
     
     /** Disable the specified actor.  All events destined to this actor
@@ -389,7 +391,6 @@ public class RTOSDirector extends Director {
      *  @exception IllegalActionException If the delay is negative.
      */
     protected void _enqueueEvent(RTOSEvent event) {
-
         if (_eventQueue == null) return;
         if(_debugging) _debug("enqueue event: to",
                 event.toString());
@@ -451,14 +452,12 @@ public class RTOSDirector extends Director {
     // This method is used when the director is embedded inside an opaque
     // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
     // If the queue is empty, then throw an InvalidStateException
-    private void _requestFiring() throws IllegalActionException {
-        DEEvent nextEvent = _pureEventQueue.get();
-
+    private void _requestFiringAt(double time) throws IllegalActionException {
         if (_debugging) _debug("Request refiring of composite actor.",
-                getContainer.getName(), "at " + nextEvent.timeStamp());
+                getContainer().getName(), "at " + time);
         // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
-                (Actor)getContainer(), nextEvent.timeStamp());
+                (Actor)getContainer(), time);
     }
     
 
