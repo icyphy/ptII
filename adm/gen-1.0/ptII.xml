@@ -573,7 +573,7 @@ Berkeley, CA 94706</property>
         <property name="wizardImageSource">C:\Program Files\InstallShield\ISMPP40\images\InstallShield Images\welcome.gif</property>
         <property name="wizardImageOrientation">1</property>
         <property name="splashImageSource"/>
-        <property name="splashDuration">10</property>
+        <property name="splashDuration">30</property>
         <property name="wizardIcon"/>
         <property name="wizardIconSource">C:\Program Files\InstallShield\ISMPP40\images\InstallShield Images\icon.gif</property>
         <property name="width">640</property>
@@ -648,7 +648,7 @@ Berkeley, CA 94706</property>
             <property name="description">$L(com.installshield.product.i18n.ProductResources, DestinationPanel.description, $P(displayName))</property>
             <property name="navigationOptions">0</property>
         </wizardBean>
-        <wizardBean class="com.installshield.product.wizardbeans.SetupTypePanel" id="bean4">
+        <wizardBean class="com.installshield.product.wizardbeans.SetupTypePanel" id="setupTypes">
             <property name="displayName">Setup Type Panel</property>
             <property name="active">True</property>
             <property name="title"/>
@@ -676,12 +676,12 @@ Berkeley, CA 94706</property>
                     <property name="id">Ptiny</property>
                 </arrayItem>
                 <arrayItem type="com.installshield.product.wizardbeans.SetupType">
-                    <property name="displayName">Custom</property>
+                    <property name="displayName">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.customDisplayName)</property>
                     <property array="True" length="2" name="features" type="string">
                         <arrayItem>bean866</arrayItem>
                         <arrayItem>bean30</arrayItem>
                     </property>
-                    <property name="description">Custom - minimal documentation</property>
+                    <property name="description">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.customDescription)</property>
                     <property name="id">custom</property>
                 </arrayItem>
             </property>
@@ -875,7 +875,7 @@ Berkeley, CA 94706</property>
                     <property array="True" length="0" name="additionalClassPaths" type="string"/>
                     <property name="embedArchive">True</property>
                     <property name="externalArchivePath"/>
-                    <property name="launcherUIDisplayTime">0</property>
+                    <property name="launcherUIDisplayTime">20</property>
                     <property name="javaArguments"/>
                     <property name="wizardArguments"/>
                     <property array="True" length="0" name="systemProperties" type="string"/>

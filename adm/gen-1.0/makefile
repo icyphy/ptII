@@ -139,8 +139,8 @@ $(PTIIDIST):
 	@echo "Removing codeDoc directories and other documentation"
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
-	@echo "Regenerate the documentation"
-	(cd $(PTIIDIST)/doc; make JDOCFLAGS="-author -version -J-Xmx132m")
+	@echo "Regenerate the documentation with gr and javasound"
+	(cd $(PTIIDIST)/doc; make JDOCFLAGS="-author -version -J-Xmx132m" GRJSRCS="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" JAVASOUNDJSRCS="ptolemy.actor.lib.javasound ptolemy.media.javasound")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
