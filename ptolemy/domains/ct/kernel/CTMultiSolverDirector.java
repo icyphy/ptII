@@ -839,12 +839,15 @@ public class CTMultiSolverDirector extends CTDirector {
                  (CTStepSizeControlActor)actors.next();
             refinedStep = Math.min(refinedStep, actor.refinedStepSize());
         }
-        if (refinedStep < 0.5*getMinStepSize()) {
+        //FIXME: output constraints are different from the state constraints.
+
+        if (refinedStep < 1.0e-16) {
             throw new IllegalActionException(this,
-                    "Cannot resolve new states even using "+
-                    "the minimum step size, at time "+
+                    "the refined step size is less than the minimum double value " +
+                    "resolution (1.0E-16) defined in Ptolemy, at time " +
                     getCurrentTime());
         }
+
         if (_debugging)
             _debug(getFullName(), "refine step with respect to output to"
                     + refinedStep);
