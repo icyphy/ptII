@@ -45,7 +45,7 @@ detail message is adjusted accordingly.
 Derived classes can provide multiple constructors that take 0, 1 or 2
 Nameable references plus a detail String.
 
-@author John S. Davis, II, Edward A. Lee
+@author John S. Davis, II, Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class KernelException extends Exception {
@@ -102,13 +102,13 @@ public class KernelException extends Exception {
         return _message;
     }
 
-    /** Return the stack trace as a String.
+    /** Return the stack trace of the given argument as a String.
      *  This method is useful if we are catching and rethrowing
-     *  an throwable.  This method should be used instead of
+     *  a throwable.  This method should be used instead of
      *  Throwable.printStackTrace(), which prints the stack trace
      *  to stderr, which is likely to be hidden if we are running
      *  a Ptolemy application from anything but a shell console.
-     *  @param throwable An throwable.
+     *  @param throwable A throwable.
      *  @return The stack trace of the throwable.
      */
     public static String stackTraceToString(Throwable throwable) {

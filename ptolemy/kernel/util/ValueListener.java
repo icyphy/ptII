@@ -1,4 +1,4 @@
-/* Listener for changes to object implementing Settable.
+/* Listener for changes to objects implementing Settable.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -23,9 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
-
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -45,8 +44,7 @@ public interface ValueListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This is called to notify the listener that the value of the
-     *  specified Settable has changed.
+    /** React to the specified Settable has changing.
      *  @param settable The object that has changed value.
      */
     public void valueChanged(Settable settable);

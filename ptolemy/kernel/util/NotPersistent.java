@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -33,9 +33,11 @@ package ptolemy.kernel.util;
 //////////////////////////////////////////////////////////////////////////
 //// NotPersistent
 /**
-This is an interface for objects that are not persistent in external
-object representations.   Such objects are usually attributes that are
-used internally in visual editors and only represent internal state.
+
+This is an interface for NamedObjs that are not persistent in external
+object representations (i.e. MoML).  Such objects are usually
+attributes that are used internally in visual editors and only
+represent internal state.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -44,4 +46,10 @@ used internally in visual editors and only represent internal state.
 public interface NotPersistent {
 
     // This is a tag interface.
+
+    // Note that this design pattern breaks down in Variable, which does not
+    // fall under this pattern because Variable cannot implement
+    // NotPersistent because Variable is subclasses by Parameter, which would
+    // mean Parameters are not persistent
+
 }
