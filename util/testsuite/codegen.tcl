@@ -57,18 +57,18 @@ proc speedComparison  {xmlFile \
 
 
     if {$codeGenType == "Deep"} {
-	puts "Not generation speed comparision stats for Deep yet"
-	#set args [java::new {String[]} 0]
-	#puts "Running builtin $codeGenType codegen $repeat times"
-	set codegenElapsed 0
-	#set codegenElapsed [time {java::call \
-	#	$targetClass \
-	#	main $args} $repeat]
-	#
-	#puts "Running exec $codeGenType codegen $repeat times"
-	set codegenExecElapsed 0
-	#set codegenExecElapsed \
-	#	[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
+	#puts "Not generation speed comparision stats for Deep yet"
+	set args [java::new {String[]} 0]
+	puts "Running builtin $codeGenType codegen $repeat times"
+	#set codegenElapsed 0
+	set codegenElapsed [time {java::call \
+		$targetClass \
+		main $args} $repeat]
+	
+	puts "Running exec $codeGenType codegen $repeat times"
+	#set codegenExecElapsed 0
+	set codegenExecElapsed \
+		[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
 
     } else {
 	set args [java::new {String[]} 2 \
@@ -162,8 +162,12 @@ proc speedComparison  {xmlFile \
 # warning message is printed and the iterations are set to 200.
 # If the iterations cannot be found, then a warning message is printed
 #
+# If statsOnly is 1, then we do not generate the code, we
+# just print the make command to run the stats.
+#
 proc sootCodeGeneration {modelPath {codeGenType Shallow} \
-	{defaultIterations {}} } {
+	{defaultIterations {}} \
+        {statsOnly 0}} {
     global relativePathToPTII
 
     if {[file extension $modelPath] == ""} {
@@ -300,115 +304,133 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	}
     }
 
-    set command compileDemo
-    puts "Now running 'make ... $command', this could take 60 seconds or so"
+    if { $statsOnly == 1} {
+	puts "sootCodeGeneration called with statsOnly == 1, so we are not regenerating"
+    } else {
+	set command compileDemo
+	puts "Now running 'make ... $command', this could take 60 seconds or so"
 
-    set results ""
-    # make -C is a GNU make extension that changes to a directory
-    set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER=$iterationsParameter $command]
-    puts $results
-#    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
-#	puts $results
-#	puts $errMsg
-#    }
-#    puts $results
+	set results ""
+	# make -C is a GNU make extension that changes to a directory
+	set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER=$iterationsParameter $command]
+	puts $results
+	#    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
+	#	puts $results
+	#	puts $errMsg
+	#    }
+	#    puts $results
+    }
+
     # If the model has a different name than the file name, we
     # handle it here.
     set command runDemo
-    set results [exec make -C .. MODEL=$modelName \
+    if { $codeGenType == "Deep"} {
+	set command runDemoTest
+    }
+    if { $statsOnly == 1} {
+	# Just print the command
+	puts "make MODEL=$modelName SOURCECLASS=$modelPath $command"
+	return "Times Interp/Deep ms $modelName 1 \
+	    builtin: 0/0 \
+	    0 % \
+	    exec: 0/0 \
+	    0 %"
+    } else {
+	set results [exec make -C .. MODEL=$modelName \
 	    SOURCECLASS=$modelPath $command]
-    puts $results
+	puts $results
+    }
 
     return [speedComparison $realModelPath $modelName $targetPackage \
 	    3 $modelClass $codeGenType]
 } 
 
 
-# Read in a model, generate code and run it in the current jvm
-proc sootShallowCodeGenerationBuiltin {model} {
-    global relativePathToPTII
+#  # Read in a model, generate code and run it in the current jvm
+#  proc sootShallowCodeGenerationBuiltin {model} {
+#      global relativePathToPTII
 
-    # We need to get the classpath so that we can run if we are running
-    # under Javascope, which includes classes in a zip file
-    set builtinClasspath [java::call System getProperty "java.class.path"]
-    set rtjar [java::call System getProperty "sun.boot.class.path"]
+#      # We need to get the classpath so that we can run if we are running
+#      # under Javascope, which includes classes in a zip file
+#      set builtinClasspath [java::call System getProperty "java.class.path"]
+#      set rtjar [java::call System getProperty "sun.boot.class.path"]
 
-    set sootClasspath $relativePathToPTII/vendors/soot/1.2.2/jasminclasses.jar[java::field java.io.File pathSeparator]$relativePathToPTII/vendors/soot/1.2.2/sootclasses.jar
+#      set sootClasspath $relativePathToPTII/vendors/soot/1.2.2/jasminclasses.jar[java::field java.io.File pathSeparator]$relativePathToPTII/vendors/soot/1.2.2/sootclasses.jar
 
-    set classpath $relativePathToPTII[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$sootClasspath[java::field java.io.File pathSeparator]$builtinClasspath[java::field java.io.File pathSeparator]$rtjar
-
-
-    set args [java::new {String[]} 12 \
-	    [list \
-	    $model "-d" $relativePathToPTII \
-	    "-p" "wjtp.at" "targetPackage:ptolemy.copernicus.java.test.cg" \
-	    "-p" "wjtp.mt" "targetPackage:ptolemy.copernicus.java.test.cg" \
-	    "-p" "wjtp.umr" "disabled" \
-	    ]]
-    set main [java::new ptolemy.copernicus.java.Main $args]
-    set toplevel [$main readInModel $model]
-    $main initialize $toplevel
-    $main addTransforms
-    set modelName ptolemy.copernicus.java.test.cg.CG[$toplevel getName]
-
-    # Make a stab at getting the iterations
-    set director [$toplevel getDirector]
-    set iterations [$director getAttribute iterations]
-    if { $iterations == [java::null] } {
-	puts "WARNING: iterations parameter not found in\n '$modelName',\n \
-		perhaps this model is not SDF?"
-    } else {
-	set iterationsValue [[java::cast ptolemy.data.IntToken \
-	    [[java::cast ptolemy.data.expr.Parameter \
-	    $iterations]  getToken]] doubleValue]
-	puts "iterationsValue = $iterationsValue"
-    }
+#      set classpath $relativePathToPTII[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$sootClasspath[java::field java.io.File pathSeparator]$builtinClasspath[java::field java.io.File pathSeparator]$rtjar
 
 
-    # See KernelMain.generateCode for a description of why this is necessary
-    $args set 0 "java.lang.Object"
-    java::call soot.Main setReservedNames
-    java::call soot.Main setCmdLineArgs $args
-    set main [java::new soot.Main]
-    set ccl [java::new soot.ConsoleCompilationListener]
-    java::call soot.Main addCompilationListener $ccl
-    $main run
-    #set thread [java::new Thread main]
-    #$thread start
+#      set args [java::new {String[]} 12 \
+#  	    [list \
+#  	    $model "-d" $relativePathToPTII \
+#  	    "-p" "wjtp.at" "targetPackage:ptolemy.copernicus.java.test.cg" \
+#  	    "-p" "wjtp.mt" "targetPackage:ptolemy.copernicus.java.test.cg" \
+#  	    "-p" "wjtp.umr" "disabled" \
+#  	    ]]
+#      set main [java::new ptolemy.copernicus.java.Main $args]
+#      set toplevel [$main readInModel $model]
+#      $main initialize $toplevel
+#      $main addTransforms
+#      set modelName ptolemy.copernicus.java.test.cg.CG[$toplevel getName]
 
-    # Find the new classes in the new Scene.
-    # Soot tries to be smart and refresh the scene in between comilations, so so must we.
-    java::call ptolemy.copernicus.java.PtolemyUtilities loadSootReferences
+#      # Make a stab at getting the iterations
+#      set director [$toplevel getDirector]
+#      set iterations [$director getAttribute iterations]
+#      if { $iterations == [java::null] } {
+#  	puts "WARNING: iterations parameter not found in\n '$modelName',\n \
+#  		perhaps this model is not SDF?"
+#      } else {
+#  	set iterationsValue [[java::cast ptolemy.data.IntToken \
+#  	    [[java::cast ptolemy.data.expr.Parameter \
+#  	    $iterations]  getToken]] doubleValue]
+#  	puts "iterationsValue = $iterationsValue"
+#      }
 
-#    exec java -Xmx132m -classpath $classpath \
-#	    ptolemy.copernicus.java.Main 
-#           $model -d $relativePathToPTII \
-#	    -p wjtp.at targetPackage:ptolemy.copernicus.java.test.cg \
-#	    -p wjtp.mt targetPackage:ptolemy.copernicus.java.test.cg
+
+#      # See KernelMain.generateCode for a description of why this is necessary
+#      $args set 0 "java.lang.Object"
+#      java::call soot.Main setReservedNames
+#      java::call soot.Main setCmdLineArgs $args
+#      set main [java::new soot.Main]
+#      set ccl [java::new soot.ConsoleCompilationListener]
+#      java::call soot.Main addCompilationListener $ccl
+#      $main run
+#      #set thread [java::new Thread main]
+#      #$thread start
+
+#      # Find the new classes in the new Scene.
+#      # Soot tries to be smart and refresh the scene in between comilations, so so must we.
+#      java::call ptolemy.copernicus.java.PtolemyUtilities loadSootReferences
+
+#  #    exec java -Xmx132m -classpath $classpath \
+#  #	    ptolemy.copernicus.java.Main 
+#  #           $model -d $relativePathToPTII \
+#  #	    -p wjtp.at targetPackage:ptolemy.copernicus.java.test.cg \
+#  #	    -p wjtp.mt targetPackage:ptolemy.copernicus.java.test.cg
 
 
 
 
-#    set applicationArguments [java::new {java.lang.String[]} 4 [list \
-#	    "-class" $modelName \
-#	    "-iterations" "10" \
-#	    ]]
-#
-#    set application [java::new ptolemy.actor.gui.CompositeActorApplication]
-#    $application processArgs $applicationArguments
-#    set models [listToObjects [$application models]]
-#    $application waitForFinish
-#    set result {}
-#    foreach model $models {
-#        set modelc [java::cast ptolemy.actor.gui.test.TestModel $model]
-#        lappend result [listToStrings [$modelc getResults]]
-#    }
-#    list $result
+#  #    set applicationArguments [java::new {java.lang.String[]} 4 [list \
+#  #	    "-class" $modelName \
+#  #	    "-iterations" "10" \
+#  #	    ]]
+#  #
+#  #    set application [java::new ptolemy.actor.gui.CompositeActorApplication]
+#  #    $application processArgs $applicationArguments
+#  #    set models [listToObjects [$application models]]
+#  #    $application waitForFinish
+#  #    set result {}
+#  #    foreach model $models {
+#  #        set modelc [java::cast ptolemy.actor.gui.test.TestModel $model]
+#  #        lappend result [listToStrings [$modelc getResults]]
+#  #    }
+#  #    list $result
 
-#    return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -iterations 10 -class $modelName]
-    puts "sootShallowCodeGeneration {$model}: running $modelName"
+#  #    return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -iterations 10 -class $modelName]
+#      puts "sootShallowCodeGeneration {$model}: running $modelName"
 
-    return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class $modelName]
-}
+#      return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class $modelName]
+#  }
 
 
