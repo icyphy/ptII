@@ -74,14 +74,15 @@ JSRCS = \
 	CurrentTime.java \
 	DB.java \
 	Discard.java \
-        DiscreteRandomSource.java \
+    DiscreteRandomSource.java \
 	Distributor.java \
 	Expression.java \
 	FileWriter.java \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
-        MaxIndex.java \
+	MathFunction.java \
+    MaxIndex.java \
 	Maximum.java \
 	Minimum.java \
 	MultiplyDivide.java \
