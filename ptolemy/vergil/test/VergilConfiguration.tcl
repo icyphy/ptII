@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkRuntimeStatistics] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -47,26 +51,11 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-
-# Return memory statistics
-proc memoryStatistics {} {
-    # Ptolemy 1.2 and later has this method
-    #puts "$prefix [java::call ptolemy.actor.Manager timeAndMemory -1]"
-
-    # Ptolemy 1.0.1 does not have Manager.timeAndMemory, so we use this:
-    set runtime [java::call Runtime getRuntime]
-    set totalMemory [expr {[$runtime totalMemory] /1024}]
-    set freeMemory [expr {[$runtime freeMemory] /1024}]
-    set percent [expr { round ( (double($freeMemory) / double($totalMemory)) * 100 )}]
-    return "Memory: ${totalMemory}K Free: ${freeMemory}K ${percent}%"
-
-}
-
 # Print memory statistics, call gc, then print memory statistics
 proc memoryGCmemory {} {
-    puts "Before gc: [memoryStatistics]"
+    puts "Before gc: [jdkRuntimeStatistics]"
     java::call System gc    
-    puts "After gc: [memoryStatistics]"
+    puts "After gc: [jdkRuntimeStatistics]"
 }
 
 # Expand a configuration
