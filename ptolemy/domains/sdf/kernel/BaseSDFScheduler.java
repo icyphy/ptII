@@ -394,5 +394,10 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** If true, then print verbose messages.  By default, this variable
+     *  is set to false.  To enable verbose messages, edit the source file
+     *  and recompile.
+     */     
     protected static final boolean VERBOSE = false;
 }
