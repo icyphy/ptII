@@ -159,7 +159,7 @@ public class CryptographyActor extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        try{
+        try {
             if (input.hasToken(0)) {
                 byte[] dataBytes =
                     _arrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
@@ -218,7 +218,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *  exceptions occurs.
      */
     protected Key _bytesToKey(byte keyBytes[])throws IllegalActionException{
-        try{
+        try {
             ByteArrayInputStream byteArrayInputStream;
             ObjectInputStream objectInputStream;
             Key key;

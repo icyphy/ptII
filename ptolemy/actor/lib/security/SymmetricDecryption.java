@@ -131,7 +131,7 @@ public class SymmetricDecryption extends CipherActor {
      *  the algorithm does not exist or if the provider does not exist.
      */
     public void fire() throws IllegalActionException {
-        try{
+        try {
             if (keyIn.hasToken(0)) {
                 _secretKey =
                     (SecretKey)_bytesToKey(_arrayTokenToUnsignedByteArray(

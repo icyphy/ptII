@@ -132,7 +132,7 @@ public class CipherActor extends CryptographyActor {
         _padding = ((StringToken)padding.getToken()).stringValue();
         _mode = ((StringToken)mode.getToken()).stringValue();
         _keyAlgorithm = _algorithm;
-        try{
+        try {
             if (_provider.equalsIgnoreCase("default")) {
                 _cipher = Cipher.getInstance(
                         _algorithm + "/" + _mode + "/" + _padding);
@@ -140,7 +140,7 @@ public class CipherActor extends CryptographyActor {
                 _cipher = Cipher.getInstance(
                         _algorithm + "/" + _mode + "/" + _padding, _provider);
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to initialize Cipher with algorithm: '"
                     + _algorithm + "', padding: '"

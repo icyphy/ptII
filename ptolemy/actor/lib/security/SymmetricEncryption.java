@@ -182,7 +182,7 @@ public class SymmetricEncryption extends CipherActor {
      *  or if the specified provider does not exist.
      */
     public void initialize() throws IllegalActionException {
-        try{
+        try {
             super.initialize();
             _secretKey = (SecretKey)_createSymmetricKey();
             //keyOut.send(0, _unsignedByteArrayToArrayToken(
@@ -234,7 +234,7 @@ public class SymmetricEncryption extends CipherActor {
         //        byteArrayInputStream = new ByteArrayInputStream(initialData);
         //        int length = 0;
         //        byte [] buffer = new byte [BUFFER_SIZE];
-        //        try{
+        //        try {
         //            while ((length = byteArrayInputStream.read(buffer)) != -1) {
         //                _cos.write(buffer, 0, length);
         //            }

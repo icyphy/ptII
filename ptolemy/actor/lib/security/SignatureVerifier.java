@@ -146,7 +146,7 @@ public class SignatureVerifier extends SignatureActor {
         ByteArrayOutputStream byteArrayOutputStream =
             new ByteArrayOutputStream();
 
-        try{
+        try {
             _signature.initVerify(_publicKey);
             _signature.update(_data);
             boolean verify = _signature.verify(signatureData);

@@ -143,7 +143,7 @@ public class AsymmetricEncryption extends CipherActor {
             for (int i = 0; i < dataBytes.length; i += blockSize) {
                 if (dataBytes.length-i <= blockSize) {
                     length = dataBytes.length-i;
-                } else{
+                } else {
                     length = blockSize;
                 }
                 byteOutputStream.write(_cipher.doFinal(dataBytes, i, length));

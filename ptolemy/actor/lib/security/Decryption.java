@@ -255,7 +255,7 @@ public class Decryption extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        try{
+        try {
             _cipher = Cipher.getInstance(_algorithm, _provider);
 
         } catch (Exception ex) {
@@ -316,7 +316,7 @@ public class Decryption extends TypedAtomicActor {
      * @exception NoSuchProviderException when provider is not found.
      */
     protected void _createAsymmetricKeys()throws IllegalActionException{
-        try{
+        try {
             KeyPairGenerator keyPairGen =
                 KeyPairGenerator.getInstance(_algorithm, _provider);
             keyPairGen.initialize(1024, new SecureRandom());
@@ -355,7 +355,7 @@ public class Decryption extends TypedAtomicActor {
      * @exception IllegalActionException
      */
     protected void _createSymmetricKey() throws IllegalActionException{
-        try{
+        try {
             KeyGenerator keyGen = KeyGenerator.getInstance(_algorithm, _provider);
             keyGen.init(56, new SecureRandom());
             _secretKey = keyGen.generateKey();
@@ -384,7 +384,7 @@ public class Decryption extends TypedAtomicActor {
     protected byte[] _crypt(byte[] initialData)throws IllegalActionException{
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Key key;
-        try{
+        try {
             if (_keyMode == _SYMMETRIC) {
                 key = _secretKey;
                 _cipher.init(Cipher.DECRYPT_MODE, key);
@@ -397,7 +397,7 @@ public class Decryption extends TypedAtomicActor {
                 for (int i = 0; i<initialData.length; i+=blockSize) {
                     if (initialData.length-i <= blockSize) {
                         length = initialData.length-i;
-                    } else{
+                    } else {
                         length = blockSize;
                     }
                     byteArrayOutputStream.write(_cipher.doFinal(initialData, i, length));
