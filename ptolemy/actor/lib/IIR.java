@@ -223,7 +223,12 @@ public class IIR extends Transformer {
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
         } catch (IllegalActionException ex) {
-            throw new CloneNotSupportedException(ex.getMessage());
+            // CloneNotSupportedException does not have a constructor
+            // that takes a cause argument, so we use initCause
+            CloneNotSupportedException throwable
+                = new CloneNotSupportedException();
+            throwable.initCause(ex);
+            throw throwable;
         }
         return newObject;
     }
