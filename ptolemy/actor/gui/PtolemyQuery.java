@@ -46,6 +46,7 @@ import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
@@ -191,6 +192,33 @@ public class PtolemyQuery extends Query
                             attribute.getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
+                } else if ((attribute instanceof FileParameter)
+                        || (attribute instanceof FileAttribute)) {
+                    // Specify the directory in which to start browsing
+                    // to be the location where the model is defined,
+                    // if that is known.
+                    URI modelURI = URIAttribute.getModelURI(
+                            (NamedObj)attribute);
+                    File directory = null;
+                    if (modelURI != null) {
+                        if (modelURI.getScheme().equals("file")) {
+                            File modelFile = new File(modelURI);
+                            directory = modelFile.getParentFile();
+                        }
+                    }
+                    URI base = null;
+                    if (directory != null) {
+                        base = directory.toURI();
+                    }
+                    // FIXME: Should remember previous browse location?
+                    // Last argument is the starting directory.
+                    addFileChooser(name,
+                            name,
+                            attribute.getExpression(),
+                            base,
+                            directory);
+                    attachParameter(attribute, name);
+                    foundStyle = true;
                 } else if (attribute instanceof Parameter
                         && ((Parameter)attribute).getChoices() != null) {
                     Parameter castAttribute = (Parameter)attribute;
@@ -220,34 +248,7 @@ public class PtolemyQuery extends Query
                             foundStyle = true;
                         }
                     }
-                    // FIXME: Other types?
-                } else if (attribute instanceof FileAttribute) {
-                    // Specify the directory in which to start browsing
-                    // to be the location where the model is defined,
-                    // if that is known.
-                    URI modelURI = URIAttribute.getModelURI(
-                            (FileAttribute)attribute);
-                    File directory = null;
-                    if (modelURI != null) {
-                        if (modelURI.getScheme().equals("file")) {
-                            File modelFile = new File(modelURI);
-                            directory = modelFile.getParentFile();
-                        }
-                    }
-                    URI base = null;
-                    if (directory != null) {
-                        base = directory.toURI();
-                    }
-                    // FIXME: Should remember previous browse location?
-                    // Last argument is the starting directory.
-                    addFileChooser(name,
-                            name,
-                            attribute.getExpression(),
-                            base,
-                            directory);
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                }
+               }
                 // FIXME: Other attribute classes? TextStyle?
             } catch (IllegalActionException ex) {
                 // Ignore and create a line entry.
