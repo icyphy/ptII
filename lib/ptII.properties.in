@@ -11,16 +11,36 @@
 # We use a properties file here so that we can easily start Ptolemy II
 # without passing lots of command line arguments
 #
+# The format of this file is documented in the java.util.Properties
+# Javadoc page, for example
+# http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html
+#
+# This file is read in by VergilApplication.mergePropertiesFile().
+# Properties listed in this file override preexisting properties.
+# To view the properties, start up vergil, do 
+# File -> New -> Graph Editor -> View -> JVM Properties
 
+####
 # Location of the the PTII directory
 ptolemy.ptII.dir=@PTII@
 
+####
 # Start up with the US Locale so as to avoid problems with , instead
 # of . in floating point numbers in German and Swedish locales
 user.language=en
-Duser.region=US
+user.region=US
 
+####
 # These properties are used by PtinyOS
+#
+
+# PTJAVA_DIR without /cygdrive
+ptolemy.ptII.java.dir=@PTJAVA_DIR_NO_CYGDRIVE@
+
+# Architecture that where jni includes can be found, for example:
+#    ptolemy.ptII.java.dir + /include/ + ptolemy.ptII.jni.architecture
+# Usually one of win32, linux or solaris
 ptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@
-ptolemy.ptII.java.dir=@PTJAVA_DIR_CLEAN@
+
+# TOSROOT without /cygdrive
 ptolemy.ptII.tosroot=@TOSROOT_NO_CYGDRIVE@
