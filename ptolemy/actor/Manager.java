@@ -30,10 +30,6 @@
 
 package ptolemy.actor;
 
-import ptolemy.data.type.TypeLattice;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalitySolver;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -43,12 +39,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
-
 import java.util.Date;			// For timing measurements
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Manager
@@ -59,57 +53,58 @@ interface, or the top-level code of an application.  The manager can
 execute the model in the calling thread or in a separate thread.
 The latter is useful when the caller wishes to remain live during
 the execution of the model.
-<p>
-There are three methods that can be used to start execution of a system
-attached to the manager.  The execute() method is the most basic way to
-execute a model.  The model will be executed <i>synchronously</i>,
-meaning that the execute()
-method will return when execution has completed.  Any exceptions that
-occur will be thrown by the execute method to the calling thread, and will
-not be reported to any execution listeners.  The run() method also
-initiates synchronous execution of a model, but additionally catches all
+
+<p> There are three methods that can be used to start execution of a
+system attached to the manager.  The execute() method is the most
+basic way to execute a model.  The model will be executed
+<i>synchronously</i>, meaning that the execute() method will return
+when execution has completed.  Any exceptions that occur will be
+thrown by the execute method to the calling thread, and will not be
+reported to any execution listeners.  The run() method also initiates
+synchronous execution of a model, but additionally catches all
 exceptions and passes them to the notifyListenersOfException() method
-<i>without throwing them to the calling thread</i>.
-The startRun() method, unlike the previous two
-techniques, begins <i>asynchronous</i> execution of a model.   This method
-starts a new thread for execution of the model and then returns immediately.
-Exceptions are reported using the notifyListenersOfException() method.
-<p>
-In addition, execution can be manually driven, one phase at a time, using the
-methods initialize(), iterate() and wrapup().  This is most useful for
-testing purposes.  For example, a type system check only needs to get the
-resolved types, which are found during initialize, so the test can avoid
-actually executing the system.  Also, when testing mutations, the model can
-be examined after each toplevel iteration to ensure the proper behavior.
-<p>
-A manager provides services for cleanly handling changes to the
+<i>without throwing them to the calling thread</i>.  The startRun()
+method, unlike the previous two techniques, begins <i>asynchronous</i>
+execution of a model.  This method starts a new thread for execution
+of the model and then returns immediately.  Exceptions are reported
+using the notifyListenersOfException() method.
+
+<p> In addition, execution can be manually driven, one phase at a
+time, using the methods initialize(), iterate() and wrapup().  This is
+most useful for testing purposes.  For example, a type system check
+only needs to get the resolved types, which are found during
+initialize, so the test can avoid actually executing the system.
+Also, when testing mutations, the model can be examined after each
+toplevel iteration to ensure the proper behavior.
+
+<p> A manager provides services for cleanly handling changes to the
 topology.  These include such changes as adding or removing an entity,
-port, or relation, creating or destroying a link, and changing the value
-or type of a parameter.  Collectively, such changes are called
-<i>mutations</i>. Usually, mutations
-cannot safely occur at arbitrary points in the execution of
-a model.  Models can queue mutations with any object in the hierarchy or with
-the manager using the requestChange() method.  An object in the hierarchy
-simply delegates the request to its container, so the request propagates
-up the hierarchy until it gets to the top level composite actor, which
+port, or relation, creating or destroying a link, and changing the
+value or type of a parameter.  Collectively, such changes are called
+<i>mutations</i>. Usually, mutations cannot safely occur at arbitrary
+points in the execution of a model.  Models can queue mutations with
+any object in the hierarchy or with the manager using the
+requestChange() method.  An object in the hierarchy simply delegates
+the request to its container, so the request propagates up the
+hierarchy until it gets to the top level composite actor, which
 delegates to the manager, which performs the change at the earliest
 opportunity.  In this implementation of Manager, the changes are
 executed between iterations.
-<p>
-A service is also provided whereby an object can be registered with the
-composite actor as a change listener.  A change listener is informed when
-mutations that are requested via requestChange() are executed successfully,
-or when they fail with an exception.
-<p>
-Manager can optimize the performance of an execution by making
-the workspace <i>write protected</i> during an iteration, if all
-relevant directors permit this.  This removes some of the overhead
-of obtaining read and write permission on the workspace.
-By default, directors do not permit this, but
-many directors explicitly relinquish write access to allow faster execution.
-Such directors are declaring that they will not make changes to the
-topology during execution.  Instead, any desired mutations are delegated
-to the manager via the requestChange() method.
+
+<p> A service is also provided whereby an object can be registered
+with the composite actor as a change listener.  A change listener is
+informed when mutations that are requested via requestChange() are
+executed successfully, or when they fail with an exception.
+
+<p> Manager can optimize the performance of an execution by making the
+workspace <i>write protected</i> during an iteration, if all relevant
+directors permit this.  This removes some of the overhead of obtaining
+read and write permission on the workspace.  By default, directors do
+not permit this, but many directors explicitly relinquish write access
+to allow faster execution.  Such directors are declaring that they
+will not make changes to the topology during execution.  Instead, any
+desired mutations are delegated to the manager via the requestChange()
+method.
 
 @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee, Elaine Cheong
 // Contributors: Mudit Goel, John S. Davis II
@@ -371,6 +366,8 @@ public class Manager extends NamedObj implements Runnable {
             _pauseRequested = false;
             _typesResolved = false;
             _iterationCount = 0;
+
+            _resumeNotifyWaiting = false;
 
             // Initialize the topology
             _container.preinitialize();
@@ -685,6 +682,7 @@ public class Manager extends NamedObj implements Runnable {
         // nondeterministically, and can leave any objects that the thread
         // operating on in an inconsistent state.
         if (_thread != null) {
+            // FIXME:  stop() in java.lang.Thread has been deprecated
             _thread.stop();
             try {
                 _thread.join();
