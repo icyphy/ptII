@@ -82,16 +82,16 @@ public class MatrixPane extends JScrollPane {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear the display. */
+    public void clear() {
+        table.setModel(_emptyTableModel);
+    }
+
     /** Set the matrix to display in the table.
      *  @param matrix The matrix to display in the table.
      */
     public void display(MatrixToken matrix) {
         table.setModel(new MatrixAsTable(matrix));
-    }
-
-    /** Clear the display. */
-    public void clear() {
-        table.setModel(_emptyTableModel);
     }
 
     ///////////////////////////////////////////////////////////////////
