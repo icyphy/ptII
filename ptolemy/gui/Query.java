@@ -38,8 +38,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.ChangeListener;
 
-import collections.LinkedList;
-
 //////////////////////////////////////////////////////////////////////////
 //// Query
 /**
@@ -148,10 +146,13 @@ public class Query extends JPanel {
     /** Add a listener.  The changed() method of the listener will be
      *  called when any of the entries is changed.  Note that "line"
      *  entries only trigger this call when Return is pressed.
+     *  If the listener has already been added, then do nothing.
+     *  @param listener The listener to add.
      */
     public void addQueryListener(QueryListener listener) {
-        if(_listeners == null) _listeners = new LinkedList();
-        _listeners.insertLast(listener);
+        if(_listeners == null) _listeners = new Vector();
+        if(_listeners.contains(listener)) return;
+        _listeners.add(listener);
     }
 
     /** Create a bank of radio buttons.
@@ -194,27 +195,11 @@ public class Query extends JPanel {
         _entries.put(name, buttons);
     }
 
-    /** FIXME: Create a slider with the specified name, label, and default 
-     *  value.
-     *  @param name The name used to identify the slider.
-     *  @param label The label to attach to the slider.
-     *  @param defaultValue Default value of slider.
-     */
-    public void addSlider(String name, String label, int defaultValue) {
-        JLabel lbl = new JLabel(label + ": ");
-        JSlider slider = new JSlider();
-        slider.setValue(defaultValue);
-        _addPair(lbl, slider);
-        _entries.put(name, slider);
-        slider.addChangeListener(new SliderListener(name));
-    }
-
-    /** FIXME: Create a slider with the specified name, label, default 
-     *  value, maximum, and minimum.  To set the minimum or maximum value 
-     *  of the slider,  use setMinimum() or setMaximum().
+    /** Create a slider with the specified name, label, default 
+     *  value, maximum, and minimum.
      *  @param name The name used to identify the slider.
      *  @param label The label to attach to the slider.     
-     *  @param defaultValue Default value of slider.
+     *  @param defaultValue Initial position of slider.
      *  @param max Maximum value of slider.
      *  @param min Minimum value of slider.
      */
@@ -235,7 +220,7 @@ public class Query extends JPanel {
      *   specified name.  Note that this is a runtime exception, so it
      *   need not be declared explicitly.
      *  @exception IllegalArgumentException If the entry is not a
-     *   radio button.  This is a runtime exception, so it
+     *   checkbox.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
     public boolean booleanValue(String name)
@@ -336,6 +321,15 @@ public class Query extends JPanel {
         }
     }
 
+    /** Remove a listener.  If the listener has not been added, then
+     *  do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeQueryListener(QueryListener listener) {
+        if(_listeners == null) return;
+        _listeners.remove(listener);
+    }
+
     /** Set the background color for all the widgets.
      *  @param color The background color.
      */
@@ -348,6 +342,31 @@ public class Query extends JPanel {
             if (!(components[i] instanceof JTextField)) {
                 components[i].setBackground(_background);
             }
+        }
+    }
+
+    /** Set the current value in the entry with the given name.
+     *  If the entry is not a checkbox, then throw an exception.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry is not a
+     *   checkbox.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     */
+    public void setBoolean(String name, boolean value)
+            throws NoSuchElementException, IllegalArgumentException {
+        Object result = _entries.get(name);
+        if(result == null) {
+            throw new NoSuchElementException("No item named \"" +
+            name + "\" in the query box.");
+        }
+        if (result instanceof JRadioButton) {
+            ((JRadioButton)result).setSelected(value);
+        } else {
+            throw new IllegalArgumentException("Item named \"" +
+            name + "\" is not a radio button, and hence does not have "
+            + "a boolean value.");
         }
     }
 
@@ -375,6 +394,27 @@ public class Query extends JPanel {
             throw new IllegalArgumentException("Item named \"" +
             name + "\" is not a display, and hence cannot be set using "
             + "setDisplay().");
+        }
+    }
+
+    /** For entries for which it is appropriate, if the second argument is
+     *  false, then it will be disabled.
+     *  @param name The name of the entry.
+     *  @param boole If false, disables the entry.
+     */
+    public void setEnabled(String name, boolean boole) {
+        Object result = _entries.get(name);
+        if(result == null) {
+            throw new NoSuchElementException("No item named \"" +
+            name + " \" in the query box.");
+        }
+        if(result instanceof JComponent) {
+            ((JComponent)result).setEnabled(boole);
+        } else if(result instanceof JRadioButton[]) {
+            JRadioButton[] buttons = (JRadioButton[])result;
+            for (int i = 0; i < buttons.length; i++) {
+                buttons[i].setEnabled(boole);
+            }
         }
     }
 
@@ -481,7 +521,7 @@ public class Query extends JPanel {
     protected GridBagConstraints _constraints;
 
     /** List of registered listeners. */
-    protected LinkedList _listeners;
+    protected Vector _listeners;
 
     ///////////////////////////////////////////////////////////////////
     ////                         friendly methods                  ////
