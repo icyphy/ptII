@@ -60,16 +60,6 @@ Once the specified number of cycles has been completed, then this actor
 will output zeros with the same type as the values in the <i>values</i>
 parameter.
 <p>
-The <i>start</i> input, if connected and provided with a token, will
-start the clock.  If this input is not connected, then the clock will
-start at the start of execution.  In this case, "connected" means that
-there is actually another port somewhere else in the model that can
-provide data to this port.  It will not be sufficient to merely be
-linked to a relation. So that this <i>start</i> port can
-be used meaningfully in the CT domain, it is declared DISCRETE, and it
-should be connected to an event generator.  Other domains ignore this
-declaration.
-<p>
 At the beginning of each time interval of length given by <i>period</i>,
 this actor initiates a sequence of output events with values given by
 <i>values</i> and offset into the period given by <i>offsets</i>.
@@ -166,17 +156,6 @@ public class Clock extends TimedSource {
         numberOfCycles = new Parameter(this,"numberOfCycles");
         numberOfCycles.setTypeEquals(BaseType.INT);
         numberOfCycles.setExpression("-1");
-
-        // start port.
-        start = new TypedIOPort(this, "start");
-        start.setInput(true);
-        // type is undeclared.
-        // Annotate DISCRETE, for the benefit of CT.
-        new Parameter(start, "signalType", new StringToken("DISCRETE"));
-
-        // To prevent type inference from doing the wrong thing, we have
-        // to declare the output to be CONTINUOUS.
-        new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -197,11 +176,6 @@ public class Clock extends TimedSource {
      *  This parameter must contain a DoubleToken, and it defaults to 2.0.
      */
     public Parameter period;
-
-    /** A port that, if connected, is used to specify when the clock
-     *  starts. This port has undeclared type.
-     */
-    public TypedIOPort start;
 
     /** The values that will be produced at the specified offsets.
      *  This parameter must contain an ArrayToken, and it defaults to
@@ -283,29 +257,9 @@ public class Clock extends TimedSource {
 
         if (_debugging)_debug("--- Firing at time " + currentTime + ".");
 
-        // In case time has gone backwards since the last call to fire()
-        // (something that can occur within an iteration), reinitialize
-        // these from the last known good state.
-        _tentativeCycleStartTime = _cycleStartTime;
-        _tentativeCurrentValue = _currentValue;
-        _tentativePhase = _phase;
-        _tentativeCycleCount = _cycleCount;
-        _tentativeStartTime = _startTime;
-
-        // Check the start input first, to see whether everything needs to
-        // be reset.
-        if (start.numberOfSources() > 0) {
-            if (start.hasToken(0)) {
-                if (_debugging)_debug("Received a start input.");
-                start.get(0);
-                // Indicate to postfire() that it can call fireAt().
-                _done = false;
-                _tentativeCycleStartTime = currentTime;
-                _tentativeStartTime = currentTime;
-                _tentativePhase = 0;
-                _tentativeCycleCount = 1;
-            }
-        }
+        // Use the strategy pattern here so that derived classes can
+        // override how this is done.
+        _updateTentativeValues();
 
         // Use Double.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
@@ -330,6 +284,7 @@ public class Clock extends TimedSource {
                     _tentativeCycleStartTime + _offsets[_tentativePhase]) {
                 // Phase boundary.  Change the current value.
                 _tentativeCurrentValue = _getValue(_tentativePhase);
+
                 // Increment to the next phase.
                 _tentativePhase++;
                 if (_tentativePhase >= _offsets.length) {
@@ -388,31 +343,20 @@ public class Clock extends TimedSource {
         _startTime = currentTime;
         _currentValue = _getValue(0).zero();
         _phase = 0;
-        // If the start port is connected, then we do not
-        // immediately begin producing output.  The _done
-        // variable prevents postfire from calling fireAt().
-        if (start.numberOfSources() > 0) {
-            if (_debugging) {
-                _debug("The start input is connected, so wait for an event.");
-            }
-            _done = true;
-            // Indicate that we are before the first cycle.
-            _cycleCount = 0;
-        } else {
-            // Go ahead and start.
-            if (_debugging) {
-                _debug("The start input is not connected, so start now.");
-            }
-            _done = false;
-            _cycleCount = 1;
 
-            // This needs to be the last line, because in threaded domains,
+        // As in fire(), we use the strategy pattern so that derived classes
+        // can do something different here.
+        _initializeCycleCount();
+
+        // Subclasseses may disable starting by setting _done to true.
+        if (!_done) {
+            if (_debugging) {
+                _debug("Requesting firing at time "
+                       + (_offsets[0] + currentTime));
+            }
+            // This should be the last line, because in threaded domains,
             // it could execute immediately.
             getDirector().fireAt(this, _offsets[0] + currentTime);
-            if (_debugging) {
-                _debug("Requested firing at time "
-                        + (_offsets[0] + currentTime));
-            }
         }
     }
 
@@ -430,6 +374,7 @@ public class Clock extends TimedSource {
         _phase = _tentativePhase;
         _cycleCount = _tentativeCycleCount;
         _startTime = _tentativeStartTime;
+        _done = _tentativeDone;
 
         _cycleCount += _tentativeCycleCountIncrement;
         if (_debugging){
@@ -480,6 +425,67 @@ public class Clock extends TimedSource {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** Initialize the cycle count and done flag.  These are done in a
+     *  protected method so that derived classes can do something different
+     *  here.
+     */
+    protected void _initializeCycleCount() {
+        _done = false;
+        _cycleCount = 1;
+    }
+
+    /** Copy values committed in initialize() or in the last postfire()
+     *  into the corresponding tentative variables. In effect, this loads
+     *  the last known good value for these variables, which is particularly
+     *  important if time has gone backwards. This is done in a
+     *  protected method because derived classes may want to override
+     *  it.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected void _updateTentativeValues()
+            throws IllegalActionException {
+        _tentativeCycleStartTime = _cycleStartTime;
+        _tentativeCurrentValue = _currentValue;
+        _tentativePhase = _phase;
+        _tentativeCycleCount = _cycleCount;
+        _tentativeStartTime = _startTime;
+        _tentativeDone = _done;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The current value of the clock output. */
+    protected transient Token _currentValue;
+
+    /** The count of cycles executed so far, or 0 before the start. */
+    protected transient int _cycleCount;
+
+    /** The most recent cycle start time. */
+    protected transient double _cycleStartTime;
+
+    /** Indicator of whether the specified number of cycles have
+     *  been completed.
+     */
+    protected transient boolean _done;
+
+    /** The phase of the next output. */
+    protected transient int _phase;
+
+    /** The time at which output starts. */
+    protected transient double _startTime;
+
+    // Following variables recall data from the fire to the postfire method.
+    protected transient Token _tentativeCurrentValue;
+    protected transient int _tentativeCycleCount;
+    protected transient double _tentativeCycleStartTime;
+    protected transient boolean _tentativeDone;
+    protected transient double _tentativeStartTime;
+    protected transient int _tentativePhase;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /* Get the specified value, checking the form of the values parameter.
@@ -499,33 +505,10 @@ public class Clock extends TimedSource {
     // The following are all transient because they need not be cloned.
     // Either the clone method or the initialize() method sets them.
 
-    // The current value of the clock output.
-    private transient Token _currentValue;
-
-    // Indicator of whether the specified number of cycles have been completed.
-    private boolean _done;
-
-    // The count of cycles executed so far, or 0 before the start.
-    private transient int _cycleCount;
-
-    // The most recent cycle start time.
-    private transient double _cycleStartTime;
-
     // Cache of offsets array value.
     private transient double[] _offsets;
 
-    // The phase of the next output.
-    private transient int _phase;
-
-    // The time at which output starts.
-    private transient double _startTime;
-
     // Following variables recall data from the fire to the postfire method.
-    private transient Token _tentativeCurrentValue;
     private transient int _tentativeCycleCountIncrement;
-    private transient int _tentativeCycleCount;
-    private transient double _tentativeCycleStartTime;
     private transient double _tentativeNextFiringTime;
-    private transient int _tentativePhase;
-    private transient double _tentativeStartTime;
 }

@@ -26,26 +26,40 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 60.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    </property>
     <entity name="1:TriggeredClock" class="ptolemy.actor.lib.TriggeredClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="51">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="52">
         </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 25.0,51.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false,true}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="216.0, 206.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
             </property>
         </port>
     </entity>
@@ -54,6 +68,8 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="483.5, 205.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -61,6 +77,9 @@
             <property name="multiport"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
@@ -78,10 +97,10 @@
         <vertex name="vertex1" value="360.0, 200.0">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="1:TriggeredClock.output" relation="1:1:relation6"/>
-    <link port="1:TriggeredClock.trigger" relation="relation4"/>
+    <link port="1:TriggeredClock.start" relation="relation2"/>
     <link port="Test.input" relation="1:1:relation6"/>
-    <link port="SingleEvent.output" relation="relation4"/>
+    <link port="SingleEvent.output" relation="relation2"/>
 </entity>
