@@ -868,25 +868,46 @@ indent_all:
 # Rules to build and install shield version
 INSTALLSHIELD_SRC=installshield
 INSTALLSHIELD_APP=$(INSTALLSHIELD_SRC)/app
-INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
+INSTALLSHIELD_RUNTIME=$(INSTALLSHIELD_SRC)/runtime
 INSTALLSHIELD_DESIGNDOC=$(INSTALLSHIELD_SRC)/designdoc
+INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
 INSTALLSHIELD_EXPERIMENTAL=$(INSTALLSHIELD_SRC)/experimental
 
-installshield_app: $(INSTALLSHIELD_APP) $(INSTALLSHIELD_DOC) \
-	$(INSTALLSHIELD_DESIGNDOC) $(INSTALLSHIELD_EXPERIMENTAL)
+# Runtime is last so we don't get the kruft from the doc dir
+installshield_app: $(INSTALLSHIELD_APP) \
+	$(INSTALLSHIELD_DESIGNDOC) \
+	$(INSTALLSHIELD_DOC) \
+	$(INSTALLSHIELD_EXPERIMENTAL) \
+	$(INSTALLSHIELD_RUNTIME) \
 
 $(INSTALLSHIELD_APP): #$(PTII_SRC)
 	(cd $(INSTALLSHIELD_SRC); \
 	 tar -zxf ../ptII$(VERSION).src.tar.$(SUFFIX); \
 	 mv ptII$(VERSION) `basename $@`)
 
-$(INSTALLSHIELD_DOC):
-	 mkdir -p $@/doc
-	 mv $(INSTALLSHIELD_APP)/doc/codeDoc $@/doc
+INSTALLSHIELD_RUNTIME_DOMAINS=csp de fsm pn sdf
+$(INSTALLSHIELD_RUNTIME): bar
+	 mkdir -p $@ $@/lib $@/ptolemy $@/ptolemy/vergil
+	 -mv $(INSTALLSHIELD_APP)/copyright.txt $@
+	 -mv $(INSTALLSHIELD_APP)/doc $@
+	 -mv $(INSTALLSHIELD_APP)/lib/diva.jar $@/lib
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/ptsupport.jar $@/ptolemy
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/vergil/vergil.jar $@/ptolemy/vergil
+	 for domain in $(INSTALLSHIELD_RUNTIME_DOMAINS); do \
+	  mkdir -p $@/ptolemy/domains/$$domain; \
+	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/$$domain.jar \
+	 	$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/demo \
+		$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/doc \
+		$@/ptolemy/domains/$$domain; \
+	 done
 
 $(INSTALLSHIELD_DESIGNDOC):
 	 mkdir -p $@/doc/design
 	 mv $(INSTALLSHIELD_APP)/doc/design/design.pdf $@/doc/design
+
+$(INSTALLSHIELD_DOC):
+	 mkdir -p $@/doc
+	 mv $(INSTALLSHIELD_APP)/doc/codeDoc $@/doc
 
 $(INSTALLSHIELD_EXPERIMENTAL):
 	 mkdir -p $@/ptolemy $@/ptolemy/domains/sdf
@@ -895,5 +916,6 @@ $(INSTALLSHIELD_EXPERIMENTAL):
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/codegen \
 		$@/ptolemy/domains/sdf
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dde $@/ptolemy/domains
+	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dt $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/giotto $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/gr $@/ptolemy/domains
