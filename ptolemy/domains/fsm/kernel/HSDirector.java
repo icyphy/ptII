@@ -531,6 +531,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     && preemptiveTrWithEvent == null
                     && nonPreemptiveTrWithEvent == null) {
                 _transitionHasEvent = false;
+                _lastDistanceToBoundary = 0.0;
+                _distanceToBoundary = 0.0;
+                _outputAccurate = true;
             } else {
                 // We check the maximum difference of the relations that change
                 // their status for step size refinement.
@@ -798,9 +801,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _enabledRefinements = new LinkedList();
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
-                if (actors[i].prefire()) {
-                    _enabledRefinements.add(actors[i]);
-                }
+                _enabledRefinements.add(actors[i]);
+                actors[i].prefire();
             }
         }
         _outputAccurate = true;
