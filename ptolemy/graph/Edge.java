@@ -32,9 +32,9 @@ package ptolemy.graph;
 //Edge
 /**
 A weighted or unweighted edge for a directed or undirected graph.  The
-connectivity of edges is specified by <i>source</i> nodes and <i>sink</i> 
+connectivity of edges is specified by <i>source</i> nodes and <i>sink</i>
 nodes.  A
-directed edge is directed <i>from</i> its source node <i>to</i> its sink node.  
+directed edge is directed <i>from</i> its source node <i>to</i> its sink node.
 For an
 undirected edge, the source node is simply the first node that was specified
 when the edge was created, and the sink node is the second node.  This

@@ -61,7 +61,7 @@ import ptolemy.kernel.util.InvalidStateException;
    NOTE: This class is a starting point for implementing graph algorithms,
    more methods will be added.
 
-   @author Yuhong Xiong, Shuvra S. Bhattacharyya 
+   @author Yuhong Xiong, Shuvra S. Bhattacharyya
    @version $Id$
    @since Ptolemy II 0.2
 */

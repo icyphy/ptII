@@ -44,7 +44,7 @@ import ptolemy.kernel.util.InternalErrorException;
 //////////////////////////////////////////////////////////////////////////
 //// DirectedGraph
 /**
-A directed graph. 
+A directed graph.
 Some methods in this class have two versions, one that operates
 on graph nodes, and another that operates on
 node weights. The latter form is called the <i>weights version</i>.
@@ -273,9 +273,9 @@ public class DirectedGraph extends Graph {
         return result;
     }
 
-    /** Return the nodes that are in cycles (weights version). 
+    /** Return the nodes that are in cycles (weights version).
      *  If there are multiple cycles,
-     *  the nodes in all the cycles will be returned. 
+     *  the nodes in all the cycles will be returned.
      *  @return An array of node weights that are in cycles; each element
      *  is an {@link Object}.
      */
@@ -374,7 +374,7 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return the collection of edges that make a node n2 a predecessor of a
-     *  node n1. In other words, return the collection of edges directed from 
+     *  node n1. In other words, return the collection of edges directed from
      *  n2 to n1. Each element of the collection is an {@link Edge}.
      *  @param n1 The node n1.
      *  @param n2 The node n2.
@@ -439,7 +439,7 @@ public class DirectedGraph extends Graph {
         return result;
     }
 
-    /** Find all the nodes that can be reached from any node that has the 
+    /** Find all the nodes that can be reached from any node that has the
      *  specified node weight (weights version).
      *  @param node The specified node weight.
      *  @return An array of node weights reachable from the specified weight;
@@ -456,7 +456,7 @@ public class DirectedGraph extends Graph {
      *  of nodes (weights version). The reachable nodes do not include a
      *  specified one unless there is a loop from the specified node back to
      *  itself.
-     *  @param weights An array of node weights; each element is an 
+     *  @param weights An array of node weights; each element is an
      *  {@link Object}.
      *  @return The array of nodes that are reachable from
      *  the specified one; each element is an {@link Object}.
@@ -587,7 +587,7 @@ public class DirectedGraph extends Graph {
      *  A directed self loop edge (an edge whose source and sink nodes are
      *  identical) is both an input edge and an output
      *  edge of the incident node, but it is not duplicated in the set of
-     *  incident edges. Thus, the number of edges incident edges 
+     *  incident edges. Thus, the number of edges incident edges
      *  to a node is equal to
      *  <i>I + O - S</i>, where <i>I</i> is the number of input edges,
      *  <i>O</i> is the number of output edges, and <i>S</i> is the number
@@ -665,7 +665,7 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return the collection of edges that make a node n2 a successor of a
-     *  node n1. In other words, return the collection of edges directed 
+     *  node n1. In other words, return the collection of edges directed
      *  from n1 to n2.
      *  Each element of the collection is an {@link Edge}.
      *  @param n1 The node n1.
@@ -819,7 +819,7 @@ public class DirectedGraph extends Graph {
 
     /** The adjacency matrix representation of the transitive closure.
      *  The entry (i, j) is <code>true</code> if and only if there
-     *  exists a path from the node with label <i>i</i> to the node with label 
+     *  exists a path from the node with label <i>i</i> to the node with label
      *  <i>j</i>.
      *  This array is computed by {@link #_computeTransitiveClosure()}.
      *  After each graph change, that method should be called before

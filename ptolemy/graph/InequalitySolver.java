@@ -24,7 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu) was green, description() method only makes it red
+@ProposedRating Red (cxh@eecs.berkeley.edu) was green, description() method
+only makes it red
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -83,7 +84,7 @@ public class InequalitySolver {
     ////                         public methods                    ////
 
     /** Add an <code>Inequality</code> to the set of constraints.
-     *  @param ineq An <code>Inequality</code>
+     *  @param ineq An <code>Inequality</code>.
      */
     public void addInequality(Inequality ineq) {
 	// put ineq. to _Ilist
@@ -98,7 +99,7 @@ public class InequalitySolver {
 
     /** Add a group of inequalities to the set of constraints.
      *  @param inequalities An <code>Iterator</code> for instances of
-     *   <code>Inequality</code>.
+     *  <code>Inequality</code>.
      */
     public void addInequalities(Iterator inequalities) {
         while (inequalities.hasNext()) {
@@ -151,8 +152,8 @@ public class InequalitySolver {
 
     /** Solve the set of inequalities for the greatest solution.
      *  If the set of inequalities is definite (when solving for the greatest
-     *  solution, definite means that the lesser terms of all the
-     *  inequalities are either a constant of a single variable.),
+     *  solution, <i>definite</i> means that the lesser terms of all the
+     *  inequalities are either constants or single variables.),
      *  this method can always determine satisfiability. In this case, if
      *  the set of inequalities is satisfiable, this method returns
      *  <code>true</code>, and the variables are set to the greatest solution.
@@ -180,8 +181,8 @@ public class InequalitySolver {
 
     /** Solve the set of inequalities for the least solution.
      *  If the set of inequalities is definite (when solving for the least
-     *  solution, definite means that the greater terms of all the
-     *  inequalities are either a constant of a single variable.),
+     *  solution, <i>definite</i> means that the greater terms of all the
+     *  inequalities are either constants or single variables.),
      *  this method can always determine satisfiability. In this case, if
      *  the set of inequalities is satisfiable, this method returns
      *  <code>true</code>, and the variables are set to the least solution.
@@ -199,7 +200,7 @@ public class InequalitySolver {
      *  In any case, if this method returns <code>false</code>, the
      *  variables are set to the least solution for the subset of
      *  inequalities whose greater terms are a single variable.
-     *  See the paper referred in the class document for details.
+     *  See the paper referred to in the class document for details.
      *  @return True if a solution for the inequalities is found,
      *   <code>false</code> otherwise.
      */
