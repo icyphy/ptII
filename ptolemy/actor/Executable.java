@@ -38,7 +38,7 @@ import ptolemy.kernel.util.*;
 This interface defines the <i>action methods</i>, which determine
 how an object can be invoked. It should be implemented by actors
 and directors. In an execution of an application,
-the initialize() method should be
+the initialize() and begin() methods should be
 invoked exactly once, followed by any number of iterations, followed
 by exactly one invocation of the wrapup() method. An <i>iteration</i>
 is defined to be one firing of the prefire() method, followed by
@@ -46,8 +46,11 @@ any number of firings of the fire() method, followed by one firing
 of the postfire() method.
 The prefire() method returns true to indicate that firing
 can occur.  The postfire() method returns false if no further firings
-should occur. The initialize(), fire() and postfire() methods may produce
-output data.
+should occur. The begin(), fire() and postfire() methods may produce
+output data.  The begin() method runs after the topology has
+stabilized (all higher-order function actors have executed)
+and type resolution has been done.  The initialize() method runs
+before these have happened.
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
@@ -57,11 +60,21 @@ public interface Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Begin execution of the actor.  This is invoked exactly once
+     *  after the initialization phase.  Since type resolution is done
+     *  in the initialization phase, along with topology changes that
+     *  may be requested by higher-order function actors, an actor
+     *  can produce output data and schedule events in the begin()
+     *  method.  In effect, it can do anything that can be done in the
+     *  fire() method.
+     *
+     *  @exception IllegalActionException If execution is not permitted.
+     */
+    public void begin() throws IllegalActionException;
 
-
-    /** This fires an actor and may be invoked several times between
+    /** Fire the actor.  This may be invoked several times between
      *  invocations of prefire() and postfire(). Output data may
-     *  (and normally will) be produced during the fire method.
+     *  (and normally will) be produced.
      *  Typically, the fire() method performs the computation associated
      *  with an actor. This method is not required to have bounded
      *  execution.  However, after endFire() is called, this method should
