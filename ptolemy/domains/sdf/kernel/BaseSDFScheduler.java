@@ -39,6 +39,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
