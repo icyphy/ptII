@@ -265,6 +265,13 @@ case `basename "$0"` in
 	jarfile="$ALL_JAR"
 	javaflag="$ALL_JFLAG"
 	;;
+    mescal)
+        # Mescal UI
+	javastartupclass=mescal.MescalApplication
+	javasourcedir=mescal
+	jarfile="$ALL_JAR"
+	javaflag="$ALL_JFLAG"
+	;;
 esac
 
 # Special check for Jacl with a better error message
