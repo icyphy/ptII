@@ -59,12 +59,13 @@ public class ComplexArrayMath {
      *  array but with absolute real values.
      */
     public static final Complex[] absValues(Complex[] array) {
+        Complex[] result = new Complex[array.length];
         int length = array.length;
 
         for (int i = 0; i < length; i++) {
-            array[i] = new Complex(Math.abs(array[i].real), array[i].imag);
+            result[i] = new Complex(Math.abs(array[i].real), array[i].imag);
         }
-        return array;
+        return result;
     }
 
     /** Return a new array that is constructed from <i>array</i> by

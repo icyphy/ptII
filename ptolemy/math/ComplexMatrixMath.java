@@ -64,16 +64,17 @@ public class ComplexMatrixMath {
      *  with the absolute values of the real parts.
      */
     public static final Complex[][] absValues(Complex[][] matrix) {
+        Complex[][] returnValue = new Complex[_rows(matrix)][_columns(matrix)];
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                matrix[i][j] = new Complex(Math.abs(matrix[i][j].real),
+                returnValue[i][j] = new Complex(Math.abs(matrix[i][j].real),
                         matrix[i][j].imag);
             }
         }
-        return matrix;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed from the argument by
