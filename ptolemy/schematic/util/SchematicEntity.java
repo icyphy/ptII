@@ -411,7 +411,7 @@ public class SchematicEntity extends PTMLTemplateObject
             result += super._description(indent, 0);
         else 
             result += super._description(indent, 1);
-        result += _getIndentPrefix(indent) + " terminalstyle {\n";
+        result += " terminalstyle {\n";
         if(_terminalstyle == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";
         else

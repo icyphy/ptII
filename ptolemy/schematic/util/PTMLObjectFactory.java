@@ -427,7 +427,7 @@ public class PTMLObjectFactory {
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
-            _unknownElementType(child, "relation");
+            _unknownElementType(child, "entity");
         }
 
         Enumeration attributes = e.attributeNames();
@@ -439,6 +439,8 @@ public class PTMLObjectFactory {
                 entity.setX(_getDouble(e, n));
             } else if (n.equals("y")) {
                 entity.setY(_getDouble(e, n));
+            } else if (n.equals("template")) {
+                //ignore
             } else {
                 _unknownAttribute(e, n);
             }
@@ -450,13 +452,13 @@ public class PTMLObjectFactory {
             Schematic schematic)
         throws IllegalActionException, NameDuplicationException {
 
-        _verifyElement(e, "entity");
+        _verifyElement(e, "link");
 
         SchematicLink entity = new SchematicLink();
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
-            _unknownElementType(child, "relation");
+            _unknownElementType(child, "entity");
         }
 
         // FIXME hmm... I bet it is possible for the terminal that 
@@ -642,12 +644,14 @@ public class PTMLObjectFactory {
             }
             if(schematic.containsEntity(objectName)) {
                 SchematicEntity entity = schematic.getEntity(objectName);
-                if(entity.containsTerminal(terminalName) && 
-                        (terminal != null))  
-                    terminal = entity.getTerminal(terminalName);
-                else 
-                    throw new IllegalActionException("Ambiguous Terminals " +
-                            "found with name " + name);
+                if(entity.containsTerminal(terminalName)) { 
+                    if(terminal == null)  
+                        terminal = entity.getTerminal(terminalName);
+                    else 
+                        throw new IllegalActionException(
+                                "Ambiguous Terminals " +
+                                "found with name " + name);
+                }
             }
         }            
         if(terminal == null) throw new IllegalActionException("Terminal not " +
@@ -800,7 +804,7 @@ public class PTMLObjectFactory {
         if(!e.getElementType().equals(elementtype)) {
             throw new InternalErrorException("createIconLibrary: " +
                     "Element type " + e.getElementType() + 
-                    "differs from expected " + elementtype + ".");
+                    " differs from expected " + elementtype + ".");
         }
      }
 

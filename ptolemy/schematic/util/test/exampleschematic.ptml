@@ -4,20 +4,19 @@
 <schematic name="SDF" version="1.0">
 <description>Icons for use within SDF</description>
 
-<entity name="Load BMP File" icon="examplelibrary.LoadImage">
+<entity name="Load BMP File" template="SDF.LoadImage">
 <description>Load the Image that will be transmitted and stored.</description>
 <parameter name="filename" type="string"/>
 <port name="image" output="true" type="doubleArray"/>
 </entity>
 
-<entity name="Save BMP File" icon="examplelibrary.SaveImage">
+<entity name="Save BMP File" template="SDF.SaveImage">
 <parameter name="filename" type="string"/>
 <port name="image" input="true" type="doubleArray"/>
 </entity>
 
 <relation name="R1">
-<link name="Load BMP File.image"/>
-<link name="Save BMP File.image"/>
+<link to="Load BMP File.output" from="Save BMP File.input"/>
 </relation>
 
 <!-- these parameters will get set in the Director -->

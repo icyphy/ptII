@@ -123,7 +123,7 @@ public class EntityLibrary extends PTMLObject {
      */
     public EntityLibrary getSubLibrary(String name) 
         throws IllegalActionException {
-        Enumeration allLibraries = entities();
+        Enumeration allLibraries = subLibraries();
         while(allLibraries.hasMoreElements()) {
             EntityLibrary library = (EntityLibrary) allLibraries.nextElement();
             if(name.equals(library.getName()))

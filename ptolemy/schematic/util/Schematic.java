@@ -348,6 +348,49 @@ public class Schematic extends PTMLObject
 	return str;
     }
 
+    /**
+     * Return a string this representing Schematic.
+     */
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+        result += " entities {\n";
+        Enumeration els = entities();
+        while(els.hasMoreElements()) {
+            SchematicEntity entity = (SchematicEntity) els.nextElement();
+	    result += entity._description(indent + 1, 2) + "\n";
+        }
+
+	result += _getIndentPrefix(indent) + "} ports {\n";
+        els = ports();
+        while(els.hasMoreElements()) {
+            SchematicPort port = (SchematicPort) els.nextElement();
+	    result += port._description(indent + 1, 2) + "\n";
+        }
+
+        result += _getIndentPrefix(indent) + "} terminals {\n";
+        els = terminals();
+        while(els.hasMoreElements()) {
+            SchematicTerminal term = (SchematicTerminal) els.nextElement();
+	    result += term._description(indent + 1, 2) + "\n";
+	}    
+
+        result += _getIndentPrefix(indent) + "} relations {\n";
+        els = relations();
+        while(els.hasMoreElements()) {
+            SchematicRelation relation = (SchematicRelation) els.nextElement();
+	    result += relation._description(indent + 1, 2) + "\n";
+	}    
+
+        result += _getIndentPrefix(indent) + "}";
+        if (bracket == 2) result += "}";
+
+        return result;
+    }
+
     //diva.graph.model.Graph
     /**
      * Return true if this graph contains the given node.

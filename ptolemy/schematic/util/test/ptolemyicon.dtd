@@ -96,7 +96,6 @@ format (xml|tcl) #REQUIRED>
 <!-- link elements will be parsed into class SchematicLink -->
 <!ELEMENT link EMPTY>
 <!ATTLIST link
-name CDATA #REQUIRED
 to CDATA #REQUIRED
 from CDATA #REQUIRED>
 

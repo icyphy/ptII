@@ -73,11 +73,18 @@ public class PTMLParser extends HandlerBase{
      */
     public void attribute(String name, String value, boolean specified)
     throws Exception {
+        if(DEBUG) {
+            System.out.println(
+                    "Attribute name = " + name + 
+                    ", value = " + value + 
+                    ", specified = " + specified);
+        }
         if(name == null) throw new XmlException("Attribute has no name",
                 _currentExternalEntity(),
                 parser.getLineNumber(),
                 parser.getColumnNumber());
-        if(value == null) throw new XmlException("Attribute has no value",
+        if(value == null) throw new XmlException("Attribute with name " + 
+                name + " has no value",
                 _currentExternalEntity(),
                 parser.getLineNumber(),
                 parser.getColumnNumber());
