@@ -8,6 +8,7 @@
 <body>
 <h1>Ptolemy II Domains</h1>
 <ul>
+<li> <a href="#ci">CI (Component Interaction, or push/pull)</a>
 <li> <a href="#csp">CSP (Communicating Sequential Processes)</a>
 <li> <a href="#ct">CT (Continuous Time)</a>
 <li> <a href="#de">DE (Discrete Events)</a>
@@ -21,6 +22,31 @@
 <li> <a href="#sr">SR (Synchronous/Reactive)</a>
 <li> <a href="#tm">TM (Timed Multitasking)</a>
 </ul>
+<h2><a name="ci">CI</h2>
+<P>
+The component interaction (CI) domain models systems that blend
+data-driven and demand-driven styles of computation. As an example,
+the interaction between a web server and a browser is mostly
+demand-driven. When the user clicks on a link in the browser, it pulls
+the corresponding page from the web server. A stock-quote service can
+use a data-driven style of computation. The server generates events
+when stock prices change. The data drive the clients to update their
+displayed information. Such push/pull interaction between a data producer
+and consumer is common in distributed systems, and has been included in
+middleware services, most notably in the CORBA event service. These
+services motivated the design of this domain to study the interaction
+models in distributed systems, such as stock-quote services, traffic or
+weather information systems. Other applications include database
+systems, file systems, and the Click modular router.
+<p>
+An actor in a CI model can be active, which means it possesses its own
+thread of execution. For example, an interrupt source of an embedded
+system can be modeled as an active source actor. Such a source
+generates events asynchronously with respect to the software execution
+on the embedded processor. CI models can be used to simulate and study
+how the embedded software handles the asynchronous events, such as
+external interrupts and asynchronous I/O.
+
 <h2><a name="csp">CSP</a></h2>
 
 <p>
