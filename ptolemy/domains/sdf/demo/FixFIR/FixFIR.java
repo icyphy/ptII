@@ -145,9 +145,11 @@ public class FixFIR extends SDFApplet implements QueryListener {
             // numbers
             _d2f = new DoubleToFix(_toplevel, "DoubleToFix");
             _d2f.precision.setToken(new StringToken("(2.14)"));
+            _d2f.quantizer.setToken(new IntToken(0));
 
             _f2d = new FixToDouble(_toplevel, "FixToDouble");
             _f2d.precision.setToken(new StringToken("(2.14)"));
+            _f2d.quantizer.setToken(new IntToken(0));
 
             // Create the Sequence plotter
             _myplot = new SequencePlotter(_toplevel, "plot");
@@ -286,8 +288,12 @@ public class FixFIR extends SDFApplet implements QueryListener {
         super._go();
     }
 
-    // Actors in the model.
+
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Actors in the model.
     // toplevel
     private Ramp _ramp;
     private Pulse _pulse;

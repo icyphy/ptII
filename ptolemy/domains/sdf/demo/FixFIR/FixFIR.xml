@@ -80,6 +80,7 @@ shows the effects of the use of finite precision.
 
  <entity name="d2f" class="ptolemy.actor.lib.conversions.DoubleToFix">
        <property name="precision" value="(2.14)"></property>
+       <property name="quantizer" value="0"></property>
        <port name="input"></port>
        <port name="output"></port>
  </entity>
@@ -101,6 +102,7 @@ shows the effects of the use of finite precision.
 
  <entity name="f2d" class="ptolemy.actor.lib.conversions.FixToDouble">
        <property name="precision" value="(2.14)"></property>
+       <property name="quantizer" value="0"></property>
        <port name="input"></port>
        <port name="output"></port>
  </entity>
