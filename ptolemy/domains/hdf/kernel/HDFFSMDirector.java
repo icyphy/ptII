@@ -53,6 +53,7 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.ddf.kernel.DDFDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
@@ -769,7 +770,8 @@ public class HDFFSMDirector extends FSMDirector {
                         "an HDF model.");
             } else if (director instanceof HDFDirector) {
                 foundValidDirector = true;
-            } else if (director instanceof SDFDirector) {
+            } else if (director instanceof SDFDirector ||
+                       director instanceof DDFDirector) {
                 foundValidDirector = true;
                 // FIXME
                 // THis flag actually should indicate any director
