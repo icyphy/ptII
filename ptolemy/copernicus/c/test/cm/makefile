@@ -34,12 +34,9 @@ ME =		ptolemy/copernicus/c/test
 
 # FIXME: put FIR back when singleclass translation works again.
 # DIRS =		FIR
-# $PTII/configure looks for the CaffeineMark package and sets PTCM_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTCM_DIR is empty.
-DIRS =		$(PTCM_DIR)
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 # $PTII/configure looks for Soot and JHDL and sets
 # variables in $PTII/mk/ptII.mk
@@ -55,8 +52,7 @@ TCL_SRCS = \
 
 # Write these in alphabetical order ONLY.
 JSRCS = \
-	FIRSingle.java \
-        Simple.java
+	CaffeineApp.java
 
 # Script that removes testOutput/j2c_lib
 # Run 'rm alljtests.tcl; make CLEANLIB=' to avoid 
@@ -66,33 +62,7 @@ CLEANLIB = _cleanLib.tcl
 # Non-graphical Java tests written in Tcl. List these in alphabetical order
 # ONLY.
 JSIMPLE_TESTS = \
-	$(CLEANLIB) \
-    Arrays.tcl\
-    CaffeineApp.tcl \
-    Cases.tcl \
-    CommandLine.tcl \
-    Clone.tcl \
-    Exceptions.tcl\
-    FIR2.tcl \
-    FIRSingle.tcl \
-    HashSetTest.tcl \
-    LinkedListTest.tcl \
-    Linpack.tcl\
-    InnerField.tcl \
-    InnerLocal.tcl \
-    InstanceOfTest.tcl \
-    Interface1.tcl \
-    ObjectSingle.tcl \
-    PrintStreamTest.tcl \
-    RightShift.tcl \
-    Simple.tcl \
-    SimpleSingle.tcl \
-    StringTest.tcl
-
-# Disabled tests:
-#   FIR.tcl
-#   ramp.tcl
-
+    CaffeineApp.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -102,7 +72,6 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS = \
-	array.h \
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -135,38 +104,6 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 # Useful rule for quickly testing
 ptjacl:
 	$(JTCLSH)
-
-demo: ramp
-
-# Generate C code for java.lang.Object
-# FIXME: get this to work again once non-singleclass mode translation is
-# working properly.
-Object:
-	CLASSPATH="$(CLASSPATH)" \
-		$(JAVA) ptolemy.copernicus.c.JavaToC \
-		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" \
-		java.lang.Object
-
-ramp:
-	@echo Generating C code from the Ptolemy II model in ramp.xml.
-	sh $(ROOT)/bin/ptjacl ramp.tcl
-	@echo Finished with C code generation. The following files were created:
-	ls -l -a testOutput/ramp.out
-
-# Generate C code under single class mode for a simple class 
-Simple:
-	rm -f Simple.class Simple.c Simple.h Simple.i.h Simple.o
-	@echo "Generating the class file ..."
-	javac Simple.java
-	@echo "Translating the class file to C ..."
-	CLASSPATH="$(CLASSPATH)" \
-		$(JAVA) -Dj2c_lib=\j2c_lib ptolemy.copernicus.c.JavaToC \
-		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" -v -singleClass Simple
-	@echo "Compiling the generated C with 'gcc -c'..."
-	gcc -c -I../runtime Simple.c
-	@echo "Compilation finished."
-	@echo "The generated source files are Simple.c, Simple.i.h, and "
-	@echo "Simple.h. The resulting object file is Simple.o"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
