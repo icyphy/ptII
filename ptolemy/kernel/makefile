@@ -74,7 +74,6 @@ JSRCS = \
 	ParamList.java \
 	Parameter.java \
 	Particle.java \
-	POElement.java \
 	Port.java \
 	PortList.java \
 	PtolemyException.java \
@@ -90,15 +89,16 @@ JSRCS = \
 	ValueInterface.java
 	#FIXME: FIFORelation.java \
 	#FIXME: Galaxy.java \
-	#FIXME: MultiPort.java \
 	#FIXME: Star.java \
 	#FIXME: Universe.java \
 	#Removed GraphElement.java on 11/11/97 by davisj
 	#Removed GenericPort.java on 11/11/97 by davisj 
+	#Removed MultiPort.java on 11/11/97 by davisj
 	#Moved CentralizedExecutive.java to kernel/copies
 	#Moved DistributedExecutive.java to kernel/copies 
 	#Moved Executive.java to kernel/copies 
 	#Moved Target.java to kernel/copies
+	#Moved POElement.java to kernel/copies
 
 
 EXTRA_SRCS =	$(JSRCS)
