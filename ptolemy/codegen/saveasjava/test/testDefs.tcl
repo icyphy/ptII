@@ -44,10 +44,11 @@ if [info exist env(PTII)] {
     set PTII $env(PTII)
 }
 
+set relativePathToPTII [file join .. .. .. ..]
 if {![info exist PTII]} {
     # If we are here, then we are probably running jacl and we can't
     # read environment variables
-    set PTII [file join [pwd] .. .. .. ..]
+    set PTII [file join [pwd] $relativePathToPTII] 
 }
 
 # Load up the test definitions.
