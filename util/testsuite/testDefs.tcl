@@ -205,31 +205,72 @@ proc dotests {file args} {
 # Below here we have Tycho Specific extensions
 
 ############################################################################
-#### removeobj
-# This procedure removes an object if it exists.
+#### doneTests
+# Call this at the bottom of each test file
+# If reallyExit exists and is not set to 1, then don't exist
 #
-proc removeobj {name} {
-    if {[info object $name] != ""} {
-	delete object $name
+proc doneTests {args} {
+    global PASSED FAILED KNOWN_FAILED NEWLY_PASSED duration reallyExit
+    puts "Total Tests: [expr $PASSED + $FAILED + $KNOWN_FAILED] \
+	    ((Passed: $PASSED, Newly Passed: $NEWLY_PASSED) \
+    Failed: $FAILED Known Failed: $KNOWN_FAILED) [pwd]"
+    flush stderr
+    update
+    if {![info exists reallyExit] || $reallyExit == 1} {
+	after [expr {2 * $duration}] ::tycho::TopLevel::exitProgram
     }
 }
 
-# How long windows are kept around, in milliseconds
-set duration 4000
-set longDuration 8000
+# If there is no update command, define a dummy proc.  Jacl needs this
+if {[info command update] == ""} then { 
+    proc update {} {}
+}
+
 
 ############################################################################
-#### sleep
-# sleep for 'seconds'.
+#### epsilonDiff
+# Compare two lists of numbers, if each number in the newresults
+# is the different by more than epsilong from the corresponding number
+# in old results, then return a message about the difference.
+# If the two results lists are within epsilon, then return 1
 #
-proc sleep {seconds} {
-    puts -nonewline "sleeping $seconds seconds: "
-    set endtime [expr [clock seconds] + $seconds]
-    while {[clock seconds] < $endtime} {
-	puts -nonewline "."
-	update
+proc epsilonDiff {newresults oldresults {epsilon 0.00001} } {
+    if {[llength $newresults] != [llength $oldresults]} {
+	error "The length of the two lists is not the same: [llength $newresults] != [llength $oldresults]"
     }
+    set returnresults {}
+    foreach newelement $newresults oldelement $oldresults {
+
+	if {$newelement == $oldelement } {
+	    # If the strings are equal, continue.
+	    continue
+	}
+
+	# The numbers might be complex numbers with trailing 'i'
+	set newelement [string trimright $newelement "i"]
+	set oldelement [string trimright $oldelement "i"]
+
+	if [ catch {
+	    if {$newelement > $oldelement } {
+		if [expr { $newelement > ($oldelement + $epsilon)}] {
+		    lappend returnresults "$newelement > $oldelement + $epsilon"
+		}
+	    } else {
+		if [expr { $newelement < ($oldelement - $epsilon)}] {
+		    lappend returnresults "$newelement < $oldelement + $epsilon"
+		}
+	    }
+	} errmsg] {
+	    global errorInfo
+	    error "epsilonDiff {$newresults} {$oldresults}:\n\
+		    error while processing '$newelement' and '$oldelement':\n\
+		    $errorInfo"
+	}
+    }
+    return $returnresults
 }
+
+
 ############################################################################
 #### openAllFiles 
 # Open up the files that are passed in as arguments, then destroy
@@ -258,23 +299,29 @@ proc openAllFiles {args} {
 }
 
 ############################################################################
-#### doneTests
-# Call this at the bottom of each test file
-# If reallyExit exists and is not set to 1, then don't exist
+#### removeobj
+# This procedure removes an object if it exists.
 #
-proc doneTests {args} {
-    global PASSED FAILED KNOWN_FAILED NEWLY_PASSED duration reallyExit
-    puts "Total Tests: [expr $PASSED + $FAILED + $KNOWN_FAILED] \
-	    ((Passed: $PASSED, Newly Passed: $NEWLY_PASSED) \
-    Failed: $FAILED Known Failed: $KNOWN_FAILED) [pwd]"
-    flush stderr
-    update
-    if {![info exists reallyExit] || $reallyExit == 1} {
-	after [expr {2 * $duration}] ::tycho::TopLevel::exitProgram
+proc removeobj {name} {
+    if {[info object $name] != ""} {
+	delete object $name
     }
 }
 
-# If there is no update command, define a dummy proc.  Jacl needs this
-if {[info command update] == ""} then { 
-    proc update {} {}
+# How long windows are kept around, in milliseconds
+set duration 4000
+set longDuration 8000
+
+############################################################################
+#### sleep
+# sleep for 'seconds'.
+#
+proc sleep {seconds} {
+    puts -nonewline "sleeping $seconds seconds: "
+    set endtime [expr [clock seconds] + $seconds]
+    while {[clock seconds] < $endtime} {
+	puts -nonewline "."
+	update
+    }
 }
+
