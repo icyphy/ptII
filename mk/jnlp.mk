@@ -360,6 +360,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
 		$(SIGNED_DIR)/$(DSP_MAIN_JAR) $(KEYALIAS)
 
 
@@ -430,6 +431,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
 		$(SIGNED_DIR)/$(PTINY_MAIN_JAR) $(KEYALIAS)
 
 
@@ -464,6 +466,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
 		$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) $(KEYALIAS)
 
 
@@ -498,6 +501,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
 		$(SIGNED_DIR)/$(FULL_MAIN_JAR) $(KEYALIAS)
 
 
@@ -523,6 +527,7 @@ sign_jar:
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
 		$(JARFILE) $(KEYALIAS)
 
 
