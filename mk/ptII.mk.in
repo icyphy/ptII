@@ -148,6 +148,13 @@ PTJACL_JFLAG =  @PTJACL_JFLAG@
 # make and avoid problems
 JTCLSH =	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH)\$(CLASSPATHSEPARATOR)$(PTJACL_JAR) @JTCLSH@
 
+# Directory that contains the Java Serial Comm API, see 
+# http://java.sun.com/products/javacomm/
+COMMAPI_DIR =   @COMMAPI_DIR@
+
+# If Commapi is present, then set to yes, otherwise set to no
+COMMAPI_PRESENT = @COMMAPI_PRESENT@
+
 # Location of the diva.jar file.  Diva is (among other things) a graph
 # visualization tool used by some of the demos.  For more information, see
 # http://www-cad.eecs.berkeley.edu/diva/
