@@ -238,10 +238,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         public Effigy createEffigy(
                 CompositeEntity container, URL base, URL in)
                 throws Exception {
-            // Create a blank effigy.
-            PtolemyEffigy effigy = new PtolemyEffigy(
-                    container, container.uniqueName("effigy"));
 	    if (in == null) {
+                // Create a blank effigy.
+                PtolemyEffigy effigy = new PtolemyEffigy(
+                        container, container.uniqueName("effigy"));
+
                 // If this factory contains an entity called "blank", then
                 // clone that.
                 NamedObj entity = getEntity("blank");
@@ -262,6 +263,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     return null;
                 }
+                // Create a blank effigy.
+                PtolemyEffigy effigy = new PtolemyEffigy(
+                        container, container.uniqueName("effigy"));
+
                 MoMLParser parser = new MoMLParser();
                 NamedObj toplevel = null;
 		try {
