@@ -136,8 +136,6 @@ OPTIONAL_FILES = \
 	$(PLOTMLAPPLETJAR) \
 	$(PLOTAPPLICATIONJAR) \
 	PtolemyGraphics.java \
-	'Message$$1.class' \
-	'Message$$2.class' \
 	'PlotBox$$CommandListener.class' \
 	'PlotBox$$DragListener.class' \
 	'PlotBox$$FillButtonListener.class' \
@@ -243,7 +241,6 @@ BASECLASSFILES = \
 		$(ME)/EPSGraphics.class \
 		$(ME)/Histogram.class \
 		$(ME)/HistogramApplet.class \
-		$(ME)/Message.class \
 		$(ME)/Plot.class \
 		$(ME)/PlotBox.class \
 		$(ME)/PlotDataException.class \
