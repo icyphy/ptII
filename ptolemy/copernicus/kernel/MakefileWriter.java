@@ -123,7 +123,7 @@ public class MakefileWriter extends SceneTransformer {
      *  @param outputDirectory The directory where we are producing code.
      *  @param ptIIDirectory The Ptolemy II directory, usually the value
      *  of $PTII
-     *  @returns The codebase.  If the codebase is ".", then we may
+     *  @return The codebase.  If the codebase is ".", then we may
      *  want to copy jar files.
      */
     public static String codeBase(String targetPackage,

@@ -337,7 +337,7 @@ public class Copernicus {
     /** Export the MoML of the namedObj argument to a temporary file.
      *  The file is deleted when the Java virtual machine terminates.
      *  @param namedObj The NamedObj to export
-     *  @returns The name of the temporary file that was created
+     *  @return The name of the temporary file that was created
      *  @exception Exception If the temporary file cannot be created.
      *  @see java.io.File#createTempFile(java.lang.String, java.lang.String, java.io.File)
      */
@@ -411,7 +411,7 @@ public class Copernicus {
     /** Given a string that names a file or URL, try to
      *  open as a file, and then as a URL.
      *  @param inputFileName The name of the file or URL to open
-     *  @returns A BufferedReader that refers to the inputFileName
+     *  @return A BufferedReader that refers to the inputFileName
      *  @exception FileNotFoundException If the file cannot be found.
      *  @exception IOException If there were problems creating
      *  the BufferedReader.
