@@ -209,8 +209,9 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
-	ptolemy/actor/lib/joystick/jstick.jar \
+	ptolemy/actor/lib/joystick/joystick.jar \
 	ptolemy/actor/lib/python/python.jar \
+	ptolemy/actor/lib/python/demo/demo.jar \
 	ptolemy/cal/cal.jar \
 	ptolemy/cal/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
