@@ -33,7 +33,7 @@ package ptolemy.actor.gui.jnlp;
 //////////////////////////////////////////////////////////////////////////
 //// FullApplication
 /** A wrapper class that calls ptolemy.actor.gui.MoMLApplication for
-use with Java Network Launching Protocol (JNLP) aka Web Start.  
+use with Java Network Launching Protocol (JNLP) aka Web Start.
 
 <p>In Web Start 1.0.1, it is necessary to sign the application
 if it is to have access to the local disk etc.  The way that this is
