@@ -188,7 +188,7 @@ public class MobileModel extends TypedCompositeActor {
     }
 
     /** Return true if the actor either of its input port has token.
-     *  @exception IllegalActionException should never be throwed
+     *  @exception IllegalActionException Not thrown in this baseclass.
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
