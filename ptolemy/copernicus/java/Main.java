@@ -333,8 +333,10 @@ public class Main extends KernelMain {
 	    
 	main.generateCode(args); 
 
+
         // Print out memory usage info
-	System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
+	System.out.println(args[0] + " "
+                + ptolemy.actor.Manager.timeAndMemory(startTime));
 
         WatchDogTimer.v().cancel();
 
