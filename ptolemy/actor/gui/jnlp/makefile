@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	DSPApplication.java \
 	FullApplication.java \
+	HybridSystemsApplication.java \
 	PtinyApplication.java \
 	PtinySandboxApplication.java
 
@@ -71,6 +72,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 OTHER_JARS = \
 	DSPApplication.jar \
 	FullApplication.jar \
+	HybridSystemsApplication.jar \
 	PtinyApplication.jar \
 	PtinySandboxApplication.jar
 
@@ -88,6 +90,17 @@ DSPApplication.jar: DSPApplication.class
 	rm -rf $(PTJAR_TMPDIR)
 
 FullApplication.jar: FullApplication.class
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy any class files from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp $< $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
+
+HybridSystemsApplication.jar: HybridSystemsApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
