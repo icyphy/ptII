@@ -190,6 +190,13 @@ public class Transition extends ComponentRelation {
         // an expression that cannot be evaluated.
         _guard.setLazy(true);
         _guard.setTypeEquals(BaseType.BOOLEAN);
+
+        _guard2 = new Variable(this, "_guard2");
+        // Make the variable lazy since it will often have
+        // an expression that cannot be evaluated.
+        _guard2.setLazy(true);
+        _guard2.setTypeEquals(BaseType.DOUBLE);
+
         _trigger = new Variable(this, "_trigger");
         // Make the variable lazy since it will often have
         // an expression that cannot be evaluated.
@@ -283,6 +290,7 @@ public class Transition extends ComponentRelation {
         if (attribute == guardExpression) {
             String expr = guardExpression.getExpression();
             _guard.setExpression(expr);
+            _guard2.setExpression(expr);
         }
         if (attribute == triggerExpression) {
             String expr = triggerExpression.getExpression();
@@ -327,6 +335,8 @@ public class Transition extends ComponentRelation {
         newObject.refinementName =
             (StringAttribute)newObject.getAttribute("refinementName");
         newObject._guard = (Variable)newObject.getAttribute("_guard");
+        newObject._guard2 = (Variable)newObject.getAttribute("_guard2");
+
         newObject._trigger = (Variable)newObject.getAttribute("_trigger");
         newObject._actionListsVersion = -1;
         newObject._choiceActionList = new LinkedList();
@@ -674,6 +684,10 @@ public class Transition extends ComponentRelation {
         }
         return;
     }
+
+    // Variable for evaluating guard in a different way such
+    // that the transition happen exactly when enabled.
+    protected Variable _guard2 = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

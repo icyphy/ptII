@@ -30,11 +30,15 @@
 
 package ptolemy.domains.fsm.kernel;
 
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParseTreeEvaluatorForGuardExpression;
+import ptolemy.data.expr.Variable;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
-
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
+import ptolemy.domains.ct.lib.Integrator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
@@ -249,16 +253,30 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
         // check if the transition is accurate
         // FIXME: only handle the non-preemptive transitions
-        /*
-                 Transition tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
-                 if (tr == null) {
+        try {
+            Transition tr = _ctrl._checkTransition(_st.
+                nonpreemptiveTransitionList());
+            if (tr == null) {
+                return result;
+            }
+            else {
+                Variable guard = tr._guard2;
+                guard.setParseTreeEvaluator( (ParseTreeEvaluator)new
+                    ParseTreeEvaluatorForGuardExpression());
+                _distanceToBoundary = ( (DoubleToken) guard.getToken()).
+                    doubleValue();
+                System.out.println("The distance is: " + _distanceToBoundary);
+                _transitionAccurate = (_distanceToBoundary < 1e-5);
+                if (_transitionAccurate) System.out.println("good choice");
+                return result && _transitionAccurate;
+            }
+        } catch (Exception e) {
+            //FIXME: handle the exception
+            System.out.println(e.getMessage());
             return result;
-                 } else {
+        }
 
-                 }
-         */
-
-        return result;
+        //return result;
     }
 
     /** Return a CTReceiver.
@@ -363,7 +381,35 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
             }
         }
-        return result;
+        if (_transitionAccurate) {
+            return result;
+        } else {
+            // FIXME: needs better algorithm
+            // FIXME: only handles one integrator
+            double maximumDerivative = 0.0;
+
+            Iterator actors = _enabledRefinements.iterator();
+            while (actors.hasNext()) {
+                CompositeActor actor = (CompositeActor)actors.next();
+                Iterator integrators = actor.entityList(Integrator.class).iterator();
+                while (integrators.hasNext()) {
+                    Integrator integrator = (Integrator) integrators.next();
+                    try {
+                        double input = ( (DoubleToken) integrator.input.get(0)).
+                            absolute().doubleValue();
+                        if (input > maximumDerivative) {
+                            maximumDerivative = input;
+                        }
+                    } catch (IllegalActionException e) {
+                        System.out.println(e.getMessage());
+                        maximumDerivative = 1.0;
+                    }
+                }
+            }
+
+            // step size is always reduced.
+            return result - _distanceToBoundary/Math.abs(maximumDerivative);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -376,6 +422,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     private State _st = null;
 
     // Lcoal variable to indicate whether the transition is accurate.
-    private boolean transitionAccurate = true;
+    private boolean _transitionAccurate = true;
 
+    // Lcoal variable to indicate the distance to boundary.
+    private double _distanceToBoundary = 0.0;
+
+    // Lcoal variable to indicate the distance to boundary.
+    private double _lastDistanceToBoundary = 0.0;
 }
