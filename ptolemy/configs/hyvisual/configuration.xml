@@ -30,7 +30,9 @@
     <!-- Use a custom graph editor with a CT director already in it. -->
     <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-        <property name="Solver" 
+      <!-- Call this "Continuous Time (CT) Solver" instead of "Solver" 
+           the name matches the name in the demos. -->
+        <property name="Continuous Time (CT) Solver" 
                   class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
           <property name="_location"
                     class="ptolemy.kernel.util.Location" value="68.0, 32.0">
