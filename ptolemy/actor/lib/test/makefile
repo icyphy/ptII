@@ -57,6 +57,7 @@ JSIMPLE_TESTS = \
 	Clock.tcl \
 	Commutator.tcl \
 	Const.tcl \
+	CurrentTime.tcl \
 	Distributor.tcl \
 	DB.tcl \
 	Expression.tcl \
