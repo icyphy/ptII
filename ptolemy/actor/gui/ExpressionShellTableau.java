@@ -97,7 +97,7 @@ public class ExpressionShellTableau extends Tableau
         }
 
         final NamedObj model = 
-                ((ExpressionShellEffigy)getContainer()).getModel();
+            ((ExpressionShellEffigy)getContainer()).getModel();
         ParserScope scope = new ModelScope() {
                 public ptolemy.data.Token get(String name)
                         throws IllegalActionException {
@@ -130,8 +130,8 @@ public class ExpressionShellTableau extends Tableau
         if(targetName != null) {
             Attribute attribute = model.getAttribute(targetName);
             if (attribute != null && !(attribute instanceof Parameter)) {
-               attribute.setContainer(null);
-               attribute = null;
+                attribute.setContainer(null);
+                attribute = null;
             }
             if (attribute == null) {
                 attribute = new Parameter(model, targetName);
