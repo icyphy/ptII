@@ -72,7 +72,7 @@ public class IntMatrixToken extends MatrixToken {
 	}
     }
 
-    // FIXME: finish this method after array is added to the 
+    // FIXME: finish this method after array is added to the
     // 	      expression language.
     // Construct an IntMatrixToken from the specified string.
     // @param init A string expression of a 2-D int array.
@@ -86,10 +86,10 @@ public class IntMatrixToken extends MatrixToken {
     ////                         public methods                    ////
 
     /** Return a new token whose value is the sum of this token
-     *  and the argument. The type of the specified token 
+     *  and the argument. The type of the specified token
      *  must be such that either it can be converted to the type
      *  of this token, or the type of this token can be converted
-     *  to the type of the specified token, without loss of 
+     *  to the type of the specified token, without loss of
      *  information. The type of the returned token is one of the
      *  above two types that allows lossless conversion from the other.
      *  If the specified token is a matrix, its dimension must be the
@@ -229,7 +229,7 @@ public class IntMatrixToken extends MatrixToken {
     }
 
     /** Return the content of this token as a 2-D double array.
-     *  @return A 2-D double array. 
+     *  @return A 2-D double array.
      */
     public double[][] doubleMatrix() {
         double[][] array = new double[_numRows][_numColumns];
@@ -244,7 +244,7 @@ public class IntMatrixToken extends MatrixToken {
     /** Test if the content of this token equals that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a matrix token with the same dimension, and all the
-     *  corresponding elements of the arrays are equal, and lossless 
+     *  corresponding elements of the arrays are equal, and lossless
      *  conversion is possible from either this token to the specified
      *  one, or vice versa.
      *  @param t The token with which to test equality.

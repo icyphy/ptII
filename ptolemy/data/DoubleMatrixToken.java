@@ -55,7 +55,7 @@ public class DoubleMatrixToken extends MatrixToken {
     }
 
     /** Construct a DoubleMatrixToken with the specified 2-D array.
-     *  This method makes a copy of the array and stores the copy, 
+     *  This method makes a copy of the array and stores the copy,
      *  so changes on the specified array after this token is
      *  constructed will not affect the content of this token.
      *  @exception NullPointerException If the specified array
@@ -72,7 +72,7 @@ public class DoubleMatrixToken extends MatrixToken {
 	}
     }
 
-    // FIXME: finish this method after array is added to the 
+    // FIXME: finish this method after array is added to the
     // 	      expression language.
     // Construct an DoubleMatrixToken from the specified string.
     // @param init A string expression of a 2-D int array.
@@ -86,10 +86,10 @@ public class DoubleMatrixToken extends MatrixToken {
     ////                         public methods                    ////
 
     /** Return a new token whose value is the sum of this token
-     *  and the argument. The type of the specified token 
+     *  and the argument. The type of the specified token
      *  must be such that either it can be converted to the type
      *  of this token, or the type of this token can be converted
-     *  to the type of the specified token, without loss of 
+     *  to the type of the specified token, without loss of
      *  information. The type of the returned token is one of the
      *  above two types that allows lossless conversion from the other.
      *  If the specified token is a matrix, its dimension must be the
