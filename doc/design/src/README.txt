@@ -6,4 +6,4 @@ to a separate cvs repository.
 
 To check out the new repository, do
 
-cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs ptIIdoc
+cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co ptIIdoc
