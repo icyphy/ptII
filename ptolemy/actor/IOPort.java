@@ -743,9 +743,12 @@ public class IOPort extends ComponentPort {
      *  is out of range, then always return false.  If there are multiple
      *  receivers in the group associated with the channel, then return
      *  true only if all the receivers can accept a token.
+     *
      *  @return True if there is room for a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query.
      */
-    public boolean hasRoom(int channelindex) {
+    public boolean hasRoom(int channelindex) throws IllegalActionException {
         if (!isOutput()) return false;
         if (channelindex >= getWidth() || channelindex < 0) return false;
         Receiver[][] fr = getRemoteReceivers();
@@ -761,19 +764,18 @@ public class IOPort extends ComponentPort {
      *  channel index is out of range, always return false. Note that this
      *  does not report any tokens in inside receivers. Those are accessible
      *  only through getInsideReceivers().
+     *
      *  @return True if there is a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, or if there is no director, and hence no receivers.
      */
-    public boolean hasToken(int channelindex) {
+    public boolean hasToken(int channelindex) throws IllegalActionException {
         if (!isInput()) return false;
         if (channelindex >= getWidth() || channelindex < 0) return false;
-        try {
-            Receiver[][] fr = getReceivers();
-            if (fr == null || fr[channelindex] == null) return false;
-            for (int j = 0; j < fr[channelindex].length; j++) {
-                if (fr[channelindex][j].hasToken()) return true;
-            }
-        } catch (IllegalActionException ex) {
-            // Thrown if there is no director, in which case, we return false.
+        Receiver[][] fr = getReceivers();
+        if (fr == null || fr[channelindex] == null) return false;
+        for (int j = 0; j < fr[channelindex].length; j++) {
+            if (fr[channelindex][j].hasToken()) return true;
         }
         return false;
     }

@@ -61,10 +61,10 @@ public interface Receiver {
     public Nameable getContainer();
 
     /** Return true if put() will succeed in accepting a token. */
-    public boolean hasRoom();
+    public boolean hasRoom() throws IllegalActionException;
 
     /** Return true if get() will succeed in returning a token. */
-    public boolean hasToken();
+    public boolean hasToken() throws IllegalActionException;
 
     /** Put a token into this receiver.
      *  @exception IllegalActionException If the token cannot be put.

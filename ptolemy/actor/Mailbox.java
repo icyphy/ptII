@@ -29,8 +29,7 @@
 
 package pt.actor;
 import pt.data.*;
-import pt.kernel.util.Nameable;
-import pt.kernel.util.NoSuchItemException;
+import pt.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Mailbox
@@ -95,12 +94,13 @@ public class Mailbox implements Receiver {
     /** Put a token into the mailbox.  If the argument is null, then the
      *  mailbox will not contain a token after this returns.
      *  @param token The token to be put into the mailbox.
-     *  @exception TokenHolderFullException If the Mailbox already contains
+     *  @exception IllegalActionException If the Mailbox already contains
      *   a previously put token that has not been gotten.
      */
-    public void put(Token token) throws TokenHolderFullException{
+    public void put(Token token) throws IllegalActionException{
         if(_token != null) {
-            throw new TokenHolderFullException();
+            throw new IllegalActionException(getContainer(),
+            "Cannot put a token in a full mailbox.");
         }
         _token = token;
     }

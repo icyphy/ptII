@@ -351,6 +351,7 @@ public class Director extends NamedObj implements Executable {
             // Perform mutations and initializations until there are no
             // more to perform.
             while (_performMutations()) {
+                // NOTE: Should type resolution be done here?
                 // Initialize any new actors
                 _actorListener.initializeNewActors();
             }
@@ -416,13 +417,41 @@ public class Director extends NamedObj implements Executable {
     public void run()
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
+        run(-1);
+    }
+
+    /** Invoke initialize(), then invoke iterate() the specified number
+     *  of times, and then invoke wrapup().   If the argument is negative,
+     *  then run until the iterate() method returns false.
+     *  This method acquires read
+     *  permission on the workspace several times, releasing it between
+     *  iterations and then re-acquiring it.
+     *
+     *  @param iterations The number of iterations to run.
+     *  @exception CloneNotSupportedException If thrown by any of the
+     *   called methods.
+     *  @exception IllegalActionException If thrown by any of the
+     *   called methods.
+     *  @exception NameDuplicationException If the iterate() method throws
+     *   it (while performing mutations).
+     */
+    public void run(int iterations)
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
         try {
             workspace().getReadAccess();
             initialize();
         } finally {
             workspace().doneReading();
         }
-        while (!iterate());
+        if (iterations < 0) {
+            while (iterate());
+        } else {
+            int count = 0;
+            while (count++ < iterations) {
+                iterate();
+            }
+        }
         try {
             workspace().getReadAccess();
             wrapup();
@@ -642,7 +671,7 @@ public class Director extends NamedObj implements Executable {
         }
         // Clear the mutations
         _pendingMutations.clear();
-        return true;
+        return result;
     }
 
     //////////////////////////////////////////////////////////////////////////

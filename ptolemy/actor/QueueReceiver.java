@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 
 */
 
@@ -36,7 +36,8 @@ import pt.data.*;
 import pt.actor.util.*;
 
 import collections.LinkedList;
-import collections.CollectionEnumeration;
+import java.util.NoSuchElementException;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueueReceiver
@@ -54,82 +55,163 @@ capacity is zero.
 @author Edward A. Lee
 @version $Id$
 */
-public class QueueReceiver extends NamedObj implements Receiver {
+public class QueueReceiver implements Receiver {
+
+    /** Construct an empty queue with no container.
+     */
+    public QueueReceiver() {
+        super();
+    }
 
     /** Construct an empty queue with the specified container.
      */
     public QueueReceiver(IOPort container) {
         super();
 	_container = container;
-	_queue = new FIFOQueue(this);
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return an element on the queue.  If the offset argument is
-     *  zero, return the most recent object that was put on the queue.
-     *  If the offset is 1, return second most recent the object, etc.
-     *  If there is no such element on the queue (the offset is greater
-     *  than or equal to the size, or is negative), throw an exception.
+    /** Return the capacity, or -1 if it is unbounded.
      */
-    public Token get() {
-        synchronized (workspace()) {
-	    return (Token)_queue.take();
-	}
+    public int capacity() {
+        return _queue.capacity();
     }
 
-    /** Does not remove the element
+    /** Enumerate the tokens on the queue, beginning with the oldest.
+     *  @return An enumeration of Tokens.
+     */
+    public Enumeration elements() {
+        return _queue.elements();
+    }
+
+    /** Take the first token (the oldest one) off the queue and return it.
+     *  If the queue is empty, throw an exception.
+     */
+    public Token get() throws NoSuchItemException {
+        Token t = (Token)_queue.take();
+        if (t == null) {
+            throw new NoSuchItemException(getContainer(),
+                    "Attempt to get data from an empty FIFO queue.");
+        }
+        return t;
+    }
+
+    /** Return a token on the queue.  If the offset argument is
+     *  zero, return the most recent token that was put on the queue.
+     *  If the offset is 1, return second most recent the token, etc.
+     *  Do not remove the token from the queue.
+     *  If there is no such token on the queue (the offset is greater
+     *  than or equal to the size, or is negative), throw an exception.
+     *
+     *  @param offset The offset from the most recent item on the queue.
      *  @exception NoSuchItemException The offset is out of range.
      */
-    public Token get(int offset)
-            throws NoSuchItemException {
-	synchronized (workspace()) {
-	    return (Token)_queue.get(offset);
-	}
+    public Token get(int offset) throws NoSuchItemException {
+        try {
+            return (Token)_queue.get(offset);
+        } catch (NoSuchElementException ex) {
+            throw new NoSuchItemException(getContainer(),
+                    "Offset " + offset + " out of range in queue of size " +
+                    _queue.size());
+        }
     }
 
 
-    /** Return the container of the queue, or null if there is none.
+    /** Return the container of this receiver, or null if there is none.
      */
     public Nameable getContainer() {
         return _container;
     }
 
-    /** Returns the FIFOQueue */
-    public FIFOQueue getQueue() {
-        return _queue;
-    }
-
     /** Return true if put() will succeed in accepting a token. */
     public boolean hasRoom() {
-        // FIXME
-        return false;
+        return !_queue.full();
     }
 
     /** Return true if get() will succeed in returning a token. */
     public boolean hasToken() {
-        // FIXME
-        return false;
+        return _queue.size() > 0;
     }
 
-    /** Put an object on the queue and return true if this will not
-     *  cause the capacity to be exceeded.  Otherwise, do not put
-     *  the object on the queue and return false.
-     *  FIXME: This comment is wrong!
-     *  @param element An object to put on the queue.
-     *  @return A boolean indicating success.
-     *  @exception TokenHolderFullException The size of the queue is greater
-     *  than the capacity.
+    /** Enumerate the items stored in the history queue, which are
+     *  the N most recent items taken from the queue, beginning with
+     *  the oldest, where N is less than or equal to the history capacity.
+     *  If the history capacity is -1, then the enumeration includes all
+     *  items previously taken from the queue.  If the history capacity
+     *  is zero, then return an empty enumeration.
+     *
+     *  @return An enumeration of Tokens.
      */
-    public void put(Token element) throws TokenHolderFullException {
-        synchronized (workspace()){
-	    if (_queue.size() >= _queue.capacity()) {
-	        throw new TokenHolderFullException();
-	    }
-	    _queue.put(element);
-	}
+    public Enumeration history() {
+        return _queue.history();
+    }
 
+    /** Return the capacity of the history queue.
+     *  This will be zero if the history mechanism is disabled
+     *  and -1 if the history capacity is unbounded.
+     */
+    public int historyCapacity() {
+        return _queue.historyCapacity();
+    }
+
+    /** Return the number of objects in the history.
+     */
+    public int historySize() {
+        return _queue.historySize();
+    }
+
+    /** Return an element from the history.  If the offset argument is
+     *  zero, return the most recent token in the history, which is
+     *  token most recently taken from the queue.
+     *  If the offset is 1, return the second most recent token, etc.
+     *  If there is no such token in the history (the offset is greater
+     *  than or equal to the number of objects in the history, or is
+     *  negative), throw an exception.
+     *  @exception NoSuchItemException The offset is out of range.
+     */
+    public Token previous(int offset) throws NoSuchItemException {
+        try {
+            return (Token)_queue.previous(offset);
+        } catch (NoSuchElementException ex) {
+            throw new NoSuchItemException(getContainer(),
+                    "Offset " + offset + " out of range in history queue of " +
+                    "size " + historySize());
+        }
+    }
+
+    /** Put a token on the queue.  If the queue is full, throw an exception.
+     *  @param token The token to put on the queue.
+     *  @exception IllegalActionException If the queue is full.
+     */
+    public void put(Token token) throws IllegalActionException {
+        if (!_queue.put(token)) {
+            throw new IllegalActionException(getContainer(),
+            "Queue is at capacity. Cannot put a token.");
+        }
+    }
+
+    /** Set the capacity.  Use -1 to indicate unbounded capacity
+     *  (which is the default).  If the size of the queue exceeds the
+     *  desired capacity, throw an exception.
+     *  @exception IllegalActionException Queue contains more elements
+     *   than the proposed capacity.
+     */
+    public void setCapacity(int capacity) throws IllegalActionException {
+        _queue.setCapacity(capacity);
+    }
+
+    /** Set the capacity of the history queue.
+     *  Use 0 to disable the history mechanism
+     *  and -1 to make the history capacity unbounded.
+     *  If the size of the history list exceeds the
+     *  desired capacity, then remove the oldest items from
+     *  the history list until its size equals the proposed capacity.
+     *  Note that this can be used to clear the history list.
+     */
+    public void setHistoryCapacity(int capacity) {
+        _queue.setHistoryCapacity(capacity);
     }
 
     /** Set the container. */
@@ -137,14 +219,15 @@ public class QueueReceiver extends NamedObj implements Receiver {
         _container = port;
     }
 
+    /** Return the number of objects in the queue.
+     */
+    public int size() {
+        return _queue.size();
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    private FIFOQueue _queue;
+    private FIFOQueue _queue = new FIFOQueue();
     private IOPort _container;
 }
-
-
-
-
-

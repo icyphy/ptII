@@ -68,15 +68,13 @@ JSRCS = \
 	ActorListener.java \
 	AtomicActor.java \
 	CompositeActor.java \
-	DataComputingInit.java \
 	Director.java \
 	Executable.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
 	QueueReceiver.java \
-	Receiver.java \
-	TokenHolderFullException.java
+	Receiver.java
 
 EXTRA_SRCS =	$(JSRCS)
 
