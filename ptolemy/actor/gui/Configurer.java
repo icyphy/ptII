@@ -56,15 +56,15 @@ This class is an editor for the user settable attributes of an object.
 It may consist of more than one editor panel.  If the object has
 any attributes that are instances of EditorPaneFactory, then the
 panes made by those factories are stacked vertically in this panel.
-Otherwise, a single instance of EditorPaneFactory is created and
-used to construct an editor.
+Otherwise, a static method of EditorPaneFactory is
+used to construct a default editor.
 <p>
 The restore() method restores the values of the attributes of the
 object to their values when this object was created.  This can be used
 in a modal dialog to implement a cancel button, which restores
 the attribute values to those before the dialog was opened.
 <p>
-This class is created by an intance of the EditParametersDialog class
+This class is created by an instance of the EditParametersDialog class
 to handle the part of the dialog that edits the parameters.
 
 @see EditorPaneFactory

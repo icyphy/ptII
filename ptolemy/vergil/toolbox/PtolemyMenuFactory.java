@@ -68,14 +68,18 @@ public class PtolemyMenuFactory extends MenuFactory {
 	_controller = controller;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
     /** Add a menu item factory to this creator.
+     *  @param factory The menu item factory to add.
      */
     public void addMenuItemFactory(MenuItemFactory factory) {
 	_factoryList.add(factory);
     }
 
-    /**
-     * Create an instance of the menu associated with this factory.
+    /** Create an instance of the menu associated with this factory.
+     *  @param figure The figure for which to create a context menu.
      */
     public JContextMenu create(Figure figure) {
 	NamedObj object = _getObjectFromFigure(figure);
@@ -108,6 +112,9 @@ public class PtolemyMenuFactory extends MenuFactory {
         _factoryList.remove(factory);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
     /** Return the Ptolemy object that the given figure represents.
      *  In this base class, we assume that the figure is attached to a
      *  a diva.graph.model object, and that object is attached to the
@@ -118,6 +125,9 @@ public class PtolemyMenuFactory extends MenuFactory {
 	Object object = figure.getUserObject();
 	return (NamedObj)_controller.getGraphModel().getSemanticObject(object);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private members                       ////
 
     /** The menu item factories.
      */
