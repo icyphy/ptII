@@ -24,10 +24,13 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor;
+package ptolemy.actor.sched;
+
+import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.util.*;
 import java.util.Enumeration;
 
