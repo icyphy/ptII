@@ -41,6 +41,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.util.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.TimePlotter;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -101,7 +102,7 @@ public class Thermostat extends CTApplet {
             p.setToken(new DoubleToken(0.0));
 
             // the plot
-            PlotActor myplot = new PlotActor(_toplevel, "plot");
+            TimePlotter myplot = new TimePlotter(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Thermostat");
@@ -111,7 +112,6 @@ public class Thermostat extends CTApplet {
             myplot.plot.setXRange(0.0, 5.0);
             myplot.plot.setYRange(-0.1, 0.3);
             myplot.plot.setSize(500, 300);
-            myplot.timed.setToken(new BooleanToken(true));
 
             //System.out.println("Building a simple hybrid system.");
             CTCompositeActor hs = new CTCompositeActor(_toplevel, "HS");

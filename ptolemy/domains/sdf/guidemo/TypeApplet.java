@@ -53,6 +53,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.*;
 import ptolemy.actor.util.*;
 import ptolemy.plot.*;
 
@@ -236,7 +237,7 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
         TypedIOPort input2 = new TypedIOPort(_expr, "input2", true, false);
 
         // Create and configure plotter
-        _plotter = new PlotActor(_toplevel, "plot");
+        _plotter = new SequencePlotter(_toplevel, "plot");
 
         _plotter.setPanel(_ioPanel);
         _plotter.plot.setGrid(true);
@@ -245,7 +246,6 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 	_plotter.plot.setConnected(false);
 	_plotter.plot.setImpulses(true);
 	_plotter.plot.setMarksStyle("dots");
-        _plotter.timed.setToken(new BooleanToken(false));
 
 	// Create printer. Can't use null in constructor, thus
 	// set the container to null after construction.
@@ -469,7 +469,6 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 		_plotter.plot.setConnected(false);
 		_plotter.plot.setImpulses(true);
 		_plotter.plot.setMarksStyle("dots");
-        	_plotter.timed.setToken(new BooleanToken(false));
 
 	        _expr.output.unlinkAll();
 		_printer.setContainer(null);
@@ -498,7 +497,7 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
     ////                         private variables                 ////
     private Expression _expr;
     private Ramp _ramp1, _ramp2;
-    private PlotActor _plotter;
+    private SequencePlotter _plotter;
     private Print _printer;
 
     private Query _query = new Query();

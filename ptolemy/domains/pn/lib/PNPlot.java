@@ -35,6 +35,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.Placeable;
 import ptolemy.plot.*;
 import java.awt.Panel;
 

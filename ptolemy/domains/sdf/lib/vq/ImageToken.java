@@ -265,6 +265,20 @@ public final class ImageToken extends MatrixToken {
 	return array;
     }
 
+    /** Return the element of the matrix at the specified
+     *  row and column wrapped in a token.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return An IntToken containing the matrix element.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the corresponding range
+     *   of the index of the contained array.
+     */
+    public Token getElementAsToken(int row, int column)
+            throws ArrayIndexOutOfBoundsException {
+	return new IntToken(_value[row * _columnCount + column]);
+    }
+
     /** Test if the content of this token is equal to that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a matrix token with the same dimension, and all the

@@ -73,7 +73,7 @@ public class ComSystem extends SDFApplet {
         add(_createRunControls(2));
         try {
             // Create and configure data source
-            CoinFlip data = new CoinFlip(_toplevel, "data");
+            Bernoulli data = new Bernoulli(_toplevel, "data");
 
             // Create and configure coder
             LineCoder coder = new LineCoder(_toplevel, "coder");
