@@ -60,26 +60,26 @@ test Param-1.1 {Get information about the class} {
 
     list [getJavaInfo $param]
 } {{
-  class:         pt.data.expr.Parameter
   fields:        
-  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
-    kernel.util.Workspace} {description int} {equals java.l
-    ang.Object} getClass getContainer getFullName getName {
-    getParameter java.lang.String} getParameters getScope g
-    etToken hashCode notify notifyAll {removeParameter java
-    .lang.String} reset {setName java.lang.String} {setToke
-    n pt.data.Token} {setTokenFromExpr java.lang.String} to
-    String {update java.util.Observable java.lang.Object} w
-    ait {wait long} {wait long int} workspace
+  methods:       clone {clone pt.kernel.util.Workspace} {deepContains pt
+    .kernel.util.NamedObj} description {description int} {e
+    quals java.lang.Object} {getAttribute java.lang.String}
+     getAttributes getClass getContainer getFullName getNam
+    e getScope getToken hashCode notify notifyAll reset {se
+    tContainer pt.kernel.util.NamedObj} {setName java.lang.
+    String} {setToken pt.data.Token} {setTokenFromExpr java
+    .lang.String} toString {update java.util.Observable jav
+    a.lang.Object} wait {wait long} {wait long int} workspa
+    ce
     
   constructors:  {pt.data.expr.Parameter pt.kernel.util.NamedObj java.la
     ng.String java.lang.String} {pt.data.expr.Parameter pt.
     kernel.util.NamedObj java.lang.String pt.data.Token}
     
-  properties:    class container fullName name parameters scope token to
+  properties:    attributes class container fullName name scope token to
     kenFromExpr
     
-  superclass:    pt.kernel.util.NamedObj
+  superclass:    pt.kernel.util.Attribute
     
 }}
 
@@ -213,14 +213,14 @@ test Param-5.1 {Check reseting the Param to its original Token} {
 test Param-6.0 {Check updating of Params that refer to other Params} {
     set e [java::new {pt.kernel.Entity String} parent]
     set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id1 1.1]
-    $e {addParam pt.data.expr.Parameter} $param1
+    $param1 setContainer $e
 
     set tok1 [java::new  {pt.data.DoubleToken double} 9.9]
     set param2 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id2 9.9]
-    $e {addParam pt.data.expr.Parameter} $param2
+    $param2 setContainer $e
 
     set param3 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String String} $e id3 "id1 + id2"]
-    $e {addParam pt.data.expr.Parameter} $param3
+    $param3 setContainer $e
  
     set name1 [$param1 getFullName]
     set value1 [[$param1 getToken] getValue]
