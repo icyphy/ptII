@@ -92,6 +92,25 @@ one casts a Fixpoint result into a Fixpoint with less precision.
 
 <p>
 
+The rounding of a Fixpoint can happen in different ways as defined by
+the <I>Overflow mode</I>. The following overflow modes can be
+selected.  
+
+<ul> 
+
+<li> <B>Saturate</B>: The value of the Fixpoint is set to either the
+maximum value or minimum value that can be expressed by the Fixpoint
+given it's precision.
+
+<li> <B>Zero Saturate</B>:
+The value of the Fixpoint is set to zero on an overflow. 
+
+<li> <B>Truncation</B>:
+
+The value of the Fixpoint is truncated by removing bits to fit the
+Fixpoint into it's new precision.
+
+</ul>
 
 <p> 
 
@@ -108,7 +127,9 @@ used to represents a value.
 The Fixpoint uses three innerclasses. It uses the <i>Fixvalue</i>
 innerclass to keep the BigInteger value and the state of the value
 together. The <i>Error</i> innerclass is used to get a type safe
-enumerations of the state a <i>Fixpoint</i> resides. 
+enumerations of the state a <i>Fixpoint</i> resides. The Overflow
+innerclass is used to get a type safe enumeration of the different
+modes of rounding.
 
 @author Bart Kienhuis
 @version $Id$ */
@@ -233,10 +254,12 @@ public final class FixPoint implements Cloneable, Serializable {
 	// Create a Fixvalue with the additional bits set
 	Fixvalue result = _makeBits( dz.doubleValue(), cp );
 	result.setError( _value.getError() );
+	result.setOverflow( _value.getOverflow() );
 
 	// return the FixPoint with the correct precision and result
 	return new FixPoint(cp, result);
     }
+
     /** Return the fixvalue in the Fixpoint as a double. 
      *  @return The fixvalue in the Fixpoint as a double.
      */
@@ -249,11 +272,19 @@ public final class FixPoint implements Cloneable, Serializable {
 
 	return y;
     }
+
     /** Get a description of the error condition of the Fixpoint 
 	@return The description of the error condition of the Fixpoint
     */
     public String getErrorDescription() {
 	return _value.getErrorDescription();
+    }
+
+    /** Get a description of the overflow mode of the Fixpoint 
+	@return The description of the overflow mode of the Fixpoint
+    */
+    public String getOverflowDescription() {
+	return _value.getOverflowDescription();
     }
 
     /** Returns the precision of the Fixpoint.  
@@ -263,6 +294,12 @@ public final class FixPoint implements Cloneable, Serializable {
 	return _precision;
     }
 
+    /** Returns the overflow mode of the Fixpoint.  
+     *  @return the overflow mode of the Fixpoint.
+     */
+    public Overflow getRoundingMode() {
+	return _value.getOverflow();
+    }
 
     /** Return a new Fixpoint number with value equal to the multiplication
      *  of this Fixpoint number and the argument. The operation is
@@ -305,21 +342,88 @@ public final class FixPoint implements Cloneable, Serializable {
 	    + "." + _value.getFractionBits(_precision).toString();
     }
 
+    /** Return a string representation of the value of this Fixpoint.
+     * @return A string representation of the value of this Fixpoint 
+     */
     public String toString(){        
   	return "" + doubleValue();
     }
 
+    /** Return a new Fixpoint number scaled to the give precision. To
+     *  fit the new precision, a rounding error can occur. In that
+     *  case the value of the Fixpoint is determined, depending on the
+     *  overflow mode selected.  
+     *  @param newprecision The new precision of the Fixpoint.  
+     *  @return A new Fixpoint with the given precision.  
+     */
+    public FixPoint scaleToPrecision(Precision newprecision ) {
+	Fixvalue newvalue = _scaleBits(_value, _precision, newprecision );
+	return new FixPoint(newprecision, newvalue);
+    }
+
+    /** Return a new Fixpoint number scaled to the give precision
+     *  given as a String. To fit the new precision, a rounding error
+     *  can occur. In that case the value of the Fixpoint is
+     *  determined, depending on the overflow mode selected.  
+     @param precisionString String that gives the new precision of the 
+     Fixpoint.
+     @return A new Fixpoint with the given precision.  
+    */
+    public FixPoint scaleToPrecision(String precisionString ) {
+	Precision newprecision = new Precision( precisionString );
+	Fixvalue newvalue = _scaleBits(_value, _precision, newprecision);
+	return new FixPoint(newprecision, newvalue);
+    }
+
+
+    /** Set the overflow mode of the Fixpoint.  
+     *  @param overflow The overflow mode
+     */
+    public void setRoundingMode(Overflow overflow) {
+	_value.setOverflow( overflow );
+    }
+
+    /** Set the overflow mode of the Fixpoint using a string. Added to
+     *  make testing easier 
+     @param name String describing the overflow mode */
+    public void setRounding(String name) {
+	if ( name.compareTo("SATURATE")==0) {
+	    _value.setOverflow( SATURATE );
+	    //System.out.println(" -- SATURATE --");
+	}
+	if ( name.compareTo("ZERO_SATURATE")==0) {
+	    _value.setOverflow( ZERO_SATURATE );
+	    //System.out.println(" -- ZERO SATURATE --");
+	}
+	if ( name.compareTo("TRUNCATE")==0) {
+	    _value.setOverflow( TRUNCATE );
+	    //System.out.println(" -- TRUNCATE --");
+	}
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Indicator that quantization has occurred */
+
+    /** Indicator that no overflow has occurred */
     public final Error OVERFLOW   = new Error("Overflow Occurred");   
 
-    /** Indicator that no quantization has occurred */
+    /** Indicator that an overflow has occurred */
     public final Error NOOVERFLOW = new Error("No Overflow Occurred");
 
     /** Indicator that a rounding error has occurred */
     public final Error ROUNDING   = new Error("Rounding Occurred");
+
+    /** Indicator to saturate the fixvalue, when an overflow occurs */
+    public final Overflow SATURATE = new Overflow("Saturate",0);
+
+
+    /** Indicator to truncate the fixvalue, when an overflow occurs */
+    public final Overflow TRUNCATE = new Overflow("Truncated",2);
+    /** Indicator to saturate the fixvalue to zero, when an overflow occurs */
+    public final Overflow ZERO_SATURATE = new Overflow("Zero Saturate",1);
+    
 
 
     ///////////////////////////////////////////////////////////////////
@@ -355,6 +459,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	System.out.println (" scale Value (10) " + doubleValue() 
 			    + " Precision: " + _precision.toString() );
 	System.out.println (" Errors:     " + _value.getErrorDescription());
+	System.out.println (" Round Mode: " + _value.getOverflowDescription());
     }
 
     /** Return a Fixvalue which fractional part is aligned with the
@@ -373,7 +478,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	BigInteger arg = (_value.fixvalue).shiftLeft(delta);
 	
 	// return the Fixvalue with aligned value
-	return new Fixvalue( arg, _value.getError());
+	return new Fixvalue( arg, _value.getError(), _value.getOverflow() );
     }
 
     /** Initialize the Fixpoint */
@@ -448,6 +553,101 @@ public final class FixPoint implements Cloneable, Serializable {
 
 	return fxv;
     }
+    /** Returns a Fixvalue which is a copy of the supplied Fixvalue,
+	but with it's precision scaled from the old precision to the new
+	precision. If the new Fixvalue cannot be contained by the new
+	precision, a rounding error occurs and depending on the overflow mode
+	selected, the appropriate Fixvalue is determined.
+	@param x Fixvalue that needs to be scaled 
+	@param oldprecision The old precision of the Fixvalue 
+	@param newprecision The new precision of the Fixvalue 
+	@return Fixvalue with the desired new precision 
+    */
+    private Fixvalue _scaleBits(Fixvalue x, Precision oldprecision, 
+				Precision newprecision ) 
+    {
+
+	int delta,a,b = 0;
+
+	Fixvalue intResult;
+	Fixvalue fractionResult;
+
+	Fixvalue integerPart  = x.getIntegerBits( oldprecision );
+	Fixvalue fractionPart = x.getFractionBits( oldprecision );
+
+	// If the new precision is larger, we pad the current value
+	// with zeros. If it is smaller, we have to remove bits
+	// resulting in rounding/truncation.
+
+	// The handling of the scaling of the integer and fractional
+	// part is different. We first handle the integer part,
+	// followed by the fractional part.
+	a = oldprecision.getIntegerBitLength();
+	b = newprecision.getIntegerBitLength();
+	if (a > b ) {
+	    if ( integerPart.fixvalue.bitLength() <= b ) {
+		delta = 0; 
+	    }
+	    else {
+		delta = a-b;
+		// Because the real bitLength of x can be different
+		// from the bit length given by the precision, we need
+		// to correct the number of bits that really need to
+		// be shifted
+		int correction = a - integerPart.fixvalue.bitLength();
+		delta = delta - correction;
+	    }
+	} else {
+	    // b >= a
+	    delta = 0;
+	}
+	intResult = integerPart.scaleRight(delta);
+	
+	// Check if a Overflow took place
+	if ( intResult.getErrorDescription().compareTo("Overflow Occurred")==0 ) {
+	    // Create a new fractionpart
+	    fractionResult = new Fixvalue();
+	    fractionResult.setError( intResult.getError() );
+
+	    // Check how to resolve the rounding of the fractional part
+	    switch( intResult.getOverflow().getInteger() ) {
+	    case 0: //SATURATE
+		BigInteger tmp = (_twoRaisedTo[newprecision.getFractionBitLength()]).toBigInteger();
+		fractionResult.fixvalue = tmp.subtract( BigInteger.ONE );
+		break;
+	    case 1: //ZERO_SATURATE:
+		fractionResult.fixvalue = BigInteger.ZERO;
+		break;
+	    case 2: // TRUNCATE:
+		a = oldprecision.getFractionBitLength();
+		b = newprecision.getFractionBitLength();    
+		delta = b-a;
+		
+		// truncate the fractional part by shifting it delta positions
+		fractionResult.fixvalue = 
+		    fractionPart.fixvalue.shiftLeft(delta);
+		break;
+	    }
+	} else {
+   
+	    // No Overflow took place, so know check Fractional Part
+	    a = oldprecision.getFractionBitLength();
+	    b = newprecision.getFractionBitLength();    
+	    delta = b-a;
+
+	    // scale the fractional part
+	    fractionResult = fractionPart.scaleLeft(delta);   
+	}
+
+	// Reconstruct a single Fixpoint from the separate integer and
+	// fractional part
+	BigInteger total = 
+	    intResult.fixvalue.shiftLeft(newprecision.getFractionBitLength());
+	total = total.add( fractionResult.fixvalue );
+
+	// Return the Fixvalue cast to the new precision
+	return new Fixvalue( total, fractionResult.getError(), intResult.getOverflow());
+    }
    
 
     /////////////////////////////////////////////////////////////////////////
@@ -475,6 +675,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	public Fixvalue() {
 	    fixvalue     = BigInteger.ZERO;
 	    _error       = NOOVERFLOW;
+	    _overflow    = SATURATE;
 	}
 
 	/** Create a Fixvalue with value Zero and set the error field
@@ -484,17 +685,19 @@ public final class FixPoint implements Cloneable, Serializable {
 	public Fixvalue(BigInteger value) {
 	    fixvalue     = value;
 	    _error       = NOOVERFLOW;
+	    _overflow    = SATURATE;
 	}
 
 	/** Create a Fixvalue with value Zero and set the error field
             to Nooverflow and the overflow mode to Saturate 
 	    @param value Set the BigInteger of this Fixvale to value
 	    @param err   The error of this Fixvalue
+	    @param of    The overflow mode of this Fixvalue
 	*/
-	public Fixvalue(BigInteger value, Error err) {
+	public Fixvalue(BigInteger value, Error err, Overflow of) {
 	    fixvalue     = value;
 	    _error       = err;
-
+	    _overflow    = of;
 	}
 
 	/** Return a new Fixvalue with value equal to the sum of this
@@ -506,7 +709,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
         public Fixvalue add(Fixvalue aValue ) {
 	    BigInteger result = fixvalue.add( aValue.fixvalue );
-	    return new Fixvalue(result, _error);
+	    return new Fixvalue(result, _error, _overflow);
 	}
 
 	/** Return a new Fixvalue with value equal to the
@@ -519,7 +722,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
 	public Fixvalue multiply(Fixvalue aValue ) {
 	    BigInteger result = fixvalue.multiply( aValue.fixvalue );
-	    return new Fixvalue(result, _error);
+	    return new Fixvalue(result, _error, _overflow);
 	}
 
 	/** Return the negated value of this Fixvalue. Uses the negate
@@ -528,7 +731,75 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
  	public Fixvalue negate() {
  	    BigInteger result = fixvalue.negate();
- 	    return new Fixvalue(result, _error);
+ 	    return new Fixvalue(result, _error, _overflow);
+	}
+
+	/** Return a scaled Fixvalue by scaling this fixvalue. Scale
+	 *  the fixvalue bu shifting it delta positions from the
+	 *  righthand side. If delta>0, then the fixvalue is reduced
+	 *  leading to possible rounding. Select on the overflow mode
+	 *  what the final Fixvalue should look like. 
+	 *  @param delta Number of positions the fixvalue is scaled from right.
+	 *  @return A scaled Fixvalue.
+	 */
+ 	public Fixvalue scaleRight(int delta) {
+	    Fixvalue result = new Fixvalue(fixvalue, _error, _overflow);
+	    if (delta>0) {
+		result.setError(OVERFLOW);
+		switch( _overflow.getInteger() ) {
+		case 0: //SATURATE
+		    // return all bits to one's
+		    // Determine the new length of BigInteger fixvalue
+		    // and use that to determine the MAX_VALUE
+		    BigInteger tmp = (_twoRaisedTo[(fixvalue.bitLength()-delta)]).toBigInteger();
+		    result.fixvalue = tmp.subtract( BigInteger.ONE );
+		    break;
+		case 1: //ZERO_SATURATE:
+		    // return all bits to zero's
+		    result.fixvalue = BigInteger.ZERO;
+		    break;
+		case 2: //TRUNCATE:
+		    // simply remove the bits that are too much
+		    result.fixvalue = fixvalue.shiftRight( delta );
+		    break;
+		}
+	    }
+	    return result;
+	}
+
+	/** Return a scaled Fixvalue by scaling this fixvalue. Scale
+	 *  the fixvalue by shifting it delta positions from the
+	 *  left hand side. If delta<0, then the fixvalue is reduced in
+	 *  length leading to possible rounding. Select on the basis
+	 *  of the overflow mode what the final Fixvalue should look
+	 *  like.  
+	 *  @param delta Number of positions the fixvalue is
+	 *  scaled from left.  
+	 *  @return A scaled Fixvalue.  
+	 */
+ 	public Fixvalue scaleLeft(int delta) {
+	    // copy the previous fixvalue
+	    Fixvalue work = new Fixvalue(fixvalue, _error, _overflow);
+	    Fixvalue result = new Fixvalue();
+
+	    // Delta >0, shift Left
+	    // Delta <0, shift Right
+	    if ( delta < 0) {
+
+		// Check if last delta bits are zero
+		// Because then no rounding takes place
+		for(int i=0;i<-delta;i++){
+		    if ( work.fixvalue.testBit( i ) == true ) {
+			work.setError(ROUNDING);
+		    }
+		}
+		result.fixvalue = work.fixvalue.shiftLeft( delta );
+	    } else {
+		result.fixvalue = work.fixvalue.shiftLeft( delta );
+	    }
+	    result.setError( work.getError() );
+	    result.setOverflow( work.getOverflow() );
+	    return result;
 	}
 
 	/** Return only the fractional part of the Fixvalue. Because
@@ -541,7 +812,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	    BigInteger tmp = (_twoRaisedTo[precision.getFractionBitLength()]).toBigInteger();
 	    BigInteger mask = tmp.subtract( BigInteger.ONE );
 	    BigInteger result = fixvalue.and(mask);
-	    return new Fixvalue(result, _error);
+	    return new Fixvalue(result, _error, _overflow);
 	}
 
 	/** Return only the integer part of the Fixvalue. Because
@@ -553,7 +824,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
     	public Fixvalue getIntegerBits(Precision precision) {
 	    BigInteger result = fixvalue.shiftRight(precision.getFractionBitLength());
-	    return new Fixvalue(result, _error);
+	    return new Fixvalue(result, _error, _overflow);
 	}
 
 	/** Return a bit string representation of the Fixvalue. The
@@ -568,16 +839,32 @@ public final class FixPoint implements Cloneable, Serializable {
 	*/
 	public void setError(Error error) { _error = error; }
 
+	/** Set the Overflow mode of the Fixvalue 
+	    @param overflow The overflow mode of the Fixvalue
+	*/
+	public void setOverflow(Overflow overflow) { _overflow = overflow; }
+
 	/** Get the Error condition from the Fixvalue 
 	    @return The error condition of the Fixvalue
 	*/
 	public Error getError() { return _error; }
 
 
+	/** Get the Overflow mode from the Fixvalue 
+	    @return The Overflow mode of the Fixvalue
+	*/
+	public Overflow getOverflow() { return _overflow; }
+
+
 	/** Get a description of the error condition of the Fixvalue 
 	    @return The description of the error condition of the Fixvalue
 	*/
 	public String getErrorDescription() { return _error.getDescription(); }
+
+	/** Get a description of the overflow mode of the Fixvalue 
+	    @return The description of the overflow mode of the Fixvalue
+	*/
+	public String getOverflowDescription() { return _overflow.getDescription(); }
 
 	/////////////////////////////////////////////////////////////////////
 	////                      private variables                      ////
@@ -588,6 +875,8 @@ public final class FixPoint implements Cloneable, Serializable {
 	/** The error condition of the Fixvalue */
 	private Error      _error;
 	
+	/** The Overflow mode of the Fixvalue */
+	private Overflow   _overflow;
     }
 
 
@@ -608,6 +897,34 @@ public final class FixPoint implements Cloneable, Serializable {
 	private String _description;
 	
     }
+
+    /** Instances of this class represent overflow modes of the Fixvalue.
+     */
+    public final class Overflow {
+	// Constructor is private because only Manager instantiates this class.
+	private Overflow(String description, int value) {
+	    _description = description;
+	    _value = value;
+	}
+
+	/** Get a description of the Overflow.
+	 *  @return A description of the Overflow.
+	 */
+	public int getInteger() {
+	    return _value;
+	}
+	
+	/** Get a description of the Overflow.
+	 *  @return A description of the Overflow.
+	 */
+	public String getDescription() {
+	    return _description;
+	}
+	
+	private String _description;
+	private int _value;
+    }
+
 
     //////////////////////
     // static class
