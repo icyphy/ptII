@@ -89,7 +89,7 @@ public class QueueReceiver implements Receiver {
     /** Take the first token (the oldest one) off the queue and return it.
      *  If the queue is empty, throw an exception.
      */
-    public Token get() throws NoTokenException {
+    public Token get() {
         Token t = (Token)_queue.take();
         if (t == null) {
             throw new NoTokenException(getContainer(),
@@ -108,7 +108,7 @@ public class QueueReceiver implements Receiver {
      *  @param offset The offset from the most recent item on the queue.
      *  @exception NoSuchItemException The offset is out of range.
      */
-    public Token get(int offset) throws NoSuchItemException {
+    public Token get(int offset) {
         // FIXME: should this throw NoTokenException ??
 	// Should the method get(int offset) throw NoTokenException or keep
 	// it unchanged (NoSuchItemException). If we want to change it to
@@ -116,7 +116,7 @@ public class QueueReceiver implements Receiver {
         try {
             return (Token)_queue.get(offset);
         } catch (NoSuchElementException ex) {
-            throw new NoSuchItemException(getContainer(),
+            throw new NoTokenException(getContainer(),
                     "Offset " + offset + " out of range in queue of size " +
                     _queue.size());
         }
@@ -130,12 +130,12 @@ public class QueueReceiver implements Receiver {
     }
 
     /** Return true if put() will succeed in accepting a token. */
-    public boolean hasRoom() {
+    public boolean hasRoom() throws IllegalActionException {
         return !_queue.full();
     }
 
     /** Return true if get() will succeed in returning a token. */
-    public boolean hasToken() {
+    public boolean hasToken() throws IllegalActionException {
         return _queue.size() > 0;
     }
 
@@ -187,9 +187,9 @@ public class QueueReceiver implements Receiver {
 
     /** Put a token on the queue.  If the queue is full, throw an exception.
      *  @param token The token to put on the queue.
-     *  @exception IllegalActionException If the queue is full.
+     *  @exception NoRoomException If the queue is full.
      */
-    public void put(Token token) throws NoRoomException {
+    public void put(Token token) {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");
