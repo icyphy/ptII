@@ -130,7 +130,7 @@ possible to use hierarchical DT in Vergil by doing the following steps
 <LI>2.) Modify the inside model MOML file with the following modifications:
     <UL>
     <LI> change class= keyword to extends= ; 
-    <LI> change <model> keyword to <class>;
+    <LI> change <entity> keyword to <class>;
     <LI> provide a name for the <class> which is "" (blank) by default;
     <LI> change the <port> to include <property name="output"/> 
                                 or <property name="input"/>
