@@ -917,10 +917,12 @@ public class UtilityFunctions {
      *  @param value The value of the variable.
      *  @return The value.
      */
+    /* FIXME: Removed pending implementing assignments.
     public static ptolemy.data.Token set(String name, ptolemy.data.Token value) {
     	Constants.add(name, value);
     	return value;
     }
+    */
 
     /** Return the sum of the elements in the specified array.
      *  This method is polymorphic in that it can sum any array
