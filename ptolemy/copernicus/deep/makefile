@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II code generation kernle
+# Makefile for Ptolemy II deep generation
 #
-# @Authors: Steve Neuendorffer, Christopher Hylands
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -29,49 +29,28 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus/kernel
+ME =		ptolemy/copernicus/deep
 
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/soot/1.2.2/soot/classes$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/soot/1.2.2/soot/classes$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	deep
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 DIRS =
 
 # Keep this list alphabetized.
-JSRCS = \
-	AliasAnalysis.java \
-	AliasAssignmentEliminator.java \
-	CastAndInstanceofEliminator.java \
-	ClassWriter.java \
-	EntitySootClass.java \
-	FastForwardFlowAnalysis.java \
-	ImprovedDeadAssignmentEliminator.java \
-	InstanceEqualityEliminator.java \
-	GenerateCode.java \
-	GeneratorAttribute.java \
-	JimpleWriter.java \
-	KernelMain.java \
-	MaybeAliasAnalysis.java \
-	MustAliasAnalysis.java \
-	NullPointerAnalysis.java \
-	PtolemyUtilities.java \
-	SideEffectAnalysis.java \
-	SideEffectFreeInvocationRemover.java \
-	SootUtilities.java \
-	TransformerAdapter.java \
-	WatchDogTimer.java 
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Generator.xml
+	compileCommandTemplate.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -82,19 +61,13 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'FastForwardFlowAnalysis$$1.class' \
-	'KernelMain$$_IgnoreAllApplicationClasses.class' \
-	'MaybeAliasAnalysis$$1.class' \
-	'MaybeAliasAnalysis$$GraphFlow.class' \
-	'SideEffectAnalysis$$EffectFlow.class' \
-	'WatchDogTimer$$1.class'
+	cg \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-
-install: all
+install: all $(PTPACKAGE).jar
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
