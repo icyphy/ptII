@@ -42,8 +42,6 @@ import ptolemy.data.*;
 Description of the class
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class ExplicitRK23Solver extends VariableStepSolver{
 

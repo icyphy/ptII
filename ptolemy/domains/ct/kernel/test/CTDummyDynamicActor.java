@@ -40,16 +40,9 @@ import ptolemy.data.*;
 Dummy actor that implement the CTDynamicActor interface. SISO.
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTDummyDynamicActor extends CTActor implements CTDynamicActor{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public CTDummyDynamicActor(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {

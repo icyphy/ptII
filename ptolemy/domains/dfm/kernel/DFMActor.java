@@ -81,10 +81,6 @@ public abstract class DFMActor extends AtomicActor {
      * Read all the input and process the input tokens.  If all input
      * token has the tag that equals to "Previous Result Valid" then
      * the default result is   
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public void fire() {
 
@@ -237,10 +233,6 @@ System.out.println("actor: "+getName()+"done delaying...");
     }  
 
     /** 
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     protected boolean _processInputData() {
        String tag;

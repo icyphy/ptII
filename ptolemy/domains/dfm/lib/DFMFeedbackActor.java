@@ -54,11 +54,6 @@ import ptolemy.actor.*;
 public class DFMFeedbackActor extends DFMActor {
     /** Constructor
      * 
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public DFMFeedbackActor(CompositeActor container, String name, DFMToken initValue)
             throws NameDuplicationException, IllegalActionException {

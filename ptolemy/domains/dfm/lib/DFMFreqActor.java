@@ -56,11 +56,6 @@ import java.util.Observable;
 */
 public class DFMFreqActor extends DFMActor {
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public DFMFreqActor(CompositeActor container, String name)
                       throws NameDuplicationException, IllegalActionException {

@@ -50,11 +50,6 @@ import ptolemy.actor.*;
 public class DFMAnnotateFeedbackActor extends DFMFeedbackActor {
     /** Constructor
      * 
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public DFMAnnotateFeedbackActor(CompositeActor container, String name, DFMToken initValue)
             throws NameDuplicationException, IllegalActionException {

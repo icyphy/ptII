@@ -45,11 +45,6 @@ Dummy actor that implements the CTEventGenerator interface. SISO
 */
 public class CTDummyEventGenerator extends CTActor implements CTEventGenerator{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public CTDummyEventGenerator(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {

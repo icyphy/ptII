@@ -69,7 +69,6 @@ public class DFMToken extends Token{
     /** Get the tag of the this token.
      * 
      * @return get tag on this token
-     * @exception full-classname description
      */	
     public String getTag(){
         return _tag;

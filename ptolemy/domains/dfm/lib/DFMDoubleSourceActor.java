@@ -39,16 +39,9 @@ import ptolemy.kernel.util.*;
  A double source actor that fires a double token.
 @author William Wu 
 @version %W%	%G%
-@see classname
-@see full-classname
 */
 public class DFMDoubleSourceActor extends DFMActor {
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public DFMDoubleSourceActor(CompositeActor container, String name)
                       throws NameDuplicationException, IllegalActionException {

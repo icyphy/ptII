@@ -46,8 +46,6 @@ The FE method approximate the x(t+h) as:
 No error control is performed.
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class ForwardEulerSolver extends FixedStepSolver{
 

@@ -47,11 +47,6 @@ import ptolemy.kernel.util.*;
 
 public class DFMSelectOutputActor extends DFMActor {
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public DFMSelectOutputActor(CompositeActor container, String name)
                 throws NameDuplicationException, IllegalActionException {

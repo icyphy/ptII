@@ -42,8 +42,6 @@ import java.util.Enumeration;
 Base class for variable step size (with local error control) ODE solvers.
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public abstract class VariableStepSolver extends ODESolver{
 

@@ -40,16 +40,9 @@ import ptolemy.data.*;
 For testing schedules.
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTDummySISOActor extends CTActor{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public CTDummySISOActor(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {

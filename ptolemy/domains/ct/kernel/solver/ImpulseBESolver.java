@@ -84,11 +84,6 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     ////                         public methods                    ////
 
     /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public boolean resolveStates() throws IllegalActionException {
         

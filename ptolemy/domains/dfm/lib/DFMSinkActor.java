@@ -36,16 +36,9 @@
 Description of the class
 @author  youname
 @version %W%	%G%
-@see classname
-@see full-classname
 */
 public class DFMSinkActor {
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public DFMSinkActor() {
     }
@@ -54,11 +47,6 @@ public class DFMSinkActor {
     ////                         public methods                    ////
 
     /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public int APublicMethod() {
         return 1;
@@ -69,11 +57,6 @@ public class DFMSinkActor {
     ////                         protected methods                      ////
 
     /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     protected int _AProtectedMethod() {
         return 1;

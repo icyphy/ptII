@@ -38,8 +38,6 @@ import ptolemy.domains.ct.kernel.*;
 /**
 Base class for fixed step size (no error control) ODE solvers.
 @version $Id$
-@see classname
-@see full-classname
 */
 public abstract class FixedStepSolver extends ODESolver{
     /** Construct a solver in the default workspace with an empty

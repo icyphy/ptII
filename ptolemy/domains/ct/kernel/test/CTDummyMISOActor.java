@@ -41,16 +41,9 @@ import ptolemy.data.*;
 Description of the class
 @author Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTDummyMISOActor extends CTActor{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public CTDummyMISOActor(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {

@@ -45,11 +45,6 @@ Dummy actor that implements CTEventInterpreter interface.
 public class CTDummyEventInterpreter extends CTActor 
         implements CTEventInterpreter{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public CTDummyEventInterpreter(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {

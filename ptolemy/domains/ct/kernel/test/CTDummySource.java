@@ -44,11 +44,6 @@ Dummy actor for source actor. One output, no input.
 */
 public class CTDummySource extends CTActor{
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public CTDummySource(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
