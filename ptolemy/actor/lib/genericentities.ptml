@@ -34,7 +34,7 @@
 <port name="input" input="true" type="double"/>
 </entity>
 
-<entity name="sequenceplot" icon="generic.sink" terminalstyle="generic.sink" implementation="ptolemy.actor.lib.SequencePlotter">
+<entity name="sequenceplot" icon="generic.sink" terminalstyle="generic.sink" implementation="ptolemy.actor.gui.SequencePlotter">
 <terminalmap ports="input"/>
 <port name="input" input="true" type="double"/>
 </entity>
