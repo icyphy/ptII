@@ -125,6 +125,7 @@ public class BrowserLauncher {
      * does not run
      */
     public static void openURL(String url) throws IOException {
+	System.out.println("BrowserLauncher.openURL(): " + url);
 	if (!loadedWithoutErrors) {
 	    throw new IOException("Exception in finding browser: "
                     + errorMessage);
@@ -134,6 +135,10 @@ public class BrowserLauncher {
 	    throw new IOException("Unable to locate browser: "
                     + errorMessage);
 	}
+
+	// The return code returned by process.waitFor()
+	// 0 usually indicates normal execution.
+	int exitCode = 0;
 
 	switch (jvm) {
 	case MRJ_2_0:
@@ -200,6 +205,7 @@ public class BrowserLauncher {
 	    break;
 	case WINDOWS_NT:
 	case WINDOWS_9x:
+	    System.out.println("BrowserLauncher.openURL(): Windows");
             // Add quotes around the URL to allow ampersands and other special
             // characters to work.
             Process process =
@@ -213,7 +219,7 @@ public class BrowserLauncher {
             // That's hinted at in
             // <http://developer.java.sun.com/developer/qow/archive/68/>.
             try {
-                process.waitFor();
+                exitCode = process.waitFor();
                 process.exitValue();
             } catch (InterruptedException ie) {
                 throw new IOException("InterruptedException while "
@@ -250,6 +256,13 @@ public class BrowserLauncher {
             Runtime.getRuntime().exec(new String[] { (String) browser, url });
             break;
 	}
+
+	if (exitCode != 0) {
+	    throw new IOException("Process exec'd by BrowserLauncher returned "
+				  + exitCode + "."
+				  "\n url was: " + url
+				  "\n browser was: " + browser);
+	} 
     }
 
     /**
