@@ -126,6 +126,7 @@ public class ODDirector extends ProcessDirector {
      */
     public synchronized void addReadBlock() {
         _readBlocks++;
+	notifyAll();
         System.out.println(_readBlocks + " actors are blocked on reads.");
     }
     
@@ -133,6 +134,7 @@ public class ODDirector extends ProcessDirector {
      */
     public synchronized void addWriteBlock() {
         _writeBlocks++;
+	notifyAll();
         System.out.println(_writeBlocks + " actors are blocked on writes.");
     }
 
@@ -153,6 +155,7 @@ public class ODDirector extends ProcessDirector {
             if( isDeadlocked() ) {
                 resolveDeadlock();
                 if( isDeadlocked() ) {
+		    System.out.println("End of fire()");
                     return;
                 }
             }
@@ -190,6 +193,7 @@ public class ODDirector extends ProcessDirector {
      */
     public boolean isDeadlocked() {
         if( _actorsActive == _readBlocks + _writeBlocks ) {
+	  // System.out.println("All actors blocked - Deadlock!");
             return true;
         }
         return false;
