@@ -133,7 +133,8 @@ public class Distributor extends Transformer implements SequenceActor {
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
             } catch (IllegalActionException ex) {
-                throw new InternalErrorException(ex.toString());
+                throw new InternalErrorException(this, ex,
+                        "output width was" + output.getWidth());
             }
         }
     }

@@ -128,7 +128,8 @@ public class Commutator extends Transformer implements SequenceActor {
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
             } catch (IllegalActionException ex) {
-                throw new InternalErrorException(ex.toString());
+                throw new InternalErrorException(this, ex,
+                        "input width was" + input.getWidth());
             }
         }
     }
