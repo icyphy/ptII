@@ -915,7 +915,8 @@ void function() #PtFunctionNode :
       if (isArrayRef && !(nch == 2 || nch == 3)) {
         throw new ParseException("PtParser: Parsed an array reference to "
                 + x.image + " having " + (nch - 1) + " indices, "
-                + "only reference to 1 and 2 dimensional arrays are supported.");
+                + "only reference to 1 and 2 dimensional arrays "
+                + "are supported.");
       }
     }
 }
@@ -934,8 +935,9 @@ void matrixConstruct() #PtMatrixConstructNode :
       { /* Assert that the following rows have the same number of terms as the
          first row. */
         if ( i != jjtThis._nColumns ) {
-          throw new ParseException("PtParser: error parsing matrix construction, "
-                  + "the " + nRows + "th row does not have the same number of "
+          throw new ParseException("PtParser: error parsing matrix "
+                  + "construction, the "
+                  + nRows + "th row does not have the same number of "
                   + "terms as the first row.");
         }
       }
