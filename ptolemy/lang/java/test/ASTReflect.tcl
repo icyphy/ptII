@@ -162,6 +162,7 @@ proc deeplcompare {lista listb {indent ""}} {
 	    }
 	}
     }
+    return 1
 }
 
 # Compare two lists.  If == says that they are not equal, then
@@ -203,7 +204,8 @@ test ASTReflect-2.1 {check out constructor in Object} {
   {ConstructorCall {SuperConstructorCallNode { 
                     {Args  {}} 
                   }}} 
-}}}}} {}
+}}}}
+} {1}
 
 ######################################################################
 ####
@@ -275,7 +277,7 @@ test ASTReflect-2.2 {check out constructors} {
                     {Args  {}} 
                   }}} 
 }}}}
-} {}
+} {1}
 
 ######################################################################
 ####
@@ -453,7 +455,7 @@ test ASTReflect-3.1 {check out fields} {
   {DefType {DoubleTypeNode {leaf}}} 
   {InitExpr {AbsentTreeNode {leaf}}} 
 }}}} 
-} {}
+} {1}
 
 ######################################################################
 ####
@@ -551,7 +553,7 @@ test ASTReflect-4.1 {check out innerclasses} {
                {Ident Object} 
              }}} 
 }}}}
-} {} 
+} {1} 
 
 ######################################################################
 ####
@@ -641,4 +643,4 @@ test ASTReflect-5.1 {check out methods} {
   {ReturnType {VoidTypeNode {leaf}}} 
   {Body {AbsentTreeNode {leaf}}} 
 }}}} 
-} {}
+} {1}
