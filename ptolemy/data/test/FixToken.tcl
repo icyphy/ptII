@@ -80,6 +80,11 @@ test FixToken-1.3 {Create a non-empty instance from an String} {
     $p toString
 } {fix(7.7734375,16,4)}
 
+test FixToken-1.4 {Create a non-empty instance from an String} {
+    set p [java::new {ptolemy.data.FixToken String} "fix(2.5, 6, 3)" ]
+    $p toString
+} {fix(2.5,6,3)}
+
 ######################################################################
 
 test FixToken-2.1 {Test additive identity} {	    

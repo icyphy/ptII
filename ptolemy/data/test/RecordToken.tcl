@@ -75,6 +75,14 @@ test RecordToken-1.1 {Create a non-empty instance} {
 ######################################################################
 ####
 # 
+test RecordToken-1.2 {Create a non-empty instance from string} {
+    set r [java::new {ptolemy.data.RecordToken String} "{name=\"bar\", value=6}"]
+    $r toString
+} {{name="bar", value=6}}
+
+######################################################################
+####
+# 
 test RecordToken-2.1 {Test add} {
     # first record is {name="foo", value=1, extra1=2}
     set l1 [java::new {String[]} {3} {{name} {value} {extra1}}]

@@ -34,6 +34,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.RecordType;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.PtParser;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,30 +61,33 @@ public class RecordToken extends Token {
      *  must be non-empty.
      *  @param labels An array of labels.
      *  @param values An array of Tokens.
-     *  @exception IllegalArgumentException If the labels or the values array
+     *  @exception IllegalActionException If the labels or the values array
      *   do not have the same length; or is empty; or contains null element;
      *   or the labels array contains duplicate elements.
      */
-    public RecordToken(String[] labels, Token[] values) {
-        if (labels == null || values == null ||
-                labels.length != values.length) {
-            throw new IllegalArgumentException("RecordToken: the labels or " +
-                    "the values array do not have the same length, " +
-                    "or is null.");
-        }
+    public RecordToken(String[] labels, Token[] values)
+            throws IllegalActionException {
+        _initialize(labels, values);
+    }
 
-        for (int i = 0; i<labels.length; i++) {
-            if (labels[i] == null || values[i] == null) {
-                throw new IllegalArgumentException("RecordToken: the " + i +
-                        "'th element of the labels or values array is null");
-            }
-            if ( !_fields.containsKey(labels[i])) {
-                _fields.put(labels[i], values[i]);
-            } else {
-                throw new IllegalArgumentException("RecordToken: The " +
-                        "labels array contain duplicate element: " + labels[i]);
-            }
-        }
+    /** Construct a RecordToken from the specified string.
+     *  @param init A string expression of a record.
+     *  @exception IllegalActionException If the string does
+     *   not contain a parsable record.
+     */
+    public RecordToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	RecordToken token = (RecordToken)tree.evaluateParseTree();
+
+        Object[] labelObjects = token.labelSet().toArray();
+        String[] labels = new String[labelObjects.length];
+        Token[] values = new Token[labelObjects.length];
+	for (int i=0; i<labelObjects.length; i++) {
+	    labels[i] = (String)labelObjects[i];
+	    values[i] = token.get(labels[i]);
+	}
+        _initialize(labels, values);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -327,6 +332,34 @@ public class RecordToken extends Token {
             values[i] = this.get(labels[i]).zero();
         }
         return new RecordToken(labels, values);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    // initialize this token using the specified labels and values.
+    // This method is called by the constructor.
+    private void _initialize(String[] labels, Token[] values)
+            throws IllegalActionException {
+        if (labels == null || values == null ||
+                labels.length != values.length) {
+            throw new IllegalActionException("RecordToken: the labels or " +
+                    "the values array do not have the same length, " +
+                    "or is null.");
+        }
+
+        for (int i = 0; i<labels.length; i++) {
+            if (labels[i] == null || values[i] == null) {
+                throw new IllegalActionException("RecordToken: the " + i +
+                        "'th element of the labels or values array is null");
+            }
+            if ( !_fields.containsKey(labels[i])) {
+                _fields.put(labels[i], values[i]);
+            } else {
+                throw new IllegalActionException("RecordToken: The " +
+                        "labels array contain duplicate element: " + labels[i]);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

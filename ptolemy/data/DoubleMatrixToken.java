@@ -81,7 +81,7 @@ public class DoubleMatrixToken extends MatrixToken {
         _initialize(value, copy);
     }
 
-    /** Construct an DoubleMatrixToken from the specified string.
+    /** Construct a DoubleMatrixToken from the specified string.
      *  @param init A string expression of a 2-D double matrix.
      *  @exception IllegalActionException If the string does
      *   not contain a parsable 2-D double matrix.

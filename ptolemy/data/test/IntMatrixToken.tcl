@@ -68,9 +68,9 @@ test IntMatrixToken-1.1 {Create a non-empty instance from an int} {
 ####
 # 
 test IntMatrixToken-1.2 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.IntMatrixToken String} "\[\[5 4\]\[3 2\]\]"]
+    set p [java::new {ptolemy.data.IntMatrixToken String} "\[5, 4; 3, 2\]"]
     $p toString
-} {ptolemy.data.IntMatrixToken([5, 4; 3, 2])} {Expression language doesn't support this yet}
+} {[5, 4; 3, 2]}
 
 ######################################################################
 ####

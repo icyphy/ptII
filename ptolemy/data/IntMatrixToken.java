@@ -36,6 +36,8 @@ import ptolemy.math.Complex;
 import ptolemy.math.DoubleMatrixMath;
 import ptolemy.math.IntegerMatrixMath;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ASTPtRootNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntMatrixToken
@@ -90,25 +92,21 @@ public class IntMatrixToken extends MatrixToken {
      *   is null.
      */
     protected IntMatrixToken(final int[][] value, final int copy) {
-        _rowCount = value.length;
-        _columnCount = value[0].length;
-
-        if (copy == DO_NOT_COPY) {
-            _value = value;
-        } else {
-            _value = IntegerMatrixMath.allocCopy(value);
-        }
+        _initialize(value, copy);
     }
 
-    // FIXME: finish this method after array is added to the
-    //               expression language.
-    // Construct an IntMatrixToken from the specified string.
-    // @param init A string expression of a 2-D int array.
-    // @exception IllegalArgumentException If the string does
-    //  not contain a parsable 2-D int array.
-    //
-    // public IntMatrixToken(String init) {
-    // }
+    /** Construct an IntMatrixToken from the specified string.
+     *  @param init A string expression of a 2-D int matrix.
+     *  @exception IllegalActionException If the string does
+     *   not contain a parsable 2-D int matrix.
+     */
+    public IntMatrixToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	IntMatrixToken token = (IntMatrixToken)tree.evaluateParseTree();
+        int[][] value = token.intMatrix();
+        _initialize(value, DO_COPY);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -548,8 +546,24 @@ public class IntMatrixToken extends MatrixToken {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+
+    // initialize the row and column count and copy the specified
+    // matrix. This method is used by the constructors.
+    private void _initialize(int[][] value, int copy) {
+        _rowCount = value.length;
+        _columnCount = value[0].length;
+
+        if (copy == DO_NOT_COPY) {
+            _value = value;
+        } else {
+            _value = IntegerMatrixMath.allocCopy(value);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private final int[][] _value;
-    private final int _rowCount;
-    private final int _columnCount;
+    private int[][] _value;
+    private int _rowCount;
+    private int _columnCount;
 }

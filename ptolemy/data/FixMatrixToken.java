@@ -35,6 +35,8 @@ import ptolemy.math.FixPoint;
 import ptolemy.math.Quantizer;
 import ptolemy.math.Precision;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ASTPtRootNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixMatrixToken
@@ -76,21 +78,20 @@ public class FixMatrixToken extends MatrixToken {
      *   is null.
      */
     public FixMatrixToken(FixPoint[][] value ) throws IllegalActionException {
-	_rowCount = value.length;
-	_columnCount = value[0].length;
-	_value = new FixPoint[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		_value[i][j] = value[i][j];
-                Precision precision = value[i][j].getPrecision();
-                if (_precision != null && !_precision.equals(precision)) {
-                    throw new IllegalActionException(
-                            "Attempt to create a FixMatrixToken"
-                            + " with unequal precisions.");
-                }
-                _precision = precision;
-	    }
-	}
+        _initialize(value);
+    }
+
+    /** Construct a FixMatrixToken from the specified string.
+     *  @param init A string expression of a 2-D fix matrix.
+     *  @exception IllegalActionException If the string does
+     *   not contain a parsable 2-D fix matrix.
+     */
+    public FixMatrixToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	FixMatrixToken token = (FixMatrixToken)tree.evaluateParseTree();
+        FixPoint[][] value = token.fixMatrix();
+        _initialize(value);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -391,6 +392,29 @@ public class FixMatrixToken extends MatrixToken {
             // precisions are all the same, so this should not be thrown.
             throw new InternalErrorException("Unequal precisions!");
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
+    // initialize the row and column count and copy the specified
+    // matrix. This method is used by the constructors.
+    private void _initialize(FixPoint[][] value) throws IllegalActionException {
+	_rowCount = value.length;
+	_columnCount = value[0].length;
+	_value = new FixPoint[_rowCount][_columnCount];
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		_value[i][j] = value[i][j];
+                Precision precision = value[i][j].getPrecision();
+                if (_precision != null && !_precision.equals(precision)) {
+                    throw new IllegalActionException(
+                            "Attempt to create a FixMatrixToken"
+                            + " with unequal precisions.");
+                }
+                _precision = precision;
+	    }
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

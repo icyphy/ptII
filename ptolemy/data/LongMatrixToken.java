@@ -31,6 +31,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ASTPtRootNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongMatrixToken
@@ -64,25 +66,21 @@ public class LongMatrixToken extends MatrixToken {
      *   is null.
      */
     public LongMatrixToken(long[][] value) {
-	_rowCount = value.length;
-	_columnCount = value[0].length;
-	_value = new long[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		_value[i][j] = value[i][j];
-	    }
-	}
+        _initialize(value);
     }
 
-    // FIXME: finish this method after array is added to the
-    // 	      expression language.
-    // Construct an LongMatrixToken from the specified string.
-    // @param init A string expression of a 2-D long array.
-    // @exception IllegalArgumentException If the string does
-    //  not contain a parsable 2-D int array.
-    //
-    // public LongMatrixToken(String init) {
-    // }
+    /** Construct a LongMatrixToken from the specified string.
+     *  @param init A string expression of a 2-D long matrix.
+     *  @exception IllegalActionException If the string does
+     *   not contain a parsable 2-D long matrix.
+     */
+    public LongMatrixToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	LongMatrixToken token = (LongMatrixToken)tree.evaluateParseTree();
+        long[][] value = token.longMatrix();
+        _initialize(value);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -371,6 +369,22 @@ public class LongMatrixToken extends MatrixToken {
 	    }
 	}
 	return new LongMatrixToken(result);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
+    // initialize the row and column count and copy the specified
+    // matrix. This method is used by the constructors.
+    private void _initialize(long[][] value) {
+	_rowCount = value.length;
+	_columnCount = value[0].length;
+	_value = new long[_rowCount][_columnCount];
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		_value[i][j] = value[i][j];
+	    }
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

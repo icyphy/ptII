@@ -37,6 +37,8 @@ import ptolemy.math.Quantizer;
 import ptolemy.math.Precision;
 import ptolemy.graph.CPO;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ASTPtRootNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToken
@@ -98,6 +100,19 @@ public class FixToken extends ScalarToken {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
+    }
+
+    /** Construct a FixToken from the specified string.
+     *  @param init A string expression of a fixed point number in Ptolemy II
+     *   expression language syntax.
+     *  @exception IllegalActionException If the string does
+     *   not contain a parsable fixed point number.
+     */
+    public FixToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	FixToken token = (FixToken)tree.evaluateParseTree();
+        _value = token.fixValue();
     }
 
     ///////////////////////////////////////////////////////////////////
