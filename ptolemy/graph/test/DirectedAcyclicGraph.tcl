@@ -151,14 +151,14 @@ test DirectedAcyclicGraph-2.6 {a 5 point CPO that's not a lattice} {
 ######################################################################
 ####
 # 
-#test DirectedAcyclicGraph-2.7 {a 6 point CPO that's not a lattice} {
-#    # add a bottom to the above lattice
-#    set n6 [java::new {java.lang.String String} node6]
-#    $p add $n6
-#    $p addEdge $n6 $n4
-#    $p addEdge $n6 $n5
-#    $p isLattice
-#} {0}
+test DirectedAcyclicGraph-2.7 {a 6 point CPO that's not a lattice} {
+    # add a bottom to the above lattice
+    set n6 [java::new {java.lang.String String} node6]
+    $p add $n6
+    $p addEdge $n6 $n4
+    $p addEdge $n6 $n5
+    $p isLattice
+} {0}
 
 ######################################################################
 ####
@@ -178,6 +178,7 @@ test DirectedAcyclicGraph-3.1 {a DAG with 4 nodes forming a diamond} {
     $p addEdge $n2 $n4
     $p addEdge $n3 $n4
     set sort [$p topologicalSort]
-    list [$sort get 0] [$sort get 1] [$sort get 2] [$sort get 3]
-} {node1 node2 node3 node4}
+    list [$sort get 0] [$sort get 1] [$sort get 2] [$sort get 3] \
+	 [$p isLattice]
+} {node1 node2 node3 node4 1}
 
