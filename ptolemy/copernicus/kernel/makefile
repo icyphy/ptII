@@ -53,6 +53,7 @@ JSRCS = \
 	CastAndInstanceofEliminator.java \
 	ClassWriter.java \
 	EntitySootClass.java \
+	FastForwardFlowAnalysis.java \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
 	JimpleWriter.java \
