@@ -53,7 +53,10 @@ JSRCS = \
 	UnitSystem.java
 
 OTHER_FILES_TO_BE_JARED = \
-	BasicUnits.xml
+	BasicUnits.xml \
+	CGSUnitBase.xml \
+	ElectronicUnitBase.xml \
+	UnitConversions.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
