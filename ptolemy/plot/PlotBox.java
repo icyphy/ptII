@@ -1380,7 +1380,10 @@ public class PlotBox extends Applet {
      */
     private String _formatNum (double num, int numfracdigits) {
         // First, round the number. 
-        String numString = Double.toString(num + 0.5*Math.pow(10.0, -numfracdigits));
+        double fudge = 0.5;
+        if (num < 0.0) fudge = -0.5;
+        String numString = Double.toString(num +
+                fudge*Math.pow(10.0, -numfracdigits));
         // Next, find the decimal point.
         int dpt = numString.lastIndexOf(".");
         StringBuffer result = new StringBuffer();
