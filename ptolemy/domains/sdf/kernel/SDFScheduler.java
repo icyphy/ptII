@@ -657,9 +657,9 @@ public class SDFScheduler extends Scheduler {
      *  through the specified port.   Set and verify the fractional
      *  firing for each Actor that is connected to this port.
      *  Any actors that we calculate their firing vector for the first time
-     *  are moved from RemainingActors to pendingActors.
-     *  Note that ports directly container by the given container are
-     *  handled slightly differently than other ports.  Most importantly,
+     *  are moved from remainingActors to pendingActors.
+     *  Note that ports directly contained by the given container are
+     *  handled slightly differently from other ports.  Most importantly,
      *  Their rates are propagated to ports they are connected to on the
      *  inside, as opposed to ports they are connected to on the outside.
      *
@@ -693,25 +693,74 @@ public class SDFScheduler extends Scheduler {
         // First check to make sure that this Port is not connected to
         // any other output ports on the outside.  
         // This results in a non-deterministic merge and is illegal.
+        // Do not do this test for output ports where we are propagating
+        // inwards instead of outwards.
         if(currentPort.isOutput() && currentPort.getContainer() != container) {
-            Iterator connectedOutPorts =
-                currentPort.deepConnectedOutPortList().iterator();
+            Iterator connectedPorts =
+                    currentPort.deepConnectedPortList().iterator();
             
-            while(connectedOutPorts.hasNext()) {
-                IOPort connectedPort =
-                    (IOPort) connectedOutPorts.next();
+            // Make sure any connected output ports are connected on
+            // the inside.
+            while(connectedPorts.hasNext()) {
+
+                IOPort connectedPort = (IOPort) connectedPorts.next();
+
                 // connectPort might be connected on the inside to the
-                // currentPort, which is legal.
-                if(!connectedPort.getContainer().equals(
-                        currentPort.getContainer().getContainer())) {
+                // currentPort, which is legal.  The container argument
+                // is always the container of the director, so any port
+                // that has that container must be connected on the inside.
+                if(connectedPort.isOutput()
+                        && connectedPort.getContainer() != container) {
                     throw new NotSchedulableException(
                             currentPort, connectedPort,
-                            "Two output ports are connected " +
-                            "on the same relation. " +
+                            "Output ports drive the same relation. " +
+                            "This is not legal in SDF.");
+                } else if(connectedPort.isInput()
+                        && connectedPort.getContainer() == container) {
+                    throw new NotSchedulableException(
+                            currentPort, connectedPort,
+                            "Output port drives the same relation as " +
+                            "the external input port. " +
                             "This is not legal in SDF.");
                 }
             }
         }
+
+        // Next check to make sure that if this Port is an external
+        // input port, then it does not drive the same relation as some
+        // other output port or some other external input port.
+        // This results in a non-deterministic merge and is illegal.
+        if(currentPort.isInput() && currentPort.getContainer() == container) {
+            Iterator connectedPorts =
+                    currentPort.deepInsidePortList().iterator();
+            // Make sure any connected output ports are connected on
+            // the inside.
+            while(connectedPorts.hasNext()) {
+
+                IOPort connectedPort = (IOPort) connectedPorts.next();
+
+                // connectPort might be connected on the inside to the
+                // currentPort, which is legal.  The container argument
+                // is always the container of the director, so any port
+                // that has that container must be connected on the inside.
+                if(connectedPort.isOutput()
+                       && connectedPort.getContainer() != container) {
+                    throw new NotSchedulableException(
+                            currentPort, connectedPort,
+                            "External input port drive the same relation " +
+                            "as an output port. " +
+                            "This is not legal in SDF.");
+                } else if(connectedPort.isInput()
+                       && connectedPort.getContainer() == container) {
+                    throw new NotSchedulableException(
+                            currentPort, connectedPort,
+                            "External input port drives the same relation as " +
+                            "another external input port. " +
+                            "This is not legal in SDF.");
+                }
+            }
+        }
+
 
         // Get the rate of this port.
         int currentRate = _getRate(currentPort);
@@ -1181,16 +1230,27 @@ public class SDFScheduler extends Scheduler {
                 ((Integer)maxBufferSizes.get(relation)).intValue();
             
             Parameter parameter = (Parameter)
-                relation.getAttribute("bufferSize");
+                    relation.getAttribute("bufferSize");
             if(parameter == null) {
+                // This needs to be done in a mutation, since
+                // we may not be able to grab write access to the
+                // workspace.
+                final Relation finalRelation = relation;
+                final int finalBufferSize = bufferSize;
+                ChangeRequest request = new ChangeRequest(this,
+                        "set buffer size") {
+                    protected void _execute() throws Exception {
+                        Parameter parameter = new Parameter(
+                                finalRelation, "bufferSize");
+                        parameter.setToken(new IntToken(finalBufferSize));
+                    }
+                };
+                relation.requestChange(request);
+            } else {
                 try {
-                    parameter = new Parameter(relation, "bufferSize");
                     parameter.setToken(new IntToken(bufferSize));
-               } catch (Exception ex) {
-                    throw new RuntimeException("Failed to create parameter "
-                            + "in " + relation.getFullName() + " with name "
-                            + "bufferSize even though one did not already "
-                            + "exist:" + ex.getMessage());
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(ex.toString());
                 }
             }
             
