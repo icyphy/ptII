@@ -69,6 +69,7 @@ JSRCS = \
 	CompositeActor.java \
 	Director.java \
 	Executable.java \
+	ExecutionEvent.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
