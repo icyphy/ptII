@@ -44,8 +44,8 @@ if {[string compare test [info procs test]] == 1} then {
 #
 proc pxgraphFiles {} {
     global pxgraphfile1 pxgraphfile2
-    set pxgraphfile1 /tmp/pxgrapfile1_[pid].plt
-    set pxgraphfile2 /tmp/pxgrapfile2_[pid].plt
+    set pxgraphfile1 /tmp/pxgrapfile1.plt
+    set pxgraphfile2 /tmp/pxgrapfile2.plt
     set fd [open $pxgraphfile1 w]
     puts $fd "0  0\n1	1 \n2,2\n3 -0.2" 
     close $fd
