@@ -32,7 +32,15 @@ ME =		ptolemy/domains/wireless/demo
 
 # Keep these alphabetical please.
 DIRS = \
+	AntennaPattern \
 	CircularRange \
+	Collisions \
+	EvaderAndPursuer \
+	MACProtocolModel \
+	PersonalAreaNetwork \
+	PowerVariability \
+	SmallWorld \
+	TerrainModel \
 	WirelessSoundDetection
 
 # Root of Ptolemy II directory
@@ -47,7 +55,12 @@ PTPACKAGE = 	demo
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
+# These models are listed in ptII/ptolemy/configs/visualsense/intro.htm
 PTCLASSALLJARS = \
+	CircularRange/CircularRange.jar \
+	EvaderAndPursuer/EvaderAndPursuer.jar \
+	PowerVariability/PowerVariability.jar \
+	SmallWorld/SmallWorld.jar \
 	WirelessSoundDetection/WirelessSoundDetection.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
