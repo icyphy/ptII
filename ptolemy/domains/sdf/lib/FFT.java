@@ -48,7 +48,7 @@ import ptolemy.math.SignalProcessing;
 //// FFT
 
 /**
-This actor calculates the FFT of a complex input array.
+This actor calculates the FFT of a sequence of complex inputs.
 The order of the FFT determines the number of tokens that
 will be consumed and produced on each firing. The order is
 the base-2 logarithm of the size. The default order is 8,
