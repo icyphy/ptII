@@ -96,7 +96,6 @@ JSRCS = \
 	TypedDecl.java
 
 EXTRA_SRCS =	$(JSRCS) \
-	DeclTypes.def \
 	JavaVisitor.java \
 	NodeTypes.def \
 	Yylex \
@@ -162,7 +161,9 @@ analysis:
 codegen:
 	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
 	$(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-	-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem
+	-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem -iterations 5 \
+      -outdir $(ROOT) -outpkg cg.orthocom
+      
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
