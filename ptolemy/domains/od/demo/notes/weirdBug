@@ -1,0 +1,64 @@
+cd ~/_ptolemyII/ptolemy/domains/od/demo/
+make -k run
+CLASSPATH=../../../.. /usr/java/bin/java ptolemy.domains.od.demo.ODStringDemo
+Width of input port is 3
+1 actors are active.
+2 actors are active.
+3 actors are active.
+4 actors are active.
+Process thread #1 started.
+Process thread #2 started.
+Process thread #3 started.
+Process thread #4 started.
+Rechecking ODPrintString.getNextToken()
+SIGSEGV   11*  segmentation violation
+    si_signo [11]: SIGSEGV   11*  segmentation violation
+    si_errno [0]: Error 0
+    si_code [1]: SEGV_MAPERR [addr: 0x18183601]
+
+	stackbase=EFFFE930, stackpointer=EFFFD3D4
+
+Full thread dump:
+    "consonants" (TID:0xed66b8b0, sys_thread_t:0x103b80, state:R, thread_t: t@9, sp:0x0 threadID:0xef1b3e00, stack_base:0xef1b3d94, stack_size:0x22000) prio=5
+	ptolemy.domains.od.lib.ODStringSource.fire(Compiled Code)
+	ptolemy.actor.process.ProcessThread.run(Compiled Code)
+    "vowels" (TID:0xed66bbb8, sys_thread_t:0x103aa8, state:R, thread_t: t@8, sp:0x0 threadID:0xef1e3e00, stack_base:0xef1e3d94, stack_size:0x22000) prio=5
+	ptolemy.domains.od.lib.ODStringSource.fire(Compiled Code)
+	ptolemy.actor.process.ProcessThread.run(Compiled Code)
+    "punctuation" (TID:0xed66bec0, sys_thread_t:0x1131f0, state:R, thread_t: t@7, sp:0x0 threadID:0xef213e00, stack_base:0xef213d94, stack_size:0x22000) prio=5
+	ptolemy.domains.od.lib.ODStringSource.fire(Compiled Code)
+	ptolemy.actor.process.ProcessThread.run(Compiled Code)
+    "printer" (TID:0xed66bf98, sys_thread_t:0x113160, state:R, thread_t: t@6, sp:0x0 threadID:0xef243e00, stack_base:0xef243d94, stack_size:0x22000) prio=5
+	ptolemy.domains.od.lib.ODPrintString.fire(Compiled Code)
+	ptolemy.actor.process.ProcessThread.run(Compiled Code)
+    "SIGQUIT handler" (TID:0xed666298, sys_thread_t:0x3c788, state:R, thread_t: t@5, sp:0x0 threadID:0xef2f3e00, stack_base:0xef2f3d94, stack_size:0x22000) prio=0
+    "Finalizer thread" (TID:0xed666088, sys_thread_t:0x44b70, state:CW, thread_t: t@4, sp:0x0 threadID:0xef3b3e00, stack_base:0xef3b3d94, stack_size:0x22000) prio=1
+    "main" (TID:0xed6660b0, sys_thread_t:0x3d6f0, state:R, thread_t: t@1, sp:0x0 threadID:0x20a18, stack_base:0xefffe930, stack_size:0x800000) prio=5 *current thread*
+	ptolemy.actor.CompositeActor.fire(Compiled Code)
+	ptolemy.actor.Manager._iterate(Compiled Code)
+	ptolemy.actor.Manager.run(Compiled Code)
+	ptolemy.domains.od.demo.ODStringDemo.main(Compiled Code)
+Monitor Cache Dump:
+    <internal> java.lang.Class@ED66A470/ED750A68: owner "printer" (0x113160, 2 entries)
+    <internal> java.lang.Class@ED66A4E8/ED7505E0: owner "main" (0x3d6f0, 1 entry)
+Registered Monitor Dump:
+    PCMap lock: <unowned>
+    Thread queue lock: <unowned>
+    Name and type hash table lock: <unowned>
+    String intern lock: <unowned>
+    JNI pinning lock: <unowned>
+    JNI global reference lock: <unowned>
+    BinClass lock: <unowned>
+    Class loading lock: <unowned>
+    Java stack lock: <unowned>
+    Code rewrite lock: <unowned>
+    Heap lock: <unowned>
+    Has finalization queue lock: <unowned>
+    Finalize me queue lock: <unowned>
+	Waiting to be notified:
+	    "Finalizer thread" (0x44b70)
+    Monitor registry: owner "main" (0x3d6f0, 1 entry)
+Abort - core dumped
+make: *** [run] Error 134
+
+Compilation exited abnormally with code 2 at Mon Nov 30 11:49:13
