@@ -132,6 +132,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
         super.init();
         try {
             _query = new Query();
+            _query.setBackground(_getBackground());
             _query.addLine("busmean", "Bus mean interarrival time", "1.0");
             _query.addLine("passmean",
                     "Passenger mean interarrival time", "1.0");
@@ -139,7 +140,6 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             _query.addDisplay("average",
                 "Average waiting time of passengers", "");
             add(_query);
-            _query.setBackground(_getBackground());
             _query.addQueryListener(this);
 
             // The 2 argument requests a go and stop button.
