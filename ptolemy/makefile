@@ -51,9 +51,14 @@ VPATH =		$(ROOT)/$(ME)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+EXTRA_SRCS =	PtolemyII.ptml
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = PtolemyII.ptml $(DIRS) filter media system
+MISC_FILES = $(DIRS) filter media system
+
+all: suball $(EXTRA_SRCS)
+install: subinstall
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
