@@ -52,6 +52,7 @@ JARFILE = 	$(JPACKAGE).jar
 CLASSPATH = ../../../..
 
 JSRCS = \
+	PNAdder.java \
 	PNAlternate.java \
  	PNAudioPacker.java \
 	PNAudioSource.java \
