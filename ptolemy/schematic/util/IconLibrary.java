@@ -69,14 +69,14 @@ public class IconLibrary extends PTMLObject {
      * Add an Icon to this library
      */
     public void addIcon(Icon i) {
-        _icons.insertFirst(i);
+        _icons.insertLast(i);
     }
 
     /**
      * Add a sublibrary to this library.
      */
     public void addSubLibrary(IconLibrary library) {
-        _sublibraries.insertFirst(library);
+        _sublibraries.insertLast(library);
     }
 
     /**

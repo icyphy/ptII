@@ -69,14 +69,14 @@ public class EntityLibrary extends PTMLObject {
      * Add an Entity to this library
      */
     public void addEntity(EntityTemplate e) {
-        _entities.insertFirst(e);
+        _entities.insertLast(e);
     }
 
     /**
      * Add a sublibrary to this library.
      */
     public void addSubLibrary(EntityLibrary library) {
-        _sublibraries.insertFirst(library);
+        _sublibraries.insertLast(library);
     }
 
     /**

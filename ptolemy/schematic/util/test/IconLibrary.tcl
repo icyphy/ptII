@@ -90,7 +90,7 @@ test IconLibrary-3.3 {SubLibrarys} {
     set r4 [$enum nextElement] 
     set r5 [$enum hasMoreElements]
     list $r1 [$r2 toString] $r3 [$r4 toString] $r5
-} {1 SubLibrary2({}{}) 1 SubLibrary1({}{}) 0}
+} {1 SubLibrary1({}{}) 1 SubLibrary2({}{}) 0}
 
 test IconLibrary-3.4 {removeSubLibrary} {
     $e0 removeSubLibrary $t1

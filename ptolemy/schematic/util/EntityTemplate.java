@@ -81,7 +81,7 @@ public class EntityTemplate extends PTMLObject {
         if(containsPort(port))
             throw new IllegalActionException("Port with name " + 
 		 port.getName() + " already exists.");
-        _ports.insertFirst(port);
+        _ports.insertLast(port);
     }
 
     /**

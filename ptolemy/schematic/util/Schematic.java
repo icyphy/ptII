@@ -72,7 +72,7 @@ public class Schematic extends PTMLObject {
      * of the entity must be unique in this schematic.
      */
     public void addEntity (SchematicEntity entity) {
-        _entities.insertFirst(entity);
+        _entities.insertLast(entity);
     }
 
     /**
@@ -86,7 +86,7 @@ public class Schematic extends PTMLObject {
         if(containsPort(port))
             throw new IllegalActionException("Port with name " + 
 		 port.getName() + " already exists.");
-        _ports.insertFirst(port);
+        _ports.insertLast(port);
     }
 
    /**
@@ -94,7 +94,7 @@ public class Schematic extends PTMLObject {
      * of the relation must be unique in this schematic.
      */
     public void addRelation (SchematicRelation relation) {
-        _relations.insertFirst(relation);
+        _relations.insertLast(relation);
     }
 
     /**

@@ -57,6 +57,7 @@ test PTMLObjectFactory-2.1 {Constructor tests} {
 	    createIconLibrary $xmllib]
     $iconlib toString
 } {SDF({}{
+LoadImage()
 SaveImage(
 ....line(style=dotted,width=5,points=0 0 10 10)
 ....rect(color=blue,fill=hatch,points=0 0 10 10)
@@ -64,6 +65,5 @@ SaveImage(
 ....polygon(points=0 0 10 10 15 10 15 0)
 ....textline(font=helvetica,points=0 0)
 ....textbox(alignX=center,alignY=top,points=0 0 100 100)
-....image(format=gif,compression=zip,file=icon.gif,points=0 0 100 100))
-LoadImage()})}
+....image(format=gif,compression=zip,file=icon.gif,points=0 0 100 100))})}
 
