@@ -79,8 +79,15 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo:
-	CLASSPATH=$(CLASSPATH) appletviewer QR.htm
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer QR.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" QR.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" QR.xml
 
 docs: javadocs
 
