@@ -373,6 +373,35 @@ cd $PTII/ptolemy/matlab
 make
 $PTII/bin/vergil ./demo/MatlabExpression/MatlabExpression
 </pre>
+   <br>You might need to edit jni_md.h
+   <blockquote>
+   GCC doesn't have a __int64 built-in, and this patch basically uses
+   "long long" instead.
+
+   <ol>
+   <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
+    Where <code><i>jdk_root</i></code> is the installation root (eg.,
+   <code>c:/Program Files/Java/jdk1.5.0_01</code>
+
+
+   <li> Replace the segment:
+   </ol>
+
+   <pre>
+   typedef long jint;
+   typedef __int64 jlong;
+   </pre>
+   with:
+   <pre>
+   typedef long jint;
+   #ifdef __GNUC__
+   typedef long long jlong;
+   #else
+   typedef __int64 jlong;
+   #endif
+   typedef signed char jbyte;
+   </pre>
+   </blockquote>
 
 <h3>Quicktime</h3>
 The <a hreg="codedoc/ptolemy/domains/gr/lib/quicktime/package-summary.html">Quicktime</a> GR domain actors use Quicktime from Apple.
