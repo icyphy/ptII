@@ -33,6 +33,7 @@ import java.util.*;
 
 import ptolemy.graph.*;
 
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 
 import ptolemy.kernel.Entity;
@@ -46,29 +47,14 @@ import ptolemy.kernel.ComponentEntity;
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ModelGraph extends DirectedGraph {
+public class ActorModelGraph extends ModelGraph {
 
-    public ModelGraph(ComponentEntity entity) {
-	super();
-	_entity = entity;
-	_inputPortNodes = new Vector();
-	_outputPortNodes = new Vector();
+    public ActorModelGraph(AtomicActor entity) {
+	super(entity);
     }
 
-    public ComponentEntity getEntity() { return _entity; }
-
-    public Node addIOPortNode(IOPort port) {
-	Node n = addNodeWeight(port);
-	if (port.isInput())
-	    _inputPortNodes.add(n);
-	else
-	    _outputPortNodes.add(n);
-	return n;
+    public AtomicActor getAtomicActor() { 
+	return (AtomicActor) getEntity();
     }
-
-
-    protected ComponentEntity _entity;
-    protected Collection _inputPortNodes;
-    protected Collection _outputPortNodes;
 
 }

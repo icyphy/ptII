@@ -66,9 +66,11 @@ JSRCS =	\
 	SuperBlock.java \
 	SynthesisToDotty.java \
 	UniqueVector.java \
-	ModelGraph.java
+	ModelGraph.java \
+	CompositeModelGraph.java \
+	ActorModelGraph.java
 
-
+#	DirectedPortGraph.java
 #	PtolemyLogic.java
 #	PtolemyCellToJHDLCircuit.java \
 #	PtolemyAtomicCell.java \
