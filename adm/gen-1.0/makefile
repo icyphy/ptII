@@ -221,7 +221,7 @@ nightly: ptclean ptbuild \
 	clean all \
 	glimpse \
 	findchanges \
-	remote1
+	remote4
 
 ####################################
 # Rules that operate in ~ptII
@@ -686,7 +686,7 @@ remote3distbuild:
 	@echo `date`
 
 # Build Jacl
-REMOTE3PTJACL_JAR	= $(REMOTE4PTIIDIST)/ptjacl.jar
+REMOTE3PTJACL_JAR	= $(REMOTE3PTIIDIST)/ptjacl.jar
 $(REMOTE3PTJACL_JAR):
 	@echo "#"
 	@echo "# Creating $@"
@@ -734,21 +734,105 @@ remote3done: $(REMOTE3DONEFILE) remotealldone
 $(REMOTE3DONEFILE):
 	date > $@
 
+# Semaphore file for the remote4 build
+REMOTE4DONEFILE = $(GENLOGDIR)/remote4done
+remote4done: $(REMOTE4DONEFILE) remotealldone
+$(REMOTE4DONEFILE):
+	date > $@
+
+
 # If the remote done files are present, concatenate the logs and send email
-# Note that currently we are not running remote2
+# Note that currently we are not running remote 1 and remote2
 remotealldone:
-	if [ -f $(REMOTE1DONEFILE) \
-			-a -f $(REMOTE3DONEFILE) ]; then \
+	if [ -f $(REMOTE3DONEFILE) \
+			-a -f $(REMOTE4DONEFILE) ]; then \
 		date; \
 		echo "Remote processes finished"; \
-		cat $(REMOTE1LOG) $(REMOTE3LOG) \
+		cat $(REMOTE3LOG) $(REMOTE4LOG) \
 			>> $(PTIINIGHTLY_TXT); \
 		/bin/sh $(PTIIADM)/bin/ptIInightly-mail $(EMAILTO) ; \
 	else \
 		date; \
 		echo "Still waiting"; \
-		ls -l $(REMOTE1DONEFILE) $(REMOTE3DONEFILE); \
+		ls -l $(REMOTE3DONEFILE) $(REMOTE4DONEFILE); \
 	fi
+
+##########################################################################
+# Build from a tar file - similar to remote1, but w/o test case coverage
+
+####################################
+# Build and generate test case coverage on a remote host
+
+# Use a non-gnu make here for testing purposes
+OTHERMAKE = /usr/ccs/bin/make
+
+# Remote location of Ptolemy II tree for testing
+REMOTE4HOME = /vol/tycho/tycho2/ptII
+REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
+
+# Host to run on
+REMOTE4HOST = tycho
+
+# Log file to save the results in
+REMOTE4LOG = $(GENLOGDIR)/remote4.out
+
+# Create a separate tree and build on REMOTE4HOST
+remote4: $(PTII_SRC) $(GENLOGDIR)
+	@echo "#"
+	@echo "# Now building on $(REMOTE4HOST) from dist tar file"
+	@echo "#"
+	@echo `date`
+	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		remote4nuke remote4ptiidist remote4configure \
+		remote4distclean remote4build \
+		 >& $(REMOTE4LOG)" &
+
+
+# Remove the remote dist
+remote4nuke:
+	rm -rf $(REMOTE4PTIIDIST) $(REMOTE4DONEFILE)
+
+# untarthe remote dist.  Usually this is run on the remote machine
+remote4ptiidist: $(REMOTE4PTIIDIST)
+$(REMOTE4PTIIDIST): $(PTII_SRC)
+	@echo "#"
+	@echo "# Now untaring on `hostname`"
+	@echo "#"
+	@echo `date`
+	(cd $(REMOTE4HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_SRC) .gz`)
+
+remote4configure:
+	@echo "#"
+	@echo "# Now configuring on `hostname`"
+	@echo "#"
+	@echo `date`
+	(cd $(REMOTE4PTIIDIST);	rm -f config.cache; PTII=$(REMOTE4PTIIDIST) configure)
+
+# Clean the remote4 tree
+remote4distclean:
+	@echo "#"
+	@echo "# Now running make clean in $(REMOTE4PTIIDIST) on `hostname`"
+	@echo "#"
+	@echo `date`
+	(cd $(REMOTE4PTIIDIST); \
+		$(MAKE) clean; \
+		find . -name codeDoc -exec rm -rf {} \;)
+
+remote4distjavadocs:
+	@echo "#"
+	@echo "# Now generating javadocs in $(PTIIDIST) on `hostname`"
+	@echo "#"
+	@echo `date`
+	-(cd $(REMOTE4PTIIDIST); $(OTHERMAKE) -k javadocs)
+
+remote4build:
+	@echo "#"
+	@echo "# Now running make in $(REMOTE4PTIIDIST)"
+	@echo "# on  `hostname`"
+	@echo "#"
+	@echo `date`
+	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) install)
+
 
 
 ###########################################################################
