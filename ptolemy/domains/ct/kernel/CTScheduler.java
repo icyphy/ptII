@@ -727,7 +727,7 @@ public class CTScheduler extends Scheduler{
         // Create the nodes.
         // The actors comes from deepGetEntities, so it is impossible
         // that one actor can occur twice in the Enumeration. So no
-        // exceptions are catched.
+        // exceptions are caught.
         LinkedList actorlist = new LinkedList();
         while (actors.hasMoreElements()) {
             Actor a = (Actor)actors.nextElement();
@@ -773,7 +773,7 @@ public class CTScheduler extends Scheduler{
         // Create the nodes.
         // The actors comes from deepGetEntities, so it is impossible
         // that one actor can occur twice in the Enumeration. So no
-        // exceptions are catched.
+        // exceptions are caught.
         LinkedList actorlist = new LinkedList();
         while (actors.hasMoreElements()) {
             Actor a = (Actor)actors.nextElement();
