@@ -1,65 +1,52 @@
 
+This directory contains 6 java files:
+PetriNetActor.java     PetriNetReceiver.java  Transition.java
+PetriNetDirector.java  Place.java             Weight.java
 
+However, 3 of them are basically empty: 
+PetriNetReceiver.java  Transition.java Weight.java
+
+It is a good thing to have the Transition.java empty since
+it can be easily replaced by other actors. 
+
+********************************
+A Petri net Actor  
+
+THis is the basic unit of the hierarchical PetriNet component. It contains 
+ports, places, transitions, and hierarchical petrinet components. 
+The current version restricts the ports to be uniformly connected to
+Places or transitions in one direction. It is not allowed to have 
+ports to connect to places and transitions in the same input or output
+direction.
+
+It is also assumed that a transition is connected to places and a place
+is connected to transitions eventually in the hierarchy. 
+
+However, the system does not check for such restrictions.
+
+The flat Peti Net model is defined as follows.
+            place ----> transition ----> place
+A hierarchical Petri Net model is defined as follows:
+            place ----> transition ----> place
+            place ----> (ports) ----> transition ---> (ports) ----> place
+where (ports) means it could be 0 or any finite number of different directional
+ports, ---> means one or more marked or unmarked arcs.
+
+
+*********************************************
 PetriNetDirector
-
-// we will have three kinds of fire, fire one transition,
-// fire one round transitions, and fire till no more
-// transitions can fire or go infinite. The director should have all the
-// three parameters to choose. The implementation details
-// are minor differences. We have implemented two methods
-// the fire one transition, and fire one round transition.
-// we have not implemented the fire all transitions till
-// no more transitions to fire yet.
-
-//  
-// second problem is to choose from all the ready transition which one
-// to fire, and when it fires, it changes the state, and
-// we again to choose from many of the ready states
-// until no more transitions can fire.
-// the current method just fire the transition sequentially.
-
-
-
- public void fire() throws IllegalActionException {
-
-
-/* A Petri net transition.
-
-// fire has two parts: to modify the marking in the output places and
-// to modify the marking at the input places. The method also checks
-// whether there is a weight in the middle of the place-transition
-// connection. The weight is defined as single-input single-output
-// transformer to hold the weight of the arcs. 
-
-
-    public void fire() throws IllegalActionException {
-
-
-// prefire is similar with fire, it checks all the input places
-// to see whether the marking in that place is bigger than
-// the weight on the arc or not.
-
-
-    public boolean prefire() throws IllegalActionException {
-
-
-/* A Petri net place.
-
-    public Parameter initialMarking;
-
-    public int getMarking() { 
-    public void increaseMarking(int i) {
-    public void decreaseMarking(int i) {
-    public void printMarking() { 
-    public void initialize() throws IllegalActionException {
-  
-/* A Petri net Weight.
  
-    public Parameter initialWeight;
-    input.setMultiport(false);
-    output.setMultiport(false);
-   
-    public void initialize() throws IllegalActionException {
-    public int getWeight() {  
-    public void printWeight() { 
-    private int _currentWeight = 1;
+ *   Petri net director. Basic Petri net model consists of places and
+ *   transitions. A transition is enabled if places connected to the
+ *   input of the transition all have more tokens than the corresponding 
+ *   edge weights. An enabled transition can fire. WHen a transition fires,
+ *   it reduces the tokens in the places connected to the input of the 
+ *   transition, and increase the tokens in places connected to the output
+ *   of the transition. 
+ *
+ *
+ *   The key methods are the testing whether a transition
+ *   is ready or not _testReadyTransition, and fire an enabled transition 
+ *   _fireTransition. The sequence of firing is determinted by the method
+ *   fireHierarchicalPetriNet.
+
