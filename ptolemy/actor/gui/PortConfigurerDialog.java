@@ -330,15 +330,15 @@ public class PortConfigurerDialog extends PtolemyDialog
                 }
 
                 if (_columnNames.contains(ColumnNames.COL_UNITS)) {
-                    String _units = "";
+                    String units = "";
                     UnitAttribute _unitsAttribute = (UnitAttribute) p
                         .getAttribute("_units");
 
                     if (_unitsAttribute != null) {
-                        _units = _unitsAttribute.getExpression();
+                        units = _unitsAttribute.getExpression();
 
-                        if (_units != null) {
-                            portInfo.put(ColumnNames.COL_UNITS, _units);
+                        if (units != null) {
+                            portInfo.put(ColumnNames.COL_UNITS, units);
                         } else {
                             portInfo.put(ColumnNames.COL_UNITS, "");
                         }
@@ -492,12 +492,6 @@ public class PortConfigurerDialog extends PtolemyDialog
          * @see javax.swing.table.TableModel#isCellEditable(int, int)
          */
         public boolean isCellEditable(int row, int col) {
-            if (!_units) {
-                if (col == _columnNames.indexOf(ColumnNames.COL_UNITS)) {
-                    return false;
-                }
-            }
-
             Hashtable portInfo = (Hashtable) (_ports.elementAt(row));
             Port port = (Port) portInfo.get(ColumnNames.COL_ACTUAL_PORT);
 
@@ -1049,12 +1043,12 @@ public class PortConfigurerDialog extends PtolemyDialog
                 }
 
                 if (_columnNames.contains(ColumnNames.COL_UNITS)) {
-                    String _units = null;
+                    String units = null;
                     UnitAttribute _unitsAttribute = (UnitAttribute) actualPort
                         .getAttribute("_units");
 
                     if (_unitsAttribute != null) {
-                        _units = _unitsAttribute.getExpression();
+                        units = _unitsAttribute.getExpression();
                     }
 
                     String tableValue = (String) portInfo.get(ColumnNames.COL_UNITS);
@@ -1062,9 +1056,9 @@ public class PortConfigurerDialog extends PtolemyDialog
                     // tableValue will not be null because we put ""
                     // into portInfo in the constructor of
                     // PortTableModel.
-                    if (((_units == null) && (!tableValue.equals("")))
-                            || ((_units != null)
-                                    && (!tableValue.equals(_units)))) {
+                    if (((units == null) && (!tableValue.equals("")))
+                            || ((units != null)
+                                    && (!tableValue.equals(units)))) {
                         havePortUpdate = true;
                         updates.put(ColumnNames.COL_UNITS, Boolean.TRUE);
                     }
@@ -1392,7 +1386,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         if (updates.containsKey(ColumnNames.COL_UNITS)) {
             Boolean updateValue = (Boolean) updates.get(ColumnNames.COL_UNITS);
 
-            if (_units && updateValue.booleanValue()) {
+            if (updateValue.booleanValue()) {
                 momlUpdate.append(_momlProperty("_units", _UNIT_ATTRIBUTE,
                                           ((String) portInfo.get(ColumnNames.COL_UNITS))));
             }
@@ -1700,19 +1694,21 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // List of names of columns that will be used for this target.
+
+    /** List of names of columns that will be used for this target. */
     private ArrayList _columnNames;
 
-    // When you click on the "Hide" column header, toggle this value.
-    // @see toggleHidePorts()
+    /** When you click on the "Hide" column header, toggle this value.
+     * @see toggleHidePorts()
+     */
     private boolean _hideAllPorts = false;
 
-    // The combination box used to select the location of a port.
+    /** The combination box used to select the location of a port. */
     private JComboBox _portLocationComboBox;
     JTable _portTable;
     PortTableModel _portTableModel = null;
 
-    // JTableHeader of _portTable.  MouseListener is added to this.
+    /** JTableHeader of _portTable.  MouseListener is added to this. */
     JTableHeader _jth;
     static ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
     Vector _ports = null;
@@ -1720,25 +1716,24 @@ public class PortConfigurerDialog extends PtolemyDialog
     private static String _SINGLETON_ATTRIBUTE = "ptolemy.kernel.util.SingletonAttribute";
     private static String _SINGLETON_PARAMETER = "ptolemy.data.expr.SingletonParameter";
 
-    // When you click on the "Show Name" column header, toggle this value.
-    // @see toggleShowAllNames()
+    /** When you click on the "Show Name" column header, toggle this value.
+     * @see toggleShowAllNames()
+     */
     private boolean _showAllNames = false;
     private static String _STRING_ATTRIBUTE = "ptolemy.kernel.util.StringAttribute";
     static PtParser _typeParser = new PtParser();
 
-    // FIXME comment
-    private boolean _units = true;
     private static String _UNIT_ATTRIBUTE = "ptolemy.data.unit.UnitAttribute";
 
-    // The various buttons.
+    /** The various buttons. */
     private JButton _applyButton;
 
-    // The various buttons.
+    /** The various buttons. */
     private JButton _commitButton;
 
-    // The various buttons.
+    /** The various buttons. */
     private JButton _addButton;
 
-    // The various buttons.
+    /** The various buttons. */
     private JButton _removeButton;
 }
