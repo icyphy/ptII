@@ -14,7 +14,8 @@
 mailto=$1
 
 ADMDIR=/users/ptII/adm
-cd $ADMDIR/gen-latest
+GENDIR=$ADMDIR/gen-1.0
+cd $GENDIR
 
 
 # Generate the mail message
@@ -33,7 +34,7 @@ find /users/ptII/logs -name "java[0-9]*" -mtime +45 -exec rm {} \;
 
 
 echo "The size of the Ptolemy II tar file:" >> $mailmsg
-ls -l $ADMDIR/gen-latest/*.gz >> $mailmsg
+ls -l $GENDIR/.gz >> $mailmsg
 echo "" >> $mailmsg
 echo "To download the latest build, or see a list of changed files, go to"  >> $mailmsg
 echo "http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/adm/gen-1.0"  >> $mailmsg
@@ -110,7 +111,7 @@ echo "Test results during code coverage" >> $mailmsg
 echo "" >> $mailmsg
 echo "............................................................" >> $mailmsg
 echo "|To add a directory to the list of directories to be tested|" >> $mailmsg
-echo "|edit the value of JSALLDIRS in $ADMDIR/gen-latest/makefile|" >> $mailmsg
+echo "|edit the value of JSALLDIRS in $GENDIR/makefile|" >> $mailmsg
 echo "............................................................" >> $mailmsg
 echo "" >> $mailmsg
 # Note that we only grep for the tests run during code coverage
