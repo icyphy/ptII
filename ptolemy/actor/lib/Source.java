@@ -44,16 +44,30 @@ import ptolemy.kernel.util.*;
 /**
 Base class for simple data sources.  This class provides an output port
 and a trigger input port, both exposed as public variables.  The trigger
-port is a multiport of type Token, meaning that you can connect anything
-to it without imposing any type constraints on what you connect to it.
+port is a multiport with undeclared type, meaning that you can supply it
+with any data type.  The trigger port can also be left unconnected.
 The purpose of the trigger input is to (optionally) supply events that
 cause the actor to fire.  For some domains, such as SDF and CT, this is
 entirely unnecessary, as the actor will fire whether inputs are supplied
 or not.  In such domains, the trigger input will normally be left unconnected.
-Some derived classes may attach additional significance to an input
-on the trigger port.  In this base class, the fire() method reads
+In this base class, the fire() method reads
 at most one token from each channel of the trigger input, if any,
 and then discards the token.
+<p>
+Some derived classes may attach additional significance to an input
+on the trigger port. For example, they might fix the type and attach
+some significance to the value.  Typically, the derived class will call
+numberOfSources() on the trigger port to determine whether it is
+connected, and if it is, then use the data at the trigger port to
+trigger some action.  Note that it is not sufficient to use getWidth()
+on the port, since the width may be greater than zero even if there
+is no source of data.  This can occur, for example, if a trigger port
+is connected to the inside of a port of an opaque composite actor, and
+there is nothing connected to the outside of that port.  On the other
+hand, if numberOfSources() returns a number greater than zero, then
+there is ultimately an output port somewhere that can supply data to
+the trigger port.  Thus, this is the correct method to use to determine
+whether the port is connected.
 
 @author Edward A. Lee
 @version $Id$
@@ -76,7 +90,10 @@ public abstract class Source extends TypedAtomicActor {
         super(container, name);
     	output = new TypedIOPort(this, "output", false, true);
     	trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setTypeEquals(BaseType.GENERAL);
+        // NOTE: It used to be that trigger was set to GENERAL, but this
+        // isn't really what we want.  What we want is an undeclared type
+        // that can resolve to anything.  EAL 12/31/02
+        // trigger.setTypeEquals(BaseType.GENERAL);
         trigger.setMultiport(true);
     }
 
@@ -88,8 +105,8 @@ public abstract class Source extends TypedAtomicActor {
      */
     public TypedIOPort output = null;
 
-    /** The trigger port.  The type of this port is Token, meaning
-     *  that any token can be accepted.
+    /** The trigger port.  The type of this port is undeclared, meaning
+     *  that it will resolve to any data type.
      */
     public TypedIOPort trigger = null;
 
