@@ -38,7 +38,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTEventGenerator;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -50,13 +49,12 @@ import ptolemy.kernel.util.Workspace;
 //// EventSource
 /**
    This actor outputs a set of events at a discrete set of time points.
-   This is an event generator for the CT domain. It can be used to generate
-   impulses in CT models.
+   It can be used to generate impulses in CT models.
    <p> 
    This actor only generates predictable events and that is why it does not
    implement the CTStepSizeControlActor interface. This actor requests a
    refiring at its initialize method, then only fires at discrete phase of
-   execution and produces events. During its postfire method, it requests
+   execution to produce events. During its postfire method, it requests
    further firings to produce more events if necessary.
     
    @author Jie Liu, Haiyang Zheng
@@ -66,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (liuj)
 */
 
-public class EventSource extends TypedAtomicActor implements CTEventGenerator {
+public class EventSource extends TypedAtomicActor {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -200,18 +198,7 @@ public class EventSource extends TypedAtomicActor implements CTEventGenerator {
      *  @exception IllegalActionException If the event cannot be sent.
      */
     public void fire() throws IllegalActionException {
-        CTDirector director = (CTDirector)getDirector();
-        if (director.isDiscretePhase() && hasCurrentEvent()) {
-            output.send(0, ((ArrayToken)values.getToken()).getElement(_phase));
-        }
-    }
-
-    /** Return true if there is an event at the current time.
-     *  @return True if there is an event to emit now.
-     */
-    public boolean hasCurrentEvent() {
-        CTDirector director = (CTDirector)getDirector();
-        return (director.getModelTime().compareTo(_nextOutputTime) == 0);
+        output.send(0, ((ArrayToken)values.getToken()).getElement(_phase));
     }
 
     /** Schedule the first firing and initialize local variables.
@@ -229,6 +216,16 @@ public class EventSource extends TypedAtomicActor implements CTEventGenerator {
         getDirector().fireAt(this, _nextOutputTime);
     }
 
+    /** Return true if this actor is scheduled to fire at the current time.
+     *  @return True if this actor is scheduled to fire at the current time.
+     */
+    public boolean prefire() throws IllegalActionException {
+        CTDirector director = (CTDirector)getDirector();
+        boolean result 
+            = (director.getModelTime().compareTo(_nextOutputTime) == 0);
+        return result && super.prefire();
+    }
+    
     /** Update the state of the actor and schedule the next firing,
      *  if the director is in the discrete phase.
      *  @exception IllegalActionException If the director throws it when
@@ -237,27 +234,21 @@ public class EventSource extends TypedAtomicActor implements CTEventGenerator {
      */
     public boolean postfire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        if (director.isDiscretePhase() && hasCurrentEvent()) {
-            double periodValue =
-                ((DoubleToken)period.getToken()).doubleValue();
-
-            // Increment to the next phase.
-            _phase++;
-            if (_phase >= _offsets.length) {
-                _phase = 0;
-                _cycleStartTime = _cycleStartTime.add(periodValue);
-            }
-            if (_offsets[_phase] >= periodValue) {
-                throw new IllegalActionException(this,
-                        "Offset number " + _phase + " with value "
-                        + _offsets[_phase] + " must be less than the "
-                        + "period, which is " + periodValue);
-            }
-            if (hasCurrentEvent()) {
-                _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
-                director.fireAt(this, _nextOutputTime);
-            }
+        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        // Increment to the next phase.
+        _phase++;
+        if (_phase >= _offsets.length) {
+            _phase = 0;
+            _cycleStartTime = _cycleStartTime.add(periodValue);
         }
+        if (_offsets[_phase] >= periodValue) {
+            throw new IllegalActionException(this,
+                    "Offset number " + _phase + " with value "
+                    + _offsets[_phase] + " must be less than the "
+                    + "period, which is " + periodValue);
+        }
+        _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
+        director.fireAt(this, _nextOutputTime);
         return true;
     }
 
