@@ -14,6 +14,7 @@
       <property name="HDFFSM Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector"/>
       <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
       <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
+      <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector"/>
       <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
       <property name="Sensor Director" class="ptolemy.apps.sensor.lib.SensorDirector">
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
