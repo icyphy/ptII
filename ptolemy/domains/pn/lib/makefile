@@ -37,6 +37,7 @@ ME =		java/pt/domains/pn/stars
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
+JAVAHOME =      /opt/jdk1.2latest
 
 DIRS = 		demo #test doc
 
@@ -53,6 +54,7 @@ CLASSPATH = ../../../..
 JSRCS = \
 	PNAlternate.java \
 	PNInterleave.java \
+	PNPlot.java \
 	PNRamp.java \
 	PNRedirect.java \
 	PNSieve.java 
@@ -61,7 +63,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk' 
 # should not complain about
-MISC_FILES =	$(DIRS) doc test
+MISC_FILES =  Constan	$(DIRS) doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
