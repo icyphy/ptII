@@ -882,17 +882,38 @@ public class Variable extends Attribute implements Typeable, Settable {
 	// to be unsettable. The TypeTerm of this variable can be unsettable
 	// if the token or expression of this variable is not null, even
 	// though the type contains NaT currently.
-	if (_varType instanceof StructuredType) {
-	    if ( !getTypeTerm().isSettable()) {
-	    	((StructuredType)_varType).fixType();
-	    } else  {
-	    	((StructuredType)_varType).unfixType();
-	    }
-	}
+	// if (_varType instanceof StructuredType) {
+	//     if ( !getTypeTerm().isSettable()) {
+	//     	((StructuredType)_varType).fixType();
+	//     } else  {
+	//     	((StructuredType)_varType).unfixType();
+	//     }
+	// }
 
         // Include all relative types that have been specified.
 	List result = new LinkedList();
 	result.addAll(_constraints);
+
+	// If the variable has a value known at this time, add a constraint.
+	// If the variable is not evaluatable at this time (an exception is
+	// thrown in _evaluate(), do nothing.
+	// Add the inequality to the result list directly to add the
+	// constraint only for this round of type resolution. If using
+	// setTypeAtLeast(), the constraint will be permanent for this
+	// Variable.
+        try {
+            Token currentToken = getToken();
+	    if (currentToken != null) {
+	        Type currentType = currentToken.getType();
+
+	        TypeConstant current = new TypeConstant(currentType);
+                Inequality ineq = new Inequality(current, getTypeTerm());
+                result.add(ineq);
+            }
+        } catch (Exception e) {
+            // expression cannot be evaluated at this time.
+            // do nothing.
+	}
 
         // If the variable has a type, add a constraint.
         // Type currentType = getType();
@@ -1435,6 +1456,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	 */
 	public void initialize(Object e)
 		throws IllegalActionException {
+
 	    if ( !isSettable()) {
 		throw new IllegalActionException("TypeTerm.initialize: " +
 		    "The type is not settable.");
@@ -1457,17 +1479,17 @@ public class Variable extends Attribute implements Typeable, Settable {
 	 *  setTypeEquals() is called with an argument that is not
 	 *  BaseType.NAT, or the user has set a non-null expression or token
 	 *  into this variable.
-         *  @return True if the type of this variable is set;
+         *  @return True if the type of this variable can be set;
 	 *   false otherwise.
          */
         public boolean isSettable() {
-	    // return ( !_declaredType.isConstant());
+	    return ( !_declaredType.isConstant());
 
-	    if (_token != null || _currentExpression != null ||
-		_declaredType.isConstant() || _valueFixed) {
-		return false;
-	    }
-	    return true;
+//	    if (_token != null || _currentExpression != null ||
+//		_declaredType.isConstant() || _valueFixed) {
+//		return false;
+//	    }
+//	    return true;
         }
 
         /** Check whether the current type of this term is acceptable,

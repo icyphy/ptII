@@ -55,6 +55,15 @@ public class BaseType implements Type, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return this, that is, return the reference to this object.
+     *  @return A BaseType.
+     *  @exception CloneNotSupportedException Not thrown.
+     */
+    public Object clone()
+	    throws CloneNotSupportedException {
+        return this;
+    }
+
     /** Convert the specified token to a token having the type
      *  represented by this object.
      *  @param t A token.
