@@ -42,14 +42,9 @@ include $(CONFIG)
 
 DIRS = 		# demo test doc
 
-# Used to build zip files
-JPACKAGE = 	ptolemy.domains.csp.demo
-JPACKAGE_DIR = 	ptolemy/domains/csp/demo
-JVERSION =	1.0
-JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
-PTCLASSJAR = 	$(JPACKAGE).jar
-
+# Used to build jar files
+PTPACKAGE = 	BusContention
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 CLASSPATH = $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 
@@ -67,31 +62,21 @@ EXTRA_SRCS = \
 # should not complain about
 MISC_FILES =	$(DIRS)
 
-PTAUXJAR =	BusContentionDemo.jar
-
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR) \
-	$(PTAUXJAR)
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass $(PTAUXJAR)
+all: jclass
 
-install: jclass 
+install: jclass $(PTCLASSJAR)
 
 
 # 'make clean' removes everything in KRUFT
-KRUFT = BusContentionDemo.jar
+KRUFT =
 
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
-$(PTAUXJAR): $(JSRCS) $(JCLASS)
-		(cd $(ROOT); \
-                $(JAR) cf \
-                $(ME)/$@ \
-		$(ME)/*.class) 
 
 depend:
 	@echo "no dependencies in this directory"
