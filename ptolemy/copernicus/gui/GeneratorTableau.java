@@ -179,9 +179,9 @@ public class GeneratorTableau extends Tableau {
                             configuration.openModel(
                                     null, infoURL, infoURL.toExternalForm());
                         } catch (Exception ex) {
-                            throw new InternalErrorException(
-                                    "Failed to open doc/codegen.htm: "
-                                    + ex);
+                            throw new InternalErrorException(model, ex,
+				     "Failed to open doc/codegen.htm: ");
+
                         }
                     }
                 });
@@ -287,13 +287,16 @@ public class GeneratorTableau extends Tableau {
 				((BooleanToken)options.run.getToken())
 				.booleanValue();
 			    boolean runAsApplet = false;
-
+			    boolean runAsDeep = false;
 			    List execCommands = new LinkedList();
 
 			    String packageNameString =
 				options.packageName.getExpression();
 			    String codeGenerator =
 				options.codeGenerator.getExpression();
+
+			    System.out.println("GeneratorTableau: codeGenerator= " +
+					       codeGenerator);
 
 			    if (codeGenerator.equals(options
 						     .sootApplet.
@@ -307,9 +310,8 @@ public class GeneratorTableau extends Tableau {
 								      packageNameString,
 								      "applet" /* Generate applet code. */));
 
-				} catch (Exception exception) {
-				    throw new IllegalActionException(exception
-								     .toString());
+				} catch (Exception ex) {
+				    throw new IllegalActionException(model, ex, null);
 				}
 				runAsApplet = true;
 			    } else if (codeGenerator.equals(options
@@ -344,9 +346,9 @@ public class GeneratorTableau extends Tableau {
 								      /* Generate deep code. */));
 
 				disassemble = true;
-				} catch (Exception exception) {
-				    throw new IllegalActionException(exception
-								     .toString());
+				runAsDeep = true;
+				} catch (Exception ex) {
+				    throw new IllegalActionException(model, ex, null);
 				}
 			    } else if (codeGenerator.equals(options
 							    .sootJHDL.
@@ -376,9 +378,8 @@ public class GeneratorTableau extends Tableau {
 								      directoryName,
 								      packageNameString,
 								      "shallow" /* Generate shallow code */));
-				} catch (Exception exception) {
-				    throw new IllegalActionException(exception
-								     .toString());
+				} catch (Exception ex) {
+				    throw new IllegalActionException(model, ex, null);
 				}
 
 				//ptolemy.copernicus.java
@@ -393,12 +394,16 @@ public class GeneratorTableau extends Tableau {
 
 			    String className = options
 				.packageName.getExpression();
-			    if (className.length() > 0
-				&& ! className.endsWith(".") ) {
-				className = className + '.'
-				    + "CG" + model.getName();
+			    if (runAsDeep) {
+				className = className + ".Main";
 			    } else {
-				className = "CG" + model.getName();
+				if (className.length() > 0
+				    && ! className.endsWith(".") ) {
+				    className = className + '.'
+					+ "CG" + model.getName();
+				} else {
+				    className = "CG" + model.getName();
+				}
 			    }
 
 			    String runOptions = options
@@ -426,6 +431,10 @@ public class GeneratorTableau extends Tableau {
 						     + appletDirectoryName
 						     + " demo"
 						     );
+				} else if (runAsDeep) {
+				    execCommands.add("java "
+						     + runOptions
+						     + " " + className);
 				} else {
 				    execCommands.add("java "
                                         + runOptions
@@ -541,7 +550,7 @@ public class GeneratorTableau extends Tableau {
 	    model.exportMoML(fileWriter);
 	    fileWriter.close();
 	} catch (IOException io) {
-	    throw new InternalErrorException("Warning: failed to write model "
+	    throw new InternalErrorException(model, null, "Warning: failed to write model "
                                            + "to '"
 					   + temporaryMoMLFile + "': " + io);
 	}
