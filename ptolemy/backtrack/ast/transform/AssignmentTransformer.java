@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.backtrack.ast.transform;
 
 import java.lang.reflect.Field;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +37,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
+import org.eclipse.jdt.core.dom.ArrayAccess;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
@@ -90,6 +92,16 @@ public class AssignmentTransformer
         Expression rightHand = node.getRightHandSide();
         Expression newObject = null;
         SimpleName name;
+        List indices = new LinkedList();
+        
+        while (leftHand instanceof ArrayAccess) {
+            ArrayAccess arrayAccess = (ArrayAccess)leftHand;
+            indices.add(0, ASTNode.copySubtree(ast, arrayAccess.getIndex()));
+            leftHand = arrayAccess.getArray();
+            while (leftHand instanceof ParenthesizedExpression)
+                leftHand = 
+                    ((ParenthesizedExpression)leftHand).getExpression();
+        }
         
         if (leftHand instanceof FieldAccess) {
             Expression object = ((FieldAccess)leftHand).getExpression();
@@ -100,12 +112,13 @@ public class AssignmentTransformer
                 return;
             
             newObject = (Expression)ASTNode.copySubtree(ast, object);
-        } else {
+        } else  if (leftHand instanceof SimpleName) {
             name = (SimpleName)leftHand;
             // Use owner to do this test.
             // if (state.isVariable(name.getIdentifier()))
             //     return;
-        }
+        } else
+            return; // Some unknown situation.
         
         Type owner = Type.getOwner(leftHand);
         boolean isStatic;
@@ -115,8 +128,11 @@ public class AssignmentTransformer
             try {
                 Class c = owner.toClass(state.getClassLoader());
                 Field field = c.getDeclaredField(name.getIdentifier());
+                int modifiers = field.getModifiers();
+                if (!java.lang.reflect.Modifier.isPrivate(modifiers))
+                    return; // Not handling non-private fields.
                 isStatic = 
-                    java.lang.reflect.Modifier.isStatic(field.getModifiers());
+                    java.lang.reflect.Modifier.isStatic(modifiers);
             } catch (ClassNotFoundException e) {
                 throw new ASTClassNotFoundException(owner.getName());
             } catch (NoSuchFieldException e) {
@@ -131,15 +147,24 @@ public class AssignmentTransformer
         if (newObject != null)
             invocation.setExpression(newObject);
         SimpleName newName = 
-            ast.newSimpleName(ASSIGN_PREFIX + name.getIdentifier());
+            ast.newSimpleName(_getAssignMethodName(name.getIdentifier(), 
+                    indices.size()));
         invocation.setName(newName);
         Expression newRightHand = 
             (Expression)ASTNode.copySubtree(ast, rightHand);
         if (isStatic)
             invocation.arguments().add(ast.newSimpleName("$CHECKPOINT"));
+        
+        Iterator indicesIter = indices.iterator();
+        while (indicesIter.hasNext())
+            invocation.arguments().add((Expression)indicesIter.next());
+        
         invocation.arguments().add(newRightHand);
         Type.propagateType(invocation, node);
         _replaceNode(node, invocation);
+        
+        _recordAccessedField(owner.getName(), name.getIdentifier(), 
+                indices.size());
     }
     
     public void handle(AnonymousClassDeclaration node, 
@@ -160,6 +185,203 @@ public class AssignmentTransformer
     public static boolean OPTIMIZE_CALL = true;
     
     public static boolean HANDLE_STATIC_FIELDS = true;
+    
+    private MethodDeclaration _createAssignMethod(Class currentClass, AST ast, 
+            String fieldName, Type fieldType, int indices, boolean isStatic, 
+            ClassLoader loader) {
+        
+        String methodName = _getAssignMethodName(fieldName, indices);
+        if (_isMethodDuplicated(currentClass, methodName, fieldType, 
+                indices, isStatic, loader))
+            throw new ASTDuplicatedMethodException(currentClass.getName(), 
+                    methodName);
+        
+        MethodDeclaration method = ast.newMethodDeclaration();
+        
+        for (int i = 0; i < indices; i++)
+            try {
+                fieldType = fieldType.removeOneDimension();
+            } catch (ClassNotFoundException e) {
+                throw new ASTClassNotFoundException(fieldType);
+            }
+        
+        SimpleName name = 
+            ast.newSimpleName(_getAssignMethodName(fieldName, indices));
+        method.setName(name);
+        
+        org.eclipse.jdt.core.dom.Type type = 
+            _createType(ast, fieldType.getName());
+        method.setReturnType(type);
+        
+        if (isStatic) {
+            // Add a "$CHECKPOINT" argument.
+            SingleVariableDeclaration checkpoint = 
+                ast.newSingleVariableDeclaration();
+            checkpoint.setType(ast.newSimpleType(
+                    _createName(ast, Checkpoint.class.getName())));
+            checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
+            method.parameters().add(checkpoint);
+        }
+        
+        for (int i = 0; i < indices; i++) {
+            SingleVariableDeclaration index = 
+                ast.newSingleVariableDeclaration();
+            index.setType(ast.newPrimitiveType(PrimitiveType.INT));
+            index.setName(ast.newSimpleName("index" + i));
+            method.parameters().add(index);
+        }
+        
+        SingleVariableDeclaration argument = 
+            ast.newSingleVariableDeclaration();
+        argument.setType(
+                (org.eclipse.jdt.core.dom.Type)ASTNode.copySubtree(ast, type));
+        argument.setName(ast.newSimpleName("newValue"));
+        method.parameters().add(argument);
+        
+        Block body = _createAssignmentBlock(ast, fieldName, indices);
+        method.setBody(body);
+        
+        int modifiers = Modifier.PRIVATE;
+        if (isStatic)
+            modifiers |= Modifier.STATIC;
+        method.setModifiers(modifiers);
+        
+        return method;
+    }
+    
+    private Block _createAssignmentBlock(AST ast, String variableName, 
+            int indices) {
+        Block block = ast.newBlock();
+        
+        Expression field  = ast.newSimpleName(variableName);
+        if (indices > 0) {
+            for (int i = 0; i < indices; i++) {
+                ArrayAccess arrayAccess = ast.newArrayAccess();
+                arrayAccess.setArray(field);
+                arrayAccess.setIndex(ast.newSimpleName("index" + i));
+                field = arrayAccess;
+            }
+        }
+        
+        IfStatement ifStatement = ast.newIfStatement();
+        
+        InfixExpression testExpression = ast.newInfixExpression();
+        testExpression.setLeftOperand(ast.newSimpleName(CHECKPOINT_NAME));
+        testExpression.setOperator(InfixExpression.Operator.NOT_EQUALS);
+        testExpression.setRightOperand(ast.newNullLiteral());
+        ifStatement.setExpression(testExpression);
+        
+        Block thenBranch = ast.newBlock();
+        
+        MethodInvocation timestampGetter = ast.newMethodInvocation();
+        timestampGetter.setExpression(ast.newSimpleName(CHECKPOINT_NAME));
+        timestampGetter.setName(ast.newSimpleName("getTimestamp"));
+
+        MethodInvocation recordInvocation = ast.newMethodInvocation();
+        recordInvocation.setExpression(
+                ast.newSimpleName(_getRecordName(variableName, indices)));
+        recordInvocation.setName(ast.newSimpleName("add"));
+        recordInvocation.arguments().add(field);
+        recordInvocation.arguments().add(timestampGetter);
+        ExpressionStatement recordStatement = 
+            ast.newExpressionStatement(recordInvocation);
+        thenBranch.statements().add(recordStatement);
+        
+        ifStatement.setThenStatement(thenBranch);
+        block.statements().add(ifStatement);
+        
+        Assignment assignment = ast.newAssignment();
+        assignment.setLeftHandSide(
+                (Expression)ASTNode.copySubtree(ast, field));
+        assignment.setRightHandSide(ast.newSimpleName("newValue"));
+        assignment.setOperator(Assignment.Operator.ASSIGN);
+        
+        ReturnStatement returnStatement = ast.newReturnStatement();
+        returnStatement.setExpression(assignment);
+        block.statements().add(returnStatement);
+        
+        return block;
+    }
+    
+    private FieldDeclaration _createFieldRecord(Class currentClass, AST ast, 
+            String fieldName, int indices, boolean isStatic) {
+        String recordName = _getRecordName(fieldName, indices);
+        if (_isFieldDuplicated(currentClass, recordName))
+            throw new ASTDuplicatedFieldException(currentClass.getName(), 
+                    recordName);
+        
+        VariableDeclarationFragment fragment = 
+            ast.newVariableDeclarationFragment();
+        fragment.setName(ast.newSimpleName(recordName));
+        
+        ClassInstanceCreation initializer = ast.newClassInstanceCreation();
+        initializer.setName(_createName(ast, FieldRecord.class.getName()));
+
+        fragment.setInitializer(initializer);
+        
+        FieldDeclaration field = ast.newFieldDeclaration(fragment);
+        field.setType(_createType(ast, FieldRecord.class.getName()));
+        
+        int modifiers = Modifier.PRIVATE;
+        if (isStatic)
+            modifiers |= Modifier.STATIC;
+        field.setModifiers(modifiers);
+        
+        return field;
+    }
+    
+    private Name _createName(AST ast, String name) {
+        int pos = _indexOf(name, new char[]{'.', '$'}, 0);
+        String subname = pos == -1 ? name : name.substring(0, pos);
+        Name fullName = ast.newSimpleName(subname);
+        while (pos != -1) {
+            pos = _indexOf(name, new char[]{'.', '$'}, pos + 1);
+            name = pos == -1 ? name : name.substring(0, pos);
+            SimpleName simpleName = ast.newSimpleName(subname);
+            fullName = ast.newQualifiedName(fullName, simpleName);
+        }
+        return fullName;
+    }
+    
+    private org.eclipse.jdt.core.dom.Type _createType(AST ast, String type) {
+        String elementName = Type.getElementType(type);
+        int dimensions = Type.dimensions(type);
+        
+        org.eclipse.jdt.core.dom.Type elementType;
+        if (Type.isPrimitive(elementName))
+            elementType = 
+                ast.newPrimitiveType(PrimitiveType.toCode(elementName));
+        else {
+            Name element = _createName(ast, elementName);
+            elementType = ast.newSimpleType(element);
+        }
+        
+        org.eclipse.jdt.core.dom.Type returnType = elementType;
+        for (int i = 1; i < dimensions; i++)
+            returnType = ast.newArrayType(returnType);
+        
+        return returnType;
+    }
+    
+    private List _getAccessedField(String className, String fieldName) {
+        Hashtable classTable = (Hashtable)_accessedFields.get(className);
+        if (classTable == null)
+            return null;
+        List indicesList = (List)classTable.get(fieldName);
+        return indicesList;
+    }
+    
+    private String _getAssignMethodName(String fieldName, int indices) {
+        return ASSIGN_PREFIX +
+                fieldName +
+                (indices == 0 ? "" : "$" + indices);
+    }
+    
+    private String _getRecordName(String fieldName, int indices) {
+        return RECORD_PREFIX +
+                fieldName +
+                (indices == 0 ? "" : "$" + indices);
+    }
     
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
             TypeAnalyzerState state) {
@@ -183,10 +405,24 @@ public class AssignmentTransformer
                         VariableDeclarationFragment fragment = 
                             (VariableDeclarationFragment)fragmentIter.next();
                         String fieldName = fragment.getName().getIdentifier();
-                        newDeclarations.add(_createAssignMethod(ast, fieldName, 
-                                type, isStatic));
-                        newDeclarations.add(_createFieldRecord(ast, fieldName, 
-                                isStatic));
+
+                        List indicesList = 
+                            _getAccessedField(currentClass.getName(), 
+                                    fieldName);
+                        if (indicesList == null)
+                            continue;
+                        
+                        Iterator indicesIter = indicesList.iterator();
+                        while (indicesIter.hasNext()) {
+                            int indices = 
+                                ((Integer)indicesIter.next()).intValue();
+                            
+                            newDeclarations.add(_createAssignMethod(currentClass, 
+                                    ast, fieldName, type, indices, isStatic, 
+                                    state.getClassLoader()));
+                            newDeclarations.add(_createFieldRecord(currentClass, 
+                                    ast, fieldName, indices, isStatic));
+                        }
                     }
                 }
             }
@@ -198,136 +434,9 @@ public class AssignmentTransformer
             ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(CHECKPOINT_NAME));
         FieldDeclaration checkpointField = ast.newFieldDeclaration(fragment);
-        checkpointField.setType(ast.newSimpleType(
-                _createName(ast, Checkpoint.class.getName())));
+        checkpointField.setType(_createType(ast, Checkpoint.class.getName()));
         checkpointField.setModifiers(Modifier.PRIVATE);
         bodyDeclarations.add(checkpointField);
-    }
-    
-    private MethodDeclaration _createAssignMethod(AST ast, String fieldName, 
-            Type fieldType, boolean isStatic) {
-        MethodDeclaration method = ast.newMethodDeclaration();
-        
-        SimpleName name = ast.newSimpleName(ASSIGN_PREFIX + fieldName);
-        method.setName(name);
-        
-        org.eclipse.jdt.core.dom.Type type = 
-            _convertEclipseType(ast, fieldType.getName());
-        method.setReturnType(type);
-        
-        if (isStatic) {
-            // Add a "$CHECKPOINT" argument.
-            SingleVariableDeclaration checkpoint = 
-                ast.newSingleVariableDeclaration();
-            checkpoint.setType(ast.newSimpleType(
-                    _createName(ast, Checkpoint.class.getName())));
-            checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
-            method.parameters().add(checkpoint);
-        }
-        SingleVariableDeclaration argument = 
-            ast.newSingleVariableDeclaration();
-        argument.setType(
-                (org.eclipse.jdt.core.dom.Type)ASTNode.copySubtree(ast, type));
-        argument.setName(ast.newSimpleName("newValue"));
-        method.parameters().add(argument);
-        
-        Block body = _createAssignmentBlock(ast, fieldName);
-        method.setBody(body);
-        
-        int modifiers = Modifier.PRIVATE;
-        if (isStatic)
-            modifiers |= Modifier.STATIC;
-        method.setModifiers(modifiers);
-        
-        return method;
-    }
-    
-    private Block _createAssignmentBlock(AST ast, String variableName) {
-        Block block = ast.newBlock();
-        
-        IfStatement ifStatement = ast.newIfStatement();
-        
-        InfixExpression testExpression = ast.newInfixExpression();
-        testExpression.setLeftOperand(ast.newSimpleName(CHECKPOINT_NAME));
-        testExpression.setOperator(InfixExpression.Operator.NOT_EQUALS);
-        testExpression.setRightOperand(ast.newNullLiteral());
-        ifStatement.setExpression(testExpression);
-        
-        Block thenBranch = ast.newBlock();
-        
-        MethodInvocation timestampGetter = ast.newMethodInvocation();
-        timestampGetter.setExpression(ast.newSimpleName(CHECKPOINT_NAME));
-        timestampGetter.setName(ast.newSimpleName("getTimestamp"));
-
-        MethodInvocation recordInvocation = ast.newMethodInvocation();
-        recordInvocation.setExpression(
-                ast.newSimpleName(RECORD_PREFIX + variableName));
-        recordInvocation.setName(ast.newSimpleName("add"));
-        recordInvocation.arguments().add(ast.newSimpleName(variableName));
-        recordInvocation.arguments().add(timestampGetter);
-        ExpressionStatement recordStatement = 
-            ast.newExpressionStatement(recordInvocation);
-        thenBranch.statements().add(recordStatement);
-        
-        ifStatement.setThenStatement(thenBranch);
-        block.statements().add(ifStatement);
-        
-        Assignment assignment = ast.newAssignment();
-        assignment.setLeftHandSide(ast.newSimpleName(variableName));
-        assignment.setRightHandSide(ast.newSimpleName("newValue"));
-        assignment.setOperator(Assignment.Operator.ASSIGN);
-        
-        ReturnStatement returnStatement = ast.newReturnStatement();
-        returnStatement.setExpression(assignment);
-        block.statements().add(returnStatement);
-        
-        return block;
-    }
-    
-    private FieldDeclaration _createFieldRecord(AST ast, String fieldName, 
-            boolean isStatic) {
-        VariableDeclarationFragment fragment = 
-            ast.newVariableDeclarationFragment();
-        fragment.setName(ast.newSimpleName(RECORD_PREFIX + fieldName));
-        
-        ClassInstanceCreation initializer = ast.newClassInstanceCreation();
-        initializer.setName(_createName(ast, FieldRecord.class.getName()));
-
-        fragment.setInitializer(initializer);
-        
-        FieldDeclaration field = ast.newFieldDeclaration(fragment);
-        field.setType(_convertEclipseType(ast, FieldRecord.class.getName()));
-        
-        int modifiers = Modifier.PRIVATE;
-        if (isStatic)
-            modifiers |= Modifier.STATIC;
-        field.setModifiers(modifiers);
-        
-        return field;
-    }
-    
-    private org.eclipse.jdt.core.dom.Type _convertEclipseType(AST ast, 
-            String typeName) {
-        org.eclipse.jdt.core.dom.Type eclipseType;
-        if (Type.isPrimitive(typeName))
-            eclipseType = 
-                ast.newPrimitiveType(PrimitiveType.toCode(typeName));
-        else
-            eclipseType = ast.newSimpleType(_createName(ast, typeName));
-        return eclipseType;
-    }
-    
-    private Name _createName(AST ast, String name) {
-        int pos = _indexOf(name, new char[]{'.', '$'}, 0);
-        String subname = pos == -1 ? name : name.substring(0, pos);
-        Name fullName = ast.newSimpleName(subname);
-        while (pos != -1) {
-            pos = _indexOf(name, new char[]{'.', '$'}, pos + 1);
-            name = pos == -1 ? name : name.substring(0, pos);
-            SimpleName simpleName = ast.newSimpleName(subname);
-            fullName = ast.newQualifiedName(fullName, simpleName);
-        }
-        return fullName;
     }
     
     private int _indexOf(String s, char[] chars, int startPos) {
@@ -338,6 +447,43 @@ public class AssignmentTransformer
                 pos = newPos;
         }
         return pos;
+    }
+    
+    private boolean _isFieldDuplicated(Class c, String fieldName) {
+        // Does NOT check fields inherited from interfaces.
+        try {
+            c.getDeclaredField(fieldName);
+            return true;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
+    
+    private boolean _isMethodDuplicated(Class c, String methodName, 
+            Type fieldType, int indices, boolean isStatic, 
+            ClassLoader loader) {
+        try {
+            for (int i = 0; i < indices; i++)
+                fieldType = fieldType.removeOneDimension();
+            int nArguments = indices + 1;
+            if (isStatic)
+                nArguments++;
+            Class[] arguments = new Class[nArguments];
+            int start = 0;
+            if (isStatic)
+                arguments[start++] = Checkpoint.class;
+            for (int i = start; i < nArguments - 1; i++)
+                arguments[i] = int.class;
+            arguments[nArguments - 1] = fieldType.toClass(loader);
+            try {
+                c.getDeclaredMethod(methodName, arguments);
+                return true;
+            } catch (NoSuchMethodException e) {
+                return false;
+            }
+        } catch (ClassNotFoundException e) {
+            throw new ASTClassNotFoundException(fieldType);
+        }
     }
     
     private void _replaceNode(ASTNode node, ASTNode newNode) {
@@ -352,4 +498,23 @@ public class AssignmentTransformer
             properties.set(position, newNode);
         }
     }
+    
+    private void _recordAccessedField(String className, String fieldName, 
+            int indices) {
+        Hashtable classTable = (Hashtable)_accessedFields.get(className);
+        if (classTable == null) {
+            classTable = new Hashtable();
+            _accessedFields.put(className, classTable);
+        }
+        List indicesList = (List)classTable.get(fieldName);
+        if (indicesList == null) {
+            indicesList = new LinkedList();
+            classTable.put(fieldName, indicesList);
+        }
+        Integer iIndices = new Integer(indices);
+        if (!indicesList.contains(iIndices))
+            indicesList.add(iIndices);
+    }
+    
+    private Hashtable _accessedFields = new Hashtable();
 }

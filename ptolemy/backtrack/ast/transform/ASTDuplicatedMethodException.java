@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -28,34 +28,27 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast.transform;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.eclipse.jdt.core.dom.CompilationUnit;
-
-import ptolemy.backtrack.ast.TypeAnalyzer;
+import ptolemy.backtrack.ast.ASTRuntimeException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AssignmentRule
+//// ASTDuplicatedMethodException
 /**
- *  
- * 
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 4.1
- *  @Pt.ProposedRating Red (tfeng)
+ 
+ 
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
  */
-public class AssignmentRule extends TransformRule {
-    
-    public void afterTraverse(CompilationUnit root) {
+public class ASTDuplicatedMethodException extends ASTRuntimeException {
+
+    public ASTDuplicatedMethodException(String className, String methodName) {
+        super("Trying to create a duplicated method \"" +
+                methodName +
+                "\" in class \"" +
+                className +
+                "\".");
     }
     
-    public void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
-        AssignmentTransformer transformer = new AssignmentTransformer();
-        _handlers.add(transformer);
-        analyzer.getHandlers().addAssignmentHandler(transformer);
-        analyzer.getHandlers().addClassHandler(transformer);
-    }
-    
-    private List _handlers = new LinkedList();
 }

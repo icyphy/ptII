@@ -44,8 +44,8 @@ import ptolemy.backtrack.ast.TypeAnalyzer;
  */
 public abstract class TransformRule {
 
-    public abstract void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root);
-    
     public abstract void afterTraverse(CompilationUnit root);
+
+    public abstract void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root);
     
 }

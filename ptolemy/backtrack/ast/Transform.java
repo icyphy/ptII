@@ -50,10 +50,6 @@ import ptolemy.backtrack.ast.transform.TransformRule;
  */
 public class Transform {
     
-    public static TransformRule[] RULES = new TransformRule[] {
-        new AssignmentRule()
-    };
-    
     /**
      *  @param args
      */
@@ -94,6 +90,10 @@ public class Transform {
         transform._outputSource();
     }
 
+    public static TransformRule[] RULES = new TransformRule[] {
+        new AssignmentRule()
+    };
+    
     protected void _beforeTraverse() {
         for (int i = 0; i < RULES.length; i++)
             RULES[i].beforeTraverse(_visitor, _ast);
