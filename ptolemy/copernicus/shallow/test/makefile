@@ -51,8 +51,15 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	gui.tcl \
+	gui.tcl
+
+# Long tests, that take so damn long they are not even done in the
+# nightly build.
+JLONG_TESTS = \
+	$(JSIMPLE_TESTS) \
 	Shallow.tcl
+
+
 
 
 # Graphical Java tests that use Tcl.
@@ -93,10 +100,51 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 #JAVAFLAGS = -Xms228m -Xmx228m
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	@echo "There are also long tests in this directory."
 	@echo "Run 'make test_long' to run these tests, which will take 4 hrs" 
-
-test_long: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
+
+test_long: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) longjtests.tcl
+	$(JTCLSH) longjtests.tcl
+
+# lonjtests.tcl is used to source all the long tcl files that use Java
+longjtests.tcl: makefile
+	rm -f $@
+	echo '# CAUTION: automatically generated file by a rule in makefile' > $@
+	echo '# This file will source all the Tcl files that use Java. ' >> $@
+	echo '# This file will source the tcl files list in the' >> $@
+	echo '# makefile SIMPLE_JTESTS and JGRAPHICAL_TESTS and JLONG_TESTS variables' >> $@
+	echo '# This file is different from all.itcl in that all.itcl' >> $@
+	echo '# will source all the .itcl files in the current directory' >> $@
+	echo '#' >> $@
+	echo '# Set the following to avoid endless calls to exit' >> $@
+	echo "if {![info exists reallyExit]} {set reallyExit 0}" >> $@
+	echo '# Exiting when there are no more windows is wrong' >> $@
+	echo "#::tycho::TopLevel::exitWhenNoMoreWindows 0" >> $@
+	echo '# If there is no update command, define a dummy proc.  Jacl needs this' >> $@
+	echo 'if {[info command update] == ""} then { ' >> $@
+	echo '    proc update {} {}' >> $@
+	echo '}' >> $@
+	echo "#Do an update so that we are sure tycho is done displaying" >> $@
+	echo "update" >> $@
+	echo "set savedir \"[pwd]\"" >> $@
+	echo "if {\"$(JSIMPLE_TESTS)\" != \"\"} {foreach i [list $(JSIMPLE_TESTS)] {puts \$$i; cd \"\$$savedir\"; if [ file exists \$$i ] { if [ catch {source \$$i} msg] {puts \"Error: \$$msg\"}}}}" >> $@
+	if [ "x$(JGRAPHICAL_TESTS)" != "x" ]; then \
+		for x in $(JGRAPHICAL_TESTS); do \
+			echo "puts stderr $$x" >> $@; \
+			echo "cd \"\$$savedir\"" >> $@; \
+			echo "if [ file exists $$x ] { if [catch {source $$x} msg] {puts \"Error: \$$msg\"}}" >> $@; \
+		done; \
+	fi
+	if [ "x$(JLONG_TESTS)" != "x" ]; then \
+		for x in $(JLONG_TESTS); do \
+			echo "puts stderr $$x" >> $@; \
+			echo "cd \"\$$savedir\"" >> $@; \
+			echo "if [ file exists $$x ] { if [catch {source $$x} msg] {puts \"Error: \$$msg\"}}" >> $@; \
+		done; \
+	fi
+	echo "catch {doneTests}" >> $@
+	echo "exit" >> $@
 
 # 'make ptjacl' will start up jacl with the proper classpath
 ptjacl:
