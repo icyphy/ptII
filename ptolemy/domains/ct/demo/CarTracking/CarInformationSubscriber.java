@@ -34,15 +34,16 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.lib.jspaces.TokenEntry;
-//import ptolemy.actor.lib.Source;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.lib.jspaces.util.SpaceFinder;
 
 import net.jini.space.JavaSpace;
 import net.jini.core.lease.Lease;
 import net.jini.core.event.*;
+import net.jini.core.transaction.TransactionException;
 import java.rmi.server.*;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
@@ -82,19 +83,19 @@ public class CarInformationSubscriber extends TypedAtomicActor
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
         
-        correct = new TypedIOport(this, "correct", false, true);
+        correct = new TypedIOPort(this, "correct", false, true);
         correct.setMultiport(false);
         correct.setTypeEquals(BaseType.BOOLEAN);
 
-        force = new TypedIOport(this, "force", false, true);
+        force = new TypedIOPort(this, "force", false, true);
         force.setMultiport(false);
         force.setTypeEquals(BaseType.DOUBLE);
 
-        velocity = new TypedIOport(this, "velocity", false, true);
+        velocity = new TypedIOPort(this, "velocity", false, true);
         velocity.setMultiport(false);
         velocity.setTypeEquals(BaseType.DOUBLE);
 
-        position = new TypedIOport(this, "position", false, true);
+        position = new TypedIOPort(this, "position", false, true);
         position.setMultiport(false);
         position.setTypeEquals(BaseType.DOUBLE);
     }
@@ -179,14 +180,14 @@ public class CarInformationSubscriber extends TypedAtomicActor
                 
         // read the current data in the JavaSpaces, and use
         // it as the initial condition
-        TokenEntry entrytemp = new TokenEntry(_entryName, 
+        TokenEntry entryTemplate = new TokenEntry(_entryName, 
                 null, null);
         TokenEntry entry;
         boolean ready = false;
         while(!ready) { 
             try {
                 entry = (TokenEntry)_space.readIfExists(
-                        entrytemp, null, Long.MAX_VALUE);
+                        entryTemplate, null, Long.MAX_VALUE);
             }catch (Exception e) {
                 throw new IllegalActionException(this,
                         "error reading space." +
@@ -194,21 +195,29 @@ public class CarInformationSubscriber extends TypedAtomicActor
             }
             if(entry == null) {
                 System.err.println("The publisher is not ready. Try again...");
-                Thread.sleep(1000);
+                try {
+                    Thread.sleep(1000);
+                } catch(InterruptedException ex) {
+                    throw new IllegalActionException(this,
+                            "sleep interrupted. " + ex.getMessage());
+                }
             } else {
                 ready = true;
+                _lastData = (ArrayToken)entry.token;
             }
         }
-        ArrayToken array = (ArrayToken)entry.token;
-        _lastTimeStamp = ((DoubleToken)array.getElement(0)).doubleValue();
-        _lastForce = ((DoubleToken)array.getElement(1)).doubleValue();
-        _lastVelocity = ((DoubleToken)array.getElement(2)).doubleValue();
-        _lastPosition = ((DoubleToken)array.getElement(3)).doubleValue();
-
         // request for notification
-        _eventReg = _space.notify(
-                template, null, this, Lease.FOREVER, null);
-        _notificationSeq = _eventReg.getSequenceNumber();
+        try {
+            _eventReg = _space.notify(
+                    entryTemplate, null, this, Lease.FOREVER, null);
+            _notificationSeq = _eventReg.getSequenceNumber();
+        } catch (RemoteException re) {
+            throw new IllegalActionException(this,
+                    "failed registering for notification. " + re.getMessage());
+        } catch (TransactionException te) {
+            throw new IllegalActionException(this,
+                    "failed registering for notification. " + te.getMessage());
+        }
     }
     
     /** Fork a new thread to handle the notify event.
@@ -223,94 +232,93 @@ public class CarInformationSubscriber extends TypedAtomicActor
      */
     public void fire() throws IllegalActionException {
         correct.send(0, new BooleanToken(_correct));
-        force.send(0, new DoubleToken(_lastForce));
-        velocity.send(0, new DoubleToken(_lastVelocity));
-        position.send(0, new DoubleToken(_lastPosition));
+        force.send(0, _lastData.getElement(1));
+        velocity.send(0, _lastData.getElement(2));
+        position.send(0, _lastData.getElement(3));
     }
-
+    
     /** Check whether the newly comed set of data is correct, 
      *  if there is any.
      */
     public boolean postfire() throws IllegalActionException {
-        if(_newData) {
+        if(_hasNewData) {
             // grab a lock so that the the set of data is consistent.
+            double lastTimeStamp =
+                ((DoubleToken)_lastData.getElement(0)).doubleValue();
+            double lastF = 
+                ((DoubleToken)_lastData.getElement(1)).doubleValue();
+            double lastV = 
+                ((DoubleToken)_lastData.getElement(2)).doubleValue();
+            double lastP = 
+                ((DoubleToken)_lastData.getElement(3)).doubleValue();
+            
             synchronized(_lock) {
                 // do the sanity check.
-                double timeInterval = _currentTimeStamp - _lastTimeStamp;
-                double fovermiu = _lastForce/_miu;
-                double expt = Math.exp(-_miu * timeInterval)
+                double currentTimeStamp = 
+                    ((DoubleToken)_currentData.getElement(0)).doubleValue();
+                double timeInterval = currentTimeStamp - lastTimeStamp;
+                double fovermiu = lastF/_miu;
+                double expt = Math.exp((-1.0) * _miu * timeInterval);
                 double computedVelocity = 
-                    (_lastVelocity - fovermiu) * expt + fovermiu;
-                double computedPosition = _lastPosition +
-                    (1.0/_miu)*(_lastVelocity - fovermiu) * (1.0 - expt) +
+                    (lastV - fovermiu) * expt + fovermiu;
+                double computedPosition = lastP +
+                    (1.0/_miu)*(lastV - fovermiu) * (1.0 - expt) +
                     fovermiu * timeInterval;
-                if(Math.abs(_currentVelocity - computedVelocity) < _eps &&
-                        Math.abs(_currentPosition - computedPosition) < _eps) {
+                double currentVelocity = 
+                    ((DoubleToken)_currentData.getElement(2)).doubleValue();
+                double currentPosition =
+                    ((DoubleToken)_currentData.getElement(3)).doubleValue();
+                if(Math.abs(currentVelocity - computedVelocity) < _eps &&
+                        Math.abs(currentPosition - computedPosition) < _eps) {
                     _correct = true;
                 } else {
                     _correct = false;
                 }
-                _lastForce = _currentForce;
-                _lastVelocity = _currentVelocity;
-                _lastPosition = _currentPosition;
+                _lastData = _currentData;
+                _hasNewData = false;
             }
         }
+        return true;
     }                    
-            
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     // The current serial number
     private String _entryName;
-
+    
     // The space to read from.
     private JavaSpace _space;
     
-    // The last sampling time
-    private double _lastTimeStamp;
-
-    // The last sample of force.
-    private double _lastForce;
-
-    // The last sample of velocity.
-    private double _lastVelocity;
-
-    // The last sample of position.
-    private double _lastPosition;
-
-    // The current sampling time
-    private double _currentTimeStamp;
-
-    // The current sample of force.
-    private double _currentForce;
-
-    // The current sample of velocity.
-    private double _currentVelocity;
-
-    // The current sample of position.
-    private double _currentPosition;
-
     // Indicating whether there's new data came in.
-    private boolean _newData;
-
+    private boolean _hasNewData;
+    
     // The correctness of the current outputs, which are the last set of 
     // subscribed data.
     private boolean _correct;
 
     // The lock that the access of local variables are synchronized on.
     private Object _lock;
+  
+    // Last set of data.
+    private ArrayToken _lastData;
 
+    // Current set of data.
+    private ArrayToken _currentData;
 
-
-    // The list of tokens that received.
-    private LinkedList _tokenList;
-
-    // The indicator the last read serial number
-    private LastRead _lastRead;
-    
     // Used to identify the event registration
     private EventRegistration _eventReg;
     
+    // Used to identify notification.
+    private long _notificationSeq;
+    
+    // Constants in the model
+    // Friction coefficient
+    private final double _miu = 0.5;
+    
+    // error tolerance.
+    private final double _eps = 1e-4;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
     
@@ -334,63 +342,26 @@ public class CarInformationSubscriber extends TypedAtomicActor
                     _event.getID() == _eventReg.getID() && 
                     _event.getSequenceNumber() > _notificationSeq) {
                 // grab a lock and read all new entries.
-                synchronized(_lastRead) {
-                    boolean finished = false;
-                    // make sure the actor is not producing outputs.
-                    synchronized(_tokenList) {
-                        while(!finished) {
-                            System.out.println(getName() + 
-                                    " is trying to read entry: " +
-                                   ( _lastRead.getSerialNumber()+1));
-                            TokenEntry entrytemp = new TokenEntry(_entryName, 
-                                new Long(_lastRead.getSerialNumber()+1), null);
-                            TokenEntry entry;
-                            try{
-                                entry = (TokenEntry)_space.readIfExists(
-                                        entrytemp, null, Long.MAX_VALUE);
-                            } catch (Exception e) {
-                                throw new InvalidStateException(_container,
-                                        "error reading space." +
-                                        e.getMessage());
-                            }
-                            if(entry == null) {
-                                System.out.println(getName() + 
-                                        " read null from space");
-                                /* check min indecies
-                                IndexEntry indexmin ;
-                                try {
-                                   indexmin = (IndexEntry)_space.read(
-                                        _minTemplate, null, Long.MAX_VALUE);
-                                } catch (Exception e) {
-                                    throw new InvalidStateException(_container,
-                                            "error reading space." +
-                                            e.getMessage());
-                                }
-                                if(_indexmin != null && 
-                                _lastRead.getSerialNumber() >= 
-                                        indexmin.position.longValue()) {
-                                    finished = true;
-                                } else {
-                                    _lastRead.setSerialNumber(
-                                            indexmin.position.longValue());
-                                            }*/
-                                finished = true;
-                            } else {
-                                System.out.println(getName() + 
-                                        " reads successfully.");
-                                _lastRead.increment();
-                                System.out.println(getName() + 
-                                        " locally stores entry: " +
-                                        _lastRead.getSerialNumber());
-                                Token token = entry.token;
-                                _tokenList.addLast(token);
-                            }
-                        }
-                        _tokenList.notifyAll();
+                synchronized(_lock) {
+                    TokenEntry entryTemplate = new TokenEntry(_entryName, 
+                            null, null);
+                    TokenEntry entry;
+                    try {
+                        entry = (TokenEntry)_space.readIfExists(
+                                entryTemplate, null, 100);
+                    } catch (Exception e) {
+                        throw new InvalidStateException(_container,
+                                "error reading from space." +
+                                e.getMessage());
                     }
+                    if(entry == null) {
+                        System.out.println(getName() + 
+                                " read null from space");
+                    }
+                    _currentData = (ArrayToken)entry.token;
+                    _hasNewData = true;
                 }
-            }   
-            Thread.currentThread().yield();
+            }
         }
         
         //////////////////////////////////////////////////////////////
@@ -402,52 +373,4 @@ public class CarInformationSubscriber extends TypedAtomicActor
         // the event
         private RemoteEvent _event;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
-    /** A index for the last read token entry serial number.
-     *  An instance of this class also serves as the lock for 
-     *  reading token entries from the JavaSpaces.
-     */
-    public class LastRead {
-        
-        /** Construct LastRead with a given serial number.
-         *  @param initserailnumber The initial serial number.
-         */
-        public LastRead(long initserialnumber) {
-            _lastSerialNumber = initserialnumber;
-        }
-        
-        //////////////////////////////////////////////////////////////
-        ////                     public methods                   ////
-        
-        /** Return the serial number of the last token entry being 
-         *  read.
-         *  @return The last read serail number.
-         */
-        public long getSerialNumber() {
-            return _lastSerialNumber;
-        }
-
-        /** Increase the serial number by one.
-         */
-        public void increment() {
-            _lastSerialNumber ++;
-        }
-
-        /** Set the serial number.
-         */
-        public void setSerialNumber(long number) {
-            _lastSerialNumber = number;
-        }
-
-
-        
-        //////////////////////////////////////////////////////////////
-        ////                     private variables                ////
-        
-        // the last read serial number
-        private long _lastSerialNumber;
-    }
-
 }

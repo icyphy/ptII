@@ -50,7 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 TCL_SRCS = 
 
 JSRCS = \
-	CarInformationPublisher.java
+	CarInformationPublisher.java \
+	CarInformationSubscriber.java \
+	CarPositionPublisher.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 

@@ -3,6 +3,10 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="leadingcar" class="ptolemy.actor.TypedCompositeActor">
     <doc>CT model for the leading car, with discrete output.</doc>
+    <property name="samplingPeriod" value="1.0" 
+        class="ptolemy.data.expr.Parameter"></property>
+    <property name="malfunctioning" value="false"
+        class="ptolemy.data.expr.Parameter"></property>
     <director class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="100">
         </property>
@@ -27,7 +31,7 @@
       	<port name="output"></port>
     </entity>
     <entity name="fsamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" value="1.0"></property>
+        <property name="samplePeriod" value="samplingPeriod"></property>
 	<port name="input"></port>
         <port name="output"></port>
     </entity>
@@ -61,12 +65,12 @@
         <port name="output"></port>
     </entity>
     <entity name="vssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" value="1.0"></property>
+        <property name="samplePeriod" value="samplingPeriod"></property>
 	<port name="input"></port>
         <port name="output"></port>
     </entity>
     <entity name="ssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" value="1.0"></property>
+        <property name="samplePeriod" value="samplingPeriod"></property>
 	<port name="input"></port>
         <port name="output"></port>
     </entity>

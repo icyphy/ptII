@@ -1,4 +1,4 @@
-/* An actor that sends car position to a Java Space.
+/* An actor that sends car information to a Java Space.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -65,8 +65,8 @@ the old ones.
 @version $Id$
 */
 
-public class CarInformationPublisher extends TypedAtomicActor 
-    implements TimedActor, CTStepSizeControlActor {
+public class CarPositionPublisher extends TypedAtomicActor 
+    implements TimedActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -76,7 +76,7 @@ public class CarInformationPublisher extends TypedAtomicActor
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public CarInformationPublisher(TypedCompositeActor container, String name)
+    public CarPositionPublisher(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
@@ -87,20 +87,6 @@ public class CarInformationPublisher extends TypedAtomicActor
         entryName = new Parameter(this, "entryName", 
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
-        
-        samplingPeriod = new Parameter(this, "samplingPeriod",
-                new DoubleToken(1.0));
-        samplingPeriod.setTypeEquals(BaseType.DOUBLE);
-
-        malfunctioning = new Parameter(this, "malfunctioning",
-                new BooleanToken(false));
-        malfunctioning.setTypeEquals(BaseType.BOOLEAN);
-
-        force = new TypedIOPort(this, "force", true, false);
-        force.setMultiport(false);
-        
-        velocity = new TypedIOPort(this, "velocity", true, false);
-        velocity.setMultiport(false);
 
         position = new TypedIOPort(this, "position", true, false);
         position.setMultiport(false);
@@ -108,14 +94,6 @@ public class CarInformationPublisher extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** Input port for force, of type DoubleToken.
-     */
-    public TypedIOPort force;
-
-    /** Input port for velocity, of type DoubleToken.
-     */
-    public TypedIOPort velocity;
 
     /** Input port for position, of type DoubleToken.
      */
@@ -130,14 +108,6 @@ public class CarInformationPublisher extends TypedAtomicActor
      *  an empty string of type StringToken.
      */
     public Parameter entryName;
-
-    /** The sampling period. Default is 1.0.
-     */
-    public Parameter samplingPeriod;
-
-    /** Indicate whether the actor is malfunctioning. Default is false.
-     */
-    public Parameter malfunctioning;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -154,12 +124,6 @@ public class CarInformationPublisher extends TypedAtomicActor
                 (CarInformationPublisher)super.clone(ws);
 	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
             newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-            newobj.samplingPeriod = (Parameter)newobj.getAttribute(
-                    "samplingPeriod");
-            newobj.malfunctioning = (Parameter)newobj.getAttribute(
-                    "malfunctioning");
-            newobj.force = (TypedIOPort)newobj.getPort("force");
-            newobj.velocity = (TypedIOPort)newobj.getPort("velocity");
             newobj.position = (TypedIOPort)newobj.getPort("position");
 	    return newobj;
         } catch (CloneNotSupportedException ex) {
@@ -167,28 +131,6 @@ public class CarInformationPublisher extends TypedAtomicActor
             throw new InternalErrorException(
                     "Clone failed: " + ex.getMessage());
         }
-    }
-
-    /** Return true always.
-     *  @return True if the current integration step is acceptable.
-     */
-    public boolean isThisStepSuccessful() {
-        return true;
-    }
-
-    /** Return java.lang.Double.MAX_VALUE.
-     *  @return java.lang.Double.MAX_VALUE.
-     */
-    public double predictedStepSize() {
-        return java.lang.Double.MAX_VALUE;
-    }
-
-    /** Return the current step size from the
-     *  director.
-     *  @return The current step size.
-     */
-    public double refinedStepSize() {
-        return ((CTDirector)getDirector()).getCurrentStepSize();
     }
 
     /** Find the JavaSpaces according to the jspaceName parameter.
@@ -224,12 +166,6 @@ public class CarInformationPublisher extends TypedAtomicActor
         //System.out.println("Finish intialization.");
     }
 
-    /** Set the next sampling time.
-     */
-    public void initialize() throws IllegalActionException {
-        _nextSamplingTime = getDirector().getCurrentTime();
-    }
-
     /** Read exactly one input token from each input channel,
      *  put them into an ArrayToken and write to the space.
      *  Replace the old token in the space.
@@ -238,30 +174,14 @@ public class CarInformationPublisher extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
 	try {
 	    String name = ((StringToken)entryName.getToken()).toString();
-            if(Math.abs(getDirector().getCurrentTime()-_nextSamplingTime)
-                    < ((CTDirector)getDirector()).getTimeResolution()){
-                _nextSamplingTime += 
-                    ((DoubleToken)samplingPeriod.getToken()).doubleValue();
-                getDirector().fireAt(this, _nextSamplingTime);
-                Token[] tokens = new Token[3];
-                if(!((BooleanToken)malfunctioning.getToken()).booleanValue()) {
-                    tokens[0] = 
-                        new DoubleToken(getDirector().getCurrentTime());
-                    tokens[1] = force.get(0);
-                    tokens[2] = velocity.get(0);
-                    tokens[3] = position.get(0);
-                } else {
-                    for(int i = 0; i < 4; i++) {
-                        tokens[i] = new DoubleToken(Math.random());
-                    }
-                }
-                ArrayToken array = new ArrayToken(tokens);
-                TokenEntry template = new TokenEntry(name, null, null);
-                _space.takeIfExists(template, null, 100);
-                TokenEntry entry = new TokenEntry(name,
-                        new Long(0), array);
-                _space.write(entry, null, Lease.FOREVER);
-            }
+            Long serialNumber = new Long(System.currentTimeMillis());
+            Token token = position.get(0);
+ 
+            TokenEntry template = new TokenEntry(name, null, null);
+            _space.takeIfExists(template, null, 100);
+            TokenEntry entry = new TokenEntry(name,
+                    serialNumber, token);
+            _space.write(entry, null, Lease.FOREVER);
 	} catch (RemoteException re) {
 	    throw new IllegalActionException(this, "Cannot write into " +
 		"JavaSpace. " + re.getMessage());
@@ -284,7 +204,5 @@ public class CarInformationPublisher extends TypedAtomicActor
     // The Java space;
     private JavaSpace _space;
 
-    // The next sampling time
-    private double _nextSamplingTime;
 }
 
