@@ -65,14 +65,15 @@ public class DirectedGraph extends Graph {
     ////                         public methods                    ////
 
     /** Adds a node to this graph.  The node is represented by the
-     *  specified Object. The Object cannot be null.  In addition, two
-     *  Objects equal to each other, as determined by the
-     *  <code>equals</code> method, cannot both be added.
+     *  specified Object. The Object cannot be <code>null</code>.
+     *  In addition, two Objects equal to each other, as determined
+     *  by the <code>equals</code> method, cannot both be added.
      *
      *  @param o the Object representing a graph node
      *  @exception IllegalArgumentException an Object equals to the
      *   specified one is already in this graph.
-     *  @exception NullPointerException argument is null.
+     *  @exception NullPointerException the specified Object is
+     *   <code>null</code>.
      */
     public void add(Object o) {
         super.add(o);
@@ -88,8 +89,8 @@ public class DirectedGraph extends Graph {
      *
      *  @param o1 the Object representing the source node
      *  @param o2 the Object representing the sink node
-     *  @exception IllegalArgumentException at least one argument is not
-     *   a graph node, i.e., the argument is not equal to an Object
+     *  @exception IllegalArgumentException at least one of the arguments
+     *   is not a graph node, i.e., the argument is not equal to an Object
      *   specified in a successful <code>add</code> call. Equality
      *   is determined by the <code>equals</code> method.
      */ 
@@ -117,7 +118,7 @@ public class DirectedGraph extends Graph {
      *  in constant time.
      *  @return <code>true</code> if the the graph is acyclic.
      *   <code>false</code> otherwise.
-     *  @exception InvalidStateException if the graph is empty.
+     *  @exception InvalidStateException the graph is empty.
      */
     public boolean isAcyclic() {
         _compTranClosure();
@@ -134,7 +135,7 @@ public class DirectedGraph extends Graph {
      *  @param o an Object representing a node in this graph.
      *  @return an array of Objects representing nodes reachable from
      *   the specified one.
-     *  @exception InvalidStateException if the graph is empty.
+     *  @exception InvalidStateException the graph is empty.
      *  @exception IllegalArgumentException the specified Object is
      *   not a node in this graph.
      */

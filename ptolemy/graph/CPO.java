@@ -1,4 +1,4 @@
-/** An interface for Complete partial order (CPO).
+/** An interface defining the operations on complete partial order (CPO).
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -33,12 +33,18 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// CPO
 /**
-An interface for Complete Partial Order(CPO). 
-Please see "Introduction to Lattices and Order" by Davey and Priestley
-for definition of operations.
+An interface defining the operations on complete partial order (CPO).
+The definitions of these operations can be found in "Introduction to
+Lattices and Order",  Cambridge University Press, 1990, by B.A. Davey
+and H.A. Priestley.
+
+Each element in the CPO is represented by an Object.
+For infinite CPOs, the result of some of the operations may be an
+infinite set. In this case, the class implementing this interface
+can throw an Exception.
 
 @author Yuhong Xiong
-@version $Id$
+$Id$
 */
 
 public interface CPO
@@ -47,124 +53,124 @@ public interface CPO
     ////                         public methods                    ////
 
     /** Returns the bottom element of this CPO.
-     *  @return an object representing the bottom element.
+     *  @return an Object representing the bottom element, or
+     *   <code>null</code> if the bottom does not exist.
      */
     public Object bottom();
 
     /** Compares two elements in this CPO.
-     *  @param e1 an object representing a CPO element.
-     *  @param e2 another object representing a CPO element.
+     *  @param e1 an Object representing a CPO element.
+     *  @param e2 an Object representing a CPO element.
      *  @return one of <code>CPO.STRICT_LESS, CPO.EQUAL,
      *   CPO.STRICT_GREATER, CPO.INCOMPARABLE</code>.
-     *  @exception IllegalArgumentException at least one element
-     *   doesn't belong to this CPO.
+     *  @exception IllegalArgumentException at least one of the 
+     *   specified Objects is not an element of this CPO.
      */
     public int compare(Object e1, Object e2);
 
     /** Computes the down-set of an element in this CPO.
      *  @param e an Object representing an element in this CPO.
-     *  @return an array of of objects representing the elements in the
-     *   down-set of the input.
-     *  @exception IllegalArgumentException the specified object doesn't
-     *   belong to this CPO.
+     *  @return an array of of Objects representing the elements in the
+     *   down-set of the specified element.
+     *  @exception IllegalArgumentException the specified Object is not
+     *   an element in this CPO.
      */
-     // FIXME: down-set may be infinite for infinite CPOs.  move this to
-     // FiniteCPO class?
     public Object[] downSet(Object e);    
 
     /** Computes the greatest lower bound (GLB) of two elements.
-     *  @param e1 an object representing an element in this CPO.
-     *  @param e2 another object representing an element in this CPO.
-     *  @return An object representing the GLB of the two specified
-     *   elements.  <code>null</code> if the GLB doesn't exist.
-     *  @exception IllegalArgumentException at least one element
-     *   doesn't belong to this CPO.
+     *  @param e1 an Object representing an element in this CPO.
+     *  @param e2 an Object representing an element in this CPO.
+     *  @return an Object representing the GLB of the two specified
+     *   elements, or <code>null</code> if the GLB does not exist.
+     *  @exception IllegalArgumentException at least one of the 
+     *   specified Objects is not an element of this CPO.
      */
     public Object glb(Object e1, Object e2);
     
     /** Computes the greatest lower bound (GLB) of a subset.
-     *  @param subset an array of objects representing the subset.
-     *  @return An object representing the GLB of the subset.
-     *  <code>null</code> if the GLB doesn't exist.
-     *  @exception IllegalArgumentException at least one element
-     *  in the subset doesn't belong to this CPO.
+     *  @param subset an array of Objects representing the subset.
+     *  @return an Object representing the GLB of the subset, or
+     *   <code>null</code> if the GLB does not exist.
+     *  @exception IllegalArgumentException at least one Object
+     *   in the specified array is not an element of this CPO.
      */
     public Object glb(Object[] subset);
 
     /** Computes the greatest element of a subset.
-     *  @param subset an array of objects representing the subset.
-     *  @return an object representing the greatest element of the subset.
-     *   <code>null</code> if the greatest element doesn't exist.
-     *  @exception IllegalArgumentException at least one element in the
-     *   subset doesn't belong to this CPO.
+     *  @param subset an array of Objects representing the subset.
+     *  @return an Object representing the greatest element of the subset,
+     *   or <code>null</code> if the greatest element does not exist.
+     *  @exception IllegalArgumentException at least one Object in the
+     *   specified array is not an element of this CPO.
      */
     public Object greatestElement(Object[] subset);
 
     /** Computes the least element of a subset.
-     *  @param subset an array of objects representing the subset.
-     *  @return an object representing the least element of the subset.
-     *   <code>null</code> if the least element doesn't exist.
-     *  @exception IllegalArgumentException at least one element in the
-     *   subset doesn't belong to this CPO.
+     *  @param subset an array of Objects representing the subset.
+     *  @return an Object representing the least element of the subset,
+     *   or <code>null</code> if the least element does not exist.
+     *  @exception IllegalArgumentException at least one Object in the
+     *   specified array is not an element of this CPO.
      */
     public Object leastElement(Object[] subset);
     
     /** Computes the least upper bound (LUB) of two elements.
-     *  @param e1 an object representing an element in this CPO.
-     *  @param e2 another object representing element in this CPO.
-     *  @return an object representing the LUB of the two specified
-     *   elements.  <code>null</code> if the LUB doesn't exist.
-     *  @exception IllegalArgumentException at least one element
-     *   doesn't belong to this CPO.
+     *  @param e1 an Object representing an element in this CPO.
+     *  @param e2 an Object representing element in this CPO.
+     *  @return an Object representing the LUB of the two specified
+     *   elements, or <code>null</code> if the LUB does not exist.
+     *  @exception IllegalArgumentException at least one of the
+     *   specified Objects is not an element of this CPO.
      */
     public Object lub(Object e1, Object e2);
     
     /** Computes the least upper bound (LUB) of a subset.
-     *  @param subset an array of objects representing the subset.
-     *  @return An object representing the LUB of the subset.
-     *  <code>null</code> if the LUB doesn't exist.
-     *  @exception IllegalArgumentException at least one element
-     *   in the subset doesn't belong to this CPO.
+     *  @param subset an array of Objects representing the subset.
+     *  @return an Object representing the LUB of the subset, or
+     *   <code>null</code> if the LUB does not exist.
+     *  @exception IllegalArgumentException at least one Object
+     *   in the specified array is not an element of this CPO.
      */
     public Object lub(Object[] subset);
  
     /** Returns the top element of this CPO.
-     *  @return an object representing the top element.
+     *  @return an Object representing the top element, or null if
+     *   the top does not exist.
      */
     public Object top();
 
     /** Computes the up-set of an element in this CPO.
      *  @param e an Object representing an element in this CPO.
-     *  @return an array of of objects representing the elements in the
-     *   up-set of the input.
-     *  @exception IllegalArgumentException the specified object doesn't
-     *   belong to this CPO.
+     *  @return an array of Objects representing the elements in the
+     *   up-set of the specified element.
+     *  @exception IllegalArgumentException the specified Object is not
+     *   an element of this CPO.
      */
-     // FIXME: up-set may be infinite for infinite CPOs.  move this to
-     // FiniteCPO class?
     public Object[] upSet(Object e);
  
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Comparison result: the first element is strictly less than
-     *  the second.
+    /** One of the return values of <code>compare</code>, indicating
+     *  that the first element is strictly less than the second.
      *  @see #compare
      */
     public static final int STRICT_LESS = -1;
     
-    /** Comparison result: the two element are equal.
+    /** One of the return values of <code>compare</code>, indicating
+     *  that the two elements are equal.
      *  @see #compare
      */
     public static final int EQUAL = 0;
-    
-    /** Comparison result: the first element is strictly greater than
-     *  the second.
+ 
+    /** One of the return values of <code>compare</code>, indicating
+     *  that the first element is strictly greater than the second.
      *  @see #compare
      */
     public static final int STRICT_GREATER = 1;
     
-    /** Comparison result: the two elements are incomparable.
+    /** One of the return values of <code>compare</code>, indicating
+     *  that the two elements are incomparable.
      *  @see #compare
      */
     public static final int INCOMPARABLE = 2;

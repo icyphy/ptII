@@ -67,14 +67,15 @@ public class Graph {
     ////                         public methods                    ////
 
     /** Adds a node to this graph.  The node is represented by the
-     *  specified Object. The Object cannot be null.  In addition, two
-     *  Objects equal to each other, as determined by the
-     *  <code>equals</code> method, cannot both be added.
+     *  specified Object. The Object cannot be <code>null</code>.
+     *  In addition, two Objects equal to each other, as determined
+     *  by the <code>equals</code> method, cannot both be added.
      *
      *  @param o the Object representing a graph node
      *  @exception IllegalArgumentException an Object equals to the
      *   specified one is already in this graph.
-     *  @exception NullPointerException argument is null.
+     *  @exception NullPointerException the specified Object is
+     *   <code>null</code>.
      */
     public void add(Object o) {
         if (contains(o)) {
@@ -92,9 +93,9 @@ public class Graph {
      *
      *  @param o1 the Object representing one graph node
      *  @param o2 the Object representing another graph node
-     *  @exception IllegalArgumentException at least one argument is not
-     *   a graph node, i.e., the argument is not equal to an Object
-     *   specified in a successful <code>add</code> call. Equality
+     *  @exception IllegalArgumentException at least one of the arguments
+     *   is not a graph node, i.e., the arguement is not equal to an
+     *   Object specified in a successful <code>add</code> call. Equality
      *   is determined by the <code>equals</code> method.
      */ 
     public void addEdge(Object o1, Object o2) {        
@@ -133,7 +134,8 @@ public class Graph {
     }
 
     /** Returns all the nodes in this graph in the form of an Objects array.
-     *  The objects are the ones passed to the <code>add()</code> calls.
+     *  The Objects are the ones passed in successful <code>add()</code>
+     *  calls.
      *  @return an Object array
      */
     public Object[] allNodes() {
@@ -159,7 +161,7 @@ public class Graph {
      *  }
      *  </pre>
      *  where each node is described by the <code>toString()</code>
-     *  method of the object representing the node.
+     *  method of the Object representing the node.
      *  @return a string description of this graph.
      */
     public String description() {
@@ -221,8 +223,8 @@ public class Graph {
     /** Returns the node in this graph with the specified node ID.
      *  @param nodeId a node ID
      *  @return an Object representing a node.
-     *  @exception IllegalArgumentException if the node id argument
-     *   is negative or is not less than the total number of nodes in
+     *  @exception IllegalArgumentException the node ID is negative
+     *   or is not less than the total number of nodes in
      *   this graph.
      */
     protected Object _getBackRef(int nodeId) {
@@ -235,10 +237,10 @@ public class Graph {
 	}
     }
 
-    /** Returns the node id of the specified node.
-     *  @param o an object representing a graph node.
+    /** Returns the node ID of the specified node.
+     *  @param o an Object representing a graph node.
      *  @return the node id.
-     *  @exception IllegalArgumentException the specified object is not
+     *  @exception IllegalArgumentException the specified Object is not
      *   a node in this graph.
      */
     protected int _getNodeId(Object o) {
