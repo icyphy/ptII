@@ -191,7 +191,8 @@ public class Attribute extends NamedObj {
             name = new String("");
         }
         NamedObj container = (NamedObj) getContainer();
-        if((container != null) && (container.getAttribute(name) != null)) {
+        Attribute another = container.getAttribute(name);
+        if((container != null) && (another != null) && (another != this)) {
             throw new NameDuplicationException (container, 
                 "already contains an attribute with the name "+name+".");
         } 
