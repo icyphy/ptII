@@ -67,31 +67,31 @@ public abstract class PtolemyTop extends Top {
         super();
     }
 
-    /** Get the view that created this frame.
-     *  @return The view.
+    /** Get the tableau that created this frame.
+     *  @return The tableau.
      */
-    public View getView() {
-        return _view;
+    public Tableau getTableau() {
+        return _tableau;
     }
 
-    /** Set the view that represents this frame.
+    /** Set the tableau that represents this frame.
      *  @param key The key identifying the model.
      */
-    public void setView(View view) {
-	_view = view;
+    public void setTableau(Tableau tableau) {
+	_tableau = tableau;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The view that created this frame.
-    private View _view = null;
+    // The tableau that created this frame.
+    private Tableau _tableau = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Read the specified URL.  This delegates to the ModelDirectory
-     *  to ensure that the preferred view of the model is opened, and
+     *  to ensure that the preferred tableau of the model is opened, and
      *  that a model is not opened more than once.
      *  @param url The URL to read.
      *  @exception Exception If the URL cannot be read.
@@ -100,8 +100,8 @@ public abstract class PtolemyTop extends Top {
         // NOTE: Used to use for the first argument the following, but
         // it seems to not work for relative file references:
         // new URL("file", null, _directory.getAbsolutePath()
-        Application application = (Application)_view.toplevel();
-        application.openModel(url, url, url.toExternalForm());
+        Configuration configuration = (Configuration)_tableau.toplevel();
+        configuration.openModel(url, url, url.toExternalForm());
     }
 
     /** Query the user for a filename and save the model to that file.
@@ -131,7 +131,7 @@ public abstract class PtolemyTop extends Top {
 	    // update the name of the model proxy.
             try {
 		String newKey = file.toURL().toExternalForm();
-		ModelProxy proxy = (ModelProxy)getView().getContainer();
+		Effigy proxy = (Effigy)getTableau().getContainer();
 	        Parameter id = (Parameter)proxy.getAttribute("identifier");
 		id.setToken(new StringToken(newKey));
 	    } catch (MalformedURLException ex) {

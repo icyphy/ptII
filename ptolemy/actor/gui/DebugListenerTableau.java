@@ -48,7 +48,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
-//// DebugListenerView
+//// DebugListenerTableau
 /**
 An attribute representing a debug listener window for the container model.
 There can be any number of such windows associated with the model.
@@ -58,9 +58,9 @@ accessed using the getFrame() method.
 @author  Edward A. Lee and Steve Neuendorffer
 @version $Id$
 */
-public class DebugListenerView extends View {
+public class DebugListenerTableau extends Tableau {
 
-    /** Construct a new view of the given debuggable object.  All 
+    /** Construct a new tableau of the given debuggable object.  All 
      *  debug events published from the given debuggable will be displayed
      *  in the frame.  The log of these messages can be saved to a 
      *  text file separate from the model.
@@ -76,7 +76,7 @@ public class DebugListenerView extends View {
      *  @exception NameDuplicationException If the name coincides with an 
      *   attribute already in the container.
      */
-    public DebugListenerView(ModelProxy container, 
+    public DebugListenerTableau(Effigy container, 
 			     String name, 
 			     final Debuggable debug)
             throws IllegalActionException, NameDuplicationException {
@@ -84,7 +84,7 @@ public class DebugListenerView extends View {
 	_debug = debug;
         final DebugListenerFrame frame = new DebugListenerFrame();
 	setFrame(frame);
-	frame.setView(this);
+	frame.setTableau(this);
 	debug.addDebugListener(frame);
 	// Listen for window closing events to unregister.
 	frame.addWindowListener(new WindowAdapter() {

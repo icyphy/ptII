@@ -78,7 +78,7 @@ import com.microstar.xml.XmlException;
 An application that opens a run control panel for each model that is 
 created, instead of automatically executing it. 
 Any number of models can be simultaneously running under
-the same application.  An instance of RunView is created for each model and
+the same application.  An instance of RunTableau is created for each model and
 added to the Model Directory.  When the frames displayed by this application
 are all closed, then the application will automatically exit.
 If no models are specified on the command line, then a default model is
@@ -87,9 +87,9 @@ opened.
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
 @see ModelFrame
-@see RunView
+@see RunTableau
 */
-public class PtolemyApplication extends Application {
+public class PtolemyApplication {
 
     /** Parse the specified command-line arguments, creating models
      *  and frames to interact with them.  If the size of the argument
@@ -98,12 +98,11 @@ public class PtolemyApplication extends Application {
      *  @exception Exception If command line arguments have problems.
      */
     public PtolemyApplication(String args[]) throws Exception {
-        // Invoke the base class constructor with null arguments to prevent
-        // the base class from running any specified models.
-        super(null);
-	new ModelDirectory(this, "directory");
-	new RunView.RunViewFactory(this, "factory");
-	new ModelReader(this, "reader");
+	super();
+	_config = new Configuration(new Workspace());
+	new ModelDirectory(_config, "directory");
+	new RunTableau.Factory(_config, "factory");
+	new ModelReader(_config, "reader");
 
 	if (args.length == 0) {
             // FIXME: We need a better initial default model,
@@ -128,14 +127,14 @@ public class PtolemyApplication extends Application {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a new application with the specified command-line arguments.
+    /** Create a new configuration in the default workspace.
      *  If the command-line arguments include the names of MoML files or
      *  URLs for MoML files, then one window is opened for each model.
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
-        try {
-            PtolemyApplication app = new PtolemyApplication(args);
+	try {
+	    new PtolemyApplication(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
@@ -173,14 +172,15 @@ public class PtolemyApplication extends Application {
         } else if (arg.equals("")) {
             // Ignore blank argument.
         } else {
-            ModelDirectory directory = (ModelDirectory)getEntity("directory");
+            ModelDirectory directory = 
+		(ModelDirectory)_config.getEntity("directory");
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
             }
             if (_expectingClass) {
                 _expectingClass = false;
 
-                ModelProxy model = directory.getModel(arg);
+                Effigy model = directory.getModel(arg);
                 if (model == null) {
                     // No preexisting model.  Create class.
                     Class newClass = Class.forName(arg);
@@ -199,12 +199,12 @@ public class PtolemyApplication extends Application {
                              = (CompositeActor)constructor.newInstance(args);
 		
                     // Create a proxy for the model.
-                    PtolemyModelProxy proxy
-                            = new PtolemyModelProxy(workspace());
+                    PtolemyEffigy proxy
+                            = new PtolemyEffigy(_config.workspace());
                     proxy.setModel(newModel);
                 } else {
                     // Model already exists.
-                    model.showViews();
+                    model.showTableaus();
                 }
 	    } else {
                 if (!arg.startsWith("-")) {
@@ -263,7 +263,7 @@ public class PtolemyApplication extends Application {
                         }
                     }
                     // Now defer to the model reader.
-                    openModel(base, inurl, key);
+                    _config.openModel(base, inurl, key);
                 } else {
                     // Argument not recognized.
                     return false;
@@ -306,16 +306,17 @@ public class PtolemyApplication extends Application {
             String value = (String)values.next();
 
             boolean match = false;
-            ModelDirectory directory = (ModelDirectory)getEntity("directory");
+            ModelDirectory directory = 
+		(ModelDirectory)_config.getEntity("directory");
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
             }
             Iterator proxies
-                    = directory.entityList(ModelProxy.class).iterator();
+                    = directory.entityList(Effigy.class).iterator();
             while(proxies.hasNext()) {
-		ModelProxy proxy = (ModelProxy)proxies.next();
-		if(proxy instanceof PtolemyModelProxy) {
-		    NamedObj model = ((PtolemyModelProxy)proxy).getModel();
+		Effigy proxy = (Effigy)proxies.next();
+		if(proxy instanceof PtolemyEffigy) {
+		    NamedObj model = ((PtolemyEffigy)proxy).getModel();
 		    Attribute attribute = model.getAttribute(name);
 		    if (attribute instanceof Variable) {
 			match = true;
@@ -399,4 +400,7 @@ public class PtolemyApplication extends Application {
 
     // List of parameter values seen on the command line.
     private List _parameterValues = new LinkedList();
+
+    // The configuration model of this application.
+    private Configuration _config;
 }

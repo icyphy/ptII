@@ -46,13 +46,13 @@ import java.net.URL;
 //// ModelReader
 /**
 An object that can read models from a URL.
-An application contains one instance of this class, and delegates
-reading URLs to that instance.  The application is responsible for
+A configuration contains one instance of this class, and delegates
+reading URLs to that instance.  The configuration is responsible for
 registering the model with the ModelDirectory.
 
 @author Edward A. Lee
 @version $Id$
-@see Application
+@see Configuration
 @see ModelDirectory
 */
 public class ModelReader extends CompositeEntity {
@@ -66,7 +66,7 @@ public class ModelReader extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public ModelReader(Application container, String name)
+    public ModelReader(Configuration container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -74,8 +74,8 @@ public class ModelReader extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the specified input URL, and return an instance of ModelProxy
-     *  for the data at that URL.  The instance of ModelProxy is created
+    /** Read the specified input URL, and return an instance of Effigy
+     *  for the data at that URL.  The instance of Effigy is created
      *  in the same workspace as this model reader, but it is not given
      *  a name.
      *  @param base The base for relative file references, or null if
@@ -85,11 +85,11 @@ public class ModelReader extends CompositeEntity {
      *  @exception Exception If the stream cannot be read.
      */
     // FIXME remove key.
-    public ModelProxy read(URL base, URL in, String key) throws Exception {
+    public Effigy read(URL base, URL in, String key) throws Exception {
         MoMLParser parser = new MoMLParser(new Workspace(), null);
         NamedObj toplevel = parser.parse(base, in.openStream());
         // Create a proxy for the model.
-        PtolemyModelProxy proxy = new PtolemyModelProxy(workspace());
+        PtolemyEffigy proxy = new PtolemyEffigy(workspace());
         proxy.setModel(toplevel);
         return proxy;
     }

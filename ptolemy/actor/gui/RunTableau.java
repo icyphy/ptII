@@ -1,4 +1,4 @@
-/* A view that creates a new run control panel for a ptolemy model.
+/* A tableau that creates a new run control panel for a ptolemy model.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -52,21 +52,21 @@ import javax.swing.JPanel;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// RunView
+//// RunTableau
 /**
-A view that creates a new run control panel for a ptolemy model, including
+A tableau that creates a new run control panel for a ptolemy model, including
 placing placeable actors such as plots and toplevel windows.
 
 @author Steve Neuendorffer
 @version $Id$
 */
-public class RunView extends View {
+public class RunTableau extends Tableau {
 
     /** Create a new run control panel for the given model with the given 
-     *  name and make it visible.  This view is managed by the given model
+     *  name and make it visible.  This tableau is managed by the given model
      *  directory.
      */
-    public RunView(PtolemyModelProxy container,
+    public RunTableau(PtolemyEffigy container,
 		   String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
@@ -87,7 +87,7 @@ public class RunView extends View {
 	ModelFrame frame = new RunFrame(actor);
 	frame.setBackground(BACKGROUND_COLOR);
 	setFrame(frame);
-	frame.setView(this);
+	frame.setTableau(this);
 	frame.setVisible(true);
 	frame.pack();
     }
@@ -95,7 +95,7 @@ public class RunView extends View {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** The frame that is created by this view.
+    /** The frame that is created by this tableau.
      */
     public class RunFrame extends ModelFrame {	
 	/** Construct a frame to control the specified Ptolemy II model.
@@ -138,8 +138,8 @@ public class RunView extends View {
 			debug = null;
 		    }
 		    if(debug != null) {
-			ModelProxy proxy = (ModelProxy)getContainer();
-			new DebugListenerView(proxy,
+			Effigy proxy = (Effigy)getContainer();
+			new DebugListenerTableau(proxy,
 					      proxy.uniqueName("debugListener"),
 					      debug);
 		    }
@@ -153,9 +153,9 @@ public class RunView extends View {
 	}
     }
 
-    /** A factory that creates run control panel views for Ptolemy models.
+    /** A factory that creates run control panel tableaus for Ptolemy models.
      */
-    public static class RunViewFactory extends ViewFactory {
+    public static class Factory extends TableauFactory {
 	/** Create an factory with the given name and container.
 	 *  The container argument must not be null, or a
 	 *  NullPointerException will be thrown.  This entity will use the
@@ -170,25 +170,25 @@ public class RunView extends View {
 	 *  @exception NameDuplicationException If the name coincides with
 	 *   an entity already in the container.
 	 */
-	public RunViewFactory(CompositeEntity container, String name)
+	public Factory(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
-	/** Create a view in the default workspace with no name for the 
-	 *  given ModelProxy.  The view will created with a new unique name
-	 *  in the given model proxy.  If this factory cannot create a view
+	/** Create a tableau in the default workspace with no name for the 
+	 *  given Effigy.  The tableau will created with a new unique name
+	 *  in the given model proxy.  If this factory cannot create a tableau
 	 *  for the given proxy (perhaps because the proxy is not of the
 	 *  appropriate subclass) then return null.
 	 *  @param proxy The model proxy.
-	 *  @return A new RunView, if the proxy is a PtolemyModelProxy, or null
-	 *  if the proxy is not a PtolemyModelProxy, 
-	 *  or creating the view fails.
+	 *  @return A new RunView, if the proxy is a PtolemyEffigy, or null
+	 *  if the proxy is not a PtolemyEffigy, 
+	 *  or creating the tableau fails.
 	 */
-	public View createView(ModelProxy proxy) {
-	    if(proxy instanceof PtolemyModelProxy) {
+	public Tableau createTableau(Effigy proxy) {
+	    if(proxy instanceof PtolemyEffigy) {
 		try {
-		    return new RunView((PtolemyModelProxy)proxy,
-				       proxy.uniqueName("view"));
+		    return new RunTableau((PtolemyEffigy)proxy,
+				       proxy.uniqueName("tableau"));
 		} catch (Exception ex) {
 		    return null;
 		}

@@ -47,7 +47,7 @@ import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// View
+//// Tableau
 /**
 A named object that represents a graphical view of another ptolemy model.
 This is intended to be used in a user interface model, with the ptolemy model
@@ -56,10 +56,10 @@ in a separate hierarchy (or even a separate workspace).
 @author Steve Neuendorffer
 @version $Id$
 */
-public class View extends ComponentEntity {
+public class Tableau extends ComponentEntity {
 
-    /** Construct a view with the given name contained by the specified
-     *  ModelDirectory. The view will act on the given model.  
+    /** Construct a tableau with the given name contained by the specified
+     *  ModelDirectory. The tableau will act on the given model.  
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This entity will use the
      *  workspace of the container for synchronization and version counts.
@@ -73,31 +73,31 @@ public class View extends ComponentEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public View(ModelProxy container,
+    public Tableau(Effigy container,
 		String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }
 
-    /** Return the component that implements the display of this view.
+    /** Return the component that implements the display of this tableau.
      */
     public JFrame getFrame () {
 	return _frame;
     }
     
-    /** Return the title of this view.  Subclasses should override this to
+    /** Return the title of this tableau.  Subclasses should override this to
      *  provide a better description of themselves.  This base class
      *  returns the full name of the model.
      */
-    public String getViewTitle() {
+    public String getTableauTitle() {
 	try {
-	    ModelProxy proxy = (ModelProxy)getContainer();
+	    Effigy proxy = (Effigy)getContainer();
 	    Parameter idParameter = 
 		(Parameter)proxy.getAttribute("identifier");
 	    return ((StringToken)idParameter.getToken()).stringValue();
 	}
 	catch (Exception ex) {
-	    return "UnNamed View";
+	    return "UnNamed Tableau";
 	}
     }
 
@@ -128,7 +128,7 @@ public class View extends ComponentEntity {
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
 	if(container == null) {
-	    ModelProxy oldContainer = (ModelProxy)getContainer();
+	    Effigy oldContainer = (Effigy)getContainer();
 	    super.setContainer(container);
 	    // Blow away the frame.
 	    if(_frame != null) {
@@ -139,15 +139,15 @@ public class View extends ComponentEntity {
 	    
             if (_master && oldContainer != null) {
                 // Window is a master.  Close the model which will close all
-		// other views.
+		// other tableaus.
 		oldContainer.setContainer(null);
             }
-	} else if(container instanceof ModelProxy) {	
+	} else if(container instanceof Effigy) {	
 	    super.setContainer(container);
 	} else {
 	    throw new IllegalActionException(this, container, 
 		"The container can only be set to an " + 
-		"instance of ModelProxy");
+		"instance of Effigy");
 	}
     }
 
@@ -157,7 +157,7 @@ public class View extends ComponentEntity {
     public void setFrame(JFrame frame) {
         _frame = frame;
 
-	frame.setTitle(getViewTitle());
+	frame.setTitle(getTableauTitle());
 
         // Set up a listener for window closing events.
         frame.addWindowListener(new WindowAdapter() {
@@ -169,7 +169,7 @@ public class View extends ComponentEntity {
                 } catch (KernelException ex) {
 		    try {
 			MessageHandler.warning(
-                            "Cannot remove view: " + ex);
+                            "Cannot remove tableau: " + ex);
                     } catch (CancelException exception) {}
 		}
             }
@@ -185,7 +185,7 @@ public class View extends ComponentEntity {
         _master = flag;
     }
 
-    /** Make this view visible by raising or deiconifying it.
+    /** Make this tableau visible by raising or deiconifying it.
      */
     public void show() {
         getFrame().toFront();
@@ -194,11 +194,11 @@ public class View extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The frame that the view is shown in.
+    /** The frame that the tableau is shown in.
      */
     private JFrame _frame;
 
-    /** True if this view is a master view.  Default value is false.
+    /** True if this tableau is a master tableau.  Default value is false.
      */
     private boolean _master = false;
 }

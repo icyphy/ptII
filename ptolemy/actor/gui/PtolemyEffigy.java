@@ -1,4 +1,4 @@
-/* A view that creates a new run control panel for a ptolemy model.
+/* A representative of a ptolemy model
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -40,20 +40,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
-//// PtolemyModelProxy
+//// PtolemyEffigy
 /**
 A proxy for a Ptolemy model in a ptolemy model of an application.
 
 @author Steve Neuendorffer
 @version $Id$
 */
-public class PtolemyModelProxy extends ModelProxy {
+public class PtolemyEffigy extends Effigy {
 
     /** Create a new proxy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this proxy.
      */
-    public PtolemyModelProxy(Workspace workspace) {
+    public PtolemyEffigy(Workspace workspace) {
 	super(workspace);
     }
 
@@ -61,7 +61,7 @@ public class PtolemyModelProxy extends ModelProxy {
      *  @param container The directory that contains this proxy.
      *  @param name The name of this proxy.
      */
-    public PtolemyModelProxy(ModelDirectory container, String name)
+    public PtolemyEffigy(ModelDirectory container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }

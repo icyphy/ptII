@@ -73,7 +73,7 @@ public class ModelDirectory extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public ModelDirectory(Application container, String name)
+    public ModelDirectory(Configuration container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }
@@ -85,10 +85,10 @@ public class ModelDirectory extends CompositeEntity {
      *  @param identifier The identifier for the model, such as a URL.
      *  @return The model, or null if there is no such model in the directory.
      */
-    public ModelProxy getModel(String identifier) {
-        Iterator entities = entityList(ModelProxy.class).iterator();
+    public Effigy getModel(String identifier) {
+        Iterator entities = entityList(Effigy.class).iterator();
         while (entities.hasNext()) {
-            ModelProxy entity = (ModelProxy)entities.next();
+            Effigy entity = (Effigy)entities.next();
             Parameter idParam = (Parameter)entity.getAttribute("identifier");
             if (idParam != null) {
                 try {
@@ -120,7 +120,7 @@ public class ModelDirectory extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-	if (entityList(ModelProxy.class).size() == 0) {
+	if (entityList(Effigy.class).size() == 0) {
             try {
 		setContainer(null);
             } catch (KernelException ex) {

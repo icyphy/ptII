@@ -1,4 +1,4 @@
-/* A named object that represents a graphical view of another ptolemy model.
+/* A named object that represents a graphical tableau of another ptolemy model.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -46,26 +46,26 @@ import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// ModelProxy
+//// Effigy
 /**
-A named object that represents an object that can be viewed in an application.
+A named object that represents an object that can be tableaued in an application.
 This is intended to be used in a user interface model.  
 
 @author Steve Neuendorffer
 @version $Id$
 */
-public class ModelProxy extends CompositeEntity {
+public class Effigy extends CompositeEntity {
 
     /** Create a new proxy in the specified workspace with an empty string
      *  for its name.
      *  @param workspace The workspace for this proxy.
      */
-    public ModelProxy(Workspace workspace) {
+    public Effigy(Workspace workspace) {
 	super(workspace);
     }
 
-    /** Construct a view with the given name contained by the specified
-     *  ModelDirectory. The view will act on the given model.  
+    /** Construct a tableau with the given name contained by the specified
+     *  ModelDirectory. The tableau will act on the given model.  
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This entity will use the
      *  workspace of the container for synchronization and version counts.
@@ -79,7 +79,7 @@ public class ModelProxy extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public ModelProxy(ModelDirectory container, String name)
+    public Effigy(ModelDirectory container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }
@@ -87,9 +87,9 @@ public class ModelProxy extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class so that views contained within this object
+    /** Override the base class so that tableaus contained within this object
      *  are removed before the model is removed from the ModelDirectory.
-     *  This should trigger the frames associated with those views to be 
+     *  This should trigger the frames associated with those tableaus to be 
      *  closed.
      *  @param container The container to attach this attribute to..
      *  @exception IllegalActionException If the proposed container is not
@@ -103,11 +103,11 @@ public class ModelProxy extends CompositeEntity {
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
 	if (container == null) {
-	    // Remove all views.
-	    Iterator views = entityList(View.class).iterator();
-	    while (views.hasNext()) {
-		ComponentEntity view = (ComponentEntity)views.next();
-		view.setContainer(null);
+	    // Remove all tableaus.
+	    Iterator tableaus = entityList(Tableau.class).iterator();
+	    while (tableaus.hasNext()) {
+		ComponentEntity tableau = (ComponentEntity)tableaus.next();
+		tableau.setContainer(null);
 	    }  
 	    super.setContainer(container);
 	   
@@ -120,14 +120,14 @@ public class ModelProxy extends CompositeEntity {
 	}
     }
 
-    /** Make all views associated with this model visible by raising
+    /** Make all tableaus associated with this model visible by raising
      *  or deiconifying them.
      */
-    public void showViews() {
-        Iterator views = entityList(View.class).iterator();
-        while(views.hasNext()) {
-            View view = (View)views.next();
-            view.show();
+    public void showTableaus() {
+        Iterator tableaus = entityList(Tableau.class).iterator();
+        while(tableaus.hasNext()) {
+            Tableau tableau = (Tableau)tableaus.next();
+            tableau.show();
         }
     }
 
@@ -147,7 +147,7 @@ public class ModelProxy extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-       	if(entityList(View.class).size() == 0) {
+       	if(entityList(Tableau.class).size() == 0) {
 	    try {
 		setContainer(null);
 	    } catch (Exception ex) {

@@ -42,19 +42,19 @@ import java.io.IOException;
 import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
-//// Application
+//// Configuration
 /**
 This is a base class for an application that uses Ptolemy II classes.
 It must contain, at a minimum, an instance of ModelDirectory, called
 "directory", an instance of ModelReader, called "reader", and
-an instance of ViewFactory, called "factory".  This class uses
+an instance of TableauFactory, called "factory".  This class uses
 those instances to manage a collection of models, open new models,
-and create views of those models.
+and create tableaus of those models.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class Application extends CompositeEntity {
+public class Configuration extends CompositeEntity {
 
     /** Construct an instance in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -63,7 +63,7 @@ public class Application extends CompositeEntity {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
-    public Application(Workspace workspace) {
+    public Configuration(Workspace workspace) {
 	super(workspace);
     }
 
@@ -71,9 +71,9 @@ public class Application extends CompositeEntity {
     ////                         public methods                    ////
 
     /** If a model with the specified name is present in the directory,
-     *  then find all the views of that model and make them 
+     *  then find all the tableaus of that model and make them 
      *  visible; otherwise, read a model from the specified URL
-     *  and create a default view for the model and add the view 
+     *  and create a default tableau for the model and add the tableau 
      *  to this directory.
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.
@@ -87,7 +87,7 @@ public class Application extends CompositeEntity {
         if (directory == null) {
             throw new InternalErrorException("No model directory!");
         }
-        ModelProxy model = directory.getModel(identifier);
+        Effigy model = directory.getModel(identifier);
         if (model == null) {
             ModelReader reader = (ModelReader)getEntity("reader");
             if (reader == null) {
@@ -99,16 +99,16 @@ public class Application extends CompositeEntity {
             model.setName(directory.uniqueName("model"));
 	    model.setContainer(directory);
 
-            // Create a view.
-            ViewFactory factory = (ViewFactory)getEntity("factory");
-            View view = factory.createView(model);
-	    view.setName(model.uniqueName("view"));
-            view.setContainer(model);
-	    // The first view is a master.
-	    view.setMaster(true);
+            // Create a tableau.
+            TableauFactory factory = (TableauFactory)getEntity("factory");
+            Tableau tableau = factory.createTableau(model);
+	    tableau.setName(model.uniqueName("tableau"));
+            tableau.setContainer(model);
+	    // The first tableau is a master.
+	    tableau.setMaster(true);
         } else {
             // Model already exists.
-            model.showViews();
+            model.showTableaus();
         }
     }
 

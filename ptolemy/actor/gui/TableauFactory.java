@@ -1,4 +1,4 @@
-/* An object that can create a view for a model proxy.
+/* An object that can create a tableau for a model proxy.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -40,20 +40,20 @@ import java.net.URL;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
-//// ViewFactory
+//// TableauFactory
 /**
-An object that will create a view for a Model Proxy.  Instances of this
+An object that will create a tableau for a Model Proxy.  Instances of this
 class will usually be contained in an application hierarchy.
 
-This base class assumes that it contains other view factories.  It defers
+This base class assumes that it contains other tableau factories.  It defers
 to each contained factory in order until one is capable of creating a
-view.  Subclasses of this class will usually be inner classes of a View,
-and create a View appropriate with a given subclass of model proxy.
+tableau.  Subclasses of this class will usually be inner classes of a Tableau,
+and create a Tableau appropriate with a given subclass of model proxy.
 
 @author Steve Neuendorffer
 @version $Id$
 */
-public class ViewFactory extends CompositeEntity {
+public class TableauFactory extends CompositeEntity {
 
     /** Create an factory with the given name and container.
      *  The container argument must not be null, or a
@@ -68,7 +68,7 @@ public class ViewFactory extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public ViewFactory(CompositeEntity container, String name)
+    public TableauFactory(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -76,24 +76,24 @@ public class ViewFactory extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a view in the default workspace with no name for the 
-     *  given ModelProxy.  The view will created with a new unique name
-     *  in the given model proxy.  If this factory cannot create a view
+    /** Create a tableau in the default workspace with no name for the 
+     *  given Effigy.  The tableau will created with a new unique name
+     *  in the given model proxy.  If this factory cannot create a tableau
      *  for the given proxy (perhaps because the proxy is not of the
      *  appropriate subclass) then return null.
      *  This base class assumes that it contains other instances of
-     *  ViewFactory and returns the view returned by the first one of those
+     *  TableauFactory and returns the tableau returned by the first one of those
      *  contained factories that does not return null, or null if they
      *  all return null.
      *  @param proxy The model proxy.
      */
-    public View createView(ModelProxy proxy) {
-	View view = null;
-	Iterator factories = entityList(ViewFactory.class).iterator();
-	while(factories.hasNext() && view == null) {
-	    ViewFactory factory = (ViewFactory)factories.next();
-	    view = factory.createView(proxy);
+    public Tableau createTableau(Effigy proxy) {
+	Tableau tableau = null;
+	Iterator factories = entityList(TableauFactory.class).iterator();
+	while(factories.hasNext() && tableau == null) {
+	    TableauFactory factory = (TableauFactory)factories.next();
+	    tableau = factory.createTableau(proxy);
 	}
-	return view;
+	return tableau;
     }
 }

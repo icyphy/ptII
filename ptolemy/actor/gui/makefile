@@ -51,28 +51,28 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Application.java \
+	Configuration.java \
 	Configurer.java \
-	DebugListenerView.java \
+	DebugListenerTableau.java \
 	Documentation.java \
 	EditorPaneFactory.java \
 	EditParametersDialog.java \
+	Effigy.java \
 	ModelDirectory.java \
 	ModelFrame.java \
 	ModelPane.java \
-	ModelProxy.java \
 	ModelReader.java \
 	MoMLApplet.java \
 	Placeable.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
-	PtolemyModelProxy.java \
+	PtolemyEffigy.java \
 	PtolemyQuery.java \
 	PtolemyTop.java \
-	RunView.java \
+	RunTableau.java \
 	TextEditor.java \
-	View.java \
-	ViewFactory.java
+	Tableau.java \
+	TableauFactory.java
 
 EXTRA_SRCS =	$(JSRCS)
 
