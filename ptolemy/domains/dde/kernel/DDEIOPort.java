@@ -40,15 +40,15 @@ import ptolemy.data.*;
 //// DDEIOPort
 /**
 A DDEIOPort is a timed input/output port used in the DDE domain.
-DDEIOPorts are used to send tokens between DDEActors, and in so
+DDEIOPorts are used to send tokens between actor, and in so
 doing, associate time with the tokens as they are placed in 
 DDEReceivers.
 <P>
-DDEIOPorts are not necessary to facilitate communication between actors
-executing in a DDE model; standard TypedIOPorts are sufficient for most
-communication. DDEIOPorts become useful when the time stamp to be
-associated with an outgoing token is greater than the current time of
-the sending actor.
+DDEIOPorts are not necessary to facilitate communication between 
+actors executing in a DDE model; standard TypedIOPorts are sufficient 
+for most communication. DDEIOPorts become useful when the time stamp 
+to be associated with an outgoing token is greater than the current 
+time of the sending actor.
 <P>
 The designers of models that incorporate DDEIOPorts should be careful
 to make sure that output time stamp ordering information is correct.
@@ -56,9 +56,8 @@ Since the output time stamp of a token being sent through a DDEIOPort
 can be greater then the sending actor's current time, it is possible
 on a subsequent token production to create an outgoing token with
 a time stamp that is greater than the current time but less then the
-previously produced time stamp. In such cases, an IllegalArgumentException
-will be thrown.
-<P>
+previously produced time stamp. In such cases, an 
+IllegalArgumentException will be thrown.
 
 
 @author John S. Davis II
@@ -68,42 +67,45 @@ will be thrown.
 
 public class DDEIOPort extends TypedIOPort {
 
-    /** Construct an DDEIOPort with no container and no name that is
-     *  neither an input nor an output.
+    /** Construct a DDEIOPort with no container and an empty 
+     *  string as a name. The constructed port will be neither 
+     *  an input nor an output.
      */
     public DDEIOPort() {
         super();
     }
 
-    /** Construct an DDEIOPort with a containing actor and a name
-     *  that is neither an input nor an output.  The specified container
-     *  must implement the Actor interface, or an exception will be thrown.
+    /** Construct a DDEIOPort with a containing actor and the
+     *  specified name that is neither an input nor an output.  
+     *  The specified container must implement the Actor interface, 
+     *  or an exception will be thrown.
      * @param container The container actor.
      * @param name The name of the port.
-     * @exception IllegalActionException If the port is not of an acceptable
-     *  class for the container, or if the container does not implement the
-     *  Actor interface.
-     * @exception NameDuplicationException If the name coincides with
-     *  a port already in the container.
+     * @exception IllegalActionException If the port is not of an 
+     *  acceptable class for the container, or if the container 
+     *  does not implement the Actor interface.
+     * @exception NameDuplicationException If the name coincides 
+     *  with a port already in the container.
      */
     public DDEIOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
-    /** Construct an DDEIOPort with a container and a name that is
-     *  either an input, an output, or both, depending on the third
-     *  and fourth arguments. The specified container must implement
-     *  the Actor interface or an exception will be thrown.
-     *  @param container The container actor.
-     *  @param name The name of the port.
-     *  @param isinput True if this is to be an input port.
-     *  @param isoutput True if this is to be an output port.
-     *  @exception IllegalActionException If the port is not of an acceptable
-     *   class for the container, or if the container does not implement the
-     *   Actor interface.
-     *  @exception NameDuplicationException If the name coincides with
-     *   a port already in the container.
+    /** Construct a DDEIOPort with a container and the specified
+     *  name that is either an input, an output, or both, depending 
+     *  on the third and fourth arguments. The specified container 
+     *  must implement the Actor interface or an exception will be 
+     *  thrown.
+     * @param container The container actor.
+     * @param name The name of the port.
+     * @param isinput True if this is to be an input port.
+     * @param isoutput True if this is to be an output port.
+     * @exception IllegalActionException If the port is not of an 
+     *  acceptable class for the container, or if the container does 
+     *  not implement the Actor interface.
+     * @exception NameDuplicationException If the name coincides with
+     *  a port already in the container.
      */
     public DDEIOPort(ComponentEntity container, String name,
             boolean isinput, boolean isoutput)
@@ -118,9 +120,9 @@ public class DDEIOPort extends TypedIOPort {
      *  all of the remote receivers connected to this port. If there
      *  are no connected receivers, then nothing is sent. Associate
      *  a time stamp with the token that is equivalent to the specified
-     *  'sendTime' parameter. Throw an IllegalActionException if the
-     *  port is not an output. Throw a NoRoomException if one of the
-     *  channels throws it.
+     *  <I>sendTime</I> parameter. Throw an IllegalActionException if 
+     *  the port is not an output. Throw a NoRoomException if one of 
+     *  the channels throws it.
      * @param token The token to send
      * @param sendTime The output time of the token being sent.
      * @exception IllegalActionException If the port is not an output
@@ -149,9 +151,10 @@ public class DDEIOPort extends TypedIOPort {
      *  specified channel. The first receiver gets the actual token,
      *  while subsequent receivers get a clone. If there are no
      *  receivers, then do nothing. Associate a time stamp with the
-     *  token that is equivalent to the specified 'sendTime' parameter.
-     *  Throw an IllegalActionException if the port is not an output.
-     *  Throw a NoRoomException if one of the channels throws it.
+     *  token that is equivalent to the specified <I>sendTime</I> 
+     *  parameter. Throw an IllegalActionException if the port is 
+     *  not an output. Throw a NoRoomException if one of the channels 
+     *  throws it.
      * @param chIndex The index of the channel, between (inclusive)
      *  0 to width-1.
      * @param token The token to send.
