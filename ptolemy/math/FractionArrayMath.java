@@ -135,8 +135,8 @@ public class FractionArrayMath {
 
     /** Return a new array that is the element-by-element division of
      *  the first array by the second array.
-     *  @param array The numerator array of Fractions.
-     *  @param num The denominator array of Fractions.
+     *  @param num The numerator array of Fractions.
+     *  @param den The denominator array of Fractions.
      *  @return A new array of Fractions.
      */
     public static final Fraction[] divide(Fraction[] num, Fraction[] den) {
