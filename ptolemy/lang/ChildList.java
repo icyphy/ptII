@@ -48,7 +48,7 @@ FIXME: Probably, the TNLManip class should be removed, and its functionality
 merged into this class.
 
 @author Shuvra S. Bhattacharyya 
-@version $Id
+@version $Id$
 @see ptolemy.lang.TNLManip
 
 */
