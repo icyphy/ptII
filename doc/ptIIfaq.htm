@@ -167,7 +167,7 @@ hackers is automatically cross posted to the comp.soft-sys.ptolemy
 newsgroup.
 
  <p>To subscribe to the ptolemy-hackers mailing list, send mail to:
-<a href="mailto:ptolemy-hackers-request@eecs.berkeley.edu"><CODE>ptolemy-hackers-request@eecs.berkeley.edu</CODE></a>
+<a href="mailto:ptolemy-hackers-request@ptolemy.eecs.berkeley.edu"><CODE>ptolemy-hackers-request@ptolemy.eecs.berkeley.edu</CODE></a>
  with the word 
 "subscribe" in the body of the letter.  To leave the newsgroup put
 the word "unsubscribe" in the body of your message.
@@ -307,7 +307,7 @@ Ptolemy (<a href="http://ptolemy.eecs.berkeley.edu" target="_top"><CODE>http://p
 and Metropolis (<a href="http://www.gigascale.org/metropolis/" target="_top"><CODE>http://www.gigascale.org/metropolis/</CODE></a>) 
 are separate research projects at Berkeley,
 albeit ones with considerable cross-influences. Ptolemy is headed by
-<a href="<a href="http://ptolemy.eecs.berkeley.edu/~eal" target="_top">Edward Lee</a>,
+<a href="http://ptolemy.eecs.berkeley.edu/~eal" target="_top">Edward Lee</a>,
 while Metropolis is headed by 
 <a href="http://www-cad.eecs.berkeley.edu/~alberto" target="_top">Alberto Sangiovanni-Vincentelli</a>.
 A key principle in Metropolis is its "meta model,"
@@ -423,14 +423,22 @@ for the nightly test suite.
  <p>Actors that read and write data are visible in Vergil under 
 <CODE>actor library</CODE> -&gt; <CODE>io</CODE>.
 
- <p><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/LineReader.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/LineReader.html</CODE></a> 
+<p>When an actor takes a URL as an argument, use
+<CODE>file:./<I>filename</I></CODE>.  For details, see the Ptolemy II 2.0.1
+DoubleReader actor at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/DoubleReader.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/DoubleReader.html</CODE></a>
+
+ <p>Ptolemy II 3.0 (Due to be released in May, 2003) includes
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/LineReader.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/LineReader.html</CODE></a> 
 - Reads a file or URL, one line at a time, and outputs each line as a String.
- <p><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/ExpressionReader.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/ExpressionReader.html</CODE></a>
+
+ <p>Ptolemy II 3.0 also includes
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/ExpressionReader.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/ExpressionReader.html</CODE></a>
 - Reads a file or URL, one line at a time, evaluates each line as an expression and outputs the tokens resulting from the evaluation.
 
  <p> These actors use a
  <p><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/kernel/attribute/FileAttribute.html">FileAttribute</a>
-to specifies a file or URL.
+to specifies a file or URL. (FileAttribute is new in Ptolemy II 3.0)
  <p>Actors that have Parameters may 
 read data using the <CODE>readFile</CODE>, <CODE>findFile</CODE> and
 <CODE>readMatrix</CODE> expression operators, see
@@ -492,6 +500,7 @@ Ptolemy II is written in Java, and Java has the Java Native Interface
 of an interface betwenn Ptolemy II actors and C code using the
 Java Native Interface (JNI), see
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/jni/package-summary.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/jni/package-summary.html</CODE></a>
+(This work is present in Ptolemy II 3.0)
 
  <p>Zoltan Kemenczy and others at Research In Motion, Ltd. developed an
 interface to Matlab that uses JNI, see
