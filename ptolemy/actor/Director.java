@@ -291,6 +291,8 @@ public class Director extends NamedObj implements Executable {
      *  then return true.
      *  @return true If this director disagree to have the workspace
      *  write protected, false otherwise.
+     *  @exception InvalidStateException If the director does not have
+     *     a container.
      *
      */
     public final boolean needWriteAccess() {
@@ -321,13 +323,11 @@ public class Director extends NamedObj implements Executable {
             // Therefore, return false.
             return false;
         } else {
-            System.out.println("Is this a bug, can a director not have a " +
-                    "container.");
+            throw new InvalidStateException("Each director need to be " + 
+                    "associated with a composite actor before simulation " + 
+                    "is started.");
 
         }
-        // This is hack, since otherwise the compiler will barf.
-        // I choose to return the safe default case.
-        return true;
     }
 
     /** Return a new receiver of a type compatible with this director.
