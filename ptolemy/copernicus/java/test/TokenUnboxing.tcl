@@ -67,12 +67,14 @@ proc _doTest {className} {
 
 proc _doSpecializedTypesTest {className} {
     global PTII
-    _stripEmpties [lsort [split [exec java -classpath "$PTII;$PTII/lib/sootclasses.jar;$PTII/lib/jasminclasses.jar" ptolemy.copernicus.java.test.TestSpecializeTypesMain "$className"] "\r\n"]]
+    set SEP [jdkClassPathSeparator]
+    _stripEmpties [lsort [split [exec java -classpath "$PTII$SEP$PTII/lib/sootclasses.jar$SEP$PTII/lib/jasminclasses.jar" ptolemy.copernicus.java.test.TestSpecializeTypesMain "$className"] "\r\n"]]
 } 
 proc _doUnboxingTest {className} {
     global PTII
+    set SEP [jdkClassPathSeparator]
     set outputDir [file join [pwd] testOutput]
-    exec java -classpath "$PTII;$PTII/lib/sootclasses.jar;$PTII/lib/jasminclasses.jar" ptolemy.copernicus.java.test.TestUnboxingMain "$outputDir" "$className"
+    exec java -classpath "$PTII$SEP$PTII/lib/sootclasses.jar$SEP$PTII/lib/jasminclasses.jar" ptolemy.copernicus.java.test.TestUnboxingMain "$outputDir" "$className"
     set f [open [file join testOutput $className.jimple]]
     read $f
     close $f
@@ -80,8 +82,9 @@ proc _doUnboxingTest {className} {
 
 proc _doExecuteTest {className} {
     global PTII
+    set SEP [jdkClassPathSeparator]
     set outputDir [file join [pwd] testOutput]
-    _stripEmpties [split [exec java -classpath "$PTII;$outputDir" $className] "\r\n"]
+    _stripEmpties [split [exec java -classpath "$PTII$SEP$outputDir" $className] "\r\n"]
 }
 
 proc _stripEmpties {x} {
@@ -277,4 +280,17 @@ test TokenUnboxing-12.2 {} {
 
 test TokenUnboxing-12.3 {} {
     _doExecuteTest ptolemy.copernicus.java.test.Unboxing12
+} {{token = 0.0} {token = 1.0}}
+
+
+test TokenUnboxing-13.1 {} {
+    _doSpecializedTypesTest ptolemy.copernicus.java.test.Unboxing13
+} {{{VariableTerm: value = double, depth = 1, associated object = r7}} {{VariableTerm: value = int, depth = 1, associated object = r15}} {{VariableTerm: value = int, depth = 1, associated object = r3}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = $r1}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = $r3}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = $r3}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = $r3}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = $r9}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = <ptolemy.copernicus.java.test.Unboxing13: ptolemy.data.Token _stateToken>}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = <ptolemy.copernicus.java.test.Unboxing13: ptolemy.data.Token[] _resultArray>}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = newarray (ptolemy.data.Token)[1]}}}
+
+test TokenUnboxing-13.2 {} {
+    _doUnboxingTest ptolemy.copernicus.java.test.Unboxing13
+} {}
+
+test TokenUnboxing-13.3 {} {
+    _doExecuteTest ptolemy.copernicus.java.test.Unboxing13
 } {{token = 0.0} {token = 1.0}}
