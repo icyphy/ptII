@@ -72,6 +72,26 @@ RegenerateCode:
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
 		ptolemy.lang.java.RegenerateCode ../nodetypes/IntLitNode.java
 
+# FIXME: we can't ship these
+JAVASRC_STUBS=$(PTII)/vendors/sun/src
+
+codegen: generate_codegen compile_codegen run_codegen 
+generate_codegen:
+	@if [ ! -d $(JAVASRC_STUBS) ]; then \
+		echo "Warning $(JAVASRC_STUBS) does not exist"; \
+	fi
+	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
+	$(JAVA) -DPTII=$(ROOT) \
+		ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+		-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem \
+		-iterations 50 \
+		-outdir $(ROOT) -outpkg cg.orthocom
+compile_codegen:
+	(cd $(ROOT)/cg/orthocom; $(JAVAC) -classpath ../.. CG_Main.java)
+run_codegen: 	
+	(cd $(ROOT)/cg/orthocom; \
+		$(JAVA) -classpath ../.. cg.orthocom.CG_Main)
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
