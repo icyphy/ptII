@@ -253,7 +253,7 @@ public class ProcessDirector extends Director {
      *  already (this might include actors initialized since the last
      *  invocation of prefire). This starts the threads, corresponding
      *  to all the actors, that were created in the initialize() method.
-     *  @return true Always returns true.
+     *  @return true.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException  {
@@ -318,6 +318,9 @@ public class ProcessDirector extends Director {
             // and when stop is called is probably nondeterministic.
             thread.stopThread();
             thread.getActor().stop();
+            // I'm not sure why we need the interrupt here...but it
+            // seems to help.
+            thread.interrupt();
         }
         _stopRequested = true;
     }
@@ -442,7 +445,7 @@ public class ProcessDirector extends Director {
             synchronized (this) {
                 while (_activeActorCount > 0) {
                     try {
-                        wait();
+                        workspace().wait(this);
                     } catch (InterruptedException ex) {
                         // ignore, wait until all process threads stop
                     }
