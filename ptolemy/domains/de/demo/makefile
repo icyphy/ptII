@@ -34,7 +34,7 @@ ME =		ptolemy/domains/de/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		Inspection
+DIRS =		Inspection ModalModel
 
 CLASSPATH =	$(ROOT)
 
@@ -49,7 +49,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Inspection/Inspection.jar
+	Inspection/Inspection.jar \
+	ModalModel/ModalModel.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
