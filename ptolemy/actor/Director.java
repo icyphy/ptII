@@ -408,7 +408,6 @@ public class Director extends NamedObj implements Executable {
      *  do nothing.
      *  This method is write-synchronized on the workspace.
      */
-    // FIXME: should have a TypeConflictException?
     public void resolveTypes() {
 	try {
 	    workspace().getWriteAccess();
@@ -426,14 +425,13 @@ public class Director extends NamedObj implements Executable {
             boolean resolved = solver.solve(false);
             if ( !resolved) {
 		Enumeration unsatisfied = solver.unsatisfiedIneq();
-                // FIXME: should have a new TypeConflictException
+                // FIXME: should have a new TypeConflictException?
                 throw new InvalidStateException("Type Conflict.");
             }
 
 	    // see if any resolved type is NaT
 	    Enumeration nats = solver.bottomVariables();
 	    if (nats.hasMoreElements()) {
-                // FIXME: also need to check if any port is resolved to NaT.
 		throw new InvalidStateException("Some resolved types are NaT.");
 	    }
 	} finally {
