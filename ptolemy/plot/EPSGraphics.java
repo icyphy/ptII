@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red
@@ -37,7 +37,7 @@ import java.awt.datatransfer.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EPSGraphics
-/** 
+/**
 Graphics class supporting EPS export from plots.
 
 @author Edward A. Lee
@@ -54,7 +54,7 @@ public class EPSGraphics extends Graphics {
      *  @param file The file to write to, or null to write to standard out.
      *  @param width The width of the plot graphic, in units of 1/72 inch.
      *  @param height The height of the plot graphic, in units of 1/72 inch.
-     */	
+     */
     public EPSGraphics(FileWriter file, int width, int height) {
         _width = width;
         _height = height;
@@ -130,12 +130,12 @@ public class EPSGraphics extends Graphics {
     }
 
     /** Draw a line, using the current color, between the points (x1, y1)
-     *  and (x2, y2) in this graphics context's coordinate system. 
-     *  @param x1 the x coordinate of the first point. 
-     *  @param y1 the y coordinate of the first point. 
-     *  @param x2 the x coordinate of the second point. 
-     *  @param y2 the y coordinate of the second point. 
-     */	
+     *  and (x2, y2) in this graphics context's coordinate system.
+     *  @param x1 the x coordinate of the first point.
+     *  @param y1 the y coordinate of the first point.
+     *  @param x2 the x coordinate of the second point.
+     *  @param y2 the y coordinate of the second point.
+     */
     public void drawLine(int x1, int y1, int x2, int y2) {
         Point start = _convert(x1, y1);
         Point end = _convert(x2, y2);
@@ -152,8 +152,8 @@ public class EPSGraphics extends Graphics {
      *  gives the number of vertices.  If the arrays are not long enough to
      *  define this many vertices, or if the third argument is less than three,
      *  then nothing is drawn.
-     *  @param xPoints An array of x coordinates. 
-     *  @param yPoints An array of y coordinates. 
+     *  @param xPoints An array of x coordinates.
+     *  @param yPoints An array of y coordinates.
      *  @param nPoints The total number of vertices.
      */
     public void drawPolygon(int xPoints[], int yPoints[], int nPoints) {
@@ -167,7 +167,7 @@ public class EPSGraphics extends Graphics {
     /** Draw an oval bounded by the specified rectangle with the current color.
      *  @param x The x coordinate of the upper left corner
      *  @param y The y coordinate of the upper left corner
-     *  @param width The width of the oval to be filled. 
+     *  @param width The width of the oval to be filled.
      *  @param height The height of the oval to be filled.
      */
     // FIXME: Currently, this ignores the fourth argument and draws a circle
@@ -208,8 +208,8 @@ public class EPSGraphics extends Graphics {
      *  gives the number of vertices.  If the arrays are not long enough to
      *  define this many vertices, or if the third argument is less than three,
      *  then nothing is drawn.
-     *  @param xPoints An array of x coordinates. 
-     *  @param yPoints An array of y coordinates. 
+     *  @param xPoints An array of x coordinates.
+     *  @param yPoints An array of y coordinates.
      *  @param nPoints The total number of vertices.
      */
     public void fillPolygon(int xPoints[], int yPoints[], int nPoints) {
@@ -223,7 +223,7 @@ public class EPSGraphics extends Graphics {
     /** Fill an oval bounded by the specified rectangle with the current color.
      *  @param x The x coordinate of the upper left corner
      *  @param y The y coordinate of the upper left corner
-     *  @param width The width of the oval to be filled. 
+     *  @param width The width of the oval to be filled.
      *  @param height The height of the oval to be filled.
      */
     // FIXME: Currently, this ignores the fourth argument and draws a circle
@@ -387,7 +387,7 @@ public class EPSGraphics extends Graphics {
         for (int i=1; i < nPoints; i++) {
             Point vertex = _convert(xPoints[i], yPoints[i]);
             _buffer.append("" + vertex.x + " " + vertex.y + " lineto\n");
-        }  
+        }
         return true;
     }
 
