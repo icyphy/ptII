@@ -58,7 +58,7 @@ class.
 public class GraphicalMessageHandler extends MessageHandler {
 
     /** Get the component set by a call to setContext(), or null if none.
-     *  @see setContext(Component)
+     *  @see #setContext(Component)
      *  @return The component with respect to which the display window
      *   is iconfied, or null if none has been specified.
      */
