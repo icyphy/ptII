@@ -31,10 +31,22 @@
 
 package ptolemy.actor.gui;
 
+import java.awt.Window;
+import java.io.File;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -42,7 +54,6 @@ import ptolemy.gui.CloseListener;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
-import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -58,17 +69,6 @@ import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-
-import java.awt.Window;
-import java.io.File;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
@@ -191,6 +191,18 @@ public class PtolemyQuery extends Query
                             attribute.getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
+                } else if (attribute instanceof Parameter
+                        && ((Parameter)attribute).getChoices() != null) {
+                    Parameter castAttribute = (Parameter)attribute;
+                    // NOTE: Make this always editable since Parameter
+                    // supports a form of expressions for value propagation.
+                    addChoice(name,
+                            name,
+                            castAttribute.getChoices(),
+                            castAttribute.getExpression(),
+                            true);
+                    attachParameter(attribute, name);
+                    foundStyle = true;
                 } else if (attribute instanceof Variable) {
                     Type declaredType = ((Variable)attribute).getDeclaredType();
                     Token current = ((Variable)attribute).getToken();
@@ -233,16 +245,6 @@ public class PtolemyQuery extends Query
                             attribute.getExpression(),
                             base,
                             directory);
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                    
-                } else if (attribute instanceof ChoiceAttribute) {
-                    ChoiceAttribute castAttribute = (ChoiceAttribute)attribute;
-                    addChoice(name,
-                            name,
-                            castAttribute.getChoices(),
-                            castAttribute.getExpression(),
-                            castAttribute.isEditable());
                     attachParameter(attribute, name);
                     foundStyle = true;
                 }
