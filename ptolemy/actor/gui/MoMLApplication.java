@@ -126,6 +126,9 @@ public class MoMLApplication {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
 
+        // Create a parser to use.
+        _parser = new MoMLParser();
+
         _parseArgs(args);
 
         // Our applications want to display errors graphically.  We do
@@ -137,6 +140,18 @@ public class MoMLApplication {
         // This is because certain parts of Ptolemy (like the expression
         // language) are not localized.
 	// FIXME: This is a workaround for the locale problem, not a fix.
+        // FIXME: In March, 2001, Johan Ecker writes
+        // Ptolemy gave tons of exception when started on my laptop
+        // which has Swedish settings as default. The Swedish standard
+        // for floating points are "2,3", i.e. using a comma as
+        // delimiter. However, I think most Swedes are adaptable and
+        // do not mind using a dot instead since this more or less has
+        // become the world standard, at least in engineering. The
+        // problem is that I needed to change my global settings to
+        // start Ptolemy and this is quite annoying. I guess that the
+        // expression parser should just ignore the delimiter settings
+        // on the local computer and always use dot, otherwise Ptolemy
+        // will crash using its own init files.
 	try {
 	    java.util.Locale.setDefault(java.util.Locale.US);
 	} catch (java.security.AccessControlException accessControl) {
@@ -379,8 +394,8 @@ public class MoMLApplication {
                     } else {
                         // No configuration has been encountered.
                         // Assume this is a MoML file, and open it.
-                        MoMLParser parser = new MoMLParser();
-                        NamedObj toplevel = parser.parse(
+                        _parser.reset();
+                        NamedObj toplevel = _parser.parse(
                                 base, inURL.openStream());
                         if (toplevel instanceof Configuration) {
                             _config = (Configuration)toplevel;
@@ -501,7 +516,7 @@ public class MoMLApplication {
     protected Configuration _readConfiguration(String urlSpec)
             throws Exception {
         URL inURL = specToURL(urlSpec);
-        _parser = new MoMLParser();
+        _parser.reset();
         Configuration toplevel = (Configuration)
             _parser.parse(inURL, inURL.openStream());
         // If the toplevel model is a configuration containing a directory,
