@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Tycho system, java/ptplot/doc/usersGuides directory.
+# Makefile for Ptolemy Tycho system, java/ptplot/doc/internals directory.
 #
 # $Id$
 # Author: Christopher Hylands
@@ -33,13 +33,16 @@
 ROOT =		../../../..
 
 # True source directory
-VPATH =		$(ROOT)/java/ptplot/doc/usersGuides
+VPATH =		$(ROOT)/java/ptplot/doc/internals
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
 EXTRA_SRCS =	\
+	index.html \
+	ptplotfaq.html \
+	troubleshooting.html
 
 MISC_FILES =
 
