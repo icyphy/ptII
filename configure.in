@@ -798,7 +798,7 @@ fi
 PTJYTHON_DIR=
 
 # Directory that contains the jython jar files
-JYTHON_DIR='${PTII}/vendors/jython'
+JYTHON_DIR='${PTII}/lib'
 
 # We only need to look for jython if $PTII/ptolemy/actor/lib/python exists
 # FIXME: Note that the package is called jython, but the directory is python
@@ -811,7 +811,7 @@ else
     AC_ARG_WITH(jython_dir, [  --with-jython=DIR       use jython.jar from DIR,
                           defaults to \$PTII/vendors/jython],
 	JYTHON_DIR=$withval,
-	JYTHON_DIR=$PTII/vendors/jython)
+	JYTHON_DIR=$PTII/lib)
 
     if test -f "$JYTHON_DIR/jython.jar"; then
 	AC_MSG_RESULT([$JYTHON_DIR])
@@ -821,7 +821,14 @@ else
     fi	
 
     if test "$PTJYTHON_DIR" = ""; then
-        AC_MSG_WARN([Failed to find PTII/vendors/jython/jython.jar
+        if test -f "$PTII/vendors/jython/jython.jar"; then
+	    JYTHON_DIR="$PTII/vendors/jython/jython.jar"
+	    AC_MSG_RESULT([$JYTHON_DIR])
+	    # FIXME: This is ugly, but we set to python instead of jythong
+ 	    # $PTII/ptolemy/actor/lib/makefile if jython was found
+	    PTJYTHON_DIR=python
+	else     
+            AC_MSG_WARN([Failed to find PTII/lib/jython.jar
     perhaps Jython is not installed?
     Jython is a java implementation of Python.
     You need not download Jython unless you plan on using the Jython
@@ -829,6 +836,7 @@ else
     The Jython can be downloaded http://www.jython.org/download.html])
 	# Note that we don't substitute in the ${PTII} here
 	JYTHON_DIR='${PTII}/vendors/jython'
+        fi
     fi
 fi
 
