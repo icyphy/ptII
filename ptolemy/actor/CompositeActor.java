@@ -678,9 +678,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     " implement the Actor interface.");
         }
         super._addEntity(entity);
-        if (_director != null) {
-            _director.invalidateSchedule();
-            _director.invalidateResolvedTypes();
+        Director director = getDirector();
+        if (director != null) {
+            director.invalidateSchedule();
+            director.invalidateResolvedTypes();
         }
     }
 
