@@ -150,48 +150,43 @@ test CTExpoSystem-4.3 {Expo System with MultiSolver DR RK23} {
     #Note: Use above setup.
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR23]
     $sys setDirector $dir
-    set starttime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute startTime]]
-    set token [java::new ptolemy.data.DoubleToken 0.0]
-    $starttime setToken $token
 
-    # $dir addDebugListener [java::new ptolemy.kernel.util.StreamListener]
-
-    set initstep [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute initStepSize]]
-    set token [java::new ptolemy.data.DoubleToken 0.1]
-    $initstep setToken $token
+    set solver [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
+    set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
+    $solver setToken $token
 
     set stoptime [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
 
-    set initstate [java::cast ptolemy.data.expr.Parameter \
-	    [$integral getAttribute initialState]]
-    set token [java::new ptolemy.data.DoubleToken 0.0]
-    $initstate setToken $token
-
-    set constval [java::cast ptolemy.data.expr.Parameter \
-	    [$const getAttribute value]]
-    set token [java::new ptolemy.data.DoubleToken 1.0]
-    $constval setToken $token
-
     set testvalue [java::cast ptolemy.data.expr.Parameter \
 	    [$testV getAttribute "Value"]]
     $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7181292429552535]
-
-    #set debugger [java::cast ptolemy.data.expr.Parameter \
-	#    [$testV getAttribute Print]]
-    #set token [java::new ptolemy.data.BooleanToken true]
-    #$debugger setToken $token
 
     $man run
     list [$testV isSuccessful]  
 } {1}
 
 
-test CTExpoSystem-4.4 {Expo system with accuracy 1e-6} {
+test CTExpoSystem-4.4 {Expo System with MultiSolver DR RK45} {
+    #Note: Use above setup.
+    set solver [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
+    set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK45Solver]
+    $solver setToken $token
+
+    set testvalue [java::cast ptolemy.data.expr.Parameter \
+	    [$testV getAttribute "Value"]]
+    $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7182738654635]
+
+    $man run
+    list [$testV isSuccessful]  
+} {1}
+
+
+test CTExpoSystem-4.5 {Expo system with accuracy 1e-6} {
     #Note: Use the above set up.
     set accu [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute errorTolerance]]
@@ -199,7 +194,7 @@ test CTExpoSystem-4.4 {Expo system with accuracy 1e-6} {
 
     set testvalue [java::cast ptolemy.data.expr.Parameter \
 	    [$testV getAttribute "Value"]]
-    $testvalue setToken [java::new ptolemy.data.DoubleToken  1.718280381223137]
+    $testvalue setToken [java::new ptolemy.data.DoubleToken  1.7182812382174]
 
     $man run
     list [$testV isSuccessful]  
@@ -226,13 +221,16 @@ test CTExpoSystem-4.4 {Expo system with accuracy 1e-6} {
 #    list [$testV isSuccessful]  
 #} {1}
 
-test CTExpoSystem-4.7 {Expo System with CTMixsignalSolver as toplevel} {
+test CTExpoSystem-4.7 {Expo System with CTMixsignalSolver as toplevel with RK23 solver} {
     #Note: Use above setup.
     set dir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $sys DIRMX]
     $sys setDirector $dir
-    #set printflag [java::cast ptolemy.data.expr.Parameter \
-	    #	    [$testV getAttribute "Print"]]
-    #$printflag setToken [java::new ptolemy.data.BooleanToken true]
+
+    set solver [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
+    set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
+    $solver setToken $token
+
     set stoptime [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
@@ -241,6 +239,21 @@ test CTExpoSystem-4.7 {Expo System with CTMixsignalSolver as toplevel} {
     set testvalue [java::cast ptolemy.data.expr.Parameter \
 	    [$testV getAttribute "Value"]]
     $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7181292429552535]
+
+    $man run
+    list [$testV isSuccessful]
+} {1}
+
+test CTExpoSystem-4.8 {Expo System with CTMixsignalSolver as toplevel with RK45 solver} {
+    #Note: Use above setup.
+    set solver [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
+    set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK45Solver]
+    $solver setToken $token
+
+    set testvalue [java::cast ptolemy.data.expr.Parameter \
+	    [$testV getAttribute "Value"]]
+    $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7182738654635]
 
     $man run
     list [$testV isSuccessful]
