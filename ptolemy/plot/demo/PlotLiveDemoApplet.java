@@ -2,8 +2,6 @@
 
 @Author: Edward A. Lee and Christopher Hylands
 
-@Version: $Id$
-
 @Copyright (c) 1997- The Regents of the University of California.
 All rights reserved.
 
@@ -29,122 +27,35 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package ptolemy.plot.demo;
+package pt.plot.demo;
 
-import ptolemy.plot.*;
+import pt.plot.*;
 import java.applet.Applet;
 import java.awt.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemoApplet
-/**
- * An Applet that demonstrates the PlotLiveDemo class.
- *
- * @author Edward A. Lee, Christopher Hylands
- * @version $Id$
- */
-public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
 
-    /**
-     * Return a string describing this applet.
+/** An Applet that demonstrates the PlotLiveDemo class.
+ *
+ *  @author Edward A. Lee, Christopher Hylands
+ *  @version $Id$
+ */
+public class PlotLiveDemoApplet extends PlotLiveApplet {
+
+    /** Return a string describing this applet.
+     *  @return A description of the applet.
      */
     public String getAppletInfo() {
-        return "PlotLiveDemoApplet 1.1: Demo of PlotLive.\n" +
+        return "PlotLiveDemoApplet 1.2: Demo of PlotLive.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
             "    Christopher Hylands, @eecs.berkeley.edu\n" +
             "($Id$)";
     }
 
-    /**
-     * Initialize the applet.
-     */
-    public void init() {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: init");
-        int width, height;
-        setLayout(new BorderLayout());
-
-        newPlot();              // Create a PlotLive to operate on.
-        add("Center",plot());
-
-        super.init();
-    }
-
     /** Create a new Plot object to operate on.
      */
-    public void newPlot() {
-        _myPlotLiveDemo = new PlotLiveDemo();
+    public Plot newPlot() {
+        return new PlotLiveDemo();
     }
-
-    /**
-     * Paint the graphics.
-     */
-    public void paint(Graphics graphics) {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: paint");
-        plot().paint(graphics);
-    }
-
-    /** Return the Plot object to operate on.
-     */
-    public Plot plot() {
-        return _myPlotLiveDemo;
-    }
-
-    /**
-     * Resize the plot.
-     * @deprecated As of JDK1.1 in java.awt.component, but we need
-     * to compile under 1.0.2 for netscape3.x compatibility.
-     */
-    public void resize(int width, int height) {
-        if (_debug > 8)
-            System.out.println("PlotLiveDemoApplet: resize "+width+" "+height);
-        super.resize(width, height); // FIXME: resize() is deprecated.
-    }
-
-    /**
-     * Paint the graphics.
-     */
-    public void run () {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: run");
-        // 	while (true) {
-        // 	    try {
-        // 		Thread.currentThread().sleep(speed);
-        // 	    } catch (InterruptedException e) {
-        // 	    }
-        if (_debug > 10)
-            System.out.println("PlotLiveDemoApplet: run calling repaint");
-	repaint();
-    }
-
-    /** Start the plot
-     */
-    public void start () {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: start");
-	_plotLiveDemoAppletThread = new Thread(this);
-        _plotLiveDemoAppletThread.start();
-        plot().start();
-        super.start();
-    }
-
-    /** Stop the plot.
-     */
-    public void stop () {
-        if (_debug > 8) System.out.println("PlotLiveDemoApplet: stop");
-        _plotLiveDemoAppletThread.stop();
-        super.stop();
-    }
-
-    //     public void update (Graphics graphics) {
-    //         if (_debug > 8) System.out.println("PlotLiveDemoApplet: update");
-    //         paint(graphics);
-    //         super.update(graphics);
-    //     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The Plot component we are running.
-    private PlotLiveDemo _myPlotLiveDemo;
-
-    // Thread for this applet.
-    private Thread _plotLiveDemoAppletThread;
 }

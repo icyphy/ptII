@@ -25,9 +25,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package ptolemy.plot.demo;
+package pt.plot.demo;
 
-import ptolemy.plot.*;
+import pt.plot.*;
 import java.awt.*;
 import java.applet.Applet;
 
@@ -35,22 +35,33 @@ import java.applet.Applet;
 //// PlotLiveDemo
 /**
  * Dynamically plot a test signal, illustrating how to use the
- * <code>PlotLive</code> class.
+ * PlotLive class.
  *
  * @author Edward A. Lee
  * @version $Id$
  */
 public class PlotLiveDemo extends PlotLive {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    /** Construct a plot for live, animated signal display.
+     *  Configure the title, axes, points style, and persistence.
+     */
+    public PlotLiveDemo() {
+        // NOTE: Prior to version 1.2, this was done in the init() method,
+        // which is now deprecated.
+        setTitle("Live Plot Demo");
+        setYRange(-1, 1);
+        setXRange(-1, 1);
+        setPointsPersistence(60);
+        setMarksStyle("dots");
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         public methods                           ////
 
     /** Add points to the plot.  This is called by the base class
-     * <code>run()</code> method while live plotting is enabled.
+     *  run() method when the plot is live.
      */
     public synchronized void addPoints() {
-        if (_debug >18 ) System.out.println("PlotLiveDemo: addPoints");
-
         // You could plot multiple points at a time here
         // for faster response, but in our case, we really need
         // to slow down the response for visual aesthetics.
@@ -71,57 +82,8 @@ public class PlotLiveDemo extends PlotLive {
         } catch (InterruptedException e) {}
     }
 
-    /**
-     * Define static properties of the plot, such as the title and
-     * axis labels.  This also calls the base class
-     * <code>init()</code>, which performs various initialization
-     * functions and reads commands from a file given by a URL, if the
-     * <i>dataurl</i> applet parameter is given.  Since the base class
-     * <code>init()</code> is called after the static plot parameters
-     * are defined, then the commands from the file will override the
-     * static ones given here.  This method also creates start and
-     * stop buttons to control the plot.
-     */
-    public void init () {
-        if (_debug >8 ) System.out.println("PlotLiveDemo: init");
-        setTitle("Live Plot Demo");
-        setYRange(-1, 1);
-        setXRange(-1, 1);
-        setNumSets(4);
-        setPointsPersistence(60);
-        setMarksStyle("dots");
-
-        // Give the user direct control over starting and stopping.
-        makeButtons();
-
-        super.init();
-    }
-
-    /**
-     * Run as an application for testing.  Run with:
-     * <pre>
-     java -classpath ../../..:/opt/jdk1.1.4/lib/classes.zip ptolemy.plot.demo.PlotLiveDemo
-     * </pre>
-     */
-    public static void main(String args[]) {
-        PlotLiveDemo pld;
-        Frame f=new Frame("PlotLiveDemo");
-        f.setLayout(new BorderLayout());
-        f.setBackground(Color.lightGray);
-        f.resize(400, 400);     // FIXME: resize() is deprecated in 1.1,
-        // but we need to compile under 1.0.2 for netscape3.x compatibility.
-        pld= new PlotLiveDemo();
-        f.add("Center",pld);
-        f.pack();
-        f.show();
-
-        pld.resize(400, 400);   // FIXME: resize() is deprecated.
-        pld.init();
-        pld.start();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    //////////////////////////////////////////////////////////////////////////
+    ////                       private variables                          ////
 
     private boolean _first = true;
     private double _count = 0.0;
