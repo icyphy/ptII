@@ -183,10 +183,11 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "divide method not supported between"
-            	+ this.getClass().getName() + " and "
-                    + divisor.getClass().getName();
-                    throw new IllegalActionException(str + ": " + ex.getMessage());
+            throw new IllegalActionException(
+                    "divide method not supported between"
+                    + this.getClass().getName() + " and "
+                    + divisor.getClass().getName() 
+                    + ": " + ex.getMessage());
         }
     }
 

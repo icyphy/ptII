@@ -118,7 +118,8 @@ public class ComplexToken extends ScalarToken {
 	int compare = TypeLattice.compare(this, token);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
-                    + "token " + token.getClass().getName() + " is not lower than "
+                    + "token " + token.getClass().getName()
+                    + " is not lower than "
                     + getClass().getName());
         }
 

@@ -141,8 +141,8 @@ public class BooleanMatrixToken extends MatrixToken {
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("BooleanMatrixToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
-                    "is higher or incomparable with BooleanMatrixToken in the " +
-                    "type hierarchy.");
+                    "is higher or incomparable with BooleanMatrixToken " +
+                    "in the type hierarchy.");
 	}
 
 	if (token instanceof BooleanMatrixToken) {

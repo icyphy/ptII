@@ -72,7 +72,8 @@ public abstract class MatrixToken extends Token {
      */
     public static Token convert(Token token) throws IllegalActionException {
         throw new IllegalActionException(token.getClass().getName() +
-                " cannot convert to a MatrixToken since that class is abstract.");
+                " cannot convert to a MatrixToken since that " +
+                "class is abstract.");
     }
 
     /** In derived classes that can be represented as a 2-D double array,
