@@ -99,7 +99,7 @@ public class TreeEditorPanel extends JScrollPane {
                 // Strangely, the XmlParser does not want as base the
                 // directory containing the file, but rather the
                 // file itself.
-                File directory = new File(file.getAbsolutePath());
+                /*File directory = */ new File(file.getAbsolutePath());
                 // base = new URL("file", null, directory);
                 base = file.toURL();
             } catch (FileNotFoundException ex2) {
