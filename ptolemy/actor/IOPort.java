@@ -583,7 +583,7 @@ public class IOPort extends ComponentPort {
                 Receiver[][] deepReceiver = relation.deepReceivers(this);
                 if (deepReceiver != null) {
                     int size = java.lang.Math.min(deepReceiver.length,
-                            width-index);
+                            width - index);
                     for (int i = 0; i < size; i++) {
                         if (deepReceiver[i] != null) {
                             _insideReceivers[index++] = deepReceiver[i];
@@ -781,21 +781,24 @@ public class IOPort extends ComponentPort {
     }
 
     /** Get a token from the specified inside channel of this port.
-     *  If the channel has a group with more than one receiver
+     *  This method is usually called on the output port of a
+     *  composite actor. 
+     *
+     *  <p>If the channel has a group with more than one receiver
      *  (something that is possible if this is a transparent port),
      *  then this method calls get() on all receivers, but returns
      *  only the first non-null token returned by these calls.
      *  Normally this method is not used on transparent ports.  If
      *  there is no token to return, then throw an exception.  This
      *  method is usually called only by the director of a composite
-     *  actor during transferOutputs, as atomic actors do not normally
+     *  actor during transferOutputs(), as atomic actors do not normally
      *  have relations connected on the inside of their ports.
      *
      *  <p> Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a
-     *  get, it is important that the thread does not hold read access
+     *  get(), it is important that the thread does not hold read access
      *  on the workspace when it is blocked. Thus this method releases
-     *  read access on the workspace before calling get.
+     *  read access on the workspace before calling get().
      *
      *  @param channelIndex The channel index.
      *  @return A token from the specified channel.
@@ -824,7 +827,7 @@ public class IOPort extends ComponentPort {
                 }
             }
             if (localReceivers[channelIndex] == null) {
-                throw new NoTokenException(this,
+                throw new IllegalActionException(this,
                         "No receiver at inside index: "
                         + channelIndex + ".");
             }
@@ -861,11 +864,14 @@ public class IOPort extends ComponentPort {
      *
      *  @return The local inside receivers, or an empty array if there are
      *   none.
+     *  @see #getInside(int)
      */
     public Receiver[][] getInsideReceivers() {
         try {
             _workspace.getReadAccess();
-            if (!isOutput() || !isOpaque()) return _EMPTY_RECEIVER_ARRAY;
+            if (!isOutput() || !isOpaque()) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
 
             // Check to see whether cache is valid.
             if (_localInsideReceiversVersion == _workspace.getVersion()) {
@@ -875,7 +881,9 @@ public class IOPort extends ComponentPort {
             // Have to compute the _inside_ width.
             int width = getWidthInside();
 
-            if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
+            if (width <= 0) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
 
             // Cache not valid.  Reconstruct it.
             _localInsideReceivers = new Receiver[width][0];
@@ -913,7 +921,7 @@ public class IOPort extends ComponentPort {
             // getReceivers(IORelation, int) throws. This should not
             // occur because we are sure the IORelation is connected.
             throw new InternalErrorException(this, ex,
-            "Expected relation to be connected!");
+                    "Expected relation to be connected!");
         } finally {
             _workspace.doneReading();
         }
@@ -959,8 +967,9 @@ public class IOPort extends ComponentPort {
     public Receiver[][] getReceivers() {
         try {
             _workspace.getReadAccess();
-            if (!isInput()) return _EMPTY_RECEIVER_ARRAY;
-
+            if (!isInput()) { 
+                return _EMPTY_RECEIVER_ARRAY;
+            }
             if (isOpaque()) {
                 // Check to see whether cache is valid.
                 if (_localReceiversVersion == _workspace.getVersion()) {
@@ -969,8 +978,9 @@ public class IOPort extends ComponentPort {
 
                 // Cache not valid.  Reconstruct it.
                 int width = getWidth();
-                if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
-
+                if (width <= 0) {
+                    return _EMPTY_RECEIVER_ARRAY;
+                }
                 _localReceivers = new Receiver[width][0];
                 int index = 0;
                 Iterator relations = linkedRelationList().iterator();
@@ -1012,7 +1022,7 @@ public class IOPort extends ComponentPort {
             // getReceivers(IORelation, int) throws. This should not
             // occur because we are sure the IORelation is connected.
             throw new InternalErrorException(this, ex,
-            "Expected relation to be connected!");
+                    "Expected relation to be connected!");
         } finally {
             _workspace.doneReading();
         }
@@ -1081,7 +1091,9 @@ public class IOPort extends ComponentPort {
             }
 
             int width = relation.getWidth();
-            if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
+            if (width <= 0) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
 
             Receiver[][] result = null;
             // If the port is opaque, return the local Receivers for the
@@ -1089,8 +1101,9 @@ public class IOPort extends ComponentPort {
             if (opaque) {
                 // If _localReceiversTable is null, then createReceivers()
                 // hasn't been called, so there is nothing to return.
-                if (_localReceiversTable == null) return _EMPTY_RECEIVER_ARRAY;
-
+                if (_localReceiversTable == null) {
+                    return _EMPTY_RECEIVER_ARRAY;
+                }
                 if ( _localReceiversTable.containsKey(relation) ) {
                     // Get the list of receivers for this relation.
                     List list = (List)_localReceiversTable.get(relation);
@@ -1110,7 +1123,7 @@ public class IOPort extends ComponentPort {
             } else {
                 // If a transparent input port, ask its all inside receivers,
                 // and trim the returned Receivers array to get the
-                // part corresponding to this occurrence of the IORelation
+                // part corresponding to this occurrence of the IORelation.
                 Receiver[][] insideReceivers = getReceivers();
                 if (insideReceivers == null) {
                     return _EMPTY_RECEIVER_ARRAY;
@@ -1133,7 +1146,7 @@ public class IOPort extends ComponentPort {
                                 result = new Receiver[width][];
                                 int receiverSize =
                                     java.lang.Math.min(width,
-                                            insideWidth-index);
+                                            insideWidth - index);
                                 for (int i = 0; i< receiverSize; i++) {
                                     result[i] = insideReceivers[index++];
                                 }
@@ -1141,11 +1154,15 @@ public class IOPort extends ComponentPort {
                             } else {
                                 seen++;
                                 index += outsideRelation.getWidth();
-                                if (index > insideWidth) break;
+                                if (index > insideWidth) {
+                                    break;
+                                }
                             }
                         } else {
                             index += outsideRelation.getWidth();
-                            if (index > insideWidth) break;
+                            if (index > insideWidth) {
+                                break;
+                            }
                         }
                     }
                 }
@@ -1176,10 +1193,14 @@ public class IOPort extends ComponentPort {
     public Receiver[][] getRemoteReceivers() {
         try {
             _workspace.getReadAccess();
-            if (!isOutput()) return _EMPTY_RECEIVER_ARRAY;
+            if (!isOutput()) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
 
             int width = getWidth();
-            if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
+            if (width <= 0) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
 
             // For opaque port, try the cached _farReceivers
             // Check validity of cached version
@@ -1211,13 +1232,6 @@ public class IOPort extends ComponentPort {
                     }
                 }
             }
-            // No longer needed, davisj (3/29/99)
-            /*
-              if (!foundRemoteInput) {
-              // No remote receivers
-              farReceivers = null;
-              }
-            */
             // For an opaque port, cache the result.
             if (isOpaque()) {
                 _farReceiversVersion = _workspace.getVersion();
@@ -1231,7 +1245,7 @@ public class IOPort extends ComponentPort {
 
     /** If this port is an output, return the remote receivers that can
      *  receive data from this port through the specified relation.
-     *  The relation should linked to the port
+     *  The relation should be linked to the port
      *  from the inside, otherwise an exception is thrown. For an output
      *  port, the returned value is an array of arrays of the same form
      *  as that returned by getReceivers() with no arguments.
@@ -1256,10 +1270,14 @@ public class IOPort extends ComponentPort {
                         "not linked from the inside.");
             }
 
-            if (!isOutput()) return _EMPTY_RECEIVER_ARRAY;
+            if (!isOutput()) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
 
             int width = relation.getWidth();
-            if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
+            if (width <= 0) {
+                return _EMPTY_RECEIVER_ARRAY;
+            }
 
             // no cache used.
             Receiver[][] outsideReceivers = getRemoteReceivers();
@@ -1273,8 +1291,8 @@ public class IOPort extends ComponentPort {
                 IORelation insideRelation =
                     (IORelation) insideRelations.next();
                 if (insideRelation == relation) {
-                    int size = java.lang.Math.min
-                        (width, outsideReceivers.length-index);
+                    int size = java.lang.Math.min(width,
+                            outsideReceivers.length - index);
                     //NOTE: if size = 0, the for loop is skipped.
                     for (int i = 0; i < size; i++) {
                         result[i] = outsideReceivers[i+index];
@@ -1352,7 +1370,7 @@ public class IOPort extends ComponentPort {
 
     /** Return true if the specified channel can accept a token via the
      *  put() method.  If this port is not an output, or the channel index
-     *  is out of range, then throws IllegalActionException.  If there
+     *  is out of range, then throw IllegalActionException.  If there
      *  are multiple receivers in the group associated with the channel,
      *  then return true only if all the receivers can accept a token.
      *
