@@ -53,9 +53,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
+JSRCS = BasePNDirector.java \
 	PNDirector.java \
-	PNQueueReceiver.java
+	PNQueueReceiver.java \
+	TimedPNDirector.java
 
 
 EXTRA_SRCS =	$(JSRCS)
