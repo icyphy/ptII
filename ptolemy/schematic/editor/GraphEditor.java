@@ -55,6 +55,7 @@ import java.io.DataOutputStream;
 import java.net.URL;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.tree.*;
 import javax.swing.filechooser.FileFilter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -281,11 +282,31 @@ public class GraphEditor extends AbstractApplication {
         }
 
 	System.out.println("library = " + lib.description());
-        JTabbedPane pane = createPaneFromComposite(lib);
+	//        JTabbedPane pane = createPaneFromComposite(lib);	
 	//        JTabbedPane pane = createPaneFromComposite(getEntityLibrary());
+	DefaultMutableTreeNode top = 
+	    new DefaultMutableTreeNode("Entity Library");
+	createTreeNodes(top, lib);
+	final JTree tree = new JTree(top);       
+	JScrollPane pane = new JScrollPane(tree);
         s.addShade("Entity Library", null, pane, "The Default entity library");
     }
     
+    public void createTreeNodes(DefaultMutableTreeNode node,
+				CompositeEntity library) {
+	Enumeration enum = library.getEntities();
+        while(enum.hasMoreElements()) {
+            Entity entity = 
+                (Entity) enum.nextElement();
+	    DefaultMutableTreeNode newNode =
+		new DefaultMutableTreeNode(entity);
+	    node.add(newNode);
+            if(entity instanceof CompositeEntity) {
+		createTreeNodes(node, (CompositeEntity)entity);
+            }
+        }	
+    }
+
     public JTabbedPane createPaneFromComposite(CompositeEntity library) {
         Enumeration enum;
         JTabbedPane pane = new JTabbedPane();
