@@ -19,13 +19,13 @@
     </configure>
   </property>
   <!-- The following attribute specifies the context menu commands -->
-  <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory"/>
+  <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory"/>
   <!-- The following attribute makes the right editor open -->
   <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
 </property>
 <property name="parameter" class="ptolemy.data.expr.Parameter">
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
-  <property name="_icon" class="ptolemy.vergil.toolbox.ValueIcon"/>
+  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>
   <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
     <configure>
       <svg>
@@ -36,7 +36,7 @@
 </property>
 <property name="requireVersion" class="ptolemy.kernel.util.RequireVersion">
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
-  <property name="_icon" class="ptolemy.vergil.toolbox.ValueIcon"/>
+  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>
   <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
     <configure>
       <svg>

@@ -17,7 +17,7 @@
       </entity>
     </entity>
     <entity name="Modal Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+      <entity name="blank" class="ptolemy.vergil.fsm.modal.ModalModel">
        <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
          <input source="ptolemy/configs/fsmLibrary.xml"/>
          <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -25,7 +25,7 @@
            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
 create refinements for the states. Each refinement needs a director.</text></svg></configure></property>
            <property name="_location" class="ptolemy.moml.Location" value="250.0, 40.0"/>
-           <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory"/>
+           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory"/>
            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
          </property>
        </entity>

@@ -12,7 +12,7 @@
     <input source="ptolemy/configs/fsmTableaux.xml"/>
     <property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
       <!-- These will appear in the View menu of an entity tableau. -->
-      <property name="Graph Editor" class="ptolemy.vergil.ptolemy.kernel.KernelGraphTableau$Factory"/>
+      <property name="Graph Editor" class="ptolemy.vergil.actor.ActorGraphTableau$Factory"/>
       <property name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory"/>
       <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
       <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
