@@ -52,7 +52,6 @@ and Army Research Office.
  */
 public class EnvironIter implements Iterator {
 
-    // no elements
     public EnvironIter() {
         _nextEnviron = null;
         _declIter = null;
@@ -77,7 +76,7 @@ public class EnvironIter implements Iterator {
         try {
             nextDecl();
 
-            // rewind to valid Decl
+            // Rewind to valid Decl.
             _declIter.previous();
         } catch (NoSuchElementException e) {
             // ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
@@ -89,7 +88,7 @@ public class EnvironIter implements Iterator {
         return true;
     }
 
-    /** Return the next Decl. */ 
+    /** Return the next Decl. */
     public Object next() {
         return nextDecl();
     }

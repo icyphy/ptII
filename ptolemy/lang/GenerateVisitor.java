@@ -55,9 +55,10 @@ nodetypes directory.
 
  <p>The syntax of NodeTypes.def is documented in Jeff Tsay's Masters
 report at
-http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/
+http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/,
+below is a brief summary.
 <menu>
-<li> 
+<li>
    <li> cheader: common header
    <li> vheader: visitor header
    <li> nheader: nodes

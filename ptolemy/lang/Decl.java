@@ -86,7 +86,7 @@ public class Decl extends TrackedPropertyMap {
         }
 
         if (!(object instanceof Decl)) {
-            throw new RuntimeException("cannot compare a Decl " + 
+            throw new RuntimeException("cannot compare a Decl " +
                     "with a non-Decl");
         }
 
@@ -106,7 +106,7 @@ public class Decl extends TrackedPropertyMap {
      *  @param name The String to compare against.
      *  @param mask The mask to compare against.
      *  @return true If the name and mask match.
-     */   
+     */
     public final boolean matches(String name, int mask) {
         if ((category & mask) != 0) {
             return (name.equals(ANY_NAME) ||

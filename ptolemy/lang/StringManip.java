@@ -41,7 +41,7 @@ public class StringManip {
 
     /** Return the portion of the substring after the final period '.', if any.
      *  Note that the input string is usually either a classname or a
-     *  file name. 
+     *  file name.
      */
     public static final String unqualifiedPart(String qualifiedName) {
         return partAfterLast(qualifiedName, '.');
