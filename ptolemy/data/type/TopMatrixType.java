@@ -79,8 +79,16 @@ public class TopMatrixType extends StructuredType
      */
     public Token convert(Token token)
             throws IllegalActionException {
-        throw new IllegalActionException("Cannot convert " + token +
-                " to TopMatrixType");
+        // Any matrix token is a valid instance of this type.
+        // This is useful because there are some things like 
+        // the matrix visualizer that can meaningfully accept any token
+        // type.
+        if(token instanceof MatrixToken) {
+            return token;
+        } else {
+            throw new IllegalActionException("Cannot convert " + token +
+                    " to TopMatrixType");
+        }
     }
 
     /** Determine if the argument represents the same MatrixType as this
