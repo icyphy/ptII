@@ -185,7 +185,9 @@ public class StateController extends AttributeController {
     /** Render the state as a circle.
      */
     public static class StateRenderer implements NodeRenderer {
-        /** Construct a state renderer. */
+        /** Construct a state renderer.
+         *  @param GraphModel The GraphModel.
+         */
         public StateRenderer(GraphModel model) {
             super();
             _model = model;

@@ -431,6 +431,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param edge The edge, which is assumed to be an instance of Arc.
          *  @return The node that is the head of the specified edge.
          *  @see #getTail(Object)
+         *  @see #setHead(Object, Object)
          */
         public Object getHead(Object edge) {
             return ((Arc) edge).getHead();
@@ -553,6 +554,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param edge The edge, which is assumed to be an instance of Arc.
          *  @return The node that is the tail of the specified edge.
          *  @see #getHead(Object)
+         *  @see #setTail(Object, Object)
          */
         public Object getTail(Object edge) {
             return ((Arc) edge).getTail();
@@ -617,6 +619,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param newArcHead The new head for the edge, which is assumed to
          *   be an icon.
          *  @see #setTail(Object, Object)
+         *  @see #getHead(Object)
          */
         public void setHead(final Object edge, final Object newArcHead) {
             final Arc link = (Arc) edge;
@@ -716,6 +719,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param newArcTail The new tail for the edge, which is assumed to
          *  be an icon.
          *  @see #setHead(Object, Object)
+         *  @see #getTail(Object)
          */
         public void setTail(final Object edge, final Object newArcTail) {
             final Arc link = (Arc) edge;

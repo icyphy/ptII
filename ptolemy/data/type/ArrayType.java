@@ -50,6 +50,7 @@ A class representing the type of an ArrayToken.
 public class ArrayType extends StructuredType {
     /** Construct a new ArrayType with the specified type for the array
      *  elements. To leave the element type undeclared, use BaseType.UNKNOWN.
+     *  @param elementType The type of the array elements.
      *  @exception IllegalArgumentException If the argument is null.
      */
     public ArrayType(Type elementType) {
@@ -239,7 +240,7 @@ public class ArrayType extends StructuredType {
     }
 
     /** Return the string representation of this type. The format is
-     *  {<type>}, where <type> is the element type.
+     *  {<i>type</i>}, where <i>type</i> is the element type.
      *  @return A String.
      */
     public String toString() {
