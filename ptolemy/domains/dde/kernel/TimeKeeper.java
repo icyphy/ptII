@@ -199,13 +199,13 @@ public class TimeKeeper {
     public void sendOutNullTokens(DDEReceiver rcvr) {
 	String name = ((Nameable)_actor).getName();
 	/*
-	if( name.equals("fBack") ) {
-	    try {
-		throw new IllegalArgumentException();
-	    } catch( IllegalArgumentException e ) {
-		e.printStackTrace();
-	    }
-	}
+          if( name.equals("fBack") ) {
+          try {
+          throw new IllegalArgumentException();
+          } catch( IllegalArgumentException e ) {
+          e.printStackTrace();
+          }
+          }
 	*/
 	Iterator ports = _actor.outputPortList().iterator();
 	double time = getCurrentTime();
@@ -287,37 +287,37 @@ public class TimeKeeper {
     /** Print the contents of the receiver list contained by
      *  this actor.
      * @deprecated Use for testing purposes only.
-    synchronized void printRcvrList() {
-	String name = ((NamedObj)_actor).getName();
-        System.out.println("\n###Print "+name+"'s RcvrList.");
-        System.out.println("   Number of Receivers in RcvrList = "
-                + _rcvrList.size() );
-        if( _rcvrList.size() == 0 ) {
-            System.out.println("\tList is empty");
-            System.out.println("###End of printRcvrList()\n");
-	    return;
-        }
-        for( int i = 0; i < _rcvrList.size(); i++ ) {
-	    PrioritizedTimedQueue testRcvr = (PrioritizedTimedQueue)_rcvrList.get(i);
-            double time = testRcvr.getRcvrTime();
-	    Token token = null;
-	    if( testRcvr._queue.size() > 0 ) {
-		token = ((PrioritizedTimedQueue.Event)testRcvr._queue.get(0)).getToken();
-	    }
-	    String msg = "\t"+name+"'s Receiver "+i+
-                " has a time of " +time+" and ";
-	    if( token instanceof NullToken ) {
-		msg += "contains a NullToken";
-	    } else if( token != null ) {
-		msg += "contains a RealToken";
-	    } else {
-		msg += "contains no token";
-	    }
-	    System.out.println(msg);
-        }
-        System.out.println("###End of printRcvrList()\n");
-    }
-     */
+     synchronized void printRcvrList() {
+     String name = ((NamedObj)_actor).getName();
+     System.out.println("\n###Print "+name+"'s RcvrList.");
+     System.out.println("   Number of Receivers in RcvrList = "
+     + _rcvrList.size() );
+     if( _rcvrList.size() == 0 ) {
+     System.out.println("\tList is empty");
+     System.out.println("###End of printRcvrList()\n");
+     return;
+     }
+     for( int i = 0; i < _rcvrList.size(); i++ ) {
+     PrioritizedTimedQueue testRcvr = (PrioritizedTimedQueue)_rcvrList.get(i);
+     double time = testRcvr.getRcvrTime();
+     Token token = null;
+     if( testRcvr._queue.size() > 0 ) {
+     token = ((PrioritizedTimedQueue.Event)testRcvr._queue.get(0)).getToken();
+     }
+     String msg = "\t"+name+"'s Receiver "+i+
+     " has a time of " +time+" and ";
+     if( token instanceof NullToken ) {
+     msg += "contains a NullToken";
+     } else if( token != null ) {
+     msg += "contains a RealToken";
+     } else {
+     msg += "contains no token";
+     }
+     System.out.println(msg);
+     }
+     System.out.println("###End of printRcvrList()\n");
+     }
+    */
 
     /** Set the output time associated with this time keeper.
      *  Throw an IllegalActionException if the output time is
@@ -335,11 +335,11 @@ public class TimeKeeper {
                     + "in the past");
         }
         /*
-        if( _outputTime > _currentTime ) {
-            if( _outputTime > outputTime ) {
-                return;
-            }
-        }
+          if( _outputTime > _currentTime ) {
+          if( _outputTime > outputTime ) {
+          return;
+          }
+          }
         */
 	if( outputTime != PrioritizedTimedQueue.IGNORE ) {
             _outputTime = outputTime;
@@ -385,7 +385,7 @@ public class TimeKeeper {
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
                     ((DDEReceiver)rcvrs[i][j])._priority =
-			    currentPriority;
+                        currentPriority;
 		    //
 		    // Is the following necessary??
 		    //

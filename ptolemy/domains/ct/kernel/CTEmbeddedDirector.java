@@ -125,9 +125,9 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         _eventPhaseExecution();
         _prefireSystem();
         /*if(_first) {
-            produceOutput();
-            return;
-            }*/
+          produceOutput();
+          return;
+          }*/
         ODESolver solver = getCurrentODESolver();
         if(!solver.resolveStates()) {
             _stateAcceptable = false;
@@ -205,27 +205,27 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         updateStates();
 
         /*if(_first) {
-            _first = false;
-            }*/
+          _first = false;
+          }*/
         /**
-        if(!_first) {
-            double bp;
-            TotallyOrderedSet breakPoints = getBreakPoints();
-            if(breakPoints != null) {
-                while (!breakPoints.isEmpty()) {
-                    bp = ((Double)breakPoints.first()).doubleValue();
-                    if(bp < getCurrentTime() + getTimeResolution()) {
-                        breakPoints.removeFirst();
-                    } else {
-                        // break point in the future, register to the outside.
-                        CompositeActor ca = (CompositeActor)getContainer();
-                        Director exe = ca.getExecutiveDirector();
-                        exe.fireAt(ca, bp);
-                        break;
-                    }
-                }
-            }
-        }
+           if(!_first) {
+           double bp;
+           TotallyOrderedSet breakPoints = getBreakPoints();
+           if(breakPoints != null) {
+           while (!breakPoints.isEmpty()) {
+           bp = ((Double)breakPoints.first()).doubleValue();
+           if(bp < getCurrentTime() + getTimeResolution()) {
+           breakPoints.removeFirst();
+           } else {
+           // break point in the future, register to the outside.
+           CompositeActor ca = (CompositeActor)getContainer();
+           Director exe = ca.getExecutiveDirector();
+           exe.fireAt(ca, bp);
+           break;
+           }
+           }
+           }
+           }
         */
         return true;
     }

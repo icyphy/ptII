@@ -86,7 +86,7 @@ public class ConditionalBranchController {
     /** Construct a controller in the specified container, which should
         be an actor.
         @param container The parent actor that contains this object.
-     */
+    */
     public ConditionalBranchController(Actor container) {
         _parentActor = container;
     }
@@ -220,9 +220,9 @@ public class ConditionalBranchController {
                 _getDirector()._actorUnblocked();
             }
             throw new TerminateProcessException(
-			    ((Nameable)getParent()).getName() +
-			    ": exiting conditional" +
-			    " branching due to TerminateProcessException.");
+                    ((Nameable)getParent()).getName() +
+                    ": exiting conditional" +
+                    " branching due to TerminateProcessException.");
         }
         _threadList = null;
         return _successfulBranch;

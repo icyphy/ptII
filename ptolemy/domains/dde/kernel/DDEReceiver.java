@@ -428,4 +428,4 @@ public class DDEReceiver extends PrioritizedTimedQueue
     private boolean _readPending = false;
     private boolean _writePending = false;
     private boolean _hideNullTokens = true;
-}
+    }

@@ -112,7 +112,7 @@ public class CSPSink extends AtomicActor {
         int count = 0;
         try {
             int limit =
-                    ((IntToken)tokenLimit.getToken()).intValue();
+                ((IntToken)tokenLimit.getToken()).intValue();
             while (count < limit || limit < 0 ) {
                 Token t = input.get(0);
                 System.out.println(getName() + " received Token: " +

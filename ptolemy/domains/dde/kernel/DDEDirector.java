@@ -321,7 +321,7 @@ public class DDEDirector extends ProcessDirector {
         _writeBlocks = 0;
         _writeBlockedQs = new LinkedList();
         _pendingMutations = false;
-   }
+    }
 
     /** Return a new receiver of a type compatible with this
      *  director. If the completion time of this director has
@@ -357,7 +357,7 @@ public class DDEDirector extends ProcessDirector {
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper =
-		    ((DDEThread)thread).getTimeKeeper();
+                ((DDEThread)thread).getTimeKeeper();
 	    timeKeeper.removeAllIgnoreTokens();
 	}
 	return _notDone;
@@ -658,8 +658,8 @@ public class DDEDirector extends ProcessDirector {
             if( _writeBlocks == 0 ) {
                 if( _externalReadBlocks == 0 ) {
                     /*
-                    System.out.println("#####Deadlock: _internalReadBlocks = "
-                    + _internalReadBlocks);
+                      System.out.println("#####Deadlock: _internalReadBlocks = "
+                      + _internalReadBlocks);
                     */
             	    return true;
                 }

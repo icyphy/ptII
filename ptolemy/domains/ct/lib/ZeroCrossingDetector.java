@@ -183,7 +183,7 @@ public class ZeroCrossingDetector extends CTActor
                 _eventNow = true;
                 if(_debugging)
                     _debug(getFullName() + " detected event at "
-                        + getDirector().getCurrentTime());
+                            + getDirector().getCurrentTime());
                 _enabled = false;
             }
             _eventMissed = false;
@@ -198,8 +198,8 @@ public class ZeroCrossingDetector extends CTActor
                     _eventMissed = true;
                     _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
                         (_thisTrg-_lastTrg);
-                   if(_debugging) _debug(getFullName() +
-                           " Event Missed: refined step at" +  _refineStep);
+                    if(_debugging) _debug(getFullName() +
+                            " Event Missed: refined step at" +  _refineStep);
                     return false;
                 }
             }

@@ -132,31 +132,31 @@ public class CSPSieve extends CSPActor {
      private TopologyChangeRequest _makeChangeRequest(final int value) {
      TopologyChangeRequest request = new TopologyChangeRequest(this) {
      public void constructEventQueue() {
-             System.out.println("TopologyRequest event q being constructed!");
-             TypedCompositeActor container =
-             (TypedCompositeActor)getContainer();
-             CSPSieve newSieve = null;
-             ComponentRelation newRel = null;
-             try {
-             newSieve = new CSPSieve(container,value + "_sieve", value);
-             // If we use a 1-1 relation this needs to change.
-             newRel = new IORelation(container, "R" + value);
-             } catch (NameDuplicationException ex) {
-             throw new InvalidStateException("11Cannot create " +
-             "new sieve.");
-             } catch (IllegalActionException ex) {
-             throw new InvalidStateException("Cannot create " +
-             "new sieve.");
-             }
+     System.out.println("TopologyRequest event q being constructed!");
+     TypedCompositeActor container =
+     (TypedCompositeActor)getContainer();
+     CSPSieve newSieve = null;
+     ComponentRelation newRel = null;
+     try {
+     newSieve = new CSPSieve(container,value + "_sieve", value);
+     // If we use a 1-1 relation this needs to change.
+     newRel = new IORelation(container, "R" + value);
+     } catch (NameDuplicationException ex) {
+     throw new InvalidStateException("11Cannot create " +
+     "new sieve.");
+     } catch (IllegalActionException ex) {
+     throw new InvalidStateException("Cannot create " +
+     "new sieve.");
+     }
 
-             queueEntityAddedEvent(container, newSieve);
-             queueRelationAddedEvent(container, newRel);
-             queuePortLinkedEvent(newRel, output);
-             queuePortLinkedEvent(newRel, newSieve.getPort("input"));
-             }
-             };
-             return request;
-             }
+     queueEntityAddedEvent(container, newSieve);
+     queueRelationAddedEvent(container, newRel);
+     queuePortLinkedEvent(newRel, output);
+     queuePortLinkedEvent(newRel, newSieve.getPort("input"));
+     }
+     };
+     return request;
+     }
     */
 
 

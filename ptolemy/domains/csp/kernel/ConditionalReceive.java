@@ -262,7 +262,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveAfterPut(CSPReceiver rcvr,
-				   ConditionalBranchController controller)
+            ConditionalBranchController controller)
             throws InterruptedException {
         while (true) {
             if (controller._isBranchFirst(getID())) {
@@ -288,7 +288,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveFirst(CSPReceiver rcvr,
-				ConditionalBranchController controller)
+            ConditionalBranchController controller)
             throws InterruptedException {
         rcvr._setConditionalReceive(true, controller);
         _registerBlockAndWait();

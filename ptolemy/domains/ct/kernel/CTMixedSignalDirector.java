@@ -183,10 +183,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             return;
         }
         /*if (_first) {
-            _first = false;
-            produceOutput();
-            //return;
-            }*/
+          _first = false;
+          produceOutput();
+          //return;
+          }*/
         CompositeActor ca = (CompositeActor) getContainer();
         Director exe = ca.getExecutiveDirector(); // it may be null.
         double timeAcc = getTimeResolution();
@@ -230,7 +230,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 _setEventPhase(true);
                 return;
             } else if (Math.abs(getCurrentTime()- getIterationEndTime())
-                       < getTimeResolution()) {
+                    < getTimeResolution()) {
                 if(_debugging) {
                     _debug(getFullName() + " fire stopped regularly.",
                             "at " + getCurrentTime(),
@@ -334,8 +334,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             double nextIterTime = exe.getNextIterationTime();
             double runlength = nextIterTime - _outsideTime;
             if(_debugging) _debug(getName(), "Outside Time = " + _outsideTime,
-                                  "NextIterationTime = " + nextIterTime,
-                                  "Infered run length = " + runlength);
+                    "NextIterationTime = " + nextIterTime,
+                    "Infered run length = " + runlength);
             if(runlength < 0 ) {
                 throw new InvalidStateException(this, "Outside domain"
                         + " time collapse."

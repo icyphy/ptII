@@ -228,8 +228,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected boolean _arriveAfterCondRec(CSPReceiver rcvr,
-		    ConditionalBranchController controller)
-                    throws InterruptedException {
+            ConditionalBranchController controller)
+            throws InterruptedException {
         // CASE 2: a conditionalReceive is already waiting.
         // As this conditionalSend arrived second, it has
         // to check if both branches are "first" and if

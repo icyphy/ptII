@@ -129,7 +129,7 @@ public class CSPMultiSource extends CSPActor {
     public void fire() {
         try {
             int limit =
-            	    ((IntToken)tokenLimit.getToken()).intValue();
+                ((IntToken)tokenLimit.getToken()).intValue();
             int count = 0;
             int size = output.getWidth();
             _branchCount = new int[size];

@@ -65,7 +65,7 @@ public class CSPSource extends AtomicActor {
      *   with instantiation of the tokenLimit parameter.
      */
     public CSPSource() throws IllegalActionException,
-    	     NameDuplicationException {
+            NameDuplicationException {
         super();
         tokenLimit = new Parameter( this, "tokenLimit",
         	(new IntToken(-1)) );
@@ -143,7 +143,7 @@ public class CSPSource extends AtomicActor {
     public void fire() {
         try {
             int limit =
-            	    ((IntToken)tokenLimit.getToken()).intValue();
+                ((IntToken)tokenLimit.getToken()).intValue();
             Random rand = new Random();
             while ( (_value < limit) || (limit < 0) ) {
                 Token t = new IntToken(_value);

@@ -193,7 +193,7 @@ public class CTScheduler extends Scheduler{
      *  @deprecated Use dynamicActorList() in stead.
      */
     public Enumeration dynamicActors() {
-         return Collections.enumeration(dynamicActorList());
+        return Collections.enumeration(dynamicActorList());
     }
 
     /** Returns a list of scheduled dynamic actors.
@@ -487,7 +487,7 @@ public class CTScheduler extends Scheduler{
      */
     public Enumeration stateTransitionSSCActors()
             throws IllegalActionException {
-         return Collections.enumeration(stateTransitionSSCActorList());
+        return Collections.enumeration(stateTransitionSSCActorList());
     }
 
     /** Returns a list of scheduled actors that form the state transition map.
