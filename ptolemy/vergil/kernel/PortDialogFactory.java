@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.kernel;
@@ -70,7 +70,7 @@ public class PortDialogFactory implements MenuItemFactory {
     /**
      * Add an item to the given context menu that will open a dialog to add or
      * remove ports from an object.
-     * 
+     *
      * @param menu
      *            The context menu.
      * @param object
@@ -166,7 +166,7 @@ public class PortDialogFactory implements MenuItemFactory {
 
     /**
      * Set the configuration for use by the help screen.
-     * 
+     *
      * @param configuration
      *            The configuration.
      */
