@@ -35,8 +35,9 @@ package ptolemy.actor.lib.image;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.ImageToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
@@ -101,10 +102,10 @@ public class ImageRotate extends Transformer {
             ((IntToken)(rotationInDegrees.getToken())).intValue();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-                ObjectToken objectToken = (ObjectToken) input.get(i);
-                Image image = (Image) objectToken.getValue();
+                ImageToken imageToken = (ImageToken) input.get(i);
+                Image image = imageToken.asAWTImage();
                 Image rotatedImage = Transform.rotate(image, rotation);
-                output.broadcast(new ObjectToken(rotatedImage));
+                output.broadcast(new AWTImageToken(rotatedImage));
             }
         }
     }
