@@ -45,8 +45,9 @@ include $(CONFIG)
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
-#    PlotApplication.java, doc/index.htm, doc/changes.htm
-PTVERSION =	3.0
+#    PlotBox.java, LogicAnalyzerFrame.java,
+#    PlotApplication.java, doc/main.htm, doc/changes.htm
+PTVERSION =	3.1
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 

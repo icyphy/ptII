@@ -1533,7 +1533,7 @@ public class PlotBox extends Panel {
                 "Ptolemy plot package\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 2.2, Build: $Id$\n\n" +
+                "Version 3.1, Build: $Id$\n\n" +
                 "Key bindings:\n" +
                 // FIXME: When clipboard works. Also fix class comment.
                 // "   Cntr-c:  copy plot to clipboard (EPS format)\n" +
