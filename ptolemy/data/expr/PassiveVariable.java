@@ -51,14 +51,14 @@ to exercise explicit control over when its expression is evaluated.
 */
 
 public class PassiveVariable extends Variable {
-    
+
     // All the constructors are wrappers of the super class constructors.
 
     /** Construct a variable in the default workspace with an empty string
      *  as its name.
      *  The variable is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     */    
+     */
     public PassiveVariable() {
         super();
     }
@@ -75,7 +75,7 @@ public class PassiveVariable extends Variable {
     }
 
     /** Construct a variable with the given name contained as an attribute
-     *  by the specified entity. The container argument must not be null, 
+     *  by the specified entity. The container argument must not be null,
      *  or a NullPointerException will be thrown. This variable will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
@@ -93,9 +93,9 @@ public class PassiveVariable extends Variable {
     }
 
     /** Construct a variable with the given container, name, and token.
-     *  The container argument must not be null, or a NullPointerException 
-     *  will be thrown. This variable will use the workspace of the 
-     *  container for synchronization and version counts. If the name 
+     *  The container argument must not be null, or a NullPointerException
+     *  will be thrown. This variable will use the workspace of the
+     *  container for synchronization and version counts. If the name
      *  argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
      *  @param container The container.
