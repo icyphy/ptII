@@ -49,36 +49,55 @@ public class SoftClip {
 	// Create a sound capture object that captures audio
 	// from the computer's audio input port (mic or
 	// line-in).
-	float sampleRate = 44100; // in Hz
+	int sampleRate = 44100; // in Hz
 	int sampleSizeInBits = 16;
 	int channels = 2; // stereo.
 	int inBufferSize = 4096;  // Internal buffer size for capture.
 	int outBufferSize = 4096; // Internal buffer size for playback.
+
+	// the object that has access to the sound capture device.
+	Object consumer = new Object();
+	// the object that has access to the sound playback device.
+	Object producer = new Object();
 
 	// Amount of data to read or write from/to the internal buffer
 	// at a time. This should be set smaller than the internal buffer
 	// size!
 	int getSamplesSize = 256;
 
+	/*
 	SoundCapture soundCapture =
 	    new SoundCapture(sampleRate, sampleSizeInBits,
                     channels, inBufferSize,
                     getSamplesSize);
-
-	int putSamplesSize = getSamplesSize;
-
+	*/
 	// Construct a sound playback object that plays audio
 	//through the computer's speaker.
+	/*
 	SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
                 sampleSizeInBits,
                 channels,
                 outBufferSize,
                 putSamplesSize);
+	*/
+
 
 	// Initialize and begin real-time capture and playback.
 	try{
-	    soundCapture.startCapture();
-	    soundPlayback.startPlayback();
+	    //soundCapture.startCapture();
+	    // Set up LiveSound parameters for capture/playback
+	    LiveSound.setSampleRate(sampleRate);
+	    LiveSound.setBitsPerSample(sampleSizeInBits);
+	    LiveSound.setChannels(channels);
+	    LiveSound.setBufferSize(inBufferSize);
+	    LiveSound.setTransferSize(getSamplesSize);
+
+	    int putSamplesSize = getSamplesSize;
+   
+	    LiveSound.startCapture(consumer);
+
+	    LiveSound.startPlayback(producer);
+	    //soundPlayback.startPlayback();
 	} catch (Exception ex) {
 	    System.err.println(ex);
 	}
@@ -89,9 +108,13 @@ public class SoftClip {
 
 	try{
 	    // Loop forever.
-	    while(true) {
+	    System.out.println("starting");
+	    int count = 0;
+	    while(count < 1000) {
+		count++;
 		// Read in some captured audio.
-		capturedSamplesArray = soundCapture.getSamples();
+		//capturedSamplesArray = soundCapture.getSamples();
+		capturedSamplesArray = LiveSound.getSamples(consumer);
 
 		// Do some simple processing on the
 		// captured audio.
@@ -106,10 +129,18 @@ public class SoftClip {
 		}
 
 		// Play the processed audio samples.
-		soundPlayback.putSamples(capturedSamplesArray);
+		//soundPlayback.putSamples(capturedSamplesArray);
+		LiveSound.putSamples(producer, capturedSamplesArray);
             }
+	    // Stop capture.
+	    LiveSound.stopCapture(consumer);
+	    // Stop playback.
+	    //soundPlayback.stopPlayback();
+	    LiveSound.stopPlayback(producer);
+	    System.out.println("stoping");
 	} catch (Exception ex) {
 	    System.err.println(ex);
 	}
+	
     }
 }
