@@ -89,7 +89,7 @@ install: all jars
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
 demosPtiny.htm: demos.htm
-	awk -f $(ROOT)/doc/javahtml.awk $< > $@  
+	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 
 completeDemosPtiny.htm: completeDemos.htm
 	awk -f $(ROOT)/doc/javahtml.awk $< > $@  
