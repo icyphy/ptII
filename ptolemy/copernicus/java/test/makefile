@@ -45,7 +45,10 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = TestUnboxingMain.java \
+JSRCS = \
+	CGNonStrictTest.java \
+	CGTest.java \
+	TestUnboxingMain.java \
 	TestSpecializeTypesMain.java \
 	Unboxing1.java \
 	Unboxing1b.java \
