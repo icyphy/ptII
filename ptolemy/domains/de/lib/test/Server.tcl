@@ -66,14 +66,14 @@ test Server-2.1 {test with the default service time value} {
        [java::cast ptolemy.domains.de.lib.DETransformer $server] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {1.0 2.0 3.0}
 
 test Server-3.1 {test with zero service time} {
     set serviceTime [java::field $server serviceTime]
     $serviceTime setExpression "0.0"
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {0.0 1.0 2.0 3.0}
 
 test Server-3.2 {test with negative service time} {
@@ -94,5 +94,5 @@ test Server-4.0 {Test with service time input} {
        [java::field [java::cast ptolemy.actor.lib.Source $clock2] output] \
        [java::field $server newServiceTime]
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {1.5 2.0 2.5}

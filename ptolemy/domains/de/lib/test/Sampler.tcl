@@ -77,5 +77,5 @@ test Sampler-2.1 {test with the default output values} {
        [java::field $sampler trigger]
     [$e0 getManager] execute
     list [enumToTokenValues [$rec getRecord 0]] \
-            [enumToStrings [$rec getTimeRecord]]
+            [enumToObjects [$rec getTimeRecord]]
 } {{1 1 0 0 1 1 0} {0.0 0.5 1.0 1.5 2.0 2.5 3.0}}

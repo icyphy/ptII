@@ -66,14 +66,14 @@ test SimpleDelay-2.1 {test with the default delay value} {
        [java::field $delay output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {1.0 2.0 3.0}
 
 test SimpleDelay-3.1 {test with the zero delay} {
     set delayAmount [java::field $delay delay]
     $delayAmount setExpression "0.0"
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {0.0 1.0 2.0 3.0}
 
 test SimpleDelay-4.1 {test a self loop with the zero delay} {
@@ -123,5 +123,5 @@ test SimpleDelay-5.2 {fix the zero delay with a non-zero delay} {
             [java::field $delay output] \
             [java::field $add plus]
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {0.0 1.0 2.0 3.0}

@@ -68,14 +68,15 @@ test Delay-2.1 {test with the default delay value} {
        [java::cast ptolemy.domains.de.lib.DETransformer $delay] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
+    #enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {1.0 2.0 3.0}
 
 test Delay-3.1 {test with zero delay} {
     set delayAmount [java::field $delay delay]
     $delayAmount setExpression "0.0"
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {0.0 1.0 2.0 3.0}
 
 test Delay-3.2 {test with negative delay} {
@@ -135,5 +136,5 @@ test Delay-5.2 {fix the zero delay with a non-zero delay} {
             $delay] output] \
             [java::field $add plus]
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {0.0 1.0 2.0 3.0}
