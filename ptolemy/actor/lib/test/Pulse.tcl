@@ -131,12 +131,11 @@ test Pulse-3.1 {test indexes that are out of order} {
         $indexesParam getToken
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse.indexes:
-Error evaluating expression: "{0, 3, 2}"
-In variable: .top.pulse.indexes
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse:
-Value of indexes is not nondecreasing and nonnegative.}}
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression "{0, 3, 2}"
+  in .top.pulse.indexes
+Because:
+Value of indexes is not nondecreasing and nonnegative.
+  in .top.pulse}}
 
 test Pulse-3.2 {test negative indexes} {
     set indexesParam [getParameter $pulse indexes]
@@ -145,12 +144,11 @@ test Pulse-3.2 {test negative indexes} {
         $indexesParam getToken
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse.indexes:
-Error evaluating expression: "{-1, 0, 1}"
-In variable: .top.pulse.indexes
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse:
-Value of indexes is not nondecreasing and nonnegative.}}
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression "{-1, 0, 1}"
+  in .top.pulse.indexes
+Because:
+Value of indexes is not nondecreasing and nonnegative.
+  in .top.pulse}}
 
 test Pulse-3.3 {test values and indexes of different dimensions} {
     set indexesParam [getParameter $pulse indexes]
@@ -161,8 +159,8 @@ test Pulse-3.3 {test values and indexes of different dimensions} {
         [$e0 getManager] execute
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse:
-Parameters values and indexes have different lengths.}}
+} {{ptolemy.kernel.util.IllegalActionException: Parameters values and indexes have different lengths.
+  in .top.pulse}}
 
 ######################################################################
 #### Test repeat function
