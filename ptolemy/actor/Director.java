@@ -95,12 +95,12 @@ invoked.
 An initialize() method may queue further mutations with the director.
 <p>
 The director also provides methods to optimize the iteration portion of a
-simulation. This is done by letting the workspace to be write-protected during
+simulation. This is done by letting the workspace to be read-only during
 an iteration. In this base class, the default implementation prevent the
-workspace to be write-protected. Derived classes (e.g. domain specific
+workspace to be read-only. Derived classes (e.g. domain specific
 directors) should override the _writeAccessPreference() method to let
-the workspace to be write-protected. (Note that the workspace might still be
-not-write-protected, it all depends on other directors in the simulation).
+the workspace to be read-only. (Note that the workspace might still be
+writable, it all depends on other directors in the simulation).
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
 @version $Id$
@@ -287,10 +287,10 @@ public class Director extends NamedObj implements Executable {
      *  the 'personal' preference of this director, if this director wants
      *  write access then just return true. Otherwise, this method continue by
      *  recursively call ones in the lower level directors. If any of those
-     *  lower level directors disagree to have the workspace write-protected,
+     *  lower level directors disagree to have the workspace being read-only,
      *  then return true.
      *  @return true If this director disagree to have the workspace
-     *  write protected, false otherwise.
+     *  being read-only, false otherwise.
      *  @exception InvalidStateException If the director does not have
      *     a container.
      *
