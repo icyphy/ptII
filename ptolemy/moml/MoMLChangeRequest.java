@@ -33,7 +33,10 @@ package ptolemy.moml;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+
 import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLChangeRequest
@@ -145,6 +148,33 @@ public class MoMLChangeRequest extends ChangeRequest {
             _parser.setContext(_context);
         }
 	_parser.parse(_base, getDescription());
+
+        // Apply the same change to any object that defers its MoML
+        // definition to the context in which we just applied the change.
+        NamedObj context = _context;
+        if (context == null) {
+            context = _parser.getToplevel();
+        }
+        List othersList = context.deferredMoMLDefinitionFrom();
+        if (othersList != null) {
+            try {
+                // Let the parser know that we are propogating
+                // changes, so that it does not need to record them
+                // using MoMLAttribute.
+                _parser._propogating = true;
+                Iterator others = othersList.iterator();
+                while (others.hasNext()) {
+                    NamedObj other = (NamedObj)others.next();
+                    if (other != null) {
+                        _parser.reset();
+                        _parser.setContext(other);
+                        _parser.parse(_base, getDescription());
+                    }
+                }
+            } finally {
+                _parser._propogating = false;
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

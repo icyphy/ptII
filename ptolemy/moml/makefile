@@ -48,10 +48,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =	Icon.java \
-	Import.java \
 	Locatable.java \
 	Location.java \
 	Vertex.java \
+	MoMLAttribute.java \
 	MoMLChangeRequest.java \
 	MoMLParser.java \
 	MoMLUtilities.java \

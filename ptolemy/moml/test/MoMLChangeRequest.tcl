@@ -60,7 +60,7 @@ set baseModel {<?xml version="1.0" standalone="no"?>
 }
 
 #----------------------------------------------------------------------
-test MoMLParser-1.1 {Test adding an entity} {
+test MoMLChangeRequest-1.1 {Test adding an entity} {
     # Create a base model.
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [java::cast ptolemy.actor.CompositeActor \
@@ -101,7 +101,7 @@ test MoMLParser-1.1 {Test adding an entity} {
 }
 
 #----------------------------------------------------------------------
-test MoMLParser-1.2 {Test adding another entity} {
+test MoMLChangeRequest-1.2 {Test adding another entity} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <entity name="rec" class="ptolemy.actor.lib.Recorder"/>
@@ -114,7 +114,7 @@ test MoMLParser-1.2 {Test adding another entity} {
 } {.top.rec}
 
 #----------------------------------------------------------------------
-test MoMLParser-1.3 {Test adding a relation} {
+test MoMLChangeRequest-1.3 {Test adding a relation} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <relation name="r" class="ptolemy.actor.TypedIORelation"/>
@@ -126,7 +126,7 @@ test MoMLParser-1.3 {Test adding a relation} {
 } {.top.r}
 
 #----------------------------------------------------------------------
-test MoMLParser-1.4 {Test adding a pair of links} {
+test MoMLChangeRequest-1.4 {Test adding a pair of links} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <link relation="r" port="const.output"/>
@@ -139,7 +139,7 @@ test MoMLParser-1.4 {Test adding a pair of links} {
 } {1 1}
 
 #----------------------------------------------------------------------
-test MoMLParser-1.5 {Test changing a parameter} {
+test MoMLChangeRequest-1.5 {Test changing a parameter} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <entity name="const">
@@ -156,7 +156,7 @@ test MoMLParser-1.5 {Test changing a parameter} {
 } {1 2}
 
 #----------------------------------------------------------------------
-test MoMLParser-1.5 {Test deleting an entity} {
+test MoMLChangeRequest-1.5 {Test deleting an entity} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <deleteEntity name="const"/>
@@ -189,7 +189,7 @@ test MoMLParser-1.5 {Test deleting an entity} {
 }
 
 #----------------------------------------------------------------------
-test MoMLParser-1.6 {Test deleting a relation} {
+test MoMLChangeRequest-1.6 {Test deleting a relation} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
         <model name=".top">
             <deleteRelation name="r"/>
@@ -219,7 +219,7 @@ test MoMLParser-1.6 {Test deleting a relation} {
 }
 
 #----------------------------------------------------------------------
-test MoMLParser-1.6 {Test deleting a port, using a new parser and context} {
+test MoMLChangeRequest-1.6 {Test deleting a port, using a new parser and context} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <deletePort name="rec.input"/>
     }]
@@ -243,7 +243,7 @@ test MoMLParser-1.6 {Test deleting a port, using a new parser and context} {
 }
 
 #----------------------------------------------------------------------
-test MoMLParser-1.7 {Test deleting a property using a lower context} {
+test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
     set rec [$toplevel getEntity "rec"]
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $rec {
         <deleteProperty name="capacity"/>
@@ -266,3 +266,69 @@ test MoMLParser-1.7 {Test deleting a property using a lower context} {
 }
 
 # FIXME:  delete links
+
+#----------------------------------------------------------------------
+#----------------------------------------------------------------------
+#----------------------------------------------------------------------
+
+# Test propogation of changes from a class to instances.
+
+set baseModel {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+   <class name="gen" extends="ptolemy.kernel.CompositeEntity">
+   </class>
+   <entity name="der" class=".top.gen"/>
+</model>
+}
+
+test MoMLChangeRequest-2.1 {Setup} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.kernel.CompositeEntity \
+            [$parser parse $baseModel]]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="gen" extends="ptolemy.kernel.CompositeEntity">
+    </class>
+    <entity name="der" class=".top.gen">
+    </entity>
+</model>
+}
+
+test MoMLChangeRequest-2.1 {Setup} {
+    set gen [$toplevel getEntity "gen"]
+    # NOTE: Have to give the context as "gen" for the changes to
+    # propogate to its clones.
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $gen {
+        <entity name="new" class="ptolemy.kernel.ComponentEntity"/>
+    }]
+    # NOTE: Request is filled immediately in the toplevel context.
+    $toplevel requestChange $change
+    # NOTE: exportMoML won't give a full description.
+    $toplevel description
+} {ptolemy.kernel.CompositeEntity {.top} attributes {
+} ports {
+} entities {
+    {ptolemy.kernel.CompositeEntity {.top.gen} attributes {
+    } ports {
+    } entities {
+        {ptolemy.kernel.ComponentEntity {.top.gen.new} attributes {
+        } ports {
+        }}
+    } relations {
+    }}
+    {ptolemy.kernel.CompositeEntity {.top.der} attributes {
+    } ports {
+    } entities {
+        {ptolemy.kernel.ComponentEntity {.top.der.new} attributes {
+        } ports {
+        }}
+    } relations {
+    }}
+} relations {
+}}

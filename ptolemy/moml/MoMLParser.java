@@ -135,7 +135,33 @@ of items immediately in the group element.
 The parse methods throw a variety of exceptions if the parsed
 data does not represent a valid MoML file or if the stream
 cannot be read for some reason.
+<p>
+This parser supports the way Ptolemy II handles hierarchical models,
+where components are instances cloned from reference models called
+"classes." A model (a composite entity) is a "class" in Ptolemy II if
+its getMoMLElementName() method returns the string "class".  If a
+component is cloned from a class, then when that component exports
+MoML, it references the class from which it was cloned
+and exports only its attributes.  However, if further changes are
+made to the component, it is important that when the component
+exports MoML, that those changes are represented in the exported MoML.
+This parser ensures that they are by creating an instance of
+MoMLAttribute for each change that is made to the clone after cloning.
+That attribute exports a MoML description of the change.
+This effectively implements an inheritance mechanism, where
+a component inherits all the features of the master from which it
+is cloned, but then extends the model with its own changes.
+<p>
+This class works closely with MoMLChangeRequest to implement another
+feature of Ptolemy II hierarchy.  In particular, if an entity is cloned
+from another that identifies itself as a "class", then any changes that
+are made to the class via a MoMLChangeRequest are also made to the clone.
+This parser ensures that those changes are <i>not</i> exported when
+MoML is exported by the clone, because they will be exported when the
+master exports MoML.
 
+@see MoMLChangeRequest
+@see MoMLAttribute
 @author Edward A. Lee, Steve Neuendorffer, John Reekie
 @version $Id$
 */
@@ -253,10 +279,22 @@ public class MoMLParser extends HandlerBase {
      *  guaranteed that this will be the last method called in the XML
      *  parsing process. As a consequence, it is guaranteed that all
      *  dependencies between parameters used in the XML description
-     *  are resolved. This fact is used in the place method, allow the
+     *  are resolved. This fact is used in the place method, allowing the
      *  use of parameter values to change the visual rendition of an
      *  placeable object.
-     *  @exception Exception is not thrown here.
+     *  <p>
+     *  After ensuring that all parameters have been evaluated, this
+     *  method places all objects that implement the Placeable interface
+     *  in the panel given to the constructor, if one was given.  There
+     *  is one exception, however.  This method avoids checking the
+     *  contained entities in any instance of TypedActorLibrary, because
+     *  that class exists specifically to defer evaluation of its contents.
+     *  It would defeat its purpose if we examined its contents.
+     *  @see Placeable
+     *  @see TypedActorLibrary
+     *  @exception CancelException If an error occurs parsing one of the
+     *   parameter values, and the user clicks on "cancel" to cancel the
+     *   parse.
      */
     public void endDocument() throws Exception {
         // Force evaluation of parameters so that any listeners are notified.
@@ -266,7 +304,7 @@ public class MoMLParser extends HandlerBase {
             try {
                 param.getToken();
             } catch (IllegalActionException ex) {
-                // NOTE: The following may throw a KernelException, which
+                // NOTE: The following may throw a CancelException, which
                 // will have the effect of cancelling the entire parse.
                 MessageHandler.warning("Evaluating parameter "
                 + param.getFullName() + " triggers exception:\n\n"
@@ -274,19 +312,7 @@ public class MoMLParser extends HandlerBase {
             }
         }
 
-        if ( _toplevel instanceof CompositeEntity) {
-            CompositeEntity container = (CompositeEntity)_toplevel;
-            // Get the list of all actors for this model
-            List actorList = container.entityList();
-            Iterator entities = actorList.iterator();        
-            // Walk through the model
-            while(entities.hasNext()) {
-                Object a = entities.next();
-                if ( a instanceof Placeable && _panel != null) {
-                    ((Placeable)a).place(_panel);
-                }
-            }
-        }
+        _placePlaceables(_toplevel);
     }
 
     /** End an element. This method pops the current container from
@@ -715,14 +741,17 @@ public class MoMLParser extends HandlerBase {
                 Object[] arguments = new Object[2];
                 arguments[0] = _current;
                 arguments[1] = dirName;
+                NamedObj container = _current;
                 _containers.push(_current);
                 _namespaces.push(_namespace);
-                // If the container is cloned from something, break
-                // the link, since now the object has changed.
-                _current.setDeferMoMLDefinitionTo(null);
                 Class newClass = Class.forName(className, true, _classLoader);
                 _current = _createInstance(newClass, arguments);
                 _namespace = DEFAULT_NAMESPACE;
+
+                // If the container is cloned from something, then
+                // add to it a MoML description of the director, so that
+                // this new director will be persistent.
+                _recordNewObject(container, _current);
 
             } else if (elementName.equals("doc")) {
                 _currentDocName = (String)_attributes.get("name");
@@ -784,10 +813,13 @@ public class MoMLParser extends HandlerBase {
                 // import prevails.
                 _imports.add(0, reference);
 
-                Import attr = new Import(_current,
+                MoMLAttribute attr = new MoMLAttribute(_current,
                        _current.uniqueName("_import"));
-                attr.setSource(source);
-                attr.setBase(_base);
+                attr.appendMoMLDescription("<import base=\""
+                        + _base.toExternalForm()
+                        + "\" source=\""
+                        + source
+                        + "\"/>");
 
             } else if (elementName.equals("input")) {
                 String source = (String)_attributes.get("source");
@@ -806,6 +838,7 @@ public class MoMLParser extends HandlerBase {
                 MoMLParser newParser =
 		    new MoMLParser(_workspace, null, _classLoader);
                 newParser.setContext(_current);
+                newParser._propogating = _propogating;
                 _parse(newParser, base, source);
 
             } else if (elementName.equals("link")) {
@@ -819,9 +852,6 @@ public class MoMLParser extends HandlerBase {
                         "Element \"link\" found inside an element that "
                         + "is not a CompositeEntity. It is: "
                         + _current);
-                // If the container is cloned from something, break
-                // the link, since now the object has changed.
-                _current.setDeferMoMLDefinitionTo(null);
 
                 CompositeEntity context = (CompositeEntity)_current;
 
@@ -841,6 +871,11 @@ public class MoMLParser extends HandlerBase {
                     int insertAt = Integer.parseInt(insertAtSpec);
                     port.insertLink(insertAt, relation);
                 }
+
+                // If the container is cloned from something, then
+                // add to it a MoML description of the new link, so that
+                // this new link will be persistent.
+                _recordLink(context, portName, relationName, insertAtSpec);
 
              } else if (elementName.equals("location")) {
                 String value = (String)_attributes.get("value");
@@ -963,9 +998,11 @@ public class MoMLParser extends HandlerBase {
                     arguments[0] = container;
                     arguments[1] = portName;
                     port = (Port)_createInstance(newClass, arguments);
-                    // If the container is cloned from something, break
-                    // the link, since now the object has changed.
-                    _current.setDeferMoMLDefinitionTo(null);
+
+                    // If the container is cloned from something, then
+                    // add to it a MoML description of the port, so that
+                    // this new port will be persistent.
+                    _recordNewObject(container, port);
                 }
                 _containers.push(_current);
                 _namespaces.push(_namespace);
@@ -1107,8 +1144,15 @@ public class MoMLParser extends HandlerBase {
                     arguments[1] = relationName;
                     _containers.push(_current);
                     _namespaces.push(_namespace);
-                    _current = _createInstance(newClass, arguments);
+                    NamedObj newRelation = _createInstance(newClass, arguments);
                     _namespace = DEFAULT_NAMESPACE;
+
+                    // If the container is cloned from something, then
+                    // add to it a MoML description of the relation, so that
+                    // this new relation will be persistent.
+                    _recordNewObject(_current, newRelation);
+                    _current = newRelation;
+
                 } else {
                     // Previously existing relation with the specified name.
                     if (newClass != null) {
@@ -1119,9 +1163,6 @@ public class MoMLParser extends HandlerBase {
                     }
                     _containers.push(_current);
                     _namespaces.push(_namespace);
-                    // If the container is cloned from something, break
-                    // the link, since now the object has changed.
-                    _current.setDeferMoMLDefinitionTo(null);
                     _current = relation;
                     _namespace = DEFAULT_NAMESPACE;
                 }
@@ -1151,9 +1192,6 @@ public class MoMLParser extends HandlerBase {
                         "Element \"unlink\" found inside an element that "
                         + "is not a CompositeEntity. It is: "
                         + _current);
-                // If the container is cloned from something, break
-                // the link, since now the object has changed.
-                _current.setDeferMoMLDefinitionTo(null);
 
                 CompositeEntity context = (CompositeEntity)_current;
 
@@ -1189,6 +1227,11 @@ public class MoMLParser extends HandlerBase {
                     int index = Integer.parseInt(insideIndexSpec);
                     port.unlinkInside(index);
                 }
+                // If the container is cloned from something, then
+                // add to it a MoML description of the unlink, so that
+                // this new entity will be persistent.
+                _recordUnlink(context, portName, relationName,
+                        indexSpec, insideIndexSpec);
 
             } else if (elementName.equals("vertex")) {
                 String vertexName = (String)_attributes.get("name");
@@ -1286,6 +1329,14 @@ public class MoMLParser extends HandlerBase {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         package freindly variables        ////
+
+    // Indicator that the MoML currently being evaluated is the result
+    // of propogating a change from a master to something that was cloned
+    // from the master.  This is set by MoMLChangeRequest only.
+    boolean _propogating = false;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     // If the first argument is not an instance of the second,
@@ -1319,12 +1370,17 @@ public class MoMLParser extends HandlerBase {
     // a class that has been previously defined (by an absolute
     // or relative name), then that class is cloned.  Otherwise,
     // the class name is interpreted as a Java class name and we
-    // attempt to construct the entity.  This method assumes that
-    // _current is an instance of CompositeEntity, or a class cast
-    // exception is thrown.  It also assumes that the class is
-    // a subclass of NamedObj, or a ClassCastException will be thrown.
+    // attempt to construct the entity.  If _current is not an instance
+    // of CompositeEntity, then an XML exception is thrown.
     private NamedObj _createEntity(String className, String entityName)
                  throws Exception {
+        if (_current != null && !(_current instanceof CompositeEntity)) {
+            throw new XmlException("Cannot create an entity inside "
+                   + "of another that is not a CompositeEntity.",
+                   _currentExternalEntity(),
+                   _parser.getLineNumber(),
+                   _parser.getColumnNumber());
+        }
         CompositeEntity container = (CompositeEntity)_current;
         ComponentEntity previous = _searchForEntity(entityName, true);
         Class newClass = null;
@@ -1332,7 +1388,15 @@ public class MoMLParser extends HandlerBase {
         if (className != null) {
             reference = _searchForEntity(className, false);
             if (reference == null) {
-		newClass = Class.forName(className, true, _classLoader);
+                try {
+                    newClass = Class.forName(className, true, _classLoader);
+                } catch (ClassNotFoundException ex) {
+                    throw new XmlException("Cannot find the class "
+                            + className,
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());                   
+                }
 	    }
         }
         if (previous != null) {
@@ -1357,12 +1421,16 @@ public class MoMLParser extends HandlerBase {
                        + "is not a CompositeEntity. It is: "
                        + _current);
                 Object[] arguments = new Object[2];
-                // If the container is cloned from something, break
-                // the link, since now the object has changed.
-                _current.setDeferMoMLDefinitionTo(null);
+
                 arguments[0] = _current;
                 arguments[1] = entityName;
-                return _createInstance(newClass, arguments);
+                NamedObj newEntity = _createInstance(newClass, arguments);
+
+                // If the container is cloned from something, then
+                // add to it a MoML description of the entity, so that
+                // this new entity will be persistent.
+                _recordNewObject(container, newEntity);
+                return newEntity;
             } else {
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
@@ -1383,7 +1451,6 @@ public class MoMLParser extends HandlerBase {
 
             // Clone it.
             ComponentEntity newEntity = (ComponentEntity)reference.clone();
-            newEntity.setDeferMoMLDefinitionTo(reference);
 
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
@@ -1399,6 +1466,11 @@ public class MoMLParser extends HandlerBase {
             // that name will be cloned, so we need to change this.
             // It may get changed back if we are inside a "class" element.
             newEntity.setMoMLElementName("entity");
+
+            // If the container is cloned from something, then
+            // add to it a MoML description of the entity, so that
+            // this new entity will be persistent.
+            _recordNewObject(container, newEntity);
 
             return newEntity;
         }
@@ -1448,14 +1520,13 @@ public class MoMLParser extends HandlerBase {
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
-        // If the container is cloned from something, break
-        // the link, since now the object has changed.
-        NamedObj container = (NamedObj)toDelete.getContainer();
-        if (container != null) {
-            container.setDeferMoMLDefinitionTo(null);
-        }
-
         toDelete.setContainer(null);
+
+        // If the container is cloned from something, then
+        // add to it a MoML description of the deletion, so that
+        // this deletion will be persistent.
+        _recordDeletion("Entity", _current, entityName);
+
         return toDelete;
     }
 
@@ -1471,6 +1542,12 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
         toDelete.setContainer(null);
+
+        // If the container is cloned from something, then
+        // add to it a MoML description of the deletion, so that
+        // this deletion will be persistent.
+        _recordDeletion("Port", _current, portName);
+
         return toDelete;
     }
 
@@ -1486,6 +1563,15 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
         toDelete.setContainer(null);
+
+        // If the container is cloned from something, then
+        // add to it a MoML description of the deletion, so that
+        // this deletion will be persistent.  Note that addition of
+        // properties does not need to be recorded, because exportMoML()
+        // always describes properties.  However, deletion of properties
+        // does need to be recorded.
+        _recordDeletion("Property", _current, propName);
+
         return toDelete;
     }
 
@@ -1501,6 +1587,12 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
         toDelete.setContainer(null);
+
+        // If the container is cloned from something, then
+        // add to it a MoML description of the deletion, so that
+        // this deletion will be persistent.
+        _recordDeletion("Relation", _current, relationName);
+
         return toDelete;
     }
 
@@ -1577,6 +1669,134 @@ public class MoMLParser extends HandlerBase {
                    _parser.getColumnNumber());
         }
         return parser.parse(xmlFile, xmlFile.openStream());
+    }
+
+    // Place all objects contained by the specified one in the panel
+    // given in the constructor, if one was given, but avoid examining
+    // any objects of type TypedActorLibrary.
+    private void _placePlaceables(Object object) {
+        if ((object instanceof CompositeEntity)
+                && !(object instanceof TypedActorLibrary)) {
+            CompositeEntity container = (CompositeEntity)object;
+            // Get the list of all actors for this model
+            List actorList = container.entityList();
+            Iterator entities = actorList.iterator();        
+            // Walk through the model
+            while(entities.hasNext()) {
+                Object contained = entities.next();
+                if ( contained instanceof Placeable && _panel != null) {
+                    ((Placeable)contained).place(_panel);
+                }
+                _placePlaceables(contained);
+            }
+        }
+    }
+
+    // If an object is deleted from a container, and this is not the
+    // result of a propogating change from a master, then we need
+    // to record the change so that it will be exported in any exported MoML.
+    private void _recordDeletion(
+            String type, NamedObj container, String deleted) {
+        if (container.getDeferMoMLDefinitionTo() != null && !_propogating) {
+            try {
+                MoMLAttribute attr = new MoMLAttribute(container,
+                       container.uniqueName("_extension"));
+                attr.appendMoMLDescription(
+                    "<delete" + type + " name=\"" + deleted + "\"/>");
+            } catch (KernelException ex) {
+                throw new InternalErrorException(
+                    "Unable to record deletion from class!\n" + ex.toString());
+            }
+        }
+    }
+
+    // If a new link is added to a container, and this is not the
+    // result of a propogating change from a master, then we need
+    // to record the change so that it will be exported in any exported MoML.
+    private void _recordLink(
+            NamedObj container,
+            String port,
+            String relation,
+            String insertAtSpec) {
+        if (container.getDeferMoMLDefinitionTo() != null && !_propogating) {
+            try {
+                MoMLAttribute attr = new MoMLAttribute(container,
+                       container.uniqueName("_extension"));
+                if (insertAtSpec == null) {
+                    attr.appendMoMLDescription("<link port=\""
+                           + port
+                           + "\" relation=\""
+                           + relation
+                           + "\"/>");
+                } else {
+                    attr.appendMoMLDescription("<link port=\""
+                           + port
+                           + "\" relation=\""
+                           + relation
+                           + "\" insertAt=\""
+                           + insertAtSpec
+                           + "\"/>");
+                }
+            } catch (KernelException ex) {
+                throw new InternalErrorException(
+                    "Unable to record extension to class!\n" + ex.toString());
+            }
+        }
+    }
+
+    // If a new object is added to a container, and this is not the
+    // result of a propogating change from a master, then we need
+    // to record the change so that it will be exported in any exported MoML.
+    private void _recordNewObject(NamedObj container, NamedObj newObj) {
+        if (container.getDeferMoMLDefinitionTo() != null && !_propogating) {
+            try {
+                MoMLAttribute attr = new MoMLAttribute(container,
+                       container.uniqueName("_extension"));
+                attr.appendMoMLDescription(newObj.exportMoML());
+            } catch (KernelException ex) {
+                throw new InternalErrorException(
+                    "Unable to record extension to class!\n" + ex.toString());
+            }
+        }
+    }
+
+    // If a link is deleted from a container, and this is not the
+    // result of a propogating change from a master, then we need
+    // to record the change so that it will be exported in any exported MoML.
+    private void _recordUnlink(
+            NamedObj container,
+            String port,
+            String relation,
+            String indexSpec,
+            String insideIndexSpec) {
+        if (container.getDeferMoMLDefinitionTo() != null && !_propogating) {
+            try {
+                MoMLAttribute attr = new MoMLAttribute(container,
+                       container.uniqueName("_extension"));
+                if (relation != null) {
+                    attr.appendMoMLDescription("<unlink port=\""
+                           + port
+                           + "\" relation=\""
+                           + relation
+                           + "\"/>");
+                } else if (indexSpec != null) {
+                    attr.appendMoMLDescription("<unlink port=\""
+                           + port
+                           + "\" index=\""
+                           + indexSpec
+                           + "\"/>");
+                } else {
+                    attr.appendMoMLDescription("<unlink port=\""
+                           + port
+                           + "\" insideIndex=\""
+                           + insideIndexSpec
+                           + "\"/>");
+                }
+            } catch (KernelException ex) {
+                throw new InternalErrorException(
+                    "Unable to record extension to class!\n" + ex.toString());
+            }
+        }
     }
 
     // Given a name that is either absolute (with a leading period)

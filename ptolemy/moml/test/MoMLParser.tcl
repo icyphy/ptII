@@ -572,6 +572,40 @@ test MoMLParser-1.12.3 {test import with a relative source } {
 set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.ComponentEntity">
+        <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    </class>
+    <entity name="derived" class="master"/>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.13.1 {test mutation after class instantiation} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $parser parse {<entity name=".top.derived">
+    <port name="q" class="ptolemy.kernel.ComponentPort"/>
+</entity>}
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.ComponentEntity">
+        <port name="p" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </class>
+    <entity name="derived" class=".top.master">
+        <port name="q" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.ComponentEntity">
         <port name="p" class="ptolemy.kernel.ComponentPort">
         </port>
     </class>
@@ -584,7 +618,7 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.13 {test extension of a class} {
+test MoMLParser-1.13.2 {test extension of a class} {
     $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
@@ -596,9 +630,7 @@ test MoMLParser-1.13 {test extension of a class} {
         <port name="p" class="ptolemy.kernel.ComponentPort">
         </port>
     </class>
-    <class name="derived" extends="ptolemy.kernel.ComponentEntity">
-        <port name="p" class="ptolemy.kernel.ComponentPort">
-        </port>
+    <class name="derived" extends=".top.master">
         <port name="q" class="ptolemy.kernel.ComponentPort">
         </port>
     </class>
@@ -651,46 +683,7 @@ test MoMLParser-1.15 {test extension of a composite class} {
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
-    <class name="derived" extends="ptolemy.kernel.CompositeEntity">
-        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
-        </entity>
-        <entity name="e2" class="ptolemy.kernel.ComponentEntity">
-        </entity>
-    </class>
-</model>
-}
-
-#----------------------------------------------------------------------
-set body {
-<model name="top" class="ptolemy.kernel.CompositeEntity">
-    <class name="master" extends="ptolemy.kernel.CompositeEntity">
-        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
-        </entity>
-    </class>
-    <class name="derived" extends="master">
-        <entity name="e2" class="ptolemy.kernel.ComponentEntity">
-        </entity>
-    </class>
-</model>
-}
-
-set moml "$header $body"
-
-test MoMLParser-1.15 {test extension of a composite class} {
-    $parser reset
-    set toplevel [$parser parse $moml]
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="top" class="ptolemy.kernel.CompositeEntity">
-    <class name="master" extends="ptolemy.kernel.CompositeEntity">
-        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
-        </entity>
-    </class>
-    <class name="derived" extends="ptolemy.kernel.CompositeEntity">
-        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
-        </entity>
+    <class name="derived" extends=".top.master">
         <entity name="e2" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
@@ -713,7 +706,7 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.16 {test extension of a composite class} {
+test MoMLParser-1.16 {test instatiation of a composite class} {
     $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
@@ -725,9 +718,7 @@ test MoMLParser-1.16 {test extension of a composite class} {
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
-    <entity name="derived" class="ptolemy.kernel.CompositeEntity">
-        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
-        </entity>
+    <entity name="derived" class=".top.master">
         <entity name="e2" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </entity>
@@ -784,6 +775,384 @@ test MoMLParser-1.18 {test director persistence} {
 <model name="top" class="ptolemy.actor.CompositeActor">
     <director name="dir" class="ptolemy.actor.Director">
     </director>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+    </class>
+    <entity name="derived" class="master">
+        <director name="dir" class="ptolemy.actor.Director"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.1 {test director persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+    </class>
+    <entity name="derived" class=".top.master">
+        <director name="dir" class="ptolemy.actor.Director">
+        </director>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+    </class>
+    <entity name="derived" class="master">
+        <relation name="rel" class="ptolemy.actor.IORelation"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.2 {test relation persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+    </class>
+    <entity name="derived" class=".top.master">
+        <relation name="rel" class="ptolemy.actor.IORelation">
+        </relation>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <entity name="e" class="ptolemy.actor.CompositeActor"/>
+    </class>
+    <entity name="derived" class="master">
+        <deleteEntity name="e"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.3 {test deletion persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <entity name="e" class="ptolemy.actor.CompositeActor">
+        </entity>
+    </class>
+    <entity name="derived" class=".top.master">
+        <deleteEntity name="e"/>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort"/>
+    </class>
+    <entity name="derived" class="master">
+        <deletePort name="p"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.4 {test deletion persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort">
+        </port>
+    </class>
+    <entity name="derived" class=".top.master">
+        <deletePort name="p"/>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <property name="a" class="ptolemy.data.expr.Parameter"/>
+        <property name="b" class="ptolemy.data.expr.Parameter"/>
+    </class>
+    <entity name="derived" class="master">
+        <deleteProperty name="a"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.5 {test deletion persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <property name="a" class="ptolemy.data.expr.Parameter">
+        </property>
+        <property name="b" class="ptolemy.data.expr.Parameter">
+        </property>
+    </class>
+    <entity name="derived" class=".top.master">
+        <property name="b" class="ptolemy.data.expr.Parameter">
+        </property>
+        <deleteProperty name="a"/>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+    </class>
+    <entity name="derived" class="master">
+        <deleteRelation name="r"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.6 {test deletion persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
+    </class>
+    <entity name="derived" class=".top.master">
+        <deleteRelation name="r"/>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort"/>
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+    </class>
+    <entity name="derived" class="master">
+        <link port="p" relation="r"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.7 {test link persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort">
+        </port>
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
+    </class>
+    <entity name="derived" class=".top.master">
+        <link port="p" relation="r"/>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort"/>
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+    </class>
+    <entity name="derived" class="master">
+        <link port="p" relation="r" insertAt="1"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.8 {test link persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort">
+        </port>
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
+    </class>
+    <entity name="derived" class=".top.master">
+        <link port="p" relation="r" insertAt="1"/>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort"/>
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+        <link port="p" relation="r"/>        
+    </class>
+    <entity name="derived" class="master">
+        <unlink port="p" relation="r"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.9 {test unlink persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort">
+        </port>
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
+        <link port="p" relation="r"/>
+    </class>
+    <entity name="derived" class=".top.master">
+        <unlink port="p" relation="r"/>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort"/>
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+        <link port="p" relation="r"/>        
+    </class>
+    <entity name="derived" class="master">
+        <unlink port="p" insideIndex="0"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.10 {test unlink persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort">
+        </port>
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
+        <link port="p" relation="r"/>
+    </class>
+    <entity name="derived" class=".top.master">
+        <unlink port="p" insideIndex="0"/>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <entity name="e" class="ptolemy.actor.AtomicActor">
+            <port name="p" class="ptolemy.actor.IOPort"/>
+        </entity>
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+        <link port="e.p" relation="r"/>        
+    </class>
+    <entity name="derived" class="master">
+        <unlink port="e.p" index="0"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.11 {test unlink persistence in instatiation of a class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <entity name="e" class="ptolemy.actor.AtomicActor">
+            <port name="p" class="ptolemy.actor.IOPort">
+            </port>
+        </entity>
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
+        <link port="e.p" relation="r"/>
+    </class>
+    <entity name="derived" class=".top.master">
+        <unlink port="e.p" index="0"/>
+    </entity>
 </model>
 }
 

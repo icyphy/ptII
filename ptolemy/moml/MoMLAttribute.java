@@ -1,4 +1,4 @@
-/* An attribute indicating import from an external file.
+/* An attribute that has an arbitrary MoML description, externally given.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -32,23 +32,31 @@ package ptolemy.moml;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Import
+//// MoMLAttribute
 /**
-This attribute identifies an external file that the container of the
-attribute depends on.  When exported to MoML, this attribute becomes
-an "import" element rather than the usual attribute.
+This attribute has an arbitrary MoML description that is exported
+when the exportMoML() methods of the container are called.  Thus,
+it serves as a convenient way to attach persistent information
+that will not otherwise be exported to MoML.  To specify its
+MoML description, call setMoMLDescription().
 
 @author  Edward A. Lee
 @version $Id$
 */
-public class Import extends Attribute {
+public class MoMLAttribute extends Attribute {
 
-    /** Construct an import reference with the specified container and name.
+    /** Construct an attribute with the specified container and name.
      *  @param container The container.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
@@ -56,7 +64,7 @@ public class Import extends Attribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public Import(NamedObj container, String name)
+    public MoMLAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -64,8 +72,22 @@ public class Import extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append to the MoML description of this object.
+     *  @param moml The MoML description of this object.
+     */
+    public void appendMoMLDescription(String moml) {
+        // FIXME: Is the "\n" the right thing here? Want platform independence.
+        StringTokenizer tokenizer = new StringTokenizer(moml, "\n");
+        while (tokenizer.hasMoreTokens()) {
+            _momlDescription.add(tokenizer.nextToken());
+        }
+    }
+
     /** Write a MoML description of this object, which in this case is
-     *  an import element.
+     *  whatever has been specified by the setMoMLDescription() method.
+     *  If that method has not been called, then nothing is written.
+     *  The written MoML is indented to the specified depth and terminated
+     *  with a newline.
      *  @param name The name to use instead of the name of this object.
      *   This argument is ignored.
      *  @param output The output stream to write to.
@@ -73,51 +95,18 @@ public class Import extends Attribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        output.write(_getIndentPrefix(depth)
-               + "<import base=\""
-               + _base.toExternalForm()
-               + "\" source=\""
-               + _source
-               + "\"/>\n");
-    }
-
-    /** Get the base with respect to which this import source can be opened.
-     *  @return The base with respect to which this import source
-     *   can be opened.
-     */
-    public URL getBase() {
-        return _base;
-    }
-
-    /** Get the file that this import refers to.
-     *  @return The file referred to.
-     */
-    public String getSource() {
-        return _source;
-    }
-
-    /** Set the base with respect to which this import source can be opened.
-     *  @param source The base with respect to which this import source can
-     *   be opened.
-     */
-    public void setBase(URL base) {
-        _base = base;
-    }
-
-    /** Set the file that this import refers to.
-     *  The argument is interpreted as a URL, relative or absolute.
-     *  @param source The file that this import refers to.
-     */
-    public void setSource(String source) {
-        _source = source;
+        if (_momlDescription.size() > 0) {
+            Iterator strings = _momlDescription.iterator();
+            while(strings.hasNext()) {
+                String string = (String)strings.next();
+                output.write(_getIndentPrefix(depth) + string + "\n");
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The base with respect to which the source can be opened.
-    private URL _base;
-
-    // The object referred to.
-    private String _source;
+    // The MoML description as a list of strings.
+    private List _momlDescription = new LinkedList();
 }
