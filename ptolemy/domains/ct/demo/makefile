@@ -43,8 +43,12 @@ include $(CONFIG)
 CLASSPATH = ../../../..
 
 TCL_SRCS = \
-	Exponential.tcl \
-	Ramp.tcl
+	ExpoBE.tcl \
+	ExpoFE.tcl \
+	ExpoRK23.tcl \
+	RampBE.tcl \
+	RampFE.tcl \
+	RampRK23.tcl
 
 
 JSRCS = \
