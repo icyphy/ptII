@@ -6914,6 +6914,7 @@ echo $ECHO_N "checking for \$X10_DIR/tjx10p-11/lib/x10.jar... $ECHO_C" >&6
 	   X10_CLASSES=${X10_DIR}/tjx10p-11/lib/x10.jar
 	   echo "$as_me:$LINENO: result: $X10_CLASSES" >&5
 echo "${ECHO_T}$X10_CLASSES" >&6
+	   PTX10_DIR=x10
 	else
 	   X10_CLASSES=
 	   echo "$as_me:$LINENO: result: no" >&5
