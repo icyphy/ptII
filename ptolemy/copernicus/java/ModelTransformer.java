@@ -322,6 +322,9 @@ public class ModelTransformer extends SceneTransformer {
             NamedObj context,
             Local contextLocal, NamedObj namedObj, Local namedObjLocal,
             SootClass theClass, HashSet createdSet) {
+
+        Type variableType = RefType.v(PtolemyUtilities.variableClass);
+
         // A local that we will use to set the value of our
         // settable attributes.
         Local attributeLocal = Jimple.v().newLocal("attribute",
@@ -330,7 +333,10 @@ public class ModelTransformer extends SceneTransformer {
 	Local settableLocal = Jimple.v().newLocal("settable",
                 PtolemyUtilities.settableType);
 	body.getLocals().add(settableLocal);
-
+	Local variableLocal = Jimple.v().newLocal("variable",
+                variableType);
+	body.getLocals().add(variableLocal);
+ 
         /*    NamedObj classObject = _findDeferredInstance(namedObj);
               System.out.println("Class object for " + namedObj.getFullName());
               System.out.println(classObject.exportMoML());
@@ -395,9 +401,45 @@ public class ModelTransformer extends SceneTransformer {
             SootUtilities.createAndSetFieldFromLocal(body, local,
                     theClass, attributeType, fieldName);
 
-            // If the attribute is settable, then set its
-            // expression.
-	    if (attribute instanceof Settable) {
+            if (attribute instanceof Variable) {
+                // If the attribute is a parameter, then set its
+                // token to the correct value.
+		// cast to Variable.
+                Stmt assignStmt = Jimple.v().newAssignStmt(
+                        variableLocal,
+                        Jimple.v().newCastExpr(
+                                local,
+                                variableType));
+                               
+              	body.getUnits().add(assignStmt);
+                
+                Token token = null;
+                try {
+                    token = ((Variable)attribute).getToken();
+                } catch (IllegalActionException ex) {
+                    throw new RuntimeException(ex.getMessage());
+                }
+
+                Local tokenLocal = 
+                    PtolemyUtilities.buildConstantTokenLocal(body,
+                        assignStmt, token, "token");
+                        
+		// call setToken.
+		body.getUnits().add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newVirtualInvokeExpr(
+                                variableLocal,
+                                PtolemyUtilities.variableSetTokenMethod,
+                                tokenLocal)));
+                // call validate to ensure that attributeChanged is called.
+                body.getUnits().add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newInterfaceInvokeExpr(
+                                variableLocal,
+                                PtolemyUtilities.validateMethod)));
+                
+            } else if (attribute instanceof Settable) {
+                // If the attribute is settable, then set its
+                // expression.
+                
 		// cast to Settable.
 		body.getUnits().add(Jimple.v().newAssignStmt(
                         settableLocal,
