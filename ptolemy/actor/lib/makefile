@@ -50,11 +50,14 @@ ME =		ptolemy/actor/lib
 #
 # $PTII/configure looks for JXTA and sets PTJXTA_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
+#
+# $PTII/configure looks for X10 and sets PTX10_DIR in
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTX10_DIR is empty.
 
 DIRS = 		conversions gui logic hoc image javasound net io xslt \
 		test comm string $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
-		$(PTJYTHON_DIR) $(PTJXTA_DIR) #$(PTJSPACES_DIR)
+		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTX10_DIR) #$(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
