@@ -696,6 +696,16 @@ public class PlotBox extends Panel {
         _setYRange(min, max);
     }
 
+    /** Override update so that it doesn't clear the plot.
+     *  This prevents flashing of dynamic plots.
+     *  Note that this means that calls to update are not passed to
+     *  lightlweight components.  But currently we have no lightweight
+     *  components, so this is not a problem.
+     */
+    public void update(Graphics g) {
+        paint(g);
+    }
+
     /** Write the current data and plot configuration to the
      *  specified stream.  The output is buffered, and is flushed and
      *  closed before exiting.  Derived classes should override _write()
