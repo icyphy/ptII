@@ -31,10 +31,10 @@
 
 ME =		ptolemy/media
 
-# JAVASOUND_NEEDED_DIRS is set in $PTII/mk/ptII.mk by configure
+# PTJAVASOUND_DIR is set in $PTII/mk/ptII.mk by configure
 # if sound.jar is found.
 
-DIRS =		test $(JAVASOUND_NEEDED_DIRS)
+DIRS =		test $(PTJAVASOUND_DIR)
 
 # Root of the Java directory
 ROOT =		../..
