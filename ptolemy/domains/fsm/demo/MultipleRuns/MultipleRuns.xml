@@ -2,16 +2,26 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MultipleRuns" class="ptolemy.vergil.fsm.modal.ModalModel">
-    <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+    <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+            </property>
+            <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+            </property>
         </property>
     </property>
     <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+    </property>
+    <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+        </property>
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+        </property>
+        <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute" value="stop">
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
@@ -20,7 +30,7 @@
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 388]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 345]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[63, 135]">
         </property>
@@ -49,6 +59,8 @@
             </property>
         </property>
         <property name="numberOfRuns" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 3, 897, 461}}">
         </property>
         <entity name="mode1" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode1">
@@ -109,6 +121,10 @@
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+            </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </relation>
         <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="run &lt; numberOfRuns">
@@ -126,6 +142,10 @@
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+            </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
@@ -145,6 +165,10 @@
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+            </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </relation>
         <link port="mode1.incomingPort" relation="relation"/>
         <link port="mode1.incomingPort" relation="relation3"/>
@@ -161,6 +185,8 @@
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="blockSize">
@@ -175,14 +201,10 @@
         <property name="blockSize" class="ptolemy.data.expr.Parameter" value="2000">
         </property>
         <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+            <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+            </property>
             <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
                 <doc>The sampling frequency, in the same units as the frequency.</doc>
-            </property>
-            <property name="frequency" class="ptolemy.data.expr.Parameter" value="freq1">
-                <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
-            </property>
-            <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
-                <doc>The phase, in radians.</doc>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
             </property>
@@ -207,20 +229,80 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 45.0">
                 </property>
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+                </property>
+            </property>
+            <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="freq1">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
+                </property>
+                <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+            </property>
+            <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
+                </property>
+                <doc>The phase, in radians.</doc>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
             </property>
             <doc>This composite actor generates a sine wave.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="168.5, 119.5">
             </property>
         </entity>
         <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
+            <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+            </property>
             <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
                 <doc>The sampling frequency, in the same units as the frequency.</doc>
-            </property>
-            <property name="frequency" class="ptolemy.data.expr.Parameter" value="freq2">
-                <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
-            </property>
-            <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
-                <doc>The phase, in radians.</doc>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
             </property>
@@ -245,6 +327,70 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 45.0">
                 </property>
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
+                </property>
+            </property>
+            <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="freq2">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
+                </property>
+                <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+            </property>
+            <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
+      </svg>
+    </configure>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
+                </property>
+                <doc>The phase, in radians.</doc>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
             </property>
             <doc>This composite actor generates a sine wave.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="168.5, 204.5">
@@ -254,6 +400,10 @@
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={482, 414, 508, 355}}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="9">
             </property>
