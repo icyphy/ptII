@@ -1,4 +1,4 @@
-/* An actor that converse 32 boolean tokens to an IntToken
+/* An actor that converts 32 BooleanTokens to an IntToken
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -36,7 +36,6 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.actor.lib.*;
-import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// BitsToInt
@@ -92,49 +91,37 @@ public class BitsToInt extends SDFAtomicActor {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            BitsToInt newobj = (BitsToInt)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-                return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        BitsToInt newobj = (BitsToInt)(super.clone(ws));
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        return newobj;
     }
 
 
-    /** Consume 32 BooleanTokens on the input. Produce a single
-     *  IntToken on the output port which the 32 bitsBooleanTokens
-     *  represent.
+    /** Consume 32 BooleanTokens on the input. First token consumed is the 
+     *  most significant bit. Output a single IntToken which the 32 
+     *  BooleanTokens represents.
      *
-     *  @exception IllegalActionException will be thrown if attempt to
-     *  fire this actor when there is no director.
+     *  @exception IllegalActionException If is no director.
      */
 
     public final void fire() throws IllegalActionException  {
-        int i;
+        int i, j;
         int integer = 0;
         BooleanToken[] bits = new BooleanToken[32];
-        
+
         input.getArray(0, bits);
         
         for (i = 0; i < 32; i++) {
             integer = integer << 1;
-            if (bits[31 - i].booleanValue())
+            if (bits[i].booleanValue())
                 integer += 1;
         }
     
         IntToken value = new IntToken(integer);
         output.send(0, value);
     }
-    
-    private BooleanToken[] bits;
-    private int integer;
-    private int remainder;
-    private IntToken value;
 }
 
 
