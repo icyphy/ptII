@@ -186,22 +186,25 @@ test NamedObj-6.2 {Test description} {
     set a [java::new pt.kernel.NamedObj]
     set b [java::new pt.kernel.NamedObj $n ""]
     set c [java::new pt.kernel.NamedObj $n "car" ]
-    list "[$a description 0]\n\
-    [$b description 0]\n\
-    [$c description 0]\n\
-    [$a description 1]\n\
-    [$b description 1]\n\
-    [$c description 1]\n\
-    [$a description 2]\n\
-    [$b description 2]\n\
-    [$c description 2]"
-
-} {{{ pt.kernel.NamedObj {.} }
- { pt.kernel.NamedObj {foo.} }
- { pt.kernel.NamedObj {foo.car} }
- { . }
- { foo. }
- { foo.car }
- { pt.kernel.NamedObj {.} }
- { pt.kernel.NamedObj {foo.} }
- { pt.kernel.NamedObj {foo.car} }}}
+    list "[$a description [java::field pt.kernel.Nameable QUIET]]\n\
+	    [$b description [java::field pt.kernel.Nameable QUIET]]\n\
+	    [$c description [java::field pt.kernel.Nameable QUIET]]\n\
+	    [$a description [java::field pt.kernel.Nameable CONTENTS]]\
+	    [$b description [java::field pt.kernel.Nameable CONTENTS]]\
+	    [$c description [java::field pt.kernel.Nameable CONTENTS]]\
+	    [$a description [java::field pt.kernel.Nameable CONNECTIONS]]\
+	    [$b description [java::field pt.kernel.Nameable CONNECTIONS]]\
+	    [$c description [java::field pt.kernel.Nameable CONNECTIONS]]\
+	    [$a description [java::field pt.kernel.Nameable PRETTYPRINT]]\
+	    [$b description [java::field pt.kernel.Nameable PRETTYPRINT]]\
+	    [$c description [java::field pt.kernel.Nameable PRETTYPRINT]]"
+} {{pt.kernel.NamedObj {.}
+ pt.kernel.NamedObj {foo.}
+ pt.kernel.NamedObj {foo.car}
+ pt.kernel.NamedObj {.}
+ pt.kernel.NamedObj {foo.}
+ pt.kernel.NamedObj {foo.car}
+    pt.kernel.NamedObj {.}
+ pt.kernel.NamedObj {foo.}
+ pt.kernel.NamedObj {foo.car}
+}}
