@@ -77,7 +77,6 @@ public class LocalZenoApplet extends DDEApplet {
     /** Initialize the applet.
      */
     public void init() {
-	// setSingleParameter("stopTime", "90");
 	super.init();
 
 	setLayout( new BorderLayout(5, 5) );
@@ -384,11 +383,11 @@ public class LocalZenoApplet extends DDEApplet {
                     public void run () {
                         switch (state) {
                         case 1:
-			    figure.setFillPaint(Color.green);
+			    figure.setFillPaint(Color.yellow);
                             break;
                         
                         case 2:
-                            figure.setFillPaint(Color.yellow);
+                            figure.setFillPaint(Color.green);
                             break;
                         
                         case 3:
