@@ -54,7 +54,6 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
-	PNActorListener.java \
 	PNDirector.java \
 	PNQueueReceiver.java 
 
