@@ -85,7 +85,7 @@ public class ExternalTextEffigy extends TextEffigy {
      *  the external editor to finally open the file specified by the
      *  identifier (as opposed to at newTextEffigy(container, text) time
      *  at which the document file is not yet specified. This greatly
-     *  simplfies the interaction with the external text editor: instead
+     *  simplifies the interaction with the external text editor: instead
      *  of first telling it to create a text buffer with some name and
      *  no file attached, the buffer, its associated file name, and any
      *  text saved by newTextEffigy(container, text) is given to the
