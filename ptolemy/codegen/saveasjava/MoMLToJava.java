@@ -108,7 +108,9 @@ public class MoMLToJava {
         try {
             SaveAsJava saver = new SaveAsJava();
             generatedCode = saver.generate(toplevel);
-	    outputFileName = saver.sanitizeName(toplevel) + ".java";
+	    // We call the class we are generating CGFoo.java so that it
+	    // will not collide with Foo.java.
+	    outputFileName = "CG" + saver.sanitizeName(toplevel) + ".java";
         } catch (Exception ex) {
             throw new IllegalActionException(ex.getMessage()
                     + "Exception raised when attempting to generate Java\n");
@@ -130,7 +132,7 @@ public class MoMLToJava {
     /** A simple main() to test the saving of Ptolemy II MoML models
      *  as Java source code. Exactly one argument is expected. This argument
      *  specifies the name of a MoML file. The equivalent Java code for
-     *  the MoML file is saved in file XXX.java, where XXX is the model name
+     *  the MoML file is saved in file CGXXX.java, where XXX is the model name
      *  specified in the MoML file.
      */
     public static void main(String[] args) throws Exception {

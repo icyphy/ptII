@@ -265,9 +265,6 @@ public class GeneratorTableau extends Tableau {
             goButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         try {
-			    System.out.println("GeneratorTableau: "
-					       + "options are: " 
-					       + options.toString());
                             // Handle the directory entry.
                             final String directoryName = options.directory
                                 .getExpression();
@@ -297,6 +294,8 @@ public class GeneratorTableau extends Tableau {
 				.booleanValue();
 			    List execCommands = new LinkedList();
 
+			    String packageNameString =
+				options.packageName.getExpression();
 			    if (((BooleanToken)options
 				 .sootShallow.getToken())
 				.booleanValue()) {
@@ -309,10 +308,7 @@ public class GeneratorTableau extends Tableau {
 				    execCommands
 					.add(_generateJavaCommand(model,
 								  directoryName,
-
-								  options
-								  .packageName
-								  .getExpression()));
+								  packageNameString));
 				} catch (Exception exception) {
 				    throw new IllegalActionException(exception
 								     .toString());
@@ -345,14 +341,15 @@ public class GeneratorTableau extends Tableau {
 						     + " code generation");
 				File destination =
 				    new File(directoryName,
-					     model.getName() + ".java");
+					     "CG" + model.getName() + ".java");
 
 				FileWriter outFile =
 				    new FileWriter(destination);
 				PrintWriter outPrinter =
 				    new PrintWriter(outFile);
 				outPrinter.print((new SaveAsJava())
-						 .generate(model));
+						 .generate(model,
+							   packageNameString));
 				outFile.close();
 				exec.updateStatusBar("Code generation "
 						     + "complete.");
@@ -380,7 +377,7 @@ public class GeneratorTableau extends Tableau {
 						     + " "
 						     + directoryName
 						     + File.separatorChar
-						     + model.getName()
+						     + "CG" + model.getName()
 						     + ".java");
 				}
 			    } else if (((BooleanToken)options

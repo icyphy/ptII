@@ -62,12 +62,28 @@ class SaveAsJava {
     ////                         public methods                    ////
 
     /** Return the java code associated with a top level Ptolemy II
-     *  object and all of its descendants.
+     *  object and all of its descendants.  The generated code
+     *  is placed in the top package, that is, the code does not
+     *  contain a <code>package</code> directive.
      *  @param toplevel The root object of the topology to be saved.
      *  @return The generated java code.
      */
     public String generate(NamedObj toplevel) throws IllegalActionException {
+	return generate(toplevel, "");
+    }
 
+    /** Return the java code associated with a top level Ptolemy II
+     *  object and all of its descendants.  The generated code
+     *  is placed in the package specified by the packageName parameter.
+     *  @param toplevel The root object of the topology to be saved.
+     *  @param packageName The java package to generate the java code in.
+     *  If this parameter is non-null and non-empty, then a 
+     *  <code>package <i>packageName</i>;</code> line is added to the
+     *  generated code.
+     *  @return The generated java code.
+     */
+    public String generate(NamedObj toplevel, String packageName)
+	throws IllegalActionException {
         // Data associated with a given class under consideration
         String className = toplevel.getClass().getName();
 
@@ -91,8 +107,10 @@ class SaveAsJava {
         }
         compositeModel = (CompositeEntity)toplevel;
 
-        // Generate class header output
-        String sanitizedName = sanitizeName(compositeModel);
+        // Generate class header output.
+	// We call the class we are generating CGFoo so that it
+	// will not collide with Foo.
+        String sanitizedName = "CG" + sanitizeName(compositeModel);
         if (sanitizedName.length() == 0 ) {
             throw new IllegalActionException("Name of the toplevel entity is "
                     + "empty, so we don't know what file to build in.");
@@ -144,6 +162,7 @@ class SaveAsJava {
         _insertIfUnique(
                 "ptolemy.kernel.util.NameDuplicationException",
                 _importList);
+
         try {
             Iterator iter = _importList.iterator();
             while (iter.hasNext()) {
@@ -157,6 +176,11 @@ class SaveAsJava {
                     + "import list '"
                     + importCode + "'.\n");
         }
+
+	if (packageName != null && packageName != "") {
+	    // Add the package statement to the top.
+	    code = "package " + packageName + ";\n\n" + code;
+	}
 
         return code;
     }
