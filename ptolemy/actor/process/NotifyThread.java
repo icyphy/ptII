@@ -59,7 +59,11 @@ public class NotifyThread extends Thread {
      *  @param locks The set of locks to call notifyAll on.
      */
     public NotifyThread(LinkedList locks) {
-	_locks = locks;
+        _locks = new LinkedList();
+        Enumeration e = locks.elements();
+        while (e.hasMoreElements() ) {
+            _locks.insertLast(e.nextElement());
+        }
     }
 
     /** Construct a thread to be used call notifyAll on a set of locks.
