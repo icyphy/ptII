@@ -30,9 +30,8 @@ package pt.exceptions;
 
 //////////////////////////////////////////////////////////////////////////
 //// NameDuplicationException
-/** NameDuplicationException causes the Ptolemy scheduler to halt because
-of an attempt to store objects with identical names in the same container
-object.
+/** NameDuplicationException is thrown in response to attempts to store 
+objects with identical names in the same container object.
 @author John S. Davis, II
 @version @(#)NameDuplicationException.java	$Revision$	$Date$
 */
