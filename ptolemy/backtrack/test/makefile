@@ -79,12 +79,9 @@ all: jclass
 	  -prefix ptolemy.backtrack.test \
 	  -output $(ROOT) \
 	  test1/Test1.java
-	# Now, compile the transformed code.
-	javac \
-	  -classpath "$(CLASSPATH)" \
-	  ptolemy/backtrack/test/test1/Test1.java
 	# Now, compile the test program that runs the transformed code.
 	# This test program doesn't require eclipse jars any more.
+	# ptolemy/backtrack/test/test1/Test1.java is compiled as dependency.
 	javac \
 	  -classpath "$(CLASSPATH)" \
 	  Test1Main.java
