@@ -18,18 +18,9 @@
 <doc>IIR filter</doc>
 </entity>
 
-<entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder">
-</entity>
-
-<entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine">
-</entity>
-
-<!-- NOTE: Collect everything that is imported into this one file,
-     because when any imported object is dropped into a model, all
-     files imported by this library will be imported by the model.
-     May as well keep it to one file. -->
-<import source="ptolemy/actor/lib/SignalProcessingActors.xml"/>
-<entity name="Sinewave" class=".SignalProcessingActors.Sinewave"/>
+<entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
+<entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
+<entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
 
         <!-- NOTE: javasound actors only work under jdk1.3. -->
         <input source="javasound/index.xml"/>

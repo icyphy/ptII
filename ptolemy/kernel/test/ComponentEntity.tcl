@@ -167,11 +167,9 @@ test ComponentEntity-9.1 {remove a port} {
     set p1 [java::new ptolemy.kernel.ComponentPort $b P1]
     set p2 [java::new ptolemy.kernel.ComponentPort $b P2]
     $p1 setContainer [java::null]
-    list [$b description] 
-} {{ptolemy.kernel.ComponentEntity {.A.B} attributes {
-} ports {
-    {ptolemy.kernel.ComponentPort {.A.B.P2} attributes {
-    } links {
-    } insidelinks {
-    }}
-}}}
+    $b exportMoML
+} {<entity name="B" class="ptolemy.kernel.ComponentEntity">
+    <port name="P2" class="ptolemy.kernel.ComponentPort">
+    </port>
+</entity>
+}

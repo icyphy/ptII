@@ -638,7 +638,10 @@ public class MoMLParser extends HandlerBase {
                         "Missing \"extends\" attribute for element \"class\"");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"class\"");
-                NamedObj newEntity = _createEntity(className, entityName);
+                String source = (String)_attributes.get("source");
+
+                NamedObj newEntity = _createEntity(
+                         className, entityName, source);
                 if (_current != null) {
                     _containers.push(_current);
                     _namespaces.push(_namespace);
@@ -649,6 +652,7 @@ public class MoMLParser extends HandlerBase {
                     _toplevel = newEntity.toplevel();
                 }
                 newEntity.setMoMLElementName("class");
+
                 _current = newEntity;
                 _namespace = DEFAULT_NAMESPACE;
 
@@ -736,6 +740,9 @@ public class MoMLParser extends HandlerBase {
                 _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("director")) {
+                // NOTE: The director element is deprecated.
+                // Use a property instead.  This is kept here so that
+                // this parser can read older MoML files.
                 // NOTE: We do not check for a previously existing director.
                 // There is presumably no harm in just creating a new one.
                 String className = (String)_attributes.get("class");
@@ -771,7 +778,9 @@ public class MoMLParser extends HandlerBase {
                 String className = (String)_attributes.get("class");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"entity\"");
-                NamedObj newEntity = _createEntity(className, entityName);
+                String source = (String)_attributes.get("source");
+                NamedObj newEntity = _createEntity(
+                         className, entityName, source);
                 // NOTE: We tolerate entities at the top level, even
                 // though this is not proper MoML.
                 if (_current != null) {
@@ -884,59 +893,6 @@ public class MoMLParser extends HandlerBase {
                 // this new link will be persistent.
                 _recordLink(context, portName, relationName, insertAtSpec);
 
-             } else if (elementName.equals("location")) {
-                String value = (String)_attributes.get("value");
-                _checkForNull(value, "No value for element \"location\"");
-                _checkClass(_current, Locatable.class,
-                       "Element \"location\" found inside an element that "
-                       + "is not Locatable. It is: "
-                       + _current);
-
-                // Parse the specification.
-                int comma = value.indexOf(",");
-                String xSpec = null;
-                String ySpec = null;
-                String zSpec = null;
-                if (comma < 0) {
-                    // Only one dimension given.
-                    xSpec = value.trim();
-                } else {
-                    xSpec = value.substring(0, comma).trim();
-                    if (value.length() > comma + 1) {
-                        String rest = value.substring(comma + 1);
-                        comma = rest.indexOf(",");
-                        if (comma < 0) {
-                            // No more dimensions given.
-                            ySpec = rest.trim();
-                        } else {
-                            // A third dimension is given.
-                            ySpec = rest.substring(0, comma).trim();
-                            if (rest.length() > comma + 1) {
-                                zSpec = rest.substring(comma + 1).trim();
-                            }
-                        }
-                    }
-                }
-
-                double x = Double.parseDouble(xSpec);
-                if (ySpec != null) {
-                    double y = Double.parseDouble(ySpec);
-                    if (zSpec != null) {
-                        // Have three dimensions.
-                        double z = Double.parseDouble(zSpec);
-                        double[] location = {x, y, z};
-                        ((Locatable)_current).setLocation(location);
-                    } else {
-                        // Have two dimensions.
-                        double[] location = {x, y};
-                        ((Locatable)_current).setLocation(location);
-                    }
-                } else {
-                    // Have one dimension.
-                    double[] location = {x};
-                    ((Locatable)_current).setLocation(location);
-                }
-
             } else if (elementName.equals("model")) {
                 String className = (String)_attributes.get("class");
                 String modelName = (String)_attributes.get("name");
@@ -953,7 +909,7 @@ public class MoMLParser extends HandlerBase {
                     newModel.setMoMLElementName("model");
                 } else {
                     // Look for previously existing model.
-                    newModel = _searchForEntity(modelName, true);
+                    newModel = _searchForEntity(modelName);
                     if (newModel == null) {
                         throw new XmlException(
                                 "No class given for element \"model\".",
@@ -1192,32 +1148,10 @@ public class MoMLParser extends HandlerBase {
                 }
 
             } else if (elementName.equals("rendition")) {
-                String className = (String)_attributes.get("class");
-                _checkForNull(className, "No class for element \"rendition\"");
-
-                Object[] arguments = new Object[2];
-                arguments[0] = _current;
-                arguments[1] = "_icon";
-
-                _containers.push(_current);
-                _namespaces.push(_namespace);
-		try {
-		    Class newClass = Class.forName(className, true,
-                            _classLoader);
-		    _current = _createInstance(newClass, arguments);
-		    _namespace = DEFAULT_NAMESPACE;
-		} catch (NoClassDefFoundError e) {
-		    // If we are running the nightly tests, then we
-		    // have no display, and diva.jar is not in the class
-		    // path, so when we process a rendition, we will
-		    // get errors like:
-		    // "java.lang.NoClassDefFoundError: diva/canvas/Figure"
-		    // The fix is to skip the rest of the rendition.
-		    _skipRendition = true;
-		    _current = (NamedObj)_containers.pop();
-		    _namespace = (String)_namespaces.pop();
-		}
-
+                // NOTE: The rendition element is deprecated.
+                // Use an icon property instead.
+                // This ignores everything inside it.
+                _skipRendition = true;
 
             } else if (elementName.equals("unlink")) {
                 String portName = (String)_attributes.get("port");
@@ -1408,10 +1342,20 @@ public class MoMLParser extends HandlerBase {
     // a class that has been previously defined (by an absolute
     // or relative name), then that class is cloned.  Otherwise,
     // the class name is interpreted as a Java class name and we
-    // attempt to construct the entity.  If _current is not an instance
+    // attempt to construct the entity.  If instantiating a Java
+    // class doesn't work, then we look for a MoML file on the
+    // classpath that defines a class by this name.  The file
+    // is assumed to be named "foo.xml", where "foo" is the name
+    // of the class.  Moreover, the classname is assumed to have
+    // no periods (since a MoML name does not allow periods,
+    // this is reasonable). If _current is not an instance
     // of CompositeEntity, then an XML exception is thrown.
-    private NamedObj _createEntity(String className, String entityName)
-                 throws Exception {
+    // The third argument, if non-null, gives a URL to import
+    // to create a reference class from which to instantiate this
+    // entity.
+    private NamedObj _createEntity(
+            String className, String entityName, String source)
+            throws Exception {
         if (_current != null && !(_current instanceof CompositeEntity)) {
             throw new XmlException("Cannot create an entity inside "
                    + "of another that is not a CompositeEntity.",
@@ -1420,25 +1364,102 @@ public class MoMLParser extends HandlerBase {
                    _parser.getColumnNumber());
         }
         CompositeEntity container = (CompositeEntity)_current;
-        ComponentEntity previous = _searchForEntity(entityName, true);
+        ComponentEntity previous = _searchForEntity(entityName);
         Class newClass = null;
         ComponentEntity reference = null;
         if (className != null) {
-            reference = _searchForEntity(className, false);
+            // A class name is given.
+            reference = _searchForClass(className, source);
             if (reference == null) {
+                // No previously defined class with this name.
+                // First attempt to instantiate a Java class.
                 try {
                     newClass = Class.forName(className, true, _classLoader);
                 } catch (Exception ex) {
                     // NOTE: Java sometimes throws ClassNotFoundException
                     // and sometimes NullPointerException when the class
                     // does not exist.  Hence the broad catch here.
-                    throw new XmlException("Cannot find the class "
-                            + className,
-                            _currentExternalEntity(),
-                            _parser.getLineNumber(),
-                            _parser.getColumnNumber());                   
+
+                    // No such Java class.  Attempt to find a MoML class.
+                    // If there is no source defined, then use the classpath.
+                    String classAsFile = null;
+                    String altClassAsFile = null;
+                    if (source == null) {
+                        // No source defined.  Use the classpath.
+
+                        // First, replace all periods in the class name
+                        // with slashes, and then append a ".xml".
+                        // NOTE: This should perhaps be handled by the
+                        // class loader, but it seems rather complicated to
+                        // do that.
+                        altClassAsFile = className.replace('.','/') + ".xml";
+                        classAsFile = className.replace('.','/') + ".moml";
+                    } else {
+                        // Source is given.
+                        classAsFile = source;
+                    }
+
+                    // Read external model definition in a new parser,
+                    // rather than in the current context.
+                    MoMLParser newParser =
+		            new MoMLParser(_workspace, _classLoader);
+                    NamedObj candidateReference = null;
+                    try {
+                        candidateReference =
+                               _parse(newParser, _base, classAsFile);
+                    } catch (Exception ex2) {
+                        // Try the alternate file, if it's not null.
+                        if (altClassAsFile != null) {
+                            try {
+                                candidateReference =
+                                       _parse(newParser, _base, altClassAsFile);
+                                classAsFile = altClassAsFile;
+                            } catch (Exception ex3) {
+                                // Rethrow the original exception.
+                                throw ex2;
+                            }
+                        }
+                    }
+                    if (candidateReference instanceof ComponentEntity) {
+                        reference = (ComponentEntity)candidateReference;
+                    } else {
+                        throw new XmlException(
+                               "File "
+                               + classAsFile 
+                               + " does not define a ComponentEntity.",
+                               _currentExternalEntity(),
+                               _parser.getLineNumber(),
+                               _parser.getColumnNumber());
+                    }
+                    // Check that the classname matches the name of the
+                    // reference.
+                    String referenceName = reference.getName();
+                    if (!className.equals(referenceName)
+                            && !className.endsWith("." + referenceName)) {
+                        throw new XmlException(
+                               "File "
+                               + classAsFile 
+                               + " does not define a class named "
+                               + className,
+                               _currentExternalEntity(),
+                               _parser.getLineNumber(),
+                               _parser.getColumnNumber());
+                    }
+                    
+                    // Set the classname and source of the import.
+                    reference.setMoMLClass(className);
+
+                    // NOTE: This might be a relative file reference, which
+                    // won't be of much use if a MoML file is moved.
+                    reference.setMoMLSource(source);
+
+                    // Record the import to avoid repeated reading
+                    if (_imports == null) {
+                        _imports = new LinkedList();
+                    }
+                    _imports.add(0, reference);
                 }
-	    }
+            }
         }
         if (previous != null) {
             if (newClass != null) {
@@ -1455,8 +1476,9 @@ public class MoMLParser extends HandlerBase {
 
         // Next check to see whether the class extends a named entity.
         if (reference == null) {
-            // Not a named entity. Invoke the class loader.
+            // Not a named entity. Instantiate a Java class.
             if (_current != null) {
+                // Not a top-level entity.
                 _checkClass(_current, CompositeEntity.class,
                        "Cannot create an entity inside an element that "
                        + "is not a CompositeEntity. It is: "
@@ -1473,6 +1495,7 @@ public class MoMLParser extends HandlerBase {
                 _recordNewObject(container, newEntity);
                 return newEntity;
             } else {
+                // Top-level entity.  Instantiate in the workspace.
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
                 NamedObj result = _createInstance(newClass, arguments);
@@ -1500,6 +1523,13 @@ public class MoMLParser extends HandlerBase {
             // setting the container, we could get a spurious name conflict
             // when we set the container.
             newEntity.setName(entityName);
+
+            // Set the class name as specified in this method call.
+            // This overrides what NamedObj does.  The reason we want to
+            // do that is that NamedObj uses the full name of the object
+            // that we cloned as the classname.  But this may not provide
+            // enough information to instantiate the class.
+            newEntity.setMoMLClass(className);
 
             // Set the container of the clone.
             newEntity.setContainer(container);
@@ -1555,7 +1585,7 @@ public class MoMLParser extends HandlerBase {
     // Delete the entity after verifying that it is contained (deeply)
     // by the current environment.
     private NamedObj _deleteEntity(String entityName) throws Exception {
-        ComponentEntity toDelete = _searchForEntity(entityName, true);
+        ComponentEntity toDelete = _searchForEntity(entityName);
         if (toDelete == null) {
             throw new XmlException("No such entity to delete: " + entityName,
                     _currentExternalEntity(),
@@ -1682,7 +1712,8 @@ public class MoMLParser extends HandlerBase {
                 // FIXME: Shouldn't this use the base somehow?
                 xmlFile = _classLoader.getResource(source);
                 if (xmlFile == null) {
-                    throw new Exception("Class loader returns null.");
+                    // NOTE: This exception is caught below.
+                    throw new Exception("Class loader returns null");
                 }
                 input = xmlFile.openStream();
 
@@ -1839,7 +1870,7 @@ public class MoMLParser extends HandlerBase {
 
     // Given a name that is either absolute (with a leading period)
     // or relative to _current, find an attribute with that name.
-    // Return null if it is not found.  The port is required to
+    // Return null if it is not found.  The attribute is required to
     // be contained (deeply) by the current environment, or an XmlException
     // will be thrown.
     private Attribute _searchForAttribute(String name)
@@ -1868,13 +1899,56 @@ public class MoMLParser extends HandlerBase {
         return result;
     }
 
+    // Given the name of a MoML class and a source URL, check to see
+    // whether this class has already been instantiated, and if so,
+    // return the previous instance.
+    private ComponentEntity _searchForClass(String name, String source)
+            throws XmlException {
+
+        // If the name is absolute, the class may refer to an existing
+        // entity.  Check to see whether there is one with a matching source.
+        ComponentEntity candidate;
+        if (name.startsWith(".")) {
+            candidate = _searchForEntity(name);
+            if (candidate != null) {
+                // Check that it's a class.
+                if (candidate.getMoMLElementName().equals("class")) {
+                    // Check that its source matches.
+                    String candidateSource = candidate.getMoMLSource();
+                    if (source == null && candidateSource == null) {
+                        return candidate;
+                    } else if (source != null
+                           && source.equals(candidateSource)) {
+                        return candidate;
+                    }
+                }
+            }
+        }
+        if (_imports != null) {
+            Iterator entries = _imports.iterator();
+            while (entries.hasNext()) {
+                Object possibleCandidate = entries.next();
+                if (possibleCandidate instanceof ComponentEntity) {
+                    candidate = (ComponentEntity)possibleCandidate;
+                    if (candidate.getMoMLClass().equals(name)) {
+                        String candidateSource = candidate.getMoMLSource();
+                        if (source == null && candidateSource == null) {
+                            return candidate;
+                        } else if (source != null
+                                && source.equals(candidateSource)) {
+                            return candidate;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     // Given a name that is either absolute (with a leading period)
     // or relative to _current, find a component entity with that name.
-    // Return null if it is not found.  If the second argument is true,
-    // then enforce that the entity found be within the current entity,
-    // if there is one.
-    private ComponentEntity _searchForEntity(String name,
-            boolean enforceContainment) throws XmlException {
+    // Return null if it is not found
+    private ComponentEntity _searchForEntity(String name) throws XmlException {
 
         // If the name is absolute, we first have to find a
         // name from the imports that matches.
@@ -1887,13 +1961,12 @@ public class MoMLParser extends HandlerBase {
             } else {
                 topLevelName = name.substring(1, nextPeriod);
             }
-            // First search the current top level, if the name matches.
+            // Search the current top level, if the name matches.
             if (_toplevel != null && _toplevel instanceof ComponentEntity
                     && topLevelName.equals(_toplevel.getName())) {
                 if (nextPeriod < 1) {
                     if (_current != null
-                            && _current != _toplevel
-                            && enforceContainment == true) {
+                            && _current != _toplevel) {
                         throw new XmlException(
                             "Reference to an existing entity: "
                             + _toplevel.getFullName()
@@ -1910,7 +1983,8 @@ public class MoMLParser extends HandlerBase {
                                 ((CompositeEntity)_toplevel).getEntity(
                                 name.substring(nextPeriod + 1));
                         if (result != null) {
-                            if (enforceContainment == true && _current != null                                      && !_current.deepContains(result)) {
+                            if (_current != null
+                                    && !_current.deepContains(result)) {
                                 throw new XmlException(
                                     "Reference to an existing entity: "
                                     + result.getFullName()
@@ -1925,43 +1999,13 @@ public class MoMLParser extends HandlerBase {
                     }
                 }
             }
-            // Next search the imports.
-            // NOTE: We assume that if the result is in the inports,
-            // then we never want to enforce containment.  Thus, we only
-            // search the imports if the second argument is false.
-            if (_imports != null && enforceContainment == false) {
-                Iterator entries = _imports.iterator();
-                while (entries.hasNext()) {
-                    Object possibleCandidate = entries.next();
-                    if (possibleCandidate instanceof ComponentEntity) {
-                        ComponentEntity candidate =
-                                (ComponentEntity)possibleCandidate;
-                        if (candidate.getName().equals(topLevelName)) {
-                            if (nextPeriod < 1) {
-                                // Found a match.
-                                return candidate;
-                            } else {
-                                if (candidate instanceof CompositeEntity) {
-                                    ComponentEntity result =
-                                    ((CompositeEntity)candidate).getEntity(
-                                            name.substring(nextPeriod + 1));
-                                    if (result != null) {
-                                        return result;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
             return null;
         } else {
             // Name is relative.
             if (_current instanceof CompositeEntity) {
                 ComponentEntity result =
                        ((CompositeEntity)_current).getEntity(name);
-                if (result != null && enforceContainment == true &&
-                       !_current.deepContains(result)) {
+                if (result != null && !_current.deepContains(result)) {
                     throw new XmlException(
                             "Reference to an existing entity: "
                             + result.getFullName()
@@ -1976,7 +2020,7 @@ public class MoMLParser extends HandlerBase {
             if (_current == null) {
                 // The name might be a top-level name, but without
                 // the leading period.
-                return _searchForEntity("." + name, enforceContainment);
+                return _searchForEntity("." + name);
             }
             return null;
         }

@@ -122,7 +122,7 @@ test ProcessedString-1.5 {test parse moml with no PI} {
     <property name="myAttribute" class="ptolemy.kernel.util.ProcessedString">
         <configure>
 The Quick brown
-Fox Jumped over 
+Fox Jumped over
 The lazy Dog.
         </configure>
     </property>

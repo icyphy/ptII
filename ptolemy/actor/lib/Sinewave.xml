@@ -1,0 +1,72 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="Sinewave" extends="ptolemy.actor.TypedCompositeActor">
+    <doc>This composite actor generates a sine wave.</doc>
+    <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
+        <doc>The sampling frequency, in the same units as the frequency.</doc>
+    </property>
+    <property name="frequency" class="ptolemy.data.expr.Parameter" value="440.0">
+        <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+    </property>
+    <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+        <doc>The phase, in radians.</doc>
+    </property>
+    <port name="output" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <doc>Sinusoidal waveform output.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="460.00001525878906, 225.00000381469727">
+        </property>
+    </port>
+    <entity name="ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="phase">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/samplingFrequency">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="140.0, 225.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="TrigFunction0" class="ptolemy.actor.lib.TrigFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                </property>
+                <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                </property>
+                <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                </property>
+                <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                </property>
+                <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                </property>
+                <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="output" relation="relation1"/>
+    <link port="ramp.output" relation="relation2"/>
+    <link port="TrigFunction0.input" relation="relation2"/>
+    <link port="TrigFunction0.output" relation="relation1"/>
+</class>

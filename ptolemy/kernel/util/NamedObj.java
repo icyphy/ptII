@@ -385,8 +385,11 @@ public class NamedObj implements Nameable, Debuggable,
                             ws.getFullName());
                 }
             }
+            // If the master is a class, then its full name
+            // becomes the class name of the clone.
             if (getMoMLElementName().equals("class")) {
                 newobj._setDeferMoMLDefinitionTo(this);
+                newobj.setMoMLClass(getFullName());
             }
             return newobj;
         } finally {
@@ -543,22 +546,25 @@ public class NamedObj implements Nameable, Debuggable,
      *  getMoMLElement()).  If getMoMLElement() returns "class", then
      *  the exported MoML looks like this:
      *  <pre>
-     *      &lt;class name="<i>name</i>" extends="<i>classname</i>"&gt;
+     *      &lt;class name="<i>name</i>" extends="<i>classname</i> source="<i>source</i>"&gt;
      *          <i>body, determined by _exportMoMLContents()</i>
      *      &lt;/class&gt;
      *  </pre>
      *  If getMoMLElement() returns anything else (call what it returns
      *  <i>element</i>), then the exported MoML looks like this:
      *  <pre>
-     *      &lt;<i>element</i> name="<i>name</i>" class="<i>classname</i>"&gt;
+     *      &lt;<i>element</i> name="<i>name</i>" class="<i>classname</i>" source="<i>source</i>"&gt;&gt;
      *          <i>body, determined by _exportMoMLContents()</i>
      *      &lt;/<i>element</i>&gt;
      *  </pre>
      *  The <i>classname</i> attribute normally gives the Java classname
-     *  of this instance.  However, if this object was cloned from another
-     *  object that identifies itself as a MoML "class", as determined by
-     *  the getMoMLElementName() method, then it gives the name of the object
-     *  from which it was cloned.  In addition, in this case, the body contains
+     *  of this instance.  However, if setMoMLClass() has been called, or
+     *  this object has been cloned from an object on which setMoMLClass()
+     *  has been called, then the class will be name specified by that call.
+     *  The source attribute is normally left off, unless setMoMLSource()
+     *  has been called, in which case it is included.
+     *  In addition, if the object has been cloned from another that
+     *  identifies itself as a MoML "class", then the body contains
      *  only the MoML exported by the attributes. I.e., the
      *  _exportMoMLContents() method is not called in this case.
      *  For example, if "foo" was cloned from "bar", and "bar" is a
@@ -594,13 +600,8 @@ public class NamedObj implements Nameable, Debuggable,
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        String className = null;
-        if (_deferTo != null) {
-            className = _deferTo.getFullName();
-        } else {
-            className = getClass().getName();
-        }
         String momlElement = getMoMLElementName();
+        String className = getMoMLClass();
         String template = null;
         if (momlElement.equals("class")) {
             template = "\" extends=\"";
@@ -632,7 +633,12 @@ public class NamedObj implements Nameable, Debuggable,
                 + name
                 + template
                 + className
-                + "\">\n");
+                + "\"");
+        if (getMoMLSource() != null) {
+            output.write(" source=\"" + getMoMLSource() + "\">\n");
+        } else {
+            output.write(">\n");
+        }
         if (_deferTo == null) {
             _exportMoMLContents(output, depth + 1);
         } else {
@@ -761,6 +767,21 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Get the name of the MoML class for this object.
+     *  This defaults to the Java class name, unless it is set
+     *  by setMoMLClass().  Note that this never returns null.
+     *  @return A MoML class name.
+     *  @see #exportMoML(Writer, int, String)
+     *  @see #setMoMLClass(String)
+     */
+    public String getMoMLClass() {
+        if (_MoMLClass == null) {
+            return getClass().getName();
+        } else {
+            return _MoMLClass;
+        }
+    }
+
     /** Get the name of the MoML element used to describe this object.
      *  This defaults to "entity", unless it is set by setMoMLElementName().
      *  @return A MoML element name.
@@ -769,6 +790,17 @@ public class NamedObj implements Nameable, Debuggable,
      */
     public String getMoMLElementName() {
         return _MoMLElementName;
+    }
+
+    /** Get the source attribute of the MoML description of this object.
+     *  This returns whatever was most recently set by setMoMLSource(),
+     *  or null if that has not been called.
+     *  @return A string describing a URL.
+     *  @see #exportMoML(Writer, int, String)
+     *  @see #setMoMLSource(String)
+     */
+    public String getMoMLSource() {
+        return _MoMLSource;
     }
 
     /** Get the name. If no name has been given, or null has been given,
@@ -792,6 +824,8 @@ public class NamedObj implements Nameable, Debuggable,
      *  This method is read-synchronized on the workspace.
      *  @param parent An object that deeply contains this object.
      *  @return A string of the form "name2...nameN".
+     *  @exception IllegalActionException If the specified parent does not
+     *   deeply contain this object.
      */
     public String getName(NamedObj parent) {
 	if(parent == null) {
@@ -883,6 +917,18 @@ public class NamedObj implements Nameable, Debuggable,
 	}
     }
 
+    /** Set the name of the MoML class for this object, to be used
+     *  by the exportMoML() methods.
+     *  This defaults to the Java class name if this method is not called,
+     *  or if it is called with a null argument.
+     *  @param name A MoML class name.
+     *  @see #exportMoML(Writer, int, String)
+     *  @see #getMoMLClass()
+     */
+    public void setMoMLClass(String name) {
+        _MoMLClass = name;
+    }
+
     /** Set the name of the MoML element used to describe this object
      *  by the exportMoML() methods.
      *  This defaults to "entity" if this method is not called.
@@ -898,6 +944,15 @@ public class NamedObj implements Nameable, Debuggable,
      */
     public void setMoMLElementName(String name) {
         _MoMLElementName = name;
+    }
+
+    /** Set the source attribute of the MoML description of this object.
+     *  @param source A string describing a URL.
+     *  @see #exportMoML(Writer, int, String)
+     *  @see #getMoMLSource()
+     */
+    public void setMoMLSource(String source) {
+        _MoMLSource = source;
     }
 
     /** Set or change the name.  If a null argument is given the
@@ -1301,10 +1356,18 @@ public class NamedObj implements Nameable, Debuggable,
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
 
+    /** The class name used to write a MoML description.
+     */
+    private String _MoMLClass;
+
     /** The element name used to write a MoML description.
      *  This defaults to "entity".
      */
     private String _MoMLElementName = "entity";
+
+    /** The source attribute to include in a MoML description.
+     */
+    private String _MoMLSource;
 
     /** @serial The name */
     private String _name;

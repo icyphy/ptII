@@ -168,6 +168,8 @@ test CompositeActor-7.1 {Test clone and description} {
     set e4 [java::cast ptolemy.actor.CompositeActor [$e3 clone $w]]
     $e4 description
 } {ptolemy.actor.CompositeActor {.E3} attributes {
+    {ptolemy.kernel.util.NonpersistentProcessedString {.E3.iconDescription} attributes {
+    }}
 } ports {
     {ptolemy.actor.IOPort {.E3.P1} attributes {
     } links {
@@ -201,7 +203,11 @@ test CompositeActor-7.1 {Test clone and description} {
     }}
 } entities {
     {ptolemy.actor.CompositeActor {.E3.E5} attributes {
+        {ptolemy.kernel.util.NonpersistentProcessedString {.E3.E5.iconDescription} attributes {
+        }}
         {ptolemy.actor.Director {.E3.E5.WORMDIR} attributes {
+            {ptolemy.kernel.util.NonpersistentProcessedString {.E3.E5.WORMDIR.iconDescription} attributes {
+            }}
         }}
     } ports {
     } entities {

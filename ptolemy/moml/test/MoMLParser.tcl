@@ -142,7 +142,7 @@ set moml_3_3 "$header
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"yyy\"/>
 </class>
-<entity name=\"test\" class=\"top\"/>
+<entity name=\"test\" class=\".lib.top\"/>
 </model>
 "
 test MoMLParser-1.3.3 {check overriding class definition} {
@@ -422,7 +422,7 @@ set body {
         <entity name="c" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
-    <entity name="b" class="a">
+    <entity name="b" class=".top.a">
     </entity>
 </model>
 }
@@ -455,8 +455,7 @@ test MoMLParser-1.11 {test instantiation of a class} {
 #----------------------------------------------------------------------
 set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <import base="../../.." source="ptolemy/moml/test/testClass.xml"/>
-    <entity name="b" class=".a"/>
+    <entity name="b" class="ptolemy.moml.test.testClass"/>
 </model>
 }
 
@@ -473,7 +472,7 @@ test MoMLParser-1.12 {test instantiation of a class} {
             [$parser parse $moml]]
     set b [$toplevel getEntity b]
     $b exportMoML
-} {<entity name="b" class=".a">
+} {<entity name="b" class="ptolemy.moml.test.testClass">
     <property name="prop" class="ptolemy.data.expr.Parameter">
     </property>
 </entity>
@@ -482,10 +481,8 @@ test MoMLParser-1.12 {test instantiation of a class} {
 #----------------------------------------------------------------------
 set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <import base="../../.." source="ptolemy/moml/test/testClass.xml"/>
-    <entity name="b" class=".a"/>
-    <import base="../../.." source="ptolemy/moml/test/testClass2.xml"/>
-    <entity name="c" class=".a"/>
+    <entity name="b" class="ptolemy.moml.test.testClass"/>
+    <entity name="c" class="ptolemy.moml.test.testClass2"/>
 </model>
 }
 
@@ -498,11 +495,11 @@ test MoMLParser-1.12.1 {test instantiation of a class} {
     set b [$toplevel getEntity b]
     set c [$toplevel getEntity c]
     list [$b exportMoML] [$c exportMoML]
-} {{<entity name="b" class=".a">
+} {{<entity name="b" class="ptolemy.moml.test.testClass">
     <property name="prop" class="ptolemy.data.expr.Parameter">
     </property>
 </entity>
-} {<entity name="c" class=".a">
+} {<entity name="c" class="ptolemy.moml.test.testClass2">
     <property name="x" class="ptolemy.kernel.util.Attribute">
     </property>
 </entity>
@@ -511,11 +508,8 @@ test MoMLParser-1.12.1 {test instantiation of a class} {
 #----------------------------------------------------------------------
 set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <!-- Note that here, we are searching using the classpath -->
-    <import source="ptolemy/moml/test/testClass.xml"/>
-    <entity name="b" class=".a"/>
-    <import source="testClass2.xml"/>
-    <entity name="c" class=".a"/>
+    <entity name="b" class="ptolemy.moml.test.testClass"/>
+    <entity name="c" class="ptolemy.moml.test.testClass2"/>
 </model>
 }
 
@@ -528,11 +522,11 @@ test MoMLParser-1.12.2 {test import with a relative source } {
     set b [$toplevel getEntity b]
     set c [$toplevel getEntity c]
     list [$b exportMoML] [$c exportMoML]
-} {{<entity name="b" class=".a">
+} {{<entity name="b" class="ptolemy.moml.test.testClass">
     <property name="prop" class="ptolemy.data.expr.Parameter">
     </property>
 </entity>
-} {<entity name="c" class=".a">
+} {<entity name="c" class="ptolemy.moml.test.testClass2">
     <property name="x" class="ptolemy.kernel.util.Attribute">
     </property>
 </entity>
@@ -541,11 +535,8 @@ test MoMLParser-1.12.2 {test import with a relative source } {
 #----------------------------------------------------------------------
 set body {
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <!-- Note that here, we are searching relative to the cwd -->
-    <import source="testClass.xml"/>
-    <entity name="b" class=".a"/>
-    <import source="testClass2.xml"/>
-    <entity name="c" class=".a"/>
+    <entity name="b" class="testClass" source="testClass.xml"/>
+    <entity name="c" class="testClass2" source="testClass2.xml"/>
 </model>
 }
 
@@ -558,11 +549,11 @@ test MoMLParser-1.12.3 {test import with a relative source } {
     set b [$toplevel getEntity b]
     set c [$toplevel getEntity c]
     list [$b exportMoML] [$c exportMoML]
-} {{<entity name="b" class=".a">
+} {{<entity name="b" class="testClass" source="testClass.xml">
     <property name="prop" class="ptolemy.data.expr.Parameter">
     </property>
 </entity>
-} {<entity name="c" class=".a">
+} {<entity name="c" class="testClass2" source="testClass2.xml">
     <property name="x" class="ptolemy.kernel.util.Attribute">
     </property>
 </entity>
@@ -574,7 +565,7 @@ set body {
     <class name="master" extends="ptolemy.kernel.ComponentEntity">
         <port name="p" class="ptolemy.kernel.ComponentPort"/>
     </class>
-    <entity name="derived" class="master"/>
+    <entity name="derived" class=".top.master"/>
 </model>
 }
 
@@ -609,7 +600,7 @@ set body {
         <port name="p" class="ptolemy.kernel.ComponentPort">
         </port>
     </class>
-    <class name="derived" extends="master">
+    <class name="derived" extends=".top.master">
         <port name="q" class="ptolemy.kernel.ComponentPort">
         </port>
     </class>
@@ -662,7 +653,7 @@ set body {
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
-    <class name="derived" extends="master">
+    <class name="derived" extends=".top.master">
         <entity name="e2" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
@@ -697,7 +688,7 @@ set body {
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <entity name="e2" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </entity>
@@ -732,7 +723,7 @@ set body {
         <entity name="e1" class="ptolemy.kernel.ComponentEntity">
         </entity>
     </class>
-    <class name="derived" extends="master">
+    <class name="derived" extends=".top.master">
     </class>
 </model>
 }
@@ -783,7 +774,7 @@ set body {
 <model name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <property name="dir" class="ptolemy.actor.Director"/>
     </entity>
 </model>
@@ -813,7 +804,7 @@ set body {
 <model name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <relation name="rel" class="ptolemy.actor.IORelation"/>
     </entity>
 </model>
@@ -844,7 +835,7 @@ set body {
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <entity name="e" class="ptolemy.actor.CompositeActor"/>
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <deleteEntity name="e"/>
     </entity>
 </model>
@@ -876,7 +867,7 @@ set body {
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <deletePort name="p"/>
     </entity>
 </model>
@@ -909,7 +900,7 @@ set body {
         <property name="a" class="ptolemy.data.expr.Parameter"/>
         <property name="b" class="ptolemy.data.expr.Parameter"/>
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <deleteProperty name="a"/>
     </entity>
 </model>
@@ -945,7 +936,7 @@ set body {
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <relation name="r" class="ptolemy.actor.IORelation"/>
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <deleteRelation name="r"/>
     </entity>
 </model>
@@ -978,7 +969,7 @@ set body {
         <port name="p" class="ptolemy.actor.IOPort"/>
         <relation name="r" class="ptolemy.actor.IORelation"/>
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <link port="p" relation="r"/>
     </entity>
 </model>
@@ -1013,7 +1004,7 @@ set body {
         <port name="p" class="ptolemy.actor.IOPort"/>
         <relation name="r" class="ptolemy.actor.IORelation"/>
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <link port="p" relation="r" insertAt="1"/>
     </entity>
 </model>
@@ -1049,7 +1040,7 @@ set body {
         <relation name="r" class="ptolemy.actor.IORelation"/>
         <link port="p" relation="r"/>        
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <unlink port="p" relation="r"/>
     </entity>
 </model>
@@ -1117,7 +1108,7 @@ set body {
         <relation name="r" class="ptolemy.actor.IORelation"/>
         <link port="p" relation="r"/>        
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <unlink port="p" insideIndex="0"/>
     </entity>
 </model>
@@ -1156,7 +1147,7 @@ set body {
         <relation name="r" class="ptolemy.actor.IORelation"/>
         <link port="e.p" relation="r"/>        
     </class>
-    <entity name="derived" class="master">
+    <entity name="derived" class=".top.master">
         <unlink port="e.p" index="0"/>
     </entity>
 </model>
@@ -2078,7 +2069,7 @@ test MoMLParser-8.1 {test input with a relative source } {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <class name="a" extends="ptolemy.kernel.CompositeEntity">
+    <class name="testClass2" extends="ptolemy.kernel.CompositeEntity">
         <property name="x" class="ptolemy.kernel.util.Attribute">
         </property>
     </class>
@@ -2103,7 +2094,7 @@ test MoMLParser-8.2 {test input with a relative source } {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <class name="a" extends="ptolemy.kernel.CompositeEntity">
+    <class name="testClass2" extends="ptolemy.kernel.CompositeEntity">
         <property name="x" class="ptolemy.kernel.util.Attribute">
         </property>
     </class>

@@ -130,6 +130,8 @@ test AtomicActor-7.1 {Test clone and description} {
     set e4 [java::cast ptolemy.actor.AtomicActor [$e3 clone $w]]
     $e4 description
 } {ptolemy.actor.AtomicActor {.E3} attributes {
+    {ptolemy.kernel.util.NonpersistentProcessedString {.E3.iconDescription} attributes {
+    }}
 } ports {
     {ptolemy.actor.IOPort {.E3.P1} attributes {
     } links {
