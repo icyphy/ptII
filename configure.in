@@ -59,7 +59,9 @@ AC_PREFIX_DEFAULT($PTII)
 #       if it is not, look for javac on the path.
 #--------------------------------------------------------------------
 
-AC_ARG_WITH(java, [  --with-java=DIR           use Java binaries from DIR, defaults to the value of the PTJAVA_DIR environment variable],
+AC_ARG_WITH(java, [  --with-java=DIR         use Java binaries from DIR,
+                           defaults to the value of the
+                           PTJAVA_DIR environment variable],
     PTJAVA_DIR=$withval)
 
 if test ! -d "$PTJAVA_DIR"; then
@@ -138,6 +140,87 @@ else
   Try --with-java=DIR, or set the JAVA_HOME environment variable.])
 fi
 
+#--------------------------------------------------------------------
+#	See if there was a command-line option for where Java is;  if
+#	not, check to see if the PTJAVA_DIR environment variable is set;
+#       if it is not, look for javac on the path.
+#--------------------------------------------------------------------
+
+AC_MSG_CHECKING([for JavaCC])
+AC_ARG_WITH(java, [  --with-javacc=DIR       use JavaCC.zip from DIR,
+                           defaults to \$PTOLEMY/vendors/sun/JavaCC],
+    JAVACC_DIR=$withval, JAVACC_DIR=$PTOLEMY/vendors/sun/JavaCC)
+
+if test "`uname -s`" = "CYGWIN32_NT"; then
+    JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
+    JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
+    AC_MSG_WARN([Be sure that your CLASSPATH includes JavaCC.zip]);
+else
+    if test ! -d "$JAVACC_DIR"; then
+	AC_MSG_WARN(['${JAVACC_DIR}' is not a directory, 
+so we search for the jjtree command.])
+	AC_PATH_PROG(JJTREE, jjtree)
+	if test -x "$JJTREE"; then	
+	    AC_MSG_RESULT([$JJTREE]);
+	    JAVACCBIN=`dirname $JJTREE`
+	    JAVACC_DIR=`dirname $JAVACCBIN`
+	else  	
+	    AC_MSG_WARN([Failed to find jjtree]);
+	fi
+    fi	
+    if test -d "$JAVACC_DIR"; then
+	AC_MSG_RESULT([$JAVACC_DIR])
+	AC_MSG_CHECKING([for jjtree])
+ 	if test -x "$JAVACC_DIR/bin/jjtree"; then
+	    # Note that we don't substitute in the $(JAVACC_DIR) here
+	    JJTREE='$(JAVACC_DIR)/bin/jjtree'
+	    AC_MSG_RESULT([$JJTREE])
+	else    
+	    AC_MSG_WARN([Failed to find jjtree in '$JAVACC_DIR/bin']);
+	fi    
+	AC_MSG_CHECKING([for javacc])
+ 	if test -x "$JAVACC_DIR/bin/javacc"; then
+	    # Note that we don't substitute in the $(JAVACC_DIR) here
+	    JAVACC='$(JAVACC_DIR)/bin/javacc'
+	    AC_MSG_RESULT([$JAVACC])
+	else    
+	    AC_MSG_WARN([Failed to find javacc in '$JAVACC_DIR/bin']);
+	fi    
+    fi
+fi
+
+if test ! -d "$JAVACC_DIR"; then
+        AC_MSG_WARN([Failed to find javacc, perhaps JavaCC is not installed?
+You need not download JavaCC unless you plan on modifying certain files 
+in ptolemy/data/expr. 
+JavaCC can be downloaded from http://www.sun.com/suntest'])
+fi
+
+#--------------------------------------------------------------------
+#	See if there was a command-line option for where Tcl Blend is
+#--------------------------------------------------------------------
+
+AC_ARG_WITH(java, [  --with-jtclsh=SCRIPT    jtclsh is at BINARY. jtclsh is
+                           used for running the test scripts],
+    JTCLSH=$withval, JTCLSH=jtclsh)
+if test "$JTCLSH" != "jtclsh"; then
+    AC_MSG_CHECKING([for jtclsh])
+    AC_MSG_RESULT($JTCLSH]);
+else
+    AC_PATH_PROG(JTCLSH, jtclsh)
+    if test ! -x "$JTCLSH"; then	
+	AC_MSG_WARN([jtclsh not found.  jtclsh is a startup script for
+Tcl Blend, which is used to run the test suite.
+You only need to have jtclsh if you are planning on running the test suite.
+See http://www.scriptics.com/java for Tcl Blend sources and binaries.])
+   fi     
+fi 
+
+
+#--------------------------------------------------------------------
+#	Figure out which separator to use for CLASSPATH
+#	So much for write once, run everywhere.
+#--------------------------------------------------------------------
 AC_MSG_CHECKING([for the proper CLASSPATH separator])
 case "`uname -s`" in
     CYGWIN32_NT) CLASSPATHSEPARATOR=";";;
@@ -151,8 +234,22 @@ AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin, use ;
 AC_SUBST(CLASSPATHSEPARATOR)
+
+# javacc binary
+AC_SUBST(JAVACC)
+
+# Directory that contains JavaCC, which is used in ptolemy/data/expr
+AC_SUBST(JAVACC_DIR)
+
+# jtclsh script, used for test suites
+AC_SUBST(JTCLSH)
+
+# jtree binary
+AC_SUBST(JTREE)
+
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)
+
 # Location of the PtII directory
 AC_SUBST(PTII_DEFAULT)
 
