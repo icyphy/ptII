@@ -229,8 +229,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
         _debug(schedule.toString() + "\n");
 
         SymbolicScheduleElement result =
-                 _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(),
-                 scheduler);
+            _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(),
+                    scheduler);
         _debug("Completed PSDFScheduler._getSchedule().\n The "
                 + "schedule follows.\n" + result.toString() + "\n");
         _debug("Saving buffer sizes\n");
@@ -285,7 +285,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 SymbolicFiring firing = new SymbolicFiring((Actor)
                         weight.getComputation(), "1");
                 return firing;
-            // Super node
+                // Super node
             } else {
                 Schedule schedule = new Schedule();
 
@@ -295,9 +295,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 ptolemy.graph.Node source = edge.source();
                 ptolemy.graph.Node sink   = edge.sink();
                 SymbolicScheduleElement first  =
-                        _expandAPGAN(childGraph, source, apgan);
+                    _expandAPGAN(childGraph, source, apgan);
                 SymbolicScheduleElement second =
-                        _expandAPGAN(childGraph, sink, apgan);
+                    _expandAPGAN(childGraph, sink, apgan);
 
                 // Determine the iteration counts of the source and
                 // sink clusters.
@@ -318,9 +318,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 String denominator = PSDFGraphs.gcdExpression(
                         producedExpression, consumedExpression);
                 String firstIterations = "(" + consumedExpression + ") / ("
-                        + denominator + ")";
+                    + denominator + ")";
                 String secondIterations = "(" + producedExpression + ") / ("
-                        + denominator + ")";
+                    + denominator + ")";
 
                 first.setIterationCount(firstIterations);
                 second.setIterationCount(secondIterations);
@@ -335,7 +335,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 while (edges.hasNext()) {
                     Edge nextEdge = (Edge)edges.next();
                     PSDFEdgeWeight weight =
-                            (PSDFEdgeWeight)nextEdge.getWeight();
+                        (PSDFEdgeWeight)nextEdge.getWeight();
                     IOPort sourcePort = weight.getSourcePort();
                     List relationList = sourcePort.linkedRelationList();
                     if (relationList.size() != 1) {
@@ -352,11 +352,11 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     String produced = apgan.producedExpression(nextEdge);
                     String consumed = apgan.consumedExpression(nextEdge);
                     String bufferSizeExpression = "(("
-                            + produced
-                            + ") * ("
-                            + consumed
-                            + ")) / "
-                            + PSDFGraphs.gcdExpression(produced, consumed);
+                        + produced
+                        + ") * ("
+                        + consumed
+                        + ")) / "
+                        + PSDFGraphs.gcdExpression(produced, consumed);
 
                     // Due to the bottom-up traversal in _expandAPGAN,
                     // relations that are linked to multiple sink
@@ -391,7 +391,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  a symbolic expression.
      */
     private class SymbolicFiring extends Firing implements
-            SymbolicScheduleElement {
+                                                                                                SymbolicScheduleElement {
         /** Construct a firing with the given actor and the given
          *  expression.  The given actor
          *  is assumed to fire the number of times determined by
@@ -419,7 +419,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         public int getIterationCount() {
             try {
                 IntToken token = (IntToken)
-                        _evaluateExpressionInModelScope(_parseTree);
+                    _evaluateExpressionInModelScope(_parseTree);
                 System.out.println("firing " + getActor() + " " +
                         token.intValue() + " times");
                 return token.intValue();
@@ -479,7 +479,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     /** A schedule whose iteration count is given by an expression.
      */
     private class SymbolicSchedule extends Schedule  implements
-            SymbolicScheduleElement {
+                                                                                                          SymbolicScheduleElement {
         /** Construct a symbolic schedule with the given expression.
          *  This schedule is assumed to fire the number of times determined
          *  by evaluating the given expression.
@@ -504,7 +504,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         public int getIterationCount() {
             try {
                 IntToken token = (IntToken)
-                        _evaluateExpressionInModelScope(_parseTree);
+                    _evaluateExpressionInModelScope(_parseTree);
                 return token.intValue();
             } catch (Exception ex) {
                 // FIXME: this isn't very nice.
