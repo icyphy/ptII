@@ -207,7 +207,7 @@ public class JNLPUtilities {
         // non-conforming hack of using a backslash.
 
         String jarURLParentFileName =
-            jarURLFileName.substring(0,jarURLFileName.lastIndexOf("/"));
+            jarURLFileName.substring(0, jarURLFileName.lastIndexOf("/"));
 
         String parentEntryFileName =
             entryFileName.substring(0, entryFileName.lastIndexOf("/"));
