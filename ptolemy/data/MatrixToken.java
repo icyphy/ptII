@@ -197,8 +197,8 @@ public abstract class MatrixToken extends Token {
      *   as requested (always thrown in this base class).
      */
     public Complex[][] complexMatrix() throws IllegalActionException {
-        throw new IllegalActionException(this.getClass().getName() +
-                " cannot be converted to a complex matrix.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "complex matrix"));
     }
 
     /** Return a new token whose value is the value of this token
@@ -237,8 +237,8 @@ public abstract class MatrixToken extends Token {
      *   as requested (always thrown in this base class).
      */
     public double[][] doubleMatrix() throws IllegalActionException {
-        throw new IllegalActionException(this.getClass().getName() +
-                " cannot be converted to a double matrix.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "double matrix"));
     }
 
     /** Return the number of columns of the matrix.
@@ -274,8 +274,8 @@ public abstract class MatrixToken extends Token {
      *   as requested (always thrown in this base class).
      */
     public int[][] intMatrix() throws IllegalActionException {
-        throw new IllegalActionException(this.getClass().getName() +
-                " cannot be converted to an integer matrix.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "int matrix"));
     }
 
     /** Test that the value of this Token is close to the argument
@@ -376,8 +376,8 @@ public abstract class MatrixToken extends Token {
      *   as requested (always thrown in this base class).
      */
     public long[][] longMatrix() throws IllegalActionException {
-        throw new IllegalActionException(this.getClass().getName() +
-                " cannot be converted to a long matrix.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "long matrix"));
     }
 
     /** Return a new token whose value is the value of this token

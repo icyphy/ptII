@@ -78,7 +78,7 @@ test LongMatrixToken-1.2 {Create a non-empty instance from an String} {
 test LongMatrixToken-2.0 {Create a non-empty instance and query its value as an int} {
     catch {$p intMatrix} result
     list $result
-} {{ptolemy.kernel.util.IllegalActionException: ptolemy.data.LongMatrixToken cannot be converted to an integer matrix.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' to the type int matrix.}}
 
 ######################################################################
 ####
@@ -86,7 +86,7 @@ test LongMatrixToken-2.0 {Create a non-empty instance and query its value as an 
 test LongMatrixToken-2.1 {Create a non-empty instance and query its value as a double} {
     catch {$p doubleMatrix} result
     list $result
-} {{ptolemy.kernel.util.IllegalActionException: ptolemy.data.LongMatrixToken cannot be converted to a double matrix.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' to the type double matrix.}}
 
 ######################################################################
 ####
@@ -110,7 +110,7 @@ test LongMatrixToken-2.3 {Create a non-empty instance and query its value as a s
 test LongMatrixToken-2.4 {Create a non-empty instance and query its value as a complex} {
     catch {$p complexMatrix} result
     list $result
-} {{ptolemy.kernel.util.IllegalActionException: ptolemy.data.LongMatrixToken cannot be converted to a complex matrix.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' to the type complex matrix.}}
 
 ######################################################################
 ####

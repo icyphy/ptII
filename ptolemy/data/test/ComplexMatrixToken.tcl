@@ -96,7 +96,7 @@ test ComplexMatrixToken-2.0 {Create a non-empty instance and query its value as 
 test ComplexMatrixToken-2.1 {Create a non-empty instance and query its value as a double} {
     catch {$p doubleMatrix} result
     list $result
-} {{ptolemy.kernel.util.IllegalActionException: ptolemy.data.ComplexMatrixToken cannot be converted to a double matrix.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' to the type double matrix.}}
 
 ######################################################################
 ####
@@ -104,7 +104,7 @@ test ComplexMatrixToken-2.1 {Create a non-empty instance and query its value as 
 test ComplexMatrixToken-2.2 {Create a non-empty instance and query its value as a long} {
     catch {$p longMatrix} result
     list $result
-} {{ptolemy.kernel.util.IllegalActionException: ptolemy.data.ComplexMatrixToken cannot be converted to a long matrix.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' to the type long matrix.}}
 
 ######################################################################
 ####

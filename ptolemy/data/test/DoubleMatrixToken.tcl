@@ -94,7 +94,7 @@ test DoubleMatrixToken-2.1 {Create a non-empty instance and query its value as a
 test DoubleMatrixToken-2.2 {Create a non-empty instance and query its value as a long} {
     catch {$p longMatrix} result
     list $result
-} {{ptolemy.kernel.util.IllegalActionException: ptolemy.data.DoubleMatrixToken cannot be converted to a long matrix.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' to the type long matrix.}}
 
 ######################################################################
 ####
