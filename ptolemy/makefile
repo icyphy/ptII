@@ -36,7 +36,8 @@
 # doc directory should be last so we get files from version control before
 # updating the docs
 # filter is not yet ready
-DIRS = kernel plot graph data actor automata gui math domains schematic filter
+DIRS = kernel plot graph data actor automata gui math media \
+	domains schematic filter
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -55,7 +56,7 @@ EXTRA_SRCS =	PtolemyII.ptml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS) filter media system
+MISC_FILES = $(DIRS) filter system
 
 all: suball $(EXTRA_SRCS)
 install: subinstall
