@@ -791,7 +791,9 @@ public class Variable extends Attribute
     /** Specify whether this parameter should be in string mode.
      *  If the argument is true, then specify that the type of this
      *  parameter is string. Otherwise, specify that the type is
-     *  unknown.
+     *  unknown.  Note that it probably does not make sense to
+     *  switch between string mode and not string mode after the
+     *  variable has a value.
      *  @param stringMode True to put the parameter in string mode.
      *  @exception IllegalActionException If the current value of this
      *   parameter is incompatible with the resulting type.
