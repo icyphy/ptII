@@ -1,6 +1,6 @@
 /*******************************************************************
 Dummy C code for overridden method 
-<java.io.PrintStream: void println(java.lang.String)>
+<java.io.PrintStream: void print(java.lang.Object)>
 
 Copyright (c) 2001-2003 The University of Maryland.
 
@@ -28,6 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @author Ankush Varma 
 @version $Id$
 */
-
-printf("%s\n", (char*)p0->f1860107401_value->array_data);
+i1195259493_String value = p0->class->methods.m0295957240_toString(p0);
+printf("%s", (char*) value->f1860107401_value->array_data);
 
