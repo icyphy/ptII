@@ -50,7 +50,7 @@ size, -h. That is, for ODE
 <pre>
     x'=f(x, t), x(0)=x0
 </pre>
-This solver do the following two steps
+This solver performs the following two steps
 <pre>
     x(t+h) = x(t) + h * x'(t+h)
     x(t+) = x(t+h) - h * x'(t+)

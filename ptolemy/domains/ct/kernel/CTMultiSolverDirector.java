@@ -431,11 +431,11 @@ public class CTMultiSolverDirector extends CTDirector {
         // if there are events happening.
         if (hasDiscreteEvents) {
             getBreakPoints().insert(new Double(getCurrentTime()));
-            if (_debugging) _debug(getName(), "has discrete events at time "+
-                    getCurrentTime());
+            if (_debugging) _debug(getName(), "has discrete events at time "
+                    + getCurrentTime());
             _setDiscretePhase(true);
             Iterator discrete =
-                schedule.get(CTSchedule.DISCRETE_ACTORS).actorIterator();
+                    schedule.get(CTSchedule.DISCRETE_ACTORS).actorIterator();
             while (discrete.hasNext()) {
                 Actor actor = (Actor)discrete.next();
                 // Skip the actor if it is an event generator with no

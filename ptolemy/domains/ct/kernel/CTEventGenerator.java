@@ -36,9 +36,9 @@ import ptolemy.actor.Actor;
 //////////////////////////////////////////////////////////////////////////
 //// CTEventGenerator
 /**
-Interface for CT actors that convert continuous time signals to
-discrete events. Typical
-implementations of event generator are samplers, event detectors, etc.
+Interface for CT actors that convert continuous-time signals to
+discrete events. Typical implementations of event generator are
+samplers, event detectors, etc.
 
 @author Jie Liu
 @version $Id$
@@ -49,18 +49,8 @@ public interface CTEventGenerator extends Actor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Implementations of this method should emit
-     *  the discrete event that happens at the current time. If there
-     *  is no such events, do nothing.
-     *  @exception IllegalActionException If the event cannot be sent.
-     *
-     public void emitCurrentEvents() throws IllegalActionException;
-    */
-
-    /** Implementations of this method should return
-     *  true if there is an event at the current time.
+    /** Return true if there is an event at the current time.
      *  @return True if there is an event to emit now.
      */
     public boolean hasCurrentEvent();
-
 }

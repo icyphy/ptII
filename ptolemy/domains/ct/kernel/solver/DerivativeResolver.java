@@ -49,13 +49,13 @@ This solver finds the derivatives of the state variables of an ODE
 with respect to the current time.
 For example, if the ODE is
 <pre>
-    x' = f(x, t)
-</pre>,
+    x' = f(x, t),
+</pre>
 the current time is t0, and
 <pre>
-    x(t0) = x0.
+    x(t0) = x0,
 </pre>
-This method calculate
+then this method calculates
 <pre>
     x'(t0) = f(x(t0), t0).
 </pre>
@@ -66,7 +66,7 @@ This is used for preparing the history for other methods.
 Note that time does not progress under this solver.
 So, this class implements BreakpointODESolver and can only be
 used as a breakpoint solver.
-It assumes that the state variable is continuous after the breakpoint.
+It assumes that state variables are continuous after the breakpoint.
 This may not be true if there are impulses in the system.
 In that case, use ImpulseBESolver as the breakpoint solver for a
 better result.
