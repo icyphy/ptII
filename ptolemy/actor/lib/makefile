@@ -51,13 +51,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	conversions/conversions.jar \
 	gui/gui.jar \
+	hoc/hoc.jar \
 	logic/logic.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
