@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="hde actors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>hde actors</doc>
+
+<entity name="StateSampler" class="ptolemy.domains.hde.lib.StateSampler">
+</entity>
+<entity name="ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+</entity>
+<entity name="HDEMerge" class="ptolemy.domains.hde.lib.HDEMerge">
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
