@@ -99,6 +99,8 @@ public class DEActor extends AtomicActor {
     /** Schedule this actor to be fired at a specified delay relative
      *  to the current time. If the delay specified is less than zero, then
      *  IllegalActionException will be thrown.
+     *
+     *  
      *  FIXME: Change the name, maybe refireAfterDelay()
      *
      *  @param delay The delay, relative to the current time.
@@ -107,12 +109,30 @@ public class DEActor extends AtomicActor {
     public void refireAtTime(double delay) throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
 	// FIXME: the depth is equal to zero ???
-	dir.enqueueEvent(this, delay, 0);
+        // If this actor has input ports, then the depth is set to be
+        // one higher than the max depth of the input ports.
+        // If this actor has no input ports, then the depth is set to
+        // to be zero.
+        long maxdepth = -1;
+        Enumeration iports = this.inputPorts();
+        while (iports.hasMoreElements()) {
+            IOPort p = (IOPort) iports.nextElement();
+            Receiver[][] r = p.getReceivers();
+            if (r == null) continue;
+            DEReceiver rr = (DEReceiver) r[0][0];
+            if (rr._depth > maxdepth) {
+                maxdepth = rr._depth;
+            }
+        }
+        dir.enqueueEvent(this, delay, maxdepth+1);
     }
+
+
     /** Empty all input ports.
      *
      *  @exception IllegalActionException Not thrown.
      */
+    /*
     public void wrapup() throws IllegalActionException {
 	super.wrapup();
 	Enumeration inputs = inputPorts();
@@ -132,7 +152,8 @@ public class DEActor extends AtomicActor {
 	    
 	    
 	}
-    }  
+    } 
+    */
   ///////////////////////////////////////////////////////////////////
   ////                         private variables                 ////
   

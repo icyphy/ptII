@@ -112,15 +112,15 @@ import java.util.Enumeration;
 // The topological depth of the receivers are static and computed once
 // in the initialization() method. This means that mutations are not
 // currently supported.
-public class DECQDirector extends Director {
-
+public class DECQDirector extends DEDirector {
+    
     /** Construct a director with empty string as name in the
      *  default workspace.
      */
     public DECQDirector() {
         super();
     }
-
+    
     /** Construct a director with the specified name in the default
      *  workspace. If the name argument is null, then the name is set to the
      *  empty string. This director is added to the directory of the workspace,
@@ -204,41 +204,43 @@ public class DECQDirector extends Director {
 
     /** Fire the one actor identified by the prefire() method as ready to fire.
      *  If there are multiple simultaneous events destined to this actor,
-     *  then they have all been dequeued from the global queue and put into
-     *  the corresponding receivers.
+     *  then they will have all been dequeued from the global queue and put 
+     *  into the corresponding receivers.
      *  <p>
-     *  NOTE: Currently, this means that there may be multiple simultaneous
-     *  events in a given receiver.  Since many actors may be written in
-     *  such a way that they do not expect this, this may change in the future.
-     *  I.e., these events may be made visible over multiple firings rather
-     *  than all at once.
+     *  The actor will be fired multiple times until it has consumed all tokens
+     *  in all of its receivers. If the firing actor resulted from a 'pure
+     *  event' then the actor will be fired exactly once.
      */
     public void fire()
-            throws CloneNotSupportedException, IllegalActionException {
-        _actorToFire.fire();
-    }
-
-    /** Return the current time of the simulation. Firing actors that need to
-     *  know the current time (e.g. for calculating the time stamp of the
-     *  delayed outputs) call this method.
-     */
-    public double getCurrentTime() {
-        return _currentTime;
-    }
-
-    /** Return the time of the earliest event seen in the simulation.
-     *  Before the simulation begins, this is java.lang.Double.MAX_VALUE.
-     *  @return The start time of the simulation.
-     */
-    public double getStartTime() {
-        return _startTime;
-    }
-
-    /** Return the stop time of the simulation, as set by setStopTime().
-     *  @return The stop time of the simulation.
-     */
-    public double getStopTime() {
-        return _stopTime;
+	 throws CloneNotSupportedException, IllegalActionException {
+		
+	// Repeatedly fire the actor until it doesn't have any more filled 
+	// receivers. In the case of 'pure event' the actor is fired once.
+	// 
+	boolean refire = false;
+        /*
+        System.out.println("Firing actor: " + 
+                ((Nameable)_actorToFire).description(FULLNAME|CLASSNAME) + 
+                " at time: " + 
+                _currentTime);
+        */
+        System.out.println("Firing actor: " +
+                ((Entity)_actorToFire).description(FULLNAME|CLASSNAME) +
+                           " at time: " +
+                           _currentTime);
+	do {
+	    _actorToFire.fire();
+	    // check _filledReceivers to see if there's any receivers left
+	    // that's not emptied.
+	    refire = false;
+	    Enumeration enum = _filledReceivers.elements();
+	    while (enum.hasMoreElements()) {
+		DEReceiver r = (DEReceiver)enum.nextElement();
+		if (r.hasToken()) {
+		    refire = true;
+		}
+	    }
+	} while (refire);
     }
 
     /** Set current time to zero, calculate priorities for simultaneous
@@ -264,11 +266,16 @@ public class DECQDirector extends Director {
      */
     public void initialize()
             throws CloneNotSupportedException, IllegalActionException {
+        
+        // FIXME: Something weird going on here with respect to the
+        // order of method invocation.
 
 	// initialize the global event queue.
 	_cQueue = new CalendarQueue(new DECQComparator());
+        
 	// initialize the directed graph for scheduling.
-	_dag = new DirectedGraph();
+	_dag = new DirectedAcyclicGraph();
+	// FIXME: why current time is started to be 0.0 ???
         _currentTime = 0.0;
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
@@ -281,16 +288,10 @@ public class DECQDirector extends Director {
 	    throw new IllegalActionException("Can't initialize a "+
 		    "cyclic graph in DECQDirector.initialize()");
 	}
+        // Call the parent initialize method to create the receivers.
+        super.initialize();
         // Set the depth field of the receivers.
         _computeDepth();
-        super.initialize();
-    }
-
-    /** Return a new receiver of a type DEReceiver.
-     *  @return A new DEReceiver.
-     */
-    public Receiver newReceiver() {
-        return new DEReceiver();
     }
 
     /** Invoke the base class prefire() method, and if it returns true,
@@ -317,8 +318,12 @@ public class DECQDirector extends Director {
             NameDuplicationException {
 	// During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field.
+
         _actorToFire = null;
+	// Initialize the _filledReceivers field.
+	_filledReceivers.clear();
 	if (super.prefire()) {
+
             DEEvent currentEvent = null;
             // Keep taking events out until there are no more simultaneous
             // events or until the queue is empty. Some events get put back
@@ -333,7 +338,8 @@ public class DECQDirector extends Director {
                     break;
                 }
                 if (_actorToFire == null) {
-                    // Always accept the firstevent.
+                    // This is first time we're in the loop, therefore always
+		    // accept the event.
                     _actorToFire = currentEvent.actor;
                     
                     // Advance current time.
@@ -346,8 +352,8 @@ public class DECQDirector extends Director {
 		    if (_currentTime < _startTime) {
 			if (_startTimeInitialized) {
 			    throw new InternalErrorException("DECQDirector "+
-				    "prefire bug.. trying to initiale start "+
-				    "time twice.");
+				    "prefire bug.. trying to initialize " +
+				    "start time twice.");
 			}
 
 			_startTime = _currentTime;
@@ -359,17 +365,35 @@ public class DECQDirector extends Director {
 			return false;
 		    }
 
-                    // Transfer the event to the port
+                    // Transfer the event to the receiver and keep track
+		    // of which receiver is filled.
                     DEReceiver rec = currentEvent.receiver;
+		    // If rec is null, then it's a 'pure event', and there's
+		    // no need to put event into receiver.
                     if (rec != null) {
+			// Adds the receiver to the _filledreceivers list.
+			if (!_filledReceivers.includes(rec)) {
+			    _filledReceivers.insertFirst(rec);
+			}
+			// Transfer the event to the receiver.
                         rec._triggerEvent(currentEvent.token);
-                    }
+                    } 
                 } else {
+		    // Not the first time through the loop; check if the event
+		    // has time stamp equal to previously obtained current
+		    // time. Then check if it's for the same actor.
 
                     // Check whether the event occurred at current time.
-                    if (currentEvent.key.timeStamp() != _currentTime) {
+		    if (currentEvent.key.timeStamp() < _currentTime) {
+			throw new InternalErrorException("Event that was "+
+				"dequeued later has smaller time stamp. " +
+				"Check DECQDirector for bug.");
+		    }
+                    if (currentEvent.key.timeStamp() > _currentTime) {
                         // The event has a later time stamp, so we put it back
                         fifo.put(currentEvent);
+			// Break the loop, since all events after this will
+			// all have time stamp later or equal to this one.
                         break;
                     } else {
                         // The event has the same time stamp as the first
@@ -385,15 +409,17 @@ public class DECQDirector extends Director {
                             // because the event in the receiver may be an
                             // old one...
                             DEReceiver rec = currentEvent.receiver;
+			    // if rec is null, then it's a 'pure event' and
+			    // there's no need to put event into receiver.
                             if (rec != null) {
+				// Adds the receiver to the _filledreceivers 
+				// list.
+				if (!_filledReceivers.includes(rec)) {
+				    _filledReceivers.insertFirst(rec);
+				}
+				// Transfer the event to the receiver.
                                 rec._triggerEvent(currentEvent.token);
-                            } else {
-				// FIXME: what should happen here...
-				// This shouldn't happen ?
-				// FIXME: Ack.. turned out this does happen..
-				System.out.println("Null receiver in event destined for actor " + ((Entity)currentEvent.actor).description(FULLNAME));
-				
-			    }
+                            } 
                         } else {
                             // Put it back in the queue.
                             fifo.put(currentEvent);
@@ -412,13 +438,6 @@ public class DECQDirector extends Director {
         return _actorToFire != null;
     }
 
-    /** Set the stop time of the simulation.
-     *  @param stopTime The new stop time.
-     */
-    public void setStopTime(double stopTime) {
-        this._stopTime = stopTime;
-    }
-
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
@@ -430,10 +449,9 @@ public class DECQDirector extends Director {
     // there's a flaw in the design.
     private void _constructDirectedGraph() {
         LinkedList portList = new LinkedList();
-	LinkedList deltaList = new LinkedList();
 
         // Clear the graph
-        _dag = new DirectedGraph();
+        _dag = new DirectedAcyclicGraph();
 
         // First, include all input ports to be nodes in the graph.
         CompositeActor container = ((CompositeActor)getContainer());
@@ -443,23 +461,14 @@ public class DECQDirector extends Director {
             while (allactors.hasMoreElements()) {
 		// get all the input ports in that actor
 		Actor actor = (Actor)allactors.nextElement();
-		// exclude input ports of DEDelta actors.
-		if (!(actor instanceof DEDelta)) {
-		    Enumeration allports = actor.inputPorts();
-		    while (allports.hasMoreElements()) {
-			IOPort port = (IOPort)allports.nextElement();
-			// create the nodes in the graph.
-			_dag.add(port);
-			portList.insertLast(port);
-		    }
-		} else {
-		    Enumeration allports = actor.inputPorts();
-		    while (allports.hasMoreElements()) {
-			IOPort port = (IOPort)allports.nextElement();
-			deltaList.insertLast(port);
-		    }
+		Enumeration allports = actor.inputPorts();
+		while (allports.hasMoreElements()) {
+		    IOPort port = (IOPort)allports.nextElement();
+		    // create the nodes in the graph.
+		    _dag.add(port);
+		    portList.insertLast(port);
 		}
-            }
+	    }
         }
 
         // Next, create the directed edges.
@@ -487,15 +496,15 @@ public class DECQDirector extends Director {
 		Enumeration triggers = p.triggersPorts();
 		while (triggers.hasMoreElements()) {
 		    IOPort outPort = (IOPort) triggers.nextElement();
-		    IOPort deltaInPort = _searchDeltaPort(outPort);
+		    // IOPort deltaInPort = _searchDeltaPort(outPort);
 		    // find the input ports connected to outPort
 		    Enumeration inPortEnum = outPort.deepConnectedInPorts();
 		    while (inPortEnum.hasMoreElements()) {
                         IOPort pp = (IOPort)inPortEnum.nextElement();
                         // create an arc from p to pp
                         if (_dag.contains(pp)) {
-			    if (pp != deltaInPort)
-			       _dag.addEdge(p,pp);
+			    //if (pp != deltaInPort)
+			    _dag.addEdge(p,pp);
                         } else {
                             // FIXME: Could this exception be triggered by
                             // level-crossing transitions?  In this case,
@@ -512,15 +521,15 @@ public class DECQDirector extends Director {
                         ((Actor)ioPort.getContainer()).outputPorts();
                 while (triggers.hasMoreElements()) {
 		    IOPort outPort = (IOPort) triggers.nextElement();
-		    IOPort deltaInPort = _searchDeltaPort(outPort);
+		    //IOPort deltaInPort = _searchDeltaPort(outPort);
                     // find out the input ports connected to outPort
                     Enumeration inPortEnum = outPort.deepConnectedInPorts();
                     while (inPortEnum.hasMoreElements()) {
                         IOPort pp = (IOPort)inPortEnum.nextElement();
                         // create an arc from p to pp
                         if (_dag.contains(pp)) {
-			    if (pp != deltaInPort)
-				_dag.addEdge(ioPort,pp);
+			    //if (pp != deltaInPort)
+			    _dag.addEdge(ioPort,pp);
                         } else {
                             // FIXME: Could this exception be triggered by
                             // level-crossing transitions?  In this case,
@@ -537,7 +546,7 @@ public class DECQDirector extends Director {
     // Perform topological sort on the directed graph and use the result
     // to set the depth field of the DEReceiver objects.
     private void _computeDepth() {
-	Object[] sort = (Object[]) _dag.topSort();
+        Object[] sort = (Object[]) _dag.topologicalSort();
 	for(int i=sort.length-1; i >= 0; i--) {
             IOPort p = (IOPort)sort[i];
             // FIXME: Debugging topological sort
@@ -568,20 +577,7 @@ public class DECQDirector extends Director {
             }
 	}
     }
-
-    private IOPort _searchDeltaPort(IOPort outPort) {
-	Enumeration cpEnum = outPort.connectedPorts();
-	while (cpEnum.hasMoreElements()) {
-	    IOPort cp = (IOPort) cpEnum.nextElement();
-	    if (cp.isInput() && ((cp.getContainer()) instanceof DEDelta)) {
-		Actor a = (Actor)cp.getContainer();
-		IOPort p = (IOPort)a.outputPorts().nextElement();
-		return (IOPort)p.connectedPorts().nextElement();
-	    }
-	}
-	return null;
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
 
@@ -621,6 +617,109 @@ public class DECQDirector extends Director {
         public DESortKey key;
     }
 
+    private class DECQComparator implements CQComparator {
+	
+	/** Compare its two argument for order. Return a negative integer,
+	 *  zero, or a positive integer as the first argument is less than,
+	 *  equal to, or greater than the second.
+	 *  <p>
+	 *  Both arguments have to be instances of DESortKey, otherwise a
+	 *  ClassCastException will be thrown.
+	 *  <p>
+	 *  The comparison is done based on their time stamps, and in case the
+	 *  time stamps are equal, then their receiverDepth values is used.
+	 * @param object1 the first DESortKey argument
+	 * @param object2 the second DESortKey argument
+	 * @return a negative integer, zero, or a positive integer as the first
+	 *         argument is less than, equal to, or greater than the second.
+	 * @exception ClassCastException object1 and object2 have to be instances
+	 *            of DESortKey
+	 */
+	public int compare(Object object1, Object object2) {
+	    
+	    DESortKey a = (DESortKey) object1;
+	    DESortKey b = (DESortKey) object2;
+	    
+	    if ( a.timeStamp() < b.timeStamp() )  {
+		return -1;
+	    } else if ( a.timeStamp() > b.timeStamp() ) {
+		return 1;
+	    } else if ( a.receiverDepth() < b.receiverDepth() ) {
+		return -1;
+	    } else if ( a.receiverDepth() > b.receiverDepth() ) {
+		return 1;
+	    } else {
+		return 0;
+	    }
+    }
+	
+	/** Given a key, a zero reference, and a bin width, return the index of
+	 *  the bin containing the key.
+	 *  <p>
+	 *  If the arguments are not instances of DESortKey, then a
+	 *  ClassCastException will be thrown.
+	 *  @param key the key
+	 *  @param zeroReference the zero reference.
+	 *  @param binWidth the width of the bin
+	 *  @return The index of the bin containing the key, according to the
+	 *          zero reference, and the bin width.
+	 *  @exception ClassCastException Arguments need to be instances of
+	 *          DESortKey.
+	 */
+	public long getBinIndex(Object key, Object zeroReference, Object binWidth) {
+	    DESortKey a = (DESortKey) key;
+	    DESortKey w = (DESortKey) binWidth;
+	    DESortKey zero = (DESortKey) zeroReference;
+	    
+	    return (long)((a.timeStamp() - zero.timeStamp())/w.timeStamp());
+	}
+	
+	
+	/** Given an array of DESortKey objects, find the appropriate bin
+	 *  width. By 'appropriate', the bin width is chosen such that on average
+	 *  the number of entry in all non-empty bins is equal to one.
+	 *  If the argument is null, return the default bin width which is 1.0
+	 *  for this implementation.
+	 *  <p>
+	 *  If the argument is not an instance of DESortKey[], then a
+	 *  ClassCastException will be thrown.
+	 *
+	 *  @param keyArray an array of DESortKey objects.
+	 *  @return The bin width.
+	 *  @exception ClassCastException keyArray need to be an array of
+	 *          DESortKey.
+	 *
+	 */
+	public Object getBinWidth(Object[] keyArray) {
+	    
+	    if ( keyArray == null ) {
+		return new DESortKey(1.0, 0);
+	    }
+	    
+	    double[] diff = new double[keyArray.length - 1];
+	    
+	    double average = 0;
+	    for (int i = 1; i < keyArray.length; ++i) {
+		diff[i-1] = ((DESortKey)keyArray[i]).timeStamp() -
+		    ((DESortKey)keyArray[i-1]).timeStamp();
+		average = average + diff[i-1];
+	    }
+	    average = average / diff.length;
+	    double effAverage = 0;
+	    int nEffSamples = 0;
+	    for (int i = 1; i < keyArray.length; ++i) {
+		if ( diff[i-1] < 2*average ) {
+		    nEffSamples++;
+		    effAverage = effAverage + diff[i-1];
+		}
+	    }
+	    effAverage = effAverage / nEffSamples;
+	    return new DESortKey(3.0 * effAverage, 0);
+	    
+	}
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -630,21 +729,20 @@ public class DECQDirector extends Director {
     // variables to keep track of the objects currently firing.
     private Actor _actorToFire = null;
 
-    // Defines the stopping condition
-    private double _stopTime = 0.0;
-
-    // The time of the earliest event seen in the current simulation.
-    private double _startTime = Double.MAX_VALUE;
-
-    // The current time of the simulation.
-    // Firing actors may get the current time by calling getCurrentTime()
-    private double _currentTime = 0.0;
-
     // Directed Graph whose nodes represent input ports and whose
     // edges represent delay free paths.  This is used for prioritzing
     // simultaneous events.
-    private DirectedGraph _dag = new DirectedGraph();
+    private DirectedAcyclicGraph _dag=null;
+
+    // Access with insertFirst(), take().
+    private LinkedList _filledReceivers = new LinkedList();
 
     // FIXME: debug variables
     private boolean _startTimeInitialized = false;
 }
+
+
+
+
+
+

@@ -102,12 +102,11 @@ public class DEReceiver implements Receiver {
     }
 
     /** Return the director.
-     *  @return An instance of DECQDirector.
+     *  @return An instance of DEDirector.
      *  @exception IllegalActionException If there is no container port, or
      *   if the port has no container actor, or if the actor has no director.
      */
-    // FIXME: This should return DEDirector, not DECQDirector.
-    public DECQDirector getDirector() throws IllegalActionException {
+    public DEDirector getDirector() throws IllegalActionException {
         IOPort port = (IOPort)getContainer();
         if (port != null) {
             if (_directorVersion == port.workspace().getVersion()) {
@@ -117,8 +116,8 @@ public class DEReceiver implements Receiver {
             Actor actor = (Actor)port.getContainer();
             if (actor != null) {
                 Director dir = actor.getDirector();
-                if (dir instanceof DECQDirector) {
-                    _director = (DECQDirector)dir;
+                if (dir instanceof DEDirector) {
+                    _director = (DEDirector)dir;
                     _directorVersion = port.workspace().getVersion();
                     return _director;
                 }
@@ -211,8 +210,7 @@ public class DEReceiver implements Receiver {
     // _depth: The topological depth associated with this receiver.
     long _depth = 0;
 
-    // FIXME: This should be DEDirector, not DECQDirector.
-    DECQDirector _director;
+    DEDirector _director;
     long _directorVersion = -1;
 
     // List for storing tokens.  Access with clear(), insertFirst(), take().

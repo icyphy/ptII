@@ -55,9 +55,9 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
-	DECQComparator.java \
+	DEActor.java \
 	DECQDirector.java \
-	DEDelta.java \
+	DEDirector.java \
 	DEIOPort.java \
 	DEReceiver.java \
 	DESortKey.java
