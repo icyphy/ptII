@@ -139,7 +139,7 @@ public class EditParametersDialog extends ComponentDialog
                     _target.requestChange(
                             new MoMLChangeRequest(this, _target, moml));
             }
-        } else if (buttonPressed().equals("Edit Style")) {
+        } else if (buttonPressed().equals("Edit Styles")) {
             // Create a dialog for setting parameter styles.
             try {
                 StyleConfigurer panel = new StyleConfigurer(target);
@@ -155,7 +155,7 @@ public class EditParametersDialog extends ComponentDialog
                 new EditParametersDialog(_owner, _target);
 
             } catch (IllegalActionException ex) {
-                MessageHandler.error("Edit Parameter Style failed", ex);
+                MessageHandler.error("Edit Parameter Styles failed", ex);
             }         
         }
     }
@@ -212,7 +212,7 @@ public class EditParametersDialog extends ComponentDialog
         super._handleClosing();
         if (!buttonPressed().equals("Commit")
                 && !buttonPressed().equals("Add")
-                && !buttonPressed().equals("Edit Style")
+                && !buttonPressed().equals("Edit Styles")
                 && !buttonPressed().equals("Remove")) {
             // Restore original parameter values.
             ((Configurer)contents).restore();
@@ -272,7 +272,7 @@ public class EditParametersDialog extends ComponentDialog
 
     // Button labels.
     private static String[] _moreButtons
-            = {"Commit", "Add", "Remove", "Edit Style", "Cancel"};
+            = {"Commit", "Add", "Remove", "Edit Styles", "Cancel"};
 
     // The owner window.
     private Frame _owner;
