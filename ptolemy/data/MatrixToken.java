@@ -263,8 +263,8 @@ public abstract class MatrixToken extends Token {
         } else if (type == BaseType.FIX) {
             token = new FixMatrixToken(tokens, rows, columns);
         } else {
-            throw new IllegalActionException("Unrecognized type for matrix" +
-                    " creation.");
+            throw new IllegalActionException("Unrecognized type " + type + 
+                    " for matrix creation.");
         }
         return token;
     }
