@@ -8,7 +8,7 @@ software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE L IABLE TO ANY PARTY
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
@@ -297,11 +297,11 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public Parameter synchronizeToRealTime;
 
-    /** The resolution in comparing time.
-     *  The default value is 1e-10, of type DoubleToken.
+    /** The number of digits of the fractional part of the model time.
+     *  The default value is 10, and the type is int.
      */
-    public Parameter timeResolution;
-    
+    public Parameter timeScale;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -345,14 +345,9 @@ public class DEDirector extends Director implements TimedDirector {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken())
                 .booleanValue();
-        } else if (attribute == timeResolution) {
-            double value = ((DoubleToken)timeResolution.getToken()).
-                doubleValue();
-            if (value <= 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot set a negative or zero time resolution.");
-            }
-            setTimeResolution(value);
+        } else if (attribute == timeScale) {
+            int value = ((IntToken)timeScale.getToken()).intValue();
+            setTimeScale(value);
         } else {
             super.attributeChanged(attribute);
         }
@@ -637,7 +632,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return The next larger time on the event queue.
      */
     public double getNextIterationTime() {
-        return _eventQueue.get().timeStamp().getTimeValue();
+        return _eventQueue.get().timeStamp().getDoubleValue();
     }
 
     /** Return the time stamp of the next event in the queue with time stamp
@@ -667,7 +662,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return the start time.
      */
     public final double getStartTime() {
-        return getModelStartTime().getTimeValue();
+        return getModelStartTime().getDoubleValue();
     }
 
     /** Return the start time parameter value. This method is final
@@ -683,7 +678,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return the stop time.
      */
     public final double getStopTime() {
-        return getModelStopTime().getTimeValue();
+        return getModelStopTime().getDoubleValue();
     }
 
     /** Return the stop time. This method is final
@@ -819,7 +814,7 @@ public class DEDirector extends Director implements TimedDirector {
 
         // A nextEventTime of Double.NEGATIVE_INFINITY is used to represent
         // a firing as soon as possible.
-        if (nextEventTime.equalTo(timeConstants.NEGATIVE_INFINITY)) {
+        if (nextEventTime.equals(timeConstants.NEGATIVE_INFINITY)) {
             nextEventTime = outsideCurrentTime;
             return true;
         }
@@ -832,8 +827,8 @@ public class DEDirector extends Director implements TimedDirector {
             throw new IllegalActionException(this,
                     "Prefire method: Missed a firing at "
                     + nextEventTime + "."
-                    + " The outside time is already " +
-                    + outsideCurrentTime.getTimeValue() + ".");
+                    + " The outside time is already "
+                    + outsideCurrentTime + ".");
         }
 
         // Now we check if there's any external input.
@@ -854,7 +849,7 @@ public class DEDirector extends Director implements TimedDirector {
             return true;
         } else {
             // If there is no external input
-            if (nextEventTime.equalTo(outsideCurrentTime)) {
+            if (nextEventTime.equals(outsideCurrentTime)) {
                 // If there is an internal event scheduled to happen 
                 // at the current time, it is the right time to fire.
                 setModelTime(nextEventTime);
@@ -1052,7 +1047,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // An embedded director should process events 
                     // that only happen at the current time.
                     // If the event is in the past, that is an error.
-                    if (!nextEvent.timeStamp().equalTo(
+                    if (!nextEvent.timeStamp().equals(
                         timeConstants.NEGATIVE_INFINITY) 
                         &&
                         nextEvent.timeStamp().compareTo(getModelTime()) < 0){
@@ -1171,11 +1166,11 @@ public class DEDirector extends Director implements TimedDirector {
                             // minimum double value.
                             double elapsedTimeInSeconds =
                                 ((double)elapsedTime)/1000.0;
-                            if (currentTime.getTimeValue() <= elapsedTimeInSeconds) {
+                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
                                 break;
                             }
                             long timeToWait = (long)(currentTime.subtract(
-                                elapsedTimeInSeconds).getTimeValue() * 1000.0);
+                                elapsedTimeInSeconds).getDoubleValue() * 1000.0);
                             if (timeToWait > 0) {
                                 if (_debugging) {
                                     _debug("Waiting for real time to pass: "
@@ -1204,7 +1199,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // FIXME: is the special NEGATIVE_INFINITY time
                     // necessary?
                     // Deal with a fireAtCurrentTime event.
-                    if (currentTime.equalTo(timeConstants.NEGATIVE_INFINITY)) {
+                    if (currentTime.equals(timeConstants.NEGATIVE_INFINITY)) {
                         currentTime = getModelTime();
                     }
 
@@ -1272,7 +1267,7 @@ public class DEDirector extends Director implements TimedDirector {
                 boolean theSameActor = nextEvent.actor().equals(
                     currentEvent.actor());
                 if (nextEvent.timeStamp()
-                        .equalTo(timeConstants.NEGATIVE_INFINITY) ||
+                        .equals(timeConstants.NEGATIVE_INFINITY) ||
                      nextEvent.hasTheSameTagAndDepthAs(currentEvent) ||
                      (nextEvent.hasTheSameTagAs(currentEvent) && 
                         hasPureEvent && theSameActor)){
@@ -1343,7 +1338,7 @@ public class DEDirector extends Director implements TimedDirector {
         int microstep = 0;
         if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep + 1;
-        } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
+        } else if (!time.equals(timeConstants.NEGATIVE_INFINITY) &&
                 time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
@@ -1426,7 +1421,7 @@ public class DEDirector extends Director implements TimedDirector {
         int microstep = 0;
         if (time == getModelTime()) {
             microstep = _microstep;
-        } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
+        } else if (!time.equals(timeConstants.NEGATIVE_INFINITY) &&
                 time.compareTo(getModelTime()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
@@ -1806,9 +1801,8 @@ public class DEDirector extends Director implements TimedDirector {
             stopTime.setExpression("MaxDouble");
             stopTime.setTypeEquals(BaseType.DOUBLE);
 
-            timeResolution = new Parameter(this, "timeResolution",
-                    new DoubleToken("1e-10"));
-            timeResolution.setTypeEquals(BaseType.DOUBLE);
+            timeScale = new Parameter(this, "scale", new IntToken("10"));
+            timeScale.setTypeEquals(BaseType.INT);
 
             stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
                     new BooleanToken(true));

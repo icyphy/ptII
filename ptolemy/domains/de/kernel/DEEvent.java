@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
    The time stamp, microstep, and depth are compared in that order by the
    compareTo() method from the Comparable interface.
    <p>
-   @author Lukito Muliadi, Edward A. Lee
+   @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (liuj)
@@ -175,7 +175,7 @@ public final class DEEvent implements Comparable {
      *  @param event The event to compare against.
      */
     public final boolean hasTheSameTagAs(DEEvent event) {
-        return (_timeStamp.equalTo(event._timeStamp)) &&
+        return (_timeStamp.equals(event._timeStamp)) &&
             (_microstep == event._microstep);
     }
 

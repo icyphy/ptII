@@ -206,9 +206,9 @@ public class DECQEventQueue implements DEEventQueue {
          *   an instance of DEEvent.
          */
         public final long getVirtualBinNumber(Object event) {
-            long value = (long)((((DEEvent) event).timeStamp().getTimeValue()
-                - _zeroReference.timeStamp().getTimeValue())
-                / _binWidth.timeStamp().getTimeValue());
+            long value = (long)((((DEEvent) event).timeStamp().getDoubleValue()
+                - _zeroReference.timeStamp().getDoubleValue())
+                / _binWidth.timeStamp().getDoubleValue());
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
@@ -244,13 +244,13 @@ public class DECQEventQueue implements DEEventQueue {
 
             double average =
                 (((DEEvent)entryArray[entryArray.length - 1]).timeStamp()
-                .subtract(((DEEvent)entryArray[0]).timeStamp())).getTimeValue() 
+                .subtract(((DEEvent)entryArray[0]).timeStamp())).getDoubleValue() 
                 / (entryArray.length-1);
             double effectiveAverage = 0.0;
             int effectiveSamples = 0;
             for (int i = 0; i < entryArray.length - 1; ++i) {
                 diff[i] = ((DEEvent)entryArray[i+1]).timeStamp().subtract(
-                    ((DEEvent)entryArray[i]).timeStamp()).getTimeValue();
+                    ((DEEvent)entryArray[i]).timeStamp()).getDoubleValue();
                 if (diff[i] < 2.0 * average) {
                     effectiveSamples++;
                     effectiveAverage += diff[i];

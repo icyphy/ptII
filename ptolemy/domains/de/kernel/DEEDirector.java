@@ -244,11 +244,11 @@ public class DEEDirector extends DEDirector {
                             // (and maybe even longer than Sun Microsystems).
                             double elapsedTimeInSeconds =
                                 ((double)elapsedTime)/1000.0;
-                            if (currentTime.getTimeValue() <= elapsedTimeInSeconds) {
+                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
                                 break;
                             }
                             long timeToWait = (long)(currentTime.subtract(
-                                elapsedTimeInSeconds).getTimeValue()*1000.0);
+                                elapsedTimeInSeconds).getDoubleValue()*1000.0);
                             if (timeToWait > 0) {
                                 if (_debugging) {
                                     _debug("Waiting for real time to pass: "
@@ -275,7 +275,7 @@ public class DEEDirector extends DEDirector {
                     actorToFire = currentEvent.actor();
 
                     // Deal with a fireAtCurrentTime event.
-                    if (currentTime.equalTo(timeConstants.NEGATIVE_INFINITY)) {
+                    if (currentTime.equals(timeConstants.NEGATIVE_INFINITY)) {
                         currentTime = getModelTime();
                     }
 
@@ -329,7 +329,7 @@ public class DEEDirector extends DEDirector {
                 // FIXME: the same ioPort requirement is not correct.
                 // Consider the multi-input atomic actors, e.g. the
                 // BooleanSelect and Inhibit.
-                if ((nextEvent.timeStamp().equalTo(
+                if ((nextEvent.timeStamp().equals(
                     timeConstants.NEGATIVE_INFINITY) ||
                             nextEvent.hasTheSameTagAndDepthAs(currentEvent))
                         && nextEvent.actor() == currentEvent.actor()) {
@@ -378,7 +378,7 @@ public class DEEDirector extends DEDirector {
         int microstep = 0;
         if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep + 1;
-        } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
+        } else if (!time.equals(timeConstants.NEGATIVE_INFINITY) &&
                 time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
@@ -446,7 +446,7 @@ public class DEEDirector extends DEDirector {
 
         if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep;
-        } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
+        } else if (!time.equals(timeConstants.NEGATIVE_INFINITY) &&
                 time.compareTo(getModelTime()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,

@@ -81,7 +81,7 @@ test Server-3.2 {test with negative service time} {
     $serviceTime setExpression "-1.0"
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Attempt to queue an event in the past: Current time is 0.0 while event time is -1.0
+} {{ptolemy.kernel.util.IllegalActionException: Attempt to queue an event in the past: Current time is 0.0000000000 while event time is -1.0000000000
   in .top.server}}
 
 test Server-4.0 {Test with service time input} {

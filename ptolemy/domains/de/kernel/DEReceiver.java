@@ -199,7 +199,7 @@ public class DEReceiver extends AbstractReceiver {
             throw new IllegalActionException(getContainer(),
                     "Cannot enqueue a token in the past.");
         }
-        if (time.equalTo(now)) {
+        if (time.equals(now)) {
             // Use special enqueue method to increment microstep.
             dir._enqueueEvent(this, token);
         } else {

@@ -154,8 +154,8 @@ public class SingleEvent extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         double eventTimeValue = ((DoubleToken)time.getToken()).doubleValue();
-        Time eventTime = new Time(this, eventTimeValue);
-        if (getDirector().getModelTime().equalTo(eventTime)) {
+        Time eventTime = new Time(getDirector(), eventTimeValue);
+        if (getDirector().getModelTime().equals(eventTime)) {
             output.send(0, value.getToken());
         }
         super.fire();

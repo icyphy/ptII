@@ -170,7 +170,7 @@ public class TimedDelay extends DETransformer {
         _currentOutput = null;
         if (_delayedTokens.size() > 0) {
             _currentOutput = (Token)_delayedTokens.get(
-                new Double(currentTime.getTimeValue()));
+                new Double(currentTime.getDoubleValue()));
             if (_currentOutput != null) {
                 output.send(0, _currentOutput);
                 // FIXME: is it too early to return? what if the delay is 0
@@ -211,12 +211,12 @@ public class TimedDelay extends DETransformer {
        // at the current time.
        if (_delayedTokens.size() > 0 && 
            _currentOutput != null) {
-           _delayedTokens.remove(new Double(currentTime.getTimeValue()));
+           _delayedTokens.remove(new Double(currentTime.getDoubleValue()));
        }
        // Store the not handled token that is scheduled to 
        // be sent in future.
        if (_currentInput != null) {
-           _delayedTokens.put(new Double(delayToTime.getTimeValue()), 
+           _delayedTokens.put(new Double(delayToTime.getDoubleValue()), 
                _currentInput);
            getDirector().fireAt(this, delayToTime);
        }

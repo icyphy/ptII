@@ -75,7 +75,7 @@
     </relation>
     <link port="Server.input" relation="relation"/>
     <link port="Server.output" relation="relation3"/>
-    <link port="Server.serviceTime" relation="relation2"/>
+    <link port="Server.newServiceTime" relation="relation2"/>
     <link port="Clock.output" relation="relation"/>
     <link port="Clock2.output" relation="relation2"/>
     <link port="Test.input" relation="relation4"/>

@@ -47,18 +47,18 @@ import ptolemy.kernel.util.StringAttribute;
    This actor models a server with a fixed or variable service time.
    A server is either busy (serving a customer) or not busy at any given time.
    If an input arrives when it is not busy, then the input token is produced
-   on the output with a delay given by the <i>serviceTime</i> parameter.
+   on the output with a delay given by the <i>newServiceTime</i> parameter.
    If an input arrives while the server is busy, then that input is
    queued until the server becomes free, at which point it is produced
-   on the output with a delay given by the <i>serviceTime</i> parameter.
+   on the output with a delay given by the <i>newServiceTime</i> parameter.
    If several inputs arrive while the server is busy, then they are
    served on a first-come, first-served basis.
    <p>
-   If the <i>serviceTime</i> parameter is not set, it defaults to 1.0.
+   If the <i>newServiceTime</i> parameter is not set, it defaults to 1.0.
    The value of the parameter can be changed at any time during execution
    of the model by providing an input event at the <i>newServiceTime</i>
    input port.  The token read at that port replaces the value of the
-   <i>serviceTime</i> parameter.
+   <i>newServiceTime</i> parameter.
    <p>
    This actor declares that there is delay between the <i>input</i>
    and the <i>output</i> ports and between <i>newServiceTime</i>
@@ -66,7 +66,7 @@ import ptolemy.kernel.util.StringAttribute;
    assigning priorities to firings.
    <p>
    Like the TimedDelay actor, the output is produced with a future time
-   stamp (larger than current time by <i>serviceTime</i>).  That output
+   stamp (larger than current time by <i>newServiceTime</i>).  That output
    token cannot be retracted once produced, even if the server actor
    is deleted from the topology.  If the service time is zero, then
    the output event is queued to be processed in the next microstep,
@@ -125,7 +125,7 @@ public class Server extends VariableDelay {
         // produce output
         if (currentTime.compareTo(_nextTimeFree) == 0) {
             _currentOutput = (Token)_delayedTokens.get(
-                new Double(currentTime.getTimeValue()));
+                new Double(currentTime.getDoubleValue()));
             if (_currentOutput == null) {
                 throw new InternalErrorException("Service time is " +
                     "reached, but output is not available.");
@@ -146,7 +146,7 @@ public class Server extends VariableDelay {
     /** If a token was read in the fire() method, then produce it on
      *  the output and schedule a firing to occur when the service time elapses.
      *  The output is produced with a time offset equal to the value
-     *  of the <i>serviceTime</i> parameter.
+     *  of the <i>newServiceTime</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
@@ -157,7 +157,7 @@ public class Server extends VariableDelay {
         // at most one token inside (like a processer can execute
         // at most one process at any time.) 
         if (_currentOutput != null) {
-            _delayedTokens.remove(new Double(currentTime.getTimeValue()));
+            _delayedTokens.remove(new Double(currentTime.getDoubleValue()));
         }
         // If the delayedTokensList is not empty, and the delayedTokens
         // is empty (ready for a new service), get the first token
@@ -165,7 +165,7 @@ public class Server extends VariableDelay {
         // after the service finishes.
         if (_delayedTokensList.size() != 0 && _delayedTokens.isEmpty()) {
             _nextTimeFree = currentTime.add(_delay);
-            _delayedTokens.put(new Double(_nextTimeFree.getTimeValue()), 
+            _delayedTokens.put(new Double(_nextTimeFree.getDoubleValue()), 
                 _delayedTokensList.removeFirst());
             getDirector().fireAt(this, _nextTimeFree);
         }
@@ -180,7 +180,7 @@ public class Server extends VariableDelay {
         throws NameDuplicationException, IllegalActionException  {
         // FIXME: can not call super._init() and delay.setName(newName).
         // The port does not get the new name. This is a bug.
-        delay = new PortParameter(this, "serviceTime");
+        delay = new PortParameter(this, "newServiceTime");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);
         // Put the delay port at the bottom of the icon by default.

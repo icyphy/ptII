@@ -179,7 +179,7 @@ public class PreemptableTask extends DETransformer {
                 _interrupted = false;
                 if (_executing) {
                     double delay_time = 
-                        currentTime.subtract(_interruptTime).getTimeValue();
+                        currentTime.subtract(_interruptTime).getDoubleValue();
                     _outputTime = _outputTime.add(delay_time);
                     director.fireAt(this, _outputTime);
                 }
@@ -195,9 +195,9 @@ public class PreemptableTask extends DETransformer {
         super.initialize();
 
         _executing = false;
-        _interruptTime = new Time(this);
+        _interruptTime = new Time(getDirector());
         _interrupted = false;
-        _outputTime = new Time(this);
+        _outputTime = new Time(getDirector());
 
         _tokenList = new LinkedList();
     }
