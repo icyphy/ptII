@@ -1,5 +1,4 @@
-/* Receives a key from an AsymmetricDecryption actor and uses it to encrypt a
-   data input based on a given asymmetric algorithm.
+/* Verify the signature of the input data.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -48,16 +47,21 @@ import java.security.SignatureException;
 //////////////////////////////////////////////////////////////////////////
 //// AsymmetricEncryption
 /**
-This actor takes an unsigned byte array at the input and encrypts the
-message.  The resulting output is an unsigned byte array. Various
-ciphers that are implemented by "providers" and installed on the
-system maybe used by specifying the algorithm in the <i>algorithm</i>
-parameter. The algorithm specified must be asymmetric. The mode and
-padding can also be specified in the mode and padding parameters. In
-case a provider specific instance of an algorithm is needed the
-provider may also be specified in the provider parameter.  This actor
-receives a public key from the AsymmetricDecryption actor and encrypts
-the data input with the given key.
+Verify the signature of the input data.
+<p>
+<p>In cryptography, digital signatures can be used to verify that the
+data was not modified in transit.  However, the data itself is passed
+in cleartext.
+
+<p>This actor reads an objectToken public key from the
+<i>publicKey</i> port and then verifies the signature of
+each unsigned byte array that appears on the <i>input</i> port.
+If the signature is legitimate, then the unsigned byte array
+data on the <i>data</i> port is passed to the <i>output</i> port.
+
+<p>The algorithm and keySize parameters should be set to the same
+value as the corresponding parameter in the SignatureSigner actor.
+Two common values for the algorithm parameter are DSA and RSA.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
@@ -104,22 +108,18 @@ public class SignatureVerifier extends SignatureActor {
     public TypedIOPort data;
 
     /** This port receives the public key to be used from the
-     *  The type is an ObjectToken of type java.security.Key.
+     *  The type is an ObjectToken containin a java.security.Key.
      */
     public TypedIOPort publicKey;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there are tokens on the <i>input</i> and <i>publicKey</i>
-     *  ports, they are consumed.  This method takes the data from the
-     *  <i>input</i> and encrypts the data based on the
-     *  <i>algorithm</i>, <i>provider</i>, <i>mode</i> and
-     *  <i>padding</i> using the public key from the decryption actor.
-     *  This is then sent on the <i>output</i>.  All parameters should
-     *  be the same as the corresponding decryption actor.
+    /** Read in the publicKey, input and data tokens and verify
+     *  the signature.  
      *
-     *  @exception IllegalActionException If thrown by base class.
+     *  @exception IllegalActionException If thrown by base class
+     *  or if the signature does not properly verify.
      */
     public void fire() throws IllegalActionException {
         System.out.println("SignatureVerifier.fire()");
@@ -134,17 +134,9 @@ public class SignatureVerifier extends SignatureActor {
         }
     }
 
-    /** Get an instance of the cipher.
-     *
-     *  @exception IllegalActionException If thrown by base class.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
+
     /** Verify the signature.
      * @exception IllegalActionException If there is a problem with
      * the signature or the key.
@@ -159,7 +151,6 @@ public class SignatureVerifier extends SignatureActor {
             _signature.update(_data);
             boolean verify = _signature.verify(signatureData);
             if (verify) {
-                System.out.println("SignatureVerifier: data verified");
                 return _data;
             } else {
                 throw new IllegalActionException("Signature verification "
@@ -175,5 +166,6 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The original data in cleartext that is being verified.
     private byte[] _data;
 }

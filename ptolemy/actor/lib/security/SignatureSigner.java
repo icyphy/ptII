@@ -1,5 +1,4 @@
-/* Creates a signature for the given piece of data and creates the key
-to be sent to the signature verifier.
+/* Sign the input data using a public key.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -55,18 +54,37 @@ import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// SignatureSigner
-/**
+/** Sign the input data using a public key.
 
-This actor takes an unsigned byte array at the input creates a
-signature for it.  The resulting output is an unsigned byte array.
-The Signature class in Java is based on calculating the message digest
-of some data and encrypting it.  Various signature algorithms that are
-implemented by "providers" and installed maybe used by specifying the
-algorithm in the <i>algorithm</i> parameter.  In case a provider
-specific instance of an algorithm is needed, the provider may also be
-specified in the <i>provider</i> parameter.  This actor creates 
-a private key to sign data and a public key which is sent on the
-<i>keyOut</i> port to verify the signature.
+<p>In cryptography, digital signatures can be used to verify that the
+data was not modified in transit.  However, the data itself is passed
+in cleartext.
+
+<p> In this case, the SignatureSigner actor generates private and
+public keys. 
+
+<p>The public key is passed as an unsigned byte array on the
+<i>publicKey</i> port to the SignatureVerifier actor to verify that
+the data has not been tampered with.
+
+<p>Each time fire() is called, the private key is used to create a
+signature for each block of unsigned byte array read from the
+<i>input</i> port.  The signed data is passed to a SignatureVerifier
+actor on the <i>output</i> port as an unsigned byte array.
+
+<p>The <i>input</i> data itself is passed to in <b>cleartext</b>
+on the <i>data</i> port.
+
+<p>In this actor, the <i>algorithm<ii> parameter is used to set
+the Signature and the <i>keyPairGenerator</i> parameter is used
+to set the KeyPairGenerator.
+<br>Common settings are:
+<br><i>algorithm</i>: <code>SHA1WITHDSA</code>
+<br><i>keyPairGenerator</i>:<code>DSA</code>
+<br>or
+<br><i>algorithm</i>: <code>MD5WITHRSA</code>
+<br><i>keyPairGenerator</i>:<code>RSA</code>
+Other possible values can be found in the JCE documentation below.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
@@ -97,7 +115,7 @@ public class SignatureSigner extends SignatureActor {
         super(container, name);
 
         keyPairGenerator = new StringParameter(this, "keyPairGenerator");
-        // Get the possible choices
+        // Get the possible choices.
         Set algorithms = Security.getAlgorithms("KeyPairGenerator");
         Iterator algorithmsIterator = algorithms.iterator();
         for(int i = 0; algorithmsIterator.hasNext(); i++) {
@@ -119,19 +137,23 @@ public class SignatureSigner extends SignatureActor {
     ////                     ports and parameters                  ////
 
 
-    /** This port sends out the original data to be verified with the
-     *  encrypted digest
+    /** The original data in cleartext to be verified with the the
+     *  signed digest.  The type is unsigned byte array.
      */
     public TypedIOPort data;
 
-    /** This port outputs the key to be used by the
-     *  AsymmetricEncryption actor as an unsigned byte array.
+    /** The public key to be used by the SignatureVerifier actor
+     *  to verify the data on the <i>output</i> port.
+     *  The type is an ObjectToken containin a java.security.Key.
      */
     public TypedIOPort publicKey;
 
     /** The algorithm to be used to generate the key pair.  For
-     *  example, using RSAwithMD5 as the signature algorithm, RSA
-     *  would be used for the <i>keyPairGenerator</i> parameter.
+     *  example, using RSAwithMD5 as the signature algorithm in the
+     *  <i>algorithm</i> parameter, RSA would be used for the
+     *  <i>keyPairGenerator</i> parameter.  If the
+     *  <i>algorithm</i>parameter was SHA1WITHDSA, then the value of
+     *  this parameter would be DSA.
      */
     public StringParameter keyPairGenerator;
 
@@ -139,8 +161,7 @@ public class SignatureSigner extends SignatureActor {
     ////                         public methods                    ////
 
     /** Override the base class to reinitialize the state if
-     *  the <i>algorith</i>, <i>provider</i>, or <i>keysize</i>
-     *  parameter is changed.
+     *  the <i>keyPairGenerator</i> parameter is changed.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -153,23 +174,22 @@ public class SignatureSigner extends SignatureActor {
             super.attributeChanged(attribute);
         }
     }
-    /** If there is a token on the <i>input</i> port, this method
-     *  takes the data from the <i>input</i> and decrypts the data
-     *  based on the <i>algorithm</i>, <i>provider</i>, <i>mode</i>
-     *  and <i>padding</i> using the created private key.  This is
-     *  then sent on the <i>output</i>.  The public key is also sent
-     *  out on the <i>publicKey</i> port.  All parameters should be the
-     *  same as the corresponding encryption actor.
+
+    /** Created a signature for the input data and the signature to the
+     *  output.   
+     *  @exception IllegalActionException If calling send() or super.fire()
+     *  throws it.
      *
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
-        System.out.println("SignatureSigner.fire()");
+        // This method merely calls the super class which eventually
+        // calls CryptographicActor.fire() which in turn calls 
+        // SignatureSigner_process().
         super.fire();
-        //publicKey.send(0, (new ObjectToken(_publicKey)));
     }
 
-    /** Get an instance of the cipher and outputs the key required for
+    /** Create asymmetric keys and place the output the public key.
      *  decryption.
      *  @exception IllegalActionException If thrown by base class.
      */
@@ -182,9 +202,9 @@ public class SignatureSigner extends SignatureActor {
         publicKey.send(0, new ObjectToken(_publicKey));
     }
 
-    /** Takes the data and calculates a message digest for it.
+    /** Calculate a signature.
      *
-     * @return byte[] the decrypted data.
+     * @return byte[] the data to calculate a signature for.
      * @exception IllegalActionException If the key or padding is invalid.
      */
     protected byte[] _process(byte[] dataBytes) throws IllegalActionException{
