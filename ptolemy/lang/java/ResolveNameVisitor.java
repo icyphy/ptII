@@ -68,6 +68,9 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+    
+        System.out.println("resolve name");
+        
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         NameContext c = new NameContext();

@@ -57,8 +57,10 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     public final Environ getEnviron() {
         if (_environ == null) {
+           ApplicationUtility.trace("getEnviron() for " + _name + ": building environment"); 
            _buildEnviron();
         }
+        ApplicationUtility.trace("getEnviron() for " + _name + ": environment already in place");         
         return _environ;
     }
 
@@ -120,15 +122,18 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
            ApplicationUtility.trace(">Reading in user type : " + fullName() +
             " from " + fileName);
-
-           // should set the source
-           StaticResolution.load(file, 0);
+           
+           StaticResolution.load(file, 0); // should set the source
          
            if (_source == AbsentTreeNode.instance) {
-	           ApplicationUtility.error("file " + fileName +
+	          ApplicationUtility.error("file " + fileName +
                " doesn't contain class or interface " + fullName());
            }
 
+           // this is a hack, but ... set the environment to be null
+           // so that it is reloaded next time
+           // _environ = null;
+           
            ApplicationUtility.trace(">Done reading class " + fullName());
         }
     }
@@ -159,6 +164,10 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
            setSuperClass(StaticResolution.OBJECT_DECL);
         }
+        
+        // this is a hack but ...
+        // set the environment property of the source node
+        // _source.setProperty(ENVIRON_KEY, _environ);
     }
 
     protected static TypeNameNode _invalidType(ClassDecl self, String name) {

@@ -267,7 +267,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
     protected void _visitList(List nodeList, Environ env) {
         LinkedList listArgs = new LinkedList();
-        listArgs.addLast(env);                  // last environments
+        listArgs.addLast(env);                  // last environment
         listArgs.addLast(Boolean.TRUE);         // inner class = true
         listArgs.addLast(NullValue.instance);   // no enclosing decl
         TNLManip.traverseList(this, null, listArgs, nodeList);

@@ -60,8 +60,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        ApplicationUtility.trace("resolveClass for " +
-         node.getProperty(IDENT_KEY));
+        //ApplicationUtility.trace("resolveClass for " +
+        // node.getProperty(IDENT_KEY));
+
+        System.out.println("resolveClass for " +
+          node.getProperty(IDENT_KEY));
+
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -235,79 +239,8 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         childArgs.addLast(me);
         childArgs.addLast(myEnviron);
 
-        /*
-        // Set implied modifiers of interface member nodes
-        Iterator memberItr = node.getMembers();
-        int publicModifier = (node.getModifiers() & PUBLIC_MOD);
-        
-        while (memberItr.hasNext()) {
-            TreeNode node = (TreeNode) memberItr.next();
-            
-            switch (node.classID()) {
-            
-              // methods are always abstract, and public if the interface is public
-              case METHODDECLNODE_ID:
-              {
-                MethodDeclNode methodDeclNode = (MethodDeclNode) node;
-                methodDeclNode.setModifiers(methodDeclNode.getModifiers() 
-                 | (publicModifier | ABSTRACT_MOD));
-              }
-              break;
-              
-              // classes and fields are always static and final, and public if the 
-              // interface is public
-              case FIELDDECLNODE_ID:
-              case CLASSDECLNODE_ID:
-              {
-                ModifiedNode modifiedNode = (ModifiedNode) node;
-                modifiedNode.setModifiers(modifiedNode.getModifiers() 
-                 | (publicModifier | STATIC_MOD | FINAL_MOD));              
-              }
-              break;
-              
-              // interfaces are always static, and public if the
-              // enclosing interface is public
-              case INTERFACEDECLNODE_ID:
-              {
-                InterfaceDeclNode interfaceDeckNode = (InterfaceDeclNode) node;
-                interfaceDeclNode.setModifiers(interfaceDeclNode.getModifiers() 
-                 | (publicModifier | STATIC_MOD | FINAL_MOD));              
-              }
-              break;
-        } */
-
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
-
-        /*
-        // Set implied modifiers of interface member decls               
-        Iterator declItr = myEnviron.allProperDecls();
-
-        while (declItr.hasNext()) {
-            JavaDecl decl = (JavaDecl) declItr.next();
-
-            int modifiers = decl.getModifiers();
-
-            switch (decl.category) {
-
-            case CG_METHOD:
-            modifiers |= (publicModifier | ABSTRACT_MOD);
-            break;
-
-            case CG_FIELD:
-            case CG_CLASS:
-            modifiers |=
-             (publicModifier | FINAL_MOD | STATIC_MOD);
-            break;
-
-            case CG_INTERFACE:
-            modifiers |= (publicModifier | STATIC_MOD);
-            break;
-
-            }
-            decl.setModifiers(modifiers);
-        }
-        */
-
+        
         return null;
     }
 

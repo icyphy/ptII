@@ -115,7 +115,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
            JavaDecl container = JavaDecl.getDecl(name.getQualifier());
 
            if (container.hasEnviron()) {
-              // qualifier is a package
+              
               possibles = container.getEnviron().lookupFirstProper(
                name.getIdent(), categories);
                              
@@ -138,6 +138,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
 
         if (!possibles.hasNext()) {
+           // temp
+           Interrogator.interrogate(name);
+           
            ApplicationUtility.error(name.getIdent() + " undefined in environ " +
             env.toString());
         }

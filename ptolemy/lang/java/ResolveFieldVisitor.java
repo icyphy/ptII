@@ -54,6 +54,8 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+        System.out.println("resolve field");
+        
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
         
         LinkedList childArgs = TNLManip.cons(new FieldContext());
