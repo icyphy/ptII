@@ -41,8 +41,8 @@ import ptolemy.actor.Manager;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.IDAttribute;
 import ptolemy.kernel.undo.UndoStackAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -297,9 +297,8 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  the portion within some composite actor.   It also adjusts the
      *  URIAttribute in the model to match the specified file, if
      *  necessary, and creates one otherwise.  It also
-     *  overrides the base class to look for an IDAttribute in the
-     *  top-level model, and if there is one, to update its
-     *  <i>lastUpdated</i> field.
+     *  overrides the base class to update the attributes if they need
+     *  to update their content.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
@@ -308,14 +307,13 @@ public abstract class PtolemyFrame extends TableauFrame {
         if (tableau != null) {
             Effigy effigy = (Effigy)tableau.getContainer();
             if (effigy != null) {
-                // Look for an IDAttribute to update.
+                // Update all the attributes that need updated.
                 if (_model != null) {
-                    List idAttributes = _model.attributeList(IDAttribute.class);
-                    if (idAttributes.size() > 0) {
-                        // IDAttribute is a singleton, so there should be only one.
-                        IDAttribute idAttribute = (IDAttribute)idAttributes.get(0);
-                        // The null argument says set the date to now.
-                        idAttribute.setDate(null);
+                    Iterator attributes = 
+                        _model.attributeList(Attribute.class).iterator();
+                    while (attributes.hasNext()) {
+                        Attribute attribute = (Attribute)attributes.next();
+                        attribute.updateContent();
                     }
                 }
 

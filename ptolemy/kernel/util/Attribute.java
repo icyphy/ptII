@@ -213,7 +213,14 @@ public class Attribute extends NamedObj {
         }
         super.setName(name);
     }
-
+    
+    /** Update the content of this attribute. 
+     *  In this base class, nothing is performed.
+     *  Subclasses need to override this class to update the attribute.
+     *  @exception InternalErrorException Not thrown in this base class.
+     */
+    public void updateContent() throws InternalErrorException {}
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

@@ -26,13 +26,14 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.kernel.attributes;
+package ptolemy.vergil.kernel.attributes;
 
 import java.text.DateFormat;
 import java.util.Date;
 
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -42,6 +43,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.icon.BoxedValuesIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// IDAttribute
@@ -77,6 +79,7 @@ public class IDAttribute extends SingletonAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        // name for the model
         this.name = new StringAttribute(this, "name");
         this.name.setExpression(container.getName());
         // This should not be persistent, in case the name changes outside
@@ -112,8 +115,14 @@ public class IDAttribute extends SingletonAttribute {
             definedIn.setVisibility(Settable.NOT_EDITABLE);
         }
 
+        created = new StringAttribute(this, "created");
+        created.setExpression(
+            DateFormat.getDateTimeInstance().format(new Date()));
+        created.setVisibility(Settable.NOT_EDITABLE);
+        created.setPersistent(true);
+
         lastUpdated = new StringAttribute(this, "lastUpdated");
-        setDate(null);
+        _updateDate();
         lastUpdated.setVisibility(Settable.NOT_EDITABLE);
 
         author = new StringAttribute(this, "author");
@@ -128,9 +137,14 @@ public class IDAttribute extends SingletonAttribute {
         if (userName != null) {
             author.setExpression(userName);
         }
+        author.setPersistent(true);
 
         // Hide the name.
         new SingletonAttribute(this, "_hideName");
+        
+        BoxedValuesIcon icon = new BoxedValuesIcon(this, "_icon");
+        icon.setPersistent(false);
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,6 +152,9 @@ public class IDAttribute extends SingletonAttribute {
 
     /** The author of the class. */
     public StringAttribute author;
+
+    /** The date that this model was created. */
+    public StringAttribute created;
 
     /** The base class of the containing class or entity. */
     public StringAttribute baseClass;
@@ -178,17 +195,21 @@ public class IDAttribute extends SingletonAttribute {
         }
     }
 
-    /** Set the date for the <i>lastUpdated</i> parameter.
-     *  A null argument requests that the date be set to now.
-     *  @param date The date to set.
+    /** Update the modification date of this attribute. 
      */
-    public void setDate(Date date) {
-        if (date == null) {
-            date = new Date();
-        }
+    public void updateContent() throws InternalErrorException {
+        _updateDate();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Set the current date for the <i>lastUpdated</i> parameter.
+     */
+    private void _updateDate() {
         try {
             lastUpdated.setExpression(
-                    DateFormat.getDateTimeInstance().format(date));
+                DateFormat.getDateTimeInstance().format(new Date()));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

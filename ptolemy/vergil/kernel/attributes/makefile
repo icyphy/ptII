@@ -52,6 +52,7 @@ JSRCS = \
 	DocumentationAttribute.java \
 	EllipseAttribute.java \
 	FilledShapeAttribute.java \
+	IDAttribute.java \
 	ImageAttribute.java \
 	LineAttribute.java \
 	RectangleAttribute.java \

@@ -214,6 +214,11 @@ public class ClassChanges implements MoMLFilter {
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinementPort",
                 "ptolemy.domains.fsm.modal.TransitionRefinementPort");
 
+        // Moved IDAttribute from ptolemy.kernel.attributes to
+        // ptolemy.vergil.kernel.atttributes
+        _classChanges.put("ptolemy.kernel.attributes.IDAttribute",
+                "ptolemy.vergil.kernel.attributes.IDAttribute");
+
         // The following change is too aggressive.
         //        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
         //            "ptolemy.domains.de.kernel.DEEDirector");

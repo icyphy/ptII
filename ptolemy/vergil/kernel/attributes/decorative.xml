@@ -6,9 +6,7 @@
     <?moml
       <group>
   <doc>Decortative attributes</doc>
-<property name="ModelID" class="ptolemy.kernel.attributes.IDAttribute">
-    <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
-    </property>
+<property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
 </property>
 <input source="ptolemy/configs/annotation.xml"/>
 <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute"/>
