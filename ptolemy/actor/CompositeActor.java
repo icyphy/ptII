@@ -710,7 +710,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
-        if (!(port instanceof ComponentPort)) {
+        if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
                     "CompositeActor can only contain instances of IOPort.");
         }
