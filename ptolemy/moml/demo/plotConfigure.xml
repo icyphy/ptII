@@ -1,9 +1,0 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../plot/plotml/plotml.dtd">
-<plot>
-  <title>Modulated Waveform</title>
-  <xLabel>sample count</xLabel>
-  <yLabel>amplitude</yLabel>
-  <xRange min="0" max="100"/>
-  <yRange min="-1" max="1"/>
-</plot>
