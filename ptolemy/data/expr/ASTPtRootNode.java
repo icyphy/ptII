@@ -128,7 +128,7 @@ public class ASTPtRootNode implements Node {
      *   the current node.
      *  @return The ptolemy.data.Token stored in this node.
      */
-    protected ptolemy.data.Token _resolveNode() 
+    protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
         int num = jjtGetNumChildren();
         if (num > 1) {

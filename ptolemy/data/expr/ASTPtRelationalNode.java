@@ -51,7 +51,7 @@ is a BooleanToken.
 */
 public class ASTPtRelationalNode extends ASTPtRootNode {
 
-    protected ptolemy.data.Token  _resolveNode() 
+    protected ptolemy.data.Token  _resolveNode()
             throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if ( (num != 2) ||  (_tokenList.size() != 1) ) {
