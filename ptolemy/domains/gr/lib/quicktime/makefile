@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/gr/lib
+ME =		ptolemy/domains/gr/lib/quicktime
 
 # Rule for index.xml uses this
 TITLE = 	"Quicktime 3D actors"
