@@ -125,7 +125,7 @@ public class MoMLParser extends HandlerBase {
        FIXME
      */
     public void endDocument() throws Exception {
-System.out.println("----------- top level: " + _toplevel.description());
+        _manager.execute();
     }
 
     /**
@@ -201,7 +201,8 @@ System.out.println("----------- top level: " + _toplevel.description());
      *   &AElig;lfred parser is not more specific about what exceptions
      *   it might throw.
      */
-// FIXME-- handle exceptions better...
+// FIXME-- handle exceptions better...  Are the only ones thrown
+// by the parser those thrown by these classes? If not, what does it throw?
     public CompositeActor parse(String url, InputStream input)
             throws Exception {
         _parser.setHandler(this);
@@ -342,51 +343,71 @@ System.out.println("----------- top level: " + _toplevel.description());
                 String paramValue = (String)_attributes.get("value");
                 // FIXME: Check for null.
                 Variable param = (Variable)_current.getAttribute(paramName);
-                // FIXME: Check for null. Cast problem?
+                // FIXME: Check for null and/or cast error.
 if (param == null) {
     System.out.println("No such parameter: " + paramName + " in class "
     + _current.getClass().toString());
 }
                 param.setExpression(paramValue);
             } else if (elementName.equals("connection")) {
-                // FIXME: Check cast below...
-                TypedCompositeActor container = (TypedCompositeActor)_current;
-                String source = (String)_attributes.get("source");
-                String destination = (String)_attributes.get("destination");
+                String port1Name = (String)_attributes.get("port1");
+                String port2Name = (String)_attributes.get("port2");
+                // FIXME: check for null above
                 String name = (String)_attributes.get("name");
-                // FIXME: check for null.
 
                 // FIXME: Check cast below.
                 CompositeEntity context = (CompositeEntity)_current;
 
-                // Parse the source
-                int point = source.lastIndexOf(".");
+                // Parse port1
+                int point = port1Name.lastIndexOf(".");
                 // FIXME: Make sure the following is in bounds
-                String portname = source.substring(point+1);
-                String actorname = source.substring(0, point);
+                String portname = port1Name.substring(point+1);
+                String actorname = port1Name.substring(0, point);
                 ComponentEntity actor = context.getEntity(actorname);
                 // FIXME: Check that above not null.
                 // FIXME: Check cast below.
-                ComponentPort sourcePort = (ComponentPort)
+                ComponentPort port1 = (ComponentPort)
                         (actor.getPort(portname));
 
-                // Parse the destination
-                point = destination.lastIndexOf(".");
+                // Parse port2
+                point = port2Name.lastIndexOf(".");
                 // FIXME: Make sure the following is in bounds
-                portname = destination.substring(point+1);
-                actorname = destination.substring(0, point);
+                portname = port2Name.substring(point+1);
+                actorname = port2Name.substring(0, point);
                 actor = context.getEntity(actorname);
                 // FIXME: Check that above not null.
-                ComponentPort destPort = (ComponentPort)
+                ComponentPort port2 = (ComponentPort)
                         (actor.getPort(portname));
 
                 if (name == null) {
-                    _currentConnection = ((CompositeEntity)_current)
-                            .connect(sourcePort, destPort);
+                    _currentConnection = context.connect(port1, port2);
                 } else {
-                    _currentConnection = ((CompositeEntity)_current)
-                            .connect(sourcePort, destPort, name);
+                    _currentConnection = context.connect(port1, port2, name);
                 }
+            } else if (elementName.equals("link")) {
+                String portName = (String)_attributes.get("port");
+                String connectionName = (String)_attributes.get("connection");
+                // FIXME: check for null above
+
+                // FIXME: Check cast below.
+                CompositeEntity context = (CompositeEntity)_current;
+
+                // Parse port
+                int point = portName.lastIndexOf(".");
+                // FIXME: Make sure the following is in bounds
+                String portname = portName.substring(point+1);
+                String actorname = portName.substring(0, point);
+                ComponentEntity actor = context.getEntity(actorname);
+                // FIXME: Check that above not null.
+                // FIXME: Check cast below.
+                ComponentPort port = (ComponentPort)
+                        (actor.getPort(portname));
+
+                // Get relation
+                // FIXME: Check cast and for null return value.
+                ComponentRelation relation = (ComponentRelation)
+                        (context.getRelation(connectionName));
+                port.link(relation);
             }
         } catch (ClassNotFoundException ex) {
             // FIXME -- thrown by Class.forName().

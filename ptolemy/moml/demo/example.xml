@@ -8,18 +8,18 @@
   This model demonstrates MoML, the XML-based modeling language.
   </doc>
 
-  <director class="ptolemy.domains.de.kernel.DEDirector">
-    <!-- FIXME: no such parameter name="stopTime" value="100.0" -->
+  <director class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <parameter name="iterations" value="100"/>
   </director>
 
   <!-- Define the actors -->
-  <actor name="clock" class="ptolemy.actor.lib.Clock">
-    <parameter name="period" value="4.0"/>
+  <actor name="ramp" class="ptolemy.actor.lib.Ramp">
+    <parameter name="step" value="0.1"/>
     <!-- hints for a GUI... -->
     <icon xpos="100" ypos="100"
-           modifiers="$CLASSPATH/ptolemy/actor/lib/icons/Clock.icon"/>
+           modifiers="$CLASSPATH/ptolemy/actor/lib/icons/Ramp.icon"/>
   </actor>
-  <actor name="display" class="ptolemy.actor.gui.TimedPlotter">
+  <actor name="display" class="ptolemy.actor.gui.SequencePlotter">
     <!-- reference to a "plotML" file for configuration information -->
     <!-- FIXME parameter name="configuration" value="display.pml" /-->
     <icon xpos="200" ypos="100"
@@ -32,13 +32,12 @@
   <!-- To do: Link parameters with on-screen controls here. -->
 
   <!-- Make the connections -->
-  <connection source="clock.output" destination="display.input"
-        name="clockToDisplay">
-    <!-- any vertex in the connection is associated with the relation -->
-    <vertex xpos="150" ypos="100"/>
+  <connection port1="ramp.output" port2="display.input" name="c">
+    <vertex name="v" xpos="150" ypos="100"/>
   </connection>
-  <link port="recorder.input" vertex="clockToDisplay">
-    <!-- optional vertex entities here for GUI purposes -->
+  <!-- A link adds to a specified connection, and may also give a vertex -->
+  <link port="recorder.input" connection="c" vertex="v">
+    <!-- optional vertex elements here for GUI purposes -->
   </link>
 
 </model>

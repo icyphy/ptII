@@ -1,12 +1,12 @@
-<!ELEMENT model (doc | manager | director | parameter | actor |
-	 connection | link | placement | icon)*>
+<!ENTITY % inlines "(doc | manager | director | parameter | actor |
+	 connection | link | placement | icon)*">
+<!ELEMENT model %inlines;>
 <!ATTLIST model name CDATA "top">
 <!ATTLIST model class CDATA "ptolemy.actor.TypedCompositeActor">
 
   <!ELEMENT doc (#PCDATA)>
 
-  <!ELEMENT actor (doc | manager | director | parameter | actor |
-	 connection | link | placement | icon)*>
+  <!ELEMENT actor %inlines;>
   <!ATTLIST actor name CDATA #REQUIRED>
   <!ATTLIST actor class CDATA "ptolemy.actor.TypedCompositeActor">
 
@@ -16,12 +16,13 @@
 
   <!ELEMENT connection (vertex*)>
   <!ATTLIST connection name CDATA #IMPLIED>
-  <!ATTLIST connection source CDATA #REQUIRED>
-  <!ATTLIST connection destination CDATA #REQUIRED>
+  <!ATTLIST connection port1 CDATA #REQUIRED>
+  <!ATTLIST connection port2 CDATA #REQUIRED>
 
   <!ELEMENT link (vertex*)>
   <!ATTLIST link port CDATA #REQUIRED>
-  <!ATTLIST link vertex CDATA #REQUIRED>
+  <!ATTLIST link connection CDATA #REQUIRED>
+  <!ATTLIST link vertex CDATA #IMPLIED>
 
     <!ELEMENT vertex EMPTY>
     <!ATTLIST vertex name CDATA "">
