@@ -45,7 +45,9 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = TestModel.java
+JSRCS = \
+	Rerun.java \
+	TestModel.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
