@@ -29,6 +29,7 @@
 */
 package ptolemy.caltrop.ddi;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.caltrop.actors.CalInterpreter;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ast.Actor;
@@ -55,7 +56,7 @@ public class SDFFactory implements DDIFactory {
      * @param context The context that the plugin will use.
      * @param env The environment that the plugin will use.
      */
-    public DDI create(CalInterpreter ptActor, Actor actor, Context context,
+    public DDI create(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env) {
         return new SDF(ptActor, actor, context, env);
     }

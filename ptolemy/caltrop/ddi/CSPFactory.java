@@ -29,6 +29,7 @@
 */
 package ptolemy.caltrop.ddi;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.caltrop.actors.CalInterpreter;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ast.Actor;
@@ -44,7 +45,7 @@ import caltrop.interpreter.environment.Environment;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CSPFactory implements DDIFactory {
-    public DDI create(CalInterpreter ptActor, Actor actor, Context context, Environment env) {
+    public DDI create(TypedAtomicActor ptActor, Actor actor, Context context, Environment env) {
         return new CSP(ptActor, actor, context, env);
     }
 

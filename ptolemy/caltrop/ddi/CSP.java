@@ -45,6 +45,7 @@ import caltrop.interpreter.environment.Environment;
 import caltrop.interpreter.util.PriorityUtil;
 import caltrop.interpreter.util.Utility;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.actors.CalInterpreter;
 import ptolemy.caltrop.ddi.util.DataMapEnvironment;
@@ -73,7 +74,7 @@ import java.util.Map;
 */
 public class CSP extends AbstractDDI implements DDI {
 
-    public CSP(CalInterpreter ptActor, Actor actor,
+    public CSP(TypedAtomicActor ptActor, Actor actor,
             Context context, Environment env) {
         _ptActor = ptActor;
         _actor = actor;
@@ -85,7 +86,7 @@ public class CSP extends AbstractDDI implements DDI {
         _cbc = new ConditionalBranchController(_ptActor);
     }
 
-    private CalInterpreter _ptActor;
+    private TypedAtomicActor _ptActor;
     private Actor _actor;
     private Action [] _actions;
     private Context _context;

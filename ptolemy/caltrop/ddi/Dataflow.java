@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.actors.CalInterpreter;
 import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
@@ -72,7 +73,7 @@ import java.util.Collections;
 */
 public class Dataflow extends AbstractDDI implements DDI {
 
-    public Dataflow(CalInterpreter ptActor, Actor actor, Context context,
+    public Dataflow(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env) {
         _ptActor = ptActor;
         _actor = actor;
@@ -101,7 +102,7 @@ public class Dataflow extends AbstractDDI implements DDI {
         return portMap;
     }
 
-    private CalInterpreter _ptActor;
+    private TypedAtomicActor _ptActor;
     private Actor _actor;
     private Action [] _actions;
     private Context _context;
@@ -146,14 +147,13 @@ public class Dataflow extends AbstractDDI implements DDI {
                 // fire() call of this iteration.
                 // Hence we could put rollback work here.
 
-            	_rollbackInputChannels();
                 _selectAction();
             }
             if (_actorInterpreter.currentAction() != null) {
 				_lastFiredAction = _actorInterpreter.currentAction();
                 _actorInterpreter.actionStep();
                 _actorInterpreter.actionComputeOutputs();
-                _actorInterpreter.actionClear();
+                _actorInterpreter.actionClear(); // sets .currentAction() to null
             }
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
@@ -172,9 +172,11 @@ public class Dataflow extends AbstractDDI implements DDI {
      * action was selected.
      */
     private int  _selectAction() {
+    	_rollbackInputChannels();
         for (int i = 0; i < _actions.length; i++) {
         	if (this.isEligibleAction(_actions[i])) {
         		// Note: could we perhaps reuse environment?
+            	_rollbackInputChannels();
         		_actorInterpreter.actionSetup(_actions[i]);
         		if (_actorInterpreter.actionEvaluatePrecondition()) {
         			return i;
@@ -183,6 +185,7 @@ public class Dataflow extends AbstractDDI implements DDI {
         		}
         	}
         }
+    	_rollbackInputChannels();
         return -1;
     }
 
@@ -190,6 +193,7 @@ public class Dataflow extends AbstractDDI implements DDI {
         Action [] actions = _actor.getInitializers();
         for (int i = 0; i < actions.length; i++) {
             // Note: could we perhaps reuse environment?
+        	_rollbackInputChannels();
             _actorInterpreter.actionSetup(actions[i]);
             if (_actorInterpreter.actionEvaluatePrecondition()) {
                 return i;
@@ -209,7 +213,6 @@ public class Dataflow extends AbstractDDI implements DDI {
     		_currentStateSet = Collections.singleton(_actor.getScheduleFSM().getInitialState());
     	}
     	
-        _rollbackInputChannels();
         try {
             _selectInitializer();
         } catch (Exception ex) {
@@ -270,12 +273,12 @@ public class Dataflow extends AbstractDDI implements DDI {
     public boolean prefire() throws IllegalActionException {
 		_lastFiredAction = null;
         try {
-        	_rollbackInputChannels();
             _selectAction();
-            if (_actorInterpreter.currentAction() != null)
-                return true;
-            else
-                return _ptActor.superPrefire();
+//            if (_actorInterpreter.currentAction() != null)
+//                return true;
+//            else
+//                return _ptActor.superPrefire();
+            return true;
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
                     "Error during action selection in actor '"

@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.actors.CalInterpreter;
 import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
@@ -90,7 +91,7 @@ public class SDF extends AbstractDDI implements DDI {
      * @param context The context that the plugin will use.
      * @param env The environment that the plugin will use.
      */
-    public SDF(CalInterpreter ptActor, Actor actor, Context context,
+    public SDF(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env) {
         _ptActor = ptActor;
         _actor = actor;
@@ -123,7 +124,7 @@ public class SDF extends AbstractDDI implements DDI {
         return portMap;
     }
 
-    private CalInterpreter _ptActor;
+    private TypedAtomicActor _ptActor;
     private Actor _actor;
     private Action [] _actions;
     private Context _context;
@@ -571,10 +572,11 @@ public class SDF extends AbstractDDI implements DDI {
     public boolean prefire() throws IllegalActionException {
         try {
             _selectAction();
-            if (_actorInterpreter.currentAction() != null)
-                return true;
-            else
-                return _ptActor.superPrefire();
+//            if (_actorInterpreter.currentAction() != null)
+//                return true;
+//            else
+//                return _ptActor.superPrefire();
+            return true;
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
                     "Error during action selection in actor '"

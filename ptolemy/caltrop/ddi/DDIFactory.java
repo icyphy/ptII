@@ -29,6 +29,7 @@
 */
 package ptolemy.caltrop.ddi;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.caltrop.actors.CalInterpreter;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ast.Actor;
@@ -55,6 +56,6 @@ public interface DDIFactory {
      * @param env The environment that the plugin will use.
      * @return A <tt>DDI</tt> for this domain.
      */
-    DDI create(CalInterpreter ptActor, Actor actor, Context context,
+    DDI create(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env);
 }
