@@ -1023,14 +1023,23 @@ void genState ()
 
 	// Parameter code for the constructor
 	// FIXME: deal with arrays
-	sprintf (str2,"\n        // %s\n", stateDescriptor);
+	sprintf (str2,"\n        // %s %s\n", stateDescriptor, stateClass);
 	strcat (javaConsStuff, str2);
 	sprintf (str2,"        %s = new Parameter(this, \"%s\");\n",
 		 stateName, stateName);
 	strcat (javaConsStuff, str2);
 	// stateDefault already has leading and trailing double quotes.
-	sprintf (str2,"        %s.setExpression(%s);\n",
-		 stateName, stateDefault);
+	if (strcmp(stateClass, "FloatArrayState") == 0) {
+		// Remove the leading and trailing doublequotes
+		sprintf (str1, "%s", stateDefault+1);
+	        str1[strlen(str1)-1] = '\0';
+
+		sprintf (str2,"        %s.setExpression(\"{%s}\");\n",
+			 stateName, str1);
+	} else {
+		sprintf (str2,"        %s.setExpression(%s);\n",
+			 stateName, stateDefault);
+	}
 	strcat (javaConsStuff, str2);
 
 	// Parameter code for the declaration
@@ -1160,17 +1169,23 @@ void genPort ()
 
 	char ptIIType[MEDBUFSIZE];
 	sprintf(ptIIType,cvtToUpper(portType));
-	if (strcmp(ptIIType, "FLOAT") == 0) {
-		sprintf(ptIIType, "DOUBLE");
-	}
-	
-	if (strcmp(ptIIType, "ANYTYPE") != 0) {
-		// Don't set the type
-		sprintf (str2, "        %s.setTypeEquals(BaseType.%s);\n",
+	if (strcmp(ptIIType, "FLOATARRAY") == 0) {
+		// Array
+		sprintf (str2, "        %s.setTypeEquals(new ArrayType(BaseType.UNKNOWN));\n",
 			portName, ptIIType);
 		strcat (javaConsStuff, str2);
+	} else {
+		if (strcmp(ptIIType, "FLOAT") == 0) {
+			sprintf(ptIIType, "DOUBLE");
+		}
+	
+		if (strcmp(ptIIType, "ANYTYPE") != 0) {
+			// Don't set the type
+			sprintf (str2, "        %s.setTypeEquals(BaseType.%s);\n",
+				portName, ptIIType);
+			strcat (javaConsStuff, str2);
+		}
 	}
-
 	// Ports
 	sprintf (str2, "\n    /**\n"); 
 	strcat (javaPortsAndParameters, str2);
