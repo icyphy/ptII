@@ -47,17 +47,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CipherActor
 /**
-This is a base class that implements general functions used by cipher actors.
-Cipher actors are any actors which perform encryption or decryption based on
-the Java JCE.  Actors extending this class take in an unsigned byte
-array at the <i>input</i>, perform the transformation specified in the
-<i>algorithm</i> parameter and send a unsigned byte array on the <i>output</i>.
-The algorithms that maybe implemented are limited to the ciphers that are
-implemented by "providers" following the JCE specifications and installed in
-the machine being run. The mode and padding can also be specified in the
-<i>mode</i> and <i>padding</i> parameters.  In case a provider specific
-instance of an algorithm is needed, the provider may also be specified
-in the <i>provider</i> parameter. The <i>keySize</i> parameter allows
+
+This is a base class that implements general functions used by cipher
+actors.  Cipher actors are any actors which perform encryption or
+decryption based on the Java JCE.  Actors extending this class take in
+an unsigned byte array at the <i>input</i>, perform the transformation
+specified in the <i>algorithm</i> parameter and send a unsigned byte
+array on the <i>output</i>.  The algorithms that maybe implemented are
+limited to the ciphers that are implemented by "providers" following
+the JCE specifications and installed in the machine being run. The
+mode and padding can also be specified in the <i>mode</i> and
+<i>padding</i> parameters.  In case a provider specific instance of an
+algorithm is needed, the provider may also be specified in the
+<i>provider</i> parameter. The <i>keySize</i> parameter allows
 implementations of algorithms using various key sizes.
 
 This class and its subclasses rely on the Java Cryptography Extension (JCE)
@@ -67,7 +69,6 @@ and Java Cryptography Architecture(JCA).
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class CipherActor extends CryptographyActor {
 
     /** Construct an actor with the given container and name.
@@ -122,12 +123,9 @@ public class CipherActor extends CryptographyActor {
      *  initialized.  If provider is left as "SystemDefault" the system
      *  chooses the provider based on the JCE.
      *
-     * @exception IllegalActionException if exception below is thrown.
-     * @exception NoSuchAlgorihmException when the algorithm is not found.
-     * @exception NoSuchPaddingException when the padding scheme is illegal
-     *     for the given algorithm.
-     * @exception NoSuchProviderException if the specified provider does not
-     *     exist.
+     * @exception IllegalActionException If the algoritm cannot be found,
+     * the padding scheme is illegal for the the given algorithm or
+     * if the specified provider does not exist. 
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -135,21 +133,19 @@ public class CipherActor extends CryptographyActor {
         _mode = ((StringToken)mode.getToken()).stringValue();
         _keyAlgorithm = _algorithm;
         try{
-
-            if(_provider.equalsIgnoreCase("default")){
-                _cipher =
-                    Cipher.getInstance(_algorithm+"/"+_mode+"/"+_padding);
+            if (_provider.equalsIgnoreCase("default")) {
+                _cipher = Cipher.getInstance(
+                        _algorithm + "/" + _mode + "/" + _padding);
             } else {
-                _cipher =
-                    Cipher.getInstance(_algorithm+"/"+_mode+"/"+
-                            _padding, _provider);
+                _cipher = Cipher.getInstance(
+                        _algorithm + "/" + _mode + "/" + _padding, _provider);
             }
-        } catch(NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
+        } catch(Exception ex) {
+            throw new IllegalActionException(ex, this,
+                    "Failed to initialize Cipher with algorithm: '"
+                    + _algorithm + "', padding: '" 
+                    + _padding + "', provider: '"
+                    + _provider + "'");
         }
     }
 
