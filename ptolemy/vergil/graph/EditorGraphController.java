@@ -98,9 +98,9 @@ public class EditorGraphController extends ViewerGraphController {
         GraphPane pane = getGraphPane();
 
         // Create a listener that creates new relations
-        _relationCreator = new RelationCreator();
-        _relationCreator.setMouseFilter(_controlFilter);
-        pane.getBackgroundEventLayer().addInteractor(_relationCreator);
+	// _relationCreator = new RelationCreator();
+        //_relationCreator.setMouseFilter(_controlFilter);
+        //pane.getBackgroundEventLayer().addInteractor(_relationCreator);
 
         // Create a listener that creates new terminals
 	//_portCreator = new PortCreator();
@@ -130,21 +130,21 @@ public class EditorGraphController extends ViewerGraphController {
     ///////////////////////////////////////////////////////////////
     //// PortCreator
 
-    protected class PortCreator extends ActionInteractor {
+    /* protected class PortCreator extends ActionInteractor {
 	public PortCreator() {
 	    super(VergilApplication.getInstance().getAction("New External Port"));
 	}
-    }
+	}*/
 
     ///////////////////////////////////////////////////////////////
     //// RelationCreator
-
+    /*
     protected class RelationCreator extends ActionInteractor {
 	public RelationCreator() {
 	    // FIXME don't ref VergilApplication.
 	    super(VergilApplication.getInstance().getAction("New Relation"));
 	}
-    }
+	}*/
 	
     ///////////////////////////////////////////////////////////////
     //// LinkCreator
@@ -234,7 +234,7 @@ public class EditorGraphController extends ViewerGraphController {
     */
     /** The interactor for creating new relations
      */
-    private RelationCreator _relationCreator;
+    // private RelationCreator _relationCreator;
 
     /** The interactor for creating new vertecies connected
      *  to an existing relation
@@ -243,7 +243,7 @@ public class EditorGraphController extends ViewerGraphController {
 
     /** The interactor for creating new terminals
      */
-    private PortCreator _portCreator;
+    //  private PortCreator _portCreator;
 
     /** The interactor for creating context sensitive menus.
      */
