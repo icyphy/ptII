@@ -57,12 +57,12 @@ public class DotProductSystem extends TypedCompositeActor {
             Const const2 = new Const(this, "const2");
             const2.value.setExpression("{2.0,3.0}");
 
-            TwoArraysIn twoArraysIn = new TwoArraysIn(this, "twoArraysIn");
-            connect(const1.output, twoArraysIn.input1);
-            connect(const2.output, twoArraysIn.input2);
+            DotProduct dotProduct = new DotProduct(this, "dotProduct");
+            connect(const1.output, dotProduct.input1);
+            connect(const2.output, dotProduct.input2);
 
             FileWriter fileWriter = new FileWriter(this, "fileWriter");
-            connect(twoArraysIn.output, fileWriter.input);
+            connect(dotProduct.output, fileWriter.input);
 
         } catch (NameDuplicationException e) {
             throw new RuntimeException(e.toString());
