@@ -52,15 +52,16 @@ test ASTFormatter-1.1 {Convert the SwimmingPool example} {
 	java::call ptolemy.backtrack.ast.ASTFormatter main $args
     } stdout
     list $stdout
-} {{
+} {{package ptolemy.backtrack.ast.test;
+
 public class ASTTest {
 
-    public ASTTest(){
-        foo=1;
+    public ASTTest() {
+        foo = 1;
     }
 
-    public int incrementFoo(){
-        foo+=1;
+    public int incrementFoo() {
+        foo += 1;
         return foo;
     }
 
