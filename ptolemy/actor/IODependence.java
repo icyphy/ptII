@@ -46,32 +46,24 @@ import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// IODependence
-/** An instance of IODependence is an attribute of an actor containing
-the input-output dependence information. For atomic actors,
-this attribute is constructed inside the constructor. For composite actors,
-this attribute is constructed in the preinitialize method of the composite
-actors, after their directors finish preinitialization. The process is 
-performed in a bottom-up way because the upper level IO dependence
-information is built from those of the lower level.
+/** An instance of IODependence is an attribute containing
+the input-output dependence information of an actor. For atomic actors,
+this attribute is constructed in the preinitialize method. For
+composite actors, this attribute is inferred in a bottom-up way from the
+IODependence attributes of the emgedded actors. 
 <p>
-This object contains a list of instances of <i>IOInformation</i>, each of
-which corresponds to one input port. To access the IOInformation, use the
-<i>getInputPort(IOPort)</i>, method which does a name mapping search.
-To add one IOInformation of an input port, use <i>addInputPort(IOPort)</i>.
-This method returns an IOInformation object.
+For atomic actors, by default, all the input ports and output ports are
+directly dependent. To check the direct dependence of a pair of input port
+and output port, use <i>hasDependence(input, output)</i> method. To remove
+the direct dependence of a pair of input port and output port, use 
+<i>removeDependence(input, output)</i> method.
 <p>
-Each input port has an IOInformation, which is an inner class providing
-access to the relation between the input port and all the output ports.
-Output ports are divided into three groups: (a) those immediately dependent
-on the input, (b) those not immediately dependent on the input, and (c) those
-not dependent on the input. The outputs in group (a) can be accessed with
-<i>getDelayToPorts()</i> method, and the outputs in group (b) can be accessed
-with <i>getDirectFeedthroughPort</i> method. The outputs in group (c) are
-discarded.
+This attribute is synchronized with the workspace. 
 <p>
-This attribute is not persistent by default, so it will not be recorded
-in a MoML representation of the model containing it.
+This attribute is not persistent by default, so it will not be exported
+into a MoML representation of the model.
 
+@see ptolemy.domains.de.lib.TimedDelay
 @author Haiyang Zheng
 @version $Id$
 @since Ptolemy II 3.1
@@ -130,7 +122,7 @@ public class IODependence extends Attribute {
         }
     }
         
-    /** Return true if there are directed cycle loops in the IODependence. 
+    /** Return true if there are directed cycle loops. 
      *  @return True if there are directed loops.
      */
     public boolean containsCyclicLoops() {
@@ -145,7 +137,7 @@ public class IODependence extends Attribute {
         return _dg.cycleNodes();
     } 
     
-    /** Return a set of output ports which not directly dependent on the
+    /** Return a set of output ports which are not directly dependent on the
      *  given input. 
      * 
      *  @param inputPort The given input port of the container.
@@ -192,8 +184,7 @@ public class IODependence extends Attribute {
         _dgValid = -1;
     }
 
-    /** Remove the dependence between the input and output ports such they 
-     *  are not directly dependent.
+    /** Remove the dependence between the input and output ports.
      * 
      *  @param inputPort An input port.
      *  @param outputPort An output Port.
