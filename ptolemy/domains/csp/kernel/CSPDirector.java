@@ -272,7 +272,7 @@ public class CSPDirector extends ProcessDirector {
     public void wrapup() throws IllegalActionException {
         System.out.println(Thread.currentThread().getName() +
                 ": CSPDirector: about to end the model");
-        if ((_actorsDelayed !=0 ) || _topologyChangesPending ||
+        if ((_actorsDelayed != 0 ) || _topologyChangesPending ||
                 (_getPausedActorsCount() != 0)) {
             /*throw new InvalidStateException( "CSPDirector wrapping up " +
               "when there are actors delayed or paused, or when " +
