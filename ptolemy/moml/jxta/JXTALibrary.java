@@ -242,6 +242,9 @@ public class JXTALibrary extends EntityLibrary
 
 
     public void changeFailed(ChangeRequest change, Exception exception) {
+       System.out.println(change.toString());
+       System.out.println(exception.getMessage());
+       exception.printStackTrace();
        throw new RuntimeException(exception.toString());
     }
 
@@ -307,7 +310,12 @@ public class JXTALibrary extends EntityLibrary
                     byte[] buff = new byte[len];
                     is.read(buff);
 
-                    Class cls = classLoader.myDefineClass(null, buff, 0, len) ;
+                    Class cls = classLoader.myDefineClass(null, buff, 0, len);
+		    try {
+			_saveClass(cls, buff);
+	 	    } catch (IOException ex) {
+			ex.printStackTrace();
+		    }
                     String clsName = cls.getName();
                     if (cls != null) {
                         System.out.println("created class object " + clsName);
@@ -315,7 +323,7 @@ public class JXTALibrary extends EntityLibrary
                     classLoader.myResolveClass(cls);
                     Object[] arguments = new Object[2];
                     int l = clsName.lastIndexOf(".");
-                    System.out.println("the name of the new instance is : "
+                    System.out.println("the name of the new class is : "
                             + clsName.substring(l+1));
 
                     arguments[0] = this;
@@ -324,7 +332,7 @@ public class JXTALibrary extends EntityLibrary
                         NamedObj newEntity = _createInstance(cls, arguments);
                         System.out.println("create an instance of "
                                 + clsName + ".\n");
-                        // ((ComponentEntity) newEntity).setContainer(this);
+                        ((ComponentEntity) newEntity).setContainer(null);
                         String chg = newEntity.exportMoML();
                         System.out.println("the moml description of the "
                                 + "new object is: \n" + chg + "\n");
@@ -707,6 +715,22 @@ public class JXTALibrary extends EntityLibrary
             return false;
         }
         return true;
+    }
+
+    private void _saveClass(Class cls, byte[] buf) throws IOException {
+        String clsName = cls.getName();
+	char fileSeparator = System.getProperty("file.separator").charAt(0);
+        String pathName = clsName.replace('.', fileSeparator);
+	String pathDir = pathName.substring(0, pathName.lastIndexOf(fileSeparator));
+	String rootPath = System.getProperty("ptolemy.ptII.dir", ".");
+	File destDir = new File(rootPath + fileSeparator + pathDir);
+	if (!destDir.exists()) {
+            destDir.mkdirs();
+	}
+	File clsFile = new File(destDir, pathName.substring(pathName.lastIndexOf(fileSeparator) + 1, pathName.length()) + ".class");
+	FileOutputStream output = new FileOutputStream(clsFile);
+	output.write(buf);
+	output.close();
     }
 
     ///////////////////////////////////////////////////////////////////
