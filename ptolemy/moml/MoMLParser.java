@@ -1856,19 +1856,39 @@ public class MoMLParser extends HandlerBase {
             xmlFile = new URL(base, source);
 
             // Security concern here.  Warn if external source.
+            // and we are not running within an applet.
             // The warning method will throw a CancelException if the
             // user clicks "Cancel".
             String protocol = xmlFile.getProtocol();
             if (protocol != null
                     && protocol.trim().toLowerCase().equals("http")) {
-                MessageHandler.warning("Security concern:\n"
-                        + "Reading MoML from the net at address:\n"
-                        + xmlFile.toExternalForm()
-                        + "\nOK to proceed?");
+                SecurityManager security = System.getSecurityManager();
+                boolean withinApplet = false;
+                if (security != null) {
+                    try {
+                        // This is sort of arbitrary, but seems to be the
+                        // closest choice.
+                        security.checkCreateClassLoader();
+                    } catch (SecurityException securityException) {
+                        // If we are running under an untrusted applet.
+                        // then a SecurityException will be thrown,
+                        // and we can rely on the Applet protection
+                        // mechanism to protect the user against
+                        // a wayward model.
+                        withinApplet = true;
+                    }
+                }
+                if (security == null || withinApplet == false) {
+                    MessageHandler.warning("Security concern:\n"
+                            + "Reading MoML from the net at address:\n"
+                            + xmlFile.toExternalForm()
+                            + "\nOK to proceed?");
+                }
             }
             input = xmlFile.openStream();
         } catch (IOException ioException) {
-            errorMessage.append("1. Failed to open '" + source + "' with base '"
+            errorMessage.append("1. Failed to open '" + source
+                    + "' with base '"
                     + base + "':\n" + ioException + "\n");
             // That failed.  Try opening it relative to the classpath.
             try {
