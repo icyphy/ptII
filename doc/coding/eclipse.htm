@@ -120,14 +120,16 @@ of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
 as above. Open the Lorenz CT demo from the Quick Tour and run it.
 </ol>
 
-<h2>Additional setup for compiling just what's necessary</h2>
+<h2>Compiling just what's necessary</h2>
 
 
-   There are parts of the CVS ptII tree that are not meant to be
-   compiled, or are meant to be compiled only in certain situations.
-   However, Eclipse will attempt to compile every .java in the project
-   which typically leads to many, many error messages. To restrict
-   Eclipse to compile just the appropriate .javas
+There are parts of the CVS ptII tree that are not meant to be
+compiled, or are meant to be compiled only in certain situations.
+However, Eclipse will attempt to compile every .java in the project
+which typically leads to many, many error messages. If you want to use
+the CVS capability see <a href="#cvs_repository">Using the ptII CVS repository in Eclipse</a>.
+If you dont want the CVS capability and want to restrict
+Eclipse to compile just the appropriate .javas
 
 <ol>
 <li> You must be using Eclipse 2.1. If necessary, obtain from
@@ -135,48 +137,42 @@ as above. Open the Lorenz CT demo from the Quick Tour and run it.
 
 <li>  Exit Eclipse if it is running
 
-<li> In the PTII directory replace the <CODE>.classpath</CODE>
- file contents with
-(but change occurrences of <CODE>C:/ptII</CODE>
- to reflect the location of  the
- <CODE>$PTII</CODE> on your system)
-
-<pre>
-   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-   &lt;classpath&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/sootclasses.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/jasminclasses.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/jython.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/matlab.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/matlabSunOS.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/matlabWindows.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/ptCal.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/ptjacl.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/saxon7.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/lib/diva.jar"/&gt;
-       &lt;classpathentry
-   excluding="vendors/|ptolemy/matlab/|ptolemy/plot/servlet/|ptolemy/acto
-   r/lib/joystick/|ptolemy/apps/|ptolemy/domains/gr/|ptolemy/domains/pdf/
-   |ptolemy/domains/ct/demo/Saber/|doc/coding/templates/|config/|ptolemy/
-   copernicus/jhdl/|ptolemy/copernicus/c/test/"
-           kind="src" path=""/&gt;
-       &lt;classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/vendors/sun/jxta/jxta.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/vendors/sun/jxta/cryptix-asn1.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/vendors/sun/jxta/cryptix32.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/vendors/sun/jxta/beepcore.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/vendors/sun/jxta/minimalBC.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/vendors/sun/jxta/jxtasecurity.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/vendors/sun/jxta/log4j.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/vendors/sun/jxta/jxtaptls.jar"/&gt;
-       &lt;classpathentry kind="lib" path="C:/ptII/vendors/sun/commapi/comm.jar"/&gt;
-       &lt;classpathentry kind="output" path="dotclasses"/&gt;
-   &lt;/classpath&gt;
-</pre>
+<li> In the PTII directory run configure. This will create the "correct" .classpath.
+<li> Restart Eclipse.
 
 
-</ol>       
 
+</ol>  
+
+<h2><a name="cvs_repository">Using the ptII CVS repository in Eclipse</a></h2>
+Eclipse has an extensive CVS capability. However, Eclipse assumes that
+an Eclipse project (including the .classpath, and .project) are under CVS control.
+Therefore, creating the ptII project in Eclipse under CVS control requires an unusual procedure.
+In brief, the CVS ptII module must be checked out of CVS into an Eclipse project that doesn't work "correctly" until
+the .classpath is created by manually running configure.
+
+<ol>
+<li> You must be using Eclipse 2.1. If necessary, obtain from
+       <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>
+<li> Set up the CVS connection
+See <a href="#cvs">Creating the CVS connection</a> to see how to do this
+<li> In the CVS Repositories View open the repository until you see the ptII Head and right click on this
+<li> Select the "Check Out As...." option
+<li> Go through the various menus to create a Java Project named ptII. Don't use the "Default Location". Instead specify the location where you want ptII to go (e.g. c:\ptII)
+<li> Click OK. And, wait for the checkout to finish
+<li> The result should be the ptII project. There will probably be several errors reported that are due to the .classpath that was just created as part of the checkout/project creation process.
+<li> Now run configure in the ptII directory outside of Eclipse. This will create the "correct" .classpath.
+<li> In Eclipse, perform a Refresh on the ptII project. This will cause Eclipse to see the new .classpath
+</ol>
+     
+
+<h2><a name="cvs">Creating the CVS connection</a></h2>
+<ol>
+<li> Expose the CVS Repositories View by Window->Show View->Other. The select CVS->CVS Repositories
+<li> In the CVS Repositories Panel right mouse click and select New->Repository Location
+<li> Specify the appropriate parameters. In particular, specify extssh for Connection Type
+<li> click Finish
+</ol>
 
 <h2><a name="tabs">Don't use tabs in the editor</a></h2>
 This setting is in the <code>$PTII/.eclipse.epf</code> file.
