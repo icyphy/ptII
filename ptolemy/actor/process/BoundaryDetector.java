@@ -32,9 +32,11 @@ with respect to boundary ports.
 
 package ptolemy.actor.process;
 
-import ptolemy.kernel.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.kernel.ComponentEntity;
+
 
 import java.util.Iterator;
 
@@ -52,10 +54,10 @@ public class BoundaryDetector {
 
     /** Construct a BoundaryDetector with the specified containing
      *  receiver.
-     *  @param rcvr The receiver containing this BoundaryDetector.
+     *  @param receiver The receiver containing this BoundaryDetector.
      */
-    public BoundaryDetector(Receiver rcvr) {
-	_rcvr = rcvr;
+    public BoundaryDetector(Receiver receiver) {
+	_receiver = receiver;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -74,7 +76,7 @@ public class BoundaryDetector {
         if( _connectedBoundaryCacheIsOn ) {
             return _isConnectedBoundaryValue;
         } else {
-            IOPort contPort = (IOPort)_rcvr.getContainer();
+            IOPort contPort = (IOPort)_receiver.getContainer();
             if( contPort == null ) {
                 _connectedBoundaryCacheIsOn = false;
                 _isConnectedBoundaryValue = false;
@@ -86,7 +88,6 @@ public class BoundaryDetector {
             ComponentEntity connectedEntity = null;
 
             Iterator ports = contPort.connectedPortList().iterator();
-	    int cnt = 0;
             while( ports.hasNext() ) {
                 connectedPort = (IOPort)ports.next();
                 connectedEntity = (ComponentEntity)connectedPort.getContainer();
@@ -97,11 +98,11 @@ public class BoundaryDetector {
 		    // Now determine if this receiver's channel is
 		    // connected to the boundary port.
                     try {
-                        Receiver[][] rcvrs =
+                        Receiver[][] receivers =
                             connectedPort.deepGetReceivers();
-                        for( int i = 0; i < rcvrs.length; i++ ) {
-                            for( int j = 0; j < rcvrs[i].length; j++ ) {
-                                if( _rcvr == rcvrs[i][j] ) {
+                        for( int i = 0; i < receivers.length; i++ ) {
+                            for( int j = 0; j < receivers[i].length; j++ ) {
+                                if( _receiver == receivers[i][j] ) {
                                     _connectedBoundaryCacheIsOn = true;
                                     _isConnectedBoundaryValue = true;
                                     return true;
@@ -120,10 +121,10 @@ public class BoundaryDetector {
                     // connected to the outside of a boundary port.
 		    // Now determine if this receiver's channel is
 		    // connected to the boundary port.
-		    Receiver[][] rcvrs = connectedPort.getRemoteReceivers();
-		    for( int i = 0; i < rcvrs.length; i++ ) {
-			for( int j = 0; j < rcvrs[i].length; j++ ) {
-			    if( _rcvr == rcvrs[i][j] ) {
+		    Receiver[][] receivers = connectedPort.getRemoteReceivers();
+		    for( int i = 0; i < receivers.length; i++ ) {
+			for( int j = 0; j < receivers[i].length; j++ ) {
+			    if( _receiver == receivers[i][j] ) {
 				_connectedBoundaryCacheIsOn = true;
 				_isConnectedBoundaryValue = true;
 				return true;
@@ -150,7 +151,7 @@ public class BoundaryDetector {
         if( _connectedInsideOfBoundaryCacheIsOn ) {
             return _isConnectedInsideOfBoundaryValue;
         } else {
-            IOPort contPort = (IOPort)_rcvr.getContainer();
+            IOPort contPort = (IOPort)_receiver.getContainer();
             if( contPort == null ) {
                 _connectedInsideOfBoundaryCacheIsOn = false;
                 _isConnectedInsideOfBoundaryValue = false;
@@ -162,10 +163,10 @@ public class BoundaryDetector {
             ComponentEntity connectedEntity = null;
 
             Iterator ports = contPort.connectedPortList().iterator();
-	    int cnt = 0;
             while( ports.hasNext() ) {
                 connectedPort = (IOPort)ports.next();
-                connectedEntity = (ComponentEntity)connectedPort.getContainer();
+                connectedEntity =
+                    (ComponentEntity)connectedPort.getContainer();
                 if( connectedEntity == contEntity.getContainer()
 			&& connectedPort.isInput() ) {
                     // The port container of this receiver is
@@ -173,11 +174,11 @@ public class BoundaryDetector {
 		    // Now determine if this receiver's channel is
 		    // connected to the boundary port.
                     try {
-                        Receiver[][] rcvrs =
+                        Receiver[][] receivers =
                             connectedPort.deepGetReceivers();
-                        for( int i = 0; i < rcvrs.length; i++ ) {
-                            for( int j = 0; j < rcvrs[i].length; j++ ) {
-                                if( _rcvr == rcvrs[i][j] ) {
+                        for( int i = 0; i < receivers.length; i++ ) {
+                            for( int j = 0; j < receivers[i].length; j++ ) {
+                                if( _receiver == receivers[i][j] ) {
                                     _connectedInsideOfBoundaryCacheIsOn = true;
                                     _isConnectedInsideOfBoundaryValue = true;
                                     return true;
@@ -211,7 +212,7 @@ public class BoundaryDetector {
         if( _connectedOutsideOfBoundaryCacheIsOn ) {
             return _isConnectedOutsideOfBoundaryValue;
         } else {
-            IOPort contPort = (IOPort)_rcvr.getContainer();
+            IOPort contPort = (IOPort)_receiver.getContainer();
             if( contPort == null ) {
                 _connectedOutsideOfBoundaryCacheIsOn = false;
                 _isConnectedOutsideOfBoundaryValue = false;
@@ -223,7 +224,6 @@ public class BoundaryDetector {
             ComponentEntity connectedEntity = null;
 
             Iterator ports = contPort.connectedPortList().iterator();
-	    int cnt = 0;
             while( ports.hasNext() ) {
                 connectedPort = (IOPort)ports.next();
                 connectedEntity = (ComponentEntity)connectedPort.getContainer();
@@ -233,10 +233,10 @@ public class BoundaryDetector {
                     // connected to the outside of a boundary port.
 		    // Now determine if this receiver's channel is
 		    // connected to the boundary port.
-		    Receiver[][] rcvrs = connectedPort.getRemoteReceivers();
-		    for( int i = 0; i < rcvrs.length; i++ ) {
-			for( int j = 0; j < rcvrs[i].length; j++ ) {
-			    if( _rcvr == rcvrs[i][j] ) {
+		    Receiver[][] receivers = connectedPort.getRemoteReceivers();
+		    for( int i = 0; i < receivers.length; i++ ) {
+			for( int j = 0; j < receivers[i].length; j++ ) {
+			    if( _receiver == receivers[i][j] ) {
 				_connectedOutsideOfBoundaryCacheIsOn = true;
 				_isConnectedOutsideOfBoundaryValue = true;
 				return true;
@@ -267,7 +267,7 @@ public class BoundaryDetector {
         if( _insideBoundaryCacheIsOn ) {
             return _isInsideBoundaryValue;
         } else {
-            IOPort innerPort = (IOPort)_rcvr.getContainer();
+            IOPort innerPort = (IOPort)_receiver.getContainer();
             if( innerPort == null ) {
                 _insideBoundaryCacheIsOn = false;
                 _isInsideBoundaryValue = false;
@@ -314,7 +314,7 @@ public class BoundaryDetector {
         if( _outsideBoundaryCacheIsOn ) {
             return _isInsideBoundaryValue;
         } else {
-            IOPort innerPort = (IOPort)_rcvr.getContainer();
+            IOPort innerPort = (IOPort)_receiver.getContainer();
             if( innerPort == null ) {
                 _outsideBoundaryCacheIsOn = false;
                 _isOutsideBoundaryValue = false;
@@ -362,7 +362,7 @@ public class BoundaryDetector {
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
-    private Receiver _rcvr;
+    private Receiver _receiver;
 
     private boolean _insideBoundaryCacheIsOn = false;
     private boolean _isInsideBoundaryValue = false;

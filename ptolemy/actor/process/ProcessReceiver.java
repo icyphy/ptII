@@ -31,10 +31,9 @@ domains.
 
 package ptolemy.actor.process;
 
+import ptolemy.actor.Receiver;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.util.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver
@@ -42,7 +41,7 @@ import ptolemy.data.*;
 A ProcessReceiver is an interface for receivers in the process oriented
 domains. It adds methods to the Receiver interface for setting flags that
 indicate whether a termination of the simulation has been requested.
-In addition, methods are available to accomodate hierarchical
+In addition, methods are available to accommodate hierarchical
 heterogeneity via composite actors.
 <P>
 In process oriented domains, simulations are normally ended on the
@@ -64,7 +63,7 @@ public synchronized void requestFinish() {
 </code>
 <P>
 <P>
-To accomodate hierarchical heterogeneity, an instantiation of
+To accommodate hierarchical heterogeneity, an instantiation of
 ProcessReceiver must be able to determine its topological location
 with respect to boundary ports. A boundary port is an opaque port
 that is contained by a composite actor. This ability is enforced
@@ -73,7 +72,7 @@ isConnectedToBoundaryInside(), isInsideBoundary() and isOutsideBoundary()
 methods. For convenience, the BoundaryDetector class is available to
 to simplify the implementation of these methods.
 <P>
-Blocking reads and writes are accomodated via the get(Branch)
+Blocking reads and writes are accommodated via the get(Branch)
 and put(Token, Branch) methods. In cases where a branch attempts
 to get data from or put data into a process receiver, it calls,
 respectively, these methods by passing itself as an argument.
@@ -101,7 +100,7 @@ public interface ProcessReceiver extends Receiver {
     ////                         public methods                    ////
 
     /** Get a token from this receiver and pass in a branch object as
-     *  an argument. This method can accomodate blocking reads at the
+     *  an argument. This method can accommodate blocking reads at the
      *  boundary of composite actors. If the branch argument is not
      *  null it is assumed that the receiver is at or connected to
      *  the boundary of a composite actor and any blocks are
@@ -224,7 +223,7 @@ public interface ProcessReceiver extends Receiver {
     public void reset();
 
     /** Put a token into this receiver and pass in a branch object as
-     *  an argument. This method can accomodate blocking writes at the
+     *  an argument. This method can accommodate blocking writes at the
      *  boundary of composite actors. If the branch argument is not
      *  null it is assumed that the receiver is at or connected to
      *  the boundary of a composite actor and any blocks are

@@ -32,8 +32,6 @@
 
 package ptolemy.actor.process;
 
-import ptolemy.actor.*;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -82,9 +80,9 @@ public class NotifyThread extends Thread {
      */
     public void run() {
 	if (_locks != null) {
-	    Iterator objs = _locks.iterator();
-	    while (objs.hasNext()) {
-		Object nextObj = objs.next();
+	    Iterator objects = _locks.iterator();
+	    while (objects.hasNext()) {
+		Object nextObj = objects.next();
 		synchronized(nextObj) {
 		    nextObj.notifyAll();
 		}

@@ -31,10 +31,15 @@ incorporates hierarchical, heterogeneity.
 
 package ptolemy.actor.process;
 
-import ptolemy.kernel.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Mailbox;
+import ptolemy.actor.Receiver;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
+import ptolemy.kernel.CompositeEntity;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -86,28 +91,28 @@ consider the case of a process-oriented opaque composite actor that is
 contained by another process-oriented opaque composite actor. If the
 actors contained by the inner composite actor are not blocked, then
 execution of the inner composite actor is allowed to continue
-indepenent of the state of the branch controllers. If the actors
+independent of the state of the branch controllers. If the actors
 contained by the inner composite actor are internally blocked, then
 after the branch controllers have been deactivated, execution of the
 composite actor ends and postfire returns false indicating that
 successive iterations are not allowed. If the actors contained by the
 inner composite actor are externally blocked, then the composite
 process director waits until the branch controllers block (an
-inevitible condition) and registers the block with the containing
+inevitable condition) and registers the block with the containing
 (outer) composite actor's director.
 <P>
 In this paragraph we consider the case of a process-oriented opaque
 composite actor that is contained by a schedule-oriented (non process)
 opaque composite actor. If the actors contained by the inner composite
 actor are not blocked, then execution of the inner composite actor is
-allowed to continue indepenent of the state of the branch controllers.
+allowed to continue independent of the state of the branch controllers.
 If the actors contained by the inner composite actor are internally
 blocked, then after the branch controllers have been deactivated,
 execution of the composite actor ends and postfire returns false
 indicating that successive iterations are not allowed. If the actors
 contained by the inner composite actor are externally blocked, then
 the composite process director waits until the branch controllers
-block (an inevitible condition) and ends the iteration with postfire()
+block (an inevitable condition) and ends the iteration with postfire()
 returning true indicating that successive iterations are allowed.
 <P>
 <P>
@@ -176,8 +181,8 @@ public class CompositeProcessDirector extends ProcessDirector {
 	newObj._onFirstIteration = true;
 	newObj._inputBranchController = null;
 	newObj._outputBranchController = null;
-	newObj._blockedRcvrs = new LinkedList();
-	newObj._branchCntlrLock = new Object();
+	newObj._blockedReceivers = new LinkedList();
+	newObj._branchControllerLock = new Object();
         return newObj;
     }
 
@@ -256,15 +261,15 @@ public class CompositeProcessDirector extends ProcessDirector {
             }
         }
 
-        _blockedRcvrs.clear();
+        _blockedReceivers.clear();
 
         _inputBranchController = new BranchController(container);
         _outputBranchController = new BranchController(container);
 
 	// Instantiate Input/Output Branch Controllers
 	if( container != null ) {
-            Iterator inports = container.inputPortList().iterator();
-            createBranchController(inports);
+            Iterator inPorts = container.inputPortList().iterator();
+            createBranchController(inPorts);
 	    Iterator outports = container.outputPortList().iterator();
             createBranchController(outports);
 	}
@@ -308,8 +313,6 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException  {
-        // System.out.println("PROCESSDIRECTOR.prefire() ending. ");
-
         super.prefire();
 
         Thread thread = null;
@@ -341,10 +344,8 @@ public class CompositeProcessDirector extends ProcessDirector {
         }
         _inputBranchController.deactivateBranches();
         while( !_inputBranchController.isBlocked() ) {
-            // System.out.println(_name+": controller about to wait");
             workspace.wait(this);
         }
-        // System.out.println(_name+": controller ending stopInputBranchController()");
     }
 
     /** Stop the output branch controller of this director. This
@@ -401,11 +402,11 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  domain specific functionality. Implementations of this method
      *  must be synchronized.
      *
-     *  @param rcvr The receiver whose data transfer is blocked.
+     *  @param receiver The receiver whose data transfer is blocked.
      */
-    protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
-        _blockedRcvrs.add(rcvr);
-	super._actorBlocked(rcvr);
+    protected synchronized void _actorBlocked(ProcessReceiver receiver) {
+        _blockedReceivers.add(receiver);
+	super._actorBlocked(receiver);
     }
 
     /** Register the receivers that instigated the newly blocked actor.
@@ -413,14 +414,14 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  specific functionality. Implementations of this method must be
      *  synchronized.
      *
-     *  @param rcvrs The receivers whose data transfer is blocked.
+     *  @param receivers The receivers whose data transfer is blocked.
      */
-    protected synchronized void _actorBlocked(LinkedList rcvrs) {
-        if( rcvrs == _blockedRcvrs ) {
+    protected synchronized void _actorBlocked(LinkedList receivers) {
+        if( receivers == _blockedReceivers ) {
             return;
         }
-        _blockedRcvrs.addAll(rcvrs);
-	super._actorBlocked(rcvrs);
+        _blockedReceivers.addAll(receivers);
+	super._actorBlocked(receivers);
     }
 
     /** Unregister the specified receiver that was previously blocked.
@@ -428,12 +429,12 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  domain specific functionality. Implementations of this method
      *  must be synchronized.
      *
-     *  @param rcvr The receiver whose data transfer was
+     *  @param receiver The receiver whose data transfer was
      *   previously blocked.
      */
-    protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
-        _blockedRcvrs.remove(rcvr);
-	super._actorUnBlocked(rcvr);
+    protected synchronized void _actorUnBlocked(ProcessReceiver receiver) {
+        _blockedReceivers.remove(receiver);
+	super._actorUnBlocked(receiver);
     }
 
     /** Unregister the receivers that were previously blocked. This
@@ -441,16 +442,16 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  specific functionality. Implementations of this method must
      *  be synchronized.
      *
-     *  @param rcvrs The receivers whose data transfer was
+     *  @param receivers The receivers whose data transfer was
      *   previously blocked.
      */
-    protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
-        Iterator rcvrIterator = rcvrs.iterator();
-        while( rcvrIterator.hasNext() ) {
-            ProcessReceiver rcvr = (ProcessReceiver)rcvrIterator.next();
-            _blockedRcvrs.remove(rcvr);
+    protected synchronized void _actorUnBlocked(LinkedList receivers) {
+        Iterator receiverIterator = receivers.iterator();
+        while( receiverIterator.hasNext() ) {
+            ProcessReceiver receiver = (ProcessReceiver)receiverIterator.next();
+            _blockedReceivers.remove(receiver);
         }
-	super._actorUnBlocked(rcvrs);
+	super._actorUnBlocked(receivers);
     }
 
     /** Return false if the number of blocked processes is less than
@@ -481,11 +482,11 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   blocked; return false otherwise.
      */
     protected boolean _areActorsExternallyBlocked() {
-    	Iterator blockedRcvrIter = _blockedRcvrs.iterator();
-        while( blockedRcvrIter.hasNext() ) {
-            ProcessReceiver rcvr =
-                    (ProcessReceiver)blockedRcvrIter.next();
-            if( rcvr.isConnectedToBoundaryInside() ) {
+    	Iterator blockedReceiverIter = _blockedReceivers.iterator();
+        while( blockedReceiverIter.hasNext() ) {
+            ProcessReceiver receiver =
+                    (ProcessReceiver)blockedReceiverIter.next();
+            if( receiver.isConnectedToBoundaryInside() ) {
                 return true;
             }
         }
@@ -499,15 +500,15 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  then no registration operation will be performed by this
      *  method.
      *
-     *  @param cntlr The controller for which registration of a
+     *  @param controller The controller for which registration of a
      *   blocked state will occur.
      */
-    protected synchronized void _controllerBlocked(BranchController cntlr) {
-        if( cntlr == _inputBranchController ) {
-            _inputControllerIsBlocked = cntlr.isBlocked();
+    protected synchronized void _controllerBlocked(BranchController controller) {
+        if( controller == _inputBranchController ) {
+            _inputControllerIsBlocked = controller.isBlocked();
         }
-        if( cntlr == _outputBranchController ) {
-            _outputControllerIsBlocked = cntlr.isBlocked();
+        if( controller == _outputBranchController ) {
+            _outputControllerIsBlocked = controller.isBlocked();
         }
         notifyAll();
     }
@@ -519,16 +520,16 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  controller is blocked then no registration operation will
      *  be performed by this method.
      *
-     *  @param cntlr The controller for which registration of an
+     *  @param controller The controller for which registration of an
      *   unblocked state will occur.
      */
-    protected void _controllerUnBlocked(BranchController cntlr) {
-        synchronized(_branchCntlrLock) {
-            if( cntlr == _inputBranchController ) {
-                _inputControllerIsBlocked = cntlr.isBlocked();
+    protected void _controllerUnBlocked(BranchController controller) {
+        synchronized(_branchControllerLock) {
+            if( controller == _inputBranchController ) {
+                _inputControllerIsBlocked = controller.isBlocked();
             }
-            if( cntlr == _outputBranchController ) {
-                _outputControllerIsBlocked = cntlr.isBlocked();
+            if( controller == _outputBranchController ) {
+                _outputControllerIsBlocked = controller.isBlocked();
             }
         }
     }
@@ -563,19 +564,21 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     protected boolean _registerBlockedRcvrsWithExecutive() {
 	Workspace workspace = workspace();
-	LinkedList blkdRcvrs = new LinkedList();
-	blkdRcvrs.addAll( _outputBranchController.getBlockedReceivers() );
-	blkdRcvrs.addAll( _inputBranchController.getBlockedReceivers() );
+	LinkedList blockedReceivers = new LinkedList();
+	blockedReceivers.addAll(
+                _outputBranchController.getBlockedReceivers() );
+	blockedReceivers.addAll(
+                _inputBranchController.getBlockedReceivers() );
 
-	int origCount = blkdRcvrs.size();
+	int originalCount = blockedReceivers.size();
 
     	Director execDir = ((Actor)getContainer()).getExecutiveDirector();
 	CompositeActor execContainer =
                 ((CompositeActor)getContainer().getContainer());
 
-    	((CompositeProcessDirector)execDir)._actorBlocked(blkdRcvrs);
+    	((CompositeProcessDirector)execDir)._actorBlocked(blockedReceivers);
 
-	while( blkdRcvrs.size() >= origCount ) {
+	while( blockedReceivers.size() >= originalCount ) {
 	    workspace.wait(this);
 	}
 
@@ -609,7 +612,6 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
-        // System.out.println("Entered CompositeProcessDirector._resolveDeadlock");
 	Director execDir = ((Actor)getContainer()).getExecutiveDirector();
 	Workspace workspace = workspace();
 	if( _areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
@@ -687,8 +689,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *
      *  @return False indicating that internal deadlock was not
      *   resolved.
-     *  @exception IllegalActionException is not thrown in this
-     *   base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _resolveInternalDeadlock() throws
             IllegalActionException {
@@ -709,11 +710,9 @@ public class CompositeProcessDirector extends ProcessDirector {
     private boolean _inputControllerIsBlocked = true;
     private boolean _outputControllerIsBlocked = true;
 
-    private LinkedList _blockedRcvrs = new LinkedList();
+    private LinkedList _blockedReceivers = new LinkedList();
 
-    private Object _branchCntlrLock = new Object();
-
+    private Object _branchControllerLock = new Object();
 
     private String _name = null;
-
 }

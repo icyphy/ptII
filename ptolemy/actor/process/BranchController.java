@@ -32,14 +32,15 @@ monitoring whether the branches have blocked.
 
 package ptolemy.actor.process;
 
-// Ptolemy imports.
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
-import ptolemy.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
-// Java imports
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -95,7 +96,7 @@ public class BranchController implements Runnable {
             }
             setActive(true);
             Branch branch = null;
-            for( int i=0; i < _branches.size(); i++ ) {
+            for( int i = 0; i < _branches.size(); i++ ) {
                 branch = (Branch)_branches.get(i);
                 branch.run();
             }
@@ -146,26 +147,26 @@ public class BranchController implements Runnable {
         _ports.add(port);
 
 	Branch branch = null;
-	ProcessReceiver prodRcvr = null;
-	ProcessReceiver consRcvr = null;
-	Receiver[][] prodRcvrs = null;
-	Receiver[][] consRcvrs = null;
+	ProcessReceiver prodReceiver = null;
+	ProcessReceiver consReceiver = null;
+	Receiver[][] prodReceivers = null;
+	Receiver[][] consReceivers = null;
 
-	for( int i=0; i < port.getWidth(); i++ ) {
+	for( int i = 0; i < port.getWidth(); i++ ) {
 	    if( port.isInput() ) {
-		prodRcvrs = port.getReceivers();
-		consRcvrs = port.deepGetReceivers();
+		prodReceivers = port.getReceivers();
+		consReceivers = port.deepGetReceivers();
 	    } else if( port.isOutput() ) {
-		prodRcvrs = port.getInsideReceivers();
-		consRcvrs = port.getRemoteReceivers();
+		prodReceivers = port.getInsideReceivers();
+		consReceivers = port.getRemoteReceivers();
 	    } else {
 		throw new IllegalActionException("Bad news");
 	    }
 
-	    prodRcvr = (ProcessReceiver)prodRcvrs[i][0];
-	    consRcvr = (ProcessReceiver)consRcvrs[i][0];
+	    prodReceiver = (ProcessReceiver)prodReceivers[i][0];
+	    consReceiver = (ProcessReceiver)consReceivers[i][0];
 
-	    branch = new Branch( prodRcvr, consRcvr, this );
+	    branch = new Branch( prodReceiver, consReceiver, this );
 	    _branches.add(branch);
 	}
     }
@@ -173,25 +174,23 @@ public class BranchController implements Runnable {
     /** Deactive the branches assigned to this branch controller.
      */
     public synchronized void deactivateBranches() {
-        // System.out.println(_parentName+": branch controller calling deactivate()");
 	setActive(false);
         Iterator branches = _branches.iterator();
         Branch branch = null;
-        ProcessReceiver bRcvr = null;
+        ProcessReceiver bReceiver = null;
         while (branches.hasNext()) {
             branch = (Branch)branches.next();
             branch.setActive(false);
-            bRcvr = branch.getConsReceiver();
-            synchronized(bRcvr) {
-                bRcvr.notifyAll();
+            bReceiver = branch.getConsReceiver();
+            synchronized(bReceiver) {
+                bReceiver.notifyAll();
             }
-            bRcvr = branch.getProdReceiver();
-            synchronized(bRcvr) {
-                bRcvr.notifyAll();
+            bReceiver = branch.getProdReceiver();
+            synchronized(bReceiver) {
+                bReceiver.notifyAll();
             }
         }
 	notifyAll();
-        // System.out.println(_parentName+": branch controller ending deactivate()");
     }
 
     /** Returned a linked list of the blocked receivers associated
@@ -255,7 +254,7 @@ public class BranchController implements Runnable {
     }
 
     /** Begin executing the branches associated with this branch
-     *  controller so that they will begin transfering data in
+     *  controller so that they will begin transferring data in
      *  their assigned channels. If all of the branches become
      *  blocked then the director associated with this branch
      *  branch controller is notified.
@@ -297,13 +296,13 @@ public class BranchController implements Runnable {
      *  blocked branch. If all the assigned branches are blocked,
      *  then this branch controller will be registered as blocked with
      *  the controlling director.
-     *  @param rcvr The process receiver that is being registered
+     *  @param receiver The process receiver that is being registered
      *   as blocked.
      */
-    protected void _branchBlocked(ProcessReceiver rcvr) {
+    protected void _branchBlocked(ProcessReceiver receiver) {
         synchronized(this) {
             _branchesBlocked++;
-	    _blockedReceivers.addFirst(rcvr);
+	    _blockedReceivers.addFirst(receiver);
 	    notifyAll();
         }
     }
@@ -314,12 +313,12 @@ public class BranchController implements Runnable {
      *  this branch controller with the director as no longer being
      *  blocked.
      */
-    protected void _branchUnBlocked(ProcessReceiver rcvr) {
+    protected void _branchUnBlocked(ProcessReceiver receiver) {
         synchronized(this) {
             if( _branchesBlocked > 0 ) {
                 _branchesBlocked--;
             }
-	    _blockedReceivers.remove(rcvr);
+	    _blockedReceivers.remove(receiver);
 	    notifyAll();
         }
     }

@@ -30,7 +30,6 @@
 
 package ptolemy.actor.process;
 
-import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -40,20 +39,19 @@ This exception is thrown to terminate a process. This is only a
 notification exception that a ProcessDirector uses to terminate all the
 processes gracefully. It is not an exception that indicates an error in
 the code or model.
-
+<p>
 In the process domains (PN and CSP for example), a simulation is
 terminated only when a deadlock is detected. During a deadlock, the
 threads corresponding to actors are normally blocked on a method call to
 the receiver. This exception is normally thrown from these methods, so
 that the threads can return from the call and terminate themselves.
-
+<p>
 This class is a standalone class and not derived from the Ptolemy
 Runtime exceptions as those exceptions indicate an error in the model,
 while this exception is used for passing of information to the threads.
 
 @author Neil Smyth, Mudit Goel
 @version $Id$
-
 */
 public class TerminateProcessException extends RuntimeException {
 
@@ -71,32 +69,32 @@ public class TerminateProcessException extends RuntimeException {
 
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument and the second argument string.
-     *  @param obj The object.
+     *  @param object The object.
      *  @param detail The message.
      */
-    public TerminateProcessException(Nameable obj, String detail) {
-        this(obj, null, detail);
+    public TerminateProcessException(Nameable object, String detail) {
+        this(object, null, detail);
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  names of the first two arguments plus the third argument string.
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
+     *  @param object1 The first object.
+     *  @param object2 The second object.
      *  @param detail The message.
      */
-    public TerminateProcessException(Nameable obj1, Nameable obj2,
+    public TerminateProcessException(Nameable object1, Nameable object2,
             String detail) {
-        String obj1string = _getFullName(obj1);
-        String obj2string = _getFullName(obj2);
+        String object1String = _getFullName(object1);
+        String object2String = _getFullName(object2);
         String prefix;
-        if (!obj1string.equals("")) {
-            if (!obj2string.equals("")) {
-                prefix = new String(obj1string + " and " + obj2string);
+        if (!object1String.equals("")) {
+            if (!object2String.equals("")) {
+                prefix = new String(object1String + " and " + object2String);
             } else {
-                prefix = obj1string;
+                prefix = object1String;
             }
         } else {
-            prefix = obj2string;
+            prefix = object2String;
         }
         _setMessage(prefix);
         if (detail != null) {
@@ -126,12 +124,12 @@ public class TerminateProcessException extends RuntimeException {
      *  @param obj An object with a name.
      *  @return The name of the argument.
      */
-    protected String _getName(Nameable obj) {
+    protected String _getName(Nameable object) {
         String name;
-        if (obj == null) {
+        if (object == null) {
             return "";
         } else {
-            name = obj.getName();
+            name = object.getName();
             if (name.equals("")) {
                 name = new String("<Unnamed Object>");
             }
@@ -142,28 +140,28 @@ public class TerminateProcessException extends RuntimeException {
     /** Get the name of a Nameable object.  This method attempts to use
      *  getFullName(), if it is defined, and resorts to getName() if it is
      *  not.  If the argument is a null reference, return an empty string.
-     *  @param obj An object with a full name.
+     *  @param object An object with a full name.
      *  @return The full name of the argument.
      */
-    protected String _getFullName(Nameable obj) {
+    protected String _getFullName(Nameable object) {
         String name;
-        if (obj == null) {
+        if (object == null) {
             return "";
         } else {
             try {
-                name = obj.getFullName();
+                name = object.getFullName();
             } catch (TerminateProcessException ex) {
-                name = obj.getName();
+                name = object.getName();
             }
         }
         return name;
     }
 
     /** Sets the error message to the specified string.
-     *  @param msg The message.
+     *  @param message The message.
      */
-    protected void _setMessage(String msg) {
-        _message = msg;
+    protected void _setMessage(String message) {
+        _message = message;
     }
 
     ///////////////////////////////////////////////////////////////////

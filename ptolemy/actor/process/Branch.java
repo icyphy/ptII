@@ -32,7 +32,7 @@ actor boundary.
 
 package ptolemy.actor.process;
 
-import ptolemy.actor.*;
+
 import ptolemy.data.Token;
 import ptolemy.kernel.util.*;
 
@@ -74,44 +74,44 @@ public class Branch implements Runnable {
 
     /** Construct a branch object with a branch controller.
      *
-     *  @param cntlr The branch controller assigned to this branch.
+     *  @param controller The branch controller assigned to this branch.
      *  @deprecated Use this constructor for testing purposes only.
      */
-    public Branch(BranchController cntlr) throws
+    public Branch(BranchController controller) throws
     	    IllegalActionException {
-        _controller = cntlr;
+        _controller = controller;
     }
 
     /** Construct a branch object with a producer receiver, a consumer
      *  receiver and a branch controller.
      *
-     *  @param prodRcvr The producer receiver assigned to this branch.
-     *  @param consRcvr The consumer receiver assigned to this branch.
-     *  @param cntlr The branch controller assigned to this branch.
+     *  @param producerReceiver The producer receiver assigned to this branch.
+     *  @param consumerReceiver The consumer receiver assigned to this branch.
+     *  @param controller The branch controller assigned to this branch.
      *  @exception IllegalActionException If the receivers assigned to
      *   this branch are null or improperly configured.
      */
-    public Branch(ProcessReceiver prodRcvr, ProcessReceiver consRcvr,
-	    BranchController cntlr) throws IllegalActionException {
-        _controller = cntlr;
+    public Branch(ProcessReceiver producerReceiver, ProcessReceiver consumerReceiver,
+	    BranchController controller) throws IllegalActionException {
+        _controller = controller;
 
-        if( prodRcvr == null || consRcvr == null ) {
+        if( producerReceiver == null || consumerReceiver == null ) {
             throw new IllegalActionException("The boundary "
             	    + "receivers of this branch are null.");
         }
-        if( !prodRcvr.isProducerReceiver() ) {
-	    String name = ((Nameable)consRcvr.getContainer()).getName();
+        if( !producerReceiver.isProducerReceiver() ) {
+	    String name = ((Nameable)consumerReceiver.getContainer()).getName();
             throw new IllegalActionException("Receiver: " + name +
 		    " Not producer receiver");
         }
-	_prodRcvr = prodRcvr;
+	_producerReceiver = producerReceiver;
 
-        if( !consRcvr.isConsumerReceiver() ) {
-	    String name = ((Nameable)consRcvr.getContainer()).getName();
+        if( !consumerReceiver.isConsumerReceiver() ) {
+	    String name = ((Nameable)consumerReceiver.getContainer()).getName();
             throw new IllegalActionException("Receiver: " + name +
 		    " Not consumer receiver");
         }
-	_consRcvr = consRcvr;
+	_consumerReceiver = consumerReceiver;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ public class Branch implements Runnable {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public ProcessReceiver getConsReceiver() {
-        return _consRcvr;
+        return _consumerReceiver;
     }
 
     /** Return the producer receiver that this branch gets data from.
@@ -132,7 +132,7 @@ public class Branch implements Runnable {
      * @see ptolemy.actor.process.BoundaryDetector
      */
     public ProcessReceiver getProdReceiver() {
-        return _prodRcvr;
+        return _producerReceiver;
     }
 
     /** Return true if this branch is active.
@@ -148,26 +148,26 @@ public class Branch implements Runnable {
      *  or consumer receiver (but not both) are passed as an
      *  argument according to which one is blocked.
      *
-     *  @param rcvr The receiver assigned to this branch that
+     *  @param receiver The receiver assigned to this branch that
      *   is blocked.
      */
-    public void registerRcvrBlocked(ProcessReceiver rcvr) {
-    	if( !_rcvrBlocked ) {
-    	    _rcvrBlocked = true;
-            _controller._branchBlocked(rcvr);
+    public void registerRcvrBlocked(ProcessReceiver receiver) {
+    	if( !_receiverBlocked ) {
+    	    _receiverBlocked = true;
+            _controller._branchBlocked(receiver);
         }
     }
 
     /** Register that the receiver controlled by this branch
      *  is no longer blocked.
      *
-     *  @param rcvr The receiver assigned to this branch for
+     *  @param receiver The receiver assigned to this branch for
      *   which a block is being removed.
      */
-    public void registerRcvrUnBlocked(ProcessReceiver rcvr) {
-    	if( _rcvrBlocked ) {
-    	    _rcvrBlocked = false;
-            _controller._branchUnBlocked(rcvr);
+    public void registerRcvrUnBlocked(ProcessReceiver receiver) {
+    	if( _receiverBlocked ) {
+    	    _receiverBlocked = false;
+            _controller._branchUnBlocked(receiver);
         }
     }
 
@@ -202,13 +202,13 @@ public class Branch implements Runnable {
      *  token transfer.
      */
     public void transferToken() {
-        if( _prodRcvr == null ) {
+        if( _producerReceiver == null ) {
             return;
-        } else if ( _consRcvr == null ) {
+        } else if ( _consumerReceiver == null ) {
             return;
         }
-        Token token = _prodRcvr.get(this);
-        _consRcvr.put(token, this);
+        Token token = _producerReceiver.get(this);
+        _consumerReceiver.put(token, this);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -219,8 +219,8 @@ public class Branch implements Runnable {
 
     private boolean _active = false;
     private BranchController _controller;
-    private ProcessReceiver _prodRcvr;
-    private ProcessReceiver _consRcvr;
-    private boolean _rcvrBlocked = false;
+    private ProcessReceiver _producerReceiver;
+    private ProcessReceiver _consumerReceiver;
+    private boolean _receiverBlocked = false;
 
 }

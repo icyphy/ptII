@@ -30,9 +30,11 @@
 
 package ptolemy.actor.process;
 
-import ptolemy.kernel.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessThread
@@ -125,7 +127,6 @@ public class ProcessThread extends PtolemyThread {
 			_actor.fire();
 			iterate =  _actor.postfire();
 		    }
-                    // System.out.println(_name+" processThread.iterate = "+iterate);
 		}
             }
         } catch (TerminateProcessException t) {
@@ -134,7 +135,6 @@ public class ProcessThread extends PtolemyThread {
             _manager.notifyListenersOfException(e);
         } finally {
             try {
-                // System.out.println(_name+" calling wrapup");
  		wrapup();
             } catch (IllegalActionException e) {
                 _manager.notifyListenersOfException(e);
@@ -142,7 +142,6 @@ public class ProcessThread extends PtolemyThread {
             _director._decreaseActiveCount();
 	    /*
               String name = ((Nameable)_actor).getName();
-              System.out.println(name+": has called _decreaseActiveCount on "
               + _director.getName() + "; there are "
               + _director._getActiveActorsCount()+" active actors in "
               + _director.getName() +".");
@@ -156,7 +155,6 @@ public class ProcessThread extends PtolemyThread {
      *  this director.
      */
     public void stopThread() {
-        // System.out.println(_name+" called stopThread");
 	_threadStopRequested = true;
     }
 

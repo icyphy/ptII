@@ -30,10 +30,14 @@
 
 package ptolemy.actor.process;
 
-import ptolemy.kernel.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Mailbox;
+import ptolemy.actor.Receiver;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -60,7 +64,7 @@ implementations given here are trivial and suffice only to illustrate
 the approach that should be followed.
 <P>
 This base class is not sufficient for executing hierarchical, heterogeneous
-models. In order to accomodate hierarchical, heterogeneity the subclass
+models. In order to accommodate hierarchical, heterogeneity the subclass
 CompositeProcessDirector must be used.
 <P>
 <P>
@@ -191,10 +195,10 @@ public class ProcessDirector extends Director {
         Iterator ports = actor.inputPortList().iterator();
         while( ports.hasNext() ) {
             IOPort port = (IOPort)ports.next();
-            Receiver[][] rcvrs = port.getReceivers();
-            for( int i = 0; i < rcvrs.length; i++ ) {
-                for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    ((ProcessReceiver)rcvrs[i][j]).reset();
+            Receiver[][] receivers = port.getReceivers();
+            for( int i = 0; i < receivers.length; i++ ) {
+                for( int j = 0; j < receivers[i].length; j++ ) {
+                    ((ProcessReceiver)receivers[i][j]).reset();
                 }
             }
         }
@@ -221,8 +225,9 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if(_debugging) 
+        if (_debugging) {
             _debug(_name+": returning _notDone = " + _notDone);
+        }
 	return _notDone;
     }
 
@@ -255,7 +260,6 @@ public class ProcessDirector extends Director {
     public void stopFire() {
  	Iterator threads = _actorThreadList.iterator();
  	while( threads.hasNext() ) {
-            // System.out.println("PROCESS THREADS.stopFire()");
  	    ProcessThread thread = (ProcessThread)threads.next();
 
 	    // Call stopThread() on the threads first
@@ -267,7 +271,7 @@ public class ProcessDirector extends Director {
     /** Throw an IllegalActionException as an indication that this method
      *  should not be used within process domains.
      *
-     *  @exception IllegalActionException in all cases as this method
+     *  @exception IllegalActionException Always thrown. This method
      *   should not be invoked within the process domains.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
@@ -278,7 +282,7 @@ public class ProcessDirector extends Director {
     /** Throw an IllegalActionException as an indication that this method
      *  should not be used within process domains.
      *
-     *  @exception IllegalActionException in all cases as this method
+     *  @exception IllegalActionException Always thrown. This method
      *   should not be invoked within the process domains.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
@@ -322,15 +326,16 @@ public class ProcessDirector extends Director {
      *   this director.
      */
     public void wrapup() throws IllegalActionException {
-        if( _debugging ) _debug(_name+": calling wrapup()");
-
+        if ( _debugging ) {
+            _debug(_name+": calling wrapup()");
+        }
 	Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
             Iterator actorPorts;
             ProcessReceiver nextRec;
-            LinkedList recs = new LinkedList();
+            LinkedList receiversList = new LinkedList();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actorPorts = actor.inputPortList().iterator();
@@ -342,14 +347,14 @@ public class ProcessDirector extends Director {
                         for (int j = 0; j < receivers[i].length; j++) {
                             nextRec = (ProcessReceiver)receivers[i][j];
                             nextRec.requestFinish();
-                            recs.addFirst(nextRec);
+                            receiversList.addFirst(nextRec);
                         }
                     }
                 }
             }
 
             // Now wake up all the receivers.
-            (new NotifyThread(recs)).start();
+            (new NotifyThread(receiversList)).start();
         }
 
         return;
@@ -363,9 +368,9 @@ public class ProcessDirector extends Director {
      *  may be overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
      *
-     *  @param rcvr The receiver whose data transfer is blocked.
+     *  @param receiver The receiver whose data transfer is blocked.
      */
-    protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
+    protected synchronized void _actorBlocked(ProcessReceiver receiver) {
         _blockedActorCount++;
         notifyAll();
     }
@@ -375,9 +380,9 @@ public class ProcessDirector extends Director {
      *  may be overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
      *
-     *  @param rcvrs The receivers whose data transfer is blocked.
+     *  @param receivers The receivers whose data transfer is blocked.
      */
-    protected synchronized void _actorBlocked(LinkedList rcvrs) {
+    protected synchronized void _actorBlocked(LinkedList receivers) {
         _blockedActorCount++;
         notifyAll();
     }
@@ -387,9 +392,10 @@ public class ProcessDirector extends Director {
      *  overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
      *
-     *  @param rcvr The receiver whose data transfer was previously blocked.
+     *  @param receiver The receiver whose data transfer was
+     *  previously blocked.
      */
-    protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
+    protected synchronized void _actorUnBlocked(ProcessReceiver receiver) {
         _blockedActorCount--;
         notifyAll();
     }
@@ -399,19 +405,20 @@ public class ProcessDirector extends Director {
      *  overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
      *
-     *  @param rcvrs The receivers whose data transfer was previously blocked.
+     *  @param receivers The receivers whose data transfer was
+     *  previously blocked.
      */
-    protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
+    protected synchronized void _actorUnBlocked(LinkedList receivers) {
         _blockedActorCount--;
         notifyAll();
     }
 
     /** Add a thread to the list of threads in the model.
      *  This list is used in case of abrupt termination of the model.
-     *  @param thr The newly created thread
+     *  @param thread The newly created thread.
      */
-    protected synchronized void _addNewThread(ProcessThread thr) {
-	_actorThreadList.addFirst(thr);
+    protected synchronized void _addNewThread(ProcessThread thread) {
+	_actorThreadList.addFirst(thread);
     }
 
     /** Return true if the count of active processes in the container is 0.
@@ -434,7 +441,6 @@ public class ProcessDirector extends Director {
     protected synchronized void _decreaseActiveCount() {
 	_actorsActive--;
 	notifyAll();
-        // if( _debugging ) _debug(_name+": finishing _decreaseActiveCount()");
     }
 
     /** Return the number of active processes under the control of this
