@@ -184,49 +184,6 @@ public class VergilApplication extends MoMLApplication {
         }
     }
 
-    /** Save the given entity in the user library in the given
-     *  configuration.
-     *  @param entity The entity to save.
-     */
-    public static void saveComponentInLibrary(Configuration configuration, 
-            Entity entity) {
-        try {
-            CompositeEntity library = (CompositeEntity)
-                configuration.getEntity("actor library.vergilUserLibrary");
-            if(library == null) {
-                MessageHandler.error(
-                        "Save In Library failed: " +
-                        "Could not find user library with name " +
-                        "\"vergilUserLibrary\".");
-                return;
-            }
-            configuration.openModel(library);
-            
-            StringWriter buffer = new StringWriter();
-            
-            // Check if there is already something existing in the 
-            // user library with this name.
-            if(library.getEntity(entity.getName()) != null) {
-                MessageHandler.error(
-                        "Save In Library failed: An object" +
-                        " already exists in the user library with name " +
-                        "\"" + entity.getName() + "\".");
-                return;
-            }  
-            entity.exportMoML(buffer, 1);
-            
-            ChangeRequest request =
-                new MoMLChangeRequest(entity, library, buffer.toString());
-            library.requestChange(request);
-        }
-        catch (IOException ex) {
-            // Ignore.
-        }
-        catch (KernelException ex) {
-            // Ignore.
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
