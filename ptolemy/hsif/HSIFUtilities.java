@@ -30,8 +30,10 @@
 
 package ptolemy.hsif;
 
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.util.XSLTUtilities;
 
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.net.URL;
 import java.util.LinkedList;
@@ -70,7 +72,25 @@ public class HSIFUtilities {
 	// This method takes a FileWriter so that the user can
 	// ensure that the FileWriter exists and is writable before going
 	// through the trouble of doing the conversion.
-        Document inputDocument = XSLTUtilities.parse(input);
+	
+        Document inputDocument = null;
+	try {
+	    inputDocument= XSLTUtilities.parse(input);
+	} catch (FileNotFoundException ex) {
+	    // Try it as a jar url
+	    try {
+		URL jarURL =
+		    JNLPUtilities.jarURLEntryResource(input);
+		if (jarURL == null) {
+		    throw new Exception("'" + input + "' was not a jar "
+					+ "URL, or was not found");
+		}
+	    inputDocument= XSLTUtilities.parse(jarURL.toString());
+	    } catch (Exception ex2) {
+		// FIXME: IOException does not take a cause argument
+		throw ex;
+	    }
+	}
 
         List transforms = new LinkedList();
 
