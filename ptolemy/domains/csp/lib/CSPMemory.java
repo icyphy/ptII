@@ -55,7 +55,7 @@ public class CSPMemory extends CSPActor {
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          
-         _input = new IOPort(this, "_input", true, false);
+         _input = new IOPort(this, "input", true, false);
          _output = new IOPort(this, "output", false, true);
          _strValue = "initialValue";
     }
