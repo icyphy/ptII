@@ -766,9 +766,11 @@ test CompositeEntity-11.9 {Test clone} {
 } {ptolemy.kernel.CompositeEntity {.E7} ports {
     {ptolemy.kernel.ComponentPort {.E7.P8} links {
     } insidelinks {
+        {ptolemy.kernel.ComponentRelation {.E7.R8}}
     }}
     {ptolemy.kernel.ComponentPort {.E7.P11} links {
     } insidelinks {
+        {ptolemy.kernel.ComponentRelation {.E7.R9}}
     }}
 } entities {
     {ptolemy.kernel.ComponentEntity {.E7.E8} ports {
@@ -784,9 +786,11 @@ test CompositeEntity-11.9 {Test clone} {
 } relations {
     {ptolemy.kernel.ComponentRelation {.E7.R8} links {
         {ptolemy.kernel.ComponentPort {.E7.E8.P9}}
+        {ptolemy.kernel.ComponentPort {.E7.P8}}
     }}
     {ptolemy.kernel.ComponentRelation {.E7.R9} links {
         {ptolemy.kernel.ComponentPort {.E7.E8.P10}}
+        {ptolemy.kernel.ComponentPort {.E7.P11}}
     }}
 }}
 
