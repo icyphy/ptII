@@ -34,6 +34,7 @@ import ptolemy.apps.fullscreen.MultiBuffer;
 import ptolemy.apps.fullscreen.Transform;
 
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.DisplayMode;	// JDK1.4
 import java.awt.Frame;
@@ -142,7 +143,7 @@ public class MultiBufferTest {
 		Graphics2D g = (Graphics2D) mainFrame.getGraphics();
 		System.out.println("buffer: " + i);
 		//if (!bufferStrategy.contentsLost()) {
-		  if(true) {
+		if(true) {
 
 		    g.setColor(_COLORS[i]);
 		    System.out.println("after setColor");
@@ -207,6 +208,25 @@ public class MultiBufferTest {
 		    System.out.println("About to show");
 		    //bufferStrategy.show();
 		    mainFrame.show();
+	    for( float alpha = 0.01f; alpha < 0.99f; alpha += 0.05f) {
+		AlphaComposite ac =
+		    AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+					       alpha);
+		//g = (Graphics2D) bufferStrategy.getDrawGraphics();
+		System.out.println("alpha: " + alpha);
+
+		g.setComposite(ac);
+		    g.setColor(_COLORS[i]);
+		    g.drawImage(scaledImage, xOffset, yOffset,
+		    		width, height,
+		    		_COLORS[i],
+		    		originalImageIcon.getImageObserver());
+		    g.fillRect(bounds.x, bounds.y,
+			       bounds.width*2, bounds.height);
+
+		    //bufferStrategy.show();
+		    mainFrame.show();
+	    }
 		    //System.out.println("About to dispose");
 		    g.dispose();
 	        }
