@@ -28,8 +28,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.expr;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
@@ -134,10 +137,27 @@ public class Constants {
         _table.remove(name);
     }
 
+    /** Return a copy of the types.
+     *  @return a copy of the hash table tha name types.
+     */
+    public static TreeMap types() {
+        // We use a separate map of types so that we can list the
+        // types in the port configurer dialog
+
+        // We return a TreeMap here because we do not need the
+        // synchronization in a Hashtable, but we do want it sorted.
+        return new TreeMap(_types);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The hash table containing the named constants.
     private static Hashtable _table = new Hashtable();
+
+    /** The treemap containing the named constants.
+     *  We use a treemap so that we get sorting in natural order.
+     */
+    private static TreeMap _types = new TreeMap();
 
     ///////////////////////////////////////////////////////////////////
     ////                         static initializer                ////
@@ -200,21 +220,26 @@ public class Constants {
         _table.put("NegativeInfinity", new DoubleToken(Double.NEGATIVE_INFINITY));
 
         // Type constants.
-        _table.put("boolean", BooleanToken.FALSE);
-        _table.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
-        _table.put("double", new DoubleToken(0.0));
-        _table.put("fixedpoint", new FixToken(0.0, 2, 1));
-        _table.put("general", new GeneralToken());
-        _table.put("int", new IntToken(0));
-        _table.put("long", new LongToken(0));
-        _table.put("matrix", new ConcreteMatrixToken());
-        _table.put("object", new ObjectToken());
-        _table.put("xmltoken", new XMLToken());
-        _table.put("scalar", new ConcreteScalarToken());
-        _table.put("string", new StringToken(""));
-        _table.put("unknown", new UnknownToken());
-        _table.put("unsignedByte", new UnsignedByteToken(0));
+        // We use a separate map of types so that we can list the
+        // types in the port configurer dialog
+        _types.put("boolean", BooleanToken.FALSE);
+        _types.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
+        _types.put("double", new DoubleToken(0.0));
+        _types.put("fixedpoint", new FixToken(0.0, 2, 1));
+        _types.put("general", new GeneralToken());
+        _types.put("int", new IntToken(0));
+        _types.put("long", new LongToken(0));
+        _types.put("matrix", new ConcreteMatrixToken());
+        _types.put("object", new ObjectToken());
+        _types.put("xmltoken", new XMLToken());
+        _types.put("scalar", new ConcreteScalarToken());
+        _types.put("string", new StringToken(""));
+        _types.put("unknown", new UnknownToken());
+        _types.put("unsignedByte", new UnsignedByteToken(0));
+
+        _table.putAll(_types);
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
