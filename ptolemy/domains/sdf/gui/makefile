@@ -45,7 +45,8 @@ PTPACKAGE = 	gui
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	SDFApplet.java
+	SDFApplet.java \
+	SDFApplication.java
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS)
