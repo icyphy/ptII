@@ -16,7 +16,7 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"PNImageSource.tcl RLEncoding.tcl" != ""} {foreach i [list PNImageSource.tcl RLEncoding.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
+if {"PNImageSource.tcl MatrixPacker.tcl " != ""} {foreach i [list PNImageSource.tcl MatrixPacker.tcl ] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
 puts stderr dummy.tcl
 cd "$savedir"
 if [ file exists dummy.tcl ] {source dummy.tcl}
