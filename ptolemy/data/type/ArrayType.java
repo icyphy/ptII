@@ -195,12 +195,32 @@ public class ArrayType extends StructuredType {
 	return newObj;
     }
 
+    /** Reset the element type to the value it was first constructed.
+     *  This method is called at the beginning of type resolution.
+     *  @exception IllegalActionException If this type is a constant.
+     */
+    public void reset()
+	    throws IllegalActionException {
+	if (isConstant()) {
+	    throw new IllegalActionException("ArrayType.reset: " +
+		"Cannot reset a constant type.");
+	}
+
+	if (_declaredElementType == BaseType.NAT) {
+	    _elementType = BaseType.NAT;
+	} else {
+	    // element type is a structured type.
+	    ((StructuredType)_elementType).reset();
+	}
+    }
+
     /** Update this Type to the specified ArrayType. This Type must not
      *  be a constant, otherwise an exception will be thrown. 
      *  The specified type must have the same structure as this type.
      *  This method will only update the component whose declared type is
      *  BaseType.NAT, and leave the constant part of this type intact.
-     *  This method does not check for circular usage, the caller should.
+     *  This method does not check for circular usage, the caller should
+     *  perform this check.
      *  @param st A StructuredType.
      *  @exception IllegalActionException If this Type is a constant, or
      *   the specified type has a different structure.
@@ -407,6 +427,21 @@ public class ArrayType extends StructuredType {
 	    return (new InequalityTerm[0]);
 	}
 
+        /** Reset the element type to the value it was first constructed.
+	 *  @parameter e Must be BaseType.NAT.
+         *  @exception IllegalActionException If this type is a constant,
+	 *   or the argument is not BaseType.NAT.
+         */
+        public void initialize(Object e)
+	    throws IllegalActionException {
+	    if (e != BaseType.NAT) {
+		throw new IllegalActionException("ElementTypeTerm.initialize: "
+		    + "The argument is not BaseType.NAT.");
+	    }
+
+	    reset();
+	}
+
         /** Test if the element type is a type variable.
 	 *  @return True if the element type is a type variable.
      	 */
@@ -424,7 +459,7 @@ public class ArrayType extends StructuredType {
 	}
 
     	/** Set the element type if it is settable.
-         *  @param e a Type.
+         *  @param e A Type.
          *  @exception IllegalActionException If the element type is
 	 *   not settable.
      	 */

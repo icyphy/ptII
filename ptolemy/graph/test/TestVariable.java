@@ -93,6 +93,15 @@ public class TestVariable implements InequalityTerm {
 	return variable;
     }
 
+    /** Set the value of this variable to the specified String.
+     *  @param e a String
+     *  @exception IllegalActionException not thrown
+     */
+    public void initialize(Object e)
+            throws IllegalActionException {
+	_value = (String)e;
+    }
+
     /** Return true.
      *  @return true
      */

@@ -577,6 +577,37 @@ public class TypedIOPort extends IOPort implements Typeable {
 	    return (new InequalityTerm[0]);
         }
 
+        /** Reset the resolved type to the declared type.
+	 *  @param e Must be BaseType.NAT.
+         *  @exception IllegalActionException If the type is set to a
+	 *   constant through setTypeEquals(), or the argument is not
+	 *   BaseType.NAT.
+         */
+        public void initialize(Object e)
+		throws IllegalActionException {
+	    if ( !isSettable()) {
+	    	throw new IllegalActionException("TypeTerm.initialize: " +
+		    "Cannot initialize a constant type.");
+	    }
+
+	    if (e != BaseType.NAT) {
+		throw new IllegalActionException("TypeTerm.initialize: " +
+		    "The argument is not BaseType.NAT.");
+	    }
+
+	    Type oldType = _resolvedType;
+	    if (_declaredType == BaseType.NAT) {
+	        _resolvedType = BaseType.NAT;
+	    } else {
+		// _declaredType is a StructuredType
+		((StructuredType)_resolvedType).reset();
+	    }
+
+	    if (!oldType.isEqualTo(_resolvedType)) {
+		_notifyTypeListener(oldType, _resolvedType);
+	    }
+        }
+
         /** Test if the type of this TypedIOPort can be changed.
 	 *  The type can be changed if setTypeEquals() is not called,
 	 *  or called with a BaseType.NAT argument.

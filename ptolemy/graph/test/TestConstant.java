@@ -91,6 +91,16 @@ public class TestConstant implements InequalityTerm {
 	return false;
     }
 
+    /** Throw an Exception.
+     *  @exception IllegalActionException Always thrown since this term is a
+     *   constant.
+     */
+    public void initialize(Object e)
+	    throws IllegalActionException {
+	throw new IllegalActionException("TestConstant.initialize: This term "
+		+ "is a constant.");
+    }
+
     /** Check whether the current value of this term is acceptable,
      *  and return true if it is.  In this class, a value is always
      *  acceptable.

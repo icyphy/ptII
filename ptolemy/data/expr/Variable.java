@@ -1286,6 +1286,31 @@ public class Variable extends Attribute implements Typeable {
 	    return (new InequalityTerm[0]);
         }
 
+	/** Reset the resolved type to the declared Type.
+	 *  @param e Must be BaseType.NAT.
+	 *  @exception IllegalActionException If the type is a constant,
+	 *   or the argument is not BaseType.NAT.
+	 */
+	public void initialize(Object e)
+		throws IllegalActionException {
+	    if ( !isSettable()) {
+		throw new IllegalActionException("TypeTerm.initialize: " +
+		    "Cannot initialize a constant type.");
+	    }
+
+	    if (e != BaseType.NAT) {
+		throw new IllegalActionException("TypeTerm.initialize: " +
+		    "The argument is not BaseType.NAT.");
+	    }
+
+	    if (_declaredType == BaseType.NAT) {
+		_varType = BaseType.NAT;
+	    } else {
+		// _declaredType is a StructuredType
+		((StructuredType)_varType).reset();
+	    }
+	}
+
         /** Test if the type of this Variable is fixed. The type is fixed if
 	 *  setTypeEquals() is called with an argument that is not
 	 *  BaseType.NAT, or the user has set a non-null expression or token

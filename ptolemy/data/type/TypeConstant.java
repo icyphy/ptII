@@ -72,13 +72,22 @@ public class TypeConstant implements InequalityTerm {
 	return _type;
     }
 
-    /* return an array of size zero.
+    /* Return an array of size zero.
      * @return An array of InequalityTerm of size 0.
      */
     public InequalityTerm[] getVariables() {
 	return (new InequalityTerm[0]);
     }
 
+    /** Throw an Exception since type constant cannot be initialized.
+     *  @exception IllegalActionException Alway thrown.
+     */
+    public void initialize(Object e)
+	    throws IllegalActionException {
+	throw new IllegalActionException("TypeConstant.initialize: " +
+	    "Type constant cannot be initialized.");
+    }
+ 
     /** Return false since this term represent a constant.
      *  @return false.
      */
