@@ -1,5 +1,5 @@
 /* An SDF actor that outputs the sine of the input, and reads the
-amplitude and frequency values from input ports.
+frequency value from input ports.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -43,15 +43,13 @@ import ptolemy.domains.sdf.kernel.*;
 //// SineFM
 /**
 This actor computes the sine of the input signal. This actor,
-unlike SDFSine, reads the frequency and amplitude values from
-corresponding input ports. This allows the frequency and amplitude
-values to be updated at the sample level, making this actor useful
-for FM applications, such as FM synthesis.
+unlike SDFSine, reads the frequency value from the input port. 
+This allows the frequency value to be updated at the sample rate, 
+making this actor useful for FM applications, such as FM synthesis.
 <p>
 Produce an output token on each firing with a value that is
 equal to the sine of the input, scaled and shifted according to the
-parameters and the current <i>omega</i> and <i>amplitude</i> input 
-port values. 
+parameters and the current <i>omega</i> input port value. 
 In the actual implementation, <i>rate</i> tokens are
 consumed and produced by the input and output ports, respectively,
 on each call to fire(). The parameter values are reread on each
@@ -90,13 +88,13 @@ public class SineFM extends SDFTransformer {
         super(container, name);
 	
 	// parameters
-        amplitude = new SDFIOPort(this, "amplitude", true, false);
-	amplitude.setTypeEquals(BaseType.DOUBLE);
-        
 	omega = new SDFIOPort(this, "omega", true, false);
 	omega.setTypeEquals(BaseType.DOUBLE);
 
-        phase = new Parameter(this, "phase", new DoubleToken(0.0));
+        amplitude = new Parameter(this, "amplitude", new DoubleToken(1.0));
+	amplitude.setTypeEquals(BaseType.DOUBLE);
+
+	phase = new Parameter(this, "phase", new DoubleToken(0.0));
 	phase.setTypeEquals(BaseType.DOUBLE);
 
         input.setTypeEquals(BaseType.DOUBLE);
@@ -106,18 +104,20 @@ public class SineFM extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The magnitude (amplitude).
-     */
-    public SDFIOPort amplitude;
-
     /** The omega (in radians).  Note that this is a frequency
      *  only if the input is time.
      */
     public SDFIOPort omega;
 
+    /** The magnitude.
+     *  The default value of this parameter is the double 1.0.
+     */
+    public Parameter amplitude;
+
     /** The phase.
      *  The default value of this parameter is the double 0.0.
      */
+    // FIXME: Consider making this an input port instead.
     public Parameter phase;
 
     ///////////////////////////////////////////////////////////////////
@@ -133,8 +133,8 @@ public class SineFM extends SDFTransformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         SineFM newobj = (SineFM)super.clone(ws);
-	newobj.amplitude = (SDFIOPort)newobj.getPort("amplitude");
 	newobj.omega = (SDFIOPort)newobj.getPort("omega");
+	newobj.amplitude = (Parameter)newobj.getAttribute("amplitude");
         newobj.phase = (Parameter)newobj.getAttribute("phase");
         return newobj;
     }
@@ -147,16 +147,16 @@ public class SineFM extends SDFTransformer {
     public void fire() throws IllegalActionException {
 	// Check parameter values.
 	double p = ((DoubleToken)phase.getToken()).doubleValue();
+	double A = ((DoubleToken)amplitude.getToken()).doubleValue();
 
 	omega.getArray(0, _omegaTokenArray);
-	amplitude.getArray(0, _amplitudeTokenArray);
 	input.getArray(0, _tokenArray);
 	double result;
 	// For each samples in the current channel:
 	for (int i = 0; i < _rate; i++) {
 	    // Convert to double[].
 	    _resultTokenArray[i] = 
-		new DoubleToken((_amplitudeTokenArray[i].doubleValue())*Math.sin((_omegaTokenArray[i].doubleValue())*(_tokenArray[i].doubleValue())+p));
+		new DoubleToken(A*Math.sin((_omegaTokenArray[i].doubleValue())*(_tokenArray[i].doubleValue())+p));
 	}
 
 	output.sendArray(0, _resultTokenArray);
@@ -168,7 +168,6 @@ public class SineFM extends SDFTransformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _tokenArray = new DoubleToken[_rate];
-	_amplitudeTokenArray = new DoubleToken[_rate];
 	_omegaTokenArray = new DoubleToken[_rate];
 	_resultTokenArray = new DoubleToken[_rate];
     }  
@@ -179,7 +178,6 @@ public class SineFM extends SDFTransformer {
     public void preinitialize() throws IllegalActionException {
 	super.preinitialize();
 	omega.setTokenConsumptionRate(_rate);
-	amplitude.setTokenConsumptionRate(_rate);
     }
     
 
@@ -187,7 +185,6 @@ public class SineFM extends SDFTransformer {
     ////                         private variables                 ////
 
     DoubleToken[] _tokenArray;
-    DoubleToken[] _amplitudeTokenArray;
     DoubleToken[] _omegaTokenArray;
     DoubleToken[] _resultTokenArray;
 
