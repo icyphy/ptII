@@ -293,7 +293,7 @@ public class DiningApplet extends Applet
      *  the "Go" button is depressed.
      */
     public void start() {
-        _table.initialize( _philosophers );
+        _table._initialize( _philosophers );
     }
 
     ///////////////////////////////////////////////////////////////////
