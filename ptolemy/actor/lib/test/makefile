@@ -51,6 +51,7 @@ JSRCS =
 JSIMPLE_TESTS = \
 	AddSubtract.tcl \
 	AbsoluteValue.tcl \
+	Auto.tcl \
 	Average.tcl \
 	Bernoulli.tcl \
 	Clock.tcl \
