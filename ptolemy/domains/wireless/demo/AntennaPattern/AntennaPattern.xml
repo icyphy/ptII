@@ -26,13 +26,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {384, 155, 801, 610}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {85, 28, 626, 632}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 492]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[411, 523]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{245.5316722972973, 257.2899070945946}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{158.0316722972973, 272.7899070945946}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -68,7 +68,7 @@ of modeling receiving antenna gain) </text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Yang Zhao, Rachel Zhou, and Edward A. Lee</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors: Yang Zhao, Rachel Zhou, and Edward A. Lee</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -83,7 +83,7 @@ of modeling receiving antenna gain) </text></svg></configure>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 500.0]">
         </property>
     </property>
     <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
@@ -251,7 +251,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {627, -2, 392, 415}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {627, -2, 392, 408}, maximized = false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[384, 360]">
             </property>
