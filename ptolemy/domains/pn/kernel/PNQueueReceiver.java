@@ -171,7 +171,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     public Token get(Branch branch) {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = ((BasePNDirector)
-                ((Actor)(getContainer().getContainer())).getExecutiveDirector());
+                ((Actor)(getContainer().getContainer()))
+                .getExecutiveDirector());
         Token result = null;
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
