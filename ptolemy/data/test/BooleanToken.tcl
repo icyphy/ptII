@@ -2,7 +2,7 @@
 #
 # @Author: Neil Smyth
 #
-# @Version $Id$
+# @Version @(#)BooleanToken.tcl	1.3 09/28/98
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
