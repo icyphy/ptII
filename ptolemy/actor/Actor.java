@@ -48,29 +48,35 @@ public interface Actor extends Executable {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Return the director responsible for the execution of this actor, or
-     *  null if there is none.
-     *  @return The director that invokes this actor.
+    /** Return the local director, if there is one, otherwise the executive
+     *  director, if there is one, otherwise null.
+     *  @return The director.
      */
     public Director getDirector();
 
-    /** Return an enumeration of the input ports.
+    /** Return the executive director, if there is one, otherwise return null.
+     *  @return The executive director.
+     */
+    public Director getExecutiveDirector();
+
+    /** Return an enumeration of the input ports of this actor.
+     *  Note that implementations should return ports directly
+     *  contained by this actor, whether they are transparent or not.
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration inputPorts();
 
-    /** Return a new receiver of a type compatible with the director.
+    /** Return a new receiver of a type compatible with the executive director.
+     *  This is the receiver that should be used by ports of this actor.
      *  @exception IllegalActionException If there is no director.
      *  @return A new object implementing the Receiver interface.
      */
     public Receiver newReceiver() throws IllegalActionException;
 
-    /** Return an enumeration of the output ports.
+    /** Return an enumeration of the output ports of this actor.
+     *  Note that implementations should return ports directly
+     *  contained by this actor, whether they are transparent or not.
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration outputPorts();
 }
-
-
-
-

@@ -130,12 +130,13 @@ public class IORelation extends ComponentRelation {
     /** Return the receivers of all input ports linked to this
      *  relation, directly or indirectly, except those in the port
      *  given as an argument. The returned value is an array of
-     *  arrays. The first index (the row) specifies the channel.
+     *  arrays. The first index (the row) specifies the group, where
+     *  a group receives the same data from a channel.
      *  Each channel normally receives distinct data. The
      *  second index (the column) specifies the receiver number within
      *  the group of receivers that get copies from the same channel.
      *  <p>
-     *  The number of channels (rows) is less than or equal to the
+     *  The number of groups (rows) is less than or equal to the
      *  width of the relation, which is always at least one. If
      *  there are no receivers then return null.
      *  <p>
@@ -335,7 +336,7 @@ public class IORelation extends ComponentRelation {
      *   CompositeActor or null, or this entity and the container are not in
      *   the same workspace.
      *  @exception NameDuplicationException If the name collides with a name
-     *   already on the contents list of the container.
+     *   already on the relations list of the container.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {

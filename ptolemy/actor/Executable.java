@@ -56,14 +56,16 @@ public interface Executable {
 
     /** This fires an actor and may be invoked several times between
      *  invocations of prefire() and postfire(). It may produce output
-     *  data.
+     *  data. Typically, the fire() method performs the computation associated
+     *  with an actor.
      */
     public void fire()
             throws CloneNotSupportedException, IllegalActionException;
 
     /** This method should be invoked exactly once per execution
      *  of an application, before any of these other methods are invoked.
-     *  It may produce output data.
+     *  It may produce output data.  This method typically initializes
+     *  internal members of an actor and produces initial output data.
      */
     public void initialize()
             throws CloneNotSupportedException, IllegalActionException;
@@ -71,15 +73,19 @@ public interface Executable {
     /** This method should be invoked once per iteration, after the last
      *  invocation of fire() in that iteration. It may produce output data.
      *  It returns true if the execution can proceed into the next iteration.
-     *  @return True if the execution can continue.
+     *  @return True if the execution can continue.  This method typically
+     *  wraps up an iteration, which may involve updating local state.
+     *  In an opaque, non-atomic entity, it may also transfer output data.
      */
     public boolean postfire()
            throws CloneNotSupportedException, IllegalActionException;
 
     /** This method should be invoked once per iteration, before the first
      *  invocation of fire() in that iteration.  It returns true if the
-     *  iteration can proceed (the fire() method can be invoked). It
-     *  may move data into an inner subsystem.
+     *  iteration can proceed (the fire() method can be invoked). Thus
+     *  this method will typically check preconditions for an iteration, if
+     *  there are any. In an opaque, non-atomic entity,
+     *  it may move data into an inner subsystem.
      *  @return True if the iteration can proceed.
      */
     public boolean prefire()
@@ -88,7 +94,8 @@ public interface Executable {
 
     /** This method should be invoked exactly once per execution
      *  of an application.  None of the other action methods should be
-     *  be invoked afer it.
+     *  be invoked afer it.  It finalizes an execution, typically closing
+     *  files, displaying final results, etc.
      */
     public void wrapup() throws IllegalActionException;
 }

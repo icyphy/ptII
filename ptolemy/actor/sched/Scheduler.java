@@ -212,7 +212,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  IllegalActionException.
      *  This method read synchronize the workspace.
      *
-     * @return An Enumeration of the deeply contained atomic entities
+     * @return An Enumeration of the deeply contained opaque entities
      *  in the firing order.
      * @exception IllegalActionException If the scheduler has no container
      *  (director), or the container has no container (CompositeActor).
@@ -305,7 +305,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  synchronized on the workspace.
      * 
      * @see pt.kernel.CompositeEntity#deepGetEntities()
-     * @return An Enumeration of the deeply contained atomic entities
+     * @return An Enumeration of the deeply contained opaque entities
      *  in the firing order.
      * @exception NotSchedulableException If the CompositeActor is not
      *  schedulable. Not thrown in this base class, but may be needed

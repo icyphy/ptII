@@ -38,7 +38,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActor
 /**
-An AtomicActor is an executable entity that does not itself contain
+An AtomicActor is an executable entity that cannot itself contain
 other actors. The container is required to be an instance of CompositeActor.
 Derived classes may further constrain the container by overriding
 setContainer(). The Ports of AtomicActors are constrained to be IOPorts.
@@ -115,6 +115,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     /** Return the director responsible for the execution of this actor.
+     *  In this class, this is always the executive director.
      *  Return null if either there is no container or the container has no
      *  director.
      *  @return The director that invokes this actor.
@@ -125,6 +126,13 @@ public class AtomicActor extends ComponentEntity implements Actor {
             return container.getDirector();
         }
         return null;
+    }
+
+    /** Return the executive director (same as getDirector()).
+     *  @return The executive director.
+     */
+    public Director getExecutiveDirector() {
+        return getDirector();
     }
 
     /** Do nothing.  Derived classes override this method to define their
@@ -139,7 +147,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Do nothing.  Derived classes override this method to define their
      *  initialization code, which gets executed exactly once prior to
-     *  any other action methods.
+     *  any other action methods. This method typically initializes
+     *  internal members of an actor and produces initial output data.
      *
      *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -240,8 +249,10 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Return true.  Derived classes override this method to define
      *  operations to be performed at the end of every iteration of
-     *  its execution, after at least one invocation of the fire()
-     *  method.
+     *  its execution, after one invocation of the prefire() method
+     *  and any number of invocations of the fire() method.
+     *  This method typically wraps up an iteration, which may
+     *  involve updating local state.
      *
      *  @return True if execution can continue into the next iteration.
      *  @exception CloneNotSupportedException Not thrown in this base class.
@@ -255,6 +266,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
     /** Return true. Derived classes override this method to define
      *  operations to be performed at the beginning of every iteration
      *  of its execution, prior the invocation of the fire() method.
+     *  Derived classes may also use it to check preconditions for an
+     *  iteration, if there are any.
      *
      *  @return True if the actor is ready for firing, false otherwise.
      *  @exception CloneNotSupportedException Not thrown in this base class.
@@ -290,7 +303,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Do nothing.  Derived classes override this method to define
      *  operations to be performed excatly once at the end of a complete 
-     *  execution of an application.
+     *  execution of an application.  It typically closes
+     *  files, displays final results, etc.
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */

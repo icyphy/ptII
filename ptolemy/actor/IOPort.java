@@ -142,7 +142,7 @@ public class IOPort extends ComponentPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Send a token to all connected Receivers.  The first receiver gets
+    /** Send a token to all connected receivers.  The first receiver gets
      *  the token passed as an argument, and subsequent receivers get clones.
      *  The transfer is accomplished by calling the put()
      *  method of the destination receivers.  The destination receivers
@@ -271,6 +271,8 @@ public class IOPort extends ComponentPort {
      *  difference between this method and getReceivers() is that this method
      *  treats the port as a transparent port regardless of whether it is
      *  one.  If there are no relations linked on the inside, it returns null.
+     *  This method is used for opaque, non-atomic entities.  It "sees through"
+     *  the boundary of opaque ports and actors.
      *  This method is <i>not</i> read-synchronized on the workspace, so the
      *  caller should be.
      *
@@ -352,6 +354,12 @@ public class IOPort extends ComponentPort {
 
     /** If the port is an opaque output port, return the receivers that
      *  receive data from all inside linked relations, otherwise return null.
+     *  This method is used for opaque, non-atomic entities, which have
+     *  opaque ports with inside links.  Normally, those inside links
+     *  are not visible.
+     *  This method permits a director to transfer data across an opaque
+     *  boundary by transferring it from the inside receivers to whatever
+     *  receivers this might be connected to on the outside.
      *  The returned value is an an array of arrays in the same format as
      *  that returned by getReceivers().
      *  This method is read-synchronized on the workspace.
@@ -403,16 +411,17 @@ public class IOPort extends ComponentPort {
     /** If the port is an input, return the receivers that receive data
      *  from all linked relations, otherwise return null.  For an input
      *  port, the returned value is an array of arrays.  The first index
-     *  (the row) specifies the channel.  The second index (the
+     *  (the group) specifies the group of receivers that receive from
+     *  from the same channel.  The second index (the
      *  column) specifies the receiver number within the group of
      *  receivers that get copies from the same channel.
      *  <p>
-     *  For a transparent port (a port of a non-atomic entity), this method
+     *  For a transparent port (a port of a non-opaque entity), this method
      *  returns receivers in ports connected to this port on the inside.
      *  For an opaque port, the receivers returned are contained directly by
      *  this port.
      *  <p>
-     *  The number of channels (rows) is the width of the port.
+     *  The number of channels (groups) is the width of the port.
      *  If the width is zero, then this method will return null,
      *  same as if the port is not an input port.
      *  <p>
@@ -427,12 +436,14 @@ public class IOPort extends ComponentPort {
      *  <i>x</i>[<i>c</i>][0] is defined.  If the port is transparent,
      *  the group size is arbitrary.
      *  <p>
-     *  For an atomic port, this method creates receivers by calling
+     *  For an opaque port, this method creates receivers by calling
      *  _newReceiver() if there are no receivers or the number of receivers
      *  does not match the width of the port.  In the latter case,
      *  previous receivers are lost, together with any data they may contain.
      *  <p>
-     *  This method is read-synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.  If its cached
+     *  list of local receivers is not valid, however, then it acquires
+     *  write synchronization on the workspace to reconstruct it.
      *
      *  @return The local receivers.
      *  @exception IllegalActionException If there is no director, and hence
@@ -485,9 +496,10 @@ public class IOPort extends ComponentPort {
      *  single relation may represent multiple channels because it may be
      *  a bus.
      *  <p>
-     *  This method is read-synchronized on the workspace.
+     *  This method is write-synchronized on the workspace so that it
+     *  can add receivers if necessary.
      *
-     *  @param relation A relation that is linked on the outside.
+     *  @param relation A relation that is linked on the outside or inside.
      *  @return The local receivers.
      *  @exception IllegalActionException If the relation is not linked
      *   from the outside, or if there is no director.
@@ -495,8 +507,9 @@ public class IOPort extends ComponentPort {
     public Receiver[][] getReceivers(IORelation relation)
             throws IllegalActionException {
         try {
-            workspace().getReadAccess();
-            // Allow inside relations also to support wormholes.
+            workspace().getWriteAccess();
+            // Allow inside relations also to support opaque,
+            // non-atomic entities.
             if (!isLinked(relation) && !isInsideLinked(relation)) {
                 throw new IllegalActionException(this, relation,
                         "getReceivers: Relation argument is not " +
@@ -582,7 +595,7 @@ public class IOPort extends ComponentPort {
                 return result;
             }
         } finally {
-            workspace().doneReading();
+            workspace().doneWriting();
         }
     }
 
@@ -591,8 +604,8 @@ public class IOPort extends ComponentPort {
      *  port, the returned value is an array of arrays of the same form
      *  as that returned by getReceivers() with no arguments.  The length
      *  of the array is the width of the port (the number of channels).
-     *  The length of each subarray is the number of receivers in
-     *  the group for the corresponding channel.
+     *  It is an array of arrays, each of which represents a group of
+     *  receivers that receive data from the same channel.
      *  <p>
      *  This method may have the effect of creating new receivers in the
      *  remote input ports, if they do not already have the right number of
@@ -762,8 +775,8 @@ public class IOPort extends ComponentPort {
     /** Return true if the specified channel has a token to deliver via
      *  via the get() method.  If this port is not an input, or if the
      *  channel index is out of range, always return false. Note that this
-     *  does not report any tokens in inside receivers. Those are accessible
-     *  only through getInsideReceivers().
+     *  does not report any tokens in inside receivers of a t output
+     *  port. Those are accessible only through getInsideReceivers().
      *
      *  @return True if there is a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
@@ -852,8 +865,8 @@ public class IOPort extends ComponentPort {
 
     /** If the argument is true, make the port an input port.
      *  If the argument is false, make the port not an input port.
-     *  This has no effect if the port is a transparent port that is
-     *  linked on the inside to input ports.  In that case, the port
+     *  This has no effect if the port is a transparent port.
+     *  In that case, the port
      *  is an input port regardless of whether and how this method is called.
      *  This method is write-synchronized on the workspace.
      *
@@ -917,7 +930,7 @@ public class IOPort extends ComponentPort {
      *  specified channel.  The first receiver gets the actual token,
      *  while subsequent ones get a clone.  If there are no receivers,
      *  then do nothing. The transfer is accomplished by calling the put()
-     *  method of the destination receivers.
+     *  method of the remote receivers.
      *  This method is read-synchronized on the workspace.
      *
      *  @param channelindex The index of the channel, from 0 to width-1
@@ -978,7 +991,8 @@ public class IOPort extends ComponentPort {
         super.setContainer(container);
     }
 
-    /** Unlink the specified Relation. If the Relation
+    /** Unlink the specified Relation. The receivers associated with
+     *  this relation, and any data they contain, are lost. If the Relation
      *  is not linked to this port, do nothing.
      *  This method is write-synchronized on the workspace.
      *
@@ -1055,9 +1069,9 @@ public class IOPort extends ComponentPort {
      *  If the detail argument sets the bit defined by the constant
      *  RECEIVERS, then append to the description a field containing
      *  the receivers contained by this port.  The keywork is "receivers"
-     *  and the format is like the Receivers array, a list of rows, with
-     *  each row corresponding to a channel.
-     *  Each row is a list of receiver descriptions (it may also be empty).
+     *  and the format is like the Receivers array, an array of groups, with
+     *  each group receiving from a channel.
+     *  Each group is a list of receiver descriptions (it may also be empty).
      *  If the detail argument sets the bit defined by the constact
      *  REMOTERECEIVERS, then also append to the description a field containing
      *  the remote receivers connected to this port.
@@ -1114,7 +1128,7 @@ public class IOPort extends ComponentPort {
                     Receiver[][] recvrs = getReceivers();
                     if (recvrs != null) {
                         for (int i = 0; i < recvrs.length; i++) {
-                            // One list item per row
+                            // One list item per group
                             result += _getIndentPrefix(indent+1) + "{\n";
                             if (recvrs[i] != null) {
                                 for (int j = 0; j < recvrs[i].length; j++) {
@@ -1144,7 +1158,7 @@ public class IOPort extends ComponentPort {
                 Receiver[][] recvrs = getRemoteReceivers();;
                 if (recvrs != null) {
                     for (int i = 0; i<recvrs.length; i++) {
-                        // One list item per row
+                        // One list item per group
                         result += _getIndentPrefix(indent+1) + "{\n";
                         if (recvrs[i] != null) {
                             for (int j = 0; j< recvrs[i].length; j++) {
@@ -1317,7 +1331,11 @@ public class IOPort extends ComponentPort {
     /** Create a new receiver compatible with the local director.
      *  This is done by asking the local director of the container
      *  a new receiver, and then setting its
-     *  container to this port.  This method is not read-synchronized
+     *  container to this port.  This allows actors to work across
+     *  several domains, since often the only domain-specific part of
+     *  of an actor is its receivers.  Derived classes may choose to
+     *  handle this directly, creating whatever specific type of receiver
+     *  they want. This method is not read-synchronized
      *  on the workspace, so the caller should be.
      *
      *  @return A new receiver.
@@ -1326,20 +1344,25 @@ public class IOPort extends ComponentPort {
      *   if it has no local director).
      */
     protected Receiver _newInsideReceiver() throws IllegalActionException {
-        Nameable container = getContainer();
-        if (container instanceof CompositeActor) {
+        ComponentEntity container = (ComponentEntity)getContainer();
+        if (container.isOpaque() && !container.isAtomic()) {
             Receiver rec = ((CompositeActor)container).newInsideReceiver();
             rec.setContainer(this);
             return rec;
         }
         throw new IllegalActionException(this,
-        "Cannot create inside receivers for a port of a non-wormhole.");
+        "Can only create inside receivers for a port of a non-atomic, "
+        + "opaque entity.");
     }
 
     /** Create a new receiver compatible with the executive director.
      *  This is done by asking the
      *  containing actor for a new receiver, and then setting its
-     *  container to this port.  This method is not read-synchronized
+     *  container to this port.  This allows actors to work across
+     *  several domains, since often the only domain-specific part of
+     *  of an actor is its receivers.  Derived classes may choose to
+     *  handle this directly, creating whatever specific type of receiver
+     *  they want.  This method is not write-synchronized
      *  on the workspace, so the caller should be.
      *
      *  @return A new receiver.

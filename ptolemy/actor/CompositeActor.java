@@ -43,10 +43,9 @@ A CompositeActor is an aggregation of actors.  It may have a
 is responsible for executing the contained actors.
 Normally, at the top level of a hierarchy, a composite actor with no
 container will have a local director.  A composite actor at a lower level
-of the hierarchy may also have a local director, in which it is called
-a <i>wormhole</i>.  A wormhole, despite being a composite, returns
-<i>true</i> to its isAtomic() method.  Thus, it behaves both as a
-composite and an atomic actor.  Its ports are opaque, but it can
+of the hierarchy may also have a local director.  A composite actor
+with a local director is <i>opaque</i>, and serves the role of the
+<i>wormhole</i> from Ptolemy 0.x. Its ports are opaque, but it can
 contain actors and relations.
 <p>
 The getDirector() method returns the local director if there is one.
@@ -59,7 +58,7 @@ if it has one.  If there is no container (the composite is at the top
 level of the hierarchy), then an executive director can be explicitly
 specified using the setExecutiveDirector() method.  Such an executive
 director implements the master controller for execution of an application.
-It may, for example, be a control panel user interface.
+It may, for example, be associated with a control panel user interface.
 It is responsible for invoking the director.
 <p>
 A composite actor must have a director in order to be executable.
@@ -97,8 +96,8 @@ Derived classes may impose further constraints by overriding setContainer().
 */
 public class CompositeActor extends CompositeEntity implements Actor {
 
-    /** Construct a top-level CompositeActor in the default workspace
-     *  with an empty string as its name. Add the actor to the workspace
+    /** Construct a CompositeActor in the default workspace with no container
+     *  and an empty string as its name. Add the actor to the workspace
      *  directory.  You should set the local director or executive director
      *  before attempting to send data to the actor or to execute it.
      *  Increment the version number of the workspace.
@@ -107,8 +106,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
         super();
     }
 
-    /** Construct a top-level CompositeActor in the specified workspace
-     *  with an empty string as a name. You can then change the name with
+    /** Construct a CompositeActor in the specified workspace with no container
+     *  and an empty string as a name. You can then change the name with
      *  setName(). If the workspace argument is null, then use the default
      *  workspace.  You should set the local director or executive director
      *  before attempting to send data to the actor or to execute it.
@@ -125,9 +124,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  You should set the local director or executive director
-     *  before attempting to send data to the actor or to execute it.
+     *  Increment the version of the workspace.  This actor will have no
+     *  local director initially, and its executive director will be simply
+     *  the director of the container.
      *
      *  @param container The container actor.
      *  @param name The name of this actor.
@@ -147,7 +146,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
     /** Clone the actor into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
-     *  NOTE: This will not work if there are level-crossing transitions.
      *  The result is a composite actor with clones of the ports of the
      *  original actor, the contained actors, and the contained relations.
      *  The ports of the returned actor are not connected to anything.
@@ -157,6 +155,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  is cloned only if it has been explicitly specified using
      *  setExecutiveDirector().  It is not cloned if it is inherited from
      *  the container.
+     *  NOTE: This will not work if there are level-crossing transitions.
      *
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If the actor contains
@@ -181,7 +180,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         return newobj;
     }
 
-    /** If this actor is atomic, invoke the fire() method of its local
+    /** If this actor is opaque, invoke the fire() method of its local
      *  director. Otherwise, throw an exception.
      *  This method is read-synchronized on the workspace, so the
      *  fire() method of the director need not be (assuming it is only
@@ -191,18 +190,18 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   multiple destinations, and the token cannot be cloned.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's fire() method throws it, or if the actor is not
-     *   atomic.
+     *   opaque.
      */
     public void fire()
             throws CloneNotSupportedException, IllegalActionException {
         try {
             workspace().getReadAccess();
-            if (!isAtomic()) {
+            if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot fire a non-atomic actor.");
+                "Cannot fire a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
-            // not the executive director, because this is atomic.
+            // not the executive director, because this is opaque.
             getDirector().fire();
         } finally {
             workspace().doneReading();
@@ -247,7 +246,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is atomic, invoke the initialize() method of its local
+    /** If this actor is opaque, invoke the initialize() method of its local
      *  director. Otherwise, throw an exception.
      *  This method is read-synchronized on the workspace, so the initialize()
      *  method of the director need not be, assuming it is only called from
@@ -257,25 +256,27 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   multiple destinations, and the token cannot be cloned.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's initialize() method throws it, or if this actor
-     *   is not atomic.
+     *   is not opaque.
      */
     public void initialize()
             throws CloneNotSupportedException, IllegalActionException {
         try {
             workspace().getReadAccess();
-            if (!isAtomic()) {
+            if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot initialize a non-atomic actor.");
+                "Cannot initialize a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
-            // not the executive director, because this is atomic.
+            // not the executive director, because this is opaque.
             getDirector().initialize();
         } finally {
             workspace().doneReading();
         }
     }
 
-    /** Return an enumeration of the input ports.
+    /** Return an enumeration of the input ports of this actor.
+     *  Note that this method returns the ports directly
+     *  contained by this actor, whether they are transparent or not.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of IOPort objects.
      */
@@ -305,7 +306,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  Otherwise, return false.  This method is <i>not</i>
      *  synchronized on the workspace, so the caller should be.
      */
-    public boolean isAtomic() {
+    public boolean isOpaque() {
         return _director != null;
     }
 
@@ -388,6 +389,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     /** Return an enumeration of the output ports.
+     *  Note that this method returns the ports directly
+     *  contained by this actor, whether they are transparent or not.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of IOPort objects.
      */
@@ -411,8 +414,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is atomic, invoke the postfire() method of its
-     *  local director and transfer output data (this is a wormhole).
+    /** If this actor is opaque, invoke the postfire() method of its
+     *  local director and transfer output data.
      *  Specifically, transfer any data from the output ports of this composite
      *  to the ports connected on the outside. The transfer is accomplished
      *  by calling the transferOuputs() method of the executive director.
@@ -424,20 +427,20 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   multiple destinations, and the token cannot be cloned.
      *  @exception IllegalActionException If there is no director,
      *   or if the director's postfire() method throws it, or if this
-     *   actor is not atomic.
+     *   actor is not opaque.
      */
     public boolean postfire()
             throws CloneNotSupportedException, IllegalActionException {
         try {
             workspace().getReadAccess();
-            if (!isAtomic()) {
+            if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot invoke postfire a non-atomic actor.");
+                "Cannot invoke postfire a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
-            // not the executive director, because this is atomic.
+            // not the executive director, because this is opaque.
             boolean oktocontinue = getDirector().postfire();
-            // The composite actor is a wormhole.
+            // The composite actor is opaque.
             // Use the executive director to transfer outputs.
             Director edir = getExecutiveDirector();
             if (edir != null) {
@@ -453,11 +456,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is atomic, transfer input data and invoke the prefire()
+    /** If this actor is opaque, transfer input data and invoke the prefire()
      *  method of the local director. Specifically, transfer any data from
      *  the input ports of this composite to the ports connected on the inside.
      *  The transfer is accomplished by calling the transferInputs() method
-     *  of the local director.   This method returns true if the actor is
+     *  of the local director (the exact behavior of which depends on the
+     *  domain).  This method returns true if the actor is
      *  ready to fire (determined by the prefire() method of the director).
      *  It is read-synchronized on the workspace.
      *
@@ -466,7 +470,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   a token has multiple destinations and cannot be cloned.
      *  @exception IllegalActionException If there is no director,
      *   or if the director's prefire() method throws it, or if this actor
-     *   is not atomic.
+     *   is not opaque.
      *  @exception NameDuplicationException If the prefire() method of the
      *   director throws it (while performing mutations, if any).
      */
@@ -475,9 +479,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
             NameDuplicationException {
         try {
             workspace().getReadAccess();
-            if (!isAtomic()) {
+            if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot invoke prefire a non-atomic actor.");
+                "Cannot invoke prefire a non-opaque actor.");
             }
             // Use the local director to transfer outputs.
             Enumeration ports = inputPorts();
@@ -514,9 +518,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     /** Set the local director for execution of this CompositeActor.
-     *  If this is not at the top level of the hierarchy, calling this
-     *  method with a non-null argument turns the composite into a wormhole.
-     *  Calling it with a null argument reverses this.
+     *  Calling this method with a non-null argument makes this entity opaque.
+     *  Calling it with a null argument makes it transparent.
      *  The container of the specified director is set to this composite
      *  actor, and if there was previously a local director, its container
      *  is set to null. This method is write-synchronized on the workspace.
@@ -543,7 +546,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This can only be done for a composite actor that has no container.
      *  For others, the executive director is inherited from the container
      *  (via its getDirector() method).  This is used for example to specify
-     *  a master control panel that supervises the execution of an application.
+     *  a master controller that supervises the execution of an application.
      *  If the executive director is explicitly specified
      *  using this method, then it is cloned when this composite is cloned.
      *  Otherwise, it is not cloned, since it is assumed that the clone
@@ -575,22 +578,22 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is atomic, then invoke the wrapup() method of the local
+    /** If this actor is opaque, then invoke the wrapup() method of the local
      *  director. This method is read-synchronized on the workspace.
      *
      *  @exception IllegalActionException If there is no director,
      *   or if the director's wrapup() method throws it, or if this
-     *   actor is not atomic.
+     *   actor is not opaque.
      */
     public void wrapup() throws IllegalActionException {
         try {
             workspace().getReadAccess();
-            if (!isAtomic()) {
+            if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot fire a non-atomic actor.");
+                "Cannot fire a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
-            // not the executive director, because this is atomic.
+            // not the executive director, because this is opaque.
             getDirector().wrapup();
         } finally {
             workspace().doneReading();
