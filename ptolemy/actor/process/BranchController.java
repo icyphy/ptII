@@ -52,7 +52,7 @@ import java.util.List;
 @version $Id$
 */
 
-public class BranchController {
+public class BranchController implements Runnable {
 
     /** Construct a controller in the specified container, which should
         be an actor.
@@ -213,8 +213,7 @@ public class BranchController {
             } else {
                 // throw exception here.
             }
-            
-            this.notifyAll();
+            notifyAll();
         }
     }
 
@@ -282,6 +281,24 @@ public class BranchController {
 
     /**
      */
+    public synchronized boolean areEngagementsComplete() {
+	if( _engagements.size() == _maxEngagers ) {
+	    Iterator engagements = _engagements.iterator();
+	    Branch branch = null;
+	    while( engagements.hasNext() ) {
+		branch = (Branch)engagements.next();
+		if( branch.numberOfCompletedEngagements() 
+			< _maxEngagements ) {
+		    return false;
+		}
+	    }
+	    return true;
+	}
+	return false;
+    }
+
+    /**
+     */
     public synchronized boolean isDeadlocked() {
         if( _branchesBlocked == _branchesActive ) {
             return true;
@@ -289,6 +306,45 @@ public class BranchController {
         return false;
     }
     
+    /**
+     */
+    public boolean isActive() {
+	return _active;
+    }
+
+    /**
+     */
+    public void setActive(boolean active) {
+	_active = active;
+    }
+
+    /**
+     */
+    public void run() {
+	_active = true;
+
+	synchronized(this) {
+	    try {
+		while( isActive() ) {
+		    wait();
+
+		    if( isDeadlocked() ) {
+			while( isDeadlocked() ) {
+			    _getDirector()._branchBlocked(this);
+			    wait();
+			}
+			_getDirector()._branchUnBlocked(this);
+		    }
+
+		    if( areEngagementsComplete() ) {
+			setActive(false);
+		    }
+		}
+	    } catch( InterruptedException e ) {
+		// Do something
+	    }
+	}
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -300,19 +356,7 @@ public class BranchController {
     protected void _branchBlocked() {
         synchronized(this) {
             _branchesBlocked++;
-            if ( isDeadlocked() ) {
-                _getDirector()._branchBlocked(this);
-                // FIXME: acquiring a second lock, need to be careful.
-		/*
-                if( !_hasReadBlock() ) {
-                    _getDirector()._actorWriteBlocked();
-                } else if( _hasInternalBlock() ) {
-                    _getDirector()._actorReadBlocked(true);
-                } else {
-                    _getDirector()._actorReadBlocked(false);
-                }
-		*/
-            }
+	    notifyAll();
         }
     }
 
@@ -324,67 +368,10 @@ public class BranchController {
     protected void _branchUnBlocked() {
         synchronized(this) {
             _branchesBlocked--;
-	    if( !isDeadlocked() ) {
-		_getDirector()._branchUnBlocked(this);
-		/*
-                if( !_hasReadBlock() ) {
-                    _getDirector()._actorWriteUnBlocked();
-                } else if( _hasInternalBlock() ) {
-                    _getDirector()._actorReadUnBlocked(true);
-                } else {
-                    _getDirector()._actorReadUnBlocked(false);
-                }
-		*/
-	    } else {
-		// There must be a problem.
-	    }
+	    notifyAll();
         }
     }
 
- 
-    /**
-    protected boolean _hasInternalBlock() {
-	if( _threadList == null ) {
-	    return false;
-	}
-	Iterator threads = _threadList.iterator();
-	BranchThread bThread = null;
-	Branch branch = null;
-	BoundaryReceiver rcvr = null;
-	while( threads.hasNext() ) {
-	    bThread = (BranchThread)threads.next();
-	    branch = bThread.getBranch();
-	    rcvr = branch.getConsReceiver();
-	    if( rcvr.is
-	}
-
-    	return true;
-    }
-     */
-    
-    /**
-    protected boolean _hasReadBlock() {
-	if( _threadList == null ) {
-	    return false;
-	}
-	Iterator threads = _threadList.iterator();
-	BranchThread bThread = null;
-	Branch branch = null;
-	BoundaryReceiver rcvr = null;
-	while( threads.hasNext() ) {
-	    bThread = (BranchThread)threads.next();
-	    branch = bThread.getBranch();
-	    if( _transferInput ) {
-		rcvr = branch.getProdReceiver();
-		if( rcvr.isBlocked() ) {
-		}
-	    }
-	}
-
-    	return true;
-    }
-     */
-    
     /** Resets the internal state controlling the execution of a conditional
      *  branching construct (CIF or CDO). It is only called by chooseBranch()
      *  so that it starts with a consistent state each time.
@@ -438,5 +425,7 @@ public class BranchController {
     
     private int _maxEngagements = -1;
     private int _maxEngagers = -1;
+
+    private boolean _active = false;
 
 }
