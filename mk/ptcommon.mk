@@ -585,10 +585,13 @@ htmlchek:
 	sh $(HTMLCHEK)/runachek.sh `pwd` $(HTMLCHEKOUT) `pwd` \
 		map=1 netscape=1 nowswarn=1 arena=1 strictpair=TCL,AUTHOR
 
+# Script used to find files that shold not be shipped
+CHKEXTRA =	$(PTII)/util/testsuite/chkextra
 checkjunk:
-	@checkextra -v $(SRCS) $(HDRS) $(EXTRA_SRCS) $(MISC_FILES) \
+	@$(CHKEXTRA) $(SRCS) $(HDRS) $(EXTRA_SRCS) $(MISC_FILES) \
 		$(OPTIONAL_FILES) $(JSRCS) makefile SCCS CVS \
-		$(JCLASS) $(OBJS) $(LIBR) $(PTDISTS) $(PTCLASSJAR)
+		$(JCLASS) $(OBJS) $(LIBR) $(PTDISTS) \
+		$(PTCLASSJAR) $(PTCLASSALLJAR) $(PTAUXALLJAR)
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
