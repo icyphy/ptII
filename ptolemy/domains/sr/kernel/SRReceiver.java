@@ -43,14 +43,28 @@ import ptolemy.kernel.util.InvalidStateException;
 //// SRReceiver
 /**
 
-FIXMENOW: update.
-
-The receiver for the SR domain. This receiver is a mailbox with capacity one,
-and any token put in the receiver overwrites any token previously present in
-the receiver. As a consequence, hasRoom() method always returns true. The
-get() method will consume the token if one exists. After the
-consumption, the hasToken() method will return false, until a token is put
-into this receiver.
+The receiver for the synchronous reactive domain.  This receiver is a mailbox
+with capacity one.  The status of this receiver can be known (either known to
+contain a token or known not to contain a token) or unknown.  The isKnown() 
+method returns true if the receiver has known status.  If the receiver has 
+known status, the hasToken() method returns whether the receiver has a token.
+If the receiver has unknown status, the hasToken() method always returns
+false.
+<p>
+In the course of an iteration in SR, receivers can change from unknown status 
+to known status, but never the other way around.  The status is automatically 
+set to known when the put() method or setAbsent() method is called.  Once a 
+receiver becomes known, its value (or lack of a value if it is absent) can not
+change.  The hasRoom() method always returns true, but attempting to change 
+the status of a receiver from present to absent or from absent to present will
+result in an exception.  An exception will also be thrown if a receiver has 
+present status and it receives a token that is not the same as the one it 
+already contains.  Thus, for an actor to be valid in SR, a firing must produce
+the same outputs given the same inputs (in a given iteration).
+<p>
+Since the value of a receiver can not change (once it is known) in the course 
+of an iteration, tokens need not be consumed.  A receiver retains its token 
+until the director calls the reset() method.
 
 @author Paul Whitaker
 @version $Id$

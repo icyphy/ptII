@@ -504,8 +504,6 @@ public class SRDirector extends StaticSchedulingDirector {
         try {
             SRScheduler scheduler = 
                 new SRScheduler(this, uniqueName("Scheduler"));
-            // FIXME: Is this next line necessary since a Scheduler is an
-            // attribute of a Director?
             setScheduler(scheduler);
         }
         catch (Exception ex) {
