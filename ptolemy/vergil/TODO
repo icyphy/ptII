@@ -10,6 +10,7 @@ In TimedSource, attributeChanged triggers a fireAt().  What happens if
 Snap off port isn't accurate.
 GraphControllers should be able to report errors in a systematic way.
 models without managers need something to queue change requests with.
+Cancel close of InternalFrame doesn't work under jdk1.2.2  (use jdk1.3!)
 
 TODO:
 Snap to Grid.

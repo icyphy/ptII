@@ -71,8 +71,8 @@ JSRCS = \
 	VisualNotation.java 
 
 EXTRA_SRCS =	$(JSRCS) \
-		lib\rootEntityLibrary.xml \
-		lib\rootIconLibrary.xml
+		lib/rootEntityLibrary.xml \
+		lib/rootIconLibrary.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
