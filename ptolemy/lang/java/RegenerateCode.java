@@ -57,6 +57,7 @@ import ptolemy.lang.java.StaticResolution;
  *  into other languages or formats.
  *
  *  @author Jeff Tsay and Shuvra S. Bhattacharyya 
+ *  @version $Id$
  */
 public class RegenerateCode implements JavaStaticSemanticConstants {
 
@@ -102,8 +103,11 @@ public class RegenerateCode implements JavaStaticSemanticConstants {
      *  object has been configured.
      *
      * @param args The Java source files that are to be converted.
+     * @return The return values returned by each pass on each file.
+     * The pass return values for the first file are first in the list,
+     * followed by the pass return values for the second file, and so on.  
      */
-    public void regenerate(String[] args) {
+    public LinkedList regenerate(String[] args) {
         int files = args.length;
         int fileStart = 0;
         boolean debug = false;
@@ -119,6 +123,9 @@ public class RegenerateCode implements JavaStaticSemanticConstants {
         if (files < 1) {
             System.out.println("usage : ptolemy.lang.java.RegenerateCode [-d] f1.java [f2.java ...]");
         }
+
+        // The list of pass return results.
+        LinkedList passResults = new LinkedList();
 
         for (int f = 0; f < files; f++) {
             JavaParser javaParser = new JavaParser();
@@ -171,14 +178,22 @@ public class RegenerateCode implements JavaStaticSemanticConstants {
                     System.out.println("The AST after Pass #" + passNumber + ":");
                     System.out.println(ast.toString());
                 }
+                if (passResult == null) {
+                    passResults.add(NullValue.instance);
+                } else {
+                    passResults.add(passResult);
+                }
+                if (_verbose && (passResult!=null)) {
+                    System.out.println("The result returned from Pass #"
+                            + passNumber + ":");
+                    System.out.println(passResult.toString()); 
+                }
                 passNumber++;
             }
 
 
-            System.out.println("/* Regenerated source file for : " + 
-                    args[f + fileStart] + " */");
-            if (passResult != null) System.out.println((String)passResult);
         }
+        return passResults;
     }
 
     /**
