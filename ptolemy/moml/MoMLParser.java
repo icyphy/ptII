@@ -1736,7 +1736,7 @@ public class MoMLParser extends HandlerBase {
                     + ex.getTargetException(),
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
-                    _parser.getColumnNumber(), ex);
+                    _parser.getColumnNumber(), ex.getTargetException());
         } catch (Exception ex) {
             if (_handler != null) {
                 int reply = _handler.handleError(
