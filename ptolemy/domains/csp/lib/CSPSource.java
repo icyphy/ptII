@@ -89,7 +89,7 @@ public class CSPSource extends AtomicActor {
         this(cont, name, -1, 0);
     }
 
-    /** Construct a CSPSource with the sepcified container and the
+    /** Construct a CSPSource with the specified container and the
      *  specified name. The name must be unique within the container
      *  or an exception is thrown. The container argument must not be
      *  null, or a NullPointerException will be thrown. The limit
