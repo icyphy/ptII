@@ -238,7 +238,8 @@ public class MoMLParser extends HandlerBase {
      *  to translate names.
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
-     *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
+     *  @param filterList The list of MoMLFilters to add to the
+     *  list of MoMLFilters to be used to translate names.
      *  @see #addMoMLFilter(MoMLFilter filter)
      *  @see #getMoMLFilters()
      *  @see #setMoMLFilters(List filterList)
@@ -393,17 +394,17 @@ public class MoMLParser extends HandlerBase {
      *  and return null.  Note that the version number is not checked,
      *  so future versions of MoML should also work.
      *  @param name The name of the document type.
-     *  @param publicId The public ID of the document type.
-     *  @param systemId The system ID of the document type.
+     *  @param publicID The public ID of the document type.
+     *  @param systemID The system ID of the document type.
      *  @exception CancelException If the public ID is not that of MoML.
      */
-    public void doctypeDecl(String name, String publicId, String systemId)
+    public void doctypeDecl(String name, String publicID, String systemID)
             throws CancelException {
-        if (publicId != null
-                && !publicId.trim().equals("")
-                && !publicId.startsWith("-//UC Berkeley//DTD MoML")) {
+        if (publicID != null
+                && !publicID.trim().equals("")
+                && !publicID.startsWith("-//UC Berkeley//DTD MoML")) {
             throw new CancelException(
-                    "Public ID is not that of MoML version 1: " + publicId);
+                    "Public ID is not that of MoML version 1: " + publicID);
         }
     }
 
@@ -706,9 +707,9 @@ public class MoMLParser extends HandlerBase {
     /** Handle the end of an external entity.  This pops the stack so
      *  that error reporting correctly reports the external entity that
      *  causes the error.
-     *  @param systemId The URI for the external entity.
+     *  @param systemID The URI for the external entity.
      */
-    public void endExternalEntity(String systemId) {
+    public void endExternalEntity(String systemID) {
         _externalEntities.pop();
     }
 
@@ -716,12 +717,12 @@ public class MoMLParser extends HandlerBase {
      *  &AElig;lfred will call this method whenever it encounters
      *  a serious error.  This method simply throws an XmlException.
      *  @param message The error message.
-     *  @param systemId The URI of the entity that caused the error.
+     *  @param systemID The URI of the entity that caused the error.
      *  @param line The approximate line number of the error.
      *  @param column The approximate column number of the error.
      *  @exception XmlException If called.
      */
-    public void error(String message, String systemId,
+    public void error(String message, String systemID,
             int line, int column) throws XmlException {
 	String currentExternalEntity = "";
 	try {
@@ -928,7 +929,7 @@ public class MoMLParser extends HandlerBase {
      *  it is probably not a good idea to use this method in applet code,
      *  since it will probably fail outright.
      *
-     *  @param text The file name from which to read MoML.
+     *  @param filename The file name from which to read MoML.
      *  @return The top-level composite entity of the Ptolemy II model.
      *  @exception Exception If the parser fails.
      *  @exception SecurityException If the user.dir system property is
@@ -1045,8 +1046,8 @@ public class MoMLParser extends HandlerBase {
      *  a modified URI (a string), an InputStream, or a Reader.
      *  In the latter two cases, the input character stream is
      *  provided.
-     *  @param publicId The public identifier, or null if none was supplied.
-     *  @param systemId The system identifier.
+     *  @param publicID The public identifier, or null if none was supplied.
+     *  @param systemID The system identifier.
      *  @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
@@ -2472,13 +2473,13 @@ public class MoMLParser extends HandlerBase {
     /** Handle the start of an external entity.  This pushes the stack so
      *  that error reporting correctly reports the external entity that
      *  causes the error.
-     *  @param systemId The URI for the external entity.
+     *  @param systemID The URI for the external entity.
      */
-    public void startExternalEntity(String systemId) {
+    public void startExternalEntity(String systemID) {
         // NOTE: The Microstar XML parser incorrectly passes the
         // HTML file for the first external entity, rather than
         // XML file.  So error messages typically refer to the wrong file.
-        _externalEntities.push(systemId);
+        _externalEntities.push(systemID);
     }
 
     /**
