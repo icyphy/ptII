@@ -270,6 +270,7 @@ public class Plot extends PlotBox {
 	// If we see both -nl and -bar, assume we do an impulse plot.
 	boolean sawbararg = false; // Saw -bar arg.
 	boolean sawnlarg = false;  // Saw -nl arg.
+	int savedmarks = 0;        // Save _marks in case we have -P -bar -nl.
 
 	// If this is a component, then getParameter might fail.  
 	try {
@@ -373,9 +374,10 @@ public class Plot extends PlotBox {
 		    sawbararg = true;
 		    if (sawnlarg) {
 			setImpulses(true);
-		    }
-		    else {
+		    } else {
 			setBars(true); 
+			// Save _marks in case we did -P -bar -nl.
+			savedmarks = _marks;
 			setMarksStyle("none");
 		    }
 		    setConnected(false);
@@ -415,6 +417,8 @@ public class Plot extends PlotBox {
 		    // If we saw the -bar arg, then assume impulses 
 		    sawnlarg = true;
 		    if (sawbararg) {
+			// Restore the _marks in case we did -P -bar -nl
+			_marks = savedmarks;
 			setBars(false); 
 			setImpulses(true);
 		    }
