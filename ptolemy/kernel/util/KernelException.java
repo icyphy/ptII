@@ -81,7 +81,7 @@ public class KernelException extends Exception {
         if (detail != null) {
             if (!detail.equals("")) {
                 if (!prefix.equals("")) {
-                    _setMessage(new String(prefix + ": " + detail));
+                    _setMessage(new String(prefix + ":\n" + detail));
                 } else {
                     _setMessage(detail);
                 }
