@@ -135,7 +135,7 @@ public class ServiceInformation extends TypedAtomicActor {
             if (request.equals("Cipher") || request.equals("Signature")
                     || request.equals("MessageDigest")
                     || request.equals("KeyGenerator")
-                    || request.equals("KeyPairGenrator")) {
+                    || request.equals("KeyPairGenerator")) {
 
                 // FIXME: this just always sends the same data?
                 Iterator it = (Security.getAlgorithms("Request")).iterator();

@@ -111,13 +111,13 @@ public class SignatureSigner extends SignatureActor {
     public SDFIOPort keyOut;
 
     /** This port sends out the original data to be verified with the
-     *  encypted digest
+     *  encrypted digest
      */
     public SDFIOPort data;
 
-    /** The algrotihm to be used to generate the key pair.  For
+    /** The algorithm to be used to generate the key pair.  For
      *  example, using RSAwithMD5 as the signature algorithm, RSA
-     *  would be used for the <i>keyAlgrotrithm</i> parameter.
+     *  would be used for the <i>keyAlgorithm</i> parameter.
      */
     public Parameter keyAlgorithm;
 

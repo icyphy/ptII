@@ -56,7 +56,7 @@ parameter. The algorithm specified must be asymmetric. The mode and
 padding can also be specified in the mode and padding parameters. In
 case a provider specific instance of an algorithm is needed the
 provider may also be specified in the provider parameter.  This actor
-receives a public key from the AsymmetricDecyption actor and encrypts
+receives a public key from the AsymmetricDecryption actor and encrypts
 the data input with the given key.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java

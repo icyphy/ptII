@@ -60,8 +60,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 This actor takes an unsigned byte array at the input and decrypts the
 message.  The resulting output is an unsigned byte array.  The shared
 secret key is received from the SymmetricEncryption actor on the
-<i>keyIn</i> and is used to decrypt the message.  Certain algortihms
-may also require extra parameters generated during encyption to
+<i>keyIn</i> and is used to decrypt the message.  Certain algorithms
+may also require extra parameters generated during encryption to
 decrypt the message.  These are received on the <i>parameters</i>
 port.  Various ciphers that are implemented by "providers" and
 installed maybe used by specifying the algorithm in the
@@ -116,8 +116,8 @@ public class SymmetricDecryption extends CipherActor {
      */
     public SDFIOPort keyIn;
 
-    /** This port recieves any parameters that may have generated during
-     *  encryption if paramters were generated during encryption.
+    /** This port receives any parameters that may have generated during
+     *  encryption if parameters were generated during encryption.
      */
     public SDFIOPort parameters;
 
@@ -145,16 +145,16 @@ public class SymmetricDecryption extends CipherActor {
 
             if (parameters.hasToken(0)) {
                 if (_provider.equalsIgnoreCase("SystemDefault")) {
-                    _algParams = AlgorithmParameters.getInstance(_algorithm);
+                    _algorithmParameters = AlgorithmParameters.getInstance(_algorithm);
                 } else {
-                    _algParams =
+                    _algorithmParameters =
                         AlgorithmParameters.getInstance(_algorithm, _provider);
                 }
                 byte [] encodedAP =
                     _arrayTokenToUnsignedByteArray(
                             (ArrayToken)parameters.get(0));
 
-                _algParams.init(encodedAP);
+                _algorithmParameters.init(encodedAP);
             }
 
             if (_secretKey != null) {
@@ -185,7 +185,7 @@ public class SymmetricDecryption extends CipherActor {
             new ByteArrayOutputStream();
         try {
 
-            _cipher.init(Cipher.DECRYPT_MODE, _secretKey, _algParams);
+            _cipher.init(Cipher.DECRYPT_MODE, _secretKey, _algorithmParameters);
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
             return byteArrayOutputStream.toByteArray();
 
@@ -203,9 +203,9 @@ public class SymmetricDecryption extends CipherActor {
      */
     private SecretKey _secretKey = null;
 
-    // The initilization parameter used in a block ciphering mode.
+    // The initialization parameter used in a block ciphering mode.
     private IvParameterSpec _spec;
 
     // The algorithm parameters to be used if they exist.
-    private AlgorithmParameters _algParams;
+    private AlgorithmParameters _algorithmParameters;
 }

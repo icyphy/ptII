@@ -71,19 +71,19 @@ import ptolemy.kernel.util.StringAttribute;
 /**
 
 This actor takes an unsigned byte array at the input and decrypts the
-message.  The resulting ouput is an unsighned byte array. Various
+message.  The resulting output is an unsigned byte array. Various
 ciphers that are implemented by "providers" and installed maybe used
 by specifying the algorithm in the algorithm parameter.  The mode and
-padding can also be spcecified in the mode and padding parameters.  In
+padding can also be specified in the mode and padding parameters.  In
 case a provider specific instance of an algorithm is needed the
 provider may also be specified in the provider parameter.  The mode
 parameter must also be set to asymmetric or symmetric depending on the
 specified algorithm.  When in an asymmetric mode, this actor creates a
-private key for decyption use and a public key which is sent on the
-<i>keyOut</i> port to an encyption actor for encryption purposes.  In
+private key for decryption use and a public key which is sent on the
+<i>keyOut</i> port to an encryption actor for encryption purposes.  In
 symmetric mode, the share secret key is sent on the <i>keyOut</i> port
 to an encyption actor for encryption purposes.  Key creation is done
-in preinitilization and is put on the keyOut port during initilization
+in preinitialization and is put on the keyOut port during initialization
 so the encryption has a key to use when its first fired.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
@@ -119,7 +119,6 @@ public class Decryption extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        //Create ports and parameters and set defalut values and types.
         input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
@@ -145,70 +144,70 @@ public class Decryption extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Specifies the algoithm of the cipher to use for decrypting the data and
-     *  making the key.  The algorithm is specified as a string input. The
-     *  algoithms are limited to those implemented by providers using the Java
-     *  JCE which are found on the system.
+    /** Specifies the algorithm of the cipher to use for decrypting
+     *  the data and making the key.  The algorithm is specified as a
+     *  string input. The algorithms are limited to those implemented
+     *  by providers using the Java JCE which are found on the system.
      */
     public Parameter algorithm;
 
     /** Used to specify a provider for the given algorithm.  Takes the
-     *  algorithm name in a string format. If left blank the system chooses the
-     *  provider based the JCE architecture.
+     *  algorithm name in a string format. If left blank the system
+     *  chooses the provider based the JCE architecture.
      */
     public Parameter provider;
 
-    /** The padding scheme used by the cipher during encryption.  The padding
-     *  is specified as a string and includes the options of NOPADDING and
-     *  PKCS#5.  This should be the same as the encryption actor.  If left
-     *  blank the default setting for the algorithm is used.
+    /** The padding scheme used by the cipher during encryption.  The
+     *  padding is specified as a string and includes the options of
+     *  NOPADDING and PKCS#5.  This should be the same as the
+     *  encryption actor.  If left blank the default setting for the
+     *  algorithm is used.
      */
     public Parameter padding;
 
-    /** The mode of the block cipher that was for used encryption.  The mode is
-     *  specified as a string and includes ECB, CBC, CFB and OFB.  The modes
-     *  are limited by their implemetantion in the provider library.  If left
-     *  blank the default seting for the algrithm used.  This should be the
-     *  same as the mode used for in the coresponding encrytpion actor.
+    /** The mode of the block cipher that was for used encryption.
+     *  The mode is specified as a string and includes ECB, CBC, CFB
+     *  and OFB.  The modes are limited by their implementation in the
+     *  provider library.  If left blank the default setting for the
+     *  algorithm used.  This should be the same as the mode used for
+     *  in the corresponding encryption actor.
      */
     public Parameter mode;
 
-    /** Specifies the size of the key to be created.  This is an int value
-     *  representing the number of bits.  A default value exists for certain
-     *  algorithms.  If a key is not specified and no default value is found
-     *  then an error is produced.
+    /** Specifies the size of the key to be created.  This is an int
+     *  value representing the number of bits.  A default value exists
+     *  for certain algorithms.  If a key is not specified and no
+     *  default value is found then an error is produced.
      */
     public Parameter keySize;
 
-    /** This StringAttribute determines whether decryption will be performed on
-     *  a asymmetric or symmetric crytographic algorithm.  The to possible
-     *  values are "symmetric" or "asymmetric".  THe default value is
-     *  "asymmetric."
+    /** This StringAttribute determines whether decryption will be
+     *  performed on a asymmetric or symmetric crytographic algorithm.
+     *  The to possible values are "symmetric" or "asymmetric".  THe
+     *  default value is "asymmetric."
      */
     public StringAttribute cryptoMode;
 
-    /** This port takes in as an UnsignedByteArray and decrypts the data based
-     *  on the algoithm.
+    /** This port takes in as an UnsignedByteArray and decrypts the
+     *  data based on the algorithm.
      */
     public SDFIOPort input;
 
-    /** This port sends out the decrypted data received from <i>input</i> in
-     *  the form of a UnsignedByteArray.
+    /** This port sends out the decrypted data received from
+     *  <i>input</i> in the form of a UnsignedByteArray.
      */
     public SDFIOPort output;
 
-    /** This port outputs the key to be used by the encryption actor.  If set
-     *  to asymmetric encryption the generated public key is sent out.
-     *  Otherwise the generated secret key is sent out.
+    /** This port outputs the key to be used by the encryption actor.
+     *  If set to asymmetric encryption the generated public key is
+     *  sent out.  Otherwise the generated secret key is sent out.
      */
     public SDFIOPort keyOut;
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Determine whether to use aysmmetric or symmetric decryption.
+    /** Determine whether to use asymmetric or symmetric decryption.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If naming conflict is encountered.
      */
@@ -225,10 +224,12 @@ public class Decryption extends TypedAtomicActor {
         } else super.attributeChanged(attribute);
     }
 
-    /** This method takes the data from the <i>input</i> and decrypts the data
-     *  based on the <i>algorithm</i>, <i>provider</i>, <i>mode</i> and
-     *  <i>padding</i>.  This is the sent on the <i>output</i>.  All paramters
-     *  should be the same as the corresponding encryptoion actor.
+    /** This method takes the data from the <i>input</i> and decrypts
+     *  the data based on the <i>algorithm</i>, <i>provider</i>,
+     *  <i>mode</i> and <i>padding</i>.  This is the sent on the
+     *  <i>output</i>.  All parameters should be the same as the
+     *  corresponding encryption actor.
+     *
      *  @exception IllegalActionException If decryption fails or the
      *  base class throws it.
      */
@@ -279,8 +280,8 @@ public class Decryption extends TypedAtomicActor {
         }
     }
 
-    /** Get parameter information and sets token poduction for iniitialize to
-     *  one.
+    /** Get parameter information and sets token production for
+     *  initialize to one.
      *
      * @exception IllegalActionException If the base class throws it
      * or the keys cannot be created. 
@@ -300,7 +301,7 @@ public class Decryption extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
 
-    /** Take an ArrayTooken and converts it to an array of unsigned bytes.
+    /** Take an ArrayToken and converts it to an array of unsigned bytes.
      *
      * @param dataArrayToken
      * @return dataBytes
@@ -448,8 +449,8 @@ public class Decryption extends TypedAtomicActor {
      */
     private static final int _SYMMETRIC = 1;
 
-    /** Set to _ASYMMETRIC or _SYMMETRIC depending on <i>crypoMode</i>
-     *  paramter.
+    /** Set to _ASYMMETRIC or _SYMMETRIC depending on the <i>cryptoMode</i>
+     *  parameter.
      */
     private int _keyMode;
 
@@ -477,11 +478,10 @@ public class Decryption extends TypedAtomicActor {
      */
     private Cipher _cipher;
 
-
     //private ArrayToken _keyOutput;
 
-    /** The name of the provider to be used in determing which instance of an
-     *  algorithm to provide.
+    /** The name of the provider to be used in determining which
+     *  instance of an algorithm to provide.
      */
     private String _provider = "BC";
 }

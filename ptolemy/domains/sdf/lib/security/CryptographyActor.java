@@ -179,7 +179,7 @@ public class CryptographyActor extends TypedAtomicActor {
     /** This method retrieves the <i>algorithm</i>, <i>provider</i>,
      *  and, <i>keySize</i>.
      *
-     * @exception IllegalActionException If the alorithm is not found,
+     * @exception IllegalActionException If the algorithm is not found,
      * the padding scheme is illegal for a given algorithm or the
      * specified provider does not exist.
      */
@@ -313,7 +313,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *
      * @param dataBytes the data to be processed.
      * @return dataBytes the data unchanged.
-     * @exception IlligalActionException Not thrown in this base class
+     * @exception IllegalActionException Not thrown in this base class
      */
     protected byte[] _process(byte [] dataBytes)
             throws IllegalActionException {

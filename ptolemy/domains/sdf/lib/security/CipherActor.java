@@ -129,7 +129,7 @@ public class CipherActor extends CryptographyActor {
      *  initialized.  If provider is left as "SystemDefault" the system
      *  chooses the provider based on the JCE.
      *
-     * @exception IllegalActionException If the algoritm cannot be found,
+     * @exception IllegalActionException If the algorithm cannot be found,
      * the padding scheme is illegal for the the given algorithm or
      * if the specified provider does not exist.
      */

@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 
 This actor takes an unsigned byte array at the input and encrypts the
-message using the public key retrieved from the AsymmetricDecyption
+message using the public key retrieved from the AsymmetricDecryption
 actor.  The resulting output is an unsigned byte array. Various
 ciphers that are implemented by "providers" and installed on the
 system maybe used by specifying the algorithm in the <i>algorithm</i>

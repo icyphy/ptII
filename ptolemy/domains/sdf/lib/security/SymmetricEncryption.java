@@ -175,7 +175,7 @@ public class SymmetricEncryption extends CipherActor {
     /** Get an instance of the cipher and outputs the key required for
      *  decryption.
      *  @exception IllegalActionException If thrown by base class or
-     *  if the algorithn is not found, or if the padding scheme is illegal,
+     *  if the algorithm is not found, or if the padding scheme is illegal,
      *  or if the specified provider does not exist.
      */
     public void initialize() throws IllegalActionException {
