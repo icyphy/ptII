@@ -346,7 +346,9 @@ public class MoMLParser extends HandlerBase {
             // Inside a configure or doc tag.
             // Simply replicate the element in the current
             // character buffer.
-            _currentCharData.append("</" + elementName + ">");
+            _currentCharData.append("</");
+            _currentCharData.append(elementName);
+            _currentCharData.append(">");
             return;
         }
 	if ( _skipRendition ) {
@@ -593,7 +595,11 @@ public class MoMLParser extends HandlerBase {
      */
     public void processingInstruction (String target, String data) {
         if (_currentCharData != null) {
-            _currentCharData.append("<?" + target + " " + data + "?>");
+            _currentCharData.append("<?");
+            _currentCharData.append(target);
+            _currentCharData.append(" ");
+            _currentCharData.append(data);
+            _currentCharData.append("?>");
         }
     }
 
@@ -700,7 +706,8 @@ public class MoMLParser extends HandlerBase {
                     // Count doc tags so that they can nest.
                     _docNesting++;
                 }
-                _currentCharData.append("<" + elementName);
+                _currentCharData.append("<");
+                _currentCharData.append(elementName);
                 // Put the attributes into the character data.
                 Iterator attributeNames = _attributeNameList.iterator();
                 while (attributeNames.hasNext()) {
@@ -709,11 +716,12 @@ public class MoMLParser extends HandlerBase {
                     if(value != null) {
                         // Note that we have to escape the value again,
                         // so that it is properly parsed.
-                        _currentCharData.append(" "
-                                + name
-                                + "=\""
-                                + StringUtilities.escapeForXML(value)
-                                + "\"");
+                        _currentCharData.append(" ");
+                        _currentCharData.append(name);
+                        _currentCharData.append("=\"");
+                        _currentCharData.append(
+                                StringUtilities.escapeForXML(value));
+                        _currentCharData.append("\"");
                     }
                 }
                 _attributes.clear();
@@ -1981,6 +1989,7 @@ public class MoMLParser extends HandlerBase {
             String port,
             String relation,
             String insertAtSpec) {
+        
         if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
@@ -2005,6 +2014,7 @@ public class MoMLParser extends HandlerBase {
                         "Unable to record extension to class!\n" + ex.toString());
             }
         }
+        
     }
 
     // If a new object is added to a container, and this is not the
@@ -2098,7 +2108,7 @@ public class MoMLParser extends HandlerBase {
     // return the previous instance.
     public ComponentEntity _searchForClass(String name, String source)
             throws XmlException {
-
+        
         // If the name is absolute, the class may refer to an existing
         // entity.  Check to see whether there is one with a matching source.
         ComponentEntity candidate;
@@ -2109,6 +2119,7 @@ public class MoMLParser extends HandlerBase {
                 if (candidate.getMoMLInfo().elementName.equals("class")) {
                     // Check that its source matches.
                     String candidateSource = candidate.getMoMLInfo().source;
+                      
                     if (source == null && candidateSource == null) {
                         return candidate;
                     } else if (source != null
@@ -2295,7 +2306,7 @@ public class MoMLParser extends HandlerBase {
     private Map _attributes = new HashMap();
  
     // The list of attribute names, in the order they were parsed.
-    private List _attributeNameList = new LinkedList();
+    private List _attributeNameList = new ArrayList(0);
 
     // Base for relative URLs.
     private URL _base;
