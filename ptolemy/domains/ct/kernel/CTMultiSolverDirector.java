@@ -134,7 +134,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     /** This does the initialization for the entire subsystem. This
      *  is called exactly once at the start of the entire execution.
      *  It checks if it container and its scheduler is correct. 
-     *  Otherwise throw an exception. It then calls _intialize()
+     *  Otherwise throw an exception. It then calls _initialize()
      *  method to initialize parameters and times.
      *
      *  @exception IllegalActionException If there's no scheduler or
