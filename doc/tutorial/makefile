@@ -60,8 +60,7 @@ PTCLASSJAR =
 JSRCS = \
 	TutorialApplet1.java \
 	TutorialApplet2.java \
-	TutorialApplet3.java \
-	tutorial.htm
+	TutorialApplet3.java
 
 # Note that the TutorialApplet*.java files get copied to
 # TutorialApplet.java and then made
@@ -79,6 +78,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	tutorial.htm \
 	doc \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR) \
