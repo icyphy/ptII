@@ -84,10 +84,8 @@ interface DataflowActor {
      *  or is not an input port.
      *  @return The number of tokens consumed on the port.
      */
-            /*
     public void setTokenConsumptionRate(IOPort p, int count) 
         throws IllegalActionException;
-        */
 
     /** Set the number of tokens that are produced or consumed 
      *  on the designated port of this Actor.  This will generally
@@ -101,21 +99,23 @@ interface DataflowActor {
      *  or is not an output port.
      *  @return The number of tokens produced on the port.
      */
-            /*    public void setTokenProductionRate(IOPort p, int count) 
+    public void setTokenProductionRate(IOPort p, int count) 
         throws IllegalActionException;
-        */
-            /* public int getTokenConsumptionDelay(IOPort p)
-            throws IllegalActionException;
 
-    public int getTokenProductionDelay(IOPort p)
+         /*
+    public int getTokenInitConsumption(IOPort p)
+        throws IllegalActionException;
+        
+    public int getTokenInitProduction(IOPort p)
             throws IllegalActionException;
-
-    public void setTokenConsumptionDelay(IOPort p, int count)
+            /*
+    public void setTokenInitConsumption(IOPort p, int count)
             throws IllegalActionException;
-
-    public void setTokenProductionDelay(IOPort p, int count)
+            
+    public void setTokenInitProduction(IOPort p, int count)
             throws IllegalActionException;
             */
+ 
 }
 
 
