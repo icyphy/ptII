@@ -813,9 +813,12 @@ public class PlotBox extends JPanel implements Printable {
      */
     public synchronized void setButtons(boolean visible) {
         if (_resetButton == null) {
-            // We need to load the image from a file relative to the class
-            // location.  Use the resource locator of the class.
-            URL img = getClass().getResource("images/reset.gif");
+            // Load the image by using the absolute path to the gif.
+	    // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+	    // For more information, see
+	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
+            URL img = getClass().getResource("/ptolemy/plot/img/reset.gif");
             if (img != null) {
                 ImageIcon resetIcon = new ImageIcon(img);
                 _resetButton = new JButton(resetIcon);
@@ -825,6 +828,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _resetButton = new JButton("R");
             }
+	    // FIXME: If we failed to get an image, then the letter "R" 
+	    // Is not likely to fit into a 20x20 button.
             _resetButton.setPreferredSize(new Dimension(20,20));
             _resetButton.setToolTipText(
                     "Reset X and Y ranges to their original values");
@@ -834,9 +839,12 @@ public class PlotBox extends JPanel implements Printable {
         _resetButton.setVisible(visible);
 
         if (_formatButton == null) {
-            // We need to load the image from a file relative to the class
-            // location.  Use the resource locator of the class.
-            URL img = getClass().getResource("images/format.gif");
+            // Load the image by using the absolute path to the gif.
+	    // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+	    // For more information, see
+	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
+            URL img = getClass().getResource("/ptolemy/plot/img/format.gif");
             if (img != null) {
                 ImageIcon formatIcon = new ImageIcon(img);
                 _formatButton = new JButton(formatIcon);
@@ -846,6 +854,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _formatButton = new JButton("S");
             }
+	    // FIXME: If we failed to get an image, then the letter "S" 
+	    // Is not likely to fit into a 20x20 button.
             _formatButton.setPreferredSize(new Dimension(20,20));
             _formatButton.setToolTipText(
                     "Set the plot format");
@@ -855,9 +865,12 @@ public class PlotBox extends JPanel implements Printable {
         _formatButton.setVisible(visible);
 
         if (_fillButton == null) {
-            // We need to load the image from a file relative to the class
-            // location.  Use the resource locator of the class.
-            URL img = getClass().getResource("images/fill.gif");
+            // Load the image by using the absolute path to the gif.
+	    // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+	    // For more information, see
+	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
+            URL img = getClass().getResource("/ptolemy/plot/img/fill.gif");
             if (img != null) {
                 ImageIcon fillIcon = new ImageIcon(img);
                 _fillButton = new JButton(fillIcon);
@@ -867,6 +880,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _fillButton = new JButton("F");
             }
+	    // FIXME: If we failed to get an image, then the letter "F" 
+	    // Is not likely to fit into a 20x20 button.
             _fillButton.setPreferredSize(new Dimension(20,20));
             _fillButton.setToolTipText(
                     "Rescale the plot to fit the data");

@@ -106,7 +106,7 @@ EXTRA_SRCS = $(JSRCS) \
 	index.htm
 
 # Non-source files such as README files and subdirectories
-MISC_FILES = test images #bean
+MISC_FILES = test img #bean
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -185,7 +185,10 @@ BASECLASSFILES = \
 		'$(ME)/Plot$$Format.class' \
 		'$(ME)/PlotBox$$CommandListener.class' \
 		'$(ME)/PlotBox$$DragListener.class' \
-		'$(ME)/PlotBox$$ZoomListener.class'
+		'$(ME)/PlotBox$$ZoomListener.class' \
+		$(ME)/img/fill.gif \
+		$(ME)/img/format.gif \
+		$(ME)/img/reset.gif
 
 # Class files used in simple applets
 APPLETCLASSFILES = \
