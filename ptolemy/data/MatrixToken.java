@@ -274,7 +274,12 @@ public abstract class MatrixToken extends Token {
      *  above.  If the first argument type is an array type, then
      *  return a matrix type of the same element type, otherwise return
      *  BaseType.UNKNOWN.
-     *  @param type The type of the argument to the corresponding function.
+     *  @param type1 The type of the first argument to the
+     *  corresponding function.
+     *  @param type2 The type of the second argument to the
+     *  corresponding function.
+     *  @param type3 The type of the third argument to the
+     *  corresponding function.
      *  @return The type of the value returned from the corresponding function.
      */
      public static Type arrayToMatrixReturnType(
@@ -344,7 +349,12 @@ public abstract class MatrixToken extends Token {
     /** Return the (exact) return type of the createSequence function
      *  above.  The return type is an array type whose element type is
      *  the least upper bound of the first two types.
-     *  @param type The type of the argument to the corresponding function.
+     *  @param type1 The type of the first argument to the
+     *  corresponding function.
+     *  @param type2 The type of the second argument to the
+     *  corresponding function.
+     *  @param type3 The type of the third argument to the
+     *  corresponding function.
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type createSequenceReturnType(
