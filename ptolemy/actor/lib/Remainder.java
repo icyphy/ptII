@@ -60,7 +60,7 @@ argument. Special cases:
 </ul>
 </quote>
 
-Note: The divisor parameter is available as a input port in
+Note: The divisor parameter is available as an input port in
 the MathFunction.Modulo() method. If you need to change the divisor
 during run-time, the MathFunction actor may be the a better choice.
 
