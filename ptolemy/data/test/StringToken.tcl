@@ -237,7 +237,7 @@ test StringToken-13.1 {Test convert from UnsignedByteToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
     list $msg
-} {{"1"}}
+} {{"1ub"}}
 
 test StringToken-13.2 {Test convert from ComplexToken} {
     set o [java::new {ptolemy.math.Complex} 1.0 1.0]

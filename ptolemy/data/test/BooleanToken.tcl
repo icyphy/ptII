@@ -231,7 +231,7 @@ test BooleanToken-13.1 {Test convert from UnsignedByteToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.UnsignedByteToken '1' to the type boolean because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.UnsignedByteToken '1ub' to the type boolean because the type of the token is higher or incomparable with the given type.}}
 
 test BooleanToken-13.2 {Test convert from ComplexToken} {
     set o [java::new {ptolemy.math.Complex} 1.0 1.0]

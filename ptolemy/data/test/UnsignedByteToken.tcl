@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test UnsignedByteToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.UnsignedByteToken]
     $p toString
-} {0}
+} {0ub}
 
 ######################################################################
 ####
@@ -62,7 +62,7 @@ test UnsignedByteToken-1.1 {Create an instance with a value} {
     set token [java::new {ptolemy.data.UnsignedByteToken byte} 3]
     set token2 [java::new {ptolemy.data.UnsignedByteToken byte} -1]
     list [$token toString] [$token2 toString]
-} {3 255}
+} {3ub 255ub}
 
 ######################################################################
 ####
@@ -72,7 +72,7 @@ test UnsignedByteToken-1.2 {Create an instance from a string value} {
     set token2 [java::new {ptolemy.data.UnsignedByteToken String} "255"]
     catch {[[java::new {ptolemy.data.UnsignedByteToken String} "-1"] toString]} res3
     list [$token toString] [$token2 toString] $res3
-} {5 255 {ptolemy.kernel.util.IllegalActionException: Value '-1' is out of the range of Unsigned Byte}}
+} {5ub 255ub {ptolemy.kernel.util.IllegalActionException: Value '-1' is out of the range of Unsigned Byte}}
 
 ######################################################################
 ####
@@ -96,7 +96,7 @@ test UnsignedByteToken-3.0 {Create an non-empty instance and add it to Strings} 
     set token6 [$token4 add $token5]
 
     list [$token6 toString]
-} {{"value is 66....."}}
+} {{"value is 6ub6ub....."}}
 
 ######################################################################
 ####
@@ -135,7 +135,7 @@ test UnsignedByteToken-13.1 {Test convert from ByteToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.UnsignedByteToken convert $t] toString]} msg
     list $msg
-} {1}
+} {1ub}
 
 test UnsignedByteToken-13.2 {Test convert from ComplexToken} {
     set o [java::new {ptolemy.math.Complex} 1.0 1.0]
