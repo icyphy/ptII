@@ -111,7 +111,7 @@ public class DialogTableau extends Tableau {
         if (PtolemyDialog.class.isAssignableFrom(dialogClass)) {
             // First see whether the effigy already contains a dialog of
             // dialogClas on this entity.
-            if (effigy instanceof HTMLEffigy) {
+            if (effigy instanceof Effigy) {
                 Iterator dialogs =
                     effigy.entityList(DialogTableau.class).iterator();
                 while (dialogs.hasNext()) {
