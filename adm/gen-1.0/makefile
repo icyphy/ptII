@@ -490,10 +490,10 @@ remote1distjsall:
 		done ; \
 	fi
 	jssummary -HTML -PROGRESS \
-		-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE)" \
+		-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE) \
 		-OUTFILE=$(JSOUTDIR)/coverage.html
 	jsreport -HTML -PROGRESS -RECURSIVE \
-		-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE)" \
+		-IDATABASE=$(JSDATABASE) -RDATABASE=$(JSDATABASE) \
 		-OUTDIR=$(JSOUTDIR) 
 	# Add links and colorize the coverage.html page
 	sh $(PTIIADM)/bin/coveragerating $(PTII) \
