@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t, e)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -45,9 +45,9 @@ import ptolemy.data.expr.ASTPtRootNode;
 /**
 A token that contains a 2-D Complex matrix.
 
-@author Yuhong Xiong
-@version $Id$
 @see ptolemy.math.Complex
+@author Yuhong Xiong, Christopher Hylands
+@version $Id$
 */
 public class ComplexMatrixToken extends MatrixToken {
 
@@ -288,23 +288,35 @@ public class ComplexMatrixToken extends MatrixToken {
         return BaseType.COMPLEX_MATRIX;
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.  The value of the ptolemy.math.Complex epsilon field is
+    /** Test that each element of this Token is close to the 
+     *  corresponding element in the argument Token and that each
+     *  element of this Token has the same units as the corresponding
+     *  element in the argument Token. 
+     *  The value of the ptolemy.math.Complex epsilon field is
      *  used to determine whether the two Tokens are close.
+     *
+     *  <p> Two tokens are considered close only if the specified token
+     *  is also a matrix token with the same dimension, and all the
+     *  corresponding elements of the matrices are close, and lossless
+     *  conversion is possible from either this token to the specified
+     *  one, or vice versa and the units of each of the corresponding
+     *  elements are equal.
      *
      *  <p>If A and B are the values of the tokens, and if
      *  the following is true:
      *  <pre>
      *  abs(A-B) < epsilon
      *  </pre>
-     *  then A and B are considered close.
+     *  and the units of A and B are equal, then A and B are considered close.
      *
      *  @see ptolemy.math.Complex#epsilon
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.
      *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
+     *   value of each element of this token is close to the 
+     *   value of corresponding element in the argument token and
+     *   the units of each element of this token is the same as the units
+     *   of the corresponding element in the argument token.
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be compared with this token.
      */
@@ -312,22 +324,26 @@ public class ComplexMatrixToken extends MatrixToken {
         return isCloseTo(token, ptolemy.math.Complex.epsilon);
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.  The value of the ptolemy.math.Complex epsilon field is
-     *  used to determine whether the two Tokens are close.
+    /** Test that each element of this Token is close to the 
+     *  corresponding element in the argument Token and that each
+     *  element of this Token has the same units as the corresponding
+     *  element in the argument Token. 
+     *  The value of the epsilon argument is used to determine whether
+     *  the two Tokens are close.
      *
      *  <p> Two tokens are considered close only if the specified token
      *  is also a matrix token with the same dimension, and all the
      *  corresponding elements of the matrices are close, and lossless
      *  conversion is possible from either this token to the specified
-     *  one, or vice versa.
+     *  one, or vice versa and the units of each of the corresponding
+     *  elements are equal.
      *
      *  <p>If A and B are the values of elements of the tokens, and if
      *  the following is true:
      *  <pre>
      *  abs(A-B) < epsilon
      *  </pre>
-     *  then A and B are considered close.
+     *  and the units of A and B are equal, then A and B are considered close.
      *
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t, e)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -43,11 +43,11 @@ import ptolemy.data.expr.ASTPtRootNode;
 //// ComplexToken
 /**
 A token that contains a Complex.
-<p>
-@author Yuhong Xiong, Neil Smyth
-@version $Id$
-@see ptolemy.data.Token
 
+@see ptolemy.data.Token
+@see ptolemy.math.Complex
+@author Yuhong Xiong, Neil Smyth, Christopher Hylands
+@version $Id$
 */
 public class ComplexToken extends ScalarToken {
 
@@ -248,75 +248,70 @@ public class ComplexToken extends ScalarToken {
 	return BaseType.COMPLEX;
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.  The value of the ptolemy.math.Complex epsilon field is
-     *  used to determine whether the two Tokens are close.
+    /** Test that the magnitude of this Token is close to the
+     *  magnitude of the argument.  The value of the
+     *  ptolemy.math.Complex epsilon field is used to determine
+     *  whether the two Tokens are close.
      *
      *  <p>If A and B are the values of the tokens, and if
      *  the following is true:
      *  <pre>
-     *  abs(A-B) < epsilon
+     *  absolute(A-B) < epsilon
      *  </pre>
-     *  then A and B are considered close.
+     *  and the units of A and B are equal, then A and B are considered close.
      *
      *  @see ptolemy.math.Complex#epsilon
      *  @see #isEqualTo
+     *  @see #absolute
      *  @param token The token to test closeness of this token with.
      *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
+     *   magnitude of this token is close to the magnitude of the argument
+     *   token and the units of both tokens are equal.
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token) throws IllegalActionException{
+
+        // ptolemy.math.Complex.epsilon is used because the
+        // isCloseTo() method for complex numbers is in ptolemy.math.Complex
+        // and we don't want to introduce a dependency between ptolemy.math
+        // and ptolemy.data by using ptolemy.data.ScalarToken.epsilon.
+
         return isCloseTo(token, ptolemy.math.Complex.epsilon);
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.  The value of the ptolemy.math.Complex epsilon field is
-     *  used to determine whether the two Tokens are close.
+    /** Test that the magnitude of this Token is close to the
+     *  magnitude of the argument and that the units of this Token
+     *  and the argument token are equal.  The value of the
+     *  ptolemy.math.Complex epsilon field is used to determine
+     *  whether the two Tokens are close.
      *
-     *  <p>If A and B are the values of the tokens, and if the following
+     *
+     *  <p>If A and B are the complex values of the tokens,
+     *  and if the following
      *  is true:
      *  <pre>
-     *  abs(A-B) < epsilon
+     *  absolute(A-B) < epsilon
      *  </pre>
-     *  then A and B are considered close.
+     *  and the units of A and B are equal, then A and B are considered close.
      *
      *  @see #isEqualTo
+     *  @see #absolute
      *  @param token The token to test closeness of this token with.
      *  @param epsilon The value that we use to determine whether two
      *  tokens are close.
      *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
+     *   magnitude of this token is close to the magnitude of the argument
+     *   token and the units of both tokens are equal.
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token,
             double epsilon)
             throws IllegalActionException {
-
-        int compare = TypeLattice.compare(this, token);
-	if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("ComplexToken.isEqualTo: " +
-                    "type of argument: " + token.getClass().getName() +
-                    "is incomparable with ComplexToken in the type " +
-                    "hierarchy.");
-        }
-
-        if (compare == CPO.LOWER) {
-            return token.isEqualTo(this);
-        } else {
-	    // argument type is lower or the same as Complex.
-	    ComplexToken complexToken = (ComplexToken)convert(token);
-            Complex complexValue = complexToken.complexValue();
-	    if (_value.equals(complexValue)) {
-                return new BooleanToken(true);
-	    }
-	    // Here is where we differ from isEqualTo:
-	    return new BooleanToken(_value.isCloseTo(complexValue, epsilon));
-        }
+        // Let subtract handle incomparable types and units for us.
+        ComplexToken difference = (ComplexToken)subtract(token);
+        return difference.absolute().isLessThan(new DoubleToken(epsilon));
     }
 
     /** Test the values of this Token and the argument Token for equality.

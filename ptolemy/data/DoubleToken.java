@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu, nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t, e)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -46,12 +46,11 @@ A token that contains a double precision number.
 <p>
 Note that a double cannot be losslessly converted to a long, and vice
 versa, as both have 64 bit representations in Java.
-<p>
-@author Neil Smyth, Yuhong Xiong
+
 @see ptolemy.data.Token
 @see java.text.NumberFormat
+@author Neil Smyth, Yuhong Xiong, Christopher Hylands
 @version $Id$
-
 */
 public class DoubleToken extends ScalarToken {
 
@@ -269,23 +268,24 @@ public class DoubleToken extends ScalarToken {
         return BaseType.DOUBLE;
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.  The value of the ptolemy.math.Complex epsilon field is
-     *  used to determine whether the two Tokens are close.
+    /** Test that the value of this token is close to the argument
+     *  token and that the units of this TOken and the argument token
+     *  are equal.  The value of the ptolemy.math.Complex epsilon
+     *  field is used to determine whether the two Tokens are close.
      *
      *  <p>If A and B are the values of the tokens, and if
      *  the following is true:
      *  <pre>
-     *  abs(A-B) < epsilon
+     *  absolute(A-B) < epsilon
      *  </pre>
-     *  then A and B are considered close.
+     *  and the units of A and B are equal, then A and B are considered close.
      *
      *  @see ptolemy.math.Complex#epsilon
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.
      *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
+     *   value of this token is close to the value of the argument
+     *   token and the units of both tokens are equal.
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be compared with this token.
      */
@@ -293,8 +293,10 @@ public class DoubleToken extends ScalarToken {
 	return isCloseTo(token, ptolemy.math.Complex.epsilon);
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.  The value of the epsilon argument is used to determine
+    /** Test that the value of this token is close to the argument
+     *  token and that the units of this token and the argument token
+     *  equal.
+     *  The value of the epsilon argument is used to determine
      *  whether the two Tokens are close.
      *
      *  <p>If A and B are the values of the tokens, and if
@@ -302,7 +304,7 @@ public class DoubleToken extends ScalarToken {
      *  <pre>
      *  abs(A-B) < epsilon
      *  </pre>
-     *  then A and B are considered close.
+     *  and the units of A and B are equal, then A and B are considered close.
      *
      *  <p>There are two isCloseTo() methods so that we can use
      *  different values of epsilon in different threads without
@@ -313,13 +315,16 @@ public class DoubleToken extends ScalarToken {
      *  @param epsilon The value that we use to determine whether two
      *  tokens are close.
      *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
+     *   value of this token is close to the value of the argument
+     *   token and the units of both tokens are equal.
      *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.  */
+     *   not of a type that can be compared with this token.
+     */
     public BooleanToken isCloseTo(Token token,
             double epsilon)
             throws IllegalActionException {
+
+        // We need to do type conversion here to handle isCloseTo(Complex).
         int typeInfo = TypeLattice.compare(this, token);
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
@@ -328,26 +333,17 @@ public class DoubleToken extends ScalarToken {
             } else {
                 doubleToken = (DoubleToken)token;
             }
-
-            if (_value == doubleToken.doubleValue()
-                    && _isUnitEqual(doubleToken)) {
-                return new BooleanToken(true);
-            } else {
-		double difference = _value - doubleToken.doubleValue();
-		// Here is where we differ from isEqualTo().
-		return new BooleanToken(Math.abs(difference)
-                        < epsilon);
-            }
-
+            DoubleToken difference = (DoubleToken)subtract(doubleToken);
+            return difference.absolute().isLessThan(new DoubleToken(epsilon));
         } else if (typeInfo == CPO.LOWER) {
-            return token.isEqualTo(this);
+            return token.isCloseTo(this);
         } else {
-            throw new IllegalActionException("DoubleToken.isCloseTo: "
+            throw new IllegalActionException("DoubleToken.isEqualTo: "
                     + "Cannot compare "
                     + this.getClass().getName() + " " + this.toString()
                     + " and "
                     + token.getClass().getName() + " " + token.toString()
-                    + " for equality.");
+                    + " for closeness.");
         }
     }
 

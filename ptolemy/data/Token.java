@@ -31,6 +31,7 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 
@@ -167,7 +168,7 @@ public class Token implements Serializable {
      *   not of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token) throws IllegalActionException{
-	return isEqualTo(token);
+	return isCloseTo(token, 0.0);
     }
 
     /** Test that the value of this Token is close to the argument
@@ -186,10 +187,30 @@ public class Token implements Serializable {
      *   value and units of this token are close to those of the argument
      *   token.
      *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.  */
+     *   not of a type that can be compared with this token.
+     */
     public BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
-	return isEqualTo(token);
+        // Note that if we had absolute(), subtraction() and islessThan()
+        // we could perhaps define this method for all tokens.  However,
+        // Precise classes like IntToken not bother doing the absolute(),
+        // subtraction(), and isLessThan() method calls and should go
+        // straight to isEqualTo().  Also, these methods might introduce
+        // exceptions because of type conversion issues.
+        try {
+            return isEqualTo(token);
+        } catch (IllegalActionException ex) {
+            // Catch any errors and rethrow them with a message
+            // that includes the "closeness" instead of equality.
+            // For example, if we see if a String and Double are close
+            // then if we don't catch and rethrow the exception, the
+            // message will say something about "equality"
+            // instead of "closeness".
+            throw new IllegalActionException(
+                    _notSupportedMessage("closeness", this, token)
+                    + " Original Exception was:\n"
+                    + KernelException.stackTraceToString(ex));
+        }
     }
 
     /** Test for equality of the values of this Token and the argument Token.
