@@ -186,3 +186,28 @@ test Attribute-8.3 {setContainer, then setContainer again} {
     $a description
 } {ptolemy.kernel.util.Attribute {.N.D.} attributes {
 }}
+
+test Attribute-8.4 {Construct an Attribute in an unnamed NamedObj} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n [java::new ptolemy.kernel.util.NamedObj]
+    set c [java::new ptolemy.kernel.util.Attribute $n C]
+    $c getFullName
+} {..C}
+
+test Attribute-8.5 {setContainer to an unnamed NamedObj} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n [java::new ptolemy.kernel.util.NamedObj]
+    set c [java::new ptolemy.kernel.util.Attribute]
+    $c setContainer $n
+    $c getFullName
+} {..}
+
+test Attribute-8.6 {setContainer to an unnamed NamedObj} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n [java::new ptolemy.kernel.util.NamedObj]
+    set c [java::new ptolemy.kernel.util.Attribute]
+    set d [java::new ptolemy.kernel.util.Attribute]
+    $c setContainer $n
+    $d setContainer $c
+    $d getFullName
+} {...}
