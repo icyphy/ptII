@@ -2,10 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FixPoint" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0.1">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="130.0, 5.0">
+        <property name="_location" class="ptolemy.moml.Location" value="130.0, 25.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -28,9 +28,9 @@ data against unquantized data.</text>
         <property name="_location" class="ptolemy.moml.Location" value="62.0, 33.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[560, 230]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[560, 350]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[124, 152]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[124, 154]">
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -149,11 +149,11 @@ data against unquantized data.</text>
         </port>
     </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="100.0, 190.0">
+        <vertex name="vertex0" value="100.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="225.0, 145.0">
+        <vertex name="vertex1" value="225.0, 145.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
