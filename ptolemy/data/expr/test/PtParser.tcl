@@ -482,7 +482,10 @@ test PtParser-10.2 {Test for reasonable error messages on type problems} {
     $v1 setExpression "cos(1)"
     catch {$v1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: No matching function cos( 1 ).}}
+} {{ptolemy.kernel.util.IllegalActionException: .E.v1:
+Error evaluating expression "cos(1)":
+ptolemy.kernel.util.IllegalActionException: No matching function cos( 1 ).}}
+
 
 ######################################################################
 ####
@@ -653,6 +656,7 @@ test PtParser-14.0 {Test constant expressions.} {
 
     list $va $vb $vc $vd $ve $vf
 } {1 true 0 true 0 true}
+
 ######################################################################
 ####
 # Test parser go to the end of the expression.
