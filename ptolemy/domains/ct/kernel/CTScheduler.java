@@ -576,7 +576,9 @@ public class CTScheduler extends Scheduler {
                         // Assume all the ports of a CTCompositeActor 
                         // to be continuous unless otherwise specified.
                         // NOTE: this is a conservative approximation.
-                        _signalTypeMap.setType(port, CONTINUOUS);
+                        if (_signalTypeMap.getType(port) == UNKNOWN) {
+                            _signalTypeMap.setType(port, CONTINUOUS);
+                        }
                         if (port.isOutput()) {
                             _signalTypeMap.propagateType(port);
                         }
