@@ -32,18 +32,23 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
+
+import java.util.List;
+import java.util.ArrayList;
 
 //////////////////////////////////////////////////////////////////////////
 //// SetVariable
@@ -68,11 +73,11 @@ the same as the type of the input. Otherwise, then input
 token is converted to a string and the setExpression() method
 on the variable is used to set the value.
 
-@author Edward A. Lee
+@author Edward A. Lee, Steve Neuendorffer
 @version $Id$
 */
 
-public class SetVariable extends TypedAtomicActor implements ChangeListener {
+public class SetVariable extends TypedAtomicActor implements ChangeListener, ExplicitChangeContext {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -121,6 +126,59 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener {
             java.lang.Exception exception) {
         MessageHandler.error("Failed to set variable.", exception);
     }
+    
+    /** 
+     * Return the change context being made explicit.  In this case,
+     * the change context returned is this actor.
+     */
+    public Entity getContext() {
+        return this;
+    }
+
+    /** Return the variable modified by this actor.  This method requires 
+     *  write access on the workspace.
+     *  @exception IllegalActionException If the variable cannot be found.
+     */
+    public Attribute getModifiedVariable() throws IllegalActionException {
+        NamedObj container = (NamedObj) getContainer();
+        if (container == null) {
+            throw new IllegalActionException(this, "No container.");
+        }
+        String variableNameValue = variableName.getExpression();
+        Variable variable =
+            (Variable) container.getAttribute(
+                    variableNameValue);
+        if (variable == null) {
+            try {
+                variable = new Variable(this, variableNameValue);
+            } catch (NameDuplicationException ex) {
+                throw new IllegalActionException(
+                    this, ex,
+                    "Existing attribute that is not a Variable " + 
+                    "with specified name: "
+                    + variableNameValue
+                    + ". It is: "
+                    + container.getAttribute(variableNameValue));
+            }
+        }   
+        return variable;
+    }
+
+    /** Return a list of variables that this entity modifies.  The
+     * variables are assumed to have a change context of the given
+     * entity.
+     * @return A list of variables.
+     * @exception IllegalActionException If the list of modified
+     * variables cannot be returned.
+     */
+    public List getModifiedVariables() throws IllegalActionException {
+        Attribute attribute = getModifiedVariable();
+        List list = new ArrayList(1);
+        if(attribute instanceof Variable) {
+            list.add(attribute);
+        }
+        return list;
+    }
 
     /** Read at most one token from the input port and issue a change
      *  request to update variables as indicated by the input.
@@ -129,44 +187,28 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener {
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             final Token value = input.get(0);
-            final NamedObj container = (NamedObj) getContainer();
             ChangeRequest request =
                 new ChangeRequest(this, "SetVariable change request") {
-                protected void _execute() throws IllegalActionException {
-                    Attribute variable = container.getAttribute(_variableName);
-                    if (variable == null) {
-                        try {
-                            workspace().getWriteAccess();
-                            // Have to do this again after getting write access.
-                            variable = container.getAttribute(_variableName);
-                            if (variable == null) {
-                                variable = new Variable(container, _variableName);
-                                variable.setPersistent(false);
-                            }
-                        } catch (NameDuplicationException ex) {
-                            throw new IllegalActionException(SetVariable.this, ex,
-                            "Cannot create variable named: " + _variableName);
-                        } finally {
-                            workspace().doneWriting();
+                    protected void _execute() throws IllegalActionException {
+                        Attribute variable = getModifiedVariable();
+                        if (variable instanceof Variable) {
+                            ((Variable)variable).setToken(value);
+                            // NOTE: If we don't call validate(), then the
+                            // change will not propagate to dependents.
+                            ((Variable)variable).validate();
+                        } else if (variable instanceof Settable) {
+                            ((Settable)variable).setExpression(value.toString());
+                            // NOTE: If we don't call validate(), then the
+                            // change will not propagate to dependents.
+                            ((Settable)variable).validate();
+                        } else {
+                            throw new IllegalActionException(SetVariable.this,
+                                    "Cannot set the value of the variable named: "
+                                    + variableName.getExpression());
                         }
                     }
-                    if (variable instanceof Variable) {
-                        ((Variable)variable).setToken(value);
-                        // NOTE: If we don't call validate(), then the
-                        // change will not propagate to dependents.
-                        ((Variable)variable).validate();
-                    } else if (variable instanceof Settable) {
-                        ((Settable)variable).setExpression(value.toString());
-                        // NOTE: If we don't call validate(), then the
-                        // change will not propagate to dependents.
-                        ((Settable)variable).validate();
-                    } else {
-                        throw new IllegalActionException(SetVariable.this,
-                        "Cannot set the value of the variable named: "
-                        + _variableName);
-                    }
-                }
-            };
+                };
+            
             // To prevent prompting for saving the model, mark this
             // change as non-persistent.
             request.setPersistent(false);
@@ -185,36 +227,9 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        NamedObj container = (NamedObj) getContainer();
-        if (container == null) {
-            throw new IllegalActionException(this, "No container.");
-        }
-        _variableName = variableName.getExpression();
-        Attribute variable = container.getAttribute(_variableName);
-        if (variable == null) {
-            try {
-                workspace().getWriteAccess();
-                // Have to do this again after getting write access.
-                variable = container.getAttribute(_variableName);
-                if (variable == null) {
-                    variable = new Variable(container, _variableName);
-                    variable.setPersistent(false);
-                }
-            } catch (NameDuplicationException ex) {
-                throw new IllegalActionException(SetVariable.this, ex,
-                "Cannot create variable named: " + _variableName);
-            } finally {
-                workspace().doneWriting();
-            }
-        }
-        if (variable instanceof Variable) {
-            ((Variable)variable).setTypeSameAs(input);
+        Attribute attribute = getModifiedVariable();
+        if (attribute instanceof Variable) {
+            ((Variable)attribute).setTypeSameAs(input);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Name of the variable to set.
-    private String _variableName;
 }
