@@ -901,7 +901,7 @@ remotealldone:
 REMOTE4HOST = cooley
 
 # Remote location of Ptolemy II tree for testing
-REMOTE4HOME = /vol/$(REMOTE4HOME)/$(REMOTE4HOME)2/ptII
+REMOTE4HOME = /vol/$(REMOTE4HOST)/$(REMOTE4HOST)2/ptII
 REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 
 # Log file to save the results in
