@@ -97,6 +97,8 @@ public class Firing extends ScheduleElement {
      *   is active.
      */
     public Iterator actorIterator() {
+        // As of 8/02, it seems like this method class is not really
+        // used except by the test suite.
 	return new ActorIterator();
     }
 
@@ -168,6 +170,8 @@ public class Firing extends ScheduleElement {
      *  changes while this iterator is active.
      */
     private class ActorIterator implements Iterator {
+        // As of 8/02, it seems like this inner class is not really
+        // used except by the test suite.
 	/** Construct a ScheduleIterator.
 	 */
 	public ActorIterator() {
