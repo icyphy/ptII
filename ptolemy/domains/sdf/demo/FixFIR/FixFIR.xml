@@ -48,7 +48,7 @@ using double precision.</text>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="FIR Double Precision" class="ptolemy.domains.sdf.lib.FIRDouble">
+    <entity name="FIR Double Precision" class="ptolemy.domains.sdf.lib.FIR">
         <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
