@@ -73,12 +73,6 @@ public abstract class StructuredType implements Type, Cloneable {
      */
     public abstract Object getUser();
 
-    /** Notify this type that its user, which is a Variable, has changed its
-     *  expression so this type may be changed.
-     *  @param user A Variable.
-     */
-    public abstract void needEvaluate(Variable user);
-
     /** Set the user of this StructuredType. The user can only be set once
      *  Otherwise, an exception will be thrown.
      *  @param Object The user.

@@ -273,17 +273,6 @@ public class ArrayType extends StructuredType {
 	return _declaredElementType.isSubstitutionInstance(argElemType);
     }
 
-    /** Notify this type that its user, which is a Variable, has changed its
-     *  expression so this type may be changed.
-     *  @param user A Variable.
-     */
-    public void needEvaluate(Variable user) {
-	if (_elementType instanceof StructuredType) {
-	    ((StructuredType)_elementType).needEvaluate(user);
-	}
-	_userVariable = user;
-    }
-
     /** Set the user of this ArrayType. The user can only be set once,
      *  otherwise an exception will be thrown.
      *  @param Object The user.
@@ -513,8 +502,6 @@ public class ArrayType extends StructuredType {
 
     private static ArrayType _representative = new ArrayType(BaseType.NAT);
 
-    private Variable _userVariable = null;
-
     ///////////////////////////////////////////////////////////////////
     ////                           inner class                     ////
 
@@ -540,17 +527,6 @@ public class ArrayType extends StructuredType {
          *  @return a Type.
          */
         public Object getValue() {
-	    if (_userVariable != null) {
-		// evaluate the containing Variable by calling getType().
-		try {
-		    _userVariable.getType();
-		} catch (IllegalActionException ex) {
-		    throw new InternalErrorException(
-                            "ArrayType$ElementTypeTerm.getValue: Cannot " +
-                            "evaluate the containing Variable.");
-		}
-		_userVariable = null;
-	    }
 	    return _elementType;
 	}
 

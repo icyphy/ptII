@@ -661,9 +661,6 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    }
         } else {
             _needsEvaluation = true;
-	    if (_varType instanceof StructuredType) {
-		((StructuredType)_varType).needEvaluate(this);
-	    }
         }
         _currentExpression = expr;
         _destroyParseTree();
