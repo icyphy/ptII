@@ -35,7 +35,7 @@
 
 # Every Ptolemy II makefile should include ptII.mk
 
-# Variables with @ around them are subsituted in by the configure script
+# Variables with @ around them are substituted in by the configure script
 
 # Default top-level directory.  Usually this is the same as $PTII
 prefix =	@prefix@
@@ -51,7 +51,7 @@ BIN_INSTALL_DIR =	$(exec_prefix)/bin
 
 # The home of the Java Developer's Kit (JDK)
 # Generating Java documentation uses this makefile variable
-# The line below gets subsituted by the configure script
+# The line below gets substituted by the configure script
 PTJAVA_DIR = 	@PTJAVA_DIR@
 
 # JDK Version from the java.version property
