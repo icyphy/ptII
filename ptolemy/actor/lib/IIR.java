@@ -39,16 +39,17 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// IIR
 /**
-This actor implements an infinite impulse response (IIR) filter. A
-direct form II [1] implementation is used. The input and output types
+This actor is an implementation of an infinite impulse response IIR filter.
+A direct form II [1] implementation is used. The input and output types
 are DoubleToken.
 <p>
 This filter has a transfer function given by:
 <pre>
-       b<sub>0</sub> + b<sub>1</sub>z<sup>-1</sup> + ... + b<sub>M</sub>z<sup>-M</sup>
+       b<sub>0</sub> + b<sub>1</sub>z<sup>-1</sup> + ...
+                           + b<sub>M</sub>z<sup>-M</sup>
       ------------------------
        1 - a<sub>1</sub>z<sup>-1</sup> - ... - a<sub>N</sub>z<sup>-N</sup>
 </pre>
@@ -62,6 +63,7 @@ as a row vector of a token of type DoubleMatrixToken. The format is
 [b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>]. The default
 value of this parameter is [1.0].
 <p>
+
 The <i>denominator</i> parameter represents the denominator
 coefficients as a row vector of a token of type DoubleMatrixToken. The
 format is [a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>]. Note
