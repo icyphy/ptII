@@ -333,7 +333,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     
                     // Collect constraints on all the ports in the contained
                     // actor to the ports that the actor can send data to.
-                    Iterator ports = ((Entity)actor).portList().iterator();
+                    Iterator ports = actor.outputPortList().iterator();
                     while (ports.hasNext()) {
                         TypedIOPort sourcePort = (TypedIOPort)ports.next();
                         List destinationPorts = sourcePort.sinkPortList();
@@ -343,7 +343,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 }
                 // Also need to check connection from the input ports on
                 // this composite actor to input ports of contained actors.
-                Iterator boundaryPorts = portList().iterator();
+                Iterator boundaryPorts = inputPortList().iterator();
                 while (boundaryPorts.hasNext()) {
                     TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
                     List destinationPorts = sourcePort.insideSinkPortList();
@@ -594,6 +594,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
                         destinationPort.getTypeTerm());
                 result.add(ineq);
+                System.out.println("adding inequality from " + sourcePort + " to " + destinationPort);
             }
         }
 
