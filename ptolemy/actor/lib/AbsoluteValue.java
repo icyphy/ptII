@@ -135,11 +135,6 @@ public class AbsoluteValue extends Transformer {
 	///////////////////////////////////////////////////////////////
 	////                       public inner methods            ////
 
-	/** Do nothing.
-	 */
-	public void fixValue() {
-	}
-
 	/** Return null.
 	 *  @return null.
 	 */
@@ -206,11 +201,6 @@ public class AbsoluteValue extends Transformer {
         public String toString() {
             return "(AbsoluteValue$FunctionTerm, " + getValue() + ")";
         }
-
-	/** Do nothing.
-	 */
-	public void unfixValue() {
-	}
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
