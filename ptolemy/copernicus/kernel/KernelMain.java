@@ -92,9 +92,11 @@ public class KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add transforms to the Scene.
+    /** Add transforms to the Scene.  Derived classes should do most
+     *  of their added functionality in this method.
      */
     public void addTransforms() {
+
         // A Hack to ignore the class we specify on the command
 	// line. This is a soot problem that requires this hack.
 	// We will provide soot with java.lang.Object as its
@@ -149,6 +151,10 @@ public class KernelMain {
     public void initialize()
             throws IllegalActionException {
 
+	// initialize() is a separate method so that we can read
+	// in the model and then get its name so that we can 
+	// determine the name of the class that will be generated.
+	
         // Call the MOML parser on the test file to generate a Ptolemy II
         // model.
         MoMLParser parser = new MoMLParser();
