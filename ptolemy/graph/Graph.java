@@ -1401,15 +1401,22 @@ public class Graph implements Cloneable {
      *  method.
      *  @exception IllegalStateException If the weight of the given node
      *  is not valid, as determined by {@link #validNodeWeight(Object)}.
+     *  @exception IllegalArgumentException If the specified node is not in
+     *  the graph.
      */
     public boolean validateWeight(Node node) {
         // FIXME:  @see #validateWeight(Node, Object).
+        if (!containsNode(node)) {
+            throw new IllegalArgumentException("The specified node is not "
+                    + "in the graph." + _nodeDump(node));
+        }
         Object weightArgument = node.hasWeight() ? node.getWeight() : null;
         if (!validNodeWeight(weightArgument)) {
             throw new IllegalStateException("Invalid weight associated with a "
                     + "node in the graph." +  _nodeDump(node));
         }
-        boolean changed = _removeWeight(node, node.getWeight(), _nodeWeightMap);
+        boolean changed = _removeWeight(node, weightArgument, _nodeWeightMap,
+                _unweightedNodeSet);
         _registerWeight(node);
         return changed;
     }
@@ -1869,31 +1876,47 @@ public class Graph implements Cloneable {
     // a new weight for the node (edge),
     // remove the current mapping of a weight to the node (edge), if such
     // a mapping exists, and determine whether the new weight differs from
-    // the previous weight.
-    // @param weightedObject The node or edge.
+    // the previous weight. The node (edge) is assumed to be in the graph.
+    // @param element The graph element (node or edge).
     // @param weight The new weight.
     // @param weightMap The mapping of weights into nodes or edges.
+    // @param unweightedSet The set of  unweighted nodes or edges.
     // @return True if the weight associated with the node (edge) has
     // changed as determined by the equals method.
-    private boolean _removeWeight(Object weightedObject, Object weight,
-            HashMap weightMap) {
+    private boolean _removeWeight(Object element, Object weight,
+            HashMap weightMap, HashSet unweightedSet) {
         boolean weightValueHasChanged = false;
-        Iterator weights = weightMap.keySet().iterator();
         boolean removed = false;
-        Object nextWeight = null;
-        List nextList = null;
-        while (weights.hasNext() && !removed) {
-            nextWeight = weights.next();
-            nextList = (List)weightMap.get(nextWeight);
-            removed = nextList.remove(weightedObject);
-        }
-        if (removed) {
-            // Note that the weight can change without the weight value,
-            // as referenced here, changing if the change does not affect
-            // comparison under the equals method.
-            weightValueHasChanged = !nextWeight.equals(weight);
-            if (nextList.size() == 0) {
-                weightMap.remove(weight);
+        if (unweightedSet.contains(element)) {
+            unweightedSet.remove(element);
+            removed = true;
+            weightValueHasChanged = (weight == null); 
+        } else {
+            Iterator weights = weightMap.keySet().iterator();
+            Object nextWeight = null;
+            List nextList = null;
+            while (weights.hasNext() && !removed) {
+                nextWeight = weights.next();
+                nextList = (List)weightMap.get(nextWeight);
+                removed = nextList.remove(element);
+            }
+            if (removed) {
+                // Note that the weight can change without the weight 
+                // comparison here changing (if the change does not affect
+                // comparison under the equals method).
+                weightValueHasChanged = !nextWeight.equals(weight);
+                if (nextList.size() == 0) {
+                    weightMap.remove(nextWeight);
+                }
+            } else {
+                // Something is wrong. The graph class should prevent
+                // this from ever happening.
+                String description = (element instanceof Node) ?
+                        _nodeDump((Node)element) : _edgeDump((Edge)element);
+                throw new RuntimeException("Internal error: the specified "
+                        + "graph element is neither unweighted nor associated "
+                        + "with a weight." + description); 
+               
             }
         }
         if (weightValueHasChanged) {
