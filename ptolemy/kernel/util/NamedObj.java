@@ -64,8 +64,13 @@ they will still use it for synchronization.  I.e., the workspace
 keeps track only of top-level objects in the containment hierarchy.
 Any object contained by another uses the workspace of its container
 as its own workspace by default.
-Derived  classes that want to use parameters should override 
-the addParameter(Nameable) method so that it takes a Parameter argument.
+<p>
+Any object that implements the Nameable interface can be attached
+to this object as a parameter using addParameter().  Derived classes
+may constrain the parameter class further.  To do that, they should
+override the addParameter() method to throw an exception if the
+object provided is not of the right class.
+
 @author Mudit Goel, Edward A. Lee
 @version $Id$
 */
@@ -118,50 +123,45 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Add a parameter. This method should be overridden in derived 
-     *  classes that want to use parameters.
-     *  The version number of the workspace should be incremented 
-     *  whenever a parameter is added, and should synchronize on 
-     *  the workspace while adding the parameter.
+    /** Add a parameter.  A parameter is any instance of NamedObj that
+     *  has this object set as its container.
+     *  WARNING: This method should only be called by methods which guarantee 
+     *  the above condition. Otherwise inconsistant states may result.
+     *  Derived classes may further constrain the class of the parameter.
+     *  To do this, they should override this method to throw an exception
+     *  when the argument is not an instance of the expected class.
+     *  This method is synchronized on the workspace and increments its
+     *  version number.
      *  @param p The parameter to be added.
      *  @exception NameDuplicationException If this object already
-     *   has a parameter with the same name. For derived classes.
-     *  @exception IllegalActionException If the method is invoked on 
-     *   an object that cannot contain parameters. In derived classes 
-     *   this exception is thrown if the parameter is not contained by 
-     *   this NamedObj.
+     *   has a parameter with the same name.
+     *  @exception IllegalActionException If the parameter is not an
+     *   an instance of the expect class (in derived classes, or if
+     *   the parameter does not have this object as its container.
      */
-    public void addParameter(Nameable p)
+    public void addParameter(NamedObj p)
             throws NameDuplicationException, IllegalActionException {
-        String str = "Attempt to attach a parameter to a ";
-        str = str + "namedObj that cannot contain it.";
-        throw new IllegalActionException(str);        
-    }
-
-    /** Clone the object and register the cloned object in the specicified 
-     *  workspace.
-     *  It is possible to set the workspace into which we want to place 
-     *  the cloned object as we are creating a clone which is not 
-     *  referenced by what was there before. 
-     *  This uses the <code>clone()</code> method of
-     *  java.lang.Object, which makes a field-by-field copy, to
-     *  clone the parameter list and to call the protected method
-     *  _clear(), which is defined in derived classes to remove
-     *  references that should not be in the clone.
-     *  @param ws The workspace in which to place the cloned object.
-     *  @exception CloneNotSupportedException Thrown only in derived classes.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        NamedObj result = (NamedObj)super.clone();
-        result._clear(ws);
-        try {
-            ws.add(result);
-        } catch (IllegalActionException ex) {
-            // Ignore.  Can't occur.
+        // NOTE: The argument is a NamedObj rather than Nameable because
+        // we need a public clone() method.
+        synchronized(workspace()) {
+            if (p.getContainer() != this) {
+                throw new IllegalActionException(this, p,
+                        "Attempt to add a parameter to a NamedObj " +
+                        "that is not its container");
+            }
+            try {
+                if (_params == null) {
+                    _params = new NamedList();
+                }
+                _params.append(p);
+            } catch (IllegalActionException ex) {   
+                // a Param cannot be constructed without a name, so we can
+                // ignore the exception.
+            }
+            workspace().incrVersion();
         }
-        // FIXME: Clone the parameter list.
-        return result;
     }
+ 
 
     /** Clone the object and register the cloned object in the 
      *  workspace in which the original object resides.
@@ -174,6 +174,45 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public Object clone() throws CloneNotSupportedException {
         return clone(workspace());
+    }
+
+    /** Clone the object and register the cloned object in the specified 
+     *  workspace. This uses the <code>clone()</code> method of
+     *  java.lang.Object, which makes a field-by-field copy, and then
+     *  calls the protected method _clear(), which is expected to remove
+     *  references that should not be in the clone. It then clones the
+     *  parameter list, if there is one.
+     *  @param ws The workspace in which to place the cloned object.
+     *  @exception CloneNotSupportedException If any of the parameters
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        // NOTE: It is safe to clone an object into a different workspace.
+        // It is not safe to move an object to a new workspace, by contrast.
+        // The reason this is safe is that after the _clear() method has been
+        // run, there are no references in the clone to objects in the old
+        // workspace.  Moreover, no object in the old workspace can have
+        // a reference to the cloned object because we have only just created
+        // it and have not returned the reference.
+        NamedObj result = (NamedObj)super.clone();
+        result._clear(ws);
+        try {
+            ws.add(result);
+        } catch (IllegalActionException ex) {
+            // Ignore.  Can't occur.
+        }
+        Enumeration params = getParameters();
+        while (params.hasMoreElements()) {
+            NamedObj p = (NamedObj)params.nextElement();
+            NamedObj np = (NamedObj)p.clone(ws);
+            try {
+                np.setContainer(result);         
+            } catch (KernelException ex) {
+                throw new CloneNotSupportedException(
+                        "Failed to clone a Parameter: " + ex.getMessage());
+            }
+        }
+        return result;
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -263,15 +302,15 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  @param name The name of the desired parameter.
      *  @return The requested parameter if it is found, null otherwise
      */
-    public Nameable getParameter(String name) {
+    public NamedObj getParameter(String name) {
         synchronized(workspace()) {
-            return (Nameable) _params.get(name);
+            return (NamedObj) _params.get(name);
         }
     }
 
     /** Return an enumeration of the parameters attached to this object.
      *  This method is synchronized on the workspace.
-     *  @return An enumeration of Parameter objects.
+     *  @return An enumeration of instances of NamedObj.
      */
     public Enumeration getParameters() {
         synchronized(workspace()) {
@@ -282,22 +321,34 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             }
         }
     }
-
-    /** Remove the parameter with the given name.
+    
+    /** Remove the given parameter.
      *  If there is no such parameter, do nothing.
      *  This method is synchronized on the workspace and increments its
-     *  version.
-     *  @param name The name of the parameter to be removed.
-     *  @return The removed parameter if it is found, null otherwise.
+     *  version. It should only be called by setContainer() in Parameter.
+     *  @param param The parameter to be removed.
      */
-    public Nameable removeParameter(String name) {
+    public void removeParameter(NamedObj param) {
         synchronized(workspace()) {
-            Nameable p = (Nameable)_params.remove(name);
+            _params.remove((Nameable)param);
             workspace().incrVersion();
-            return p;
         }
     }
+    
 
+    /** Set the container. In this base class throw an exception as it 
+     *  cannot have a container. This method should be overridden in 
+     *  derived classes to check the argument is a valid type.
+     *  @param namedObj The container of this object.
+     *  @exception IllegalException This method should be overridden.
+     *  @exception NameDuplicationException Thrown in derived classes.
+     */
+     public void setContainer(NamedObj namedobj) 
+             throws IllegalActionException, NameDuplicationException {
+         String str = "setContainer method in NamedObj should be overridden";
+         throw new IllegalActionException(this, namedobj, str);
+     }
+    
     /** Set or change the name.  If a null argument is given the
      *  name is set to an empty string.
      *  Increment the version of the workspace.
@@ -349,6 +400,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         _workspace = ws; //is this correct?
     }
 
+    
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
