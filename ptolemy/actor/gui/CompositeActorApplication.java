@@ -122,12 +122,6 @@ public class CompositeActorApplication {
         }
     }
 
-    /** Do nothing.
-     *  @param manager The manager calling this method.
-     */
-    public void managerStateChanged(Manager manager) {
-    }
-
     /** Parse the command-line arguments, creating models as specified.
      *  @param args The command-line arguments.
      *  @exception If something goes wrong.
