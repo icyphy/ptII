@@ -111,7 +111,7 @@ public class DeadObjectEliminator extends BodyTransformer {
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
         for (Iterator units = body.getUnits().snapshotIterator();
-            units.hasNext();) {
+             units.hasNext();) {
             Unit unit = (Unit)units.next();
             Iterator boxes = unit.getUseBoxes().iterator();
             while (boxes.hasNext()) {
@@ -130,7 +130,7 @@ public class DeadObjectEliminator extends BodyTransformer {
                         body.getUnits().remove(unit);
                         for (Iterator defs = localDefs.getDefsOfAt(
                                 (Local)r.getBase(), unit).iterator();
-                            defs.hasNext();) {
+                             defs.hasNext();) {
                             Unit defUnit = (Unit)defs.next();
                             if (defUnit instanceof DefinitionStmt) {
                                 // If we are keeping a definition, then

@@ -120,18 +120,18 @@ public class InlineParameterTransformer extends SceneTransformer {
 
         // Loop over all the actor instance classes.
         for (Iterator entities = _model.deepEntityList().iterator();
-            entities.hasNext();) {
+             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
             SootClass entityClass =
-                        Scene.v().loadClassAndSupport(className);
+                Scene.v().loadClassAndSupport(className);
 
             _createTokenAndExpressionFields(
                     entityClass, entity, entity,
                     attributeToValueFieldMap, debug);
             for (Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 Port port = (Port)ports.next();
                 _createTokenAndExpressionFields(
                         entityClass, entity, port,
@@ -140,16 +140,16 @@ public class InlineParameterTransformer extends SceneTransformer {
         }
 
         for (Iterator entities = _model.deepEntityList().iterator();
-            entities.hasNext();) {
+             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
             SootClass theClass =
-                        Scene.v().loadClassAndSupport(className);
+                Scene.v().loadClassAndSupport(className);
 
             // inline calls to parameter.getToken and getExpression
             for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 // What about static methods?  They don't have a this
@@ -185,7 +185,7 @@ public class InlineParameterTransformer extends SceneTransformer {
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
         for (Iterator units = body.getUnits().snapshotIterator();
-            units.hasNext();) {
+             units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
             if (stmt.containsInvokeExpr()) {
                 ValueBox box = stmt.getInvokeExprBox();
@@ -250,7 +250,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                         Value argValues[] = new Value[r.getArgCount()];
                         int argCount = 0;
                         for (Iterator args = r.getArgs().iterator();
-                            args.hasNext();) {
+                             args.hasNext();) {
                             Value arg = (Value)args.next();
                             //  if (debug) System.out.println("arg = " + arg);
                             if (Evaluator.isValueConstantValued(arg)) {
@@ -291,14 +291,14 @@ public class InlineParameterTransformer extends SceneTransformer {
 
                             // Inline namedObj methods on the attribute.
                             if (r.getMethod().getSubSignature().equals(
-                                       PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                                    PtolemyUtilities.getFullNameMethod.getSubSignature())) {
                                 box.setValue(StringConstant.v(
-                                                     attribute.getFullName()));
+                                        attribute.getFullName()));
                             }
                             if (r.getMethod().getSubSignature().equals(
-                                       PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                    PtolemyUtilities.getNameMethod.getSubSignature())) {
                                 box.setValue(StringConstant.v(
-                                                     attribute.getName()));
+                                        attribute.getName()));
                             }
 
                             // For Variables, we handle get/setToken,
@@ -545,19 +545,19 @@ public class InlineParameterTransformer extends SceneTransformer {
                     if (pair.getUnit() instanceof DefinitionStmt) {
                         DefinitionStmt useStmt = (DefinitionStmt)pair.getUnit();
                         if (useStmt.getLeftOp() instanceof FieldRef) {
-                             SootField field = ((FieldRef)useStmt.getLeftOp()).getField();
-                             ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                             if (tag == null) {
-                                 System.out.println("Failed usage: " + useStmt);
-                                 // We came to a field store that we did not create... hopefully
-                                 // there is one that we created.
-                                 //  continue;
-                                 //throw new RuntimeException("Could not determine the static value of "
-                                 //        + local + " in " + method);
-                                 // return null;
-                             } else {
-                                 return (Attribute)tag.getObject();
-                             }
+                            SootField field = ((FieldRef)useStmt.getLeftOp()).getField();
+                            ValueTag tag = (ValueTag)field.getTag("_CGValue");
+                            if (tag == null) {
+                                System.out.println("Failed usage: " + useStmt);
+                                // We came to a field store that we did not create... hopefully
+                                // there is one that we created.
+                                //  continue;
+                                //throw new RuntimeException("Could not determine the static value of "
+                                //        + local + " in " + method);
+                                // return null;
+                            } else {
+                                return (Attribute)tag.getObject();
+                            }
                         }
                     }
                 }
@@ -573,7 +573,7 @@ public class InlineParameterTransformer extends SceneTransformer {
         } else {
             String string = "More than one definition of = " + local + "\n";
             for (Iterator i = definitionList.iterator();
-                i.hasNext();) {
+                 i.hasNext();) {
                 string += "Definition = " + i.next().toString();
             }
             throw new RuntimeException(string);
@@ -590,8 +590,8 @@ public class InlineParameterTransformer extends SceneTransformer {
             NamedObj context, NamedObj container,
             Map attributeToValueFieldMap, boolean debug) {
         /*   SootClass tokenClass =
-            Scene.v().loadClassAndSupport("ptolemy.data.Token");
-            Type tokenType = RefType.v(tokenClass);*/
+             Scene.v().loadClassAndSupport("ptolemy.data.Token");
+             Type tokenType = RefType.v(tokenClass);*/
         if (debug) System.out.println("creating field for " +
                 container + " in class " + theClass);
 
@@ -599,8 +599,8 @@ public class InlineParameterTransformer extends SceneTransformer {
             Scene.v().loadClassAndSupport("java.lang.String");
         Type stringType = RefType.v(stringClass);
         for (Iterator attributes =
-                container.attributeList().iterator();
-            attributes.hasNext();) {
+                 container.attributeList().iterator();
+             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
             if (attributeToValueFieldMap.get(attribute) != null) {
                 throw new RuntimeException("already created field for attribute" + attribute);

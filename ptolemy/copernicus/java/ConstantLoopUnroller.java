@@ -122,7 +122,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
         for (Iterator blocks = graph.iterator();
-            blocks.hasNext();) {
+             blocks.hasNext();) {
             Block block = (Block)blocks.next();
             // filter out anything that doesn't look like a loop block.
             if ((block.getPreds().size() != 1) ||
@@ -151,7 +151,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
             // start of the block. It should be the only jump in the block.
             IfStmt jumpStmt = null;
             for (Iterator stmts = conditional.iterator();
-                stmts.hasNext();) {
+                 stmts.hasNext();) {
                 Stmt stmt = (Stmt)stmts.next();
                 if (stmt instanceof IfStmt) {
                     IfStmt ifStmt = (IfStmt)stmt;
@@ -229,124 +229,124 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
 
             /*
-            List conditionalLiveLocals = liveLocals.getLiveLocalsBefore(conditional.getHead());
-            for (Iterator locals = conditionalLiveLocals.iterator();
-                locals.hasNext();) {
-                Local local = (Local)locals.next();
-                System.out.println("local = " + local);
-                System.out.println("stmt = " + block.getTail());
-                List defsList;
-                try {
-                    defsList = localDefs.getDefsOfAt(local, block.getTail());
-                } catch (Exception ex) {
-                    continue;
-                }
-                if (defsList.size() == 0) {
-                    DefinitionStmt counterStmt = (DefinitionStmt)defsList.get(0);
-                    if (counterStmt.getRightOp() instanceof AddExpr) {
-                        AddExpr addExpr = (AddExpr)counterStmt.getRightOp();
-                        Value incrementValue;
-                        if (addExpr.getOp1().equals(local)) {
-                            incrementValue = addExpr.getOp2();
-                        } else {
-                            incrementValue = addExpr.getOp1();
-                        }
-                        if (!Evaluator.isValueConstantValued(incrementValue)) continue;
-                        int increment = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
-                        defsList = localDefs.getDefsOfAt(local, whilePredecessor.getTail());
+              List conditionalLiveLocals = liveLocals.getLiveLocalsBefore(conditional.getHead());
+              for (Iterator locals = conditionalLiveLocals.iterator();
+              locals.hasNext();) {
+              Local local = (Local)locals.next();
+              System.out.println("local = " + local);
+              System.out.println("stmt = " + block.getTail());
+              List defsList;
+              try {
+              defsList = localDefs.getDefsOfAt(local, block.getTail());
+              } catch (Exception ex) {
+              continue;
+              }
+              if (defsList.size() == 0) {
+              DefinitionStmt counterStmt = (DefinitionStmt)defsList.get(0);
+              if (counterStmt.getRightOp() instanceof AddExpr) {
+              AddExpr addExpr = (AddExpr)counterStmt.getRightOp();
+              Value incrementValue;
+              if (addExpr.getOp1().equals(local)) {
+              incrementValue = addExpr.getOp2();
+              } else {
+              incrementValue = addExpr.getOp1();
+              }
+              if (!Evaluator.isValueConstantValued(incrementValue)) continue;
+              int increment = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
+              defsList = localDefs.getDefsOfAt(local, whilePredecessor.getTail());
 
-                        if (defsList.size() == 0) {
-                            DefinitionStmt initializeStmt =
-                                (DefinitionStmt)defsList.get(0);
-                            if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
-                                int initial = ((IntConstant)Evaluator.getConstantValueOf(
-                                        counterStmt.getRightOp())).value;
-                                Value conditionalExpr = jumpStmt.getCondition();
+              if (defsList.size() == 0) {
+              DefinitionStmt initializeStmt =
+              (DefinitionStmt)defsList.get(0);
+              if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
+              int initial = ((IntConstant)Evaluator.getConstantValueOf(
+              counterStmt.getRightOp())).value;
+              Value conditionalExpr = jumpStmt.getCondition();
 
-                                Value limitValue;
-                                if (addExpr.getOp1().equals(local)) {
-                                    limitValue = addExpr.getOp2();
-                                } else {
-                                    limitValue = addExpr.getOp1();
-                                }
-                                int limit = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
+              Value limitValue;
+              if (addExpr.getOp1().equals(local)) {
+              limitValue = addExpr.getOp2();
+              } else {
+              limitValue = addExpr.getOp1();
+              }
+              int limit = ((IntConstant)Evaluator.getConstantValueOf(incrementValue)).value;
 
-                                System.out.println("initial = " + initial);
-                                System.out.println("increment = " + increment);
-                                System.out.println("limit = " + increment);
-                            }
-                        }
-                    }
-                }
-            }
+              System.out.println("initial = " + initial);
+              System.out.println("increment = " + increment);
+              System.out.println("limit = " + increment);
+              }
+              }
+              }
+              }
+              }
 
-            /*
+              /*
 
 
-            List conditionalBoxList = conditionalExpr.getUseBoxes();
+                List conditionalBoxList = conditionalExpr.getUseBoxes();
 
-            List predecessorDefs = new LinkedList();
-            List bodyDefs = new LinkedList();
-            List conditionalDefs = new LinkedList();
-            while (conditionalBoxList.size() > 0) {
+                List predecessorDefs = new LinkedList();
+                List bodyDefs = new LinkedList();
+                List conditionalDefs = new LinkedList();
+                while (conditionalBoxList.size() > 0) {
                 ValueBox box = (ValueBox)conditionalBoxList.get(0);
                 conditionalBoxList.remove(box);
                 if (!(box.getValue() instanceof Local)) continue;
                 List defsList = localDefs.getDefsOfAt((Local)box.getValue(), jumpStmt);
                 for (Iterator defs = defsList.iterator();
-                    defs.hasNext();) {
-                    Unit definitionStmt = (Unit)defs.next();
+                defs.hasNext();) {
+                Unit definitionStmt = (Unit)defs.next();
 
-                    if (_blockContains(block, definitionStmt)) {
-                        bodyDefs.add(definitionStmt);
-                    } else if (_blockContains(conditional, definitionStmt)) {
-                        // conditionalBoxList.addAll(definitionStmt.getUseBoxes());
-                        conditionalDefs.add(definitionStmt);
-                    } else {
-                        predecessorDefs.add(definitionStmt);
-                    }
+                if (_blockContains(block, definitionStmt)) {
+                bodyDefs.add(definitionStmt);
+                } else if (_blockContains(conditional, definitionStmt)) {
+                // conditionalBoxList.addAll(definitionStmt.getUseBoxes());
+                conditionalDefs.add(definitionStmt);
+                } else {
+                predecessorDefs.add(definitionStmt);
                 }
-            }
-            System.out.println("predecessorDefs = ");
-            for (Iterator i = predecessorDefs.iterator();
+                }
+                }
+                System.out.println("predecessorDefs = ");
+                for (Iterator i = predecessorDefs.iterator();
                 i.hasNext();) {
                 System.out.println("stmt = " + i.next());
-            }
-           System.out.println("bodyDefs = ");
-             for (Iterator i = bodyDefs.iterator();
+                }
+                System.out.println("bodyDefs = ");
+                for (Iterator i = bodyDefs.iterator();
                 i.hasNext();) {
                 System.out.println("stmt = " + i.next());
-            }
+                }
 
-            // FINALLY we know we've found something we can unroll... :)
-            // System.out.println("is unrollable...");
+                // FINALLY we know we've found something we can unroll... :)
+                // System.out.println("is unrollable...");
 
-            // There should be a jump from the predecessor to the
-            // condition.  Redirect this jump to the block.
-            /*
-            conditional.getHead().redirectJumpsToThisTo(block.getHead());
+                // There should be a jump from the predecessor to the
+                // condition.  Redirect this jump to the block.
+                /*
+                  conditional.getHead().redirectJumpsToThisTo(block.getHead());
 
-            Local thisLocal = body.getThisLocal();
-            Chain units = body.getUnits();
-            List bodyStmtList = new LinkedList();
-            // pull the statements that we are inlining out of the body
-            // so that we can copy them.  Note that this also removes
-            // them from the method body.
-            Unit insertPoint = (Unit)units.getSuccOf(block.getTail());
-            for (Iterator blockStmts = block.iterator();
-                blockStmts.hasNext();) {
-                Stmt original = (Stmt)blockStmts.next();
-                blockStmtList.add(original);
-                blockStmts.remove();
-            }
+                  Local thisLocal = body.getThisLocal();
+                  Chain units = body.getUnits();
+                  List bodyStmtList = new LinkedList();
+                  // pull the statements that we are inlining out of the body
+                  // so that we can copy them.  Note that this also removes
+                  // them from the method body.
+                  Unit insertPoint = (Unit)units.getSuccOf(block.getTail());
+                  for (Iterator blockStmts = block.iterator();
+                  blockStmts.hasNext();) {
+                  Stmt original = (Stmt)blockStmts.next();
+                  blockStmtList.add(original);
+                  blockStmts.remove();
+                  }
 
-            // Loop through and unroll the loop block once for
-            // every element of the field list.
-            /*
-            for (int i = 0; i < times; i++) {
-                SootField insertField =
+                  // Loop through and unroll the loop block once for
+                  // every element of the field list.
+                  /*
+                    for (int i = 0; i < times; i++) {
+                    SootField insertField =
                     (SootField)fields.next();
-                for (Iterator blockStmts = blockStmtList.iterator();
+                    for (Iterator blockStmts = blockStmtList.iterator();
                     blockStmts.hasNext();) {
                     // clone each statement
                     Stmt original = (Stmt)blockStmts.next();
@@ -354,28 +354,28 @@ public class ConstantLoopUnroller extends BodyTransformer {
                     // If the statement is a call to the next() method,
                     // then inline it with the next value of the iterator.
                     for (Iterator boxes = clone.getUseBoxes().iterator();
-                        boxes.hasNext();) {
-                        ValueBox box = (ValueBox)boxes.next();
-                        Value value = box.getValue();
-                        if (value instanceof InvokeExpr) {
-                            InvokeExpr r = (InvokeExpr)value;
-                            if (r.getMethod() == iteratorNextMethod) {
-                                box.setValue(Jimple.v()
-                                        .newInstanceFieldRef(thisLocal,
-                                                insertField));
-                            }
-                        }
+                    boxes.hasNext();) {
+                    ValueBox box = (ValueBox)boxes.next();
+                    Value value = box.getValue();
+                    if (value instanceof InvokeExpr) {
+                    InvokeExpr r = (InvokeExpr)value;
+                    if (r.getMethod() == iteratorNextMethod) {
+                    box.setValue(Jimple.v()
+                    .newInstanceFieldRef(thisLocal,
+                    insertField));
+                    }
+                    }
                     }
                     units.insertBefore(clone, insertPoint);
-                }
-                }
+                    }
+                    }
 
-            // remove the conditional
-            for (Iterator blockStmts = conditional.iterator();
-                blockStmts.hasNext();) {
-                Stmt original = (Stmt)blockStmts.next();
-                blockStmts.remove();
-                }*/
+                    // remove the conditional
+                    for (Iterator blockStmts = conditional.iterator();
+                    blockStmts.hasNext();) {
+                    Stmt original = (Stmt)blockStmts.next();
+                    blockStmts.remove();
+                    }*/
         }
     }
 

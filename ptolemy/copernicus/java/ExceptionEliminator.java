@@ -107,24 +107,24 @@ public class ExceptionEliminator extends SceneTransformer {
         // Loop over all the classes
 
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
 
             SootClass theClass = (SootClass) i.next();
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
+                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
 
                     // If any box is removable, then remove the statement.
                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-                        boxes.hasNext();) {
+                         boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
 
                         _replaceExceptions(box);
@@ -135,17 +135,17 @@ public class ExceptionEliminator extends SceneTransformer {
     }
 
     private boolean _isPtolemyException(SootClass exceptionClass) {
-       if (SootUtilities.derivesFrom(
-                  exceptionClass,
-                  PtolemyUtilities.kernelExceptionClass)) {
-           return true;
-       }
-       if (SootUtilities.derivesFrom(
-                  exceptionClass,
-                  PtolemyUtilities.kernelRuntimeExceptionClass)) {
-           return true;
-       }
-       return false;
+        if (SootUtilities.derivesFrom(
+                exceptionClass,
+                PtolemyUtilities.kernelExceptionClass)) {
+            return true;
+        }
+        if (SootUtilities.derivesFrom(
+                exceptionClass,
+                PtolemyUtilities.kernelRuntimeExceptionClass)) {
+            return true;
+        }
+        return false;
     }
     // Replace any Ptolemy exception constructor
     // or initializer with a plain old RuntimeException.
@@ -172,9 +172,9 @@ public class ExceptionEliminator extends SceneTransformer {
                 .getSootClass();
             if (_isPtolemyException(exceptionClass)) {
                 box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                     (Local)expr.getBase(),
-                                     PtolemyUtilities.runtimeExceptionClass.getMethod("void <init>()"),
-                                     new LinkedList()));
+                        (Local)expr.getBase(),
+                        PtolemyUtilities.runtimeExceptionClass.getMethod("void <init>()"),
+                        new LinkedList()));
             }
         }
     }

@@ -116,7 +116,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         // Loop over all the actor instance classes and get the
         // attribute fields.
         for (Iterator i = _model.deepEntityList().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
@@ -126,7 +126,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                     attributeToFieldMap);
             // And get the attributes of ports too...
             for (Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 Port port = (Port)ports.next();
                 _getAttributeFields(entityClass, entity, port,
                         attributeToFieldMap);
@@ -135,8 +135,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         }
 
         // Loop over all the entity classes and replace getAttribute calls.
-       for (Iterator i = _model.deepEntityList().iterator();
-            i.hasNext();) {
+        for (Iterator i = _model.deepEntityList().iterator();
+             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
@@ -145,7 +145,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
             // Replace calls to getAttribute with field references.
             for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
@@ -155,7 +155,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
+                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
                     if (!unit.containsInvokeExpr()) {
                         continue;
@@ -264,7 +264,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         } else {
             System.out.println("more than one definition of = " + local);
             for (Iterator i = definitionList.iterator();
-                i.hasNext();) {
+                 i.hasNext();) {
                 System.out.println(i.next().toString());
             }
         }
@@ -278,8 +278,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             NamedObj object, Map attributeToFieldMap) {
 
         for (Iterator attributes =
-                object.attributeList().iterator();
-            attributes.hasNext();) {
+                 object.attributeList().iterator();
+             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
 
             String fieldName = ModelTransformer.getFieldNameForAttribute(

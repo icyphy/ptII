@@ -127,14 +127,14 @@ public class FieldOptimizationTransformer extends SceneTransformer {
 
         // Loop over all the actor instance classes.
         for (Iterator i = _model.deepEntityList().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = Options.getString(options, "targetPackage")
                 + "." + entity.getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
             for (Iterator fields = entityClass.getFields().iterator();
-                fields.hasNext();) {
+                 fields.hasNext();) {
                 SootField field = (SootField)fields.next();
                 // FIXME: static fields too.
                 if (Modifier.isStatic(field.getModifiers())) {
@@ -143,7 +143,7 @@ public class FieldOptimizationTransformer extends SceneTransformer {
                 boolean finalize = true;
                 Value fieldValue = null;
                 for (Iterator methods = entityClass.getMethods().iterator();
-                    (methods.hasNext() && finalize);) {
+                     (methods.hasNext() && finalize);) {
                     SootMethod method = (SootMethod)methods.next();
                     if (method.getName().equals("<init>")) {
                         Chain units = method.retrieveActiveBody().getUnits();

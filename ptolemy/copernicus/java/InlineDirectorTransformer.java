@@ -124,7 +124,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         // First remove methods that are called on the director.
         // Loop over all the entity classes...
         for (Iterator i = _model.deepEntityList().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
@@ -133,14 +133,14 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             // Loop over all the methods...
             for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
                 // Loop over all the statements.
                 for (Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
+                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
                     if (!unit.containsInvokeExpr()) {
                         continue;
@@ -175,7 +175,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Local thisLocal = body.getThisLocal();
 
             for (Iterator entities = _model.deepEntityList().iterator();
-                entities.hasNext();) {
+                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
@@ -214,7 +214,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
             for (Iterator entities = _model.deepEntityList().iterator();
-                entities.hasNext();) {
+                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);
@@ -311,7 +311,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
             for (Iterator entities = _model.deepEntityList().iterator();
-                entities.hasNext();) {
+                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
                         entity, _model);

@@ -114,7 +114,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         // Loop over all the actor instance classes and get
         // fields for ports.
         for (Iterator i = _model.deepEntityList().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
@@ -126,7 +126,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
 
         // Loop over all the classes and replace getPort calls.
         for (Iterator i = _model.deepEntityList().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
@@ -134,7 +134,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
 
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
-                methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
@@ -146,7 +146,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                     new SimpleLocalDefs(unitGraph);
 
                 for (Iterator units = body.getUnits().snapshotIterator();
-                    units.hasNext();) {
+                     units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
                     if (!unit.containsInvokeExpr()) {
                         continue;
@@ -248,7 +248,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         } else {
             System.out.println("more than one definition of = " + local);
             for (Iterator i = definitionList.iterator();
-                i.hasNext();) {
+                 i.hasNext();) {
                 System.out.println(i.next().toString());
             }
         }
@@ -262,7 +262,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
             Entity object, Map portToFieldMap) {
 
         for (Iterator ports = object.portList().iterator();
-            ports.hasNext();) {
+             ports.hasNext();) {
             Port port = (Port)ports.next();
 
             String fieldName =
