@@ -228,12 +228,12 @@ public class Scheduler extends NamedObj implements MutationListener{
                 (StaticSchedulingDirector)getContainer();
             if( dir == null) {
                 throw new IllegalActionException(this, 
-                    "is a dangling scheduler.");
+                        "is a dangling scheduler.");
             }
             CompositeActor ca = (CompositeActor)(dir.getContainer());
             if( ca == null) {
                 throw new IllegalActionException(this, 
-                    "is a dangling scheduler.");
+                        "is a dangling scheduler.");
             }
             if(!valid()) {
                 _cachedschedule = new LinkedList();
@@ -313,7 +313,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      */	
     protected Enumeration _schedule() throws NotSchedulableException {
         StaticSchedulingDirector dir =
-                (StaticSchedulingDirector)getContainer();
+            (StaticSchedulingDirector)getContainer();
         CompositeActor ca = (CompositeActor)(dir.getContainer());
         return ca.deepGetEntities();
     }

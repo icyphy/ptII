@@ -109,7 +109,7 @@ public class StaticSchedulingDirector extends Director{
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         StaticSchedulingDirector newobj = (StaticSchedulingDirector)
-                                          super.clone(ws);
+            super.clone(ws);
         newobj._scheduler = null;
         return newobj;
     }
@@ -164,10 +164,10 @@ public class StaticSchedulingDirector extends Director{
      *  @exception IllegalActionException IF there's no scheduler.
      */
     public void setScheduleValid( boolean valid)
-             throws IllegalActionException {
+            throws IllegalActionException {
         if(_scheduler == null) {
             throw new IllegalActionException(this, 
-                " has no scheduler.");
+                    " has no scheduler.");
         }
         _scheduler.setValid(valid);
     }
@@ -180,7 +180,7 @@ public class StaticSchedulingDirector extends Director{
     public boolean scheduleValid() throws IllegalActionException {
         if(_scheduler == null) {
             throw new IllegalActionException(this, 
-                " has no scheduler.");
+                    " has no scheduler.");
         }
         return _scheduler.valid();
     }

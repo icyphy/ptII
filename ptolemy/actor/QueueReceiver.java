@@ -188,7 +188,7 @@ public class QueueReceiver implements Receiver {
     public void put(Token token) throws IllegalActionException {
         if (!_queue.put(token)) {
             throw new IllegalActionException(getContainer(),
-            "Queue is at capacity. Cannot put a token.");
+                    "Queue is at capacity. Cannot put a token.");
         }
     }
 

@@ -117,7 +117,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-            "TypedAtomicActor.newPort: Internal error: " + ex.getMessage());
+                    "TypedAtomicActor.newPort: Internal error: " + ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
@@ -176,12 +176,12 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
 	    if (allUndeclared) {
 	    	for (Enumeration inPorts = inputPorts();
-			     inPorts.hasMoreElements() ;) {
+                     inPorts.hasMoreElements() ;) {
 	    	    TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
 	    	    for (Enumeration outPorts = outputPorts();
-			     	 outPorts.hasMoreElements() ;) {
+                         outPorts.hasMoreElements() ;) {
 		    	TypedIOPort outport =
-				(TypedIOPort)outPorts.nextElement();
+                            (TypedIOPort)outPorts.nextElement();
 
 		    	if (inport != outport) {
 		            // not bi-directional port

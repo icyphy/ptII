@@ -49,7 +49,7 @@ public class NotSchedulableException extends InvalidStateException {
      *  @param detail The message.
      */
     public NotSchedulableException(String detail) {
-       super(detail);
+        super(detail);
     }
 
     /** Constructs an Exception with a detail message that includes the

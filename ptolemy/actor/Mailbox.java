@@ -100,7 +100,7 @@ public class Mailbox implements Receiver {
     public void put(Token token) throws IllegalActionException{
         if(_token != null) {
             throw new IllegalActionException(getContainer(),
-            "Cannot put a token in a full mailbox.");
+                    "Cannot put a token in a full mailbox.");
         }
         _token = token;
     }

@@ -226,7 +226,7 @@ public class IOPort extends ComponentPort {
 	    LinkedList result = new LinkedList();
 
 	    for (Enumeration allPorts = deepConnectedPorts();
-		 	allPorts.hasMoreElements(); ) {
+                 allPorts.hasMoreElements(); ) {
 		IOPort port = (IOPort)allPorts.nextElement();
 		if (port.isInput()) {
 		    result.insertLast(port);
@@ -253,7 +253,7 @@ public class IOPort extends ComponentPort {
 	    LinkedList result = new LinkedList();
 
 	    for (Enumeration allPorts = deepConnectedPorts();
-		 	allPorts.hasMoreElements(); ) {
+                 allPorts.hasMoreElements(); ) {
 		IOPort port = (IOPort)allPorts.nextElement();
 		if (port.isOutput()) {
 		    result.insertLast(port);
@@ -1146,7 +1146,7 @@ public class IOPort extends ComponentPort {
                     }
                 } catch (IllegalActionException ex) {
                     result += _getIndentPrefix(indent+1) +
-                             ex.getMessage() + "\n";
+                        ex.getMessage() + "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
             }
@@ -1168,7 +1168,7 @@ public class IOPort extends ComponentPort {
                                     result += recvrs[i][j].getClass().getName();
                                     result += " in ";
                                     result += recvrs[i][j].
-                                            getContainer().getFullName();
+                                        getContainer().getFullName();
                                 }
                                 result += "}\n";
                             }
@@ -1244,24 +1244,24 @@ public class IOPort extends ComponentPort {
             // Check for existing outside links
             if(!isMultiport() && numLinks() >= 1) {
                 throw new IllegalActionException(this, relation,
-                "Attempt to link more than one relation " +
-                "to a single port.");
+                        "Attempt to link more than one relation " +
+                        "to a single port.");
             }
             if (rel.getWidth() != 1 || !rel.widthFixed()) {
                 // Relation is a bus.
                 if(!isMultiport()) {
                     throw new IllegalActionException(this,  rel,
-                    "Attempt to link a bus relation " +
-                    "to a single port.");
+                            "Attempt to link a bus relation " +
+                            "to a single port.");
                 }
                 Enumeration relations = linkedRelations();
                 while (relations.hasMoreElements()) {
                     IORelation r = (IORelation)relations.nextElement();
                     if (!r.widthFixed()) {
                         throw new IllegalActionException(this, rel,
-                        "Attempt to link a second bus relation " +
-                        "with unspecified width to the outside " +
-                        "of a port.");
+                                "Attempt to link a second bus relation " +
+                                "with unspecified width to the outside " +
+                                "of a port.");
                     }
                 }
             }
@@ -1301,15 +1301,15 @@ public class IOPort extends ComponentPort {
             // Check for existing inside links
             if(!isMultiport() && numInsideLinks() >= 1) {
                 throw new IllegalActionException(this, relation,
-                "Attempt to link more than one relation " +
-                "to a single port.");
+                        "Attempt to link more than one relation " +
+                        "to a single port.");
             }
             if ((rel.getWidth() != 1) || !rel.widthFixed()) {
                 // Relation is a bus.
                 if(!isMultiport()) {
                     throw new IllegalActionException(this,  rel,
-                    "Attempt to link a bus relation " +
-                    "to a single port.");
+                            "Attempt to link a bus relation " +
+                            "to a single port.");
                 }
                 if (!rel.widthFixed()) {
                     // Make sure there are no other busses already
@@ -1318,9 +1318,9 @@ public class IOPort extends ComponentPort {
                         _getInsideWidth(null);
                     } catch (InvalidStateException ex) {
                         throw new IllegalActionException(this, rel,
-                        "Attempt to link a second bus relation " +
-                        "with unspecified width to the inside " +
-                        "of a port.");
+                                "Attempt to link a second bus relation " +
+                                "with unspecified width to the inside " +
+                                "of a port.");
                     }
                 }
             }
@@ -1351,8 +1351,8 @@ public class IOPort extends ComponentPort {
             return rec;
         }
         throw new IllegalActionException(this,
-        "Can only create inside receivers for a port of a non-atomic, "
-        + "opaque entity.");
+                "Can only create inside receivers for a port of a non-atomic, "
+                + "opaque entity.");
     }
 
     /** Create a new receiver compatible with the executive director.
@@ -1373,8 +1373,8 @@ public class IOPort extends ComponentPort {
     protected Receiver _newReceiver() throws IllegalActionException {
         Actor container = (Actor)getContainer();
         if (container == null) {
-             throw new IllegalActionException(this,
-            "Cannot create a receiver without a container.");
+            throw new IllegalActionException(this,
+                    "Cannot create a receiver without a container.");
         }
         Receiver rec = container.newReceiver();
         rec.setContainer(this);

@@ -175,8 +175,8 @@ public class IORelation extends ComponentRelation {
                         recvrs = p.getRemoteReceivers(this);
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(
-                        "IORelation.deepReceivers: Internal error: "
-                        + e.getMessage());
+                                "IORelation.deepReceivers: Internal error: "
+                                + e.getMessage());
                     }
                 } else {
                     // if p not a transparent port, or this relation is linked
@@ -186,9 +186,9 @@ public class IORelation extends ComponentRelation {
                         // relation.
                         recvrs = p.getReceivers(this);
                     } catch (IllegalActionException e) {
-                         throw new InternalErrorException(
-                        "IORelation.deepReceivers: Internal error: "
-                        + e.getMessage());
+                        throw new InternalErrorException(
+                                "IORelation.deepReceivers: Internal error: "
+                                + e.getMessage());
                     }
                 }
                 result = _cascade(result, recvrs);
@@ -371,8 +371,8 @@ public class IORelation extends ComponentRelation {
                     _inferWidth();
                 } catch (InvalidStateException ex) {
                     throw new IllegalActionException(this,
-                    "Cannot use unspecified width on this relation " +
-                    "because of its links.");
+                            "Cannot use unspecified width on this relation " +
+                            "because of its links.");
                 }
             }
             if (width != 1) {
@@ -382,8 +382,8 @@ public class IORelation extends ComponentRelation {
                     IOPort p = (IOPort) ports.nextElement();
                     if (!p.isMultiport()) {
                         throw new IllegalActionException(this, p,
-                        "Cannot make bus because the " +
-                        "relation is linked to a non-multiport.");
+                                "Cannot make bus because the " +
+                                "relation is linked to a non-multiport.");
                     }
                 }
             }

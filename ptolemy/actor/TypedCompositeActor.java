@@ -126,7 +126,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-            "CompositeActor.newPort: Internal error: " + ex.getMessage());
+                    "CompositeActor.newPort: Internal error: " + ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
@@ -184,20 +184,20 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	        // type check on all output connections
 	        // NOTE: this can also be done on all input connections.
 	        for (Enumeration outports = actor.outputPorts();
-			     outports.hasMoreElements() ;) {
+                     outports.hasMoreElements() ;) {
 		    TypedIOPort outport = (TypedIOPort)outports.nextElement();
 
 		    for (Enumeration inports = outport.deepConnectedInPorts();
-				 inports.hasMoreElements() ;) {
+                         inports.hasMoreElements() ;) {
 		        TypedIOPort inport = (TypedIOPort)inports.nextElement();
 		        Token outDeclared = outport.declaredType();
 		        Token inDeclared = inport.declaredType();
 		        if (outDeclared != null && inDeclared != null) {
 			    // both in/out ports are declared, type check
 			    int compare = TypeCPO.compare(outDeclared,
-							  inDeclared);
+                                    inDeclared);
 			    if (compare == CPO.STRICT_GREATER ||
-			        compare == CPO.INCOMPARABLE) {
+                                    compare == CPO.INCOMPARABLE) {
 			        // FIXME: should have a TypeConflictException();
 			        // throw new TypeConflictException();
 			        throw new InvalidStateException("type " +
@@ -246,8 +246,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof TypedActor)) {
             throw new IllegalActionException(this, entity,
-            "CompositeActor can only contain entities that implement the "
-            + "TypedActor interface.");
+                    "CompositeActor can only contain entities that implement the "
+                    + "TypedActor interface.");
         }
         super._addEntity(entity);
     }
@@ -272,7 +272,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
-            "TypedCompositeActor can only contain instances of TypedIOPort.");
+                    "TypedCompositeActor can only contain instances of TypedIOPort.");
         }
         super._addPort(port);
     }
