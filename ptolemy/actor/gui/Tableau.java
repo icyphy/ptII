@@ -65,6 +65,15 @@ make the associated frame visible.  To do that, call show().
 */
 public class Tableau extends CompositeEntity {
 
+    /** 
+     */
+    public Tableau(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+
+        size = new SizeAttribute(this, "size");
+    }
+    
     /** Construct a tableau with the given name and container.
      *  @param container The container.
      *  @param name The name of the tableau.
