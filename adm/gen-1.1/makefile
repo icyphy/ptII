@@ -453,6 +453,10 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/saveasjava \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/deep \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/shallow \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
@@ -462,6 +466,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/hoc \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/javasound \

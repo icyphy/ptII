@@ -91,6 +91,14 @@ OPTIONAL_FILES =	\
 	codeDocPtiny \
 	uml
 
+# Java packages for copernicus 
+COPERNICUSPACKAGES = \
+			ptolemy.copernicus.kernel \
+			ptolemy.copernicus.c \
+			ptolemy.copernicus.deep \
+			ptolemy.copernicus.jhdl \
+			ptolemy.copernicus.shallow
+
 # Java packages for codegen
 CODEGENPACKAGES = \
 			ptolemy.lang \
@@ -150,6 +158,7 @@ ALLPACKAGES =		$(CODEGENPACKAGES) \
 			ptolemy.actor \
 			ptolemy.actor.gui \
 			ptolemy.actor.process \
+			ptolemy.actor.lib.hoc \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
 			ptolemy.domains.csp.kernel \
@@ -215,6 +224,7 @@ codeDoc/tree.html:	$(CODEGENJSRCS) \
 			../ptolemy/actor/gui/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
+			../ptolemy/actor/lib/hoc/*.java \
 			../ptolemy/actor/lib/gui/*.java \
 			../ptolemy/actor/lib/logic/*.java \
 			../ptolemy/actor/process/*.java \
