@@ -171,30 +171,33 @@ public class DDEReceiver extends TimedQueueReceiver
      */
     public boolean hasToken() {
 	Workspace workspace = getContainer().workspace();
-        DDEDirector director = null;
-        if( isInsideBoundary() ) {
-            director = (DDEDirector)((Actor)
-                    getContainer().getContainer()).getDirector();
-        } else if( isOutsideBoundary() ) {
-            director = (DDEDirector)((Actor)
-                    getContainer().getContainer()).getExecutiveDirector();
-        } else {
-            director = (DDEDirector)((Actor)
-                    getContainer().getContainer()).getDirector();
-        }
+        DDEDirector director = (DDEDirector)((Actor) 
+		getContainer().getContainer()).getDirector();
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
-	    TimeKeeper timeKeeper =
-                ((DDEThread)thread).getTimeKeeper();
-	    if( isOutsideBoundary() ) {
-		return __hasOutsideToken( workspace, director, 
-			timeKeeper, _hideNullTokens );
-	    } else if( isInsideBoundary() ) {
-		return __hasInsideToken( workspace, director, 
-			timeKeeper );
+	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+
+	    int value = 0;
+	    timeKeeper.updateRcvrList( this );
+	    while( value == 0 ) {
+		/*
+		if( this != timeKeeper.getFirstRcvr() ) {
+		    return false;
+		}
+		*/
+		value = getNextTokenType(workspace, director, 
+			timeKeeper, _hideNullTokens);
+		/* JFIXME
+		if( value == 0 ) {
+		    timeKeeper.sendOutNullTokens(this);
+		}
+		*/
 	    }
-	    return __hasToken( workspace, director, 
-		    timeKeeper, _hideNullTokens );
+	    if( value == 1 ) {
+		return true;
+	    } else if( value == -1 ) {
+		return false;
+	    } 
 	}
 	return false;
     }
@@ -218,16 +221,10 @@ public class DDEReceiver extends TimedQueueReceiver
      */
     public void put(Token token) {
 	Thread thread = Thread.currentThread();
-	double time = getLastTime();
+	double time = _lastTime;
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-            if( isConnectedToBoundary() ) {
-                Actor actor = (Actor)getContainer().getContainer();
-                Director dir = actor.getDirector();
-                time = dir.getCurrentTime();
-            } else {
-	        time = timeKeeper.getOutputTime();
-            }
+	    time = timeKeeper.getOutputTime();
 	}
 	put( token, time );
     }
@@ -260,13 +257,8 @@ public class DDEReceiver extends TimedQueueReceiver
 	Thread thread = Thread.currentThread();
         Workspace workspace = getContainer().workspace();
         DDEDirector director = null;
-        if( isOutsideBoundary() ) {
-            director = (DDEDirector)((Actor)
-                    getContainer().getContainer()).getExecutiveDirector();
-        } else {
-            director = (DDEDirector)((Actor)
-                    getContainer().getContainer()).getDirector();
-        }
+        director = (DDEDirector)((Actor) 
+		getContainer().getContainer()).getDirector();
 	_put(token, time, workspace, director);
     }
 
@@ -302,7 +294,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	_terminate = false;
     	_readPending = false;
     	_writePending = false;
-    	_ignoreNotSeen = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -323,42 +314,30 @@ public class DDEReceiver extends TimedQueueReceiver
     ///////////////////////////////////////////////////////////////////
     ////                         private methods 		   ////
 
-    /** This method is a wrapper around _hasToken(). _hasToken()
-     *  provides the recursive functionality of hasToken(). This
-     *  method is an unsynchronized wrapper that helps prevent
-     *  cyclic dependencies.
-     */
-    private boolean __hasToken(Workspace workspace,
-	    DDEDirector director, TimeKeeper timeKeeper,
-	    boolean _hideNullTokens ) {
-        
-        int value = 0;
-        while( value == 0 ) {
-            value = _hasToken(workspace, director, 
-                    timeKeeper, _hideNullTokens);
-            if( value == 0 ) {
-            	timeKeeper.sendOutNullTokens(this);
-            }
-        }
-        if( value == 1 ) {
-            return true;
-        } else if( value == -1 ) {
-            return false;
-        } 
-        return false;
-    }
-            
     /** This method provides the recursive functionality of 
      *  hasToken() for general receivers.
      */
-    private synchronized int _hasToken(Workspace workspace,
+    public synchronized int getNextTokenType(Workspace workspace,
 	    DDEDirector director, TimeKeeper timeKeeper,
 	    boolean _hideNullTokens ) {
+	/* FIXME
+	String name = ((Nameable)getContainer().getContainer()).getName();
+	if( name.equals("join") ) {
+	    timeKeeper.printRcvrList();
+	}
+	*/
 
-	//////////////////////////////////////////////////////
-	// Resort the TimeKeeper to account for recents puts()
-	//////////////////////////////////////////////////////
-	timeKeeper.resortRcvrList();
+	//////////////////////
+	// Update the RcvrList
+	//////////////////////
+	timeKeeper.updateRcvrList( this );
+
+	/////////////////////////////////////////
+	// Determine if this Receiver is in Front
+	/////////////////////////////////////////
+	if( this != timeKeeper.getFirstRcvr() ) {
+	    return -1;
+	}
 
 	//////////////////////////////////////////
 	// Determine if the TimeKeeper is inactive 
@@ -370,148 +349,14 @@ public class DDEReceiver extends TimedQueueReceiver
 	///////////////////
 	// Check Rcvr Times
 	///////////////////
-        if( getRcvrTime() == INACTIVE && !_terminate ) {
-            return -1;
-	}
         if( getRcvrTime() == IGNORE && !_terminate ) {
-	    if( _ignoreNotSeen ) {
-		timeKeeper.setIgnoredTokens(true);
-		_ignoreNotSeen = false;
-                return -1;
-	    } else {
-		_ignoreNotSeen = true;
-		timeKeeper.removeAllIgnoreTokens();
-		timeKeeper.setIgnoredTokens(false);
-		return -1;
-	    }
-        }
-	if( getRcvrTime() > timeKeeper.getNextTime() &&
-        	!_terminate ) {
-	    return -1;
-	}
+	    timeKeeper.removeAllIgnoreTokens();
 
-	///////////////////////////
-	// Check Token Availability
-	///////////////////////////
-        if( super.hasToken() && !_terminate ) {
-	    if( !timeKeeper.hasMinRcvrTime() ) {
-		if( hasNullToken() ) {
-		    if( timeKeeper.getHighestPriorityReal() != null ) {
-			return -1;
-		    } else if( this !=
-                    	    timeKeeper.getHighestPriorityNull() ) {
-			return -1;
-		    } else if( !_hideNullTokens ) {
-			return 1;
-		    } else {
-			super.get();
-                        return 0;
-		    }
-		} else {
-		    if( this == timeKeeper.getHighestPriorityReal() ) {
-			return 1;
-		    }
-		    return -1;
-		}
-	    } else {
-		if( hasNullToken() ) {
-		    if( !_hideNullTokens ) {
-			return 1;
-		    }
-		    super.get();
-                    return 0;
-		}
-		return 1;
-	    }
-	}
-	if( !super.hasToken() && !_terminate ) {
-	    _readPending = true;
-            if( isConnectedToBoundary() ) {
-                director.addExternalReadBlock();
-            } else {
-                director.addInternalReadBlock();
-            }
-	    while( _readPending && !_terminate ) {
-		workspace.wait( this );
-	    }
-	}
+	    /* JFIXME
+	    */
+	    timeKeeper.sendOutNullTokens(this);
 
-	////////////////////
-	// Check Termination
-	////////////////////
-	if( _terminate ) {
-	    if( _readPending ) {
-		_readPending = false;
-                if( isConnectedToBoundary() ) {
-		    director.removeExternalReadBlock();
-                } else {
-		    director.removeInternalReadBlock();
-                }
-	    }
-            throw new TerminateProcessException("");
-	}
-        return _hasToken(workspace, director,
-                timeKeeper, _hideNullTokens);
-    }
-    
-    /** This method is a wrapper around _hasInsideToken(). 
-     *  _hasInsideToken() provides the recursive functionality 
-     *  of hasToken() for receivers connected on the inside of
-     *  a composite actor. This method is an unsynchronized wrapper 
-     *  that helps prevent cyclic dependencies.
-     */
-    private boolean __hasInsideToken(Workspace workspace,
-	    DDEDirector director, TimeKeeper timeKeeper) {
-        
-        int value = 0;
-        while( value == 0 ) {
-            value = _hasInsideToken(workspace, director, 
-                    timeKeeper);
-        }
-        if( value == 1 ) {
-            return true;
-        } else if( value == -1 ) {
-            return false;
-        } 
-        return false;
-    }
- 
-    /** This method provides the recursive functionality of 
-     *  hasToken() for general receivers.
-     */
-    private synchronized int _hasInsideToken(Workspace workspace,
-	    DDEDirector director, TimeKeeper timeKeeper ) {
-
-	///////////////////
-	// Check Rcvr Times
-	///////////////////
-        if( getRcvrTime() == INACTIVE && !_terminate ) {
-            return -1;
-	}
-        if( getRcvrTime() == IGNORE && !_terminate ) {
-	    if( _ignoreNotSeen ) {
-		IOPort port = (IOPort)getContainer();
-		Director outsideDir = ((Actor) 
-			port.getContainer()).getExecutiveDirector();
-		if( outsideDir instanceof DDEDirector ) {
-		    Receiver[][] rcvrs = null; 
-		    rcvrs = port.getRemoteReceivers();
-		    for(int i = 0; i < rcvrs.length; i++ ) {
-			for(int j = 0; j < rcvrs[i].length; j++ ) {
-			    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-			    rcvr.put( new Token(), TimedQueueReceiver.IGNORE );
-			}
-		    }
-		}
-		timeKeeper.setIgnoredTokens(true);
-		_ignoreNotSeen = false;
-                return -1;
-	    } else {
-		_ignoreNotSeen = true;
-		timeKeeper.removeAllIgnoreTokens();
-		timeKeeper.setIgnoredTokens(false);
-                return -1;
-	    }
+	    return 0;
         }
 
 	///////////////////////////
@@ -519,10 +364,28 @@ public class DDEReceiver extends TimedQueueReceiver
 	///////////////////////////
         if( super.hasToken() && !_terminate ) {
 	    if( hasNullToken() ) {
-		get();
+		// Treat Null Tokens Normally For Feedback
+		if( !_hideNullTokens ) {
+		    return 1;
+		}
+
+		// Deal With Null Tokens Separately
+		super.get();
+		timeKeeper.sendOutNullTokens(this);
                 return 0;
 	    }
-            return 1;
+	    return 1;
+	}
+
+	////////////////////////
+	// Perform Blocking Read
+	////////////////////////
+	if( !super.hasToken() && !_terminate ) {
+	    _readPending = true;
+            director.addInternalReadBlock();
+	    while( _readPending && !_terminate ) {
+		workspace.wait( this );
+	    }
 	}
 
 	////////////////////
@@ -535,183 +398,33 @@ public class DDEReceiver extends TimedQueueReceiver
 	    }
             throw new TerminateProcessException("");
 	}
-        return -1;
+	/*
+        return 0;
+	*/
+	return getNextTokenType(workspace, director, 
+			timeKeeper, _hideNullTokens);
     }
-
-    /** This method is a wrapper around _hasOutsideToken(). 
-     *  _hasOutsideToken() provides the recursive functionality 
-     *  of hasToken() for receivers connected on the inside of
-     *  a composite actor. This method is an unsynchronized wrapper 
-     *  that helps prevent cyclic dependencies.
-     */
-    private boolean __hasOutsideToken(Workspace workspace,
-	    DDEDirector director, TimeKeeper timeKeeper,
-            boolean _hideNullTokens) {
-        
-        int value = 0;
-        while( value == 0 ) {
-            value = _hasOutsideToken(workspace, director, 
-                    timeKeeper, _hideNullTokens);
-        }
-        if( value == 1 ) {
-            return true;
-        } else if( value == -1 ) {
-            return false;
-        } 
-        return false;
-    }
- 
-    /** This method provides the recursive functionality of 
-     *  hasToken() for general receivers.
-     */
-    private synchronized int _hasOutsideToken(Workspace workspace,
-	    DDEDirector director, TimeKeeper timeKeeper,
-	    boolean _hideNullTokens ) {
-
-	//////////////////////////////////////////////////////
-	// Resort the TimeKeeper to account for recents puts()
-	//////////////////////////////////////////////////////
-	timeKeeper.resortRcvrList();
-
-	//////////////////////////////////////////
-	// Determine if the TimeKeeper is inactive 
-	//////////////////////////////////////////
-        if( timeKeeper.getNextTime() == INACTIVE ) {
-            requestFinish();
-	}
-
-	///////////////////
-	// Check Rcvr Times
-	///////////////////
-        if( getRcvrTime() == INACTIVE && !_terminate ) {
-            return -1;
-	}
-        if( getRcvrTime() == IGNORE && !_terminate ) {
-            IOPort port = (IOPort)getContainer(); 
-            Director insideDir = ((Actor) 
-            	    port.getContainer()).getDirector();
-	    if( insideDir instanceof DDEDirector ) {
-            	Receiver[][] rcvrs = null;
-		try {
-		    rcvrs = port.deepGetReceivers();
-		} catch( IllegalActionException e ) {
-                    System.err.println("Error while access "
-                            + "receivers");
-		}
-		for(int i = 0; i < rcvrs.length; i++ ) {
-		    for(int j = 0; j < rcvrs[i].length; j++ ) {
-			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-			rcvr.put( new Token(), TimedQueueReceiver.IGNORE );
-		    }
-		}
-            }
-            return -1;
-        }
-	if( getRcvrTime() > timeKeeper.getNextTime() &&
-        	!_terminate ) {
-	    // Pass this information in via a null token
-            IOPort port = (IOPort)getContainer();
-            Receiver[][] rcvrs = null;
-            try {
-                rcvrs = port.deepGetReceivers();
-            } catch( IllegalActionException e ) {
-                System.err.println("Error while access "
-                        + "receivers");
-            }
-            double time = getRcvrTime();
-            for (int i = 0; i < rcvrs.length; i++) {
-		for (int j = 0; j < rcvrs[i].length; j++ ) {
-		    if( time > ((DDEReceiver)
-			    rcvrs[i][j]).getLastTime() ) {
-                    ((DDEReceiver)rcvrs[i][j]).put(
-			    new NullToken(), time );
-                    }
-                }
-	    }
-            return -1;
-	}
-
-	///////////////////////////
-	// Check Token Availability
-	///////////////////////////
-        if( super.hasToken() && !_terminate ) {
-	    if( !timeKeeper.hasMinRcvrTime() ) {
-		// BE SURE TO SEND A NULL TOKEN
-		if( hasNullToken() ) {
-		    if( timeKeeper.getHighestPriorityReal() != null ) {
-                        return -1;
-		    } else if( this !=
-                    	    timeKeeper.getHighestPriorityNull() ) {
-                        return -1;
-		    } else if( !_hideNullTokens ) {
-			timeKeeper._tokenConsumed = true;
-                        return 1;
-		    } else {
-			super.get();
-			timeKeeper._tokenConsumed = true;
-			timeKeeper.sendOutNullTokens(this);
-                        return 0;
-		    }
-		} else {
-		    if( this == timeKeeper.getHighestPriorityReal() ) {
-			timeKeeper._tokenConsumed = true;
-                        return 1;
-		    }
-                    return -1;
-		}
-	    } else {
-		if( hasNullToken() ) {
-		    if( !_hideNullTokens ) {
-			timeKeeper._tokenConsumed = true;
-                        return 1;
-		    }
-		    super.get();
-		    timeKeeper._tokenConsumed = true;
-		    timeKeeper.sendOutNullTokens(this);
-                    return 0;
-		}
-		timeKeeper._tokenConsumed = true;
-                return 1;
-	    }
-	}
-	if( !super.hasToken() && !_terminate ) {
-	    if( timeKeeper._tokenConsumed ) {
-                return -1;
-	    }
-	    _readPending = true;
-            if( isConnectedToBoundary() ) {
-                director.addExternalReadBlock();
-            } else {
-                director.addInternalReadBlock();
-            }
-	    while( _readPending && !_terminate ) {
-		workspace.wait( this );
-	    }
-	}
-
-	////////////////////
-	// Check Termination
-	////////////////////
-	if( _terminate ) {
-	    if( _readPending ) {
-		_readPending = false;
-                if( isConnectedToBoundary() ) {
-		    director.removeExternalReadBlock();
-                } else {
-		    director.removeInternalReadBlock();
-                }
-	    }
-            throw new TerminateProcessException("");
-	} else {
-            return 0;
-	}
-    }
-
+    
     /** This method provides the recursive functionality
      *  of put(Token, double).
      */
     private void _put(Token token, double time, Workspace workspace,
 	    DDEDirector director) {
+	Thread thread = Thread.currentThread();
+	if( thread instanceof DDEThread ) {
+	    String callerName = ((Nameable)((DDEThread)thread).getActor()).getName();
+	    String calleeName = 
+		((Nameable)getContainer().getContainer()).getName();
+	    /*
+	    if( token instanceof NullToken ) {
+		System.out.println("put() with NullToken called on "+calleeName+" at time = "+time+" by "+callerName);
+	    } else {
+		System.out.println("put() with RealToken called on "+calleeName+" at time = "+time+" by "+callerName);
+	    }
+	    */
+	}
+
+
         synchronized(this) {
         
             if( time > getCompletionTime() &&
@@ -722,11 +435,7 @@ public class DDEReceiver extends TimedQueueReceiver
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
 		if( _readPending ) {
-                    if( isConnectedToBoundary() ) {
-		        director.removeExternalReadBlock();
-                    } else {
-		        director.removeInternalReadBlock();
-                    }
+		    director.removeInternalReadBlock();
 		    _readPending = false;
 		    notifyAll();
 		}
@@ -740,6 +449,7 @@ public class DDEReceiver extends TimedQueueReceiver
 		    workspace.wait( this );
 		}
             }
+
             if( _terminate ) {
 		if( _writePending ) {
 		    _writePending = false;
@@ -757,8 +467,6 @@ public class DDEReceiver extends TimedQueueReceiver
 
     ///////////////////////////////////////////////////////////////////
     ////                      package friendly variables           ////
-    
-    boolean _ignoreNotSeen = true;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

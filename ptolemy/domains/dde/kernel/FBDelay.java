@@ -191,6 +191,10 @@ public class FBDelay extends DDEActor {
      * @see ptolemy.domains.dde.kernel.DDEReceiver
      */
     public void initialize() throws IllegalActionException {
+	// System.out.println("##### FBDelay.initialize() #####");
+
+
+
 	super.initialize();
 
         Receiver[][] rcvrs = output.getRemoteReceivers();

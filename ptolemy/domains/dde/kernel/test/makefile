@@ -56,19 +56,13 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	DDEIOPort.tcl \
 	DDEReceiver.tcl \
+	DDEIOPort.tcl \
 	FBDelay.tcl \
-	TimeKeeper.tcl \
-	TimedQueueReceiver.tcl 
-	
-	# DDEIOPort.tcl \
-	# DDEReceiver.tcl \
-	# FBDelay.tcl \
-	# TimeKeeper.tcl \
-	# TimedQueueReceiver.tcl 
-	
-	# Test.tcl
+	RcvrComparator.tcl \
+	TimedQueueReceiver.tcl \
+	TimeKeeper.tcl 
+
 	# test.tcl 
 
 # Graphical Java tests that use Tcl.

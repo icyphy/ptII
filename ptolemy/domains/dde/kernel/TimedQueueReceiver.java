@@ -101,7 +101,7 @@ public class TimedQueueReceiver {
     public TimedQueueReceiver(IOPort container, int priority) {
         super();
 	_container = container;
-	setPriority(priority);
+	_priority = priority;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -128,7 +128,7 @@ public class TimedQueueReceiver {
      * @exception NoTokenException If the queue is empty.
      */
     public Token get() {
-        // Get the a token and set all relevant 
+        // Get a token and set all relevant 
         // local time parameters
 	Token token = null;
         Event event = (Event)_queue.take();
@@ -144,27 +144,13 @@ public class TimedQueueReceiver {
         }
         
         // Set relevant TimeKeeper time parameters
-        // based on whether this receiver is contained
-        // in a boundary port or not.
 	Thread thread = Thread.currentThread();
         try {
             if( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
-            
-                if( isInsideBoundary() ) {
-                    timeKeeper.setOutputTime( event.getTime() );
-                    return token;
-                } 
-                
-                else if( isOutsideBoundary() ) {
-                    timeKeeper.setCurrentTime( event.getTime() );
-                } 
-                
-                else {
-                    timeKeeper.setCurrentTime( event.getTime() );
-                    timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
-                }
+                timeKeeper.setCurrentTime( event.getTime() );
+                timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
             }
         } catch( IllegalActionException e ) {
             System.err.println("An exception thrown while setting"
@@ -177,13 +163,10 @@ public class TimedQueueReceiver {
             TimeKeeper timeKeeper =
                 ((DDEThread)thread).getTimeKeeper();
 
-	    if( !isInsideBoundary() && !isOutsideBoundary() ) {
-		timeKeeper.removeAllIgnoreTokens();
-	    	timeKeeper.updateRcvrList(this);
-	    } else if( !isInsideBoundary() ) {
-		timeKeeper.removeAllIgnoreTokens();
-		timeKeeper.updateRcvrList(this);
-            }
+	    timeKeeper.removeAllIgnoreTokens();
+	    /* FIXME
+	    timeKeeper.updateRcvrList(this);
+	    */
         }
 
         return token;
@@ -203,21 +186,13 @@ public class TimedQueueReceiver {
         return _container;
     }
 
-    /** Return the last time of this receiver. The last time is
-     *  the time associated with the token that was most recently
-     *  placed in the queue. If no tokens have been placed on the
-     *  queue, then the last time equals 0.0.
-     * @return double The last time of this TimedQueueReceiver.
+    /** Return the last time of this receiver. This method
+     *  is not synchronized so the caller should be.
+     * @return double The last time.
+     * @deprecated Only used for testing purposes
      */
     public double getLastTime() {
         return _lastTime;
-    }
-
-    /** Get the priority of this receiver.
-     * @return Return the priority of this receiver.
-     */
-    public int getPriority() {
-        return _priority;
     }
 
     /** Return the receiver time of this receiver. The receiver
@@ -248,148 +223,37 @@ public class TimedQueueReceiver {
         return _queue.size() > 0;
     }
 
-    /** Return true if this receiver is connected to the inside of a 
-     *  boundary port. A boundary port is an opaque port that is contained 
-     *  by a composite actor. If this receiver is connected to the inside 
-     *  of a boundary port, then return true. Otherwise return false. 
-     *  Note that this method will return false if this receiver is 
-     *  contained in a boundary port.
-     *  This method is not synchronized so the caller should be.
-     * @return True if this receiver is connected to the inside of a 
-     *  boundary port; return false otherwise.
-     */
-     public boolean isConnectedToBoundary() {
-         IOPort innerPort = (IOPort)getContainer();
-         if( innerPort == null ) {
-             return false;
-         }
-         ComponentEntity innerEntity = 
-                 (ComponentEntity)innerPort.getContainer(); 
-
-         Port outerPort = null; 
-         List portList = innerPort.connectedPortList(); 
-         Iterator ports = portList.iterator();
-         ComponentEntity outerEntity = null; 
-         while( ports.hasNext() ) {
-             outerPort = (Port)ports.next();
-             outerEntity = (ComponentEntity)outerPort.getContainer();
-             if( outerEntity == innerEntity.getContainer() ) {
-		 // We are connected to a boundary port. Now
-		 // determine if the boundary port is connected
-		 // to this relation.
-                 try {
-		     Receiver[][] rcvrs = 
-                         ((IOPort)outerPort).deepGetReceivers();
-		     for( int i = 0; i < rcvrs.length; i++ ) {
-		     	 for( int j = 0; j < rcvrs[i].length; j++ ) {
-		             if( this == rcvrs[i][j] ) {
-			         return true;
-			     }
-		         }
-		     }
-                 } catch( IllegalActionException e) {
-            	     System.err.println("An exception thrown while "
-                             + " accessing the remote receivers.");
-                 }
-             }
-         }
-         return false;
-     }
-     
-    /** Return true if this receiver is contained on the inside of a 
-     *  boundary port. A boundary port is an opaque port that is 
-     *  contained by a composite actor. If this receiver is contained 
-     *  on the inside of a boundary port then return true. Otherwise 
-     *  return false. This method is not synchronized so the caller 
-     *  should be.
-     * @return True if this receiver is contained on the inside of
-     *  a boundary port; return false otherwise.
-     */
-     public boolean isInsideBoundary() {
-         IOPort innerPort = (IOPort)getContainer();
-         if( innerPort == null ) {
-             return false;
-         }
-         ComponentEntity innerEntity = 
-                 (ComponentEntity)innerPort.getContainer(); 
-         if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
-             // This receiver is contained by the port 
-             // of a composite actor.
-             if( innerPort.isOutput() && !innerPort.isInput() ) {
-                 return true;
-             } else if( !innerPort.isOutput() && innerPort.isInput() ) {
-                 return false;
-             } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
-                 return false;
-             } else {
-                 // NOTE: The following only works if the port is not 
-                 // both an input and output.
-                 throw new IllegalArgumentException("A port that is "
-                         + "both an input and output can not be " 
-                         + "properly dealt with by "
-                         + "DDEReceiver.isInsideBoundary");
-             }
-         } 
-         return false;
-     }
-
-    /** Return true if this receiver is contained on the inside of a 
-     *  boundary port. A boundary port is an opaque port that is 
-     *  contained by a composite actor. If this receiver is contained 
-     *  on the inside of a boundary port then return true. Otherwise 
-     *  return false. This method is not synchronized so the caller 
-     *  should be.
-     * @return True if this receiver is contained on the inside of
-     *  a boundary port; return false otherwise.
-     */
-     public boolean isOutsideBoundary() {
-         IOPort innerPort = (IOPort)getContainer();
-         if( innerPort == null ) {
-             return false;
-         }
-         ComponentEntity innerEntity = 
-                 (ComponentEntity)innerPort.getContainer(); 
-         if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
-             // This receiver is contained by the port 
-             // of a composite actor.
-             if( innerPort.isOutput() && !innerPort.isInput() ) {
-                 return false;
-             } else if( !innerPort.isOutput() && innerPort.isInput() ) {
-                 return true;
-             } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
-                 return false;
-             } else {
-                 // NOTE: The following only works if the port is not 
-                 // both an input and output.
-                 throw new IllegalArgumentException("A port that is "
-                         + "both an input and output can not be " 
-                         + "properly dealt with by "
-                         + "DDEReceiver.isInsideBoundary");
-             }
-         } 
-         return false;
-     }
-
     /** Put a token on the queue with the specified time stamp and set
      *  the last time value to be equal to this time stamp. If the
      *  queue is empty immediately prior to putting the token on
      *  the queue, then set the receiver time value to be equal to the
      *  last time value. If the queue is full, throw a NoRoomException.
-     * @param token The token to put on the queue.
+     *  Time stamps can not be set to negative values that are not equal 
+     *  to IGNORE or INACTIVE; otherwise an IllegalArgumentException
+     *  will be thrown.
+     * @param token The token to put on the queue. 
      * @param time The time stamp of the token.
      * @exception NoRoomException If the queue is full.
      */
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE && time != IGNORE ) {
+	    /* FIXME
 	    if( token instanceof NullToken ) {
 		return;
 	    }
+	    */
 	    IOPort port = (IOPort)getContainer();
 	    NamedObj actor = (NamedObj)port.getContainer();
 	    // NOTE: Maintain the following IllegalArgumentException
 	    // message as it is used by DDEIOPort.send().
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time in the past.");
+	} else if( time < 0.0 && time != INACTIVE && time != IGNORE ) {
+	    IOPort port = (IOPort)getContainer();
+	    NamedObj actor = (NamedObj)port.getContainer();
+	    throw new IllegalArgumentException(actor.getName() +
+		    " - Attempt to set current time to a" +
+		    " a negative value.");
 	}
         Event event;
         _lastTime = time;
@@ -411,10 +275,16 @@ public class TimedQueueReceiver {
      * @exception NoTokenException If the queue is empty.
      */
     public void removeIgnoredToken() {
+	/*
+	String name = ((Nameable)getContainer().getContainer()).getName();
+	System.out.println("*****removeIgnoredToken() called on "+name);
+	*/
+
+
         if( getRcvrTime() != TimedQueueReceiver.IGNORE ) {
             return;
         }
-        // Get the a token and set all relevant 
+        // Get the token and set all relevant 
         // local time parameters
         Event event = (Event)_queue.take();
         if (event == null) {
@@ -428,22 +298,13 @@ public class TimedQueueReceiver {
             _rcvrTime = nextEvent.getTime();
         }
         
-        // Set relevant TimeKeeper time parameters
-        // based on whether this receiver is contained
-        // in a boundary port or not.
+        // Set relevant time keeper time parameters
 	Thread thread = Thread.currentThread();
         try {
             if( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
-            
-                if( isInsideBoundary() || isOutsideBoundary() ) {
-                    return;
-                } 
-                
-                else {
-                    timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
-                }
+		timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
             }
         } catch( IllegalActionException e ) {
             System.err.println("An exception thrown while setting"
@@ -452,13 +313,25 @@ public class TimedQueueReceiver {
         
 	// Set the receiver time if value is still IGNORE
 	if( getRcvrTime() == TimedQueueReceiver.IGNORE ) {
+	    /* FIXME
+	    if( name.equals("join") ) {
+		System.out.println("##### STILL IGNORE #####");
+	    }
+	    */
 	    if( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
+		/*
+		if( name.equals("join") ) {
+		    System.out.println("Ignore time of "+name+
+			    " replaced with time of "+timeKeeper.getCurrentTime());
+		}
+		*/
 		setRcvrTime( timeKeeper.getCurrentTime() );
 	    }
 	}
         
+	/* FIXME
         // Call updateRcvrList() even if _queue.size() == 0,
         // so that the triple is no longer in front.
         if( thread instanceof DDEThread ) {
@@ -466,6 +339,7 @@ public class TimedQueueReceiver {
                 ((DDEThread)thread).getTimeKeeper();
             timeKeeper.updateRcvrList(this);
         }
+	*/
     }
 
     /** Set the queue capacity of this receiver.
@@ -488,6 +362,12 @@ public class TimedQueueReceiver {
     // This time value indicates that the receiver contents should
     // be ignored.
     static final double IGNORE = -1.0;
+
+    // The time stamp of the newest token to be placed in the queue.
+    double _lastTime = 0.0;
+
+    // The priority of this receiver.
+    int _priority = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods                ////
@@ -520,7 +400,7 @@ public class TimedQueueReceiver {
      *  the local notion of time of the actor that contains this
      *  receiver.
      */
-    public void reset() {
+    void reset() {
         DDEDirector director = (DDEDirector)
             ((Actor)getContainer().getContainer()).getDirector();
 	double time = director.getCurrentTime();
@@ -543,14 +423,6 @@ public class TimedQueueReceiver {
         _completionTime = time;
     }
 
-    /** Set the priority of this receiver. This method is
-     *  not synchronized so the caller should be.
-     * @param int The priority of this receiver.
-     */
-    void setPriority(int priority) {
-        _priority = priority;
-    }
-
     /** Set the receiver time of this receiver to the specified
      *  value. If this queue is not empty, then the receiver
      *  time will not be set to the specified value. This method
@@ -566,24 +438,19 @@ public class TimedQueueReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The time stamp of the newest token to be placed in the queue.
-    private double _lastTime = 0.0;
-
-    // The time stamp of the earliest token that is still in the queue.
-    private double _rcvrTime = 0.0;
-
     // The time after which execution of this receiver will cease.
     private double _completionTime = ETERNITY;
-
-    // The priority of this receiver.
-    private int _priority = 0;
-
-    // The queue in which this receiver stores tokens.
-    private FIFOQueue _queue = new FIFOQueue();
 
     // The IOPort which contains this receiver.
     private IOPort _container;
     
+    // The queue in which this receiver stores tokens.
+    // FIXME
+    public FIFOQueue _queue = new FIFOQueue();
+
+    // The time stamp of the earliest token that is still in the queue.
+    private double _rcvrTime = 0.0;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
@@ -593,7 +460,8 @@ public class TimedQueueReceiver {
     // values. This is particularly useful in situations
     // where the specification of the destination receiver
     // may be considered redundant.
-    private class Event {
+    // FIXME
+    public class Event {
 
 	// Construct an Event with a token and time stamp.
 	public Event(Token token, double time) {

@@ -37,8 +37,9 @@ import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeKeeper
@@ -96,7 +97,8 @@ public class TimeKeeper {
      */
     public TimeKeeper(Actor anActor) throws IllegalActionException {
 	_actor = anActor;
-        _rcvrTimeList = new LinkedList();
+        _rcvrList = new LinkedList();
+	_rcvrComparator = new RcvrComparator(this);
 
         String name = ((Nameable)_actor).getName();
         setRcvrPriorities();
@@ -123,182 +125,10 @@ public class TimeKeeper {
      *  managed by this TimeKeeper.
      */
     public synchronized TimedQueueReceiver getFirstRcvr() {
-	if( _rcvrTimeList.size() == 0 ) {
+	if( _rcvrList.size() == 0 ) {
 	    return null;
 	}
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.getFirst();
-	return triple.getReceiver();
-    }
-
-    /** Return the TimedQueueReceiver of this time keeper's list such that
-     *  the returned receiver has the highest priority given that it has
-     *  the lowest nonnegative receiver time of all receivers managed by
-     *  this TimeKeeper. Return null if this time keeper's list of receivers
-     *  is empty.
-     * @return The TimedQueueReceiver with the highest priority
-     *  and lowest nonnegative rcvrTime. If no receivers exist,
-     *  return null.
-     */
-    public synchronized TimedQueueReceiver getHighestPriorityNull() {
-        double time = -10.0;
-	double firstTime = -10.0;
-        int maxPriority = -1;
-	int cnt = 0;
-	boolean rcvrNotFound = true;
-        RcvrTimeTriple highPriorityTriple = null;
-
-	if( _rcvrTimeList.size() == 0 ) {
-	    return null;
-	}
-	while( cnt < _rcvrTimeList.size() ) {
-	    RcvrTimeTriple triple =
-                (RcvrTimeTriple)_rcvrTimeList.get(cnt);
-	    if( time == -10.0 ) {
-	        time = triple.getTime();
-	        firstTime = time;
-		TimedQueueReceiver tmpRcvr =
-                    (TimedQueueReceiver)triple.getReceiver();
-		if( tmpRcvr.hasNullToken() ) {
-		    maxPriority = triple.getPriority();
-		    highPriorityTriple = triple;
-		}
-	    } else {
-	        time = triple.getTime();
-	    }
-
-	    if( time > firstTime ||
-		    time == TimedQueueReceiver.INACTIVE ||
-                    time == TimedQueueReceiver.IGNORE ) {
-		if( highPriorityTriple != null ) {
-		    return highPriorityTriple.getReceiver();
-		} else {
-		    return null;
-		}
-	    } else if( maxPriority < triple.getPriority() ) {
-		TimedQueueReceiver tmpRcvr =
-                    (TimedQueueReceiver)triple.getReceiver();
-		if( tmpRcvr.hasNullToken() ) {
-		    maxPriority = triple.getPriority();
-		    highPriorityTriple = triple;
-		}
-	    }
-	    cnt++;
-	}
-	if( highPriorityTriple != null ) {
-	    return highPriorityTriple.getReceiver();
-	} else {
-	    return null;
-	}
-    }
-
-    /** Return the TimedQueueReceiver of this time keeper's list such that
-     *  the returned receiver has the highest priority given that it has
-     *  the lowest nonnegative receiver time of all receivers managed by
-     *  this TimeKeeper. Return null if this time keeper's list of receivers
-     *  is empty.
-     * @return The TimedQueueReceiver with the highest priority
-     *  and lowest nonnegative rcvrTime. If no receivers exist,
-     *  return null.
-     */
-    public synchronized TimedQueueReceiver getHighestPriorityReal() {
-        double time = -10.0;
-	double firstTime = -10.0;
-        int maxPriority = -1;
-	int cnt = 0;
-	boolean rcvrNotFound = true;
-        RcvrTimeTriple highPriorityTriple = null;
-
-	if( _rcvrTimeList.size() == 0 ) {
-	    return null;
-	}
-	while( cnt < _rcvrTimeList.size() ) {
-	    RcvrTimeTriple triple =
-                (RcvrTimeTriple)_rcvrTimeList.get(cnt);
-	    if( time == -10.0 ) {
-	        time = triple.getTime();
-	        firstTime = time;
-		TimedQueueReceiver tmpRcvr =
-                    (TimedQueueReceiver)triple.getReceiver();
-		if( !tmpRcvr.hasNullToken() ) {
-		    if( tmpRcvr.getRcvrTime() != TimedQueueReceiver.IGNORE ) {
-			maxPriority = triple.getPriority();
-			highPriorityTriple = triple;
-		    }
-		}
-	    } else {
-	        time = triple.getTime();
-	    }
-
-	    if( time > firstTime ||
-		    time == TimedQueueReceiver.INACTIVE ||
-                    time == TimedQueueReceiver.IGNORE ) {
-		if( highPriorityTriple != null ) {
-		    return highPriorityTriple.getReceiver();
-		} else {
-		    return null;
-		}
-	    } else if( maxPriority < triple.getPriority() ) {
-		TimedQueueReceiver tmpRcvr =
-                    (TimedQueueReceiver)triple.getReceiver();
-		if( !tmpRcvr.hasNullToken() ) {
-		    if( tmpRcvr.getRcvrTime() != TimedQueueReceiver.IGNORE ) {
-			maxPriority = triple.getPriority();
-			highPriorityTriple = triple;
-		    }
-		}
-	    }
-	    cnt++;
-	}
-	if( highPriorityTriple != null ) {
-	    return highPriorityTriple.getReceiver();
-	} else {
-	    return null;
-	}
-    }
-
-    /** Return the TimedQueueReceiver of this time keeper's list such that
-     *  the returned receiver has the highest priority given that it has
-     *  the lowest nonnegative receiver time of all receivers managed by
-     *  this TimeKeeper. Return null if this time keeper's list of receivers
-     *  is empty.
-     * @return The TimedQueueReceiver with the highest priority
-     *  and lowest nonnegative rcvrTime. If no receivers exist,
-     *  return null.
-     */
-    public synchronized TimedQueueReceiver getHighestPriorityReceiver() {
-        double time = -10.0;
-	double firstTime = -10.0;
-        int maxPriority = 0;
-	int cnt = 0;
-	boolean rcvrNotFound = true;
-        RcvrTimeTriple highPriorityTriple = null;
-
-	if( _rcvrTimeList.size() == 0 ) {
-	    return null;
-	}
-	while( cnt < _rcvrTimeList.size() ) {
-	    RcvrTimeTriple triple =
-                (RcvrTimeTriple)_rcvrTimeList.get(cnt);
-	    if( time == -10.0 ) {
-	        time = triple.getTime();
-	        firstTime = time;
-		maxPriority = triple.getPriority();
-		highPriorityTriple = triple;
-	    } else {
-	        time = triple.getTime();
-	    }
-
-	    if( time > firstTime ||
-		    time == TimedQueueReceiver.INACTIVE ||
-                    time == TimedQueueReceiver.IGNORE ) {
-		return highPriorityTriple.getReceiver();
-	    } else if( maxPriority < triple.getPriority() ) {
-		maxPriority = triple.getPriority();
-		highPriorityTriple = triple;
-	    }
-	    cnt++;
-	}
-	return highPriorityTriple.getReceiver();
+        return (TimedQueueReceiver)_rcvrList.getFirst();
     }
 
     /** Return the earliest possible time stamp of the next token to be
@@ -310,11 +140,10 @@ public class TimeKeeper {
      *  this actor.
      */
     public double getNextTime() {
-        if( _rcvrTimeList.size() == 0 ) {
+        if( _rcvrList.size() == 0 ) {
             return _currentTime;
         }
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.getFirst();
-        return triple.getTime();
+        return ((TimedQueueReceiver)_rcvrList.getFirst()).getRcvrTime();
     }
 
     /** Return the current value of the output time associated with
@@ -336,134 +165,44 @@ public class TimeKeeper {
         return _outputTime;
     }
 
-    /** Return true if the minimum receiver time is unique to a single
-     *  receiver. Return true if there are no input receivers. Return
-     *  false if two or more receivers share the same receiver time and
-     *  this receiver time is less than that of any other receivers
-     *  contained by the same actor.
-     * @return True if the minimum receiver time is unique to a single
-     *  receiver or if there are no receivers; otherwise return false.
-     */
-    public synchronized boolean hasMinRcvrTime() {
-        if( _rcvrTimeList.size() < 2 ) {
-            return true;
-        }
-
-        RcvrTimeTriple firstTriple =
-            (RcvrTimeTriple)_rcvrTimeList.getFirst();
-	RcvrTimeTriple secondTriple =
-            (RcvrTimeTriple)_rcvrTimeList.get(1);
-
-	if( firstTriple.getTime() == secondTriple.getTime() ) {
-	    return false;
-	}
-	return true;
-    }
-
-    /** Resort the receivers that are controlled by this TimeKeeper.
-     *  Use this method in cases where the receiver times may have
-     *  been modified without being reordered with respect to the
-     *  other receivers.
-     */
-    public synchronized void resortRcvrList() {
-	String calleeName = ((Nameable)_actor).getName();
-	int listSize = _rcvrTimeList.size();
-	LinkedList oldRcvrTimeList = _rcvrTimeList;
-	_rcvrTimeList = new LinkedList();
-	RcvrTimeTriple triple;
-	TimedQueueReceiver rcvr;
-	for( int i = 0; i < listSize; i++ ) {
-	    triple = (RcvrTimeTriple)oldRcvrTimeList.get(i);
-	    rcvr = triple.getReceiver();
-	    updateRcvrList(rcvr);
-	} 
-    }
-
-    /** If the actor managed by this time keeper is atomic, then send a 
-     *  NullToken to all output channels that have a receiver time less 
-     *  than or equal to the current time of this time keeper. In this
-     *  case, set the time stamp of the NullTokens to be equal to the
-     *  current time of this TimeKeeper.
-     *  <P>
-     *  If the receiver argument of this method is contained on the 
-     *  inside of a boundary port and the outer model of computation is 
-     *  DDE, then send a NullToken to each receiver linked to the receiver 
-     *  argument. In this case, set the time stamp of the NullTokens to be
-     *  equal to the output time of this TimeKeeper.
-     *  <P>
-     *  If the receiver argument of this method is contained on the
-     *  outside of a boundary port and the inner model of computation is
-     *  DDE, then send a NullToken to each receiver linked to the receiver
-     *  argument. In this case, set the time stamp of the NullTokens to be
-     *  equal to the current time of this TimeKeeper.
+    /** Send a NullToken to all output channels that have a receiver 
+     *  time less than or equal to the current time of this time keeper. 
+     *  In this case, set the time stamp of the NullTokens to be equal 
+     *  to the current time of this time keeper. This method assumes
+     *  that the actor controlled by this time keeper is atomic.
      *  <P>
      *  This method is not synchronized so the calling method should be. 
      * @params rcvr The receiver that is causing this method to be invoked.
      */
     public void sendOutNullTokens(DDEReceiver rcvr) {
-        String actorName = ((Nameable)_actor).getName();
-        if( rcvr.isInsideBoundary() ) {
-            if( _actor.getExecutiveDirector() instanceof DDEDirector ){
-                IOPort port = (IOPort)rcvr.getContainer();
-                Receiver[][] rcvrs = null;
-                rcvrs = port.getRemoteReceivers();
-                double time = getOutputTime();
-                for (int i = 0; i < rcvrs.length; i++) {
-            	    for (int j = 0; j < rcvrs[i].length; j++ ) {
-                        if( time > ((DDEReceiver)
-                                rcvrs[i][j]).getLastTime() ) {
-                            ((DDEReceiver)rcvrs[i][j]).put(
-                                    new NullToken(), time );
-                        }
-                    }
-                }
-            }
-            return;
-        }
-        
-        else if( rcvr.isOutsideBoundary() ) {
-            if( _actor.getDirector() instanceof DDEDirector ){
-                IOPort port = (IOPort)rcvr.getContainer();
-                Receiver[][] rcvrs = null;
-                try {
-                    rcvrs = port.deepGetReceivers();
-                } catch( IllegalActionException e ) {
-                    System.err.println("Error while accessing "
-                            + "the receivers");
-                }
-                double time = getCurrentTime();
-                for (int i = 0; i < rcvrs.length; i++) {
-            	    for (int j = 0; j < rcvrs[i].length; j++ ) {
-                        if( time > ((DDEReceiver)
-                                rcvrs[i][j]).getLastTime() ) {
-                            ((DDEReceiver)rcvrs[i][j]).put(
-                                    new NullToken(), time );
-                        }
-                    }
-                }
-            }
-            return;
-        }
-        
-        else {
-	    Iterator ports = _actor.outputPortList().iterator(); 
-            double time = getCurrentTime(); 
-            while( ports.hasNext() ) {
-            	IOPort port = (IOPort)ports.next(); 
-                Receiver rcvrs[][] = 
-                        (Receiver[][])port.getRemoteReceivers();
-            	for (int i = 0; i < rcvrs.length; i++) {
-                    for (int j = 0; j < rcvrs[i].length; j++) {
-                        if( time >
-			        ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
-                            ((DDEReceiver)rcvrs[i][j]).put(
-                                    new NullToken(), time );
-                        }
+	String name = ((Nameable)_actor).getName();
+	/*
+	if( name.equals("fBack") ) {
+	    try {
+		throw new IllegalArgumentException();
+	    } catch( IllegalArgumentException e ) {
+		e.printStackTrace();
+	    }
+	}
+	*/
+
+
+
+	Iterator ports = _actor.outputPortList().iterator(); 
+	double time = getCurrentTime(); 
+	while( ports.hasNext() ) {
+	    IOPort port = (IOPort)ports.next(); 
+	    Receiver rcvrs[][] = 
+		(Receiver[][])port.getRemoteReceivers();
+	    for (int i = 0; i < rcvrs.length; i++) {
+		for (int j = 0; j < rcvrs[i].length; j++) {
+		    if( time > ((DDEReceiver)rcvrs[i][j])._lastTime ) {
+			((DDEReceiver)rcvrs[i][j]).put(
+				new NullToken(), time );
 		    }
 		}
             }
-            return;
-        }
+	}
     }
 
     /** Set the current time of this TimeKeeper. If the specified
@@ -481,14 +220,14 @@ public class TimeKeeper {
 		&& time != TimedQueueReceiver.IGNORE ) {
 	    throw new IllegalArgumentException(
 		    ((NamedObj)_actor).getName() + " - Attempt to "
-		    + "set current time in the past.");
+		    + "set current time in the past." 
+		    + " time = " + time
+		    + "; current time = " + _currentTime );
 	}
             
 	if( time != TimedQueueReceiver.IGNORE ) {
             _currentTime = time;
-	} else {
-	    return;
-	}
+	} 
     }
 
     /** Set the priorities of the receivers contained in the input
@@ -504,6 +243,13 @@ public class TimeKeeper {
      */
     public synchronized void setRcvrPriorities()
             throws IllegalActionException {
+		/*
+	String name = ((Nameable)_actor).getName();
+	System.out.println("##### TimeKeeper Set Priorities: "+name+" #####");
+		*/
+
+
+
         LinkedList listOfPorts = new LinkedList();
 	Iterator inputPorts = _actor.inputPortList().iterator();
 	if( !inputPorts.hasNext() ) {
@@ -521,7 +267,6 @@ public class TimeKeeper {
         // Now set the priorities of each port's receiver, set
 	// the receiving time keeper and initialize the rcvrList.
         //
-	String name = ((Nameable)_actor).getName();
         int cnt = 0;
         int currentPriority = 0;
         while( cnt < listOfPorts.size() ) {
@@ -529,8 +274,8 @@ public class TimeKeeper {
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    ((DDEReceiver)rcvrs[i][j]).setPriority(
-			    currentPriority);
+                    ((DDEReceiver)rcvrs[i][j])._priority = 
+			    currentPriority;
 		    //
 		    // Is the following necessary??
 		    //
@@ -560,89 +305,115 @@ public class TimeKeeper {
 	}
     }
 
-    /** Specify according to the parameter whether or not this
-     *  TimeKeeper currently has receivers that contain IGNORE
-     *  tokens at the head of their queues.
-     * @param ignore Set to true if IGNORE tokens exist at the
-     *  head of a receiver queue; set to false otherwise.
-     */
-    void setIgnoredTokens(boolean ignore) {
-	_ignoredReceivers = ignore;
-    }
-
     /** Update receivers controlled by this time keeper that have
      *  a receiver time equal to TimedQueueReceiver.IGNORE. For
      *  each such receiver, call DDEReceiver.removeIgnoredToken().
      */
     public synchronized void removeAllIgnoreTokens() {
-	if( _rcvrTimeList == null ) {
+	String name = ((Nameable) _actor).getName();
+	/*
+	if( name.equals("join") ) {
+	    System.out.println("*****removeAllIgnoreTokens() called by "+name+" at time "+_currentTime);
+	}
+	*/
+
+
+
+	if( _rcvrList == null ) {
 	    return;
 	}
-	if( _ignoredReceivers ) {
-	    RcvrTimeTriple triple;
-	    DDEReceiver rcvr;
-	    for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
-	        triple = (RcvrTimeTriple)_rcvrTimeList.get(i);
-		rcvr = (DDEReceiver)triple.getReceiver();
+	if( _ignoredRcvrs ) {
+	    TimedQueueReceiver rcvr;
+	    for( int i = 0; i < _rcvrList.size(); i++ ) {
+	        rcvr = (TimedQueueReceiver)_rcvrList.get(i);
 		if( rcvr.getRcvrTime() ==
 			TimedQueueReceiver.IGNORE ) {
 		    rcvr.removeIgnoredToken();
-                    rcvr._ignoreNotSeen = true;
 		}
 	    }
-	    _ignoredReceivers = false;
+	    _ignoredRcvrs = false;
 	}
     }
 
-    /** Update the list of TimedQueueReceivers.
-     *  RcvrTimeTriples by positioning the
-     *  specified triple. If the specified triple is already
-     *  contained in the list, then the triple is removed and
-     *  then added back to the list. The position of the triple
-     *  is based on the triple's time value.
+    /** Update the list of receivers by adding and sorting a new 
+     *  receiver or resorting a receiver that already exists. The
+     *  receiver is sorted according to a RcvrComparator.
      * @param tqr The TimedQueueReceiver whose position is being
      *  updated.
-     * @param time The time of the repositioned TimedQueueReceiver.
-     * @param priority The priority of the repositioned
-     *  TimedQueueReceiver.
+     * @see ptolemy.domains.dde.kernel.RcvrComparator
      */
     public synchronized void updateRcvrList(TimedQueueReceiver tqr) {
-	String calleeName = ((Nameable)_actor).getName();
+	if( _rcvrList == null ) {
+	    _rcvrList = new LinkedList();
+	}
+
+	/*
 	double time = tqr.getRcvrTime();
-	int priority = tqr.getPriority();
-	RcvrTimeTriple triple =
-            new RcvrTimeTriple(tqr, time, priority);
-	_removeRcvrTriple( triple );
-	_addRcvrTriple( triple );
+	if( time == TimedQueueReceiver.IGNORE ) {
+	    System.out.println("#### SET IGNORE #####");
+	    _ignoredRcvrs = true;
+	}
+
+	if( !_rcvrList.contains( tqr ) ) {
+	    // Add receiver to list
+	    if( time > 0 ) {
+		_rcvrList.addFirst( tqr );
+	    } else {
+		_rcvrList.addLast( tqr );
+	    }
+	}
+
+	Collections.sort( _rcvrList, _rcvrComparator );
+	*/
+
+
+
+
+	double time = tqr.getRcvrTime();
+	if( time == TimedQueueReceiver.IGNORE ) {
+	    // System.out.println("#### SET IGNORE #####");
+	    _ignoredRcvrs = true;
+	}
+
+	// If receiver is already on the list then sort and return
+	if( _rcvrList.contains( tqr ) ) {
+	    Collections.sort( _rcvrList, _rcvrComparator );
+	    return;
+	}
+
+	// Add receiver to list and then sort
+	if( time > 0.0 ) {
+	    _rcvrList.addFirst( tqr );
+	} else {
+	    _rcvrList.addLast( tqr );
+	}
+	
+	Collections.sort( _rcvrList, _rcvrComparator );
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly variables              ////
 
-    // A flag indicating whether a token has been consumed. This
-    // flag is only used by composite actors.
-    boolean _tokenConsumed = false;
-
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods		   ////
 
-    /** Print the contents of the RcvrTimeTriple list contained by
+    /** Print the contents of the receiver list contained by
      *  this actor. Use this method for testing purposes only.
      * @deprecated
+     */
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
         System.out.println("\n###Print "+name+"'s RcvrList.");
         System.out.println("   Number of Receivers in RcvrList = "
-                + _rcvrTimeList.size() );
-        if( _rcvrTimeList.size() == 0 ) {
+                + _rcvrList.size() );
+        if( _rcvrList.size() == 0 ) {
             System.out.println("\tList is empty");
             System.out.println("###End of printRcvrList()\n");
 	    return;
         }
-        for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
-	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeList.at(i);
-	    TimedQueueReceiver testRcvr = testTriple.getReceiver();
-            double time = testTriple.getTime();
+        for( int i = 0; i < _rcvrList.size(); i++ ) {
+	    TimedQueueReceiver testRcvr = (TimedQueueReceiver)_rcvrList.get(i);
+            double time = testRcvr.getRcvrTime();
 	    Token token = null;
 	    if( testRcvr._queue.size() > 0 ) {
 		token = ((TimedQueueReceiver.Event)testRcvr._queue.get(0)).getToken();
@@ -660,104 +431,9 @@ public class TimeKeeper {
         }
         System.out.println("###End of printRcvrList()\n");
     }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods		   ////
-
-    /** Add the specified RcvrTimeTriple to the list of triples.
-     *  If the time stamp of the specified triple is
-     *  TimedQueueReceiver.INACTIVE, then insert the triple into
-     *  the last position of the RcvrTimeTriple list. If the time
-     *  stamp of the specified triple is TimedQueueReceiver.IGNORE
-     *  then insert the triple before the first INACTIVE receiver.
-     *  In all other cases insert the triple immediately after all
-     *  other triples with time stamps less than or equal to the
-     *  time stamp of the specified triple. ALWAYS call
-     *  _removeRcvrTriple immediately before calling this method if
-     *  the RcvrTimeTriple list already contains the triple specified
-     *  in the argument.
-     */
-    private void _addRcvrTriple(RcvrTimeTriple newTriple) {
-	String calleeName = ((Nameable)_actor).getName();
-        if( _rcvrTimeList.size() == 0 ) {
-            _rcvrTimeList.add( 0, newTriple );
-            return;
-        }
-
-        boolean notAddedYet = true;
-	// Add INACTIVE receivers
-	if( newTriple.getTime() == TimedQueueReceiver.INACTIVE ) {
-	    _rcvrTimeList.addLast(newTriple);
-	    return;
-	}
-
-	// Add IGNORE receivers
-	else if( newTriple.getTime() == TimedQueueReceiver.IGNORE ) {
-	    int cnt = 0;
-	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
-		RcvrTimeTriple triple =
-                    (RcvrTimeTriple)_rcvrTimeList.get(cnt);
-	        if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
-		    _rcvrTimeList.add( cnt, newTriple );
-		    cnt = _rcvrTimeList.size();
-		    notAddedYet = false;
-		} else if( triple.getTime() == TimedQueueReceiver.IGNORE ) {
-		    _rcvrTimeList.add( cnt, newTriple );
-		    cnt = _rcvrTimeList.size();
-		    notAddedYet = false;
-	        }
-	        cnt++;
-	    }
-	    _ignoredReceivers = true;
-	}
-
-	// Add regular receivers
-	else {
-	    int cnt = 0;
-	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
-		RcvrTimeTriple triple =
-                    (RcvrTimeTriple)_rcvrTimeList.get(cnt);
-	        if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
-		    _rcvrTimeList.add( cnt, newTriple );
-		    cnt = _rcvrTimeList.size();
-		    notAddedYet = false;
-		} else if( triple.getTime() == TimedQueueReceiver.IGNORE ) {
-		    _rcvrTimeList.add( cnt, newTriple );
-		    cnt = _rcvrTimeList.size();
-		    notAddedYet = false;
-	        } else if( newTriple.getTime() < triple.getTime() ) {
-	            _rcvrTimeList.add( cnt, newTriple );
-		    cnt = _rcvrTimeList.size();
-		    notAddedYet = false;
-	        }
-	        cnt++;
-	    }
-	}
-
-        if( notAddedYet ) {
-            _rcvrTimeList.addLast( newTriple );
-        }
-    }
-
-    /** Remove the specified RcvrTimeTriple from the list of triples.
-     */
-    private void _removeRcvrTriple(RcvrTimeTriple triple) {
-	String calleeName = ((Nameable)_actor).getName();
-
-        TimedQueueReceiver rcvrToBeRemoved = triple.getReceiver();
-
-	for( int cnt = 0; cnt < _rcvrTimeList.size(); cnt++ ) {
-	    RcvrTimeTriple nextTriple =
-                (RcvrTimeTriple)_rcvrTimeList.get(cnt);
-	    TimedQueueReceiver nextRcvr = nextTriple.getReceiver();
-
-	    if( rcvrToBeRemoved == nextRcvr ) {
-	        _rcvrTimeList.remove( cnt );
-		return;
-	    }
-	}
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -765,82 +441,28 @@ public class TimeKeeper {
     // The actor that is managed by this time keeper.
     private Actor _actor;
 
-    // The _rcvrTimeList stores RcvrTimeTriples and is used to
-    // order the receivers according to time and priority.
-    private LinkedList _rcvrTimeList;
-
     // The currentTime of the actor that is controlled by this
-    // thread is equivalent to the minimum positive rcvrTime of
-    // each input receiver.
+    // time keeper is equivalent to the minimum positive rcvrTime 
+    // of each input receiver.
     private double _currentTime = 0.0;
 
-    // The output time associated with this actor.
+    // The output time associated with this time keeper.
     private double _outputTime = 0.0;
 
-    // Flag set to true if any of the receivers have time of
-    // TimedQueueReceiver.IGNORE
-    private boolean _ignoredReceivers = false;
+    // This flag is set to true if any of the receivers have 
+    // a time stamp of TimedQueueReceiver.IGNORE
+    boolean _ignoredRcvrs = false;
+
+    // The comparator that sorts the receivers 
+    // controlled by this time keeper.
+    private RcvrComparator _rcvrComparator;
+
+    // The _rcvrList stores the receivers controlled by
+    // this time keeper. The receivers are ordered 
+    // according to the rcvr comparator.
+    private LinkedList _rcvrList;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
-    // A RcvrTimeTriple is a data structure for storing a receiver
-    // along with its rcvrTime and priority. RcvrTimeTriples are
-    // used by DDEActors to order incoming events according to time
-    // stamps. Each DDEActor has a RcvrTimeTriple associated with
-    // each receiver it owns. In situations where multiple receivers
-    // of a DDEActor have simultaneous events, the priority of the
-    // RcvrTimeTriples are used to determine order.
-
-    public class RcvrTimeTriple {
-
-        // Construct a RcvrTimeTriple with a TimeQueueReceiver,
-	// a rcvr time and a priority. The rcvr time must be
-	// greater than or equal to any previous rcvr times
-	// associated with the TimedQueueReceiver.
-        public RcvrTimeTriple(TimedQueueReceiver rcvr,
-		double rcvrTime, int priority ) {
-            _rcvr = rcvr;
-	    _priority = priority;
-	    _rcvrTime = rcvrTime;
-	    if( !(rcvr instanceof TimedQueueReceiver) ) {
-	        throw new IllegalArgumentException(
-			rcvr.getContainer().getName() +
-			" is not a TimedQueueReceiver.");
-	    }
-	    if( rcvrTime < _rcvrTime &&
-		    rcvrTime != TimedQueueReceiver.INACTIVE &&
-		    rcvrTime != TimedQueueReceiver.IGNORE ) {
-	        throw new IllegalArgumentException(
-			"Rcvr times must be monotonically "
-			+ "non-decreasing.");
-	    }
-	}
-
-        ///////////////////////////////////////////////////////////
-	////                     public inner methods          ////
-
-        // Return the TimedQueueReceiver of this RcvrTimeTriple.
-        public TimedQueueReceiver getReceiver() {
-            return _rcvr;
-        }
-
-        // Return the priority of this RcvrTimeTriple.
-        public int getPriority() {
-            return _priority;
-        }
-
-        // Return the time of this RcvrTimeTriple.
-        public double getTime() {
-            return _rcvrTime;
-        }
-
-        ///////////////////////////////////////////////////////////
-        ////                     private inner variables       ////
-
-        private TimedQueueReceiver _rcvr;
-	private double _rcvrTime = 0.0;
-	private int _priority;
-    }
 
 }

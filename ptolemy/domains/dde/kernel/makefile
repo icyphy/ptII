@@ -48,16 +48,16 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-        DDEActor.java \
-        DDEDirector.java \
-        DDEIOPort.java \
-        DDEReceiver.java \
-        DDEThread.java \
-        FBDelay.java \
+	DDEActor.java \
+	DDEDirector.java \
+	DDEIOPort.java \
+	DDEReceiver.java \
+	DDEThread.java \
+	FBDelay.java \
 	NullToken.java \
+	RcvrComparator.java \
         TimeKeeper.java \
-        TimedQueueReceiver.java
-	
+	TimedQueueReceiver.java 
 
 EXTRA_SRCS =	$(JSRCS)
 

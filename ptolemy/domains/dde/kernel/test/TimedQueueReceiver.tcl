@@ -1,4 +1,4 @@
-# Tests for the Event class
+# Tests for the TimedQueueReceiver class
 #
 # @Author: John S. Davis II
 #
@@ -168,6 +168,19 @@ test TimedQueueReceiver-6.2 {Check for exception with get() given empty \
     catch {$tqr get} msg 
     list $msg
 } {{java.util.NoSuchElementException: The FIFOQueue is empty!}}
+
+######################################################################
+####
+#
+test TimedQueueReceiver-7.2 {Attempt to put negative time stamps} {
+    set actor [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
+    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
+    set t1 [java::new ptolemy.data.Token]
+
+    catch {$tqr put $t1 -1.5} msg
+    list $msg
+} {{java.lang.IllegalArgumentException:  - Attempt to set current time in the past.}}
 
 
 

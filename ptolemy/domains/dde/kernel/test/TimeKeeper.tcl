@@ -50,173 +50,14 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # Global Variables 
+set globalIgnoreTime -1
 set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
-set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+set globalInactiveTime [java::field $globalEndTimeRcvr INACTIVE]
 
 ######################################################################
 ####
 #
-test TimeKeeper-2.1 {hasMinRcvrTime - No simultaneous Events} {
-    
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
-    set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set iop [java::new ptolemy.actor.TypedIOPort]
-
-    set tok [java::new ptolemy.data.Token]
-
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
-    $rcvr1 put $tok 0.0
-
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    $rcvr2 put $tok 0.5
-
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
-    $rcvr3 put $tok 2.5
-
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-
-    $keeper updateRcvrList $rcvr1 
-    $keeper updateRcvrList $rcvr2
-    $keeper updateRcvrList $rcvr3
-
-    list [$keeper getCurrentTime] [$keeper hasMinRcvrTime]
-
-} {0.0 1}
-
-######################################################################
-####
-#
-test TimeKeeper-2.2 {hasMinRcvrTime - Simultaneous Events} {
-    
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
-    set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set iop [java::new ptolemy.actor.TypedIOPort]
-
-    set tok [java::new ptolemy.data.Token]
-
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
-    $rcvr1 put $tok 0.0
-
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    $rcvr2 put $tok 0.0
-
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
-    $rcvr3 put $tok 2.5
-    
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-
-    $keeper updateRcvrList $rcvr1
-    $keeper updateRcvrList $rcvr2
-    $keeper updateRcvrList $rcvr3
-
-    list [$keeper getCurrentTime] [$keeper hasMinRcvrTime]
-
-} {0.0 0}
-
-######################################################################
-####
-#
-test TimeKeeper-2.3 {hasMinRcvrTime - Negative Events} {
-    
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
-    set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set iop [java::new ptolemy.actor.TypedIOPort]
-
-    set tok [java::new ptolemy.data.Token]
-
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    $rcvr1 put $tok $globalEndTime
-
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
-    $rcvr2 put $tok 5.0
-
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
-    $rcvr3 put $tok 18.0
-
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-
-    $keeper updateRcvrList $rcvr1
-    set time1 [$keeper getNextTime]
-    $keeper updateRcvrList $rcvr2
-    set time2 [$keeper getNextTime]
-    $keeper updateRcvrList $rcvr3
-    set time3 [$keeper getNextTime]
-
-    set val 1
-    if { $time1 != $globalEndTime } {
-	set val 0
-    } 
-    if { $time2 != 5.0 } {
-	set val 0
-    } 
-    if { $time3 != 5.0 } {
-	set val 0
-    } 
-
-    list [$keeper hasMinRcvrTime] $val
-
-} {1 1}
-
-######################################################################
-####
-#
-test TimeKeeper-3.1 {hasMinRcvrTime, getNextTime - With Negative Events} {
-    
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
-    set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set iop [java::new ptolemy.actor.TypedIOPort]
-
-    set tok [java::new ptolemy.data.Token]
-
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    $rcvr1 put $tok $globalEndTime
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
-    $rcvr2 put $tok 5.0
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
-    $rcvr3 put $tok 18.0
-    set rcvr4 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 4]
-    $rcvr4 put $tok 18.0
-    set rcvr5 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 5]
-    $rcvr5 put $tok 18.0
-    set rcvr6 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 6]
-    $rcvr6 put $tok 28.0
-
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
-
-    $keeper updateRcvrList $rcvr1
-    set time1 [$keeper getNextTime]
-    $keeper updateRcvrList $rcvr2
-    set time2 [$keeper getNextTime]
-    $keeper updateRcvrList $rcvr3
-    set time3 [$keeper getNextTime]
-    $keeper updateRcvrList $rcvr4
-    set time4 [$keeper getNextTime]
-    $keeper updateRcvrList $rcvr5
-    set time5 [$keeper getNextTime]
-    $keeper updateRcvrList $rcvr6
-    set time6 [$keeper getNextTime]
-
-    set val 1
-    if { $time1 != $globalEndTime } {
-	set val 0
-    }
-
-    list [$keeper hasMinRcvrTime] $val $time2 $time3 $time4 $time5 $time6
-
-} {1 1 5.0 5.0 5.0 5.0 5.0}
-
-######################################################################
-####
-#
-test TimeKeeper-4.1 {getNextTime()} {
+test TimeKeeper-2.1 {instantiate objects} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
@@ -226,11 +67,18 @@ test TimeKeeper-4.1 {getNextTime()} {
 
     set tok [java::new ptolemy.data.Token]
 
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop 2]
+    list 1
+} {1}
+
+######################################################################
+####
+# Continued from above
+test TimeKeeper-3.1 {getNextTime()} {
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
     $rcvr1 put $tok 15.0
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop 1]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
     $rcvr2 put $tok 5.0
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop 3]
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
     $rcvr3 put $tok 6.0
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
@@ -238,7 +86,8 @@ test TimeKeeper-4.1 {getNextTime()} {
     $keeper updateRcvrList $rcvr1
     $keeper updateRcvrList $rcvr2
     $keeper updateRcvrList $rcvr3
-    set newrcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$keeper getFirstRcvr]]
+
+    set newrcvr [$keeper getFirstRcvr]
 
     list [$keeper getNextTime] [expr {$rcvr2 == $newrcvr} ]
 
@@ -246,40 +95,71 @@ test TimeKeeper-4.1 {getNextTime()} {
 
 ######################################################################
 ####
-#
-test TimeKeeper-4.2 {getNextTime() - With 1 arg DDEReceiver constructor} {
-    
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
-    set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
-
-    set tok [java::new ptolemy.data.Token]
-
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
-    $rcvr1 put $tok 15.0
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+# Continued from above
+test TimeKeeper-3.2 {getNextTime()} {
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 20]
+    $rcvr1 put $tok $globalIgnoreTime
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
     $rcvr2 put $tok 5.0
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
-    $rcvr3 put $tok 6.0
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
+    $rcvr3 put $tok 5.0
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     $keeper updateRcvrList $rcvr1
     $keeper updateRcvrList $rcvr2
     $keeper updateRcvrList $rcvr3
-    set newrcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$keeper getFirstRcvr]]
 
-    list [$keeper getNextTime] [expr {$rcvr2 == $newrcvr} ]
+    set newrcvr [$keeper getFirstRcvr]
+
+    list [$keeper getNextTime] [expr {$rcvr3 == $newrcvr} ]
 
 } {5.0 1}
 
+######################################################################
+####
+# Continued from above
+test TimeKeeper-3.3 {getNextTime()} {
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 20]
+    $rcvr1 put $tok $globalIgnoreTime
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    $rcvr2 put $tok $globalInactiveTime
+
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
+
+    $keeper updateRcvrList $rcvr1
+    $keeper updateRcvrList $rcvr2
+
+    set newrcvr [$keeper getFirstRcvr]
+
+    list [$keeper getNextTime] [expr {$rcvr1 == $newrcvr} ]
+
+} {-1.0 1}
+
+######################################################################
+####
+# Continued from above
+test TimeKeeper-3.4 {getNextTime()} {
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
+    $rcvr1 put $tok $globalInactiveTime
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 5]
+    $rcvr2 put $tok $globalInactiveTime
+
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
+
+    $keeper updateRcvrList $rcvr1
+    $keeper updateRcvrList $rcvr2
+
+    set newrcvr [$keeper getFirstRcvr]
+
+    list [$keeper getNextTime] [expr {$rcvr2 == $newrcvr} ]
+
+} {-2.0 1}
 
 ######################################################################
 ####
 #
-test TimeKeeper-5.1 {Call Methods On Uninitialized TimeKeeper} {
+test TimeKeeper-4.1 {Call Methods On Uninitialized TimeKeeper} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
@@ -288,9 +168,6 @@ test TimeKeeper-5.1 {Call Methods On Uninitialized TimeKeeper} {
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     set val 1
-    if { ![java::isnull [$keeper getHighestPriorityReceiver]] } {
-	set val 0
-    }
     if { [$keeper getCurrentTime] != 0.0 } {
 	set val 0
     }
@@ -298,9 +175,6 @@ test TimeKeeper-5.1 {Call Methods On Uninitialized TimeKeeper} {
 	set val 0
     }
     if { ![java::isnull [$keeper getFirstRcvr]] } {
-	set val 0
-    }
-    if { [$keeper hasMinRcvrTime] == 0 } {
 	set val 0
     }
 
@@ -311,162 +185,121 @@ test TimeKeeper-5.1 {Call Methods On Uninitialized TimeKeeper} {
 ######################################################################
 ####
 #
-test TimeKeeper-6.1 {getHighestPriorityTriple - Simultaneous Events} {
+test TimeKeeper-5.1 {Ignore Tokens} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
-
     set tok [java::new ptolemy.data.Token]
 
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
-    $rcvr1 put $tok 5.0
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    $rcvr2 put $tok 5.0
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
-    $rcvr3 put $tok 6.0
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
+    $rcvr1 put $tok 0.0
 
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 4]
+    $rcvr2 put $tok $globalIgnoreTime
 
-    $keeper updateRcvrList $rcvr1 
-    $keeper updateRcvrList $rcvr2 
-    $keeper updateRcvrList $rcvr3
-    set newrcvr [$keeper getHighestPriorityReceiver]
-
-    list [$keeper getCurrentTime] [expr {$rcvr2 == $newrcvr} ]
-
-} {0.0 1}
-
-######################################################################
-####
-#
-test TimeKeeper-6.2 {getHighestPriorityTriple - No Simultaneous Events} {
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
-    set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
-
-    set tok [java::new ptolemy.data.Token]
-
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
-    $rcvr1 put $tok 15.0
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    $rcvr2 put $tok 5.0
+    set val 0
+    if { [$rcvr1 hasToken] == 1 } {
+	if { [$rcvr2 hasToken] == 1 } {
+	    set val 1
+	}
+    }
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     $keeper updateRcvrList $rcvr1
     $keeper updateRcvrList $rcvr2
-    set newrcvr [$keeper getHighestPriorityReceiver]
 
-    list [$keeper getCurrentTime] [expr {$rcvr2 == $newrcvr} ]
+    $keeper removeAllIgnoreTokens
 
-} {0.0 1}
+    set newVal 1
+    if { [$rcvr2 hasToken] == 0 } {
+	set newVal 0
+    }
+
+    list $val $newVal
+
+} {1 0}
 
 ######################################################################
 ####
-#
-test TimeKeeper-6.3 {getHighestPriorityTriple - Simultaneous Events w/NullToken} {
+# Continued from above.
+test TimeKeeper-5.2 {Ignore Tokens} {
     
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
-    set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
+    $rcvr1 put $tok 0.0
 
-    set tok [java::new ptolemy.data.Token]
-    set nullTok [java::new ptolemy.domains.dde.kernel.NullToken]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 4]
+    $rcvr2 put $tok $globalIgnoreTime
+    $rcvr2 put $tok 3.0
 
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
-    $rcvr1 put $tok 5.0
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    $rcvr2 put $nullTok 5.0
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
-    $rcvr3 put $tok 6.0
+    set val 0
+    if { [$rcvr1 hasToken] == 1 } {
+	if { [$rcvr2 hasToken] == 1 } {
+	    set val 1
+	}
+    }
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $rcvr1 
-    $keeper updateRcvrList $rcvr2 
-    $keeper updateRcvrList $rcvr3
-    set newrcvr [$keeper getHighestPriorityReal]
+    $keeper updateRcvrList $rcvr1
+    $keeper updateRcvrList $rcvr2
 
-    list [$keeper getCurrentTime] [expr {$rcvr2 == $newrcvr} ]
+    $keeper removeAllIgnoreTokens
 
-} {0.0 0}
+    set newVal 1
+    if { [$rcvr2 hasToken] == 0 } {
+	set newVal 0
+    }
+
+    set time [$rcvr2 getRcvrTime]
+
+    list $val $time
+
+} {1 3.0}
 
 ######################################################################
 ####
-#
-test TimeKeeper-7.1 {Check resortList} {
-    set actor [java::new ptolemy.actor.TypedAtomicActor] 
-    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
+# Continued from above.
+test TimeKeeper-5.3 {Ignore Tokens} {
+    
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
+    $rcvr1 put $tok $globalIgnoreTime
+
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 4]
+    $rcvr2 put $tok $globalIgnoreTime
+
+    set val 0
+    if { [$rcvr1 hasToken] == 1 } {
+	if { [$rcvr2 hasToken] == 1 } {
+	    set val 1
+	}
+    }
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
+    $keeper updateRcvrList $rcvr1
+    $keeper updateRcvrList $rcvr2
 
-    set $tok [java::new ptolemy.data.Token]
+    $keeper removeAllIgnoreTokens
 
-    $rcvr1 put $tok 15.0
-    $rcvr2 put $tok 5.0
-    $rcvr3 put $tok 7.0
-
-    $keeper updateRcvrList $rcvr1 
-    $keeper updateRcvrList $rcvr2 
-    $keeper updateRcvrList $rcvr3 
-
-    set val 1
-    if {[$keeper getFirstRcvr] != $rcvr2 } {
-	set val 0
+    set newVal 1
+    if { [$rcvr1 hasToken] == 0 } {
+	if { [$rcvr1 hasToken] == 0 } {
+	    set newVal 0
+	}
     }
 
-    $rcvr2 get
-    $rcvr2 put $tok 8.0
+    set time [$rcvr2 getRcvrTime]
 
-    $keeper resortRcvrList
+    list $val $newVal
 
-    if { [$keeper getFirstRcvr] != $rcvr3 } {
-	set val 0
-    }
+} {1 0}
 
-    list $val
-} {1}
 
-######################################################################
-####
-#
-test TimeKeeper-8.1 {Check sendOutNullTokens} {
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
-    set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
-    set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
 
-    set outPort [java::new ptolemy.actor.TypedIOPort $act1 "output" false true]
-    set inPort [java::new ptolemy.actor.TypedIOPort $act2 "input" true false]
-    set rel [$topLevel connect $outPort $inPort "rel"]
 
-    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $act1]
-    $inPort createReceivers
 
-    set rcvrs [$inPort getReceivers]
-    set rcvr [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs get {0 0}]]
-    set ddeRcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver $rcvr]
 
-    $rcvr setCapacity 1
-
-    set hasRoom [$rcvr hasRoom]
-    $keeper setCurrentTime 5.0
-    $keeper sendOutNullTokens $ddeRcvr
-    set noRoom [$rcvr hasRoom]
-
-    set val [$rcvr getRcvrTime]
-    
-    list $val $hasRoom $noRoom
-} {5.0 1 0}
