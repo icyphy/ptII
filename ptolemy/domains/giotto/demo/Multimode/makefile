@@ -66,14 +66,14 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass #$(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 
 install: all
 
 demo: demo_applet demo_ptolemy demo_vergil
-demo_applet: $(PTCLASSJAR)
+demo_applet:
 	CLASSPATH=$(CLASSPATH) appletviewer Multimode.htm
 
 demo_ptolemy:
