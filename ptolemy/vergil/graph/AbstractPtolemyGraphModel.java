@@ -213,8 +213,10 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
          *  @param exception The exception that was thrown.
          */
         public void changeFailed(ChangeRequest change, Exception exception) {
-	    // FIXME? Hmm... I believe that this is handled elsewhere?
-            ExceptionHandler.show("Change failed", exception);
+            // Ignore unless this is the originator.
+            if(change.getOriginator() == AbstractPtolemyGraphModel.this) {
+                ExceptionHandler.show("Change failed", exception);
+            }
         }
     }
 }
