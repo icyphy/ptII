@@ -38,8 +38,7 @@ where it might be thrown when the user clicks "cancel" in a dialog box.
 Throwing an exception allows the execution environment to unwind the stack,
 cancelling operations that may only lead to an endless stream of warnings
 or errors.  This class is really just a marker, and is intended to not be
-reported to the user. It is a runtime exception so it can be thrown without
-being declared.
+reported to the user.
 
 @see MessageHandler
 @author Edward A. Lee
