@@ -607,12 +607,13 @@ public class CTMultiSolverDirector extends CTDirector {
             boolean ready = actor.prefire();
             if(_debugging) _debug("Prefire "+((Nameable)actor).getName() +
                     " returns " + ready);
-            if(!ready) {
-                throw new IllegalActionException(((Nameable)actor).getName()
-                        + " prefire returns false. This is not allowed in"
-                        + " the CT domain. Does the actor require all inputs"
-                        + " to be present at the prefire time?");
-            }
+            // Ignore the false return values
+            //if(!ready) {
+            //    throw new IllegalActionException(((Nameable)actor).getName()
+            //            + " prefire returns false. This is not allowed in"
+            //            + " the CT domain. Does the actor require all inputs"
+            //            + " to be present at the prefire time?");
+            //}
         }
         return true;
     }
