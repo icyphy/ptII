@@ -28,6 +28,7 @@
 package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -46,18 +47,20 @@ import java.util.Enumeration;
  *  @version $Id$
  *  @see Actor
  */
-public class DEActor extends TypedAtomicActor {
+public abstract class DEActor extends TypedAtomicActor implements TimedActor {
 
-    /** Constructor a DEActor with the specified container and name.
+    /** Constructor an with the specified container and name.
+     *  This is protected because there is no reason to create an instance
+     *  of this class, but derived classes will want to invoke the
+     *  constructor of the superclass.
      *  @param container The container.
-     *  @param name The name of this actor.
-     *
+     *  @param name The name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEActor(TypedCompositeActor container, String name)
+    protected DEActor(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     }
@@ -67,63 +70,61 @@ public class DEActor extends TypedAtomicActor {
 
     /** Get the current time from the director.
      *  @return The current time.
-     *  @exception IllegalActionException If the director does not exist.
+     *  @exception IllegalActionException If there is no director.
      */
     public double getCurrentTime() throws IllegalActionException {
         DEDirector dir = (DEDirector) getDirector();
         if (dir == null) {
-            throw new IllegalActionException("No director available");
+            throw new IllegalActionException(this, "No director.");
         }
         return dir.getCurrentTime();
     }
 
     /** Get the start time from the director.
      *  @return The start time.
-     *  @exception IllegalActionException If The director does not exist.
+     *  @exception IllegalActionException If there is no director.
      */
     public double getStartTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
 	if (dir == null) {
-	    throw new IllegalActionException("No director available");
+	    throw new IllegalActionException(this, "No director.");
 	}
 	return dir.getStartTime();
     }
 
     /** Get the stop time from the director.
      *  @return The stop time.
-     *  @exception IllegalActionException If the director does not exist.
+     *  @exception IllegalActionException If there is no director.
      */
     public double getStopTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
 	if (dir == null) {
-	    throw new IllegalActionException("No director available");
+	    throw new IllegalActionException(this, "No director.");
 	}
 	return dir.getStopTime();
     }
 
     /** Schedule this actor to be fired at a specified delay relative
-     *  to the current time. If the delay specified is less than zero, then
-     *  IllegalActionException will be thrown.
-     *
+     *  to the current time. If the delay is less than zero, then
+     *  an exception will be thrown.
      *  @param delay The delay, relative to the current time.
      *  @exception IllegalActionException If the delay is negative.
      */
     public void fireAfterDelay(double delay) throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
-	// FIXME: the depth is equal to zero ???
         // If this actor has input ports, then the depth is set to be
         // one higher than the max depth of the input ports.
         // If this actor has no input ports, then the depth is set to
         // to be zero.
-
         dir.fireAfterDelay(this, delay);
     }
 
     /** Schedule this actor to be fired at a specified time in the future.
-     *  If the time is not in the future (i.e. less than the current time),
-     *  then throw an exception.
-     *  @param timeStamp The time stamp at which the actor will be fired.
-     *  @exception IllegalActionException If the time stamp is in the past.
+     *  If the time is not in the future (i.e. is less than the current
+     *  time), then throw an exception.  This is a facade for the fireAt()
+     *  method of the director.
+     *  @param timeStamp The time at which the actor will be fired.
+     *  @exception IllegalActionException If the time is in the past.
      */
     public void fireAt(double timeStamp) throws IllegalActionException {
         DEDirector dir = (DEDirector)getDirector();
