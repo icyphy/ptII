@@ -237,6 +237,9 @@ public class Manager extends NamedObj implements Runnable {
 
         _debug("-- Manager execute() called.");
 
+        // Reset this in case finish() has been called since the last run.
+        _finishRequested = false;
+
         boolean completedSuccessfully = false;
         try {
             initialize();
@@ -453,7 +456,6 @@ public class Manager extends NamedObj implements Runnable {
                 _actorsToInitialize.clear();
             }
             if (_container.prefire()) {
-                // Invoke initialize on actors that have been added.
                 _container.fire();
                 result = _container.postfire();
             }
