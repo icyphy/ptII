@@ -142,6 +142,9 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _debug(getName() + " create breakpoint solver.");
+        _breakpointSolver =
+            _instantiateODESolver(_breakpointsolverclass);
         _debug(getFullName() + " register the initial break point.");
         fireAt(null, getCurrentTime());
     }

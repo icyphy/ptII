@@ -163,8 +163,8 @@ public class CTSingleSolverDirector extends CTDirector {
         setCurrentStepSize(getSuggestedNextStepSize());
         _processBreakpoints();
         _debug("execute the system from "+
-                    getCurrentTime() +" step size" + getCurrentStepSize()
-               + " using solver " + getCurrentODESolver().getName());
+                getCurrentTime() +" step size" + getCurrentStepSize()
+                + " using solver " + getCurrentODESolver().getName());
         _fireOneIteration();
     }
     
@@ -224,7 +224,7 @@ public class CTSingleSolverDirector extends CTDirector {
             fireAt(null, getStopTime());
         }
         if(Math.abs(getCurrentTime() - getStopTime()) < getTimeResolution()) {
-            updateStates(); // call postfire on all actors
+            //updateStates(); // call postfire on all actors
             return false;
         }
         if(getStopTime() < getCurrentTime()) {
@@ -454,10 +454,10 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         _debug("updating parameters");
         // Instantiate ODE solver
-        if(_defaultSolver == null) {
+        //if(_defaultSolver == null) {
             _debug("instantiating ODE solver "+_solverclass);
             _defaultSolver = _instantiateODESolver(_solverclass);
-        }
+            //}
         // set time
         //_debug(this.getFullName() + 
         //        "_init get State Time " + getStartTime());

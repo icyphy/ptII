@@ -238,7 +238,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      *       no scheduler, or thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
-        _debug("MixedSignalDirector initialize.");
+        _debug("MixedSignalDirector " + getName() + " initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
             _debug("Director has no container.");
@@ -259,9 +259,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             double tnow = exe.getCurrentTime();
             setStartTime(tnow);
             exe.fireAt(ca, tnow);
+            _initialize();
+        } else {
+            super.initialize();
         }
-        _debug("Director.super initialize.");
-        _initialize();
     }
 
     /** Return true if this is an embedded director and the current fire

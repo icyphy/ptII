@@ -106,7 +106,7 @@ director dependent.
 */
 public abstract class CTDirector extends StaticSchedulingDirector {
 
-    public static boolean STAT = true;
+    public static boolean STAT = false;
     public  int NSTEP = 0;
     public  int NFUNC = 0;
     public  int NFAIL = 0;
@@ -474,7 +474,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 this, "MaximumIterationsPerStep", 
                 new IntToken(_maxIterations));
             ErrorTolerance =  new Parameter(
-                this, "LocalTrancationErrorTolerance",
+                this, "ErrorTolerance",
                 new DoubleToken(_lteTolerance));
             ValueResolution =  new Parameter(
                 this, "ConvergeValueResolution", 
