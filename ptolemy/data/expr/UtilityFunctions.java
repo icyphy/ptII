@@ -313,7 +313,7 @@ public class UtilityFunctions {
 			return new ArrayToken(result);
         }
     }
-    
+
     /** Return the return type of the iterate method, given the types
      *  of the argument.
      *  @param functionType The type of the function to iterate.
@@ -329,7 +329,7 @@ public class UtilityFunctions {
             throws IllegalActionException {
         if (functionType instanceof FunctionType) {
             FunctionType castFunctionType = (FunctionType)functionType;
-            if (castFunctionType.getArgCount() != 1) {
+        if (castFunctionType.getArgCount() != 1) {
                 throw new IllegalActionException(
                 "iterate() can only be used on functions that take one argument.");
             } else {
@@ -338,14 +338,14 @@ public class UtilityFunctions {
                 if (comparison != CPO.LOWER && comparison != CPO.SAME) {
                     throw new IllegalActionException(
                     "iterate(): specified initial value is not compatible with"
-                    + " function argument type.");  
+                    + " function argument type.");
                 }
                 Type resultType = castFunctionType.getReturnType();
                 int comparison2 = TypeLattice.compare(resultType, argType);
                 if (comparison2 != CPO.LOWER && comparison2 != CPO.SAME) {
                     throw new IllegalActionException(
                     "iterate(): invalid function: function return type is not"
-                    + " compatible with function argument type.");  
+                    + " compatible with function argument type.");
                 }
                 return new ArrayType(
                         TypeLattice.leastUpperBound(resultType, initialType));
@@ -469,20 +469,20 @@ public class UtilityFunctions {
     public static ArrayToken map(FunctionToken function, ArrayToken array)
 	        throws IllegalActionException {
         int arity = function.getNumberOfArguments();
-        ArrayToken result = null;
+        Token[] result = new Token[array.length()];
         if (arity == 1) {
             for (int i = 0; i < array.length(); i++) {
                 Token args = (Token)array.getElement(i);
                 LinkedList arglist = new LinkedList();
                 arglist.add(args);
-                result.add(function.apply(arglist));
-            } 
-         } else {
+                result[i] =function.apply(arglist);
+            }
+         } else if (arity > 1){
             for (int i = 0; i < array.length(); i++) {
                 Token args = (Token)array.getElement(i);
                 if(! (args instanceof ArrayToken)) {
 					throw new IllegalActionException(
-                    "Invalid arguments to map(): mismatched arity.");   
+                    "Invalid arguments to map(): mismatched arity.");
                 }
                 LinkedList arglist = new LinkedList();
                 ArrayToken castArgs = (ArrayToken) args;
@@ -493,14 +493,77 @@ public class UtilityFunctions {
                     for (int j = 1; j< arity; j++) {
                         arglist.add(castArgs.getElement(j));
                     }
-                    result.add(function.apply(arglist));
+                    result[i] =function.apply(arglist);
                 }
             }
-        }
-        return result;
+        } else {
+            throw new IllegalActionException(
+            "map() can only be used on functions that take at least one argument.");
+         }
+        return new ArrayToken(result);
     }
 
+    /** Return the return type of the map method, given the types
+     *  of the argument.
+     *  @param functionType The type of the function to map.
+     *  @param arrayTokenType The type of array to apply the
+     *  specified function on.
+     *  @return The type of the result.
+     *  @exception IllegalActionException If the specified function does not
+     *   take at least one argument, or if the type signature of the function
+     *   is not compatible with the array elements, or if the specified
+     *   function has different argument type.
+     */
+    public static Type mapReturnType(Type functionType, Type arrayTokenType)
+            throws IllegalActionException {
+        if (functionType instanceof FunctionType) {
+            FunctionType castFunctionType = (FunctionType)functionType;
+            if (castFunctionType.getArgCount() == 1) {
+                Type argType = castFunctionType.getArgType(0);
+                int comparison = TypeLattice.compare(
+                        ((ArrayType)arrayTokenType).getElementType(), argType);
+                if (comparison != CPO.LOWER && comparison != CPO.SAME) {
+                    throw new IllegalActionException(
+                    "map(): specified array token is not compatible with"
+                    + " function argument type.");
+                }
+            } else if(castFunctionType.getArgCount() > 1) {
+                Type firstArgType = castFunctionType.getArgType(0);
+                boolean flag = true;
+                for (int i =1; i< castFunctionType.getArgCount(); i++) {
+                    Type argType = castFunctionType.getArgType(i);
+                    if (argType != firstArgType) {
+                        i = castFunctionType.getArgCount();
+                        flag = false;
+                        throw new IllegalActionException("map() can only work "
+                            + "for functions whose arguments are all of the same type.");
+                    }
+                }
+                if (flag) {
+                    Type argType = castFunctionType.getArgType(0);
+                    Type elementType = ((ArrayType)arrayTokenType).getElementType();
+                    if (! (elementType instanceof ArrayType)) {
+                        throw new IllegalActionException(
+                             "map(): specified array token is not compatible with"
+                             + " function arity.");
+                    } else {
+                        int comparison = TypeLattice.compare(
+                                ((ArrayType)elementType).getElementType(), argType);
+                        if (comparison != CPO.LOWER && comparison != CPO.SAME) {
+                            throw new IllegalActionException(
+                            "map(): specified array token is not compatible with"
+                            + " function argument type.");
+                        }
+                    }
+                }
+            }
+            Type resultType = castFunctionType.getReturnType();
+            return new ArrayType(resultType);
 
+        } else {
+            return BaseType.UNKNOWN;
+        }
+    }
 
     /** Return the maximum of two unsigned bytes.
      *  @param x An unsigned byte.
@@ -895,7 +958,7 @@ public class UtilityFunctions {
         }
         return arrayToken;
     }
-    
+
     /** Return the (exact) return type of the repeat function above.
      *  This function always returns an ArrayType whose element type
      *  is the second argument.
@@ -984,7 +1047,7 @@ public class UtilityFunctions {
         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
         return evaluator.traceParseTreeEvaluation(parseTree, null).toString();
     }
-    
+
     /** Return true if the first argument is close in value to the second,
      *  where "close" means that it is within the distance given by the
      *  third argument. Exactly what this means depends on the data type.
