@@ -218,7 +218,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
      */	
-    public Enumeration schedule() throws NotScheduleableException {
+    public Enumeration schedule() throws NotSchedulableException {
        if(!valid()) {
            _cachedschedule = _schedule();
        }
@@ -287,7 +287,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  schedulable. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
      */	
-    protected Enumeration _schedule() throws NotScheduleableException {
+    protected Enumeration _schedule() throws NotSchedulableException {
         try {
             workspace().getReadAccess();
             StaticSchedulingDirector dir =
