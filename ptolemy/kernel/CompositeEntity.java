@@ -427,17 +427,19 @@ public class CompositeEntity extends ComponentEntity {
 
     /** Return a sequence of MoML link attributes that describe
      *  any link between objects (ports, entities, and relations) that are
-     *  present in the <i>filter</i> argument.  The <i>filter</i>
+     *  present in the <i>filter</i> argument.  Both ends of the link
+     *  must be present in <i>filter</i> for MoML to be generated for that
+     *  link.  The <i>filter</i>
      *  argument normally contains ports, relations, and entities
      *  that are contained by this composite entity. If it contains
-     *  this entity, then that is equivalent to containing all the ports
-     *  contained by this entity.  It is recommended to use a collection
+     *  an entity, then that is equivalent to containing all the ports
+     *  contained by that entity.  It is recommended to use a collection
      *  class (such as HashSet) for which the contains() method is
      *  efficient.
      *  <p>
      *  If the argument is null, then return all the links that this
      *  composite is responsible for (i.e., apply no filtering).  If the
-     *  argument is an empty collection, then return none of the links. The
+     *  argument is an empty collection, then return none of the links.  The
      *  links that this entity is responsible for is the inside links of
      *  its ports, and links on ports contained by contained entities.
      *  @param indentation The depth at which the output should be indented.
