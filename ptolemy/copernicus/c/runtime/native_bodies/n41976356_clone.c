@@ -32,5 +32,4 @@ Native code for java.lang.Object.clone().
 
     /* METHOD STUB:
      */
-    i1063877011_Object dummy;
-    return dummy;
+    return NULL;
