@@ -175,24 +175,24 @@ test SignalProcessing-3.2 {decibel array} {
 } {}
 
 ####################################################################
-test SignalProcessing-4.1 {fft Complex: null argument} {
+test SignalProcessing-4.1 {FFTComplexOut Complex[] order: null argument} {
     # Real array
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {fft ptolemy.math.Complex[]} [java::null]]} errMsg
+	    {FFTComplexOut ptolemy.math.Complex[] int} [java::null] 8]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : null array passed to transform method.}}
 
 ####################################################################
-test SignalProcessing-4.2 {fft Complex: empty array} {
+test SignalProcessing-4.2 {FFTComplexOut Complex[] : empty array} {
     set ca0 [java::new {ptolemy.math.Complex[]} 0]
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {fft ptolemy.math.Complex[]} $ca0]} errMsg
+	    {FFTComplexOut ptolemy.math.Complex[]} $ca0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : empty array passed to transform method.}}
 
 
 ####################################################################
-test SignalProcessing-4.2 {FFT Complex} {
+test SignalProcessing-4.2 {FFTComplexOut Complex[]} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -204,30 +204,30 @@ test SignalProcessing-4.2 {FFT Complex} {
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.1 {fft Complex, order: null argument} {
+test SignalProcessing-5.1 {FFTComplexOut Complex[] order: null argument} {
     # Real array
     catch {java::call ptolemy.math.SignalProcessing \
-	    {fft ptolemy.math.Complex[] int} [java::null] 1} errMsg
+	    {FFTComplexOut ptolemy.math.Complex[] int} [java::null] 1} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : null array passed to transform method.}}
 
 ####################################################################
-test SignalProcessing-5.2 {fft Complex, order: empty array} {
+test SignalProcessing-5.2 {FFTComplexOut Complex[] order: empty array} {
     set ca0 [java::new {ptolemy.math.Complex[]} 0]
     catch {java::call ptolemy.math.SignalProcessing \
-	    {fft ptolemy.math.Complex[] int} $ca0 1} errMsg
+	    {FFTComplexOut ptolemy.math.Complex[] int} $ca0 1} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : empty array passed to transform method.}}
 
 ####################################################################
-test SignalProcessing-5.3 {fft Complex, order 0} {
+test SignalProcessing-5.3 {FFTComplexOut Complex[] order 0} {
     catch {java::call ptolemy.math.SignalProcessing \
-	    {fft ptolemy.math.Complex[] int } $ca1 0} errMsg
+	    {FFTComplexOut ptolemy.math.Complex[] int } $ca1 0} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: order argument must be positive.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : order of transform must be positive.}}
 
 ####################################################################
-test SignalProcessing-5.4 {FFTComplexOut, order 1} {
+test SignalProcessing-5.4 {FFTComplexOut Complex[] order 1} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -238,7 +238,7 @@ test SignalProcessing-5.4 {FFTComplexOut, order 1} {
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.5 {FFTComplexOut, order 2} {
+test SignalProcessing-5.5 {FFTComplexOut Complex[] order 2} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -272,22 +272,22 @@ test SignalProcessing-5.7 {FFTComplexOut, order 2, smaller array} {
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-6.1 {fft Complex: empty array} {
+test SignalProcessing-6.1 {FFTComplexOut double[] : empty array} {
     set da0 [java::new {double[]} 0]
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {fft double[]} $da0]} errMsg
+	    {FFTComplexOut double[]} $da0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : empty array passed to transform method.}}
 
 ####################################################################
-test SignalProcessing-6.2 {fft Complex: null array} {
+test SignalProcessing-6.2 {FFTComplexOut double[] int : null array} {
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {fft double[]} [java::null]]} errMsg
+	    {FFTComplexOut double[] int} [java::null] 8]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : null array passed to transform method.}}
 
 ####################################################################
-test SignalProcessing-6.3 {FFTComplexOut double} {
+test SignalProcessing-6.3 {FFTComplexOut double[]} {
     # Real array
     set impulse [java::new {double[]} 5 [list 1.0 0.0 0.0 0.0 0.0]]
     set result [java::call ptolemy.math.SignalProcessing \
@@ -296,27 +296,27 @@ test SignalProcessing-6.3 {FFTComplexOut double} {
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-7.1 {fft Complex, order: empty array} {
+test SignalProcessing-7.1 {FFTComplexOut double[] order: empty array} {
     set da0 [java::new {double[]} 0]
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {fft double[]} $da0]} errMsg
+	    {FFTComplexOut double[]} $da0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : empty array passed to transform method.}}
 
 ####################################################################
-test SignalProcessing-7.2 {fft Complex, order: null array} {
+test SignalProcessing-7.2 {FFTComplexOut double[] order: null array} {
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {fft double[]} [java::null]]} errMsg
+	    {FFTComplexOut double[] int} [java::null]] 8} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : null array passed to transform method.}}
 
 ####################################################################
-test SignalProcessing-7.3 {fft double, order 0} {
+test SignalProcessing-7.3 {FFTComplexOut double[] order 0} {
     # NOTE: uses setup from 6.3 above
     catch {set result [java::call ptolemy.math.SignalProcessing \
-	    {fft double[] int} $impulse 0]} errMsg
+	    {FFTComplexOut double[] int} $impulse 0]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: SignalProcessing.fft: order argument must be positive.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : order of transform must be positive.}}
 
 ####################################################################
 test SignalProcessing-7.4 {FFTComplexOut double, order 1} {
