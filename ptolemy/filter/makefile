@@ -35,7 +35,6 @@ DIRS = filtermodel view controller applet
 # Root of Tycho directory
 ROOT =		../..
 
-ME = 		ptolemy/domains/ct
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 
