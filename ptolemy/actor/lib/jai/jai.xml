@@ -6,6 +6,8 @@
     <?moml
       <group>
         <doc>Java Advanced Imaging actors</doc>
+	<entity name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
+	</entity>
 	<entity name="JAIDCT" class="ptolemy.actor.lib.jai.JAIDCT">
 	</entity>
 	<entity name="JAIDFT" class="ptolemy.actor.lib.jai.JAIDFT">

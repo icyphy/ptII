@@ -48,7 +48,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = JAIDCT.java \
+JSRCS = JAIBMPWriter.java \
+	JAIDCT.java \
 	JAIDFT.java \
 	JAIEdgeDetection.java \
 	JAIIDCT.java \
