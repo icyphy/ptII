@@ -30,6 +30,7 @@
 
 package ptolemy.kernel;
 
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 
 import java.io.IOException;
@@ -126,6 +127,23 @@ public class CompositeEntity extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a change listener. The listener
+     *  will be notified of the execution of each change requested
+     *  via the requestChange() method.
+     *  If the listener is already in the list, do not add it again.
+     *  @param listener The listener to add.
+     */
+    public void addChangeListener(ChangeListener listener) {
+        if (_changeListeners == null) {
+            _changeListeners = new LinkedList();
+        } else {
+            if (_changeListeners.contains(listener)) {
+                return;
+            }
+        }
+        _changeListeners.add(listener);
+    }
 
     /** Allow or disallow connections that are created using the connect()
      *  method to cross levels of the hierarchy.
@@ -687,6 +705,34 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Remove a change listener. If the specified listener is not
+     *  on the list, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeChangeListener(ChangeListener listener) {
+        if (_changeListeners == null) {
+            return;
+        }
+        _changeListeners.remove(listener);
+    }
+
+    /** Request that given change request be executed.   In this base 
+     *  class, execute the change immediately.  Subclasses should override
+     *  this to queue the change request and execute at an appropriate time.
+     *  An exception is thrown by this method if the change 
+     *  request fails.
+     *  @param change The requested change.
+     *  @exception ChangeFailedException If the model is idle and the
+     *  change request fails.
+     */
+    public void requestChange(ChangeRequest change) 
+	throws ChangeFailedException {
+	// If the model is idle (i.e., initialize() has not yet been
+	// invoked), then process the change request right now.
+	change.execute();
+	_notifyChangeListeners(change);
+    }
+
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute, port, entity, or relation.
      *  @param prefix A prefix for the name.
@@ -884,6 +930,21 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Notify all change listeners that the given request has completed
+     *  without throwing an exception.  The notification is deferred to
+     *  mutation itself, which performs the actual notification.
+     *  If no change listeners have been added, then do nothing.
+     */
+    public void _notifyChangeListeners(ChangeRequest request) {
+	if (_changeListeners != null) {
+	    Iterator listeners = _changeListeners.iterator();
+	    while(listeners.hasNext()) {
+		ChangeListener listener = (ChangeListener)listeners.next();
+		request.notify(listener);
+	    }
+	}
+    }
+
     /** Remove the specified entity. This method should not be used
      *  directly.  Call the setContainer() method of the entity instead with
      *  a null argument.
@@ -912,6 +973,9 @@ public class CompositeEntity extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // A list of change listeners.
+    private List _changeListeners;
 
     /** @serial List of contained entities. */
     private NamedList _containedEntities = new NamedList(this);
