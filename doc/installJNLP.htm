@@ -20,6 +20,16 @@
                 } 
         } 
  </SCRIPT> 
+<SCRIPT LANGUAGE="VBScript"> 
+          on error resume next 
+          If isIE = "true" Then 
+            If Not(IsObject(CreateObject("JavaWebStart.IsInstalled"))) Then 
+                  javawsInstalled = 0 
+            Else 
+                  javawsInstalled = 1 
+            End If 
+          End If 
+      </SCRIPT>
 </head>
 <body>
 <h1>Vergil Web Start Download</h1>	
