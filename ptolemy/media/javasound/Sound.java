@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (srao@eecs.berkeley.edu)
 */
 
-package ptolemy.media;
+package ptolemy.media.javasound;
 
 import java.io.InputStream;
 import java.io.File;
@@ -176,7 +176,8 @@ public class Sound {
         stopPlayback();
         _doubleBuffer = buffer;
         _refreshByteBufferFromDoubleBuffer();
-        _soundQueue = new ByteArrayAudioQueue(_byteBuffer);
+        _soundQueue = new ByteArrayAudioQueue(_byteBuffer, true,
+                getBytesPerSample(), getSampleRate());
     }
 
     /** Load the contents of the array of bytes into the sound queue. The 
@@ -191,7 +192,8 @@ public class Sound {
     public void load(byte[] buffer) {
         stopPlayback();
         _byteBuffer = buffer;
-        _soundQueue = new ByteArrayAudioQueue(_byteBuffer);
+        _soundQueue = new ByteArrayAudioQueue(_byteBuffer, true,
+                getBytesPerSample(), getSampleRate());
     }
 
     /** Load the audio data stored in the given file into the sound queue. 
@@ -202,7 +204,8 @@ public class Sound {
      *  be stopped before the file is loaded.
      *  @param file an audio file to be loaded into the sound queue.
      */
-    public void load(File file) {
+    public void load(File file) throws UnsupportedAudioFileException, 
+        IOException {
         stopPlayback();
         AudioInputStream ais = AudioSystem.getAudioInputStream(file);
         _format = _getProperFormat(ais.getFormat(), AudioFormat.PCM_SIGNED);
@@ -217,7 +220,8 @@ public class Sound {
      *  be stopped before the url is loaded.
      *  @param url an audio url to be loaded into the sound queue.
      */
-    public void load(URL url) {
+    public void load(URL url) throws UnsupportedAudioFileException,
+        IOException {
         stopPlayback();
         AudioInputStream ais = AudioSystem.getAudioInputStream(url);
         _format = _getProperFormat(ais.getFormat(), AudioFormat.PCM_SIGNED);
@@ -354,7 +358,8 @@ public class Sound {
 	 *  buffer for the output channel but that results in the audio data 
 	 *  sounding terrible at high sampling rates. 
 	 */
-        _target.close();
+        if (_target != null)
+            _target.close();
 	if (_pushThread != null) {
 	    _stopping = true;
             try{
@@ -570,8 +575,7 @@ public class Sound {
 	    while(!_stopping) {
 		for (bytesRead = 0; bytesRead < data.length; bytesRead += 1) {
 		    if (_soundQueue.isEmpty()) 
-			if (_isRealTime)
-			    for (int i = 0; i < getChannelCount(); i += 1) 
+                        for (int i = 0; i < getChannelCount(); i += 1) 
 				_soundQueue.put(0.0);
 		    data[bytesRead] = _soundQueue.getByte();
 		}

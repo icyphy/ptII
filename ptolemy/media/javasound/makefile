@@ -51,10 +51,11 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	Audio.java \
+	ByteQueue.java \
 	AudioQueue.java \
 	ByteArrayAudioQueue.java \
-	DoubleArrayAudioQueue.java
+	DoubleArrayAudioQueue.java \
+	Sound.java
 
 EXTRA_SRCS =	$(JSRCS)
 

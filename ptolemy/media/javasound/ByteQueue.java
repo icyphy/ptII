@@ -30,7 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (srao@eecs.berkeley.edu)
 */
 
-package ptolemy.media;
+package ptolemy.media.javasound;
 
 import java.util.NoSuchElementException;
 
