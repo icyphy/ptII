@@ -28,7 +28,7 @@
 @AcceptedRating Red (celaine@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.ptdb;
+package ptolemy.vergil.debugger;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;

@@ -1,6 +1,6 @@
-# Makefile for the Vergil package
+# Makefile for the ptolemy/vergil/debugger package
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Elaine Cheong
 #
 # @Version: $Id$
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/vergil
+ME =		ptolemy/vergil/debugger
 
-DIRS = 		toolbox basic actor kernel fsm debugger icon lib tree test
+DIRS=
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -43,77 +43,35 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	vergil
+PTPACKAGE = 	debugger
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include these jars in PTAUXALLJAR
-PTAUXALLJARS = \
-		actor/actor.jar \
-		basic/basic.jar \
-		fsm/fsm.jar \
-		icon/icon.jar \
-		kernel/kernel.jar \
-		ptdb/ptdb.jar \
-		toolbox/toolbox.jar
-
-# All the .class files necessary to run a Vergil applet
-PTAUXALLJAR =	vergilApplet.jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		$(PTAUXALLJARS) \
-		debugger/debugger.jar \
-		kernel/kernel.jar \
-		lib/lib.jar \
-		tree/tree.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	MoMLViewerApplet.java  \
-	TypeAnimatorApplet.java \
-	VergilApplication.java \
-	VergilErrorHandler.java
+	DebugController.java \
+	BreakpointDialogFactory.java \
+	BreakpointConfigurer.java \
+	BreakpointConfigurerDialog.java
 
-EXTRA_SRCS =	$(JSRCS) \
-	TODO.txt \
-	Vergil.htm \
-	Vergil.properties \
-	vergilAppletDemo.xml
+EXTRA_SRCS = \
+	$(JSRCS) $(DIRS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
-
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	lib \
-	test \
 	$(PTCLASSJAR) \
-	'MoMLViewerApplet$$GetDocumentationAction.class' \
-	'MoMLViewerApplet$$ObjectContextMenuFactory.class' \
-	'MoMLViewerApplet$$PortContextMenuFactory$$PortDescriptionFactory.class' \
-	'MoMLViewerApplet$$PortContextMenuFactory.class' \
-	'MoMLViewerApplet$$StateContextMenuFactory.class' \
-	'MoMLViewerApplet$$TransitionContextMenuFactory.class' \
-	'TypeAnimatorApplet$$1.class' \
-	'TypeAnimatorApplet$$PortTypeListener.class' \
-	'VergilApplication$$1.class' \
-	'VergilApplication$$2.class' \
-	'VergilApplication$$3.class' \
-	'VergilApplication$$4.class' \
-	'VergilApplication$$ClassReloadingService.class' \
-	'VergilApplication$$MouseFocusMover.class' \
-	'VergilApplication$$TitleChanger.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

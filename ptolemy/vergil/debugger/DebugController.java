@@ -27,7 +27,7 @@
 @AcceptedRating Red (celaine@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.ptdb;
+package ptolemy.vergil.debugger;
 
 import diva.canvas.Figure;
 

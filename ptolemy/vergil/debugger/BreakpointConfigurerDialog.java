@@ -27,7 +27,7 @@
 @AcceptedRating Red (celaine@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.ptdb;
+package ptolemy.vergil.debugger;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.ComponentDialog;
