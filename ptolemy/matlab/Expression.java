@@ -141,22 +141,6 @@ public class Expression extends TypedAtomicActor {
         // _time is not needed, fire() sets a matlab variable directly
         _iteration = new Variable(this, "iteration", new IntToken(1));
 
-        TransientSingletonConfigurableAttribute
-            iconDescription = new TransientSingletonConfigurableAttribute(
-                    this, "_iconDescription");
-	/*
-        iconDescription.configure(null, null,
-                "<svg>"
-                + "<rect width=\"50\" height=\"40\" style=\"fill:white\"/>"
-
-                // + "<image x=\"4\" y=\"3\" width=\"32\" height=\"32\" "
-                // +        "xlink:href=\"ptolemy/matlab/matlab.jpg\"></image>"
-                + "<polygon style=\"fill:#FF6930;stroke:black\" "
-                +          "points=\"25,4 39,30 25,24 11,30\"/>"
-
-                + "<text x=\"6\" y=\"38\" style=\"font-size:12\">Matlab</text>"
-                + "</svg>");
-		*/
         matlabEngine = new Engine();
     }
 
@@ -212,7 +196,7 @@ public class Expression extends TypedAtomicActor {
             if (t instanceof IntToken)
                 matlabEngine.setDebugging((byte)((IntToken)t).intValue());
         }
-        matlabEngine.open();
+        engine = matlabEngine.open();
     }
 
     /** Initialize the iteration count to 1.
@@ -254,8 +238,11 @@ public class Expression extends TypedAtomicActor {
             if (cellFormat.length() > 2) {
                 _addPathCommand = "addedPath_ = " + cellFormat.toString()
                     + ";addpath(addedPath_{:});";
-                matlabEngine.evalString("previousPath_=path");
-                _previousPath = matlabEngine.get("previousPath_");
+                synchronized (Engine.semaphore) {
+                    int status = matlabEngine.evalString
+                        (engine, "previousPath_=path");
+                    _previousPath = matlabEngine.get(engine, "previousPath_");
+                }
             }
         }
     }
@@ -276,36 +263,39 @@ public class Expression extends TypedAtomicActor {
                 // persistent storage created by a function (this usually
                 // for speed-up purposes to avoid recalculation on every
                 // function call)
-                matlabEngine.evalString("clear variables;clear globals");
+                int status = matlabEngine.evalString
+                    (engine, "clear variables;clear globals");
 
                 if (_addPathCommand != null)
-                    matlabEngine.evalString(_addPathCommand);
+                    status = matlabEngine.evalString(engine, _addPathCommand);
 
-                matlabEngine.put("time",
+                matlabEngine.put(engine, "time",
                         new DoubleToken(director.getCurrentTime()));
-                matlabEngine.put("iteration",
+                matlabEngine.put(engine, "iteration",
                         _iteration.getToken());
                 Iterator inputPorts = inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort port = (IOPort)(inputPorts.next());
                     // FIXME: Handle multiports
                     if (port.getWidth() > 0 && port.hasToken(0)) {
-                        matlabEngine.put(port.getName(), port.get(0));
+                        matlabEngine.put(engine, port.getName(), port.get(0));
                     }
                 }
-                matlabEngine.evalString(expression.getExpression());
+                status = matlabEngine.evalString
+                    (engine, expression.getExpression());
                 Iterator outputPorts = outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort)(outputPorts.next());
                     // FIXME: Handle multiports
                     if (port.getWidth() > 0) {
-                        port.send(0, matlabEngine.get(port.getName()));
+                        port.send(0, matlabEngine.get(engine, port.getName()));
                     }
                 }
                 // Restore previous path if path was modified above
                 if (_previousPath != null) {
-                    matlabEngine.put("previousPath_",_previousPath);
-                    matlabEngine.evalString("path(previousPath_);");
+                    matlabEngine.put(engine, "previousPath_",_previousPath);
+                    status = matlabEngine.evalString
+                        (engine, "path(previousPath_);");
                 }
             }
         } catch (IllegalActionException ex) {
@@ -328,7 +318,8 @@ public class Expression extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (matlabEngine != null) matlabEngine.close();
+        if (matlabEngine != null) matlabEngine.close(engine);
+        engine = null;
     }
 
     private Engine matlabEngine = null;
