@@ -358,7 +358,7 @@ public class PtolemyModule implements Module {
 		CompositeActor toplevel =
 		    (CompositeActor) doc.getModel();
 		Manager manager = toplevel.getManager();
-		
+				
 		// FIXME there is alot of code in here that is similar
 		// to code in MoMLApplet and MoMLApplication.  I think
 		// this should all be in ModelPane.
@@ -412,21 +412,6 @@ public class PtolemyModule implements Module {
 		ModelPane modelPane = new ModelPane(toplevel);
 		frame.getContentPane().add(modelPane, BorderLayout.NORTH);
 
-		// Create a panel to place placeable objects.
-		JPanel displayPanel = new JPanel();
-		displayPanel.setLayout(new BoxLayout(displayPanel,
-						     BoxLayout.Y_AXIS));
-		modelPane.setDisplayPane(displayPanel);
-		
-		// Put placeable objects in a reasonable place
-		for(Iterator i = toplevel.deepEntityList().iterator();
-		    i.hasNext();) {
-		    Object o = i.next();
-		    if(o instanceof Placeable) {
-			((Placeable) o).place(displayPanel);
-		    }
-		}
-		
 		if(frame != null) {
 		    // Show the frame, even if it is currently iconified.
 		    frame.setVisible(true);
@@ -449,6 +434,7 @@ public class PtolemyModule implements Module {
 		    new javax.swing.Timer(200, packer);
 		timer.setRepeats(false);
 		timer.start();
+				
 	    } catch (Exception ex) {
 		MessageHandler.error("Execution Failed", ex);
 	    }	    
@@ -466,38 +452,11 @@ public class PtolemyModule implements Module {
 	    NamedObj target = getTarget();
 	    final DocumentationViewer viewer = 
 		new DocumentationViewer(target);	
-	    JFrame frame = new JFrame();
-	    JMenuBar mb = new JMenuBar();
-	    frame.setJMenuBar(mb);
-	    JMenu menu = new JMenu("File");
-	    mb.add(menu);
+	    viewer.setTitle(target.getClass().getName());
+	    viewer.show();
+	    viewer.toFront();
+	    viewer.pack();
 
-	    menu.add(new AbstractAction ("Print") {
-		public void actionPerformed(ActionEvent e) {
-		    java.awt.print.PrinterJob job = 
-			java.awt.print.PrinterJob.getPrinterJob();
-		    java.awt.print.PageFormat format = job.defaultPage();
-		    java.awt.print.Paper p = format.getPaper();
-		    // 1/2 inch margins.
-		    p.setImageableArea(36, 36,
-				       p.getWidth() - 72, p.getHeight() - 72);
-		    format.setPaper(p);
-		    job.pageDialog(format);
-		    job.setPrintable(viewer, format);
-		    if (job.printDialog()) {
-                        try {
-                            job.print();
-                        } catch (Exception ex) {
-                            getApplication().showError("PrintingFailed", ex);
-                        }
-                    }
-                }
-	    });
-	    frame.getContentPane().add(viewer);
-	    frame.setTitle(target.getClass().getName());
-	    frame.show();
-	    frame.toFront();
-	    frame.pack();
 	}
     };
     
