@@ -82,7 +82,7 @@ public class ForwardEulerSolver extends FixedStepSolver{
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
-    public void resolveStates() throws IllegalActionException {
+    public boolean resolveStates() throws IllegalActionException {
         if(VERBOSE) {
             System.out.println("FE: resolveState().");
         }
@@ -117,6 +117,7 @@ public class ForwardEulerSolver extends FixedStepSolver{
             next.fire();
         }
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
+        return true;
     }
 
     /**  fire() method for integrators.

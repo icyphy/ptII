@@ -91,7 +91,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
      * @return description
      * @exception full-classname description
      */	
-    public void resolveStates() throws IllegalActionException {
+    public boolean resolveStates() throws IllegalActionException {
         
         super.resolveStates();
         CTDirector dir = (CTDirector)getContainer();
@@ -107,6 +107,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
         dir.setCurrentStepSize(-dir.getCurrentStepSize());
         super.resolveStates();
         dir.setCurrentStepSize(-dir.getCurrentStepSize());
+        return true;
     }
 
 

@@ -92,7 +92,7 @@ public class BackwardEulerSolver extends FixedStepSolver
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
-    public void resolveStates() throws IllegalActionException {
+    public boolean resolveStates() throws IllegalActionException {
         if(VERBOSE) {
             System.out.println("BE: resolveState().");
         }
@@ -145,6 +145,7 @@ public class BackwardEulerSolver extends FixedStepSolver
                     dir.getMaxIterations() + " at time "+dir.getCurrentTime());
             }
         }
+        return true;
     }
 
     /**  fire() method for integrators.

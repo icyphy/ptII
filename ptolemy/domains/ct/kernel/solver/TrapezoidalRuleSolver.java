@@ -92,7 +92,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
-    public void resolveStates() throws IllegalActionException {
+    public boolean resolveStates() throws IllegalActionException {
         if(VERBOSE) {
             System.out.println("BE: resolveState().");
         }
@@ -161,6 +161,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
                 iterations = 0;
             }
         }
+        return true;
     }
 
     /**  fire() method for integrators.
