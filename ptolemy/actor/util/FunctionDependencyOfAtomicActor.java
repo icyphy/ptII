@@ -1,5 +1,5 @@
 /* An instance of FunctionDependencyOfAtomicActor describes the function
-   dependency information of an atomic actor.
+   dependency between the inputs and outputs of an atomic actor.
 
    Copyright (c) 2003-2004 The Regents of the University of California.
    All rights reserved.
@@ -39,8 +39,10 @@ import ptolemy.graph.Edge;
 //// FunctionDependencyOfAtomicActor
 /**
    An instance of FunctionDependencyOfAtomicActor describes the function
-   dependency of an atomic actor. By default, each output port
-   of an atomic actor depends on all input ports of the actor.
+   dependency between the inputs and outputs of an atomic actor. 
+   By default, each output port of an atomic actor depends on all input 
+   ports of the actor, meaning that the token sent through an output
+   depends on all the tokens received from the input ports.
    For some atomic actors, such as the TimedDelay actor, an output in
    a firing does not depend on an input port.
    (See {@link FunctionDependency} for the definition of dependency.)
