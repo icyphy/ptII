@@ -192,7 +192,6 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 	puts "We can run Deep codegen on $modelName"
     }
 
-    return
     set command compile${codeGenType}Demo
     puts "Now running 'make ... $command', this could take 60 seconds or so"
 
