@@ -1117,6 +1117,22 @@ public class IOPort extends ComponentPort {
         return false;
     }
 
+    /** Override the base class to invalidate the schedule and resolved
+     *  types of the director of the container, if there is one, in addition
+     *  to what the base class does.
+     *  @param index The index at which to insert the link.
+     *  @param relation The relation to link to this port.
+     *  @exception IllegalActionException If the link would cross levels of
+     *   the hierarchy, or the relation is incompatible,
+     *   or the port has no container, or the port is not in the
+     *   same workspace as the relation.
+     */
+    public void insertLink(int index, Relation relation)
+            throws IllegalActionException {
+        super.insertLink(index, relation);
+        _invalidate();
+    }
+
     /** Return true if the port is an input.  The port is an input
      *  if either setInput() has been called with a <i>true</i> argument, or
      *  it is connected on the inside to an input port, or if it is
@@ -1187,6 +1203,33 @@ public class IOPort extends ComponentPort {
             }
         }
         return _isOutput;
+    }
+
+    /** Override the base class to invalidate the schedule and resolved
+     *  types of the director of the container, if there is one, in addition
+     *  to what the base class does.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If the relation does not share
+     *   the same workspace, or the port has no container.
+     */
+    public void liberalLink(ComponentRelation relation)
+            throws IllegalActionException {
+        super.liberalLink(relation);
+        _invalidate();
+    }
+
+    /** Override the base class to invalidate the schedule and resolved
+     *  types of the director of the container, if there is one, in addition
+     *  to what the base class does.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If the link crosses levels of
+     *   the hierarchy, or the port has no container, or the relation
+     *   is not a ComponentRelation.
+     */
+    public void link(ComponentRelation relation)
+            throws IllegalActionException {
+        super.link(relation);
+        _invalidate();
     }
 
     /** Send the specified token to all receivers connected to the
@@ -1289,7 +1332,9 @@ public class IOPort extends ComponentPort {
     /** Override the base class to ensure that the proposed container
      *  implements the Actor interface (the base class ensures that the
      *  container is an instance of ComponentEntity) or null. A null
-     *  argument will remove the port from the container.
+     *  argument will remove the port from the container.  This method
+     *  invalidates the schedule and type resolution of the director
+     *  of the container, if there is one.
      *
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
@@ -1306,6 +1351,23 @@ public class IOPort extends ComponentPort {
                     "IOPort can only be contained by objects implementing " +
                     "the Actor interface.");
         }
+        // Invalidate schedule and type resolution of the old container.
+        CompositeActor oldContainer = (CompositeActor)getContainer();
+        if (oldContainer != null) {
+            Director director = oldContainer.getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
+        }
+        // Invalidate schedule and type resolution of the new container.
+        if (container != null) {
+            Director director = ((Actor)container).getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
+        }
         super.setContainer(container);
     }
 
@@ -1314,6 +1376,8 @@ public class IOPort extends ComponentPort {
      *  This has no effect if the port is a transparent port.
      *  In that case, the port
      *  is an input port regardless of whether and how this method is called.
+     *  Invalidate the schedule and resolved types of the director of the
+     *  container, if there is one.
      *  This method is write-synchronized on the workspace.
      *
      *  @param isInput True to make the port an input.
@@ -1326,6 +1390,7 @@ public class IOPort extends ComponentPort {
         // thread.
         _workspace.getWriteAccess();
         _isInput = isInput;
+        _invalidate();
         _workspace.doneWriting();
     }
 
@@ -1337,6 +1402,8 @@ public class IOPort extends ComponentPort {
      *  This has no effect if the port is a transparent port that is
      *  linked on the inside to a multiport.  In that case, the port
      *  is a multiport regardless of whether and how this method is called.
+     *  Invalidate the schedule and resolved types of the director of the
+     *  container, if there is one.
      *  This method is write-synchronized on the workspace.
      *
      *  @param isMulitport True to make the port a multiport.
@@ -1349,6 +1416,7 @@ public class IOPort extends ComponentPort {
         // thread.
         _workspace.getWriteAccess();
         _isMulitport = isMulitport;
+        _invalidate();
         _workspace.doneWriting();
     }
 
@@ -1357,6 +1425,8 @@ public class IOPort extends ComponentPort {
      *  This has no effect if the port is a transparent port that is
      *  linked on the inside to output ports.  In that case, the port
      *  is an output port regardless of whether and how this method is called.
+     *  Invalidate the schedule and resolved types of the director of the
+     *  container, if there is one.
      *  This method is write-synchronized on the workspace.
      *
      *  @param isOutput True to make the port an output.
@@ -1369,6 +1439,7 @@ public class IOPort extends ComponentPort {
         // thread.
         _workspace.getWriteAccess();
         _isOutput = isOutput;
+        _invalidate();
         _workspace.doneWriting();
     }
 
@@ -1377,6 +1448,8 @@ public class IOPort extends ComponentPort {
      *  If a link is removed, then any links at higher index numbers
      *  will have their index numbers decremented by one.
      *  If there is a container, notify it by calling connectionsChanged().
+     *  Invalidate the schedule and resolved types of the director of the
+     *  container, if there is one.
      *  This method is write-synchronized on the
      *  workspace and increments its version number.
      *  @param index The index number of the link to remove.
@@ -1390,6 +1463,7 @@ public class IOPort extends ComponentPort {
                 _localReceiversTable.remove(toDelete);
             }
             super.unlink(index);
+            _invalidate();
         } finally {
             _workspace.doneWriting();
         }
@@ -1399,6 +1473,10 @@ public class IOPort extends ComponentPort {
      *  this relation, and any data they contain, are lost. If the Relation
      *  is not linked to this port, do nothing. If the relation is linked
      *  more than once, then unlink all occurrences.
+     *  Invalidate the schedule and resolved types of the director of the
+     *  container, if there is one.
+     *  Invalidate the schedule and resolved types of the director of the
+     *  container, if there is one.
      *  This method is write-synchronized on the workspace.
      *
      *  @param relation The relation to unlink.
@@ -1410,6 +1488,7 @@ public class IOPort extends ComponentPort {
             if (_localReceiversTable != null) {
                 _localReceiversTable.remove(relation);
             }
+            _invalidate();
         } finally {
             _workspace.doneWriting();
         }
@@ -1437,6 +1516,7 @@ public class IOPort extends ComponentPort {
                 }
             }
             super.unlinkAll();
+            _invalidate();
         } finally {
             _workspace.doneWriting();
         }
@@ -1464,6 +1544,7 @@ public class IOPort extends ComponentPort {
                 }
             }
             super.unlinkAllInside();
+            _invalidate();
         } finally {
             _workspace.doneWriting();
         }
@@ -1490,6 +1571,7 @@ public class IOPort extends ComponentPort {
                 }
             }
             super.unlinkInside(index);
+            _invalidate();
         } finally {
             _workspace.doneWriting();
         }
@@ -1510,6 +1592,7 @@ public class IOPort extends ComponentPort {
             if (_localReceiversTable != null) {
                 _localReceiversTable.remove(relation);
             }
+            _invalidate();
         } finally {
             _workspace.doneWriting();
         }
@@ -1903,6 +1986,19 @@ public class IOPort extends ComponentPort {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    // Invalidate schedule and type resolution of the director of the
+    // container, if there is one.
+    private void _invalidate() {
+        Actor container = (Actor)getContainer();
+        if (container != null) {
+            Director director = container.getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
             }
         }
     }

@@ -73,7 +73,7 @@ test Expression-2.1 {run with default empty expression} {
     catch {$m execute} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .top.expr:
-Expression yields a null result: null}}
+Expression yields a null result: }}
 
 test Expression-3.1 {run with a simple expression} {
     set expression [java::field $expr expression]

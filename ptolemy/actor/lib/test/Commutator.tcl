@@ -95,16 +95,14 @@ test Commutator-4.1 {run with mutations} {
     $m initialize
     $m iterate
     set c1 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
-            {<removeEntity name="ramp1">}]
+            {<deleteEntity name="ramp1"/>}]
     set c2 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
-            {<removeRelation name="r1">}]
-    $m requestChange $c1
-    $m requestChange $c2
+            {<deleteRelation name="r1"/>}]
+    $e0 requestChange $c1
+    $e0 requestChange $c2
     $m iterate
     $m wrapup
     enumToTokenValues [$rec getRecord 0]
-$e0 exportMoML
-# FIXME: Both change requests above failed to do anything!
 } {0 0 1}
 
 test Commutator-5.1 {test under DE} {

@@ -42,7 +42,7 @@ import javax.swing.JPanel;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyEffigy
 /**
-A proxy for a Ptolemy model in a ptolemy model of an application.
+An effigy for a Ptolemy II model.
 
 @author Steve Neuendorffer
 @version $Id$

@@ -116,10 +116,8 @@ public class Commutator extends Transformer implements SequenceActor {
         if (port == input) {
             try {
                 _productionRate.setToken(new IntToken(input.getWidth()));
-                Director director = getDirector();
-                if (director != null) {
-                    director.invalidateSchedule();
-                }
+                // NOTE: schedule is invalidated automatically already
+                // by the changed connections.
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(ex.toString());
             }

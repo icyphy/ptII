@@ -38,7 +38,7 @@
         </port>
     </entity>
     <entity name="TrigFunction5" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;tan&quot;">
+        <property name="function" value="tan">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location value="233.0, 64.0"/>

@@ -711,7 +711,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Override the base class to ensure that the proposed container
      *  is an instance of CompositeActor. If it is, call the base class
-     *  setContainer() method.
+     *  setContainer() method.  Also, invalidate the schedule and
+     *  resolved types of the director.
      *
      *  @param entity The proposed container.
      *  @exception IllegalActionException If the action would result in a
@@ -727,6 +728,20 @@ public class CompositeActor extends CompositeEntity implements Actor {
             throw new IllegalActionException(container, this,
                     "CompositeActor can only be contained by instances of " +
                     "CompositeActor.");
+        }
+        // Invalidate the schedule and type resolution of the old director.
+        Director oldDirector = getDirector();
+        if (oldDirector != null) {
+            oldDirector.invalidateSchedule();
+            oldDirector.invalidateResolvedTypes();
+        }
+        // Invalidate the schedule and type resolution of the new director.
+        if (container != null) {
+            Director director = ((CompositeActor)container).getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
         }
         super.setContainer(container);
     }
@@ -930,6 +945,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             throw new IllegalActionException(this, relation,
                     "CompositeActor can only contain instances of IORelation.");
         }
+        Director director = getDirector();
         super._addRelation(relation);
     }
 

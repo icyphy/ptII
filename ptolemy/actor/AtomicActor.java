@@ -372,7 +372,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Override the base class to ensure that the proposed container
      *  is an instance of CompositeActor or null. If it is, call the
-     *  base class setContainer() method. A null argument will remove
+     *  base class setContainer() method. Also, invalidate the schedule
+     *  and resolved types of the director. A null argument will remove
      *  this actor from its container.
      *
      *  @param container The proposed container.
@@ -389,6 +390,20 @@ public class AtomicActor extends ComponentEntity implements Actor {
             throw new IllegalActionException(container, this,
                     "AtomicActor can only be contained by instances of " +
                     "CompositeActor.");
+        }
+        // Invalidate the schedule and type resolution of the old director.
+        Director oldDirector = getDirector();
+        if (oldDirector != null) {
+            oldDirector.invalidateSchedule();
+            oldDirector.invalidateResolvedTypes();
+        }
+        // Invalidate the schedule and type resolution of the new director.
+        if (container != null) {
+            Director director = ((CompositeActor)container).getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
         }
         super.setContainer(container);
     }

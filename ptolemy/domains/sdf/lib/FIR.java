@@ -169,6 +169,10 @@ public class FIR extends SDFAtomicActor {
 	    input.setTypeEquals(tmpToken.getType());
 	    output.setTypeEquals(tmpToken.getType());
 
+            Director dir = getDirector();
+            if (dir != null) {
+                dir.invalidateResolvedTypes();
+            }
         } else {
             super.attributeTypeChanged(attribute);
         }

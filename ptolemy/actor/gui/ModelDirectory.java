@@ -90,7 +90,7 @@ public class ModelDirectory extends CompositeEntity {
      *  @return The effigy for the model, or null if the model is not
      *   in the directory.
      */
-    public Effigy get(String identifier) {
+    public Effigy getEffigy(String identifier) {
         Iterator entities = entityList(Effigy.class).iterator();
         while (entities.hasNext()) {
             Effigy entity = (Effigy)entities.next();

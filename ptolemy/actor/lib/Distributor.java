@@ -117,11 +117,9 @@ public class Distributor extends Transformer implements SequenceActor {
         if (port == output) {
             try {
                 _consumptionRate.setToken(new IntToken(output.getWidth()));
-                Director director = getDirector();
-                if (director != null) {
-                    director.invalidateSchedule();
-                }
                 _currentOutputPosition = 0;
+                // NOTE: schedule is invalidated automatically already
+                // by the changed connections.
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(ex.toString());
             }

@@ -424,6 +424,9 @@ public class IORelation extends ComponentRelation {
      *  Derived classes may further constrain the class of the container
      *  to a subclass of CompositeActor.
      *  <p>
+     *  This method invalidates the schedule and resolved types of the
+     *  director of the container, if there is one.
+     *  <p>
      *  This method is write-synchronized on the workspace.
      *
      *  @param container The proposed container.
@@ -439,6 +442,23 @@ public class IORelation extends ComponentRelation {
             throw new IllegalActionException (this, container,
                     "IORelation can only be contained by CompositeActor.");
         }
+        // Invalidate schedule and type resolution of the old container.
+        CompositeActor oldContainer = (CompositeActor)getContainer();
+        if (oldContainer != null) {
+            Director director = oldContainer.getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
+        }
+        // Invalidate schedule and type resolution of the new container.
+        if (container != null) {
+            Director director = ((CompositeActor)container).getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
+        }
         super.setContainer(container);
     }
 
@@ -448,7 +468,9 @@ public class IORelation extends ComponentRelation {
      *  and the width will be inferred from the way the relation is used
      *  (but will never be less than one).
      *  If the argument is not one, then all linked ports must
-     *  be multiports, or an exception is thrown.
+     *  be multiports, or an exception is thrown.  This method invalidates
+     *  the resolved types on the director of the container, if there is
+     *  one.
      *  This method write-synchronizes on the workspace.
      *
      *  @param width The width of the relation.
@@ -484,6 +506,16 @@ public class IORelation extends ComponentRelation {
                 }
             }
             _width = width;
+
+            // Invalidate schedule and type resolution.
+            CompositeActor container = (CompositeActor)getContainer();
+            if (container != null) {
+                Director director = container.getDirector();
+                if (director != null) {
+                    director.invalidateSchedule();
+                    director.invalidateResolvedTypes();
+                }
+            }
         } finally {
             _workspace.doneWriting();
         }

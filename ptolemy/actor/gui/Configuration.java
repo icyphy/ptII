@@ -96,7 +96,7 @@ public class Configuration extends CompositeEntity {
             throw new InternalErrorException("No model directory!");
         }
         // Check to see whether the model is already open.
-        Effigy model = directory.get(identifier);
+        Effigy model = directory.getEffigy(identifier);
         if (model == null) {
             // No previous model exists that is identified by this URL.
             ModelReader reader = (ModelReader)getEntity("reader");

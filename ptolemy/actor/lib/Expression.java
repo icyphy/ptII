@@ -123,6 +123,7 @@ public class Expression extends TypedAtomicActor {
      *  for the variables and parameters.
      */
     public void attributeTypeChanged(Attribute attribute) {
+        // FIXME: Should this invalidate resolved types in the director?
     }
 
     /** Clone the actor into the specified workspace. This calls the

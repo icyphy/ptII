@@ -38,7 +38,7 @@
         </port>
     </entity>
     <entity name="TrigFunction1" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;sin&quot;">
+        <property name="function" value="sin">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location value="199.0, 47.0"/>
@@ -70,7 +70,7 @@
         </port>
     </entity>
     <entity name="TrigFunction2" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;cos&quot;">
+        <property name="function" value="cos">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location value="202.0, 134.0"/>

@@ -180,7 +180,7 @@ public class PtolemyApplication {
             if (_expectingClass) {
                 _expectingClass = false;
 
-                Effigy model = directory.get(arg);
+                Effigy model = directory.getEffigy(arg);
                 if (model == null) {
                     // No preexisting model.  Create class.
                     Class newClass = Class.forName(arg);

@@ -72,7 +72,8 @@ test Distributor-2.1 {run with a single output} {
             $in1
     set r1 [$e0 connect \
             $out1 \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]]
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input] \
+            {r1}]
     set m [$e0 getManager]
     $m execute
     enumToTokenValues [$rec1 getRecord 0]
@@ -85,7 +86,8 @@ test Distributor-3.1 {run with two outputs} {
     set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]   
     set r2 [$e0 connect \
             $out1 \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]]
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input] \
+            {r2}]
     $m execute
     list [enumToTokenValues [$rec1 getRecord 0]] \
             [enumToTokenValues [$rec2 getRecord 0]]
@@ -97,9 +99,9 @@ test Distributor-4.1 {run with mutations} {
     $m initialize
     $m iterate
     set c1 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
-            {<removeEntity name="ramp1">}]
+            {<deleteEntity name="rec2"/>}]
     set c2 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
-            {<removeRelation name="r1">}]
+            {<deleteRelation name="r2"/>}]
     $m requestChange $c1
     $m requestChange $c2
     $m iterate

@@ -38,7 +38,7 @@
         </port>
     </entity>
     <entity name="TrigFunction2" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;acos&quot;">
+        <property name="function" value="acos">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location value="228.0, 76.0"/>
@@ -70,7 +70,7 @@
         </port>
     </entity>
     <entity name="TrigFunction3" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;asin&quot;">
+        <property name="function" value="asin">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location value="223.0, 148.0"/>
@@ -86,7 +86,7 @@
         </port>
     </entity>
     <entity name="TrigFunction4" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.data.expr.Parameter" value="&quot;atan&quot;">
+        <property name="function" value="atan">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location value="222.0, 211.0"/>

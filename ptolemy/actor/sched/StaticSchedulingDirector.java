@@ -52,10 +52,6 @@ So the schedule is locally cached in the scheduler, and can be reused
 when needed. A schedule is called "valid" if is can be used to correctly
 direct the execution of the CompositeActor.
 However, the schedule may become invalid when the CompositeActor mutates.
-The scheduler is a TopologyListener of the director, and the schedule
-is automatically invalidated when a TopologyChange occurs.
-The setScheduleValid() method can also be used to explicitly validate
-or invalidate the schedule when needed.
 
 @author Jie Liu
 @version $Id$
