@@ -1193,6 +1193,41 @@ lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,susp
 	longer bounces
         </ul>
 </ul>
+<h3>Limitations in the Class Mechanism</h3>
+The class mechanism is highly preliminary and is likely to change
+in future releases.  There are several known problems:
+
+<ul>
+
+
+<li> Several higher-order-components will not work inside class definitions.
+    (ModalModel, several CT actors, etc.).
+
+
+<li> Name collisions can occur when adding objects to base classes
+    whose names collide with objects in derived classes.
+    Auto naming should look through the derivedList for name conflicts.
+
+
+<li> Propagation of changes to a base class is very slow in Vergil.
+    If there are more than just a very few instances or derived
+    classes, interactive editing is not practical.  As a workaround,
+    put the class definitions in a separate file and edit them
+    without opening the model that creates instances. The probable
+    reason is that MoMLParser handles propagation by issuing large
+    numbers of change requests.
+
+
+<li> Certain actors, such as MathFunction, change the number of ports
+    when parameters change.  This violates the derivation invariance
+    for classes.  To demonstrate the bug, put a MathFunction actor
+    in a base class that has a subclass.  Change the function parameter
+    in the subclass to anything but "modulo".  Then change the function
+    in the base class to "modulo" (which adds a port).  Now attempt
+    to insert a parameter into the port.  You will get an
+    InternalErrorException when it tries to propagate the change.
+</ul>
+
 
 <h3>Limitations in the Actor Libraries</h3>
 <ul>
@@ -1236,9 +1271,37 @@ The SerialComm actor will only work under Windows.
 
 <li> IterateOverArray has the following problems
      <menu>
-     <li> Look inside of iterateOverArray does not work.
-     <li> Rename a port inside a port of iterateOverArray, then it does
-          not rename the ports in the higher level.
+
+	<li> IterateOverArray: When you drop in an actor, and then
+	another actor, and then select "undo," the second actor is
+	deleted without the first one being re-created. Thus, undo is
+        only a partial undo. The fix to this is extremely
+        complicated. Probably the only viable
+        mechanism is to use UndoStackAttribute.getUndoInfo() to get the undo
+        stack and then to manipulate the contents of that stack directly.
+	
+	<li> IterateOverArray: There should be an option to reset
+	between firings of the inside actor.
+
+
+	<li> IterateOverArray: If you drop a new actor onto an IterateOverArray
+        in a subclass, it will simply acquire the new contents, but not
+        actually do anything with them. It should somehow refuse to accept
+        the new object in the subclass, since to do so, it would have to
+        delete the original object defined in the base class, and this would
+        violate the derived invariant.
+
+        
+	<li> IterateOverArray: If an instance of IterateOverArray in a derived
+        class has overridden values of parameters, those are lost if
+        contained entity of the instance in the base class is replaced and
+        then an undo is requested.
+
+       
+        <li> IterateOverArray: When an actor with a display icon like
+        Const, Expression, or MathFunction is put into
+        IterateOverArray, the CopyCatIcon doesn't reflect the text display.
+
      </menu>
 
 </ul>
@@ -1258,6 +1321,13 @@ Below are some of the limitations of Vergil, the Ptolemy II Graphical
 User Interface.
 
 <ul>
+
+
+<li> The labeling of ports gets messed up if you change cardinality.
+
+
+<li> Cancelling a style change doesn't restore original
+state.  There are FIXME's about this in actor.gui.style.StyleConfigurer.
 
 <li> If there are multiple windows open for a model, say, the top
 level vergil window and the tree view, or the top level window
@@ -1288,6 +1358,12 @@ have constraints on their element types can cause problems.
 <li>Debugger not yet integrated.
 <li>It is difficult to add actors to the libraries.
 <li>No dynamic class reloading.
+
+<li>There is no mechanism in the UI to save a model as a class,
+nor to save a submodel as a class.
+
+<li>There is no mechanism in the UI to create a custom icon for
+a library element and store it in the right place.
 
 <li>If an actor uses a slider, then the actor tree navigator pane
 incorrectly shows the slider as a subitem of the actor.
