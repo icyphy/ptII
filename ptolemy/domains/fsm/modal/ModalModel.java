@@ -157,10 +157,10 @@ public class ModalModel extends CTCompositeActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == directorClass) {
-            FSMDirector director = (FSMDirector)getDirector();
             Class newDirectorClass = null;
             String newDirectorClassName = directorClass.stringValue();
             try {
+                Director director = getDirector();
                 if (director != null && director.getContainer() == this) {
                     // Delete the old director.
                     director.setContainer(null);
@@ -172,6 +172,8 @@ public class ModalModel extends CTCompositeActor {
                     (new Class[]{CompositeEntity.class, String.class});
                 director = (FSMDirector)newDirectorConstructor.newInstance
                         (new Object[]{this, "_Director"});
+                ((FSMDirector)director).controllerName.setExpression(
+                        "_Controller");
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (ClassNotFoundException ex) {
@@ -185,7 +187,6 @@ public class ModalModel extends CTCompositeActor {
             } catch (InvocationTargetException ex) {
                 throw new IllegalActionException(ex.toString());
             }
-            director.controllerName.setExpression("_Controller");
         }
     }
 
@@ -334,16 +335,11 @@ public class ModalModel extends CTCompositeActor {
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.domains.fsm.modal.ModalModel");
 
-        // Create a default FSMDirector.
-        FSMDirector director = new FSMDirector(this, "_Director");
-
         // Create a default modal controller.
-        
         // NOTE: It would be much nicer if the director created the
         // controller it likes (or has it configured) and returned it
         // (zk 2002/09/11)
         _controller = new ModalController(this, "_Controller");
-        director.controllerName.setExpression("_Controller");
 
         // configure the directorClass parameter
         directorClass = new StringParameter(this, "directorClass");
