@@ -120,11 +120,11 @@ public class BasicContextMenu extends JPopupMenu {
                     int i = 0;
                     while (parameters.hasNext()) {
                         parameterNames[i++] =
-                                ((NamedObj)parameters.next()).getName();
+                            ((NamedObj)parameters.next()).getName();
                     }
                     Query query = new Query();
                     query.addChoice("Parameter", "Parameter", parameterNames,
-                             parameterNames[0]);
+                            parameterNames[0]);
                     // FIXME: First argument below should be a parent window
                     // (a JFrame).
                     ComponentDialog dialog = new ComponentDialog(
@@ -136,7 +136,7 @@ public class BasicContextMenu extends JPopupMenu {
                         query = new Query();
                         query.setTextWidth(25);
                         String[] choices = {"none", "check box",
-                                "choice", "radio button", "slider"};
+                                            "choice", "radio button", "slider"};
                         query.addChoice("Style", "Interaction style",
                                 choices, choices[0]);
                         // FIXME: First argument below should be a parent window
@@ -149,11 +149,11 @@ public class BasicContextMenu extends JPopupMenu {
                         if (dialog.buttonPressed().equals("OK")) {
                             String choiceResponse = query.stringValue("Style");
                             Attribute attribute
-                                    = _target.getAttribute(parameterName);
+                                = _target.getAttribute(parameterName);
                             if (choiceResponse.equals("check box")) {
                                 CheckBoxStyle style
-                                        = new CheckBoxStyle(attribute,
-                                        attribute.uniqueName("style"));
+                                    = new CheckBoxStyle(attribute,
+                                            attribute.uniqueName("style"));
                             }
                             // FIXME...  need to deal with other styles.
                         }

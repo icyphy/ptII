@@ -125,11 +125,11 @@ public class GraphicElement extends Object {
         _attributes.remove(name);
     }
 
-   /**
-    * Set the attribute with the given name to the given value.
-    * Throw an exception if there is no attribute with the
-    * given name in this schematic.
-    */
+    /**
+     * Set the attribute with the given name to the given value.
+     * Throw an exception if there is no attribute with the
+     * given name in this schematic.
+     */
     public void setAttribute(String name, String value) {
         _attributes.put(name, value);
     }
@@ -161,7 +161,7 @@ public class GraphicElement extends Object {
     }
 
     private static final PaintedString _errorObject =
-	new PaintedString("ERROR!");
+    new PaintedString("ERROR!");
 
     private Map _attributes;
     private String _type;

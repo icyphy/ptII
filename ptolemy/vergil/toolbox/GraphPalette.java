@@ -235,10 +235,10 @@ public class GraphPalette extends JGraph {
 	}
 
 	public Object getTransferData(DataFlavor flavor)
-	    throws UnsupportedFlavorException, IOException {
+                throws UnsupportedFlavorException, IOException {
 	    if (flavor.equals(DataFlavor.plainTextFlavor)) {
 		return new ByteArrayInputStream(_node.toString().
-						getBytes("Unicode"));
+                        getBytes("Unicode"));
 	    } else if(flavor.equals(GraphPalette.nodeFlavor)) {
 		return _node;
 	    } else if(flavor.equals(DataFlavor.stringFlavor)) {
@@ -286,7 +286,7 @@ public class GraphPalette extends JGraph {
 
 		//initial cursor, transferable, dsource listener
 		e.startDrag(DragSource.DefaultCopyNoDrop,
-				transferable, dsl);
+                        transferable, dsl);
 
                 // reset the dragged node, so we can't drag again.
                 _palette.setDraggedNode(null);
@@ -308,8 +308,8 @@ public class GraphPalette extends JGraph {
     ///////////////////////////////////////////////////////////////
     //                      Data Members                         //
     public static final DataFlavor nodeFlavor =
-	new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
-		       "diva.graph.Node", "divanode");
+    new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
+            "diva.graph.Node", "divanode");
 
     private Node _draggedNode;
     private PaletteController _controller;

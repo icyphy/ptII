@@ -65,7 +65,7 @@ public class PatternIcon extends EditorIcon {
      * Create a new icon with the name "EditorIcon" in the given container.
      */
     public PatternIcon(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

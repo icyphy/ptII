@@ -60,7 +60,7 @@ public class EditorIcon extends Icon {
      * representations.
      */
     public EditorIcon(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         this(container, "_icon");
     }
 
@@ -70,7 +70,7 @@ public class EditorIcon extends Icon {
      * representations.
      */
     public EditorIcon(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

@@ -64,7 +64,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
      */
     public XMLIcon(NamedObj container)
             throws NameDuplicationException, IllegalActionException {
-       this(container, "_icon");
+        this(container, "_icon");
     }
 
     /**
@@ -78,7 +78,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
         _graphics = (LinkedList) new LinkedList();
     }
 
-   /**
+    /**
      * Add a new graphic element to the icon.
      */
     public void addGraphicElement(GraphicElement g)
@@ -213,7 +213,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
     }
 
     private GraphicElement _createGraphicElement(XmlElement e)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         String name = e.getType();
         GraphicElement element = new GraphicElement(name);
