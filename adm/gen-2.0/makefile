@@ -974,11 +974,11 @@ remote4build:
 # Run the deep tests, this is likely to take 6 hours.
 remote4javatest:
 	@echo "#"
-	@echo "# Now running make test in $(REMOTE4PTIIDIST)/ptolemy/copernicus/java"
+	@echo "# Now running make in $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test"
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java;	PTII=$(REMOTE4PTIIDIST) $(MAKE) test)
+	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test;	PTII=$(REMOTE4PTIIDIST) $(MAKE))
 
 
 ##########################################################################
@@ -1050,11 +1050,11 @@ remote5build:
 # Run the shallow tests, this is likely to take 3 hours.
 remote5shallowtest:
 	@echo "#"
-	@echo "# Now running make test in $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow"
+	@echo "# Now running make in $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test"
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow; PTII=$(REMOTE5PTIIDIST) $(MAKE) test)
+	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; PTII=$(REMOTE5PTIIDIST) $(MAKE))
 
 
 
