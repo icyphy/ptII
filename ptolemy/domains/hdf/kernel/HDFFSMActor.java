@@ -329,19 +329,6 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
         }
     }
 
-    /** Set the input variables for channels that are connected to an
-     *  output port of the refinement of current state.
-     *  @exception IllegalActionException If a value variable cannot take
-     *   the token read from its corresponding channel.
-     */
-    // Never used anywhere ELSE than in FSMDirector or HSDirector
-    /*
-    protected void _setInputsFromRefinement()
-            throws IllegalActionException {
-        super._setInputsFromRefinement();
-    }
-    */
-
     /** Set the input variables for all ports of this actor.
      *
      *  @param firings The number of times this actor has been fired in
@@ -449,6 +436,19 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
             currentTokenIndex++;
         }
     }
+
+    /** Set the input variables for channels that are connected to an
+     *  output port of the refinement of current state.
+     *  @exception IllegalActionException If a value variable cannot take
+     *   the token read from its corresponding channel.
+     */
+    // Never used anywhere ELSE than in FSMDirector or HSDirector
+    /*
+    protected void _setInputsFromRefinement()
+            throws IllegalActionException {
+        super._setInputsFromRefinement();
+    }
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
