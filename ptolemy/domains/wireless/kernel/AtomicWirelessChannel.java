@@ -623,6 +623,21 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                 _debug(" * no transmit properties.\"");
             }
         }
+        
+        WirelessIOPort destination = (WirelessIOPort)receiver.getContainer();
+        
+        if(_portPropertyTransformer.get(sender) != null) {
+            PropertyTransformer propertyTransformer = (PropertyTransformer) 
+                    _portPropertyTransformer.get(sender);
+            result = propertyTransformer.
+                    getProperty(result, sender, destination);
+        }
+        if(_portPropertyTransformer.get(destination) != null) {
+            PropertyTransformer propertyTransformer = (PropertyTransformer) 
+                    _portPropertyTransformer.get(destination);
+            result = propertyTransformer.
+                    getProperty(result, sender, destination);
+        }
         return result;
     }
 

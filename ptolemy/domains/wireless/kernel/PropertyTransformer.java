@@ -50,6 +50,7 @@ public interface PropertyTransformer {
     /** Return the interested properties. The returned value is a 
      *  RecordToken with the specified propertiesa as labels.
      */
-    public RecordToken getProperty(RecordToken args, String[] properties) 
+    public RecordToken getProperty(RecordToken properties, 
+            WirelessIOPort sender, WirelessIOPort receiver) 
             throws IllegalActionException;
 }

@@ -41,6 +41,8 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.hoc.ModelUtilities;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
@@ -55,6 +57,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -281,27 +284,84 @@ public class TransformProperty extends TypedAtomicActor
      * @return The execution result.
      * @exception IllegalActionException If failed to execute the model. 
      */
-    public RecordToken getProperty(RecordToken args, String[] properties) 
+    public RecordToken getProperty(RecordToken properties, 
+            WirelessIOPort sender, WirelessIOPort destination) 
             throws IllegalActionException {
         if (_executable!= null) {
+            double[] p1 = _locationOf(sender);
+            double[] p2 = _locationOf(destination);
+            String[] labels = {"SenderLocation", 
+                               "ReceiverLocation",
+                               "Properties"
+                              };
+            DoubleToken[] t1 = new DoubleToken[p1.length];
+            DoubleToken[] t2 = new DoubleToken[p2.length];
+            for(int i=0; i<p1.length; i++) {
+                t1[i] = new DoubleToken(p1[i]);
+            }
+            for(int i=0; i<p2.length; i++) {
+                t2[i] = new DoubleToken(p2[i]);
+            }
+            Token[] value = {new ArrayToken(t1),
+                             new ArrayToken(t2),
+                             properties };
+            RecordToken args = new RecordToken(labels, value);
             
+            /*
+            double dx = p2[0] - p1[0];
+            double dy = p2[1] - p1[1];
+            double r = Math.sqrt(dx*dx + dy*dy);
+            double theta = Math.acos(dx/r);
+            if (dy < 0 ) {
+                theta = 2*Math.PI - theta;
+            } */
             RecordToken results;
+            String[] resultLabels = {"Properties"}; 
             try {
                 results = ModelUtilities.executeModel
-                        ((CompositeActor)_executable, args, properties);
+                        ((CompositeActor)_executable, args, resultLabels);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                 "Execution failed.");
             }
-            return results;
+            return (RecordToken)results.get("Properties");
         }
         return null;
     }
     
+    /** Return the location of the given port. If the container of the
+     *  specified port is the container of this channel, then use the
+     *  "_location" attribute of the port.  Otherwise, use the
+     *  "_location" attribute of its container. In either case,
+     *  register a listener to the location attribute so that valueChanged()
+     *  will be called if and when that location changes.
+     *  The calling method is expected to have read access on the workspace.
+     *  Subclasses may override this method to provide some other way of
+     *  obtaining location information.
+     *  @param port A port with a location.
+     *  @return The location of the port.
+     *  @exception IllegalActionException If a valid location attribute cannot
+     *   be found.
+     */
+    private double[] _locationOf(IOPort port) throws IllegalActionException {
+        Entity container = (Entity)port.getContainer();
+        Locatable location = null;
+        location = (Locatable)container.getAttribute(
+                LOCATION_ATTRIBUTE_NAME, Locatable.class);
+        if (location == null) {
+            throw new IllegalActionException(
+                    "Cannot determine location for port "
+                    + port.getName()
+                    + ".");
+        }
+        return location.getLocation();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
     private CompositeActor _executable;
     private NamedObj _model;
      
     private boolean _registeredWithChannel = false;
+    // Name of the location attribute.
+    private static final String LOCATION_ATTRIBUTE_NAME = "_location";
 }
