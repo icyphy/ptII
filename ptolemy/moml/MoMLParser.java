@@ -185,16 +185,8 @@ public class MoMLParser extends HandlerBase {
             ((Configurable)_current).configure(_base, stream);
 
         } else if (elementName.equals("doc")) {
-            // Use a special property to contain the text.
-            // Note that an object may contain several documentation
-            // properties.
-            _checkClass(_current, NamedObj.class,
-                    "Element \"doc\" found inside an element that "
-                    + "is not a NamedObj. It is: "
-                    + _current);
-            NamedObj current = (NamedObj)_current;
-            String name = current.uniqueName("_doc_");
-            Documentation doc = new Documentation(current, name);
+            String name = _current.uniqueName("_doc_");
+            Documentation doc = new Documentation(_current, name);
             doc.setValue(_currentCharData.toString());
         } else if (
                 elementName.equals("property")
@@ -206,7 +198,7 @@ public class MoMLParser extends HandlerBase {
                 || elementName.equals("rendition")
                 || elementName.equals("vertex")) {
             try {
-                _current = _containers.pop();
+                _current = (NamedObj)_containers.pop();
             } catch (EmptyStackException ex) {
                 // We are back at the top level.  Ignore.
             }
@@ -409,12 +401,8 @@ public class MoMLParser extends HandlerBase {
                 _checkForNull(propertyName,
                         "No name for element \"property\"");
                 String value = (String)_attributes.get("value");
-                _checkClass(_current, NamedObj.class,
-                        "Element \"property\" found inside an element that "
-                        + "is not a NamedObj. It is: "
-                        + _current);
-                Object property = (Attribute)
-                        ((NamedObj)_current).getAttribute(propertyName);
+                NamedObj property = (Attribute)
+                        _current.getAttribute(propertyName);
 
                 String className = (String)_attributes.get("class");
                 Class newClass = null;
@@ -468,7 +456,7 @@ public class MoMLParser extends HandlerBase {
              } else if (elementName.equals("class")) {
                 String className = (String)_attributes.get("extends");
                 _checkForNull(className,
-                        "Missing extends attribute for element \"class\"");
+                        "Missing \"extends\" attribute for element \"class\"");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"class\"");
                 NamedObj newEntity;
@@ -514,6 +502,9 @@ public class MoMLParser extends HandlerBase {
                 arguments[0] = _current;
                 arguments[1] = dirName;
                 _containers.push(_current);
+                // If the container is cloned from something, break
+                // the link, since now the object has changed.
+                _current.deferMoMLDefinitionTo(null);
                 Class newClass = Class.forName(className);
                 _current = _createInstance(newClass, arguments);
 
@@ -560,13 +551,10 @@ public class MoMLParser extends HandlerBase {
                 // import prevails.
                 _imports.add(0, reference);
 
-                if (_current instanceof NamedObj) {
-                    NamedObj container = (NamedObj)_current;
-                    Import attr = new Import(container,
-                           container.uniqueName("_import")); 
-                    attr.setSource(source);
-                    attr.setBase(_base);
-                }
+                Import attr = new Import(_current,
+                       _current.uniqueName("_import")); 
+                attr.setSource(source);
+                attr.setBase(_base);
 
             } else if (elementName.equals("link")) {
                 String portName = (String)_attributes.get("port");
@@ -579,6 +567,10 @@ public class MoMLParser extends HandlerBase {
                         "Element \"link\" found inside an element that "
                         + "is not a CompositeEntity. It is: "
                         + _current);
+                // If the container is cloned from something, break
+                // the link, since now the object has changed.
+                _current.deferMoMLDefinitionTo(null);
+
                 CompositeEntity context = (CompositeEntity)_current;
 
                 // Parse port
@@ -630,7 +622,7 @@ public class MoMLParser extends HandlerBase {
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
                 Class newClass = Class.forName(className);
-                _toplevel = (NamedObj)_createInstance(newClass, arguments);
+                _toplevel = _createInstance(newClass, arguments);
                 _toplevel.setName(modelName);
                 _toplevel.setMoMLElementName("model");
                 _current = _toplevel;
@@ -666,6 +658,9 @@ public class MoMLParser extends HandlerBase {
                     arguments[0] = container;
                     arguments[1] = portName;
                     port = (Port)_createInstance(newClass, arguments);
+                    // If the container is cloned from something, break
+                    // the link, since now the object has changed.
+                    _current.deferMoMLDefinitionTo(null);
                 }
                 _containers.push(_current);
                 _current = port;
@@ -713,6 +708,9 @@ public class MoMLParser extends HandlerBase {
                                 + className);
                     }
                     _containers.push(_current);
+                    // If the container is cloned from something, break
+                    // the link, since now the object has changed.
+                    _current.deferMoMLDefinitionTo(null);
                     _current = relation;
                 }
 
@@ -720,13 +718,8 @@ public class MoMLParser extends HandlerBase {
                 String className = (String)_attributes.get("class");
                 _checkForNull(className, "No class for element \"rendition\"");
 
-                _checkClass(_current, NamedObj.class,
-                        "Element \"rendition\" found inside an element that "
-                        + "is not a NamedObj. It is: "
-                        + _current);
-
                 Object[] arguments = new Object[2];
-                arguments[0] = (NamedObj)_current;
+                arguments[0] = _current;
                 arguments[1] = "_icon";
 
                 _containers.push(_current);
@@ -843,8 +836,8 @@ public class MoMLParser extends HandlerBase {
     // is the current container object.  If the current container
     // already contains an entity with the specified name and class,
     // then return that entity.  If the class name matches
-    // an entity that has been previously created (by an absolute
-    // or relative name), then that entity is cloned.  Otherwise,
+    // a class that has been previously defined (by an absolute
+    // or relative name), then that class is cloned.  Otherwise,
     // the class name is interpreted as a Java class name and we
     // attempt to construct the entity.  This method assumes that
     // _current is an instance of CompositeEntity, or a class cast
@@ -883,44 +876,62 @@ public class MoMLParser extends HandlerBase {
             // Not a named entity. Invoke the class loader.
             if (_current != null) {
                 Object[] arguments = new Object[2];
+                // If the container is cloned from something, break
+                // the link, since now the object has changed.
+                _current.deferMoMLDefinitionTo(null);
                 arguments[0] = _current;
                 arguments[1] = entityName;
-                return (NamedObj)_createInstance(newClass, arguments);
+                return _createInstance(newClass, arguments);
             } else {
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
-                NamedObj result =
-                        (NamedObj)_createInstance(newClass, arguments);
+                NamedObj result = _createInstance(newClass, arguments);
                 result.setName(entityName);
                 return result;
             }
         } else {
-            // Extending a previously defined entity.  Clone it.
+            // Extending a previously defined entity.  Check to see that
+            // it was defined to be a class.
+            if (!reference.getMoMLElementName().equals("class")) {
+                throw new XmlException("Attempt to extend an entity that "
+                + "is not a class: " + reference.getFullName(),
+                _currentExternalEntity(),
+                _parser.getLineNumber(),
+                _parser.getColumnNumber());
+            }
+
+            // Clone it.
             ComponentEntity newEntity = (ComponentEntity)reference.clone();
-            // The master may have an entity name "class" (or "model"?), and
-            // that name will be cloned, so we need to change this.
-            newEntity.setMoMLElementName("entity");
+            newEntity.deferMoMLDefinitionTo(reference);
             
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
             // name conflict here.  If we were to set the name after
-            // setting the container, we could get a spurious name conflict.
+            // setting the container, we could get a spurious name conflict
+            // when we set the container.
             newEntity.setName(entityName);
 
             // Set the container of the clone.
             newEntity.setContainer(container);
-            
+
+            // The master may have an entity name "class" (or "model"?), and
+            // that name will be cloned, so we need to change this.
+            // It may get changed back if we are inside a "class" element.
+            newEntity.setMoMLElementName("entity");
+
             return newEntity;
         }
     }
 
     // Create an instance of the specified class name by finding a
-    // constructor that matches the specified arguments.
+    // constructor that matches the specified arguments.  The specified
+    // class must be NamedObj or derived, or a ClassCastException will
+    // be thrown.
     // @param newClass The class.
     // @param arguments The constructor arguments.
     // @throws Exception If no matching constructor is found, or if
     //  invoking the constructor triggers an exception.
-    private Object _createInstance(Class newClass, Object[] arguments)
+    private NamedObj _createInstance(Class newClass, Object[] arguments)
             throws Exception {
         Constructor[] constructors = newClass.getConstructors();
         for (int i = 0; i < constructors.length; i++) {
@@ -935,7 +946,7 @@ public class MoMLParser extends HandlerBase {
                 }
             }
             if (match) {
-                return constructor.newInstance(arguments);
+                return (NamedObj)constructor.newInstance(arguments);
             }
         }
         // If we get here, then there is no matching constructor.
@@ -1021,7 +1032,7 @@ public class MoMLParser extends HandlerBase {
     private Stack _containers = new Stack();
 
     // The current object in the hierarchy.
-    private Object _current;
+    private NamedObj _current;
 
     // The current character data for the current element.
     private StringBuffer _currentCharData;

@@ -34,10 +34,12 @@ import ptolemy.kernel.util.*;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Hashtable;
+import java.util.Collections;
 import java.util.Enumeration;
-
-import collections.LinkedList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// CompositeEntity
@@ -162,10 +164,10 @@ public class CompositeEntity extends ComponentEntity {
         newentity._containedRelations = new NamedList(newentity);
 
         // Clone the contained relations.
-        Enumeration relations = getRelations();
-        while (relations.hasMoreElements()) {
+        Iterator relations = relationList().iterator();
+        while (relations.hasNext()) {
             ComponentRelation relation =
-                (ComponentRelation)relations.nextElement();
+                (ComponentRelation)relations.next();
             ComponentRelation newrelation =
                 (ComponentRelation)relation.clone(ws);
             // Assume that since we are dealing with clones,
@@ -181,10 +183,10 @@ public class CompositeEntity extends ComponentEntity {
         }
 
         // Clone the contained entities.
-        Enumeration entities = getEntities();
-        while (entities.hasMoreElements()) {
+        Iterator entities = entityList().iterator();
+        while (entities.hasNext()) {
             ComponentEntity entity =
-                (ComponentEntity)entities.nextElement();
+                (ComponentEntity)entities.next();
             ComponentEntity newsubentity = (ComponentEntity)entity.clone(ws);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
@@ -198,9 +200,9 @@ public class CompositeEntity extends ComponentEntity {
             }
 
             // Clone the links of the ports of the cloned entities.
-            Enumeration ports = entity.getPorts();
-            while (ports.hasMoreElements()) {
-                ComponentPort port = (ComponentPort)ports.nextElement();
+            Iterator ports = entity.portList().iterator();
+            while (ports.hasNext()) {
+                ComponentPort port = (ComponentPort)ports.next();
                 Enumeration lrels = port.linkedRelations();
                 while (lrels.hasMoreElements()) {
                     ComponentRelation rel =
@@ -226,12 +228,12 @@ public class CompositeEntity extends ComponentEntity {
         }
 
         // Clone the inside links from the ports of this entity.
-        Enumeration ports = getPorts();
-        while (ports.hasMoreElements()) {
-            ComponentPort port = (ComponentPort)ports.nextElement();
-            relations = port.insideRelations();
-            while (relations.hasMoreElements()) {
-                Relation relation = (Relation)relations.nextElement();
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            ComponentPort port = (ComponentPort)ports.next();
+            relations = port.insideRelationList().iterator();
+            while (relations.hasNext()) {
+                Relation relation = (Relation)relations.next();
                 ComponentRelation newrel =
                         newentity.getRelation(relation.getName());
                 Port newport =
@@ -336,93 +338,61 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Enumerate the opaque entities that are directly or indirectly
-     *  contained by this entity.  The enumeration will be empty if there
+    /** List the opaque entities that are directly or indirectly
+     *  contained by this entity.  The list will be empty if there
      *  are no such contained entities.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of opaque ComponentEntity objects.
+     *  @return A list of opaque ComponentEntity objects.
      */
-    public Enumeration deepGetEntities() {
+    public List deepEntityList() {
         try {
             _workspace.getReadAccess();
-            Enumeration enum = _containedEntities.elements();
-            // Construct a linked list and then return an enumeration of it.
             LinkedList result = new LinkedList();
 
-            while (enum.hasMoreElements()) {
-                ComponentEntity entity = (ComponentEntity)enum.nextElement();
+            Iterator entities = _containedEntities.elementList().iterator();
+
+            while (entities.hasNext()) {
+                ComponentEntity entity = (ComponentEntity)entities.next();
                 if (entity.isOpaque()) {
-                    result.insertLast(entity);
+                    result.add(entity);
                 } else {
-                    result.appendElements(
-                            ((CompositeEntity)entity).deepGetEntities());
+                    result.addAll(((CompositeEntity)entity).deepEntityList());
                 }
             }
-            return result.elements();
+            return result;
         } finally {
             _workspace.doneReading();
         }
     }
 
-    /** Write a MoML description of this object with the specified 
-     *  indentation depth. MoML is an XML modeling markup language.
-     *  The element name is given by the getMoMLElementName(), and will
-     *  typically be "entity", "model", or "class".  If it is "class",
-     *  then the element is written with "name" and "extends" attributes.
-     *  Otherwise, it is written with "name" and "class" attributes.
-     *  If it is "model", or it is "class" and the depth argument is zero,
-     *  then the exported MoML includes header information that 
-     *  identifies the data as XML and cites the PUBLIC DTD.
-     *  <p>
-     *  The body of the element is written using
-     *  the _exportMoMLContents() protected method, so that derived classes
-     *  can override that method alone to alter only how the contents
-     *  of this object are described.
-     *  <p>
-     *  If this composite entity was created by cloning another,
-     *  then instead of referring to its Java class, we refer to the
-     *  master instance from which it was cloned (using the full name
-     *  of that master instance).  In addition, the only contents
-     *  that are described in this case are the attributes and the ports,
-     *  not the contained entities or relations.
-     *  <p>
-     *  The text that is written is indented according to the specified
-     *  depth, with each line (including the last one)
-     *  terminated with a newline.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @throws IOException If an I/O error occurs.
-     *  @see _exportMoMLContents
+    /** Enumerate the opaque entities that are directly or indirectly
+     *  contained by this entity.  The enumeration will be empty if there
+     *  are no such contained entities.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use deepEntityList() instead.
+     *  @return An enumeration of opaque ComponentEntity objects.
      */
-    public void exportMoML(Writer output, int depth) throws IOException {
-        String classAttribute = "\" class=\"";
-        String momlElement = getMoMLElementName();
-        boolean isClass = momlElement.equals("class");
-        if (isClass) {
-            classAttribute = "\" extends=\"";
+    public Enumeration deepGetEntities() {
+        return Collections.enumeration(deepEntityList());
+    }
+
+    /** List the contained entities in the order they were added
+     *  (using their setContainer() method).
+     *  The returned list is static in the sense
+     *  that it is not affected by any subsequent additions or removals
+     *  of entities.
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of ComponentEntity objects.
+     */
+    public List entityList() {
+        try {
+            _workspace.getReadAccess();
+            // Copy the list so we can create a static enumeration.
+            NamedList entitiesCopy = new NamedList(_containedEntities);
+            return entitiesCopy.elementList();
+        } finally {
+            _workspace.doneReading();
         }
-        if ((isClass && depth == 0) || momlElement.equals("model")) {
-            output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-            + "<!DOCTYPE model PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
-            + "    \"http://ptolemy.eecs.berkeley.edu/archive/moml.dtd\">\n");
-        }
-        String master = null;
-        if (_clonedFrom != null) {
-            master = _clonedFrom.getFullName();
-        } else {
-            master = getClass().getName();
-        }
-        output.write(_getIndentPrefix(depth)
-               + "<"
-               + momlElement
-               + " name=\""
-               + getName()
-               + classAttribute
-               + master
-               + "\">\n");
-        _exportMoMLContents(output, depth + 1);
-        output.write(_getIndentPrefix(depth) + "</"
-                + getMoMLElementName() + ">\n");
     }
 
     /** Get the attribute with the given name. The name may be compound,
@@ -500,18 +470,11 @@ public class CompositeEntity extends ComponentEntity {
      *  that it is not affected by any subsequent additions or removals
      *  of entities.
      *  This method is read-synchronized on the workspace.
+     *  @deprecated Use entityList() instead.
      *  @return An enumeration of ComponentEntity objects.
      */
     public Enumeration getEntities() {
-        try {
-            _workspace.getReadAccess();
-            // Copy the list so we can create a static enumeration.
-            NamedList entitiesCopy = new NamedList(_containedEntities);
-            Enumeration entities = entitiesCopy.elements();
-            return entities;
-        } finally {
-            _workspace.doneReading();
-        }
+        return Collections.enumeration(entityList());
     }
 
     /** Get a contained port by name. The name may be compound,
@@ -577,18 +540,11 @@ public class CompositeEntity extends ComponentEntity {
      *  that it is not affected by any subsequent additions or removals
      *  of relations.
      *  This method is read-synchronized on the workspace.
+     *  @deprecated Use relationList() instead.
      *  @return An enumeration of ComponentRelation objects.
      */
     public Enumeration getRelations() {
-        try {
-            _workspace.getReadAccess();
-            // Copy the list so we can create a static enumeration.
-            NamedList relationsCopy = new NamedList(_containedRelations);
-            Enumeration relations = relationsCopy.elements();
-            return relations;
-        } finally {
-            _workspace.doneReading();
-        }
+        return Collections.enumeration(relationList());
     }
 
     /** Return false since CompositeEntities are not atomic.
@@ -658,6 +614,24 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** List the relations contained by this entity.
+     *  The returned list is static in the sense
+     *  that it is not affected by any subsequent additions or removals
+     *  of relations.
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of ComponentRelation objects.
+     */
+    public List relationList() {
+        try {
+            _workspace.getReadAccess();
+            // Copy the list so we can create a static enumeration.
+            NamedList relationsCopy = new NamedList(_containedRelations);
+            return relationsCopy.elementList();
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Remove all contained entities and unlink them from all relations.
      *  This is done by setting their containers to null.
      *  This method is read-synchronized on the workspace
@@ -666,15 +640,10 @@ public class CompositeEntity extends ComponentEntity {
     public void removeAllEntities() {
         try {
             _workspace.getReadAccess();
-            // Have to copy list to avoid corrupting the enumeration.
-            // NOTE: Is this still true?  Or was this due to a bug in
-            // NamedList?
-            NamedList entitiesCopy = new NamedList(_containedEntities);
-            Enumeration entities = entitiesCopy.elements();
+            Iterator entities = entityList().iterator();
 
-            while (entities.hasMoreElements()) {
-                ComponentEntity entity =
-                    (ComponentEntity)entities.nextElement();
+            while (entities.hasNext()) {
+                ComponentEntity entity = (ComponentEntity)entities.next();
                 try {
                     entity.setContainer(null);
                 } catch (KernelException ex) {
@@ -698,15 +667,11 @@ public class CompositeEntity extends ComponentEntity {
     public void removeAllRelations() {
         try {
             _workspace.getWriteAccess();
-            // Have to copy list to avoid corrupting the enumeration.
-            // NOTE: Is this still true?  Or was this due to a bug in
-            // NamedList?
-            NamedList relationsCopy = new NamedList(_containedRelations);
-            Enumeration relations = relationsCopy.elements();
+            Iterator relations = relationList().iterator();
 
-            while (relations.hasMoreElements()) {
+            while (relations.hasNext()) {
                 ComponentRelation relation =
-                    (ComponentRelation)relations.nextElement();
+                        (ComponentRelation)relations.next();
                 try {
                     relation.setContainer(null);
                 } catch (KernelException ex) {
@@ -811,17 +776,17 @@ public class CompositeEntity extends ComponentEntity {
                     result += " ";
                 }
                 result += "entities {\n";
-                Enumeration enume = getEntities();
-                while (enume.hasMoreElements()) {
+                Iterator entities = entityList().iterator();
+                while (entities.hasNext()) {
                     ComponentEntity entity =
-                        (ComponentEntity)enume.nextElement();
+                            (ComponentEntity)entities.next();
                     result +=
                         entity._description(detail, indent+1, 2) + "\n";
                 }
                 result += _getIndentPrefix(indent) + "} relations {\n";
-                Enumeration enum = getRelations();
-                while (enum.hasMoreElements()) {
-                    Relation relation = (Relation)enum.nextElement();
+                Iterator relations = relationList().iterator();
+                while (relations.hasNext()) {
+                    Relation relation = (Relation)relations.next();
                     result += relation._description(detail, indent+1, 2) + "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
@@ -834,13 +799,13 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Write a MoML description of the contents of this object, which
-     *  in this class is the attributes, ports, contained relations,
+     *  in this class are the attributes, ports, contained relations,
      *  and contained entities, plus all links.  The links are written
      *  in an order that respects the ordering in ports, but not necessarily
      *  the ordering in relations.  This method is called
-     *  by _exportMoML().  Each description is indented according to the
+     *  by exportMoML().  Each description is indented according to the
      *  specified depth and terminated with a newline character.
-     *  @param output The output stream to write to.
+     *  @param output The output to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @throws IOException If an I/O error occurs.
      */
@@ -848,32 +813,28 @@ public class CompositeEntity extends ComponentEntity {
             throws IOException {
         super._exportMoMLContents(output, depth);
 
-        // If this entity was cloned from another, then we do not
-        // describe the contents, and therefore we are done.
-        if (_clonedFrom != null) return;
-
-        Enumeration entities = getEntities();
-        while (entities.hasMoreElements()) {
-            ComponentEntity entity = (ComponentEntity)entities.nextElement();
+        Iterator entities = entityList().iterator();
+        while (entities.hasNext()) {
+            ComponentEntity entity = (ComponentEntity)entities.next();
             entity.exportMoML(output, depth);
         }
-        Enumeration relations = getRelations();
-        while (relations.hasMoreElements()) {
+        Iterator relations = relationList().iterator();
+        while (relations.hasNext()) {
             ComponentRelation relation
-                    = (ComponentRelation)relations.nextElement();
+                    = (ComponentRelation)relations.next();
             relation.exportMoML(output, depth);
         }
         // Next write the links.  To get the ordering right,
         // we read the links from the ports, not from the relations.
 
         // First, produce the inside links on contained ports.
-        Enumeration ports = getPorts();
-        while (ports.hasMoreElements()) {
-            ComponentPort port = (ComponentPort)ports.nextElement();
-            relations = port.insideRelations();
-            while (relations.hasMoreElements()) {
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            ComponentPort port = (ComponentPort)ports.next();
+            relations = port.insideRelationList().iterator();
+            while (relations.hasNext()) {
                 ComponentRelation relation
-                         = (ComponentRelation)relations.nextElement();
+                         = (ComponentRelation)relations.next();
                 // In order to support level-crossing links, consider the
                 // possibility that the relation is not contained by this.
                 String relationName;
@@ -892,16 +853,16 @@ public class CompositeEntity extends ComponentEntity {
         }
 
         // Next, produce the links on ports contained by contained entities.
-        entities = getEntities();
-        while (entities.hasMoreElements()) {
-            ComponentEntity entity = (ComponentEntity)entities.nextElement();
-            ports = entity.getPorts();
-            while (ports.hasMoreElements()) {
-                ComponentPort port = (ComponentPort)ports.nextElement();
-                relations = port.linkedRelations();
-                while (relations.hasMoreElements()) {
+        entities = entityList().iterator();
+        while (entities.hasNext()) {
+            ComponentEntity entity = (ComponentEntity)entities.next();
+            ports = entity.portList().iterator();
+            while (ports.hasNext()) {
+                ComponentPort port = (ComponentPort)ports.next();
+                relations = port.linkedRelationList().iterator();
+                while (relations.hasNext()) {
                     ComponentRelation relation
-                            = (ComponentRelation)relations.nextElement();
+                            = (ComponentRelation)relations.next();
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
                     String relationName;

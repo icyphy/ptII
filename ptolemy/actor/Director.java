@@ -92,6 +92,7 @@ public class Director extends NamedObj implements Executable {
      */
     public Director() {
         super();
+        setMoMLElementName("director");
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -101,6 +102,7 @@ public class Director extends NamedObj implements Executable {
      */
     public Director(Workspace workspace) {
         super(workspace);
+        setMoMLElementName("director");
     }
 
     /** Construct a director in the given container with the given name.
@@ -118,6 +120,7 @@ public class Director extends NamedObj implements Executable {
             throws IllegalActionException {
         super(container.workspace(), name);
         container.setDirector(this);
+        setMoMLElementName("director");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -62,7 +62,7 @@ test BasePNDirector-2.1 {Constructor tests} {
     set d2 [java::new ptolemy.domains.pn.kernel.BasePNDirector $w]
     set d3 [java::new ptolemy.domains.pn.kernel.BasePNDirector $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 W. .E0.D3}
+} {.D1 . .E0.D3}
     
 
 ######################################################################
@@ -73,7 +73,7 @@ test BasePNDirector-3.1 {Test clone} {
     set d4 [java::cast ptolemy.domains.pn.kernel.BasePNDirector [$d3 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.M W.}
+} {.M .}
 
 
 ######################################################################
@@ -86,7 +86,7 @@ test BasePNDirector-4.1 {Test _makeDirectorOf} {
     $e0 setManager $manager
     set d3 [java::new ptolemy.domains.pn.kernel.BasePNDirector $e0 D3]
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {W.E0.D3 W.D4 {W. W.E0}}
+} {.E0.D3 .D4 {. .E0}}
 
 ######################################################################
 ####
@@ -100,7 +100,7 @@ test BasePNDirector-5.1 {Test action methods} {
     # run the application again
     $manager run
     lsort [$a1 getRecord]
-} {W.E0.A1.fire W.E0.A1.fire W.E0.A1.initialize W.E0.A1.initialize W.E0.A1.postfire W.E0.A1.postfire W.E0.A1.prefire W.E0.A1.prefire W.E0.A1.wrapup W.E0.A1.wrapup W.E0.A2.fire W.E0.A2.fire W.E0.A2.initialize W.E0.A2.initialize W.E0.A2.postfire W.E0.A2.postfire W.E0.A2.prefire W.E0.A2.prefire W.E0.A2.wrapup W.E0.A2.wrapup}
+} {.E0.A1.fire .E0.A1.fire .E0.A1.initialize .E0.A1.initialize .E0.A1.postfire .E0.A1.postfire .E0.A1.prefire .E0.A1.prefire .E0.A1.wrapup .E0.A1.wrapup .E0.A2.fire .E0.A2.fire .E0.A2.initialize .E0.A2.initialize .E0.A2.postfire .E0.A2.postfire .E0.A2.prefire .E0.A2.prefire .E0.A2.wrapup .E0.A2.wrapup}
 
 ######################################################################
 ####

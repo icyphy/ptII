@@ -303,8 +303,6 @@ test MoMLParser-1.11 {test instantiation of a class} {
     <entity name="b" class=".top.a">
         <property name="p" class="ptolemy.data.expr.Parameter" value="x">
         </property>
-        <port name="port" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
 </model>
 }
@@ -332,9 +330,227 @@ test MoMLParser-1.12 {test instantiation of a class} {
     <entity name="b" class=".a">
         <property name="p" class="ptolemy.data.expr.Parameter" value="x">
         </property>
-        <port name="port" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
 </model>
 }
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.ComponentEntity">
+        <port name="p" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </class>
+    <class name="derived" extends="master">
+        <port name="q" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </class>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.13 {test extension of a class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.ComponentEntity">
+        <port name="p" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </class>
+    <class name="derived" extends="ptolemy.kernel.ComponentEntity">
+        <port name="p" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="q" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </class>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <entity name="master" class="ptolemy.kernel.ComponentEntity">
+    </entity>
+    <entity name="derived" class="master">
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.14 {test that instantiation of an entity fails} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    catch {set toplevel [$parser parse $moml]} msg
+    list $msg
+} {{com.microstar.xml.XmlException: Attempt to extend an entity that is not a class: .top.master}}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <class name="derived" extends="master">
+        <entity name="e2" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.15 {test extension of a composite class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <class name="derived" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+        <entity name="e2" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <class name="derived" extends="master">
+        <entity name="e2" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.15 {test extension of a composite class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <class name="derived" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+        <entity name="e2" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <entity name="derived" class="master">
+        <entity name="e2" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.16 {test extension of a composite class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <entity name="derived" class="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+        <entity name="e2" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <class name="derived" extends="master">
+    </class>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.17 {test extension of a composite class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="master" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="e1" class="ptolemy.kernel.ComponentEntity">
+        </entity>
+    </class>
+    <class name="derived" extends=".top.master">
+    </class>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <director name="dir" class="ptolemy.actor.Director"/>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18 {test director persistence} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <director name="dir" class="ptolemy.actor.Director">
+    </director>
+</model>
+}
+
 

@@ -143,20 +143,7 @@ public class Parameter extends Variable {
      *  @throws IOException If an I/O error occurs.
      */
     public void exportMoML(Writer output, int depth) throws IOException {
-        String value = getExpression();
-        if (value == null) {
-            ptolemy.data.Token token = null;
-            try {
-                token = getToken();
-            } catch (IllegalActionException ex) {}
-            if (token != null) {
-                value = token.toString();
-            }
-        }
-        String valueTerm = "";
-        if (value != null) {
-            valueTerm = " value=\"" + value + "\"";
-        }
+        String valueTerm = " value=\"" + stringRepresentation() + "\"";
         output.write(_getIndentPrefix(depth)
                + "<"
                + getMoMLElementName()

@@ -32,6 +32,8 @@ package ptolemy.kernel;
 
 import ptolemy.kernel.util.*;
 
+import java.io.Writer;
+import java.io.IOException;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////

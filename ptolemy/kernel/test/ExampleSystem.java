@@ -33,6 +33,7 @@ import ptolemy.kernel.util.*;
 
 import java.io.Serializable;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSystem
@@ -209,9 +210,9 @@ public class ExampleSystem implements Serializable {
     public String printDeepLinkedPorts(ComponentRelation r) {
         String st = r.getName() + ": ";
         ComponentPort po;
-        Enumeration ports = r.deepLinkedPorts();
-        while (ports.hasMoreElements()) {
-            po = (ComponentPort) ports.nextElement();
+        Iterator ports = r.deepLinkedPortList().iterator();
+        while (ports.hasNext()) {
+            po = (ComponentPort) ports.next();
             st += po.getName() + " ";
         }
         return(st+"\n");
@@ -226,9 +227,9 @@ public class ExampleSystem implements Serializable {
     public String printConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
         ComponentPort po;
-        Enumeration ports = p.connectedPorts();
-        while (ports.hasMoreElements()) {
-            po = (ComponentPort) ports.nextElement();
+        Iterator ports = p.connectedPortList().iterator();
+        while (ports.hasNext()) {
+            po = (ComponentPort) ports.next();
             st += po.getName() + " ";
         }
         return(st+"\n");
@@ -244,9 +245,9 @@ public class ExampleSystem implements Serializable {
     public String printDeepConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
         ComponentPort po;
-        Enumeration ports = p.deepConnectedPorts();
-        while (ports.hasMoreElements()) {
-            po = (ComponentPort) ports.nextElement();
+        Iterator ports = p.deepConnectedPortList().iterator();
+        while (ports.hasNext()) {
+            po = (ComponentPort) ports.next();
             st += po.getName() + " ";
         }
         return(st+"\n");

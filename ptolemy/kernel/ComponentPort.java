@@ -32,8 +32,11 @@ package ptolemy.kernel;
 
 import ptolemy.kernel.util.*;
 
+import java.util.Collections;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComponentPort
@@ -171,6 +174,24 @@ public class ComponentPort extends Port {
         return newobj;
     }
 
+    /** Deeply list the ports connected to this port on the outside.
+     *  Begin by listing the ports that are connected to this port.
+     *  If any of those are transparent ports that we are connected to
+     *  from the inside, then list all the ports deeply connected
+     *  on the outside to that transparent port.  Note that a port may
+     *  be listed more than once. This method is read synchronized on the
+     *  workspace.
+     *  @return An unmodifiable list of ComponentPort objects.
+     */
+    public List deepConnectedPortList() {
+        try {
+            _workspace.getReadAccess();
+            return _deepConnectedPortList(null);
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Deeply enumerate the ports connected to this port on the outside.
      *  Begin by enumerating the ports that are connected to this port.
      *  If any of those are transparent ports that we are connected to
@@ -179,11 +200,25 @@ public class ComponentPort extends Port {
      *  be listed more than once. This method read synchronized on the
      *  workspace.
      *  @return An enumeration of ComponentPort objects.
+     *  @deprecated Use deepConnectedPortList() instead.
      */
     public Enumeration deepConnectedPorts() {
+        return Collections.enumeration(deepConnectedPortList());
+    }
+
+    /** If this port is transparent, then deeply list the ports
+     *  connected on the inside.  Otherwise, list
+     *  just this port. All ports listed are opaque. Note that
+     *  the returned list could conceivably be empty, for
+     *  example if this port is transparent but has no inside links.
+     *  Also, a port may be listed more than once if more than one
+     *  inside connection to it has been established.
+     *  @return An unmodifiable list of ComponentPort objects.
+     */
+    public List deepInsidePortList() {
         try {
             _workspace.getReadAccess();
-            return _deepConnectedPorts(null);
+            return _deepInsidePortList(null);
         } finally {
             _workspace.doneReading();
         }
@@ -197,11 +232,28 @@ public class ComponentPort extends Port {
      *  Also, a port may be listed more than once if more than one
      *  inside connection to it has been established.
      *  @return An enumeration of ComponentPort objects.
+     *  @deprecated Use deepInsidePortList() instead.
      */
     public Enumeration deepInsidePorts() {
+        return Collections.enumeration(deepInsidePortList());
+    }
+
+    /** List the ports connected on the inside to this port. Note that
+     *  a port may be listed more than once if more than one inside connection
+     *  has been established to it.
+     *  This method is read-synchronized on the workspace.
+     *  @return A list of ComponentPort objects.
+     */
+    public List insidePortList() {
         try {
             _workspace.getReadAccess();
-            return _deepInsidePorts(null);
+            LinkedList result = new LinkedList();
+            Iterator relations = insideRelationList().iterator();
+            while (relations.hasNext()) {
+                Relation relation = (Relation)relations.next();
+                result.addAll(relation.linkedPortList(this));
+            }
+            return result;
         } finally {
             _workspace.doneReading();
         }
@@ -212,17 +264,29 @@ public class ComponentPort extends Port {
      *  has been established to it.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
+     *  @deprecated Use insidePortList() instead.
      */
     public Enumeration insidePorts() {
+        return Collections.enumeration(insidePortList());
+    }
+
+    /** List the relations linked on the inside to this port.
+     *  Note that a relation may be listed more than once if more than link
+     *  to it has been established.
+     *  This method is read-synchronized on the workspace.
+     *  @return A list of ComponentRelation objects.
+     */
+    public List insideRelationList() {
         try {
             _workspace.getReadAccess();
+            // Unfortunately, CrossRefList returns an enumeration only.
+            // Use it to construct a list.
             LinkedList result = new LinkedList();
-            Enumeration relations = insideRelations();
+            Enumeration relations = _insideLinks.getContainers();
             while (relations.hasMoreElements()) {
-                Relation relation = (Relation)relations.nextElement();
-                result.appendElements(relation.linkedPorts(this));
+                result.add(relations.nextElement());
             }
-            return result.elements();
+            return result;
         } finally {
             _workspace.doneReading();
         }
@@ -235,6 +299,9 @@ public class ComponentPort extends Port {
      *  @return An enumeration of ComponentRelation objects.
      */
     public Enumeration insideRelations() {
+        // NOTE: There is no reason to deprecate this because it does
+        // depend on Doug Lea's collections, and it is more efficient than
+        // the list version.
         try {
             _workspace.getReadAccess();
             return _insideLinks.getContainers();
@@ -251,9 +318,7 @@ public class ComponentPort extends Port {
         if(port == null) return false;
         try {
             _workspace.getReadAccess();
-            // Call deepConnectedPort to refresh the cache.
-            Enumeration dummy = deepConnectedPorts();
-            return _deeplinkedports.includes(port);
+            return deepConnectedPortList().contains(port);
         } finally {
             _workspace.doneReading();
         }
@@ -428,10 +493,10 @@ public class ComponentPort extends Port {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Deeply enumerate the ports connected to this port on the outside.
-     *  Begin by enumerating the ports that are connected to this port.
+    /** Deeply list the ports connected to this port on the outside.
+     *  Begin by listing the ports that are connected to this port.
      *  If any of those are transparent ports that we are connected to
-     *  from the inside, then enumerate all the ports deeply connected
+     *  from the inside, then list all the ports deeply connected
      *  on the outside to that transparent port.  Note that a port may
      *  be listed more than once. The path argument is the path from
      *  the port that originally calls this method to this port.
@@ -442,62 +507,149 @@ public class ComponentPort extends Port {
      *  caller should.
      *  @param path The list of ports on the path to this port in deeply
      *   traversing the topology.
-     *  @return An enumeration of ComponentPort objects.
+     *  @return An unmodifiable list of ComponentPort objects.
      */
-    protected Enumeration _deepConnectedPorts(LinkedList path) {
+    protected List _deepConnectedPortList(LinkedList path) {
         if (_deeplinkedportsversion == _workspace.getVersion()) {
             // Cache is valid.  Use it.
-            return _deeplinkedports.elements();
+            return _deeplinkedports;
         }
         if(path == null) {
             path = new LinkedList();
         } else {
-            if (path.firstIndexOf(this) >= 0) {
-                throw new InvalidStateException( path.elements(),
-                        "loop in topology!");
+            if (path.indexOf(this) >= 0) {
+                throw new InvalidStateException(path, "loop in topology!");
             }
         }
-        path.insertFirst(this);
-        Enumeration nearrelations = linkedRelations();
+        path.add(0, this);
+        Iterator nearrelations = linkedRelationList().iterator();
         LinkedList result = new LinkedList();
 
-        while( nearrelations.hasMoreElements() ) {
+        while( nearrelations.hasNext() ) {
             ComponentRelation relation =
-                (ComponentRelation)nearrelations.nextElement();
+                (ComponentRelation)nearrelations.next();
 
-            Enumeration connectedports =
-                relation.linkedPorts(this);
-            while (connectedports.hasMoreElements()) {
+            Iterator connectedports = relation.linkedPortList(this).iterator();
+            while (connectedports.hasNext()) {
                 ComponentPort port =
-                    (ComponentPort)connectedports.nextElement();
+                    (ComponentPort)connectedports.next();
                 // NOTE: If level-crossing transitions are not allowed,
                 // then a simpler test than that of the following
                 // would work.
                 if (port._outside(relation.getContainer())) {
                     // We are coming at the port from the inside.
                     if (port.isOpaque()) {
-                        result.insertLast(port);
+                        result.add(port);
                     } else {
                         // Port is transparent
-                        result.appendElements(
-                                port._deepConnectedPorts(path));
+                        result.addAll(port._deepConnectedPortList(path));
                     }
                 } else {
                     // We are coming at the port from the outside.
                     if (port.isOpaque()) {
-                        result.insertLast(port);
+                        result.add(port);
                     } else {
                         // It is transparent.
-                        result.appendElements(
-                                port._deepInsidePorts(path));
+                        result.addAll(port._deepInsidePortList(path));
                     }
                 }
             }
         }
-        _deeplinkedports = result;
+        _deeplinkedports = Collections.unmodifiableList(result);
         _deeplinkedportsversion = _workspace.getVersion();
-        path.removeFirst();
-        return _deeplinkedports.elements();
+        path.remove(0);
+        return _deeplinkedports;
+    }
+
+    /** Deeply enumerate the ports connected to this port on the outside.
+     *  Begin by enumerating the ports that are connected to this port.
+     *  If any of those are transparent ports that we are connected to
+     *  from the inside, then list all the ports deeply connected
+     *  on the outside to that transparent port.  Note that a port may
+     *  be enumerated more than once. The path argument is the path from
+     *  the port that originally calls this method to this port.
+     *  If this port is already on the list of ports on the path to this
+     *  port in deeply traversing the topology, then there is a loop in
+     *  the topology, and an InvalidStateException is thrown.
+     *  This method not synchronized on the workspace, so the
+     *  caller should.
+     *  @param path The list of ports on the path to this port in deeply
+     *   traversing the topology.
+     *  @deprecated Use _deepConnectedPortList() instead.
+     *  @return An enumeration of ComponentPort objects.
+     */
+    protected Enumeration _deepConnectedPorts(LinkedList path) {
+        return Collections.enumeration(_deepConnectedPortList(path));
+    }
+
+    /** If this port is transparent, then deeply list the ports
+     *  connected on the inside.  Otherwise, list
+     *  just this port. All ports listed are opaque. Note that
+     *  the returned list could conceivably be empty, for
+     *  example if this port is transparent but has no inside links.
+     *  Also, a port may be listed more than once if more than one
+     *  inside connection to it has been established.
+     *  The path argument is the path from
+     *  the port that originally calls this method to this port.
+     *  If this port is already on the list of ports on the path to this
+     *  port in deeply traversing the topology, then there is a loop in
+     *  the topology, and an InvalidStateException is thrown.
+     *  This method is read-synchronized on the workspace.
+     *  @param path The list of ports on the path to this port in deeply
+     *   traversing the topology.
+     *  @return An unmodifiable list of ComponentPort objects.
+     */
+    protected List _deepInsidePortList(LinkedList path) {
+        if (_deeplinkedinportsversion == _workspace.getVersion()) {
+            // Cache is valid.  Use it.
+            return _deeplinkedinports;
+        }
+        if(path == null) {
+            path = new LinkedList();
+        } else {
+            if (path.indexOf(this) >= 0) {
+                throw new InvalidStateException(path, "loop in topology!");
+            }
+        }
+        path.add(0, this);
+        LinkedList result = new LinkedList();
+        if (isOpaque()) {
+            // Port is opaque.
+            result.add(this);
+        } else {
+            // Port is transparent.
+            Iterator relations = insideRelationList().iterator();
+            while (relations.hasNext()) {
+                Relation relation = (Relation)relations.next();
+                Iterator insideports = relation.linkedPortList(this).iterator();
+                while (insideports.hasNext()) {
+                    ComponentPort downport =
+                        (ComponentPort)insideports.next();
+                    // The inside port may not be actually inside,
+                    // in which case we want to look through it
+                    // from the inside (this supports transparent
+                    // entities).
+                    if (downport._outside(relation.getContainer())) {
+                        // The inside port is not truly inside.
+                        // Check to see whether it is transparent.
+                        if (downport.isOpaque()) {
+                            result.add(downport);
+                        } else {
+                            result.addAll(
+                                    downport._deepConnectedPortList(path));
+                        }
+                    } else {
+                        // The inside port is truly inside.
+                        result.addAll(
+                                downport._deepInsidePortList(path));
+                    }
+                }
+            }
+        }
+        _deeplinkedinports = Collections.unmodifiableList(result);
+        _deeplinkedinportsversion = _workspace.getVersion();
+        path.remove(0);
+        return _deeplinkedinports;
     }
 
     /** If this port is transparent, then deeply enumerate the ports
@@ -516,60 +668,10 @@ public class ComponentPort extends Port {
      *  @param path The list of ports on the path to this port in deeply
      *   traversing the topology.
      *  @return An enumeration of ComponentPort objects.
+     *  @deprecated Use _deepInsidePortList() instead.
      */
     protected Enumeration _deepInsidePorts(LinkedList path) {
-        if (_deeplinkedinportsversion == _workspace.getVersion()) {
-            // Cache is valid.  Use it.
-            return _deeplinkedinports.elements();
-        }
-        if(path == null) {
-            path = new LinkedList();
-        } else {
-            if (path.firstIndexOf(this) >= 0) {
-                throw new InvalidStateException( path.elements(),
-                        "loop in topology!");
-            }
-        }
-        path.insertFirst(this);
-        LinkedList result = new LinkedList();
-        if (isOpaque()) {
-            // Port is opaque.
-            result.insertLast(this);
-        } else {
-            // Port is transparent.
-            Enumeration relations = insideRelations();
-            while (relations.hasMoreElements()) {
-                Relation relation = (Relation)relations.nextElement();
-                Enumeration insideports =
-                    relation.linkedPorts(this);
-                while (insideports.hasMoreElements()) {
-                    ComponentPort downport =
-                        (ComponentPort)insideports.nextElement();
-                    // The inside port may not be actually inside,
-                    // in which case we want to look through it
-                    // from the inside (this supports transparent
-                    // entities).
-                    if (downport._outside(relation.getContainer())) {
-                        // The inside port is not truly inside.
-                        // Check to see whether it is transparent.
-                        if (downport.isOpaque()) {
-                            result.insertLast(downport);
-                        } else {
-                            result.appendElements(
-                                    downport._deepConnectedPorts(path));
-                        }
-                    } else {
-                        // The inside port is truly inside.
-                        result.appendElements(
-                                downport._deepInsidePorts(path));
-                    }
-                }
-            }
-        }
-        _deeplinkedinports = result;
-        _deeplinkedinportsversion = _workspace.getVersion();
-        path.removeFirst();
-        return _deeplinkedinports.elements();
+        return Collections.enumeration(_deepInsidePortList(path));
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -604,9 +706,9 @@ public class ComponentPort extends Port {
                 // when querying the Ports.
                 detail &= ~LINKS;
                 result += "insidelinks {\n";
-                Enumeration enum = insideRelations();
-                while (enum.hasMoreElements()) {
-                    Relation rel = (Relation)enum.nextElement();
+                Iterator enum = insideRelationList().iterator();
+                while (enum.hasNext()) {
+                    Relation rel = (Relation)enum.next();
                     result += rel._description(detail, indent+1, 2) + "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
@@ -699,8 +801,8 @@ public class ComponentPort extends Port {
     // A cache of the deeply linked ports, and the version used to
     // construct it.
     // 'transient' means that the variable will not be serialized.
-    private transient LinkedList _deeplinkedports;
+    private transient List _deeplinkedports;
     private transient long _deeplinkedportsversion = -1;
-    private transient LinkedList _deeplinkedinports;
+    private transient List _deeplinkedinports;
     private transient long _deeplinkedinportsversion = -1;
 }

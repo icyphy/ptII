@@ -34,6 +34,9 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
+import java.io.IOException;
+import java.io.Writer;
+
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -806,6 +809,25 @@ public class CompositeActor extends CompositeEntity implements Actor {
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Write a MoML description of the contents of this object, which
+     *  in this class is the director, attributes, ports, contained relations,
+     *  and contained entities, plus all links.  The links are written
+     *  in an order that respects the ordering in ports, but not necessarily
+     *  the ordering in relations.  This method is called
+     *  by exportMoML().  Each description is indented according to the
+     *  specified depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        if (_director != null) {
+            _director.exportMoML(output, depth);
+        }
+        super._exportMoMLContents(output, depth);
     }
 
     ///////////////////////////////////////////////////////////////////

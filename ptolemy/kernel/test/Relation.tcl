@@ -75,7 +75,7 @@ test Relation-4.1 {Test linkedPorts on a Relation that has no ports} {
     set enum  [$r1 linkedPorts $p1]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {{java.util.NoSuchElementException: exhausted enumeration} 0}
+} {java.util.NoSuchElementException 0}
 
 ######################################################################
 ####

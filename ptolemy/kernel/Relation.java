@@ -32,8 +32,11 @@ package ptolemy.kernel;
 
 import ptolemy.kernel.util.*;
 
+import java.util.Collections;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
@@ -159,12 +162,60 @@ public class Relation extends NamedObj {
         return newobj;
     }
 
+    /** List the linked ports.  Note that a port may appear more than
+     *  once if more than one link to it has been established.
+     *  This method is read-synchronized on the workspace.
+     *  @return A list of Port objects.
+     */
+    public List linkedPortList() {
+        try {
+            _workspace.getReadAccess();
+            // Unfortunately, CrossRefList returns an enumeration only.
+            // Use it to construct a list.
+            LinkedList result = new LinkedList();
+            Enumeration ports = _portList.getContainers();
+            while (ports.hasMoreElements()) {
+                result.add(ports.nextElement());
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** List the linked ports except the specified port.
+     *  Note that a port may appear more than
+     *  once if more than on link to it has been established.
+     *  This method is read-synchronized on the workspace.
+     *  @param except Port to exclude from the enumeration.
+     *  @return A list of Port objects.
+     */
+    public List linkedPortList(Port except) {
+        // This works by constructing a linked list and then returning it.
+        try {
+            _workspace.getReadAccess();
+            LinkedList storedPorts = new LinkedList();
+            Enumeration ports = _portList.getContainers();
+
+            while(ports.hasMoreElements()) {
+                Port p = (Port)ports.nextElement();
+                if(p != except) storedPorts.add(p);
+            }
+            return storedPorts;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Enumerate the linked ports.  Note that a port may appear more than
      *  once if more than one link to it has been established.
      *  This method is read-synchronized on the workspace.
      *  @return An Enumeration of Port objects.
      */
     public Enumeration linkedPorts() {
+        // NOTE: There is no reason to deprecate this because it does
+        // depend on Doug Lea's collections, and it is more efficient than
+        // the list version.
         try {
             _workspace.getReadAccess();
             return _portList.getContainers();
@@ -179,23 +230,10 @@ public class Relation extends NamedObj {
      *  This method is read-synchronized on the workspace.
      *  @param except Port to exclude from the enumeration.
      *  @return An Enumeration of Port objects.
+     *  @deprecated Use linkedPortList() instead.
      */
     public Enumeration linkedPorts(Port except) {
-        // This works by constructing a linked list and then enumerating it.
-        try {
-            _workspace.getReadAccess();
-            LinkedList storedPorts = new LinkedList();
-            Enumeration ports = _portList.getContainers();
-
-            while(ports.hasMoreElements()) {
-                Port p = (Port)ports.nextElement();
-                if(p != except)
-                    storedPorts.insertLast(p);
-            }
-            return storedPorts.elements();
-        } finally {
-            _workspace.doneReading();
-        }
+        return Collections.enumeration(linkedPortList(except));
     }
 
     /** Return the number of links to ports.

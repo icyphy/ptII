@@ -927,7 +927,10 @@ test CompositeEntity-18.0 {test exportMoML} {
     $p1 link $r
     $p2 link $r
     $e1 exportMoML
-} {<entity name="e1" class="ptolemy.kernel.CompositeEntity">
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="e1" class="ptolemy.kernel.CompositeEntity">
     <property name="a1" class="ptolemy.kernel.util.Attribute">
     </property>
     <port name="p1" class="ptolemy.kernel.ComponentPort">
@@ -942,7 +945,7 @@ test CompositeEntity-18.0 {test exportMoML} {
     </relation>
     <link port="p1" relation="r"/>
     <link port="e2.p2" relation="r"/>
-</entity>
+</model>
 }
 
 

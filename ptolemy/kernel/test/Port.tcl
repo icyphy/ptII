@@ -511,9 +511,12 @@ test Port-16.0 {Test exportMoML} {
     $a setName A
     set p1 [java::new ptolemy.kernel.Port $a P1]
     $a exportMoML
-} {<entity name="A" class="ptolemy.kernel.Entity">
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="A" class="ptolemy.kernel.Entity">
     <port name="P1" class="ptolemy.kernel.Port">
     </port>
-</entity>
+</model>
 }
 

@@ -228,6 +228,7 @@ public class NamedObj implements Nameable, Debuggable,
            throws IllegalActionException {}
 
     /** Return a list of the attributes contained by this object.
+     *  If there are no attributes, return an empty list.
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of instances of Attribute.
      */
@@ -315,12 +316,12 @@ public class NamedObj implements Nameable, Debuggable,
         try {
             _workspace.getReadAccess();
             NamedObj newobj = (NamedObj)super.clone();
-            newobj._clonedFrom = this;
             // NOTE: It is not necessary to write-synchronize on the other
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
             newobj._attributes = null;
             newobj._workspace = ws;
+            newobj._fullNameVersion = -1;
             Iterator params = attributeList().iterator();
             while (params.hasNext()) {
                 Attribute p = (Attribute)params.next();
@@ -378,11 +379,59 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Specify that when generating a MoML description of this named
+     *  object, instead of giving a detailed description, refer to the
+     *  specified other object.  The name of that other object goes
+     *  into the "class" or "extends" attribute of the MoML element
+     *  definining this object.  Normally, this object is a clone
+     *  of the referred to object, or the generated MoML may not
+     *  make much sense.  In addition, calling this method
+     *  suppresses description of the contents of the contents
+     *  of this named object (_exportMoMLContents() is not called).
+     *  Only the attributes are described in the body of the element.
+     *  To re-enabled detailed descriptions, call this method with
+     *  a null argument.  This method is write synchronized on
+     *  the workspace.
+     *  @param referTo The object to refer to.
+     *  @see #exportMoML(Writer, int)
+     *  @see #deferredMoMLDefinitionFrom()
+     */
+    public void deferMoMLDefinitionTo(NamedObj deferTo) {
+        try {
+            _workspace.getWriteAccess();
+            if (deferTo == null && _deferTo != null) {
+                if (_deferTo._deferredFrom != null) {
+                    // Removing a previous reference.
+                    _deferTo._deferredFrom.remove(this);
+                }
+            }
+            _deferTo = deferTo;
+            if (deferTo != null) {
+                if (deferTo._deferredFrom == null) {
+                    deferTo._deferredFrom = new LinkedList();
+                }
+                deferTo._deferredFrom.add(this);
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Get the list of other objects that defer their MoML definitions
+     *  to this one.
+     *  @return An unmodifiable list of NamedObj objects.
+     *  @see #deferMoMLDefinitionTo(NamedObj)
+     */
+    public List deferredMoMLDefinitionFrom() {
+        return Collections.unmodifiableList(_deferredFrom);
+    }
+
     /** Return a full description of the object. This is accomplished
      *  by calling the description method with an argument for full detail.
      *  This method read-synchronizes on the workspace.
      *  @return A description of the object.
-     *  @see exportMoML
+     *  @deprecated Use exportMoML() instead.
+     *  @see #exportMoML(Writer, int)
      */
     public String description() {
         return description(COMPLETE);
@@ -395,15 +444,15 @@ public class NamedObj implements Nameable, Debuggable,
      *  It read-synchronizes on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
-     *  @see exportMoML
+     *  @deprecated Use exportMoML() instead.
+     *  @see #exportMoML(Writer, int)
      */
     public String description(int detail) {
         return _description(detail, 0, 0);
     }
 
     /** Get a MoML description of this object.  This might be an empty string
-     *  if there is no MoML description of the object.
-     *  MoML is an XML modeling markup language.  This uses the two
+     *  if there is no MoML description of the object.  This uses the two
      *  argument version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
@@ -422,16 +471,9 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** Write a MoML description of this object using the specified
      *  Writer.  If there is no MoML description, then nothing is written.
-     *  MoML is an XML modeling markup language.  To write to standard
-     *  out, do
+     *  To write to standard out, do
      *  <pre>
      *      exportMoML(new OutputStreamWriter(System.out))
-     *  </pre>
-     *  To write to a string, do
-     *  <pre>
-     *      StringWriter buffer = new StringWriter();
-     *      exportMoML(buffer);
-     *      String result = buffer.toString();
      *  </pre>
      *  This method uses the two
      *  argument version of this method.  It is final to ensure that
@@ -444,39 +486,106 @@ public class NamedObj implements Nameable, Debuggable,
         exportMoML(output, 0);
     }
 
-    /** Write a MoML description of this object with the specified 
-     *  indentation depth. MoML is an XML modeling markup language.
-     *  The element name is given by the getMoMLElementName(), and it has
-     *  "name" and "class" (XML) attributes.
-     *  The "entity" element is used because in MoML, this can generically
-     *  refer to any nameable, instantiable object.  It need not refer
-     *  to a Ptolemy II Entity.  The body of the element,
-     *  between the "&lt;entity&gt;" and "&lt;/entity&gt;", is written using
-     *  the _exportMoMLContents() protected method, so that derived classes
-     *  can override that method alone to alter only how the contents
-     *  of this object are described.
+    /** Write a MoML description of this entity with the specified 
+     *  indentation depth.  The description has one of two forms, depending
+     *  on whether this is a class or an entity (determined by
+     *  getMoMLElement()).  If getMoMLElement() returns "class", then
+     *  the exported MoML looks like this:
+     *  <pre>
+     *      &lt;class name="<i>name</i>" extends="<i>classname</i>"&gt;
+     *          <i>body, determined by _exportMoMLContents()</i>
+     *      &lt;/class&gt;
+     *  </pre>
+     *  If getMoMLElement() returns anything else (call what it returns
+     *  <i>element</i>), then the exported MoML looks like this:
+     *  <pre>
+     *      &lt;<i>element</i> name="<i>name</i>" class="<i>classname</i>"&gt;
+     *          <i>body, determined by _exportMoMLContents()</i>
+     *      &lt;/<i>element</i>&gt;
+     *  </pre>
+     *  The <i>classname</i> attribute normally gives the Java classname
+     *  of this instance.  However, if deferMoMLDefinitionTo() has been
+     *  called with a non-null argument, then it gives the name of the object
+     *  specified in that call.  In addition, in this case, the body contains
+     *  only a description of the attributes.   The _exportMoMLContents()
+     *  method is not called.  For example, the exported MoML might look like:
+     *  <pre>
+     *      &lt;entity name="foo" class=".bar"&gt;
+     *          <i>attributes</i>
+     *      &lt;/entity&gt;
+     *  </pre>
+     *  Here, ".bar" is the full name of another named object.
+     *  <p>
+     *  If this object has no container and the depth argument is zero,
+     *  then this method prepends XML file header information, which is:
+     *  <pre>
+     *  &lt;?xml version="1.0" standalone="no"?&gt;
+     *  &lt;!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+     *      "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd"&gt;
+     *  </pre>
+     *  <p>
      *  The text that is written is indented according to the specified
      *  depth, with each line (including the last one)
      *  terminated with a newline.
      *  Derived classes should override this method to change the MoML
      *  description of an object.  They should override the protected
-     *  method _exportMoMLContents() if they need to change which
+     *  method _exportMoMLContents() if they need to only change which
      *  contents are described.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @throws IOException If an I/O error occurs.
-     *  @see _exportMoMLContents
+     *  @see #deferMoMLDefinitionTo(NamedObj)
      */
     public void exportMoML(Writer output, int depth) throws IOException {
+        String className = null;
+        if (_deferTo != null) {
+            className = _deferTo.getFullName();
+        } else {
+            className = getClass().getName();
+        }
+        String momlElement = getMoMLElementName();
+        String template = null;
+        if (momlElement.equals("class")) {
+            template = "\" extends=\"";
+        } else {
+            template = "\" class=\"";
+        }
+        if (depth == 0
+                && getContainer() == null
+                && (momlElement.equals("class")
+                || momlElement.equals("model")
+                || momlElement.equals("entity"))) {
+            // No container, and this is a top level moml element.
+            // Generate header information.
+            output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+            + "<!DOCTYPE model PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
+            + "    \"http://ptolemy.eecs.berkeley.edu/archive/moml.dtd\">\n");
+
+            // Correct the element name, if appropriate.
+            if (momlElement.equals("entity")) {
+                // Erroneous element name.  Change it.
+                momlElement = "model";
+                setMoMLElementName(momlElement);
+            }
+        }
         output.write(_getIndentPrefix(depth)
                + "<"
-               + getMoMLElementName()
+               + momlElement
                + " name=\""
-               + _name
-               + "\" class=\""
-               + getClass().getName()
+               + getName()
+               + template
+               + className
                + "\">\n");
-        _exportMoMLContents(output, depth + 1);
+        if (_deferTo == null) {
+            _exportMoMLContents(output, depth + 1);
+        } else {
+            // Describe only the attributes.
+            Iterator attributes = attributeList().iterator();
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute)attributes.next();
+                attribute.exportMoML(output, depth + 1);
+            }
+        }
         output.write(_getIndentPrefix(depth) + "</"
                 + getMoMLElementName() + ">\n");
     }
@@ -530,9 +639,9 @@ public class NamedObj implements Nameable, Debuggable,
 	return null;
     }
 
-    /** Return a string of the form "workspace.name1.name2...nameN". Here,
-     *  "nameN" is the name of this object, "workspace" is the name of the
-     *  workspace, and the intervening names are the names of the containers
+    /** Return a string of the form ".name1.name2...nameN". Here,
+     *  "nameN" is the name of this object,
+     *  and the intervening names are the names of the containers
      *  of this other name of this object, if there are containers.
      *  A recursive structure, where this object is directly or indirectly
      *  contained by itself, results in a runtime exception of class
@@ -547,9 +656,12 @@ public class NamedObj implements Nameable, Debuggable,
     public String getFullName() {
         try {
             _workspace.getReadAccess();
-            // NOTE: For improved performance, the full name could be cached.
+            if (_fullNameVersion == _workspace.getVersion()) {
+                return _fullNameCache;
+            }
+            // Cache is not valid. Recalculate full name.
             String fullName = getName();
-            // Use a linked list to keep track of what we've seen already.
+            // Use a hash set to keep track of what we've seen already.
             Set visited = new HashSet();
             visited.add(this);
             Nameable container = getContainer();
@@ -568,18 +680,20 @@ public class NamedObj implements Nameable, Debuggable,
                 visited.add(container);
                 container = container.getContainer();
             }
-            return _workspace.getName() + "." + fullName;
+            _fullNameCache = "." + fullName;
+            _fullNameVersion = _workspace.getVersion();
+            return _fullNameCache;
         } finally {
             _workspace.doneReading();
         }
     }
 
     /** Get the name of the MoML element used to describe this object.
-     *  This defaults to "element", unless it is set by setMoMLElementName().
+     *  This defaults to "entity", unless it is set by setMoMLElementName().
      *  @return A MoML element name.
      */
     public String getMoMLElementName() {
-        return _MoMLElement;
+        return _MoMLElementName;
     }
 
     /** Get the name. If no name has been given, or null has been given,
@@ -607,11 +721,18 @@ public class NamedObj implements Nameable, Debuggable,
     }
 
     /** Set the name of the MoML element used to describe this object.
-     *  This defaults to "element" if this method is not called.
+     *  This defaults to "entity" if this method is not called.
+     *  Top-level objects should have element name "model" or "class."
+     *  Others are "entity", "port", "relation", "property", etc.
+     *  Derived classes can often just call this method in their
+     *  constructor to produce correct MoML.  If the element name
+     *  is set to "class", then a slightly different style of MoML
+     *  will be generated by exportMoML().  In particular, it will
+     *  use the "extends" attribute instead of "class".
      *  @param name A MoML element name.
      */
     public void setMoMLElementName(String name) {
-        _MoMLElement = name;
+        _MoMLElementName = name;
     }
 
     /** Set or change the name.  If a null argument is given the
@@ -653,8 +774,8 @@ public class NamedObj implements Nameable, Debuggable,
         return getClass().getName() + " {" + getFullName()+ "}";
     }
 
-    /** Return a name that is guaranteed to not be the name of
-     *  any contained attribute.  In derived classes, this is overridden
+    /** Return a name that is guaranteed to not be the name of any
+     *  contained attribute.  In derived classes, this should be overridden
      *  so that the returned name is guaranteed to not conflict with
      *  any contained object.
      *  @param prefix A prefix for the name.
@@ -881,8 +1002,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @throws IOException If an I/O error occurs.
-     *  @see exportMoML
-     *  @see _exportMoML
+     *  @see #exportMoML(Writer, int)
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
@@ -947,9 +1067,6 @@ public class NamedObj implements Nameable, Debuggable,
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** @serial The object this was cloned from, if any. */
-    protected NamedObj _clonedFrom = null;
-
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
 
@@ -966,6 +1083,9 @@ public class NamedObj implements Nameable, Debuggable,
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** @serial The Attributes attached to this object. */
+    private NamedList _attributes;
+
     /** @serial The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
 
@@ -974,14 +1094,23 @@ public class NamedObj implements Nameable, Debuggable,
      */
     private static Workspace _DEFAULT_WORKSPACE = new Workspace();
 
+    // An object to defer to when generating MoML.
+    private NamedObj _deferTo = null;
+
+    // A list of objects that defer to this one for generating MoML.
+    private List _deferredFrom;
+
+    // Cached value of the full name.
+    private String _fullNameCache;
+
+    // Version of the workspace when cache last updated.
+    private long _fullNameVersion = -1;
+
     /** The element name used to write a MoML description.
      *  This defaults to "entity".
      */
-    private String _MoMLElement = "entity";
+    private String _MoMLElementName = "entity";
 
     /** @serial The name */
     private String _name;
-
-    /** @serial The Attributes attached to this object. */
-    private NamedList _attributes;
 }

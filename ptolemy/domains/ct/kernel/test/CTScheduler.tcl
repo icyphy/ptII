@@ -68,7 +68,7 @@ test CTScheduler-1.2 {Construct a CTScheduler in a workspace} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set a1 [java::new ptolemy.domains.ct.kernel.CTScheduler $w]
     list [$a1 getFullName]
-} {W.CTScheduler}
+} {.CTScheduler}
 
 test CTScheduler-1.3 {sheduler and its container} {
     set ca [java::new ptolemy.actor.CompositeActor]

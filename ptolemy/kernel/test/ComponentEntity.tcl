@@ -84,22 +84,22 @@ test ComponentEntity-4.1 {is atomic test} {
 ####
 #
 test ComponentEntity-5.1 {Create new ports} {
-    set w [java::new ptolemy.kernel.util.Workspace X]
+    set w [java::new ptolemy.kernel.util.Workspace]
     set e1 [java::new ptolemy.kernel.ComponentEntity $w]
     $e1 setName Y
     set p1 [$e1 newPort A]
     set p2 [$e1 newPort B]
     list [$p1 getFullName] [$p2 getFullName] [_testEntityGetPorts $e1]
-} {X.Y.A X.Y.B {{A B}}}
+} {.Y.A .Y.B {{A B}}}
 
 test ComponentEntity-5.2 {Test clone} {
     set e2 [java::cast ptolemy.kernel.ComponentEntity [$e1 clone]]
     $e2 description 31
-} {ptolemy.kernel.ComponentEntity {X.Y} ports {
-    {ptolemy.kernel.ComponentPort {X.Y.A} links {
+} {ptolemy.kernel.ComponentEntity {.Y} ports {
+    {ptolemy.kernel.ComponentPort {.Y.A} links {
     } insidelinks {
     }}
-    {ptolemy.kernel.ComponentPort {X.Y.B} links {
+    {ptolemy.kernel.ComponentPort {.Y.B} links {
     } insidelinks {
     }}
 }}
@@ -122,7 +122,7 @@ test ComponentEntity-6.1 {Reparent entities} {
     set result3 [list [$e1 getFullName] [$e2 getFullName] \
             [$e3 getFullName] [$e4 getFullName]]
     list $result1 $result2 $result3
-} {{A A.B A.B.C A.B.C.D} {A A.B A.B.C A.B.D} {A A.B A.C A.B.D}}
+} {{A .B .B.C .B.C.D} {A .B .B.C .B.D} {A .B .C .B.D}}
 
 ######################################################################
 ####
@@ -134,7 +134,7 @@ test ComponentEntity-7.1 {Reparent entities, attempting a circular structure} {
     set e3 [java::new ptolemy.kernel.CompositeEntity $e2 C]
     catch {$e2 setContainer $e3} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: A.B and A.B.C:
+} {{ptolemy.kernel.util.IllegalActionException: .B and .B.C:
 Attempt to construct recursive containment.}}
 
 ######################################################################

@@ -60,7 +60,7 @@ test SDFScheduler-2.1 {Constructor tests} {
     set s3 [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
     $s3 setName S3
     list [$s1 getFullName] [$s2 getFullName] [$s3 getFullName]
-} {.Scheduler W.Scheduler W.S3}
+} {.Scheduler .Scheduler .S3}
 
 ######################################################################
 ####
@@ -71,7 +71,7 @@ test SDFScheduler-3.1 {Test clone} {
             [$s2 clone $w]]
     $s4 setName S4
     enumToFullNames [$w directory]
-} {W.Scheduler W.S3}
+} {.Scheduler .S3}
 
 ######################################################################
 ####
@@ -84,7 +84,7 @@ test SDFScheduler-4.1 {Test setScheduler and getScheduler} {
     $d0 setScheduler $s2
     set d1 [$s2 getContainer]
     list [$d0 getFullName] [$d1 getFullName] [$s2 getFullName]
-} {W.E0.D1 W.E0.D1 W.E0.D1.Scheduler}
+} {.E0.D1 .E0.D1 .E0.D1.Scheduler}
 
 ######################################################################
 ####
@@ -807,7 +807,7 @@ test SDFScheduler-10.1 {input Broadcast Multirate Scheduling tests} {
     $scheduler setValid false
     catch {[$scheduler schedule]} e1
     list $e1
-} {{ptolemy.actor.sched.NotSchedulableException: W.Toplevel.Ramp1.output and W.Toplevel.Ramp2.output: Two output ports are connected on the same relation. This is not legal in SDF.}}
+} {{ptolemy.actor.sched.NotSchedulableException: .Toplevel.Ramp1.output and .Toplevel.Ramp2.output: Two output ports are connected on the same relation. This is not legal in SDF.}}
 
 test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
@@ -1162,7 +1162,7 @@ test SDFScheduler-13.1 {connected graph, disconnected relation} {
     catch {set sched1 [_getSchedule $toplevel $scheduler]} err1
     list $sched1 $err1
 } {{} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled:
-W.Toplevel.Consumer
+.Toplevel.Consumer
 }}
 
 

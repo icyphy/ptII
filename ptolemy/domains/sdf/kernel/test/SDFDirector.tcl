@@ -58,7 +58,7 @@ test SDFDirector-2.1 {Constructor tests} {
     $e0 setName E0
     set d3 [java::new ptolemy.domains.sdf.kernel.SDFDirector $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 W.D2 W.E0.D3}
+} {.D1 .D2 .E0.D3}
 
 ######################################################################
 ####
@@ -69,7 +69,7 @@ test SDFDirector-3.1 {Test clone} {
     set d4 [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$d2 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.Manager}
+} {.Manager}
 
 ######################################################################
 ####
@@ -85,7 +85,7 @@ test SDFDirector-4.1 {Test _makeDirectorOf} {
     $e1 setManager $manager
     $e1 setDirector $d3
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {W.E1.D3 W.D4 {W.E0 W.E1}}
+} {.E1.D3 .D4 {.E0 .E1}}
 
 ######################################################################
 ####

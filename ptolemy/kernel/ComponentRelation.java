@@ -31,8 +31,11 @@ package ptolemy.kernel;
 
 import ptolemy.kernel.util.*;
 
+import java.util.Collections;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComponentRelation
@@ -121,43 +124,52 @@ public class ComponentRelation extends Relation {
         return newobj;
     }
 
-    /** Deeply enumerate the ports linked to this relation. Look through
+    /** Deeply list the ports linked to this relation. Look through
      *  all transparent ports and return only opaque ports.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of ComponentPorts.
+     *  @return An unmodifiable list of ComponentPorts.
      */
-    public Enumeration deepLinkedPorts() {
+    public List deepLinkedPortList() {
         try {
             _workspace.getReadAccess();
             if (_deeplinkedportsversion == _workspace.getVersion()) {
                 // Cache is valid.  Use it.
-                return _deeplinkedports.elements();
+                return _deeplinkedports;
             }
-            Enumeration nearports = linkedPorts();
+            Iterator nearports = linkedPortList().iterator();
             _deeplinkedports = new LinkedList();
 
-            while( nearports.hasMoreElements() ) {
-                ComponentPort port = (ComponentPort)nearports.nextElement();
+            while( nearports.hasNext() ) {
+                ComponentPort port = (ComponentPort)nearports.next();
                 if (port._outside(this.getContainer())) {
                     // Port is above me in the hierarchy.
                     if (port.isOpaque()) {
                         // Port is opaque.  Append it to list.
-                        _deeplinkedports.insertLast(port);
+                        _deeplinkedports.add(port);
                     } else {
                         // Port is transparent.  See through it.
-                        _deeplinkedports.appendElements(
-                                port.deepConnectedPorts());
+                        _deeplinkedports.addAll(port.deepConnectedPortList());
                     }
                 } else {
                     // Port below me in the hierarchy.
-                    _deeplinkedports.appendElements(port.deepInsidePorts());
+                    _deeplinkedports.addAll(port.deepInsidePortList());
                 }
             }
             _deeplinkedportsversion = _workspace.getVersion();
-            return _deeplinkedports.elements();
+            return Collections.unmodifiableList(_deeplinkedports);
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Deeply enumerate the ports linked to this relation. Look through
+     *  all transparent ports and return only opaque ports.
+     *  This method is read-synchronized on the workspace.
+     *  @return An enumeration of ComponentPorts.
+     *  @deprecated Use deepLinkedPortList() instead.
+     */
+    public Enumeration deepLinkedPorts() {
+        return Collections.enumeration(deepLinkedPortList());
     }
 
     /** Get the container entity.
@@ -266,6 +278,6 @@ public class ComponentRelation extends Relation {
     // A cache of the deeply linked ports, and the version used to
     // construct it.
     // 'transient' means that the variable will not be serialized.
-    private transient LinkedList _deeplinkedports;
+    private transient List _deeplinkedports;
     private transient long _deeplinkedportsversion = -1;
 }

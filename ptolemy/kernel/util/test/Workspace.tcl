@@ -75,7 +75,7 @@ test Workspace-3.1 {Add objects to the workspace directory} {
     set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]
     set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
     enumToFullNames [$w directory]
-} {W.N1 W.N2 W.N3}
+} {.N1 .N2 .N3}
 
 test Workspace-3.2 {Add objects to the wrong workspace} {
     set w [java::new ptolemy.kernel.util.Workspace W]
@@ -90,7 +90,7 @@ test Workspace-3.3 {Add objects twice to the workspace directory} {
     set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
     catch {$w add $n1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: W and W.N1:
+} {{ptolemy.kernel.util.IllegalActionException: W and .N1:
 Object is already listed in the workspace directory.}}
 
 ######################################################################
@@ -109,7 +109,7 @@ test Workspace-4.1 {Remove objects from the workspace directory} {
 	    $version2 \
 	    [enumToFullNames [$w directory]] \
 	    $version3
-} {1 7 {W.N1 W.N3} 8}
+} {1 7 {.N1 .N3} 8}
 
 test Workspace-4.2 {Call getContainer} {
     # NOTE: Uses previous setup
@@ -120,9 +120,9 @@ test Workspace-4.3 {Call description} {
     # NOTE: Uses previous setup
     $w description
 } {ptolemy.kernel.util.Workspace {W} directory {
-    {ptolemy.kernel.util.NamedObj {W.N1} attributes {
+    {ptolemy.kernel.util.NamedObj {.N1} attributes {
     }}
-    {ptolemy.kernel.util.NamedObj {W.N3} attributes {
+    {ptolemy.kernel.util.NamedObj {.N3} attributes {
     }}
 }}
 
@@ -280,7 +280,7 @@ test Workspace-7.1 {Test isReadOnly, setReadOnly} {
     set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
     list $readOnly1 $readOnly2 $errMsg $readOnly3 \
 	    [enumToFullNames [$w directory]]
-} {0 1 {ptolemy.kernel.util.InvalidStateException: W: Trying to relinquish write access on a write-protected workspace.} 0 {W.N1 W.null W.N2 W.N3}}
+} {0 1 {ptolemy.kernel.util.InvalidStateException: W: Trying to relinquish write access on a write-protected workspace.} 0 {.N1 .null .N2 .N3}}
 
 ######################################################################
 #### The following assumptions are made for this test to work. 

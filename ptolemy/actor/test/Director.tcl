@@ -61,7 +61,7 @@ test Director-2.1 {Constructor tests} {
     $e0 setName E0
     set d3 [java::new ptolemy.actor.Director $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 W.D2 W.E0.D3}
+} {.D1 .D2 .E0.D3}
 
 ######################################################################
 ####
@@ -71,7 +71,7 @@ test Director-3.1 {Test clone} {
     set d4 [java::cast ptolemy.actor.Director [$d2 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.M W.D2 W.E0}
+} {.M .D2 .E0}
 
 ######################################################################
 ####
@@ -80,7 +80,7 @@ test Director-4.1 {Test _makeDirectorOf} {
     # NOTE: Uses the setup above
     $e0 setManager $manager
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {W.E0.D3 W.D4 {W.D2 W.E0}}
+} {.E0.D3 .D4 {.D2 .E0}}
 
 ######################################################################
 ####
@@ -92,16 +92,16 @@ test Director-5.1 {Test action methods} {
     $a1 clear
     $manager run
     $a1 getRecord
-} {W.E0.A1.initialize
-W.E0.A2.initialize
-W.E0.A1.prefire
-W.E0.A1.fire
-W.E0.A1.postfire
-W.E0.A2.prefire
-W.E0.A2.fire
-W.E0.A2.postfire
-W.E0.A1.wrapup
-W.E0.A2.wrapup
+} {.E0.A1.initialize
+.E0.A2.initialize
+.E0.A1.prefire
+.E0.A1.fire
+.E0.A1.postfire
+.E0.A2.prefire
+.E0.A2.fire
+.E0.A2.postfire
+.E0.A1.wrapup
+.E0.A2.wrapup
 }
 
 ######################################################################
@@ -114,15 +114,15 @@ test Director-6.1 {Test wormhole activation} {
     $a1 clear
     $manager run
     $a1 getRecord
-} {W.E0.A1.initialize
-W.E0.E1.A2.initialize
-W.E0.A1.prefire
-W.E0.A1.fire
-W.E0.A1.postfire
-W.E0.E1.A2.prefire
-W.E0.E1.A2.fire
-W.E0.E1.A2.postfire
-W.E0.A1.wrapup
-W.E0.E1.A2.wrapup
+} {.E0.A1.initialize
+.E0.E1.A2.initialize
+.E0.A1.prefire
+.E0.A1.fire
+.E0.A1.postfire
+.E0.E1.A2.prefire
+.E0.E1.A2.fire
+.E0.E1.A2.postfire
+.E0.A1.wrapup
+.E0.E1.A2.wrapup
 }
 

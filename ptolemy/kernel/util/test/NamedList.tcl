@@ -118,6 +118,18 @@ test NamedList-3.2 {Test clone} {
     _testEnums elements $clonedDir
 } {{n1 n2 {}}}
 
+test NamedList-3.2.1 {Test elementList} {
+    set dir [java::new ptolemy.kernel.util.NamedList]
+    set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
+    set n3 [java::new ptolemy.kernel.util.NamedObj]
+    $dir append $n1
+    $dir append $n2
+    $dir append $n3
+    set clonedDir [java::cast ptolemy.kernel.util.NamedList [$dir clone]]
+    listToFullNames [$clonedDir elementList]
+} {.n1 .n2 .}
+
 ######################################################################
 ####
 #

@@ -39,6 +39,8 @@ import ptolemy.domains.de.lib.Merge;
 import ptolemy.domains.de.lib.Delay;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
+
+import java.util.Collections;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,7 +96,7 @@ public class TestDE {
             _manager.iterate();
         }
         _manager.wrapup();
-        return _rec.getTimeRecord();
+        return Collections.enumeration(_rec.getTimeHistory());
     }
 
     /** Insert a new clock.

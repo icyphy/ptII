@@ -38,6 +38,8 @@ import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.Delay;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
+
+import java.util.Collections;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,7 +79,7 @@ public class ChangeRequestTest {
             _manager.iterate();
         }
         _manager.wrapup();
-        return _rec.getRecord(0);
+        return Collections.enumeration(_rec.getHistory(0));
     }
 
     /** Insert a feedback loop.

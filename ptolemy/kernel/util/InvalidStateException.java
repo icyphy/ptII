@@ -29,7 +29,10 @@
 */
 
 package ptolemy.kernel.util;
+
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// InvalidStateException
@@ -101,8 +104,8 @@ public class InvalidStateException extends RuntimeException {
         }
     }
 
-    /** Constructs an Exception with a detail message that includes the
-     *  names of an enumeration of nameable plus the an argument string.
+    /** Construct an exception with a detail message that includes the
+     *  names of an enumeration of nameable object plus the argument string.
      *  @param objects The enumeration of Nameable objects
      *  @param detail The message.
      */
@@ -131,6 +134,15 @@ public class InvalidStateException extends RuntimeException {
                 }
             }
         }
+    }
+
+    /** Constructs an exception with a detail message that includes the
+     *  names of a list of nameable objects plus the argument string.
+     *  @param objects The enumeration of Nameable objects
+     *  @param detail The message.
+     */
+    public InvalidStateException(List objects, String detail) {
+        this(Collections.enumeration(objects), detail);
     }
 
     ///////////////////////////////////////////////////////////////////

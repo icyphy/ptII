@@ -65,7 +65,7 @@ test CompositeActor-2.1 {Constructor tests} {
     set e2 [java::new ptolemy.actor.CompositeActor $w]
     set e3 [java::new ptolemy.actor.CompositeActor $e0 E3]
     list [$e1 getFullName] [$e2 getFullName] [$e3 getFullName]
-} {. W. .E0.E3}
+} {. . .E0.E3}
 
 ######################################################################
 ####
@@ -99,7 +99,7 @@ test CompositeActor-3.3 {Test failure mode of setManager} {
     catch {$e0 setManager $m4} msg2
     list $msg $msg2
 } {{ptolemy.kernel.util.IllegalActionException: .E0.E3.E5 and .:
-Cannot set the Manager of an actor with a container.} {ptolemy.kernel.util.IllegalActionException: .E0 and W.Manager:
+Cannot set the Manager of an actor with a container.} {ptolemy.kernel.util.IllegalActionException: .E0 and .Manager:
 Cannot set manager because workspaces are different.}}
 
 test CompositeActor-3.3a {Test failure mode of setDirector} {
@@ -108,7 +108,7 @@ test CompositeActor-3.3a {Test failure mode of setDirector} {
     $d4 setName Director
     catch {$e0 setDirector $d4} msg
     list $msg 
-} {{ptolemy.kernel.util.IllegalActionException: .E0 and W.Director:
+} {{ptolemy.kernel.util.IllegalActionException: .E0 and .Director:
 Cannot set director because workspaces are different.}}
 
 test CompositeActor-3.4 {Test isOpaque} {
@@ -167,40 +167,40 @@ test CompositeActor-7.1 {Test clone and description} {
     # NOTE: Uses the setup above
     set e4 [java::cast ptolemy.actor.CompositeActor [$e3 clone $w]]
     $e4 description
-} {ptolemy.actor.CompositeActor {W.E3} attributes {
+} {ptolemy.actor.CompositeActor {.E3} attributes {
 } ports {
-    {ptolemy.actor.IOPort {W.E3.P1} attributes {
+    {ptolemy.actor.IOPort {.E3.P1} attributes {
     } links {
     } insidelinks {
     } configuration {{width 0}} receivers {
     } remotereceivers {
     }}
-    {ptolemy.actor.IOPort {W.E3.P2} attributes {
+    {ptolemy.actor.IOPort {.E3.P2} attributes {
     } links {
     } insidelinks {
     } configuration {input output {width 0}} receivers {
     } remotereceivers {
     }}
-    {ptolemy.actor.IOPort {W.E3.P3} attributes {
+    {ptolemy.actor.IOPort {.E3.P3} attributes {
     } links {
     } insidelinks {
     } configuration {output {width 0}} receivers {
     } remotereceivers {
     }}
-    {ptolemy.actor.IOPort {W.E3.P4} attributes {
+    {ptolemy.actor.IOPort {.E3.P4} attributes {
     } links {
     } insidelinks {
     } configuration {input {width 0}} receivers {
     } remotereceivers {
     }}
-    {ptolemy.actor.IOPort {W.E3.P5} attributes {
+    {ptolemy.actor.IOPort {.E3.P5} attributes {
     } links {
     } insidelinks {
     } configuration {{width 0}} receivers {
     } remotereceivers {
     }}
 } entities {
-    {ptolemy.actor.CompositeActor {W.E3.E5} attributes {
+    {ptolemy.actor.CompositeActor {.E3.E5} attributes {
     } ports {
     } entities {
     } relations {

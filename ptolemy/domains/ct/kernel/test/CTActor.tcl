@@ -70,7 +70,7 @@ test CTActor-1.2 {Construct a CTActor in a workspace} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set a1 [java::new ptolemy.domains.ct.kernel.CTActor $w]
     list [$a1 getFullName]
-} {W.}
+} {.}
 
 test CTActor-1.3 {Construct a CTActor with a container and a name} {
     set ca [java::new ptolemy.actor.TypedCompositeActor]

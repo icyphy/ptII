@@ -61,7 +61,7 @@ test StaticSchedulingDirector-2.1 {Constructor tests} {
     $e0 setName E0
     set d3 [java::new ptolemy.actor.sched.StaticSchedulingDirector $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 W.D2 .E0.D3}
+} {.D1 .D2 .E0.D3}
 
 ######################################################################
 ####
@@ -72,7 +72,7 @@ test StaticSchedulingDirector-3.1 {Test clone} {
             [$d1 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.D2}
+} {.D2}
 
 ######################################################################
 ####
@@ -85,7 +85,7 @@ test StaticSchedulingDirector-4.1 {Test setScheduler and getScheduler} {
     set s2 [java::new ptolemy.actor.sched.Scheduler]
     catch {[$d2 setScheduler $s2]} err1
     list [$s0 getFullName] [$s1 getFullName] $err1
-} {.D1.Scheduler .D1.Scheduler {ptolemy.kernel.util.IllegalActionException: W.D2 and .Scheduler:
+} {.D1.Scheduler .D1.Scheduler {ptolemy.kernel.util.IllegalActionException: .D2 and .Scheduler:
 Cannot set scheduler because workspaces are different.}}
 
 ######################################################################

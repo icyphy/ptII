@@ -67,7 +67,7 @@ test ComponentRelation-2.1 {Constructor} {
 
     list [$r1 getFullName] [$r2 getFullName] [$r3 getFullName] \
 	    [$r4 getFullName] [$r5 getFullName] [$r6 getFullName]
-} {. .R2 .E.R3 . workspace2. .}
+} {. .R2 .E.R3 . . .}
 
 ######################################################################
 ####

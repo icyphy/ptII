@@ -34,10 +34,11 @@ import ptolemy.kernel.util.*;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.lang.reflect.*;
-
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Entity
@@ -142,9 +143,9 @@ public class Entity extends NamedObj {
         Entity newentity = (Entity)super.clone(ws);
         newentity._portList = new NamedList(newentity);
         // Clone the ports.
-        Enumeration ports = getPorts();
-        while (ports.hasMoreElements()) {
-            Port port = (Port)ports.nextElement();
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
             Port newport = (Port)port.clone(ws);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally (the original was successfully
@@ -161,38 +162,51 @@ public class Entity extends NamedObj {
         return newentity;
     }
 
-    /** Enumerate all ports that are connected to contained ports.
-     *  Ports in this entity is not included unless there is a loopback,
+    /** Return a list of the ports that are connected to contained ports.
+     *  Ports in this entity are not included unless there is a loopback,
      *  meaning that two distinct ports of this entity are linked to the same
      *  relation.   The connected entities can be obtained from the ports
      *  using getContainer().  Note that a port may be listed more than
      *  once if there is more than one connection to it.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of Port objects.
+     *  @return An unmodifiable list of Port objects.
      */
-    public Enumeration connectedPorts() {
+    public List connectedPortList() {
         try {
             _workspace.getReadAccess();
-            // This works by constructing a linked list and then enumerating it.
-            // While this may seem costly, it means that the returned
-            // enumeration is robust.  It will not be corrupted by changes
+            // This works by constructing a linked list and returning it.
+            // That list will not be corrupted by changes
             // in the topology.
             // The linked list is cached for efficiency.
             if (_workspace.getVersion() != _connectedportsversion) {
                 // Cache is not valid, so update it.
                 _connectedports = new LinkedList();
-                Enumeration ports = _portList.elements();
+                Iterator ports = _portList.elementList().iterator();
 
-                while( ports.hasMoreElements() ) {
-                    Port port = (Port)ports.nextElement();
-                    _connectedports.appendElements( port.connectedPorts() );
+                while( ports.hasNext() ) {
+                    Port port = (Port)ports.next();
+                    _connectedports.addAll( port.connectedPortList() );
                 }
                 _connectedportsversion = _workspace.getVersion();
             }
-            return _connectedports.elements();
+            return Collections.unmodifiableList(_connectedports);
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Enumerate all ports that are connected to contained ports.
+     *  Ports in this entity are not included unless there is a loopback,
+     *  meaning that two distinct ports of this entity are linked to the same
+     *  relation.   The connected entities can be obtained from the ports
+     *  using getContainer().  Note that a port may be listed more than
+     *  once if there is more than one connection to it.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use connectedPortList() instead.
+     *  @return An enumeration of Port objects.
+     */
+    public Enumeration connectedPorts() {
+        return Collections.enumeration(connectedPortList());
     }
 
     /** Notify this entity that the links to the specified port have
@@ -248,12 +262,35 @@ public class Entity extends NamedObj {
     /** Enumerate the ports belonging to this entity.
      *  The order is the order in which they became contained by this entity.
      *  This method is read-synchronized on the workspace.
+     *  @deprecated Use portList() instead.
      *  @return An enumeration of Port objects.
      */
     public Enumeration getPorts() {
+        return Collections.enumeration(portList());
+    }
+
+    /** Get all relations that are linked to ports contained by this
+     *  entity. Note that a relation may be listed more once.
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of Relation objects.
+     */
+    public List linkedRelationList() {
         try {
             _workspace.getReadAccess();
-            return _portList.elements();
+            // This method constructs a list and then enumerates it.
+            // The list is cached for efficiency.
+            if (_workspace.getVersion() != _linkedrelationsversion) {
+                // Cache is not valid.  Update it.
+                _linkedrelations = new LinkedList();
+                Iterator ports = _portList.elementList().iterator();
+
+                while( ports.hasNext() ) {
+                    Port port = (Port)ports.next();
+                    _linkedrelations.addAll( port.linkedRelationList() );
+                }
+                _linkedrelationsversion = _workspace.getVersion();
+            }
+            return Collections.unmodifiableList(_linkedrelations);
         } finally {
             _workspace.doneReading();
         }
@@ -262,28 +299,11 @@ public class Entity extends NamedObj {
     /** Enumerate relations that are linked to ports contained by this
      *  entity. Note that a relation may be listed more once.
      *  This method is read-synchronized on the workspace.
+     *  @deprecated Use linkedRelationList() instead.
      *  @return An enumeration of Relation objects.
      */
     public Enumeration linkedRelations() {
-        try {
-            _workspace.getReadAccess();
-            // This method constructs a list and then enumerates it.
-            // The list is cached for efficiency.
-            if (_workspace.getVersion() != _linkedrelationsversion) {
-                // Cache is not valid.  Update it.
-                _linkedrelations = new LinkedList();
-                Enumeration ports = _portList.elements();
-
-                while( ports.hasMoreElements() ) {
-                    Port port = (Port)ports.nextElement();
-                    _linkedrelations.appendElements( port.linkedRelations() );
-                }
-                _linkedrelationsversion = _workspace.getVersion();
-            }
-            return _linkedrelations.elements();
-        } finally {
-            _workspace.doneReading();
-        }
+        return Collections.enumeration(linkedRelationList());
     }
 
     /** Create a new port with the specified name. Set its container
@@ -311,6 +331,20 @@ public class Entity extends NamedObj {
         }
     }
 
+    /** Get the ports belonging to this entity.
+     *  The order is the order in which they became contained by this entity.
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of Port objects.
+     */
+    public List portList() {
+        try {
+            _workspace.getReadAccess();
+            return _portList.elementList();
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Remove all ports by setting their container to null.
      *  As a side effect, the ports will be unlinked from all relations.
      *  This method is write-synchronized on the workspace, and increments
@@ -319,13 +353,13 @@ public class Entity extends NamedObj {
     public void removeAllPorts() {
         try {
             _workspace.getWriteAccess();
-            // Have to copy _portList to avoid corrupting the enumeration.
-            // NOTE: Is this still true?  Or was this a bug in in NamedList?
+            // Have to copy _portList to avoid corrupting the iterator.
+            // NOTE: Could use a ListIterator here instead.
             NamedList portListCopy = new NamedList(_portList);
-            Enumeration ports = portListCopy.elements();
+            Iterator ports = portListCopy.elementList().iterator();
 
-            while (ports.hasMoreElements()) {
-                Port port = (Port)ports.nextElement();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
                 try {
                     port.setContainer(null);
                 } catch (KernelException ex) {
@@ -341,7 +375,7 @@ public class Entity extends NamedObj {
     }
 
     /** Return a name that is guaranteed to not be the name of
-     *  any contained attribute or port.  In derived classes, this is
+     *  any contained attribute or port.  In derived classes, this should be
      *  overridden so that the returned name is guaranteed to not conflict
      *  with any contained object.
      *  @param prefix A prefix for the name.
@@ -409,9 +443,9 @@ public class Entity extends NamedObj {
                     result += " ";
                 }
                 result += "ports {\n";
-                Enumeration enum = getPorts();
-                while (enum.hasMoreElements()) {
-                    Port port = (Port)enum.nextElement();
+                Iterator iter = portList().iterator();
+                while (iter.hasNext()) {
+                    Port port = (Port)iter.next();
                     result += port._description(detail, indent+1, 2) + "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
@@ -424,19 +458,19 @@ public class Entity extends NamedObj {
     }
 
     /** Write a MoML description of the contents of this object, which
-     *  in this class is the attributes plus the ports.  This method is called
-     *  by _exportMoML().  Each description is indented according to the
+     *  in this class are the attributes plus the ports.  This method is called
+     *  by exportMoML().  Each description is indented according to the
      *  specified depth and terminated with a newline character.
-     *  @param output The output stream to write to.
+     *  @param output The output to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @throws IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
-        Enumeration ports = getPorts();
-        while (ports.hasMoreElements()) {
-            Port port = (Port)ports.nextElement();
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
             port.exportMoML(output, depth);
         }
     }

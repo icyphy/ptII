@@ -63,14 +63,14 @@ test CTDirector-1.2 {Construct a Director in a workspace} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set d1 [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $w]
     list  [$d1 getFullName]
-} {W.}
+} {.}
 
 test CTDirector-1.3 {Construct with a name and a container} {
     set ca [java::new ptolemy.actor.TypedCompositeActor $w]
     $ca setName CA
     set d2 [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $ca DIR2]
     list [$d2 getFullName]
-} {W.CA.DIR2}
+} {.CA.DIR2}
 
 
 ######################################################################

@@ -1161,7 +1161,7 @@ test IOPort-15.1 {test clone()} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set p5 [java::cast ptolemy.actor.IOPort [$p4 clone $w]]
     $p5 description
-} {ptolemy.actor.IOPort {W.P4} attributes {
+} {ptolemy.actor.IOPort {.P4} attributes {
 } links {
 } insidelinks {
 } configuration {input multiport opaque {width 0}} receivers {

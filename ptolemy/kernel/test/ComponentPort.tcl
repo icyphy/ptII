@@ -65,7 +65,7 @@ test ComponentPort-2.1 {Construct Ports} {
 
     list [$p1 getFullName] [$p2 getFullName] \
 	    [$p3 getFullName] [$p4 getFullName] [$p5 getFullName]
-} {. ..P2 . workspace2. .}
+} {. ..P2 . . .}
 
 ######################################################################
 ####

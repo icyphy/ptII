@@ -106,7 +106,7 @@ test Attribute-3.3 {set an Attribute to its own name} {
 ####
 #
 test Attribute-6.2 {Test description} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
+    set w [java::new ptolemy.kernel.util.Workspace]
     set n [java::new ptolemy.kernel.util.NamedObj N]
     set a [java::new ptolemy.kernel.util.Attribute]
     set b [java::new ptolemy.kernel.util.Attribute $w]
@@ -119,7 +119,7 @@ test Attribute-6.2 {Test description} {
 	    [$c description $detail] \
 	    [$n description $detail]
 } {{ptolemy.kernel.util.Attribute {.} attributes {
-}} {ptolemy.kernel.util.Attribute {W.} attributes {
+}} {ptolemy.kernel.util.Attribute {.} attributes {
 }} {ptolemy.kernel.util.Attribute {.N.C} attributes {
 }} {ptolemy.kernel.util.NamedObj {.N} attributes {
     {ptolemy.kernel.util.Attribute {.N.C}}
@@ -143,15 +143,15 @@ test Attribute-7.1 {Test clone into a new workspace} {
             [$bw getFullName] \
             [$cx getFullName] \
             [$cw getFullName]
-} {X. . X. W. X.C .C}
+} {. . . . .C .C}
 
 test Attribute-7.2 {Test cloning of NamedObj with attributes} {
     # NOTE: Builds on previous test.
     set nx [java::cast ptolemy.kernel.util.NamedObj [$n clone $x]]
     set nw [java::cast ptolemy.kernel.util.NamedObj [$n clone]]
     list [$nx description $detail] [$nw description $detail]
-} {{ptolemy.kernel.util.NamedObj {X.N} attributes {
-    {ptolemy.kernel.util.Attribute {X.N.C}}
+} {{ptolemy.kernel.util.NamedObj {.N} attributes {
+    {ptolemy.kernel.util.Attribute {.N.C}}
 }} {ptolemy.kernel.util.NamedObj {.N} attributes {
     {ptolemy.kernel.util.Attribute {.N.C}}
 }}}
@@ -175,7 +175,7 @@ test Attribute-8.2 {setContainer, different workspace} {
     # Builds on 8.1 above
     catch {$b setContainer $c} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: W. and .N.C:
+} {{ptolemy.kernel.util.IllegalActionException: . and .N.C:
 Cannot set container because workspaces are different.}}
     
 test Attribute-8.3 {setContainer, then setContainer again} {

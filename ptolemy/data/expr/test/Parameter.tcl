@@ -67,7 +67,7 @@ test Parameter-2.0 {Check constructors} {
     set name4 [$param4 getFullName]
     set value3 [[$param3 getToken] stringValue]
     list $name1 $name2 $name3 $name4 $value3 
-} {. workspace. .entity.id2 .entity.id1 4.5}
+} {. . .entity.id2 .entity.id1 4.5}
 
 #################################
 ####
@@ -335,17 +335,23 @@ test Parameter-13.0 {Test exportMoML} {
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
     set a1 [java::new ptolemy.data.expr.Parameter $a "A1"]
     $a exportMoML
-} {<entity name="A" class="ptolemy.kernel.util.NamedObj">
-    <attribute name="A1" class="ptolemy.data.expr.Parameter">
-    </attribute>
-</entity>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="A" class="ptolemy.kernel.util.NamedObj">
+    <property name="A1" class="ptolemy.data.expr.Parameter">
+    </property>
+</model>
 }
 
 test Parameter-13.1 {Test exportMoML} {
     $a1 setExpression {3}
     $a exportMoML
-} {<entity name="A" class="ptolemy.kernel.util.NamedObj">
-    <attribute name="A1" class="ptolemy.data.expr.Parameter" value="3">
-    </attribute>
-</entity>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="A" class="ptolemy.kernel.util.NamedObj">
+    <property name="A1" class="ptolemy.data.expr.Parameter" value="3">
+    </property>
+</model>
 }

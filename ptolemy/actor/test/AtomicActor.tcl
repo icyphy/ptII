@@ -65,7 +65,7 @@ test AtomicActor-2.1 {Constructor tests} {
     set e2 [java::new ptolemy.actor.AtomicActor $w]
     set e3 [java::new ptolemy.actor.AtomicActor $e0 E3]
     list [$e1 getFullName] [$e2 getFullName] [$e3 getFullName]
-} {. W. .E0.E3}
+} {. . .E0.E3}
 
 ######################################################################
 ####
@@ -129,33 +129,33 @@ test AtomicActor-7.1 {Test clone and description} {
     # NOTE: Uses the setup above
     set e4 [java::cast ptolemy.actor.AtomicActor [$e3 clone $w]]
     $e4 description
-} {ptolemy.actor.AtomicActor {W.E3} attributes {
+} {ptolemy.actor.AtomicActor {.E3} attributes {
 } ports {
-    {ptolemy.actor.IOPort {W.E3.P1} attributes {
+    {ptolemy.actor.IOPort {.E3.P1} attributes {
     } links {
     } insidelinks {
     } configuration {opaque {width 0}} receivers {
     } remotereceivers {
     }}
-    {ptolemy.actor.IOPort {W.E3.P2} attributes {
+    {ptolemy.actor.IOPort {.E3.P2} attributes {
     } links {
     } insidelinks {
     } configuration {input output opaque {width 0}} receivers {
     } remotereceivers {
     }}
-    {ptolemy.actor.IOPort {W.E3.P3} attributes {
+    {ptolemy.actor.IOPort {.E3.P3} attributes {
     } links {
     } insidelinks {
     } configuration {output opaque {width 0}} receivers {
     } remotereceivers {
     }}
-    {ptolemy.actor.IOPort {W.E3.P4} attributes {
+    {ptolemy.actor.IOPort {.E3.P4} attributes {
     } links {
     } insidelinks {
     } configuration {input opaque {width 0}} receivers {
     } remotereceivers {
     }}
-    {ptolemy.actor.IOPort {W.E3.P5} attributes {
+    {ptolemy.actor.IOPort {.E3.P5} attributes {
     } links {
     } insidelinks {
     } configuration {opaque {width 0}} receivers {

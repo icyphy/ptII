@@ -831,7 +831,31 @@ public class Variable extends Attribute implements Typeable {
 	_constraints.insertLast(ineq);
     }
 
-    /** Return a string representation of the current variable value.
+    /** Return a string representing the (possibly unevaluated) value
+     *  of this variable.  If the value has been set by an expression,
+     *  then return that expression.  If the value has been set via
+     *  a token, then return a string representation of the value of that
+     *  token.  If neither, then return an empty string.
+     *  @return A string representation of this variable.
+     */
+    public String stringRepresentation() {
+        String value = getExpression();
+        if (value == null) {
+            ptolemy.data.Token token = null;
+            try {
+                token = getToken();
+            } catch (IllegalActionException ex) {}
+            if (token != null) {
+                value = token.toString();
+            }
+        }
+        if (value != null) {
+            value = "";
+        }
+        return value;
+    }
+
+    /** Return a string representation of the current evaluated variable value.
      *  @return A string representing the class and the current token.
      */
     public String toString() {

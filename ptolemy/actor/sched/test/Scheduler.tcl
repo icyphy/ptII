@@ -58,7 +58,7 @@ test Scheduler-2.1 {Constructor tests} {
     set s3 [java::new ptolemy.actor.sched.Scheduler $w]
     $s3 setName S3
     list [$s1 getFullName] [$s2 getFullName] [$s3 getFullName] 
-} {.Scheduler W.Scheduler W.S3}
+} {.Scheduler .Scheduler .S3}
 
 ######################################################################
 ####
@@ -69,7 +69,7 @@ test Scheduler-3.1 {Test clone} {
             [$s2 clone $w]]
     $s4 setName S4
     enumToFullNames [$w directory]
-} {W.Scheduler W.S3}
+} {.Scheduler .S3}
 
 ######################################################################
 ####
@@ -81,7 +81,7 @@ test Scheduler-4.1 {Test setScheduler and getScheduler} {
     $d0 setScheduler $s2
     set d1 [$s2 getContainer]
     list [$d0 getFullName] [$d1 getFullName] [$s2 getFullName]
-} {W.D0 W.D0 W.D0.Scheduler}
+} {.D0 .D0 .D0.Scheduler}
 
 ######################################################################
 ####

@@ -32,8 +32,11 @@ package ptolemy.kernel;
 
 import ptolemy.kernel.util.*;
 
+import java.util.Collections;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Port
@@ -157,24 +160,34 @@ public class Port extends NamedObj {
         return newobj;
     }
 
-    /** Enumerate the connected ports.  Note that a port may be listed
+    /** List the connected ports.  Note that a port may be listed
      *  more than once if more than one connection to it has been established.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of Port objects.
+     *  @return An unmodifiable list of Port objects.
      */
-    public Enumeration connectedPorts() {
+    public List connectedPortList() {
         try {
             _workspace.getReadAccess();
             LinkedList result = new LinkedList();
-            Enumeration relations = linkedRelations();
-            while (relations.hasMoreElements()) {
-                Relation relation = (Relation)relations.nextElement();
-                result.appendElements(relation.linkedPorts(this));
+            Iterator relations = linkedRelationList().iterator();
+            while (relations.hasNext()) {
+                Relation relation = (Relation)relations.next();
+                result.addAll(relation.linkedPortList(this));
             }
-            return result.elements();
+            return Collections.unmodifiableList(result);
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Enumerate the connected ports.  Note that a port may be listed
+     *  more than once if more than one connection to it has been established.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use connectedPortList() instead.
+     *  @return An enumeration of Port objects.
+     */
+    public Enumeration connectedPorts() {
+        return Collections.enumeration(connectedPortList());
     }
 
     /** Return true, since a simple port is always opaque.
@@ -204,12 +217,36 @@ public class Port extends NamedObj {
         }
     }
 
+    /** List the linked relations.  Note that a relation may appear
+     *  more than once if more than one link to it has been established.
+     *  This method is read-synchronized on the workspace.
+     *  @return A list of Relation objects.
+     */
+    public List linkedRelationList() {
+        try {
+            _workspace.getReadAccess();
+            // Unfortunately, CrossRefList returns an enumeration only.
+            // Use it to construct a list.
+            LinkedList result = new LinkedList();
+            Enumeration relations = _relationsList.getContainers();
+            while (relations.hasMoreElements()) {
+                result.add(relations.nextElement());
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Enumerate the linked relations.  Note that a relation may appear
      *  more than once if more than one link to it has been established.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Relation objects.
      */
     public Enumeration linkedRelations() {
+        // NOTE: There is no reason to deprecate this because it does
+        // depend on Doug Lea's collections, and it is more efficient than
+        // the list version.
         try {
             _workspace.getReadAccess();
             return _relationsList.getContainers();

@@ -97,17 +97,6 @@ Cannot set a name with a period: This.name.has.dots}}
 
 ######################################################################
 ####
-# FIXME:  test addParam, removeParam, getParam, getParams
-# test NamedObj-3.1 {Experiment with Parameters} {
-#     set n [java::new ptolemy.kernel.util.NamedObj]
-#     set a1 [java::new ptolemy.data.Parameter A1 1]
-#     set a2 [java::new ptolemy.data.Parameter A2 2]
-#     $n addParameter $a1
-#     set result [enumToFullNames [$n getParameters]]
-# } {{first parameter} 42 {second parameter} -4}
-
-######################################################################
-####
 #
 test NamedObj-4.1 {Set the name to null in the constructor} {
     set n [java::new ptolemy.kernel.util.NamedObj [java::null]]
@@ -130,7 +119,7 @@ test NamedObj-5.1 {Test getFullName} {
     set n [java::new ptolemy.kernel.util.Workspace "foo"]
     set b [java::new ptolemy.kernel.util.NamedObj $n "bar"]
     list [$n getFullName] [$b getFullName]
-} {foo foo.bar}
+} {foo .bar}
 
 ######################################################################
 ####
@@ -141,7 +130,7 @@ test NamedObj-6.1 {Test toString} {
     set b [java::new ptolemy.kernel.util.NamedObj $n ""]
     set c [java::new ptolemy.kernel.util.NamedObj $n "car" ]
     list [$a toString] [$b toString] [$c toString]
-} {{ptolemy.kernel.util.NamedObj {.}} {ptolemy.kernel.util.NamedObj {foo.}} {ptolemy.kernel.util.NamedObj {foo.car}}}
+} {{ptolemy.kernel.util.NamedObj {.}} {ptolemy.kernel.util.NamedObj {.}} {ptolemy.kernel.util.NamedObj {.car}}}
 
 ######################################################################
 ####
@@ -157,14 +146,14 @@ test NamedObj-6.2 {Test description} {
 	    [$n description [java::field ptolemy.kernel.util.NamedObj COMPLETE]]"
 } {{ptolemy.kernel.util.NamedObj {.} attributes {
 }
- ptolemy.kernel.util.NamedObj {foo.} attributes {
+ ptolemy.kernel.util.NamedObj {.} attributes {
 }
- ptolemy.kernel.util.NamedObj {foo.car} attributes {
+ ptolemy.kernel.util.NamedObj {.car} attributes {
 }
  ptolemy.kernel.util.Workspace {foo} directory {
-    {ptolemy.kernel.util.NamedObj {foo.} attributes {
+    {ptolemy.kernel.util.NamedObj {.} attributes {
     }}
-    {ptolemy.kernel.util.NamedObj {foo.car} attributes {
+    {ptolemy.kernel.util.NamedObj {.car} attributes {
     }}
 }}}
 
@@ -176,7 +165,7 @@ test NamedObj-7.1 {Test clone} {
     set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
     set b [java::cast ptolemy.kernel.util.NamedObj [$a clone]]
     $b description [java::field ptolemy.kernel.util.NamedObj COMPLETE]
-} {ptolemy.kernel.util.NamedObj {N.A} attributes {
+} {ptolemy.kernel.util.NamedObj {.A} attributes {
 }}
 
 ######################################################################
@@ -189,7 +178,7 @@ test NamedObj-8.1 {Test RecorderListener: call clone} {
     $a addDebugListener $listener
     $a clone
     $listener getMessages
-} {Cloned N.A into workspace: N
+} {Cloned .A into workspace: N
 }
 
 test NamedObj-8.2 {Test RecorderListener: call setName} {
@@ -238,8 +227,8 @@ test NamedObj-8.5 {Test RecorderListener: reset, getMessages, setName} {
     set b [java::new ptolemy.kernel.util.Attribute $a "X"]
     $b setContainer [java::null]
     list $result1 [$listener getMessages]
-} {{} {Added attribute X to N.A
-Removed attribute X from N.A
+} {{} {Added attribute X to .A
+Removed attribute X from .A
 }}
 
 test NamedObj-8.6 {Test RecorderListener: set container to null} {
@@ -250,8 +239,8 @@ test NamedObj-8.6 {Test RecorderListener: set container to null} {
     set b [java::new ptolemy.kernel.util.Attribute $a "X"]
     $b setContainer [java::null]
     $listener getMessages
-} {Added attribute X to N.A
-Removed attribute X from N.A
+} {Added attribute X to .A
+Removed attribute X from .A
 }
 
 test NamedObj-8.7 {Test RecorderListener: add then remove a listenert} {
@@ -341,27 +330,100 @@ Changed name from .B to .C
 ####
 #
 test NamedObj-10.1 {Test getAttribute} {
-    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set n [java::new ptolemy.kernel.util.Workspace]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
     set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
     set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
     set gotten [$a getAttribute "A1.A2"]
     $gotten getFullName
-} {N.A.A1.A2}
+} {.A.A1.A2}
 
 ######################################################################
 ####
 #
 test NamedObj-11.1 {Test exportMoML} {
-    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set n [java::new ptolemy.kernel.util.Workspace]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
     set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
     set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
     $a exportMoML
-} {<entity name="A" class="ptolemy.kernel.util.NamedObj">
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="A" class="ptolemy.kernel.util.NamedObj">
     <property name="A1" class="ptolemy.kernel.util.Attribute">
         <property name="A2" class="ptolemy.kernel.util.Attribute">
         </property>
     </property>
-</entity>
+</model>
 }
+
+test NamedObj-11.2 {Test deferMoMLDefinitionTo} {
+    set b [java::cast ptolemy.kernel.util.NamedObj [$a clone]]
+    set a3 [java::new ptolemy.kernel.util.Attribute $a1 "A3"]
+    $b deferMoMLDefinitionTo $a
+    $b exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="A" class=".A">
+    <property name="A1" class="ptolemy.kernel.util.Attribute">
+        <property name="A2" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </property>
+</model>
+}
+
+test NamedObj-11.3 {Test referTo of a class} {
+    $b setMoMLElementName class
+    $b exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<class name="A" extends=".A">
+    <property name="A1" class="ptolemy.kernel.util.Attribute">
+        <property name="A2" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </property>
+</class>
+}
+
+test NamedObj-11.4 {Test deferredMoMLDefinitionFrom} {
+    listToFullNames [$a deferredMoMLDefinitionFrom]
+} {.A}
+
+test NamedObj-11.5 {Test removal of deferral} {
+    $b deferMoMLDefinitionTo [java::null]
+    listToFullNames [$a deferredMoMLDefinitionFrom]
+} {}
+
+
+######################################################################
+####
+#
+test NamedObj-12.1 {Test uniqueName} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A0"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a "A2"]
+    list [$a uniqueName A] [$a uniqueName A]
+} {A1 A3}
+
+######################################################################
+####
+#
+test NamedObj-13.1 {Test attributeList} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A0"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a "A2"]
+    listToNames [$a attributeList]
+} {A0 A2}
+
+test NamedObj-13.2 {Test attributeList with filter} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A0"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a "A2"]
+    listToNames [$a attributeList [$a1 getClass]]
+} {A0 A2}

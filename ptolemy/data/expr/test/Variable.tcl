@@ -67,7 +67,7 @@ test Variable-1.0 {Check constructors} {
     set name4 [$param4 getFullName]
     set value3 [[$param3 getToken] stringValue]
     list $name1 $name2 $name3 $name4 $value3 
-} {. workspace. .entity.id2 .entity.id1 4.5}
+} {. . .entity.id2 .entity.id1 4.5}
 
 #################################
 #### scope
@@ -428,7 +428,10 @@ test Variable-12.0 {Test exportMoML} {
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
     set a1 [java::new ptolemy.data.expr.Variable $a "A1"]
     $a exportMoML
-} {<entity name="A" class="ptolemy.kernel.util.NamedObj">
-</entity>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="A" class="ptolemy.kernel.util.NamedObj">
+</model>
 }
 
