@@ -64,7 +64,7 @@ import ptolemy.kernel.util.StringAttribute;
 /**
 This actor reads datagram packets via a separate thread.  The thread
 responds to datagrams whenever they arrive, giving the actor the ability
-to read the datagrams asynchronously.  
+to read the datagrams asynchronously.
 
 Datagrams are connectionless, open-loop internet communications.  Each
 datagram packet contains data plus a return address.  The return
@@ -105,9 +105,9 @@ received are first made into a string using the platform's default
 character encoding.  Then this string is parsed by the Ptolemy parser.
 The parser is capable of throwing an exception if the data has been
 garbled or truncated or is incorrectly formed for the parser.  A
-variety of output data types are possible, and may vary from packet 
-to packet.  This is because this setting permits the Ptolemy parser 
-to determine the type as it parses. 
+variety of output data types are possible, and may vary from packet
+to packet.  This is because this setting permits the Ptolemy parser
+to determine the type as it parses.
 
 <p>If <i>encoding</i> equals "raw_integers_little_endian", then the bytes
 received are packed into integers, 4 bytes to each integer.  As the
@@ -126,13 +126,13 @@ bytes are discarded.  This is the robust setting, capable of handling
 any datagram that may arrive.  As above, The type of the
 output is an array of integers.
 
-<p>The return address and socket number are broadcast as String and int 
+<p>The return address and socket number are broadcast as String and int
 respectively.  These tell where the received datagram originated from.
 
 <p>FIXME: Factor out the encoding capability so all actors can use it
 and so the I/O actors can share it rather than each having to separately
 implement it.  Ideally, there would be more encoding options than
-provided here.  Actors to factor out encoding functionality might be 
+provided here.  Actors to factor out encoding functionality might be
 named Encode and Decode, or Pack and Unpack, or simply Repack.  These
 will be sort of like the conversion actors, but they will be bit-preserving
 rather than value-preserving (as are most of the existing converters).
@@ -176,10 +176,10 @@ outputs as well, but they are not parameter-programmable.
 <p>
 <p>NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
 number assigned to its local datagram socket.  Initially, the local
-socket number is set to 4004.  There is no particular reason for choosing 
-this number, except that is noticeable in the code and in Vergil, thus 
-encouraging you to change it to any desired value in the range 0..65535.  
-Note that socket numbers 0..1023 are generally reserved and numbers 1024 and 
+socket number is set to 4004.  There is no particular reason for choosing
+this number, except that is noticeable in the code and in Vergil, thus
+encouraging you to change it to any desired value in the range 0..65535.
+Note that socket numbers 0..1023 are generally reserved and numbers 1024 and
 above are generally available.
 
 <p>Some commonly used port numbers (a.k.a. socket numbers) are shown below:
@@ -201,13 +201,13 @@ Well-known Ports
 Reference:  http://192.168.1.1/Forward.htm
 (A webpage hosted from within the Linksys BEFSR41 Cable/DSL Router)
 
-<p>Another useful tidbit is the command 'netstat'.  This works in a 
-DOS prompt and also in the UNIX-like Bash shell.  In either shell, 
-enter 'netstat -an'.  This command shows current port allocations!  Ports 
+<p>Another useful tidbit is the command 'netstat'.  This works in a
+DOS prompt and also in the UNIX-like Bash shell.  In either shell,
+enter 'netstat -an'.  This command shows current port allocations!  Ports
 allocated to Ptolemy models are shown along with other port allocations.
 Other useful network commands include 'ping' and 'tracert'.
 Both TCP and UDP (datagram) ports are shown by netstat.
-FIXME: Find out whether a TCP port using a specific number blocks a 
+FIXME: Find out whether a TCP port using a specific number blocks a
 UDP port from using that same number.
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward Lee
@@ -271,7 +271,7 @@ public class DatagramReader extends TypedAtomicActor {
         defaultReturnAddress.setTypeEquals(BaseType.STRING);
         defaultReturnAddress.setToken(new StringToken("localhost"));
 
-        defaultReturnSocketNumber = new Parameter(this, 
+        defaultReturnSocketNumber = new Parameter(this,
                 "defaultReturnSocketNumber");
         defaultReturnSocketNumber.setTypeEquals(BaseType.INT);
         defaultReturnSocketNumber.setExpression("0");
@@ -306,8 +306,8 @@ public class DatagramReader extends TypedAtomicActor {
         encoding.setExpression("for_Ptolemy_parser");
         // The above setExpression() call causes a call to the
         // attributeChanged() method here in this same actor!
-        // The actor uses this to set the related cached values 
-        // <i>_decodeWithPtolemyParser</i> etc. to be congruent 
+        // The actor uses this to set the related cached values
+        // <i>_decodeWithPtolemyParser</i> etc. to be congruent
         // with the setting of <i>encoding</i>.
 
    }
@@ -375,8 +375,8 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public Parameter actorBufferLength;
 
-    /** Length (in bytes) of the buffer within java and/or the platform 
-     *  layers below java.  Java documents refers to all this 
+    /** Length (in bytes) of the buffer within java and/or the platform
+     *  layers below java.  Java documents refers to all this
      *  collectively as the platform.  The size of this buffer is
      *  controlled via the getReceiveBufferSize() and
      *  setReceiveBufferSize() methods.  @see java.net.DatagramSocket.
@@ -388,7 +388,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  integer value.  Thus, I suggest taking this with a grain of salt.
      *  Caution #2 - the get/setReceiveBufferSize() calls block when
      *  called as long as another thread is in a receive() call on that
-     *  same socket.  This is undocumented in Java's documentation. 
+     *  same socket.  This is undocumented in Java's documentation.
      */
     public Parameter platformBufferLength;
 
@@ -453,8 +453,8 @@ public class DatagramReader extends TypedAtomicActor {
      *  receiving arrays of bytes and integers respectively.  The former
      *  are not received explicitly as bytes since the Byte type is
      *  still under development in Ptolemy.  Conversion in this actor
-     *  between bytes and integers simply ignores the 24 high order bits 
-     *  of the integer.  For example, 511, 255, and -1 are treated as 
+     *  between bytes and integers simply ignores the 24 high order bits
+     *  of the integer.  For example, 511, 255, and -1 are treated as
      *  the same value under the "raw_low_bytes_of_integers" setting.
      */
     public StringAttribute encoding;
@@ -517,15 +517,15 @@ public class DatagramReader extends TypedAtomicActor {
                 // it really work, that is set the type of the <i>output</i>
                 // port if and only if the <i>encoding</i> parameter is
                 // actually changed, some things would need to be fixed.
-                // The "configure" dialog currently implements "cancel" 
-                // via a reapplication of stored values, thus reverting 
-                // the change.  However, my actor would have already 
-                // overwritten and lost user settings in such a process.  
-                // Having fixed this, the next step would be to use 
-                // MoMLChangeRequest(originator, context, "<....>") in 
-                // place of setTypeEquals() whose changes do not stick. 
-                // Finally, to make this safe during the constructor 
-                // call, maybe an _inConstructor variable would serve 
+                // The "configure" dialog currently implements "cancel"
+                // via a reapplication of stored values, thus reverting
+                // the change.  However, my actor would have already
+                // overwritten and lost user settings in such a process.
+                // Having fixed this, the next step would be to use
+                // MoMLChangeRequest(originator, context, "<....>") in
+                // place of setTypeEquals() whose changes do not stick.
+                // Finally, to make this safe during the constructor
+                // call, maybe an _inConstructor variable would serve
                 // to avoid overwriting user settings.
                 if (false) {
 
@@ -678,9 +678,9 @@ public class DatagramReader extends TypedAtomicActor {
            } // Sync(this)
 
         // In the case of <i>actorBufferLength</i>, simply cache the parameter.
-        // The thread used this value to set the size of a buffer prior 
-        // to the socket.receive() call.  The thread only resizes a buffer 
-        // when it is about to call receive on it and this parameter has 
+        // The thread used this value to set the size of a buffer prior
+        // to the socket.receive() call.  The thread only resizes a buffer
+        // when it is about to call receive on it and this parameter has
         // changed from the value last used for that specific buffer.
         // Synchronization ensures that the thread's test for a change in
         // this value and its use of the value access the same thing.
@@ -984,7 +984,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  evaluation variable, the DatagramSocket, and the
      *  SocketReadingThread.
      */
-    public void setContainer(CompositeEntity container) 
+    public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container != getContainer()) {
             wrapup();
@@ -1085,9 +1085,9 @@ public class DatagramReader extends TypedAtomicActor {
         if (_debugging) _debug("stopFire() is called");
         synchronized(_syncFireAndThread) {
             if (_fireIsWaiting) {
-                // stopFire() gets called a lot.  Including each time 
-                // the program is started.  This caveat has proven 
-                // necessary to avoid disrupting one of the first 
+                // stopFire() gets called a lot.  Including each time
+                // the program is started.  This caveat has proven
+                // necessary to avoid disrupting one of the first
                 // few firings.
                 _stopFire = true;
                 _syncFireAndThread.notifyAll();
@@ -1116,7 +1116,7 @@ public class DatagramReader extends TypedAtomicActor {
         if (_debugging) _debug("WRAPUP IS CALLED");
 
         //System.err.println("wrapup() has been called in " + this);
-        //e.printStackTrace();  
+        //e.printStackTrace();
               // FIXME cxh's java checker recommends
               // KernelException.stackTraceToString(ex)
               // instead of printStackTrace() above.  Try it.
@@ -1260,7 +1260,7 @@ public class DatagramReader extends TypedAtomicActor {
                             System.out.println("Socket Ex." + ex.toString());
                             //throw new IllegalActionException(this,sex.toString());
                         } catch (IllegalActionException ex) {
-                            System.out.println("getToken or setToken failed" 
+                            System.out.println("getToken or setToken failed"
                                     + "on platformBufferSize" + ex.toString());
                         }
                     }
@@ -1271,7 +1271,7 @@ public class DatagramReader extends TypedAtomicActor {
                     if (_receivePacket == null ||
                             _receiveAllocated != _actorBufferLength) {
                         _receivePacket = new DatagramPacket(
-                                new byte[_actorBufferLength], 0, 
+                                new byte[_actorBufferLength], 0,
                                 _actorBufferLength);
                         _receiveAllocated = _actorBufferLength;
                     }

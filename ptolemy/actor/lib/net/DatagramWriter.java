@@ -425,7 +425,7 @@ public class DatagramWriter extends TypedAtomicActor {
     /** [Pre]initialize allocates the socket and makes use of default
      *  parameters for the remote address and socket to which datagrams
      *  will be sent.
-     *  @exception IllegalActionException If 
+     *  @exception IllegalActionException If
      *   the default remote socket number is outside the range 0..65535,
      *   the local socket number is outside the range 0..65535,
      *   the local socket cannot be created with the given
