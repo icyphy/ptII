@@ -107,6 +107,9 @@ public class MatrixViewer extends Sink implements Placeable {
                 in = input.get(i);
                 _matrixTable = new MatrixAsTable( (MatrixToken) in );
                 table.setModel( _matrixTable );
+
+                // Avoid reordering of the tables
+                table.getTableHeader().setReorderingAllowed(false);
             }
         }
     }
@@ -189,7 +192,7 @@ public class MatrixViewer extends Sink implements Placeable {
             @param matrix The matrix.
          */
         MatrixAsTable( MatrixToken matrix ) {
-            _matrix = matrix;   
+            _matrix = matrix;
         }
 
         /** Get the row count of the Matrix.
@@ -217,8 +220,15 @@ public class MatrixViewer extends Sink implements Placeable {
                 stringValue();
         }
 
+        /** Get column names of the Matrix.
+            @return the column names.
+         */
+        public String getColumnName( int columnIndex ) {
+            return Integer.toString( columnIndex + 1 );
+        }
+
         /** The Matrix for which a Table Model is created. */
-        private MatrixToken _matrix;
+        private MatrixToken _matrix = null;
         
     }
    
