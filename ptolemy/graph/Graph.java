@@ -71,6 +71,9 @@ Furthermore, the label assigned in a given graph to a node may change over time
 for all instances of the node in multiple graphs.  All of this holds for edges
 all well. The same weight may be shared among multiple nodes and edges.
 
+<p> Multiple edges in a graph can connect the same pair of nodes.
+Thus, multigraphs are supported.
+
 <p>Once assigned, node and edge weights should not be changed in ways that
 affect comparison under the <code>equals</code> method (this restriction allows
 us to efficiently map weights into their associated nodes and edges).
@@ -541,6 +544,20 @@ public class Graph {
         return _edges.label(edge);
     }
 
+    /** Return the edge label of the specified edge given the edge weight.
+     *  If multiple edges have the specified weight, then return one of their
+     *  labels arbitrarily.
+     *
+     *  @param weight The edge weight.
+     *  @return The edge label.
+     *  @exception IllegalArgumentException If the specified weight is not
+     *  an edge weight in this graph.
+     *  @see #edgeLabel(Edge).
+     */
+    public int edgeLabel(Object weight) throws IllegalArgumentException {
+        return _edges.label(edge(weight));
+    }
+
     /** Return the weight of a given edge in the graph given the edge label.
      *
      *  @param edge the edge label.
@@ -723,8 +740,8 @@ public class Graph {
      *
      *  @param weight The node weight.
      *  @return The node label.
-     *  @exception IllegalArgumentException If the specified weight was not
-     *  not a node weight in this graph.
+     *  @exception IllegalArgumentException If the specified weight is not
+     *  a node weight in this graph.
      *  @see #nodeLabel(Node).
      */
     public int nodeLabel(Object weight) throws IllegalArgumentException {
