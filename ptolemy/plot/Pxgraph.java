@@ -149,7 +149,7 @@ of the data plotting region is always white because the dataset colors
 were designed for a white background.
 
 <dt><a name="-bigendian flag"><code>-bigendian</code></a>
-<dt>Data files are in big-endian, or network binary format.
+<dd>Data files are in big-endian, or network binary format.
 See the <code>-binary</code> command line argument documentation
 below for details about the format.
 If you are on a little-endian machine, such as a machine
@@ -197,7 +197,7 @@ cxh@carson 324% od -c data/integrator1.plt
 0000020  \0  \0   d   @  \0  \0  \0   @   , 314 315   d   @   @  \0  \0
 </pre>
 For further information about endian-ism, see the
-<code>-bigendian</code> and <code>-littleendian<code> command
+<code>-bigendian</code> and <code>-littleendian</code> command
 line argument documentation.
 
 <dt><code>-brb</code> <code><i>&lt;base&gt;</i></code>
@@ -258,7 +258,7 @@ In the Java version, fonts may be specified as
 The default is <code>helvetica-PLAIN-12</code>.
 
 <dt><a name="-littleendian"><code>-littleendian</code></a>
-<dt>Data files are in little-endian, or x86 binary format.
+<dd>Data files are in little-endian, or x86 binary format.
 See the <code>-binary</code> command line argument documentation
 above for details about the format.
 If you are on a big-endian machine, such as a Sun Sparc,
