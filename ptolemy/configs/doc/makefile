@@ -67,9 +67,6 @@ OTHER_FILES_TO_BE_JARED = \
 	copyright.htm \
 	demos.htm \
 	docs.htm \
-	hybridAbout.htm \
-	hybridCopyright.htm \
-	hybridHelp.htm \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm
 
