@@ -259,7 +259,7 @@ public class ImageDisplay extends Sink implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** A specification of the size of the pane if it's in its own window. */
+    /** A specification of the size of the pane if its in its own window. */
     protected SizeAttribute _paneSize;
 
     ///////////////////////////////////////////////////////////////////
