@@ -348,7 +348,7 @@ inverse kinematics algorithm.</text>
                     <property name="output"/>
                 </port>
             </entity>
-            <entity name="Delay7" class="ptolemy.domains.de.lib.Delay">
+            <entity name="Delay7" class="ptolemy.domains.de.lib.TimedDelay">
                 <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="442.0, 402.0">
@@ -2062,7 +2062,7 @@ inverse kinematics algorithm.</text>
                     <property name="output"/>
                 </port>
             </entity>
-            <entity name="Delay7" class="ptolemy.domains.de.lib.Delay">
+            <entity name="Delay7" class="ptolemy.domains.de.lib.TimedDelay">
                 <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="420.0, 343.0">
@@ -3446,7 +3446,7 @@ inverse kinematics algorithm.</text>
                     <property name="output"/>
                 </port>
             </entity>
-            <entity name="Delay7" class="ptolemy.domains.de.lib.Delay">
+            <entity name="Delay7" class="ptolemy.domains.de.lib.TimedDelay">
                 <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="421.0, 262.0">
@@ -4389,7 +4389,7 @@ inverse kinematics algorithm.</text>
                 <property name="multiport"/>
             </port>
         </entity>
-        <entity name="Delay46" class="ptolemy.domains.de.lib.Delay">
+        <entity name="Delay46" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="609.0, 209.0">
@@ -4401,7 +4401,7 @@ inverse kinematics algorithm.</text>
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="Delay47" class="ptolemy.domains.de.lib.Delay">
+        <entity name="Delay47" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="610.0, 268.0">
@@ -4413,7 +4413,7 @@ inverse kinematics algorithm.</text>
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="Delay48" class="ptolemy.domains.de.lib.Delay">
+        <entity name="Delay48" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="611.0, 330.0">
@@ -4425,7 +4425,7 @@ inverse kinematics algorithm.</text>
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="Delay49" class="ptolemy.domains.de.lib.Delay">
+        <entity name="Delay49" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="613.0, 389.0">
@@ -4437,7 +4437,7 @@ inverse kinematics algorithm.</text>
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="Delay50" class="ptolemy.domains.de.lib.Delay">
+        <entity name="Delay50" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="615.0, 453.0">
@@ -4449,7 +4449,7 @@ inverse kinematics algorithm.</text>
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="Delay51" class="ptolemy.domains.de.lib.Delay">
+        <entity name="Delay51" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="616.0, 517.0">
@@ -4593,7 +4593,7 @@ inverse kinematics algorithm.</text>
                     <property name="output"/>
                 </port>
             </entity>
-            <entity name="Delay5" class="ptolemy.domains.de.lib.Delay">
+            <entity name="Delay5" class="ptolemy.domains.de.lib.TimedDelay">
                 <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="263.0, 261.0">
@@ -4691,7 +4691,7 @@ inverse kinematics algorithm.</text>
             <link port="decrement and check if Zero.in" relation="relation3"/>
             <link port="decrement and check if Zero.out" relation="relation0"/>
         </class>
-        <entity name="Delay0" class="ptolemy.domains.de.lib.Delay">
+        <entity name="Delay0" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="605.0, 95.0">
@@ -4703,7 +4703,7 @@ inverse kinematics algorithm.</text>
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="Delay1" class="ptolemy.domains.de.lib.Delay">
+        <entity name="Delay1" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="606.0, 154.0">
