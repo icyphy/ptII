@@ -31,6 +31,8 @@
 
 ME =		ptolemy/domains/ct/demo
 
+DIRS = sigmadelta
+
 # Root of the Java directory
 ROOT =		../../../..
 
@@ -60,8 +62,7 @@ TCL_SRCS = \
 
 
 JSRCS = \
-	WaveBERK23.java \
-	SigmaDeltaApplet.java
+	WaveBERK23.java 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
@@ -77,23 +78,22 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass SigmaDelta.jar
+all: jclass demo.jar
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-PTAUXJAR = SigmaDelta.jar
+PTAUXJAR = demo.jar
 
-demo: SigmaDelta.jar
-	CLASSPATH=$(CLASSPATH) appletviewer SigmaDelta.html
+demo: subdemo
 
 docs: javadocs
 
 # 'make clean' removes everything in KRUFT
-KRUFT = SigmaDelta.jar
+KRUFT = demo.jar
 
 # Jar file for the Sigma Delta Applet
-SigmaDelta.jar: $(JSRCS) $(JCLASS) makefile
+demo.jar: $(JSRCS) $(JCLASS) makefile
 	(cd $(ROOT); \
 		$(JAR) cf \
 		$(ME)/$@ \
