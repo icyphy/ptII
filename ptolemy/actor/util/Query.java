@@ -48,7 +48,7 @@ public class Query extends Panel {
 
     /** Construct a panel with no queries in it.
      */
-    public Query () {
+    public Query() {
         _grid = new GridBagLayout();
         setLayout(_grid);
     }
