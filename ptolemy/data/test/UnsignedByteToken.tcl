@@ -120,7 +120,7 @@ test UnsignedByteToken-5.0 {Test hashCode} {
 
 ######################################################################
 ####
-# Test subtract operator between ints and ints.
+# Test subtract operator between unsigned bytes
 test UnsignedByteToken-8.0 {Test subtract operator between ints.} {
     set tok1 [java::new {ptolemy.data.UnsignedByteToken int} 7]
     set tok2 [java::new {ptolemy.data.UnsignedByteToken int} 2]
@@ -133,7 +133,7 @@ test UnsignedByteToken-8.0 {Test subtract operator between ints.} {
 
 ######################################################################
 ####
-# Test subtract operator between ints and ints.
+# Test subtract operator between unsigned bytes
 test UnsignedByteToken-8.1 {Test shift operator between ints.} {
     set tok1 [java::new {ptolemy.data.UnsignedByteToken int} 7]
     set tok2 [java::new {ptolemy.data.UnsignedByteToken int} -7]
