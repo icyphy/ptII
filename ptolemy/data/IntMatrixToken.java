@@ -26,16 +26,16 @@
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
 @AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
-
 */
 
 package ptolemy.data;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
-//// IntMatrixToken
+//// ImageToken
 /**
 A token that contains a 2-D integer array.
 
@@ -43,10 +43,10 @@ FIXME: Except add() and addReverse(), other arithmetics operations are
 not implemented yet. Those methods will be added after the corresponding
 operations are added to the math package.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
 */
-public class IntMatrixToken extends MatrixToken {
+public final class IntMatrixToken extends MatrixToken {
 
     /** Construct an IntMatrixToken with a one by one array. The
      *  only element in the array has value 0.
@@ -54,8 +54,8 @@ public class IntMatrixToken extends MatrixToken {
     public IntMatrixToken() {
 	_rowCount = 1;
 	_columnCount = 1;
-	_value = new int[1][1];
-	_value[0][0] = 0;
+	_value = new int[1];
+	_value[0] = 0;
     }
 
     /** Construct an IntMatrixToken with the specified 2-D array.
@@ -68,14 +68,39 @@ public class IntMatrixToken extends MatrixToken {
     public IntMatrixToken(int[][] value) {
 	_rowCount = value.length;
 	_columnCount = value[0].length;
-	_value = new int[_rowCount][_columnCount];
+	_value = new int[_rowCount * _columnCount];
 	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		_value[i][j] = value[i][j];
-	    }
+            System.arraycopy(value[i], 0, _value, i * _columnCount, 
+                    _columnCount);
 	}
     }
 
+    /** Construct an IntMatrixToken with the specified 1-D array, 
+     *  with the stated dimensions.   The element at (r, c) is in 
+     *  location r * columns + c.  
+     *  
+     *  This method makes a copy of the array and stores the
+     *  copy, so changes on the specified array after this token
+     *  is constructed will not affect the content of this token.
+     *  @exception NullPointerException If the specified array
+     *   is null.
+     *  @exception RuntimeException If the specified array is not
+     *  of length rows * columns
+     */
+    public IntMatrixToken(int[] value, int rows, int columns) {
+        if(value.length != rows * columns) 
+            throw new RuntimeException("Attempted to create invalid " +
+                    "IntMatrixToken with " + rows + " rows and " + 
+                    columns + " columns, but the array was length " + 
+                    value.length + ".");
+	_rowCount = rows;
+	_columnCount = columns;
+	_value = new int[_rowCount * _columnCount];
+        System.arraycopy(value, 0, _value, 0,
+                    _rowCount * _columnCount);
+
+    }
+    
     // FIXME: finish this method after array is added to the
     // 	      expression language.
     // Construct an IntMatrixToken from the specified string.
@@ -124,7 +149,8 @@ public class IntMatrixToken extends MatrixToken {
 		result = new int[_rowCount][_columnCount];
 		for (int i = 0; i < _rowCount; i++) {
 		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] = scalar + _value[i][j];
+			result[i][j] = 
+                            scalar + _value[i * _columnCount + j];
 		    }
 		}
 	    } else {
@@ -139,7 +165,8 @@ public class IntMatrixToken extends MatrixToken {
 		result = tem.intMatrix();
 		for (int i = 0; i < _rowCount; i++) {
 		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] += _value[i][j];
+			result[i][j] += 
+                            _value[i * _columnCount + j];
 		    }
 		}
 	    }
@@ -174,7 +201,8 @@ public class IntMatrixToken extends MatrixToken {
         Complex[][] array = new Complex[_rowCount][_columnCount];
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
-                array[i][j] = new Complex((double)_value[i][j]);
+                array[i][j] = 
+                    new Complex((double)_value[i * _columnCount + j]);
             }
         }
         return array;
@@ -230,7 +258,7 @@ public class IntMatrixToken extends MatrixToken {
         double[][] array = new double[_rowCount][_columnCount];
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
-                array[i][j] = (double)_value[i][j];
+                array[i][j] = (double)_value[i * _columnCount + j];
             }
         }
 	return array;
@@ -272,11 +300,11 @@ public class IntMatrixToken extends MatrixToken {
 	    } else {
 		tem = (IntMatrixToken)convert(t);
 	    }
-	    int[][] array = tem.intMatrix();
 
 	    for (int i = 0; i < _rowCount; i++) {
 		for (int j = 0; j < _columnCount; j++) {
-		    if (_value[i][j] != array[i][j]) {
+		    if (_value[i * _columnCount + j] != 
+                            tem.getElementAt(i,j)) {
 			return new BooleanToken(false);
 		    }
 		}
@@ -295,7 +323,7 @@ public class IntMatrixToken extends MatrixToken {
      *   of the index of the contained array.
      */
     public int getElementAt(int row, int column) {
-	return _value[row][column];
+	return _value[row * _columnCount + column];
     }
 
     /** Return the content of this token as a 2-D integer array.
@@ -306,12 +334,34 @@ public class IntMatrixToken extends MatrixToken {
     public int[][] intMatrix() {
         int[][] array = new int[_rowCount][_columnCount];
         for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                array[i][j] = _value[i][j];
-            }
+            System.arraycopy(_value, i * _columnCount, array[i], 0, 
+                    _columnCount); 
         }
         return array;
     }
+
+    /** Return the content of this token as a 1-D integer array.
+     *  The returned array contains a row-by-row copy of the Matrix,
+     *  starting with row zero.
+     *  @return A 1-D integer Array
+     */
+    public int[] intArray() {
+        int[] array = new int[_rowCount*_columnCount];
+        System.arraycopy(_value, 0, array, 0, _rowCount*_columnCount);
+        return array;
+    }
+
+
+    /* Return a reference to the internal representation of the 
+     *  Matrix, which is similar in format to that returned by intArray()
+     *  This method is provided for speed ONLY and the returned reference
+     *  should not be modified!
+     *  @return A reference to the internal 1-D integer Array.
+     * FIXME should this method be here?
+     */
+    /*public int[] intArrayRef() {
+        return _value;
+        }*/
 
     /** Return the content of this token as a 2-D long array.
      */
@@ -319,7 +369,7 @@ public class IntMatrixToken extends MatrixToken {
         long[][] array = new long[_rowCount][_columnCount];
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
-                array[i][j] = (long)_value[i][j];
+                array[i][j] = (long)_value[i * _columnCount + j];
             }
         }
         return array;
@@ -391,8 +441,11 @@ public class IntMatrixToken extends MatrixToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private int[][] _value = null;
+
+    private int[] _value = null;
     private int _rowCount = 0;
     private int  _columnCount = 0;
 }
+
+
 
