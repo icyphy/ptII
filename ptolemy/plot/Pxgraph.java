@@ -311,7 +311,7 @@ produce standard bar graphs.
 
 <dt><code>-o</code> <code><i>output filename</i></code>
 <dd>The name of the file to place the print output in.  Currently
-defaults to <code>/tmp/t.ps<code>.  See also the
+defaults to <code>/tmp/t.ps</code>.  See also the
 <code>-print</code> option.
 
 <dt><code>-p</code>
@@ -325,7 +325,7 @@ scatter plots.
 <dt><code>-print</code>
 <dd>Bring up the print dialog immediately upon startup.  Unfortunately,
 there is no way to automatically print in JDK1.1, the user must hit
-the <code>Ok</code> button.  See also the <code>-o<code> option.
+the <code>Ok</code> button.  See also the <code>-o</code> option.
 
 <dt><code>-rv</code>
 <dd>Reverse video. On black and white displays, this will
