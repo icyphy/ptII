@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="Units" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -176,22 +176,6 @@ as a unit-handling integrator.</text></svg></configure>
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 8]">
     </property>
-    <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
-        <property name="initialState" class="ptolemy.data.expr.Parameter" value="5.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 255.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-    </entity>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="volt">
         </property>
@@ -383,8 +367,22 @@ as a unit-handling integrator.</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="175.0, 255.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="325.0, 270.0">
         </vertex>
@@ -403,15 +401,15 @@ as a unit-handling integrator.</text></svg></configure>
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="565.0, 295.0">
         </vertex>
     </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Integrator.input" relation="relation14"/>
-    <link port="Integrator.output" relation="relation11"/>
-    <link port="Scale2.input" relation="relation11"/>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Scale2.input" relation="relation6"/>
     <link port="Scale2.output" relation="relation"/>
     <link port="Const.output" relation="relation2"/>
     <link port="Display1.input" relation="relation3"/>
@@ -424,10 +422,12 @@ as a unit-handling integrator.</text></svg></configure>
     <link port="MultiplyDivide.divide" relation="relation2"/>
     <link port="MultiplyDivide.output" relation="relation5"/>
     <link port="Scale1.input" relation="relation12"/>
-    <link port="Scale1.output" relation="relation14"/>
+    <link port="Scale1.output" relation="relation7"/>
     <link port="1:PeriodicSampler.input" relation="relation5"/>
     <link port="1:PeriodicSampler.output" relation="relation15"/>
     <link port="PeriodicSampler.input" relation="relation"/>
     <link port="PeriodicSampler.output" relation="relation3"/>
     <link port="Display3.input" relation="relation4"/>
+    <link port="Integrator.input" relation="relation7"/>
+    <link port="Integrator.output" relation="relation6"/>
 </class>
