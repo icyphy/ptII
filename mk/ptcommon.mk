@@ -273,9 +273,10 @@ htest-netscape: $(JTESTHTML) $(JCLASS)
 
 # Create a zip file of the .class files
 # We cd up one level so that the zip file has the proper package name
+# We remove the file in case it is a symbolic link
 tyzip: $(TYZIP)
 $(TYZIP): $(JSRCS) $(JCLASS)
-	(cd $(CLASSPATH); $(JAR) -c0Mf $@ $(TYPACKAGE_DIR)/*.class)
+	(cd $(CLASSPATH); rm -f $@; $(JAR) -c0Mf $@ $(TYPACKAGE_DIR)/*.class)
 
 jars: $(JARFILE) 
 $(JARFILE): $(JSRCS) $(JCLASS)
@@ -288,13 +289,15 @@ $(JARFILE): $(JSRCS) $(JCLASS)
 			echo "Name: $$x" >> manifest.tmp; \
 			echo "Java-Bean: True" >> manifest.tmp; \
 		done; \
-		(cd $(CLASSPATH); $(JAR) cfm $(TYPACKAGE_DIR)/$@ \
-			$(TYPACKAGE_DIR)/manifest.tmp \
-			$(TYPACKAGE_DIR)/*.class); \
+		(cd $(CLASSPATH); rm -f $(TYPACKAGE_DIR)/$@; \
+			$(JAR) cfm $(TYPACKAGE_DIR)/$@ \
+				$(TYPACKAGE_DIR)/manifest.tmp \
+				$(TYPACKAGE_DIR)/*.class); \
 	else \
 		echo "Creating $@"; \
-		(cd $(CLASSPATH); $(JAR) cf $(TYPACKAGE_DIR)/$@ \
-			$(TYPACKAGE_DIR)/*.class); \
+		(cd $(CLASSPATH); rm -f $(TYPACKAGE_DIR)/$@; \
+			$(JAR) cf $(TYPACKAGE_DIR)/$@ \
+				$(TYPACKAGE_DIR)/*.class); \
 	fi
 
 ##############
