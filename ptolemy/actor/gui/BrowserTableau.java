@@ -85,7 +85,7 @@ public class BrowserTableau extends Tableau {
      *  by the lack of communication between Java and the browser,
      *  so this is the best we can do.
      *  If the URI ends in "#in_browser", we strip it off before
-     *  passing the URI to the browser.  #in_browser is used by 
+     *  passing the URI to the browser.  #in_browser is used by
      *  {@link ptolemy.actor.gui.HTMLViewer} to force a hyperlink to be
      *  opened in a browser.
      */
@@ -141,7 +141,7 @@ public class BrowserTableau extends Tableau {
             }
 	    String inBrowser = "#in_browser";
 	    if (url.endsWith(inBrowser)) {
-		// Strip off any trailing #in_browser, see HTMLViewer. 
+		// Strip off any trailing #in_browser, see HTMLViewer.
 		url = url.substring(0, url.length() - inBrowser.length());
 	    }
   	    BrowserLauncher.openURL(url);

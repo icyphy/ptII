@@ -115,7 +115,7 @@ public class HTMLViewer extends TableauFrame
         } else if (event.getEventType() == HyperlinkEvent.EventType.EXITED) {
             report("");
         } else if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-            URL newURL = event.getURL();            
+            URL newURL = event.getURL();
 
             if (event.getDescription().equals("about:copyright")) {
                 // Note that if we have a link that is

@@ -87,7 +87,7 @@ public class ExpressionShellTableau extends Tableau
         PtParser parser = new PtParser();
         ASTPtRootNode node = parser.generateSimpleAssignmentParseTree(command);
         String targetName = null;
-        
+
         // Figure out if we got an assignment... if so, then get the
         // identifier name and only evaluated the expression part.
         if(node instanceof ASTPtAssignmentNode) {
@@ -96,7 +96,7 @@ public class ExpressionShellTableau extends Tableau
             node = assignmentNode.getExpressionTree();
         }
 
-        final NamedObj model = 
+        final NamedObj model =
             ((ExpressionShellEffigy)getContainer()).getModel();
         ParserScope scope = new ModelScope() {
                 public ptolemy.data.Token get(String name)
@@ -123,9 +123,9 @@ public class ExpressionShellTableau extends Tableau
                     return getAllScopedVariableNames(null, model);
                 }
             };
- 
+
         Token result = _evaluator.evaluateParseTree(node, scope);
-        
+
         // If a target was specified, instantiate a new token.
         if(targetName != null) {
             Attribute attribute = model.getAttribute(targetName);

@@ -51,10 +51,10 @@ import java.util.Set;
 //// GenerateCopyrights
 /**
 Generate an HTML file that contains links to the appropriate
-copyrights for entities in the configuration.  
+copyrights for entities in the configuration.
 
 <p>This class expands a Ptolemy II configuration and looks for
-FileAttributes named _copyright.  
+FileAttributes named _copyright.
 
 <pre>
         &lt;property name="_copyright" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/ptolemy/actor/lib/python/copyright.htm"&gt;
@@ -127,7 +127,7 @@ public class GenerateCopyrights {
 
         StringBuffer htmlBuffer = new StringBuffer();
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
-                + "</head>\n<body>\n" 
+                + "</head>\n<body>\n"
                 + "<h1>Ptolemy II Copyrights</h1>\n"
                 + "The primary copyright for the Ptolemy II System can be\n"
                 + "found in <a href=\"" + ptIICopyright + "\"><code>"
@@ -145,7 +145,7 @@ public class GenerateCopyrights {
                 + "  <tr><th>Actor</th>\n"
                 + "      <th>Copyright of package used by the Actor</th>\n"
                 + "  </tr>\n");
-                
+
         Iterator copyrights = copyrightsMap.entrySet().iterator();
         while (copyrights.hasNext()) {
             Map.Entry entry = (Map.Entry)copyrights.next();
@@ -183,7 +183,7 @@ public class GenerateCopyrights {
     ////                         private methods                   ////
 
     // If a className is can be found, then add the className
-    // and copyrightPath to copyrightsMap 
+    // and copyrightPath to copyrightsMap
     private static void _addIfPresent(Map copyrightsMap,
             String className, String copyrightPath) {
         try {
