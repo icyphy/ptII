@@ -107,8 +107,8 @@ public class Scheduler extends NamedObj implements TopologyListener{
         return newobj;
     }
 
-    /** Responce for that an entity has been added to a composite.
-     *  This will invalidate the current schedule.
+    /** Invalidate the current schedule since an entity has been added
+     *  to a composite.
      *
      *  @param event The mutation event
      */
@@ -116,9 +116,8 @@ public class Scheduler extends NamedObj implements TopologyListener{
         setValid(false);
     }
 
-    /** Responce for that an entity has been removed from a composite.
-     * The <b>compositeEntity</b> and <b>entity</b> fields of the
-     * passed event will be valid.
+    /** Invalidate the current schedule since an entity has been removed
+     *  from a composite.
      *
      * @param event The mutation event
      */
@@ -135,9 +134,8 @@ public class Scheduler extends NamedObj implements TopologyListener{
         return _container;
     }
 
-    /** Responce for that a port has been added to an entity.
-     * The <b>entity</b> and <b>port</b> fields of the
-     * passed event will be valid.
+    /** Invalidate the current schedule since a port has been added 
+     *  to an entity.
      *
      * @param event The mutation event
      */
@@ -145,9 +143,8 @@ public class Scheduler extends NamedObj implements TopologyListener{
         setValid(false);
     }
 
-    /** Responce for that a port has been linked to a relation.
-     * The <b>relation</b> and <b>port</b> fields of the
-     * passed event will be valid.
+    /** Invalidate the current schedule since a port has been linked
+     *  to a relation.
      *
      * @param event The mutation event
      */
@@ -155,9 +152,8 @@ public class Scheduler extends NamedObj implements TopologyListener{
         setValid(false);
     }
 
-    /** Responce for that a port has been removed from a entity.
-     * The <b>entity</b> and <b>port</b> fields of the
-     * passed event will be valid.
+    /** Invalidate the current schedule since a port has been removed
+     *  from a entity.
      *
      * @param event The mutation event
      */
@@ -165,9 +161,8 @@ public class Scheduler extends NamedObj implements TopologyListener{
         setValid(false);
     }
 
-    /** Responce for that a port has been unlinked from a relation.
-     * The <b>relation</b> and <b>port</b> fields of the
-     * passed event will be valid.
+    /** Invalidate the current schedule since a port has been unlinked
+     *  from a relation.
      *
      * @param event The mutation event
      */
@@ -175,9 +170,8 @@ public class Scheduler extends NamedObj implements TopologyListener{
         setValid(false);
     }
 
-    /** Responce for that a relation has been added to a composite.
-     * The <b>compositeEntity</b> and <b>relation</b> fields of the
-     * passed event will be valid.
+    /** Invalidate the current schedule since a relation has been added
+     *  to a composite.
      *
      * @param event The mutation event
      */
@@ -185,9 +179,8 @@ public class Scheduler extends NamedObj implements TopologyListener{
         setValid(false);
     }
 
-    /** Responce for that a relation has been removed from a composite.
-     * The <b>compositeEntity</b> and <b>relation</b> fields of the
-     * passed event will be valid.
+    /** Invalidate the current schedule since a relation has been removed
+     *  from a composite.
      *
      * @param event The mutation event
      */
@@ -228,9 +221,9 @@ public class Scheduler extends NamedObj implements TopologyListener{
             }
             if(!valid()) {
                 _cachedschedule = new LinkedList();
-                Enumeration newsche = _schedule();
-                while (newsche.hasMoreElements()) {
-                    _cachedschedule.insertLast(newsche.nextElement());
+                Enumeration newSchedEnum = _schedule();
+                while (newSchedEnum.hasMoreElements()) {
+                    _cachedschedule.insertLast(newSchedEnum.nextElement());
                 }
             }
             return _cachedschedule.elements();
@@ -253,7 +246,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
     }
 
     /** Return true if the current schedule is valid.
-     *@return true if the current schedule is valid.
+     *  @return true if the current schedule is valid.
      */
     public boolean valid() {
         return _valid;
@@ -308,5 +301,5 @@ public class Scheduler extends NamedObj implements TopologyListener{
     // The cached schedule.
     private LinkedList _cachedschedule = null;
     // The static name
-    private static final String _DEFAULT_SCHEDULER_NAME = "Basic Scheduler";
+    private static final String _DEFAULT_SCHEDULER_NAME = "Basic_Scheduler";
 }

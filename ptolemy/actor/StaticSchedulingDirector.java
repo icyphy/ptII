@@ -39,7 +39,7 @@ A director that uses static scheduling to govern the execution of the
 CompositeActor it belongs to.
 <p>
 A StaticSchedulingDirector contains a scheduler. By calling the schedule()
-method on the sceduler, the director can get an Enumeration of the
+method on the scheduler, the director can get an Enumeration of the
 actors in the firing order. Then the director can use this Enumeration
 to fire the actors in that order.
 <p>
@@ -51,7 +51,7 @@ direct the execution of the CompositeActor.
 However, the schedule may become invalid when the CompositeActor mutates.
 The scheduler is a TopologyListener of the director, and the schedule
 is automatically invalidated when a TopologyChange occurs.
-The setSchdulValid() method can also be used to explicitly validate
+The setScheduleValid() method can also be used to explicitly validate
 or invalidate the schedule when needed.
 
 @author Jie Liu
@@ -130,7 +130,7 @@ public class StaticSchedulingDirector extends Director{
 
     /** Set the scheduler for this StaticSchedulingDirector.
      *  The container of the specified scheduler is set to this director.
-     *  If there was a previous scheduler, the container of that schduler
+     *  If there was a previous scheduler, the container of that scheduler
      *  is set to null. This method is write-synchronized on the workspace.
      *  If the scheduler is not compatible with the director, an
      *  IllegalActionException is thrown.
@@ -153,7 +153,7 @@ public class StaticSchedulingDirector extends Director{
         }
     }
 
-    /** Validate/Devalidate the schedule. A true argument indicate that
+    /** Validate/Invalidate the schedule. A true argument indicate that
      *  the current (cached) schedule is valid, and the director can use
      *  it in the further execution. A false argument indicate that
      *  the CompositeActor has been significantly changed so that the
