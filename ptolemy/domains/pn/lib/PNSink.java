@@ -30,7 +30,6 @@ import pt.domains.pn.kernel.*;
 import pt.kernel.*;
 import pt.data.*;
 import pt.actors.*;
-import java.util.NoSuchElementException;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,18 +59,21 @@ public class PNSink extends PNActor{
      */
     public void run() {
         int i;
-        Token data;
+        Token[] data;
         try {
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                Enumeration outports = _input.deepConnectedOutputPorts();
-                while (outports.hasMoreElements()) {
-                    PNOutPort outport = (PNOutPort)outports.nextElement();
-                    data = (Token)readFrom(_input, outport);
+                //Enumeration outports = _input.deepConnectedOutputPorts();
+                //while (outports.hasMoreElements()) {
+                //PNOutPort outport = (PNOutPort)outports.nextElement();
+                Enumeration relations = _input.linkedRelations();
+                while (relations.hasMoreElements()) {
+                    IORelation relation = (IORelation)relations.nextElement();
+                    data = readFrom(_input, relation);
                 }
             }
             // System.out.println("Terminating at al "+this.getName());
             ((PNDirector)getDirector()).processStopped();
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchItemException e) {
 	    // System.out.println("Terminating "+this.getName());
             return;
         }
