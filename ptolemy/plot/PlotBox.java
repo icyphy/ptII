@@ -573,6 +573,13 @@ public class PlotBox extends Applet {
     /**
      * Rescales so that the data that is currently plotted just fits.
      */
+    public synchronized void fillPlot () {
+        fillPlot(_graphics);
+    }
+
+    /**
+     * Rescales so that the data that is currently plotted just fits.
+     */
     public synchronized void fillPlot (Graphics graphics) {
         setXRange(_xBottom, _xTop);
         setYRange(_yBottom, _yTop);
