@@ -53,7 +53,7 @@
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.25">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -580,8 +580,8 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
 <title>Throttle Position</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="0.27749999999997643"/>
-<yRange min="0.702043408619771" max="1.000774367855814"/>
+<xRange min="0.0" max="0.24999999999997943"/>
+<yRange min="0.7019672156253995" max="1.000774367855814"/>
 </plot>?>
         </configure>
     </entity>
@@ -934,7 +934,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
 <title>Pulse-Width Modulation Signal</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="0.27749999999997643"/>
+<xRange min="0.0" max="0.24999999999997943"/>
 <yRange min="0.0" max="1.0"/>
 </plot>?>
                 </configure>
