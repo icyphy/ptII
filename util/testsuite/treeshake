@@ -121,14 +121,16 @@ if [ $retval = 0 ]; then
 	    # The trick is that we process the directories in reverse
 	    # order, so if the classpath is "xxx/jimple1;$PTII" we first
 	    # copy the .class files from $PTII and then from xxx/jimple.
-	    # Note that we do not look inside jar files, though we could.
 	    classPathDirectories=""	
+	    classPathJarFiles=""
 	    for dirOrJar in $classPathDirectoriesAndJars
 	    do
 		if [ -d "$dirOrJar" ]; then
 		    # It is a directory, we add it to the list
 		    # in reverse order
 		    classPathDirectories="$dirOrJar $classPathDirectories"
+		else    
+		    classPathJarFiles="$dirOrJar $classPathJarFiles"
 		fi
 	    done	
             #echo "classPathDirectories:	$classPathDirectories"
@@ -152,6 +154,27 @@ if [ $retval = 0 ]; then
 			fi
 		done
 	    done	
+
+    	    for jarFile in $classPathJarFiles
+	    do
+	        PTJAR_TMPDIR2=ptjar_tmpdir2
+	        rm -rf $PTJAR_TMPDIR2
+	        mkdir $PTJAR_TMPDIR2
+		cat $jarFile | (cd $PTJAR_TMPDIR2; "$JAR" -x)
+
+	        echo "Copying files from $jarFile"
+		
+		for file in $ptolemyFiles
+		do
+			if [ -f "$PTJAR_TMPDIR2/$file" ]; then
+			    classDir=`dirname $PTJAR_TMPDIR/$file`
+			    if [ ! -d "$classDir" ]; then
+				mkdir -p $classDir
+			    fi	
+			    cp "$PTJAR_TMPDIR2/$file" $classDir
+			fi
+		done
+	    done	
 	    # Now that we have processed the classpath arg, we break
 	    # out of the argument processing loop
 	    break
@@ -163,7 +186,7 @@ fi
 
 if [ "$classPathArg" != "" ]; then
     (cd $PTJAR_TMPDIR; "$JAR" -cm $manifest $ptolemyFiles) > "$treeshakejar"
-    rm -rf $PTJAR_TMPDIR
+    rm -rf $PTJAR_TMPDIR $PTJAR_TMPDIR2
 else
     (cd $PTII; "$JAR" -cm $manifest $ptolemyFiles) > "$treeshakejar"
 fi
