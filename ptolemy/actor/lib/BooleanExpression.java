@@ -34,7 +34,6 @@ import ptolemy.actor.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.Port;
-import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
@@ -44,8 +43,9 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// BooleanExpression
 /**
-The output type is restricted to boolean.
+This is an Expression actor whose output port has type boolean.
 
+@see Expression
 @author Jie Liu
 @version $Id$
 */
@@ -53,6 +53,7 @@ The output type is restricted to boolean.
 public class BooleanExpression extends Expression {
 
     /** Construct an actor with the given container and name.
+     *  Set the type of the output port to boolean
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
