@@ -97,7 +97,7 @@ test NamedList-5.1 {Test prepend} {
     $dir prepend $n1
     $dir prepend $n2
     $dir prepend $n3
-    _testEnums getElements $dir
+    _testEnums elements $dir
 } {{n3 n2 n1}}
 
 ######################################################################
@@ -145,7 +145,7 @@ test NamedList-6.1 {Test insertAfter} {
     $dir prepend $n1
     $dir insertAfter [$n1 getName] $n2
     $dir insertAfter [$n2 getName] $n3
-    _testEnums getElements $dir
+    _testEnums elements $dir
 } {{n1 n2 n3}}
 
 ######################################################################
@@ -194,13 +194,13 @@ test NamedList-8.1 {Test remove} {
     $dir prepend $n1
     $dir insertAfter [$n1 getName] $n2
     $dir insertAfter [$n2 getName] $n3
-    set result1 [_testEnums getElements $dir]
+    set result1 [_testEnums elements $dir]
     $dir {remove String} n2
-    set result2 [_testEnums getElements $dir]
+    set result2 [_testEnums elements $dir]
     $dir {remove pt.kernel.util.Nameable} $n3
-    set result3 [_testEnums getElements $dir]
+    set result3 [_testEnums elements $dir]
     $dir {remove String} n1
-    set result4 [_testEnums getElements $dir]
+    set result4 [_testEnums elements $dir]
     list $result1 $result2 $result3 $result4
 } {{{n1 n2 n3}} {{n1 n3}} n1 {{}}}
 
@@ -232,10 +232,10 @@ test NamedList-9.1 {Test copy constructor} {
     $dir prepend $n1
     $dir prepend $n2
     $dir prepend $n3
-    set result1 [_testEnums getElements $dir]
+    set result1 [_testEnums elements $dir]
     set clone [java::new {pt.kernel.util.NamedList pt.kernel.util.NamedList} $dir]
-    set result2 [_testEnums getElements $clone]
+    set result2 [_testEnums elements $clone]
     $dir {remove pt.kernel.util.Nameable} $n2
-    set result3 [_testEnums getElements $dir]
+    set result3 [_testEnums elements $dir]
     list $result1 $result2 $result3
 } {{{n3 n2 n1}} {{n3 n2 n1}} {{n3 n1}}}
