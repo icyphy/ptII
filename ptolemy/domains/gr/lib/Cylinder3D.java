@@ -131,13 +131,13 @@ public class Cylinder3D extends GRShadedShape {
         URL textureURL = texture.asURL();
         if (textureURL != null) {
             primitiveFlags = primitiveFlags
-                    | Primitive.GENERATE_TEXTURE_COORDS;
+                | Primitive.GENERATE_TEXTURE_COORDS;
         }
 
         int circleDivisionsValue
-                = ((IntToken)circleDivisions.getToken()).intValue();
+            = ((IntToken)circleDivisions.getToken()).intValue();
         int sideDivisionsValue
-                = ((IntToken)circleDivisions.getToken()).intValue();
+            = ((IntToken)circleDivisions.getToken()).intValue();
         _containedNode = new Cylinder((float) _getRadius(),
                 (float) _getHeight(), primitiveFlags, circleDivisionsValue,
                 sideDivisionsValue, _appearance);

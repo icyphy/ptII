@@ -234,7 +234,7 @@ abstract public class GRShadedShape extends GRActor3D {
         _material.setDiffuseColor(color);
 
         float shine = (float)
-                ((DoubleToken)shininess.getToken()).doubleValue();
+            ((DoubleToken)shininess.getToken()).doubleValue();
         if (shine > 1.0) {
             color = new Color3f(specularColor.asColor());
             _material.setSpecularColor(color);
@@ -246,19 +246,19 @@ abstract public class GRShadedShape extends GRActor3D {
 
         // Deal with transparent attributes.
         float transparent = (float)
-                ((DoubleToken)transparency.getToken()).doubleValue();
+            ((DoubleToken)transparency.getToken()).doubleValue();
         if (transparent > 0.0) {
             TransparencyAttributes attributes
-                    = new TransparencyAttributes(
-                    TransparencyAttributes.NICEST, transparent);
+                = new TransparencyAttributes(
+                        TransparencyAttributes.NICEST, transparent);
             _appearance.setTransparencyAttributes(attributes);
         }
 
         // Deal with flat attribute.
         if (((BooleanToken)flat.getToken()).booleanValue()) {
             ColoringAttributes coloring
-                    = new ColoringAttributes(0.7f, 0.7f, 0.7f,
-                    ColoringAttributes.SHADE_FLAT);
+                = new ColoringAttributes(0.7f, 0.7f, 0.7f,
+                        ColoringAttributes.SHADE_FLAT);
             _appearance.setColoringAttributes(coloring);
         }
 

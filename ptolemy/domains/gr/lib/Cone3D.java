@@ -147,9 +147,9 @@ public class Cone3D extends GRShadedShape {
         }
 
         int circleDivisionsValue
-                = ((IntToken)circleDivisions.getToken()).intValue();
+            = ((IntToken)circleDivisions.getToken()).intValue();
         int sideDivisionsValue
-                = ((IntToken)circleDivisions.getToken()).intValue();
+            = ((IntToken)circleDivisions.getToken()).intValue();
         _containedNode = new Cone((float)_getRadius(), (float) _getHeight(),
                 primitiveFlags, circleDivisionsValue,
                 sideDivisionsValue, _appearance);
