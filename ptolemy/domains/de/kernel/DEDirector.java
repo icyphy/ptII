@@ -361,8 +361,6 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
-
-        boolean _timeHasNotAdvanced = true;
         while (true) {
             _stopRequested = false;
 
@@ -746,150 +744,22 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Disable the specified actor.  All events destined to this actor
-     *  will be ignored. If the argument is null, then do nothing.
-     *  @param actor The actor to disable.
+    /** Dequeue the events from the event queue that have the smallest
+     *  time stamp and depth. Advance the model time to their
+     *  time stamp, and mark the destination actor for firing.
+     *  If the time stamp is greater than the stop time then return null.
+     *  If there are no events on the event queue, and _stopWhenQueueIsEmpty
+     *  flag is true (which is set to true by default) then return null,
+     *  which will have the effect of stopping the simulation.
+     *  If _stopWhenQueueIsEmpty is false and the queue is empty, then
+     *  stall the current thread by calling wait() on the _eventQueue
+     *  until there are events available.  If _synchronizeToRealTime
+     *  is true, then this method may suspend the calling thread using
+     *  Object.wait(long) to let elapsed real time catch up with the
+     *  current event.
+     *  @return The next actor to fire.
      */
-    protected void _disableActor(Actor actor) {
-        if (actor != null) {
-            if(_debugging) _debug("Actor ", ((Nameable)actor).getName(),
-                    " is disabled.");
-            if (_disabledActors == null) {
-                _disabledActors = new HashSet();
-            }
-            _disabledActors.add(actor);
-        }
-    }
-
-    /** Put a pure event into the event queue with the specified time stamp.
-     *  A "pure event" is one with no token, used to request
-     *  a firing of the specified actor.
-     *  Note that the actor may have no new data at its input ports
-     *  when it is fired.
-     *  The depth for the queued event is equal to the depth of the actor.
-     *  A smaller depth corresponds to a higher priority.
-     *  The microstep for the queued event is equal to zero,
-     *  unless the time is equal to the current time.
-     *  If it is, then the event is queued with the current microstep
-     *  plus one.  If there is no event queue, then this method does
-     *  nothing.
-     *
-     *  @param actor The destination actor.
-     *  @param time The time stamp of the "pure event".
-     *  @exception IllegalActionException If the time argument is in the past.
-     */
-    protected void _enqueueEvent(Actor actor, double time)
-            throws IllegalActionException {
-
-        if (_eventQueue == null) return;
-        int microstep = 0;
-
-        if (time == getCurrentTime()) {
-            microstep = _microstep + 1;
-        } else if ( time < getCurrentTime()) {
-            throw new IllegalActionException((Nameable)actor,
-                    "Attempt to queue an event in the past.");
-        }
-        int depth = _getDepth(actor);
-        if(_debugging) _debug("enqueue a pure event: ",
-                ((NamedObj)actor).getName(),
-                "time = "+ time + " microstep = "+ microstep + " depth = "
-                + depth);
-        _eventQueue.put(new DEEvent(actor, time, microstep, depth));
-    }
-
-    /** Put an event into the event queue with the specified destination
-     *  receiver, token, and time stamp. The depth of the event is the
-     *  depth of the actor that has the receiver.
-     *  A smaller depth corresponds
-     *  to a higher priority.  The microstep is always equal to zero,
-     *  unless the time argument is equal to the current time, in which
-     *  case, the microstep is equal to the current microstep (determined
-     *  by the last dequeue, or zero if there has been none). If there is
-     *  no event queue, then this method does nothing.
-     *
-     *  @param receiver The destination receiver.
-     *  @param token The token destined for that receiver.
-     *  @param time The time stamp of the event.
-     *  @param depth The depth.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    protected void _enqueueEvent(DEReceiver receiver, Token token,
-            double time) throws IllegalActionException {
-
-        if (_eventQueue == null) return;
-        int microstep = 0;
-
-        if (time == getCurrentTime()) {
-            microstep = _microstep;
-        } else if ( time < getCurrentTime()) {
-            Nameable destination = receiver.getContainer();
-            throw new IllegalActionException(destination,
-                    "Attempt to queue an event in the past.");
-        }
-
-        Actor destination = (Actor)(receiver.getContainer()).getContainer();
-        int depth = _getDepth(destination);
-        if(_debugging) _debug("enqueue event: to",
-                receiver.getContainer().getName()+ " ("+token.toString()+") ",
-                "time = "+ time + " microstep = "+ microstep + " depth = "
-                + depth);
-        _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
-    }
-
-    /** Put an event into the event queue with the specified destination
-     *  receiver, and token.
-     *  The time stamp of the event is the
-     *  current time, but the microstep is one larger than the current
-     *  microstep. The depth is the depth of the actor.
-     *  This method is used by actors that declare that they
-     *  introduce delay, but where the value of the delay is zero.
-     *  If there is no event queue, then this method does nothing.
-     *
-     *  @param receiver The destination receiver.
-     *  @param token The token destined for that receiver.
-     *  @param depth The depth.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    protected void _enqueueEvent(DEReceiver receiver, Token token)
-            throws IllegalActionException {
-
-        if (_eventQueue == null) return;
-
-        Actor destination = (Actor)(receiver.getContainer()).getContainer();
-        int depth = _getDepth(destination);
-        _eventQueue.put(new DEEvent(receiver, token,
-                getCurrentTime(), _microstep + 1, depth));
-    }
-
-    /** Override the default Director implementation, because in DE
-     *  domain, we don't need write access inside an iteration.
-     *  @return false.
-     */
-    protected boolean _writeAccessRequired() {
-        // Return false to let the workspace be write-protected.
-        // Return true to debug the PtolemyThread.
-        return false;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Dequeue the events from the event queue that have the smallest
-    // time stamp and depth. Advance the model time to their
-    // time stamp, and mark the destination actor for firing.
-    // If the time stamp is greater than the stop time then return null.
-    // If there are no events on the event queue, and _stopWhenQueueIsEmpty
-    // flag is true (which is set to true by default) then return null,
-    // which will have the effect of stopping the simulation.
-    // If _stopWhenQueueIsEmpty is false and the queue is empty, then
-    // stall the current thread by calling wait() on the _eventQueue
-    // until there are events available.  If _synchronizeToRealTime
-    // is true, then this method may suspend the calling thread using
-    // Object.wait(long) to let elapsed real time catch up with the
-    // current event.
-    //
-    private Actor _dequeueEvents() {
+    protected Actor _dequeueEvents() {
         Actor actorToFire = null;
         DEEvent currentEvent = null, nextEvent = null;
         int currentDepth = 0;
@@ -1053,6 +923,163 @@ public class DEDirector extends Director {
         return actorToFire;
     }
 
+
+    /** Disable the specified actor.  All events destined to this actor
+     *  will be ignored. If the argument is null, then do nothing.
+     *  @param actor The actor to disable.
+     */
+    protected void _disableActor(Actor actor) {
+        if (actor != null) {
+            if(_debugging) _debug("Actor ", ((Nameable)actor).getName(),
+                    " is disabled.");
+            if (_disabledActors == null) {
+                _disabledActors = new HashSet();
+            }
+            _disabledActors.add(actor);
+        }
+    }
+
+    /** Put a pure event into the event queue with the specified time stamp.
+     *  A "pure event" is one with no token, used to request
+     *  a firing of the specified actor.
+     *  Note that the actor may have no new data at its input ports
+     *  when it is fired.
+     *  The depth for the queued event is equal to the depth of the actor.
+     *  A smaller depth corresponds to a higher priority.
+     *  The microstep for the queued event is equal to zero,
+     *  unless the time is equal to the current time.
+     *  If it is, then the event is queued with the current microstep
+     *  plus one.  If there is no event queue, then this method does
+     *  nothing.
+     *
+     *  @param actor The destination actor.
+     *  @param time The time stamp of the "pure event".
+     *  @exception IllegalActionException If the time argument is in the past.
+     */
+    protected void _enqueueEvent(Actor actor, double time)
+            throws IllegalActionException {
+
+        if (_eventQueue == null) return;
+        int microstep = 0;
+
+        if (time == getCurrentTime()) {
+            microstep = _microstep + 1;
+        } else if ( time < getCurrentTime()) {
+            throw new IllegalActionException((Nameable)actor,
+                    "Attempt to queue an event in the past.");
+        }
+        int depth = _getDepth(actor);
+        if(_debugging) _debug("enqueue a pure event: ",
+                ((NamedObj)actor).getName(),
+                "time = "+ time + " microstep = "+ microstep + " depth = "
+                + depth);
+        _eventQueue.put(new DEEvent(actor, time, microstep, depth));
+    }
+
+    /** Put an event into the event queue with the specified destination
+     *  receiver, token, and time stamp. The depth of the event is the
+     *  depth of the actor that has the receiver.
+     *  A smaller depth corresponds
+     *  to a higher priority.  The microstep is always equal to zero,
+     *  unless the time argument is equal to the current time, in which
+     *  case, the microstep is equal to the current microstep (determined
+     *  by the last dequeue, or zero if there has been none). If there is
+     *  no event queue, then this method does nothing.
+     *
+     *  @param receiver The destination receiver.
+     *  @param token The token destined for that receiver.
+     *  @param time The time stamp of the event.
+     *  @param depth The depth.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    protected void _enqueueEvent(DEReceiver receiver, Token token,
+            double time) throws IllegalActionException {
+
+        if (_eventQueue == null) return;
+        int microstep = 0;
+
+        if (time == getCurrentTime()) {
+            microstep = _microstep;
+        } else if ( time < getCurrentTime()) {
+            Nameable destination = receiver.getContainer();
+            throw new IllegalActionException(destination,
+                    "Attempt to queue an event in the past.");
+        }
+
+        Actor destination = (Actor)(receiver.getContainer()).getContainer();
+        int depth = _getDepth(destination);
+        if(_debugging) _debug("enqueue event: to",
+                receiver.getContainer().getName()+ " ("+token.toString()+") ",
+                "time = "+ time + " microstep = "+ microstep + " depth = "
+                + depth);
+        _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
+    }
+
+    /** Put an event into the event queue with the specified destination
+     *  receiver, and token.
+     *  The time stamp of the event is the
+     *  current time, but the microstep is one larger than the current
+     *  microstep. The depth is the depth of the actor.
+     *  This method is used by actors that declare that they
+     *  introduce delay, but where the value of the delay is zero.
+     *  If there is no event queue, then this method does nothing.
+     *
+     *  @param receiver The destination receiver.
+     *  @param token The token destined for that receiver.
+     *  @param depth The depth.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    protected void _enqueueEvent(DEReceiver receiver, Token token)
+            throws IllegalActionException {
+
+        if (_eventQueue == null) return;
+
+        Actor destination = (Actor)(receiver.getContainer()).getContainer();
+        int depth = _getDepth(destination);
+        _eventQueue.put(new DEEvent(receiver, token,
+                getCurrentTime(), _microstep + 1, depth));
+    }
+
+    /** Return the depth of the actor.
+     *  @throws IllegalActionException If the actor is not accessible.
+     */
+    protected int _getDepth(Actor actor) throws IllegalActionException {
+        if (!_sortValid) {
+            _computeDepth();
+        }
+        Integer depth = (Integer)_actorToDepth.get(actor);
+        if (depth != null) {
+            return depth.intValue();
+        }
+        throw new IllegalActionException("Attempt to get depth of actor " +
+                "that was not sorted.");
+    }
+
+    /** Override the default Director implementation, because in DE
+     *  domain, we don't need write access inside an iteration.
+     *  @return false.
+     */
+    protected boolean _writeAccessRequired() {
+        // Return false to let the workspace be write-protected.
+        // Return true to debug the PtolemyThread.
+        return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The queue used for sorting events. */
+    protected DEEventQueue _eventQueue;
+
+    /** Set to true when it is time to end the execution. */
+    protected boolean _noMoreActorsToFire = false;
+
+    /** Flag that indicates that a stop has been requested. */
+    protected boolean _stopRequested = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     // Construct a directed graph with the nodes representing actors and
     // directed edges representing dependencies.  The directed graph
     // is returned.
@@ -1175,20 +1202,6 @@ public class DEDirector extends Director {
         _sortValid = true;
     }
 
-    // Return the depth of the actor. Throws IllegalActionException
-    // if the actor is not in the table.
-    private int _getDepth(Actor actor) throws IllegalActionException {
-        if (!_sortValid) {
-            _computeDepth();
-        }
-        Integer depth = (Integer)_actorToDepth.get(actor);
-        if (depth != null) {
-            return depth.intValue();
-        }
-        throw new IllegalActionException("Attempt to get depth of actor " +
-                "that was not sorted.");
-    }
-
     // initialize parameters. Set all parameters to their default
     // values.
     private void _initParameters() {
@@ -1251,14 +1264,8 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The queue used for sorting events.
-    private DEEventQueue _eventQueue;
-
     // The current microstep.
     private int _microstep = 0;
-
-    // Set to true when it's time to end the execution.
-    private boolean _noMoreActorsToFire = false;
 
     // Set to true when the time stamp of the token to be dequeue has
     // exceeded the stopTime.
@@ -1266,9 +1273,6 @@ public class DEDirector extends Director {
 
     // The real time at which the model begins executing.
     private long _realStartTime = 0;
-
-    // Flag that indicates that a stop has been requested.
-    private boolean _stopRequested = false;
 
     // Decide whether the simulation should be stopped when there's no more
     // events in the global event queue.

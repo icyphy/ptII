@@ -80,7 +80,7 @@ public final class DEEvent implements Comparable {
      *  @exception NullPointerException If the receiver is null or is
      *   not contained by a port contained by an actor.
      */
-    DEEvent(DEReceiver receiver, Token token, double timeStamp,
+    public DEEvent(DEReceiver receiver, Token token, double timeStamp,
             int microstep, int depth) {
         _receiver = receiver;
         _actor = (Actor)receiver.getContainer().getContainer();
@@ -97,7 +97,7 @@ public final class DEEvent implements Comparable {
      *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination receiver.
      */
-    DEEvent(Actor actor, double timeStamp, int microstep, int depth) {
+    public DEEvent(Actor actor, double timeStamp, int microstep, int depth) {
         _actor = actor;
         _timeStamp = timeStamp;
         _microstep = microstep;
