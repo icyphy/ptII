@@ -96,11 +96,13 @@ public class Rerun extends MoMLSimpleApplication {
      */
     public static void main(String args[]) {
         try {
-            int runs = 100;
+            // Constructing the Rerun object runs the model once,
+            // so we run it 100-1 more times.
+            int runs = 99;
             String xmlFileName = null;
             if (args.length == 2) {
                 try {
-                    runs = Integer.parseInt(args[0]);
+                    runs = Integer.parseInt(args[0]) - 1;
                 } catch (Exception ex) {
                     System.err.println("Failed to parse '" + args[0]
                             + "', using " + runs + " instead."); 
