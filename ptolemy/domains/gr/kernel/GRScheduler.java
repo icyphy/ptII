@@ -120,7 +120,7 @@ public class GRScheduler extends Scheduler {
      *
      * @return A Schedule type of the deeply contained opaque entities
      *  in the firing order.
-     * @exception NotScheduleableException If the CompositeActor is not
+     * @exception NotSchedulableException If the CompositeActor is not
      *  schedulable.
      */
     protected Schedule _getSchedule() {

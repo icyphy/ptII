@@ -301,7 +301,7 @@ public class SDFScheduler extends Scheduler {
      *
      *  @return A schedule of the deeply contained opaque entities
      *  in the firing order.
-     *  @exception NotScheduleableException If the rates specified for
+     *  @exception NotSchedulableException If the rates specified for
      *  the model imply that the model is not statically schedulable.
      *  @exception IllegalActionException If the rate parameters
      *  of the model are not correct, or the computed rates for
