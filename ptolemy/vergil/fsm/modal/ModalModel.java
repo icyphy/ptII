@@ -44,6 +44,8 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.HSDirector;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.hdf.kernel.HDFFSMActor;
+import ptolemy.domains.hdf.kernel.HDFFSMDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -203,6 +205,7 @@ public class ModalModel extends TypedCompositeActor
             throws CloneNotSupportedException {
         ModalModel newModel = (ModalModel)super.clone(workspace);
         newModel._controller = (FSMActor)newModel.getEntity("_Controller");
+        //newModel._controller = (HDFFSMActor)newModel.getEntity("_Controller");
         return newModel;
     }
 
@@ -234,9 +237,11 @@ public class ModalModel extends TypedCompositeActor
     public FSMDirector newDirector()
             throws IllegalActionException, NameDuplicationException {
         // Default director supports continuous-time models:
-        return new HSDirector(this, "_Director");
+        //return new HSDirector(this, "_Director");
+        //System.out.println("return HDFFSMDirector");
+        return new HDFFSMDirector(this, "_Director");
     }
-
+    
     /** Create a new port with the specified name in this entity, the
      *  controller, and all the refinements.  Link these ports so that
      *  if the new port is set to be an input, output, or multiport, then
@@ -336,7 +341,8 @@ public class ModalModel extends TypedCompositeActor
      * additional or different directors. */
     protected String[] modalDirectorClassNames = {
         "ptolemy.domains.fsm.kernel.HSDirector",
-        "ptolemy.domains.fsm.kernel.FSMDirector"
+        "ptolemy.domains.fsm.kernel.FSMDirector",
+        "ptolemy.domains.hdf.kernel.HDFFSMDirector"
     };
 
     ///////////////////////////////////////////////////////////////////
@@ -431,7 +437,8 @@ public class ModalModel extends TypedCompositeActor
 
     /** The FSM controller. */
     private FSMActor _controller;
-
+    //private HDFFSMActor _controller;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
