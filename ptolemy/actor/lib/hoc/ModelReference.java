@@ -131,9 +131,10 @@ import ptolemy.moml.MoMLParser;
    <li> <i>lingerTime</i>:
    The amount of time (in milliseconds) to linger in the fire()
    method of this actor.  This is a long that defaults to 0L.
-   If the model is run, then the linger occurs after the run
-   is complete (if the run occurs in the calling thread) or
-   after the run starts (if the run occurs in a separate thread).
+   If the model is run in the calling thread, then the linger
+   occurs after the run is complete. If the model is run in a
+   new thread, then the linger occurs after the run starts,
+   and the run is stopped after the linger time expires.
    This can be used, for example, to run a model for a specified
    amount of time, then ask it to finish() and continue.
 
