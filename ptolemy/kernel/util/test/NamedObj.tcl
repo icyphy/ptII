@@ -479,3 +479,17 @@ test NamedObj-13.2 {Test attributeList with filter} {
     set a2 [java::new ptolemy.kernel.util.Attribute $a "A2"]
     listToNames [$a attributeList [$a1 getClass]]
 } {A0 A2}
+
+######################################################################
+####
+
+test NamedObj-14.1 {Test depthInHierarchy} {
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
+    $a depthInHierarchy
+} {0}
+
+test NamedObj-14.2 {Test depthInHierarchy} {
+    set b [java::new ptolemy.kernel.util.Attribute $a "A" ]
+    $b depthInHierarchy
+} {1}

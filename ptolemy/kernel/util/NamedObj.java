@@ -483,6 +483,21 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Return the depth in the hierarchy of this object. If this object
+     *  has no container, then return 0.  If its container has no container,
+     *  then return 1.  Etc.
+     *  @return The depth in the hierarchy of this object.
+     */
+    public int depthInHierarchy() {
+        int result = 0;
+        Nameable container = getContainer();
+        while (container != null) {
+            result++;
+            container = container.getContainer();
+        }
+        return result;
+    }
+
     /** Return a full description of the object. This is accomplished
      *  by calling the description method with an argument for full detail.
      *  This method read-synchronizes on the workspace.
