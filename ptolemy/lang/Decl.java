@@ -72,6 +72,9 @@ public class Decl extends TrackedPropertyMap {
         category = category0;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Override Object.equals() so that equality is defined as having
      *  the same name and category. If the object being compared against
      *  is not a Decl, throw a RuntimeException.
@@ -82,17 +85,23 @@ public class Decl extends TrackedPropertyMap {
         }
 
         if (!(o instanceof Decl)) {
-            throw new RuntimeException("cannot compare a Decl with a non-Decl");
+            throw new RuntimeException("cannot compare a Decl " + 
+                    "with a non-Decl");
         }
 
         Decl d = (Decl) o;
         return matches(d.getName(), d.category);
     }
 
+    /** Return true if at least some of the bits in the mask are set
+     *  in the category argument and the name argument matches the name of
+     *  this Decl, or the name argument is ANY_NAME or the name of
+     *  the Decl is ANY_NAME.
+     */   
     public final boolean matches(String name, int mask) {
         if ((category & mask) != 0) {
             return (name.equals(ANY_NAME) ||
-                    name.equals(ANY_NAME)||
+                    _name.equals(ANY_NAME)||
                     name.equals(_name));
         }
 	// If two Decls have a category of 0, then they
@@ -103,18 +112,27 @@ public class Decl extends TrackedPropertyMap {
         return false;
     }
 
+    /** Return the name of this Decl. */
     public final String getName() { return _name; }
 
+    /** Set the name of this Decl. */
     public final void setName(String name) { _name = name; }
 
+    /** Return a String representation of this Decl. */
     public String toString() {
         return "{" + _name + ", " + category + "}";
     }
 
-    public int category;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    protected String _name;
+    public int category;
 
     public static final int CG_ANY = 0xFFFFFFFF; // Any category
     public static final String ANY_NAME = "*";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected String _name;
 }
