@@ -48,7 +48,7 @@ elements that the comparator returns 0).
 public class TotallyOrderedSet {
     /** Construct the set with the given comparator. comparator is a blank
      *  final field.
-     * @see collections.Comparator
+     * @see java.util.Comparator
      * @param comparator The Comparator to compare elements.
      */
     public TotallyOrderedSet(Comparator comparator) {
