@@ -268,6 +268,18 @@ public class PtolemyQuery extends Query
 		    }
 		};
 	    }
+            // NOTE: This object is never removed as a listener from
+            // the change request.  This is OK because this query will
+            // be closed at some point, and all references to it will
+            // disappear, and thus both it and the change request should
+            // become accessible to the garbage collector.  However, I
+            // don't quite trust Java to do this right, since it's not
+            // completely clear that it releases resources when windows
+            // are closed.  It would be better if this listener were
+            // a weak reference.
+// FIXME:
+System.out.println("---- adding listener");
+            request.addChangeListener(this);
 	    if(_handler != null) {
 		_handler.requestChange(request);
 	    } else {
@@ -282,7 +294,7 @@ public class PtolemyQuery extends Query
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this was not the originator.
-        if (change.getOriginator() != this) return;
+        if (change.getSource() != this) return;
 
         String name = change.getDescription();
 	if (_attributes.containsKey(name)) {
@@ -304,10 +316,12 @@ public class PtolemyQuery extends Query
      *  @param exception The exception that resulted.
      */
     public void changeFailed(final ChangeRequest change, Exception exception) {
-        // Ignore if this was not the originator.
-        if (change.getOriginator() != this) {
+        // Ignore if this was not the originator, or if the error has already
+        // been reported.
+        if (change.getSource() != this) {
             return;
         }
+
         // If this is already a dialog reporting an error, and is
         // still visible, then just update the message.  Otherwise,
         // create a new dialog to prompt the user for a corrected input.
@@ -315,10 +329,17 @@ public class PtolemyQuery extends Query
             setMessage(exception.getMessage()
                     + "\n\nPlease enter a new value (or cancel to revert):");
         } else {
+            if (change.isErrorReported()) {
+                // Error has already been reported.
+                return;
+            }
+            change.setErrorReported(true);
             _query = new PtolemyQuery(_handler);
             _query.setTextWidth(getTextWidth());
             _query._isOpenErrorWindow = true;
-            _query.setMessage("Change failed:\n" + change.getDescription()
+            String description = change.getDescription();
+            _query.setMessage("Change failed:\n"
+                    + description
                     + "\n" + exception.getMessage()
                     + "\n\nPlease enter a new value:");
 
@@ -326,7 +347,6 @@ public class PtolemyQuery extends Query
             // Default value is the description itself.
             // NOTE: This is very fragile... depends on the particular
             // form of the MoML change request.
-            String description = change.getDescription();
             String tmpEntryName = description;
             if (description.startsWith("<property name=\"")) {
                 int nextQuote = description.indexOf("\"", 16);
