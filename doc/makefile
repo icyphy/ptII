@@ -196,6 +196,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
 			$(PTINYPACKAGES) \
 			$(GRPACKAGES) \
+			jni \
 			ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
