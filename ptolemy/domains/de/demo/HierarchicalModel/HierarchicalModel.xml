@@ -20,7 +20,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 275.0]">
         </property>
     </property>
-    <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 40}">
@@ -35,6 +35,8 @@
         </property>
     </property>
     <entity name=" A" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
+        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 160.0}">
@@ -238,6 +240,8 @@ output with no delay.</text></svg></configure>
         <link port="noDelay.trigger" relation="triggerRelation"/>
     </entity>
     <entity name="B" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
+        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 235.0]">
