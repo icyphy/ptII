@@ -206,8 +206,10 @@ public class TypedIOPort extends IOPort {
 	    int compare = TypeLattice.compare(token.getClass(), _resolvedType);
 	    if (compare == CPO.HIGHER ||
                     compare == CPO.INCOMPARABLE) {
-		throw new IllegalArgumentException("send: token cannot be " +
-			"converted to the resolved type of this port.");
+		throw new IllegalArgumentException("Run-time type checking " +
+		    "failed. token: " + token.getClass().getName() +
+		    ", port: " + getFullName() + ", port type: " +
+		    getResolvedType().getName());
 	    }
 
 	    // Note that the getRemoteReceivers() method doesn't throw
