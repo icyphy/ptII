@@ -52,7 +52,6 @@ calls wrapup on the actor.
 
 @author Xiaojun Liu, Yang Zhao
 @version $Id$
-@since Ptolemy II 0.2
 */
 public class ActiveActorManager extends PtolemyThread {
 
@@ -77,6 +76,13 @@ public class ActiveActorManager extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Request that execution of the actor controlled by this
+     *  thread continue.
+     */
+    public void cancelStopThread() {
+        _threadStopRequested = false;
+    }
+
     /** Return the actor being executed by this thread
      *  @return The actor being executed by this thread.
      */
@@ -90,15 +96,20 @@ public class ActiveActorManager extends PtolemyThread {
      */
     public void run() {
 
-System.out.println("Manager of " + ((NamedObj)_actor).getName() + " running...");
+        System.out.println("Manager of " + ((NamedObj)_actor).getName()
+                + " running...");
 
         boolean iterate = true;
-System.out.println("Manager of " + ((NamedObj)_actor).getName() + " point 1");
+        System.out.println("Manager of " + ((NamedObj)_actor).getName()
+                + " point 1");
         try {
-System.out.println("Manager of " + ((NamedObj)_actor).getName() + " point 2");
-System.out.println("  my state " + iterate + " " + _director._stopRequested);
+            System.out.println("Manager of " + ((NamedObj)_actor).getName()
+                    + " point 2");
+            System.out.println("  my state " + iterate + " "
+                    + _director._stopRequested);
             while (iterate && !_director._stopRequested) {
-System.out.println("Manager of " + ((NamedObj)_actor).getName() + " point 3");
+                System.out.println("Manager of " + ((NamedObj)_actor).getName()
+                        + " point 3");
                 /*// If a stop has been requested, then
                 if(_threadStopRequested) {
                     // Tell the director we're stopped
@@ -111,14 +122,16 @@ System.out.println("Manager of " + ((NamedObj)_actor).getName() + " point 3");
                     }
                 }*/
 
-System.out.println("Manager of " + ((NamedObj)_actor).getName() + " iterating...");
+                System.out.println("Manager of "
+                        + ((NamedObj)_actor).getName() + " iterating...");
 
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
                 if (((Entity)_actor).getContainer() != null) {
                     if (_actor.prefire()) {
 
-System.out.println("Manager firing actor " + ((NamedObj)_actor).getName());
+                        System.out.println("Manager firing actor "
+                                + ((NamedObj)_actor).getName());
 
                         _actor.fire();
                         iterate = _actor.postfire();
@@ -140,7 +153,9 @@ System.out.println("Manager firing actor " + ((NamedObj)_actor).getName());
                                 _receiver = (input.getReceivers())[0][0];
                             }*/
 
-System.out.println("Wait for input to pulled actor " + ((Nameable)_actor).getName());
+                            System.out.println("Wait for input to "
+                                    + "pulled actor " 
+                                    + ((Nameable)_actor).getName());
 
                             /*synchronized(_receiver) {
                                 try {
@@ -158,7 +173,8 @@ System.out.println("Wait for input to pulled actor " + ((Nameable)_actor).getNam
                                 } catch (InterruptedException ex) {}
                             }
 
-System.out.println("Wake up from waiting - " + ((Nameable)_actor).getName());
+                            System.out.println("Wake up from waiting - "
+                                    + ((Nameable)_actor).getName());
 
                         }
                     }
@@ -166,7 +182,8 @@ System.out.println("Wake up from waiting - " + ((Nameable)_actor).getName());
             }
         } catch (IllegalActionException e) {
 
-System.out.println("Manager of " + ((NamedObj)_actor).getName() + " caught exception : " + e.getMessage());
+            System.out.println("Manager of " + ((NamedObj)_actor).getName()
+                    + " caught exception : " + e.getMessage());
 
             _manager.notifyListenersOfException(e);
         }
@@ -174,14 +191,8 @@ System.out.println("Manager of " + ((NamedObj)_actor).getName() + " caught excep
         synchronized (_director) {
             _director.notifyAll();
         }
-System.out.println("Manager stopped - " + ((Nameable)_actor).getName());
-    }
-
-    /** Request that execution of the actor controlled by this
-     *  thread continue.
-     */
-    public void cancelStopThread() {
-        _threadStopRequested = false;
+        System.out.println("Manager stopped - " +
+                ((Nameable)_actor).getName());
     }
 
     /** Request that execution of the actor controlled by this
@@ -205,8 +216,9 @@ System.out.println("Manager stopped - " + ((Nameable)_actor).getName());
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                ////
 
-    // check actor connection, and set the _isPushSource flag and _period value,
-    // which are used in the run() method.
+    // check actor connection, and set the _isPushSource flag and
+    // _period value, which are used in the run() method.
+
     private void _setFlags() {
         boolean hasInput = false;
         boolean outputIsPush = false;
