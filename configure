@@ -927,6 +927,7 @@ echo "configure:927: checking for the proper CLASSPATH separator" >&5
 
 case "`uname -s`" in
     CYGWIN_NT-*) CLASSPATHSEPARATOR=";";;
+    CYGWIN_98-*) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
 esac
 echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
@@ -936,7 +937,7 @@ case "`uname -s`" in
 	# Extract the first word of "cmd", so it can be a program name with args.
 set dummy cmd; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:940: checking for $ac_word" >&5
+echo "configure:941: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_CMD_PATH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -1011,7 +1012,7 @@ find commapi" 1>&6
     COMMAPI_DIR='${PTII}/vendors/sun/commapi'
 else
     echo $ac_n "checking for commapi directory""... $ac_c" 1>&6
-echo "configure:1015: checking for commapi directory" >&5
+echo "configure:1016: checking for commapi directory" >&5
     # Check whether --with-COMMAPI or --without-COMMAPI was given.
 if test "${with_COMMAPI+set}" = set; then
   withval="$with_COMMAPI"
@@ -1065,7 +1066,7 @@ else
         echo "configure: warning: 'Lejos requires commapi, which was not found'" 1>&2
     else 
 	echo $ac_n "checking for lejos directory""... $ac_c" 1>&6
-echo "configure:1069: checking for lejos directory" >&5
+echo "configure:1070: checking for lejos directory" >&5
 	# Check whether --with-LEJOS or --without-LEJOS was given.
 if test "${with_LEJOS+set}" = set; then
   withval="$with_LEJOS"
@@ -1110,7 +1111,7 @@ find JavaCC" 1>&6
     JJTREE=jjtree
 else
     echo $ac_n "checking for JavaCC""... $ac_c" 1>&6
-echo "configure:1114: checking for JavaCC" >&5
+echo "configure:1115: checking for JavaCC" >&5
     # Check whether --with-javacc or --without-javacc was given.
 if test "${with_javacc+set}" = set; then
   withval="$with_javacc"
@@ -1133,7 +1134,7 @@ Be sure that your CLASSPATH includes JavaCC.zip" 1>&2;
 	    # Extract the first word of "jjtree", so it can be a program name with args.
 set dummy jjtree; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:1137: checking for $ac_word" >&5
+echo "configure:1138: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JJTREE'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -1172,7 +1173,7 @@ fi
 	if test -d "$JAVACC_DIR"; then
 	    echo "$ac_t""$JAVACC_DIR" 1>&6
 	    echo $ac_n "checking for jjtree""... $ac_c" 1>&6
-echo "configure:1176: checking for jjtree" >&5
+echo "configure:1177: checking for jjtree" >&5
 	    if test -x "$JAVACC_DIR/bin/jjtree"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JJTREE='$(JAVACC_DIR)/bin/jjtree'
@@ -1181,7 +1182,7 @@ echo "configure:1176: checking for jjtree" >&5
 		echo "configure: warning: Failed to find jjtree in '$JAVACC_DIR/bin'" 1>&2;
 	    fi
 	    echo $ac_n "checking for javacc""... $ac_c" 1>&6
-echo "configure:1185: checking for javacc" >&5
+echo "configure:1186: checking for javacc" >&5
 	    if test -x "$JAVACC_DIR/bin/javacc"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JAVACC='$(JAVACC_DIR)/bin/javacc'
@@ -1220,7 +1221,7 @@ if test ! -d "$PTII/util/testsuite"; then
 find Jacl" 1>&6
 else
     echo $ac_n "checking for ptjacl.jar""... $ac_c" 1>&6
-echo "configure:1224: checking for ptjacl.jar" >&5
+echo "configure:1225: checking for ptjacl.jar" >&5
     # Check whether --with-ptjacl_jar or --without-ptjacl_jar was given.
 if test "${with_ptjacl_jar+set}" = set; then
   withval="$with_ptjacl_jar"
@@ -1233,7 +1234,7 @@ fi
     if test -f "$PTJACL_JAR"; then
 	echo "$ac_t""$PTJACL_JAR" 1>&6
 	echo $ac_n "checking for how to run jacl with "$JAVA" "$PTJACL_JFLAG"""... $ac_c" 1>&6
-echo "configure:1237: checking for how to run jacl with "$JAVA" "$PTJACL_JFLAG"" >&5
+echo "configure:1238: checking for how to run jacl with "$JAVA" "$PTJACL_JFLAG"" >&5
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
 		echo "$ac_t""ok" 1>&6
@@ -1241,7 +1242,7 @@ echo "configure:1237: checking for how to run jacl with "$JAVA" "$PTJACL_JFLAG""
 		echo "$ac_t""CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell failed" 1>&6
 		PTJACL_JFLAG=
 		echo $ac_n "checking for how to run jacl with "$JAVA" "$PTJACL_FLAG"""... $ac_c" 1>&6
-echo "configure:1245: checking for how to run jacl with "$JAVA" "$PTJACL_FLAG"" >&5
+echo "configure:1246: checking for how to run jacl with "$JAVA" "$PTJACL_FLAG"" >&5
 		if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
 			echo "$ac_t""ok" 1>&6
 		else
@@ -1274,7 +1275,7 @@ if test ! -d "$JAVA3D_USER_DIR"; then
   is not present, so we need not find Java 3D" 1>&6
 else
     echo $ac_n "checking for Java 3D""... $ac_c" 1>&6
-echo "configure:1278: checking for Java 3D" >&5
+echo "configure:1279: checking for Java 3D" >&5
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
     startdir=`pwd`
@@ -1301,7 +1302,7 @@ cd "$startdir"
 PTJAVASOUND_DIR=
 
 echo $ac_n "checking for javax.sound""... $ac_c" 1>&6
-echo "configure:1305: checking for javax.sound" >&5
+echo "configure:1306: checking for javax.sound" >&5
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
@@ -1326,7 +1327,7 @@ cd "$startdir"
 PTRTOS_DIR=
 
 echo $ac_n "checking for java.util.Timer""... $ac_c" 1>&6
-echo "configure:1330: checking for java.util.Timer" >&5
+echo "configure:1331: checking for java.util.Timer" >&5
 
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
@@ -1365,7 +1366,7 @@ if test ! -d "$JINI_USER_DIR"; then
     JINI_DIR='\$PTII/vendors/sun/jini/jini1_0_1'
 else
     echo $ac_n "checking for jini directory""... $ac_c" 1>&6
-echo "configure:1369: checking for jini directory" >&5
+echo "configure:1370: checking for jini directory" >&5
     # Check whether --with-jini or --without-jini was given.
 if test "${with_jini+set}" = set; then
   withval="$with_jini"
@@ -1415,7 +1416,7 @@ if test ! -d "$PTII/vendors/jode"; then
     JODE_CLASSES='$(JODE_DIR)/jode.jar'
 else
     echo $ac_n "checking for jode directory""... $ac_c" 1>&6
-echo "configure:1419: checking for jode directory" >&5
+echo "configure:1420: checking for jode directory" >&5
     # Check whether --with-jode or --without-jode was given.
 if test "${with_jode+set}" = set; then
   withval="$with_jode"
@@ -1428,7 +1429,7 @@ fi
     if test -d "$JODE_DIR"; then
 	echo "$ac_t""$JODE_DIR" 1>&6
         echo $ac_n "checking for \$JODE_DIR/jode.jar""... $ac_c" 1>&6
-echo "configure:1432: checking for \$JODE_DIR/jode.jar" >&5
+echo "configure:1433: checking for \$JODE_DIR/jode.jar" >&5
 	if test -f "$JODE_DIR/jode.jar"; then
 	    echo "$ac_t""$JODE_DIR/jode.jar" 1>&6
 	    JODE_CLASSES=$JODE_DIR/jode.jar
@@ -1476,7 +1477,7 @@ find the PalmOS kvm" 1>&6
     KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 else
     echo $ac_n "checking for kvm directory""... $ac_c" 1>&6
-echo "configure:1480: checking for kvm directory" >&5
+echo "configure:1481: checking for kvm directory" >&5
     # Check whether --with-kvm or --without-kvm was given.
 if test "${with_kvm+set}" = set; then
   withval="$with_kvm"
@@ -1489,7 +1490,7 @@ fi
     if test -d "$KVM_DIR"; then
 	echo "$ac_t""$KVM_DIR" 1>&6
         echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
-echo "configure:1493: checking for \$KVM_DIR/bin/api/classes" >&5
+echo "configure:1494: checking for \$KVM_DIR/bin/api/classes" >&5
 	if test -d "$KVM_DIR/bin/api/classes"; then
 	    KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 	    echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1499,13 +1500,13 @@ echo "configure:1493: checking for \$KVM_DIR/bin/api/classes" >&5
     else
 	echo "$ac_t""Not found in $KVM_DIR" 1>&6
 	echo $ac_n "checking for kvm directory in /j2me_cldc""... $ac_c" 1>&6
-echo "configure:1503: checking for kvm directory in /j2me_cldc" >&5
+echo "configure:1504: checking for kvm directory in /j2me_cldc" >&5
 	# Likely place for kvm under windows
 	KVM_DIR=/j2me_cldc
         if test -d "$KVM_DIR"; then
 	    echo "$ac_t""$KVM_DIR" 1>&6
             echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
-echo "configure:1509: checking for \$KVM_DIR/bin/api/classes" >&5
+echo "configure:1510: checking for \$KVM_DIR/bin/api/classes" >&5
 	    if test -d "$KVM_DIR/bin/api/classes"; then
 	        KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 	        echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1564,7 +1565,7 @@ find the Soot - a Java Optimization Framework" 1>&6
     SOOT_DIR='${PTII}/vendors/soot/1.2.2'
 else
     echo $ac_n "checking for soot directory""... $ac_c" 1>&6
-echo "configure:1568: checking for soot directory" >&5
+echo "configure:1569: checking for soot directory" >&5
     # Check whether --with-soot or --without-soot was given.
 if test "${with_soot+set}" = set; then
   withval="$with_soot"
@@ -1577,11 +1578,11 @@ fi
     if test -d "$SOOT_DIR"; then
 	echo "$ac_t""$SOOT_DIR" 1>&6
         echo $ac_n "checking for \$SOOT_DIR/sootclasses.jar""... $ac_c" 1>&6
-echo "configure:1581: checking for \$SOOT_DIR/sootclasses.jar" >&5
+echo "configure:1582: checking for \$SOOT_DIR/sootclasses.jar" >&5
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
 	    echo "$ac_t""$SOOT_DIR/sootclasses.jar" 1>&6
 	    echo $ac_n "checking for \$SOOT_DIR/jasminclasses.jar""... $ac_c" 1>&6
-echo "configure:1585: checking for \$SOOT_DIR/jasminclasses.jar" >&5
+echo "configure:1586: checking for \$SOOT_DIR/jasminclasses.jar" >&5
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
                 echo "$ac_t""$SOOT_DIR/jasminclasses.jar" 1>&6
             fi
@@ -1607,7 +1608,7 @@ echo "configure:1585: checking for \$SOOT_DIR/jasminclasses.jar" >&5
     fi
 
     echo $ac_n "checking for rt.jar by compiling config/SystemJar.java""... $ac_c" 1>&6
-echo "configure:1611: checking for rt.jar by compiling config/SystemJar.java" >&5
+echo "configure:1612: checking for rt.jar by compiling config/SystemJar.java" >&5
     # Check whether --with-javasystemjar or --without-javasystemjar was given.
 if test "${with_javasystemjar+set}" = set; then
   withval="$with_javasystemjar"
@@ -1622,7 +1623,7 @@ fi
     if "$JAVAC" SystemJar.java ; then
 	echo "$ac_t""ok" 1>&6
 	echo $ac_n "checking the value of the java.home property ""... $ac_c" 1>&6
-echo "configure:1626: checking the value of the java.home property " >&5
+echo "configure:1627: checking the value of the java.home property " >&5
 	if env CLASSPATH=$PTII/config "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
 	    JAVA_SYSTEM_JAR=`CLASSPATH=$PTII/config "$JAVA" SystemJar`
@@ -1659,7 +1660,7 @@ find the Dallas Semiconductor tini" 1>&6
     TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
     echo $ac_n "checking for tini directory""... $ac_c" 1>&6
-echo "configure:1663: checking for tini directory" >&5
+echo "configure:1664: checking for tini directory" >&5
     # Check whether --with-tini or --without-tini was given.
 if test "${with_tini+set}" = set; then
   withval="$with_tini"
@@ -1672,11 +1673,11 @@ fi
     if test -d "$TINI_DIR"; then
 	echo "$ac_t""$TINI_DIR" 1>&6
         echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:1676: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:1677: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	    echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	    echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:1680: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:1681: checking for \$TINI_DIR/bin/tini.jar" >&5
   	    if test -f "$TINI_DIR/bin/tini.jar"; then
                 echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -1690,17 +1691,17 @@ echo "configure:1680: checking for \$TINI_DIR/bin/tini.jar" >&5
     else
 	echo "$ac_t""Not found in $TINI_DIR" 1>&6
 	echo $ac_n "checking for tini directory in /tini""... $ac_c" 1>&6
-echo "configure:1694: checking for tini directory in /tini" >&5
+echo "configure:1695: checking for tini directory in /tini" >&5
 	# Likely place for tini under windows
 	TINI_DIR=/tini
         if test -d "$TINI_DIR"; then
 	    echo "$ac_t""$TINI_DIR" 1>&6
             echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:1700: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:1701: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	        echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	        echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:1704: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:1705: checking for \$TINI_DIR/bin/tini.jar" >&5
 	        if test -f "$TINI_DIR/bin/tini.jar"; then
 	            echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -1752,7 +1753,7 @@ find the PalmOS waba" 1>&6
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
     echo $ac_n "checking for waba directory""... $ac_c" 1>&6
-echo "configure:1756: checking for waba directory" >&5
+echo "configure:1757: checking for waba directory" >&5
     # Check whether --with-waba or --without-waba was given.
 if test "${with_waba+set}" = set; then
   withval="$with_waba"
@@ -1765,7 +1766,7 @@ fi
     if test -d "$WABA_DIR"; then
 	echo "$ac_t""$WABA_DIR" 1>&6
         echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1769: checking for \$WABA_DIR/classes" >&5
+echo "configure:1770: checking for \$WABA_DIR/classes" >&5
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
 	    echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -1775,13 +1776,13 @@ echo "configure:1769: checking for \$WABA_DIR/classes" >&5
     else
 	echo "$ac_t""Not found in $WABA_DIR" 1>&6
 	echo $ac_n "checking for waba directory in /waba""... $ac_c" 1>&6
-echo "configure:1779: checking for waba directory in /waba" >&5
+echo "configure:1780: checking for waba directory in /waba" >&5
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
 	    echo "$ac_t""$WABA_DIR" 1>&6
             echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1785: checking for \$WABA_DIR/classes" >&5
+echo "configure:1786: checking for \$WABA_DIR/classes" >&5
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
 	        echo "$ac_t""$WABA_CLASSES" 1>&6
