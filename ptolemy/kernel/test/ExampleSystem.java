@@ -200,7 +200,7 @@ public class ExampleSystem implements Serializable {
 
     /**
      * Print the deeply linked ports for a given
-     * ComponetRelation. Look through all transparent ports and return
+     * ComponentRelation. Look through all transparent ports and return
      * only non transparent ports (those with no inside links).
      * @see ptolemy.kernel.ComponentRelation#deepLinkedPorts()
      * @param ComponentRelation Print the deeply linked ports for this
