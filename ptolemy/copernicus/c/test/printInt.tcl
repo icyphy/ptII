@@ -118,7 +118,8 @@ test printInt-1.1 {Generate all required files for printInt.java} {
     
     # Run the automatically generated executible.
     cd $outputDir
-    puts "running $exeFile"
+
+    set exeFile "./$exeFile"
     set results [exec $exeFile]
     regsub -all [java::call System getProperty "line.separator"] \
 	    $results "\n" results2

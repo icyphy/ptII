@@ -111,6 +111,7 @@ test Simple-1.1 {Generate all required files for Simple.java} {
     exec make -s -f $mkFile
     
     # Run the automatically generated executible.
+    set exeFile "./$exeFile"
     exec $exeFile
 
     # Move all generated files to the output directory.

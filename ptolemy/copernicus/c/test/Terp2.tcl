@@ -117,6 +117,8 @@ test Terp2-1.1 {Generate all required files for Terp2.java} {
 
     # Run the automatically generated executible.
     cd $outputDir
+
+    set exeFile "./$exeFile"
     exec $exeFile
     
 } {Fear the Turtle!!!

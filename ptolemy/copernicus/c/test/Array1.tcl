@@ -118,6 +118,8 @@ test Array-1.1 {Generate all required files for Array1.java} {
     
     # Run the automatically generated executible.
     cd $outputDir
+
+    set exeFile "./$exeFile"
     set results [exec $exeFile]
 
     regsub -all [java::call System getProperty "line.separator"] \
