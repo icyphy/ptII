@@ -301,7 +301,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    if( !super.hasToken() && !_terminate && !sendNullTokens ) {
 	        _readBlocked = true;
                 prepareToBlock(branch);
-                // director._actorBlocked(this);
 	        while( _readBlocked && !_terminate ) {
 		    workspace.wait( this );
 	        }
@@ -314,7 +313,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	        if( _readBlocked ) {
 		    _readBlocked = false;
                     wakeUpBlockedPartner();
-		    // director._actorBlocked(this);
 	        }
                 throw new TerminateProcessException("");
 	    }
@@ -336,7 +334,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public boolean hasToken(int tokens) throws IllegalActionException {
         return true;
-	// FIXME hack
+	// FIXME hack - consults neuendor's new mechanism.
     }
 
     /** Return true if this receiver is a consumer receiver. A 

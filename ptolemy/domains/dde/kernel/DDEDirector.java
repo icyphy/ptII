@@ -283,9 +283,6 @@ public class DDEDirector extends CompositeProcessDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	_completionTime = PrioritizedTimedQueue.ETERNITY;
-        // _internalReadBlocks = 0;
-        // _externalReadBlocks = 0;
-        // _writeBlocks = 0;
         _writeBlockedQs = new LinkedList();
         _pendingMutations = false;
     }

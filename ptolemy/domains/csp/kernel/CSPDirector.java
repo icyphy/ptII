@@ -159,10 +159,6 @@ public class CSPDirector extends CompositeProcessDirector {
             throws CloneNotSupportedException {
         CSPDirector newObject = (CSPDirector)super.clone(workspace);
         // newObject._actorsBlocked = 0;
-        /*
-        newObject._extReadBlockCount= 0;
-        newObject._writeBlockCount= 0;
-        */
 	newObject._actorsDelayed = 0;
         newObject._delayedActorList = new LinkedList();
         return newObject;
@@ -173,11 +169,6 @@ public class CSPDirector extends CompositeProcessDirector {
      */
     public void initialize() throws IllegalActionException {
 	// _actorsBlocked = 0;
-        /*
-	_intReadBlockCount = 0;
-	_extReadBlockCount = 0;
-	_writeBlockCount = 0;
-        */
         _actorsDelayed = 0;
         _delayedActorList = new LinkedList();
 	super.initialize();
@@ -296,13 +287,6 @@ public class CSPDirector extends CompositeProcessDirector {
      *  delayed, false otherwise.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-        /*
-        if (_getActiveActorsCount() == (_intReadBlockCount +
-        	_extReadBlockCount + _writeBlockCount + _actorsDelayed)) {
-            return true;
-        }
-        */
-        // if( _getActiveActorsCount() == _actorsBlocked + _actorsDelayed ) {
         if( _getActiveActorsCount() == _getBlockedActorsCount()
                 + _actorsDelayed ) {
             return true;
