@@ -64,8 +64,9 @@ not implement version-strings.
 
 <p>
 @author Christopher Hylands
-@version $Id$ */
+@version $Id$
 @since Ptolemy II 2.0
+ */
 public class VersionAttribute
     extends StringAttribute implements Comparable {
 
