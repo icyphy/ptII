@@ -61,6 +61,7 @@ EXTRA_SRCS = \
 	reviews.htm \
 	style.css \
 	style.htm \
+	style.pdf \
 	sunlicense.htm \
 	tcljava.htm \
 	testing.htm \
