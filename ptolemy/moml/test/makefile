@@ -51,7 +51,6 @@ JSRCS =
 JSIMPLE_TESTS = \
 	MoMLChangeRequest.tcl \
 	MoMLParser.tcl \
-	MoMLUtilities.tcl \
 	TypedActorLibrary.tcl
 
 # Graphical Java tests that use Tcl.
