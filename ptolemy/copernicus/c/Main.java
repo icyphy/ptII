@@ -75,14 +75,12 @@ public class Main extends KernelMain {
      *  @param args An array of Strings that control the transformation
      */
     public Main(String [] args) throws IllegalActionException {
-	// FIXME: targetPackage is hardwired in
-	super(args[0], "",
-	      "deep targetPackage:ptolemy.copernicus.c.cg");
-	parseInitializeCreateActorInstances();
+	// args[0] contains the MoML class name. 
+	super(args[0]);
 
-        // Process the global options.
-        // FIXME!!
-        String options = "deep targetPackage:ptolemy.apps.soot.demo.SimpleAdd.cg";
+	// Parse the model, initialize it and create instance classes
+	// for the actors.
+	_initialize();
 
         // Add a transformer to convert each actor class to C
         // "wjtp" means "whole java tranformation package"
@@ -90,7 +88,7 @@ public class Main extends KernelMain {
         // and it is applied before body transformers.
         // "wjtp.c" is the name of the phase.
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.c", 
-        //        CTransformer.v(_toplevel), options));
+        //        CTransformer.v(_toplevel));
         
         // Add transformers to do other passes.
         // "jtp" mean "java tranformation package.

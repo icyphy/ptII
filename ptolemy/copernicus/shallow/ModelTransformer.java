@@ -63,7 +63,7 @@ import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// EntitySootClass
+//// ModelTransformer
 /**
 
 @author Stephen Neuendorffer, Christopher Hylands
@@ -96,7 +96,9 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        
+        System.out.println("ModelTransformer.internalTransform('"
+			   + phaseName + "', " + options + ")");
+
         SootClass objectClass =
             Scene.v().loadClassAndSupport("java.lang.Object");
         SootClass namedObjClass =
@@ -141,6 +143,7 @@ public class ModelTransformer extends SceneTransformer {
         // create a class for the model
         String modelClassName = Options.getString(options, "targetPackage")
             + "." + _model.getName();
+
         EntitySootClass modelClass =
             new EntitySootClass(compositeActorClass, modelClassName, 
                     Modifier.PUBLIC);

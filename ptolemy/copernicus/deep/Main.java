@@ -74,19 +74,20 @@ public class Main extends KernelMain {
      *  @param args An array of Strings that control the transformation
      */
     public Main(String [] args) throws IllegalActionException {
-	// FIXME: targetPackage is hardwired in
-	super(args[0], "",
-	      "deep targetPackage:ptolemy.copernicus.deep.cg");
+	// args[0] contains the MoML class name. 
+	super(args[0]);
 
-	parseInitializeCreateActorInstances();
- 
+	// Parse the model, initialize it and create instance classes
+	// for the actors.
+	_initialize();
+
         // Add a transformer to convert each actor class to Deep Class
         // "wjtp" means "whole java tranformation package"
         // This transformer is required to be a scene transformer,
         // and it is applied before body transformers.
         // "wjtp.deep" is the name of the phase.
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.deep", 
-        //        DeepTransformer.v(_toplevel), _sootOptions));
+        //        DeepTransformer.v(_toplevel)));
         
         // Add transformers to do other passes.
         // "jtp" mean "java tranformation package.

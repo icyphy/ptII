@@ -88,8 +88,30 @@ class JHDLTransformer extends SceneTransformer {
         _model = model;
     }
 
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected. 
+     */
     public static JHDLTransformer v(CompositeActor model) { 
+        // FIXME: This should use a map to return a singleton instance
+	// for each model 
         return new JHDLTransformer(model);
+    }
+
+    /** Return the list of default options for this transformer.
+     *  @return An empty string.
+     */
+    public String getDefaultOptions() {
+        return ""; 
+    }
+
+    /** Return the list of declared options for this transformer.
+     *  This is a list of space separated option names.
+     *  @return The value of the superclass options, plus the option "deep".
+     */
+    public String getDeclaredOptions() { 
+        return super.getDeclaredOptions() + " deep targetPackage"; 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,7 +124,8 @@ class JHDLTransformer extends SceneTransformer {
      *   line to soot, or when the transformation is created.
      */
     protected void internalTransform(String phaseName, Map options) {
-
+	System.out.println("JHDLTransformer.internalTransform("
+			   + phaseName + ", " + options + ")");
         // Get a bunch of classes that we will need.
         SootClass namedObjClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.util.NamedObj");

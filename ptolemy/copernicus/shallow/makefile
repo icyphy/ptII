@@ -66,45 +66,68 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demo, run 'make demo'"
+	@echo "To run the demo, run 'make demo' or 'make shallowDemo' or 'make deepDemo'"
 
 install: all
 
 depend:
 	@echo "no dependencies in this directory"
 
-demo: compileDemo runDemo
+demo: shallowDemo deepDemo
+shallowDemo: compileShallowDemo runShallowDemo
 deepDemo: compileDeepDemo runDeepDemo
 
-TARGETPACKAGE = ptolemy.copernicus.shallow.cg
+DEEPTARGETPACKAGE = ptolemy.copernicus.shallow.cg.deep
+SHALLOWTARGETPACKAGE = ptolemy.copernicus.shallow.cg.shallow
+DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).ToplevelModel
+SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).ToplevelModel
+
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
 MODEL = OrthogonalCom 
-TARGETCLASS = $(TARGETPACKAGE).ToplevelModel
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
+
 JVM_SIZE = -Xmx132m
 
 # make SOURCECLASS=../test/RampFileWriter.xml compileDemo
-compileDemo: $(JCLASS)
-	@echo "generate code for $(SOURCEPACKAGE)"
+
+# Soot command line arguments for the user.  To list all the arguments, use
+# make SOOT_USER_ARGS=-h
+SOOT_USER_ARGS = 
+
+compileShallowDemo: $(JCLASS)
+	@echo "generate shallow code for $(SOURCEPACKAGE)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
 	ptolemy.copernicus.shallow.Main $(SOURCECLASS) -d "$(ROOT)"  \
-		-p wjtp.at deep
+		-p wjtp targetPackage:$(SHALLOWTARGETPACKAGE) \
+		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"
-	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
+	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
 
-runDemo:
+runShallowDemo:
 	@echo "Run the model"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	ptolemy.actor.gui.CompositeActorApplication \
-	-iterations 10 \
-	-class $(TARGETCLASS)
+	-iterations 50 \
+	-class $(SHALLOWTARGETCLASS)
+
+compileDeepDemo: $(JCLASS)
+	@echo "generate deep code for $(SOURCEPACKAGE)"
+	$(JAVA) $(JVM_SIZE) \
+	 -classpath "$(CLASSPATH)" \
+	ptolemy.copernicus.shallow.Main $(SOURCECLASS) -d "$(ROOT)"  \
+		-p wjtp.at deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.mt deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		$(SOOT_USER_ARGS)
+	@echo "Here is that javap output"
+	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)
+
 runDeepDemo:
 	@echo "Run the deep model"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
-	$(TARGETPACKAGE).Main
+	$(DEEPTARGETPACKAGE).Main
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

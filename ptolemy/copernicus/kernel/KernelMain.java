@@ -57,7 +57,9 @@ looks like:
 <pre>
 public class Main extends KernelMain {
     public Main(String [] args) {
-	super(args);
+	super(args[0]);
+	_initialize();
+
 	// Process args
 	// Do transformations
 	_callSootMain(args);
@@ -77,66 +79,71 @@ test these classes.
 public class KernelMain {    
 
     /** Set up code generation arguments.
-     *  @param options Optional soot style options to be prepended to any
-     *  Soot style options contained in the args parameter.
-     *  @param args An array of Strings, where the first element names
-     *  a MoML Class or file, and the subsequent optional arguments
-     *  are Soot style options such as
+     *  @param momlClassName The name of the top level model or the
+     *  .xml file that we are to generate code for.  For example:
+     *  "ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom".
      */
-    public KernelMain (String options, String[] args) {
-
-	// The options argument is a separate argument to make it easy
-	// to prepend Ptolemy II specific code genereration arguments
-	// to the array of arguments passed in by main().
-
-        if(args.length == 0) {
-	    throw new IllegalArgumentException("args.length == 0, args must "
-					       + "be at least of length 1 "
-					       + "and contain the name of "
-					       + "a MoML class or file.");
-        }            
-
-	_momlClassName = args[0];
-
-	// Build up the options string
-	StringBuffer optionsBuffer = null;
-	if (options != null) {
-	    optionsBuffer = new StringBuffer(options);
-	} else {
-	    optionsBuffer = new StringBuffer();
-	}
-
-	for (int i = 1; i < args.length; i++) {
-	    optionsBuffer.append(" " + args[i]);
-	}
-
-	_sootOptions = optionsBuffer.toString();
+    public KernelMain(String momlClassName) {
+	_momlClassName = momlClassName;
     }
 
-    /** Set up code generation arguments.
-     *  @param momlClassName The name of the top level model or the
-     *  .xml file that we are to generate code for.
-     *  @param transformOptions Soot Options of the format:
-     *  <code><i>[pass</i> <i>parameter</i>:<i>value]</i></code>.
-     *  For example:
-     *  <code>deep  targetPackage:ptolemy.copernicus.shallow.cg</code>
-     *  @param sootOptions Soot command line options.
-     *  The most common option is <code>-d ../../..</code>, which
+    /** Sample main() method that parses a MoML class, initializes
+     *  the model and creates actor instances.  In this class, 
+     *  this method does not do much, it is only a sample.
+     *
+     *  @params args The first element of the array is the MoML class
+     *  name or file name, subsequent optional arguments are Soot
+     *  command line options.
+     *  <br>The most common option is <code>-d ../../..</code>, which
      *  will store the generated files in ../../..
-     *  <br>For a complete list of sootOptions, pass in "-h", or run
+     *  Another common option is
+     *  <code> -p <i>phase-name</i> <i>key1[</i>:<i>value1]</i>,<i>key2[</i>:<i>value2]</i>,<i>...</i>,<i>keyn[</i>:<i>valuen]</i></code>
+     *  which will set the run time option <i>key</i> to <i>value</i> for
+     *  <i>phase-name</i> (default for <i>value</i> is true)
+     *  <code>-p wjtp.at deep,targetPackage:ptolemy.copernicus.jhdl.cg</code>
+     *  <br>For a complete list of Soot Options, pass in "-h", or run
      *  <code>$PTII/bin/soot -h<code>, or see
      *  <a href="http://www.sable.mcgill.ca/soot/tutorial/usage">http://www.sable.mcgill.ca/soot/tutorial/usage</a>
+     *
+     *  @exception IllegalActionException if the model cannot be parsed.
      */
-    public KernelMain(String momlClassName, String transformOptions,
-		      String sootOptions) {
-	_momlClassName = momlClassName;
-	_transformOptions = transformOptions;
-	_sootOptions = sootOptions;
+    public static void main(String[] args) throws IllegalActionException {
+	KernelMain kernelMain = new KernelMain(args[0]);
+	kernelMain._initialize();
+	kernelMain._callSootMain(args);
+    }
+
+    /** Return the model that we are generating code for.
+     */
+    public CompositeActor toplevel() {
+        return _toplevel;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Call soot.Main.main(), which does command line argument processing
+     *  and then starts the transformation.  This method should be called
+     *  after calling _initialize() and setting
+     *  up the transformations.
+     *
+     *  @params args Soot command line arguments to be passed
+     *  to soot.Main.main().  this method changes the first element of the
+     *  args array to "java.lang.Object"and then call soot.Main.main(args).
+     */	
+    protected void _callSootMain(String [] args) {
+        // This is rather ugly.  The moml Class is not a Java class, so
+        // soot won't recognize it.  However, if we give soot nothing, then 
+        // it won't run.  Note that later we will call setLibraryClass() on
+        // this class so that we don't actually generate code for it.
+        args[0] = "java.lang.Object";
+	//System.out.println("KernelMain._callSootMain(): " + args.length);
+        soot.Main.main(args);
     }
 
     /** Read in a MoML class, either as a top level model or
      *  a file, initialize the model, then create instance classes for actors.
-     *  <p> The MoML class name is processed as follows
+     *  <p> The MoML class name is processed as follows:
      *  <ol>
      *  <li> The momlClassName argument is assumed to be a dot
      *  separated top level model name such as
@@ -151,7 +158,7 @@ public class KernelMain {
      *  <ol>
      *  @exception IllegalActionException if the model cannot be parsed.
      */
-    public void parseInitializeCreateActorInstances()
+    protected void _initialize()
 	throws IllegalActionException {
 
         // Call the MOML parser on the test file to generate a Ptolemy II
@@ -220,49 +227,9 @@ public class KernelMain {
 	// (i.e. no application classes) and creates application
 	// classes from the model. 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.at", 
-                ActorTransformer.v(_toplevel), _sootOptions));
+                ActorTransformer.v(_toplevel)));
 
     }
-    
-    /** Sample main() method that parses a MoML class, initializes
-     *  the model and creates actor instances.  In this class, 
-     *  this method does not do much, it is only a sample.
-     *  @params args The first element of the array is the MoML class
-     *  name or file name, subsequent optional arguments are Soot
-     *  style options args of the format:
-     *  <code><i>[pass</i> <i>parameter</i>:<i>value]</i></code>.
-     *  For example:
-     *  <code>deep  targetPackage:ptolemy.copernicus.shallow.cg</code>
-     *  @exception IllegalActionException if the model cannot be parsed.
-     */
-    public static void main(String[] args) throws IllegalActionException {
-	KernelMain kernelMain = new KernelMain(null, args);
-	kernelMain.parseInitializeCreateActorInstances();
-    }
-
-    /** Return the model that we are generating code for.
-     */
-    public CompositeActor toplevel() {
-        return _toplevel;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    protected void _callSootMain(String [] args) {
-        // This is rather ugly.  The moml Class is not a Java class, so
-        // soot won't recognize it.  However, if we give soot nothing, then 
-        // it won't run.  Note that later we will call setLibraryClass() on
-        // this class so that we don't actually generate code for it.
-        args[0] = "java.lang.Object";
-        soot.Main.main(args);
-        //soot.Main m = new soot.Main();
-        //ConsoleCompilationListener ccl = new ConsoleCompilationListener();
-        //soot.Main.addCompilationListener(ccl);
-        //(new Thread(m)).start();
-	
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -272,14 +239,6 @@ public class KernelMain {
      */	
     protected String _momlClassName;
 
-    /** Soot style options arguments of the form
-     *  <code><i>[pass</i> <i>parameter</i>:<i>value] . . .</i></code>.
-     *  For example:
-     *  <code>deep  targetPackage:ptolemy.copernicus.shallow.cg</code>
-     */
-    protected String _sootOptions;
-    protected String _transformOptions;
-
     /** The CompositeActor we are generating code for.
      */
     protected CompositeActor _toplevel;
@@ -287,7 +246,7 @@ public class KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    private static class _IgnoreAllApplicationClasses
+    public static class _IgnoreAllApplicationClasses
 	extends SceneTransformer {
         /** Transform the Scene according to the information specified
          *  in the model for this transform.
@@ -304,15 +263,3 @@ public class KernelMain {
     }
 
 }
-    
-
-
-
-
-
-
-
-
-
-
-

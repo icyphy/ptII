@@ -67,19 +67,17 @@ public class Main extends KernelMain {
      *  @exception IllegalActionException if the model cannot be parsed.
      */
     public Main(String [] args) throws IllegalActionException {
-	// FIXME: targetPackage is hardwired in
-	super(args[0], "",
-	      "deep targetPackage:ptolemy.copernicus.shallow.cg");
-	//soot.Main.setReservedNames();
-	//soot.Main.setCmdLineArgs(args);
+	// args[0] contains the MoML class name. 
+	super(args[0]);
 
-	parseInitializeCreateActorInstances();
-	//System.out.println("shallow.Main: " + Scene.v().getPhaseOptions("wjtp.at"));
+	// Parse the model, initialize it and create instance classes
+	// for the actors.
+	_initialize();
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt", 
-                ModelTransformer.v(_toplevel), _sootOptions));
+                ModelTransformer.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt", 
-                CommandLineTransformer.v(_toplevel), _sootOptions));
+                CommandLineTransformer.v(_toplevel)));
        
         //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));

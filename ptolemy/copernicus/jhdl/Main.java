@@ -63,11 +63,65 @@ public class Main extends KernelMain {
     ////                     public methods                        ////
 
     public Main(String [] args) throws IllegalActionException {
-        // FIXME: the deep arg is wrong.
-	super(args[0], "",
-	      "deep targetPackage:ptolemy.copernicus.jhdl.demo.SimpleAdd.cg");
+	    // args[0] contains the MoML class name. 
+	    super(args[0]);
 
-	parseInitializeCreateActorInstances();
+	try {
+
+	    // Parse the model, initialize it and create instance classes
+	    // for the actors.
+	    //_initialize();
+
+	    if(args.length == 0) {
+		System.out.println("Syntax: java ptolemy.apps.soot.demo.codegen.Main momlClass"
+				   + " [soot options]");
+		System.exit(0);
+	    }            
+        
+	    String source = "<entity name=\"ToplevelModel\""
+		+ "class=\"" + args[0] + "\"/>\n";
+	    MoMLParser parser = new MoMLParser();
+	    _toplevel = (CompositeActor)parser.parse(source);        
+	    // FIXME: Temporary hack because cloning doesn't properly clone
+	    // type constraints.
+	    CompositeActor modelClass = (CompositeActor)
+		parser._searchForClass(args[0], _toplevel.getMoMLInfo().source);
+	    if(modelClass != null) {
+		_toplevel = modelClass;
+	    }                          
+	} catch (Exception e) {
+	    System.out.println("Threw: " + e);
+	}
+        // Initialize the model to ensure type resolution and scheduling
+        // are done.
+        try {
+            Manager manager = new Manager(_toplevel.workspace(), "manager");
+            _toplevel.setManager(manager);
+            manager.initialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("could not initialize composite actor");
+        }
+
+        // Process the global options.
+        // FIXME!!
+        //String options = "deep targetPackage:ptolemy.apps.soot.demo.SimpleAdd.cg";
+	String options = "deep targetPackage:ptolemy.copernicus.jhdl.demo.SimpleAdd.cg";
+        // A Hack to ignore the class we specify on the command
+	// line. This is a soot problem that requires this hack.
+	// We will provide soot with java.lang.Object as its
+	// only application class in Main. The first transformation
+	// will ignore all application classes (i.e. set them to
+	// library classes)
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.hack", 
+                new _IgnoreAllApplicationClasses(), ""));
+ 
+        // Create instance classes for actors.
+	// This transformer takes no input as far as soot is concerned
+	// (i.e. no application classes) and creates application
+	// classes from the model. 
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.at", 
+                ActorTransformer.v(_toplevel), options));
 
         // Add a transformer to convert each actor class to JHDL.
         // "wjtp" means "whole java tranformation package"
@@ -76,7 +130,7 @@ public class Main extends KernelMain {
         // "jhdl" is Michael Wirthlin's hardware design language.
         // "wjtp.jhdl" is the name of the phase.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.jhdl", 
-                JHDLTransformer.v(_toplevel), _sootOptions));
+                JHDLTransformer.v(_toplevel)));
         
         // Add transformers to do other passes.
         // "jtp" mean "java tranformation package.
@@ -103,21 +157,5 @@ public class Main extends KernelMain {
 	// We do most of the work in the constructor so that we
 	// can more easily test this class
 	Main main = new Main(args);
-    }
-
-    // Get the method with the given name in the given class 
-    // (or one of its super classes).
-    public static SootMethod _searchForMethodByName(SootClass theClass, 
-            String name) {
-        while(theClass != null) {
-            System.out.println("checking " + theClass + " for " + name);
-            if(theClass.declaresMethodByName(name)) {
-                return theClass.getMethodByName(name);
-            }
-            theClass = theClass.getSuperclass();
-            theClass.setLibraryClass();
-        }
-        throw new RuntimeException("Method " + name + " not found in class "
-                + theClass);
     }
 }

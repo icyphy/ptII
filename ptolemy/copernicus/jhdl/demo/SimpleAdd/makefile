@@ -71,19 +71,28 @@ install: all $(PTCLASSJAR)
 depend:
 	@echo "no dependencies in this directory"
 
-TARGETPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd
+TARGETPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd.cg
 SOURCEPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd
 MODEL = SimpleAddSystem
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 
+# Soot command line arguments for the user.  To list all the arguments, use
+# make SOOT_USER_ARGS=-h
+SOOT_USER_ARGS = 
+
 demo: jclass
 	@echo "First we generate SimpleAdd.class"
 	$(JAVA) -Xmx128M -Xms128M \
-	 -classpath "$(CLASSPATH)" \
-	ptolemy.copernicus.jhdl.Main $(SOURCECLASS) -d "$(ROOT)"
+		 -classpath "$(CLASSPATH)" \
+		ptolemy.copernicus.jhdl.Main \
+		$(SOURCECLASS) \
+		-d "$(ROOT)" \
+		-p wjtp.at deep,targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.jhdl deep,targetPackage:$(TARGETPACKAGE) \
+		$(SOOT_USER_ARGS)
 	@echo "decompile the simpleAdd actor"
-	"$(PTII)/bin/jode" $(TARGETPACKAGE).SimpleAdd
+	"$(PTII)/bin/jode" $(TARGETPACKAGE).simpleAdd
 #	java -classpath $(ROOT) $(TARGETCLASS)
 
 interpret: jclass
