@@ -50,11 +50,6 @@ if [ -z "$PTII" ]; then
     fi
 fi
 
-if [ ! -f $PTII/ptolemy/plot/ptolemy.plot.jar ]; then
-    echo "$0: Warning, $PTII/ptolemy/plot/ptolemy.plot.jar does not exist"
-    echo "  Perhaps you need to install ptplot or edit the variables in $0?"
-fi
-
 # We can start up either Pxgraph or PlotApplication here
 if [ "`basename $0`" = "pxgraph" ]; then
     javastartupclass=ptolemy.plot.Pxgraph
