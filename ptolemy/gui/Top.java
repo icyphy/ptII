@@ -241,12 +241,12 @@ public abstract class Top extends JFrame {
 
     /** Read the specified URL.
      *  @param url The URL to read.
-     *  @exception IOException If the URL cannot be read.
+     *  @exception Exception If the URL cannot be read.
      */
-    protected abstract void _read(URL url) throws IOException;
+    protected abstract void _read(URL url) throws Exception;
 
     /** Open a file dialog to identify a file to be opened, and then call
-     *  _read() to open the file.
+     *  _read() to open the file.x
      */
     protected void _open() {
         JFileChooser fileDialog = new JFileChooser();
@@ -269,7 +269,7 @@ public abstract class Top extends JFrame {
             File file = fileDialog.getSelectedFile();
             try {
                 _read(file.toURL());
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 report("Error reading input", ex);
             }
         }
