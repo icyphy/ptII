@@ -346,7 +346,7 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
 	-cp *.class $(PTJAR_TMPDIR)/$(ME)
 	for jar in $(PTCLASSALLJARS) ; do \
-		echo "Unjaring $$jar"; \
+		echo "Unjarring $$jar"; \
 		(cd $(PTJAR_TMPDIR); $(JAR) -xf ../$$jar); \
 	done
 	rm -rf $(PTJAR_TMPDIR)/META-INF
@@ -367,7 +367,7 @@ $(PTAUXALLJAR): $(PTAUXALLJARS)
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
 	-cp *.class $(PTJAR_TMPDIR)/$(ME)
 	for jar in $^; do \
-		echo "Unjaring $$jar"; \
+		echo "Unjarring $$jar"; \
 		(cd $(PTJAR_TMPDIR); jar -xf ../$$jar); \
 	done
 	rm -rf $(PTJAR_TMPDIR)/META-INF
