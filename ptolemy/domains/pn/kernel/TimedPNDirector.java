@@ -212,8 +212,7 @@ public class TimedPNDirector extends BasePNDirector {
                 _notDone = false;
                 return;
             }
-            _mutationBlockCount = 0;
-            _mutationsRequested = false;
+	    _mutationsRequested = false;
             //Loop until a real deadlock is detected.
             while( _readBlockCount != _getActiveActorsCount() ) {
                     // !_areActorsStopped()) {
@@ -276,48 +275,6 @@ public class TimedPNDirector extends BasePNDirector {
 	}
     }
 
-    /** Add a topology change request to the request queue and suspend the
-     *  calling thread until the requests are processed. These changes
-     *  are executed in the fire() method of the director.
-     *  After queuing the requests, increment the count of processes blocked
-     *  while waiting for the topology change requests to be processed
-     *  (mutation-blocked). On detecting a timed-deadlock,
-     *  the directing thread processes the queued topology change requests in
-     *  the fire() method
-     *  of the director. After the directing thread processes all the requests,
-     *  it notifies the all the processes blocked on a mutation (including the
-     *  calling process) to resume. The count of mutation-blocked processes
-     *  is decreased by the directing thread.
-     *  This method is synchronized on the director.
-     *  <p>
-     *  FIXME: Currently this director does not properly deal with
-     *         topology mutations.
-     *
-     *  @param request An object with commands to perform topology changes
-     *  and to inform the topology listeners of the same.
-     *  @exception ChangeFailedException If the superclass throws it.
-     *  @see ptolemy.kernel.event.ChangeRequest
-     *  @see ptolemy.kernel.event.ChangeListener
-     *  @see #fire
-     */
-    public void requestChange(ChangeRequest request) throws ChangeFailedException {
-	synchronized(this) {
-	    // _mutationsRequested = true;
-	    _informOfMutationBlock();
-            super.requestChange(request);
-            /*
-	    while(_mutationsRequested) {
-		try {
-		    wait();
-		} catch (InterruptedException e) {
-		    System.err.println(e.toString());
-		}
-	    }
-            */
-	}
-    }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -342,7 +299,7 @@ public class TimedPNDirector extends BasePNDirector {
      */
     protected synchronized boolean _areActorsDeadlocked() {
 	if (_readBlockCount + _writeBlockCount + _delayBlockCount
-		+ _mutationBlockCount >= _getActiveActorsCount()) {
+	        >= _getActiveActorsCount()) {
 	    return true;
 	} else {
 	    return false;

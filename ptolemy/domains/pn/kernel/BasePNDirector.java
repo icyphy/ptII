@@ -209,8 +209,7 @@ public class BasePNDirector extends CompositeProcessDirector {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         BasePNDirector newobj = (BasePNDirector)super.clone(ws);
         newobj._readBlockCount = 0;
-        newobj._mutationBlockCount = 0;
-        newobj._writeBlockCount = 0;
+	newobj._writeBlockCount = 0;
         newobj._writeblockedQueues = new LinkedList();
         return newobj;
     }
@@ -272,7 +271,6 @@ public class BasePNDirector extends CompositeProcessDirector {
     public void initialize() throws IllegalActionException {
 	super.initialize();
         _readBlockCount = 0;
-	_mutationBlockCount = 0;
 	_writeBlockCount = 0;
 	_writeblockedQueues = new LinkedList();
         //processlisteners is not initialized as we might want to continue
@@ -425,30 +423,6 @@ public class BasePNDirector extends CompositeProcessDirector {
         }
         return;
     }
-
-    /** Increment the count of actors waiting for the queued topology changes
-     *  to be processed. Check for a resultant deadlock or pausing of the
-     *  execution. If either of them is detected, then notify the directing
-     *  thread of the same.
-     *  This method is normally called by processes or actors that queue
-     *  requests for changes to the topology and do not wish to continue
-     *  their execution until their requests are processed.
-     *  This method is not used by the base director and is provided for
-     *  use by the deriveed classes.
-     */
-    protected synchronized void _informOfMutationBlock() {
-	_mutationBlockCount++;
-	notifyAll();
-    }
-
-    /** Decrement the count of processes waiting for the topology change
-     *  requests (mutation requests) to be processed. This method is not used
-     *  by the base director and is provided for use by the derived classes.
-     */
-    protected synchronized void _informOfMutationUnblock() {
-	_mutationBlockCount--;
-    }
-
 
     /** Increment by 1 the count of processes blocked while reading from a
      *  receiver and notify all process listeners of the blocking of the
@@ -625,11 +599,6 @@ public class BasePNDirector extends CompositeProcessDirector {
 
     /** The count of processes blocked on a read from a receiver. */
     protected int _readBlockCount = 0;
-
-    /** The count of processes waiting for the requests for topology changes
-     *  to be processed.
-     */
-    protected int _mutationBlockCount = 0;
 
     /** The count of processes blocked on a write to a receiver. */
     protected int _writeBlockCount = 0;

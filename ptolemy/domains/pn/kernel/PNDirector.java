@@ -192,8 +192,7 @@ public class PNDirector extends BasePNDirector {
                 _notDone = false;
                 return;
             }
-            _mutationBlockCount = 0;
-            _mutationsRequested = false;
+	    _mutationsRequested = false;
             //Loop until a deadlock other than an artificial deadlock is
             //detected.
             while( _readBlockCount != _getActiveActorsCount() ) { 
@@ -224,8 +223,8 @@ public class PNDirector extends BasePNDirector {
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-	return (_readBlockCount + _writeBlockCount +
-                _mutationBlockCount == _getActiveActorsCount());
+	return (_readBlockCount + _writeBlockCount
+                == _getActiveActorsCount());
     }
 
     ///////////////////////////////////////////////////////////////////
