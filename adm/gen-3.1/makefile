@@ -97,6 +97,7 @@ PTII_TOPDIR=	.cshrc \
 		configure \
 		configure.in \
 		copyright.txt \
+		diva \
 		doc \
 		jni \
 		lib \
