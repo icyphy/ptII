@@ -40,7 +40,7 @@ CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(KVM_CLASSES)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test
+DIRS =
 
 # Used to build jar files
 #PTPACKAGE = 	util
