@@ -19,7 +19,7 @@ if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
 fi
 
 # If you change the version number, then edit 
-# adm/bin/ptIInightly
+# ptII/adm/bin/ptIInightly
 # ptII/adm/gen-xxx/makefile
 # buildmaster/web/adm/makefile
 GENDIR=$ADMDIR/gen-2.1
