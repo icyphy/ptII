@@ -57,8 +57,8 @@ import ptolemy.kernel.util.InternalErrorException;
     @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
     @version $Id$
     @since Ptolemy II 0.2
-    @Pt.ProposedRating Yellow (hyzheng)
-    @Pt.AcceptedRating Red (hyzheng)
+    @Pt.ProposedRating Green (hyzheng)
+    @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class DEReceiver extends AbstractReceiver {
 
@@ -91,14 +91,11 @@ public class DEReceiver extends AbstractReceiver {
      *  the current time. If there is no token, throw an exception. If this
      *  receiver contains more than one event, the oldest event is removed
      *  first. In other words, this receiver has a FIFO behavior.
-     *  <p>
-     *  This method is synchronized since the actor may not
-     *  execute in the same thread as the director.
      *  @return A token.
      *  @exception NoTokenException If there are no more tokens. This is
      *   a runtime exception, so it need not to be declared explicitly.
      */
-    public synchronized Token get() throws NoTokenException {
+    public Token get() throws NoTokenException {
         if (_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
                     "No more tokens in the DE receiver.");
@@ -145,11 +142,10 @@ public class DEReceiver extends AbstractReceiver {
      *  The director will be responsible to dequeue the trigger event at
      *  the correct timestamp and microstep and invoke the corresponding actor
      *  whose input port contains this receiver. This receiver may contain
-     *  more than one events. This method is synchronized since the actor
-     *  may not execute in the same thread as the director.
+     *  more than one events. 
      *  @param token The token to be put.
      */
-    public synchronized void put(Token token) {
+    public void put(Token token) {
         try {
             DEDirector dir = _getDirector();
             dir._enqueueTriggerEvent(getContainer());

@@ -57,10 +57,6 @@ import ptolemy.kernel.util.InvalidStateException;
 */
 public class DECQEventQueue implements DEEventQueue {
 
-    // FIXME: do we need synchronized methods? Note that the DE director
-    // is the only one to enqueue and dequeue events, and its access to 
-    // event queue is synchronized already.
-    
     /** Construct an empty event queue.
      *  @param director The director that contains this event queue.
      */
@@ -100,26 +96,23 @@ public class DECQEventQueue implements DEEventQueue {
     /** Empty the event queue. This method is synchronized since there
      *  may be actors running under different threads in the DE domain.
      */
-    public synchronized void clear() {
+    public void clear() {
         _cQueue.clear();
     }
 
     /** Return the earliest DE event in the queue without removing it
-     *  from the queue. This method is synchronized since there
-     *  may be actors running under different threads in the DE domain.
+     *  from the queue. 
      *  @return The earliest DE event in the queue.
      *  @exception InvalidStateException If the queue is empty.
      */
-    public synchronized final DEEvent get() {
+    public final DEEvent get() {
         return (DEEvent)_cQueue.get();
     }
 
     /** Return true if this event queue is empty.
-     *  This method is synchronized since there
-     *  may be actors running under different threads in the DE domain.
      *  @return True if there are no event in the queue.
      */
-    public synchronized final boolean isEmpty() {
+    public final boolean isEmpty() {
         return _cQueue.isEmpty();
     }
 
@@ -151,17 +144,15 @@ public class DECQEventQueue implements DEEventQueue {
     /** Return the size of the event queue.
      *  @return The size of the event queue.
      */
-    public synchronized final int size() {
+    public final int size() {
         return _cQueue.size();
     }
 
     /** Dequeue the earliest DE event in this event queue.
-     *  This method is synchronized since there
-     *  may be actors running under different threads in the DE domain.
      *  @return The earliest DE event in the queue.
      *  @exception InvalidStateException If the queue is empty.
      */
-    public synchronized final DEEvent take() {
+    public final DEEvent take() {
         return (DEEvent)_cQueue.take();
     }
 

@@ -208,8 +208,8 @@ import ptolemy.kernel.util.Workspace;
    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class DEDirector extends Director implements TimedDirector {
 
