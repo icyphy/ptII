@@ -191,7 +191,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         _setDiscretePhase(false);
         // continuous phase;
         if (_debugging) _debug("execute the system from "+
-                getCurrentTime() + " step size" + getCurrentStepSize()
+                getCurrentTime() + " with step size " + getCurrentStepSize()
                 + " using solver " + getCurrentODESolver().getName());
         if (_prefireContinuousActors()) {
             ODESolver solver = getCurrentODESolver();
@@ -374,3 +374,4 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     // The current time of the outer domain.
     private double _outsideTime;
 }
+

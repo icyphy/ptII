@@ -164,6 +164,33 @@ public class CTReceiver extends Mailbox {
         return true;
     }
 
+    /** FIXME: This is a test implementation that makes hasToken()
+     *  to return true for all continuous port, since the scheduler
+     *  will make them available at the fire() time. However,
+     *  this does not work since trigger ports <i>really</i> have
+     *  no tokens even at the fire() time. So, this method is commented
+     *  out.
+     *  If the receiver is continuous, then always return true; if
+     *  the receiver is discrete, then return true if there is actually
+     *  a token inside the receiver.
+     *  @return True, if the receiver is continuous or if the receiver
+     *  if discrete and there is a token. False, if the receiver is
+     *  discrete, and there is no token.
+     
+    public boolean hasToken() {
+        if (_type == CONTINUOUS) {
+            return true;
+        } else if (_type == DISCRETE) {
+            return super.hasToken();
+        } else {
+          throw new InvalidStateException( getContainer(),
+                  "hasToken() is called before the signal type of "
+                  + "this port has been set. "
+                  + "This may indicate an error in CTScheduler.");
+        }
+    }
+     */
+
     /** Put a token into this receiver. If the argument is null,
      *  then this receiver will not contain any token after this method
      *  returns. If the receiver already has a token, then the new token

@@ -594,6 +594,12 @@ public class CTMultiSolverDirector extends CTDirector {
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor) actors.next();
             boolean ready = actor.prefire();
+            if (!ready) {
+              throw new IllegalActionException((Nameable)actor, 
+                  "It is not ready to fire. In the CT domain, all continuous "
+                  + "actors should be ready to fire at all time.\n "
+                  + "Does the actor only operate on sequence of tokens?");
+            }  
             if (_debugging) _debug("Prefire of " 
                     + ((Nameable)actor).getName()
                     + " returns " + ready);

@@ -599,6 +599,9 @@ public class CTScheduler extends Scheduler {
                 _signalTypeMap.propagateType(port);
             }
         }
+        // Output the signal type resolution result to the debugger.
+        if (_debugging) _debug("Signal Type Resulution Result: {\n",
+            _signalTypeMap.toString(), "}");
 
         // Now all ports are in the SignalTypes table. We classify
         // continuous and discrete actors.
@@ -1047,7 +1050,26 @@ public class CTScheduler extends Scheduler {
             }
         }
 
-
+        /** Return a string representation for the signal types of all ports.
+         *  It is in the format like:
+         *  portFullName::signalType.
+         *  @return The string representation of the signal types.
+         *   If the map of the signal types is empty, then return an empty
+         *   string.
+         */
+        public String toString() {
+            String string = new String();
+            if (_map != null) {
+                Iterator ports = _map.keySet().iterator();
+                while(ports.hasNext()) {
+                    IOPort port = (IOPort)ports.next();
+                    String type = signalTypeToString(getType(port));
+                    string += port.getFullName() + "::" + type + "\n";
+                }
+            }
+            return string;
+        }
+      
         /////////////////////////////////////////////////////////////////
         ////                     private variables                   ////
         // The HashMap.
