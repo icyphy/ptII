@@ -59,10 +59,13 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES = \
+	'PSDFScheduler$$ScheduleScope.class' \
+	'PSDFScheduler$$SymbolicFiring.class' \
+	'PSDFScheduler$$SymbolicSchedule.class' \
+	'PSDFScheduler$$SymbolicScheduleElement.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass $(PTCLASSJAR)
