@@ -29,7 +29,7 @@
 
 */
 
-package ptolemy.actor.gui;
+package ptolemy.apps.hsif;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,11 +48,11 @@ An object that can create a new Effigy from an HSIF file.
 
 @author Haiyang Zheng and Edward A. Lee
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 2.0
 @see Configuration
 @see Effigy
 */
-public class EffigyFactory extends CompositeEntity {
+public class HSIFEffigyFactory extends CompositeEntity {
 
     /** Create a factory with the given name and container.
      *  @param container The container.
@@ -62,7 +62,7 @@ public class EffigyFactory extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public EffigyFactory(EffigyFactory container, String name)
+    public HSIFEffigyFactory(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -79,7 +79,7 @@ public class EffigyFactory extends CompositeEntity {
     }
 
     /** Create a new effigy in the given container by reading the specified
-     *  URL. If the specified URL is refers to an HSIF file, then invoke
+     *  URL. If the specified URL refers to an HSIF file, invoke
      *  the HSIF to MoML translator to create a MoML temporary file, and
      *  then delegate to the container of this effigy factory to open that
      *  file. If the specified file is not HSIF, return null.
@@ -91,11 +91,26 @@ public class EffigyFactory extends CompositeEntity {
      *  @exception Exception If the stream cannot be read, or if the data
      *   is malformed in some way.
      */
-    public Effigy createEffigy(CompositeEntity container, URL base, URL in)
+    public Effigy createEffigy(CompositeEntity container, URL base, URL input)
 	    throws Exception {
-        // FIXME: Check whether the URL refers to an HSIF file.
         if (_inCreateEffigy) return null;
-        if (it is HSIF) {
+
+        // Check whether the URL refers to an HSIF file.
+ 	    if (input != null) {
+             String extension = getExtension(input);
+             if (!extension.equals("xml")) {
+                 return null;
+             }
+             // Create a blank effigy.
+             PtolemyEffigy effigy = new PtolemyEffigy(
+                     container, container.uniqueName("effigy"));
+
+             MoMLParser parser = new MoMLParser();
+             NamedObj toplevel = null;
+
+         }
+
+        if (_isHSIF) {
             try {
                 _inCreateEffigy = true;
 
@@ -113,4 +128,5 @@ public class EffigyFactory extends CompositeEntity {
     ////                         private variables                 ////
 
     private boolean _inCreateEffigy;
+    private boolean _isHSIF;
 }
