@@ -30,7 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.plot.plotml;
 
-import ptolemy.plot.*;
+import ptolemy.plot.PlotBox;
+import ptolemy.plot.Histogram;
 
 // XML imports.
 import com.microstar.xml.XmlException;
@@ -38,14 +39,14 @@ import com.microstar.xml.XmlException;
 //////////////////////////////////////////////////////////////////////////
 //// HistogramMLApplet
 /**
- * This applet reads a URL giving a PlotML file that contains data.
- * It plots a histogram of that data.
- *
- * @see Histogram
- * @author Edward A. Lee
- * @version $Id$
- * @since Ptolemy II 0.4
- */
+This applet reads a URL giving a PlotML file that contains data.
+It plots a histogram of that data.
+
+@see Histogram
+@author Edward A. Lee
+@version $Id$
+@since Ptolemy II 0.4
+*/
 public class HistogramMLApplet extends PlotMLApplet {
 
     ///////////////////////////////////////////////////////////////////
