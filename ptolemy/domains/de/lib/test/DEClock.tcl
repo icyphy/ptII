@@ -40,26 +40,29 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-# 
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
-
 ######################################################################
 ####
 # 
 test DEClock-2.1 {Test the constructors} {
-    set ws [java::new ptolemy.kernel.util.Workspace]
-    set actor [java::new ptolemy.actor.TypedCompositeActor $ws]
-    set dir [java::new ptolemy.domains.de.kernel.DECQDirector]
+    #set ws [java::new ptolemy.kernel.util.Workspace ".myworkspace" ]
+    set actor [java::new ptolemy.actor.TypedCompositeActor ]
+    set dir [java::new ptolemy.domains.de.kernel.DEDirector]
     $actor setDirector $dir
     set man [java::new ptolemy.actor.Manager]
     $actor setManager $man
     set clock [java::new ptolemy.domains.de.lib.DEClock $actor "MyClock" 1.0 1.0]
-    list \
-} {}
+    $clock description
+} {ptolemy.domains.de.lib.DEClock {..MyClock} attributes {
+    {ptolemy.data.expr.Parameter {..MyClock.interval} ptolemy.data.DoubleToken(1.0)}
+    {ptolemy.data.expr.Parameter {..MyClock.value} ptolemy.data.DoubleToken(1.0)}
+} ports {
+    {ptolemy.actor.TypedIOPort {..MyClock.output} attributes {
+    } links {
+    } insidelinks {
+    } configuration {output opaque {width 0}} receivers {
+    } remotereceivers {
+    } type {declared ptolemy.data.Token resolved ptolemy.data.Token}}
+}}
 
 
 
