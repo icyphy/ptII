@@ -46,19 +46,19 @@ FIXME: what do do about long in the operator overloading methods?*
 */
 public class DoubleToken extends ScalarToken {
 
-    /** Construct a token with double 0.0.
+    /** Construct a DoubleToken with double 0.0.
      */
     public DoubleToken() {
 	_value = 0.0;
     }
 
-    /** Construct a token with the specified value.
+    /** Construct a DoubleToken with the specified value.
      */
     public DoubleToken(double value) {
 	_value = value;
     }
 
-    /** Construct an DoubleToken from the specified string.
+    /** Construct a DoubleToken from the specified string.
      *  @exception IllegalArgumentException If the Token could not
      *   be created with the given String.
 
