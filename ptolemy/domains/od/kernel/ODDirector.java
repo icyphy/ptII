@@ -201,13 +201,17 @@ public class ODDirector extends ProcessDirector {
      */
     public Receiver newReceiver() {
         ODReceiver rcvr = new ODReceiver();
+	rcvr.setCompletionTime( _completionTime );
+	System.out.println("Completion Time = " + _completionTime);
+        /*
 	if( _completionTime != -1.0 ) {
 	    // System.out.println("Completion Time = " + _completionTime);
 	    rcvr.setCompletionTime( _completionTime );
 	}
+        */
         return rcvr;
     }
-
+    
     /** 
      */
     public synchronized void removeReadBlock() {
@@ -253,7 +257,7 @@ public class ODDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
-    private double _completionTime = -1;
+    private double _completionTime = -5.0;
     private int _readBlocks = 0;
     private int _writeBlocks = 0;
 

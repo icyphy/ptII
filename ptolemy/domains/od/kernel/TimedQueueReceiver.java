@@ -30,7 +30,6 @@
 
 package ptolemy.domains.od.kernel;
 
-import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
@@ -39,14 +38,17 @@ import ptolemy.actor.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// TimedQueueReceiver
 /**
-/* A FIFO queue receiver for storing tokens with time stamps.
+A FIFO queue receiver for storing tokens with time stamps. To help organize
+the tokens this queue contains, two flags are maintained: "lastTime" and
+"rcvrTime." The lastTime flag is defined to be equivalent to the time stamp 
+of the newest token placed in the queue. The rcvrTime flag is defined as the 
+time stamp of the oldest token in the queue. Both of these flags must have
+monotonically non-decreasing values with the exception that their values will
+be set to -1.0 at the conclusion of a simulation run. 
 
-The "lastTime" of this queue is defined as the time stamp of the newest
-token within the queue and is updated every time put() is called. The 
-"rcvrTime" of this queue is defined as the time stamp of the oldest token 
-within the queue and is called every time get() is called. 
-
+***
 Synchronization Notes:
+***
 This domain observes a hierarchy of synchronization locks. When multiple
 synchronization locks are required, they must be obtained in an order that
 is consistent with this hierarchy. Adherence to this hierarchical ordering
@@ -83,10 +85,11 @@ focus on the internal state of the workspace and hence are at the bottom
 of the synchronization hierarchy.
 
 
-
 @author John S. Davis II
 @version @(#)TimedQueueReceiver.java	1.17	11/18/98
+@see ptolemy.domains.od.kernel.ODReceiver
 */
+
 public class TimedQueueReceiver implements Receiver {
 
     /** Construct an empty queue with no container.
@@ -106,7 +109,7 @@ public class TimedQueueReceiver implements Receiver {
     ////                         public methods                    ////
 
     /** Take the first token (the oldest one) off the queue and return it.
-     *  If the queue is empty, throw an exception. If there are other
+     *  If the queue is empty, throw a NoTokenException. If there are other
      *  tokens left on the queue, set the rcvr time to equal that of the
      *  new leading token.
      * @exception NoTokenException If the queue is empty.
@@ -153,30 +156,35 @@ public class TimedQueueReceiver implements Receiver {
     }
 
     /** Get the queue capacity. 
+     * @return int The queue capacity.
      */
     public int getCapacity() {
         return _queue.getCapacity();
     }
 
     /** Get the completion time of this receiver. 
+     * @return double The completion time.
      */
     public synchronized double getCompletionTime() {
         return _completionTime;
     }
 
     /** Return the container. 
+     * @return IOPort The containing IOPort.
      */
     public IOPort getContainer() {
         return _container;
     }
 
-    /** 
+    /** Return the lastTime value.
+     * @return double The value of the lastTime flag.
      */
     public double getLastTime() {
         return _lastTime;
     }
 
-    /** Get the priority of this receiver. 
+    /** Return the priority of this receiver. 
+     * @return The priority of this receiver.
      */
     public synchronized int getPriority() {
         return _priority;
@@ -244,7 +252,7 @@ public class TimedQueueReceiver implements Receiver {
         
         synchronized(this) {
 	    /* 
-	    if( time > getCompletionTime() ) {
+	    if( time > getCompletionTime() && getCompletionTime() != -5 ) {
 	        _lastTime = -1.0;
 	    }
 	    else {
@@ -306,7 +314,7 @@ public class TimedQueueReceiver implements Receiver {
     private double _rcvrTime = 0.0;
 
     // The time after which this server will become defunct.
-    private double _completionTime;
+    private double _completionTime = -5.0;
 
     private int _priority = 0;
     

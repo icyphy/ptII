@@ -274,7 +274,7 @@ public class ODReceiver extends TimedQueueReceiver
 	        return;
 	    }
 	  */
-	    if( time > getCompletionTime() ) {
+	    if( time > getCompletionTime() && getCompletionTime() != -5.0 ) {
 	        time = -1.0;
 		token = null;
 	    }
