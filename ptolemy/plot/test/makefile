@@ -74,6 +74,9 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 tests:: $(EXTRA_SRCS) jclass test_java test_jgraphical
 
+all: jclass
+install: jclass
+
 test_java: jclass
 
 # Tycho-wide test definitions.
