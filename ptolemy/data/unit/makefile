@@ -56,7 +56,8 @@ OTHER_FILES_TO_BE_JARED = \
 	BasicUnits.xml \
 	CGSUnitBase.xml \
 	ElectronicUnitBase.xml \
-	UnitConversions.xml
+	UnitConversions.xml \
+	unitSystems.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
