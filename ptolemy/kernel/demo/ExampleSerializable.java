@@ -46,7 +46,12 @@ public class ExampleSerializable {
     ////                         public methods                    ////
 
 
-    /** Create an Example System, then print it out. */
+    /** Create an Example System, then print it out.
+     * @exception NameDuplicationException if the example system cannot
+     * be built because of a duplicate name
+     * @exception IllegalActionException if the example system cannot
+     * be built.
+     */
     public static void main(String args[])
             throws NameDuplicationException, IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
