@@ -790,9 +790,7 @@ public class PtolemyUtilities {
                 if (depth > maxDepth) maxDepth = depth;
             }
             return maxDepth + 1;
-        } else if (type.equals(BaseType.UNKNOWN) ||
-                type.equals(BaseType.GENERAL) ||
-                !type.isInstantiable()) {
+        } else if (!isExactTokenType(type)) {
             return Integer.MIN_VALUE;
         } else {
             return 1;
@@ -935,6 +933,18 @@ public class PtolemyUtilities {
                 } else {
                     throw new RuntimeException("Unknown type field: " + field);
                 }
+            } else if (value instanceof InstanceInvokeExpr) {
+                InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                if(r.getMethod().getName().equals("getElementType")) {
+                    ptolemy.data.type.ArrayType arrayType =
+                        (ptolemy.data.type.ArrayType)
+                        getTypeValue(method, (Local)r.getBase(),
+                                stmt, localDefs, localUses);
+                    return arrayType.getElementType();
+                } else {
+                    throw new RuntimeException(
+                            "Unknown instance invoke: " + r);
+                }
             } else if (value instanceof NewExpr) {
                 // If we get to an object creation, then try
                 // to figure out where the object is initialized
@@ -953,7 +963,7 @@ public class PtolemyUtilities {
                                             useStmt, localDefs, localUses);
                                 return new ptolemy.data.type.ArrayType(elementType);
                             } else {
-                                throw new RuntimeException("ArrayType(unknown): " + stmt);
+                                throw new RuntimeException("unknown type constructor " + constructorExpr);
                             }
                         }
                     }
@@ -1044,6 +1054,19 @@ public class PtolemyUtilities {
         return doneSomething;
     }
 
+
+    /** Return true if the given type is an exact token type.
+     */
+    public static boolean isExactTokenType(ptolemy.data.type.Type type) {
+        if(type.equals(BaseType.UNKNOWN) ||
+                type.equals(BaseType.GENERAL) ||
+                !type.isInstantiable()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /** Return true if the given type references a concrete
      *  ptolemy token type.  In other words It is either a direct
      *  reference to a token, or an array of tokens.
@@ -1113,6 +1136,9 @@ public class PtolemyUtilities {
 
     // Soot Type representing the ptolemy.actor.TypedAtomicActor class.
     public static Type actorType;
+
+    // Soot class representing the ptolemy.actor.AtomicActor class.
+    public static SootClass atomicActorClass;
 
     // The soot method representing the java.lang.System.arraycopy method.
     public static SootMethod arraycopyMethod;
@@ -1431,6 +1457,10 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.kernel.util.Settable class.
     public static Type settableType;
 
+    // Soot Field representing the ptolemy.actor.AtomicActor
+    // _stopRequested field.
+    public static SootField stopRequestedField;
+
     // Soot class representing the ptolemy.kernel.util.StringAttribute class.
     public static SootClass stringAttributeClass;
 
@@ -1525,6 +1555,12 @@ public class PtolemyUtilities {
         namedObjClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
         debuggingField = namedObjClass.getField("boolean _debugging");
+        
+        atomicActorClass =
+            Scene.v().loadClassAndSupport("ptolemy.actor.AtomicActor");
+        stopRequestedField =
+            atomicActorClass.getField("boolean _stopRequested");
+
         getAttributeMethod = namedObjClass.getMethod(
                 "ptolemy.kernel.util.Attribute "
                 + "getAttribute(java.lang.String)");

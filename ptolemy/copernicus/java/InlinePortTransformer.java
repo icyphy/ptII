@@ -444,7 +444,9 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                             } else {
                                 box.setValue(IntConstant.v(0));
                             }
-                        } else if (r.getMethod().getName().equals("getWidth")) {
+                        } else if (r.getMethod().getName().equals("getWidth") ||
+                                   r.getMethod().getName().equals("numberOfSources") || 
+                                   r.getMethod().getName().equals("numberOfSinks")) {
                             if (debug) {
                                 System.out.println("replacing getWidth at "
                                         + stmt);
