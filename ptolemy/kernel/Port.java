@@ -342,9 +342,10 @@ public class Port extends NamedObj {
      *  in invalid references to objects. 
      *  In this class, this method resets the private members _relationsList
      *  and _container.
+     *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear() {
-        super._clear();
+    protected void _clear(Workspace ws) {
+        super._clear(ws);
         // Ignore exception because "this" cannot be null.
         try {
             _relationsList = new CrossRefList(this);

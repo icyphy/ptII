@@ -316,9 +316,10 @@ public class Entity extends NamedObj {
      *  in invalid references to objects. 
      *  In this class, this method reinitializes the private member
      *  _portList.
+     *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear() {
-        super._clear();
+    protected void _clear(Workspace ws) {
+        super._clear(ws);
         _portList = new NamedList(this);
     }
 

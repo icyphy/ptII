@@ -29,7 +29,6 @@
 
 package pt.kernel;
 
-import pt.data.Parameter;
 import java.io.Serializable;
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -293,7 +292,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public Nameable removeParameter(String name) {
         synchronized(workspace()) {
-            Parameter p = (Nameable)_params.remove(name);
+            Nameable p = (Nameable)_params.remove(name);
             workspace().incrVersion();
             return p;
         }
