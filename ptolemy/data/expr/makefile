@@ -40,7 +40,7 @@
 # Note that none of these classes would be relevant to FSMs, for example.
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../..
 
 ME =		java/pt/data/parser
 
