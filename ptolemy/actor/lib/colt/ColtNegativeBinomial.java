@@ -81,9 +81,9 @@ public class ColtNegativeBinomial extends ColtRandomSource {
         coltP = new Parameter(this, "p", new DoubleToken(0.5));
         coltP.setTypeEquals(BaseType.DOUBLE);
 
-        randomElementClass = getRandomElementClass(container);
+        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new NegativeBinomial(1, 0.5, randomElement);
+        rng = new NegativeBinomial(1, 0.5, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////

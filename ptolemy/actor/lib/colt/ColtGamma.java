@@ -81,9 +81,9 @@ public class ColtGamma extends ColtRandomSource {
         coltLambda = new Parameter(this, "lambda", new DoubleToken(1.0));
         coltLambda.setTypeEquals(BaseType.DOUBLE);
 
-        randomElementClass = getRandomElementClass(container);
+        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new Gamma(1.0, 1.0, randomElement);
+        rng = new Gamma(1.0, 1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////

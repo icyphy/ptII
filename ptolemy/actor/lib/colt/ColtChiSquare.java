@@ -79,9 +79,9 @@ public class ColtChiSquare extends ColtRandomSource {
         coltFreedom = new Parameter(this, "freedom", new DoubleToken(1.0));
         coltFreedom.setTypeEquals(BaseType.DOUBLE);
 
-        randomElementClass = getRandomElementClass(container);
+        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new ChiSquare(1.0, randomElement);
+        rng = new ChiSquare(1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -81,9 +81,9 @@ public class ColtZeta extends ColtRandomSource {
         coltPk = new Parameter(this, "pk", new DoubleToken(1.0));
         coltPk.setTypeEquals(BaseType.DOUBLE);
 
-        randomElementClass = getRandomElementClass(container);
+        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new Zeta(1.0, 1.0, randomElement);
+        _rng = new Zeta(1.0, 1.0, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,8 +121,8 @@ public class ColtZeta extends ColtRandomSource {
         double ro = ((DoubleToken) coltRo.getToken()).doubleValue();
         double pk = ((DoubleToken) coltPk.getToken()).doubleValue();
 
-        ((Zeta) rng).setState(ro, pk);
-        _current = ((Zeta) rng).nextInt();
+        ((Zeta) _rng).setState(ro, pk);
+        _current = ((Zeta) _rng).nextInt();
 
         return super.prefire();
     }

@@ -79,9 +79,9 @@ public class ColtLogarithmic extends ColtRandomSource {
         coltP = new Parameter(this, "p", new DoubleToken(0.5));
         coltP.setTypeEquals(BaseType.DOUBLE);
 
-        randomElementClass = getRandomElementClass(container);
+        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new Logarithmic(0.5, randomElement);
+        rng = new Logarithmic(0.5, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////

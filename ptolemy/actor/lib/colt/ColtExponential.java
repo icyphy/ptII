@@ -79,9 +79,9 @@ public class ColtExponential extends ColtRandomSource {
         coltLambda = new Parameter(this, "lambda", new DoubleToken(1.0));
         coltLambda.setTypeEquals(BaseType.DOUBLE);
 
-        randomElementClass = getRandomElementClass(container);
+        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new Exponential(1.0, randomElement);
+        rng = new Exponential(1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -82,9 +82,9 @@ public class ColtNormal extends ColtRandomSource {
             new Parameter(this, "standardDeviation", new DoubleToken(1.0));
         coltStandardDeviation.setTypeEquals(BaseType.DOUBLE);
 
-        randomElementClass = getRandomElementClass(container);
+        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new Normal(1.0, 1.0, randomElement);
+        _rng = new Normal(1.0, 1.0, _randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,8 +123,8 @@ public class ColtNormal extends ColtRandomSource {
         double standardDeviation =
             ((DoubleToken) coltStandardDeviation.getToken()).doubleValue();
 
-        ((Normal) rng).setState(mean, standardDeviation);
-        _current = ((Normal) rng).nextDouble();
+        ((Normal) _rng).setState(mean, standardDeviation);
+        _current = ((Normal) _rng).nextDouble();
 
         return super.prefire();
     }

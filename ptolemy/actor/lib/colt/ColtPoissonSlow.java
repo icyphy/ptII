@@ -79,9 +79,9 @@ public class ColtPoissonSlow extends ColtRandomSource {
         coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
         coltMean.setTypeEquals(BaseType.DOUBLE);
 
-        randomElementClass = getRandomElementClass(container);
+        randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new PoissonSlow(1.0, randomElement);
+        rng = new PoissonSlow(1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
