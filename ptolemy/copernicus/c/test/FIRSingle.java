@@ -83,6 +83,7 @@ public class FIRSingle {
         _interpolation = interpolation;
         _decimation = decimation;
         _decimationPhase = decimationPhase;
+        _mostRecent = 0;
 
         _phaseLength = (int)(numberOfTaps / _interpolation);
         if ((numberOfTaps % _interpolation) != 0) {
