@@ -138,7 +138,7 @@ public class EditParametersDialog extends ComponentDialog
             // to delete the parameter.
             String deleteName = query.stringValue("delete");
 
-            if (dialog.buttonPressed().equals("OK") 
+            if (dialog.buttonPressed().equals("OK")
                     && !deleteName.equals("")) {
                 String moml = "<deleteProperty name=\""
                     + deleteName

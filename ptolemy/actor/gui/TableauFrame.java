@@ -345,7 +345,7 @@ public abstract class TableauFrame extends Top {
         if(getEffigy() == null) {
             return super._close();
         }
-        
+
         // NOTE: We use dispose() here rather than just hiding the
         // window.  This ensures that derived classes can react to
         // windowClosed events rather than overriding the

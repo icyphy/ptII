@@ -302,7 +302,7 @@ public class Configuration extends CompositeEntity {
 		try {
 		    if (!file.canWrite()) {
 			effigy.setModifiable(false);
-		    } 
+		    }
 		} catch (java.security.AccessControlException
 			 accessControl) {
 		    // If we are running in a sandbox, then canWrite()
