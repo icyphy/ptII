@@ -36,7 +36,7 @@ import ptolemy.kernel.util.*;
 //// FiringEvent
 /**
 An interface for events that can be used for debugging.  These events will
-generally be subclassed to create events with more meaning (such as 
+generally be subclassed to create events with more meaning (such as
 a FiringEvent).
 
 @author  Steve Neuendorffer
@@ -44,8 +44,8 @@ a FiringEvent).
 @see ptolemy.kernel.util.DebugListener
 */
 public class FiringEvent implements DebugEvent {
-    
-    /** 
+
+    /**
      * Create a new firing event with the given source, actor, and type.
      */
     public FiringEvent(Director source, Actor actor, FiringEventType type) {
@@ -64,7 +64,7 @@ public class FiringEvent implements DebugEvent {
 	return _actor;
     }
 
-    /** 
+    /**
      * Return the director that activated this event.
      */
     public NamedObj getSource() {
@@ -82,22 +82,22 @@ public class FiringEvent implements DebugEvent {
 	private FiringEventType(String name) {
 	    _name = name;
 	}
-	
+
 	public String getName() {
 	    return _name;
 	}
 	private String _name;
     }
-    
-    public static FiringEventType PREFIRE = 
+
+    public static FiringEventType PREFIRE =
 	new FiringEventType("prefire");
-    public static FiringEventType FIRE = 
+    public static FiringEventType FIRE =
 	new FiringEventType("fire");
-    public static FiringEventType POSTFIRE = 
+    public static FiringEventType POSTFIRE =
 	new FiringEventType("postfire");
-    public static FiringEventType POSTPOSTFIRE = 
+    public static FiringEventType POSTPOSTFIRE =
 	new FiringEventType("postpostfire");
-    public static FiringEventType ITERATE = 
+    public static FiringEventType ITERATE =
 	new FiringEventType("iterate");
 
     private Actor _actor;

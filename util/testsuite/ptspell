@@ -1,5 +1,5 @@
 #!/bin/sh
-# Shell script to spell check files.  Mixed case words are split up 
+# Shell script to spell check files.  Mixed case words are split up
 
 # Author:  Christopher Hylands
 # Version: $Id$

@@ -532,9 +532,9 @@ public class Manager extends NamedObj implements Runnable {
 		_changeRequests = new LinkedList();
 	    }
 	    _changeRequests.add(change);
-	    // Now call stopfire so we can be sure the model will give us 
+	    // Now call stopfire so we can be sure the model will give us
 	    // back control.
-	    _container.stopFire();	    
+	    _container.stopFire();
 	}
     }
 
@@ -933,7 +933,7 @@ public class Manager extends NamedObj implements Runnable {
 	/** Print out the current state.
 	 */
 	public String toString() {
-	    return new String("Manager " + getManager() + 
+	    return new String("Manager " + getManager() +
 			      " is in state " + getDescription());
 	}
 

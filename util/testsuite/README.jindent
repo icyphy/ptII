@@ -13,8 +13,8 @@ this small standalone release available.
 The standalone release consists of the following files
 $PTII/util/testsuite/jindent  - The shell script that does the actual work
 $PTII/util/testsuite/jindent.el - Emacs file that does some set up
-$PTII/util/testsuite/ptjavastyle.el - Emacs file that contains the 
-				      Ptolemy II coding style	
+$PTII/util/testsuite/ptjavastyle.el - Emacs file that contains the
+				      Ptolemy II coding style
 
 Installation:
 1. Set your PTII variable to point to the top of the tree:
@@ -28,7 +28,7 @@ Usage:
 jindent Foo.java will:
 	1. Copy the file to a temporary location
 	2. Indent the temporary file
-	3. If there are any indentation changes necessary, 
+	3. If there are any indentation changes necessary,
 	it will check the file out of SCCS if necessary
 	4. Reindent the file
 	5. Check the file back in using SCCS or CVS

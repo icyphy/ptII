@@ -198,7 +198,7 @@ public class IORelation extends ComponentRelation {
                     try {
                         // Note that this may be an inside or outside linked
                         // relation.
-                        
+
                         // NOTE: We have to be careful here to keep track of
                         // multiple occurrences of a port in this list.
                         // EAL 7/30/00.

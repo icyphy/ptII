@@ -29,7 +29,7 @@ exec tclsh "$0" "$@"
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 #                                        PT_COPYRIGHT_VERSION_2
 #                                        COPYRIGHTENDKEY
 #######################################################################
@@ -45,7 +45,7 @@ exec tclsh "$0" "$@"
 
 # This script is used to convert javadoc html output to pdf
 # so that we can print it out in 2up format.  Ideally javadoc would
-# do this for us. 
+# do this for us.
 # One method would be to use the mif doclet to generate mif javadoc
 # output and then use something like a mif2ps script to generate
 # PostScript.  However, this would require that Frame was installed
@@ -81,7 +81,7 @@ proc psConcat { outfile files} {
     # but skip the %%EOF
     # Then, for each successive file, we copy the body of the file
     # and increment the page count
-    
+
     set outfd [open $outfile w]
     foreach infile $files {
         set sawEndProlog 0
@@ -227,7 +227,7 @@ proc htmlGetTitle {htmlfile} {
 #
 proc ::tycho::rm { args } {
     global tcl_platform
-    if { $tcl_platform(platform) != "windows" } { 
+    if { $tcl_platform(platform) != "windows" } {
 	# Unix-ism
 	eval exec rm $args
     }
@@ -236,16 +236,16 @@ proc ::tycho::rm { args } {
 #####################################################################
 #### html2ps
 # Use netscape to convert html to PostScript
-# Typical Usage: 
+# Typical Usage:
 # <tcl><pre>
 # html2ps [glob $TYCHO/doc/*html]
 # </pre></tcl>
 #
 proc html2ps {filelist} {
-    set numfiles [llength $filelist]	
+    set numfiles [llength $filelist]
     foreach file $filelist {
 	# count down to 0 to give the user something to look at
-	puts -nonewline " $numfiles" 
+	puts -nonewline " $numfiles"
 	incr numfiles -1
 	flush stdout
 
@@ -256,7 +256,7 @@ proc html2ps {filelist} {
 		^http {set urlfile $file} \
 		^/ {set urlfile "file://$file"} \
 		default {set urlfile "file://[pwd]/$file"}
-	
+
 	# File to save as.  If we don't specify a absolute path,
         # then the ps file will end up in either the the directory where
         # netscape started, or the home directory
@@ -270,7 +270,7 @@ proc html2ps {filelist} {
 		puts "\nCall to netscape failed to \nopen `$urlfile',\n\
 			 perhaps netscape is not running?:\n $errMsg\n\
 			 About to try starting netscape by hand."
-		exec netscape &	 
+		exec netscape &
 		#FIXME: we should do this with the tcl clock command
 		exec sleep 10
 
@@ -287,7 +287,7 @@ proc html2ps {filelist} {
 # Given a list of directories, return a list of all the html files.
 # If there is an index.html file present in a directory, then we place that
 # at the front of the list of files in that directory.
-# 
+#
 # A good way to find html directories is:
 # find . \( -name html_library -o -name -o -name adm -o -name codeDoc -o -name devel -o -name itclhtml \) -prune -o -name "*.htm*" -exec dirname {} \; | sort -u
 #
@@ -326,9 +326,9 @@ proc htmlByDir {htmldirlist} {
 #### htmlLinks
 # Given a html file, return a list of the links
 #
-proc htmlLinks {htmlfile {depth 0} {dagfd {}} {recurse 1}} { 
+proc htmlLinks {htmlfile {depth 0} {dagfd {}} {recurse 1}} {
     global filesSeen
-    
+
     if {$depth > 100} {
         error "htmlLinks reached a maximum depth of $depth\n\
                 filesSeen was: $filesSeen"
@@ -392,7 +392,7 @@ proc htmlLinks {htmlfile {depth 0} {dagfd {}} {recurse 1}} {
 # Given a .html index file, produce a PostScript file that contains
 # PostScript of all of the html files that the index file has links to.
 #
-# Typical Usage: 
+# Typical Usage:
 # <tcl><pre>
 # htmlTree2ps $TYCHO/doc/index.html index.ps
 # </pre></tcl>
@@ -415,7 +415,7 @@ proc htmlTree2ps {indexfile psfile args} {
 	htmlByDir $args
     } else {
 	puts "About to traverse all local files linked from\n $indexfile"
-	puts " and generate $psfile"	
+	puts " and generate $psfile"
 	flush stdout
 	update
 
@@ -474,7 +474,7 @@ proc addToDAG {dagfd htmlfile link} {
 
 #####################################################################
 #### html2DAG
-# Given a html file, generate a Directed Acyclic Graph (DAG) that 
+# Given a html file, generate a Directed Acyclic Graph (DAG) that
 # consists of all of the files that have links to them.
 #
 proc html2DAG {indexfile dagfile} {
@@ -482,7 +482,7 @@ proc html2DAG {indexfile dagfile} {
     set filesSeen {}
 
     puts "About to traverse all local files linked from\n $indexfile"
-    puts " and generate $dagfile"	
+    puts " and generate $dagfile"
     flush stdout
     update
 
@@ -514,11 +514,11 @@ proc html2DAG {indexfile dagfile} {
 	puts $dagfd "\{add \{$dagitem\} \{label \{$title\} \
 	    link \{$dagitem \{\}\}\} \{$daglist($dagitem)\}\}"
     }
-    
+
     close $dagfd
 }
 
- 
+
 
 #####################################################################
 #### html2psProcessArgs
@@ -530,7 +530,7 @@ proc html2psProcessArgs {} {
     if {$argc < 2 } {
 	puts "html2ps: wrong number of arguments"
 	set error 1
-    } 
+    }
     if { $argc >= 3 } {
 	set commandarg [lindex $argv 0]
 	set indexfile [lindex $argv 1]
@@ -542,13 +542,13 @@ proc html2psProcessArgs {} {
     if {![file readable $indexfile]} {
 	puts "html2ps: $indexfile is not readable"
 	set error 1
-    }    
+    }
 
     # Check for -d in the first arg
     if { $argc == 3 && $commandarg != "-d" && $commandarg != "-dag" } {
 	puts "html2ps: $commandarg not understood, it must be -d or -dag"
 	set error 1
-    } else { 	
+    } else {
 	set error 0
     }
 
@@ -559,32 +559,32 @@ proc html2psProcessArgs {} {
 	puts " or it can generate a Tycho Directed Acyclic Graph (DAG)."
         puts " -dag       Produce a DAG"
         puts " -d         Collect html files from the htmldirs args"
-	puts " If the -d option is not present, then all of the local links" 
+	puts " If the -d option is not present, then all of the local links"
 	puts " in the html file are followed, and added to the"
         puts " PostScript file in a depth first order."
 	exit
     }
     switch $argc {
 	2 { htmlTree2ps $indexfile $outputfile }
-	3 { 
+	3 {
 	    if {"$commandarg" == "-dag" } {
 		html2DAG $indexfile $outputfile
 	    } else {
 		if {"$commandarg" == "-d" } {
 		    set outputfile [lindex $argv 1]
 		    set inputdirectory [lindex $argv 2]
-		    eval htmlTree2ps dummy $outputfile $inputdirectory 
+		    eval htmlTree2ps dummy $outputfile $inputdirectory
 		} else {
 		    error "html2ps: don't understand $commandarg, exiting."
 		}
 	    }
 	  }
-	default { 
+	default {
 	    if {"$commandarg" != "-d" } {
 		error "html2ps: usage: html2ps -d htmlfile outputfile directories "
 	    }
 	    set outputfile [lindex $argv 1]
-	    eval htmlTree2ps dummy $outputfile [lrange $argv 2 end] 
+	    eval htmlTree2ps dummy $outputfile [lrange $argv 2 end]
           }
     }
 }

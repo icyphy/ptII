@@ -51,7 +51,7 @@ import javax.swing.SwingUtilities; // for isEventDispatchThread()
  This class will work in both applications and applets.
  When run in an applet, this class attempts to gracefully handle
  the various security restrictions concerning getting the parent
- of a ThreadGroup.  
+ of a ThreadGroup.
  The output includes the number of threads and whether the current thread
  is the Swing Event Dispatch Thread.
 
@@ -137,7 +137,7 @@ public class PrintThreads {
      * We could use Thread.toString(), but that is hard to read.
      */
     public static String toThreadDescription(Thread thread) {
-	String name = "Unnamed thread"; 
+	String name = "Unnamed thread";
 	String group = "Unnamed group";
 	try {
 	    if (thread == null) {

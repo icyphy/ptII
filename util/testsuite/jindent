@@ -59,14 +59,14 @@ do
 	    echo "Would be checked out"
 	else
 	    if [ -d SCCS ]; then
-		sccs edit $file 
-	    fi	
+		sccs edit $file
+	    fi
 	    if [ -w $file ]; then
 		echo "$file is now writable, now reindenting"
 		$emacs -q -batch -l $jindent_el $file -f jindent
 		if [ -d SCCS ]; then
 		    sccs delget -y"Reindented with jindent" $file
-		else    
+		else
 		    if [ -d CVS ]; then
 			cvs commit -m "Reindented with jindent" $file
 		    fi

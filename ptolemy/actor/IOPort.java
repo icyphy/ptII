@@ -496,12 +496,12 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Get an array of tokens from the specified channel. The 
+    /** Get an array of tokens from the specified channel. The
      *  parameter <i>channelIndex</i> specifies the channel and
-     *  the parameter <i>vectorLength</i> specifies the number of 
-     *  valid tokens to get in the returned array. The length of 
+     *  the parameter <i>vectorLength</i> specifies the number of
+     *  valid tokens to get in the returned array. The length of
      *  the returned array can be greater than the specified vector
-     *  length, in which case, only the first <i>vectorLength</i> 
+     *  length, in which case, only the first <i>vectorLength</i>
      *  elements are guaranteed to be valid.
      *  <p>
      *  If the channel has a group with more than one receiver (something
@@ -509,7 +509,7 @@ public class IOPort extends ComponentPort {
      *  calls get() on all receivers, but returns only the first non-null
      *  token returned by these calls.
      *  Normally this method is not used on transparent ports.
-     *  If there are not enough tokens to fill the array, then throw 
+     *  If there are not enough tokens to fill the array, then throw
      *  an exception.
      *  <p>
      *  Some of this method is read-synchronized on the workspace.
@@ -546,7 +546,7 @@ public class IOPort extends ComponentPort {
             }
 
 	    Token[] retArray = localRec[channelIndex][0].getArray(vectorLength);
-	    
+
 
             if (retArray == null) {
                 throw new NoTokenException(this, "get: No token array to return.");
@@ -635,8 +635,8 @@ public class IOPort extends ComponentPort {
      *  from all linked relations. For an input
      *  port, the returned value is an array of arrays.  The first index
      *  (the group) specifies the group of receivers that receive from
-     *  the same channel.  The second index (the column) specifies the 
-     *  receiver number within the group of receivers that get copies from 
+     *  the same channel.  The second index (the column) specifies the
+     *  receiver number within the group of receivers that get copies from
      *  the same channel.
      *  <p>
      *  For a transparent port (a port of a non-opaque entity), this method
@@ -1290,7 +1290,7 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Send the specified portion of a token array to all receivers connected 
+    /** Send the specified portion of a token array to all receivers connected
      *  to the specified channel. The first <i>vectorLength</i> tokens
      *  of the token array are sent.
      *  <p>

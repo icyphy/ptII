@@ -287,19 +287,19 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Invoke a specified number of iterations of the actor. An
-     *  iteration is equivalant to invoking prefire(), fire(), and 
-     *  postfire(), in that order. In an iteration, if prefire() 
-     *  returns true, then fire() will be called once, followed by 
-     *  postfire(). Otherwise, if prefire() returns false, fire() 
+     *  iteration is equivalant to invoking prefire(), fire(), and
+     *  postfire(), in that order. In an iteration, if prefire()
+     *  returns true, then fire() will be called once, followed by
+     *  postfire(). Otherwise, if prefire() returns false, fire()
      *  and postfire() are not invoked, and this method returns
      *  NOT_READY. If postfire() returns false, then no more
      *  iterations are invoked, and this method returns STOP_ITERATING.
      *  Otherwise, it returns COMPLETED.
      *  <p>
-     *  This base class method actually invokes prefire(), fire(), 
+     *  This base class method actually invokes prefire(), fire(),
      *  and postfire(), as described above, but a derived class
      *  may override the method to execute more efficient code.
-     *  
+     *
      *  @param count The number of iterations to perform.
      *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
      *  @exception IllegalActionException If iterating is not
@@ -517,7 +517,7 @@ public class Director extends Attribute implements Executable {
                 // use the most recently added one.
                 Director previous = null;
                 CompositeActor castContainer = (CompositeActor)oldContainer;
-                Iterator directors = 
+                Iterator directors =
                        castContainer.attributeList(Director.class).iterator();
                 while (directors.hasNext()) {
                     Director altDirector = (Director)directors.next();

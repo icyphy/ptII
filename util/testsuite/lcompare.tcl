@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1997-2000 The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -52,7 +52,7 @@ proc ldepth {list {count 0}} {
 	    if {$greatestDepth < $temp} {
 		set greatestDepth $temp
 	    }
-	} 
+	}
     }
     return $greatestDepth
 }
@@ -90,7 +90,7 @@ proc test_ldepth {} {
 
 # Sort a list by sorting each sublist as well.
 # Given a nested list like
-#                    {a c b {{f {n m} p} {d e} g} z}  
+#                    {a c b {{f {n m} p} {d e} g} z}
 # return             {a b c z {{d e} {f {m n} p} g}}
 # lsort would return {a b c z {{f {n m} p} {d e} g}}
 proc deeplsort {list} {
@@ -109,7 +109,7 @@ proc deeplsort {list} {
     if {$allLeaves == 1} {
 	return [lsort $list]
     }
-    
+
     # If any elements have a length greather than 1, then call deepsort on
     # each element that has a length greater than 1 and create a new list
     # and then call lsort on the new list
@@ -120,7 +120,7 @@ proc deeplsort {list} {
 	    lappend newlist $element
 	}
     }
-    return [lsort $newlist] 
+    return [lsort $newlist]
 }
 
 
@@ -157,10 +157,10 @@ proc lcompare {lista listb} {
     set deepsortedlista [deeplsort $lista]
     set deepsortedlistb [deeplsort $listb]
     puts ""
-    return [deeplcompare $deepsortedlista $deepsortedlistb] 
+    return [deeplcompare $deepsortedlista $deepsortedlistb]
 }
 
-#set a {a c b {{f {n m} p} {d e} g} z}  
-#set b {a c b {{f {n m} q} {d e} g} z}  
+#set a {a c b {{f {n m} p} {d e} g} z}
+#set b {a c b {{f {n m} q} {d e} g} z}
 #
 #puts [lcompare $a $b]

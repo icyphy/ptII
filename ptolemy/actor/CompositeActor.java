@@ -351,16 +351,16 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     /** Invoke a specified number of iterations of the actor. An
-     *  iteration is equivalant to invoking prefire(), fire(), and 
-     *  postfire(), in that order. In an iteration, if prefire() 
-     *  returns true, then fire() will be called once, followed by 
-     *  postfire(). Otherwise, if prefire() returns false, fire() 
+     *  iteration is equivalant to invoking prefire(), fire(), and
+     *  postfire(), in that order. In an iteration, if prefire()
+     *  returns true, then fire() will be called once, followed by
+     *  postfire(). Otherwise, if prefire() returns false, fire()
      *  and postfire() are not invoked, and this method returns
      *  NOT_READY. If postfire() returns false, then no more
      *  iterations are invoked, and this method returns STOP_ITERATING.
      *  Otherwise, it returns COMPLETED.
      *  <p>
-     *  This base class method actually invokes prefire(), fire(), 
+     *  This base class method actually invokes prefire(), fire(),
      *  and postfire(), as described above, but a derived class
      *  may override the method to execute more efficient code.
      *
@@ -572,7 +572,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Queue a change request.  Delegate the change request to the container
      *  of this actor, if there is one.  If there is none, then delegate
-     *  to the Manager.  If the actor has no manager then execute the request 
+     *  to the Manager.  If the actor has no manager then execute the request
      *  immediately.  Any listeners that have been registered using
      *  addChangeListener() will be notified of success (or failure) of
      *  the request.

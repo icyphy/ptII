@@ -32,14 +32,14 @@
 
 # To use this file, add the following code to your test file
 # just after the source of testDefs.tcl
-# 
-# if {[info procs _testClone] == "" } then { 
+#
+# if {[info procs _testClone] == "" } then {
 #    source [file join $PTII util testsuite testParameters.tcl]
 # }
 
 # Unfortunately, changes between Tcl Blend 1.0 and 1.1 require
 # the use of java::cast
-# 
+#
 # In Tcl Blend 1.0, the following code worked
 #  set newObject [$ramp clone]
 #  set initVal [[[$newObject getAttribute init] getToken] doubleValue]
@@ -76,7 +76,7 @@ proc _testClone {object} {
 proc _testDoubleValue {object attributeName} {
     set attribute [$object getAttribute $attributeName]
     if { $attribute == [java::null] } {
-	error "test_doubleValue: Attribute '$attributeName' not found in $object" 
+	error "test_doubleValue: Attribute '$attributeName' not found in $object"
     }
     return [[java::cast ptolemy.data.DoubleToken \
 	    [[java::cast ptolemy.data.expr.Parameter \

@@ -163,8 +163,8 @@ public class QueueReceiver extends AbstractReceiver {
     public boolean hasRoom() {
 	return !_queue.isFull();
     }
-    
-    /** Return true if the receiver has room for putting the given number of 
+
+    /** Return true if the receiver has room for putting the given number of
      *  tokens into it (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
@@ -172,8 +172,8 @@ public class QueueReceiver extends AbstractReceiver {
      *  than one.
      */
     public boolean hasRoom(int tokens) throws IllegalActionException {
-	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
+	if(tokens < 1)
+	    throw new IllegalActionException("The number of " +
 					     "tokens must be greater than 0");
 	return (_queue.size() + tokens) < _queue.getCapacity();
     }
@@ -194,8 +194,8 @@ public class QueueReceiver extends AbstractReceiver {
      *  than one.
      */
     public boolean hasToken(int tokens) throws IllegalActionException {
-	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
+	if(tokens < 1)
+	    throw new IllegalActionException("The number of " +
 					     "tokens must be greater than 0");
         return _queue.size() >= tokens;
     }

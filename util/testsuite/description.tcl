@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1998-2000 The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -48,7 +48,7 @@
 # source ExampleSystem.tcl
 # set desc [$e0 description [java::field ptolemy.kernel.Nameable LIST_PRETTYPRINT]]]
 # description2DAG "Ptolemy II Entities" $filename $desc
-# 
+#
 proc description2DAG {title filename desc} {
     set fd [open $filename w]
     puts $fd "{configure -canvasheight 600} {configure -canvaswidth 800}"
@@ -84,7 +84,7 @@ proc _description2DAGInternal {fd contents {parent {}} {oldparent {}}
 	# Checking that the list has two elements is not enough, since
 	# we could have the case where we have a graph that consists
 	# of a parent Entity with two child entities that are
-	# connected to each other.  
+	# connected to each other.
 	if {[llength $element] == 2 && [llength [lindex $element 0]] == 1} {
 	    set className [lindex $element 0]
 
@@ -195,7 +195,7 @@ proc description2TclBlend {descriptionString} {
 		    append results "set $name\
 			    \[java::new $className\]\n\
 			    \$$name setName $name\n"
-		} else {   
+		} else {
 		    append results "set $name\
 			    \[java::new $className \$$parentName $name\]\n"
 		}
@@ -211,7 +211,7 @@ proc description2TclBlend {descriptionString} {
 		#
 		# If we have not yet seen this relation, then emit
 		# an instruction to create it.
-		if {[lsearch $relationsSeen $name] == -1} { 
+		if {[lsearch $relationsSeen $name] == -1} {
 		    lappend relationsSeen $name
 		    append results "set $name\
 			    \[java::new $className \$$parentName $name\]\n"
@@ -269,7 +269,7 @@ proc getCurrentUniverse {} {
 
 ######################################################################
 #### getEntityByName
-# Search the current universe for an entity with a particular name 
+# Search the current universe for an entity with a particular name
 # setCurrentUniverse $e0
 # set e [getEntityByName .E0.E10.E9]
 # $e description 3
@@ -329,13 +329,13 @@ proc fullName2HTML {className fullName} {
     set fullDocFileName \
 	    [file dirname $fullFileName]/doc/codeDoc/$className.html
 
-    set entity [$jrpc send "getEntityByName $fullName"] 
+    set entity [$jrpc send "getEntityByName $fullName"]
     set description [split [$jrpc send "$entity description 2"] "\n"]
     foreach linkLine $description {
 	set elements [split $linkLine]
 	if {[llength $elements] > 0} {
 	    append formattedDescription \
-		    "<li>[lindex $elements 0],\ 
+		    "<li>[lindex $elements 0],\
 		    named `[lindex $elements 1]'\n\
 		    is linked to a [lindex $elements 3],\
 		    named `[lindex $elements 4]'\n"

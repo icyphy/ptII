@@ -75,7 +75,7 @@ public interface Receiver {
     /** Get an array of tokens from this receiver. The parameter
      *  specifies the number of valid tokens to get in the returned
      *  array. The length of the returned array can be greater than
-     *  <i>vectorLength</i>, in which case, only the first <i>vectorLength</i> 
+     *  <i>vectorLength</i>, in which case, only the first <i>vectorLength</i>
      *  elements are guaranteed to be valid. This is allowed so that
      *  an implementation of this method can choose to reallocate
      *  the returned token array only when the vector length is increased.
@@ -101,7 +101,7 @@ public interface Receiver {
      */
     public boolean hasRoom() throws IllegalActionException;
 
-    /** Return true if the receiver has room for putting the given number of 
+    /** Return true if the receiver has room for putting the given number of
      *  tokens into it (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.

@@ -82,14 +82,14 @@ public abstract class AbstractReceiver implements Receiver {
     /** Get an array of tokens from this receiver. The parameter
      *  specifies the number of valid tokens to get in the returned
      *  array. The length of the returned array can be greater than
-     *  <i>vectorLength</i>, in which case, only the first <i>vectorLength</i> 
+     *  <i>vectorLength</i>, in which case, only the first <i>vectorLength</i>
      *  elements are guaranteed to be valid. This is allowed so that
      *  an implementation of this method can choose to reallocate
      *  the returned token array only when the vector length is increased.
      *  <p>
      *  This base class method is not performance optimized, since
      *  it simply calls put(Token) multiple times. Domains that
-     *  can use a vectorized put() and get() should probably  implement 
+     *  can use a vectorized put() and get() should probably  implement
      *  a more optimized version of this method.
      *  @param vectorLength The number of valid tokens to get in the
      *   returned array.
@@ -124,14 +124,14 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public abstract boolean hasRoom() throws IllegalActionException;
 
-    /** Return true if the receiver has room for putting the given number of 
+    /** Return true if the receiver has room for putting the given number of
      *  tokens into it (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
-     *  In this base class, if the number of tokens equals one, 
+     *  In this base class, if the number of tokens equals one,
      *  then call the zero-argument method instead.  If the number of
      *  tokens is greater than 1, then return false, since domains are
-     *  not required to provide more than one token.  
+     *  not required to provide more than one token.
      *  @exception IllegalActionException Not thrown in this base class.
      *  @exception IllegalArgumentException If the argument is not positive.
      *   This is a runtime exception, so it does not need to be declared
@@ -139,7 +139,7 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public boolean hasRoom(int tokens)
             throws IllegalActionException, IllegalArgumentException {
-	if(tokens < 1) 
+	if(tokens < 1)
 	    throw new IllegalArgumentException(
                     "hasRoom() requires a positive argument.");
 	if(tokens == 1) return hasRoom();
@@ -156,10 +156,10 @@ public abstract class AbstractReceiver implements Receiver {
 
     /** Return true if get() will succeed in returning a token the given
      *  number of times.
-     *  In this base class, if the number of tokens equals one, 
+     *  In this base class, if the number of tokens equals one,
      *  then call the zero argument method instead.  If the number of
      *  tokens is greater than 1, then return false, since domains are
-     *  not required to provide more than one token.  
+     *  not required to provide more than one token.
      *  @return A boolean indicating whether there are the given number of
      *  tokens in this receiver.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -169,13 +169,13 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public boolean hasToken(int tokens)
             throws IllegalActionException, IllegalArgumentException {
-	if(tokens < 1) 
+	if(tokens < 1)
 	    throw new IllegalArgumentException(
                     "hasToken() requires a positive argument.");
 	if(tokens == 1) return hasToken();
 	return false;
     }
-    
+
     /** Put a token to the receiver. If the receiver is full, throw an
      *  exception.
      *  @param token The token to be put to the receiver.
@@ -190,7 +190,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  <p>
      *  This base class method is not performance optimized, since
      *  it simply calls put(Token) multiple times. Domains that
-     *  can use a vectorized put() and get() should probably implement 
+     *  can use a vectorized put() and get() should probably implement
      *  a more optimized version of this method.
      *  @param tokenArray The array containing data to put into this
      *   receiver.
@@ -203,7 +203,7 @@ public abstract class AbstractReceiver implements Receiver {
 	    put(tokenArray[i]);
 	}
     }
-    
+
     /** Set the container.
      *  @param port The IOPort containing this receiver.
      *  @exception IllegalActionException If the container is not of

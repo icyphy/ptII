@@ -301,9 +301,9 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
     }
 
-    /** Send the specified portion of a token array to all receivers 
+    /** Send the specified portion of a token array to all receivers
      *  connected to the specified channel, checking the type
-     *  and converting the token if necessary. The first 
+     *  and converting the token if necessary. The first
      *  <i>vectorLength</i> tokens of the token array are sent.
      *  If the port is not connected to anything, or receivers have not been
      *  created in the remote port, or the channel index is out of
@@ -314,22 +314,22 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  <p>
      *  To improve effiecency for the common case where the type of the
      *  tokens to send matches the type of this port and all connected
-     *  ports, this method assumes that all of the tokens in the 
+     *  ports, this method assumes that all of the tokens in the
      *  specified portion of the token array are of the same
      *  type. If this is not the case, then the non-vectorized send()
      *  method should be used instead.
-     *  The implementation only actually checks the 
-     *  type of the first token in the array, and then assumes that 
-     *  the remaining tokens are of the same type. 
+     *  The implementation only actually checks the
+     *  type of the first token in the array, and then assumes that
+     *  the remaining tokens are of the same type.
      *  <p>
-     *  If the type of the tokens in the specified portion of the 
+     *  If the type of the tokens in the specified portion of the
      *  token array is the type of this
-     *  port, or the tokens in the specified portion of the 
+     *  port, or the tokens in the specified portion of the
      *  token array can be converted to that type
-     *  losslessly, the tokens in the specified portion of the 
+     *  losslessly, the tokens in the specified portion of the
      *  token array are sent to all receivers connected to the
      *  specified channel. Otherwise, IllegalActionException is thrown.
-     *  Before putting the tokens in the specified portion of the 
+     *  Before putting the tokens in the specified portion of the
      *  token array into the destination receivers, this
      *  method also checks the type of the remote input port,
      *  and converts the tokens if necessary.

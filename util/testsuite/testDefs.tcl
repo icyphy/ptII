@@ -6,26 +6,26 @@
 #
 # @Copyright (c) 1996-2000 The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
@@ -56,20 +56,20 @@
 package require java
 
 # Load up Tcl procs to print out enums
-if {[info procs _testEnums] == "" } then { 
+if {[info procs _testEnums] == "" } then {
     source [file join $PTII util testsuite testEnums.tcl]
 }
 
-if {[info procs enumToFullNames] == "" } then { 
+if {[info procs enumToFullNames] == "" } then {
     source [file join $PTII util testsuite enums.tcl]
 }
 
-if {[info procs description2TclBlend] == "" } then { 
+if {[info procs description2TclBlend] == "" } then {
     source [file join $PTII util testsuite description.tcl]
 }
 
 
-if {[info procs _testClone] == "" } then { 
+if {[info procs _testClone] == "" } then {
     source [file join $PTII util testsuite testParameters.tcl]
 }
 
@@ -93,7 +93,7 @@ if ![info exists TESTS] {
 }
 
 proc print_verbose {test_name test_description contents_of_test code answer {testtype "NORMAL"}} {
-    global FAILED KNOWN_FAILED errorInfo 
+    global FAILED KNOWN_FAILED errorInfo
     puts "\n"
     puts "==== $test_name $test_description"
     puts "==== Contents of test case:"
@@ -165,7 +165,7 @@ proc test {test_name test_description contents_of_test passing_results {testtype
     if {$code != 0} {
         print_verbose $test_name $test_description $contents_of_test \
                 $code $answer $testtype
-    } elseif {[string compare $answer $passing_results] == 0} then { 
+    } elseif {[string compare $answer $passing_results] == 0} then {
         if $VERBOSE then {
             print_verbose $test_name $test_description $contents_of_test \
                     $code $answer
@@ -183,14 +183,14 @@ proc test {test_name test_description contents_of_test passing_results {testtype
 		    $code $answer $testtype
 	    puts "---- Result should have been:"
 	    puts "$passing_results"
-	    puts "---- $test_name FAILED" 
+	    puts "---- $test_name FAILED"
 	    incr FAILED
 	} else {
 	    print_verbose $test_name $test_description $contents_of_test \
 		    $code $answer $testtype
 	    puts "---- KNOWN Failure, Result should have been:"
 	    puts "$passing_results"
-	    puts "---- $test_name Failed, but this is a KNOWN failure" 
+	    puts "---- $test_name Failed, but this is a KNOWN failure"
 	    incr KNOWN_FAILED
 	}
     }
@@ -221,7 +221,7 @@ proc doneTests {args} {
     global PASSED FAILED KNOWN_FAILED NEWLY_PASSED duration reallyExit
 
     # Attempt to flush the javascope database.  The alternative is
-    # to run jsinstr with JSINTRFLAGS=-IFLUSHCLASS=true 
+    # to run jsinstr with JSINTRFLAGS=-IFLUSHCLASS=true
     catch {java::call COM.sun.suntest.javascope.database.js\$ flush}
 
     # This line must exist so that we can easily parse the results
@@ -239,7 +239,7 @@ proc doneTests {args} {
 }
 
 # If there is no update command, define a dummy proc.  Jacl needs this
-if {[info command update] == ""} then { 
+if {[info command update] == ""} then {
     proc update {} {}
 }
 
@@ -287,7 +287,7 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
 	}
 
 	if {[llength $newelement] > 1} {
-	    # We have a sublist, so call epsilonDiff 
+	    # We have a sublist, so call epsilonDiff
 	    set tmpresults [epsilonDiff $newelement $oldelement $epsilon \
 		    [expr {$level + 1}]]
 	    if {$tmpresults != {} } {
@@ -307,9 +307,9 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
 		    previous element was + or -)\n, but current\
 	            element is not '0.0'"
 	    }
-	} 
+	}
 
-	if { "$newelement" == "+" && "$oldelement" == "-" || 
+	if { "$newelement" == "+" && "$oldelement" == "-" ||
    	    "$newelement" == "-" && "$oldelement" == "+" } {
 		# If we have a complex number like {-0.22500000000000 - 0.0i}
 		# then we want to compare it with  {-0.22500000000000 + 0.0i}
@@ -321,7 +321,7 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
 	if [ catch {
 	    if { "$newelement" == "NaN" &&  "$oldelement" != "NaN" }  {
 		    lappend returnresults "$newelement== NaN, $oldelement != NaN"
-	    } else { 
+	    } else {
 		if [expr {$newelement > $oldelement}] {
 		if [expr { $newelement > ($oldelement + $epsilon)}] {
 		    lappend returnresults "$newelement > $oldelement + $epsilon"
@@ -352,7 +352,7 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
 
 
 ############################################################################
-#### openAllFiles 
+#### openAllFiles
 # Open up the files that are passed in as arguments, then destroy
 # the windows after a short wait
 #
