@@ -59,7 +59,7 @@ domains may spawn additional threads of their own.
 
 @author Steve Neuendorffer
 // Contributors: Mudit Goel, Edward A. Lee, Lukito Muliadi
-@version: @(#)Manager.java	1.10  10/14/98
+@version: @(#)Manager.java	$Id$
 */
 
 public final class Manager extends NamedObj {
@@ -117,25 +117,15 @@ public final class Manager extends NamedObj {
      *  that this method is not synchronized because it would grab the whole
      *  object until it finishes.   if you call this method, then just about
      *  the only way to terminate execution is by having postfire return false.
+     *  In actuality,
+     *  go is implemented by starting a ManagerExecutionThread that calls
+     *  back to this method.  
+     *  It begins by calling initialize on the toplevel composite actor.   
+     *  It then continually calls iterate based on
+     *  the variables _isRunning, and _isPaused.  It finally 
+     *  calls wrapup on its container to clean up after the execution.
      */
     public void blockingGo() {
-        blockingGo(-1);
-    }
-
-    /** This method is a blocking version of the go() method.  In actuality,
-     *  go is implemented by starting a ManagerExecutionThread that calls
-     *  back to this method.   This is made public for use with test scripts
-     *  and other batch mode processing.
-     *  It begins by calling initialize on its container, which is the
-     *  toplevel composite actor.   It then continually calls iterate based on
-     *  the variables _isRunning, _isPaused, and _iterations.  It finally 
-     *  calls wrapup on its container to clean up after the execution.
-     *  
-     *  @param iterations The number of toplevel iterations to run for.   
-     *  If iterations = -1, then execution will have no preset limit on the
-     *  number of iterations.
-     */
-    public void blockingGo(int iterations) {
         CompositeActor toplevel = ((CompositeActor)getToplevel());
                
         // ensure that we only have one execution running.
@@ -162,11 +152,9 @@ public final class Manager extends NamedObj {
                 
                 // Call _iterate() until:
                 // _isRunning is set to false (presumably by stop())
-                // iteration limit is reached
                 // postfire() returns false.
-                while (_isRunning && 
-                        ((iterations < 0) || (_iteration++ < iterations)) 
-                        && _iterate())
+                while (_isRunning && _iterate())
+                
 
                     try {
                         // if a pause has been requested
@@ -278,26 +266,12 @@ public final class Manager extends NamedObj {
     }
     
     /** Start an execution that will run for an unspecified number of 
-     *  iterations.   This will normally be terminated by calling finish, 
-     *  terminate, or returning false in a postfire method.   This method
-     *  is equivalent to calling go(-1).   This method is non-blocking.
+     *  toplevel iterations.   This will normally be stopped by 
+     *  calling finish, terminate, or returning false in a postfire method. 
+     *  This method is non-blocking.
      */
     public synchronized void go() {
-        _startExecution(-1);
-    }
-
-    /** Start an execution that will run for no more than a specified
-     *  number of iterations.   The execution may be interrupted 
-     *  by calling finish, terminate, or returning false in a postfire method.
-     *  This method is non-blocking.   This method is synchronized to 
-     *  prevent interaction with simultaneous calls to finish, terminate, 
-     *  pause, and resume.
-     *  @param iterations The number of toplevel iterations to execute for.
-     *  If iterations = -1, then execution will have no preset limit on the
-     *  number of iterations.
-     */
-    public synchronized void go(int iterations) {
-        _startExecution(iterations);
+        _startExecution();
     }
 
     /** If an execution is currently running, then set a flag requesting that
@@ -460,21 +434,19 @@ public final class Manager extends NamedObj {
          *  @param m The manager that created the ManagerExecutionThread
          *  @param iterations The number of iterations to execute for     
          */
-        public ManagerExecutionThread(Manager m, int iterations) {
+        public ManagerExecutionThread(Manager m) {
             super();
             _manager = m;
-            _iterations = iterations;
         }
         
         /** This thread makes a single call back to the blockingGo 
          *  method of the Manager that it was created with.
          */
         public void run() {
-            _manager.blockingGo(_iterations);
+            _manager.blockingGo();
         }
         
         private Manager _manager;
-        private int _iterations;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -493,6 +465,8 @@ public final class Manager extends NamedObj {
      *   throws it.
      */
     private boolean _iterate() throws IllegalActionException {
+
+        _iteration++;
         CompositeActor toplevel = (CompositeActor)getToplevel();
         if (toplevel == null) {
             throw new InvalidStateException("Manager "+ getName() +
@@ -555,7 +529,7 @@ public final class Manager extends NamedObj {
      *  Starts a new ManagerExecutionThread which will call
      *  back to this object in 'blockingGo'.
      */
-    private void _startExecution(int iterations) {
+    private void _startExecution() {
          if(_isRunning) return;
          
          // If the previous run hasn't totally finished yet, then be sure 
@@ -571,7 +545,7 @@ public final class Manager extends NamedObj {
              }
              _runningthread = null;
          }
-         _runningthread = new ManagerExecutionThread(this,iterations);
+         _runningthread = new ManagerExecutionThread(this);
          _runningthread.start();
 
      }
