@@ -52,7 +52,8 @@ JSRCS = \
 	ImageAttribute.java \
 	LineAttribute.java \
 	MonitorImage.java \
-	RectangleAttribute.java
+	RectangleAttribute.java \
+	ShapeAttribute.java
 
 OTHER_FILES_TO_BE_JARED = \
 	interactive.xml

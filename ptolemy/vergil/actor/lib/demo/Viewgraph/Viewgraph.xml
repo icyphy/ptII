@@ -20,16 +20,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="870.0, 20.0">
         </property>
     </property>
-    <property name="line" class="ptolemy.vergil.actor.lib.LineAttribute">
-        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-        </property>
-        <property name="horizontal" class="ptolemy.data.expr.Parameter" value="1024.0">
-        </property>
-        <property name="vertical" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-20.0, 115.0">
-        </property>
-    </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -65,6 +55,8 @@
     <property name="rectangle" class="ptolemy.vergil.actor.lib.RectangleAttribute">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="400.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="200.0">
@@ -94,6 +86,18 @@ attributes with visual elements.</text></svg></configure>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 515.0">
+        </property>
+    </property>
+    <property name="line2" class="ptolemy.vergil.actor.lib.LineAttribute">
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="1024.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 120.0">
         </property>
     </property>
     <entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">

@@ -1,4 +1,4 @@
-/* An attribute with a reference to a rectangle.
+/* An abstract attribute with a reference to a shape.
 
  Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,8 +30,6 @@
 
 package ptolemy.vergil.actor.lib;
 
-import java.awt.geom.Rectangle2D;
-
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -39,16 +37,18 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.icon.ShapeIcon;
 
 //////////////////////////////////////////////////////////////////////////
-//// RectangleAttribute
+//// ShapeAttribute
 /**
-This is an attribute that is rendered as a rectangle.
+This is an abstract attribute that is rendered as a shape.
+Concrete derived classes provide particular shapes.
 <p>
 @author Edward A. Lee
 @version $Id$
 */
-public class RectangleAttribute extends ShapeAttribute {
+public abstract class ShapeAttribute extends Attribute {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -63,17 +63,18 @@ public class RectangleAttribute extends ShapeAttribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public RectangleAttribute(NamedObj container, String name)
+    public ShapeAttribute(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        width = new Parameter(this, "width");
-        width.setTypeEquals(BaseType.DOUBLE);
-        width.setExpression("100.0");
+        // Hide the name.
+        new Attribute(this, "_hideName");
 
-        height = new Parameter(this, "height");
-        height.setTypeEquals(BaseType.DOUBLE);
-        height.setExpression("100.0");
+        _icon = new ShapeIcon(this, "_icon");
+
+        lineWidth = new Parameter(this, "lineWidth");
+        lineWidth.setTypeEquals(BaseType.DOUBLE);
+        lineWidth.setExpression("1.0");
 
         // FIXME: controller for resizing.
         // Create a custom controller.
@@ -83,15 +84,9 @@ public class RectangleAttribute extends ShapeAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The vertical extent.
-     *  This is a double that defaults to 100.0.
+    /** The line width.  This is a double that defaults to 1.0.
      */
-    public Parameter height;
-
-    /** The horizontal extent.
-     *  This is a double that defaults to 100.0.
-     */
-    public Parameter width;
+    public Parameter lineWidth;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -104,14 +99,18 @@ public class RectangleAttribute extends ShapeAttribute {
      */
     public void attributeChanged(Attribute attribute)
         throws IllegalActionException {
-        if (attribute == width || attribute == height) {
-            double widthValue = ((DoubleToken) width.getToken()).doubleValue();
-            double heightValue =
-                ((DoubleToken) height.getToken()).doubleValue();
-            _icon.setShape(
-                new Rectangle2D.Double(0.0, 0.0, widthValue, heightValue));
+        if (attribute == lineWidth) {
+            double lineWidthValue =
+                ((DoubleToken) lineWidth.getToken()).doubleValue();
+            _icon.setLineWidth((float) lineWidthValue);
         } else {
             super.attributeChanged(attribute);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected members                   ////
+
+    /** The shape icon. */
+    protected ShapeIcon _icon;
 }

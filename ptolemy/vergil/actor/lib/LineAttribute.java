@@ -39,7 +39,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.icon.ShapeIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// LineAttribute
@@ -49,7 +48,7 @@ This is an attribute that is rendered as a line.
 @author Edward A. Lee
 @version $Id$
 */
-public class LineAttribute extends Attribute {
+public class LineAttribute extends ShapeAttribute {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -68,19 +67,14 @@ public class LineAttribute extends Attribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        // Hide the name.
-        new Attribute(this, "_hideName");
+        x = new Parameter(this, "x");
+        x.setTypeEquals(BaseType.DOUBLE);
+        x.setExpression("100.0");
+        
+        y = new Parameter(this, "y");
+        y.setTypeEquals(BaseType.DOUBLE);
+        y.setExpression("0.0");
 
-        _icon = new ShapeIcon(this, "_icon");
-        
-        horizontal = new Parameter(this, "horizontal");
-        horizontal.setTypeEquals(BaseType.DOUBLE);
-        horizontal.setExpression("100.0");
-        
-        vertical = new Parameter(this, "vertical");
-        vertical.setTypeEquals(BaseType.DOUBLE);
-        vertical.setExpression("0.0");
-        
         // FIXME: controller for resizing.
         // Create a custom controller.
         // new ImageAttributeControllerFactory(this, "_controllerFactory");
@@ -92,12 +86,12 @@ public class LineAttribute extends Attribute {
     /** The horizontal extent.
      *  This is a double that defaults to 100.0.
      */
-    public Parameter horizontal;
+    public Parameter x;
     
-    /** The vertical extent.
+    /** The y extent.
      *  This is a double that defaults to 0.0.
      */
-    public Parameter vertical;
+    public Parameter y;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -110,21 +104,15 @@ public class LineAttribute extends Attribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == horizontal || attribute == vertical) {      
-            double horizontalValue
-                   = ((DoubleToken)horizontal.getToken()).doubleValue();
-            double verticalValue
-                   = ((DoubleToken)vertical.getToken()).doubleValue();
+        if (attribute == x || attribute == y) {      
+            double xValue
+                   = ((DoubleToken)x.getToken()).doubleValue();
+            double yValue
+                   = ((DoubleToken)y.getToken()).doubleValue();
             _icon.setShape(new Line2D.Double(
-                   0.0, 0.0, horizontalValue, verticalValue));
+                   0.0, 0.0, xValue, yValue));
         } else {
             super.attributeChanged(attribute);
         }
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    // The image icon.
-    private ShapeIcon _icon;
 }
