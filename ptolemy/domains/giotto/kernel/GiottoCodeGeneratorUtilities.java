@@ -248,7 +248,7 @@ public class GiottoCodeGeneratorUtilities {
                         inPort.getName(model));
             List sourcePortList = inPort.sourcePortList();
             if (sourcePortList.size() > 1) {
-                throw new IllegalActionException(inPort, "Input port cannot" +
+                throw new IllegalActionException(inPort, "Input port cannot " +
                         "receive data from multiple sources in Giotto.");
             }
             Iterator sourcePorts = inPort.sourcePortList().iterator();
