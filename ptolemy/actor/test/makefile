@@ -51,6 +51,7 @@ JSIMPLE_TESTS = \
 	AtomicActor.tcl \
 	CompositeActor.tcl \
 	Director.tcl \
+	Manager.tcl \
 	IOPort.tcl \
 	IORelation.tcl \
 	StaticSchedulingDirector.tcl \
