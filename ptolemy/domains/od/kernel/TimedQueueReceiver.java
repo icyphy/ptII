@@ -152,7 +152,7 @@ public class TimedQueueReceiver implements Receiver {
 	    triple = new RcvrTimeTriple( this, _rcvrTime, _priority ); 
 	    // triple = new RcvrTimeTriple( this, _rcvrTime, getPriority() ); 
 	    // ODActor actor = (ODActor)getContainer().getContainer(); 
-	    actor.updateRcvrTable( triple );
+	    actor.updateRcvrList( triple );
             
             /* 
 	    // System.out.println(((ComponentEntity)actor).getName()
@@ -282,7 +282,7 @@ public class TimedQueueReceiver implements Receiver {
                 _rcvrTime = _lastTime; 
                 triple = new RcvrTimeTriple( this, _rcvrTime, _priority ); 
                 // System.out.println("Update: _rcvrTime = " + _rcvrTime); 
-                actor.updateRcvrTable( triple ); 
+                actor.updateRcvrList( triple ); 
             }
 
             if (!_queue.put(event)) {
