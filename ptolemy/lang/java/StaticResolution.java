@@ -553,6 +553,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     public static final ClassDecl  ARRAY_CLASS_DECL;
     public static final FieldDecl  ARRAY_LENGTH_DECL;
+
+    // FIXME: Where is ARRAY_CLONE_DECL used? It looks like we can remove it.
     public static final MethodDecl ARRAY_CLONE_DECL;
 
     /** A List containing values of CompileUnitNodes that have only been parsed
@@ -586,7 +588,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     _defaultTypeVisitor.typePolicy();
    
     /** Generate debugging output associated with loading of ASTs.
-     *  FIXME: remove when we are done debuggin gthe loading of ASTs.
+     *  FIXME: remove when we are done debugging the loading of ASTs.
      */ 
     public static boolean debugLoading = false; 
 
@@ -670,7 +672,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         // clone() method has an empty body for now
         MethodDeclNode arrayCloneNode = new MethodDeclNode(PUBLIC_MOD | FINAL_MOD,
                 new NameNode(AbsentTreeNode.instance, "clone"), new LinkedList(),
-                new LinkedList(), new BlockNode(new LinkedList()), OBJECT_TYPE);
+        //      new LinkedList(), new BlockNode(new LinkedList()), OBJECT_TYPE);
+        // Use a null object to denote an empty body to distinguish this from a
+        // body with an empty statement list.
+                new LinkedList(), null, OBJECT_TYPE);
 
         arrayClassMembers.add(arrayLengthNode);
         arrayClassMembers.add(arrayCloneNode);
@@ -799,9 +804,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             if (container instanceof TypedDecl) {
                 ClassDecl classDecl = NodeUtil.typedDeclToClassDecl((TypedDecl)container);
                 if (classDecl != null) {
-                    if (StaticResolution.debugLoading)
-                        System.out.println("source type is: " + 
-                                classDecl.getSource().getClass().getName()); 
                     UserTypeDeclNode classSource = 
                             (UserTypeDeclNode)(classDecl.getSource()); 
                     if (StaticResolution.traceLoading)
@@ -937,8 +939,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     // Load classes into the scope.
     // This method is only called a few times to bootstrap the JDK system
-    // classes like Object
+    // classes like Object. Shallow AST loading is used here if possible.
     private static final ClassDecl _requireClass(Scope scope, String name) {
+
+        // FIXME: clean up the code in this routine that is commented out.
 
 	    ClassDecl classDecl = null;
         if (traceLoading) 
@@ -968,10 +972,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	        // Use reflection
 	        Class myClass = ASTReflect.lookupClass(name);
 	        if (myClass.isInterface()) {
-                StaticResolution.shallowLoading = false;
-		        InterfaceDeclNode interfaceDeclNode = ASTReflect.ASTInterfaceDeclNode(myClass);
-		        // FIXME: seems like this should be something other
-		        // than classDecl, perhaps interfaceDecl or userTypeDecl?
+                // StaticResolution.shallowLoading = false;
+		        InterfaceDeclNode interfaceDeclNode = 
+                        ASTReflect.ASTInterfaceDeclNode(myClass);
 		        classDecl = new ClassDecl(name,
                             CG_INTERFACE,
                             new TypeNameNode(interfaceDeclNode.getName()),
@@ -989,10 +992,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		        scope.add(classDecl);
 	        } else {
 
-                // FIXME: we must also ensure deep loading for interfaces.
-                StaticResolution.shallowLoading = false;
-		        ClassDeclNode classDeclNode =
-		            ASTReflect.ASTClassDeclNode(myClass);
+                // StaticResolution.shallowLoading = false;
+		        ClassDeclNode classDeclNode = ASTReflect.ASTClassDeclNode(myClass);
     
 		        classDecl = new ClassDecl(name,
                             CG_CLASS,
@@ -1027,7 +1028,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                         + "call loadSource() on '" + classDecl.getName() + "'");
             }
             try {
-                StaticResolution.shallowLoading = false;
+                // StaticResolution.shallowLoading = false;
                 classDecl.loadSource();
             } catch (IOException e) {
                 throw new RuntimeException("Failed to load source: " + e);
