@@ -119,7 +119,7 @@ public class SymmetricDecryption extends CipherActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the <i>input</i> and <i>key</i>, and send the decrypted data    
+    /** Read the <i>input</i> and <i>key</i>, and send the decrypted data
      *  to the <i>output</i> port.
      *  The algorithm is obtained from the <i>key</i>, and if it
      *  is different than the current value of the <i>algorithm<i>
@@ -133,7 +133,7 @@ public class SymmetricDecryption extends CipherActor {
             if (key.hasToken(0)) {
                 KeyToken keyToken = (KeyToken)key.get(0);
                 _key = (java.security.Key)keyToken.getValue();
-                if (!_algorithm.equals(_key.getAlgorithm())) { 
+                if (!_algorithm.equals(_key.getAlgorithm())) {
                     // We have the name of the algorithm from the Key,
                     // so we reinitialize the cipher
                     _algorithm = _key.getAlgorithm();

@@ -143,7 +143,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
                 }
 
                 keySize = new Parameter(this, "keySize", new IntToken(1024));
-                keySize.setTypeEquals(BaseType.INT);                
+                keySize.setTypeEquals(BaseType.INT);
             }
 
     ///////////////////////////////////////////////////////////////////
@@ -225,7 +225,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  if there is a problem processing the data.
      */
     public void fire() throws IllegalActionException {
-        super.fire(); // super.fire() will print out debugging messages. 
+        super.fire(); // super.fire() will print out debugging messages.
         try {
             if (input.hasToken(0)) {
                 byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(

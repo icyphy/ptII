@@ -50,7 +50,7 @@ Encrypt an unsigned byte array using a symmetric algorithm.
 
 <p>In cryptography, a symmetric algorithm is an algorithm that uses
 the same key for encryption and decryption.  An asymmetric algorithm uses
-two different keys: a public key and a private key.  Sun's documentation 
+two different keys: a public key and a private key.  Sun's documentation
 says that asymmetric algorithms are usually much slower than
 symmetric algorithms.  The initial default set of algorithms that
 comes with the Sun JDK does not include an asymmetric encryption algorithm,
@@ -144,7 +144,7 @@ public class SymmetricEncryption extends CipherActor {
                 // FIXME: do we really want to initialize the key each time?
                 java.security.Key securityKey =
                     (java.security.Key)keyToken.getValue();
-                if (!_algorithm.equals(securityKey.getAlgorithm())) { 
+                if (!_algorithm.equals(securityKey.getAlgorithm())) {
                     // We have the name of the algorithm from the Key,
                     // so we reinitialize the cipher
                     _algorithm = securityKey.getAlgorithm();

@@ -108,7 +108,7 @@ public class KeyToken extends Token {
 
 
     public String toString() {
-        StringBuffer result =  new StringBuffer("KeyToken( Algorithm:"); 
+        StringBuffer result =  new StringBuffer("KeyToken( Algorithm:");
         result.append(_value.getAlgorithm() + " \n");
         result.append(" Format: " + _value.getFormat() + " \n");
         result.append(" Encoded: ");

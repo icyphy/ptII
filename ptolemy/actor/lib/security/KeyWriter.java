@@ -89,7 +89,7 @@ public class KeyWriter extends KeyStoreActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(KeyToken.KEY);
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.BOOLEAN);                
+        output.setTypeEquals(BaseType.BOOLEAN);
 
     }
 
@@ -101,7 +101,7 @@ public class KeyWriter extends KeyStoreActor {
     public TypedIOPort input;
 
     /** The output port, which contains a True boolean token when
-     *  the key has been written. 
+     *  the key has been written.
      */
     public TypedIOPort output;
 
@@ -116,7 +116,7 @@ public class KeyWriter extends KeyStoreActor {
         // See io.LineWriter for an example of an actor that writes to a file.
         if (input.hasToken(0)) {
             KeyToken keyToken = (KeyToken)input.get(0);
-            java.security.Key key = (java.security.Key)keyToken.getValue(); 
+            java.security.Key key = (java.security.Key)keyToken.getValue();
             if (key instanceof java.security.PrivateKey) {
                 throw new IllegalActionException(this,
                         "Key is a PrivateKey, which is not supported because "
@@ -125,7 +125,7 @@ public class KeyWriter extends KeyStoreActor {
             // Now we add the key to the keystore, protected
             // by the password.
             try {
-                _keyStore.setKeyEntry(_alias, key, 
+                _keyStore.setKeyEntry(_alias, key,
                         _storePassword.toCharArray(),
                         null /* No certificate */);
             } catch (Exception ex) {

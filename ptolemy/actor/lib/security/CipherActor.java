@@ -172,7 +172,7 @@ abstract public class CipherActor extends CryptographyActor {
      *  a padding string. When decrypting, the receiving party needs to know
      *  how to remove the padding, if any.
      *  </blockquote>
-     * 
+     *
      *  <p>The padding is specified as a string.
      *  Names for parameter and parameters implemented vary based on the
      *  provider.
@@ -276,7 +276,7 @@ abstract public class CipherActor extends CryptographyActor {
     ///////////////////////////////////////////////////////////////////
     ////                    Private  Methods                      ////
 
-    /** The value of _cipher is updated by calling 
+    /** The value of _cipher is updated by calling
      * javax.crypt.Cipher.getInstance() with an argument that is
      * created from the values of the _algorithm, _mode and _padding.
      */

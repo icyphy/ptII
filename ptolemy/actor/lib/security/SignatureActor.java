@@ -219,7 +219,7 @@ public class SignatureActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                    Private  Methods                      ////
 
-    /** If necessary, the value of _signature is updated by calling 
+    /** If necessary, the value of _signature is updated by calling
      * Signature.getInstance() with an argument that is
      * created from the values of the _signatureAlgorithm and _provider
      */

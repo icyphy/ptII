@@ -57,7 +57,7 @@ import javax.crypto.KeyGenerator;
 Create a secret key and send it on the <i>output</i>.
 
 <p>The secret key can be used by the {@link SymmetricEncryption} and
-{@link SymmetricDecryption} actors.  
+{@link SymmetricDecryption} actors.
 See {@link ptolemy.actor.lib.security.SymmetricEncryption} for a
 description of symmetric vs. asymmetric algorithms.
 
@@ -201,7 +201,7 @@ public class SecretKey extends Source {
     /** Update the secret key by calling KeyGenerator.getInstance()
      *  with an argument that is created from the values of _algorithm,
      *  _provider and _keySize.
-     */   
+     */
     private void _updateSecretKey() throws IllegalActionException {
         if (_updateSecretKeyNeeded) {
             try {
@@ -220,7 +220,7 @@ public class SecretKey extends Source {
             }
             _updateSecretKeyNeeded = false;
         }
-    }        
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -55,10 +55,10 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// KeyReader
-/** 
+/**
 Read in a keystore from a FileParameter and output a Key.
 
-<p>Keystores are ways to manage keys and certificates.  
+<p>Keystores are ways to manage keys and certificates.
 See the {@link KeyStoreActor} documentation for more information about
 keystores.
 
@@ -87,7 +87,7 @@ public class KeyReader extends KeyStoreActor {
 
         getPublicKey = new Parameter(this, "getPublicKey",
                 new BooleanToken(true));
-        getPublicKey.setTypeEquals(BaseType.BOOLEAN);                
+        getPublicKey.setTypeEquals(BaseType.BOOLEAN);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(KeyToken.KEY);
@@ -107,7 +107,7 @@ public class KeyReader extends KeyStoreActor {
 
         verifyCertificate = new Parameter(this, "verifyCertificate",
                 new BooleanToken(true));
-        verifyCertificate.setTypeEquals(BaseType.BOOLEAN);                
+        verifyCertificate.setTypeEquals(BaseType.BOOLEAN);
     }
 
 
@@ -168,7 +168,7 @@ public class KeyReader extends KeyStoreActor {
                 ((BooleanToken)getPublicKey.getToken()).booleanValue();
         } else if (attribute == verifyCertificate) {
             _updateKeyNeeded = true;
-            _verifyCertificate = 
+            _verifyCertificate =
                 ((BooleanToken)verifyCertificate.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
@@ -176,7 +176,7 @@ public class KeyReader extends KeyStoreActor {
     }
 
     /** Output the java.security.Key that was read in.
-     *   
+     *
      *  Read at most one input token from each channel of the trigger
      *  input and discard it.  If the trigger input is not connected,
      *  then this method does nothing.  Derived classes should be
@@ -201,8 +201,8 @@ public class KeyReader extends KeyStoreActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** If necessary, update _key by using the values of the 
-     *  alias, fileOrURL and getPublicKey parameters. 
+    /** If necessary, update _key by using the values of the
+     *  alias, fileOrURL and getPublicKey parameters.
      *  @exception IllegalActionException If the parent class throws it
      *  or if there is a problem with the cryptographic configuration.
      */
@@ -230,7 +230,7 @@ public class KeyReader extends KeyStoreActor {
                                 "', keyStore: " + _keyStore);
                     }
                     PublicKey publicKey = certificate.getPublicKey();
-                    
+
                     // FIXME: The testsuite needs to test this with an
                     // invalid certificate.
                     certificate.verify(publicKey);
@@ -244,14 +244,14 @@ public class KeyReader extends KeyStoreActor {
                                 "Unknown, certificate was not a X509 cert.");
                     }
                     _key = publicKey;
-                }                    
+                }
                 if (!_getPublicKey) {
                     _key = _keyStore.getKey(_alias,
                             _keyPassword.toCharArray());
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to get key store alias '" + _alias 
+                        "Failed to get key store alias '" + _alias
                         + "' or certificate from " + fileOrURL.asURL());
             }
         }

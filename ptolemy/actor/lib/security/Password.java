@@ -98,7 +98,7 @@ public class Password extends Source {
 
         isPersistent = new Parameter(this, "isPersistent",
                 new BooleanToken(false));
-        isPersistent.setTypeEquals(BaseType.BOOLEAN);                
+        isPersistent.setTypeEquals(BaseType.BOOLEAN);
 
         password = new StringParameter(this, "password");
         password.setExpression("foo");
@@ -106,7 +106,7 @@ public class Password extends Source {
         new PasswordStyle(password, "style");
 
         output.setTypeEquals(BaseType.STRING);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////

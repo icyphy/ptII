@@ -71,7 +71,7 @@ public class PublicKeyReader extends KeyReader {
         // The key password is not needed to get the public key, so hide it.
         keyPassword.setVisibility(Settable.EXPERT);
 
-        // This actor always verifies the certificate.  
+        // This actor always verifies the certificate.
         verifyCertificate.setExpression("true");
 
         // Hide the verifyCertificate Parameter

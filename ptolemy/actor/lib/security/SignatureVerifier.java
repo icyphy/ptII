@@ -141,7 +141,7 @@ public class SignatureVerifier extends SignatureActor {
                 _signature.update(ArrayToken.arrayTokenToUnsignedByteArray(
                                           inputToken));
                 if (!_signature.verify(signatureData)) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             "Signature verification failed.");
                 }
             } catch (java.security.GeneralSecurityException ex) {
