@@ -156,7 +156,7 @@ public class PlotApplet extends Applet implements Runnable {
      */
     public void paint(Graphics graphics) {
         if (_debug > 8) System.out.println("PlotApplet: paint");
-        _myPlot.paint(graphics);
+        plot().paint(graphics);
     }
 
     /** Return the Plot object to operate on.
@@ -201,6 +201,7 @@ public class PlotApplet extends Applet implements Runnable {
     ////                         protected variables                      ////
 
     // If non-zero, print out debugging messages.
+    // See also the _debug declared in PlotBox.
     protected int _debug = 0;
 
     //////////////////////////////////////////////////////////////////////////
