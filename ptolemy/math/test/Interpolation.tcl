@@ -40,6 +40,21 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+# compare two lists of doubles
+proc deltaCompare {list1 list2} {
+    set delta 1e-6
+    for {set i 0} {$i < [llength $list1]} {incr i} {
+	set v1 [lindex $list1 $i]
+	set v2 [lindex $list2 $i]
+	set diff [expr abs($v1 - $v2)]
+
+	if {$diff> $delta} {
+	    return 0 
+	}
+    }
+    return 1
+}
+
 ######################################################################
 ####
 #
@@ -122,30 +137,32 @@ test Interpolation-2.2 {test period=0, order=0} {
 #
 test Interpolation-2.3 {period=0, order=1} {
     $interp setOrder 1
-    list [$interp interpolate -4] [$interp interpolate -3] \
+    set result [list [$interp interpolate -4] [$interp interpolate -3] \
 	[$interp interpolate -2] [$interp interpolate -1] \
 	[$interp interpolate 0] [$interp interpolate 1] \
 	[$interp interpolate 2] [$interp interpolate 3] \
 	[$interp interpolate 4] [$interp interpolate 5] \
 	[$interp interpolate 6] [$interp interpolate 7] \
 	[$interp interpolate 8] [$interp interpolate 9] \
-	[$interp interpolate 10] [$interp interpolate 11]
-} {0.0 0.0 0.0 0.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0 0.0 0.0 0.0 0.0 0.0}
+	[$interp interpolate 10] [$interp interpolate 11]]
+    deltaCompare $result {0.0 0.0 0.0 0.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0 0.0 0.0 0.0 0.0 0.0}
+} {1}
 
 ######################################################################
 ####
 #
 test Interpolation-2.4 {period=0, order=3} {
     $interp setOrder 3
-    list [$interp interpolate -4] [$interp interpolate -3] \
+    set result [list [$interp interpolate -4] [$interp interpolate -3] \
 	[$interp interpolate -2] [$interp interpolate -1] \
 	[$interp interpolate 0] [$interp interpolate 1] \
 	[$interp interpolate 2] [$interp interpolate 3] \
 	[$interp interpolate 4] [$interp interpolate 5] \
 	[$interp interpolate 6] [$interp interpolate 7] \
 	[$interp interpolate 8] [$interp interpolate 9] \
-	[$interp interpolate 10] [$interp interpolate 11]
-} {0.0 0.0 0.0 0.0 7.0 7.0 5.0 4.0 3.0 2.0 1.0 0.0 0.0 0.0 0.0 0.0}
+	[$interp interpolate 10] [$interp interpolate 11]]
+    deltaCompare $result {0.0 0.0 0.0 0.0 7.0 7.0 5.0 4.0 3.0 2.0 1.0 0.0 0.0 0.0 0.0 0.0}
+} {1}
 
 ######################################################################
 ####
@@ -168,31 +185,30 @@ test Interpolation-2.5 {test period=8, order=0} {
 #
 test Interpolation-2.6 {period=8, order=1} {
     $interp setOrder 1
-    list [$interp interpolate -4] [$interp interpolate -3] \
+    set result [list [$interp interpolate -4] [$interp interpolate -3] \
 	[$interp interpolate -2] [$interp interpolate -1] \
 	[$interp interpolate 0] [$interp interpolate 1] \
 	[$interp interpolate 2] [$interp interpolate 3] \
 	[$interp interpolate 4] [$interp interpolate 5] \
 	[$interp interpolate 6] [$interp interpolate 7] \
 	[$interp interpolate 8] [$interp interpolate 9] \
-	[$interp interpolate 10] [$interp interpolate 11]
-} {3.0 2.0 1.0 4.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0 4.0 7.0 6.0 5.0 4.0}
+	[$interp interpolate 10] [$interp interpolate 11]]
+    deltaCompare $result {3.0 2.0 1.0 4.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0 4.0 7.0 6.0 5.0 4.0}
+} {1}
 
 ######################################################################
 ####
 #
 test Interpolation-2.7 {period=8, order=3} {
-
-puts "in 2.7"
-
     $interp setOrder 3
-    list [$interp interpolate -4] [$interp interpolate -3] \
+    set result [list [$interp interpolate -4] [$interp interpolate -3] \
 	[$interp interpolate -2] [$interp interpolate -1] \
 	[$interp interpolate 0] [$interp interpolate 1] \
 	[$interp interpolate 2] [$interp interpolate 3] \
 	[$interp interpolate 4] [$interp interpolate 5] \
 	[$interp interpolate 6] [$interp interpolate 7] \
 	[$interp interpolate 8] [$interp interpolate 9] \
-	[$interp interpolate 10] [$interp interpolate 11]
-} {3.0 1.5 1.0 4.0 7.0 6.5 5.0 4.0 3.0 1.5 1.0 4.0 7.0 6.5 5.0 4.0}
+	[$interp interpolate 10] [$interp interpolate 11]]
+    deltaCompare $result {3.0 1.5 1.0 4.0 7.0 6.5 5.0 4.0 3.0 1.5 1.0 4.0 7.0 6.5 5.0 4.0}
+} {1}
 
