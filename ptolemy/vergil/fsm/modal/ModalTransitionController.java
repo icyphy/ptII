@@ -129,7 +129,7 @@ public class ModalTransitionController extends TransitionController {
 
             // Default choices.
             String[] choiceClasses
-                = {"ptolemy.vergil.fsm.modal.TransitionRefinement" };
+                = {"ptolemy.domains.fsm.modal.TransitionRefinement" };
             String[] choiceNames = {"Default Refinement"};
 
             // Check the configuration to see whether the default is overridden.
