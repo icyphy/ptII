@@ -60,6 +60,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	matlab.xml
+	matlab.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -67,8 +68,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES =	test \
-	ptmatlab.cc \
-	README.txt
+	ptmatlab.cc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
