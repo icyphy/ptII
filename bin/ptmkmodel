@@ -161,22 +161,22 @@ ME =		ptolemy/domains/$domain/demo/$model
 # Root of the Java directory
 ROOT =		../../../../../
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	\$(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =	\$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	$model
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR = 	\$(PTPACKAGE).jar
 
 JSRCS = \\
 	$appletjava
 
 EXTRA_SRCS = \\
 	$applethtm \\
-	$(JSRCS)
+	\$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -186,23 +186,23 @@ MISC_FILES =
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS = \$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass \$(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-demo: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) appletviewer $applethtm
+demo: \$(PTCLASSJAR)
+	CLASSPATH=\$(CLASSPATH) appletviewer $applethtm
 
 depend:
 	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+include \$(ROOT)/mk/ptcommon.mk
 EOF
 
 
