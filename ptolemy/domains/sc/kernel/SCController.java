@@ -42,7 +42,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// SCController
 /**
-An SCController is an FSM controller. 
+An SCController is an FSM controller.
 
 FIXME: Clean handling of the refinement of the state left.
 
@@ -119,7 +119,8 @@ public class SCController extends CompositeEntity implements Actor {
         newobj._currentState = null;
         newobj._takenTransition = null;
         if (_localVariables != null) {
-            newobj._localVariables = (VariableList)newobj.getAttribute("LocalVariables");
+            newobj._localVariables =
+                (VariableList)newobj.getAttribute("LocalVariables");
         }
         // From AtomicActor.
         newobj._inputPortsVersion = -1;
@@ -481,7 +482,8 @@ public class SCController extends CompositeEntity implements Actor {
 
     public void setInitialTransition(SCTransition initialTransition)
             throws IllegalActionException {
-        if (initialTransition != null && initialTransition.getContainer() != this) {
+        if (initialTransition != null 
+                && initialTransition.getContainer() != this) {
             throw new IllegalActionException(this, initialTransition,
                     "Initial transition is not contained by SCController.");
         }
@@ -670,7 +672,8 @@ System.out.println("Port " + port.getFullName() + " is floating.");
 
                 // Here we must be careful, port does not have inside
                 // receivers created!
-                port = (IOPort)((CompositeActor)getContainer()).getPort(port.getName());
+                port = (IOPort)((CompositeActor)getContainer()).getPort(
+                        port.getName());
                 if (port == null || !port.isOutput()) {
                     continue;
                 }
