@@ -119,6 +119,12 @@ test LogicFunction-2.6 {XNOR: Truth table: True, True} {
     enumToTokenValues [$rec getRecord 0]
 } {true}
 
+test LogicFunction-2.7 {NotAFunction: test for bad function name} {
+    catch {$function setExpression "notAFunction"} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Unrecognized logic function: notafunction.  Valid functions are 'and', 'or', 'xor', 'nand', 'nor', and 'xnor'.
+  in .top.logic}}
+
 test LogicFunction-3.0 {Truth table: True, False} {
     $in2value setToken [java::new ptolemy.data.BooleanToken false]
     list {}
