@@ -353,6 +353,51 @@ test IOPort-9.1 {Check connectivity via send} {
     $received toString
 } {"foo"}
 
+######################################################################
+####
+#
+test IOPort-9.1.0 {Check connectivity via vectorized send and get} {
+    # Note that vector length of 1 is used here. The generic
+    # director uses a mailbox receiver, which can only hold
+    # a single token, so larger vector lengths cannot be used
+    # here. Domains that support vectorized get() and send()
+    # should contain the tests for vector length > 1.
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    # sending entity
+    set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
+    # receiving entity
+    set e2 [java::new ptolemy.actor.AtomicActor $e0 E2]
+    set p2 [java::new ptolemy.actor.IOPort $e2 P2 true false]
+    # connection
+    # Can't use this because it uses a plain relation.
+    # set r1 [$e0 connect $p1 $p2 R1]
+    set r1 [java::new ptolemy.actor.IORelation $e0 R1]
+    $p1 link $r1
+    $p2 link $r1
+    
+    # Call preinitialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director preinitialize
+
+    # token to send
+    set token [java::new ptolemy.data.StringToken foo]
+    set token2 [java::new ptolemy.data.StringToken bar]
+
+    # token array to send.
+    set tokenArray [java::new {ptolemy.data.Token[]} {1}]
+    $tokenArray set 0 $token
+
+    # Tcl requires a fully qualified method signature for the overloaded
+    # send() method.
+    $p1 {send int ptolemy.data.Token[] int} 0 $tokenArray 1
+    set received [$p2 get 0 1]
+    jdkPrintArray $received
+} {{"foo"}}
+
 test IOPort-9.1.1 {Check hasRoom and hasToken methods} {
     # NOTE: Use previous setup.
     set res1 [$p1 hasRoom 0]
