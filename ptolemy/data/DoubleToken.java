@@ -37,13 +37,13 @@ $Id$
 */
 public class DoubleToken extends ScalarToken {
 
-    /** Construct a token with double 0.0
+    /** Construct a token with double 0.0.
      */
     public DoubleToken() {
 	_value = 0.0;
     }
 
-    /** Construct a token with the specified value
+    /** Construct a token with the specified value.
      */
     public DoubleToken(double value) {
 	_value = value;
@@ -58,16 +58,16 @@ public class DoubleToken extends ScalarToken {
 	_value = value;
     }
 
-    /** Return the value in the token as a byte by casting.
+    /** Return the value in the token as a byte.
      */
     public byte byteValue() {
 	return (byte)_value;
     }
 
-    /* Return a reference to a Complex. The real part of the Complex
-	is the value in the token, the imaginary part is set to 0.
-	FIXME: finish after the Complex class is moved to this package.
-     */
+    // Return a reference to a Complex. The real part of the Complex
+    // is the value in the token, the imaginary part is set to 0.
+    // FIXME: finish after the Complex class is moved to this package.
+
 //    public Complex complexValue() {
 //    }
 
@@ -77,19 +77,19 @@ public class DoubleToken extends ScalarToken {
 	return _value;
     }
 
-    /* Return a reference to a Fix.
-	FIXME: finish after the Fix class is available.
-     */
+    // Return a reference to a Fix.
+    // FIXME: finish after the Fix class is available.
+
 //    public Fix fixValue() {
 //    }
 
-    /** Return the value in the token as an int by casting.
+    /** Return the value in the token as an int.
      */
     public int intValue() {
 	return (int)_value;
     }
 
-    /** Return the value in the token as a long integer by casting.
+    /** Return the value in the token as a long integer.
      */
     public long longValue() {
 	return (long)_value;
