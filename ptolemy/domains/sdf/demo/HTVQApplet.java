@@ -42,7 +42,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// HTVQApplet
 /**
-An applet that uses SDF to simulate a Video Compression Scheme based on 
+An applet that uses SDF to simulate a Video Compression Scheme based on
 a simple Hierarchical Table-Lookup Vector Quantization demo.
 
 @author Steve Neuendorffer
@@ -83,7 +83,7 @@ public class HTVQApplet extends Applet implements Runnable {
         controlPanel.add(_goButton);
         _goButton.addActionListener(new GoButtonListener());
         // Done adding go button
- 
+
        Panel displayPanel = new Panel();
         add(displayPanel);
         displayPanel.setLayout(new BorderLayout(15, 15));
@@ -96,9 +96,9 @@ public class HTVQApplet extends Applet implements Runnable {
         Panel compressedPanel = new Panel();
         compressedPanel.setSize(200, 200);
         displayPanel.add(compressedPanel, "East");
-       
+
         validate();
- 
+
         // Creating the topology.
         try {
             _manager = new Manager();
@@ -110,7 +110,7 @@ public class HTVQApplet extends Applet implements Runnable {
             c.setManager(_manager);
             d.setScheduler(s);
             d.setScheduleValid(false);
-            
+
             ImageSequence source = new ImageSequence(c, "Source");
             ImagePartition part = new ImagePartition(c, "Part");
             HTVQEncode encode = new HTVQEncode(c, "Encoder");
@@ -120,7 +120,7 @@ public class HTVQApplet extends Applet implements Runnable {
             ImageDisplay original = new ImageDisplay(c, "Original");
             consumer.setPanel(compressedPanel);
             original.setPanel(originalPanel);
-            
+
             r = (TypedIORelation) c.connect(
                     (TypedIOPort)source.getPort("image"),
                     (TypedIOPort)part.getPort("image"), "R1");
@@ -156,17 +156,17 @@ public class HTVQApplet extends Applet implements Runnable {
                 // Start the CurrentTimeThread.
             //             Thread ctt = new CurrentTimeThread();
             //  ctt.start();
-            
+
             validate();
                 _manager.run();
-                
+
 
         } catch (Exception ex) {
             System.err.println("Run failed: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
-    
+
 
 
     ////////////////////////////////////////////////////////////////////////

@@ -83,7 +83,7 @@ public class SDFApplet extends PtolemyApplet {
         try {
             // Initialization
             _goButton = new Button("Go");
-            
+
             _manager = new Manager();
             _toplevel = new TypedCompositeActor();
             _toplevel.setName("ComSystem");
@@ -92,17 +92,17 @@ public class SDFApplet extends PtolemyApplet {
                     (Parameter)_director.getAttribute("Iterations");
             iterparam.setToken(new IntToken(iterations));
             SDFScheduler scheduler = new SDFScheduler();
-            
+
             _toplevel.setDirector(_director);
             _toplevel.setManager(_manager);
             _director.setScheduler(scheduler);
             _director.setScheduleValid(false);
-            
+
             // Add a control panel in the main panel.
             Panel controlPanel = new Panel();
             add(controlPanel);
             controlPanel.add(_goButton);
-            
+
             _goButton.addActionListener(new GoButtonListener());
         } catch (Exception ex) {
             report("Setup failed:", ex);

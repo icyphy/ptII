@@ -47,36 +47,36 @@ public class VideoTest {
             throws IllegalActionException, NameDuplicationException
         {
             DebugListener debugger = new DebugListener();
-            
+
             Debug.register(debugger);
             VideoTest demo = new VideoTest();
             demo.execute();
         }
     public void execute()
             throws IllegalActionException, NameDuplicationException
-        {            
+        {
             Manager m = new Manager();
             TypedCompositeActor c = new TypedCompositeActor();
             SDFDirector d = new SDFDirector();
             SDFScheduler s = new SDFScheduler();
-            
+
             c.setDirector(d);
             c.setManager(m);
             d.setScheduler(s);
             d.setScheduleValid(false);
-            
+
             ImageSequence source = new ImageSequence(c, "Source");
             ImagePartition part = new ImagePartition(c, "Part");
             ImageUnpartition unpart = new ImageUnpartition(c, "Unpart");
             SDFConsumer consumer = new SDFConsumer(c, "Display");
-            
+
             c.connect((TypedIOPort)source.getPort("image"),
                     (TypedIOPort)part.getPort("image"), "R1");
             c.connect((TypedIOPort)part.getPort("partition"),
                     (TypedIOPort)unpart.getPort("partition"), "R2");
             c.connect((TypedIOPort)unpart.getPort("image"),
                     (TypedIOPort)consumer.getPort("input"), "R3");
-            
+
             Parameter p = (Parameter) d.getAttribute("Iterations");
             p.setToken(new IntToken(60));
             m.run();
