@@ -50,16 +50,23 @@ PTPACKAGE = 	domains
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
+# Include these jars in PTAUXALLJAR
+PTAUXALLJARS = \
+		dde/dde.jar \
+                dt/dt.jar \
+		giotto/giotto.jar \
+		gr/gr.jar \
+
+# Experimental domains 
+PTAUXALLJAR =	experimentalDomains.jar
+
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 		csp/csp.jar \
 		ct/ct.jar \
-		dde/dde.jar \
 		de/de.jar \
-                dt/dt.jar \
 		fsm/fsm.jar \
-		giotto/giotto.jar \
 		pn/pn.jar \
 		sdf/sdf.jar
 
