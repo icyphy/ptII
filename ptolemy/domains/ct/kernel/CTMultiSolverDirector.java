@@ -599,7 +599,6 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     protected boolean _prefireContinuousActors()
             throws IllegalActionException {
-        boolean allReady = true;
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         Iterator actors = 
             schedule.get(CTSchedule.CONTINUOUS_ACTORS).actorIterator();
@@ -608,9 +607,14 @@ public class CTMultiSolverDirector extends CTDirector {
             boolean ready = actor.prefire();
             if(_debugging) _debug("Prefire "+((Nameable)actor).getName() +
                     " returns " + ready);
-            allReady = allReady && ready;
+            if(!ready) {
+                throw new IllegalActionException(((Nameable)actor).getName()
+                        + " prefire returns false. This is not allowed in"
+                        + " the CT domain. Does the actor require all inputs"
+                        + " to be present at the prefire time?");
+            }
         }
-        return allReady;
+        return true;
     }
     
     /** Clear obsolete breakpoints, switch to breakpointODESolver if this
