@@ -23,9 +23,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
-@AcceptedRating Red
+
 @ProposedRating Red
+@AcceptedRating Red
 */
+
 package ptolemy.domains.sdf.lib.vq;
 
 import ptolemy.kernel.*;
@@ -48,7 +50,7 @@ public class VQEncode extends SDFAtomicActor {
     public VQEncode(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
-        super(container,name);
+        super(container, name);
         TypedIOPort outputport = (TypedIOPort) newPort("index");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
@@ -80,8 +82,8 @@ public class VQEncode extends SDFAtomicActor {
         for(j = 0; j < numpartitions; j++) {
             _part = _partitions[j];
 
-            int i,nn=0;
-            long nnd = 1000000,td;
+            int i, nn = 0;
+            long nnd = 1000000, td;
             for(i = 0; i < 256; i++) {
                 td = _distortion(_part, _codebook[2][i],
                         _xpartsize * _ypartsize);
@@ -92,7 +94,7 @@ public class VQEncode extends SDFAtomicActor {
             //          System.out.println(nn);
         }
         ObjectToken ot = new ObjectToken(_codewords);
-        ((TypedIOPort) getPort("index")).send(0,ot);
+        ((TypedIOPort) getPort("index")).send(0, ot);
 
     }
 
@@ -132,7 +134,7 @@ public class VQEncode extends SDFAtomicActor {
                 temp = new byte[size];
                 for(j = 0; j < 256; j++) {
                     _codebook[i][j] = new int[size];
-                    if(source.read(temp)!=size)
+                    if(source.read(temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
                     for(x = 0; x < size; x++)
@@ -157,7 +159,7 @@ public class VQEncode extends SDFAtomicActor {
     }
 
     long _distortion(int a[], int b[], int len) {
-        long c,d = 0;
+        long c, d = 0;
         int i;
         for(i = 0;i<len;i++)
         {
