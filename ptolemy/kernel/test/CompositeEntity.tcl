@@ -556,6 +556,32 @@ test CompositeEntity-11.4 {Test getConnectedPorts on ports} {
 
 ######################################################################
 ####
+# NOTE:  Uses the setup constructed in 11.1.
+test CompositeEntity-11.5 {Test description} {
+    $e0 description 3
+} {{pt.kernel.CompositeEntity {.E0}{pt.kernel.CompositeEntity {.E0.E3}{pt.kernel.CompositeEntity {.E0.E3.E4}{pt.kernel.ComponentEntity {.E0.E3.E4.E1}{pt.kernel.ComponentPort {.E0.E3.E4.E1.P1}{pt.kernel.ComponentRelation {.E0.E3.E4.R1}} {pt.kernel.ComponentRelation {.E0.E3.E4.R2}} {pt.kernel.ComponentRelation {.E0.E3.E4.R3}}}
+}
+ {pt.kernel.ComponentEntity {.E0.E3.E4.E2}{pt.kernel.ComponentPort {.E0.E3.E4.E2.P2}{pt.kernel.ComponentRelation {.E0.E3.E4.R3}}}
+ {pt.kernel.ComponentPort {.E0.E3.E4.E2.P3}{pt.kernel.ComponentRelation {.E0.E3.E4.R2}} {pt.kernel.ComponentRelation {.E0.E3.R6}}}
+}
+}
+ {pt.kernel.ComponentEntity {.E0.E3.E5}{pt.kernel.ComponentPort {.E0.E3.E5.P5}{pt.kernel.ComponentRelation {.E0.E3.R5}}}
+}
+ {pt.kernel.ComponentEntity {.E0.E3.E6}{pt.kernel.ComponentPort {.E0.E3.E6.P6}{pt.kernel.ComponentRelation {.E0.E3.R6}}}
+}
+}
+ {pt.kernel.CompositeEntity {.E0.E7}{pt.kernel.ComponentEntity {.E0.E7.E8}{pt.kernel.ComponentPort {.E0.E7.E8.P9}{pt.kernel.ComponentRelation {.E0.E7.R8}}}
+ {pt.kernel.ComponentPort {.E0.E7.E8.P10}{pt.kernel.ComponentRelation {.E0.E7.R9}}}
+}
+}
+ {pt.kernel.CompositeEntity {.E0.E10}{pt.kernel.ComponentEntity {.E0.E10.E9}{pt.kernel.ComponentPort {.E0.E10.E9.P14}{pt.kernel.ComponentRelation {.E0.E10.R12}}}
+}
+}
+}
+}
+
+######################################################################
+####
 # Test connections.
 test CompositeEntity-12.1 {Test connect} {
     set e0 [java::new pt.kernel.CompositeEntity]

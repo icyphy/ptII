@@ -213,10 +213,11 @@ test Entity-6.2 {remove port by reference} {
     $ramp addPort $a
     set b [java::new pt.kernel.Port $ramp b]
     $ramp removePort $a
-    list [_testEntityGetPorts $ramp] \
+
+    list [$ramp description 2] \
             [expr { [$a getContainer] == [java::null] }] \
             [[$b getContainer] getName]
-} {b 1 Ramp}
+} {{{pt.kernel.Entity {.Ramp}{pt.kernel.Port {.Ramp.b}}}} 1 Ramp}
 
 ######################################################################
 ####

@@ -175,4 +175,33 @@ test NamedObj-6.1 {Test toString} {
     set b [java::new pt.kernel.NamedObj $n ""]
     set c [java::new pt.kernel.NamedObj $n "car" ]
     list [$a toString] [$b toString] [$c toString]
-} {{pt.kernel.NamedObj `.'} {pt.kernel.NamedObj `foo.'} {pt.kernel.NamedObj `foo.car'}}
+} {{pt.kernel.NamedObj {.}} {pt.kernel.NamedObj {foo.}} {pt.kernel.NamedObj {foo.car}}}
+
+
+######################################################################
+####
+# 
+test NamedObj-6.1 {Test description} {
+    set n [java::new pt.kernel.Workspace "foo"]
+    set a [java::new pt.kernel.NamedObj]
+    set b [java::new pt.kernel.NamedObj $n ""]
+    set c [java::new pt.kernel.NamedObj $n "car" ]
+    list "[$a description 0]\n\
+    [$b description 0]\n\
+    [$c description 0]\n\
+    [$a description 1]\n\
+    [$b description 1]\n\
+    [$c description 1]\n\
+    [$a description 2]\n\
+    [$b description 2]\n\
+    [$c description 2]"
+
+} {{{pt.kernel.NamedObj {.}}
+ {pt.kernel.NamedObj {foo.}}
+ {pt.kernel.NamedObj {foo.car}}
+ {pt.kernel.NamedObj {.} {pt.kernel.Workspace {}}}
+ {pt.kernel.NamedObj {foo.} {pt.kernel.Workspace {foo}}}
+ {pt.kernel.NamedObj {foo.car} {pt.kernel.Workspace {foo}}}
+ {pt.kernel.NamedObj {.} {pt.kernel.Workspace {}}}
+ {pt.kernel.NamedObj {foo.} {pt.kernel.Workspace {foo}}}
+ {pt.kernel.NamedObj {foo.car} {pt.kernel.Workspace {foo}}}}}
