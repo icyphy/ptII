@@ -61,12 +61,13 @@ public class IconLibraryFactory {
      * @exception NameDuplicationException If the XML element contains two
      * named objects with the same name.
      */
-    public static IconLibrary createIconLibrary(XMLElement e) 
+    public static IconLibrary createIconLibrary(IconLibrary container, 
+						XMLElement e) 
             throws IllegalActionException, NameDuplicationException {
 
         _checkElement(e, "iconlibrary");
 
-        IconLibrary ptmlobject = new IconLibrary();
+        IconLibrary ptmlobject = new IconLibrary(container, "_library");
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement) children.nextElement();
@@ -74,7 +75,7 @@ public class IconLibraryFactory {
             if(etype.equals("icon")) {
                 // if it's an Icon, then create it, 
                 // and add it to the list of icons.
-                _createIcon(ptmlobject, child);
+                Icon icon = _createIcon(ptmlobject, child);
             } else if(etype.equals("sublibrary")) {
                 // if it's a sublibrary, then add it to the 
                 // list of sublibraries.
@@ -83,8 +84,8 @@ public class IconLibraryFactory {
                 try {
                     String offset = child.getAttribute("url");
                     XMLElement sublibtree = _parseSubURL(e, offset);
-                    IconLibrary sublib = createIconLibrary(sublibtree); 
-                    ptmlobject.addSubLibrary(sublib);
+                    IconLibrary sublib = 
+			createIconLibrary(ptmlobject, sublibtree); 
                 }
                 catch (Exception ex) {
                     System.out.println("Couldn't parse iconlibrary from url "+
@@ -120,12 +121,12 @@ public class IconLibraryFactory {
      * Create a PTMLParser and point it at the URL, then call createIconLibrary
      * on the returned tree of XMLElements.
      */
-    public static IconLibrary parseIconLibrary(URL url) 
+    public static IconLibrary parseIconLibrary(IconLibrary container, URL url) 
             throws Exception {
-
+       
         String urlstring = url.toString();        
-        XMLElement root = _parser.parse(urlstring);
-        return IconLibraryFactory.createIconLibrary(root);
+	XMLElement root = _parser.parse(urlstring);
+        return IconLibraryFactory.createIconLibrary(container, root);
     }
    
     /**

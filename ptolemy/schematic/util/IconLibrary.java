@@ -49,7 +49,7 @@ called suiblibraries.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class IconLibrary extends Entity {
+public class IconLibrary extends CompositeEntity {
 
     /** 
      * Create an IconLibrary object with the name "iconlibrary".
@@ -57,14 +57,14 @@ public class IconLibrary extends Entity {
      */
     public IconLibrary() {
         super();
-        _sublibraries = (NamedList) new NamedList();
-        _icons = (NamedList) new NamedList();
-        _terminalstyles = (NamedList) new NamedList();
-        try {
+	//	_sublibraries = (NamedList) new NamedList();
+        //_icons = (NamedList) new NamedList();
+        //_terminalstyles = (NamedList) new NamedList();
+	/*       try {
             setName("IconLibrary");
         } catch (KernelException ex) {
             throw new InternalErrorException(ex.toString());
-        }
+	    }*/
     }
 
     /** 
@@ -72,35 +72,12 @@ public class IconLibrary extends Entity {
      * The library will have an empty string for the description and version.
      * @throws IllegalActionException If the name contains a period.
      */
-    public IconLibrary(String name) throws IllegalActionException {
-        super(name);
-        _sublibraries = (NamedList) new NamedList();
-        _icons = (NamedList) new NamedList();
-        _terminalstyles = (NamedList) new NamedList();
+    public IconLibrary(IconLibrary container, String name) throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        //_sublibraries = (NamedList) new NamedList();
+        //_icons = (NamedList) new NamedList();
+        //_terminalstyles = (NamedList) new NamedList();
    }
-
-    /**
-     * Add an Icon to this library
-     *  @exception IllegalActionException If the icon has no name.
-     *  @exception NameDuplicationException If the name of the icon
-     *  coincides with the name of another icon contained in this library.
-     */
-    public void addIcon(Icon i)
-        throws IllegalActionException, NameDuplicationException {
-        _icons.append(i);
-    }
-
-    /**
-     * Add a sublibrary to this library.
-     *  @exception IllegalActionException If the sublibrary has no name.
-     *  @exception NameDuplicationException If the name of the sublibrary
-     *  coincides with the name of another sublibrary
-     *  contained in this library.
-     */
-    public void addSubLibrary(IconLibrary library)
-        throws IllegalActionException, NameDuplicationException {
-        _sublibraries.append(library);
-    }
 
     /**
      * Add a terminal style to this library.
@@ -115,20 +92,6 @@ public class IconLibrary extends Entity {
     // }
 
     /**
-     * Test if the library contains the given icon.
-     */
-    public boolean containsIcon(Icon icon) {
-        return _icons.includes(icon);
-    }
-
-    /**
-     * Test if the library contains the sublibrary
-     */
-    public boolean containsSubLibrary(IconLibrary lib) {
-        return _sublibraries.includes(lib);
-    }
-
-    /**
      * Test if the library contains the terminal style
      */
     //    public boolean containsTerminalStyle(TerminalStyle style) {
@@ -141,21 +104,11 @@ public class IconLibrary extends Entity {
      * @return The found icon, or null if the icon was not found.
      */
     public Icon findIcon(String dottedName) {
-        StringTokenizer tokens = new StringTokenizer(dottedName, ".");
-        IconLibrary temp = this;
-        int count = tokens.countTokens();
-        
-        int i;
-        for(i = 0; i < (count - 1); i++) {
-	    String name = (String) tokens.nextElement();
-	    temp = temp.getSubLibrary(name);
-	    if(temp == null) {
-		return null;
-	    }
-	}
-
-	String name = (String) tokens.nextElement();
-	return temp.getIcon(name);
+	Attribute icon = getAttribute(dottedName);
+	if(icon instanceof Icon)
+	    return (Icon)icon;
+	else
+	    return null;
     }
 
     /** 
@@ -184,20 +137,6 @@ public class IconLibrary extends Entity {
 	}*/
 
     /**
-     * Get the icon that is stored in this icon library with the given name
-     */
-    public Icon getIcon(String name) {
-	return (Icon) _icons.get(name);
-    }
-
-    /** 
-     * Return the URL of the given sublibrary.
-     */
-    public IconLibrary getSubLibrary(String name) {
-	return (IconLibrary) _sublibraries.get(name);
-    }
-
-    /**
      * Get the terminal style in this IconLibrary with the given name.
      */
     //    public TerminalStyle getTerminalStyle(String name) {
@@ -209,29 +148,6 @@ public class IconLibrary extends Entity {
     //public String getVersion() {
     //    return _version;
     //}
-
-    /**
-     * Return the icons that are contained in this icon library.
-     *
-     * @return an enumeration of Icon
-     */
-    public Enumeration icons() {
-        return _icons.elements();
-    }
-
-   /**
-     * Remove an icon from this IconLibrary
-     */
-    public void removeIcon(Icon icon) {
-        _sublibraries.remove(icon);
-    }
-
-    /**
-     * Remove a sublibrary from this IconLibrary
-     */
-    public void removeSubLibrary(IconLibrary lib) {
-        _sublibraries.remove(lib);
-    }
 
     /**
      * Remove a terminal style from this IconLibrary
@@ -252,16 +168,6 @@ public class IconLibrary extends Entity {
      * for parsing.
      * @return an Enumeration of Strings
      */
-    public Enumeration subLibraries() {
-        return _sublibraries.elements();
-    }
-
-    /**
-     * Return the names of subLibraries of this IconLibrary.   These names
-     * are URL Strings which can be passed to other IconLibrary objects
-     * for parsing.
-     * @return an Enumeration of Strings
-     */
     //    public Enumeration terminalStyles() {
     //   return _terminalstyles.elements();
     //}
@@ -269,7 +175,7 @@ public class IconLibrary extends Entity {
     /**
      * Return a string this representing Icon.
      */
-    public String toString() {
+/*    public String toString() {
         Enumeration els = subLibraries();
         String str = getName() + "({";
         while(els.hasMoreElements()) {
@@ -281,9 +187,9 @@ public class IconLibrary extends Entity {
          while(els.hasMoreElements()) {
             Icon icon = (Icon) els.nextElement();
 	    str += "\n" + icon.toString();
-        }        
+}       
         return str + "})";
-    }
+}*/
 
     /** Return a description of the object.  Lines are indented according to
      *  to the level argument using the protected method _getIndentPrefix().
@@ -296,30 +202,43 @@ public class IconLibrary extends Entity {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     */
+     
     protected String _description(int detail, int indent, int bracket) {
         String result = "";
         if(bracket == 0) 
             result += super._description(detail, indent, 0);
         else 
             result += super._description(detail, indent, 1);
-        /*
+        
 	result += _getIndentPrefix(indent) + " sublibraries {\n";
         result += _enumerationDescription(subLibraries(), indent);
-
+	/*
 	result += _getIndentPrefix(indent) + "} icons {\n";
         result += _enumerationDescription(icons(), indent);
 
 	result += _getIndentPrefix(indent) + "} terminalstyles{\n";
         result += _enumerationDescription(terminalStyles(), indent);
-	*/
+	
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 
         return result;
     }
 
-    private NamedList _icons;
-    private NamedList _sublibraries;
-    private NamedList _terminalstyles;
+    /** Return a description of the enumeration by appropriately calling 
+     *  _description on each element of the enumeration.  
+     *  @param enum An enumeration of NamedObjs.
+     
+    private String _enumerationDescription(Enumeration enum, int indent) {
+        String result = "";
+        while(enum.hasMoreElements()) {
+            NamedObj obj = (NamedObj) enum.nextElement();
+            result += obj.description() + "\n";
+        }
+        return result;
+    }
+*/
+//    private NamedList _icons;
+//    private NamedList _sublibraries;
+//    private NamedList _terminalstyles;
 }

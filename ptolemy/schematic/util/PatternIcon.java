@@ -1,4 +1,4 @@
-/* An Icon is the graphical representation of a schematic entity.
+/* An Icon has another Icon as a pattern
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -44,61 +44,30 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// XMLIcon
+//// PatternIcon
 /**
+This icon represents an icon with a similar look to another icon (its
+'pattern').  
 
-An icon is the graphical representation of a schematic entity.
-Icons are stored hierarchically in icon libraries.   Every icon has a 
-name, along with a graphical representation.
-
-This icon is for those based on XML.  If the icon is never configured, then
-it will have a default figure.
-
-@author Steve Neuendorffer, John Reekie
+@author Steve Neuendorffer
 @version $Id$
 */
-public class XMLIcon extends EditorIcon implements Configurable {
+public class PatternIcon extends EditorIcon {
 
     /**
      * Create a new icon with the name "Icon" in the given container.
-     * By default, the icon contains no graphic
-     * representations.
      */
-    public XMLIcon (NamedObj container) 
+    public PatternIcon (NamedObj container) 
             throws NameDuplicationException, IllegalActionException {
-        super(container);
-        setName("_icon");
-        _graphics = (CircularList) new CircularList();
-    }
-
-   /**
-     * Add a new graphic element to the icon. 
-     */
-    public void addGraphicElement (GraphicElement g) 
-            throws IllegalActionException {
-        _graphics.insertLast(g);
-    }
-
-    /** Configure the object with data from the specified input stream.
-     *  This method is defined to throw a very general exception to allow
-     *  classes that implement the interface to use whatever exceptions
-     *  are appropriate.
-     *  @param base The base relative to which references within the input
-     *   stream are found, or null if this is not known.
-     *  @param in InputStream
-     *  @exception Exception If the stream cannot be read or its syntax
-     *   is incorrect.
-     */
-    public void configure(URL base, InputStream in) throws Exception {
-	// Do nothing yet.
+        this(container, "_icon");
     }
 
     /**
-     * Test if this icon contains a graphic in the
-     * given format.
+     * Create a new icon with the name "EditorIcon" in the given container. 
      */
-    public boolean containsGraphicElement (GraphicElement g) {
-        return _graphics.includes(g);
+    public PatternIcon (NamedObj container, String name) 
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
     }
 
     /**
@@ -106,50 +75,23 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * will be painted with each graphic element that this icon contains.
      */
     public Figure createBackgroundFigure() {
-        Enumeration graphics = graphicElements();
-        PaintedFigure figure = new PaintedFigure();
-        while(graphics.hasMoreElements()) {
-            GraphicElement element = (GraphicElement) graphics.nextElement();
-            figure.add(element.getPaintedObject());
-        }
-        return figure;
+        return _pattern.createBackgroundFigure();
     }
 
-    /**
-     * Return an enumeration over the names of the graphics formats
-     * supported by this icon.
-     *
-     * @return Enumeration of String.
-     */
-    public Enumeration graphicElements() {
-        return _graphics.elements();
+    public Icon getPattern() {
+	return _pattern;
     }
-
-    /**
-     * Remove a graphic element from the icon. Throw an exception if
-     * the graphic element is not contained in this icon
-     */
-    public void removeGraphicElement (GraphicElement g)
-            throws IllegalActionException {
-        try {
-            _graphics.removeOneOf(g);
-        }
-        catch (NoSuchElementException e) {
-            throw new IllegalActionException("removeGraphicElement:" +
-                    "GraphicElement not found in icon.");
-        }
+    
+    public void setPattern(EditorIcon icon) {
+	_pattern = icon;
     }
     
     /**
      * Return a string this representing Icon.
      */
     public String toString() {
-        Enumeration els = graphicElements();
         String str = super.toString() + "(";
-        while(els.hasMoreElements()) {
-            GraphicElement g = (GraphicElement) els.nextElement();
-            str += "\n...." + g.toString();
-        }
+	str += _pattern;
         return str + ")";
     }
 
@@ -171,19 +113,17 @@ public class XMLIcon extends EditorIcon implements Configurable {
             result += super._description(detail, indent, 0);
         else 
             result += super._description(detail, indent, 1);
-	result += " graphics {\n";
-	Enumeration graphicElements = graphicElements();
-        while (graphicElements.hasMoreElements()) { 
-            GraphicElement p = (GraphicElement) graphicElements.nextElement();
-            result +=  _getIndentPrefix(indent + 1) + p.toString() + "\n";
-        }
-	
+	result += " pattern {\n";
+	if(_pattern == null) 
+	    result += _getIndentPrefix(indent + 1) + "null\n";
+	else
+	    result += _getIndentPrefix(indent + 1) + _pattern.toString() + "\n";	    
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 
         return result;
     }
 
-    private CircularList _graphics;
+    private EditorIcon _pattern;
 }
 

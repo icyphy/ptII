@@ -51,10 +51,12 @@ JSRCS = \
 	EditorDropTarget.java \
 	EditorGraphController.java \
 	EditorGraphImpl.java \
-	EditorNodeRenderer.java \
+	EntityController.java \
+	EntityPortController.java \
 	GraphDocument.java \
 	GraphEditor.java \
 	ParameterQuery.java \
+	PortController.java \
 	SchematicPalette.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -33,6 +33,7 @@ package ptolemy.schematic.editor;
 import ptolemy.schematic.util.EditorIcon;
 import ptolemy.schematic.util.IconLibrary;
 import ptolemy.schematic.util.IconLibraryFactory;
+import ptolemy.schematic.util.LibraryIcon;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
@@ -256,6 +257,7 @@ public class GraphEditor extends AbstractApplication {
         JShadePane s =_applicationFrame.getShadePane();
 
         parseLibraries();
+	//System.out.println("Icons = " + _iconLibrary.description());
         //        JTabbedPane pane = createPaneFromEntityLibrary(_entityLibrary);
         // FIXME Get the right library.
         CompositeEntity lib = getEntityLibrary();
@@ -284,7 +286,7 @@ public class GraphEditor extends AbstractApplication {
             throw new RuntimeException(e.getMessage());
         }
         */
-	System.out.println("library = " + lib.description());
+	//System.out.println("library = " + lib.description());
 //	System.out.println("library = " + getEntityLibrary().description());
 //        JTabbedPane pane = createPaneFromComposite(lib);	
 	//        JTabbedPane pane = createPaneFromComposite(getEntityLibrary());
@@ -294,16 +296,18 @@ public class GraphEditor extends AbstractApplication {
 	final JTree tree = new JTree(top);       
 	JScrollPane pane = new JScrollPane(tree);*/
         JTreePane pane = new JTreePane("EntityLibrary");
-        createTreeNodes(pane, null, lib);
+        createTreeNodes(pane, "EntityLibrary", lib);
         s.addShade("Entity Library", null, pane, "The Default entity library");
         //       pane.setSelectedTitle(lib.getFullName());
     }
     
     public void createTreeNodes(JTreePane pane,
             String parent, CompositeEntity library) {
-        SchematicPalette palette = new SchematicPalette();
+	SchematicPalette palette = new SchematicPalette();
 	Enumeration enum = library.getEntities();
         int i = 0;
+	pane.addEntry(parent, library.getFullName(), palette);
+ 
         while(enum.hasMoreElements()) {
             Entity entity = 
                 (Entity) enum.nextElement();
@@ -317,7 +321,6 @@ public class GraphEditor extends AbstractApplication {
                         (CompositeEntity)entity);
             }
         }	
-        pane.addEntry(parent, library.getFullName(), palette);
     }
 
     public JTabbedPane createPaneFromComposite(CompositeEntity library) {
@@ -445,23 +448,23 @@ public class GraphEditor extends AbstractApplication {
                     return;
                 } 
                 try {
-                    /*
-                    Schematic schematic = 
-                        (Schematic) d.getCurrentSheet().getModel();
+                    Graph graph = (Graph)d.getCurrentSheet().getModel();
+                    CompositeActor toplevel = 
+		    (CompositeActor) graph.getSemanticObject();
                     // FIXME set the Director.  This is a hack, but it's the 
                     // Simplest hack.
-                    //   SchematicDirector director = 
-			//_entityLibrary.findDirector(
-                    //       (String)_directorComboBox.getSelectedItem());
-		    //schematic.setDirector(director);
-                    
-                    PtolemyModelFactory factory = new PtolemyModelFactory();
-                    TypedCompositeActor system = 
-                        factory.createPtolemyModel(schematic);
-                    Manager manager = system.getManager();
+		    ptolemy.domains.sdf.kernel.SDFDirector director = 
+		    new ptolemy.domains.sdf.kernel.SDFDirector();
+		    //		    _entityLibrary.getEntity(
+		    //	(String)_directorComboBox.getSelectedItem());
+		    toplevel.setDirector(director);
+                    director.iterations.setExpression("25");
+
+                    Manager manager = new Manager();
+		    toplevel.setManager(manager);
 		    // manager.addDebugListener(new StreamListener());
                     manager.startRun();
-                    */
+                    
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     throw new GraphException(ex.getMessage());
@@ -549,14 +552,17 @@ public class GraphEditor extends AbstractApplication {
         try {
             URL urlbase = new URL("file:" + System.getProperty("PTII"));
             iconlibURL = new URL(urlbase, 
-		"ptII/ptolemy/schematic/lib/rootIconLibrary.ptml");
+		"ptII/ptolemy/actor/lib/genericicons.ptml");
 				 
             //            entitylibURL = new URL(urlbase, 
             //		"ptII/ptolemy/schematic/lib/rootEntityLibrary.ptml");
             entitylibURL = new URL(urlbase, 
 		"ptII/ptolemy/actor/lib/genericentities.xml");
-				   
-            _iconLibrary = IconLibraryFactory.parseIconLibrary(iconlibURL);
+				   	    
+            _iconLibrary = new IconLibrary();
+	    _iconLibrary.setName("root");
+	    IconLibraryFactory.parseIconLibrary(_iconLibrary, iconlibURL);
+	    LibraryIcon.setIconLibrary(_iconLibrary);
 
             MoMLParser parser = new MoMLParser();
             _entityLibrary =

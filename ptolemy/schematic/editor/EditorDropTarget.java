@@ -124,7 +124,7 @@ public class EditorDropTarget extends DropTarget {
                     NamedObj newObject = (NamedObj)newNode.getSemanticObject();
 		    newObject.setName(semanticObject.getName() + 
 				      ((EditorGraphController)gc).createUniqueID());
-		    ((EditorGraphController) gc).addNode(newNode, p.x, p.y);
+		    ((EditorGraphController) gc).getEntityController().addNode(newNode, p.x, p.y);
                 }
                 catch (Exception ex) {
                     ex.printStackTrace();

@@ -53,23 +53,9 @@ JSRCS = \
 	GraphicElement.java \
 	IconLibrary.java \
 	IconLibraryFactory.java \
+	LibraryIcon.java \
+	PatternIcon.java \
 	XMLIcon.java	
-
-#	EntityLibrary.java \
-#	IconLibrary.java \
-#	PTMLObject.java \
-#	PTMLObjectFactory.java \
-#	PTMLTemplateObject.java \
-#	PtolemyModelFactory.java \
-#	Schematic.java \
-#	SchematicDirector.java \
-#	SchematicEntity.java \
-#	SchematicGraphImpl.java \
-#	SchematicLink.java \
-#	SchematicParameter.java \
-#	SchematicPort.java \
-#	SchematicRelation.java \
-#	SchematicTerminal.java \
 
 
 EXTRA_SRCS =	$(JSRCS)

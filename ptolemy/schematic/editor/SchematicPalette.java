@@ -76,13 +76,13 @@ public class SchematicPalette extends JGraph {
     }
 
     public void addNode(Node n, double x, double y) {
-	_controller.addNode(n, x, y);
+	_controller._entityController.addNode(n, x, y);
     }
 
     public void addEntity(Entity e, double x, double y) {
         Node node = new BasicCompositeNode();
 	node.setSemanticObject(e);
-        _controller.addNode(node, x, y);
+        _controller._entityController.addNode(node, x, y);
     }
 
     public Node getDraggedNode() {
@@ -129,47 +129,15 @@ public class SchematicPalette extends JGraph {
 
     public class PaletteController extends GraphController {
 	public PaletteController (SchematicPalette palette) {
-	    // The interactors attached to terminals and edges
-	    SelectionModel sm = getSelectionModel();	    
-	    NodeInteractor ni = new NodeInteractor(sm);
+	    _portController = new PortController(this);
+	    _entityController = new EntityController(this);
 	    DragInteractor di = new NodeDnDInteractor(palette);
-
+	    NodeInteractor ni = _entityController.getNodeInteractor();
 	    ni.setDragInteractor(di);
-	    setNodeInteractor(ni);
-
-            // let all the mouse events fall through to the canvas, so the
-            // drag recognizer can get them.
-            ni.setConsuming(false);
+	    ni.setConsuming(false);
 	    di.setConsuming(false);
-            NodeRenderer nr = new EditorNodeRenderer(this);
-	    setNodeRenderer(nr);
 	}
 
-	/** Add a node to this graph editor and render it
-	 * at the given location.
-	 */
-	public void addNode(Node n, double x, double y) {
-	    // Create a figure for it
-	    drawNode(n,x,y);
-	    
-	    // Add to the graph
-	    getGraphImpl().addNode(n, getGraph());
-	}
-	
-	/** Draw a node at the given location.
-	 */
-	public void drawNode(Node n, double x, double y) {
-	    // Create a figure for it
-	    Figure nf = getNodeRenderer().render(n);
-	    nf.setInteractor(getNodeInteractor());
-	    getGraphPane().getForegroundLayer().add(nf);
-	    CanvasUtilities.translateTo(nf, x, y);
-	    
-	    // Add to the view and model
-	    nf.setUserObject(n);
-	    n.setVisualObject(nf);
-	}
-	
 	/**
 	 * Initialize all interaction on the graph pane. This method
 	 * is called by the setGraphPane() method of the superclass.
@@ -218,6 +186,8 @@ public class SchematicPalette extends JGraph {
                 // This drag interactor doesn't actually drag.
             }
 	}
+	EntityController _entityController;
+	PortController _portController;
     }
 
     /** A transferable object that contains a local JVM reference to a 

@@ -48,6 +48,7 @@ import diva.canvas.interactor.*;
 import diva.canvas.toolbox.*;
 import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
@@ -84,13 +85,14 @@ public class EditorGraphController extends GraphController {
      */
     private RelationCreator _relationCreator;
 
-    /** The interactor for creating new vertecies connected to an existing relation
+    /** The interactor for creating new vertecies connected
+     *  to an existing relation
      */
     private ConnectedVertexCreator _connectedVertexCreator;
 
-     /** The interactor for creating new terminals
+    /** The interactor for creating new terminals
      */
-    private TerminalCreator _terminalCreator;
+    private PortCreator _portCreator;
 
     /** The interactor for creating context sensitive menus.
      */
@@ -98,7 +100,12 @@ public class EditorGraphController extends GraphController {
 
     /** The interactor that interactively creates edges
      */
-    private EdgeCreator _edgeCreator;
+    private LinkCreator _linkCreator;
+
+    private PortController _portController;
+    private RelationController _relationController;
+    private EntityController _entityController;
+    private LinkController _linkController;
 
     /** The filter for control operations
      */
@@ -121,8 +128,15 @@ public class EditorGraphController extends GraphController {
      * terminal and edge interactors.
      */
     public EditorGraphController () {
+	setGraphImpl(new EditorGraphImpl());
+	_portController = new PortController(this);
+	_entityController = new EntityController(this);
+	_relationController = new RelationController(this);
+	_linkController = new LinkController(this);
+
+	/*
         // The interactors attached to terminals and edges
-        SelectionModel sm = getSelectionModel();
+	SelectionModel sm = getSelectionModel();
         NodeInteractor ni = new NodeInteractor(sm);
 	//ni.setSelectionManipulator(new BoundsManipulator());
         EdgeInteractor ei = new EdgeInteractor(sm);
@@ -160,29 +174,14 @@ public class EditorGraphController extends GraphController {
         // The mouse filter needs to accept regular click or control click
         MouseFilter handleFilter = new MouseFilter(1, 0, 0);
         manipulator.setHandleFilter(handleFilter);
+	*/
     }
-
-    /** Add an entity to this graph editor and render it
-     * at the given location.
-     */
-    //    public void addEntity(SchematicEntity entity, double x, double y) {
-    //	addNode(entity, x, y);
-	
-	/*
-	Enumeration terminals = entity.terminals();
-	while(terminals.hasMoreElements()) {
-	    SchematicTerminal terminal = 
-		(SchematicTerminal) terminals.nextElement();
-	    drawNode(terminal, x + terminal.getX(), y + terminal.getY());
-	} 
-	*/       
-    //    }
 
     /** Add an edge to this graph editor and render it
      * from the given tail node to the given head node.  This edge is 
      * anchored to it's head and tail node, and does not have a regular edge
      * interactor.
-     */
+     
     public void addAnchoredEdge(Edge edge, Node head, Node tail, 
 				double x, double y) {
         Figure hf = (Figure) head.getVisualObject();
@@ -209,7 +208,7 @@ public class EditorGraphController extends GraphController {
      * from the given tail node to an autonomous site at the
      * given location. The "end" flag is either HEAD_END
      * or TAIL_END, from diva.canvas.connector.ConnectorEvent.
-     */
+     
     public void addEdge(Edge edge, Node node, int end, double x, double y) {
         Figure nf = (Figure) node.getVisualObject();
         FigureLayer layer = getGraphPane().getForegroundLayer();
@@ -239,7 +238,7 @@ public class EditorGraphController extends GraphController {
 
     /** Add a node to this graph editor and render it
      * at the given location.
-     */
+     
     public void addNode(Node node, double x, double y) {
         // Create a figure for it
         drawNode(node, x, y);
@@ -249,7 +248,7 @@ public class EditorGraphController extends GraphController {
     }
     
     /** Draw an edge.
-     */
+     
     public void drawEdge(Edge edge) {
         Node tail = edge.getTail();
         Node head = edge.getHead();
@@ -277,14 +276,14 @@ public class EditorGraphController extends GraphController {
     }
 
     /** Draw a node at the given location.
-     */
+     
     public void drawNode(Node n, double x, double y) {
 	// Create a figure for it
         Figure nf = getNodeRenderer().render(n);
         nf.setInteractor(getNodeInteractor());
 	getGraphPane().getForegroundLayer().add(nf);
 
-        /*
+        
         if(n instanceof CompositeNode) {
 	    Iterator nodes = ((CompositeNode) n).nodes();
 	    while(nodes.hasNext()) {
@@ -301,14 +300,14 @@ public class EditorGraphController extends GraphController {
 		node.setVisualObject(nodeFigure);
 	    }
            }
-        */        
+               
 
         CanvasUtilities.translateTo(nf, x, y);
  
         // Add to the view and model
         nf.setUserObject(n);
         n.setVisualObject(nf);
-    }
+	}
 
     /**
      * Return the graph being viewed.
@@ -316,6 +315,10 @@ public class EditorGraphController extends GraphController {
     //    public Graph getGraph() {
     //    return _graph;
     //}
+
+    public NodeController getEntityController() {
+	return _entityController;
+    }
 
     /**
      * Initialize all interaction on the graph pane. This method
@@ -328,9 +331,9 @@ public class EditorGraphController extends GraphController {
         GraphPane pane = getGraphPane();
 
         // Create and set up the selection dragger
-        SelectionDragger _selectionDragger = new SelectionDragger(pane);
-        _selectionDragger.addSelectionInteractor(getEdgeInteractor());
-        _selectionDragger.addSelectionInteractor(getNodeInteractor());
+	//   SelectionDragger _selectionDragger = new SelectionDragger(pane);
+	// _selectionDragger.addSelectionInteractor(getEdgeInteractor());
+	// _selectionDragger.addSelectionInteractor(getNodeInteractor());
 
         // Create a listener that creates new relations
         _relationCreator = new RelationCreator();
@@ -338,15 +341,17 @@ public class EditorGraphController extends GraphController {
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
         
         // Create a listener that creates new terminals
-        _terminalCreator = new TerminalCreator();
-        _terminalCreator.setMouseFilter(_controlFilter);
-        pane.getBackgroundEventLayer().addInteractor(_terminalCreator);
+	_portCreator = new PortCreator();
+        _portCreator.setMouseFilter(_controlFilter);
+        pane.getBackgroundEventLayer().addInteractor(_portCreator);
         
         // Create the interactor that drags new edges.
-	_edgeCreator = new EdgeCreator();
-        _edgeCreator.setMouseFilter(_controlFilter);
-        getNodeInteractor().addInteractor(_edgeCreator);
-        
+	_linkCreator = new LinkCreator();
+	_linkCreator.setMouseFilter(_controlFilter);
+	_portController.getNodeInteractor().addInteractor(_linkCreator);
+        _entityController.getPortController().getNodeInteractor().addInteractor(_linkCreator);
+	_relationController.getNodeInteractor().addInteractor(_linkCreator);
+	
         /*
         // Create the interactor that drags new edges.
 	_connectedVertexCreator = new ConnectedVertexCreator();
@@ -427,10 +432,14 @@ public class EditorGraphController extends GraphController {
             }
         }
 
-        // Set the graph
+        // Set the grap
         _graph = g;
     }
     */
+
+    public void setEntityController(NodeController controller) {
+	_entityController = (EntityController)controller;
+    }
 
     ///////////////////////////////////////////////////////////////
     //// TerminalCreator
@@ -439,9 +448,9 @@ public class EditorGraphController extends GraphController {
      * on the screen, if control-clicked with mouse button 1. This
      * needs to be made more customizable.
      */
-    protected class TerminalCreator extends AbstractInteractor {
+    protected class PortCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
-            System.out.println("Terminal Creator");
+            System.out.println("Port Creator");
 	    Graph graph = getGraph();
 	    CompositeEntity toplevel = 
 		(CompositeEntity)graph.getSemanticObject();
@@ -458,7 +467,7 @@ public class EditorGraphController extends GraphController {
 		}
 	    }
             Node n = getGraphImpl().createNode(port);
-            addNode(n, e.getLayerX(), e.getLayerY());
+            _portController.addNode(n, e.getLayerX(), e.getLayerY());
         }
     }
 
@@ -492,7 +501,7 @@ public class EditorGraphController extends GraphController {
                 throw new RuntimeException(ex.getMessage());
             }
             Node n = getGraphImpl().createNode(vertex);
-            addNode(n, e.getLayerX(), e.getLayerY());
+            _relationController.addNode(n, e.getLayerX(), e.getLayerY());
         }
     }
 
@@ -500,12 +509,11 @@ public class EditorGraphController extends GraphController {
     //// EdgeDropper
 
     /** An inner class that handles interactive changes to connectivity.
-     */
+     */  /*   
     protected class EdgeDropper extends ConnectorAdapter {
-        /**
-         * Called when a connector end is dropped--attach or
-         * detach the edge as appropriate.
-         */
+        //
+        // Called when a connector end is dropped--attach or
+        // detach the edge as appropriate.        
         public void connectorDropped(ConnectorEvent evt) {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
@@ -525,14 +533,14 @@ public class EditorGraphController extends GraphController {
             }
         }
     }
-
+	 */
     ///////////////////////////////////////////////////////////////
-    //// EdgeCreator
+    //// LinkCreator
 
     /** An interactor that interactively drags edges from one terminal
      * to another.
      */
-    protected class EdgeCreator extends AbstractInteractor {
+    protected class LinkCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
             Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
@@ -540,46 +548,42 @@ public class EditorGraphController extends GraphController {
             System.out.println(sourceObject.description());
             
 
-            if((sourceObject instanceof Vertex)||
-	       (sourceObject instanceof Port)) {
-		System.out.println(sourceObject.description());
-		
-		FigureLayer layer = (FigureLayer) e.getLayerSource();
-		
-		// Create a new edge
-		CompositeEntity container = 
-		    (CompositeEntity)getGraph().getSemanticObject();
-		Edge edge = getGraphImpl().createEdge(null);	    
-		
-		// Add it to the editor
-		addEdge(edge,
-			sourcenode,
-			ConnectorEvent.TAIL_END,
-			e.getLayerX(),
-			e.getLayerY());
-		
-		// Add it to the selection so it gets a manipulator, and
-		// make events go to the grab-handle under the mouse
-		Figure ef = (Figure) edge.getVisualObject();
-		getSelectionModel().addSelection(ef);
-		ConnectorManipulator cm = (ConnectorManipulator) ef.getParent();
-		GrabHandle gh = cm.getHeadHandle();
-		layer.grabPointer(e, gh);
-	    }
+	    FigureLayer layer = (FigureLayer) e.getLayerSource();
+	    
+	    // Create a new edge
+	    CompositeEntity container = 
+		(CompositeEntity)getGraph().getSemanticObject();
+	    Edge edge = getGraphImpl().createEdge(null);	    
+	    
+	    // Add it to the editor
+	    _linkController.addEdge(edge,
+				    sourcenode,
+				    ConnectorEvent.TAIL_END,
+				    e.getLayerX(),
+				    e.getLayerY());
+	    
+	    // Add it to the selection so it gets a manipulator, and
+	    // make events go to the grab-handle under the mouse
+	    Figure ef = (Figure) edge.getVisualObject();
+	    getSelectionModel().addSelection(ef);	    ConnectorManipulator cm = 
+		(ConnectorManipulator) ef.getParent();
+	    GrabHandle gh = cm.getHeadHandle();
+	    layer.grabPointer(e, gh);
 	}
     }
 
-    
+
+
     /** An interactor that creates a new Vertex that is connected to a vertex
      *  in a relation
      */
     protected class ConnectedVertexCreator extends AbstractInteractor {
-        public void mousePressed(LayerEvent e) {
+	public void mousePressed(LayerEvent e) {
 	    FigureLayer layer = (FigureLayer) e.getLayerSource();
 	    Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
-
+	    
             if((sourceObject instanceof Vertex)) {
 		System.out.println(sourceObject.description());
 		
@@ -598,14 +602,14 @@ public class EditorGraphController extends GraphController {
 		    throw new RuntimeException(ex.getMessage());
 		}
 		Node node = getGraphImpl().createNode(vertex);
-		addNode(node, e.getLayerX(), e.getLayerY());
+		//addNode(node, e.getLayerX(), e.getLayerY());
 
 		Edge edge = getGraphImpl().createEdge(null);
-		addEdge(edge,
-			sourcenode,
-			ConnectorEvent.TAIL_END,
-			e.getLayerX(),
-			e.getLayerY());
+		//addEdge(edge,
+		//	sourcenode,
+		//ConnectorEvent.TAIL_END,
+		//	e.getLayerX(),
+			//e.getLayerY());
 		
 		// Add it to the selection so it gets a manipulator, and
 		// make events go to the grab-handle under the mouse
@@ -621,23 +625,23 @@ public class EditorGraphController extends GraphController {
     /** An interactor that creates context-sensitive menus.
      */
     protected class MenuCreator extends AbstractInteractor {
-        public void mousePressed(LayerEvent e) {
-            Figure source = e.getFigureSource();
-            if(source == null) {
-                Graph graph = getGraph();
-                NamedObj object = (NamedObj) graph.getSemanticObject();
-                JPopupMenu menu = 
-                    new ObjectContextMenu(object);
-                menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
-            }
-            else {
-                Node sourcenode = (Node) source.getUserObject();
-                NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-                JPopupMenu menu = 
-                    new ObjectContextMenu(object);
-                menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
-            }
-        }
+	public void mousePressed(LayerEvent e) {
+	    Figure source = e.getFigureSource();
+	    if(source == null) {
+		Graph graph = getGraph();
+		NamedObj object = (NamedObj) graph.getSemanticObject();
+		JPopupMenu menu = 
+		    new ObjectContextMenu(object);
+		menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
+	    }
+	    else {
+		Node sourcenode = (Node) source.getUserObject();
+		NamedObj object = (NamedObj) sourcenode.getSemanticObject();
+		JPopupMenu menu = 
+		    new ObjectContextMenu(object);
+		menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
+	    }
+	}
     }
     
     /**
@@ -648,8 +652,8 @@ public class EditorGraphController extends GraphController {
      * of an object.  
      */
     public class ObjectContextMenu extends JPopupMenu {
-        protected NamedObj _target;
-        
+	protected NamedObj _target;
+	
         public ObjectContextMenu(NamedObj target) {
             super(target.getName());
             _target = target;
@@ -670,7 +674,7 @@ public class EditorGraphController extends GraphController {
                         ex.printStackTrace();
                         throw new RuntimeException(ex.getMessage());
                     }
-
+		    
                     pane.add(query);
                     frame.setVisible(true);
                     frame.pack();
@@ -683,26 +687,31 @@ public class EditorGraphController extends GraphController {
             action.putValue("menuItem", item);
         }
     }
-
-    /*    public class SchematicContextMenu extends ObjectContextMenu {
-        public SchematicContextMenu(CompositeEntity target) {
-            super(target);
-
-            Action action;
-            action = new AbstractAction ("Get Director Parameters") {
-                public void actionPerformed(ActionEvent e) {
-                    // Create a dialog and attach the dialog values 
-                    // to the parameters of the schematic's director
-                    CompositeEntity object = 
-		    (CompositeEntity) getValue("target");
-                    Director director = object.getDirector();
-                    JFrame frame =
-                        new JFrame("Parameters for " + director.getName());
+    
+    public class SchematicContextMenu extends ObjectContextMenu {
+	public SchematicContextMenu(CompositeEntity target) {
+	    super(target);
+	    
+	    Action action;
+	    action = new AbstractAction ("Get Director Parameters") {
+		public void actionPerformed(ActionEvent e) {
+		    // Create a dialog and attach the dialog values 
+		    // to the parameters of the schematic's director
+		    CompositeActor object = 
+		    (CompositeActor) getValue("target");
+		    Director director = object.getDirector();
+		    JFrame frame =
+		    new JFrame("Parameters for " + director.getName());
                     JPanel pane = (JPanel) frame.getContentPane();
-                    
-                    Query query = new ParameterQuery(director);
-                    
-                    pane.add(query);
+		    Query query;
+		    try {
+			query = new ParameterQuery(director);
+		    } catch (Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException(ex.getMessage());
+		    }
+			
+		    pane.add(query);
                     frame.setVisible(true);
                     frame.pack();
                 }
@@ -714,8 +723,56 @@ public class EditorGraphController extends GraphController {
             action.putValue("menuItem", item);           
         }
     }
-    */    
-    
+
+    public class RelationController extends NodeController {
+	public RelationController(GraphController controller) {
+	    super(controller);
+	    setNodeRenderer(new RelationRenderer());
+	}
+    }
+
+    public class RelationRenderer implements NodeRenderer {
+	public Figure render(Node n) {
+	    Figure figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
+	    figure.setUserObject(n);
+	    n.setVisualObject(figure);
+	    return figure;
+	}
+    }
+
+    public class LinkController extends EdgeController {
+	public LinkController(GraphController controller) {
+	    super(controller);
+	    // Create and set up the target for connectors
+	    // This is wierd...  we want 2 targets, one for head and port, 
+	    // one for tail and vertex.
+	    ConnectorTarget ct = new PerimeterTarget() {
+		public boolean accept (Figure f) {
+		    Object object = f.getUserObject();
+		    if(object instanceof Node) {
+			Node node = (Node) object;
+			object = node.getSemanticObject();
+			if(object instanceof Port) return true;
+			if(object instanceof Vertex) return true;
+		    }
+		    return false;
+		}
+	    };
+        
+	    // Create and set up the manipulator for connectors
+	    BasicSelectionRenderer renderer = (BasicSelectionRenderer)
+		getEdgeInteractor().getSelectionRenderer();
+	    ConnectorManipulator manipulator = (ConnectorManipulator) 
+		renderer.getDecorator();
+	    manipulator.setConnectorTarget(ct);
+	    //	    manipulator.addConnectorListener(new EdgeDropper());
+	    //getEdgeInteractor().setPrototypeDecorator(manipulator);
+	    
+	    //    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
+	    //manipulator.setHandleFilter(handleFilter);
+	}
+    }
+
     public String createUniqueName(String root) {
 	String name = root + _uniqueID++;
 	return name;

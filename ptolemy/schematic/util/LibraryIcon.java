@@ -1,4 +1,4 @@
-/* An Icon is the graphical representation of a schematic entity.
+/* An Icon whose pattern is in an icon library.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// XMLIcon
+//// LibraryIcon
 /**
 
 An icon is the graphical representation of a schematic entity.
@@ -57,26 +57,24 @@ it will have a default figure.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class XMLIcon extends EditorIcon implements Configurable {
+public class LibraryIcon extends PatternIcon implements Configurable {
 
     /**
      * Create a new icon with the name "Icon" in the given container.
      * By default, the icon contains no graphic
      * representations.
      */
-    public XMLIcon (NamedObj container) 
+    public LibraryIcon (NamedObj container) 
             throws NameDuplicationException, IllegalActionException {
-        super(container);
-        setName("_icon");
-        _graphics = (CircularList) new CircularList();
+        this(container, "_icon");
     }
 
-   /**
-     * Add a new graphic element to the icon. 
+    /**
+     * Create a new icon with the name "EditorIcon" in the given container. 
      */
-    public void addGraphicElement (GraphicElement g) 
-            throws IllegalActionException {
-        _graphics.insertLast(g);
+    public LibraryIcon (NamedObj container, String name) 
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
     }
 
     /** Configure the object with data from the specified input stream.
@@ -90,66 +88,25 @@ public class XMLIcon extends EditorIcon implements Configurable {
      *   is incorrect.
      */
     public void configure(URL base, InputStream in) throws Exception {
-	// Do nothing yet.
+	int bytesread = 0;
+	// There must be a better way to do this.
+	byte[] b = new byte[100];
+	bytesread = in.read(b, 0, 100);
+	if(bytesread > 90) {
+	    throw new RuntimeException("buffer overrun");
+	}
+	String name = new String(b, 0, bytesread);
+	System.out.println(name);
+	// FIXME get the name from the input stream.
+        IconLibrary library = LibraryIcon.getIconLibrary();
+	setPattern((EditorIcon)library.findIcon(name));
     }
 
-    /**
-     * Test if this icon contains a graphic in the
-     * given format.
-     */
-    public boolean containsGraphicElement (GraphicElement g) {
-        return _graphics.includes(g);
-    }
-
-    /**
-     * Create a background figure based on this icon.  The background figure
-     * will be painted with each graphic element that this icon contains.
-     */
-    public Figure createBackgroundFigure() {
-        Enumeration graphics = graphicElements();
-        PaintedFigure figure = new PaintedFigure();
-        while(graphics.hasMoreElements()) {
-            GraphicElement element = (GraphicElement) graphics.nextElement();
-            figure.add(element.getPaintedObject());
-        }
-        return figure;
-    }
-
-    /**
-     * Return an enumeration over the names of the graphics formats
-     * supported by this icon.
-     *
-     * @return Enumeration of String.
-     */
-    public Enumeration graphicElements() {
-        return _graphics.elements();
-    }
-
-    /**
-     * Remove a graphic element from the icon. Throw an exception if
-     * the graphic element is not contained in this icon
-     */
-    public void removeGraphicElement (GraphicElement g)
-            throws IllegalActionException {
-        try {
-            _graphics.removeOneOf(g);
-        }
-        catch (NoSuchElementException e) {
-            throw new IllegalActionException("removeGraphicElement:" +
-                    "GraphicElement not found in icon.");
-        }
-    }
-    
     /**
      * Return a string this representing Icon.
      */
     public String toString() {
-        Enumeration els = graphicElements();
-        String str = super.toString() + "(";
-        while(els.hasMoreElements()) {
-            GraphicElement g = (GraphicElement) els.nextElement();
-            str += "\n...." + g.toString();
-        }
+	String str = super.toString() + "(";
         return str + ")";
     }
 
@@ -171,19 +128,22 @@ public class XMLIcon extends EditorIcon implements Configurable {
             result += super._description(detail, indent, 0);
         else 
             result += super._description(detail, indent, 1);
-	result += " graphics {\n";
-	Enumeration graphicElements = graphicElements();
-        while (graphicElements.hasMoreElements()) { 
-            GraphicElement p = (GraphicElement) graphicElements.nextElement();
-            result +=  _getIndentPrefix(indent + 1) + p.toString() + "\n";
-        }
-	
-        result += _getIndentPrefix(indent) + "}";
+	//	result += " graphics {\n";	
+        //result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 
         return result;
     }
 
-    private CircularList _graphics;
+    public static IconLibrary getIconLibrary() {
+	return _iconLibrary;
+    }
+
+    public static void setIconLibrary(IconLibrary library) {
+	_iconLibrary = library;
+    }
+
+    private static IconLibrary _iconLibrary;
+
 }
 
