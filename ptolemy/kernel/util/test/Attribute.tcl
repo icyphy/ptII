@@ -54,36 +54,6 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 # 
-# FIXME: This test fails for some reason even when the result is
-# identical to what is expected!!! TclBlend problem?
-# test Attribute-1.1 {Get information about an instance of Attribute} {
-#     # If anything changes, we want to know about it so we can write tests.
-#     set n [java::new pt.kernel.util.Attribute]
-#     list [getJavaInfo $n]
-# } {{ 
-#   class:         pt.kernel.util.Attribute
-#   fields:        
-#   methods:       clone {clone pt.kernel.util.Workspace} {deepContains pt
-#     .kernel.util.NamedObj} description {description int} {e
-#     quals java.lang.Object} {getAttribute java.lang.String}
-#      getAttributes getClass getContainer getFullName getNam
-#     e hashCode notify notifyAll {setContainer pt.kernel.uti
-#     l.NamedObj} {setName java.lang.String} toString wait {w
-#     ait long} {wait long int} workspace
-#     
-#   constructors:  pt.kernel.util.Attribute {pt.kernel.util.Attribute pt.k
-#     ernel.util.NamedObj java.lang.String} {pt.kernel.util.A
-#     ttribute pt.kernel.util.Workspace}
-#     
-#   properties:    attributes class container fullName name
-#     
-#   superclass:    pt.kernel.util.NamedObj
-#     
-# }}
-
-######################################################################
-####
-# 
 test Attribute-2.1 {Create a Attribute} {
     set n [java::new pt.kernel.util.Attribute]
     $n setName "A"
