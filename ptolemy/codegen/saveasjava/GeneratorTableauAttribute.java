@@ -69,16 +69,10 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 
         // Create parameters, and populate them with style hints to
         // use a checkbox on screen.
-        deep = new Parameter(this, "deep",
-                new BooleanToken(false));
-        new CheckBoxStyle(deep, "style");
-        Documentation doc = new Documentation(deep, "tooltip");
-        doc.setValue("Experimental generation of actor code.");
-
         show = new Parameter(this, "show",
                 new BooleanToken(true));
         new CheckBoxStyle(show, "style");
-        doc = new Documentation(show, "tooltip");
+        Documentation doc = new Documentation(show, "tooltip");
         doc.setValue("Show generated code.");
 
         compile = new Parameter(this, "compile",
@@ -123,7 +117,8 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         doc.setValue("Directory into which to put generated code.");
 
         compileOptions = new StringAttribute(this, "compileOptions");
-        compileOptions.setExpression("-classpath \"" + defaultClasspath + "\"");
+        compileOptions.setExpression("-classpath \""
+				     + defaultClasspath + "\"");
         doc = new Documentation(compileOptions, "tooltip");
         doc.setValue("Options to pass to the compiler.");
 
@@ -148,11 +143,6 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 
     /** Options issued to the compile command.*/
     public StringAttribute compileOptions;
-
-    /** If true, generate code for the components as well as for the model.
-     *  This has type boolean, and defaults to false.
-     */
-    public Parameter deep;
 
     /** The directory into which to put the generated code.*/
     public StringAttribute directory;
@@ -195,8 +185,6 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             newObject.getAttribute("compile");
         newObject.compileOptions = (StringAttribute)
             newObject.getAttribute("compileOptions");
-        newObject.deep = (Parameter)
-            newObject.getAttribute("deep");
         newObject.directory = (StringAttribute)
             newObject.getAttribute("directory");
         newObject.packageName = (StringAttribute)

@@ -108,8 +108,10 @@ public class GeneratorTableau extends Tableau {
 	    setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
         } else {
-            throw new IllegalActionException(model,
-                    "Can only generate code for instances of CompositeEntity.");
+            throw
+		new IllegalActionException(model,
+					   "Can only generate code for "
+					   + "instances of CompositeEntity.");
         }
     }
 
@@ -261,74 +263,34 @@ public class GeneratorTableau extends Tableau {
                             }
 
                             if (!directory.canWrite()) {
-                                throw new IllegalActionException(model,
-                                        "Can't write: " + directoryName);
+                                throw
+				    new IllegalActionException(model,
+							       "Can't write: " 
+							       + directoryName
+							       );
                             }
-                            // Handle the generator entry.
-                            boolean deep = ((BooleanToken)options.deep.getToken())
-                                .booleanValue();
+                            // Write the generated code.
 
-                            File destination = null;
-                            if (!deep) {
-                                // Write the generated code.
-                                destination = new File(directoryName,
-                                        model.getName() + ".java");
+                            report("Starting code generation.");
+			    File destination = new File(directoryName,
+						   model.getName() + ".java");
 
-                                FileWriter outfile = new FileWriter(destination);
-                                PrintWriter outprinter = new PrintWriter(outfile);
-                                outprinter.print(
-                                        (new SaveAsJava()).generate(model));
-                                outfile.close();
-                            } else {
-                                // FIXME: what if this is not an SDF Model?
+			    FileWriter outFile = new FileWriter(destination);
+			    PrintWriter outPrinter = new PrintWriter(outFile);
+			    outPrinter.print((new SaveAsJava())
+					     .generate(model));
+			    outFile.close();
 
-                                // Handle the package entry.
-                                // This is out of order because we use the
-                                // packageName in the generator.
-                                String packageName = options.packageName
-                                    .getExpression();
-                                if (packageName.length() > 0
-                                        && ! packageName.endsWith(".") ) {
-                                    packageName = packageName + '.';
-                                }
-
-                                SDFCodeGenerator codeGenerator =
-                                    new SDFCodeGenerator();
-                                codeGenerator.
-                                    setOutputDirectoryName(directoryName);
-                                codeGenerator.
-                                    setOutputPackageName(packageName);
-
-                                // Create a manager.
-                                Manager manager = ((CompositeActor)model)
-                                    .getManager();
-                                //			    if (manager == null) {
-
-                                ((CompositeActor)model)
-                                    .setManager(new Manager(model.workspace(),
-                                            "manager"));
-                                manager = ((CompositeActor)model).getManager();
-				//}
-
-                                LinkedList models = new LinkedList();
-                                models.add(model);
-                                codeGenerator.setModels(models);
-
-                                // FIXME: the output should go into the text widget
-                                // FIXME: this should be run in the background
-                                codeGenerator.generateCode();
-                                destination = new File(
-                                        codeGenerator.getPackageDirectoryName(),
-                                        model.getName() + ".java");
-                            }
                             report("Code generation complete.");
 
                             // Handle the show checkbox.
-                            boolean show = ((BooleanToken)options.show.getToken())
+                            boolean show =
+				((BooleanToken)options.show.getToken())
                                 .booleanValue();
                             if (show) {
                                 URL codeFile = destination.toURL();
-                                Configuration config = (Configuration)toplevel();
+                                Configuration config =
+				    (Configuration)toplevel();
                                 // FIXME: If we previously had this file open,
                                 // we need to refresh the tableau.
                                 config.openModel(null, codeFile,
@@ -338,7 +300,8 @@ public class GeneratorTableau extends Tableau {
                             // Handle the compile and run.
                             boolean compile = ((BooleanToken)options.compile
                                     .getToken()).booleanValue();
-                            boolean run = ((BooleanToken)options.run.getToken())
+                            boolean run =
+				((BooleanToken)options.run.getToken())
                                 .booleanValue();
 
                             List execCommands = new LinkedList();
@@ -356,6 +319,7 @@ public class GeneratorTableau extends Tableau {
                                         + model.getName()
                                         + ".java");
                             }
+
                             if (run) {
                                 String runOptions = options
                                     .runOptions.getExpression();
@@ -363,14 +327,15 @@ public class GeneratorTableau extends Tableau {
                                     .packageName.getExpression();
                                 if (className.length() > 0
                                         && ! className.endsWith(".") ) {
-                                    className = className + '.' + model.getName();
+                                    className = className + '.'
+					+ model.getName();
                                 } else {
                                     className = model.getName();
                                 }
                                 execCommands.add("java "
                                         + runOptions
                                         + " ptolemy.actor.gui"
-                                        + ".CompositeActorApplication -class"
+                                        + ".CompositeActorApplication -class "
                                         + className);
                             }
                             if(execCommands.size() > 0) {
@@ -381,7 +346,8 @@ public class GeneratorTableau extends Tableau {
                                 new Thread(exec).start();
                             }
                         } catch (Exception ex) {
-                            MessageHandler.error("Code generation failed.", ex);
+                            MessageHandler.error("Code generation failed.",
+						 ex);
                         }
                     }
                 });
