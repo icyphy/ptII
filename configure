@@ -3993,17 +3993,22 @@ if test -z "$TOSROOT" ; then
     echo "$ac_t""The TOSROOT environment variable is not present,
 	so we need not set up for TinyOS." 1>&6
 
-   # Nothing to exclude
-   # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
+    # Nothing to exclude
+    # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
 
 else
-    echo "$ac_t""The TOSROOT is found, so we willset up for TinyOS." 1>&6
-    # Use changequote to protect the square brackets in sed
-    TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+    if test ! -d "$TOSROOT"; then
+        echo "configure: warning: TOSROOT is set to $TOSROOT,
+     but there is no directory by that name, so we will not set up for PtinyOS" 1>&2
+    else 
+        echo "$ac_t""TOSROOT = $TOSROOT, so we will set up for TinyOS." 1>&6
+        # Use changequote to protect the square brackets in sed
+        TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
 
-   # Add TOSROOT to the classpath
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$TOSROOT\"/>"
+        # Add TOSROOT to the classpath
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$TOSROOT_NO_CYGDRIVE\"/>"
+    fi
 fi 
 
 
@@ -4025,7 +4030,7 @@ if test ! -d "$PTII/ptolemy/domains/giotto"; then
     GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
 else
     echo $ac_n "checking for giotto directory""... $ac_c" 1>&6
-echo "configure:4029: checking for giotto directory" >&5
+echo "configure:4034: checking for giotto directory" >&5
     # Check whether --with-tini or --without-tini was given.
 if test "${with_tini+set}" = set; then
   withval="$with_tini"
@@ -4038,7 +4043,7 @@ fi
     if test -d "$GIOTTO_DIR"; then
     	echo "$ac_t""$GIOTTO_DIR" 1>&6
       	echo $ac_n "checking for \$GIOTTO_DIR/gdk.jar""... $ac_c" 1>&6
-echo "configure:4042: checking for \$GIOTTO_DIR/gdk.jar" >&5
+echo "configure:4047: checking for \$GIOTTO_DIR/gdk.jar" >&5
 	if test -f "$GIOTTO_DIR/gdk.jar"; then
 	   echo "$ac_t""$GIOTTO_DIR/gdk.jar" 1>&6
 	   GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
@@ -4089,7 +4094,7 @@ if test ! -d "$PTII/ptolemy/apps/kvm"; then
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
     echo $ac_n "checking for waba directory""... $ac_c" 1>&6
-echo "configure:4093: checking for waba directory" >&5
+echo "configure:4098: checking for waba directory" >&5
     # Check whether --with-waba or --without-waba was given.
 if test "${with_waba+set}" = set; then
   withval="$with_waba"
@@ -4102,7 +4107,7 @@ fi
     if test -d "$WABA_DIR"; then
 	echo "$ac_t""$WABA_DIR" 1>&6
         echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:4106: checking for \$WABA_DIR/classes" >&5
+echo "configure:4111: checking for \$WABA_DIR/classes" >&5
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
 	    echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -4112,13 +4117,13 @@ echo "configure:4106: checking for \$WABA_DIR/classes" >&5
     else
 	echo "$ac_t""Not found in $WABA_DIR" 1>&6
 	echo $ac_n "checking for waba directory in /waba""... $ac_c" 1>&6
-echo "configure:4116: checking for waba directory in /waba" >&5
+echo "configure:4121: checking for waba directory in /waba" >&5
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
 	    echo "$ac_t""$WABA_DIR" 1>&6
             echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:4122: checking for \$WABA_DIR/classes" >&5
+echo "configure:4127: checking for \$WABA_DIR/classes" >&5
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
 	        echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -4170,7 +4175,7 @@ if test ! -d "$X10_USER_DIR"; then
 	so we need not find the X10 SDK. X10 is the power line comm interface." 1>&6
 else
     echo $ac_n "checking for X10 directory""... $ac_c" 1>&6
-echo "configure:4174: checking for X10 directory" >&5
+echo "configure:4179: checking for X10 directory" >&5
     # Check whether --with-x10 or --without-x10 was given.
 if test "${with_x10+set}" = set; then
   withval="$with_x10"
@@ -4183,7 +4188,7 @@ fi
     if test -d "$X10_DIR"; then
       	echo "$ac_t""$X10_DIR" 1>&6
       	echo $ac_n "checking for \$X10_DIR/tjx10p-11/lib/x10.jar""... $ac_c" 1>&6
-echo "configure:4187: checking for \$X10_DIR/tjx10p-11/lib/x10.jar" >&5
+echo "configure:4192: checking for \$X10_DIR/tjx10p-11/lib/x10.jar" >&5
 	if test -f "$X10_DIR/tjx10p-11/lib/x10.jar"; then
 	   X10_CLASSES=${X10_DIR}/tjx10p-11/lib/x10.jar
 	   echo "$ac_t""$X10_CLASSES" 1>&6
