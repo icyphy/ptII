@@ -177,6 +177,12 @@ public class RecursiveLattice extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
+            System.arraycopy(_backward, 0,
+                    _backwardCache, 0,
+                    _backward.length);
+            System.arraycopy(_forward, 0,
+                    _forwardCache, 0,
+                    _forward.length);
             DoubleToken inputValue = (DoubleToken)input.get(0);
             // NOTE: The following code is ported from Ptolemy Classic.
             double k;
@@ -196,6 +202,15 @@ public class RecursiveLattice extends Transformer {
                 _backwardCache[i] = _backwardCache[i+1] + k*_forwardCache[i+1];
             }
             _backwardCache[M] = _forwardCache[M];
+        }
+    }
+
+   /** Initialize the state of the filter.
+     */
+    public void initialize() throws IllegalActionException {
+        for(int i = 0; i < _forward.length; i ++) {
+            _forward[i] = 0;
+            _backward[i] = 0;
         }
     }
 

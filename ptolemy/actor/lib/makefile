@@ -121,6 +121,7 @@ JSRCS = \
 	Expression.java \
 	FileWriter.java \
 	Gaussian.java \
+	GradientAdaptiveLattice.java \
 	IIR.java \
 	Interpolator.java \
 	Lattice.java \

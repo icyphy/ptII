@@ -70,8 +70,22 @@ are the negative of the ones used by this actor, which
 correspond to the definition in most other texts,
 and to the definition of partial-correlation (PARCOR)
 coefficients in the statistics literature.
+<p>
 The signs of the coefficients used in this actor are appropriate for values
 given by the LevinsonDurbin actor.
+The structure of the filter is as follows:
+<pre>
+     y[0]              y[1]               y[n-1]           y[n]
+X(n) -------o--&gt;-(+)--&gt;----o--&gt;-(+)--&gt;-- ... -&gt;---o--&gt;-(+)------&gt;  Y(n)
+     |       \   /          \   /                  \   /        
+     |      +K1 /          +K2 /                  +Kn /         
+     |         X              X                      X          
+     V      -K1 \          -K2 \                  -Kn \         
+     |       /   \          /   \                  /   \        
+     \-[z]--o--&gt;-(+)-[z]---o--&gt;-(+)-[z]- ... -&gt;---o--&gt;-(+)
+          w[0]         w[1]               w[n-1]           w[n]
+
+</pre>
 <p>
 <b>References</b>
 <p>[1]
@@ -135,19 +149,15 @@ public class Lattice extends Transformer {
             throws IllegalActionException {
         if (attribute == reflectionCoefficients) {
             ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
-            int valueLength = value.length();
-            if (_backward == null || valueLength != _backward.length) {
+            _order = value.length();
+            if (_backward == null || _order != _backward.length) {
                 // Need to reallocate the arrays.
-                _backward = new double[valueLength];
-                _backwardCache = new double[valueLength];
-                _forward = new double[valueLength + 1];
-                _forwardCache = new double[valueLength + 1];
-                _reflectionCoefs = new double[valueLength];
+                _reallocate();
             }
-            for (int i = 0; i < valueLength; i++) {
-                _reflectionCoefs[i] =
+            for (int i = 0; i < _order; i++) {
+                _reflectionCoefficients[i] =
                     ((DoubleToken)value.getElement(i)).doubleValue();
-            }
+            }        
         } else {
             super.attributeChanged(attribute);
         }
@@ -159,25 +169,31 @@ public class Lattice extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
+            System.arraycopy(_backward, 0,
+                    _backwardCache, 0,
+                    _order + 1);
+            System.arraycopy(_forward, 0,
+                    _forwardCache, 0,
+                    _order + 1);
             DoubleToken in = (DoubleToken)input.get(0);
-            // NOTE: The following code is ported from Ptolemy Classic.
-            double k;
-            int M = _backward.length;
-            // Forward prediction error
+       
             _forwardCache[0] = in.doubleValue();   // _forwardCache(0) = x(n)
-            for (int i = 1; i <= M; i++) {
-                k = - _reflectionCoefs[i-1];
-                _forwardCache[i] = k * _backwardCache[i-1] + _forwardCache[i-1];
-            }
-            output.broadcast(new DoubleToken(_forwardCache[M]));
-
-            // Backward:  Compute the weights for the next round
-            for (int i = M-1; i >0 ; i--) {
-                k = - _reflectionCoefs[i-1];
-                _backwardCache[i] = k * _forwardCache[i-1]
-                    + _backwardCache[i-1];
-            }
+    
+            _doFilter();
+          
             _backwardCache[0] = _forwardCache[0];   // _backwardCache[0] = x[n]
+
+            // Send the forward residual.
+            output.broadcast(new DoubleToken(_forwardCache[_order]));
+        }
+    }
+
+    /** Initialize the state of the filter.
+     */
+    public void initialize() throws IllegalActionException {
+        for(int i = 0; i < _order + 1; i ++) {
+            _forward[i] = 0;
+            _backward[i] = 0;
         }
     }
 
@@ -189,34 +205,71 @@ public class Lattice extends Transformer {
     public boolean postfire() throws IllegalActionException {
         System.arraycopy(_backwardCache, 0,
                 _backward, 0,
-                _backwardCache.length);
+                _order + 1);
         System.arraycopy(_forwardCache, 0,
                 _forward, 0,
-                _forwardCache.length);
+                _order + 1);
         return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    // Compute the filter, updating the caches, based on the current
+    // values.
+    protected void _doFilter() throws IllegalActionException {
+        double k;
+        // NOTE: The following code is ported from Ptolemy Classic.
+        // Update forward errors.
+        for (int i = 0; i < _order; i++) {
+            k = _reflectionCoefficients[i];
+            _forwardCache[i+1] = -k * _backwardCache[i] + _forwardCache[i];
+        }
+               
+        // Backward: Compute the weights for the next round Note:
+        // strictly speaking, _backwardCache[_order] is not necessary
+        // for computing the output.  It is computed for the use of
+        // subclasses which adapt the reflection coefficients.
+        for (int i = _order; i > 0 ; i--) {
+            k = _reflectionCoefficients[i-1];
+            _backwardCache[i] = -k * _forwardCache[i-1]
+                + _backwardCache[i-1];
+        }
+    }
+
+    // Reallocate the internal arrays.
+    protected void _reallocate() {
+        _backward = new double[_order + 1];
+        _backwardCache = new double[_order + 1];
+        _forward = new double[_order + 1];
+        _forwardCache = new double[_order + 1];
+        _reflectionCoefficients = new double[_order];
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Backward prediction errors.
-    private double[] _backward = null;
+    // The order of the filter (i.e. the number of reflection coefficients)
+    protected int _order = 0;
+
+    // Backward prediction errors.  The length is _order.
+    protected double[] _backward = null;
 
     // Cache of backward prediction errors.
     // The fire() method updates _forwardCache and postfire()
     // copies _forwardCache to _forward so this actor will work in domains
-    // like SR.
-    private double[] _backwardCache = null;
+    // like SR.  The length is _order.
+    protected double[] _backwardCache = null;
 
-    // Forward prediction errors.
-    private double[] _forward = null;
+    // Forward prediction errors.  The length is _order + 1.
+    protected double[] _forward = null;
 
     // Cache of forward prediction errors.
     // The fire() method updates _forwardCache and postfire()
     // copies _forwardCache to _forward so this actor will work in domains
-    // like SR.
-    private double[] _forwardCache = null;
+    // like SR.  The length is _order + 1.
+    protected double[] _forwardCache = null;
 
-    // Cache of reflection coefficients.
-    private double[] _reflectionCoefs = null;
+    // Cache of reflection coefficients.   The length is _order.
+    protected double[] _reflectionCoefficients = null;
 }
