@@ -359,6 +359,15 @@ public class PortConfigurerDialog
                 if (col == COL_UNITS)
                     return false;
             }
+			Object portInfo[] = (Object[]) (_ports.elementAt(row));
+			Port port = (Port) (portInfo[COL_ACTUAL_PORT]);
+			if (port.isClassElement()
+				&& (col == COL_NAME
+					|| col == COL_INPUT
+					|| col == COL_OUTPUT
+					|| col == COL_MULTIPORT)) {
+				return false;
+			}
             return true;
         }
 
