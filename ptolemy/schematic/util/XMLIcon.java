@@ -64,7 +64,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * By default, the icon contains no graphic
      * representations.
      */
-    public XMLIcon (Entity container) 
+    public XMLIcon (NamedObj container) 
             throws NameDuplicationException, IllegalActionException {
         super(container);
         setName("_icon");

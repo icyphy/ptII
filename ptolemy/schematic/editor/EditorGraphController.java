@@ -281,8 +281,7 @@ public class EditorGraphController extends GraphController {
         Figure nf = getNodeRenderer().render(n);
         nf.setInteractor(getNodeInteractor());
 	getGraphPane().getForegroundLayer().add(nf);
-        System.out.println("interactor = " + getNodeInteractor());
-	
+
         /*        if(n instanceof CompositeNode) {
 	    Iterator nodes = ((CompositeNode) n).nodes();
 	    while(nodes.hasNext()) {
@@ -333,23 +332,23 @@ public class EditorGraphController extends GraphController {
         _relationCreator = new RelationCreator();
         _relationCreator.setMouseFilter(_shiftFilter);
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
-        
+        /*
         // Create a listener that creates new terminals
         _terminalCreator = new TerminalCreator();
         _terminalCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_terminalCreator);
-        
+        */
         // Create the interactor that drags new edges.
 	_edgeCreator = new EdgeCreator();
         _edgeCreator.setMouseFilter(_controlFilter);
         getNodeInteractor().addInteractor(_edgeCreator);
-
+        
         /*
         // Create the interactor that drags new edges.
 	_connectedVertexCreator = new ConnectedVertexCreator();
         _connectedVertexCreator.setMouseFilter(_shiftFilter);
         getNodeInteractor().addInteractor(_connectedVertexCreator);
-        */
+        *//*
         // MenuCreator 
         _menuCreator = new MenuCreator();
         _menuCreator.setMouseFilter(_menuFilter);
@@ -357,6 +356,7 @@ public class EditorGraphController extends GraphController {
         getNodeInteractor().addInteractor(_menuCreator);   
         // For menus on the schematic.
         pane.getBackgroundEventLayer().addInteractor(_menuCreator);
+          */
     }
 
     /**

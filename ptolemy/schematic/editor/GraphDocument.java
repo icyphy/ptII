@@ -31,6 +31,7 @@
 package ptolemy.schematic.editor;
 
 import ptolemy.kernel.*;
+import ptolemy.actor.*;
 import ptolemy.schematic.util.*;
 
 import diva.graph.model.*;
@@ -163,7 +164,8 @@ public class GraphDocument extends AbstractDocument {
          */
         public Document createDocument (Application app) {
             GraphDocument d = new GraphDocument(app);
-            CompositeEntity toplevel = new CompositeEntity();
+            //
+            TypedCompositeActor toplevel = new TypedCompositeActor();
 
             d.addSheet(new BasicSheet(d, "New graph", 
                     new BasicGraph(toplevel)));

@@ -258,6 +258,8 @@ public class GraphEditor extends AbstractApplication {
         parseLibraries();
         //        JTabbedPane pane = createPaneFromEntityLibrary(_entityLibrary);
         // FIXME Get the right library.
+        CompositeEntity lib = getEntityLibrary();
+        /*
         CompositeEntity lib = new CompositeEntity();
         try {
         
@@ -281,7 +283,7 @@ public class GraphEditor extends AbstractApplication {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
-
+        */
 	System.out.println("library = " + lib.description());
 //	System.out.println("library = " + getEntityLibrary().description());
 //        JTabbedPane pane = createPaneFromComposite(lib);	
