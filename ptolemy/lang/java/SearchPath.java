@@ -114,6 +114,16 @@ public class SearchPath extends Vector {
             if (favorSkeletons) {
                 // favor skeletons instead of full versions for performance
                 file = _tryOpen(candidate, targetPath, "jskel");
+                if (file != null) {
+                    File javaFile = _tryOpen(candidate, targetPath, "java");
+                    if (javaFile.lastModified() > file.lastModified()) {
+                        throw new RuntimeException("SearchPath.openSource():" +
+                                candidate + target + 
+                                ".java was modified more recently than" +
+                                candidate + target + ".jskel. Rerun '" +
+                                "cd $PTII/ptolemy/lang/java; make skeleton'");
+                    }
+                }
             }
 
             if (file == null) {
