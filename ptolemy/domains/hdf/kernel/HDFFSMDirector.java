@@ -40,10 +40,8 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.Action;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -57,7 +55,6 @@ import ptolemy.domains.sdf.kernel.SDFUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -67,7 +64,6 @@ import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.lang.String;
 
 //////////////////////////////////////////////////////////////////////////
@@ -165,18 +161,21 @@ public class HDFFSMDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Examine the non-preemptive transitions from the current state.
+     *  If there is more than one transition enabled, an exception is
+     *  thrown. If there is exactly one non-preemptive transition
+     *  enabled, then it is chosen and the choice actions contained by
+     *  transition are executed.
+     */
     public void chooseStateTransition()
             throws IllegalActionException {
-        //super.fire();        
-        
+
         CompositeActor container = (CompositeActor)getContainer();
         FSMActor ctrl = getController();
         State st = ctrl.currentState();
 
         Transition tr =
             _chooseTransition(st.nonpreemptiveTransitionList());
-        if (_debugInfo)
-            System.out.println("enabled transition: " + tr.getName());
         if (tr != null) {
             Actor[] actors = tr.getRefinement();
             if (actors != null) {
@@ -216,24 +215,12 @@ public class HDFFSMDirector extends FSMDirector {
         CompositeActor container = (CompositeActor)getContainer();
         FSMActor ctrl = getController();
         ctrl.setNewIteration(_sendRequest);
-        //_setInputVariables();
         _readInputs();
         State st = ctrl.currentState();
-        // FIXME
-        //Actor ref = ctrl.currentState().getRefinement();
         Actor[] actors = ctrl.currentState().getRefinement();
         _fireRefinement = false;
         
         if (actors != null) {
-            // Note that we do not call refinement.prefire() in
-            // this.prefire(). This is because transferInputs() is
-            // called by the composite actor in fire(), and
-            // refinement.prefire() should not be invoked until
-            // the tokens have been transferred to the input ports of
-            // the current refinement.
-            // FIXME
-            //_fireRefinement = ref.prefire();
-            //_fireRefinement = actors[0].prefire();
             for (int i = 0; i < actors.length; ++ i) {
                 if (_stopRequested) break;
                 if (actors[i].prefire()) {
@@ -241,27 +228,16 @@ public class HDFFSMDirector extends FSMDirector {
                     actors[i].postfire();
                 }
             }
-            /*
-            if (_fireRefinement) {
-                // Fire the refinement.
-                // FIXME
-                //ref.fire();
-                ref[0].fire();
-                ref[0].postfire();
-                //_setInputsFromRefinement();
-                _readOutputsFromRefinement();
-            }*/
         }
         
         _readOutputsFromRefinement();
         
         if (_embeddedInSDF) {
-            //_chooseTransition(st.nonpreemptiveTransitionList());
             chooseStateTransition();
         }
         if (_sendRequest && !_embeddedInSDF) {
             ChangeRequest request =
-                new ChangeRequest(this, "make transition") {
+                new ChangeRequest(this, "choose a transition") {
                 protected void _execute() throws KernelException {
                     chooseStateTransition();
                 } 
@@ -425,7 +401,6 @@ public class HDFFSMDirector extends FSMDirector {
                 Scheduler refinmentSched = ((StaticSchedulingDirector)
                         refinementDir).getScheduler();
                 refinmentSched.setValid(false);
-                //refinmentSched.getSchedule();
                 ((HDFDirector)refinementDir).getSchedule();
             } else if (refinementDir instanceof SDFDirector) {
                 Scheduler refinmentSched = ((StaticSchedulingDirector)
@@ -588,7 +563,6 @@ public class HDFFSMDirector extends FSMDirector {
             try {
                 if (insideReceivers != null
                     && insideReceivers[i] != null) {
-                    //System.out.println("j length " + insideReceivers[i].length);
                     for (int j = 0; j < insideReceivers[i].length; j++) {
                         if (insideReceivers[i][j].hasToken()) {
                             insideReceivers[i][j].get();
@@ -597,13 +571,8 @@ public class HDFFSMDirector extends FSMDirector {
                 }
                 for (int k = 0; k < rate; k++) {
                     ptolemy.data.Token t = port.get(i);
-                    if (_debugInfo) {
-                        System.out.println("input port " + port.getFullName()
-                        + " transfer token t = " + t.toString());
-                    }
                     if (insideReceivers != null
                             && insideReceivers[i] != null) {
-                        //System.out.println("j length " + insideReceivers[i].length);
                         for (int j = 0; j < insideReceivers[i].length; j++) {
                             insideReceivers[i][j].put(t);
                         }
