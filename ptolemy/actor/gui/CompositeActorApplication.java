@@ -40,6 +40,7 @@ import java.util.List;
 
 // Ptolemy imports
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.data.expr.Variable;
@@ -349,6 +350,18 @@ public class CompositeActorApplication implements ExecutionListener {
                 if (attribute instanceof Variable) {
                     match = true;
                     ((Variable)attribute).setExpression(value);
+                    // Force evaluation so that listeners are notified.
+                    ((Variable)attribute).getToken();
+                }
+                Director director = model.getDirector();
+                if (director != null) {
+                    attribute = director.getAttribute(name);
+                    if (attribute instanceof Variable) {
+                        match = true;
+                        ((Variable)attribute).setExpression(value);
+                        // Force evaluation so that listeners are notified.
+                        ((Variable)attribute).getToken();
+                    }
                 }
             }
             if (!match) {
