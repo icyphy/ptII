@@ -1,6 +1,6 @@
-# Tests for the TypedAtomicActor class
+# Tests for configurations
 #
-# @Author: Edward A. Lee, Yuhong Xiong
+# @Author: Steve Neuendorffer
 #
 # $Id$
 #
@@ -61,14 +61,40 @@ cd ..
 set configs [glob *Configuration*.xml]
 cd test
 foreach i $configs {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set loader [[$parser getClass] getClassLoader]
+    
+    set URL [$loader getResource ptolemy/configs/$i]
+    set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
+    # force everything to get expanded
+    set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
+    
     test "$i-1.1" "Test to see if $i contains any bad XML" {
-	set parser [java::new ptolemy.moml.MoMLParser]
-	set loader [[$parser getClass] getClassLoader]
-	
-	set URL [$loader getResource ptolemy/configs/$i]
-	set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
 	# force everything to get expanded
-	set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
-	catch {$configuration description} result
-    } {0}
+	expr [string length [$configuration description]] > 0
+    } {1}
+
+    test "$i-2.1" "Test to see if $i contains any actors whose type constraints don't clone" {
+	set entityList [$configuration allAtomicEntityList]
+	set results {}
+	for {set iterator [$entityList iterator]} {[$iterator hasNext] == 1} {} {
+	    set entity [$iterator next]
+	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+		set clone [java::cast ptolemy.actor.TypedAtomicActor [$actor clone]]
+		set constraints [$actor typeConstraintList]
+		set cloneConstraints [$clone typeConstraintList]
+		set size [$constraints size]
+		set cloneSize [$cloneConstraints size]
+		if {$size != $cloneSize} {
+		    set c [join [jdkPrintArray [$constraints toArray]] "\n"]
+		    set cc [join [jdkPrintArray [$cloneConstraints toArray]] "\n"]
+		    lappend results "Actor [$actor getFullName] has \n$c\n, while clone has\n$cc"
+		}
+	    } 
+	}
+	
+	return $results
+    } {}
 }
+
