@@ -315,8 +315,8 @@ public class ComponentEntity extends Entity {
 	try {
 	    icon = new NonpersistentProcessedString(this, "iconDescription");
 	} catch (KernelException ex) {
-	    throw new InternalErrorException("Error creating icon for " + 
-					     getFullName());
+	    throw new InternalErrorException(
+                    "Error creating icon for " + getFullName());
 	}
 	icon.setInstruction("graphml");
 	icon.setString("<xmlgraphic>\n" + 
