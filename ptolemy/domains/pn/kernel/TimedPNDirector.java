@@ -215,7 +215,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  If the deadlock is a timed deadlock, process any pending topology 
      *  change requests. If there are no pending requests, then advance the
      *  time to the earliest value when a time-blocked process can be 
-     *  awakenened. If the  deadlock detected is a real deadlock, then do 
+     *  awakened. If the deadlock detected is a real deadlock, then do 
      *  nothing.
      *  
      *  If processing the queued topology change requests, then inform the
