@@ -81,13 +81,13 @@ one token for each firing, and each input port consumes one token on
 each firing, and no tokens are created during initialization.)  If
 this is not the case then the parameters "tokenConsumptionRate",
 "tokenProductionRate", and "tokenInitProduction" must be set.  The
-SDFAtomicActor class provides easier access to these parameters.  <p>
+SDFIOPort class provides easier access to these parameters.  <p>
 Note that reconstructing the schedule is expensive, so the schedule is
 locally cached for as long as possible, and mutations under SDF should
 be avoided.
 
 @see ptolemy.actor.sched.Scheduler
-@see ptolemy.domains.sdf.kernel.SDFAtomicActor
+@see ptolemy.domains.sdf.kernel.SDFIOPort
 
 @author Stephen Neuendorffer
 @version $Id$
@@ -1075,7 +1075,7 @@ public class SDFScheduler extends Scheduler {
                 _debug("productionRate = " + productionRate);
                 _debug("initProduction = " + initProduction);
             }
-            // SDFAtomicActor blindly creates parameters with bad values.
+            // SDFIOPort blindly creates parameters with bad values.
 
             /*
 	      // FIXME: This is the wrong place to be doing this.
