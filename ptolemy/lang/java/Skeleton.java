@@ -50,8 +50,8 @@ public class Skeleton {
         int files = args.length;
 
         if (files < 1) {
-           System.out.println("usage : ptolemy.lang.java.Skeleton [-d] f1.java [f2.java ...]");
-           return;
+            System.out.println("usage : ptolemy.lang.java.Skeleton [-d] f1.java [f2.java ...]");
+            return;
         }
 
         _parseArgs(args);
@@ -62,35 +62,35 @@ public class Skeleton {
             String filename = args[f];
 
             try {
-              ast = JavaParserManip.parse(filename, _debug);
+                ast = JavaParserManip.parse(filename, _debug);
             } catch (Exception e) {
-              System.err.println("error opening input file " + filename);
-              System.err.println(e.toString());
+                System.err.println("error opening input file " + filename);
+                System.err.println(e.toString());
             }
 
             if (_eliminateImports) {
-               ast = StaticResolution.load(ast, 0);
+                ast = StaticResolution.load(ast, 0);
             }
 
             ast.accept(new SkeletonVisitor(), null);
 
             if (_eliminateImports) {
-               ast.accept(new FindExtraImportsVisitor(true), null);
+                ast.accept(new FindExtraImportsVisitor(true), null);
             }
 
             String outCode = (String) ast.accept(new JavaCodeGenerator(), null);
 
             String outFileName = StringManip.partBeforeLast(filename, '.') +
-                                 ".jskel";
+                ".jskel";
 
             try {
-              FileOutputStream outFile = new FileOutputStream(outFileName);
-              outFile.write(outCode.getBytes());
-              outFile.close();
+                FileOutputStream outFile = new FileOutputStream(outFileName);
+                outFile.write(outCode.getBytes());
+                outFile.close();
             } catch (IOException e) {
-              System.err.println("error opening/writing/closing output file "
-               + outFileName);
-              System.err.println(e.toString());
+                System.err.println("error opening/writing/closing output file "
+                        + outFileName);
+                System.err.println(e.toString());
             }
         }
     }
@@ -98,26 +98,26 @@ public class Skeleton {
     protected static boolean _parseArg(String arg) {
         _fileStart++;
         if (arg.equals("-d")) {
-           _debug = true;
+            _debug = true;
         } else if (arg.equals("-i")) {
-           _eliminateImports = true;
+            _eliminateImports = true;
         } else {
-           _fileStart--; // restore fileStart to previous value
-           return false; // no more options possible
+            _fileStart--; // restore fileStart to previous value
+            return false; // no more options possible
 
         }
         return true; // more options possible
     }
 
     protected static void _parseArgs(String[] args) {
-       int i = 0;
-       int length = args.length;
-       boolean moreOptions;
+        int i = 0;
+        int length = args.length;
+        boolean moreOptions;
 
-       do {
-          moreOptions = _parseArg(args[i]);
-          i++;
-       } while (moreOptions && (i < length));
+        do {
+            moreOptions = _parseArg(args[i]);
+            i++;
+        } while (moreOptions && (i < length));
     }
 
     /** The index at which the first file to skeletonize is found in the arguments

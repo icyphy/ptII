@@ -57,7 +57,7 @@ and Army Research Office.
 @version $Id$
  */
 public class ResolvePackageVisitor extends ResolveVisitorBase
-       implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
 
     ResolvePackageVisitor() {
         super();
@@ -75,7 +75,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(environ);            // enclosing environment =
-                                               // file environment
+        // file environment
         childArgs.addLast(Boolean.FALSE);      // inner class = false
         childArgs.addLast(NullValue.instance); // no enclosing decl
 
@@ -134,7 +134,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     }
 
     protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
-     LinkedList args, boolean isClass) {
+            LinkedList args, boolean isClass) {
         Environ encEnv = (Environ) args.get(0);
 
         // inner class change
@@ -145,70 +145,70 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         Decl other = encEnv.lookupProper(className);
 
         if (other != null) {
-           ApplicationUtility.error("attempt to redefine " + other.getName() +
-           " as a class");
+            ApplicationUtility.error("attempt to redefine " + other.getName() +
+                    " as a class");
         }
 
         ClassDecl ocl;
 
         if (isInner) {
-           ocl = null;
+            ocl = null;
         } else {
-           // lookup in package
-           ocl = (ClassDecl) _pkgEnv.lookupProper(className);
+            // lookup in package
+            ocl = (ClassDecl) _pkgEnv.lookupProper(className);
         }
 
         if ((ocl != null) &&
-            ((ocl.getSource() == null) ||
-             (ocl.getSource() == AbsentTreeNode.instance))) {
-           // Assume this is the definition of 'ocl'
-           ocl.setSource(node);
-           ocl.setModifiers(node.getModifiers());
+                ((ocl.getSource() == null) ||
+                        (ocl.getSource() == AbsentTreeNode.instance))) {
+            // Assume this is the definition of 'ocl'
+            ocl.setSource(node);
+            ocl.setModifiers(node.getModifiers());
 
-           // fix category if this is an interface
-           if (!isClass) {
-              ocl.category = CG_INTERFACE;
-           }
+            // fix category if this is an interface
+            if (!isClass) {
+                ocl.category = CG_INTERFACE;
+            }
 
         } else {
-           int modifiers = node.getModifiers();
-           JavaDecl encDecl;
-           // boolean topLevel = !isInner || (modifiers & Modifier.STATIC_MOD);
+            int modifiers = node.getModifiers();
+            JavaDecl encDecl;
+            // boolean topLevel = !isInner || (modifiers & Modifier.STATIC_MOD);
 
-           //if (topLevel) {
+            //if (topLevel) {
 
-           // Set the enclosing declaration
-           if (!isInner) {
-              // For a top-level class, it's the package declaration
-              encDecl = _pkgDecl;
-           } else {
-              // For an inner class, it's the enclosing class declaration
-              Object encDeclObject = args.get(2);
+            // Set the enclosing declaration
+            if (!isInner) {
+                // For a top-level class, it's the package declaration
+                encDecl = _pkgDecl;
+            } else {
+                // For an inner class, it's the enclosing class declaration
+                Object encDeclObject = args.get(2);
 
-              // CHECKME
-              if (encDeclObject == NullValue.instance) {
-                 encDecl = null;
-              } else {
-                 encDecl = (JavaDecl) encDeclObject; // enclosing decl
-              }
-           }
+                // CHECKME
+                if (encDeclObject == NullValue.instance) {
+                    encDecl = null;
+                } else {
+                    encDecl = (JavaDecl) encDeclObject; // enclosing decl
+                }
+            }
 
-           //System.out.println("creating new class decl for " + className + " in rpv");
-           ClassDecl cl = new ClassDecl(className,
-            isClass ? CG_CLASS : CG_INTERFACE,
-            new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);
+            //System.out.println("creating new class decl for " + className + " in rpv");
+            ClassDecl cl = new ClassDecl(className,
+                    isClass ? CG_CLASS : CG_INTERFACE,
+                    new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);
 
-           if (ocl != null)  { // Redefinition in same package.
-              ApplicationUtility.error("user type name " + className +
-               " conflicts with " + ocl.getName() + " in same package");
-           }
+            if (ocl != null)  { // Redefinition in same package.
+                ApplicationUtility.error("user type name " + className +
+                        " conflicts with " + ocl.getName() + " in same package");
+            }
 
-           // add to the package environment if it's an top-level class
-           if (!isInner) {
-              _pkgEnv.add(cl);
-           }
+            // add to the package environment if it's an top-level class
+            if (!isInner) {
+                _pkgEnv.add(cl);
+            }
 
-           ocl = cl;
+            ocl = cl;
         }
 
         Environ env = new Environ(encEnv);

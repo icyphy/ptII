@@ -6,7 +6,7 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 public class PackageResolutionVisitor extends JavaVisitor
-       implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
 
     public PackageResolutionVisitor() {
         super(TM_CUSTOM);
@@ -18,19 +18,19 @@ public class PackageResolutionVisitor extends JavaVisitor
         TreeNode pkgDeclNode = node.getPkg();
 
         if (pkgDeclNode == AbsentTreeNode.instance) {
-           thePkgDecl = StaticResolution.UNNAMED_PACKAGE;
+            thePkgDecl = StaticResolution.UNNAMED_PACKAGE;
         } else {
-           NameNode name = (NameNode) StaticResolution.resolveAName(
-            (NameNode) pkgDeclNode,
-            StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null, CG_PACKAGE);
-           thePkgDecl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
+            NameNode name = (NameNode) StaticResolution.resolveAName(
+                    (NameNode) pkgDeclNode,
+                    StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null, CG_PACKAGE);
+            thePkgDecl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
         }
 
         node.setProperty(PACKAGE_KEY, thePkgDecl);
 
         // build environment for this file
         Environ importOnDemandEnv = new Environ(
-         StaticResolution.SYSTEM_PACKAGE.getEnviron());
+                StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
         Environ pkgEnv = new Environ(importOnDemandEnv);
 
@@ -49,6 +49,6 @@ public class PackageResolutionVisitor extends JavaVisitor
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         throw new RuntimeException("PackageResolution not defined on node type : " +
-         node.getClass().getName());
+                node.getClass().getName());
     }
 }

@@ -46,42 +46,42 @@ import ptolemy.lang.java.nodetypes.CompileUnitNode;
  */
 public class PrintTree {
 
-  public static void main(String[] args) {
-    int files = args.length;
-    int fileStart = 0;
-    boolean debug = false;
+    public static void main(String[] args) {
+        int files = args.length;
+        int fileStart = 0;
+        boolean debug = false;
 
-    if (files >= 1) {
-       debug = args[0].equals("-d");
-       if (debug) {
-          fileStart++;
-       }
-    }
-
-    if (files < 1) {
-       System.out.println("usage : ptolemy.lang.java.PrintTree [-d] f1.java [f2.java ...]");
-    }
-
-    ApplicationUtility.enableTrace = debug;
-
-    for (int f = fileStart; f < files; f++) {
-        JavaParser p = new JavaParser();
-
-        String filename = args[f];
-        try {
-          p.init(args[f]);
-
-        } catch (Exception e) {
-          System.err.println("error opening input file " + filename);
-          System.err.println(e.toString());
+        if (files >= 1) {
+            debug = args[0].equals("-d");
+            if (debug) {
+                fileStart++;
+            }
         }
 
-        p.yyparse();
+        if (files < 1) {
+            System.out.println("usage : ptolemy.lang.java.PrintTree [-d] f1.java [f2.java ...]");
+        }
 
-        CompileUnitNode ast = p.getAST();
+        ApplicationUtility.enableTrace = debug;
 
-        System.out.println("File : " + filename);
-        System.out.println(ast.toString());
+        for (int f = fileStart; f < files; f++) {
+            JavaParser p = new JavaParser();
+
+            String filename = args[f];
+            try {
+                p.init(args[f]);
+
+            } catch (Exception e) {
+                System.err.println("error opening input file " + filename);
+                System.err.println(e.toString());
+            }
+
+            p.yyparse();
+
+            CompileUnitNode ast = p.getAST();
+
+            System.out.println("File : " + filename);
+            System.out.println(ast.toString());
+        }
     }
-  }
 }

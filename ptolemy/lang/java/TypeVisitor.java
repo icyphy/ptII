@@ -142,7 +142,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
 
     public Object visitOuterSuperAccessNode(OuterSuperAccessNode node, LinkedList args) {
         ClassDecl thisDecl = (ClassDecl) node.getType().getName().
-         getDefinedProperty(DECL_KEY);
+            getDefinedProperty(DECL_KEY);
         return _setType(node, thisDecl.getSuperClass().getDefType());
     }
 
@@ -160,8 +160,8 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
         // returned type is an N-D array of the element type, where
         // N = # dimension expressions + # empty dimensions
         return _setType(node,
-                 TypeUtility.makeArrayType(node.getDtype(),
-                  node.getDimExprs().size() + node.getDims()));
+                TypeUtility.makeArrayType(node.getDtype(),
+                        node.getDimExprs().size() + node.getDims()));
     }
 
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
@@ -198,7 +198,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
 
     public Object visitComplementNode(ComplementNode node, LinkedList args) {
         return _setType(node, _typePolicy.arithPromoteType(
-         type(node.getExpr())));
+                type(node.getExpr())));
     }
 
     public Object visitNotNode(NotNode node, LinkedList args) {
@@ -225,13 +225,13 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
         TypeNode type1 = type(node.getExpr1());
 
         if (_typePolicy.compareTypes(type1, StaticResolution.STRING_TYPE)) {
-           return _setType(node, StaticResolution.STRING_TYPE);
+            return _setType(node, StaticResolution.STRING_TYPE);
         }
 
         TypeNode type2 = type(node.getExpr2());
 
         if (_typePolicy.compareTypes(type2, StaticResolution.STRING_TYPE)) {
-           return _setType(node, StaticResolution.STRING_TYPE);
+            return _setType(node, StaticResolution.STRING_TYPE);
         }
 
         return _setType(node, _typePolicy.arithPromoteType(type1, type2));
@@ -306,36 +306,36 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
         TypeNode elseType = type(node.getExpr3());
 
         if (_typePolicy.compareTypes(thenType, elseType)) {
-           return _setType(node, thenType);
+            return _setType(node, thenType);
         }
 
         if (_typePolicy.isArithType(thenType)) {
-           if (((thenType == ByteTypeNode.instance) &&
-                (elseType == ShortTypeNode.instance)) ||
-               ((thenType == ShortTypeNode.instance) &&
-                (elseType == ByteTypeNode.instance))) {
-              return _setType(node, ShortTypeNode.instance);
-           }
+            if (((thenType == ByteTypeNode.instance) &&
+                    (elseType == ShortTypeNode.instance)) ||
+                    ((thenType == ShortTypeNode.instance) &&
+                            (elseType == ByteTypeNode.instance))) {
+                return _setType(node, ShortTypeNode.instance);
+            }
 
-           ExprNode thenExpr = node.getExpr2();
-           ExprNode elseExpr = node.getExpr3();
+            ExprNode thenExpr = node.getExpr2();
+            ExprNode elseExpr = node.getExpr3();
 
-           // check _validIf() for byte, short, char
-           for (int kind = TypeIdentifier.TYPE_KIND_BYTE;
-                kind <= TypeIdentifier.TYPE_KIND_CHAR; kind++) {
-               if (_validIf(thenExpr, thenType, elseExpr, elseType, kind)) {
-                  return _setType(node, _typeID.primitiveKindToType(kind));
-               }
-           }
+            // check _validIf() for byte, short, char
+            for (int kind = TypeIdentifier.TYPE_KIND_BYTE;
+                 kind <= TypeIdentifier.TYPE_KIND_CHAR; kind++) {
+                if (_validIf(thenExpr, thenType, elseExpr, elseType, kind)) {
+                    return _setType(node, _typeID.primitiveKindToType(kind));
+                }
+            }
 
-           return _setType(node, _typePolicy.arithPromoteType(thenType, elseType));
+            return _setType(node, _typePolicy.arithPromoteType(thenType, elseType));
 
         } else if (_typePolicy.isReferenceType(thenType)) {
-           if (_typePolicy.isAssignableFromType(thenType, elseType)) {
-              return _setType(node, thenType);
-           } else {
-              return _setType(node, elseType);
-           }
+            if (_typePolicy.isAssignableFromType(thenType, elseType)) {
+                return _setType(node, thenType);
+            } else {
+                return _setType(node, elseType);
+            }
         }
 
         return _setType(node, _typePolicy.arithPromoteType(thenType, elseType));
@@ -405,20 +405,20 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
 
     public TypeNode _visitBinaryArithNode(BinaryArithNode node) {
         return _setType(node, _typePolicy.arithPromoteType(
-         type(node.getExpr1()), type(node.getExpr2())));
+                type(node.getExpr1()), type(node.getExpr2())));
     }
 
     public TypeNode _visitBitwiseNode(BitwiseNode node) {
         return _setType(node, _typePolicy.arithPromoteType(
-         type(node.getExpr1()), type(node.getExpr2())));
+                type(node.getExpr1()), type(node.getExpr2())));
     }
 
     protected boolean _validIf(ExprNode e1, TypeNode t1, ExprNode e2,
-     TypeNode t2, int kind) {
+            TypeNode t2, int kind) {
         return (((_typeID.kind(t1) == kind) &&
-                 _typePolicy.isAssignableFromConstant(t1, e2)) ||
+                _typePolicy.isAssignableFromConstant(t1, e2)) ||
                 ((_typeID.kind(t2) == kind) &&
-                 _typePolicy.isAssignableFromConstant(t2, e1)));
+                        _typePolicy.isAssignableFromConstant(t2, e1)));
     }
 
     /** Memoize the type, and return it. */
@@ -434,7 +434,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
      */
     public TypeNode type(ExprNode node) {
         if (node.hasProperty(TYPE_KEY)) {
-           return (TypeNode) node.getDefinedProperty(TYPE_KEY);
+            return (TypeNode) node.getDefinedProperty(TYPE_KEY);
         }
         return (TypeNode) node.accept(this, null);
     }
@@ -442,7 +442,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         ApplicationUtility.error("node " + node.toString() +
-        " is not an expression, so it does not have a type");
+                " is not an expression, so it does not have a type");
         return null;
     }
 
@@ -455,17 +455,17 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
     public TypeNode accessedObjectType(FieldAccessNode node) {
         switch (node.classID()) {
 
-          case TYPEFIELDACCESSNODE_ID:
-          return accessedObjectType((TypeFieldAccessNode) node);
+        case TYPEFIELDACCESSNODE_ID:
+            return accessedObjectType((TypeFieldAccessNode) node);
 
-          case OBJECTFIELDACCESSNODE_ID:
-          return accessedObjectType((ObjectFieldAccessNode) node);
+        case OBJECTFIELDACCESSNODE_ID:
+            return accessedObjectType((ObjectFieldAccessNode) node);
 
-          case THISFIELDACCESSNODE_ID:
-          return accessedObjectType((ThisFieldAccessNode) node);
+        case THISFIELDACCESSNODE_ID:
+            return accessedObjectType((ThisFieldAccessNode) node);
 
-          case SUPERFIELDACCESSNODE_ID:
-          return accessedObjectType((SuperFieldAccessNode) node);
+        case SUPERFIELDACCESSNODE_ID:
+            return accessedObjectType((SuperFieldAccessNode) node);
         }
 
         ApplicationUtility.error("accessdObjectType() not supported for node " + node);
@@ -494,7 +494,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
      */
     public TypeNameNode accessedObjectType(SuperFieldAccessNode node) {
         ClassDecl myClass = (ClassDecl) JavaDecl.getDecl(
-         (NamedNode) node.getDefinedProperty(THIS_CLASS_KEY));
+                (NamedNode) node.getDefinedProperty(THIS_CLASS_KEY));
         ClassDecl sclass = myClass.getSuperClass();
 
         return sclass.getDefType();

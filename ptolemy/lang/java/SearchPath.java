@@ -54,17 +54,17 @@ public class SearchPath extends Vector {
     public SearchPath(String envar, String fallbacks) {
 
         if (envar != null) {
-           String envalue = System.getProperty(envar, ".");
+            String envalue = System.getProperty(envar, ".");
 
-           ApplicationUtility.trace("envalue = " + envalue);
+            ApplicationUtility.trace("envalue = " + envalue);
 
-           if (envalue != null) {
-              _addPaths(envalue);
-           } else {
-              _addPaths(fallbacks);
-           }
+            if (envalue != null) {
+                _addPaths(envalue);
+            } else {
+                _addPaths(fallbacks);
+            }
         } else {
-           _addPaths(fallbacks);
+            _addPaths(fallbacks);
         }
     }
 
@@ -84,8 +84,8 @@ public class SearchPath extends Vector {
 
             File directory = new File(fullname);
             if (directory.isDirectory()) {
-               // target = fullname
-               return directory;
+                // target = fullname
+                return directory;
             }
         }
         return null;
@@ -120,16 +120,16 @@ public class SearchPath extends Vector {
             File file = null;
 
             if (favorSkeletons) {
-               // favor skeletons instead of full versions for performance
-               file = tryOpen(candidate, targetPath, "jskel");
+                // favor skeletons instead of full versions for performance
+                file = tryOpen(candidate, targetPath, "jskel");
             }
 
             if (file == null) {
-               file = tryOpen(candidate, targetPath, "java");
+                file = tryOpen(candidate, targetPath, "java");
             }
 
             if (file != null) {
-               return file;
+                return file;
             }
         }
         return null;
@@ -140,11 +140,11 @@ public class SearchPath extends Vector {
         File file = new File(fullname);
 
         if (file.isFile()) {
-           try {
-             return file.getCanonicalFile();
-           } catch (IOException ioe) {
-             ApplicationUtility.error("cannot get canonical filename");
-           }
+            try {
+                return file.getCanonicalFile();
+            } catch (IOException ioe) {
+                ApplicationUtility.error("cannot get canonical filename");
+            }
         }
         return null;
     }
@@ -154,35 +154,35 @@ public class SearchPath extends Vector {
 
         int end;
         do {
-          end = paths.indexOf(File.pathSeparator, begin);
-          String path = null;
-          if (end == -1) {
-             path = paths.substring(begin);
-             if (path.length() > 0) {
-                 _addPath(path);
-              }
-          } else {
-             path = paths.substring(begin, end);
-             if (path.length() > 0) {
-                _addPath(path);
-             }
-             begin = end + 1;
-          }
+            end = paths.indexOf(File.pathSeparator, begin);
+            String path = null;
+            if (end == -1) {
+                path = paths.substring(begin);
+                if (path.length() > 0) {
+                    _addPath(path);
+                }
+            } else {
+                path = paths.substring(begin, end);
+                if (path.length() > 0) {
+                    _addPath(path);
+                }
+                begin = end + 1;
+            }
         } while (end > -1);
     }
 
     protected void _addPath(String path) {
-      if (path.length() > 0) {
-         ApplicationUtility.trace("adding path " + path);
-         add(path + File.separatorChar);
-      } else {
-         throw new RuntimeException("_addPath() called with empty path string");
-      }
+        if (path.length() > 0) {
+            ApplicationUtility.trace("adding path " + path);
+            add(path + File.separatorChar);
+        } else {
+            throw new RuntimeException("_addPath() called with empty path string");
+        }
     }
 
     public static final SearchPath NAMED_PATH =
-     new SearchPath("java.class.path", ".");
+    new SearchPath("java.class.path", ".");
 
     public static final SearchPath UNNAMED_PATH =
-     new SearchPath(null, ".");
+    new SearchPath(null, ".");
 }

@@ -44,17 +44,17 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         List retList = TNLManip.traverseList(this, null, null,
-         node.getDefTypes());
+                node.getDefTypes());
 
         LinkedList newDefTypeList = new LinkedList();
         Iterator retItr = retList.iterator();
 
         while (retItr.hasNext()) {
-          Object o = retItr.next();
+            Object o = retItr.next();
 
-          if (o != NullValue.instance) {
-             newDefTypeList.addLast(o);
-          }
+            if (o != NullValue.instance) {
+                newDefTypeList.addLast(o);
+            }
         }
 
         node.setDefTypes(newDefTypeList);
@@ -73,20 +73,20 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
         LinkedList newMemberList = new LinkedList();
 
         while (retItr.hasNext()) {
-          Object o = retItr.next();
+            Object o = retItr.next();
 
-          if (o != NullValue.instance) {
-             newMemberList.addLast(o);
+            if (o != NullValue.instance) {
+                newMemberList.addLast(o);
 
-             if (o instanceof ConstructorDeclNode) {
-                ConstructorDeclNode cDeclNode = (ConstructorDeclNode) o;
+                if (o instanceof ConstructorDeclNode) {
+                    ConstructorDeclNode cDeclNode = (ConstructorDeclNode) o;
 
-                if (cDeclNode.getParams().size() == 0) {
-                   // found default constructor, make it public
-                   cDeclNode.setModifiers(PUBLIC_MOD);
+                    if (cDeclNode.getParams().size() == 0) {
+                        // found default constructor, make it public
+                        cDeclNode.setModifiers(PUBLIC_MOD);
+                    }
                 }
-             }
-          }
+            }
         }
 
         node.setMembers(newMemberList);
@@ -98,7 +98,7 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
         int modifiers = node.getModifiers();
 
         if ((modifiers & PRIVATE_MOD) != 0) {
-           return null;
+            return null;
         }
 
         node.setInitExpr(_initExpr(node.getDefType()));
@@ -110,12 +110,12 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
         int modifiers = node.getModifiers();
 
         if ((modifiers & PRIVATE_MOD) != 0) {
-           return null;
+            return null;
         }
 
         if (node.getBody() != AbsentTreeNode.instance) {
-           node.setModifiers(modifiers | NATIVE_MOD);
-           node.setBody(AbsentTreeNode.instance);
+            node.setModifiers(modifiers | NATIVE_MOD);
+            node.setBody(AbsentTreeNode.instance);
         }
 
         return node;
@@ -137,11 +137,11 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
         LinkedList newMemberList = new LinkedList();
 
         while (retItr.hasNext()) {
-          Object o = retItr.next();
+            Object o = retItr.next();
 
-          if (o != NullValue.instance) {
-             newMemberList.addLast(o);
-          }
+            if (o != NullValue.instance) {
+                newMemberList.addLast(o);
+            }
         }
 
         node.setMembers(newMemberList);
@@ -156,39 +156,39 @@ public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticCo
 
     protected TreeNode _initExpr(TypeNode node) {
         if (node instanceof ReferenceTypeNode) {
-           return new NullPntrNode();
+            return new NullPntrNode();
         }
 
         if (node == IntTypeNode.instance) {
-           return new IntLitNode("0");
+            return new IntLitNode("0");
         }
 
         if (node == LongTypeNode.instance) {
-           return new LongLitNode("0L");
+            return new LongLitNode("0L");
         }
 
         if (node == BoolTypeNode.instance) {
-           return new BoolLitNode("false");
+            return new BoolLitNode("false");
         }
 
         if (node == CharTypeNode.instance) {
-           return new CharLitNode("\\0");
+            return new CharLitNode("\\0");
         }
 
         if (node == ShortTypeNode.instance) {
-           return new CastNode(node, new IntLitNode("0"));
+            return new CastNode(node, new IntLitNode("0"));
         }
 
         if (node == ByteTypeNode.instance) {
-           return new CastNode(node, new IntLitNode("0"));
+            return new CastNode(node, new IntLitNode("0"));
         }
 
         if (node == FloatTypeNode.instance) {
-           return new FloatLitNode("0.0f");
+            return new FloatLitNode("0.0f");
         }
 
         if (node == DoubleTypeNode.instance) {
-           return new DoubleLitNode("0.0");
+            return new DoubleLitNode("0.0");
         }
 
         return AbsentTreeNode.instance;

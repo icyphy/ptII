@@ -51,8 +51,8 @@ import ptolemy.lang.java.nodetypes.TypeNode;
  */
 public class MethodDecl extends MemberDecl {
     public MethodDecl(String name, int category0, TypeNode type, int modifiers,
-     TreeNode source, JavaDecl container, List paramList,
-     Collection throwsCollection) {
+            TreeNode source, JavaDecl container, List paramList,
+            Collection throwsCollection) {
         super(name, category0, type, modifiers, source, container);
         _paramList = paramList;
         _throwsSet = new HashSet(throwsCollection);

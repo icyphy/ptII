@@ -41,7 +41,7 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 public class ResolveImportsVisitor extends JavaVisitor
-       implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
 
     public ResolveImportsVisitor() {
         super(TM_CUSTOM);
@@ -54,12 +54,12 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         // initialize importedPackages property
         if (!node.hasProperty(IMPORTED_PACKAGES_KEY)) {
-           _importedPackages = new LinkedList();
+            _importedPackages = new LinkedList();
 
-           node.setProperty(IMPORTED_PACKAGES_KEY, _importedPackages);
+            node.setProperty(IMPORTED_PACKAGES_KEY, _importedPackages);
         } else {
-           _importedPackages =
-            (Collection) node.getDefinedProperty(IMPORTED_PACKAGES_KEY);
+            _importedPackages =
+                (Collection) node.getDefinedProperty(IMPORTED_PACKAGES_KEY);
         }
 
         _importOnDemand("java.lang");
@@ -74,18 +74,18 @@ public class ResolveImportsVisitor extends JavaVisitor
         NameNode name = node.getName();
 
         StaticResolution.resolveAName(name,
-         (Environ) StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
-         CG_USERTYPE);
+                (Environ) StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
+                CG_USERTYPE);
 
         JavaDecl old = (JavaDecl) _fileEnv.lookupProper(name.getIdent());
         JavaDecl current = (JavaDecl) name.getProperty(DECL_KEY);
 
         if ((old != null) && (old != current)) {
-  	        if (old != current) {
- 	           throw new RuntimeException("attempt to import conflicting name: " +
-               old.getName());
-           }
-  	    }
+            if (old != current) {
+                throw new RuntimeException("attempt to import conflicting name: " +
+                        old.getName());
+            }
+        }
 
         _importEnv.add((ClassDecl) name.getDefinedProperty(DECL_KEY));
 
@@ -97,7 +97,7 @@ public class ResolveImportsVisitor extends JavaVisitor
         NameNode name = node.getName();
 
         StaticResolution.resolveAName(name,
-         StaticResolution.SYSTEM_PACKAGE.getEnviron(), null,  null, CG_PACKAGE);
+                StaticResolution.SYSTEM_PACKAGE.getEnviron(), null,  null, CG_PACKAGE);
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
@@ -109,19 +109,19 @@ public class ResolveImportsVisitor extends JavaVisitor
     /** The default visit method. We shouldn't visit this node, so throw an exception. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         throw new RuntimeException("ResolveImports not defined on node type : " +
-         node.getClass().getName());
+                node.getClass().getName());
     }
 
     protected final void _importOnDemand(PackageDecl importedPackage) {
 
         ApplicationUtility.trace("importOnDemand : importing " +
-         importedPackage.toString());
+                importedPackage.toString());
 
         // ignore duplicate imports
         if (_importedPackages.contains(importedPackage)) {
-           ApplicationUtility.warn("importOnDemand : ignoring duplicated package "
-            + importedPackage.toString());
-           return;
+            ApplicationUtility.warn("importOnDemand : ignoring duplicated package "
+                    + importedPackage.toString());
+            return;
         }
 
         _importedPackages.add(importedPackage);
@@ -131,16 +131,16 @@ public class ResolveImportsVisitor extends JavaVisitor
         Iterator envItr = pkgEnv.allProperDecls();
 
         while (envItr.hasNext()) {
-           JavaDecl type = (JavaDecl) envItr.next();
+            JavaDecl type = (JavaDecl) envItr.next();
 
-           if (type.category != CG_PACKAGE) {
-              ApplicationUtility.trace("importOnDemand: adding " + type.toString());
-              _importEnv.add(type); // conflicts appear on use only
-           }
+            if (type.category != CG_PACKAGE) {
+                ApplicationUtility.trace("importOnDemand: adding " + type.toString());
+                _importEnv.add(type); // conflicts appear on use only
+            }
         }
 
         ApplicationUtility.trace("importOnDemand : finished" +
-         importedPackage.toString());
+                importedPackage.toString());
     }
 
     // we can get rid of this by added java.lang to the import list
@@ -148,8 +148,8 @@ public class ResolveImportsVisitor extends JavaVisitor
         NameNode name = (NameNode) StaticResolution.makeNameNode(qualName);
 
         StaticResolution.resolveAName(name,
-         StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
-         CG_PACKAGE);
+                StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
+                CG_PACKAGE);
 
         _importOnDemand((PackageDecl) name.getDefinedProperty(DECL_KEY));
     }

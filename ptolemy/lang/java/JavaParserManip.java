@@ -66,9 +66,9 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
      */
     public static CompileUnitNode parse(File file, boolean debug) {
         try {
-          return parseCanonical(file.getCanonicalPath(), debug);
+            return parseCanonical(file.getCanonicalPath(), debug);
         } catch (IOException ioe) {
-          ApplicationUtility.error(ioe.toString());
+            ApplicationUtility.error(ioe.toString());
         }
         return null;
     }
@@ -83,15 +83,15 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
         loadedAST = (CompileUnitNode) allParsedMap.get(filename);
 
         if (loadedAST != null) {
-           return loadedAST;
+            return loadedAST;
         }
 
         JavaParser p = new JavaParser();
 
         try {
-          p.init(filename);
+            p.init(filename);
         } catch (Exception e) {
-          ApplicationUtility.error("error opening " + filename + " : " + e);
+            ApplicationUtility.error("error opening " + filename + " : " + e);
         }
 
         p.yydebug = debug;

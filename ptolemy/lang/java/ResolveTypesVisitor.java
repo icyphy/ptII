@@ -46,7 +46,7 @@ and Army Research Office.
 @version $Id$
  */
 public class ResolveTypesVisitor extends ResolveVisitorBase
-       implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
 
     /** Create a ResolveTypesVisitor. */
     ResolveTypesVisitor() {
@@ -60,7 +60,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         NameNode name = node.getName();
 
         NameNode newName = (NameNode) StaticResolution.resolveAName(
-         name, env, null, _currentPackage, CG_USERTYPE);
+                name, env, null, _currentPackage, CG_USERTYPE);
 
         // this is not necessary, but by convention ...
         node.setName(newName);
@@ -80,7 +80,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         TNLManip.traverseList(this, node,
-         TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY)), node.getDefTypes());
+                TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY)), node.getDefTypes());
 
         return null;
     }

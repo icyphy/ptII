@@ -57,7 +57,7 @@ and Army Research Office.
 @version $Id$
  */
 public class ResolveClassVisitor extends ResolveVisitorBase
-       implements JavaStaticSemanticConstants  {
+    implements JavaStaticSemanticConstants  {
     public ResolveClassVisitor() {
         super();
     }
@@ -74,7 +74,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
 
         ApplicationUtility.trace("finished resolveClass for " +
-         node.getProperty(IDENT_KEY));
+                node.getProperty(IDENT_KEY));
 
         return null;
     }
@@ -84,18 +84,18 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         Object classDeclObj = args.get(0);
 
         if (classDeclObj instanceof ClassDecl) {
-           ClassDecl classDecl = (ClassDecl) classDeclObj;
+            ClassDecl classDecl = (ClassDecl) classDeclObj;
 
-           if (classDecl.category == CG_INTERFACE) {
-              // classes of an interface are always static and final, and
-              // public if the interface is public
+            if (classDecl.category == CG_INTERFACE) {
+                // classes of an interface are always static and final, and
+                // public if the interface is public
 
-             int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
+                int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
 
-             int modifiers = node.getModifiers();
-             modifiers |= (classPublic | STATIC_MOD | FINAL_MOD);
-             node.setModifiers(modifiers);
-           }
+                int modifiers = node.getModifiers();
+                modifiers |= (classPublic | STATIC_MOD | FINAL_MOD);
+                node.setModifiers(modifiers);
+            }
         }
 
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
@@ -103,7 +103,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // record the fact that we are modifying the ClassDecl
         // exit if we have already done class resolution
         if (!me.addVisitor(_myClass)) {
-           return null;
+            return null;
         }
 
         TreeNode superClass = node.getSuperClass();
@@ -111,20 +111,20 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         ClassDecl superDecl;
 
         if (me == StaticResolution.OBJECT_DECL) {
-           superDecl = null;
+            superDecl = null;
         } else if (superClass == AbsentTreeNode.instance) {
-           superDecl = StaticResolution.OBJECT_DECL;
+            superDecl = StaticResolution.OBJECT_DECL;
         } else {
-           superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
+            superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
         }
 
         if ((superDecl != null) && (superDecl.category != CG_CLASS)) {
-           ApplicationUtility.error("class " + node.getName().getIdent() +
-            " cannot extend interface " + superDecl.getName());
+            ApplicationUtility.error("class " + node.getName().getIdent() +
+                    " cannot extend interface " + superDecl.getName());
         }
 
         if (superDecl != null) {
-           node.setSuperClass(superDecl.getDefType());
+            node.setSuperClass(superDecl.getDefType());
         }
         me.setSuperClass(superDecl);
 
@@ -135,11 +135,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         while (interfaceItr.hasNext()) {
             ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
-             (NamedNode) interfaceItr.next());
+                    (NamedNode) interfaceItr.next());
 
             if (intf.category != CG_INTERFACE) {
-               ApplicationUtility.error("class " + node.getName().getIdent() +
-                " cannot implement class " + intf.getName());
+                ApplicationUtility.error("class " + node.getName().getIdent() +
+                        " cannot implement class " + intf.getName());
             }
             declInterfaceList.addLast(intf);
         }
@@ -165,13 +165,13 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         int modifiers = node.getModifiers();
 
         if (classDecl.category == CG_INTERFACE) {
-           // fields of an interface are always static and final, and
-           // public if the interface is public
+            // fields of an interface are always static and final, and
+            // public if the interface is public
 
-           int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
+            int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
 
-           modifiers |= (classPublic | STATIC_MOD | FINAL_MOD);
-           node.setModifiers(modifiers);
+            modifiers |= (classPublic | STATIC_MOD | FINAL_MOD);
+            node.setModifiers(modifiers);
         }
 
         String nameString = node.getName().getIdent();
@@ -184,11 +184,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         Decl d = encEnviron.lookupProper(nameString, CG_FIELD);
 
         if (d != null) {
-           ApplicationUtility.error("redeclaration of " + d.getName());
+            ApplicationUtility.error("redeclaration of " + d.getName());
         }
 
         d = new FieldDecl(nameString, node.getDefType(), modifiers,
-            node, (ClassDecl) args.get(0));
+                node, (ClassDecl) args.get(0));
 
         encEnviron.add(d);
 
@@ -209,18 +209,18 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         Object classDeclObj = args.get(0);
 
         if (classDeclObj instanceof ClassDecl) {
-           ClassDecl classDecl = (ClassDecl) classDeclObj;
+            ClassDecl classDecl = (ClassDecl) classDeclObj;
 
-           if (classDecl.category == CG_INTERFACE) {
-              // inner interfaces of an interface are always static, and
-              // public if the interface is public
+            if (classDecl.category == CG_INTERFACE) {
+                // inner interfaces of an interface are always static, and
+                // public if the interface is public
 
-             int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
+                int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
 
-             int modifiers = node.getModifiers();
-             modifiers |= classPublic | STATIC_MOD;
-             node.setModifiers(modifiers);
-           }
+                int modifiers = node.getModifiers();
+                modifiers |= classPublic | STATIC_MOD;
+                node.setModifiers(modifiers);
+            }
         }
 
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
@@ -228,7 +228,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // record the fact that we are modifying the ClassDecl
         // exit if we have already done class resolution
         if (!me.addVisitor(_myClass)) {
-           return null;
+            return null;
         }
 
         LinkedList declInterfaceList = new LinkedList();
@@ -237,11 +237,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         while (interfaceItr.hasNext()) {
             ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
-             (NamedNode) interfaceItr.next());
+                    (NamedNode) interfaceItr.next());
 
             if (intf.category != CG_INTERFACE) {
-               ApplicationUtility.error("class " + node.getName().getIdent() +
-                " cannot implement class " + intf.getName());
+                ApplicationUtility.error("class " + node.getName().getIdent() +
+                        " cannot implement class " + intf.getName());
             }
             declInterfaceList.addLast(intf);
         }
@@ -279,24 +279,24 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         String constructorName = name.getIdent();
 
         MethodDecl d = new MethodDecl(constructorName, CG_CONSTRUCTOR,
-         NullTypeNode.instance, modifiers, node, classDecl,
-         _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
+                NullTypeNode.instance, modifiers, node, classDecl,
+                _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
 
 
         /* Do not do any checking that involves types.
 
-        Iterator constructorItr = classEnv.lookupFirstProper(constructorName,
-         CG_CONSTRUCTOR);
+           Iterator constructorItr = classEnv.lookupFirstProper(constructorName,
+           CG_CONSTRUCTOR);
 
-        while (constructorItr.hasNext()) {
+           while (constructorItr.hasNext()) {
 
            MethodDecl dd = (MethodDecl) constructorItr.next();
 
            if (dd.conflictsWith(d)) {
-              ApplicationUtility.error("illegal overloading of " +
-               constructorName);
+           ApplicationUtility.error("illegal overloading of " +
+           constructorName);
            }
-        }
+           }
         */
 
         classEnv.add(d);
@@ -308,10 +308,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         if (block != AbsentTreeNode.instance) {
 
-           LinkedList childArgs = new LinkedList();
-           childArgs.addLast(NullTypeNode.instance); // enclosing class decl
-           childArgs.addLast(NullTypeNode.instance); // enclosing class environ
-           block.accept(this, childArgs);
+            LinkedList childArgs = new LinkedList();
+            childArgs.addLast(NullTypeNode.instance); // enclosing class decl
+            childArgs.addLast(NullTypeNode.instance); // enclosing class environ
+            block.accept(this, childArgs);
         }
 
         return null;
@@ -325,40 +325,40 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         if (classDecl.category == CG_CLASS) {
 
-           // private methods or methods in private or final classes are final
-           if ((modifiers & PRIVATE_MOD) != 0) {
-              modifiers |= FINAL_MOD;
-           }
+            // private methods or methods in private or final classes are final
+            if ((modifiers & PRIVATE_MOD) != 0) {
+                modifiers |= FINAL_MOD;
+            }
 
-           int classMod = classDecl.getModifiers();
+            int classMod = classDecl.getModifiers();
 
-           if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
-              modifiers |= FINAL_MOD;
-           }
+            if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
+                modifiers |= FINAL_MOD;
+            }
 
         } else {
-           // we are inside an interface, all methods are abstract,
-           // and public if the enclosing interface is public
-           int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
-           modifiers |= (classPublic | ABSTRACT_MOD);
+            // we are inside an interface, all methods are abstract,
+            // and public if the enclosing interface is public
+            int classPublic = classDecl.getModifiers() & PUBLIC_MOD;
+            modifiers |= (classPublic | ABSTRACT_MOD);
         }
         node.setModifiers(modifiers);
 
         if (node.getBody() == AbsentTreeNode.instance) {
-           if ((modifiers & ABSTRACT_MOD) != 0) {
-              if ((modifiers &
-                   (PRIVATE_MOD | STATIC_MOD | FINAL_MOD | SYNCHRONIZED_MOD |
-                    NATIVE_MOD)) != 0) {
-                 ApplicationUtility.error("can't use private, static, final, " +
-                  "synchronized, or native with abstract");
-              }
-           } else if ((modifiers & NATIVE_MOD) == 0) {
-              ApplicationUtility.error("abstract or native modifier  required on " +
-               " methods without a body");
-           }
+            if ((modifiers & ABSTRACT_MOD) != 0) {
+                if ((modifiers &
+                        (PRIVATE_MOD | STATIC_MOD | FINAL_MOD | SYNCHRONIZED_MOD |
+                                NATIVE_MOD)) != 0) {
+                    ApplicationUtility.error("can't use private, static, final, " +
+                            "synchronized, or native with abstract");
+                }
+            } else if ((modifiers & NATIVE_MOD) == 0) {
+                ApplicationUtility.error("abstract or native modifier  required on " +
+                        " methods without a body");
+            }
         } else if ((modifiers & (ABSTRACT_MOD | NATIVE_MOD)) != 0) {
-           ApplicationUtility.error("an abstract or native method " +
-            "cannot have a body");
+            ApplicationUtility.error("an abstract or native method " +
+                    "cannot have a body");
         }
 
         // Check that this method is legal
@@ -371,18 +371,18 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         Iterator methodItr = classEnv.lookupFirstProper(methodName, CG_METHOD);
 
         MethodDecl d = new MethodDecl(methodName, CG_METHOD,
-         node.getReturnType(), modifiers, node, classDecl,
-         _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
+                node.getReturnType(), modifiers, node, classDecl,
+                _makeTypeList(node.getParams()), (Collection) node.getThrowsList());
 
         /* Do not do any checking that involves types.
-        while (methodItr.hasNext()) {
+           while (methodItr.hasNext()) {
 
            MethodDecl dd = (MethodDecl) methodItr.next();
 
            if (dd.conflictsWith(d)) {
-              ApplicationUtility.error("illegal overloading of " + methodName);
+           ApplicationUtility.error("illegal overloading of " + methodName);
            }
-        }
+           }
         */
 
         classEnv.add(d);
@@ -393,10 +393,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         TreeNode block = node.getBody();
 
         if (block != AbsentTreeNode.instance) {
-           LinkedList childArgs = new LinkedList();
-           childArgs.addLast(NullTypeNode.instance); // enclosing class decl
-           childArgs.addLast(NullTypeNode.instance); // enclosing class environ
-           block.accept(this, childArgs);
+            LinkedList childArgs = new LinkedList();
+            childArgs.addLast(NullTypeNode.instance); // enclosing class decl
+            childArgs.addLast(NullTypeNode.instance); // enclosing class environ
+            block.accept(this, childArgs);
         }
 
         return null;
@@ -411,7 +411,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // record the fact that we are modifying the ClassDecl
         // exit if we have already done class resolution
         if (!me.addVisitor(_myClass)) {
-           return null;
+            return null;
         }
 
         TypeNameNode superType = node.getSuperType();
@@ -422,10 +422,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         ClassDecl implIFace = null;
 
         if (sdecl.category == CG_CLASS) {
-           superClass = sdecl;
+            superClass = sdecl;
         } else if (sdecl.category == CG_INTERFACE) {
-           superClass = StaticResolution.OBJECT_DECL;
-           implIFace = sdecl;
+            superClass = StaticResolution.OBJECT_DECL;
+            implIFace = sdecl;
         }
 
         node.setProperty(SUPERCLASS_KEY, superClass);
@@ -434,7 +434,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         me.setSuperClass(superClass);
 
         if (implIFace != null) {
-           me.setInterfaces(TNLManip.cons(implIFace));
+            me.setInterfaces(TNLManip.cons(implIFace));
         }
 
         Environ myEnviron = me.getEnviron();
@@ -466,11 +466,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     protected void _addUserTypeToEnclosingClassEnviron(Object encClassEnvironObject,
-     Decl decl) {
+            Decl decl) {
         if (encClassEnvironObject != NullValue.instance) {
-           // this is an inner class, add to outer class's environment
-           Environ encClassEnviron = (Environ) encClassEnvironObject;
-           encClassEnviron.add(decl);
+            // this is an inner class, add to outer class's environment
+            Environ encClassEnviron = (Environ) encClassEnvironObject;
+            encClassEnviron.add(decl);
         }
     }
 
@@ -483,11 +483,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         Iterator paramItr = paramList.iterator();
 
         while (paramItr.hasNext()) {
-           ParameterNode param = (ParameterNode) paramItr.next();
+            ParameterNode param = (ParameterNode) paramItr.next();
 
-           TypeNode type = param.getDefType();
+            TypeNode type = param.getDefType();
 
-           retval.addLast(type);
+            retval.addLast(type);
         }
 
         return retval;

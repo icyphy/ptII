@@ -64,9 +64,9 @@ public class NumberNodeVisitor extends JavaVisitor {
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (!node.hasProperty(PropertyMap.NUMBER_KEY)) {
-           Integer keyValue = new Integer(_nodeMap.size());
-           node.setProperty(PropertyMap.NUMBER_KEY, keyValue);
-           _nodeMap.put(keyValue, node);
+            Integer keyValue = new Integer(_nodeMap.size());
+            node.setProperty(PropertyMap.NUMBER_KEY, keyValue);
+            _nodeMap.put(keyValue, node);
         }
 
         return null;

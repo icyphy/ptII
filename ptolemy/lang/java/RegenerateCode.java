@@ -45,46 +45,46 @@ import ptolemy.lang.java.nodetypes.CompileUnitNode;
  *  @author Jeff Tsay
  */
 public class RegenerateCode {
-  public static void main(String[] args) {
-    int files = args.length;
-    int fileStart = 0;
-    boolean debug = false;
+    public static void main(String[] args) {
+        int files = args.length;
+        int fileStart = 0;
+        boolean debug = false;
 
-    if (files >= 1) {
-       debug = args[0].equals("-d");
-       if (debug) {
-          fileStart++;
-          files--;
-       }
-    }
-
-    if (files < 1) {
-       System.out.println("usage : ptolemy.lang.java.RegenerateCode [-d] f1.java [f2.java ...]");
-    }
-
-    ApplicationUtility.enableTrace = debug;
-
-    for (int f = 0; f < files; f++) {
-        JavaParser p = new JavaParser();
-
-        try {
-          p.init(args[f + fileStart]);
-
-        } catch (Exception e) {
-          System.err.println("error opening input file " + args[f + fileStart]);
-          System.err.println(e.toString());
+        if (files >= 1) {
+            debug = args[0].equals("-d");
+            if (debug) {
+                fileStart++;
+                files--;
+            }
         }
 
-        //p.yydebug = debug;
+        if (files < 1) {
+            System.out.println("usage : ptolemy.lang.java.RegenerateCode [-d] f1.java [f2.java ...]");
+        }
 
-        p.yyparse();
+        ApplicationUtility.enableTrace = debug;
 
-        CompileUnitNode ast = p.getAST();
+        for (int f = 0; f < files; f++) {
+            JavaParser p = new JavaParser();
 
-        String codeString = (String) ast.accept(new JavaCodeGenerator());
+            try {
+                p.init(args[f + fileStart]);
 
-        System.out.println("// Regenerated file : " + args[f + fileStart]);
-        System.out.println(codeString);
+            } catch (Exception e) {
+                System.err.println("error opening input file " + args[f + fileStart]);
+                System.err.println(e.toString());
+            }
+
+            //p.yydebug = debug;
+
+            p.yyparse();
+
+            CompileUnitNode ast = p.getAST();
+
+            String codeString = (String) ast.accept(new JavaCodeGenerator());
+
+            System.out.println("// Regenerated file : " + args[f + fileStart]);
+            System.out.println(codeString);
+        }
     }
-  }
 }

@@ -64,21 +64,21 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         Iterator nodeItr = pass0ResolvedList.iterator();
 
         while (nodeItr.hasNext()) {
-           CompileUnitNode node = (CompileUnitNode) nodeItr.next();
-           node.accept(new ResolveClassVisitor(), null);
+            CompileUnitNode node = (CompileUnitNode) nodeItr.next();
+            node.accept(new ResolveClassVisitor(), null);
         }
 
         nodeItr = pass0ResolvedList.iterator();
 
         while (nodeItr.hasNext()) {
-           CompileUnitNode node = (CompileUnitNode) nodeItr.next();
-           node.accept(new ResolveInheritanceVisitor(_defaultTypePolicy), null);
+            CompileUnitNode node = (CompileUnitNode) nodeItr.next();
+            node.accept(new ResolveInheritanceVisitor(_defaultTypePolicy), null);
 
-           String filename = (String) node.getDefinedProperty(IDENT_KEY);
+            String filename = (String) node.getDefinedProperty(IDENT_KEY);
 
-           if (filename != null) {
-              allPass1ResolvedMap.put(filename, node);
-           }
+            if (filename != null) {
+                allPass1ResolvedMap.put(filename, node);
+            }
         }
 
         pass0ResolvedList.clear();
@@ -91,7 +91,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     public static PackageDecl importPackage(Environ env, NameNode name) {
         resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
-         CG_PACKAGE);
+                CG_PACKAGE);
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
@@ -100,10 +100,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         Iterator declItr = packageEnv.allProperDecls();
 
         while (declItr.hasNext()) {
-           JavaDecl type = (JavaDecl) declItr.next();
-           if (type.category != CG_PACKAGE) {
-              env.add(type); // conflicts appear on use only
-           }
+            JavaDecl type = (JavaDecl) declItr.next();
+            if (type.category != CG_PACKAGE) {
+                env.add(type); // conflicts appear on use only
+            }
         }
 
         return decl;
@@ -121,52 +121,52 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static boolean invalidateCompileUnit(String canonicalFilename, int pass) {
         if ((pass < 0) || (pass > 2)) {
-           throw new IllegalArgumentException("invalid pass number : " + pass);
+            throw new IllegalArgumentException("invalid pass number : " + pass);
         }
 
         String noExtensionFilename =
-         StringManip.partBeforeLast(canonicalFilename, '.');
+            StringManip.partBeforeLast(canonicalFilename, '.');
 
         boolean found = false;
 
         if (pass == 2) {
-           found = (allPass2ResolvedMap.remove(noExtensionFilename) != null);
+            found = (allPass2ResolvedMap.remove(noExtensionFilename) != null);
 
-           if (!found) {
-              ApplicationUtility.warn("couldn't invalidate " + noExtensionFilename);
-              Set keySet = allPass2ResolvedMap.keySet();
-              ApplicationUtility.warn("pass 2 resolved files: " + keySet.toString());
-           }
+            if (!found) {
+                ApplicationUtility.warn("couldn't invalidate " + noExtensionFilename);
+                Set keySet = allPass2ResolvedMap.keySet();
+                ApplicationUtility.warn("pass 2 resolved files: " + keySet.toString());
+            }
         }
 
         if (found || (pass == 1)) {
-           CompileUnitNode unitNode = (CompileUnitNode)
-            allPass1ResolvedMap.remove(noExtensionFilename);
+            CompileUnitNode unitNode = (CompileUnitNode)
+                allPass1ResolvedMap.remove(noExtensionFilename);
 
-           found = (unitNode != null);
+            found = (unitNode != null);
 
-           if (found) {
-              PackageDecl pkgDecl =
-               (PackageDecl) unitNode.getDefinedProperty(PACKAGE_KEY);
+            if (found) {
+                PackageDecl pkgDecl =
+                    (PackageDecl) unitNode.getDefinedProperty(PACKAGE_KEY);
 
-              Environ pkgEnv = pkgDecl.getEnviron();
+                Environ pkgEnv = pkgDecl.getEnviron();
 
-              String className = StringManip.rawFilename(noExtensionFilename);
+                String className = StringManip.rawFilename(noExtensionFilename);
 
-              ClassDecl classDecl = (ClassDecl) pkgEnv.lookupProper(className,
-               CG_USERTYPE);
+                ClassDecl classDecl = (ClassDecl) pkgEnv.lookupProper(className,
+                        CG_USERTYPE);
 
-              if (classDecl != null) {
-                 classDecl.invalidate();
-              } else {
-                 ApplicationUtility.warn("invalidateCompileUnit(): could not find " +
-                  "ClassDecl associated with class " + className);
-              }
-           }
+                if (classDecl != null) {
+                    classDecl.invalidate();
+                } else {
+                    ApplicationUtility.warn("invalidateCompileUnit(): could not find " +
+                            "ClassDecl associated with class " + className);
+                }
+            }
         }
 
         if (found || (pass == 0)) {
-           found = (allPass0ResolvedMap.remove(noExtensionFilename) != null);
+            found = (allPass0ResolvedMap.remove(noExtensionFilename) != null);
         }
 
         return found;
@@ -177,12 +177,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static String nameString(TreeNode node) {
         if (node == AbsentTreeNode.instance) {
-           return "absent name";
+            return "absent name";
         }
 
         // For temporarily messed up qualifiers produced by resolveAName()
         if (node instanceof NamedNode) {
-           node = ((NamedNode) node).getName();
+            node = ((NamedNode) node).getName();
         }
 
         NameNode name = (NameNode) node;
@@ -190,77 +190,77 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         TreeNode qualifier = name.getQualifier();
         String identString = name.getIdent();
         if (qualifier == AbsentTreeNode.instance) {
-           return identString;
+            return identString;
         } else {
-           return nameString(qualifier) + "." + identString;
+            return nameString(qualifier) + "." + identString;
         }
     }
 
     public static EnvironIter findPossibles(NameNode name, Environ env,
-        TypeNameNode currentClass, JavaDecl currentPackage, int categories) {
+            TypeNameNode currentClass, JavaDecl currentPackage, int categories) {
 
         EnvironIter possibles = new EnvironIter();
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
-           if ((categories &
-               (CG_FIELD | CG_METHOD | CG_LOCALVAR | CG_FORMAL | CG_USERTYPE)) != 0) {
-              possibles = env.lookupFirst(name.getIdent(), categories);
-           } else {
-              //ApplicationUtility.trace("looking up package");
-              possibles = ((Environ) SYSTEM_PACKAGE.getEnviron())
-               .lookupFirst(name.getIdent(), categories);
-           }
+            if ((categories &
+                    (CG_FIELD | CG_METHOD | CG_LOCALVAR | CG_FORMAL | CG_USERTYPE)) != 0) {
+                possibles = env.lookupFirst(name.getIdent(), categories);
+            } else {
+                //ApplicationUtility.trace("looking up package");
+                possibles = ((Environ) SYSTEM_PACKAGE.getEnviron())
+                    .lookupFirst(name.getIdent(), categories);
+            }
         } else {
-           int newCategories = 0;
-           if ((categories &
-               (CG_USERTYPE | CG_PACKAGE)) != 0) {
-              newCategories |= CG_PACKAGE;
-           }
+            int newCategories = 0;
+            if ((categories &
+                    (CG_USERTYPE | CG_PACKAGE)) != 0) {
+                newCategories |= CG_PACKAGE;
+            }
 
-           // for inner classes
-           if ((categories & CG_USERTYPE) != 0) {
-               newCategories |= (categories & CG_USERTYPE);
-           }
+            // for inner classes
+            if ((categories & CG_USERTYPE) != 0) {
+                newCategories |= (categories & CG_USERTYPE);
+            }
 
-           if ((categories & (CG_FIELD | CG_METHOD)) != 0) {
-               newCategories |= (CG_USERTYPE | CG_FIELD |
-                                 CG_LOCALVAR | CG_FORMAL);
-           }
+            if ((categories & (CG_FIELD | CG_METHOD)) != 0) {
+                newCategories |= (CG_USERTYPE | CG_FIELD |
+                        CG_LOCALVAR | CG_FORMAL);
+            }
 
-           name.setQualifier(
-            resolveAName((NameNode) name.getQualifier(), env, currentClass,
-             currentPackage, newCategories));
+            name.setQualifier(
+                    resolveAName((NameNode) name.getQualifier(), env, currentClass,
+                            currentPackage, newCategories));
 
-           JavaDecl container = JavaDecl.getDecl(name.getQualifier());
+            JavaDecl container = JavaDecl.getDecl(name.getQualifier());
 
-           if (container.hasEnviron()) {
+            if (container.hasEnviron()) {
 
-              if ((categories & CG_USERTYPE) != 0) {
+                if ((categories & CG_USERTYPE) != 0) {
 
-                 possibles = container.getTypeEnviron().lookupFirstProper(
-                  name.getIdent(), categories);
+                    possibles = container.getTypeEnviron().lookupFirstProper(
+                            name.getIdent(), categories);
 
-              } else {
-                possibles = container.getEnviron().lookupFirstProper(
-                 name.getIdent(), categories);
-              }
+                } else {
+                    possibles = container.getEnviron().lookupFirstProper(
+                            name.getIdent(), categories);
+                }
 
-           } else if (container instanceof TypedDecl) {
-              TypedDecl typedContainer = (TypedDecl) container;
-              TypeNode type = typedContainer.getType();
-              if (type instanceof PrimitiveTypeNode) {
-	             ApplicationUtility.error("cannot select " + name.getIdent() +
-                  " from non-reference type represented by " + type);
-              } else if (type instanceof ArrayTypeNode) {
-                 possibles = ARRAY_CLASS_DECL.getEnviron().lookupFirstProper(
-                  name.getIdent(), categories & (CG_FIELD | CG_METHOD));
-              } else {
-                 // what is this for ???
-                 Environ e = JavaDecl.getDecl(type).getEnviron();
-                 possibles = e.lookupFirstProper(name.getIdent(),
-                  categories & (CG_FIELD | CG_METHOD | CG_USERTYPE));
-              }
-           }
+            } else if (container instanceof TypedDecl) {
+                TypedDecl typedContainer = (TypedDecl) container;
+                TypeNode type = typedContainer.getType();
+                if (type instanceof PrimitiveTypeNode) {
+                    ApplicationUtility.error("cannot select " + name.getIdent() +
+                            " from non-reference type represented by " + type);
+                } else if (type instanceof ArrayTypeNode) {
+                    possibles = ARRAY_CLASS_DECL.getEnviron().lookupFirstProper(
+                            name.getIdent(), categories & (CG_FIELD | CG_METHOD));
+                } else {
+                    // what is this for ???
+                    Environ e = JavaDecl.getDecl(type).getEnviron();
+                    possibles = e.lookupFirstProper(name.getIdent(),
+                            categories & (CG_FIELD | CG_METHOD | CG_USERTYPE));
+                }
+            }
         }
 
         if (!possibles.hasNext()) {
@@ -268,11 +268,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             if ((categories & CG_PACKAGE) != 0) {
                 message += "\n\nClasspath error?\n\n";
             }
-           message += "Symbol name: \"" +
-                  name.getIdent() + "\" is undefined in the environment.\n" +
-                  "Able to find: " + (env.toString()).substring(100) + "...";
+            message += "Symbol name: \"" +
+                name.getIdent() + "\" is undefined in the environment.\n" +
+                "Able to find: " + (env.toString()).substring(100) + "...";
 
-           ApplicationUtility.error(message);
+            ApplicationUtility.error(message);
         }
 
         JavaDecl d = (JavaDecl) possibles.head();
@@ -284,29 +284,29 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
     public static final TreeNode resolveAName(NameNode name, Environ env,
-     TypeNameNode currentClass, JavaDecl currentPackage,
-        int categories) {
+            TypeNameNode currentClass, JavaDecl currentPackage,
+            int categories) {
 
         ApplicationUtility.trace("resolveAName : " + nameString(name));
 
         // check to whether or not we have already resolved the name
         if (name.hasProperty(DECL_KEY)) {
-           ApplicationUtility.trace("decl already defined");
-           return name;
+            ApplicationUtility.trace("decl already defined");
+            return name;
         }
 
         EnvironIter possibles = findPossibles(name, env, currentClass,
-         currentPackage, categories);
+                currentPackage, categories);
 
         if (((categories & CG_METHOD) == 0) && possibles.moreThanOne()) {
-           if ((categories & CG_USERTYPE) != 0) {
-             ApplicationUtility.warn("ambiguous reference to " + name.getIdent() +
-              ", using most specific one.");
+            if ((categories & CG_USERTYPE) != 0) {
+                ApplicationUtility.warn("ambiguous reference to " + name.getIdent() +
+                        ", using most specific one.");
 
-           } else {
-             ApplicationUtility.error("ambiguous reference to " + name.getIdent() +
-              " in environment " + env);
-           }
+            } else {
+                ApplicationUtility.error("ambiguous reference to " + name.getIdent() +
+                        " in environment " + env);
+            }
         }
 
         JavaDecl d = (JavaDecl) name.getDefinedProperty(DECL_KEY);
@@ -315,68 +315,68 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         case CG_CLASS:
         case CG_INTERFACE:
-        {
-          ClassDecl cd = (ClassDecl) d;
-          cd.loadSource();
-          int modifiers = cd.getModifiers();
-          boolean isPublic = ((modifiers & PUBLIC_MOD) != 0);
-          boolean isStatic = ((modifiers & STATIC_MOD) != 0);
+            {
+                ClassDecl cd = (ClassDecl) d;
+                cd.loadSource();
+                int modifiers = cd.getModifiers();
+                boolean isPublic = ((modifiers & PUBLIC_MOD) != 0);
+                boolean isStatic = ((modifiers & STATIC_MOD) != 0);
 
-          // check access : public?
-          if (!isPublic) {
-             JavaDecl container = cd.getContainer();
+                // check access : public?
+                if (!isPublic) {
+                    JavaDecl container = cd.getContainer();
 
-             // a top-level class in the same package?
-             if (container != currentPackage) {
+                    // a top-level class in the same package?
+                    if (container != currentPackage) {
 
-                // inner class, in the same package?
-                // FIXME : this check is too simple
-                if (!cd.deepContainedBy(currentPackage)) {
-                   ApplicationUtility.error(cd.getName() + " not accessible");
+                        // inner class, in the same package?
+                        // FIXME : this check is too simple
+                        if (!cd.deepContainedBy(currentPackage)) {
+                            ApplicationUtility.error(cd.getName() + " not accessible");
+                        }
+                    }
                 }
-             }
-          }
 
-          ApplicationUtility.trace("resolveAName " + nameString(name) +
-           " (user type) ok");
-          return name;
-        }
+                ApplicationUtility.trace("resolveAName " + nameString(name) +
+                        " (user type) ok");
+                return name;
+            }
 
         case CG_FIELD:
         case CG_METHOD:
-        {
-          TreeNode res;
-          TreeNode qualifier = name.getQualifier();
-          MemberDecl md = (MemberDecl) d;
-          if (qualifier == AbsentTreeNode.instance) {
-             if ((md.getModifiers() & STATIC_MOD) != 0) {
-                res = new TypeFieldAccessNode(name, currentClass);
-             } else {
-                res = new ThisFieldAccessNode(name);
-                res.setProperty(THIS_CLASS_KEY, currentClass);
-                // FIXME what's wrong with a normal constructor
-             }
-          } else if ((JavaDecl.getDecl(qualifier).category & CG_USERTYPE) != 0) {
-             res = new TypeFieldAccessNode(name,
-                    new TypeNameNode((NameNode) qualifier));
-          } else {
-             res = new ObjectFieldAccessNode(name, qualifier);
-          }
+            {
+                TreeNode res;
+                TreeNode qualifier = name.getQualifier();
+                MemberDecl md = (MemberDecl) d;
+                if (qualifier == AbsentTreeNode.instance) {
+                    if ((md.getModifiers() & STATIC_MOD) != 0) {
+                        res = new TypeFieldAccessNode(name, currentClass);
+                    } else {
+                        res = new ThisFieldAccessNode(name);
+                        res.setProperty(THIS_CLASS_KEY, currentClass);
+                        // FIXME what's wrong with a normal constructor
+                    }
+                } else if ((JavaDecl.getDecl(qualifier).category & CG_USERTYPE) != 0) {
+                    res = new TypeFieldAccessNode(name,
+                            new TypeNameNode((NameNode) qualifier));
+                } else {
+                    res = new ObjectFieldAccessNode(name, qualifier);
+                }
 
-          name.setQualifier(AbsentTreeNode.instance);
-          ApplicationUtility.trace("resolveAName " + nameString(name) +
-           " (field or method) ok");
-          return res;
-        }
+                name.setQualifier(AbsentTreeNode.instance);
+                ApplicationUtility.trace("resolveAName " + nameString(name) +
+                        " (field or method) ok");
+                return res;
+            }
 
         case CG_LOCALVAR:
         case CG_FORMAL:
-        //ApplicationUtility.trace("resolveAName " + nameString(name) +
-        // " (local var or formal param) ok");
-        return new ObjectNode(name);
+            //ApplicationUtility.trace("resolveAName " + nameString(name) +
+            // " (local var or formal param) ok");
+            return new ObjectNode(name);
 
         default:
-        return name;
+            return name;
         }
     }
 
@@ -389,22 +389,22 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         int firstDotPosition;
 
         do {
-           firstDotPosition = qualifiedName.indexOf('.');
+            firstDotPosition = qualifiedName.indexOf('.');
 
-           if (firstDotPosition > 0) {
-              String ident = qualifiedName.substring(0, firstDotPosition);
+            if (firstDotPosition > 0) {
+                String ident = qualifiedName.substring(0, firstDotPosition);
 
 
-              retval = new NameNode(retval, ident);
+                retval = new NameNode(retval, ident);
 
-              qualifiedName = qualifiedName.substring(firstDotPosition + 1,
-               qualifiedName.length());
+                qualifiedName = qualifiedName.substring(firstDotPosition + 1,
+                        qualifiedName.length());
 
-           } else {
-              if (qualifiedName.length() > 0) {
-                 return new NameNode(retval, qualifiedName);
-              }
-           }
+            } else {
+                if (qualifiedName.length() > 0) {
+                    return new NameNode(retval, qualifiedName);
+                }
+            }
         } while (firstDotPosition > 0);
 
         return retval;
@@ -424,16 +424,16 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  @throws NoSuchElementException if the declaration cannot be found.
      */
     public static JavaDecl findDecl(CompileUnitNode compileUnit,
-     String qualifiedName, int category) {
+            String qualifiedName, int category) {
         Environ env = (Environ) compileUnit.getDefinedProperty(ENVIRON_KEY);
         NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
 
         // is this really necessary?
         PackageDecl pkgDecl =
-         (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
+            (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
 
         EnvironIter environIter = findPossibles(nameNode, env, null,
-         pkgDecl, category);
+                pkgDecl, category);
 
         // no check for multiple matches (this should be handled by
         // the static resolution passes)
@@ -457,20 +457,20 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  @throws NoSuchElementException if the declaration cannot be found.
      */
     public static MemberDecl findInvokableDecl(CompileUnitNode compileUnit,
-     String qualifiedName, int category, List methodArgs,
-     TypeVisitor typeVisitor) {
+            String qualifiedName, int category, List methodArgs,
+            TypeVisitor typeVisitor) {
         Environ env = (Environ) compileUnit.getDefinedProperty(ENVIRON_KEY);
         NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
 
         // is this really necessary?
         PackageDecl pkgDecl =
-         (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
+            (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
 
         EnvironIter environIter = findPossibles(nameNode, env, null,
-         pkgDecl, category);
+                pkgDecl, category);
 
         ResolveFieldVisitor resolveFieldVisitor =
-         new ResolveFieldVisitor(typeVisitor);
+            new ResolveFieldVisitor(typeVisitor);
 
         // no check for multiple matches (this should be handled by
         // the static resolution passes)
@@ -487,9 +487,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     public static CompileUnitNode load(File file, int pass) {
         try {
-          return loadCanonical(file.getCanonicalPath(), pass);
+            return loadCanonical(file.getCanonicalPath(), pass);
         } catch (IOException ioe) {
-          ApplicationUtility.error(ioe.toString());
+            ApplicationUtility.error(ioe.toString());
         }
         return null;
     }
@@ -504,14 +504,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         String noExtensionName = StringManip.partBeforeLast(filename, '.');
 
         CompileUnitNode loadedAST =
-         (CompileUnitNode) allPass0ResolvedMap.get(noExtensionName);
+            (CompileUnitNode) allPass0ResolvedMap.get(noExtensionName);
 
         if (loadedAST == null) {
-           loadedAST = JavaParserManip.parseCanonical(filename, false);
+            loadedAST = JavaParserManip.parseCanonical(filename, false);
 
-           if (loadedAST == null) {
-              ApplicationUtility.error("Couldn't load " + filename);
-           }
+            if (loadedAST == null) {
+                ApplicationUtility.error("Couldn't load " + filename);
+            }
         }
         return load(loadedAST, pass);
     }
@@ -522,20 +522,20 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static CompileUnitNode load(CompileUnitNode node, int pass) {
         switch (pass) {
-          case 0:
-          return resolvePass0(node);
+        case 0:
+            return resolvePass0(node);
 
-          case 1:
-          node = resolvePass0(node);
-          return resolvePass1(node);
+        case 1:
+            node = resolvePass0(node);
+            return resolvePass1(node);
 
-          case 2:
-          node = resolvePass0(node);
-          node = resolvePass1(node);
-          return resolvePass2(node);
+        case 2:
+            node = resolvePass0(node);
+            node = resolvePass1(node);
+            return resolvePass2(node);
 
-          default:
-          throw new IllegalArgumentException("invalid pass number (" + pass + ")");
+        default:
+            throw new IllegalArgumentException("invalid pass number (" + pass + ")");
         }
     }
 
@@ -548,12 +548,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         String filename = (String) node.getProperty(IDENT_KEY);
 
         if (filename != null) {
-           CompileUnitNode pass0ResolvedNode =
-            (CompileUnitNode) allPass0ResolvedMap.get(filename);
+            CompileUnitNode pass0ResolvedNode =
+                (CompileUnitNode) allPass0ResolvedMap.get(filename);
 
-           if (pass0ResolvedNode != null) {
-              return pass0ResolvedNode;
-           }
+            if (pass0ResolvedNode != null) {
+                return pass0ResolvedNode;
+            }
         }
 
         node.accept(new PackageResolutionVisitor(), null);
@@ -561,7 +561,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         pass0ResolvedList.add(node);
 
         if (filename != null) {
-           allPass0ResolvedMap.put(filename, node);
+            allPass0ResolvedMap.put(filename, node);
         }
 
         return node;
@@ -578,13 +578,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         String filename = (String) node.getProperty(IDENT_KEY);
 
         if (filename != null) {
-           // allow the node returned by pass 1 to be a different one
-           node = (CompileUnitNode) allPass1ResolvedMap.get(filename);
+            // allow the node returned by pass 1 to be a different one
+            node = (CompileUnitNode) allPass1ResolvedMap.get(filename);
         }
 
         if (node == null) {
-           ApplicationUtility.error("Couldn't find " + filename +
-            " in pass 1 resolved map.");
+            ApplicationUtility.error("Couldn't find " + filename +
+                    " in pass 1 resolved map.");
         }
 
         return node;
@@ -601,19 +601,19 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         String filename = (String) node.getProperty(IDENT_KEY);
 
         if (filename != null) {
-           CompileUnitNode pass2ResolvedNode =
-            (CompileUnitNode) allPass2ResolvedMap.get(filename);
+            CompileUnitNode pass2ResolvedNode =
+                (CompileUnitNode) allPass2ResolvedMap.get(filename);
 
-           if (pass2ResolvedNode != null) {
-              return pass2ResolvedNode;
-           }
+            if (pass2ResolvedNode != null) {
+                return pass2ResolvedNode;
+            }
         }
 
         node.accept(new ResolveNameVisitor(), null);
         node.accept(new ResolveFieldVisitor(_defaultTypeVisitor), null);
 
         if (filename != null) {
-           allPass2ResolvedMap.put(filename, node);
+            allPass2ResolvedMap.put(filename, node);
         }
 
         return node;
@@ -631,13 +631,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         Decl decl = env.lookup(name);
 
         if (decl == null) {
-           ApplicationUtility.error("could not find class or interface \"" +
-            name + "\" in bootstrap environment: " + env);
+            ApplicationUtility.error("could not find class or interface \"" +
+                    name + "\" in bootstrap environment: " + env);
         }
 
         if ((decl.category & (CG_CLASS | CG_INTERFACE)) == 0) {
-           ApplicationUtility.error("fatal error: " + decl.getName() +
-	        " should be a class or interface");
+            ApplicationUtility.error("fatal error: " + decl.getName() +
+                    " should be a class or interface");
         }
 
         ClassDecl cdecl = (ClassDecl) decl;
@@ -722,23 +722,23 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         List arrayClassMembers = new LinkedList();
 
         FieldDeclNode arrayLengthNode = new FieldDeclNode(PUBLIC_MOD | FINAL_MOD,
-         IntTypeNode.instance, new NameNode(AbsentTreeNode.instance, "length"),
-         AbsentTreeNode.instance);
+                IntTypeNode.instance, new NameNode(AbsentTreeNode.instance, "length"),
+                AbsentTreeNode.instance);
 
-         // clone() method has an empty body for now
+        // clone() method has an empty body for now
         MethodDeclNode arrayCloneNode = new MethodDeclNode(PUBLIC_MOD | FINAL_MOD,
-         new NameNode(AbsentTreeNode.instance, "clone"), new LinkedList(),
-         new LinkedList(), new BlockNode(new LinkedList()), OBJECT_TYPE);
+                new NameNode(AbsentTreeNode.instance, "clone"), new LinkedList(),
+                new LinkedList(), new BlockNode(new LinkedList()), OBJECT_TYPE);
 
         arrayClassMembers.add(arrayLengthNode);
         arrayClassMembers.add(arrayCloneNode);
 
         ClassDeclNode arrayClassNode = new ClassDeclNode(PUBLIC_MOD,
-         new NameNode(AbsentTreeNode.instance, "<array>"),
-         TNLManip.cons(CLONEABLE_TYPE), arrayClassMembers, OBJECT_TYPE);
+                new NameNode(AbsentTreeNode.instance, "<array>"),
+                TNLManip.cons(CLONEABLE_TYPE), arrayClassMembers, OBJECT_TYPE);
 
         CompileUnitNode arrayCompileUnitNode = new CompileUnitNode(
-         javaLangName, new LinkedList(), TNLManip.cons(arrayClassNode));
+                javaLangName, new LinkedList(), TNLManip.cons(arrayClassNode));
 
         // give the CompileUnitNode a dummy name so it can be retrieved
         arrayCompileUnitNode.setProperty(IDENT_KEY, "<array>");

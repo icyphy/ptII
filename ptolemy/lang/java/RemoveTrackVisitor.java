@@ -54,9 +54,9 @@ public class RemoveTrackVisitor extends JavaVisitor {
         Iterator argsItr = args.iterator();
 
         while (argsItr.hasNext()) {
-           Class visitorClass = (Class) argsItr.next();
+            Class visitorClass = (Class) argsItr.next();
 
-           node.removeVisitor(visitorClass);
+            node.removeVisitor(visitorClass);
         }
         return null;
     }

@@ -48,7 +48,7 @@ and Army Research Office.
 @version $Id$
  */
 public class ResolveFieldVisitor extends ReplacementJavaVisitor
-       implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
     public ResolveFieldVisitor() {
         this(new TypeVisitor());
     }
@@ -63,7 +63,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         ApplicationUtility.trace("resolve field on " +
-         node.getDefinedProperty(IDENT_KEY));
+                node.getDefinedProperty(IDENT_KEY));
 
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -72,7 +72,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
 
         ApplicationUtility.trace("finished resolve field on " +
-         node.getDefinedProperty(IDENT_KEY));
+                node.getDefinedProperty(IDENT_KEY));
 
         return node;
     }
@@ -117,17 +117,17 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
         FieldContext ctx = (FieldContext) args.get(0);
         ClassDecl classDecl =
-         (ClassDecl) JavaDecl.getDecl((NamedNode) ctx.currentClass);
+            (ClassDecl) JavaDecl.getDecl((NamedNode) ctx.currentClass);
         String className = classDecl.getName();
 
         if (!node.getName().getIdent().equals(className)) {
-           ApplicationUtility.error("constructor for " + className + " must be named " +
-            className);
+            ApplicationUtility.error("constructor for " + className + " must be named " +
+                    className);
         }
 
         node.setParams(TNLManip.traverseList(this, node, args, node.getParams()));
         node.setConstructorCall((ConstructorCallNode)
-         node.getConstructorCall().accept(this, args));
+                node.getConstructorCall().accept(this, args));
         node.setBody((BlockNode) node.getBody().accept(this, args));
 
         return node;
@@ -139,7 +139,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         Environ classEnv = classDecl.getEnviron();
 
         EnvironIter methods = classEnv.lookupFirstProper(classDecl.getName(),
-         CG_CONSTRUCTOR);
+                CG_CONSTRUCTOR);
 
         node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
 
@@ -156,21 +156,21 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         ClassDecl superDecl = ctx.currentClassDecl.getSuperClass();
 
         if (superDecl == null) {
-           // the class is 'Object'
-           return AbsentTreeNode.instance;
+            // the class is 'Object'
+            return AbsentTreeNode.instance;
         }
 
         Environ superEnv = superDecl.getEnviron();
 
         EnvironIter methods = superEnv.lookupFirstProper(superDecl.getName(),
-         CG_CONSTRUCTOR);
+                CG_CONSTRUCTOR);
 
         node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
 
         node.setProperty(DECL_KEY, resolveCall(methods, node.getArgs()));
 
         // checkFieldAccess(decl(), ctx->currentClass->decl()->superClass(),
-		   //true, true, true, ctx, position());
+        //true, true, true, ctx, position());
         return node;
     }
 
@@ -202,7 +202,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     public Object visitThisNode(ThisNode node, LinkedList args) {
         FieldContext ctx = (FieldContext) args.get(0);
         if (ctx.inStatic) {
-           ApplicationUtility.error("cannot use 'this' in static code");
+            ApplicationUtility.error("cannot use 'this' in static code");
         }
 
         return node;
@@ -223,18 +223,18 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         TypeNode ot = _typeVisitor.type(expr);
 
         if (!(_typePolicy.isReferenceType(ot) || _typePolicy.isArrayType(ot))) {
-           ApplicationUtility.error("attempt to select from non-reference type " + ot);
+            ApplicationUtility.error("attempt to select from non-reference type " + ot);
         } else {
-           resolveAField(node, false, false, ctx);
+            resolveAField(node, false, false, ctx);
         }
 
         if (expr.classID() == THISNODE_ID) {
-           ThisFieldAccessNode retval = new ThisFieldAccessNode(node.getName());
+            ThisFieldAccessNode retval = new ThisFieldAccessNode(node.getName());
 
-           retval.setProperty(THIS_CLASS_KEY,
-            (TypeNameNode) expr.getDefinedProperty(THIS_CLASS_KEY));
+            retval.setProperty(THIS_CLASS_KEY,
+                    (TypeNameNode) expr.getDefinedProperty(THIS_CLASS_KEY));
 
-           return retval.accept(this, args);
+            return retval.accept(this, args);
         }
 
         return node;
@@ -244,7 +244,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         FieldContext ctx = (FieldContext) args.get(0);
 
         if (ctx.inStatic) {
-           ApplicationUtility.error("cannot use 'super' in static code");
+            ApplicationUtility.error("cannot use 'super' in static code");
         }
 
         resolveAField(node, true, true, ctx);
@@ -260,12 +260,12 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         JavaDecl d = JavaDecl.getDecl((NamedNode) node);
 
         if ((d.getModifiers() & STATIC_MOD) == 0) {
-           ClassDecl typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) node.getFType());
+            ClassDecl typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) node.getFType());
 
-           if (!_typePolicy.isSubClass(ctx.currentClassDecl, typeDecl)) {
-              ApplicationUtility.error("access to non-static " + d.getName() +
-               " that does not exist in this class");
-           }
+            if (!_typePolicy.isSubClass(ctx.currentClassDecl, typeDecl)) {
+                ApplicationUtility.error("access to non-static " + d.getName() +
+                        " that does not exist in this class");
+            }
         }
 
         return node;
@@ -294,7 +294,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
         FieldContext ctx = (FieldContext) args.get(0);
         if (ctx.inStatic) {
-           ApplicationUtility.error("cannot use 'this' in static code");
+            ApplicationUtility.error("cannot use 'this' in static code");
         }
         return node;
     }
@@ -302,7 +302,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     public Object visitOuterSuperAccessNode(OuterSuperAccessNode node, LinkedList args) {
         FieldContext ctx = (FieldContext) args.get(0);
         if (ctx.inStatic) {
-           ApplicationUtility.error("cannot use 'super' in static code");
+            ApplicationUtility.error("cannot use 'super' in static code");
         }
         return node;
     }
@@ -312,15 +312,15 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         FieldContext ctx = (FieldContext) args.get(0);
 
         if (!ctx.inStatic &&
-            (node.getEnclosingInstance() == AbsentTreeNode.instance)) {
-           ThisNode thisNode = new ThisNode();
+                (node.getEnclosingInstance() == AbsentTreeNode.instance)) {
+            ThisNode thisNode = new ThisNode();
 
-           // duplicates what's done by ResolveNameVisitor
-           thisNode.setProperty(THIS_CLASS_KEY, ctx.currentClass);
-           node.setEnclosingInstance((TreeNode) thisNode.accept(this, args));
+            // duplicates what's done by ResolveNameVisitor
+            thisNode.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+            node.setEnclosingInstance((TreeNode) thisNode.accept(this, args));
         } else {
-           node.setEnclosingInstance((TreeNode)
-            node.getEnclosingInstance().accept(this, args));
+            node.setEnclosingInstance((TreeNode)
+                    node.getEnclosingInstance().accept(this, args));
         }
 
         node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
@@ -328,22 +328,22 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         TypeNameNode typeName = node.getDtype();
 
         if (!_typeID.isClassKind(_typeID.kind(typeName))) {
-           ApplicationUtility.error("can't allocate something of non-class type " +
-            typeName.getName().getIdent());
+            ApplicationUtility.error("can't allocate something of non-class type " +
+                    typeName.getName().getIdent());
         } else {
-           ClassDecl typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) typeName);
+            ClassDecl typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) typeName);
 
-           if ((typeDecl.getModifiers() & ABSTRACT_MOD) != 0) {
-              ApplicationUtility.error("cannot allocate abstract " +
-               typeName.getName().getIdent());
-           }
+            if ((typeDecl.getModifiers() & ABSTRACT_MOD) != 0) {
+                ApplicationUtility.error("cannot allocate abstract " +
+                        typeName.getName().getIdent());
+            }
 
-           EnvironIter methods = typeDecl.getEnviron().lookupFirstProper(
-            typeDecl.getName(), CG_CONSTRUCTOR);
+            EnvironIter methods = typeDecl.getEnviron().lookupFirstProper(
+                    typeDecl.getName(), CG_CONSTRUCTOR);
 
-           MethodDecl constructor = resolveCall(methods, node.getArgs());
+            MethodDecl constructor = resolveCall(methods, node.getArgs());
 
-           node.setProperty(DECL_KEY, constructor);
+            node.setProperty(DECL_KEY, constructor);
         }
 
         // checkFieldAccess(constructor, dtype()->decl(), false, false, true,
@@ -356,15 +356,15 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         FieldContext ctx = (FieldContext) args.get(0);
 
         if (!ctx.inStatic &&
-            (node.getEnclosingInstance() == AbsentTreeNode.instance)) {
-           ThisNode thisNode = new ThisNode();
+                (node.getEnclosingInstance() == AbsentTreeNode.instance)) {
+            ThisNode thisNode = new ThisNode();
 
-           // duplicates what's done by ResolveNameVisitor
-           thisNode.setProperty(THIS_CLASS_KEY, ctx.currentClass);
-           node.setEnclosingInstance((TreeNode) thisNode.accept(this, args));
+            // duplicates what's done by ResolveNameVisitor
+            thisNode.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+            node.setEnclosingInstance((TreeNode) thisNode.accept(this, args));
         } else {
-           node.setEnclosingInstance((TreeNode)
-            node.getEnclosingInstance().accept(this, args));
+            node.setEnclosingInstance((TreeNode)
+                    node.getEnclosingInstance().accept(this, args));
         }
 
         node.setSuperArgs(TNLManip.traverseList(this, node, args, node.getSuperArgs()));
@@ -372,7 +372,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         ClassDecl superDecl = (ClassDecl) node.getDefinedProperty(SUPERCLASS_KEY);
 
         EnvironIter methods = superDecl.getEnviron().lookupFirstProper(
-         superDecl.getName(), CG_CONSTRUCTOR);
+                superDecl.getName(), CG_CONSTRUCTOR);
 
         MethodDecl constructor = resolveCall(methods, node.getSuperArgs());
 
@@ -385,7 +385,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         subCtx.methodArgs = null;
 
         node.setMembers(TNLManip.traverseList(this, node, TNLManip.cons(subCtx),
-         node.getMembers()));
+                node.getMembers()));
 
         return node;
     }
@@ -404,7 +404,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         List params2 = m2.getParams();
 
         if (params2.size() != params2.size()) {
-           return false;
+            return false;
         }
 
         ClassDecl container2 = (ClassDecl) m2.getContainer();
@@ -414,7 +414,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         TypeNameNode classType1 = container1.getDefType();
 
         if (!_typePolicy.isAssignableFromType(classType2, classType1)) {
-           return false;
+            return false;
         }
 
         Iterator params1Itr = params1.iterator();
@@ -425,7 +425,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
             TypeNode param1 = (TypeNode) params1Itr.next();
 
             if (!_typePolicy.isAssignableFromType(param2, param1)) {
-               return false;
+                return false;
             }
         }
         return true;
@@ -435,33 +435,33 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         List formalTypes = m.getParams();
 
         if (argTypes.size() != formalTypes.size()) {
-           return false;
+            return false;
         }
 
         Iterator formalItr = formalTypes.iterator();
         Iterator argItr = argTypes.iterator();
 
         while (formalItr.hasNext()) {
-           TypeNode formalType = (TypeNode) formalItr.next();
-           TypeNode argType = (TypeNode) argItr.next();
+            TypeNode formalType = (TypeNode) formalItr.next();
+            TypeNode argType = (TypeNode) argItr.next();
 
-           if (!_typePolicy.isAssignableFromType(formalType, argType)) {
-              return false;
-           }
+            if (!_typePolicy.isAssignableFromType(formalType, argType)) {
+                return false;
+            }
         }
         return true;
     }
 
     protected void resolveAField(FieldAccessNode node, boolean thisAccess, boolean isSuper,
-     FieldContext ctx) {
+            FieldContext ctx) {
         EnvironIter resolutions;
         TypeNode oType = _typeVisitor.accessedObjectType(node);
         ClassDecl typeDecl;
 
         if (oType.classID() == ARRAYTYPENODE_ID) {
-           typeDecl = StaticResolution.ARRAY_CLASS_DECL;
+            typeDecl = StaticResolution.ARRAY_CLASS_DECL;
         } else {
-           typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) oType);
+            typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) oType);
         }
 
         JavaDecl d = null;
@@ -469,30 +469,30 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         String nameString = node.getName().getIdent();
 
         if (methodArgs == null) {
-           d = JavaDecl.getDecl((NamedNode) node);
-           if (d == null) { // don't repeat work
-           	  resolutions = typeDecl.getEnviron().lookupFirstProper(nameString, CG_FIELD);
+            d = JavaDecl.getDecl((NamedNode) node);
+            if (d == null) { // don't repeat work
+                resolutions = typeDecl.getEnviron().lookupFirstProper(nameString, CG_FIELD);
 
-      	      if (!resolutions.hasNext()) {
-            	 ApplicationUtility.error ("no " + nameString + " field in " +
-         		   typeDecl.getName());
-           	  } else {
+                if (!resolutions.hasNext()) {
+                    ApplicationUtility.error ("no " + nameString + " field in " +
+                            typeDecl.getName());
+                } else {
          	    d = (JavaDecl) resolutions.nextDecl();
         	    if (resolutions.hasNext()) {
-         	      ApplicationUtility.error("ambiguous reference to " + d.getName());
-            	}
-              }
-           }
+                        ApplicationUtility.error("ambiguous reference to " + d.getName());
+                    }
+                }
+            }
         } else {
-           resolutions = typeDecl.getEnviron().lookupFirstProper(nameString,
-            CG_METHOD);
+            resolutions = typeDecl.getEnviron().lookupFirstProper(nameString,
+                    CG_METHOD);
 
-           if (!resolutions.hasNext()) {
-              ApplicationUtility.error("no " + nameString + " method in " +
-                typeDecl.getName());
-    	   } else {
-       	      d = resolveCall(resolutions, methodArgs);
-		   }
+            if (!resolutions.hasNext()) {
+                ApplicationUtility.error("no " + nameString + " method in " +
+                        typeDecl.getName());
+            } else {
+                d = resolveCall(resolutions, methodArgs);
+            }
         }
 
         node.getName().setProperty(DECL_KEY, d);
@@ -511,45 +511,45 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         Iterator argsItr = args.iterator();
 
         while (argsItr.hasNext()) {
-           ExprNode expr = (ExprNode) argsItr.next();
-           argTypes.addLast(_typeVisitor.type(expr));
+            ExprNode expr = (ExprNode) argsItr.next();
+            argTypes.addLast(_typeVisitor.type(expr));
         }
 
         LinkedList matches = new LinkedList();
 
         while (methods.hasNext()) {
-           MethodDecl method = (MethodDecl) methods.next();
-           if (isCallableWith(method, argTypes)) {
-              matches.addLast(method);
-           }
+            MethodDecl method = (MethodDecl) methods.next();
+            if (isCallableWith(method, argTypes)) {
+                matches.addLast(method);
+            }
         }
 
         if (matches.size() == 0) {
-           ApplicationUtility.error("no matching " + aMethod.getName() +
-            "(" + TNLManip.toString(argTypes) + ")");
+            ApplicationUtility.error("no matching " + aMethod.getName() +
+                    "(" + TNLManip.toString(argTypes) + ")");
         }
 
         Iterator matchesItr1 = matches.iterator();
 
         while (matchesItr1.hasNext()) {
-           MethodDecl m1 = (MethodDecl) matchesItr1.next();
-           Iterator matchesItr2 = matches.iterator();
-           boolean thisOne = true;
+            MethodDecl m1 = (MethodDecl) matchesItr1.next();
+            Iterator matchesItr2 = matches.iterator();
+            boolean thisOne = true;
 
-           while (matchesItr2.hasNext()) {
-              MethodDecl m2 = (MethodDecl) matchesItr2.next();
-              if (m1 == m2) {
-                continue; // get out of this inner loop
-              }
-              if (!isMoreSpecific(m1, m2) || isMoreSpecific(m2, m1)) {
-                 thisOne = false; // keep looking
-                 continue; // get out of this inner loop
-              }
-           }
+            while (matchesItr2.hasNext()) {
+                MethodDecl m2 = (MethodDecl) matchesItr2.next();
+                if (m1 == m2) {
+                    continue; // get out of this inner loop
+                }
+                if (!isMoreSpecific(m1, m2) || isMoreSpecific(m2, m1)) {
+                    thisOne = false; // keep looking
+                    continue; // get out of this inner loop
+                }
+            }
 
-           if (thisOne) {
-              return m1;
-           }
+            if (thisOne) {
+                return m1;
+            }
         }
 
         ApplicationUtility.error ("ambiguous method call to " + aMethod.getName());
@@ -561,9 +561,9 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         public Object clone() {
             try {
-              return super.clone();
+                return super.clone();
             } catch (CloneNotSupportedException cnse) {
-              throw new InternalError("clone of FieldContext not supported");
+                throw new InternalError("clone of FieldContext not supported");
             }
         }
 

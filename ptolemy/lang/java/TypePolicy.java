@@ -55,11 +55,11 @@ public class TypePolicy implements JavaStaticSemanticConstants {
 
     public TypeNode arithPromoteType(TypeNode type) {
         switch (_typeID.kind(type)) {
-          case TypeIdentifier.TYPE_KIND_BYTE:
-          case TypeIdentifier.TYPE_KIND_CHAR:
-          case TypeIdentifier.TYPE_KIND_SHORT:
-          case TypeIdentifier.TYPE_KIND_INT:
-          return IntTypeNode.instance;
+        case TypeIdentifier.TYPE_KIND_BYTE:
+        case TypeIdentifier.TYPE_KIND_CHAR:
+        case TypeIdentifier.TYPE_KIND_SHORT:
+        case TypeIdentifier.TYPE_KIND_INT:
+            return IntTypeNode.instance;
         }
         return type;
     }
@@ -69,23 +69,23 @@ public class TypePolicy implements JavaStaticSemanticConstants {
         int kind2 = _typeID.kind(type2);
 
         if ((kind1 == TypeIdentifier.TYPE_KIND_DOUBLE) ||
-            (kind2 == TypeIdentifier.TYPE_KIND_DOUBLE)) {
-           return DoubleTypeNode.instance;
+                (kind2 == TypeIdentifier.TYPE_KIND_DOUBLE)) {
+            return DoubleTypeNode.instance;
         }
 
         if ((kind1 == TypeIdentifier.TYPE_KIND_FLOAT) ||
-            (kind2 == TypeIdentifier.TYPE_KIND_FLOAT)) {
-           return FloatTypeNode.instance;
+                (kind2 == TypeIdentifier.TYPE_KIND_FLOAT)) {
+            return FloatTypeNode.instance;
         }
 
         if ((kind1 == TypeIdentifier.TYPE_KIND_LONG) ||
-            (kind2 == TypeIdentifier.TYPE_KIND_LONG)) {
-           return LongTypeNode.instance;
+                (kind2 == TypeIdentifier.TYPE_KIND_LONG)) {
+            return LongTypeNode.instance;
         }
 
         if ((kind1 == TypeIdentifier.TYPE_KIND_BOOLEAN) ||
-            (kind2 == TypeIdentifier.TYPE_KIND_BOOLEAN)) {
-           return BoolTypeNode.instance;
+                (kind2 == TypeIdentifier.TYPE_KIND_BOOLEAN)) {
+            return BoolTypeNode.instance;
         }
         return IntTypeNode.instance;
     }
@@ -93,35 +93,35 @@ public class TypePolicy implements JavaStaticSemanticConstants {
     /** Return true if TypeNodes t1 and t2 are identical. */
     public boolean compareTypes(TypeNode t1, TypeNode t2) {
         if (t1 == t2) {  // primitive types, or reference to same type node
-                         // this relies on the fact that the primitive
-                         // types are singletons
-           return true;
+            // this relies on the fact that the primitive
+            // types are singletons
+            return true;
         }
 
         if (isArrayType(t1)) {
-           if (!isArrayType(t2)) {
-              return false;
-           }
+            if (!isArrayType(t2)) {
+                return false;
+            }
 
-           ArrayTypeNode at1 = (ArrayTypeNode) t1;
-           ArrayTypeNode at2 = (ArrayTypeNode) t2;
+            ArrayTypeNode at1 = (ArrayTypeNode) t1;
+            ArrayTypeNode at2 = (ArrayTypeNode) t2;
 
-           return compareTypes(at1.getBaseType(), at2.getBaseType());
+            return compareTypes(at1.getBaseType(), at2.getBaseType());
         }
 
         // t1 and t2 must now both be TypeNameNodes if they are to be equal
         TypeNameNode tn1 = null;
         TypeNameNode tn2 = null;
         if (t1.classID() == TYPENAMENODE_ID) {
-           tn1 = (TypeNameNode) t1;
+            tn1 = (TypeNameNode) t1;
         } else {
-           return false;
+            return false;
         }
 
         if (t2.classID() == TYPENAMENODE_ID) {
-           tn2 = (TypeNameNode) t2;
+            tn2 = (TypeNameNode) t2;
         } else {
-           return false;
+            return false;
         }
         return compareTypeNames(tn1, tn2);
     }
@@ -141,11 +141,11 @@ public class TypePolicy implements JavaStaticSemanticConstants {
         // Search for different parameter types. If a different type is
         // found, the methods do not conflict.
         while (myParamTypesItr.hasNext() && argParamTypesItr.hasNext()) {
-           TypeNode myParamType = (TypeNode) myParamTypesItr.next();
-           TypeNode argParamType = (TypeNode) argParamTypesItr.next();
-           if (!compareTypes(myParamType, argParamType)) {
-              return false;
-           }
+            TypeNode myParamType = (TypeNode) myParamTypesItr.next();
+            TypeNode argParamType = (TypeNode) argParamTypesItr.next();
+            if (!compareTypes(myParamType, argParamType)) {
+                return false;
+            }
         }
 
         // If there are any more parameters leftover, the two methods
@@ -160,22 +160,22 @@ public class TypePolicy implements JavaStaticSemanticConstants {
         Iterator iFaceItr = classDecl.getInterfaces().iterator();
 
         while (iFaceItr.hasNext()) {
-           ClassDecl implIFace = (ClassDecl) iFaceItr.next();
-           if (isSuperInterface(iFaceDecl, implIFace)) {
-              return true;
-           }
+            ClassDecl implIFace = (ClassDecl) iFaceItr.next();
+            if (isSuperInterface(iFaceDecl, implIFace)) {
+                return true;
+            }
         }
 
         if (classDecl == StaticResolution.OBJECT_DECL) {
-           return false;
+            return false;
         } else {
-           return doesImplement(classDecl.getSuperClass(), iFaceDecl);
+            return doesImplement(classDecl.getSuperClass(), iFaceDecl);
         }
     }
 
     /** Return true iff type is a arithmetic type. */
     public boolean isArithType(TypeNode type)  {
-       return _isOneOf(type, _ARITH_TYPES);
+        return _isOneOf(type, _ARITH_TYPES);
     }
 
     /** Return true iff type is an array type. */
@@ -184,97 +184,97 @@ public class TypePolicy implements JavaStaticSemanticConstants {
     }
 
     public boolean isAssignableFromConstant(TypeNode type, ExprNode expr) {
-       switch (_typeID.kind(type)) {
-         case TypeIdentifier.TYPE_KIND_BYTE:
-         return ExprUtility.isIntConstant(expr, Byte.MIN_VALUE, Byte.MAX_VALUE);
+        switch (_typeID.kind(type)) {
+        case TypeIdentifier.TYPE_KIND_BYTE:
+            return ExprUtility.isIntConstant(expr, Byte.MIN_VALUE, Byte.MAX_VALUE);
 
-         case TypeIdentifier.TYPE_KIND_CHAR:
-         return ExprUtility.isIntConstant(expr, Character.MIN_VALUE, Character.MAX_VALUE);
+        case TypeIdentifier.TYPE_KIND_CHAR:
+            return ExprUtility.isIntConstant(expr, Character.MIN_VALUE, Character.MAX_VALUE);
 
-         case TypeIdentifier.TYPE_KIND_SHORT:
-         return ExprUtility.isIntConstant(expr, Short.MIN_VALUE, Short.MAX_VALUE);
+        case TypeIdentifier.TYPE_KIND_SHORT:
+            return ExprUtility.isIntConstant(expr, Short.MIN_VALUE, Short.MAX_VALUE);
 
-         // not in Titanium ..
-         case TypeIdentifier.TYPE_KIND_INT:
-         return ExprUtility.isIntConstant(expr, Integer.MIN_VALUE, Integer.MAX_VALUE);
-       }
-       return false;
+            // not in Titanium ..
+        case TypeIdentifier.TYPE_KIND_INT:
+            return ExprUtility.isIntConstant(expr, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        }
+        return false;
     }
 
     public boolean isAssignableFromType(final TypeNode type1,
-     final TypeNode type2)  {
+            final TypeNode type2)  {
 
-       int kind1 = _typeID.kind(type1);
-       int kind2 = _typeID.kind(type2);
+        int kind1 = _typeID.kind(type1);
+        int kind2 = _typeID.kind(type2);
 
-       if (isPrimitiveType(type1)) {
-          if (isPrimitiveType(type2)) {
-             // table driven for 2 primitive types
-             return _isOneOf(type1, _TYPES_ASSIGNABLE_TO[kind2]);
-          } else {
-             // type1 is primitive type, type2 is user type
-             return false;
-          }
-       } else if (isPrimitiveType(type2)) {
-          // type1 is user type, type2 is primitive
-          return false;
-       }
+        if (isPrimitiveType(type1)) {
+            if (isPrimitiveType(type2)) {
+                // table driven for 2 primitive types
+                return _isOneOf(type1, _TYPES_ASSIGNABLE_TO[kind2]);
+            } else {
+                // type1 is primitive type, type2 is user type
+                return false;
+            }
+        } else if (isPrimitiveType(type2)) {
+            // type1 is user type, type2 is primitive
+            return false;
+        }
 
-       if (kind1 == TypeIdentifier.TYPE_KIND_NULL) {
-          return false;
-       } else if (_typeID.isClassKind(kind1)) {
-          if (kind2 == TypeIdentifier.TYPE_KIND_NULL) {
-             return true;
-          } else if (kind2 == TypeIdentifier.TYPE_KIND_ARRAYINIT) {
-             return isArrayType(type1);
-          } else if (_typeID.isInterfaceKind(kind2)) {
-             JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);
-
-             return (decl == StaticResolution.OBJECT_DECL);
-          } else if (_typeID.isClassKind(kind2)) {
-             if (isSubClass(type2, type1)) {
+        if (kind1 == TypeIdentifier.TYPE_KIND_NULL) {
+            return false;
+        } else if (_typeID.isClassKind(kind1)) {
+            if (kind2 == TypeIdentifier.TYPE_KIND_NULL) {
                 return true;
-             }
+            } else if (kind2 == TypeIdentifier.TYPE_KIND_ARRAYINIT) {
+                return isArrayType(type1);
+            } else if (_typeID.isInterfaceKind(kind2)) {
+                JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);
 
-             if (isArrayType(type1) && isArrayType(type2)) {
-                ArrayTypeNode arrType1 = (ArrayTypeNode) type1;
-                ArrayTypeNode arrType2 = (ArrayTypeNode) type2;
+                return (decl == StaticResolution.OBJECT_DECL);
+            } else if (_typeID.isClassKind(kind2)) {
+                if (isSubClass(type2, type1)) {
+                    return true;
+                }
 
-                TypeNode elementType1 = arrType1.getBaseType();
-                TypeNode elementType2 = arrType2.getBaseType();
+                if (isArrayType(type1) && isArrayType(type2)) {
+                    ArrayTypeNode arrType1 = (ArrayTypeNode) type1;
+                    ArrayTypeNode arrType2 = (ArrayTypeNode) type2;
 
-                return isAssignableFromType(elementType1, elementType2);
-             }
-             return false;
-          }
-          return false;
-       } else if (_typeID.isInterfaceKind(kind1)) {
-          if (kind2 == TypeIdentifier.TYPE_KIND_NULL) {
-             return true;
-          } else if (_typeID.isClassKind(kind2)) {
-             ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);
-             ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);
-             return doesImplement(decl2, decl1);
-          } else if (_typeID.isInterfaceKind(kind2)) {
-             ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);
-             ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);
-             return isSuperInterface(decl1, decl2);
-          }
-          return false;
-       }
+                    TypeNode elementType1 = arrType1.getBaseType();
+                    TypeNode elementType2 = arrType2.getBaseType();
 
-       // type1 is class o
-       return false;
+                    return isAssignableFromType(elementType1, elementType2);
+                }
+                return false;
+            }
+            return false;
+        } else if (_typeID.isInterfaceKind(kind1)) {
+            if (kind2 == TypeIdentifier.TYPE_KIND_NULL) {
+                return true;
+            } else if (_typeID.isClassKind(kind2)) {
+                ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);
+                ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);
+                return doesImplement(decl2, decl1);
+            } else if (_typeID.isInterfaceKind(kind2)) {
+                ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl(type1);
+                ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl(type2);
+                return isSuperInterface(decl1, decl2);
+            }
+            return false;
+        }
+
+        // type1 is class o
+        return false;
     }
 
     /** Return true iff type is a floating point type. */
     public boolean isFloatType(TypeNode type)  {
-       return _isOneOf(type, _FLOAT_TYPES);
+        return _isOneOf(type, _FLOAT_TYPES);
     }
 
     /** Return true iff type is a discrete valued type. */
     public boolean isIntegralType(TypeNode type) {
-       return _isOneOf(type, _INTEGRAL_TYPES);
+        return _isOneOf(type, _INTEGRAL_TYPES);
     }
 
     /** Return true iff type is a primitive type. */
@@ -290,7 +290,7 @@ public class TypePolicy implements JavaStaticSemanticConstants {
 
     /** Return true iff type is a String type. */
     public boolean isStringType(TypeNode type) {
-       return compareTypes(type, StaticResolution.STRING_TYPE);
+        return compareTypes(type, StaticResolution.STRING_TYPE);
     }
 
     /** Return true iff type1 is the same class as or a subclass of type2.
@@ -300,25 +300,25 @@ public class TypePolicy implements JavaStaticSemanticConstants {
     public boolean isSubClass(TypeNode type1, TypeNode type2) {
 
         if (type2.classID() != TYPENAMENODE_ID) {
-           return false;
+            return false;
         }
 
         ClassDecl decl2 = (ClassDecl) JavaDecl.getDecl((NamedNode) type2);
 
         // arrays are subclasses of Object
         if ((decl2 == StaticResolution.OBJECT_DECL) &&
-            (type1.classID() == ARRAYTYPENODE_ID)) {
-           return true;
+                (type1.classID() == ARRAYTYPENODE_ID)) {
+            return true;
         }
 
         if (type1.classID() != TYPENAMENODE_ID) {
-           return false;
+            return false;
         }
 
         ClassDecl decl1 = (ClassDecl) JavaDecl.getDecl((NamedNode) type1);
 
         if ((decl1.category != CG_CLASS) || (decl2.category != CG_CLASS)) {
-           return false;
+            return false;
         }
 
         return isSubClass(decl1, decl2);
@@ -329,30 +329,30 @@ public class TypePolicy implements JavaStaticSemanticConstants {
      */
     public boolean isSubClass(ClassDecl decl1, ClassDecl decl2) {
         while (true) {
-           if (decl1 == decl2) {
-              return true;
-           }
+            if (decl1 == decl2) {
+                return true;
+            }
 
-           if ((decl1 == StaticResolution.OBJECT_DECL) || (decl1 == null)) {
-              return false;
-           }
+            if ((decl1 == StaticResolution.OBJECT_DECL) || (decl1 == null)) {
+                return false;
+            }
 
-           decl1 = decl1.getSuperClass();
+            decl1 = decl1.getSuperClass();
         }
     }
 
     public boolean isSuperInterface(ClassDecl decl1, ClassDecl decl2) {
         if (decl1 == decl2) {
-           return true;
+            return true;
         }
 
         Iterator iFaceItr = decl2.getInterfaces().iterator();
 
         while (iFaceItr.hasNext()) {
-           ClassDecl implIFace = (ClassDecl) iFaceItr.next();
-           if (isSuperInterface(decl1, implIFace)) {
-              return true;
-           }
+            ClassDecl implIFace = (ClassDecl) iFaceItr.next();
+            if (isSuperInterface(decl1, implIFace)) {
+                return true;
+            }
         }
         return false;
     }
@@ -368,7 +368,7 @@ public class TypePolicy implements JavaStaticSemanticConstants {
     protected static final boolean _isOneOf(TypeNode type, TypeNode[] typeArray) {
         for (int i = 0; i < typeArray.length; i++) {
             if (typeArray[i] == type) {
-               return true;
+                return true;
             }
         }
         return false;
@@ -377,54 +377,54 @@ public class TypePolicy implements JavaStaticSemanticConstants {
     protected final TypeIdentifier _typeID;
 
     protected static final TypeNode[] _ARITH_TYPES = new TypeNode[]
-     { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
-       IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
-       DoubleTypeNode.instance };
+        { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
+              IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
+              DoubleTypeNode.instance };
 
     protected static final TypeNode[] _FLOAT_TYPES = new TypeNode[]
-     { FloatTypeNode.instance, DoubleTypeNode.instance };
+        { FloatTypeNode.instance, DoubleTypeNode.instance };
 
     protected static final TypeNode[] _INTEGRAL_TYPES = new TypeNode[]
-     { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
-       IntTypeNode.instance, LongTypeNode.instance };
+        { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
+              IntTypeNode.instance, LongTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_BOOL = new TypeNode[]
-     { BoolTypeNode.instance };
+        { BoolTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_BYTE = new TypeNode[]
-     { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
-       IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
-       DoubleTypeNode.instance };
+        { ByteTypeNode.instance, ShortTypeNode.instance, CharTypeNode.instance,
+              IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
+              DoubleTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_CHAR = new TypeNode[]
-     { ShortTypeNode.instance, CharTypeNode.instance, IntTypeNode.instance,
-       LongTypeNode.instance, FloatTypeNode.instance, DoubleTypeNode.instance };
+        { ShortTypeNode.instance, CharTypeNode.instance, IntTypeNode.instance,
+              LongTypeNode.instance, FloatTypeNode.instance, DoubleTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_SHORT = new TypeNode[]
-     { ShortTypeNode.instance, IntTypeNode.instance, LongTypeNode.instance,
-       FloatTypeNode.instance, DoubleTypeNode.instance };
+        { ShortTypeNode.instance, IntTypeNode.instance, LongTypeNode.instance,
+              FloatTypeNode.instance, DoubleTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_INT = new TypeNode[]
-     { IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
-       DoubleTypeNode.instance };
+        { IntTypeNode.instance, LongTypeNode.instance, FloatTypeNode.instance,
+              DoubleTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_LONG = new TypeNode[]
-     { LongTypeNode.instance, FloatTypeNode.instance, DoubleTypeNode.instance };
+        { LongTypeNode.instance, FloatTypeNode.instance, DoubleTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_FLOAT = new TypeNode[]
-     { FloatTypeNode.instance, DoubleTypeNode.instance };
+        { FloatTypeNode.instance, DoubleTypeNode.instance };
 
     protected static final TypeNode[] _TYPES_ASSIGNABLE_TO_DOUBLE = new TypeNode[]
-     { DoubleTypeNode.instance };
+        { DoubleTypeNode.instance };
 
     /** An uneven matrix of primitive types that may be assigned to a
      *  primitive type, the kind of which is the first array index.
      */
     protected static final TypeNode[][] _TYPES_ASSIGNABLE_TO = new TypeNode[][]
-     {
-       _TYPES_ASSIGNABLE_TO_BOOL, _TYPES_ASSIGNABLE_TO_BYTE, _TYPES_ASSIGNABLE_TO_SHORT,
-       _TYPES_ASSIGNABLE_TO_CHAR, _TYPES_ASSIGNABLE_TO_INT, _TYPES_ASSIGNABLE_TO_LONG,
-       _TYPES_ASSIGNABLE_TO_FLOAT, _TYPES_ASSIGNABLE_TO_DOUBLE
-     };
+        {
+            _TYPES_ASSIGNABLE_TO_BOOL, _TYPES_ASSIGNABLE_TO_BYTE, _TYPES_ASSIGNABLE_TO_SHORT,
+                _TYPES_ASSIGNABLE_TO_CHAR, _TYPES_ASSIGNABLE_TO_INT, _TYPES_ASSIGNABLE_TO_LONG,
+                _TYPES_ASSIGNABLE_TO_FLOAT, _TYPES_ASSIGNABLE_TO_DOUBLE
+                };
 }
 

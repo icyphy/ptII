@@ -54,9 +54,9 @@ public class RemovePropertyVisitor extends JavaVisitor {
         Iterator argsItr = args.iterator();
 
         while (argsItr.hasNext()) {
-           Integer property = (Integer) argsItr.next();
+            Integer property = (Integer) argsItr.next();
 
-           node.removeProperty(property);
+            node.removeProperty(property);
         }
         return null;
     }

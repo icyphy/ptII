@@ -59,7 +59,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
      */
     public static TypeNode makeArrayType(TypeNode elementType, int dims) {
         for(int i = 0; i < dims; i++) {
-           elementType = new ArrayTypeNode(elementType);
+            elementType = new ArrayTypeNode(elementType);
         }
         return elementType;
     }
@@ -67,7 +67,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
     /** Return the base type of the array type, which is not itself an array type. */
     public static TypeNode arrayBaseType(TypeNode type) {
         if (type instanceof ArrayTypeNode) {
-           return arrayBaseType(((ArrayTypeNode) type).getBaseType());
+            return arrayBaseType(((ArrayTypeNode) type).getBaseType());
 
         }
         return type;
@@ -78,7 +78,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
      */
     public static int arrayDimension(TypeNode type) {
         if (type instanceof ArrayTypeNode) {
-           return 1 + arrayDimension(((ArrayTypeNode) type).getBaseType());
+            return 1 + arrayDimension(((ArrayTypeNode) type).getBaseType());
 
         }
         return 0;

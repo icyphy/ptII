@@ -50,7 +50,7 @@ and Army Research Office.
 @version $Id$
  */
 public class ResolveInheritanceVisitor extends ResolveVisitorBase
-       implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
 
     /** Create a new visitor that uses the default type policy. */
     public ResolveInheritanceVisitor() {
@@ -63,12 +63,12 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         ApplicationUtility.trace("resolveInheritance for " +
-         node.getProperty(IDENT_KEY));
+                node.getProperty(IDENT_KEY));
 
         TNLManip.traverseList(this, node, null, node.getDefTypes());
 
         ApplicationUtility.trace("finished resolveInheritance for " +
-         node.getProperty(IDENT_KEY));
+                node.getProperty(IDENT_KEY));
 
         return null;
     }
@@ -77,7 +77,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
         if (!me.addVisitor(_myClass)) {
-           return null;
+            return null;
         }
 
         int modifiers = node.getModifiers();
@@ -85,28 +85,28 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         ClassDecl superClass = me.getSuperClass();
 
         if (superClass != null) {
-           if ((superClass.getModifiers() & FINAL_MOD) != 0) {
-     	       ApplicationUtility.error("final class " + superClass.getName() +
-	            " cannot be extended");
-           }
+            if ((superClass.getModifiers() & FINAL_MOD) != 0) {
+                ApplicationUtility.error("final class " + superClass.getName() +
+                        " cannot be extended");
+            }
 
-           _fillInInheritedMembers(me, superClass);
+            _fillInInheritedMembers(me, superClass);
         } else {
-           ApplicationUtility.assert(me == StaticResolution.OBJECT_DECL);
+            ApplicationUtility.assert(me == StaticResolution.OBJECT_DECL);
         }
 
 
         Iterator iFaceItr = me.getInterfaces().iterator();
 
         while (iFaceItr.hasNext()) {
-           _fillInInheritedMembers(me, (ClassDecl) iFaceItr.next());
+            _fillInInheritedMembers(me, (ClassDecl) iFaceItr.next());
         }
 
         if ((modifiers & ABSTRACT_MOD) == 0) {
-           if (_hasAbstractMethod(node)) {
-	           ApplicationUtility.error(me.getName() +
-               " has abstract methods: must be declared abstract");
-           }
+            if (_hasAbstractMethod(node)) {
+                ApplicationUtility.error(me.getName() +
+                        " has abstract methods: must be declared abstract");
+            }
         }
         return null;
     }
@@ -115,7 +115,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
         if (!me.addVisitor(_myClass)) {
-           return null;
+            return null;
         }
 
         int modifiers = node.getModifiers();
@@ -123,7 +123,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         Iterator interfaceItr = me.getInterfaces().iterator();
 
         while (interfaceItr.hasNext()) {
-           _fillInInheritedMembers(me, (ClassDecl) interfaceItr.next());
+            _fillInInheritedMembers(me, (ClassDecl) interfaceItr.next());
         }
 
         return null;
@@ -133,14 +133,14 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         ClassDecl me = (ClassDecl) node.getDefinedProperty(DECL_KEY);
 
         if (!me.addVisitor(_myClass)) {
-           return null;
+            return null;
         }
 
         ClassDecl superClass = me.getSuperClass();
 
         if ((superClass.getModifiers() & FINAL_MOD) != 0) {
-   	       ApplicationUtility.error("final class " + superClass.getName() +
-	        " cannot be extended");
+            ApplicationUtility.error("final class " + superClass.getName() +
+                    " cannot be extended");
         }
 
         _fillInInheritedMembers(me, superClass);
@@ -148,9 +148,9 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         Object iFaceObj = node.getDefinedProperty(INTERFACE_KEY);
 
         if (iFaceObj != NullValue.instance) {
-           ClassDecl iFace = (ClassDecl) iFaceObj;
+            ClassDecl iFace = (ClassDecl) iFaceObj;
 
-           _fillInInheritedMembers(me, iFace);
+            _fillInInheritedMembers(me, iFace);
         }
 
         return null;
@@ -163,7 +163,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
     /** Return true iff newThrows is a "subset" of oldThrows (j8.4.4) */
     protected static boolean _throwsSubset(Set newThrows,
-     Set oldThrows) {
+            Set oldThrows) {
         // FIXME : even Titanium appears to be having trouble
         return true;
     }
@@ -175,105 +175,105 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         String memberName = member.getName();
 
         if (member.category == CG_FIELD) {
-           FieldDecl current = (FieldDecl)
-            env.lookupProper(memberName, CG_FIELD);
+            FieldDecl current = (FieldDecl)
+                env.lookupProper(memberName, CG_FIELD);
 
-           // Only definitions in the destination environment override fields
-           // If multiple definitions are inherited, a compile-time error
-           // must be reported for any use (this is achieved by letting the
-           // environment contain multiple copies of the field, which will
-           // produce an ambiguous reference error in the name lookup)
-           // But: multiple inheritances of the *same* field only count once
-           return ((current != null) &&
-                   ((current.getContainer() == to) || (member == current)));
+            // Only definitions in the destination environment override fields
+            // If multiple definitions are inherited, a compile-time error
+            // must be reported for any use (this is achieved by letting the
+            // environment contain multiple copies of the field, which will
+            // produce an ambiguous reference error in the name lookup)
+            // But: multiple inheritances of the *same* field only count once
+            return ((current != null) &&
+                    ((current.getContainer() == to) || (member == current)));
 
         } else if (member.category == CG_METHOD) {
-           MethodDecl methodMember = (MethodDecl) member;
+            MethodDecl methodMember = (MethodDecl) member;
 
-           Iterator methodItr =
-            env.lookupFirstProper(memberName, CG_METHOD);
+            Iterator methodItr =
+                env.lookupFirstProper(memberName, CG_METHOD);
 
-           while (methodItr.hasNext()) {
+            while (methodItr.hasNext()) {
 
-              MethodDecl d = (MethodDecl) methodItr.next();
+                MethodDecl d = (MethodDecl) methodItr.next();
 
-	          if (_typePolicy.doMethodsConflict(d, methodMember)) {
+                if (_typePolicy.doMethodsConflict(d, methodMember)) {
 
-   	             // Note: member is overriden method, d is overriding method
+                    // Note: member is overriden method, d is overriding method
 
-                 if (d == methodMember) {
-                    return true; // seeing the same thing twice
-                 }
+                    if (d == methodMember) {
+                        return true; // seeing the same thing twice
+                    }
 
-                 boolean isLocalDecl = (d.getContainer() == to);
- 	             int dm = d.getModifiers();
-	             int mm = methodMember.getModifiers();
+                    boolean isLocalDecl = (d.getContainer() == to);
+                    int dm = d.getModifiers();
+                    int mm = methodMember.getModifiers();
 
-	             // Note: if !isLocalDecl, then the method necessarily comes
-        	     // from an interface (i.e. is abstract). If d is also abstract,
-	             // then all methods are inherited (j8.4.6.4).
-	             boolean inheritAllAbstract =
-                  (!isLocalDecl && ((dm & ABSTRACT_MOD) != 0));
+                    // Note: if !isLocalDecl, then the method necessarily comes
+                    // from an interface (i.e. is abstract). If d is also abstract,
+                    // then all methods are inherited (j8.4.6.4).
+                    boolean inheritAllAbstract =
+                        (!isLocalDecl && ((dm & ABSTRACT_MOD) != 0));
 
-    	         TypeNode dtype = d.getType();
+                    TypeNode dtype = d.getType();
 
-	             if (!_typePolicy.compareTypes(d.getType(),
-                     methodMember.getType())) {
+                    if (!_typePolicy.compareTypes(d.getType(),
+                            methodMember.getType())) {
   	                ApplicationUtility.error("overriding of " + memberName +
-                    " changes return type");
-                 }
+                                " changes return type");
+                    }
 
-	             if ((dm & STATIC_MOD) != (mm & STATIC_MOD)) {
-		            ApplicationUtility.error("overriding of "
-                    + memberName + " adds/removes 'static'");
-                 }
+                    if ((dm & STATIC_MOD) != (mm & STATIC_MOD)) {
+                        ApplicationUtility.error("overriding of "
+                                + memberName + " adds/removes 'static'");
+                    }
 
-    	         // make sure d was a legal override/hide of member
-   	             if ((mm & FINAL_MOD) != 0) {
-		            ApplicationUtility.error("cannot override final " +
-                    memberName);
-                 }
+                    // make sure d was a legal override/hide of member
+                    if ((mm & FINAL_MOD) != 0) {
+                        ApplicationUtility.error("cannot override final " +
+                                memberName);
+                    }
 
-                 /*
-                 if ((mm & PUBLIC_MOD) &&
-                     ((dm & PUBLIC_MOD) == 0) ||
-       	          ((mm & PROTECTED_MOD) != 0) &&
+                    /*
+                      if ((mm & PUBLIC_MOD) &&
+                      ((dm & PUBLIC_MOD) == 0) ||
+                      ((mm & PROTECTED_MOD) != 0) &&
        		      !(dm & (PUBLIC_MOD | PROTECTED_MOD)) ||
-		              !(mm & (PUBLIC_MOD | PROTECTED_MOD)) &&
-	   	              (dm & PRIVATE_MOD)) {
-                    ApplicationUtility.error("overriding of " + memberName +
-                     " must provide at least as much access");
-                 }
-                 */
+                      !(mm & (PUBLIC_MOD | PROTECTED_MOD)) &&
+                      (dm & PRIVATE_MOD)) {
+                      ApplicationUtility.error("overriding of " + memberName +
+                      " must provide at least as much access");
+                      }
+                    */
 
-     	         if (!inheritAllAbstract &&
-    		         !_throwsSubset(d.getThrows(), methodMember.getThrows())) {
-	  	            ApplicationUtility.error(d.getName() +
-                     " throws more exceptions than overridden " + memberName);
-                 }
+                    if (!inheritAllAbstract &&
+                            !_throwsSubset(d.getThrows(), methodMember.getThrows())) {
+                        ApplicationUtility.error(d.getName() +
+                                " throws more exceptions than overridden " + memberName);
+                    }
 
-   	             // update overriding/hiding information for declarations of 'to'
-	             if (isLocalDecl) {
-		            methodMember.addOverrider(d);
+                    // update overriding/hiding information for declarations of 'to'
+                    if (isLocalDecl) {
+                        methodMember.addOverrider(d);
 
 	                switch (member.getContainer().category) {
-		            case CG_CLASS:
+                        case CG_CLASS:
 		            d.setOverrides(methodMember);
 		            break;
 
-		            case CG_INTERFACE:
-                    d.addImplement(methodMember);
+                        case CG_INTERFACE:
+                            d.addImplement(methodMember);
 		            break;
+                        }
                     }
-		         }
-                 return !inheritAllAbstract;
-              } // if (doMethodsConflict(dtype, mtype))
-	       } // while methodItr.hasNext()
-           return false;
-	    } else if (member.category == CG_CLASS) {
-           return true; // declared inner classes override those in outer scope
+                    return !inheritAllAbstract;
+                } // if (doMethodsConflict(dtype, mtype))
+            } // while methodItr.hasNext()
+            return false;
+        } else if (member.category == CG_CLASS) {
+            return true; // declared inner classes override those in outer scope
         } else if (member.category == CG_INTERFACE) {
-           return true; // declared inner classes override those in outer scope
+            return true; // declared inner classes override those in outer scope
         }
 
         return false;
@@ -284,12 +284,12 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
      *  inherits from FROM.
      */
     protected void _fillInInheritedMembers(ClassDecl to,
-     ClassDecl from) {
+            ClassDecl from) {
         // make sure 'from' is filled in
         TreeNode sourceNode = from.getSource();
 
         if ((sourceNode != null) && (sourceNode != AbsentTreeNode.instance)) {
-           sourceNode.accept(this, null);
+            sourceNode.accept(this, null);
         }
 
         Iterator declItr = from.getEnviron().allProperDecls();
@@ -297,14 +297,14 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         Environ toEnviron = to.getEnviron();
 
         while (declItr.hasNext()) {
-           JavaDecl member = (JavaDecl) declItr.next();
+            JavaDecl member = (JavaDecl) declItr.next();
 
-           if (((member.category &
-                (CG_FIELD | CG_METHOD | CG_USERTYPE)) != 0) &&
-               ((member.getModifiers() & PRIVATE_MOD) == 0) &&
-               !_overriddenIn(member, to)) {
-              toEnviron.add(member);
-           }
+            if (((member.category &
+                    (CG_FIELD | CG_METHOD | CG_USERTYPE)) != 0) &&
+                    ((member.getModifiers() & PRIVATE_MOD) == 0) &&
+                    !_overriddenIn(member, to)) {
+                toEnviron.add(member);
+            }
         }
     }
 
@@ -312,20 +312,20 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
      *  environment.
      */
     protected static boolean _hasAbstractMethod(UserTypeDeclNode node) {
-       Environ classEnv = JavaDecl.getDecl((NamedNode) node).getEnviron();
+        Environ classEnv = JavaDecl.getDecl((NamedNode) node).getEnviron();
 
-       Iterator memberItr = classEnv.allProperDecls();
+        Iterator memberItr = classEnv.allProperDecls();
 
-       while (memberItr.hasNext()) {
-          JavaDecl member = (JavaDecl) memberItr.next();
+        while (memberItr.hasNext()) {
+            JavaDecl member = (JavaDecl) memberItr.next();
 
-          if ((member.category == CG_METHOD) &&
-              ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
-             ApplicationUtility.trace("found abstract method: " +  member);
-             return true;
-          }
-       }
-       return false;
+            if ((member.category == CG_METHOD) &&
+                    ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
+                ApplicationUtility.trace("found abstract method: " +  member);
+                return true;
+            }
+        }
+        return false;
     }
 
     /** The default visit method. Visit all child nodes. */

@@ -57,15 +57,15 @@ public class RenameJavaVisitor extends ResolveVisitorBase {
         qualifier.accept(this, args);
 
         if (qualifier == AbsentTreeNode.instance) {
-           String ident = node.getIdent();
+            String ident = node.getIdent();
 
-           Map nameToNewNameMap = (Map) args.get(0);
+            Map nameToNewNameMap = (Map) args.get(0);
 
-           String newName = (String) nameToNewNameMap.get(ident);
+            String newName = (String) nameToNewNameMap.get(ident);
 
-           if (newName != null) {
-              node.setIdent(newName);
-           }
+            if (newName != null) {
+                node.setIdent(newName);
+            }
         }
 
         return null;

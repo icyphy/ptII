@@ -54,7 +54,7 @@ and Army Research Office.
 @version $Id$
  */
 public class ResolveNameVisitor extends ReplacementJavaVisitor
-       implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
     public ResolveNameVisitor() {
         super(TM_CUSTOM);
     }
@@ -70,7 +70,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
 
         ApplicationUtility.trace("resolve name on " +
-         node.getDefinedProperty(IDENT_KEY));
+                node.getDefinedProperty(IDENT_KEY));
 
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -82,7 +82,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
 
         ApplicationUtility.trace("finished resolve name on " +
-         node.getDefinedProperty(IDENT_KEY));
+                node.getDefinedProperty(IDENT_KEY));
 
         return node;
     }
@@ -103,17 +103,17 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         Decl other = env.lookup(varName, CG_FORMAL);
 
         if (other != null) {
-           ApplicationUtility.error("declaration shadows " + varName);
+            ApplicationUtility.error("declaration shadows " + varName);
         }
 
         other = env.lookupProper(varName, CG_LOCALVAR);
 
         if (other != null) {
-           ApplicationUtility.error("redeclaration of " + varName);
+            ApplicationUtility.error("redeclaration of " + varName);
         }
 
         LocalVarDecl d = new LocalVarDecl(varName, node.getDefType(),
-         node.getModifiers(), node);
+                node.getModifiers(), node);
 
         env.add(d);
         name.setProperty(DECL_KEY, d);
@@ -134,13 +134,13 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         LinkedList childArgs = TNLManip.cons(subCtx);
 
         node.setParams(TNLManip.traverseList(this, node, childArgs,
-         node.getParams()));
+                node.getParams()));
 
         TreeNode body = node.getBody();
         subCtx.environ = new Environ(newEnv1);
 
         if (body != AbsentTreeNode.instance) {
-           node.setBody((BlockNode) body.accept(this, childArgs));
+            node.setBody((BlockNode) body.accept(this, childArgs));
         }
 
         return node;
@@ -159,12 +159,12 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         LinkedList childArgs = TNLManip.cons(subCtx);
 
         node.setParams(TNLManip.traverseList(this, node, childArgs,
-         node.getParams()));
+                node.getParams()));
 
         subCtx.environ = new Environ(newEnv1);
 
         node.setConstructorCall((ConstructorCallNode)
-         node.getConstructorCall().accept(this, childArgs));
+                node.getConstructorCall().accept(this, childArgs));
 
         node.setBody((BlockNode) node.getBody().accept(this, childArgs));
 
@@ -185,11 +185,11 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         Decl other = env.lookup(varName, CG_FORMAL | CG_LOCALVAR);
 
         if (other != null) {
-           ApplicationUtility.error("declaration shadows " + varName);
+            ApplicationUtility.error("declaration shadows " + varName);
         }
 
         FormalParameterDecl d = new FormalParameterDecl(varName,
-         node.getDefType(), node.getModifiers(), node);
+                node.getDefType(), node.getModifiers(), node);
 
         name.setProperty(DECL_KEY, d);
         env.add(d);
@@ -204,7 +204,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subctx.environ = new Environ(ctx.environ);
 
         node.setStmts(TNLManip.traverseList(this, node, TNLManip.cons(subctx),
-         node.getStmts()));
+                node.getStmts()));
 
         return node;
     }
@@ -220,7 +220,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         Environ newEnv = new Environ(ctx.environ);
 
         if (other != null) {
-           ApplicationUtility.error("duplicate " + labelString);
+            ApplicationUtility.error("duplicate " + labelString);
         }
 
         StmtLblDecl d = new StmtLblDecl(labelString, node);
@@ -248,8 +248,8 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.environ = new Environ(ctx.environ);
 
         node.setSwitchBlocks(
-         TNLManip.traverseList(this, node, TNLManip.cons(subCtx),
-          node.getSwitchBlocks()));
+                TNLManip.traverseList(this, node, TNLManip.cons(subCtx),
+                        node.getSwitchBlocks()));
 
         return node;
     }
@@ -294,8 +294,8 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
 
         if ((node.getLabel() == AbsentTreeNode.instance) &&
-            (ctx.breakTarget == null)) {
-           ApplicationUtility.error("unlabeled break only allowed in loops or switches");
+                (ctx.breakTarget == null)) {
+            ApplicationUtility.error("unlabeled break only allowed in loops or switches");
         }
 
         _resolveJump(node, ctx.breakTarget, ctx.environ);
@@ -307,19 +307,19 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
 
         if (ctx.encLoop == null) {
-           ApplicationUtility.error("unlabeled continue only allowed in loops");
+            ApplicationUtility.error("unlabeled continue only allowed in loops");
         }
 
         _resolveJump(node, ctx.encLoop, ctx.environ);
 
         if (node.hasProperty(JUMP_DESTINATION_KEY)) {
 
-           StatementNode dest = (StatementNode)
-            node.getDefinedProperty(JUMP_DESTINATION_KEY);
+            StatementNode dest = (StatementNode)
+                node.getDefinedProperty(JUMP_DESTINATION_KEY);
 
-           if (!(dest instanceof IterationNode)) {
-              ApplicationUtility.error("continue's target is not a loop");
-           }
+            if (!(dest instanceof IterationNode)) {
+                ApplicationUtility.error("continue's target is not a loop");
+            }
         }
 
         return node;
@@ -352,8 +352,8 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameNode name = node.getName();
 
         return StaticResolution.resolveAName(name, ctx.environ,
-         ctx.currentClass, _currentPackage,
-         ctx.resolveAsObject ? (CG_FIELD | CG_LOCALVAR | CG_FORMAL) : CG_METHOD);
+                ctx.currentClass, _currentPackage,
+                ctx.resolveAsObject ? (CG_FIELD | CG_LOCALVAR | CG_FORMAL) : CG_METHOD);
     }
 
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
@@ -407,7 +407,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
     /* The default visit method comes from ReplacementJavaVisitor. */
 
     protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
-     LinkedList args) {
+            LinkedList args) {
         NameContext  ctx = new NameContext();
 
         ClassDecl decl = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
@@ -418,32 +418,32 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         LinkedList childArgs = TNLManip.cons(ctx);
 
         node.setMembers(
-         TNLManip.traverseList(this, node, childArgs, node.getMembers()));
+                TNLManip.traverseList(this, node, childArgs, node.getMembers()));
 
         return node;
     }
 
     protected static JumpStmtNode _resolveJump(JumpStmtNode node, TreeNode noLabel,
-     Environ env) {
+            Environ env) {
         TreeNode label = node.getLabel();
 
         if (label == AbsentTreeNode.instance) {
-          node.setProperty(JUMP_DESTINATION_KEY, noLabel);
+            node.setProperty(JUMP_DESTINATION_KEY, noLabel);
         } else {
-          NameNode labelName = (NameNode) label;
-          String labelString = labelName.getIdent();
+            NameNode labelName = (NameNode) label;
+            String labelString = labelName.getIdent();
 
-          StmtLblDecl dest = (StmtLblDecl)
-           env.lookup(labelString, CG_STMTLABEL);
+            StmtLblDecl dest = (StmtLblDecl)
+                env.lookup(labelString, CG_STMTLABEL);
 
-          if (dest == null) {
-             ApplicationUtility.error("label " + labelString + " not found");
-          }
+            if (dest == null) {
+                ApplicationUtility.error("label " + labelString + " not found");
+            }
 
-          labelName.setProperty(DECL_KEY, dest);
+            labelName.setProperty(DECL_KEY, dest);
 
-          LabeledStmtNode labeledStmtNode = (LabeledStmtNode) dest.getSource();
-          node.setProperty(JUMP_DESTINATION_KEY, labeledStmtNode.getStmt());
+            LabeledStmtNode labeledStmtNode = (LabeledStmtNode) dest.getSource();
+            node.setProperty(JUMP_DESTINATION_KEY, labeledStmtNode.getStmt());
         }
         return node;
     }
@@ -453,9 +453,9 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         public Object clone() {
             try {
-              return super.clone();
+                return super.clone();
             } catch (CloneNotSupportedException cnse) {
-              throw new InternalError("clone of NameContext not supported");
+                throw new InternalError("clone of NameContext not supported");
             }
         }
 

@@ -69,11 +69,11 @@ public class NumberDeclVisitor extends JavaVisitor {
             Object obj = itr.next();
 
             if (obj instanceof JavaDecl) {
-               JavaDecl decl = (JavaDecl) obj;
-               if (!decl.hasProperty(PropertyMap.NUMBER_KEY)) {
-                  decl.setProperty(PropertyMap.NUMBER_KEY, new Integer(_declSet.size()));
-                  _declSet.add(decl);
-               }
+                JavaDecl decl = (JavaDecl) obj;
+                if (!decl.hasProperty(PropertyMap.NUMBER_KEY)) {
+                    decl.setProperty(PropertyMap.NUMBER_KEY, new Integer(_declSet.size()));
+                    _declSet.add(decl);
+                }
             }
         }
 
