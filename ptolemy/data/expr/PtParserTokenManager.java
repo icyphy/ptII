@@ -24,11 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
-
 Created : May 1998
-
 */
 
 package ptolemy.data.expr;

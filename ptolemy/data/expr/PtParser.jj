@@ -33,11 +33,7 @@ PARSER_BEGIN(PtParser)
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
-
 Created : May 1998
-
 */
 
 package ptolemy.data.expr;
@@ -124,7 +120,9 @@ invalid.
 
 @author Neil Smyth, Steve Neuendorffer
 @version $Id$
-
+@since Ptolemy II 1.0
+@Pt.ProposedRating Yellow (nsmyth)
+@Pt.AcceptedRating Yellow (yuhong)
 @see ptolemy.data.expr.ASTPtBitwiseNode
 @see ptolemy.data.expr.ASTPtFunctionApplicationNode
 @see ptolemy.data.expr.ASTPtFunctionDefinitionNode

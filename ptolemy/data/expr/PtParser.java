@@ -24,11 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
-
 Created : May 1998
-
 */
 
 package ptolemy.data.expr;
@@ -115,7 +111,9 @@ invalid.
 
 @author Neil Smyth, Steve Neuendorffer
 @version $Id$
-
+@since Ptolemy II 1.0
+@Pt.ProposedRating Yellow (nsmyth)
+@Pt.AcceptedRating Yellow (yuhong)
 @see ptolemy.data.expr.ASTPtBitwiseNode
 @see ptolemy.data.expr.ASTPtFunctionApplicationNode
 @see ptolemy.data.expr.ASTPtFunctionDefinitionNode
@@ -2327,6 +2325,13 @@ String tidied, x;
     finally { jj_save(6, xla); }
   }
 
+  final private boolean jj_3_5() {
+    if (jj_scan_token(OPENBRACE)) return true;
+    if (jj_scan_token(ID)) return true;
+    if (jj_scan_token(SETEQUALS)) return true;
+    return false;
+  }
+
   final private boolean jj_3_1() {
     if (jj_scan_token(ID)) return true;
     if (jj_scan_token(SETEQUALS)) return true;
@@ -2357,13 +2362,6 @@ String tidied, x;
 
   final private boolean jj_3_6() {
     if (jj_scan_token(OPENBRACE)) return true;
-    return false;
-  }
-
-  final private boolean jj_3_5() {
-    if (jj_scan_token(OPENBRACE)) return true;
-    if (jj_scan_token(ID)) return true;
-    if (jj_scan_token(SETEQUALS)) return true;
     return false;
   }
 

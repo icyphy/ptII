@@ -24,9 +24,6 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
-
 */
 
 package ptolemy.data.expr;

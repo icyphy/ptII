@@ -24,9 +24,6 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
-
 */
 
 package ptolemy.data.expr;
@@ -44,8 +41,10 @@ This Class provides a parser for read matrices in matlab format.
 
 @author  Bart Kienhuis
 @version $Id$
+@since Ptolemy II 1.0
+@Pt.ProposedRating Red
+@Pt.AcceptedRating Red (kienhuis)
 */
-
 public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, MatrixParserConstants {/*@bgen(jjtree)*/
   protected static JJTMatrixParserState jjtree = new JJTMatrixParserState();
     /** Read a Matrix from File.
