@@ -79,7 +79,7 @@ test SequenceToArray-2.1 {test double array} {
     $e0 connect $s2aOut $recIn
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{array[-2.0, -1.0]} {array[0.0, 1.0]} {array[2.0, 3.0]}}
+} {{[-2.0, -1.0]} {[0.0, 1.0]} {[2.0, 3.0]}}
 
 ######################################################################
 #### Check types of above model
@@ -87,7 +87,7 @@ test SequenceToArray-2.1 {test double array} {
 test SequenceToArray-2.2 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$recIn getType] toString]
-} {double double (double)array general}
+} {double double (double)array (double)array}
 
 ######################################################################
 #### Test string array
@@ -97,7 +97,7 @@ test SequenceToArray-2.3 {test string array} {
     $step setExpression {"B"}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{array[A, AB]} {array[ABB, ABBB]} {array[ABBBB, ABBBBB]}}
+} {{["A", "AB"]} {["ABB", "ABBB"]} {["ABBBB", "ABBBBB"]}}
 
 ######################################################################
 #### Check types of above model
@@ -105,7 +105,7 @@ test SequenceToArray-2.3 {test string array} {
 test SequenceToArray-2.4 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$recIn getType] toString]
-} {string string (string)array general}
+} {string string (string)array (string)array}
 
 ######################################################################
 #### Test cascading SequenceToArray
@@ -129,7 +129,7 @@ test SequenceToArray-2.5 {test cascading SequenceToArray} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{array[array[0, 1], array[2, 3]]} {array[array[4, 5], array[6, 7]]} {array[array[8, 9], array[10, 11]]}}
+} {{[[0, 1], [2, 3]]} {[[4, 5], [6, 7]]} {[[8, 9], [10, 11]]}}
 
 ######################################################################
 #### Check types of above model
@@ -138,7 +138,7 @@ test SequenceToArray-2.6 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$s2a2In getType] toString] \
 	[[$s2a2Out getType] toString] [[$recIn getType] toString]
-} {int int (int)array (int)array ((int)array)array general}
+} {int int (int)array (int)array ((int)array)array ((int)array)array}
 
 ######################################################################
 #### Test array of array of string
@@ -149,7 +149,7 @@ test SequenceToArray-2.7 {test array of array of string} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{array[array[C, CD], array[CDD, CDDD]]} {array[array[CDDDD, CDDDDD], array[CDDDDDD, CDDDDDDD]]} {array[array[CDDDDDDDD, CDDDDDDDDD], array[CDDDDDDDDDD, CDDDDDDDDDDD]]}}
+} {{[["C", "CD"], ["CDD", "CDDD"]]} {[["CDDDD", "CDDDDD"], ["CDDDDDD", "CDDDDDDD"]]} {[["CDDDDDDDD", "CDDDDDDDDD"], ["CDDDDDDDDDD", "CDDDDDDDDDDD"]]}}
 
 ######################################################################
 #### Check types of above model
@@ -158,4 +158,5 @@ test SequenceToArray-2.8 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$s2a2In getType] toString] \
 	[[$s2a2Out getType] toString] [[$recIn getType] toString]
-} {string string (string)array (string)array ((string)array)array general}
+} {string string (string)array (string)array ((string)array)array ((string)array)array}
+

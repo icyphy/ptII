@@ -94,11 +94,11 @@ test ArrayToSequence-2.1 {test double array} {
 ######################################################################
 #### Check types of above model
 #
-test SequenceToArray-2.2 {check types} {
+test ArrayToSequence-2.2 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {double double (double)array (double)array double general}
+} {double double (double)array (double)array double double}
 
 ######################################################################
 #### Test string array
@@ -117,7 +117,7 @@ test ArrayToSequence-2.4 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {string string (string)array (string)array string general}
+} {string string (string)array (string)array string string}
 
 ######################################################################
 #### Test cascading SequenceToArray and ArrayToSequence
@@ -162,7 +162,7 @@ test ArrayToSequence-2.6 {check types} {
 	[[$s2a2Out getType] toString] [[$a2s2In getType] toString] \
 	[[$a2s2Out getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {int int (int)array (int)array ((int)array)array ((int)array)array (int)array (int)array int general}
+} {int int (int)array (int)array ((int)array)array ((int)array)array (int)array (int)array int int}
 
 ######################################################################
 #### Test array of array of string
@@ -184,4 +184,4 @@ test ArrayToSequence-2.8 {check types} {
 	[[$s2a2Out getType] toString] [[$a2s2In getType] toString] \
 	[[$a2s2Out getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {string string (string)array (string)array ((string)array)array ((string)array)array (string)array (string)array string general}
+} {string string (string)array (string)array ((string)array)array ((string)array)array (string)array (string)array string string}

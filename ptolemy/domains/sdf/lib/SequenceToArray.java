@@ -62,7 +62,7 @@ send ArrayTokens of corresponding type.
 @version $Id$
 */
 
-public class SequenceToArray extends SDFTransformer {
+public class SequenceToArray extends SDFAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -76,6 +76,9 @@ public class SequenceToArray extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
+	input = new SDFIOPort(this, "input", true, false);
+	output = new SDFIOPort(this, "output", false, true);
+
 	// set the tokenConsumptionRate to default 1.
 	input.setTokenConsumptionRate(1);
 
@@ -83,8 +86,17 @@ public class SequenceToArray extends SDFTransformer {
 	output.setTokenProductionRate(1);
 
 	// set the output type to be an ArrayType.
-	output.setTypeEquals(new ArrayType(BaseType.NAT));
+	output.setTypeEquals(new ArrayType(BaseType.ANY));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        public variables                   ////
+
+    /** The input port. */
+    public SDFIOPort input;
+
+    /** The output port. */
+    public SDFIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -99,6 +111,8 @@ public class SequenceToArray extends SDFTransformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         SequenceToArray newobj = (SequenceToArray)(super.clone(ws));
+	newobj.input = (SDFIOPort)newobj.getPort("input");
+	newobj.output = (SDFIOPort)newobj.getPort("output");
         return newobj;
     }
 
@@ -129,3 +143,4 @@ public class SequenceToArray extends SDFTransformer {
 	return result;
     }
 }
+
