@@ -343,7 +343,7 @@ public class MoMLApplication {
      *  @param commandFlags Command-line options that are either present
      *  or not.
      *  @return A usage string.
-     *  @see ptolemy.util.StringUtilities#usageString(String, String [][], String)
+     *  @see ptolemy.util.StringUtilities#usageString(String, String [][], String [])
      */
     protected String _configurationUsage(String commandTemplate,
             String [][] commandOptions,
