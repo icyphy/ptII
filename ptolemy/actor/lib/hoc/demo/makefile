@@ -53,6 +53,7 @@ PTCLASSALLJARS = \
 	DFTSubSet/DFTSubSet.jar \
 	HocDE/HocDE.jar \
 	IterateOverArray/IterateOverArray.jar \
+	MobileFunction/MobileFunction.jar \
 	ModelReference/ModelReference.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
