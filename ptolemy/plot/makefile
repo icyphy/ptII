@@ -60,8 +60,7 @@ JSRCS1_0 = \
 	PlotLive.java \
 	PlotLiveDemo.java \
 	PlotLiveDemoApplet.java \
-	PlotPoint.java \
-	PlayingWave.java
+	PlotPoint.java
 
 # Sources that require JDK1.1 and later.
 JSRCS1_1 = \
