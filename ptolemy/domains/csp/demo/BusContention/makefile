@@ -48,8 +48,6 @@ CLASSPATH = $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 
 JSRCS = \
 	BusContentionApplet.java \
-	BusContentionDemo.java \
-	BusContentionGraphic.java \
 	ContentionAlarm.java \
 	Controller.java \
 	Memory.java \
