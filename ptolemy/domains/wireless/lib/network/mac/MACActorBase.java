@@ -212,7 +212,6 @@ public class MACActorBase extends NetworkActorBase {
      */
     public Parameter dotllRTSThreshold;
 
-    public static boolean mBkIP;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
