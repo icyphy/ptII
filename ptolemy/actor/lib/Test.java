@@ -210,7 +210,7 @@ public class Test extends NonStrictTest {
                         + ".\n"
                         + "Width of input is "
                         + width
-                        + ", which does not match"
+                        + ", which does not match "
                         + "the  width of the "
                         + _numberOfInputTokensSeen
                         + "-th element of"
@@ -237,7 +237,11 @@ public class Test extends NonStrictTest {
                         "Test fails in iteration " + _numberOfInputTokensSeen
                         + ".\n"
                         + "Value was: " + token
-                        + ". Should have been: "+ reference[i]);
+                        + "(" + _verboseString(token.toString()) + ")"
+
+                        + ". Should have been: "+ reference[i]
+                        + "(" + _verboseString(reference[i].toString()) + ")"
+                                                 );
             }
 
             if (!isClose) {
@@ -245,10 +249,25 @@ public class Test extends NonStrictTest {
                         "Test fails in iteration " + _numberOfInputTokensSeen
                         + ".\n"
                         + "Value was: " + token
-                        + ". Should have been: " + reference[i]);
+                        + "(" + _verboseString(token.toString()) + ")"
+                        + ". Should have been: "+ reference[i]
+                        + "(" + _verboseString(reference[i].toString()) + ")"
+                                                 );
             }
         }
         _numberOfInputTokensSeen++;
+    }
+
+    private String _verboseString(String in) {
+        StringBuffer results = new StringBuffer();
+        for (int i = 0; i < in.length(); i++) {
+            int character = in.charAt(i);
+            if (results.length() > 0) {
+                results.append(", ");
+            }
+            results.append(character);
+        }
+        return results.toString();
     }
 
     /** Override the base class to do nothing and return true.
