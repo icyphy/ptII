@@ -1,6 +1,0 @@
-<Actors>
-   <Actor>
-      <name="Average"/>
-      <class="ptolemy.actor.lib.Average"/>
-   <Actor>
-</Actors>
