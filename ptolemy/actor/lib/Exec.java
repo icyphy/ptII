@@ -204,18 +204,31 @@ public class Exec extends TypedAtomicActor {
             if (_inputBufferedWriter != null) {
                 _inputBufferedWriter.close();
             }
-            _process.getInputStream().close();
-            _process.getOutputStream().close();
-            _process.getErrorStream().close();
-            // FIXME: kill of the gobblers?
+            if (_process != null) {
+                if (_process.getInputStream() != null) {
+                    _process.getInputStream().close();
+                }
+                if (_process.getOutputStream() != null) {
+                    _process.getOutputStream().close();
+                }
+                if (_process.getErrorStream() != null) {
+                    _process.getErrorStream().close();
+                }
+            }
+            // FIXME: kill of the gobblers threads?
 
         } catch (IOException ex) {
             // ignore
         }
+
+        // FIXME: Should we do a process.waitFor() and throw an exception
+        // if the return value is not 0?
+
         //synchronized(this) {
         if (_process != null) {
             _process.destroy();
         }
+
         //    _process = null;
         //}
     }
@@ -248,7 +261,7 @@ public class Exec extends TypedAtomicActor {
                 new OutputStreamWriter(_process.getOutputStream());
             _inputBufferedWriter =
                 new BufferedWriter(inputStreamWriter);
-
+            _inputBufferedWriter.write("foo");
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem setting up command '" + command + "'");
