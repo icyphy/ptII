@@ -104,7 +104,7 @@ public class StringToken extends AbstractConvertibleToken {
             return new StringToken(str);
         }
 
-         // The argument is below StringToken in the type hierarchy,
+        // The argument is below StringToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(
                 notSupportedConversionMessage(token, "string"));

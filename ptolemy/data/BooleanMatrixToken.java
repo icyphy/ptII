@@ -127,17 +127,17 @@ public class BooleanMatrixToken extends MatrixToken {
             throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(
                             token, "[boolean]"));
-         }
+        }
 
         // try boolean
-//         compare = TypeLattice.compare(BaseType.BOOLEAN, token);
-//         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-//             BooleanToken tem = (BooleanToken)
-//                 BooleanToken.convert(token);
-//             boolean[][] result = new boolean[1][1];
-//             result[0][0] = tem.booleanValue();
-//             return new BooleanMatrixToken(result);
-//         }
+        //         compare = TypeLattice.compare(BaseType.BOOLEAN, token);
+        //         if (compare == CPO.SAME || compare == CPO.HIGHER) {
+        //             BooleanToken tem = (BooleanToken)
+        //                 BooleanToken.convert(token);
+        //             boolean[][] result = new boolean[1][1];
+        //             result[0][0] = tem.booleanValue();
+        //             return new BooleanMatrixToken(result);
+        //         }
 
         // The argument is below BooleanMatrixToken in the type hierarchy,
         // but I don't recognize it.

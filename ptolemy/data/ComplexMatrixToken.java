@@ -153,13 +153,13 @@ public class ComplexMatrixToken extends MatrixToken {
         }
 
         // try Complex
-       //  compare = TypeLattice.compare(BaseType.COMPLEX, token);
-//         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-//             Complex[][] result = new Complex[1][1];
-//             ComplexToken tem = ComplexToken.convert(token);
-//             result[0][0] = tem.complexValue();
-//             return new ComplexMatrixToken(result);
-//         }
+        //  compare = TypeLattice.compare(BaseType.COMPLEX, token);
+        //         if (compare == CPO.SAME || compare == CPO.HIGHER) {
+        //             Complex[][] result = new Complex[1][1];
+        //             ComplexToken tem = ComplexToken.convert(token);
+        //             result[0][0] = tem.complexValue();
+        //             return new ComplexMatrixToken(result);
+        //         }
 
         // try DoubleMatrix
         compare = TypeLattice.compare(BaseType.DOUBLE_MATRIX, token);
@@ -347,7 +347,7 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument =
             (ComplexMatrixToken)rightArgument;
-            Complex[][] result = ComplexMatrixMath.add(_value,
+        Complex[][] result = ComplexMatrixMath.add(_value,
                 convertedArgument._getInternalComplexMatrix());
         return new ComplexMatrixToken(result);
     }
@@ -423,7 +423,7 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument =
             (ComplexMatrixToken)rightArgument;
-            Complex[][] result = ComplexMatrixMath.multiply(_value,
+        Complex[][] result = ComplexMatrixMath.multiply(_value,
                 convertedArgument._getInternalComplexMatrix());
         return new ComplexMatrixToken(result);
     }
@@ -457,7 +457,7 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument =
             (ComplexMatrixToken)rightArgument;
-            Complex[][] result = ComplexMatrixMath.subtract(_value,
+        Complex[][] result = ComplexMatrixMath.subtract(_value,
                 convertedArgument._getInternalComplexMatrix());
         return new ComplexMatrixToken(result);
     }

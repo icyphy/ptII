@@ -161,21 +161,21 @@ public class IntMatrixToken extends MatrixToken {
         }
 
         // try int
-      //   compare = TypeLattice.compare(BaseType.INT, token);
-//         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-//             IntToken tem = IntToken.convert(token);
-//             int[][] result = new int[1][1];
-//             result[0][0] = tem.intValue();
-//             return new IntMatrixToken(result);
-//         }
+        //   compare = TypeLattice.compare(BaseType.INT, token);
+        //         if (compare == CPO.SAME || compare == CPO.HIGHER) {
+        //             IntToken tem = IntToken.convert(token);
+        //             int[][] result = new int[1][1];
+        //             result[0][0] = tem.intValue();
+        //             return new IntMatrixToken(result);
+        //         }
 
         // try ByteMatrix?
-  //       compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
-//         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-//             IntMatrixToken tem = convert(token);
-//             int[][] result = tem.intMatrix();
-//             return new IntMatrixToken(result);
-//         }
+        //       compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
+        //         if (compare == CPO.SAME || compare == CPO.HIGHER) {
+        //             IntMatrixToken tem = convert(token);
+        //             int[][] result = tem.intMatrix();
+        //             return new IntMatrixToken(result);
+        //         }
 
         // The argument is below IntMatrixToken in the type hierarchy,
         // but I don't recognize it.
@@ -302,7 +302,7 @@ public class IntMatrixToken extends MatrixToken {
      *  @return BaseType.INT_MATRIX
      */
     public Type getType() {
-         return BaseType.INT_MATRIX;
+        return BaseType.INT_MATRIX;
     }
 
     /** Return a hash code value for this token. This method returns the

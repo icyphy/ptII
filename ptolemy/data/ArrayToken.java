@@ -330,7 +330,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
-         _checkArgument(rightArgument);
+        _checkArgument(rightArgument);
 
         Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
         for (int i = 0; i < _value.length; i++) {
@@ -341,7 +341,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         }
 
         return BooleanToken.TRUE;
-   }
+    }
 
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.
@@ -438,7 +438,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         _value = new Token[length];
         for (int i = 0; i < length; i++) {
             if (_elementType.equals(value[i].getType())) {
-                    _value[i] = value[i];
+                _value[i] = value[i];
             } else {
                 throw new IllegalActionException("ArrayToken._initialize: "
                         + "Elements of the array do not have the same type:"

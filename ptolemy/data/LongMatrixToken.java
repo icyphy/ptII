@@ -134,21 +134,21 @@ public class LongMatrixToken extends MatrixToken {
         }
 
         // try long
-//         compare = TypeLattice.compare(BaseType.LONG, token);
-//         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-//             LongToken tem = LongToken.convert(token);
-//             long[][] result = new long[1][1];
-//             result[0][0] = tem.longValue();
-//             return new LongMatrixToken(result);
-//         }
+        //         compare = TypeLattice.compare(BaseType.LONG, token);
+        //         if (compare == CPO.SAME || compare == CPO.HIGHER) {
+        //             LongToken tem = LongToken.convert(token);
+        //             long[][] result = new long[1][1];
+        //             result[0][0] = tem.longValue();
+        //             return new LongMatrixToken(result);
+        //         }
 
         // try IntMatrix
         compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
-         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-             IntMatrixToken tem = IntMatrixToken.convert(token);
-             long[][] result = tem.longMatrix();
-             return new LongMatrixToken(result);
-         }
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+            IntMatrixToken tem = IntMatrixToken.convert(token);
+            long[][] result = tem.longMatrix();
+            return new LongMatrixToken(result);
+        }
 
         // The argument is below LongMatrixToken in the type hierarchy,
         // but I don't recognize it.
@@ -268,7 +268,7 @@ public class LongMatrixToken extends MatrixToken {
         long[][] matrix = new long[_rowCount][_columnCount];
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
-                 matrix[i][j] = _value[i][j];
+                matrix[i][j] = _value[i][j];
             }
         }
         return matrix;
@@ -382,7 +382,7 @@ public class LongMatrixToken extends MatrixToken {
         return new LongMatrixToken(result);
     }
 
-   /** Return a reference to the internal 2-D matrix of longs that
+    /** Return a reference to the internal 2-D matrix of longs that
      *  represents this Token. Because no copying is done, the contents
      *  must NOT be modified to preserve the immutability of Token.
      *  @return A 2-D long matrix.

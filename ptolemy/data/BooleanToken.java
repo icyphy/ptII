@@ -239,7 +239,7 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  FALSE.
      */
     protected Token _divide(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         boolean denomValue = ((BooleanToken)rightArgument).booleanValue();
         if (denomValue) {
             return this;

@@ -116,7 +116,7 @@ public class IntToken extends ScalarToken {
             return new IntToken(byteToken.intValue());
         }
 
-         // The argument is below ByteToken in the type hierarchy,
+        // The argument is below ByteToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(
                 notSupportedConversionMessage(token, "int"));

@@ -112,7 +112,7 @@ public abstract class MatrixToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-               throw new IllegalActionException(null, ex,
+                throw new IllegalActionException(null, ex,
                         notSupportedMessage("add", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
@@ -174,8 +174,8 @@ public abstract class MatrixToken extends Token {
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                    notSupportedMessage("addReverse",
-                            this, leftArgument));
+                        notSupportedMessage("addReverse",
+                                this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             Token result = ((MatrixToken)leftArgument)._doAdd(this);
@@ -323,7 +323,7 @@ public abstract class MatrixToken extends Token {
                         notSupportedMessage("closeness", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
-             return rightArgument.isCloseTo(this, epsilon);
+            return rightArgument.isCloseTo(this, epsilon);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("closeness",
@@ -361,10 +361,10 @@ public abstract class MatrixToken extends Token {
                 // error message that has the types of the arguments that were
                 // passed in.
                 throw new IllegalActionException(null, ex,
-                    notSupportedMessage("equality", this, rightArgument));
+                        notSupportedMessage("equality", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
-             return rightArgument.isEqualTo(this);
+            return rightArgument.isEqualTo(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("equality",
@@ -472,7 +472,7 @@ public abstract class MatrixToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-               throw new IllegalActionException(null, ex,
+                throw new IllegalActionException(null, ex,
                         notSupportedMessage("multiply", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
@@ -534,8 +534,8 @@ public abstract class MatrixToken extends Token {
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                    notSupportedMessage("multiplyReverse",
-                            this, leftArgument));
+                        notSupportedMessage("multiplyReverse",
+                                this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             Token result = ((MatrixToken)leftArgument)._doMultiply(this);
@@ -548,7 +548,7 @@ public abstract class MatrixToken extends Token {
                     notSupportedIncomparableMessage("multiplyReverse",
                             this, leftArgument));
         }
-   }
+    }
 
     /** Return a new Token representing the right multiplicative
      *  identity. The returned token contains an identity matrix
@@ -623,7 +623,7 @@ public abstract class MatrixToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-               throw new IllegalActionException(null, ex,
+                throw new IllegalActionException(null, ex,
                         notSupportedMessage("subtract", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
@@ -685,8 +685,8 @@ public abstract class MatrixToken extends Token {
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                    notSupportedMessage("subtractReverse",
-                            this, leftArgument));
+                        notSupportedMessage("subtractReverse",
+                                this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             Token result = ((MatrixToken)leftArgument)._doSubtract(this);
@@ -791,8 +791,8 @@ public abstract class MatrixToken extends Token {
      */
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
-         throw new IllegalActionException(
-                 notSupportedMessage("add", this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("add", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument
@@ -806,8 +806,8 @@ public abstract class MatrixToken extends Token {
      */
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
-         throw new IllegalActionException(
-                 notSupportedMessage("add", this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("add", this, rightArgument));
     }
 
     /** Test for closeness of the values of this Token and the argument
@@ -824,8 +824,8 @@ public abstract class MatrixToken extends Token {
     protected BooleanToken _isCloseTo(
             MatrixToken rightArgument, double epsilon)
             throws IllegalActionException {
-         throw new IllegalActionException(
-                 notSupportedMessage("isCloseTo", this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("isCloseTo", this, rightArgument));
     }
 
     /** Test for equality of the values of this Token and the argument
@@ -841,8 +841,8 @@ public abstract class MatrixToken extends Token {
      */
     protected BooleanToken _isEqualTo(MatrixToken rightArgument)
             throws IllegalActionException {
-         throw new IllegalActionException(
-                 notSupportedMessage("isEqualTo", this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("isEqualTo", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -908,8 +908,8 @@ public abstract class MatrixToken extends Token {
      */
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
-         throw new IllegalActionException(
-                 notSupportedMessage("subtract", this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of each element of
@@ -923,8 +923,8 @@ public abstract class MatrixToken extends Token {
      */
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
-         throw new IllegalActionException(
-                 notSupportedMessage("subtract", this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////

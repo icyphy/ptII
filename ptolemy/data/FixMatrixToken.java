@@ -126,13 +126,13 @@ public class FixMatrixToken extends MatrixToken {
         }
 
         // try Fix
-//         compare = TypeLattice.compare(BaseType.FIX, token);
-//         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-//             FixPoint[][] result = new FixPoint[1][1];
-//             FixToken tem = FixToken.convert(token);
-//             result[0][0] = tem.fixValue();
-//             return new FixMatrixToken(result);
-//         }
+        //         compare = TypeLattice.compare(BaseType.FIX, token);
+        //         if (compare == CPO.SAME || compare == CPO.HIGHER) {
+        //             FixPoint[][] result = new FixPoint[1][1];
+        //             FixToken tem = FixToken.convert(token);
+        //             result[0][0] = tem.fixValue();
+        //             return new FixMatrixToken(result);
+        //         }
 
         // The argument is below FixMatrixToken in the type hierarchy,
         // but I don't recognize it.
@@ -343,7 +343,7 @@ public class FixMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
-            FixPoint[][] result = convertedArgument.fixMatrix();
+        FixPoint[][] result = convertedArgument.fixMatrix();
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
                 result[i][j] = result[i][j].add(_value[i][j]);
@@ -432,12 +432,12 @@ public class FixMatrixToken extends MatrixToken {
                 result[i][j] = result[i][j].multiply(scalar);
                 //   System.out.println("result = " + result[i][j] + ", "
                 /        + result[i][j].getPrecision());
-            }
         }
-        return new FixMatrixToken(result);
     }
+    return new FixMatrixToken(result);
+}
 
-    /** Return a new token whose value is the value of the argument
+/** Return a new token whose value is the value of the argument
      *  Token subtracted to the value of this Token.  It is assumed that
      *  the type of the argument is FixMatrixToken.
      *  @param rightArgument The token to subtract to this token.
@@ -446,19 +446,19 @@ public class FixMatrixToken extends MatrixToken {
      *  class.
      *  @return A new FixMatrixToken containing the result.
      */
-    protected MatrixToken _subtract(MatrixToken rightArgument)
-            throws IllegalActionException {
-        FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
-            FixPoint[][] result = convertedArgument.fixMatrix();
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                result[i][j] = result[i][j].subtract(_value[i][j]);
-            }
+protected MatrixToken _subtract(MatrixToken rightArgument)
+        throws IllegalActionException {
+    FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
+    FixPoint[][] result = convertedArgument.fixMatrix();
+    for (int i = 0; i < _rowCount; i++) {
+        for (int j = 0; j < _columnCount; j++) {
+            result[i][j] = result[i][j].subtract(_value[i][j]);
         }
-        return new FixMatrixToken(result);
     }
+    return new FixMatrixToken(result);
+}
 
-    /** Return a new token whose value is the value of the argument
+/** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
      *  of each element of this class.
@@ -467,19 +467,19 @@ public class FixMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElement(Token rightArgument)
-            throws IllegalActionException {
-        FixPoint scalar = ((FixToken)rightArgument).fixValue();
-        FixPoint[][] result = fixMatrix();
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                result[i][j] = result[i][j].subtract(scalar);
-            }
+protected MatrixToken _subtractElement(Token rightArgument)
+        throws IllegalActionException {
+    FixPoint scalar = ((FixToken)rightArgument).fixValue();
+    FixPoint[][] result = fixMatrix();
+    for (int i = 0; i < _rowCount; i++) {
+        for (int j = 0; j < _columnCount; j++) {
+            result[i][j] = result[i][j].subtract(scalar);
         }
-        return new FixMatrixToken(result);
     }
+    return new FixMatrixToken(result);
+}
 
-    /** Return a new token whose value is the value of the argument
+/** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
      *  of each element of this class.
@@ -488,54 +488,54 @@ public class FixMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElementReverse(Token rightArgument)
-            throws IllegalActionException {
-        FixPoint scalar = ((FixToken)rightArgument).fixValue();
-        FixPoint[][] result = fixMatrix();
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                result[i][j] = scalar.subtract(result[i][j]);
-            }
-        }
-        return new FixMatrixToken(result);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // initialize the row and column count and copy the specified
-    // matrix. This method is used by the constructors.
-    private void _initialize(FixPoint[][] value)
-            throws IllegalActionException {
-        _rowCount = value.length;
-        _columnCount = value[0].length;
-        _value = new FixPoint[_rowCount][_columnCount];
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                _value[i][j] = value[i][j];
-                Precision precision = value[i][j].getPrecision();
-                if (_precision != null && !_precision.equals(precision)) {
-                    throw new IllegalActionException(
-                            "Attempt to create a FixMatrixToken"
-                            + " with unequal precisions.");
-                }
-                _precision = precision;
-            }
+protected MatrixToken _subtractElementReverse(Token rightArgument)
+        throws IllegalActionException {
+    FixPoint scalar = ((FixToken)rightArgument).fixValue();
+    FixPoint[][] result = fixMatrix();
+    for (int i = 0; i < _rowCount; i++) {
+        for (int j = 0; j < _columnCount; j++) {
+            result[i][j] = scalar.subtract(result[i][j]);
         }
     }
+    return new FixMatrixToken(result);
+}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+///////////////////////////////////////////////////////////////////
+////                         private methods                   ////
 
-    // The 2D matrix of FixPoints.
-    private FixPoint[][] _value = null;
+// initialize the row and column count and copy the specified
+// matrix. This method is used by the constructors.
+private void _initialize(FixPoint[][] value)
+        throws IllegalActionException {
+    _rowCount = value.length;
+    _columnCount = value[0].length;
+    _value = new FixPoint[_rowCount][_columnCount];
+    for (int i = 0; i < _rowCount; i++) {
+        for (int j = 0; j < _columnCount; j++) {
+            _value[i][j] = value[i][j];
+            Precision precision = value[i][j].getPrecision();
+            if (_precision != null && !_precision.equals(precision)) {
+                throw new IllegalActionException(
+                        "Attempt to create a FixMatrixToken"
+                        + " with unequal precisions.");
+            }
+            _precision = precision;
+        }
+    }
+}
 
-    // The precision of all entries in the FixPoint matrix.
-    private Precision _precision = null;
+///////////////////////////////////////////////////////////////////
+////                         private variables                 ////
 
-    // The number of rows of the matrix.
-    private int _rowCount = 0;
+// The 2D matrix of FixPoints.
+private FixPoint[][] _value = null;
 
-    // The number of column of the matrix.
-    private int _columnCount = 0;
+// The precision of all entries in the FixPoint matrix.
+private Precision _precision = null;
+
+// The number of rows of the matrix.
+private int _rowCount = 0;
+
+// The number of column of the matrix.
+private int _columnCount = 0;
 }

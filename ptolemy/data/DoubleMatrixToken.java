@@ -142,13 +142,13 @@ public class DoubleMatrixToken extends MatrixToken {
         }
 
         // try double
-       //  compare = TypeLattice.compare(BaseType.DOUBLE, token);
-//         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-//             DoubleToken tem = DoubleToken.convert(token);
-//             double[][] result = new double[1][1];
-//             result[0][0] = tem.doubleValue();
-//             return new DoubleMatrixToken(result);
-//         }
+        //  compare = TypeLattice.compare(BaseType.DOUBLE, token);
+        //         if (compare == CPO.SAME || compare == CPO.HIGHER) {
+        //             DoubleToken tem = DoubleToken.convert(token);
+        //             double[][] result = new double[1][1];
+        //             result[0][0] = tem.doubleValue();
+        //             return new DoubleMatrixToken(result);
+        //         }
 
         // try IntMatrix
         compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
