@@ -135,6 +135,7 @@ public class ForwardEulerSolver extends FixedStepSolver{
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
         double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
         integrator.setPotentialState(pstate);
+        integrator.setPotentialDerivative(f);
         
         integrator.output.broadcast(new DoubleToken(pstate));
     }

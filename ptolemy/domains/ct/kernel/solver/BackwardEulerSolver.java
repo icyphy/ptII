@@ -167,6 +167,7 @@ public class BackwardEulerSolver extends FixedStepSolver
             voteForConverge(false);
         }
         integrator.setPotentialState(pstate);
+        integrator.setPotentialDerivative(f);
         
         integrator.output.broadcast(new DoubleToken(pstate));
     }
