@@ -246,6 +246,21 @@ public class HTMLViewerTableau extends Tableau {
             // Try looking up the URL as a resource relative to $PTII.
         String ptIIDirAsURLName = StringUtilities.getProperty(
                 "ptolemy.ptII.dirAsURL");
+
+        // FIXME: This is an ugly hack.
+        // If the user has a Windows installation that includes the
+        // source jar file, then when they open whatsNew4.0.htm
+        // and click on a javadoc link that is in codeDoc.jar but
+        // not a separate file, then the file will come up missing
+        // because ptolemy.ptII.dirAsURL refers to ptsupport.jar
+        // The hack is to strip that out.
+        String ptsupportPath = "/ptolemy/ptsupport.jar";
+        if (ptIIDirAsURLName.endsWith(ptsupportPath)) {
+            ptIIDirAsURLName = ptIIDirAsURLName.substring(0,
+                    ptIIDirAsURLName.length()
+                    - ptsupportPath.length());
+        }
+
         String relativePath = null;
         if (urlName.startsWith(ptIIDirAsURLName)) {
             relativePath = urlName.substring(ptIIDirAsURLName.length());
@@ -277,16 +292,14 @@ public class HTMLViewerTableau extends Tableau {
                 relativePath = uri.toString()
                     .substring(ptIIDirAsURI.toString().length() + offset);
                 //relativePath = urlName.substring(ptIIDirAsURLName.length());
-
-                if (relativePath.startsWith("/")) {
-                    relativePath = relativePath.substring(1);
-                }
-
             }
         }
         if (relativePath == null) {
             return null;
         } else {
+            if (relativePath.startsWith("/")) {
+                relativePath = relativePath.substring(1);
+            }
             URL anotherURL = Thread.currentThread()
                 .getContextClassLoader()
                 .getResource(relativePath);
