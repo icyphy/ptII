@@ -51,6 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -128,8 +129,8 @@ public class DDEDirector extends CompositeProcessDirector
         super();
 
         double value = PrioritizedTimedQueue.ETERNITY;
-        stopTime = new
-            Parameter(this, "stopTime", new DoubleToken(value));
+        stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
+        timePrecisionInDigits.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the  workspace with an empty
@@ -143,8 +144,8 @@ public class DDEDirector extends CompositeProcessDirector
         super(workspace);
 
         double value = PrioritizedTimedQueue.ETERNITY;
-        stopTime = new
-            Parameter(this, "stopTime", new DoubleToken(value));
+        stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
+        timePrecisionInDigits.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the given container with the
@@ -165,8 +166,8 @@ public class DDEDirector extends CompositeProcessDirector
         super(container, name);
 
         double value = PrioritizedTimedQueue.ETERNITY;
-        stopTime = new
-            Parameter(this, "stopTime", new DoubleToken(value));
+        stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
+        timePrecisionInDigits.setVisibility(Settable.FULL);
     }
 
     ///////////////////////////////////////////////////////////////////

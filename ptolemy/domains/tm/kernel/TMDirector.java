@@ -56,6 +56,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -814,6 +815,7 @@ public class TMDirector extends Director implements TimedDirector {
                     new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
+            timePrecisionInDigits.setVisibility(Settable.FULL);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() +
                     "fail to initialize parameters.");

@@ -40,6 +40,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -230,6 +231,7 @@ public class RTPDirector extends ProcessDirector
             (this, "executionDuration", new LongToken(10000));
         executionDuration.setTypeEquals(BaseType.LONG);
 
+        timePrecisionInDigits.setVisibility(Settable.FULL);
         //addDebugListener(new StreamListener());
     }
 

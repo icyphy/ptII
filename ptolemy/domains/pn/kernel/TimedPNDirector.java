@@ -38,6 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -114,6 +115,7 @@ public class TimedPNDirector extends PNDirector
     public TimedPNDirector()
             throws IllegalActionException, NameDuplicationException {
         super();
+        timePrecisionInDigits.setVisibility(Settable.FULL);
     }
 
     /**Construct a director in the  workspace with an empty name.
@@ -127,6 +129,7 @@ public class TimedPNDirector extends PNDirector
     public TimedPNDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
+        timePrecisionInDigits.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the given container with the given name.
@@ -147,6 +150,7 @@ public class TimedPNDirector extends PNDirector
     public TimedPNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        timePrecisionInDigits.setVisibility(Settable.FULL);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -43,6 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 // Java imports.
@@ -120,6 +121,7 @@ public class CSPDirector extends CompositeProcessDirector
      */
     public CSPDirector() {
         super();
+        timePrecisionInDigits.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -129,6 +131,7 @@ public class CSPDirector extends CompositeProcessDirector
      */
     public CSPDirector(Workspace workspace) {
         super(workspace);
+        timePrecisionInDigits.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the given container with the given name.
@@ -147,6 +150,7 @@ public class CSPDirector extends CompositeProcessDirector
     public CSPDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        timePrecisionInDigits.setVisibility(Settable.FULL);
     }
 
     ///////////////////////////////////////////////////////////////////

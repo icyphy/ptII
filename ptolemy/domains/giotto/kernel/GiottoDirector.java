@@ -59,6 +59,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -677,6 +678,7 @@ public class GiottoDirector extends StaticSchedulingDirector
 
             _receivers = new LinkedList();
 
+            timePrecisionInDigits.setVisibility(Settable.FULL);
         } catch (KernelException ex) {
             throw new InternalErrorException(
                     "Cannot initialize director: " + ex.getMessage());
