@@ -50,7 +50,7 @@
 # 18) Warn if the clone method copies port or parameters
 # 19) Warn if there is no trailing newline
 # 20) Warn if the class comment has * on each line.
-# 21) Warn if printStackTrace() is used
+# 21) Warn if printStackTrace() or fillInStackTrace() are used
 
 # Determine if we are on windows
 windows=no
@@ -336,10 +336,10 @@ do
 		echo "$results"
 	fi
 
-        #21) Warn if printStackTrace() is used
-	results=`egrep 'printStackTrace\(\)' $file`
+        #21) Warn if printStackTrace() or fillInStackTrace() are used
+	results=`egrep 'printStackTrace\(\)|fillInStackTrace\(\)' $file`
 	if [ "x$results" != "x" ]; then
-		echo "$file: calls printStackTrace(), use KernelException.stackTraceToString(ex) instead."
+		echo "$file: calls printStackTrace() or fillInStackTrace(), use KernelException.stackTraceToString(ex) instead."
 		echo "$results"
 	fi
 done
