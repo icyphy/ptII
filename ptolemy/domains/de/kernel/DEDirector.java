@@ -221,7 +221,7 @@ public class DEDirector extends Director {
      *  @exception NameDuplicationException If the container not a
      *   CompositeActor and the name collides with an entity in the container.
      */
-    public DEDirector(CompositeEntity container , String name)
+    public DEDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
@@ -329,7 +329,9 @@ public class DEDirector extends Director {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         DEDirector newobj = (DEDirector)(super.clone(ws));
-        newobj.stopTime =
+        newobj.startTime = 
+            (Parameter)newobj.getAttribute("startTime");
+        newobj.stopTime = 
             (Parameter)newobj.getAttribute("stopTime");
         newobj.stopWhenQueueIsEmpty =
             (Parameter)newobj.getAttribute("stopWhenQueueIsEmpty");
