@@ -65,6 +65,7 @@ JSRCS = \
 	AbsoluteValue.java \
 	Average.java \
 	Bernoulli.java \
+	BooleanExpression.java \
 	Clock.java \
 	Commutator.java \
 	Const.java \
@@ -86,6 +87,7 @@ JSRCS = \
 	Quantizer.java \
 	Ramp.java \
 	RandomSource.java \
+	Reader.java \
 	RealTimeDelay.java \
 	Recorder.java \
 	SequenceActor.java \
