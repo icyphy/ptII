@@ -61,7 +61,7 @@ test Node-2.1 {Create an unweighted node} {
 ####
 # 
 test Node-2.2 {Attempt to access the weight of an unweighted node} {
-    catch {$n weight} msg
+    catch {$n getWeight} msg
     list $msg
 } {{java.lang.IllegalStateException: Attempt to access the weight of the following unweighted node: <unweighted node>
 }}

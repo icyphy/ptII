@@ -93,7 +93,7 @@ test Edge-2.3 {Create a self-loop edge} {
 ####
 # 
 test Edge-2.4 {Attempt to access the weight of an unweighted edge} {
-    catch {$e1 weight} msg
+    catch {$e1 getWeight} msg
     list $msg
 } {{java.lang.IllegalStateException: Attempt to access the weight of the following unweighted edge: (node1, node2)
 }}

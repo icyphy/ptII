@@ -123,21 +123,6 @@ public abstract class Element {
         }
     } 
 
-    /** Return the weight that has been associated with this element.
-     *  @return The associated weight.
-     *  @deprecated Use getWeight() instead.
-     *  @exception IllegalStateException If this is an unweighted element.
-     */
-    public final Object weight() {
-        if (!hasWeight()) {
-            throw new IllegalStateException("Attempt to access the weight "
-                    + "of the following unweighted " + descriptor() + ": "
-                    + this + "\n");
-        } else {
-            return _weight;
-        }
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
