@@ -68,7 +68,7 @@ ALLJSRCS = 		ptolemy/plot/*.java \
 #			ptolemy/domains/ct/lib/*.java
 
 all: suball codeDoc/tree.html
-
+javadocs: codeDoc/tree.html
 codeDoc/tree.html: 	../ptolemy/plot/*.java \
 			../ptolemy/kernel/*.java \
 			../ptolemy/kernel/util/*.java \
