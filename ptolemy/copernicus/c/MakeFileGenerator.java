@@ -121,7 +121,7 @@ protected static LinkedList _classNameList(String classPath, String className)
 
     }
 
-// finds filename corrseponding to class and replaces
+// finds filename corresponding to class and replaces
 // "$" with "$$" for compatibility
 protected static String _classNameToMakeFileName(String className)
     {
