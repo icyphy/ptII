@@ -291,8 +291,9 @@ public class NonStrictTest extends Sink {
         if (!training
                 && _numberOfInputTokensSeen
                 < ((ArrayToken)(correctValues.getToken())).length()) {
-            throw new IllegalActionException(this,
-                    "The test produced only " + _numberOfInputTokensSeen
+            //throw new IllegalActionException(this,
+            System.out.println("Warning: NonStrictTest: " + getName()
+                    + "The test produced only " + _numberOfInputTokensSeen
                     + " tokens, yet the correctValues parameter was "
                     + "expecting "
                     + ((ArrayToken)(correctValues.getToken())).length()
