@@ -58,13 +58,15 @@ affineMatrix must be a two by three matrix.  If the matrix is
  a b c
  d e f
 </pre>
-the output is determined by the following two equations.
+the input (x', y') and output (x, y) is determined by the following two 
+equations.
 <pre>
  x' = a*x + b*y + c;
  y' = d*x + e*y + f;
 </pre>
 Note that the c and f terms do not show up when the output is directly
-displayed.
+displayed.  The c and f terms are translation terms, and only show up
+when operated on with another image.   
 
 @author James Yeh
 @version $Id$
