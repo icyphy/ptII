@@ -13,6 +13,8 @@
  rude to point the user back to intro.htm after they
  have selected help -cxh 1/01
 
+ TableauFrame.java has the path to basicHelp.htm hardwired into it. 
+
  As of JDK1.3, the Java HTML facility is insufficient for use
  with frames and links that have targets (foo.htm#bar), so we
  have a separate set of htm files that do not have links in them.
@@ -23,7 +25,7 @@
 <li><a href="demos.htm" target="_blank">Quick tour</a></li>
 <li><a href="../../../doc/design/usingVergil/index.htm" target="_blank">Using Vergil</a></li>
 <li><a href="../../../doc/design/design.pdf">Design Document (PDF)</a></li>
-<li><a href="../../../doc/ptII2.0.releaseVergil.htm">Limitations</a></li>
+<li><a href="../../../doc/ptII2.2.releaseVergil.htm">Limitations</a></li>
 <li><a href="../../../doc/troubleshootingVergil.htm" target="_blank">Troubleshooting</a></li>
 <li><a href="../../../doc/codeDoc/index.html" target="_blank">Java Class Documentation</a></li>
 <li><a href="../../../doc/acks.htm" target="_blank">Acknowledgements</a></li>
