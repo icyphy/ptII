@@ -322,6 +322,6 @@ test CTMultiSolverDirector-3.3 {BreakpointODESolver} {
     catch {$param setToken $token} msg
     #catch {$param getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .System.DIR:
-ptolemy.domains.ct.kernel.solver.DerivativeResolver can only be used as a breakpoint ODE solver.}}
+} {{ptolemy.kernel.util.IllegalActionException: ptolemy.domains.ct.kernel.solver.DerivativeResolver can only be used as a breakpoint ODE solver.
+  in .System.DIR}}
 
