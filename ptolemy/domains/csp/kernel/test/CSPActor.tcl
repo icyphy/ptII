@@ -49,7 +49,7 @@ if {[info procs enumToObjects] == "" } then {
 #
 test CSPActor-2.1 {ConditionalReceive() } {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir
@@ -85,7 +85,7 @@ test CSPActor-2.1 {ConditionalReceive() } {
 #
 test CSPActor-2.2 {ConditionalSend() } {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir

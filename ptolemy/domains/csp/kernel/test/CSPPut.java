@@ -51,12 +51,13 @@ public class CSPPut extends CSPActor {
 
     /**
      */
-    public CSPPut(CompositeActor cont, String name)
+    public CSPPut(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         outputPort = new IOPort(this, "output", false, true);
+         outputPort = new TypedIOPort(this, "output", false, true);
 	 outputPort.setMultiport(true);
+	 outputPort.setDeclaredType(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -65,5 +66,5 @@ public class CSPPut extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                        private variables                       ////
 
-    public IOPort outputPort;
+    public TypedIOPort outputPort;
 }

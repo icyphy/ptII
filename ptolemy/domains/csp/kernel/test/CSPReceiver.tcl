@@ -51,7 +51,7 @@ test CSPReceiver-2.1 {Constructors and Containers} {
     set rcvr1 [java::new ptolemy.domains.csp.kernel.CSPReceiver]
     set val1 [$rcvr1 getContainer]
 
-    set port [java::new ptolemy.actor.IOPort]
+    set port [java::new ptolemy.actor.TypedIOPort]
     set rcvr2 [java::new ptolemy.domains.csp.kernel.CSPReceiver $port]
     set val2 [$rcvr2 getContainer]
 
@@ -67,7 +67,7 @@ test CSPReceiver-2.1 {Constructors and Containers} {
 #
 test CSPReceiver-3.1 {get(), put(), No tokens - deadlock!} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir
@@ -94,7 +94,7 @@ test CSPReceiver-3.1 {get(), put(), No tokens - deadlock!} {
 #
 test CSPReceiver-3.2 {get(), put(), One token} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir
@@ -122,7 +122,7 @@ test CSPReceiver-3.2 {get(), put(), One token} {
 #
 test CSPReceiver-3.3 {get(), put(), Two tokens and then deadlock!} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir
@@ -154,7 +154,7 @@ test CSPReceiver-3.3 {get(), put(), Two tokens and then deadlock!} {
 #
 test CSPReceiver-3.4 {hasToken()} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir
@@ -183,7 +183,7 @@ test CSPReceiver-3.4 {hasToken()} {
 #
 test CSPReceiver-3.5 {hasRoom()} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir

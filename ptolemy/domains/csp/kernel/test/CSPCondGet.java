@@ -51,7 +51,7 @@ public class CSPCondGet extends CSPGet {
 
     /**
      */
-    public CSPCondGet(CompositeActor cont, String name, int rcvrCnt)
+    public CSPCondGet(TypedCompositeActor cont, String name, int rcvrCnt)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          

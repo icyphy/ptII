@@ -43,7 +43,8 @@ import javax.swing.SwingUtilities;
  */
 public class BusContentionApplication implements ActionListener {
 
-    public BusContentionApplication(Manager manager, CompositeActor topLevel) {
+    public BusContentionApplication(Manager manager, 
+	    TypedCompositeActor topLevel) {
 	_manager = manager;
 	_topLevel = topLevel;
     }
@@ -53,18 +54,18 @@ public class BusContentionApplication implements ActionListener {
 
     public static void main(String argv[]) {
 	Manager manager = new Manager("manager");
-	CompositeActor topLevel = new CompositeActor();
+	TypedCompositeActor topLevel = new TypedCompositeActor();
 
 	try {
             topLevel.setName("topLevel"); 
             topLevel.setManager(manager);
 	} catch( NameDuplicationException e ) {
-	    System.err.println("NameDuplicationException thrown in the main \n" +
-		    "method. Stack trace: \n");
+	    System.err.println("NameDuplicationException thrown in "
+		    + "the main \n method. Stack trace: \n");
             e.printStackTrace();
 	} catch( IllegalActionException e ) {
-	    System.err.println("IllegalActionException thrown in the main \n" +
-		    "method. Stack trace: \n");
+	    System.err.println("IllegalActionException thrown in the "
+		    + "main \n method. Stack trace: \n");
             e.printStackTrace();
 	}
 
@@ -155,53 +156,74 @@ public class BusContentionApplication implements ActionListener {
 	    _processActor3 = new CSPProcessor( _topLevel, "proc3", 3 ); 
 
 	    // Set up ports, relation 
-	    IOPort reqOut = (IOPort)_contentionActor.getPort("requestOut"); 
-	    IOPort reqIn = (IOPort)_contentionActor.getPort("requestIn"); 
-	    IOPort contendOut = (IOPort)_contentionActor.getPort("contendOut"); 
-	    IOPort contendIn = (IOPort)_contentionActor.getPort("contendIn"); 
+	    TypedIOPort reqOut = 
+		    (TypedIOPort)_contentionActor.getPort("requestOut"); 
+	    TypedIOPort reqIn = 
+		    (TypedIOPort)_contentionActor.getPort("requestIn"); 
+	    TypedIOPort contendOut = 
+		    (TypedIOPort)_contentionActor.getPort("contendOut"); 
+	    TypedIOPort contendIn = 
+		    (TypedIOPort)_contentionActor.getPort("contendIn"); 
 
-	    IOPort _alarmOut = (IOPort)_alarmActor.getPort("output"); 
-	    IOPort _alarmIn = (IOPort)_alarmActor.getPort("input"); 
-	    IOPort memOut = (IOPort)_memoryActor.getPort("output"); 
-	    IOPort memIn = (IOPort)_memoryActor.getPort("input"); 
+	    TypedIOPort _alarmOut = 
+		    (TypedIOPort)_alarmActor.getPort("output"); 
+	    TypedIOPort _alarmIn = 
+		    (TypedIOPort)_alarmActor.getPort("input"); 
+	    TypedIOPort memOut = 
+		    (TypedIOPort)_memoryActor.getPort("output"); 
+	    TypedIOPort memIn = 
+		    (TypedIOPort)_memoryActor.getPort("input"); 
 
-	    IOPort p1_ReqOut = (IOPort)_processActor1.getPort("requestOut"); 
-	    IOPort p2_ReqOut = (IOPort)_processActor2.getPort("requestOut"); 
-	    IOPort p3_ReqOut = (IOPort)_processActor3.getPort("requestOut"); 
-	    IOPort p1_ReqIn = (IOPort)_processActor1.getPort("requestIn"); 
-	    IOPort p2_ReqIn = (IOPort)_processActor2.getPort("requestIn"); 
-	    IOPort p3_ReqIn = (IOPort)_processActor3.getPort("requestIn"); 
+	    TypedIOPort p1_ReqOut = 
+		    (TypedIOPort)_processActor1.getPort("requestOut"); 
+	    TypedIOPort p2_ReqOut = 
+		    (TypedIOPort)_processActor2.getPort("requestOut"); 
+	    TypedIOPort p3_ReqOut = 
+		    (TypedIOPort)_processActor3.getPort("requestOut"); 
+	    TypedIOPort p1_ReqIn = 
+		    (TypedIOPort)_processActor1.getPort("requestIn"); 
+	    TypedIOPort p2_ReqIn = 
+		    (TypedIOPort)_processActor2.getPort("requestIn"); 
+	    TypedIOPort p3_ReqIn = 
+		    (TypedIOPort)_processActor3.getPort("requestIn"); 
 
-	    IOPort p1_MemOut = (IOPort)_processActor1.getPort("memoryOut"); 
-	    IOPort p2_MemOut = (IOPort)_processActor2.getPort("memoryOut"); 
-	    IOPort p3_MemOut = (IOPort)_processActor3.getPort("memoryOut"); 
-	    IOPort p1_MemIn = (IOPort)_processActor1.getPort("memoryIn"); 
-	    IOPort p2_MemIn = (IOPort)_processActor2.getPort("memoryIn"); 
-	    IOPort p3_MemIn = (IOPort)_processActor3.getPort("memoryIn"); 
+	    TypedIOPort p1_MemOut = 
+		    (TypedIOPort)_processActor1.getPort("memoryOut"); 
+	    TypedIOPort p2_MemOut = 
+		    (TypedIOPort)_processActor2.getPort("memoryOut"); 
+	    TypedIOPort p3_MemOut = 
+		    (TypedIOPort)_processActor3.getPort("memoryOut"); 
+	    TypedIOPort p1_MemIn = 
+		    (TypedIOPort)_processActor1.getPort("memoryIn"); 
+	    TypedIOPort p2_MemIn = 
+		    (TypedIOPort)_processActor2.getPort("memoryIn"); 
+	    TypedIOPort p3_MemIn = 
+		    (TypedIOPort)_processActor3.getPort("memoryIn"); 
 
-	    IORelation inReqs, outReqs, reads, writes, outContends, inContends;
+	    TypedIORelation inReqs, outReqs, 
+		    reads, writes, outContends, inContends;
 
 	    // Set up connections 
-	    inReqs = (IORelation)_topLevel.connect(reqIn, p1_ReqOut ); 
-	    inReqs = (IORelation)_topLevel.connect(reqIn, p2_ReqOut ); 
-	    inReqs = (IORelation)_topLevel.connect(reqIn, p3_ReqOut ); 
+	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p1_ReqOut ); 
+	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p2_ReqOut ); 
+	    inReqs = (TypedIORelation)_topLevel.connect(reqIn, p3_ReqOut ); 
 
-	    outContends = (IORelation)_topLevel.connect(contendOut, 
+	    outContends = (TypedIORelation)_topLevel.connect(contendOut, 
 	            _alarmIn );
-            inContends = (IORelation)_topLevel.connect(contendIn,
+            inContends = (TypedIORelation)_topLevel.connect(contendIn,
 	            _alarmOut );
 
-            outReqs = (IORelation)_topLevel.connect( reqOut, p1_ReqIn ); 
-	    outReqs = (IORelation)_topLevel.connect( reqOut, p2_ReqIn ); 
-	    outReqs = (IORelation)_topLevel.connect( reqOut, p3_ReqIn ); 
+            outReqs = (TypedIORelation)_topLevel.connect( reqOut, p1_ReqIn ); 
+	    outReqs = (TypedIORelation)_topLevel.connect( reqOut, p2_ReqIn ); 
+	    outReqs = (TypedIORelation)_topLevel.connect( reqOut, p3_ReqIn ); 
 
-	    reads = (IORelation)_topLevel.connect( memOut, p1_MemIn ); 
-	    reads = (IORelation)_topLevel.connect( memOut, p2_MemIn ); 
-	    reads = (IORelation)_topLevel.connect( memOut, p3_MemIn ); 
+	    reads = (TypedIORelation)_topLevel.connect( memOut, p1_MemIn ); 
+	    reads = (TypedIORelation)_topLevel.connect( memOut, p2_MemIn ); 
+	    reads = (TypedIORelation)_topLevel.connect( memOut, p3_MemIn ); 
 
-	    writes = (IORelation)_topLevel.connect( memIn, p1_MemOut ); 
-	    writes = (IORelation)_topLevel.connect( memIn, p2_MemOut ); 
-	    writes = (IORelation)_topLevel.connect( memIn, p3_MemOut );
+	    writes = (TypedIORelation)_topLevel.connect( memIn, p1_MemOut ); 
+	    writes = (TypedIORelation)_topLevel.connect( memIn, p2_MemOut ); 
+	    writes = (TypedIORelation)_topLevel.connect( memIn, p3_MemOut );
 
             System.out.println("Connections are complete.");
 
@@ -318,13 +340,7 @@ public class BusContentionApplication implements ActionListener {
      */
     public void endSimulation() {
         Director director = _topLevel.getDirector(); 
-	try {
-	    _manager.finish();
-	} catch( IllegalActionException e ) {
-	    System.err.println("IllegalActionException thrown while " + 
-		    "attempting to shutDown()");
-	    e.printStackTrace();
-	}
+	_manager.finish();
     }
 
     /**
@@ -382,7 +398,7 @@ public class BusContentionApplication implements ActionListener {
     CSPProcessor _processActor3;
 
     // Top Level Actor
-    CompositeActor _topLevel;
+    TypedCompositeActor _topLevel;
 
     // Manager
     Manager _manager;

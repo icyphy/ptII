@@ -51,12 +51,13 @@ public class CSPGet extends CSPActor {
 
     /**
      */
-    public CSPGet(CompositeActor cont, String name)
+    public CSPGet(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         inputPort = new IOPort(this, "input", true, false);
+         inputPort = new TypedIOPort(this, "input", true, false);
 	 inputPort.setMultiport(true);
+	 inputPort.setDeclaredType(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -65,5 +66,5 @@ public class CSPGet extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                        private variables                       ////
 
-    public IOPort inputPort;
+    public TypedIOPort inputPort;
 }

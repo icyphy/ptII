@@ -51,7 +51,7 @@ public class CSPGetToken extends CSPGet {
 
     /**
      */
-    public CSPGetToken(CompositeActor cont, String name, int numTokens)
+    public CSPGetToken(TypedCompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 

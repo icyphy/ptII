@@ -34,6 +34,7 @@ import ptolemy.domains.csp.demo.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.domains.csp.kernel.*;
+import ptolemy.data.Token;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.BooleanToken;
@@ -57,14 +58,19 @@ public class CSPProcessor extends CSPActor {
 
     /**
      */
-    public CSPProcessor(CompositeActor cont, String name, int code)
+    public CSPProcessor(TypedCompositeActor cont, String name, int code)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         _requestOut = new IOPort(this, "requestOut", false, true);
-         _requestIn = new IOPort(this, "requestIn", true, false);
-         _memoryOut = new IOPort(this, "memoryOut", false, true);
-         _memoryIn = new IOPort(this, "memoryIn", true, false);
+         _requestOut = new TypedIOPort(this, "requestOut", false, true);
+         _requestIn = new TypedIOPort(this, "requestIn", true, false);
+         _memoryOut = new TypedIOPort(this, "memoryOut", false, true);
+         _memoryIn = new TypedIOPort(this, "memoryIn", true, false);
+
+         _requestOut.setDeclaredType(IntToken.class);
+         _requestIn.setDeclaredType(BooleanToken.class);
+         _memoryOut.setDeclaredType(StringToken.class);
+         _memoryIn.setDeclaredType(Token.class);
 
          _code = code;
 
@@ -94,15 +100,6 @@ public class CSPProcessor extends CSPActor {
                 _topGraphic.receiveEvent(this, 1);
             }
         }
-	/*
-        if( getName().equals("proc1") ) {
-	    System.out.println("STATE 1: " +getName());
-        } else if( getName().equals("proc2") ) {
-	    System.out.println("\tSTATE 1: " +getName());
-        } else {
-	    System.out.println("\t\tSTATE 1: " +getName());
-        }
-	*/
         double delayTime = java.lang.Math.random();
         if( delayTime < 0.25 ) {
             delayTime = 2.5;
@@ -125,26 +122,8 @@ public class CSPProcessor extends CSPActor {
 	    System.err.println("InterruptedException during Thread.sleep()");
 	    e.printStackTrace();
 	}
-	/*
-        if( getName().equals("proc1") ) {
-	    System.out.println("STATE 2: " +getName());
-        } else if( getName().equals("proc2") ) {
-	    System.out.println("\tSTATE 2: " +getName());
-        } else {
-	    System.out.println("\t\tSTATE 2: " +getName());
-        }
-	*/
         BooleanToken bToken = (BooleanToken)_requestIn.get(0);
 
-	/*
-        if( getName().equals("proc1") ) {
-	    System.out.println("STATE 3: " +getName());
-        } else if( getName().equals("proc2") ) {
-	    System.out.println("\tSTATE 3: " +getName());
-        } else {
-	    System.out.println("\t\tSTATE 3: " +getName());
-        }
-	*/
         if( bToken.booleanValue() ) {
             // State 3
             generateEvents( new ExecEvent( this, 3 ) );
@@ -154,15 +133,6 @@ public class CSPProcessor extends CSPActor {
 	        System.err.println("InterruptedException during Thread.sleep()");
 		e.printStackTrace();
 	    }
-	    /*
-            if( getName().equals("proc1") ) {
-	        System.out.println("STATE 4: " +getName());
-            } else if( getName().equals("proc2") ) {
-                System.out.println("\tSTATE 4: " +getName());
-            } else {
-                System.out.println("\t\tSTATE 4: " +getName());
-            }
-	    */
             if( read ) {
                 _memoryIn.get(0);
             }
@@ -189,7 +159,7 @@ public class CSPProcessor extends CSPActor {
      */
     public boolean endYet() {
         double time = _dir.getCurrentTime();
-        if( time > 500.0 ) {
+        if( time > 30.0 ) {
             // System.out.println(getName() + " is ending because of time.");
             return true;
         }
@@ -229,7 +199,7 @@ public class CSPProcessor extends CSPActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        CompositeActor ca = (CompositeActor)getContainer();
+        TypedCompositeActor ca = (TypedCompositeActor)getContainer();
         _dir = (CSPDirector)ca.getDirector();
     }
 
@@ -264,10 +234,10 @@ public class CSPProcessor extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                        private methods                         ////
 
-    private IOPort _requestIn;
-    private IOPort _requestOut;
-    private IOPort _memoryIn;
-    private IOPort _memoryOut;
+    private TypedIOPort _requestIn;
+    private TypedIOPort _requestOut;
+    private TypedIOPort _memoryIn;
+    private TypedIOPort _memoryOut;
 
     private int _code;
 

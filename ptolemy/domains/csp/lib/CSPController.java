@@ -56,17 +56,22 @@ public class CSPController extends CSPActor {
 
     /**
      */
-    public CSPController(CompositeActor cont, String name)
+    public CSPController(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         _requestOut = new IOPort(this, "requestOut", false, true);
-         _requestIn = new IOPort(this, "requestIn", true, false);
-         _contendOut = new IOPort(this, "contendOut", false, true);
-         _contendIn = new IOPort(this, "contendIn", true, false);
+         _requestOut = new TypedIOPort(this, "requestOut", false, true);
+         _requestIn = new TypedIOPort(this, "requestIn", true, false);
+         _contendOut = new TypedIOPort(this, "contendOut", false, true);
+         _contendIn = new TypedIOPort(this, "contendIn", true, false);
 
          _requestOut.setMultiport(true);
          _requestIn.setMultiport(true);
+
+         _requestOut.setDeclaredType(BooleanToken.class);
+         _requestIn.setDeclaredType(IntToken.class);
+         _contendOut.setDeclaredType(Token.class);
+         _contendIn.setDeclaredType(Token.class);
 
     }
 
@@ -232,10 +237,10 @@ public class CSPController extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
-    private IOPort _requestIn;
-    private IOPort _requestOut;
-    private IOPort _contendIn;
-    private IOPort _contendOut;
+    private TypedIOPort _requestIn;
+    private TypedIOPort _requestOut;
+    private TypedIOPort _contendIn;
+    private TypedIOPort _contendOut;
 
     private int _numRequestInChannels = -1;
 

@@ -51,15 +51,18 @@ public class CSPMemory extends CSPActor {
 
     /**
      */
-    public CSPMemory(CompositeActor cont, String name)
+    public CSPMemory(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         _input = new IOPort(this, "input", true, false);
-         _output = new IOPort(this, "output", false, true);
+         _input = new TypedIOPort(this, "input", true, false);
+         _output = new TypedIOPort(this, "output", false, true);
 
          _input.setMultiport(true);
          _output.setMultiport(true);
+
+         _input.setDeclaredType(StringToken.class);
+         _output.setDeclaredType(Token.class);
 
          _strValue = "initialValue";
     }
@@ -140,8 +143,8 @@ public class CSPMemory extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
-    private IOPort _input;
-    private IOPort _output;
+    private TypedIOPort _input;
+    private TypedIOPort _output;
 
     private int _numInChannels = -1;
     private int _numOutChannels = -1;

@@ -51,7 +51,7 @@ public class CSPPutToken extends CSPPut {
 
     /**
      */
-    public CSPPutToken(CompositeActor cont, String name, int numTokens)
+    public CSPPutToken(TypedCompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 

@@ -119,7 +119,7 @@ import java.util.Enumeration;
 @see ConditionalSend
 */
 
-public class CSPActor extends AtomicActor {
+public class CSPActor extends TypedAtomicActor {
 
     /** Construct a CSPActor in the default workspace with an empty string
      *  as its name.
@@ -147,14 +147,14 @@ public class CSPActor extends AtomicActor {
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *
-     *  @param container The CompositeActor that contains this actor.
-     *  @param name The actor's name.
-     *  @exception IllegalActionException If the entity cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the name argument coincides with
-     *   an entity already in the container.
+     * @param container The TypedCompositeActor that contains this actor.
+     * @param name The actor's name.
+     * @exception IllegalActionException If the entity cannot be contained
+     *  by the proposed container.
+     * @exception NameDuplicationException If the name argument coincides 
+     *  with an entity already in the container.
      */
-    public CSPActor(CompositeActor container, String name)
+    public CSPActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -391,14 +391,6 @@ public class CSPActor extends AtomicActor {
                     "while waiting for deadlock." );
         }
     }
-
-    /** Default implementation for actors inheriting from this
-     *  class. It simply prints out a message that the actor is
-     *  wrapping up. 
-    public void wrapup() {
-        System.out.println("CSPActor: " + getName() + " wrapping up.");
-    }
-     */
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////

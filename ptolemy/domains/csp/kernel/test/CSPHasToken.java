@@ -51,7 +51,7 @@ public class CSPHasToken extends CSPGet {
 
     /**
      */
-    public CSPHasToken(CompositeActor cont, String name)
+    public CSPHasToken(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
     }

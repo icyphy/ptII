@@ -61,7 +61,7 @@ public class BusContentionApplet extends PtolemyApplet {
         setBackground(_background);
 
         Manager manager = new Manager("manager");
-	CompositeActor topLevel = new CompositeActor();
+	TypedCompositeActor topLevel = new TypedCompositeActor();
 	try {
 	    topLevel.setName("topLevel"); 
 	    topLevel.setManager(manager);

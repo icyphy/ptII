@@ -51,7 +51,7 @@ public class CSPCondPut extends CSPPutToken {
 
     /**
      */
-    public CSPCondPut(CompositeActor cont, String name, int numTokens, int rcvrCnt)
+    public CSPCondPut(TypedCompositeActor cont, String name, int numTokens, int rcvrCnt)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name, numTokens);
          

@@ -53,12 +53,15 @@ public class CSPContentionAlarm extends CSPActor {
 
     /**
      */
-    public CSPContentionAlarm(CompositeActor cont, String name)
+    public CSPContentionAlarm(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         _input = new IOPort(this, "input", true, false);
-         _output = new IOPort(this, "output", false, true);
+         _input = new TypedIOPort(this, "input", true, false);
+         _output = new TypedIOPort(this, "output", false, true);
+
+	 _input.setDeclaredType(Token.class);
+	 _output.setDeclaredType(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -121,8 +124,8 @@ public class CSPContentionAlarm extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
-    private IOPort _input;
-    private IOPort _output;
+    private TypedIOPort _input;
+    private TypedIOPort _output;
 
     private LinkedList _listeners;
 }
