@@ -144,6 +144,8 @@ public class SDFDirector extends Director {
      * 
      */
     public String generateInitializeCode() throws IllegalActionException {
+        
+        String initializeCode = super.generateInitializeCode();
         Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
@@ -156,7 +158,7 @@ public class SDFDirector extends Director {
                         = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
                 Iterator sinkChannels
                         = actorHelper.getSinkChannels(
-                                ((SampleDelay) actor).output, 0).iterator();
+                        ((SampleDelay) actor).output, 0).iterator();
                 while (sinkChannels.hasNext()) {
                     Channel channel = (Channel) sinkChannels.next();
                     IOPort port = (IOPort) channel.port;
@@ -164,7 +166,7 @@ public class SDFDirector extends Director {
                 }
             }
         }
-        return super.generateInitializeCode();
+        return initializeCode;
     }
 
     /** Return the buffer size of a given port.
