@@ -32,8 +32,10 @@ package ptolemy.actor.lib.io;
 
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.attribute.FileAttribute; // For javadoc
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionReader
