@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="realtime" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
-        <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.05">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -18,18 +18,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 85.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+    </property>
     <entity name="hier" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 185.0">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 55.0">
             </property>
         </property>
@@ -52,80 +48,31 @@
             </property>
         </port>
         <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
             <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 205.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime">
             <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 335.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 255.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 325.0">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}">
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="3.0E-2">
             </property>
-            <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 325.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="325.0, 205.0">
@@ -157,8 +104,6 @@
         <link port="Test.input" relation="relation"/>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -173,22 +118,12 @@
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="hier2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 185.0">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
             <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 55.0">
             </property>
@@ -216,14 +151,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 220.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <doc>Create a constant sequence</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -233,13 +162,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 225.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
