@@ -21,7 +21,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -36,21 +36,21 @@ package ptolemy.data.expr;
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRelationalNode
 /**
-The parse tree created from the expression string consists of a 
-hierarchy of node objects. This class represents relational 
+The parse tree created from the expression string consists of a
+hierarchy of node objects. This class represents relational
 operator(>, >=, <, <=, ==, !=) nodes in the parse tree.
 <p>
-Each node of this type has exactly two children. The resolved type 
+Each node of this type has exactly two children. The resolved type
 is a BooleanToken.
 
 @author Neil Smyth
 @version $Id$
 @see ptolemy.data.expr.ASTPtRootNode
-@see ptolemy.data.expr.PtParser 
-@see ptolemy.data.Token 
+@see ptolemy.data.expr.PtParser
+@see ptolemy.data.Token
 */
 public class ASTPtRelationalNode extends ASTPtRootNode {
-    
+
     protected ptolemy.data.Token  _resolveNode() throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if ( (num != 2) ||  (_tokenList.size() != 1) ) {
@@ -60,7 +60,7 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
         ptolemy.data.Token result = childTokens[0];
         Token x = (Token)_tokenList.take();
         // need to insert at end if want to reparse tree
-        _tokenList.insertLast(x);  
+        _tokenList.insertLast(x);
         try {
             if (x.image.compareTo("==") == 0) {
                 result = result.equals(childTokens[1]);
@@ -94,7 +94,7 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
             throw new IllegalArgumentException(str + ": " + ex.getMessage());
         }
     }
-        
+
     public ASTPtRelationalNode(int id) {
         super(id);
     }

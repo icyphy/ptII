@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -38,18 +38,18 @@ import java.lang.reflect.*;
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionNode
 /**
-The parse tree created from the expression string consists of a 
-hierarchy of node objects. This class represents function nodes in 
-the parse tree. 
+The parse tree created from the expression string consists of a
+hierarchy of node objects. This class represents function nodes in
+the parse tree.
 <p>
-Currently the functions supported are precisely those 
-in the java.lang.Math package. However, it is relatively straightforward 
-to extend this node to allow references to other functions. This 
-provides a strightforward mechanism to extend the functionality of 
-the parser by adding extra functions that the parser can call. One 
-example might be tcl(...) which would pass the string to a tcl 
-interpreter to evaluate and return the result. This is also the mechanism 
-by which files can be read into a parameter, probably via a readFile(...) 
+Currently the functions supported are precisely those
+in the java.lang.Math package. However, it is relatively straightforward
+to extend this node to allow references to other functions. This
+provides a strightforward mechanism to extend the functionality of
+the parser by adding extra functions that the parser can call. One
+example might be tcl(...) which would pass the string to a tcl
+interpreter to evaluate and return the result. This is also the mechanism
+by which files can be read into a parameter, probably via a readFile(...)
 method.
 <p>
 FIXME: need to define a basic set of functions, and inplement them.
@@ -57,8 +57,8 @@ FIXME: need to define a basic set of functions, and inplement them.
 @author Neil Smyth
 @version $Id$
 @see ptolemy.data.expr.ASTPtRootNode
-@see ptolemy.data.expr.PtParser 
-@see ptolemy.data.Token 
+@see ptolemy.data.expr.PtParser
+@see ptolemy.data.Token
 */
 public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String funcName;
@@ -86,7 +86,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     throw new IllegalArgumentException(str);
                 }
             }
-            // Currently this method only looks in java.lang.Math for 
+            // Currently this method only looks in java.lang.Math for
             // the invoked function, but this will be exttended
             Class destClass = Class.forName("java.lang.Math");
             Method m = destClass.getMethod(funcName, argTypes);
@@ -97,13 +97,13 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 return new IntToken(((Integer)result).intValue());
                 /*  } else if (result instanceof Float) {
                     return new ptolemy.data.FloatToken(((Float)result).floatValue()); */
-            } else if (result instanceof Long) { 
+            } else if (result instanceof Long) {
                 return new LongToken(((Long)result).longValue());
             } else  {
                 String str = "result of  function not of a supported type, ";
                 str = str + "ie float, int, double, or long";
                 throw new IllegalArgumentException(str);
-            }            
+            }
         } catch (Exception ex) {
             StringBuffer sb = new StringBuffer();
             for (int i=0; i<args; i++) {
@@ -112,11 +112,11 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 } else {
                     sb.append(", " + argValues[i].toString());
                 }
-            }  
+            }
             String str = "Function " + funcName + "(" + sb;
             str = str + ") cannot be executed with given arguments";
             throw new IllegalArgumentException(str + ": " + ex.getMessage());
-        } 
+        }
     }
 
 

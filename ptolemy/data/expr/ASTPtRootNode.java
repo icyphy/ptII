@@ -22,7 +22,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -39,29 +39,29 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRootNode
 /**
-The parse tree created from the expression string consists of a 
+The parse tree created from the expression string consists of a
 hierarchy of node objects, each of which is an instance of a class
-derived from this class. This is because each node is a root node for 
+derived from this class. This is because each node is a root node for
 the portion of the parse tree below it.
 <p>
-Each node in the parse tree stores its type and state information 
-in a ptolemy.data.Token variable. A parent node uses the type and value of 
-the ptolemy.data.Tokens contained in its child nodes to evaluate the type 
+Each node in the parse tree stores its type and state information
+in a ptolemy.data.Token variable. A parent node uses the type and value of
+the ptolemy.data.Tokens contained in its child nodes to evaluate the type
 and value of the ptolemy.data.Token it should contain.
 <P>
-When a node has more than one child nodes, the lexical tokens relating 
-the child nodes are stored in the parent node. Thus if we parsed a string 
-such as "2+4-9", the child nodes would be leaf nodes containing 
-ptolemy.data.Token's with values 2,4 and 9, and theparent node would 
+When a node has more than one child nodes, the lexical tokens relating
+the child nodes are stored in the parent node. Thus if we parsed a string
+such as "2+4-9", the child nodes would be leaf nodes containing
+ptolemy.data.Token's with values 2,4 and 9, and theparent node would
 store the lexical tokens representing the "+" and the "-".
 <p>
-The tree is resolved in a top down manner, calling evaluateTree() on the 
+The tree is resolved in a top down manner, calling evaluateTree() on the
 children of each node before resolving the type of the current node.
 
 @author Neil Smyth
 @version $Id$
-@see ptolemy.data.expr.PtParser 
-@see ptolemy.data.Token 
+@see ptolemy.data.expr.PtParser
+@see ptolemy.data.Token
 */
 public class ASTPtRootNode implements Node {
     protected Node parent;
@@ -77,22 +77,22 @@ public class ASTPtRootNode implements Node {
     protected ptolemy.data.Token _ptToken;
 
     /** In nodes with more than one child, the operators are stored in this
-     *  LinkedList. Note that here token refers to tokens returned by the 
+     *  LinkedList. Note that here token refers to tokens returned by the
      *  lexical analyzer.
      */
     protected LinkedList _tokenList = new LinkedList();
 
     /** Stores the ptolemy.data.Tokens of each of the children nodes */
     protected ptolemy.data.Token[] childTokens;
-     
-    /** Called to recursively evaluate the parse tree 
-     *  of nodes returned from the parser. Starting at the top, it resolves 
-     *  the ptolemy.data.Token stored in each Node in a depth first manner. 
+
+    /** Called to recursively evaluate the parse tree
+     *  of nodes returned from the parser. Starting at the top, it resolves
+     *  the ptolemy.data.Token stored in each Node in a depth first manner.
      *  When all the children of a node have returned (type & value resolved),
-     *  the type & value of the current node may be resolved by a call to 
+     *  the type & value of the current node may be resolved by a call to
      *  _resolveNode() method.
-     *  @exception IllegalArgumentException Thrown when an error occurs 
-     *  trying to evaluate the PtToken type and/or value to be stored in 
+     *  @exception IllegalArgumentException Thrown when an error occurs
+     *  trying to evaluate the PtToken type and/or value to be stored in
      *  node in the tree.
      *  @return The token contained by the root node for the parse tree.
      */
@@ -118,16 +118,16 @@ public class ASTPtRootNode implements Node {
     }
 
     /** Resolves the Token to be stored in the node. When this
-     *  method is called by evaluateParseTree(), the tokens in each of the 
-     *  children have been resolved. Thus this method is concerned with 
-     *  evaluating both the value and type of the ptToken to be stored. 
+     *  method is called by evaluateParseTree(), the tokens in each of the
+     *  children have been resolved. Thus this method is concerned with
+     *  evaluating both the value and type of the ptToken to be stored.
      *  This method should be overridden in all subclasses which have children.
-     *  @exception IllegalArgumentException Thrown when an error occurs 
+     *  @exception IllegalArgumentException Thrown when an error occurs
      *   rying to evaluate the PtToken type and/or value to be stored in
      *   the current node.
      *  @return The ptolemy.data.Token stored in this node.
      */
-    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {  
+    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
         int num = jjtGetNumChildren();
         if (num > 1) {
             String str = "Node has several children, this method ";
@@ -138,8 +138,8 @@ public class ASTPtRootNode implements Node {
         }
         return childTokens[0];
     }
-        
-   
+
+
     ///////////////////////////////////////////////////////////////////
     public ASTPtRootNode(int i) {
         id = i;
@@ -163,7 +163,7 @@ public class ASTPtRootNode implements Node {
 
     public void jjtClose() {
     }
-  
+
     public void jjtSetParent(Node n) { parent = n; }
     public Node jjtGetParent() { return parent; }
 
@@ -201,7 +201,7 @@ public class ASTPtRootNode implements Node {
     public void displayParseTree(String prefix) {
         if (_ptToken != null) {
             String str = toString(prefix) + ", Token type: ";
-            str = str + _ptToken.getClass().getName() + ", Value: "; 
+            str = str + _ptToken.getClass().getName() + ", Value: ";
             System.out.println( str + _ptToken.toString());
         } else {
             System.out.println( toString(prefix) + "  _ptToken is null");

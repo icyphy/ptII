@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,34 +37,34 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtLeafNode
 /**
-The parse tree created from the expression string consists of a 
-hierarchy of node objects. This class represents the leaf nodes of the 
+The parse tree created from the expression string consists of a
+hierarchy of node objects. This class represents the leaf nodes of the
 tree.
 
 @author Neil Smyth
 @version$Id$
 @see ptolemy.data.expr.ASTPtRootNode
-@see ptolemy.data.expr.PtParser 
-@see ptolemy.data.Token 
+@see ptolemy.data.expr.PtParser
+@see ptolemy.data.Token
 */
 public class ASTPtLeafNode extends ASTPtRootNode {
-  
+
     ///////////////////////////////////////////////////////////////////
     /// from here until next line of dashes is code for PtParser
 
-/** When the input String refers to another parameter, we store the 
- *  refered parameter in the leaf node. Thus when the value of a 
- *  parameter changes, by reevaluating the parse tree we get the 
+/** When the input String refers to another parameter, we store the
+ *  refered parameter in the leaf node. Thus when the value of a
+ *  parameter changes, by reevaluating the parse tree we get the
  *  correct result.
  */
-protected ptolemy.data.expr.Parameter _param;  
+protected ptolemy.data.expr.Parameter _param;
 
     /** If this leaf node represents a reference to a parameter, return the
      *  PtToken contained in that parameter. Otherwise return the PtToken
      *  object stored in this node.
      *  @return The PtToken stored/refernced by this node
-     *  @exception IllegalArgumentException Thrown when an error occurs 
-     *  trying to evaluate the PtToken type and/or value to be stored in 
+     *  @exception IllegalArgumentException Thrown when an error occurs
+     *  trying to evaluate the PtToken type and/or value to be stored in
      *  node in the tree.
      */
     public ptolemy.data.Token evaluateParseTree() throws IllegalArgumentException {
@@ -76,7 +76,7 @@ protected ptolemy.data.expr.Parameter _param;
         }
         return _ptToken;
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     public ASTPtLeafNode(int id) {
         super(id);

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -35,18 +35,18 @@ package ptolemy.data.expr;
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtProductNode
 /**
-The parse tree created from the expression string consists of a 
-hierarchy of node objects. This class represents product(*,/,%) nodes in 
+The parse tree created from the expression string consists of a
+hierarchy of node objects. This class represents product(*,/,%) nodes in
 the parse tree.
 
 @author Neil Smyth
 @version $Id$
 @see ptolemy.data.expr.ASTPtRootNode
-@see ptolemy.data.expr.PtParser 
-@see ptolemy.data.Token 
+@see ptolemy.data.expr.PtParser
+@see ptolemy.data.Token
 */
 public class ASTPtProductNode extends ASTPtRootNode {
-    
+
     protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if (num ==1) {

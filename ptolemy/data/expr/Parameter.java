@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -43,26 +43,26 @@ import ptolemy.graph.CPO;
 /**
 A Parameter is an Attribute that contains a token.
 <p>
-A parameter can be given a Token or an expression as its value. If it is 
-given an expression, then the token contained by this parameter needs 
+A parameter can be given a Token or an expression as its value. If it is
+given an expression, then the token contained by this parameter needs
 to be resolved via a call to evaluate(). If the expression string is null,
 or if the token placed in it is null, then the token contained will be null.
-If the parameter is set from an expression, PtParser is used to generate 
+If the parameter is set from an expression, PtParser is used to generate
 a parse tree from the expression which can then be evaluated to a token.
 <p>
-The type of a Parameter is set by the first non-null Token placed in it. 
-The type can be changed later via a method call. However the 
+The type of a Parameter is set by the first non-null Token placed in it.
+The type can be changed later via a method call. However the
 new type for the parameter must be able to contain the previous token.
 At any stage a new Token or expression can be given to the Parameter. The type
-of the new/resulting Token is checked to see if it can be converted to 
-the type of the Parameter in a lossless manner. If it cannot an exception 
+of the new/resulting Token is checked to see if it can be converted to
+the type of the Parameter in a lossless manner. If it cannot an exception
 is thrown.
 <p>
-If another Object (e.g. Parameter) wants to Observe this Parameter, it must 
-register its interest with the TokenPublisher associated with the 
+If another Object (e.g. Parameter) wants to Observe this Parameter, it must
+register its interest with the TokenPublisher associated with the
 contained Token.
 <p>
-To create a parameter from an expression, create the parameter with the 
+To create a parameter from an expression, create the parameter with the
 appropriate container and name, then call setExpression() to set its value.
 
 FIXME:  synchronization issues
@@ -70,8 +70,8 @@ FIXME:  synchronization issues
 @author Neil Smyth
 @version $Id$
 @see ptolemy.kernel.util.Attribute
-@see ptolemy.data.expr.PtParser 
-@see ptolemy.data.Token 
+@see ptolemy.data.expr.PtParser
+@see ptolemy.data.Token
 */
 public class Parameter extends Attribute implements ParameterListner {
 
@@ -110,7 +110,7 @@ public class Parameter extends Attribute implements ParameterListner {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public Parameter(NamedObj container, String name) 
+    public Parameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -123,7 +123,7 @@ public class Parameter extends Attribute implements ParameterListner {
      *  The object is not added to the list of objects in the workspace
      *  unless the container is null.
      *  Increment the version of the workspace.
-     *  If the name argument is null, then the name is set to the empty 
+     *  If the name argument is null, then the name is set to the empty
      *  string.
      *  @param container The container.
      *  @param name The name.
@@ -138,16 +138,16 @@ public class Parameter extends Attribute implements ParameterListner {
         super(container, name);
         setToken(token);
     }
-     
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the parameter. 
-     *  The state of the cloned parameter will be identical to the original 
-     *  parameter, but without the Observer/Observable dependencies set up. 
-     *  To achieve this update() should be called after cloning the 
-     *  parameter.  Update() should only be called after all 
-     *  the parameters on which this parameter depends have been created. 
+    /** Clone the parameter.
+     *  The state of the cloned parameter will be identical to the original
+     *  parameter, but without the Observer/Observable dependencies set up.
+     *  To achieve this update() should be called after cloning the
+     *  parameter.  Update() should only be called after all
+     *  the parameters on which this parameter depends have been created.
      *  @param The workspace in which to place the cloned Parameter.
      *  @exception CloneNotSupportedException If the parameter
      *   cannot be cloned.
@@ -174,7 +174,7 @@ public class Parameter extends Attribute implements ParameterListner {
         newobj._initialExpression = _initialExpression;
         newobj._listners = null;
         newobj._needsEvaluation = true;
-        newobj._noTokenYet = _noTokenYet;      
+        newobj._noTokenYet = _noTokenYet;
         newobj._parser = null;
         newobj._parseTree = null;
         newobj._scope = null;
@@ -190,14 +190,14 @@ public class Parameter extends Attribute implements ParameterListner {
     public String description(int verbosity) {
         return toString();
     }
-    
-    /** Obtain a NamedList of the parameters that the value of this 
-     *  Parameter can depend on. The scope is limited to the parameters in the 
+
+    /** Obtain a NamedList of the parameters that the value of this
+     *  Parameter can depend on. The scope is limited to the parameters in the
      *  same NamedObj and those one level up in the hierarchy.
-     *  It catches any exceptions thrown by NamedList as 1) the parameter must 
+     *  It catches any exceptions thrown by NamedList as 1) the parameter must
      *  have a container with a NamedList of Attributes, and 2) if there is
-     *  a clash in the names of the two scopeing levels, the parameter from 
-     *  the top level is considered not to be visible in the scope of this 
+     *  a clash in the names of the two scopeing levels, the parameter from
+     *  the top level is considered not to be visible in the scope of this
      *  Parameter. A parameter also cannot reference itself.
      *  @return The parameters on which this parameter can depend.
      */
@@ -205,12 +205,12 @@ public class Parameter extends Attribute implements ParameterListner {
         if (_scopeVersion == workspace().getVersion()) {
             return _scope;
         } else {
-            _scope = new NamedList();       
+            _scope = new NamedList();
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 NamedObj containerContainer =
                     ((NamedObj)container.getContainer());
-                Enumeration level1 = container.getAttributes();       
+                Enumeration level1 = container.getAttributes();
                 Parameter p;
                 while (level1.hasMoreElements() ) {
                     // Now copy the namedlist, omitting the current Parameter.
@@ -220,11 +220,11 @@ public class Parameter extends Attribute implements ParameterListner {
                                 _scope.append(p);
                             }
                         } catch (IllegalActionException ex) {
-                            // since we're basically copying a namedlist,  
+                            // since we're basically copying a namedlist,
                             // this exceptions should not occur
                             throw new InternalErrorException(ex.getMessage());
                         } catch (NameDuplicationException ex) {
-                            // since we're basically copying a namedlist,  
+                            // since we're basically copying a namedlist,
                             // this exceptions should not occur
                         }
                     }
@@ -238,7 +238,7 @@ public class Parameter extends Attribute implements ParameterListner {
                                 _scope.append(p);
                             }
                         } catch (IllegalActionException ex) {
-                            // since we're basically copying a namedlist,  
+                            // since we're basically copying a namedlist,
                             // this exceptions should not occur
                             throw new InternalErrorException(ex.getMessage());
                         } catch (NameDuplicationException ex) {
@@ -253,8 +253,8 @@ public class Parameter extends Attribute implements ParameterListner {
         }
     }
 
-    /** Evaluate the current expression to a Token. If this parameter 
-     *  was last set directly with a Token do nothing. This method is also 
+    /** Evaluate the current expression to a Token. If this parameter
+     *  was last set directly with a Token do nothing. This method is also
      *  called after a Parameter is cloned.
      *  @excpetion IllegalArgumentException If the token resulting
      *   from evaluating the xpression  cannot be stored in this parameter.
@@ -286,7 +286,7 @@ public class Parameter extends Attribute implements ParameterListner {
             }
         }
     }
-        
+
     /** Get the Token this Parameter contains. It may be null.
      *  @return The token contained by this parameter.
      */
@@ -300,13 +300,13 @@ public class Parameter extends Attribute implements ParameterListner {
         }
         return _token;
     }
-   
+
 
     /** This method is called by a Parameter this Parameter is
-     *  observing. 
+     *  observing.
      *  @param o the Observable object that called this method.
      *  @param t not used.
-     *  @exception IllegalArgumentException If type of the 
+     *  @exception IllegalArgumentException If type of the
      *   resulting Token is not allowed in this Parameter.
      */
     public void reEvaluate() throws IllegalArgumentException {
@@ -319,7 +319,7 @@ public class Parameter extends Attribute implements ParameterListner {
             throw new IllegalArgumentException(str);
         }
         _dependencyLoop = true;
-        // if an expression was placed in this parameter but has not 
+        // if an expression was placed in this parameter but has not
         // yet been evaluated, do it now
         if (_needsEvaluation ) {
             evaluate();
@@ -332,9 +332,9 @@ public class Parameter extends Attribute implements ParameterListner {
         }
         _dependencyLoop = false;
     }
-    
+
     /** Register an interest with this Parameter.
-     *  @param newListner The ParamListner that is will be notified whenever 
+     *  @param newListner The ParamListner that is will be notified whenever
      *   the token stored in this Parameter changes.
      */
      public void registerListner(ParameterListner newListner) {
@@ -344,31 +344,31 @@ public class Parameter extends Attribute implements ParameterListner {
          _listners.insertLast(newListner);
      }
 
-    /** Reset the current value of this parameter to the first seen 
-     *  token or expression. If the Parameter was initially given a 
-     *  Token, set the current Token to that Token. Otherwise evaluate 
-     *  the original expression given to the Parameter. 
-     *  @exception IllegalArgumentException If the Parameter cannot 
-     *   contain the original token (the parameters type must have been 
-     *   changed since then) or the token resulting from reevaluating 
+    /** Reset the current value of this parameter to the first seen
+     *  token or expression. If the Parameter was initially given a
+     *  Token, set the current Token to that Token. Otherwise evaluate
+     *  the original expression given to the Parameter.
+     *  @exception IllegalArgumentException If the Parameter cannot
+     *   contain the original token (the parameters type must have been
+     *   changed since then) or the token resulting from reevaluating
      *   the original expression.
-     */	
-   
+     */
+
     public void reset() throws IllegalArgumentException {
         if (_noTokenYet) return;
         if (_origToken != null) {
             setToken(_origToken);
-        } else  { 
+        } else  {
             //must have an _initialExpression
             setExpression(_initialExpression);
             evaluate();
         }
     }
 
-    /** Set the expression in this parameter. 
-     *  If the string is null, the token contained by this parameter 
-     *  is set to null. If it is not null, the expression is stored 
-     *  to be evaluated at a later stage. To evaluate the expression 
+    /** Set the expression in this parameter.
+     *  If the string is null, the token contained by this parameter
+     *  is set to null. If it is not null, the expression is stored
+     *  to be evaluated at a later stage. To evaluate the expression
      *  now, invoke the method evaluate on this parameter.
      *  @param str The expression for this parameter.
      */
@@ -382,18 +382,18 @@ public class Parameter extends Attribute implements ParameterListner {
             // cannot happen.
         }
         _currentExpression = str;
-        _needsEvaluation = true;        
+        _needsEvaluation = true;
     }
 
-    /** Put a new Token in this Parameter. This is the way to give the 
+    /** Put a new Token in this Parameter. This is the way to give the
      *  give the Parameter a new simple value.
      *  @param token The new Token to be stored in this Parameter.
-     *  @exception IllegalArgumentException If the token cannot be placed 
+     *  @exception IllegalArgumentException If the token cannot be placed
      *   in this parameter.
      */
-    public void setToken(ptolemy.data.Token token) 
+    public void setToken(ptolemy.data.Token token)
           throws IllegalArgumentException {
-        _token = token;      
+        _token = token;
         _parseTree = null;
         _currentExpression = null;
         _needsEvaluation = false;
@@ -403,17 +403,17 @@ public class Parameter extends Attribute implements ParameterListner {
             setType(_token.getClass());
         } else {
             _checkType(_token);
-        }        
+        }
         _notifyListners();
     }
-    
+
     /** Set the types of Tokens that this parameter can contain.
-     *  It must be possible to losslessly convert the currently 
-     *  contained Token to the new type, or else an exception will 
+     *  It must be possible to losslessly convert the currently
+     *  contained Token to the new type, or else an exception will
      *  be thrown. If so, the state of the parameter is unchanged.
-     *  @param newType The class object representing the new type 
+     *  @param newType The class object representing the new type
      *   of this parameter.
-     *  @exception IllegalArgumentException Thrown if the new type 
+     *  @exception IllegalArgumentException Thrown if the new type
      *   is too restrictive for the currently contained token.
      */
     public void setType(Class newType) throws IllegalArgumentException {
@@ -437,7 +437,7 @@ public class Parameter extends Attribute implements ParameterListner {
 
     /** Get a string representation of the current parameter value.
      *  @return A String representing the class and the current token.
-     */	
+     */
     public String toString() {
         String s =  super.toString() + " " + getToken().toString();
         return s;
@@ -446,14 +446,14 @@ public class Parameter extends Attribute implements ParameterListner {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /* Checks to see if the new token type is compatible with the initial 
-     *  Token type stored. If the new Token cannot be converted in a lossless 
+    /* Checks to see if the new token type is compatible with the initial
+     *  Token type stored. If the new Token cannot be converted in a lossless
      *  manner to the original type, an exception is thrown.
-     *  @param tryType The class of the token that is trying to be placed 
+     *  @param tryType The class of the token that is trying to be placed
      *   in the Parameter.
      *  @exception IllegalArgumentException thrown if incompatible types
      */
-    private void _checkType(Class tryType) 
+    private void _checkType(Class tryType)
             throws IllegalArgumentException {
         int typeInfo = TypeCPO.compare(_paramType, tryType);
         if ( (typeInfo == CPO.HIGHER) || (typeInfo == CPO.SAME) ) {
@@ -466,21 +466,21 @@ public class Parameter extends Attribute implements ParameterListner {
         throw new IllegalArgumentException(str);
     }
 
-    /* Checks to see if the new token type is compatible with the initial 
-     *  Token type stored. If the new Token cannot be converted in a lossless 
+    /* Checks to see if the new token type is compatible with the initial
+     *  Token type stored. If the new Token cannot be converted in a lossless
      *  manner to the original type, an exception is thrown.
      *  @param tok The token that is trying to be placed in the Parameter.
      *  @exception IllegalArgumentException thrown if incompatible types
      */
-    private void _checkType(ptolemy.data.Token tok) 
+    private void _checkType(ptolemy.data.Token tok)
             throws IllegalArgumentException {
-        if (tok == null) return; 
+        if (tok == null) return;
         else {
             _checkType(tok.getClass());
         }
     }
-      
-    /* Notify any ParameterListners that have registered an 
+
+    /* Notify any ParameterListners that have registered an
     *  interest/dependency in this parameter.
     */
     private void _notifyListners() {
@@ -494,28 +494,28 @@ public class Parameter extends Attribute implements ParameterListner {
         }
     }
 
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
 
-    // Stores the string used to set this expression. It is null if 
+    // Stores the string used to set this expression. It is null if
     // the parameter was set using a token.
     private String _currentExpression;
 
     // Used to check for dependency loops amongst parameters.
     private boolean _dependencyLoop = false;
 
-    // Stores the string used to initialize the parameter. It is null if 
+    // Stores the string used to initialize the parameter. It is null if
     // the first token placed in the parameter was not parsed from a string.
     private String _initialExpression;
 
-    // Each Parameter stores a linkedlist of the ParameterListners it 
+    // Each Parameter stores a linkedlist of the ParameterListners it
     // needs to notify whenever it changes.
     private LinkedList _listners;
 
-    // Indicates if the parameter was last set with an expression and that 
+    // Indicates if the parameter was last set with an expression and that
     // the expression has not yet been evaluated.
     private boolean _needsEvaluation = false;
 
@@ -532,7 +532,7 @@ public class Parameter extends Attribute implements ParameterListner {
     // The parser used by this parameter to parse expressions.
     private PtParser _parser;
 
-    // If the parameter was last set from an expression, this stores 
+    // If the parameter was last set from an expression, this stores
     // the parse tree for that expression.
     private ASTPtRootNode _parseTree;
 
@@ -542,5 +542,5 @@ public class Parameter extends Attribute implements ParameterListner {
     private long _scopeVersion = -1;
 
     // The token contained by this parameter.
-    private ptolemy.data.Token _token;   
+    private ptolemy.data.Token _token;
 }

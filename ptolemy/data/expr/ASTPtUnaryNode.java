@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,25 +37,25 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtUnaryNode
 /**
-The parse tree created from the expression string consists of a 
-hierarchy of node objects. This class represents unary operator(!,-, ~) 
+The parse tree created from the expression string consists of a
+hierarchy of node objects. This class represents unary operator(!,-, ~)
 nodes in the parse tree.
 
 @author Neil Smyth
 @version $Id$
 @see ptolemy.data.expr.ASTPtRootNode
-@see ptolemy.data.expr.PtParser 
-@see ptolemy.data.Token 
+@see ptolemy.data.expr.PtParser
+@see ptolemy.data.Token
 */
 public class ASTPtUnaryNode extends ASTPtRootNode {
     protected boolean isMinus = false;
     protected boolean isNot = false;
     protected boolean isBitwiseNot = false;
-       
+
     protected ptolemy.data.Token  _resolveNode() throws IllegalArgumentException {
         if (jjtGetNumChildren() != 1) {
             String str = "More than one child of a Unary node";
-            throw new IllegalArgumentException(str); 
+            throw new IllegalArgumentException(str);
         }
         ptolemy.data.Token result = childTokens[0];
         try {
@@ -66,7 +66,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
             } else if (isNot == true) {
                 if (!(result instanceof BooleanToken)) {
                     String str = "Cannot negate a nonBoolean type: ";
-                    throw new IllegalArgumentException(str + result.toString()); 
+                    throw new IllegalArgumentException(str + result.toString());
                 }
                 result = ((BooleanToken)result).negate();
             } else if (isBitwiseNot == true) {
@@ -76,7 +76,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
                     /*                 } else if (result instanceof LongToken) {
                                        long tmp = ~(((LongToken)result).getValue());
                                        return new LongToken(tmp);*/
-                } else { 
+                } else {
                     String str = "Cannot apply bitwise NOT \"~\" to  ";
                     str = str + "non-Integer type: " + result.toString();
                     throw new IllegalArgumentException(str);
@@ -86,13 +86,13 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
             String str = "Invalid negation operation(!, ~, -) on ";
             str = str + childTokens[0].getClass().getName();
             throw new IllegalArgumentException(str);
-        } 
+        }
         return result;
     }
 
 
 
-             
+
 
     public ASTPtUnaryNode(int id) {
         super(id);
