@@ -108,7 +108,7 @@ public abstract class URLReader extends Source {
         if (_stdIn == null) {
             _stdIn = new BufferedReader(new InputStreamReader(System.in));
         }
-        setURLReader(_stdIn);
+        _setURLReader(_stdIn);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,16 +143,16 @@ public abstract class URLReader extends Source {
                 StringToken URLToken = (StringToken)sourceURL.getToken();
                 if (URLToken == null) {
                     _source = null;
-                    setURLReader(null);
+                    _setURLReader(null);
                 } else {
                     _source = URLToken.stringValue();
                     if (_source.equals("")) {
-                        setURLReader(null);
+                        _setURLReader(null);
                     } else {
                         URL url = new URL(_source);
                         java.io.BufferedReader reader = new BufferedReader(
                                 new InputStreamReader(url.openStream()));
-                        setURLReader(reader);
+                        _setURLReader(reader);
                     }
                 }
             } catch (IOException ex) {
@@ -183,12 +183,26 @@ public abstract class URLReader extends Source {
         attributeChanged(sourceURL);
     }
 
+    /** Close the reader if there is one.
+     *  @exception IllegalActionException If an IO error occurs.
+     */
+    public void wrapup() throws IllegalActionException {
+        try {
+            if (_reader != null && _reader != _stdIn) _reader.close();
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex.getMessage());
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                ///// 
+
     /** Set the reader.  If there was a previous reader, close it.
      *  To set standard input, call this method with argument null.
      *  @param reader The reader to read to.
      *  @exception IllegalActionException If an IO error occurs.
      */
-    public void setURLReader(java.io.BufferedReader reader)
+    protected void _setURLReader(java.io.BufferedReader reader)
             throws IllegalActionException {
         try {
             if (_reader != null && _reader != _stdIn) _reader.close();
@@ -202,16 +216,6 @@ public abstract class URLReader extends Source {
         }
     }
 
-    /** Close the reader if there is one.
-     *  @exception IllegalActionException If an IO error occurs.
-     */
-    public void wrapup() throws IllegalActionException {
-        try {
-            if (_reader != null && _reader != _stdIn) _reader.close();
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
