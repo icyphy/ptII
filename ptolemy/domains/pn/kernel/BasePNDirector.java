@@ -288,7 +288,7 @@ public class BasePNDirector extends ProcessDirector {
     }
 
     /** Return true if the containing composite actor contains active 
-     *  processes and the compositeactor has input ports. Return
+     *  processes and the composite actor has input ports. Return
      *  false otherwise. This method should normally be called only after 
      *  detecting a real deadlock. True is returned to indicate that the 
      *  composite actor can start its execution again if it receives data on 
