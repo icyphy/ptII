@@ -158,7 +158,11 @@ public class ComponentRelation extends Relation {
                     }
                 } else {
                     // Port below me in the hierarchy.
-                    _deepLinkedPorts.addAll(port.deepInsidePortList());
+                    if(port.isOpaque()) {
+                        _deepLinkedPorts.add(port);
+                    } else {
+                        _deepLinkedPorts.addAll(port.deepInsidePortList());
+                    }
                 }
             }
             _deepLinkedPortsVersion = _workspace.getVersion();

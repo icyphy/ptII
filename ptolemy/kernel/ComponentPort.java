@@ -182,11 +182,10 @@ public class ComponentPort extends Port {
         return Collections.enumeration(deepConnectedPortList());
     }
 
-    /** If this port is transparent, then deeply list the ports
-     *  connected on the inside.  Otherwise, list
-     *  just this port. All ports listed are opaque. Note that
+    /** Deeply list the ports connected on the inside.
+     *  All ports listed are opaque. Note that
      *  the returned list could conceivably be empty, for
-     *  example if this port is transparent but has no inside links.
+     *  example if this port has no inside links.
      *  Also, a port may be listed more than once if more than one
      *  inside connection to it has been established.
      *  @return An unmodifiable list of ComponentPort objects.
@@ -766,16 +765,22 @@ public class ComponentPort extends Port {
             // Cache is valid.  Use it.
             return _deepLinkedInPorts;
         }
+        boolean firstLevel;
         if(path == null) {
             path = new LinkedList();
+            firstLevel = true;
         } else {
+            firstLevel = false;
             if (path.indexOf(this) >= 0) {
                 throw new InvalidStateException(path, "loop in topology!");
             }
         }
         path.add(0, this);
         LinkedList result = new LinkedList();
-        if (isOpaque()) {
+        // Note that at the first level of the hierarchy, the
+        // port may be opaque, but we are still interested in its
+        // inside connections.
+        if (isOpaque() && !firstLevel) {
             // Port is opaque.
             result.add(this);
         } else {

@@ -91,12 +91,12 @@ test ComponentPort-2.3 {Check getInsidePorts on opaque ports} {
 ######################################################################
 ####
 #
-test ComponentPort-2.3 {Check deepInsidePorts on opaque ports} {
+test ComponentPort-2.3.1 {Check deepInsidePorts on opaque ports} {
     set e1 [java::new ptolemy.kernel.ComponentEntity]
     $e1 setName E1
     set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
     enumToFullNames [$p1 deepInsidePorts]
-} {.E1.P1}
+} {}
 
 ######################################################################
 ####
@@ -437,7 +437,7 @@ loop in topology!}}
 test ComponentPort-7.3 { deepInsidePorts in another loop} {
     # Use configuration in 7.2
     list [enumToNames [$p3 deepInsidePorts]]
-} {P3}
+} {{}}
 
 
 ######################################################################
@@ -489,7 +489,7 @@ test ComponentPort-9.1 {Check _deepInsidePorts on opaque ports} {
     $e1 setName E1
     set p1 [java::new ptolemy.kernel.test.TestComponentPort $e1 P1]
     enumToFullNames [$p1 testDeepInsidePorts [java::null] ]
-} {.E1.P1}
+} {}
 
 ######################################################################
 ####
