@@ -52,6 +52,7 @@ import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
+import java.awt.Component;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.awt.geom.Line2D;
@@ -59,9 +60,15 @@ import java.awt.geom.QuadCurve2D;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
+
 
 // Ptolemy imports.
 import ptolemy.vergil.toolbox.XMLIcon;
@@ -86,7 +93,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * format for run-time reading and writing of icons.
  */
 
-public class IconEditor {
+public class IconEditor extends Component {
 
     // Control begins here.
     public static void main(String argv[])
@@ -96,24 +103,20 @@ public class IconEditor {
         // window will include a toolbar of different shapes, a toolbar 
         // of different thicknesses, a button to choose the color, 
         // and the main drawing window.
-        // For _drawingFrame, I used a BasicFrame with a false argument, 
+        // For context, I used a BasicFrame with a false argument, 
         // which tells BasicFrame not to set the size of the window or 
         // make it visible.  The string "Edit Icon" is the name of the 
         // window.
 
         AppContext context = new BasicFrame ("Edit Icon", false);
-  
+
 	// Make a new instance of the IconEditor class.
-
 	new IconEditor(context);
-
     }
   
     public IconEditor (AppContext context)
         throws NameDuplicationException, IllegalActionException {
-
         this (context, new XMLIcon (new NamedObj(), "icon"));
-
     }
 
     public IconEditor (AppContext context, XMLIcon icon) {
@@ -324,9 +327,7 @@ public class IconEditor {
 	    VersatileFigure versatileFigure = new VersatileFigure 
 	        (nextGraphic.getPaintedObject());
 	    Shape nextShape = versatileFigure.getShape ();
-	    System.out.println("the next shape is = " + nextShape);
 	    if (nextShape instanceof RectangularShape) {
-	        System.out.println("interactor 2 for it");
 	        versatileFigure.setInteractor (_interactor2);
 	    }
 	    else if (nextShape instanceof Ellipse2D) {
@@ -341,14 +342,6 @@ public class IconEditor {
 	    _layer.add (versatileFigure);
 	}
 
-	// This is the call to getFigure() which reads in some xml code and 
-	// returns a new figure represented by the xml.  For now, I've 
-	// commented this out.  I'll uncomment it when we need to integrate 
-	// this program into vergil.
-	// Figure f = getFigure (null);
-	// _layer.add (f);
-	// f.setInteractor (_interactor1);
-
 	// Sets the size of the main window in pixels.
 	_context.setSize (WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL);
 
@@ -358,34 +351,9 @@ public class IconEditor {
 
     }
 
-    // The getFigure() method, which I'm keeping around in case I need it for 
-    // the xml stuff.
-    // Eventually, this entire method will be removed.
-    //     public Figure getFigure (String xml_string) {
-    //         PaintedFigure my_figure = new PaintedFigure ();
+
     //         StringBufferInputStream xml_stream = null;
-    //         Enumeration enum = null;
-    //         URL base = null;
     //         xml_stream = new StringBufferInputStream ("<xmlgraphic> <rectangle coords=\"0 0 60 40\" fill=\"white\"/> <polygon coords=\"10 10 50 20 10 30\" fill=\"blue\"/> </xmlgraphic>\n");	       
-    //         try {
-    //             base = new URL ("http://hkn.eecs.berkeley.edu/~nickeyz/test.html");
-    //         }
-    //         catch (MalformedURLException e) {
-    //             System.out.println ("Bad URL");
-    //         }
-    //         try {
-    //  	   XMLIcon xml_icon = new XMLIcon (new NamedObj());
-    //  	   xml_icon.configure (base, xml_stream);
-    //  	   enum = xml_icon.graphicElements ();
-    //         }
-    //         catch (Exception e) {
-    //   	   System.out.println ("Error in IconEditor.java dealing with xml_icon");
-    //         }
-    //         GraphicElement element = (GraphicElement) enum.nextElement ();
-    //         my_figure.add (element.getPaintedObject ());
-    //         return my_figure;
-    //     }
-    //
 
 
     ////////////////////////////////////////////////////////////////////////
@@ -468,6 +436,10 @@ public class IconEditor {
 
     private static final String FILE_FORMAT_EXTENSION = "xml";
 
+    // The type of data that is operable via the cut, copy, and paste commands.
+    
+    public static final DataFlavor dataFlavor = 
+        new DataFlavor (VersatileFigure.class, "Versatile Figure");
 
     ////////////////////////////////////////////////////////////////////////
     /////////////////////    Anonymous Classes     ////////////////////////
@@ -673,46 +645,71 @@ public class IconEditor {
     };
 
     // When you click cut in the edit menu of the menubar.
+    // The cut operation grabs the system clipboard, then puts 
+    // the currently selected item onto the clipboard, and removes 
+    // the currently selected item from the canvas.
 
     Action cutAction = new AbstractAction ("Cut    CTRL+X") {
         public void actionPerformed (ActionEvent e) {
 	    if (_m.getFirstSelection() != null) {
 	        _currentFigure = (VersatileFigure) _m.getFirstSelection ();
 		_m.clearSelection ();
-		if (_currentFigure != null) {
-		    _layer.remove (_currentFigure);
-		    _cutOrCopiedFigure = _currentFigure;
-		    makeNewCutOrCopiedFigure ();
-		}
+		_layer.remove (_currentFigure);
+		Clipboard c = getToolkit ().getSystemClipboard ();
+		SimpleSelection s = new SimpleSelection (_currentFigure, 
+							 dataFlavor);
+		c.setContents (s, s);
+		_layer.remove (_currentFigure);
 	    }
 	}
     };
 
     // When you click copy in the edit menu of the menubar.
+    // The copy operation grabs the system clipboard, then puts
+    // the currently selected item onto the clipboard.
 
     Action copyAction = new AbstractAction ("Copy   CTRL+C") {
         public void actionPerformed (ActionEvent e) {
 	    if (_m.getFirstSelection() != null) {
 	        _currentFigure = (VersatileFigure) _m.getFirstSelection ();
 		if (_currentFigure != null) {
-		    _cutOrCopiedFigure = _currentFigure;
-		    makeNewCutOrCopiedFigure ();
+		    Clipboard c = getToolkit ().getSystemClipboard ();
+		    SimpleSelection s = new SimpleSelection (_currentFigure, 
+							     dataFlavor);
+		    c.setContents (s, s);
 		}
 	    }
 	}
     };
 
     // When you click paste in the edit menu of the menubar.
+    // The paste operation grabs the system clipboard, then gets the 
+    // current data object on the clipboard, makes a copy of it, 
+    // and adds it to the figure layer of the canvas.
+    // If something goes wrong, the machine should beep.
 
     Action pasteAction = new AbstractAction ("Paste  CTRL+V") {
         public void actionPerformed (ActionEvent e) {
-	    if (_cutOrCopiedFigure != null) {
-	        _layer.add (_cutOrCopiedFigure);
-		makeNewCutOrCopiedFigure ();
+	    Clipboard c = getToolkit ().getSystemClipboard ();
+	    Transferable t = c.getContents (this);
+	    if (t == null) {
+	        getToolkit ().beep ();
+		return;
+	    }
+	    try {
+	        VersatileFigure v = (VersatileFigure) t.getTransferData (dataFlavor);
+		_layer.add ((VersatileFigure) v.clone ());
+		repaint ();
+	    }
+	    catch (UnsupportedFlavorException ufe) {
+	        getToolkit ().beep ();
+	    }
+	    catch (Exception ex) {
+	        getToolkit ().beep ();
 	    }
 	}
     };
-
+	
     // When you click new in the file menu of the menubar.
 
     Action newIconAction = new AbstractAction ("New    CTRL+N") {
@@ -759,11 +756,12 @@ public class IconEditor {
 	    _fileChooser.showSaveDialog (_context.makeComponent());
 	    
 	    if (choice == JFileChooser.CANCEL_OPTION) {
-	        System.out.println ("You have cancelled your save file as choice");
+	      //System.out.println ("You have cancelled your save file as choice");
 	    } 
 	    else {
-	        System.out.println ("You chose to save this file: " + 
-				    _fileChooser.getSelectedFile ().getName ());
+	      
+	      //System.out.println ("You chose to save this file: " + 
+	      //		    _fileChooser.getSelectedFile ().getName ());
 	    }
 	}
     };
@@ -842,5 +840,40 @@ public class IconEditor {
 	    (_cutOrCopiedFigure);
 	_cutOrCopiedFigure.setInteractor (_currentFigure.getInteractor ());
     }
+
+
+    //////////////////////////////////////////////////////////////////////
+    //////////////////      Inner classes.              /////////////////  
+
+    // SimpleSelection.  The class used to keep track of the clipboard 
+    // contents and the type of data being stored.  
+
+    static class SimpleSelection implements Transferable, ClipboardOwner {
+        protected Object _selection;
+        protected DataFlavor _flavor;
+        public SimpleSelection (Object selection, DataFlavor flavor) {
+	    _selection = selection;
+	    _flavor = flavor;
+	}
+        public DataFlavor[] getTransferDataFlavors () {
+	    return new DataFlavor[] { _flavor };
+	}
+        public boolean isDataFlavorSupported (DataFlavor f) {
+	    return f.equals(_flavor);
+	}
+        public Object getTransferData (DataFlavor f)
+	    throws UnsupportedFlavorException {
+	    if (f.equals (_flavor)) {
+	        return _selection;
+	    }
+	    else throw new UnsupportedFlavorException (f);
+	}
+        public void lostOwnership (Clipboard c, Transferable t) {
+	    _selection = null;
+	}
+    }
+
+  
+
 }
 
