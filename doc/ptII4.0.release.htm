@@ -101,12 +101,11 @@ java.lang.URI class, which is present only in Java 1.4 and later
 <!--whatsnew-->
 <h2>Major Features that are new in Ptolemy II 4.0 </h2>
 Below are new features that were not present in Ptolemy II 3.x
-<menu>
 <ul>
 <li>
-<a href="../ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
+<a href="../ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.htm">
 Modeling wireless sensor networks</a> (see also
-<a href="../ptolemy/configs/visualsense/intro.htm">VisualSense</a>).
+<a href="design/visualsense.pdf" target="_top">VisualSense</a>).
 <br>
 The wireless domain extends the DE domain with wireless channel modeling and
 library of components and methodologies for modeling wireless systems.
@@ -115,9 +114,9 @@ VisualSense, which includes
 an extensive suite of demos.
 
 <li>
-<a href="../ptolemy/domains/sdf/demo/NoisySinewave/NoisySinewave.htm">
+<a href="../ptolemy/domains/sdf/demo/NoisySinewave/NoisySinewaveVergil.htm">
 Hierarchical classes, subclasses, and inner classes</a>. (See also
-<a href="../ptolemy/doc/configs/ClassesIllustrated.htm">
+<a href="../ptolemy/configs/doc/ClassesIllustrated.png">
 classes illustrated visually</a> and
 <a href="../ptolemy/domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.htm">
 Rijndael Encryption</a>).
@@ -141,7 +140,6 @@ that control the execution of associated models.
 This example uses one model to control repeated runs of another.
 
 </ul>
-</menu>
 
 <h2>Other Features that are new in Ptolemy II 4.0</h2>
 <ul>
@@ -155,7 +153,7 @@ The new statically checked units system associates
 units with ports and checks compatibility in connections.
 
 <li>
-<a href="../ptolemy/actor/lib/hoc/demo/IterateOverArray.htm">
+<a href="../ptolemy/actor/lib/hoc/demo/IterateOverArray/IterateOverArray.htm">
 Higher-Order Components</a>.
 Version 4.0 adds <i>higher-order components</i>,
 which are components (like actors) that operate on other
@@ -212,20 +210,20 @@ New and Enhanced Actor Libraries
 </h2>
 <ul>
 
-<li> <a href="../ptolemy/actor/lib/security/demo/Signature/Signature.xml">
+<li> <a href="../ptolemy/actor/lib/security/demo/Signature/Signature.htm">
 Security library</a>.
 
 <li>
-<a href="../ptolemy/domains/sdf/demo/Array/Array.xml">
+<a href="../ptolemy/domains/sdf/demo/Array/Array.htm">
 Array manipulation library</a>.
 
 <li>
 <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/comm/package-summary.html#package_description">
 Communications library</a> (see also
-   <a href="../ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.xml">ConvolutionalCoder</a>,
-   <a href="../ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.xml">Scrambler</a>,
-   <a href="../ptolemy/actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml">TrellisDecoder</a>,
-   <a href="../ptolemy/actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml">ViterbiDecoder</a>).
+   <a href="../ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.htm">ConvolutionalCoder</a>,
+   <a href="../ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.htm">Scrambler</a>,
+   <a href="../ptolemy/actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.htm">TrellisDecoder</a>,
+   <a href="../ptolemy/actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.htm">ViterbiDecoder</a>).
    
 <!-- FIXME: String library -->
 
@@ -234,13 +232,13 @@ Communications library</a> (see also
 New Demonstrations of Older Capabilities
 </h2>
 <ul>
-<li> <a href="../ptolemy/domains/de/demo/SmartSender/SmartSender.xml">
+<li> <a href="../ptolemy/domains/de/demo/SmartSender/SmartSender.htm">
 Self repairing model</a>.
 
-<li> <a href="../ptolemy/domains/ct/demo/Transmission/Transmission.xml">
+<li> <a href="../ptolemy/domains/ct/demo/Transmission/Transmission.htm">
 Using function closures to simplify a hybrid system model (of a car transmission)</a>.
 
-<li> <a href="../ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">
+<li> <a href="../ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.htm">
 SynthesizedVoice</a>.
 
 </ul>
@@ -249,13 +247,13 @@ Capabilities requiring additional software and/or hardware
 </h2>
 
 <ul>
-<li> <a href="../ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.xml">
+<li> <a href="../ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.htm">
 Using the serial port</a>.
 
 (see <a href="codeDoc/ptolemy/actor/lib/io/comm/SerialComm.html">
 SerialPort actor documentation</a>).
 
-<li><a href="../ptolemy/actor/lib/x10/demo/OnOff/OnOff.xml">
+<li><a href="../ptolemy/actor/lib/x10/demo/OnOff/OnOff.htm">
 X10 power-line network</a>.
 (see <a href="codeDoc/ptolemy/actor/lib/x10/X10Interface.html">
 X10Interface actor documentation</a>).
@@ -273,7 +271,7 @@ foo, you can specify a Matlab expression like:
 Before, you would have to have read foo in a Const actor and
 provided it as input to the Matlab expression actor.
 
-<li> <a href="../ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml">
+<li> <a href="../ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.html">
 Java Media Framework (JMF)</a>
 (see <a href="codeDoc/ptolemy/actor/lib/jmf/package-summary.html#package_description">
 JMF actor documentation</a>).
@@ -1286,7 +1284,6 @@ have constraints on their element types can cause problems.
 <li>Cannot have more than one vertex in a connection.
 <li>No mechanism to set the width of a relation.
 <li>The integrated web browser is not a full-featured browser.
-<li>Icon editor not yet integrated.
 <li>Debugger not yet integrated.
 <li>It is difficult to add actors to the libraries.
 <li>No dynamic class reloading.
@@ -1303,7 +1300,7 @@ incorrectly shows the slider as a subitem of the actor.
   placed at the origin.  Strangely, if I then auto-place,
   and then undo, they get their original (correct) placement!
 </ul>
-<h3>Limitatoins in JNI</h3>
+<h3>Limitations in JNI</h3>
 <menu>
 <li> The Interface to C actors using the Java Native Interface
 	is not available via the Windows Installer (or Web Start).
