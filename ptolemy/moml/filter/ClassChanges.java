@@ -34,6 +34,7 @@ import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,11 +58,12 @@ PropertyClassChanges) instead.
 public class ClassChanges implements MoMLFilter {
 
     /** If the attributeName is "class" and attributeValue names a
-     *  class that needs to be renamed then substitute in the new class
-     *  name.
+     *  class that needs to be renamed, then substitute in the new class
+     *  name. If the attributeValue names a class that needs to be removed,
+     *  then return null, which will cause the MoMLParser to skip the
+     *  rest of the element;
      *
      *  @param container  The container for this attribute.
-     *  in this method.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
      *  @return the value of the attributeValue argument.
@@ -80,18 +82,21 @@ public class ClassChanges implements MoMLFilter {
             return null;
         }
 
-
         // If you change this class, you should run before and after
         // timing tests on large moml files, a good command to run
         // is:
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
 
-        if (attributeName.equals("class")
-                &&_classChanges.containsKey(attributeValue)) {
-            // We found a class with a class change.
-            MoMLParser.setModified(true);
-            return (String)_classChanges.get(attributeValue);
+        if (attributeName.equals("class")) {
+            if (_classChanges.containsKey(attributeValue)) {
+                // We found a class with a class change.
+                MoMLParser.setModified(true);
+                return (String)_classChanges.get(attributeValue);
+            } else if (_classesToRemove.contains(attributeValue)) {
+                // We found a class to remove.
+                return null;
+            }
         }
         return attributeValue;
     }
@@ -116,14 +121,20 @@ public class ClassChanges implements MoMLFilter {
         StringBuffer results =
             new StringBuffer(getClass().getName()
                     + ": change any class names that have been "
-                    + "renamed\n"
+                    + "renamed and remove obsolete classes.\n"
                     + "Below are original class names followed by "
-                    + "the new class names.\n");
+                    + "the new class names:\n");
         Iterator classNames = _classChanges.keySet().iterator();
         while (classNames.hasNext()) {
             String className = (String)classNames.next();
             results.append("\t" + className + "\t -> "
                     + _classChanges.get(className) + "\n");
+        }
+        results.append("\nBelow are the classes to remove:\n");
+        Iterator classesToRemove = _classesToRemove.iterator();
+        while (classesToRemove.hasNext()) {
+            String className = (String)classesToRemove.next();
+            results.append("\t" + className + "\n");
         }
         return results.toString();
     }
@@ -158,5 +169,18 @@ public class ClassChanges implements MoMLFilter {
         // Renamed in 3.1-devel
         _classChanges.put("ptolemy.vergil.icon.ImageEditorIcon",
                 "ptolemy.vergil.icon.ImageIcon");
+    }
+    
+    // Set of class names that are obsolete and should be simply
+    // removed.
+    private static HashSet _classesToRemove;
+    
+    static {
+        ////////////////////////////////////////////////////////////
+        // Classes that are obsolete and should be removed.
+        _classesToRemove = new HashSet();
+        
+        // NotEditableParameter
+        _classesToRemove.add("ptolemy.data.expr.NotEditableParameter");
     }
 }

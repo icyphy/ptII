@@ -185,7 +185,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
-
+        
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 null);
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
