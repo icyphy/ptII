@@ -389,6 +389,25 @@ test NamedObj-11.1 {Test exportMoML} {
 </entity>
 }
 
+test NamedObj-11.1.1 {Test exportMoML(String)} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
+    $a exportMoML "NewName"
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NewName" class="ptolemy.kernel.util.NamedObj">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
+    <property name="A1" class="ptolemy.kernel.util.Attribute">
+        <property name="A2" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </property>
+</entity>
+}
+
 test NamedObj-11.2 {Test deferMoMLDefinitionTo} {
     # The following causes clones of $a to defer their MoML definition to $a.
     # NOTE: This is basically what the MoML parser has to do to deal with
@@ -505,6 +524,14 @@ test NamedObj-13.2 {Test attributeList with filter} {
     listToNames [$a attributeList [$a1 getClass]]
 } {A0 A2}
 
+test NamedObj-13.4 {Test getAttributes, which is deprecated } {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A0"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a "A2"]
+    enumToNames [$a getAttributes]
+} {A0 A2}
+
 ######################################################################
 ####
 
@@ -518,3 +545,48 @@ test NamedObj-14.2 {Test depthInHierarchy} {
     set b [java::new ptolemy.kernel.util.Attribute $a "A" ]
     $b depthInHierarchy
 } {1}
+
+
+######################################################################
+####
+
+test NamedObj-15.1 {Test getModelErrorHandler, setModelErrorHandler} {
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set r1 [$a getModelErrorHandler]
+    set handler [java::new ptolemy.kernel.util.BasicModelErrorHandler]
+    $a setModelErrorHandler $handler
+    list $r1 [expr {[java::cast \
+	    ptolemy.kernel.util.BasicModelErrorHandler \
+	    [$a getModelErrorHandler]] == $handler}]
+} {java0x0 1}
+
+
+######################################################################
+####
+
+test NamedObj-15.1 {Test addChangeListener, removeChangeListener } {
+    # FIXME: not much can be done here without defining another class
+
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+	    $printStream]
+
+    # Try removing the listener before adding it.
+    $a removeChangeListener $listener    
+
+    $a addChangeListener $listener
+
+    # Add the listener twice to get coverage of a basic block.
+    $a addChangeListener $listener
+
+    $printStream flush
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    list $output 
+} {{}}
