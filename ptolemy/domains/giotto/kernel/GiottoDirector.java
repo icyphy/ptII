@@ -171,26 +171,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Schedule an actor to be fired at the specified absolute time.
-     *  This method is only intended to be called from within main
-     *  simulation thread.  Actors that create their own asynchronous
-     *  threads should used the fireAtCurrentTime() method to schedule
-     *  firings.
-     *  @param actor The scheduled actor to fire.
-     *  @param time The scheduled time to fire.
-     *  @exception IllegalActionException If the specified time is in the past.
-     */
-    public void fireAt(Actor actor, double time)
-            throws IllegalActionException {
-        //         if (_eventQueue == null) {
-        //             throw new IllegalActionException(this,
-        //                     "Calling fireAt() before preinitialize().");
-        //         }
-        if (_debugging) {
-            _debug("fireAt() called by " + actor + " for time " + time);
-        }
-    }
-
     /** Return the next time that this director expects activity.
      *  @return The time of the next iteration.
      */
@@ -216,12 +196,14 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
         if (_debugging) {
             _debug("Giotto director prefiring!");
-            _debug("_expectedNextIterationTime " + _expectedNextIterationTime);
+            //_debug("_expectedNextIterationTime " + _expectedNextIterationTime);
         }
 
 
         Director upperDirector = ((CompositeActor) getContainer()).getExecutiveDirector();
+        
         if (upperDirector instanceof CTDirector) {
+            // If embedded inside a CT model
             if (Math.abs(getCurrentTime() - _expectedNextIterationTime) < ((CTDirector) upperDirector).getTimeResolution()) {
                 if (_debugging) {
                     _debug("*** Prefire returned true.");
@@ -233,7 +215,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
             }
             return false;
         } else {
-
             // only works for DE domain
 
             // This screws up in the face of simultaneous
@@ -249,8 +230,12 @@ public class GiottoDirector extends StaticSchedulingDirector {
             if (_debugging) {
                 _debug("*** Prefire returned true.");
             }
+            // if the outside time is beyond the formerly set 
+            // _expectedNextIterationTime, and if it is the start
+            // of a new run, 
             // update the next expected iteration time as current time
-            // if it is the start of new run
+            // This situation happens when the whole Giotto model is 
+            // triggered by some discrete events.
             if (_iterationCount == 0) {
                 if (_debugging) {
                     _debug("Updating the expected next iteration time as " +
@@ -330,40 +315,36 @@ public class GiottoDirector extends StaticSchedulingDirector {
         // of committing any data values that the actor may have produced
         // in its initialize() method.
         Iterator scheduleIterator = unitSchedule.iterator();
-        if (!(_unitIndex == 0 && _iterationCount == 0) || _transferOutputsOnly) {
-            while (scheduleIterator.hasNext()) {
-                Actor actor = ((Firing) scheduleIterator.next()).getActor();
-                if (_debugging) {
-                    _debug("Updating destination receivers of "
-                            + ((NamedObj)actor).getFullName());
-                }
-                List outputPortList = actor.outputPortList();
-                Iterator outputPorts = outputPortList.iterator();
-                while (outputPorts.hasNext()) {
-                    IOPort port = (IOPort) outputPorts.next();
-                    Receiver[][] channelArray = port.getRemoteReceivers();
-                    for (int i = 0; i < channelArray.length; i++) {
-                        Receiver[] receiverArray = channelArray[i];
-                        for (int j = 0; j < receiverArray.length; j++) {
-                            GiottoReceiver receiver =
-                                (GiottoReceiver) receiverArray[j];
-                            receiver.update();
-                        }
+        while (scheduleIterator.hasNext()) {
+            Actor actor = ((Firing) scheduleIterator.next()).getActor();
+            if (_debugging) {
+                _debug("Updating destination receivers of "
+                        + ((NamedObj)actor).getFullName());
+            }
+            List outputPortList = actor.outputPortList();
+            Iterator outputPorts = outputPortList.iterator();
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort) outputPorts.next();
+                Receiver[][] channelArray = port.getRemoteReceivers();
+                for (int i = 0; i < channelArray.length; i++) {
+                    Receiver[] receiverArray = channelArray[i];
+                    for (int j = 0; j < receiverArray.length; j++) {
+                        GiottoReceiver receiver =
+                            (GiottoReceiver) receiverArray[j];
+                        receiver.update();
                     }
                 }
             }
         }
 
-        if (!_transferOutputsOnly) {
-            scheduleIterator = unitSchedule.iterator();
-            while (scheduleIterator.hasNext()) {
-                Actor actor = ((Firing) scheduleIterator.next()).getActor();
-                if (_debugging) {
-                    _debug("Iterating " + ((NamedObj)actor).getFullName());
-                }
-                if (actor.iterate(1) == STOP_ITERATING) {
-                    // FIXME: put the actor on a no-fire hashtable.
-                }
+        scheduleIterator = unitSchedule.iterator();
+        while (scheduleIterator.hasNext()) {
+            Actor actor = ((Firing) scheduleIterator.next()).getActor();
+            if (_debugging) {
+                _debug("Iterating " + ((NamedObj)actor).getFullName());
+            }
+            if (actor.iterate(1) == STOP_ITERATING) {
+                // FIXME: put the actor on a no-fire hashtable.
             }
         }
     }
@@ -378,7 +359,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         _unitIndex = 0;
         _expectedNextIterationTime = 0.0;
 
-        // The receivers should be resetted before their initialization.
+        // The receivers should be reset before their initialization.
         Iterator receivers = _receivers.iterator();
         while (receivers.hasNext()) {
             GiottoReceiver receiver = (GiottoReceiver) receivers.next();
@@ -451,6 +432,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public boolean postfire() throws IllegalActionException {
 
+        if (_debugging) {
+            _debug("Giotto director postfiring!");
+        }
         _unitIndex++;
         if (_unitIndex >= _schedule.size()) {
             _unitIndex = 0;
@@ -473,28 +457,21 @@ public class GiottoDirector extends StaticSchedulingDirector {
         }
 
         if ((numberOfIterations > 0)
-                && (_iterationCount >= numberOfIterations) && (_transferOutputsOnly == true)) {
+                && (_iterationCount >= numberOfIterations)) {
+            // iterations limit is reached
             _iterationCount = 0;
-            _transferOutputsOnly = false;
             if (_isEmbedded()) {
                 return true;
             } else {
                 return false;
             }
         } else {
-
-            if ((numberOfIterations > 0)
-                    && (_iterationCount == numberOfIterations)) {
-                _transferOutputsOnly = true;
-            }
+            // continue iterations
             if (_isEmbedded()) {
-
                 _requestFiring();
-
             } else {
                 setCurrentTime (_expectedNextIterationTime);
             }
-
         }
         return true;
     }
@@ -701,6 +678,4 @@ public class GiottoDirector extends StaticSchedulingDirector {
     // Counter for minimum time steps.
     private int _unitIndex = 0;
 
-    // Boolean value to indicate the last operation of transfer of outputs
-    private boolean _transferOutputsOnly = false;
 }
