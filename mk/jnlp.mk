@@ -88,8 +88,7 @@ CORE_JNLP_JARS = \
 	ptolemy/matlab/demo/demo.jar \
 	lib/matlab.jar \
 	ptolemy/ptsupport.jar \
-	ptolemy/vergil/vergil.jar \
-	$(DOC_CODEDOC_JAR)
+	ptolemy/vergil/vergil.jar
 
 #######
 # DSP - The smallest runtime
@@ -106,7 +105,9 @@ DSP_MAIN_JAR = \
 
 DSP_JNLP_JARS =	\
 	$(DSP_MAIN_JAR) \
-	$(CORE_JNLP_JARS)
+	$(CORE_JNLP_JARS) \
+	$(DOC_CODEDOC_JAR)
+
 
 
 #######
@@ -182,6 +183,7 @@ PTINY_MAIN_JAR = \
 PTINY_JNLP_JARS = \
 	$(PTINY_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
+	$(DOC_CODEDOC_JAR) \
 	$(DSP_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS)
 
@@ -191,6 +193,7 @@ PTINY_SANDBOX_MAIN_JAR = \
 PTINY_SANDBOX_JNLP_JARS = \
 	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
+	$(DOC_CODEDOC_JAR) \
 	$(DSP_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS)
 
@@ -249,6 +252,7 @@ FULL_MAIN_JAR = \
 FULL_JNLP_JARS = \
 	$(FULL_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
+	$(DOC_CODEDOC_JAR) \
 	$(DSP_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS)
