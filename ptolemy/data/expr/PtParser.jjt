@@ -115,18 +115,18 @@ public class PtParser {
      */
     private NamedList _scope;
 
-    /** The Parameter (or other ParameterListner) creating the parser. 
+    /** The Parameter (or other ParameterListener) creating the parser. 
      *  Each time another parameter is referenced in the input expression, 
-     *  this Parameter is registered as a listner of that parameter. 
+     *  this Parameter is registered as a listener of that parameter. 
      *  If null, then no dependency is registered.
      */
-    private ParameterListner _listner;
+    private ParameterListener _listener;
 
     boolean debug = false;
     
-    public PtParser(ParameterListner parameter) {
+    public PtParser(ParameterListener parameter) {
         this(new ByteArrayInputStream("a hack!!".getBytes()));
-        _listner = parameter;
+        _listener = parameter;
     }
 
     public PtParser() {
@@ -547,10 +547,10 @@ String tidied, x;
 	   // does not have to be reparsed whenever the Token in 
 	   // the Parameter changes.
            jjtThis._param   = referedParam; 
-           // Register the calling parameter as a ParameterListner 
+           // Register the calling parameter as a ParameterListener 
 	   // of this Parameter this ID references.
-           if (_listner != null) {
-        	referedParam.registerListner(_listner);
+           if (_listener != null) {
+        	referedParam.registerListener(_listener);
             }
         } else if (token.image.equalsIgnoreCase("PI")) {
             jjtThis._ptToken = new ptolemy.data.DoubleToken(Math.PI);
