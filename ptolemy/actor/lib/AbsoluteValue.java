@@ -164,13 +164,13 @@ public class AbsoluteValue extends Transformer {
         }
 
         /** Throw an Exception.
-         *  @exception IllegalActionException Alway thrown.
+         *  @exception IllegalActionException If we call initialize on
+         *  a function term.  Always thrown in this class.
          */
         public void initialize(Object e)
 		throws IllegalActionException {
 	    throw new IllegalActionException("AbsoluteValue$FunctionTerm." +
 		"initialize: Cannot initialize a function term.");
-
         }
 
         /** Return false.
@@ -188,7 +188,8 @@ public class AbsoluteValue extends Transformer {
         }
 
         /** Throw an Exception.
-         *  @exception IllegalActionException Always thrown.
+         *  @exception IllegalActionException If the type is not settable.
+         *  Always thrown in this class.
          */
         public void setValue(Object e)
 		throws IllegalActionException {
