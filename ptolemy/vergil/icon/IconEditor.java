@@ -539,6 +539,9 @@ public class IconEditor extends Component {
 	    if (versatileFigure != null) {
 	        versatileFigure.setFillPaint (_strokeColor);
 	    }
+	    else {
+	        getToolkit ().beep ();
+	    }
 	}
     };
 
@@ -549,6 +552,9 @@ public class IconEditor extends Component {
 	    VersatileFigure versatileFigure = (VersatileFigure) _m.getFirstSelection ();
 	    if (versatileFigure != null) {
 	        versatileFigure.setStrokePaint (_strokeColor);
+	    }
+	    else {
+	        getToolkit ().beep ();
 	    }
 	}
     };
@@ -601,6 +607,9 @@ public class IconEditor extends Component {
 	    if (v != null) {
 	        v.setLineWidth (v.getLineWidth () - 1.0f);
 	    }
+	    else {
+	        getToolkit ().beep ();
+	    }
 	}
     };
 
@@ -611,6 +620,9 @@ public class IconEditor extends Component {
 	    VersatileFigure v = (VersatileFigure)_m.getFirstSelection ();
 	    if (v != null) {
 	        v.setLineWidth (v.getLineWidth () + 1.0f);
+	    }
+	    else {
+	        getToolkit ().beep ();
 	    }
 	}
     };
@@ -812,6 +824,9 @@ public class IconEditor extends Component {
 	        _m.clearSelection ();
 		_layer.remove (versatileFigure);
 	    }
+	    else {
+	        getToolkit ().beep ();
+	    }
 	}
     };
 
@@ -827,6 +842,9 @@ public class IconEditor extends Component {
 	VersatileFigure versatileFigure = (VersatileFigure) _m.getFirstSelection ();
 	if (versatileFigure != null) {
 	    versatileFigure.setLineWidth(newThickness);
+	}
+	else {
+	    getToolkit ().beep ();
 	}
     }
 
