@@ -34,7 +34,7 @@ package ptolemy.kernel.util;
 //// InternalErrorException
 /**
 This exception should be thrown if an unexpected error is encountered
-other than one for which InconsistentStateException would be appropriate.
+other than one for which InvalidStateException would be appropriate.
 Our design should make it impossible for this exception to ever occur,
 so occurrence is a bug. This exception is a RuntimeException
 so that it does not have to be declared.
