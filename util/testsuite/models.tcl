@@ -30,6 +30,21 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
+# Create a CT model with no actors in it and return it.
+# The optional argument sets the stop time for the execution.
+# It defaults to 1.0.
+#
+proc ctModel {{stopTime 1.0}} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set manager [java::new ptolemy.actor.Manager]
+    $e0 setName top
+    $e0 setManager $manager
+    set director \
+            [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $e0 CTMultiSolverDirector]
+    $director setStopTime $stopTime
+    return $e0
+}
+
 # Create a DE model with no actors in it and return it.
 # The optional argument sets the stop time for the execution.
 # It defaults to 1.0.
