@@ -43,15 +43,15 @@ no means required in order to create an applet that uses Ptolemy II.
 public class PtolemyApplet extends Applet {
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+////                         public methods                         ////
 
-    /** Return generic applet information.
-     *  @return A string giving minimal information about Ptolemy II.
-     */
-    public String getAppletInfo() {
-        return "Ptolemy II applet.\n"
+/** Return generic applet information.
+ *  @return A string giving minimal information about Ptolemy II.
+ */
+public String getAppletInfo() {
+    return "Ptolemy II applet.\n"
         + "Ptolemy II comes from UC Berkeley, Department of EECS.";
-    }
+}
 
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
@@ -86,7 +86,7 @@ public class PtolemyApplet extends Applet {
      */
     public void report(Exception ex) {
         System.err.println("Exception thrown by applet.\n"
-        + ex.getMessage() + "\nStack trace:\n");
+                + ex.getMessage() + "\nStack trace:\n");
         ex.printStackTrace();
     }
 
@@ -95,7 +95,7 @@ public class PtolemyApplet extends Applet {
      */
     public void report(String msg, Exception ex) {
         System.err.println("Exception thrown by applet.\n" + msg + "\n"
-        + ex.getMessage() + "\nStack trace:\n");
+                + ex.getMessage() + "\nStack trace:\n");
         ex.printStackTrace();
     }
 
