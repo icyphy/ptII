@@ -216,15 +216,17 @@ public abstract class URLReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
-    // The reader to read from.
+    /** The reader to read from. */
     protected java.io.BufferedReader _reader = null;
 
-    // Standard in as a reader.
+    /** Standard in as a reader. */
     protected static java.io.BufferedReader _stdIn = null;
 
-    // String for the URL.
+    /** String for the URL. */
     protected String _source;
 
-    // Flag to indicate whether or not to refresh the data between readings.
+    /** Flag to indicate whether or not to refresh the data
+     *  between readings.
+     */
     protected boolean _refreshFlag;
 }
