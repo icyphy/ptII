@@ -140,7 +140,7 @@ public class TimedQueueReceiver {
 	        _rcvrTime = nextEvent.getTime();
             }
 
-	    // Call updateRcvrList() even if _queue.size()==0,
+	    // Call updateRcvrList() even if _queue.size() == 0,
 	    // so that the triple is no longer in front.
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper =
