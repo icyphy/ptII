@@ -30,8 +30,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-/** Print the location of the system jar file, usualy rt.jar
-@@author Christopher Hylands
+/** Print the location of the system jar file, usually rt.jar
+@author Christopher Hylands
 @@version $Id$
  */
 public class SystemJar {
