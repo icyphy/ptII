@@ -240,19 +240,7 @@ public class VergilApplication extends MDIApplication {
 
  	// Update the title of the frame when the title of the document
 	// changes.
-	d.addPropertyChangeListener(new PropertyChangeListener() {
-	    public void propertyChange(PropertyChangeEvent e) {
-		String name = e.getPropertyName();
-		if (name.equals("file") || 
-		    name.equals("url")) {
-		    // the title has changed.
-		    Document d = (Document)e.getSource();
-		    JInternalFrame frame = 
-			getDesktopContext().getInternalFrame(getView(d));
-		    frame.setTitle(d.getTitle());
-		}
-	    }
-	});
+	d.addPropertyChangeListener(_titleChanger);
     }
 
         
@@ -523,6 +511,30 @@ public class VergilApplication extends MDIApplication {
         GUIUtilities.addMenuItem(menuFile, action, 'P', "Paste");
     }
 
+    /** 
+     * A property change listener for documents.  It is responsible for
+     * keeping the title of the internal frame for a document the same
+     * as the title of the document.
+     */
+    public class TitleChanger implements PropertyChangeListener {
+        /** 
+         * When the file or url properties of the document change, 
+         * assume that the title of the document has changed and
+         * reset the title of the appropriate internal frame.
+         */
+        public void propertyChange(PropertyChangeEvent e) {
+            String name = e.getPropertyName();
+            if (name.equals("file") || 
+		    name.equals("url")) {
+                // the title has changed.
+                Document d = (Document)e.getSource();
+                JInternalFrame frame = 
+                    getDesktopContext().getInternalFrame(getView(d));
+                frame.setTitle(d.getTitle());
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         package variables                 ////
 
@@ -553,6 +565,10 @@ public class VergilApplication extends MDIApplication {
 
     // The list of factories that create graph documents.
     private List _serviceList = new LinkedList();
+
+    // The title changer used by this application.  This listener will
+    // be attached to all documents.
+    private TitleChanger _titleChanger = new TitleChanger();
 }
 
 
