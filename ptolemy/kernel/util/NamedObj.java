@@ -30,6 +30,8 @@
 
 package ptolemy.kernel.util;
 
+import ptolemy.kernel.CompositeEntity;		/* Needed by javadoc */
+
 import java.io.Serializable;
 import java.util.Enumeration;
 import collections.LinkedList;
