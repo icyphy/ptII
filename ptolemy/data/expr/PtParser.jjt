@@ -30,6 +30,7 @@ LOOKAHEAD=1;
 //DEBUG_PARSER = true;
 //DEBUG_TOKEN_MANAGER = true;
 MULTI = true;
+//NODE_SCOPE_HOOK = true;
 STATIC = false;
 }
 
@@ -106,7 +107,7 @@ Created : May 1998
  * @see pt.data.parser.ASTPtSimpleNode
  * @see pt.data.parser.ASTPtFunctionNode
  * @see pt.data.parser.ASTPtLogicalNode
- * @see pt.data.parser.ASTPtProductNode
+ * @see pt.data.parser.ASTPtProductNodeI
  * @see pt.data.parser.ASTPtRelationalNode
  * @see pt.data.parser.ASTPtSumNode
  * @see pt.data.parser.ASTPtUnaryNode
@@ -414,12 +415,13 @@ void unary() #void :
  |  element()
 }
 
-void element() #PtSimpleNode :
+void element() #void :
 {
 int len;
 String tidied, x;
 }
 {
+   ( 
      <DOUBLE>
 	{   try 
             {
@@ -441,8 +443,11 @@ String tidied, x;
                 throw new ParseException(str + "to an float or double");
             }
         }
+   ) #PtSimpleNode
 
-  |  <INTEGER>
+  |  
+   (
+     <INTEGER>
 	{   try 
             {
                 x = token.image.toLowerCase();
@@ -459,33 +464,56 @@ String tidied, x;
                 throw new ParseException(str + "to an integer or long");
 	    }
 	}
+   ) #PtSimpleNode
 
-  |  <STRING>
-    {
+  | 
+   (
+      <STRING>
+      {
          // Now cut the " from each end of the string
         len = token.image.length();
         tidied = token.image.substring(1, (len -1));
         jjtThis._ptToken = new StringToken(tidied);
         //System.out.println("encountered a string \"" + tidied + "\"");    
-    }
+      }
+   ) #PtSimpleNode
 
-  |  <BOOLEAN>
+  |  
+   (
+     <BOOLEAN>
       { 
           if (token.image.equalsIgnoreCase("TRUE")) {
               jjtThis._ptToken = new BooleanToken(true);
           } else if (token.image.equalsIgnoreCase("FALSE")) {
               jjtThis._ptToken = new BooleanToken(false);   
           }
-      }   
+      }
+   ) #PtSimpleNode   
 
 
-  | "(" logicalOr() ")"
+  | 
+    (
+        "(" logicalOr() ( 
+            LOOKAHEAD( ")" "." )  (
+                    // we're in a method call on the previous token 
+                  ")" "." <ID> {jjtThis.methodName = token.image; }
+                  "(" [ logicalOr() ( "," logicalOr()  )* ]  ")" )
+          |
+            LOOKAHEAD( ")" "?" )  (
+                   //we're in a functional if, branching on the previous token
+                   ")" "?" "("logicalOr() ")" ":" "(" logicalOr() ")" )
+          | 
+            ")"
+         )
+     ) #PtMiscNode
  
   |   LOOKAHEAD( <ID> "(" )
       function()
     
-  |   <ID>
-    { 
+  | 
+   (
+     <ID>
+     { 
         if (_scope != null) {
             pt.data.Param xx = (pt.data.Param)_scope.get(token.image);
             if (xx != null) {
@@ -507,7 +535,9 @@ String tidied, x;
             throw new ParseException(str + "current scope");
         }
     }
+   ) #PtSimpleNode
 }
+
 
 void function() #PtFunctionNode :
 {   
