@@ -174,8 +174,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If the initialize() method
      *   of one of the deeply contained actors throws it.
      */
-    public void initialize()
-            throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
 	_notdone = true;
 	_actorsActive = 0;
 	_actorsPaused = 0;
@@ -188,13 +187,7 @@ public class ProcessDirector extends Director {
             //Creating receivers and threads for all actors;
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
-                ProcessThread pnt = _getProcessThread(actor, this);
-                _threadList.insertFirst(pnt);
-		_newthreads.insertFirst(pnt);
                 actor.createReceivers();
-                //Actors should be initialized after creating receivers so 
-		//that they can transmit data in their initialize methods.
-                actor.initialize();
 
 		// Reset the receivers
                 Enumeration ports = actor.inputPorts(); 
@@ -207,6 +200,16 @@ public class ProcessDirector extends Director {
 			}
 		    }
 		}
+
+		// Initialize threads
+                ProcessThread processThread = _getProcessThread(actor, this);
+                _threadList.insertFirst(processThread);
+		_newthreads.insertFirst(processThread);
+
+                //Actors should be initialized after creating receivers so 
+		//that they can transmit data in their initialize methods.
+                actor.initialize();
+
             }
 
 	    CompositeActor topOfContainer = 
