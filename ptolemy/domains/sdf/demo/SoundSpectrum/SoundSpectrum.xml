@@ -2,11 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SoundSpectrum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
@@ -18,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 974, 466}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {0, 0, 974, 459}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 350]">
     </property>
@@ -85,6 +83,29 @@ synchronous dataflow (SDF).</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 15.0">
         </property>
     </property>
+    <property name="order" class="ptolemy.data.expr.Parameter" value="7">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 35.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.5, 175.0}">
+    </property>
     <entity name="AudioCapture" class="ptolemy.actor.lib.javasound.AudioCapture">
         <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="8000">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -124,15 +145,15 @@ synchronous dataflow (SDF).</text></svg></configure>
     <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop">
         <property name="numberToRead" class="ptolemy.data.expr.Parameter" value="500">
         </property>
-        <property name="numberToWrite" class="ptolemy.data.expr.Parameter" value="128">
+        <property name="numberToWrite" class="ptolemy.data.expr.Parameter" value="2^order">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 125.0">
         </property>
     </entity>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
-        <property name="order" class="ptolemy.data.expr.Parameter" value="7">
+        <property name="order" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 135.0]">
         </property>
     </entity>
     <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
@@ -140,7 +161,7 @@ synchronous dataflow (SDF).</text></svg></configure>
         </property>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="128">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="2^order">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 135.0">
         </property>
@@ -162,7 +183,7 @@ synchronous dataflow (SDF).</text></svg></configure>
     <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 378, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 378, 508, 348}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -187,7 +208,7 @@ synchronous dataflow (SDF).</text></svg></configure>
         </configure>
     </entity>
     <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
-        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="128">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="2^order">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 65.0">
         </property>
@@ -195,7 +216,7 @@ synchronous dataflow (SDF).</text></svg></configure>
     <entity name="ArrayPlotter2" class="ptolemy.actor.lib.gui.ArrayPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={508, 378, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {508, 378, 508, 348}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
