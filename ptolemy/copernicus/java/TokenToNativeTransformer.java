@@ -241,8 +241,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                          
                                     if(SootUtilities.derivesFrom(type.getSootClass(),
                                                PtolemyUtilities.arrayTokenClass)
-                                               ||  SootUtilities.derivesFrom(type.getSootClass(),
-                                                       PtolemyUtilities.typeClass)) {
+                                               ||  (SootUtilities.derivesFrom(type.getSootClass(),
+                                                            PtolemyUtilities.typeClass) && r.getMethod().getName().equals("convert"))) {
 
                                         // Then determine the method that was
                                         // actually invoked.

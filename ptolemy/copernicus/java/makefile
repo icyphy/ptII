@@ -64,6 +64,7 @@ JSRCS = \
 	Main.java \
 	ModelTransformer.java \
 	NamedObjEliminator.java \
+	TestApplication.java \
 	TokenConstructorAnalysis.java \
 	TokenInstanceofEliminator.java \
 	TokenToNativeTransformer.java \
@@ -133,8 +134,8 @@ SOOT_USER_ARGS =
 # Time that we should let code generation run before exiting in ms.
 WATCH_DOG_TIMEOUT =     600000
 # Number of Iterations to run the generated code for.
-ITERATIONS =		200
-#ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)
+ITERATIONS =		1000
+ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)
 
 compileDemo: $(JCLASS)
 	@echo "generate deep code for $(SOURCECLASS)"
@@ -155,7 +156,7 @@ compileDemo: $(JCLASS)
 		-p wjtp.ipt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.itt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ttn disabled,debug,targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ts debug,targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.ts targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.noe targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.snapshot1 outDir:$(ROOT)/$(TARGETPATH)/jimple1 \
 		-p wjtp.snapshot2 outDir:$(ROOT)/$(TARGETPATH)/jimple2 \
@@ -202,7 +203,7 @@ treeShakeWithoutCodegen:
 	@echo "Treeshake $(MODEL) without codegen"
 	@CLASSPATH="$(CLASSPATH)" \
 		$(ROOT)/util/testsuite/treeshake $(TREESHAKE_PREFIX).jar \
-			$(JAVA) ptolemy.actor.gui.MoMLSimpleApplication \
+			$(JAVA) ptolemy.copernicus.java.TestApplication \
 			$(SOURCECLASS) \
 			| tail -1
 	ls -l $(TREESHAKE_PREFIX).jar
@@ -213,7 +214,7 @@ runTreeShakeWithoutCodegen:
 	do \
 		$(JAVA) \
 			-classpath $(TREESHAKE_PREFIX).jar \
-			ptolemy.actor.gui.MoMLSimpleApplication \
+			ptolemy.copernicus.java.TestApplication \
 			$(SOURCECLASS) \
 			| tail -1 | \
 			tee -a $(STATSFILE); \
