@@ -30,7 +30,6 @@
 
 // FIXME: To do:
 //  - Fix printing.
-//  - Handle file changes (warn when discarding modified files.
 
 package ptolemy.actor.gui;
 
@@ -42,6 +41,8 @@ import java.awt.Rectangle;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,12 +50,15 @@ import javax.swing.text.Document;
 /**
 
 TextEditor is a top-level window containing a simple text editor or viewer.
+You can access the public member text to set the text, get the text,
+or set the number of rows or columns.
+After creating this, it is necessary to call show() for it to appear.
 
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class TextEditor extends TableauFrame {
+public class TextEditor extends TableauFrame implements DocumentListener {
 
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
@@ -85,6 +89,9 @@ public class TextEditor extends TableauFrame {
         setTitle(title);
 
         text = new JTextArea(document);
+        // Since the document may have been null, request it...
+        document = text.getDocument();
+        document.addDocumentListener(this);
         _scrollPane = new JScrollPane(text);
 
         getContentPane().add(_scrollPane, BorderLayout.CENTER);
@@ -100,13 +107,32 @@ public class TextEditor extends TableauFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to notification that an attribute or set of attributes
+     *  changed. 
+     */
+    public void changedUpdate(DocumentEvent e) {
+        // Do nothing... We don't care about attributes.
+    }
+
     /** Get the background color.
      *  @return The background color of the scroll pane.
      */
     public Color getBackground() {
         return _scrollPane.getBackground();
     }
+    
+    /** React to notification that there was an insert into the document.
+     */
+    public void insertUpdate(DocumentEvent e) {
+        setModified(true);
+    }
 
+    /** React to notification that there was a removal from the document.
+     */
+    public void removeUpdate(DocumentEvent e) {
+        setModified(true);
+    }
+    
     /** Scroll as necessary so that the last line is visible.
      */
     public void scrollToEnd() {
@@ -127,7 +153,7 @@ public class TextEditor extends TableauFrame {
             _scrollPane.setBackground(background);
         }
         if (text != null) {
-            // FIXME: Should the background always be white?
+            // NOTE: Should the background always be white?
             text.setBackground(background);
         }
     }
@@ -164,7 +190,6 @@ public class TextEditor extends TableauFrame {
         super._print();
     }
 
-    // FIXME: Listen for edit changes.
     // FIXME: Listen for window closing.
 
     ///////////////////////////////////////////////////////////////////
