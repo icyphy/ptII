@@ -284,7 +284,7 @@ public class LongToken extends ScalarToken {
 	    longArg = (ScalarToken)convert(arg);
 	}
 
-	if (_value < longArg.intValue()) {
+	if (_value < longArg.longValue()) {
 	    return new BooleanToken(true);
 	}
 	return new BooleanToken(false);
