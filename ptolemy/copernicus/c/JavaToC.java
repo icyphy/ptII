@@ -1,6 +1,6 @@
 /*
 An application that converts a Java class into  C
-source files (a .i.h file, a .h file and a .c file) that implement
+source files (a _i.h file, a .h file and a .c file) that implement
 the class.
 
 Copyright (c) 2001-2002 The University of Maryland.
@@ -41,7 +41,7 @@ import soot.SootClass;
 
 //////////////////////////////////////////////////////////////////////////
 //// JavaToC
-/* An application that converts a Java class (from a class file) into  C
+/**An application that converts a Java class (from a class file) into  C
    source files (a .h file and a .c file) that implement the class.
    The C conversion capability is highly experimental and rudimentary
    at this point, with only a limited set of Java language features
@@ -63,9 +63,9 @@ public class JavaToC {
 
     /** Given a class name, convert the specified class to C (.c and
      *  .h files).
-     *  @param classPath the classpath to use during the conversion.
-     *  @param className the name of the class to translate.
-     *  @param generateSingleClass indicates whether (true) or not (false)
+     *  @param classPath The classpath to use during the conversion.
+     *  @param className The name of the class to translate.
+     *  @param generateSingleClass Indicates whether (true) or not (false)
      *  "single class mode" should be used during the conversion
      *  (see {@link Context#getSingleClassMode()} for details).
      */
@@ -89,9 +89,9 @@ public class JavaToC {
         SootClass sootClass = Scene.v().getSootClass(className);
         CNames.setup();
 
-        //generate the .i.h file
+        //generate the _i.h file
         String code = iGenerator.generate(sootClass);
-        FileHandler.write(className+".i.h", code);
+        FileHandler.write(className+"_i.h", code);
 
         // Generate the .h file.
         code = hGenerator.generate(sootClass);
@@ -103,7 +103,7 @@ public class JavaToC {
 
         // generate other required files
         RequiredFileGenerator.generateTransitiveClosureOf(classPath,
-                className, compileMode, verbose);
+                        className, compileMode, verbose);
 
         // Generate the makefile
         MakeFileGenerator.generateMakeFile(classPath, className);
@@ -111,33 +111,36 @@ public class JavaToC {
 
     }
 
-    public static void showHelp()
-    {
-        System.out.println( "USAGE: java [-Dj2c_lib=<system library path>]"
-                +" javatoc classPath [flags] className1"
-                +" [flags][className2]...\n");
+    /**
+     * Prints out the help message on usage of this class and command-line
+     * arguments.
+     */
+    public static void showHelp() {
+        System.out.println( "USAGE: java "
+            +" javatoc classPath [flags] [-lib <library>] className1"
+            +" [flags][className2]...\n");
         System.out.println( "Compile mode flags: "+
-                "[-singleClass], [-headersOnly], [-full]");
+            "[-singleClass], [-headersOnly], [-full]");
         System.out.println( "Verbose mode flags: "+
-                "[-v] for verbose, [-q] for quiet.");
+            "[-v] for verbose, [-q] for quiet.");
+
         System.out.println( "help flags        : [-h] to see this message");
         System.out.println( "\nLater flags are given precedence over "+
-                "earlier ones.");
+            "earlier ones.");
     }
 
     /** Entry point for the JavaToC application. See {@link JavaToC} for
      *  instructions on usage.
-     *  @param args application arguments.
+     *  @param args Application arguments.
      */
-    public static void main(String[] args) throws IOException
-    {
+    public static void main(String[] args) throws IOException {
         /*
-          String usage =
-          "Usage: java ptolemy.lang.copernicus.c.JavaToC classpath "
-          + " classname [-singleClass][-headersOnly]";
-          if ((args.length < 2) || (args.length > 3)) {
-          throw new RuntimeException(usage);
-          }
+        String usage =
+                "Usage: java ptolemy.lang.copernicus.c.JavaToC classpath "
+                + " classname [-singleClass][-headersOnly]";
+        if ((args.length < 2) || (args.length > 3)) {
+            throw new RuntimeException(usage);
+        }
         */
 
         String classPath = new String(args[0]);
@@ -148,32 +151,41 @@ public class JavaToC {
         boolean verbose = false;
 
         // actual flags
-        for (int i = 1;i<args.length; i++)
-            {
-                if (args[i].startsWith("-")) //its a flag
-                    {
-                        if     (args[i].equals("-v")) verbose = true;
-                        else if (args[i].equals("-q")) verbose = false;
-                        else if (args[i].equals("-singleClass"))
-                            compileMode = new String("singleClass");
-                        else if (args[i].equals("-headersOnly"))
-                            compileMode = new String("headersOnly");
-                        else if (args[i].equals("-full"))
-                            compileMode = new String ("full");
-                        else if (args[i].equals("-h"))
-                            {
-                                showHelp();
-                                System.exit(0);
-                            }
+        for(int i = 1;i<args.length; i++) {
+            if (args[i].startsWith("-")) {
+                //its a flag
+                if     (args[i].equals("-v")) verbose = true;
+                else if(args[i].equals("-q")) verbose = false;
+                else if(args[i].equals("-singleClass"))
+                    compileMode = new String("singleClass");
+                else if(args[i].equals("-headersOnly"))
+                    compileMode = new String("headersOnly");
+                else if(args[i].equals("-full"))
+                    compileMode = new String ("full");
+                else if(args[i].equals("-h")) {
+                    showHelp();
+                    System.exit(0);
+                }
+                else if(args[i].equals("-lib")) {
+                    if (i<args.length-1) {
+                        i++;
+                        System.setProperty("j2c_lib", args[i]);
                     }
-                else //its the name of a class to convert
-                    {
-                        className=args[i];
-                        convert(classPath, className, compileMode, verbose);
+                    else {
+                        System.err.println(
+                            "Must specify library directory for -lib option");
                     }
-            }
+                }
 
-        if (className.equals("")) showHelp(); //if no className specified
+            }
+            else {
+                //its the name of a class to convert
+                className=args[i];
+                convert(classPath, className, compileMode, verbose);
+            }
+        }
+
+        if(className.equals("")) showHelp(); //if no className specified
 
     }
 }

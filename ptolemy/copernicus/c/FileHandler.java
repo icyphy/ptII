@@ -1,7 +1,7 @@
 /*
 A class that takes care of common File I/O functions.
 
-Copyright (c) 2001-2002 The University of Maryland.
+Copyright (c) 2002 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -35,33 +35,38 @@ import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-/* A class that takes care of common File I/O functions
+/** A class that takes care of common File I/O functions
 
    @author Ankush Varma
    @version $Id$
    @since Ptolemy II 2.0
 */
 
-public class FileHandler
-{
-    public static boolean exists(String fileName)
-    {
+public class FileHandler {
+
+    /**
+     * @param fileName A fileName
+     * @return True if a file with that name exists.
+     */
+    public static boolean exists(String fileName) {
         File f = new File(fileName);
         return(f.exists());
     }
 
-    public static void write(String fileName, String code)
-    {
-        try
-            {
-                PrintWriter out = new PrintWriter(new FileOutputStream(fileName));
-                out.println(code.toString());
-                out.close();
-            }
-        catch(IOException e)
-            {
-                System.err.println("ERROR: Could not create file: "+fileName);
-            }
+    /**
+     * write out a given string to a file.
+     * @param fileName The file to write to.
+     * @param code The String to write.
+     */
+    public static void write(String fileName, String code) {
+        try {
+            PrintWriter out = new PrintWriter(new FileOutputStream(fileName));
+            out.println(code.toString());
+            out.close();
+        }
+        catch(IOException e) {
+            System.err.println("ERROR: Could not create file: "+fileName);
+        }
     }
 
 }
