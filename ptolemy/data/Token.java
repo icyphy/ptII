@@ -243,14 +243,6 @@ public class Token implements Serializable {
                 + this.getClass().getName() + ".");
     }
 
-    /** Return a description of the token as a string.
-     *  @return A description of this token.
-     *  @deprecated Use the toString method instead.
-     */
-    public String stringValue() {
-        return toString();
-    }
-
     /** Return a new Token whose value is the value of the argument Token
      *  subtracted from the value of this Token.
      *  It should be overridden in derived classes to provide type specific
