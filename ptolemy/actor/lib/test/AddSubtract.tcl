@@ -111,3 +111,4 @@ test AddSubtract-3.2 {test with run-time type error} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.BooleanToken 'true'
 Because:
+}
