@@ -280,6 +280,41 @@ public class ComplexToken extends ScalarToken {
         }
     }
 
+    /** Check if the magnitude of the value of this ComplexToken is strictly
+     *  less than that of the argument token.
+     *  @param arg A ScalarToken.
+     *  @return A BooleanToken with value true if the magnitude of this token
+     *   is strictly less than the argument.
+     *  @exception IllegalActionException If the type of the argument token
+     *   is incomparable with the type of this token.
+     */
+    public BooleanToken isLessThan(ScalarToken arg)
+	    throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, arg);
+        if (typeInfo == CPO.INCOMPARABLE) {
+            throw new IllegalActionException("ComplexToken.isLessThan: The " +
+		"type of the argument token is incomparable with the type " +
+		"of this token. argType: " + arg.getType());
+	}
+
+	if (typeInfo == CPO.LOWER) {
+	    return arg.isLessThan(this);
+	}
+
+	// Argument type is lower or equal to this token.
+	ScalarToken complexArg = arg;
+	if (typeInfo == CPO.HIGHER) {
+	    complexArg = (ScalarToken)convert(arg);
+	}
+
+	// using magnitudeSquared() saves the square root calculation
+	if (_value.magnitudeSquared() <
+		complexArg.complexValue().magnitudeSquared()) {
+	    return new BooleanToken(true);
+	}
+	return new BooleanToken(false);
+    }
+
     /** Return a new token whose value is the product of this token
      *  and the argument. The type of the specified token
      *  must be such that either it can be converted to the type

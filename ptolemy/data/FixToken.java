@@ -32,8 +32,8 @@
 package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.FixPoint;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.BaseType;
+import ptolemy.graph.CPO;
+import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToken
@@ -107,7 +107,7 @@ public class FixToken extends ScalarToken {
      *  @return An FixToken. 
      */
     public ScalarToken absolute() {
-	// FIXME: implement this method
+	// FIXME: implement this method after the FixPoint class supports it
 	throw new UnsupportedOperationException("FixToken.absolute: method" +
 	    "not implemented yet.");
     }
@@ -146,6 +146,44 @@ public class FixToken extends ScalarToken {
         // FixToken is immutable, so we can just return the value.
         return _value;
     }
+
+    /** Check if the value of this token is strictly less than that of the
+     *  argument token.
+     *  @param arg A ScalarToken.
+     *  @return A BooleanToken with value true if this token is strictly
+     *   less than the argument.
+     *  @exception IllegalActionException If the type of the argument token
+     *   is incomparable with the type of this token.
+     */
+    public BooleanToken isLessThan(ScalarToken arg)
+	    throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, arg);
+        if (typeInfo == CPO.INCOMPARABLE) {
+            throw new IllegalActionException("FixToken.isLessThan: The type" +
+		" of the argument token is incomparable with the type of " +
+		"this token. argType: " + arg.getType());
+	}
+
+	if (typeInfo == CPO.LOWER) {
+	    return arg.isLessThan(this);
+	}
+
+	// Argument type is lower or equal to this token.
+	ScalarToken fixArg = arg;
+	if (typeInfo == CPO.HIGHER) {
+	    fixArg = (ScalarToken)convert(arg);
+	}
+
+	// FIXME: implement this method after the FixPoint class supports it
+	throw new UnsupportedOperationException("FixToken.isLessThan: method" +
+	    "not implemented yet.");
+
+	// if (_value < intArg.fixValue()) {
+	//    return new BooleanToken(true);
+	// }
+	// return new BooleanToken(false);
+    }
+
     /** Return a new FixToken with value equal to the multiplication
 	of this FixToken number and the argument.  
 	@param arg A FixToken.  
@@ -155,7 +193,6 @@ public class FixToken extends ScalarToken {
 	FixPoint result = _value.multiply( arg.fixpointValue() );
 	return new FixToken(result);
     }
-
 
     /** Returns a new Token representing the multiplicative identity
      *  with a default precision of 1 bit for the integer part and 0

@@ -282,6 +282,39 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
+    /** Check if the value of this token is strictly less than that of the
+     *  argument token.
+     *  @param arg A ScalarToken.
+     *  @return A BooleanToken with value true if this token is strictly
+     *   less than the argument.
+     *  @exception IllegalActionException If the type of the argument token
+     *   is incomparable with the type of this token.
+     */
+    public BooleanToken isLessThan(ScalarToken arg)
+	    throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, arg);
+        if (typeInfo == CPO.INCOMPARABLE) {
+            throw new IllegalActionException("DoubleToken.isLessThan: The " +
+		"type of the argument token is incomparable with the type " +
+		"of this token. argType: " + arg.getType());
+	}
+
+	if (typeInfo == CPO.LOWER) {
+	    return arg.isLessThan(this);
+	}
+
+	// Argument type is lower or equal to this token.
+	ScalarToken doubleArg = arg;
+	if (typeInfo == CPO.HIGHER) {
+	    doubleArg = (ScalarToken)convert(arg);
+	}
+
+	if (_value < doubleArg.doubleValue()) {
+	    return new BooleanToken(true);
+	}
+	return new BooleanToken(false);
+    }
+
     /** Return a new Token whose value is the value of this token
      *  modulo the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type

@@ -157,7 +157,7 @@ public class Token {
      *  @param token The token with which to test equality.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
-     *  @return A  new BooleanToken which contains the result of the test.
+     *  @return A BooleanToken which contains the result of the test.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         throw new IllegalActionException("Equality test not supported between "
