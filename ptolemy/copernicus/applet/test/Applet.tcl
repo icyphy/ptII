@@ -59,22 +59,24 @@ test Applet-1.1 {Compile and run the SDF IIR test} {
     list {}
 } {{}}
 
-test Applet-1.2 {Create an applet for a graphical demo that uses diva.jar in a directory outside of the Ptolemy II tree} {
-    # ptapplet must exist or else the defaults will be used.
-    file delete -force /tmp/ptapplet	
-    file mkdir /tmp/ptapplet
+#1.2 test does not work under Windows 
+
+# test Applet-1.2 {Create an applet for a graphical demo that uses diva.jar in a directory outside of the Ptolemy II tree} {
+#     # ptapplet must exist or else the defaults will be used.
+#     file delete -force /tmp/ptapplet	
+#     file mkdir /tmp/ptapplet
 	
-    set args [java::new {String[]} 11 \
-	[list \
-	    [file join $relativePathToPTII ptolemy domains fsm demo \
-		MultipleRuns MultipleRuns.xml] \
-	    "-ptIIUserDirectory" "/tmp/ptapplet" \
-	    "-targetPath" "modelName" \
-	    "-targetPackage" "modelName" \
-	    "-codeGenerator" "applet" \
-	    "-run" "false"] ]
-    java::new ptolemy.copernicus.kernel.Copernicus $args	
-    list {}
-} {{}}
+#     set args [java::new {String[]} 11 \
+# 	[list \
+# 	    [file join $relativePathToPTII ptolemy domains fsm demo \
+# 		MultipleRuns MultipleRuns.xml] \
+# 	    "-ptIIUserDirectory" "/tmp/ptapplet" \
+# 	    "-targetPath" "modelName" \
+# 	    "-targetPackage" "modelName" \
+# 	    "-codeGenerator" "applet" \
+# 	    "-run" "false"] ]
+#     java::new ptolemy.copernicus.kernel.Copernicus $args	
+#     list {}
+# } {{}}
 
 
