@@ -241,7 +241,7 @@ public class DEIOPort extends TypedIOPort {
         if (!isInput() || !output.isOutput()) {
             throw new IllegalActionException(this,
                     "Invalid triggering relationship.  " +
-                    Must be input triggers output.");
+                    "Must be input triggers output.");
         }
         _triggerList.insertLast(output);
     }
