@@ -89,9 +89,9 @@ public class PxgraphApplet extends PlotApplet {
     /** Initialize the applet.  Read the applet parameters.
      */
     public void init() {
-        super.init();
-
         _parser = new PxgraphParser((Plot)plot());
+
+        super.init();
 
         // Process the pxgraphargs parameter.
         String pxgraphargs = null;
