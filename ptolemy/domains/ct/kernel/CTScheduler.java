@@ -826,7 +826,7 @@ public class CTScheduler extends Scheduler{
 
             _scheduleList.addLast(_outputSchedule);
         }
-
+        setValid(true);
         return Collections.enumeration(_scheduleList);
     }
 
