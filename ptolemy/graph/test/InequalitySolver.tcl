@@ -124,7 +124,7 @@ test InequalitySolver-2.2 {construct inequality constraints} {
     $tx setName X
     set ta [java::new ptolemy.graph.test.TestVariable]
     $ta setName A
-    set tb [java::new ptolemy.graph.test.TestVariable]p
+    set tb [java::new ptolemy.graph.test.TestVariable]
     $tb setName B
 
     set iaw [java::new ptolemy.graph.Inequality $ta $tw]
