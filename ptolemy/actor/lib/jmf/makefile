@@ -36,7 +36,8 @@ DIRS = 		#test
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+# JMF_JARS is set by $PTII/configure in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JMF_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
