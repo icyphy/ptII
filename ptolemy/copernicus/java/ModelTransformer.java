@@ -155,7 +155,7 @@ public class ModelTransformer extends SceneTransformer {
 	_portLocalMap = new HashMap();
 
         // Now instantiate all the stuff inside the model.
-        _composite(body, thisLocal, _model, modelClass, options);
+        _composite(body, thisLocal, _model, thisLocal, _model, modelClass, options);
 
         units.add(Jimple.v().newReturnVoidStmt());
         
@@ -210,14 +210,15 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Write the given composite.
-    private void _composite(JimpleBody body, Local thisLocal, 
+    private void _composite(JimpleBody body, Local containerLocal,
+            CompositeEntity container, Local thisLocal, 
             CompositeEntity composite, EntitySootClass modelClass,
             Map options) {
 
-        _ports(body, thisLocal, composite, thisLocal, composite, modelClass);
-        _entities(body, thisLocal, composite, modelClass, options);
+        _ports(body, containerLocal, container, thisLocal, composite, modelClass);
+        _entities(body, containerLocal, container, thisLocal, composite, modelClass, options);
         // create fields for attributes.
-        createFieldsForAttributes(body, composite, thisLocal, 
+        createFieldsForAttributes(body, container, containerLocal,
                 composite, thisLocal, modelClass);
        
         // handle the communication
@@ -375,7 +376,8 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set entities.
-    private void _entities(JimpleBody body, Local thisLocal, 
+    private void _entities(JimpleBody body, Local containerLocal,
+            CompositeEntity container, Local thisLocal, 
             CompositeEntity composite, EntitySootClass modelClass,
             Map options) {
 	for(Iterator entities = composite.entityList().iterator();
@@ -404,28 +406,28 @@ public class ModelTransformer extends SceneTransformer {
 	    _entityLocalMap.put(entity, local);
 
             if(entity instanceof CompositeEntity) {
-                _composite(body, local, (CompositeEntity)entity,
+                _composite(body, containerLocal, container, local, (CompositeEntity)entity,
                         modelClass, options);
             } else {
                 _ports(body, thisLocal, composite, local, entity, modelClass);
-            }
-
-            if(Options.getBoolean(options, "deep")) {
-		// If we are doing deep codegen, then we
-		// include a field for each actor.
-                // The name of the field is the sanitized version
-                // of the entity's name.
-		String entityFieldName = getFieldNameForEntity(entity);
-                SootUtilities.createAndSetFieldFromLocal(
-                        body, local, modelClass,
-                        PtolemyUtilities.actorType, entityFieldName);
-            } else {
-		// If we are doing shallow code generation, then
-		// include code to initialize the parameters of this
-		// entity.
-                // FIXME: flag to not create fields?
-                createFieldsForAttributes(body, composite, thisLocal, 
-                        entity, local, modelClass);
+                // And the attributes
+                if(Options.getBoolean(options, "deep")) {
+                    // If we are doing deep codegen, then we
+                    // include a field for each actor.
+                    // The name of the field is the sanitized version
+                    // of the entity's name.
+                    String entityFieldName = getFieldNameForEntity(entity);
+                    SootUtilities.createAndSetFieldFromLocal(
+                            body, local, modelClass,
+                            PtolemyUtilities.actorType, entityFieldName);
+                } else {
+                    // If we are doing shallow code generation, then
+                    // include code to initialize the parameters of this
+                    // entity.
+                    // FIXME: flag to not create fields?
+                    createFieldsForAttributes(body, composite, thisLocal, 
+                            entity, local, modelClass);
+                }
             }
 	}
     }
