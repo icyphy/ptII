@@ -239,7 +239,8 @@ nightly: ptclean ptbuild \
 	clean all \
 	glimpse \
 	findchanges \
-	remote4
+	remote4 \
+	jnlp
 
 ####################################
 # Rules that operate in ~ptII
@@ -347,7 +348,8 @@ bldmastrcoverage:
 		remote1doc \
 		remote1distjsall \
 		remote1distjsrestore \
-		remote1build
+		remote1build \
+		remote1jnlp
 
 # Remove the remote dist
 remote1nuke:
@@ -560,6 +562,17 @@ remote1build:
 	@echo "#"
 	@echo `date`
 	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) $(MAKE) -k install)
+
+
+# Build jnlp installers
+remote1jnlp:
+	@echo "#"
+	@echo "# Now running make jnlp in $(REMOTE1PTIIDIST)"
+	@echo "# on  `hostname`"
+	@echo "#"
+	@echo `date`
+	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) \
+		$(MAKE) -k jnlp_clean jnlp PTII_LOCALURL=http://www.gigascale.org/ptolemy/src/ptII)
 
 
 
