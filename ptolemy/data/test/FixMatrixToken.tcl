@@ -102,7 +102,7 @@ test FixMatrixToken-3.3 {Test adding FixMatrixToken to FixMatrixToken.} {
     set res3 [$q add $p]
     set res4 [$q addReverse $p]
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res toString]
-} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]}
+} {{[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {[fix(2.0,8,4), fix(3.0,8,4); fix(6.0,8,4), fix(8.0,8,4)]} {3.3 + 0.0i}}
 
 test FixMatrixToken-3.7 {Test adding FixMatrixToken to FixToken.} {
     set r [java::new {ptolemy.data.FixToken String} "fix(2.0, 8, 4)"]
