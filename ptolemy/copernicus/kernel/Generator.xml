@@ -8,13 +8,13 @@ $Id$
 <group>
      <property name="codeGenerator" 
                class="ptolemy.data.expr.Parameter"
-	       value="&quot;deep&quot;"
+	       value="&quot;java&quot;"
 	       >
                <property name="style"
 	                 class="ptolemy.actor.gui.style.ChoiceStyle">
-                   <property name="deep"
+                   <property name="java"
 		             class="ptolemy.kernel.util.StringAttribute"
-			     value="&quot;deep&quot;">
+			     value="&quot;java&quot;">
                    </property>
                    <property name="applet"
 		             class="ptolemy.kernel.util.StringAttribute"
