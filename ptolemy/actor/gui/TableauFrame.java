@@ -654,7 +654,9 @@ public abstract class TableauFrame extends Top {
                 if (factory != null) {
                     Effigy tableauContainer = (Effigy)_tableau.getContainer();
                     try {
-                        factory.createTableau(tableauContainer);
+                        Tableau tableau = 
+			    factory.createTableau(tableauContainer);
+			tableau.show();
                     } catch (Exception ex) {
                         MessageHandler.error("Cannot create view", ex);
                     }
