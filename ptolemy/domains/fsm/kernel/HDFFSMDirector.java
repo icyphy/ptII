@@ -210,11 +210,8 @@ public class HDFFSMDirector extends FSMDirector {
      *  In this base class, this returns an instance of Mailbox.
      *  @return A new Mailbox.
      */
-    // Use QueueReceiver?
-    // NOTE! There is a problem of token accumulating in the receivers.
-    // FIXME!!
     public Receiver newReceiver() {
-        return new Mailbox();
+        return new SDFReceiver();
     }
 
     /** Return false. The default director will only get fired once, and will
@@ -488,7 +485,7 @@ public class HDFFSMDirector extends FSMDirector {
 
         IOPort p;
         Receiver rec;
-        if (port.hasToken(0)) {
+        while (port.hasToken(0)) {
             try {
 		
 		
@@ -497,29 +494,24 @@ public class HDFFSMDirector extends FSMDirector {
 		//Token t = port.get(0);
 		t = port.get(0);
 		
-		// FIXME: currently only allow 1 input, 1 token for guard.
-		//guardVar.setToken(t);
-
-		
 
 		// Get token queue associated with "port".
 		ArrayFIFOQueue guardTokenArray = (ArrayFIFOQueue)inputPortNameToArrayFIFOQueue.get(port.getName());
 		
-		// Remove the oldest token from the queu and throw it away
+		// Remove the oldest token from the queue and throw it away
 		// to make room for a new token. 
-		// FIXME: Make this work for non-homogeneous case.
 		guardTokenArray.take();
 
 		// Put the most recently read in token in the queue.
 		guardTokenArray.put(t);
 
-		// Copy the newest token into the Variable array.
 		// FIXME: For the non-homogeneous case, only do this
 		// on the last firing of an iteration.
-		Token tempToken2 = (Token)guardTokenArray.get(0);
-
 		// Get the array of variables associated with "port".
 		Variable[] guardVarArray = (Variable[])inputPortNameToVariableArray.get(port.getName());
+
+		// Copy the newest token into the Variable array.
+		Token tempToken2 = (Token)guardTokenArray.get(0);
 
 		// Copy the token(s) into the array of variables.
 		(guardVarArray[0]).setToken(tempToken2);
@@ -569,9 +561,9 @@ public class HDFFSMDirector extends FSMDirector {
 
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
-                    if (rec.hasToken()) {
-                        rec.get();
-                    }
+                    //if (rec.hasToken()) {
+		    //  rec.get();
+                    //}
 		    System.out.println("HDFFSMDirector: transferInputs(): Put a token in the current refining state");
                     rec.put(t);
                 } else {
@@ -619,10 +611,11 @@ public class HDFFSMDirector extends FSMDirector {
 	 * which it is connected. It the names don't match,
 	 * then things silently fail! :(
 	 */
+	// Get the output port of this director's container.
         IOPort p = (IOPort)cont.getPort(port.getName());
 	// ********************************************************
 
-        if (insideReceiver.hasToken()) {
+        while (insideReceiver.hasToken()) {
             try {
                 Token t = insideReceiver.get();
 
