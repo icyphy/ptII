@@ -69,6 +69,10 @@ if {[info procs description2TclBlend] == "" } then {
 }
 
 
+if {[info procs _testClone] == "" } then { 
+    source [file join $PTII util testsuite testParameters.tcl]
+}
+
 if ![info exists FAILED] {
     set FAILED 0
 }

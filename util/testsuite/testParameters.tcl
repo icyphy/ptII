@@ -33,7 +33,7 @@
 # To use this file, add the following code to your test file
 # just after the source of testDefs.tcl
 # 
-# if {[info procs test_clone] == "" } then { 
+# if {[info procs _testClone] == "" } then { 
 #    source [file join $PTII util testsuite testParameters.tcl]
 # }
 
@@ -62,18 +62,18 @@
 # for the above glop.
 
 ########################################################
-#### test_clone
+#### _testClone
 # Call clone on object, then cast it to the right type
 #
-proc test_clone {object} {
+proc _testClone {object} {
     return [java::cast [java::info class $object] [$object clone]]
 }
 
 ########################################################
-#### test_doubleValue
+#### _testDoubleValue
 # Get the doubleValue of attributeName from object
 #
-proc test_doubleValue {object attributeName} {
+proc _testDoubleValue {object attributeName} {
     set attribute [$object getAttribute $attributeName]
     if { $attribute == [java::null] } {
 	error "test_doubleValue: Attribute '$attributeName' not found in $object" 

@@ -49,9 +49,9 @@ test Ramp-1.1 {test clone} {
     #set initVal [[[$newobj getAttribute init] getToken] doubleValue]
     #set stepVal [[[$newobj getAttribute step] getToken] doubleValue]
 
-    set newobj [test_clone $ramp]
-    set initVal [test_doubleValue $newobj init]
-    set stepVal [test_doubleValue $newobj step]
+    set newobj [_testClone $ramp]
+    set initVal [_testDoubleValue $newobj init]
+    set stepVal [_testDoubleValue $newobj step]
     list $initVal $stepVal
 } {0.0 1.0}
 
@@ -65,8 +65,8 @@ test Ramp-1.2 {test clone} {
     
     #set orgInitVal [[[$ramp getAttribute init] getToken] doubleValue]
     #set initVal [[[$newobj getAttribute init] getToken] doubleValue]
-    set orgInitVal [test_doubleValue $ramp init]
-    set initVal [test_doubleValue $newobj init]
+    set orgInitVal [_testDoubleValue $ramp init]
+    set initVal [_testDoubleValue $newobj init]
 
     list $orgInitVal $initVal
 } {3.0 0.0}
