@@ -56,8 +56,6 @@ JSRCS = \
 	PNSieve.java \
 	PNSink.java \
 	TimedRamp.java \
-	TicTacToeDisplay.java \
-	TTTPlayer.java \
 	PNAdder.java \
 	PNAudioSource.java \
 	PNAudioPacker.java \
