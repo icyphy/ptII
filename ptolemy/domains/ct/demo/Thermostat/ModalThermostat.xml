@@ -171,7 +171,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.Integrator.initialState = 65.0; heating.HeatSource.value = 35.0; heating.ZeroCrossingDetector.zeroLevel = 80.0">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.Integrator.initialState = 65.0; heating.HeatSource.value = 35.0; heating.LevelCrossingDetector.level = 80.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.770501419737834">
                 </property>
@@ -189,7 +189,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 0.0; heating.ZeroCrossingDetector.zeroLevel = 70.0">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 0.0; heating.LevelCrossingDetector.level = 70.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -207,7 +207,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 35.0; heating.ZeroCrossingDetector.zeroLevel = 80.0">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="heating.HeatSource.value = 35.0; heating.LevelCrossingDetector.level = 80.0">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -333,8 +333,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                 </port>
             </entity>
-            <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
-                <property name="zeroLevel" class="ptolemy.data.expr.Parameter" value="70.0">
+            <entity name="LevelCrossingDetector" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
+                <property name="level" class="ptolemy.data.expr.Parameter" value="70.0">
                 </property>
                 <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -394,8 +394,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="AddSubtract.output" relation="relation3"/>
             <link port="Integrator.input" relation="relation3"/>
             <link port="Integrator.output" relation="relation"/>
-            <link port="ZeroCrossingDetector.output" relation="relation6"/>
-            <link port="ZeroCrossingDetector.trigger" relation="relation"/>
+            <link port="LevelCrossingDetector.output" relation="relation6"/>
+            <link port="LevelCrossingDetector.trigger" relation="relation"/>
             <link port="Scale.input" relation="relation"/>
             <link port="Scale.output" relation="relation8"/>
         </entity>

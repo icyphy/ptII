@@ -271,7 +271,7 @@ a finite state machine.</text>
                     </property>
                 </port>
             </entity>
-            <entity name="ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+            <entity name="ZD" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="412.0, 237.0">
@@ -425,7 +425,7 @@ a finite state machine.</text>
                     <property name="output"/>
                 </port>
             </entity>
-            <entity name="ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+            <entity name="ZD" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="418.0, 241.0">

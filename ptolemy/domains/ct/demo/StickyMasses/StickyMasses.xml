@@ -442,9 +442,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </port>
             </entity>
             <entity name="ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
-                <property name="zeroLevel" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
+		<property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
