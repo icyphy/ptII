@@ -638,7 +638,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             // else, put all upper bounds in an array.  if there is only
             // one element in array, that is the LUB; if there is more than
             // one element, find the least one, which may not exist.
-            if (numUpperBD == 0) {     // BTW, this CPO has no top.
+            if (numUpperBD == 0) {     // This CPO has no top.
                 return null;
             } else {
                 int[] upperBD = new int[numUpperBD];
