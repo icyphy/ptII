@@ -65,11 +65,15 @@ proc autoShallowCG {autoDirectory} {
 	java::call System gc
 	#puts "[java::call ptolemy.actor.Manager timeAndMemory [$time longValue]]"
     }
-    set summary "Percentages for $autoDirectory: $numberOfModels models \
-	    Builtin Interp/Shallow: \ 
-	    [expr {$builtinPercentageSum / $numberOfModels}] % \
-	    Exec Interp/Shallow: \
-	    [expr {$execPercentageSum / $numberOfModels}] $"
+    if {$numberOfModels == 0} {
+	set summary "Number of Models was 0 !"
+    } else {
+	set summary "Percentages for $autoDirectory: $numberOfModels models \
+		Builtin Interp/Shallow: \ 
+	[expr {$builtinPercentageSum / $numberOfModels}] % \
+		Exec Interp/Shallow: \
+		[expr {$execPercentageSum / $numberOfModels}] $"
+    }
     puts $summary
     return $summary
 }
