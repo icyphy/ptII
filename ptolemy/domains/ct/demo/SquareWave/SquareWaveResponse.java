@@ -87,6 +87,7 @@ public class SquareWaveResponse extends CTApplet {
 
             _dir = new CTMultiSolverDirector(
                     _toplevel, "DIR");
+            _dir.STAT = true;
             //dir.addDebugListener(new StreamListener());
             Clock sqwv = new Clock(_toplevel, "SQWV");
             AddSubtract add1 = new AddSubtract( _toplevel, "Add1");
