@@ -808,7 +808,7 @@ public class TMDirector extends Director implements TimedDirector {
                     new DoubleToken(_startTime.getDoubleValue()));
             startTime.setTypeEquals(BaseType.DOUBLE);
             stopTime = new Parameter(this, "stopTime",
-                    new DoubleToken("PositiveInfinity"));
+                    new DoubleToken("Infinity"));
             stopTime.setTypeEquals(BaseType.DOUBLE);
             preemptive = new Parameter(this, "preemptive",
                     new BooleanToken(false));
