@@ -375,7 +375,7 @@ PTJACL_JAR=$PTII/lib/ptjacl.jar
 # The reference version of JDK 1.2 has a -native flag
 # If we don't use -native, then some of the threading tests fail
 PTJACL_JFLAG=-native
-JTCLSH='[$(JAVA) $(PTJACL_JFLAG) tcl.lang.Shell]'
+JTCLSH='["$(JAVA)" $(PTJACL_JFLAG) tcl.lang.Shell]'
 
 if test ! -d "$PTII/util/testsuite"; then
     AC_MSG_RESULT([$PTII/util/testsuite is not a directory, so we need not
@@ -388,15 +388,21 @@ else
 
     if test -f "$PTJACL_JAR"; then
 	AC_MSG_RESULT([$PTJACL_JAR])
-	AC_MSG_CHECKING([for how to run jacl])
+	AC_MSG_CHECKING([for how to run jacl with $PTJACL_FLAG])
 	# This command starts up Jacl
-	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell; then
-		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell])
+	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
+		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell])
 	else
+		AC_MSG_RESULT(["$JAVA" $PTJACL_JFLAG failed])
 		PTJACL_JFLAG=
-		AC_MSG_RESULT(['$JAVA -native' failed,
-  use CLASSPATH=$PTJACL_JAR $JAVA tcl.lang.Shell])
-		JTCLSH='[$(JAVA) tcl.lang.Shell]'
+		AC_MSG_CHECKING([for how to run jacl with "$PTJACL_FLAG]")
+		if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
+			AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell])
+		else
+			AC_MSG_RESULT(['CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell' failed,
+	  use CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell])
+		fi
+		JTCLSH='["$(JAVA)" tcl.lang.Shell]'
 	fi
     else
 	AC_MSG_WARN([The ptjacl.jar file was not found at '$PTJACL_JAR'
