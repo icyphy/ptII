@@ -408,7 +408,7 @@ it is read and <CODE>$JAVAHOME/lib/classes.zip</CODE> is used in the
 classpath.  For example, if your JDK was at <CODE>/opt/jdk1.1.6</CODE>,
 then you would add the following to your <CODE>.cshrc</CODE>:
 <PRE>
-setenv JAVAHOME /optolemy/jdk1.1.6
+setenv JAVAHOME /opt/jdk1.1.6
 </PRE>
  <BR>If <CODE>JAVAHOME</CODE> is not set, then the script searches
 the path and looks for the <CODE>java</CODE> binary.  If the

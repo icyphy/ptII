@@ -41,7 +41,7 @@
 #
 # Your JAVAHOME variable should be set to the directory that
 # contains your Java distribution.  For example, your .cshrc could contain:
-# setenv JAVAHOME /optolemy/jdk1.1.5
+# setenv JAVAHOME /opt/jdk1.1.5
 #
 # See the Pxgraph class documentation for further instructions.
 #
