@@ -5,14 +5,30 @@
 # @author Christopher Hylands
 # @version $Id$
 #
-@java@ @jvmSize@
- -classpath @classPath@
+"@java@" @jvmSize@
+ -classpath "@classPath@"
  "@javaPtIIProperty@"
- ptolemy.copernicus.c.Main @modelPath@ -d @ptIIUserDirectory@
- "--debug"
+ ptolemy.copernicus.c.Main "@modelPath@" -d "@ptIIUserDirectory@"
  -p wjtp.watchDog time:@watchDogTimeout@
  -p wjtp.at targetPackage:@targetPackage@
  -p wjtp.mt targetPackage:@targetPackage@
+ -p wjtp.clt targetPackage:@targetPackage@@iterationsParameter@
+ -p wjtp.fot targetPackage:@targetPackage@
+ -p wjtp.ffat targetPackage:@targetPackage@
+ -p wjtp.ffet targetPackage:@targetPackage@
+ -p wjtp.ffpt targetPackage:@targetPackage@
  -p wjtp.idt targetPackage:@targetPackage@
- -p wjtp.snapshot1 outDir:@ptIIUserDirectory@/@targetPath@
+ -p wjtp.iat debug,targetPackage:@targetPackage@
+ -p wjtp.ipt targetPackage:@targetPackage@
+ -p wjtp.itt targetPackage:@targetPackage@
+ -p wjtp.ttn targetPackage:@targetPackage@
+ -p wjtp.ts targetPackage:@targetPackage@
+ -p wjtp.noe targetPackage:@targetPackage@
+ -p wjtp.nee targetPackage:@targetPackage@
+ -p wjtp.ee obfuscate,targetPackage:@targetPackage@
+ -p wjtp.finalSnapshot "outDir:@ptIIUserDirectory@/@targetPath@,targetPackage:@targetPackage@"
+ -p wjtp.iee enabled
+ -p wjtp.makefileWriter 
+ "_generatorAttributeFileName:@_generatorAttributeFileName@,targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@,templateDirectory:ptolemy/copernicus/java"
  @compileOptions@
+

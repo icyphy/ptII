@@ -7,6 +7,4 @@
 #
 "@java@"
  -Xfuture -classpath "@classPath@"
- "@javaPtIIProperty@"
- ptolemy.actor.gui.CompositeActorApplication
- -class @targetPackage@.CG@modelName@
+ @targetPackage@.Main 
