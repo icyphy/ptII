@@ -625,6 +625,87 @@ public class DEDirector extends Director {
         return true;
     }
 
+    /** Return true if there are input to this composite actor,
+     *  and the current time of the outside domain is greater than
+     *  or equal to the current time. Return false if there are no
+     *  inputs and the outside time is less than the current time.
+     *  Throw an exception if there are inputs and the outside time
+     *  is less than the current time.
+     *  @return True if the composite actor is ready to run for one 
+     *          iteration.
+     *  @exception IllegalActionException If there are input events
+     *          in the past, or the outside time is larger than the
+     *          time stamp of the first event in the event queue.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (!_isEmbedded()) {
+            return true;
+        }
+        // If the outside time is larger (later) than the first event
+        // in the queue, then there's something wrong with the outside
+        // domain.
+        CompositeActor container = (CompositeActor)getContainer();
+        double outsideCurrentTime = ((Actor)container).
+            getExecutiveDirector().getCurrentTime();
+        double nextEventTime = Double.MAX_VALUE;
+        if (!_eventQueue.isEmpty()) {
+                nextEventTime =  _eventQueue.get().timeStamp();
+        }
+        if (outsideCurrentTime > nextEventTime + 1e-10) {
+            throw new IllegalActionException(this,
+                    "Missed a firing at "
+                    + getCurrentTime() + "."
+                    + " The outside time is already" + 
+                    + outsideCurrentTime + ".");
+        }
+        // Now we check if there's any input.
+        Iterator inputPorts = container.inputPortList().iterator();
+        boolean hasInput = false;
+        while(inputPorts.hasNext()) {
+            IOPort port = (IOPort)inputPorts.next();
+            for (int i = 0; i < port.getWidth(); i++) {
+                if (port.hasToken(i)) {
+                    hasInput = true;
+                    break;
+                }
+            }
+        } 
+        if (hasInput) {
+            // FIXME: Also need a time resolution parameter, like the one
+            // in CT.
+            if (outsideCurrentTime < (getCurrentTime() - 1e-10)) {
+                throw new IllegalActionException(this,
+                        "Received an event in the past at "
+                        + "an opaque composite actor boundary: "
+                        + "Outside time is " + outsideCurrentTime
+                        + ". Local current time is " 
+                        + getCurrentTime() + ".");
+            }
+            
+            // Otherwise it is a proper timing relation.
+            // We set the current time.
+            if (Math.abs(nextEventTime - outsideCurrentTime)< 1e-10) {
+                // Round up the error in double number calculation.
+                setCurrentTime(nextEventTime);
+            } else {
+                // Input events are early than the next event in the queue.
+                // So we process the input events first.
+                setCurrentTime(outsideCurrentTime);
+            }
+            return true;
+        } else {
+            // If there is no input, we test whether there's anything 
+            // internal to fire.
+            if (Math.abs(nextEventTime - outsideCurrentTime)< 1e-10) {
+                // Round up the error in double number calculation.
+                setCurrentTime(nextEventTime);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     /** Set current time to zero, invoke the preinitialize() methods of
      *  all actors deeply contained by the container, and calculate
      *  priorities for simultaneous events.
@@ -694,54 +775,6 @@ public class DEDirector extends Director {
             }
         }
         super.stopFire();
-    }
-
-    /** Advance current time to the current time of the executive director,
-     *  and then call the superclass method.  The port argument must
-     *  be an opaque input port.  If any channel of the input port
-     *  has no data, then that channel is ignored.  If the container
-     *  does not implement the Actor interface, then this method does
-     *  nothing.
-     *
-     *  @return True if data are transferred.
-     *  @param port The input port from which tokens are transferred.
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port, or if the current time of the executive director
-     *   is in the past.
-     */
-    public boolean transferInputs(IOPort port) throws IllegalActionException {
-        Nameable container = getContainer();
-        if (container instanceof Actor) {
-            double outsideCurrentTime = ((Actor)container)
-                .getExecutiveDirector().getCurrentTime();
-            // FIXME: Also need a time resolution parameter, like the one
-            // in CT.
-            if (outsideCurrentTime < (getCurrentTime() - 1e-10)) {
-                throw new IllegalActionException(this,
-                        "Received an event in the past at "
-                        + "an opaque composite actor boundary: "
-                        + "Outside time is " + outsideCurrentTime
-                        + ". Local current time is " 
-                        + getCurrentTime() + ".");
-            }
-            if (!_eventQueue.isEmpty()) {
-                DEEvent nextEvent = _eventQueue.get();
-                // FIXME: Need a time resolution parameter, like the one
-                // in CT.
-                if (Math.abs(nextEvent.timeStamp() - outsideCurrentTime)
-                        < 1e-10) {
-                    setCurrentTime(nextEvent.timeStamp());
-                } else {
-                    setCurrentTime(outsideCurrentTime);
-                }
-            } else {
-                setCurrentTime(outsideCurrentTime);
-            }
-            
-            return super.transferInputs(port);
-        } else {
-            return false;
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
