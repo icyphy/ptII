@@ -293,7 +293,7 @@ public class ModelReference
                 _throwable = null;
             }
         } else if (attribute == executionOnFiring) {
-            String executionOnFiringValue = executionOnFiring.getExpression();
+            String executionOnFiringValue = executionOnFiring.stringValue();
             if (executionOnFiringValue.equals("run in calling thread")) {
                 _executionOnFiringValue = _RUN_IN_CALLING_THREAD;
             } else if (executionOnFiringValue.equals("run in a new thread")) {
@@ -305,7 +305,7 @@ public class ModelReference
                 "Unrecognized option for executionOnFiring: " + executionOnFiringValue);
             }
         } else if (attribute == postfireAction) {
-            String postfireActionValue = postfireAction.getExpression();
+            String postfireActionValue = postfireAction.stringValue();
             if (postfireActionValue.equals("do nothing")) {
                 _postfireActionValue = _DO_NOTHING;
             } else if (postfireActionValue.equals("stop executing")) {
