@@ -40,6 +40,36 @@
 #    ptuser@kahn 2% setenv CLASSPATH $TYCHO/java
 #    ptuser@kahn 3% java pt.domains.pn.kernel.PNPrimeExample 50
 
-set PNPrimeExample [java::new pt.domains.pn.kernel.PNPrimeExample]
-set args [java::new {java.lang.String[]} {1} {50}]
-$PNPrimeExample main $args
+# set PNPrimeExample [java::new pt.domains.pn.kernel.PNPrimeExample]
+# set args [java::new {java.lang.String[]} {1} {50}]
+# $PNPrimeExample main $args
+
+set myUniverse [java::new pt.domains.pn.kernel.PNUniverse]
+
+# FIXME: the 50 is hardwired in here
+set numberOfCycles 50
+
+# FIXME: setNoCycles should be setNumberOfCycles or setCycleNumber 
+$myUniverse setNoCycles $numberOfCycles 
+
+set ramp [java::new pt.domains.pn.kernel.PNRamp $myUniverse "ramp"]
+# FIXME: what does '2' mean?
+$ramp {initialize int} 2
+$ramp setCycles $numberOfCycles
+
+set sieve [java::new pt.domains.pn.kernel.PNSieve $myUniverse "2_sieve"]
+$sieve {initialize int} 2
+
+set queue [java::new pt.kernel.IORelation $myUniverse "2_queue"]
+
+set port [$sieve getPort "input"]
+[$port getQueue] setCapacity 1
+
+$port link $queue
+
+set port [$ramp getPort "output"]
+$port link $queue
+
+$myUniverse execute
+
+puts "Bye World"
