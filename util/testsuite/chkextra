@@ -54,4 +54,5 @@ if [ "${files}x" != "x" ]; then
 	echo $files
 fi
 
+rm -f $tmpls $tmpfiles
 exit $result
