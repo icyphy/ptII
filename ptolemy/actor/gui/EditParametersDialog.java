@@ -29,6 +29,7 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.gui.CancelException;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
@@ -43,6 +44,7 @@ import ptolemy.kernel.util.StringUtilities;
 import ptolemy.moml.MoMLChangeRequest;
 
 import java.awt.Frame;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.SwingUtilities;
@@ -79,7 +81,7 @@ by the user.
 @since Ptolemy II 1.0
 */
 public class EditParametersDialog extends ComponentDialog
-    implements ChangeListener {
+        implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
@@ -166,6 +168,35 @@ public class EditParametersDialog extends ComponentDialog
             } catch (IllegalActionException ex) {
                 MessageHandler.error("Edit Parameter Styles failed", ex);
             }
+        } else if (buttonPressed().equals("Help")) {
+            try {
+                URL doc = getClass().getClassLoader().getResource(
+                        "doc/expression.htm");
+                // Try to use the configuration, if we can.
+                boolean success = false;
+                if (_owner instanceof TableauFrame) {
+                    Configuration configuration
+                            = ((TableauFrame)_owner).getConfiguration();
+                    if (configuration != null) {
+                        configuration.openModel(
+                                null, doc, doc.toExternalForm());
+                        success = true;
+                    }
+                }
+                if (!success) {
+                    // Just open an HTML page.
+                    HTMLViewer viewer = new HTMLViewer();
+                    viewer.setPage(doc);
+                    viewer.pack();
+                    viewer.show();
+                }
+            } catch (Exception ex) {
+                try {
+                    MessageHandler.warning("Cannot open help page.", ex);
+                } catch (CancelException exception) {
+                    // Ignore the cancel.
+                }
+            }
         }
     }
 
@@ -245,6 +276,7 @@ public class EditParametersDialog extends ComponentDialog
         if (!buttonPressed().equals("Commit")
                 && !buttonPressed().equals("Add")
                 && !buttonPressed().equals("Edit Styles")
+                && !buttonPressed().equals("Help")
                 && !buttonPressed().equals("Remove")) {
             // Restore original parameter values.
             ((Configurer)contents).restore();
@@ -304,7 +336,7 @@ public class EditParametersDialog extends ComponentDialog
 
     // Button labels.
     private static String[] _moreButtons
-    = {"Commit", "Add", "Remove", "Edit Styles", "Cancel"};
+    = {"Commit", "Add", "Remove", "Edit Styles", "Help", "Cancel"};
 
     // The owner window.
     private Frame _owner;
