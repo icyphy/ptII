@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -109,6 +110,10 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         yTop = new Parameter(this, "yTop", new DoubleToken(1.0));
         yTop.setTypeEquals(BaseType.DOUBLE);
 
+        runOnModification = new Parameter(
+                this, "runOnModification", BooleanToken.FALSE);
+        runOnModification.setTypeEquals(BaseType.BOOLEAN);
+
         // Fill on wrapup no longer makes sense.
         // NOTE: This gets overridden with zero if the MoML file
         // gives the value of this variable.  Hence, we need to
@@ -157,6 +162,12 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  By default, it has value true.
      */
     public Parameter periodic;
+
+    /** If <i>true</i>, then when the user edits the plot, if the
+     *  manager is currently idle, then run the model.
+     *  This is a boolean that defaults to <i>false</i>.
+     */
+    public Parameter runOnModification;
 
     /** The bottom of the Y range. This is a double, with default value -1.0.
      */
@@ -213,15 +224,32 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     }
 
     /** React to the fact that data in the specified plot has been modified
-     *  by a user edit action by recording the data.
+     *  by a user edit action by recording the data.  Note that this is
+     *  typically called in the UI thread, and it is synchronized.
      *  @param source The plot containing the modified data.
      *  @param dataset The data set that has been modified.
      */
-    public void editDataModified(EditablePlot source, int dataset) {
+    public synchronized void editDataModified(
+            EditablePlot source, int dataset) {
         if (dataset == 0 && !_settingInitialTrace) {
             _dataModified = true;
             _data = ((EditablePlot)plot).getData(0);
-            // FIXME: Could optionally execute the model here if it is idle.
+
+            // Optionally execute the model here if it is idle.
+            try {
+                boolean runValue = ((BooleanToken)runOnModification.getToken())
+                         .booleanValue();
+                if (runValue) {
+                    Manager manager = getManager();
+                    if (manager != null && manager.getState() == Manager.IDLE) {
+                        manager.startRun();
+                    }
+                }
+            } catch (IllegalActionException ex) {
+                // Should be thrown only if the manager is not idle, or
+                // if the parameter is not boolean valued.
+                throw new InternalErrorException(ex);
+            }
         }
     }
 
@@ -361,7 +389,8 @@ public class SketchedSource extends SequencePlotter implements EditListener {
 
     // Update the initial trace parameter if the sketch on screen has
     // been modified by the user.
-    private void _updateInitialTrace() throws IllegalActionException {
+    private synchronized void _updateInitialTrace()
+            throws IllegalActionException {
         if (_dataModified) {
             try {
                 // Data has been modified on screen by the user.
