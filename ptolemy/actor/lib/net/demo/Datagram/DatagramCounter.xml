@@ -1,57 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DatagramCounter" class="ptolemy.actor.TypedCompositeActor">
+<entity name="model3f" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[644, 415]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This wire carries no data.  It is used 
-to insure that the DatagramReader, which
-is configured to block in fire, does
-so only after the datagram it awaits 
-has been sent by the DatagramWriter.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="255.0, 125.0">
-        </property>
-    </property>
-    <property name="annotation6" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">This demo measures the speed of the datagram actors in the SDF domain.
-Look for the execution time on the console which invoked the model.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="-20.0, 5.0">
-        </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -60,117 +15,120 @@ Look for the execution time on the console which invoked the model.</text></svg>
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="105.0, 235.0">
+        <property name="_location" class="ptolemy.moml.Location" value="125.0, 145.0">
         </property>
     </property>
-    <property name="_generator" class="ptolemy.copernicus.kernel.GeneratorAttribute">
-        <property name="initialParametersURL" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/kernel/Generator.xml&quot;">
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="codeGenerator" class="ptolemy.data.expr.Parameter" value="&quot;java&quot;">
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">This demo sends and receives 1000 datagrams.
+Real time consumed prints to your standard output.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="40.0, 20.0">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The wire connecting DatagramWriter
+to DatagramReader carries no data.
+It tricks the SDF scheduler into
+firing them in that order.
+</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="105.0, 240.0">
+        </property>
+    </property>
+    <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="binWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="505.0, 220.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
+        <property name="_location" class="ptolemy.moml.Location" value="410.0, 220.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
+        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
+        </property>
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4003">
+        </property>
+        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="java" class="ptolemy.kernel.util.StringAttribute" value="&quot;java&quot;">
+                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
                 </property>
-                <property name="applet" class="ptolemy.kernel.util.StringAttribute" value="&quot;applet&quot;">
+                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
                 </property>
-                <property name="c" class="ptolemy.kernel.util.StringAttribute" value="&quot;c&quot;">
-                </property>
-                <property name="interpreted" class="ptolemy.kernel.util.StringAttribute" value="&quot;interpreted&quot;">
-                </property>
-                <property name="jhdl" class="ptolemy.kernel.util.StringAttribute" value="&quot;jhdl&quot;">
-                </property>
-                <property name="shallow" class="ptolemy.kernel.util.StringAttribute" value="&quot;shallow&quot;">
+                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
                 </property>
             </property>
-            <doc>The code generator to run.</doc>
         </property>
-        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc>If true, compile the generated code.  The default is true.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="185.0, 220.0">
         </property>
-        <property name="show" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc> If true, then show the generated code.  The default is true.</doc>
-        </property>
-        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc> If true, then run the generated code.  The default is true.</doc>
-        </property>
-        <property name="ptII" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dir&quot;)">
-            <doc>The location of the Ptolemy II classes.  The default is the value of the ptolemy.ptII.dir java system property</doc>
-        </property>
-        <property name="ptIIUserDirectory" class="ptolemy.data.expr.Parameter" value="ptII">
-            <doc>The top level directory to write the code in. The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetPath'.</doc>
-        </property>
-        <property name="targetPackage" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.copernicus.&quot; + codeGenerator + &quot;.cg.&quot; + modelName">
-            <doc>The package to generate code in with the model name appended. Defaults to "ptolemy.copernicus." + codeGenerator + ".cg." + modelName</doc>
-        </property>
-        <property name="targetPath" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/java/cg/DemoDatagramSDF&quot;">
-            <doc>The path relative to the ptIIUserDirectory to generate code in. The default is derived from the value of codeGenerator + targetPackage.</doc>
-        </property>
-        <property name="modelPath" class="ptolemy.data.expr.Parameter" value="&quot;file:/C:/Cygwin/home/winthrop/8Feb/ptII/ptolemy/actor/lib/net/demo/Datagram/DatagramCounter.xml&quot;">
-            <doc>The path to the model, including the .xml extension.  modelPath is converted to a URL internally before use.</doc>
-        </property>
-        <property name="modelName" class="ptolemy.data.expr.Parameter" value="&quot;DemoDatagramSDF&quot;">
-            <doc> The name of the model, read from the .xml file and sanitized.</doc>
-        </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            <doc>Number of iterations to run the model for. Usually, the model itself contains the number of iterations to run for. Defaults to 1000.</doc>
-        </property>
-        <property name="compileCommandTemplateFile" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/compileCommandTemplate.txt&quot;">
-            <doc>The template file that contains the command to run that generates the code.</doc>
-        </property>
-        <property name="compileOptions" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
-            <doc>User supplied arguments to be passed to the code generator.  Defaults to the empty string.</doc>
-        </property>
-        <property name="classPath" class="ptolemy.data.expr.Parameter" value="ptIIUserDirectory + classPathSeparator + property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses + classPathSeparator + necessaryClassPath">
-            <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
-        </property>
-        <property name="necessaryClasses" class="ptolemy.data.expr.Parameter" value="{&quot;ptolemy.domains.sdf.kernel.SDFScheduler&quot;,&quot;ptolemy.copernicus.java.Main&quot;,&quot;ptolemy.kernel.util.NamedObj&quot;,&quot;soot.gui.ICompilationListener&quot;,&quot;jasmin.Main&quot;}">
-            <doc>An array of Strings, where each element names a class that needs to be present in the classpath </doc>
-        </property>
-        <property name="necessaryClassPath" class="ptolemy.data.expr.Parameter" value="&quot;C:/Cygwin/home/winthrop/8Feb/ptII;C:/Cygwin/home/winthrop/8Feb/ptII/lib/sootclasses.jar;C:/Cygwin/home/winthrop/8Feb/ptII/lib/jasminclasses.jar&quot;">
-            <doc>Class path that refers to necessary classes. Derived from necessaryClasses</doc>
-        </property>
-        <property name="classPathSeparator" class="ptolemy.data.expr.Parameter" value="property(&quot;path.separator&quot;)">
-            <doc>The classpath separator. Under Windows, the default is ';'. Under Unix, the default is ':'</doc>
-        </property>
-        <property name="java" class="ptolemy.data.expr.Parameter" value="property(&quot;java.home&quot;) + &quot;/bin/java&quot;">
-            <doc>Defaults to the value of the java.home property + bin/java, for example: c:/jdk1.3.1/bin/java</doc>
-        </property>
-        <property name="javaSystemJar" class="ptolemy.data.expr.Parameter" value="property(&quot;java.home&quot;) + &quot;/lib/rt.jar&quot;">
-            <doc>Defaults to the value of the java.home property + "/lib/rt.jar"</doc>
-        </property>
-        <property name="jvmSize" class="ptolemy.data.expr.Parameter" value="&quot;-Xmx256m&quot;">
-            <doc>The command line arguments to pass to the java interpreter that control the size.  The default is -Xmx256m</doc>
-        </property>
-        <property name="runCommandTemplateFile" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/runCommandTemplate.txt&quot;">
-            <doc>The template file that contains the command to run the generated code.</doc>
-        </property>
-        <property name="runOptions" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
-            <doc>User supplied arguments to be passed to the command that will run the generated code. Defaults to the empty string.</doc>
-        </property>
-        <property name="sootDir" class="ptolemy.data.expr.Parameter" value="ptII + &quot;/lib&quot;">
-            <doc>The directory that contains the soot jar files. Defaults to the value of the ptII parameter  + "/lib"</doc>
-        </property>
-        <property name="sootClasses" class="ptolemy.data.expr.Parameter" value="sootDir + &quot;/sootclasses.jar&quot; + classPathSeparator + sootDir + &quot;/jasminclasses.jar&quot; + classPathSeparator + javaSystemJar">
-            <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).  The necessaryClassPath parameter may end up duplicating some of the elements of this parameter.</doc>
-        </property>
-        <property name="ptIIUserDirectoryAsURL" class="ptolemy.data.expr.Parameter" value="&quot;file:/c:/cygwin/home/winthrop/8Feb/ptII/&quot;">
-            <doc>The top level directory to write the code in as a URL.  Derived from the value of the ptIIUserDirectory parameter.</doc>
-        </property>
-        <property name="watchDogTimeout" class="ptolemy.data.expr.Parameter" value="600000">
-            <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
-        </property>
-    </property>
+        <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="remoteSocketNumber" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReader">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
         </property>
         <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="440">
         </property>
-        <property name="platformBufferLength" class="ptolemy.data.expr.Parameter" value="8192">
+        <property name="platformBufferLength" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -192,7 +150,7 @@ Look for the execution time on the console which invoked the model.</text></svg>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="265.0, 310.0">
+        <property name="_location" class="ptolemy.moml.Location" value="295.0, 220.0">
         </property>
         <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -210,81 +168,6 @@ Look for the execution time on the console which invoked the model.</text></svg>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
-        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
-        </property>
-        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
-        </property>
-        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4003">
-        </property>
-        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
-                </property>
-                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
-                </property>
-                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 135.0">
-        </property>
-        <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="remoteSocketNumber" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
-            </property>
-        </port>
-        <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="binWidth" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="455.0, 320.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>HistogramPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.0" max="3.5"/>
-<yRange min="0.0" max="900.0"/>
-<barGraph width="0.5" offset="0.15"/>
-<bin width="1.0" offset="0.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.moml.Location" value="370.0, 320.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -293,7 +176,7 @@ Look for the execution time on the console which invoked the model.</text></svg>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="130.0, 145.0">
+        <property name="_location" class="ptolemy.moml.Location" value="70.0, 220.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -305,18 +188,18 @@ Look for the execution time on the console which invoked the model.</text></svg>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DatagramReader.output" relation="relation5"/>
-    <link port="DatagramReader.trigger" relation="relation"/>
-    <link port="DatagramWriter.data" relation="relation7"/>
-    <link port="DatagramWriter.triggerOutput" relation="relation"/>
-    <link port="HistogramPlotter.input" relation="relation6"/>
-    <link port="ArrayLength.input" relation="relation5"/>
-    <link port="ArrayLength.output" relation="relation6"/>
-    <link port="Ramp.output" relation="relation7"/>
+    <link port="HistogramPlotter.input" relation="relation"/>
+    <link port="ArrayLength.input" relation="relation3"/>
+    <link port="ArrayLength.output" relation="relation"/>
+    <link port="DatagramWriter.data" relation="relation4"/>
+    <link port="DatagramWriter.triggerOutput" relation="relation2"/>
+    <link port="DatagramReader.output" relation="relation3"/>
+    <link port="DatagramReader.trigger" relation="relation2"/>
+    <link port="Ramp.output" relation="relation4"/>
 </entity>
