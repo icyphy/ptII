@@ -164,6 +164,14 @@ public class Sampler extends Transformer
         }
     }
 
+    /** Clear the cached input tokens.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public void preinitialize() throws IllegalActionException {
+        _lastInputs = null;
+        super.preinitialize();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
