@@ -39,12 +39,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.util.NoSuchElementException;
 import javax.media.sound.sampled.AudioStream;
 import javax.media.sound.sampled.AudioSystem;
 import javax.media.sound.sampled.AudioFormat;
 import javax.media.sound.sampled.AudioFormat.Encoding;
 import javax.media.sound.sampled.FileStream;
 import javax.media.sound.sampled.OutputChannel;
+import javax.media.sound.sampled.Channel;
 import javax.media.sound.sampled.Mixer;
 import javax.media.sound.sampled.AudioUnavailableException;
 
@@ -71,6 +73,20 @@ import javax.media.sound.sampled.AudioUnavailableException;
 
 
 public class NewAudio implements Runnable {
+    
+    /** Create a new instance which is initially empty. This instance
+     *  can receive data through the receiveSample method in real time.
+     *  These samples are assumed to be linear encoded and normalized
+     *  between -1.0 and 1.0 .
+     *	@param af The AudioFormat that data samples should have.
+     */
+    public NewAudio(AudioFormat af) {
+        _soundQueue = new AudioQueue(af);
+	_format = _getProperFormat(af, Encoding.PCM_SIGNED_BIG_ENDIAN);
+	_byteBuffer = null;
+	_doubleBuffer = null;
+	_isRealTime = true;
+    }
 
     /** Create a new instance initialized with the given double array.
      *	The arguments are a double array containing the audio data
@@ -84,7 +100,11 @@ public class NewAudio implements Runnable {
      *   being converted. 
      */
     public NewAudio(double[] buffer, AudioFormat af) throws IOException {
-	this(_doubleToByte(buffer, af), af);
+        _format = af;
+        _doubleBuffer = buffer;
+	_doubleToByte();
+	InputStream is = new ByteArrayInputStream(_byteBuffer);
+	_loadAsStream(new AudioStream(is, af, _byteBuffer.length));
     }
   
     /** Create a new instance initialized with the given byte array.
@@ -111,7 +131,7 @@ public class NewAudio implements Runnable {
      *   being converted.
      */
     public NewAudio(InputStream is, AudioFormat af, long length) 
-	throws IOException {
+            throws IOException {
 	_loadAsStream(new AudioStream(is, af, length));
     }
 
@@ -150,18 +170,19 @@ public class NewAudio implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
      
-    /** Return the current AudioStream.
-     *	@return the current AudioStream. 
-     */
-    public AudioStream getStream() {
-	return _stream;
-    }
-
     /** Return the format of the current AudioStream.
      *  @return the format of the current AudioStream. 
      */
     public AudioFormat getFormat() {
-	return _stream.getFormat();
+	return _format;
+    }
+
+    /** Return the size (in bytes) of t
+        he current audio data.
+        *  @return the size (in bytes) of the current audio data.
+        */
+    public int size() {
+        return _soundQueue.numBytes();
     }
 
     /** Return the audio data as a double array. This does not modify 
@@ -174,7 +195,7 @@ public class NewAudio implements Runnable {
 	if (_doubleBuffer == null)
 	    if (_byteBuffer == null)
 		_refreshBuffer();
-	    else _byteToDouble(getFormat());
+	    else _byteToDouble();
 	return _doubleBuffer;
     }
 
@@ -190,6 +211,30 @@ public class NewAudio implements Runnable {
 	return _byteBuffer;
     }
 
+    /** Place sample into the sound queue to be processed in real time.
+     *  The sample is assumed to be linear encoded and normalized 
+     *  between -1.0 and 1.0 . If this method is called when _isRealTime
+     *  is not true (when audio data is read in batch mode from memory,
+     *  a file or a URL), then this method will do nothing.
+     *  @param sample the sample to be placed in the sound queue.
+     */
+    public void putSample(double sample) {
+	if (_isRealTime)
+	    _soundQueue.put(sample);
+    }
+
+    /** Obtain one sample from the sound queue. This sample is assumed to
+     *  be linear encoded and normalized between -1.0 and 1.0. If the
+     *  sound queue is empty, this method will return 0.0 .
+     *  @return one sample from the sound queue, or 0.0 if the sound 
+     *          queue is empty.
+     */
+    public double getSample() {
+        if (_soundQueue.isEmpty())
+	    return 0.0;
+	return _soundQueue.getDouble();
+    }
+
     /** Write audio data to a file in the given file format. The
      *  arguments are the name of the file to which the audio data 
      *  will be written, and the type of file that it will be saved
@@ -201,11 +246,13 @@ public class NewAudio implements Runnable {
      *  @throws IOException if the audio data could not be saved to file.
      */ 
     public void saveAs(String filename, FileStream.FileType fileType) 
-	throws IOException {
-	if(_stream == null) 
-	    throw new NullPointerException ("No loaded audio to save");
+            throws IOException {
+        _refreshBuffer();
+	InputStream is = new ByteArrayInputStream(_byteBuffer);
+        AudioStream as = new AudioStream
+            (is, _format, AudioStream.UNKNOWN_LENGTH); 
 	File file = new File( filename );
-	if (AudioSystem.write(_stream, file, fileType, -1) == null) 
+	if (AudioSystem.write(as, file, fileType, -1) == null) 
 	    throw new IOException ("Could not save audio data to file");
     }
     
@@ -232,16 +279,9 @@ public class NewAudio implements Runnable {
      *   has a lock on the output channel.
      */
     public void openPlayback() throws AudioUnavailableException {
-	OutputChannel channel = null;
-	if (_stream == null)
-	    throw new NullPointerException 
-		("AudioStream is null, cannot start playback");
 	if (_mixer == null) 
 	    _mixer = AudioSystem.getMixer(null);        
-	channel = _mixer.getOutputChannel(_stream.getFormat(), 
-					  _OUTPUT_BUFFER_SIZE);
-	_target = channel;
-	_current = _stream;
+	_target = _mixer.getOutputChannel(_format, _OUTPUT_BUFFER_SIZE);
     }
 
     /** Create a new thread of execution that plays back the
@@ -254,15 +294,11 @@ public class NewAudio implements Runnable {
 	if (_pushThread != null)
 	    throw new NullPointerException 
 		("Playback thread is not null, cannot start playback : ");
-	if (_current == null) 
-	    throw new NullPointerException 
-		("InputStream not set, cannot start playback");
 	if (_target == null) 
 	    throw new NullPointerException 
 		("OutputChannel not set, cannot start playback");
 	_stopping = false;
 	_stopped = false; 
-	_soundBuffer = new ByteArrayOutputStream();
 	_pushThread = new Thread(this);
 	_pushThread.start();
     }
@@ -270,16 +306,16 @@ public class NewAudio implements Runnable {
     /** FIXME : Stop playback of the current audio stream through the output
      *  channel. Currently this method takes a long time to actually
      *  stop the audio data because the output channel has a very large 
-     *  buffer (16384), and it when the output channel writes to its
+     *  buffer (4096), and it when the output channel writes to its
      *  buffer, it can't be interrupted. I have tried to uses a smaller
      *  buffer for the output channel but that results in the audio data 
      *  sounding terrible at high sampling rates. 
      */
     public void stopPlayback() {
-	if (_target.isPaused()) {
-	    _target.flush();
-	    _target.resume();
-	}
+        if (_target.isPaused()) {
+            _target.flush();
+            _target.resume();
+        }
 	if (_pushThread != null) {
 	    _stopping = true;
 	    while(!_stopped) {
@@ -289,11 +325,9 @@ public class NewAudio implements Runnable {
 	    }
 	    _pushThread = null;
 	}
-	_byteBuffer = _soundBuffer.toByteArray();
-	ByteArrayInputStream bais = new ByteArrayInputStream(_byteBuffer);
-	_stream = new AudioStream(bais , getFormat(), _byteBuffer.length);
-	_current = _stream;
-	_soundBuffer = new ByteArrayOutputStream();
+        
+	if (!_isRealTime) 
+            _soundQueue = new ByteArrayAudioQueue(_byteBuffer, getFormat());
 	_looping = false;
     }
   
@@ -321,52 +355,39 @@ public class NewAudio implements Runnable {
 	    _target.resume();
     }
 
-    /** Play the current audio stream through the output channel.
-     *  This method is the implementation of the Runnable 
-     *  interface and is used by startPlayback(). It might
-     *  be a good idea to make a private extension of the
-     *  Thread class instead of making NewAudio implement
-     *  the Runnable Interface, so that the end user will not have 
-     *  to this method. This method is a modified version of
-     *  one used in a demo of the Java Sound API made by SUN.
-     *  @throws RuntimeException FIXME : if an I/O error occurs 
-     *   during playback. This is a hack because I can't throw
-     *   an IOException, and yet one must be thrown if there
-     *   is a I/O error.
+    /** Play audio continuously through the output channel.
      */
     public void run() {
-	byte[] dataArray = new byte[_target.getBufferSize()/2];
-	byte[] soundByte;
-	int bytesRead, bytesRemaining;
-	while(!_stopping) {         
-	    try {						
-		bytesRead = _current.read(dataArray);
-		if (bytesRead == -1) 
-		    if (!_looping) {
-			_target.write(null, 0, 0);
+	byte[] data = new byte[_target.getBufferSize()/ 2];
+	boolean endOfStream = false;
+	int bytesRemaining, bytesRead;
+	while(!_stopping && (!endOfStream || _isRealTime)) {
+	    for (bytesRead = 0; bytesRead < data.length; bytesRead += 1) {
+		if (_soundQueue.isEmpty()) 
+		    if (_isRealTime)
+                        for (int i = 0; i < _format.getChannels(); i += 1) 
+                            _soundQueue.put(0.0);
+		    else if (!_looping) {
+		        endOfStream = true;
 			break;
-		    } else {
-			_byteBuffer = _soundBuffer.toByteArray();
-			_current = new ByteArrayInputStream(_byteBuffer);
-			_soundBuffer = new ByteArrayOutputStream();
-			continue;
-		    }
-		bytesRemaining = bytesRead;
-		while ((bytesRemaining > 0) && !_stopping){
-		    bytesRemaining -= _target.write(dataArray, 0, bytesRead);
-		    if (getFormat().getEncoding() == 
-			Encoding.PCM_SIGNED_BIG_ENDIAN)
-			_soundBuffer.write(dataArray, 0 , bytesRead);
-		    else _soundBuffer.write(_reverse(dataArray, getFormat()),
-					    0, bytesRead);
-		}
-	    } catch (IOException ioe) {
-		throw new RuntimeException (ioe.getMessage());
+		    } else _soundQueue = new ByteArrayAudioQueue
+                               (_byteBuffer, _format);
+                try {
+                    data[bytesRead] = _soundQueue.getByte();
+                } catch (NoSuchElementException e) {
+                    data[bytesRead] = 0;
+System.out.println("NO SUCH");
+ 
+                }
 	    }
-	}
+	    bytesRemaining = bytesRead;
+	    while ((bytesRemaining > 0) && !_stopping) 
+	        bytesRemaining -= _target.write(data, 0, bytesRead);
+     	}
 	_stopped = true;
+	_target.write(null, 0, 0);
     }
-  
+
     /** Return a String representation of the type of audio data stored
      *  in this class.
      *  @return a String representation of the audio data.
@@ -374,26 +395,7 @@ public class NewAudio implements Runnable {
     public String toString() {
 	return "Ptolemy Audio\n"
 	    + "-------------------\n"
-	    + "size = " + getStream().getLength() + " bytes\n"
 	    + "format = " + getFormat() + "\n";
-    }
-
-    /** Convert the audio data to the given audio format. Currently the
-     *  only conversions that are available are from mu-law or a-law
-     *  encoded data to linear encoded data that is either MSB or LSB.
-     *  Note : should this method be made private?
-     *  @return true if the conversion was successful.
-     */
-    public boolean convert(AudioFormat af) {
-	AudioStream asold = _stream;
-	_stream = AudioSystem.getAudioStream(af, asold);
-	if (_stream == null) {
-	    _stream = asold;
-	    return false;
-	}
-	_byteBuffer = null;
-	_doubleBuffer = null;
-	return true;
     }
        
     /** Convert the audio data to the given audio encoding. Currently the
@@ -403,13 +405,10 @@ public class NewAudio implements Runnable {
      *  of a sample will be doubled, but everything else about the 
      *  current AudioFormat (i.e sample rate, number of channels) will
      *  remain the same.
-     *  Note : should this method be made private?
-     *  @return true if the conversion was successful.
      */
-    public boolean convert(Encoding ae) {
-	AudioFormat af = getFormat();
+    private AudioFormat _getProperFormat(AudioFormat af, Encoding ae) {
 	if (af.getEncoding() == ae)
-	    return true;
+	    return af;
 	double srate = af.getSampleRate();
 	int ssize = af.getSampleSizeInBits();
 	int channels = af.getChannels();
@@ -417,13 +416,13 @@ public class NewAudio implements Runnable {
 	double frate = af.getFrameRate();
 	if (_needToDoubleSampleSize(af.getEncoding(), ae)) 
 	    af = new AudioFormat(ae, srate, ssize * 2, channels, 
-				 fsize * 2, frate);
+                    fsize * 2, frate);
 	else if (_needToHalfSampleSize(getFormat().getEncoding(),ae))
 	    af = new AudioFormat(ae, srate, ssize / 2, channels, 
-				 fsize / 2, frate);
+                    fsize / 2, frate);
 	else af = new AudioFormat(ae, srate, ssize, channels, 
-				  fsize, frate);
-	return convert(af);
+                fsize, frate);
+	return af;
     } 
 
     ///////////////////////////////////////////////////////////////////
@@ -433,11 +432,11 @@ public class NewAudio implements Runnable {
      *  and the output is not compressed, and false otherwise.
      */
     private boolean _needToDoubleSampleSize(Encoding input, 
-					    Encoding output) {
+            Encoding output) {
 	return (((input == Encoding.ALAW) || 
-		 (input == Encoding.ULAW)) &&
+                (input == Encoding.ULAW)) &&
 		!((output == Encoding.ALAW) || 
-		  (output == Encoding.ULAW)));
+                        (output == Encoding.ULAW)));
     }
 
     /** Return true if the input encoding is not a compressed encoding
@@ -447,7 +446,7 @@ public class NewAudio implements Runnable {
      *  or a-law.
      */
     private boolean _needToHalfSampleSize(Encoding input, 
-					  Encoding output) {
+            Encoding output) {
 	return _needToDoubleSampleSize(output, input);
     }
 
@@ -482,14 +481,19 @@ public class NewAudio implements Runnable {
     private void _loadAsStream(AudioStream as) throws IOException {
 	if (as == null) 
 	    throw new IOException("Can't load empty audio stream");
-	_stream = as;
-	boolean converted = convert(Encoding.PCM_SIGNED_BIG_ENDIAN);
-	if (!converted)
-	    converted = convert(Encoding.PCM_SIGNED_LITTLE_ENDIAN);
-	if (!converted) 
+	_format = as.getFormat();
+	AudioStream asold = as;
+	if (!(_format.getEncoding() == Encoding.PCM_SIGNED_BIG_ENDIAN) &&
+                !(_format.getEncoding() == Encoding.PCM_SIGNED_LITTLE_ENDIAN))
+            as = AudioSystem.getAudioStream
+                (_getProperFormat(_format, Encoding.PCM_SIGNED_BIG_ENDIAN), asold);
+	if (as == null) 
 	    throw new IOException
-		("Could not convert audio stream to linear format");        
-	_byteBuffer = null;
+		("Could not convert audio stream to linear format");
+	_format = as.getFormat();
+	_byteBuffer = new byte[(int) as.getLength()];
+	as.read(_byteBuffer);
+	_soundQueue = new ByteArrayAudioQueue(_byteBuffer, _format);
 	_doubleBuffer = null;
     }
 
@@ -500,102 +504,62 @@ public class NewAudio implements Runnable {
      *  from the audio stream into the byte array buffer.
      */
     private void _refreshBuffer() throws IOException {
-	_byteBuffer = new byte[(int) _stream.getLength()];
-	AudioFormat af = _stream.getFormat();
-	_stream.read(_byteBuffer);
-	ByteArrayInputStream bais = new ByteArrayInputStream(_byteBuffer);
-	_stream = new AudioStream(bais, af, _byteBuffer.length);
-	_byteToDouble(af);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	while (!_soundQueue.isEmpty())
+            baos.write(_soundQueue.getByte());
+	_byteBuffer = baos.toByteArray();
+	for (int i = 0; i < _byteBuffer.length; i += 1) 
+            _soundQueue.put(_byteBuffer[i]);
+	_byteToDouble();
     }
+ 
 
     /** Transfer the audio data stored in the byte array buffer 
      *  into the double array buffer so that every element in the 
      *  double array will be a linear encoded sample normalized 
-     *  between -1.0 and 1.0 . The AudioFormat tells how many bytes 
-     *  per sample there are, and whether the bytes are stored in 
-     *  MSB or LSB order.
+     *  between -1.0 and 1.0 . 
      */
-    private void _byteToDouble(AudioFormat af) {
-	long bits;
-	int i, j, index;
-	int bytesPerSample = af.getSampleSizeInBits() / 8;
-	_doubleBuffer = new double[_byteBuffer.length / bytesPerSample];
-	for (i = 0; i < _doubleBuffer.length ; i += 1) {
-	    for (j = 0, bits = 0; j < bytesPerSample; j += 1) {
-		if (af.getEncoding() == Encoding.PCM_SIGNED_LITTLE_ENDIAN)
-		    index = i * bytesPerSample + j;
-		else index = (i + 1) * bytesPerSample - j - 1;
-		bits += (long) (_byteBuffer[index] * Math.pow(256, j));
-	    }
-	    _doubleBuffer[i] = ((double) bits) / 
-		(0.4999 * Math.pow(256, bytesPerSample));
-	}
+    private void _byteToDouble() {
+        AudioQueue aqs = new ByteArrayAudioQueue(_byteBuffer, _format);
+        int numSamples = _byteBuffer.length * 8 
+            / _format.getSampleSizeInBits();
+        _doubleBuffer = new double[numSamples];  
+        for (int i = 0; !aqs.isEmpty(); i += 1) 
+	    _doubleBuffer[i] = aqs.getDouble();
     }
- 
-    /** Transfer the audio data stored in the given double array into 
-     *  the given byte array. The AudioFormat tells how many bytes 
-     *  per sample there should be in the byte array, and whether the 
-     *  bytes should be stored in MSB or LSB order.
-     */
-    private static byte[] _doubleToByte(double[] d, AudioFormat af) {
-	long bits;
-	int bytesPerSample = af.getSampleSizeInBits() / 8;
-	byte[] b = new byte[bytesPerSample * d.length];
-	int i, j, index;
-	for (i = 0; i < d.length; i += 1) {
-	    bits = Math.round(0.4999 * d[i] * Math.pow(256, bytesPerSample));
-	    for (j = 0; j < bytesPerSample; j += 1, bits /= 256) {
-		if (af.getEncoding() == Encoding.PCM_SIGNED_BIG_ENDIAN)
-		    index = (i + 1) * bytesPerSample - j - 1;
-		else index = i * bytesPerSample + j;
-		b[index] = (byte) (bits % 256);
-	    }
-	}
-	return b;
-    }
-
    
     /** Transfer the audio data stored in the double array buffer into 
      *  the byte array buffer. The AudioFormat tells how many bytes 
      *  per sample there should be in the byte array, and whether the 
      *  bytes should be stored in MSB or LSB order.
      */
-    private void _doubleToByte(AudioFormat af) {
-	_byteBuffer = _doubleToByte(_doubleBuffer, af);
+    private void _doubleToByte() {
+	AudioQueue aqs = new DoubleArrayAudioQueue(_doubleBuffer, _format);
+	int numBytes = _doubleBuffer.length * 
+            _format.getSampleSizeInBits() / 8;
+	_byteBuffer = new byte[numBytes];  
+	for (int i = 0; !aqs.isEmpty(); i += 1)
+  	    _byteBuffer[i] = aqs.getByte();
     }
 
-    /** Reverse the elements in the given byte array, such that
-     *  if they were in MSB order, they should now be LSB order,
-     *  and vice versa.
-     */
-    private static byte[] _reverse(byte[] b, AudioFormat af) {
-	byte[] br = new byte[b.length];
-	int bytesPerSample = af.getSampleSizeInBits() / 8;
-	int rindex, index;
-	for (int i = 0; i < (b.length / bytesPerSample); i += 1) 
-	    for (int j = 0; j < bytesPerSample ; j += 1) {
-		rindex = (i + 1) * bytesPerSample  - j - 1;
-		index = i * bytesPerSample + j;
-		br[rindex] = b[index];
-	    }
-	return br;
-    }
     
-  ///////////////////////////////////////////////////////////////////
-  ////                         private members                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
 
+    private AudioFormat _format = null;
+
+    // Queue of audio data waiting to be outputted
+    private AudioQueue _soundQueue = null;
+    
     // The mixer used to obtain an output channel
     private Mixer _mixer = null;
 
-    // The thread of exceution used for playback
+    // The thread of execution used for playback
     private Thread _pushThread = null;
-
-    // The current stream attached to the output channel
-    private InputStream _current = null;
-    
-    // Stores the part of the audio stream that has already written
-    // to the output channel so that the audio data is never destroyed.
-    private ByteArrayOutputStream _soundBuffer = new ByteArrayOutputStream();
+  
+    // true if the audio data will be sent to the output channel 
+    // in real time through the putSample method. 
+    private boolean _isRealTime = false;
 
     // true if the current audio stream is stopped
     private boolean _stopped = false;
@@ -608,13 +572,10 @@ public class NewAudio implements Runnable {
 
     // the output channel to which audio data is written
     private OutputChannel _target = null;
-    
-    // the underlying audio stream to which all conversions are made
-    private AudioStream _stream = null;
 
     // the current byte array representation of the audio data. the
-    // AudioFormat of _stream specifies exactly how the bytes in
-    // this buffer represent audio data. This includes how many
+    // AudioFormat _format  specifies exactly how the bytes in
+    // this buffer represent audio data, such as how many
     // bytes are used per audio sample, and whether those bytes
     // are stored in MSB or LSB order.
     private byte[] _byteBuffer = null;
@@ -635,6 +596,6 @@ public class NewAudio implements Runnable {
     // this value, however, the sound quality for streams with 
     // high sample rates degrades noticably because not enough data 
     // can be stored on the buffer.
-    private static final int _OUTPUT_BUFFER_SIZE = 16384;
+    private static final int _OUTPUT_BUFFER_SIZE = 4096;
 
 }

@@ -111,7 +111,7 @@ public class Audio {
      *  8kHz sample rate, with a single channel.
      *  @param audio An audio signal.
      */
-    public Audio(double[] audio) {
+  public Audio(double[] audio) {
         String ptinfo = "Ptolemy audio";
         info = ptinfo.getBytes();
         offset = 24 + info.length;
@@ -317,7 +317,7 @@ public class Audio {
      *  The returned values lie in the range -1.0 to 1.0.
      *
      *  @param input The input stream.
-     *  @xception IOException If an I/O error occurs reading the stream.
+     *  @exception IOException If an I/O error occurs reading the stream.
      *  @exception IllegalArgumentException If the input stream
      *   is not an understood format.  This is a runtime exception, so it need
      *   not be declared explicitly
