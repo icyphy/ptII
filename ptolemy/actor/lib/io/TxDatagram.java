@@ -64,7 +64,7 @@ editor's work area.
 @version $Id$
 */
 public class TxDatagram extends TypedAtomicActor {
-
+    // FIXME: should this extend Source?
     public TxDatagram(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -97,6 +97,7 @@ public class TxDatagram extends TypedAtomicActor {
      * is running (as evedenced by socket != null) then close socket
      * and reopen with new port number (even if same as old port
      * number).
+     * FIXME: @param?  @exception?
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -128,6 +129,7 @@ public class TxDatagram extends TypedAtomicActor {
     }
 
     /** Transmits the packed over the ethernet.
+     * FIXME: @exception?
      */
     public void fire() throws IllegalActionException {
 
@@ -156,6 +158,7 @@ public class TxDatagram extends TypedAtomicActor {
     }
 
     /** Preinitialize
+     * FIXME: @exception?
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -178,6 +181,7 @@ public class TxDatagram extends TypedAtomicActor {
 
 
     /** Wrap up
+     * FIXME: @exception?
      */
     public void wrapup() throws IllegalActionException {
         if (socket != null) {
@@ -195,11 +199,15 @@ public class TxDatagram extends TypedAtomicActor {
     // Intermediate variables used to [re]construct the packet for
     // transmission.
 
+    // FIXME: private variables need comments
+
     private byte _data;
     private int _length;
     private String _address;
+    // FIXME: why two underscores?  Consider a different name
     private InetAddress __address;
     private int _port;
+    // FIXME: why two underscores?  Consider a different name
     private DatagramPacket __packet;
     private DatagramSocket socket;
 }

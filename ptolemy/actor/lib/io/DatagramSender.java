@@ -30,18 +30,23 @@
 
 package ptolemy.actor.lib.io;
 
-//import ptolemy.actor.*;
-//import ptolemy.kernel.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-//import ptolemy.data.*;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
-//import ptolemy.actor.lib.*;
 
-//import java.io.*;
-//import java.net.*;
-//import java.util.*;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DatagramSender
