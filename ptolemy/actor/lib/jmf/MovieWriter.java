@@ -67,7 +67,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.gui.MessageHandler;
+import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -340,7 +340,7 @@ public class MovieWriter extends Sink
 
         processor.realize();
 
-        if (!_waitForState(processor, processor.Realized)) {
+        if (!_waitForState(processor, Processor.Realized)) {
             throw new IllegalActionException("Failed to realize processor");
         }
 
