@@ -35,22 +35,19 @@
 
 # The home of the Java Developer's Kit (JDK)
 # Generating Java documentation uses this makefile variable
-JAVAHOME = 	/usr/java
-# JAVAHOME = 	/opt/jdk1.2latest
+# The line below gets subsituted by the configure script
+PTJAVA_DIR = 	@JAVA_DIR@
 
 # Java CLASSPATH separator
 CLASSPATHSEPARATOR = :
 # For NT
 #CLASSPATHSEPARATOR = ;
 
-# The home of the most recent JDK, possibly experimental or prerelease.
-LATEST_JAVAHOME = /opt/jdk1.2latest
-
 # Location of the Java html documentation.
 # The file java.lang.Object.html should
 # be at $JAVAHTMLDIR/java.lang.Object.html
 # JAVAHTMLDIR = 	/opt/SUNWjws/JWS/lib/html/java/api
-JAVAHTMLDIR = 	$(JAVAHOME)/docs/api
+JAVAHTMLDIR = 	$(PTJAVA_DIR)/docs/api
 
 # The home of the Java Foundation Classes (JFC) aka Swing
 JFCHOME = 	/opt/swing
@@ -70,31 +67,30 @@ JSCLASSPATH = 	/users/ptdesign/vendors/sun/JavaScope/JavaScope.zip
 
 ########## You should not have to change anything below this line ######
 
-
 # The 'javac' compiler.
-JAVAC = 	$(JAVAHOME)/bin/javac
+JAVAC = 	$(PTJAVA_DIR)/bin/javac
 
 # Flags to pass to javac.
 JFLAGS = 	-g -depend
 
 # The 'javadoc' program
-JAVADOC = 	$(JAVAHOME)/bin/javadoc
+JAVADOC = 	$(PTJAVA_DIR)/bin/javadoc
 
 # Flags to pass to javadoc.
-JDOCFLAGS = 	-author -version # -doctype MIF
+JDOCFLAGS = 	-author -version
 
 # The jar command, used to produce jar files, which are similar to tar files
-JAR =		$(JAVAHOME)/bin/jar
+JAR =		$(PTJAVA_DIR)/bin/jar
 
-# The 'java' interpreter
-JAVA =		$(JAVAHOME)/bin/java
+# The 'java' interpreter.
+JAVA =		$(PTJAVA_DIR)/bin/java
 
-# JavaCC is the Java Compiler Compiler which is used by pt.data.parser
+# JavaCC is the Java Compiler Compiler which is used by pt.data.parser.
 JAVACCDIR =	$(PTOLEMY)/vendors/sun/JavaCC
 JJTREE =	$(JAVACCDIR)/bin/jjtree
 JAVACC =	$(JAVACCDIR)/bin/javacc
 
-# Script to run tclBlend
+# Script to run tclBlend for the test suite.
 JTCLSH =	jtclsh
 
 
