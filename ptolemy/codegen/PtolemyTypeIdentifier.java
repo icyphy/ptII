@@ -186,8 +186,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 return i + TYPE_KIND_TOKEN;
             }
         }
-        throw new RuntimeError("kindOfTokenType(): type unknown, type = " + type);
-        return TYPE_KIND_UNKNOWN;
+        throw new RuntimeException("kindOfTokenType(): type unknown, type = " + type);
+        //return TYPE_KIND_UNKNOWN;
     }
 
     /** Return a new TypeNameNode corresponding to a token type in Ptolemy.
@@ -477,7 +477,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         TYPED_ATOMIC_ACTOR_TYPE = TYPED_ATOMIC_ACTOR_DECL.getDefType();
 
 
-        System.out.println("PtolemyTypeIdentifier<static>: load Complex");
+        //System.out.println("PtolemyTypeIdentifier<static>: load Complex");
         //CompileUnitNode complexUnit = StaticResolution.loadFile(
         //        SearchPath.NAMED_PATH.openSource("ptolemy.math.Complex", true), 1);
 
@@ -487,7 +487,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 "Complex", CG_CLASS);
         COMPLEX_TYPE = COMPLEX_DECL.getDefType();
 
-        System.out.println("PtolemyTypeIdentifier<static>: load FixPoint");
+        //System.out.println("PtolemyTypeIdentifier<static>: load FixPoint");
         //CompileUnitNode fixPointUnit = StaticResolution.loadFile(
         //        SearchPath.NAMED_PATH.openSource("ptolemy.math.FixPoint", true), 1);
 
