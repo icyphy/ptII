@@ -91,11 +91,11 @@ public class DiningApplet extends Applet
 
         Parameter eatingRate = new Parameter(univ, "eatingRate");
         eatingRate.setExpression("1.0");
-        eatingRate.evaluate();
+        eatingRate.getToken();
 
         Parameter thinkingRate = new Parameter(univ, "thinkingRate");
         thinkingRate.setExpression("1.0");
-        thinkingRate.evaluate();
+        thinkingRate.getToken();
 
         // Set up the actors and connections
         CSPPhilosopher p1 = new CSPPhilosopher(univ, "Aristotle");
