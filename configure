@@ -1631,7 +1631,7 @@ SOOT_DIR='${PTII}/vendors/soot/1.2.2'
 # Soot needs to find java.lang.Object	
 # Use {} here instead of () because bin/ptinvoke uses JAVA_SYSTEM_JAR
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
-JAVA_SYSTEM_JAR='${PTJAVA_DIR)}jre/lib/rt.jar'
+JAVA_SYSTEM_JAR='${PTJAVA_DIR}jre/lib/rt.jar'
 
 # We don't bother overriding this below so that something close
 # to the right default is in ptII.mk and the user can just change
