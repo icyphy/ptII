@@ -31,50 +31,39 @@ package pt.actors;
 import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// CompositeActor
+//// Actor
 /** 
 A CompositeActor is a computational unit which contains Actors and
 operates on and/or produces data. The Ports of a CompositeActor are
 constrained to be IOPorts.
-@author John S. Davis II
+@author Mudit Goel
 @version $Id$
 @see Actor
 @see IOPort
 @see full-classname
 */
-public abstract class CompositeActor extends CompositeEntity 
-        implements DataComputingInit {
-
+public abstract class CompositeActor extends CompositeEntity {
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public CompositeActor() {
+	super();
+    }
+
+    public CompositeActor(Workspace workspace) {
+        super(workspace);
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Initialize this composite actor just prior to a trace of executions. 
-     *  This method does nothing in this abstract class but it may be 
-     *  overridden in derived classes.
-     */	
-    public void executionInit() {
+    public void setDirector(Director director) {
+	_director = director;
         return;
     }
 
-    /** Initialize this composite actor in relation to the graph structure 
-     *  within which it exists. Invoke this method at the conclusion of graph
-     *  construction. This method does nothing in this abstract class
-     *  but it may be overridden in derived classes.
-     */	
-    public void graphInit() {
-        return;
+    public Director getDirector() {
+	return _director;
     }
-
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
@@ -88,4 +77,5 @@ public abstract class CompositeActor extends CompositeEntity
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
+    Director _director;
 }
