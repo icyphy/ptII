@@ -277,7 +277,7 @@ public class PNRDMainController extends AtomicActor {
 	    // create decoder galaxy.
 	    
 	    createDecoders(bestNumBlocks);
-	    System.out.println("Mutated and waitng t wr ");
+	    System.out.println("Mutated and waiting t wr ");
 	    //writeTo(_infoOut, infoArrayToken);
 	    _infoOut.broadcast(infoArrayToken);
 	    System.out.println("written ");
