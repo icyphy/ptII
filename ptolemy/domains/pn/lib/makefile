@@ -54,10 +54,7 @@ CLASSPATH = ../../../..
 JSRCS = \
 	PNAlternate.java \
 	PNInterleave.java \
-	PNPlot.java \
-	PNRamp.java \
-	PNRedirect.java \
-	PNSieve.java 
+	PNRedirect.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
