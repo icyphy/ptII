@@ -106,7 +106,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      *  thrown in a domain.
      */
     public boolean isPtolemyExceptionKind(int kind) {
-        return ((kind >= TYPE_KIND_CHANGE_FAILED_EXCEPTION) &&
+        return (/*(kind >= TYPE_KIND_CHANGE_FAILED_EXCEPTION) &&*/
                 (kind <= TYPE_KIND_NO_TOKEN_EXCEPTION));
     }
 
@@ -240,10 +240,12 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_TYPED_IO_PORT        = TYPE_KIND_PARAMETER + 1;
 
     // Ptolemy exception kinds
-    public static final int TYPE_KIND_CHANGE_FAILED_EXCEPTION
-    = TYPE_KIND_TYPED_IO_PORT + 1;
+    // public static final int TYPE_KIND_CHANGE_FAILED_EXCEPTION
+    // = TYPE_KIND_TYPED_IO_PORT + 1;
+    // public static final int TYPE_KIND_ILLEGAL_ACTION_EXCEPTION
+    // = TYPE_KIND_CHANGE_FAILED_EXCEPTION + 1;
     public static final int TYPE_KIND_ILLEGAL_ACTION_EXCEPTION
-    = TYPE_KIND_CHANGE_FAILED_EXCEPTION + 1;
+     = TYPE_KIND_TYPED_IO_PORT + 1;
     public static final int TYPE_KIND_KERNEL_EXCEPTION
     = TYPE_KIND_ILLEGAL_ACTION_EXCEPTION + 1;
     public static final int TYPE_KIND_NAME_DUPLICATION_EXCEPTION
@@ -347,8 +349,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final TypeNameNode TYPED_IO_PORT_TYPE;
 
     // kernel exception types
-    public static final ClassDecl CHANGE_FAILED_EXCEPTION_DECL;
-    public static final TypeNameNode CHANGE_FAILED_EXCEPTION_TYPE;
+    //public static final ClassDecl CHANGE_FAILED_EXCEPTION_DECL;
+    //public static final TypeNameNode CHANGE_FAILED_EXCEPTION_TYPE;
 
     public static final ClassDecl ILLEGAL_ACTION_EXCEPTION_DECL;
     public static final TypeNameNode ILLEGAL_ACTION_EXCEPTION_TYPE;
@@ -413,7 +415,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         TYPE_KIND_DUMMY_TOKEN,
         TYPE_KIND_PARAMETER,
         TYPE_KIND_TYPED_IO_PORT,
-        TYPE_KIND_CHANGE_FAILED_EXCEPTION, TYPE_KIND_ILLEGAL_ACTION_EXCEPTION,
+        /*TYPE_KIND_CHANGE_FAILED_EXCEPTION,*/
+	TYPE_KIND_ILLEGAL_ACTION_EXCEPTION,
         TYPE_KIND_KERNEL_EXCEPTION, TYPE_KIND_NAME_DUPLICATION_EXCEPTION,
         TYPE_KIND_NO_SUCH_ITEM_EXCEPTION, TYPE_KIND_TYPE_CONFLICT_EXCEPTION,
         TYPE_KIND_INTERNAL_ERROR_EXCEPTION, TYPE_KIND_INVALID_STATE_EXCEPTION,
@@ -647,14 +650,14 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         TYPED_IO_PORT_TYPE = TYPED_IO_PORT_DECL.getDefType();
 
-        CompileUnitNode changeFailedUnit = StaticResolution.load(
-                SearchPath.NAMED_PATH.openSource(
-                        "ptolemy.kernel.event.ChangeFailedException", true), 1);
+	//        CompileUnitNode changeFailedUnit = StaticResolution.load(
+	//                SearchPath.NAMED_PATH.openSource(
+	//                        "ptolemy.kernel.event.ChangeFailedException", true), 1);
 
-        CHANGE_FAILED_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-                changeFailedUnit,  "ChangeFailedException", CG_CLASS);
+        //CHANGE_FAILED_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
+        //        changeFailedUnit,  "ChangeFailedException", CG_CLASS);
 
-        CHANGE_FAILED_EXCEPTION_TYPE = CHANGE_FAILED_EXCEPTION_DECL.getDefType();
+        //CHANGE_FAILED_EXCEPTION_TYPE = CHANGE_FAILED_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode illegalActionUnit = StaticResolution.load(
                 SearchPath.NAMED_PATH.openSource(
@@ -767,7 +770,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 DUMMY_LOWER_BOUND,
                 PARAMETER_DECL,
                 TYPED_IO_PORT_DECL,
-                CHANGE_FAILED_EXCEPTION_DECL, ILLEGAL_ACTION_EXCEPTION_DECL,
+                /*CHANGE_FAILED_EXCEPTION_DECL,*/
+		ILLEGAL_ACTION_EXCEPTION_DECL,
                 KERNEL_EXCEPTION_DECL, NAME_DUPLICATION_EXCEPTION_DECL,
                 NO_SUCH_ITEM_EXCEPTION_DECL, TYPE_CONFLICT_EXCEPTION_DECL,
                 INTERNAL_ERROR_EXCEPTION_DECL, INVALID_STATE_EXCEPTION_DECL,
@@ -789,7 +793,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 DUMMY_LOWER_BOUND_TYPE,
                 PARAMETER_TYPE,
                 TYPED_IO_PORT_TYPE,
-                CHANGE_FAILED_EXCEPTION_TYPE, ILLEGAL_ACTION_EXCEPTION_TYPE,
+                /*CHANGE_FAILED_EXCEPTION_TYPE,*/
+		ILLEGAL_ACTION_EXCEPTION_TYPE,
                 KERNEL_EXCEPTION_TYPE, NAME_DUPLICATION_EXCEPTION_TYPE,
                 NO_SUCH_ITEM_EXCEPTION_TYPE, TYPE_CONFLICT_EXCEPTION_TYPE,
                 INTERNAL_ERROR_EXCEPTION_TYPE, INVALID_STATE_EXCEPTION_TYPE,
