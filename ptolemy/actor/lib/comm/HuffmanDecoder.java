@@ -1,6 +1,6 @@
 /* Huffman Decoder.
 
-Copyright (c) 2003-2004 The Regents of the University of California.
+Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -45,11 +45,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    decode the input using Huffman code and send the result to the output 
    port. Its base class HuffmanBasic.java generates the code book.
    The decoder simply decode the input according to this code book.
-   @see HuffmanBasic.java and HuffmanCoder.java.
-    
+
+   @see HuffmanBasic
+   @see HuffmanCoder
    @author Rachel Zhou
    @version $Id$
-   @since Ptolemy II 3.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
 */
@@ -86,15 +87,17 @@ public class HuffmanDecoder extends HuffmanBasic {
             alphabetTokens[i] = alphabetArrayToken.getElement(i);
         }
         // Get the input token. Ready for output.
-        if (! input.hasToken(0) && !_code.equals(""))
+        if (! input.hasToken(0) && !_code.equals("")) {
             throw new IllegalActionException(this,
                 "This is not a decodable code.");
+        }
         BooleanToken inputToken = (BooleanToken)input.get(0);
-        if (inputToken.booleanValue())
+        if (inputToken.booleanValue()) {
             _code = _code + "1";
-        else
+        } else {
             _code = _code + "0";
-        
+        }
+
         // Find the codeword in the code book.
         for (int i = 0; i < _pmf.length; i ++) {
             if (_code.equals(_codeBook[i])) {
