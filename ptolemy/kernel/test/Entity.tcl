@@ -1,4 +1,4 @@
-# Tests for the Entity class
+# Tests for the abstract Entity class
 #
 # @Author: Christopher Hylands
 #
@@ -58,7 +58,88 @@ test Entity-1.1 {Get information about an instance of Entity} {
   class:         pt.kernel.test.EntityTest
   fields:        
   methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams enumEntities {enumEntities java.lang.String} enumRelations {enumRelations java.lang.String} getPortList numberOfConnectedEntities {numberOfConnectedEntities java.lang.String}
-  constructors:  pt.kernel.test.EntityTest
+  constructors:  pt.kernel.test.EntityTest {pt.kernel.test.EntityTest java.lang.String}
   properties:    portList class params name
   superclass:    pt.kernel.Entity
 }}
+
+
+######################################################################
+####
+# 
+test Entity-2.1 {Construct Entities} {
+    set e1 [java::new pt.kernel.test.EntityTest]
+    set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
+    list [$e1 getName] [$e2 getName] 
+} {{} {My Entity}}
+
+######################################################################
+####
+# 
+test Entity-2.2 {Construct Entities, call getPortList} {
+    set e1 [java::new pt.kernel.test.EntityTest]
+    set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
+    list [expr {[java::null] == [$e1 getPortList]}] \
+	    [expr {[java::null] == [$e2 getPortList]}] \
+} {1 1}
+
+######################################################################
+####
+# 
+test Entity-2.3 {Construct Entities, call numberOfConnectedEntities} {
+    set e1 [java::new pt.kernel.test.EntityTest]
+    set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
+    list [$e1 numberOfConnectedEntities] [$e2 numberOfConnectedEntities] 
+} {}
+
+######################################################################
+####
+# 
+test Entity-2.4 {Test numberOfConnectedEntities(portname)} {
+    set e1 [java::new pt.kernel.test.EntityTest]
+    set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
+    list [$e1 numberOfConnectedEntities "Not a PortName"] \
+	    [$e2 numberOfConnectedEntities "Not a PortName"] 
+} {}
+	 
+
+######################################################################
+####
+# 
+test Entity-3.1 {Test enumEntities. Note that since Entity is abstract,
+	the Entity enum code is better covered in the derived classes.} {
+    set e1 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set enum [$e1 enumEntities]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {}
+
+######################################################################
+####
+# 
+test Entity-3.2 {Test enumEntities(portName)} {
+    set e1 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set enum [$e1 enumEntities "Not a Port"]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {}
+
+######################################################################
+####
+# 
+test Entity-3.3 {Test enumRelations()} {
+    set e1 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set enum [$e1 enumRelations]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {}
+
+######################################################################
+####
+# 
+test Entity-3.4 {Test enumRelations()} {
+    set e1 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set enum [$e1 enumRelations "Not a PortName"]
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {}
