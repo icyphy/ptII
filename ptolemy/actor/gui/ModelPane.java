@@ -254,10 +254,6 @@ public class ModelPane extends JPanel implements CloseListener {
             _controlPanel.remove(_directorQuery);
             _directorQuery = null;
         }
-	if (_displays != null) {
-            remove(_displays);
-	    _displays = null;
-        }
 	if (model != null) {
             _manager = _model.getManager();
 
@@ -322,27 +318,11 @@ public class ModelPane extends JPanel implements CloseListener {
             }
 
             if (_layout != CONTROLS_ONLY) {
-                // place the placeable objects in the model
-                _displays = new JPanel();
-                _displays.setBackground(null);
-
-                add(_displays);
-                _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
-                _displays.setBackground(null);
-
-                // Put placeable objects in a reasonable place.
-                Iterator atomicEntities = model
-                         .allAtomicEntityList().iterator(); 
-                while (atomicEntities.hasNext()) {
-                    Object object = atomicEntities.next();
-                    if(object instanceof Placeable) {
-                        ((Placeable) object).place(_displays);
-                    }
-                }
+                _createPlaceable(model);
             }
         }
     }
-
+    
     /** If the model has a manager and is not already running,
      *  then execute the model in a new thread.  Otherwise, do nothing.
      */
@@ -423,6 +403,45 @@ public class ModelPane extends JPanel implements CloseListener {
     public static int DIRECTOR_PARAMETERS = 4;
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
+    /** Place the placeable objects in the model to the display pane.
+     *  This method place all placeables vertically. Derived classes
+     *  may override this method if the placeable objects are to be
+     *  placed differently.
+     *  @param model The model that contains the placeable objects.
+     */
+    protected void _createPlaceable(CompositeActor model) {
+        if (_displays != null) {
+            remove(_displays);
+	    _displays = null;
+        }
+        // place the placeable objects in the model
+        _displays = new JPanel();
+        _displays.setBackground(null);
+        
+        add(_displays);
+        _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
+        _displays.setBackground(null);
+        
+        // Put placeable objects in a reasonable place.
+        Iterator atomicEntities = model
+            .allAtomicEntityList().iterator(); 
+        while (atomicEntities.hasNext()) {
+            Object object = atomicEntities.next();
+            if(object instanceof Placeable) {
+                ((Placeable) object).place(_displays);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
+    // A panel into which to place model displays.
+    protected Container _displays;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The panel for the control buttons.
@@ -434,8 +453,6 @@ public class ModelPane extends JPanel implements CloseListener {
     // The query box for the director parameters.
     private Configurer _directorQuery;
 
-    // A panel into which to place model displays.
-    private Container _displays;
 
     // The go button.
     private JButton _goButton;
