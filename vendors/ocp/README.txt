@@ -12,3 +12,6 @@ These files are not checked in, you can find them in
 OCP.tar.gz        - 10 Mb tar file version
 OCP.zip		  - 12 Mb zip file
 
+Note that if you untar the tar file, be sure to create an empty
+directory first, as the tar file will create multiple files in the
+current directory when it is untar'd
