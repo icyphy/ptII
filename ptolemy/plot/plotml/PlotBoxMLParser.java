@@ -221,7 +221,22 @@ public class PlotBoxMLParser extends HandlerBase {
     public void startElement(String elementName) throws XmlException {
         try {
             // NOTE: The elements are alphabetical below...
-            if (elementName.equals("tick")) {
+            if (elementName.equals("size")) {
+                String spec = (String)_attributes.get("height");
+                _checkForNull(spec, "No height argument for element \"size\"");
+                // NOTE: Do not use parseDouble() to maintain Java 1.1
+                // compatibility.
+                int height = (Integer.valueOf(spec)).intValue();
+
+                spec = (String)_attributes.get("width");
+                _checkForNull(spec, "No width argument for element \"size\"");
+                // NOTE: Do not use parseDouble() to maintain Java 1.1
+                // compatibility.
+                int width = (Integer.valueOf(spec)).intValue();
+
+                _plot.setSize(width, height);
+
+            } else if (elementName.equals("tick")) {
                 String label = (String)_attributes.get("label");
                 _checkForNull(label, "No label for element \"tick\"");
 
