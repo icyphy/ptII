@@ -663,7 +663,7 @@ public class RLEDiva extends PNApplet implements Runnable {
         /** Respond to a process finshed event.
          */
         public void processFinished(PNProcessEvent event) {
-            // nothing yet
+            processStateChanged(event);
         }
     }
 

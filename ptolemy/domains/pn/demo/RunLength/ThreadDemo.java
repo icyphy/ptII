@@ -477,7 +477,7 @@ public class ThreadDemo {
         /** Respond to a process finshed event.
          */
         public void processFinished(PNProcessEvent event) {
-            // nothing yet
+            processStateChanged(event);
         }
     }
 
