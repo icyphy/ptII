@@ -3,10 +3,18 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PolarToComplexAndBack" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="90.0, 39.5">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
     <entity name="Ramp0" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -17,6 +25,8 @@
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="60.0, 175.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -36,6 +46,8 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="55.0, 295.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -45,11 +57,13 @@
         </port>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.5707963, 3.1415927, -1.5707963, 0.0, 1.5707963, 3.1415927, -1.5707963}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true, true, true, true, true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="550.0, 295.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -63,12 +77,16 @@
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="470.0, 175.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <entity name="ComplexToPolar11" class="ptolemy.actor.lib.conversions.ComplexToPolar">
+        <property name="_location" class="ptolemy.moml.Location" value="285.0, 185.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -80,6 +98,8 @@
         </port>
     </entity>
     <entity name="PolarToComplex14" class="ptolemy.actor.lib.conversions.PolarToComplex">
+        <property name="_location" class="ptolemy.moml.Location" value="170.0, 185.0">
+        </property>
         <port name="magnitude" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -90,24 +110,56 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="PhaseUnwrap" class="ptolemy.actor.lib.PhaseUnwrap">
+        <property name="_location" class="ptolemy.moml.Location" value="370.0, 250.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
+        <property name="_location" class="ptolemy.moml.Location" value="460.0, 295.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="115.0, 295.0">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp0.output" relation="relation9"/>
-    <link port="Ramp1.output" relation="relation11"/>
-    <link port="Test11.input" relation="relation17"/>
+    <link port="Ramp1.output" relation="relation4"/>
+    <link port="Test11.input" relation="relation5"/>
     <link port="Test13.input" relation="relation15"/>
     <link port="ComplexToPolar11.input" relation="relation13"/>
     <link port="ComplexToPolar11.magnitude" relation="relation15"/>
-    <link port="ComplexToPolar11.angle" relation="relation17"/>
+    <link port="ComplexToPolar11.angle" relation="relation"/>
     <link port="PolarToComplex14.magnitude" relation="relation9"/>
-    <link port="PolarToComplex14.angle" relation="relation11"/>
+    <link port="PolarToComplex14.angle" relation="relation4"/>
     <link port="PolarToComplex14.output" relation="relation13"/>
+    <link port="PhaseUnwrap.input" relation="relation"/>
+    <link port="PhaseUnwrap.output" relation="relation3"/>
+    <link port="Equals.input" relation="relation3"/>
+    <link port="Equals.input" relation="relation4"/>
+    <link port="Equals.output" relation="relation5"/>
 </entity>
