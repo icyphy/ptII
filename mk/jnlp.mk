@@ -735,7 +735,7 @@ jnlp_dist_update:
 		(cd $(DIST_DIR); tar -xpf -)
 	cp doc/webStartHelp.htm $(DIST_DIR)
 
-#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-storepass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp jnlp_sign
+#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
 jnlp_dist_update_remote:
 	scp doc/webStartHelp.htm messier:$(DIST_DIR)
