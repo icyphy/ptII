@@ -272,40 +272,61 @@ public class NonStrictTest extends Sink {
     /** If <i>trainingMode</i> is <i>true</i>, then take the collected
      *  training tokens and store them as an array in <i>correctValues</i>.
      *  @exception IllegalActionException If initialized() was called
-     *  and fire() was not called.
+     *  and fire() was not called or if the number of inputs tokens seen
+     *  is not greater than or equal to the number of elements in the
+     *  <i>correctValues</i> array.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         boolean training = ((BooleanToken)trainingMode.getToken())
             .booleanValue();
         if (!training
-                && _initialized
-                && ! _firedOnce) {
-            throw new IllegalActionException(this,
-                    "The fire() method of this actor was never called. "
-                    + "Usually, this is an error indicating that "
-                    + "starvation is occurring");
-        }
-        _initialized = false;
-
-        if (!training
-                && _numberOfInputTokensSeen
-                < ((ArrayToken)(correctValues.getToken())).length()) {
-            String errorMessage = 
+                && _initialized) {
+            if (! _firedOnce ) {
+                throw new IllegalActionException(this,
+                        "The fire() method of this actor was never called. "
+                        + "Usually, this is an error indicating that "
+                        + "starvation is occurring");
+            }
+            if ( _numberOfInputTokensSeen
+                     < ((ArrayToken)(correctValues.getToken())).length()) {
+                String errorMessage = 
                     "The test produced only " + _numberOfInputTokensSeen
                     + " tokens, yet the correctValues parameter was "
                     + "expecting "
                     + ((ArrayToken)(correctValues.getToken())).length()
                     + " tokens.";
-            if (isRunningNightlyBuild()) {
-                System.out.println("Warning: NonStrictTest: " 
-                        + getName() + errorMessage
-                        + "\nNote that the nightly build is running"
-                        + " so we are not throwing an exception here");
-            } else {
-                throw new IllegalActionException(this, errorMessage);
+
+                if (isRunningNightlyBuild()) {
+                    System.out.println("Warning: NonStrictTest: " 
+                            + getName() + errorMessage
+                            + "\nNote that the nightly build is running"
+                            + " so we are not throwing an exception here");
+                } else {
+                    throw new IllegalActionException(this, errorMessage);
+                }
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
+        _initialized = false;
+
 
         // Note that wrapup() might get called by the manager before
         // we have any data...
