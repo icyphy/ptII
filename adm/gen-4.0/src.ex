@@ -71,6 +71,7 @@ ptolemy/com
 ptolemy/configs/doc/whatsNew5.0.htm
 ptolemy/configs/test/vergilConfigurationNoMatlab.xml
 ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
+ptolemy/configs/ptinyos
 ptolemy/configs/visualnc
 ptolemy/data/expr/TVariable.java
 ptolemy/gui/JPanelTest.java
