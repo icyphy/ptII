@@ -32,7 +32,7 @@
 package ptolemy.data.type;
 
 import ptolemy.graph.InequalityTerm;
-import ptolemy.graph.Inequality;	/* Needed for javadoc */ 
+import ptolemy.graph.Inequality;	
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
@@ -48,21 +48,22 @@ $Id$
 
 */
 
-public abstract class Type 
+public interface Type extends InequalityTerm
 {
     /** Given a constraint on this Type, return an enumeration of constraints
      *  on other types, on which this type depends.
+     *  In this base class, we assume there is nothing to expand, so return
+     *  an enumeration with a single element of the given constraint.
      */
-    public Enumeration expandConstraint(Inequality constraint) {
-        LinkedList l = new LinkedList();
-        l.insertFirst(constraint);
-        return l.elements();
-    }
-
-    public abstract boolean isEqualTo(Object t);
-
-    public abstract boolean isValueAcceptable();
+    public Enumeration expandConstraint(Inequality constraint);
     
-    
+    /** Resolve the given constraints on objects of this type.
+     *  Set the values of all the mentioned variables, such that the
+     *  values are consistent with all of the constraints.
+     *  @param constraints An Enumeration of Inequality objects.
+     *  @return An enumeration of objects in which conflict occured.
+     */
+    //    public Enumeration resolveConstraints(Enumeration constraints);
+
 }
 

@@ -33,7 +33,7 @@ package ptolemy.data.type;
 
 import ptolemy.graph.InequalityTerm;
 import ptolemy.graph.Inequality;	/* Needed for javadoc */ 
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -49,9 +49,8 @@ $Id$
 
 */
 
-public class DataTypeResolver 
-{
-
+public class DataTypeResolver implements TypeResolver
+{    
     /** Check types on all the connections and resolve undeclared types.
      *  This method is not write-synchronized on the workspace, so one
      *  of its calling methods should be (normally Manager.resolveTypes()).
@@ -63,6 +62,7 @@ public class DataTypeResolver
     public Enumeration resolveTypes(Enumeration constraints) {
 	LinkedList dataconstraints = new LinkedList();
     
+        // Filter all the constraints that aren't appropriate.
 	while(constraints.hasMoreElements()) {
             Inequality constraint = (Inequality) constraints.nextElement();
             InequalityTerm lesser = constraint.getLesserTerm();
@@ -71,11 +71,14 @@ public class DataTypeResolver
             if((lesser instanceof DataType) && 
                     (greater instanceof DataType)) {
                 dataconstraints.insertLast(constraint);
+            } else {
+                throw new InternalErrorException("Found unrecognizeable " +
+                        "constraint terms in DataType");
             }
         }
 
         LatticeTypeResolver resolver = 
-            new LatticeTypeResolver(DataType.getTypeLattice());
+            new LatticeTypeResolver(Data.getTypeLattice());
         return resolver.resolveTypes(dataconstraints.elements());
     }
 }

@@ -49,7 +49,7 @@ $Id$
 
 */
 
-public class TypeSystem implements TypeResolver
+public class TypeSystem
 {
     /** Check types on all the connections and resolve undeclared types.
      *  This method is not write-synchronized on the workspace, so one
@@ -62,7 +62,7 @@ public class TypeSystem implements TypeResolver
     public Enumeration resolveTypes(Enumeration constraints) {
         LinkedList expandedconstraints = new LinkedList();
         LinkedList dataconstraints = new LinkedList();
-        LinkedList arrayconstraints = new LinkedList();
+        LinkedList dimensionconstraints = new LinkedList();
 
         while(constraints.hasMoreElements()) {
             Inequality constraint = (Inequality) constraints.nextElement();
@@ -77,40 +77,33 @@ public class TypeSystem implements TypeResolver
                 dataconstraints.insertLast(constraint);
             }
             else
-                if(_validConstraint(constraint, ArrayType.class)) { 
-                    arrayconstraints.insertLast(constraint);
+                if(_validConstraint(constraint, DimensionType.class)) { 
+                    dimensionconstraints.insertLast(constraint);
             }
         }
         
-        DataTypeResolver dataresolver = new DataTypeResolver();
+        DataTypeResolver dataresolver = 
+            new DataTypeResolver();
         Enumeration dataconflicts = 
             dataresolver.resolveTypes(dataconstraints.elements());
         
-        ArrayTypeResolver arrayresolver = new ArrayTypeResolver();
-        Enumeration arrayconflicts = 
-            arrayresolver.resolveTypes(arrayconstraints.elements());
+        DimensionTypeResolver dimensionresolver = 
+            new DimensionTypeResolver();
+        Enumeration dimensionconflicts = 
+            dimensionresolver.resolveTypes(
+                    dimensionconstraints.elements());
         
         LinkedList conflicts = new LinkedList();
         conflicts.appendElements(dataconflicts);
-        conflicts.appendElements(arrayconflicts);
-        
-        
-        
+        conflicts.appendElements(dimensionconflicts);
+                
         return conflicts.elements();
     }
     
     public Enumeration _expandConstraint(Inequality constraint) {
         LinkedList constraints = new LinkedList();
-        InequalityTerm lesser = constraint.getLesserTerm();
-        if(lesser instanceof DataType) {
-            constraints.appendElements(
-                    ((DataType) lesser).expandConstraint(constraint));
-        } else if(lesser instanceof ArrayType) {
-            constraints.appendElements(
-                    ((ArrayType) lesser).expandConstraint(constraint));
-        } else 
-            throw new RuntimeException("Constraints must be expressed " +
-                    "between two Types of the same class");
+        Type lesser = (Type)constraint.getLesserTerm();
+        lesser.expandConstraint(constraint);
         return constraints.elements();
     }    
 

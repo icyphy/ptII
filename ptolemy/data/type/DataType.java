@@ -1,4 +1,4 @@
-/** Type hierarchy of token classes.
+/** A class representing an elementary data type.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -31,69 +31,73 @@
 
 package ptolemy.data.type;
 
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import java.util.Enumeration;
+import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DataType
 /**
-A class representing the basic data type of a token.  This type may be a 
-constant type or a variable type that will be resolved by a DataTypeResolver.
-The possible values of this data type are represented as members of the
-type-safe enumeration DataTypeEnum.  A lattice representing the possible
-lossless conversions of this data type can be returned using the
-getTypeLattice method.  
+A class representing an elementary data type.
 
-@author Steve Neuendorffer, Yuhong Xiong
-@version $Id$
-@see ptolemy.graph.CPO
+@author Steve Neuendorffer
+$Id$
+
 */
 
-public final class DataType extends Type implements InequalityTerm
+public class DataType implements Type
 {
-    /** Create a new variable data type object with the same value as 
-     *  BOTTOM.
+    /** Create a new data type variable, initialized to bottom.
      */
     public DataType() {
-        _value = BOTTOM._value;
+        _value = Data.BOTTOM;
         _isSettable = true;
     }
 
-    /** Create a new data type object with the same value as 
-     *  the given data type.  If the given data type is constant, then this
-     *  type will be constant also.  If the given data type is variable,
-     *  then this data type will also be variable.
+    /** 
+     * Create a new data type constant with the given value.
      */
-    public DataType(DataType t) {
-        _value = t._value;
-        _isSettable = t._isSettable;
-    }
-
-    /** Create a new constant data type object with a new value.
-     *  The value will have the given characteristics, but will not
-     *  be a part of the type lattice.  This method is used to create
-     *  the values of the lattice and their corresponding constant template
-     *  data types.
-     */
-    private DataType(String name, boolean instantiable) {
-        _value = new DataTypeEnum(name, instantiable);
+    public DataType(Data value) {
+        _value = value;
         _isSettable = false;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    public String toString() {
+        String s = new String("DataType(");
+        s += _value.toString();
+        s += ",";
+        if(isSettable()) 
+            s += "Variable";
+        else 
+            s += "Constant";
+        s += ")";
+        return s;
+    }
 
-    /** Return the Object associated with this term. If this term is
-     *  not associated with a particular Object, or it is not necessary
-     *  to obtain the reference of the associated Object, this method
-     *  can return <code>null</code>.
-     *  @return an Object.
+    /** Given a constraint on this Type, return an enumeration of constraints
+     *  on other types, on which this type depends.
+     *  In this base class, we assume there is nothing to expand, so return
+     *  an enumeration with a single element of the given constraint.
+     */
+    public Enumeration expandConstraint(Inequality constraint) {
+        LinkedList list = new LinkedList();
+        list.insertFirst(constraint);
+        return list.elements();
+    }
+
+    public boolean equals(Object type) {
+        if(!(type instanceof DataType)) return false;        
+        return _value.equals(((DataType)type)._value);
+    }
+
+    /** REturn the object associated with this type
      */
     public Object getAssociatedObject() {
         return null;
     }
-    
+
     /** Return the value of this term.  If this term is a constant,
      *  return that constant; if this term is a variable, return the
      *  current value of that variable; if this term is a function,
@@ -113,23 +117,16 @@ public final class DataType extends Type implements InequalityTerm
      *  @return an array of InequalityTerms
      */
     public InequalityTerm[] getVariables() {
-        InequalityTerm terms[];
+        InequalityTerm termArray[];
         if(isSettable()) {
-            terms = new InequalityTerm[1];
-            terms[0] = this;
+            termArray = new InequalityTerm[1];
+            termArray[0] = this;
         } else {
-            terms = new InequalityTerm[0];
+            termArray = new InequalityTerm[0];
         }
-        return terms;
+        return termArray;
     }
 
-    public boolean isEqualTo(Object t) {
-        if (t instanceof DataType) 
-            return _value == ((DataType) t)._value;
-        else
-            return false;
-    }
-        
     /** Check whether this term can be set to a specific element of the
      *  underlying CPO. Only variable terms are settable, constant
      *  and function terms are not.
@@ -140,13 +137,12 @@ public final class DataType extends Type implements InequalityTerm
         return _isSettable;
     }
 
-    /** Check whether the current type of this term is acceptable,
-     *  and return true if it is.  Normally, a type is acceptable
-     *  if it represents an instantiable object.
-     *  @return True if the current type is acceptable.
+    /** Check whether the current value of this term is acceptable,
+     *  and return true if it is.
+     *  @return True if the current value is acceptable.
      */
     public boolean isValueAcceptable() {
-        return _value._instantiable;
+        return _value.isInstantiable();
     }
 
     /** Set the value of this term to the specified CPO element.
@@ -156,129 +152,29 @@ public final class DataType extends Type implements InequalityTerm
      *   underlying CPO.
      *  @exception IllegalActionException If this term is not a variable.
      */
-    public void setValue(Object e) throws IllegalActionException {
-        if(!isSettable()) {
-            throw new IllegalActionException("Inequality term is not a " +
-                    "variable!");
-        }
-        if(!(e instanceof DataTypeEnum)) {
-            throw new InternalErrorException("Object must be a value " + 
-                    "compatible with a DataType!");
-        }
-        _value = (DataTypeEnum) e;
-    }    
+    public void setValue(Object e)
+            throws IllegalActionException {
+        if(isSettable()) {
+            if(e instanceof Data)
+                _value = (Data)e;
+            else
+                throw new IllegalActionException("Value of " +
+                        "type must be compatible with " +
+                        "DataType");
+        } else
+            throw new IllegalActionException("This " +
+                    "type cannot be set to the value because it " +
+                    "is not a variable.");
+    }
 
-    /** Return a string representing this type
+    /** The value of this BasicType.
      */
-    public String toString() {
-        String s = new String("DataType(");
-        s += _value.getName();
-        s += ")";
-        if(isSettable()) 
-            return "Var" + s;
-        else 
-            return "Const" + s;
-    }
+    private Data _value;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                    public static methods                  ////
-
-    /** Returns the type lattice. This method partially exposes the
-     *  underlying object representing the type lattice, so it breaks
-     *  information hiding. But this is necessary since the type
-     *  resolution mechanism in the actor package needs access to the
-     *  underlying lattice.
-     *  @return a CPO modeling the type hierarchy.
+    /** True if this type is a variable type, and its value can be set.
      */
-    public static CPO getTypeLattice() {
-	return _typeLattice;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    
-    public static final DataType BOOLEAN = new DataType("BOOLEAN", true);
-    public static final DataType BOTTOM = new DataType("BOTTOM", false);
-    public static final DataType COMPLEX = new DataType("COMPLEX", true);
-    public static final DataType DOUBLE = new DataType("DOUBLE", true);
-    public static final DataType INT = new DataType("INT", true);
-    public static final DataType LONG = new DataType("LONG", true);
-    public static final DataType NUMERICAL = new DataType("NUMERICAL", false);
-    public static final DataType OBJECT = new DataType("OBJECT", true);
-    public static final DataType RECORD = new DataType("RECORD", false);
-    public static final DataType STRING = new DataType("STRING", true);
-    public static final DataType TOP = new DataType("TOP", false);
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                   private static methods                  ////
-
-    // construct the lattice of types.
-    private static DirectedAcyclicGraph _setup() {
-
-        DirectedAcyclicGraph _lattice = new DirectedAcyclicGraph();
-
-	_lattice.add(BOOLEAN._value);
-	_lattice.add(BOTTOM._value);		// NaT
-	_lattice.add(COMPLEX._value);
-	_lattice.add(DOUBLE._value);
-	_lattice.add(INT._value);
-	_lattice.add(LONG._value);
-        _lattice.add(NUMERICAL._value);
-        _lattice.add(OBJECT._value);
-        _lattice.add(RECORD._value);
-        _lattice.add(STRING._value);
-        _lattice.add(TOP._value);
-
-        _lattice.addEdge(OBJECT._value, TOP._value);
-        _lattice.addEdge(BOTTOM._value, OBJECT._value);
-
-        _lattice.addEdge(RECORD._value, TOP._value);
-        _lattice.addEdge(BOTTOM._value, RECORD._value);
-
-        _lattice.addEdge(STRING._value, TOP._value);
-        _lattice.addEdge(BOOLEAN._value, STRING._value);
-        _lattice.addEdge(BOTTOM._value, BOOLEAN._value);
-
-	_lattice.addEdge(NUMERICAL._value, STRING._value);
-	_lattice.addEdge(LONG._value, NUMERICAL._value);
-	_lattice.addEdge(COMPLEX._value, NUMERICAL._value);
-	_lattice.addEdge(DOUBLE._value, COMPLEX._value);
-	_lattice.addEdge(INT._value, LONG._value);
-	_lattice.addEdge(INT._value, DOUBLE._value);
-        _lattice.addEdge(BOTTOM._value, INT._value);
-
-	if ( !_lattice.isLattice()) {
-	    throw new InternalErrorException("DataType: The type " +
-		"hierarchy is not a lattice.");
-	}
-	return _lattice;
-    }
-
-    /** A type safe enumeration representing the possible types of a
-     *  DataType object;
-     */
-    public class DataTypeEnum {
-        private DataTypeEnum(String name, boolean instantiable) {
-            _name = name;
-            _instantiable = instantiable;
-        }
-
-        public String getName() {
-            return _name;
-        }
-
-        private String _name;
-        private boolean _instantiable;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private static DirectedAcyclicGraph _typeLattice = _setup();
-    
-    private DataTypeEnum _value;
     private boolean _isSettable;
 }
+
+
 

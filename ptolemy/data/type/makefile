@@ -49,14 +49,15 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	ArrayType.java \
-	ArrayTypeLattice.java \
-	ArrayTypeResolver.java \
+	Data.java \
 	DataType.java \
 	DataTypeResolver.java \
-	LatticeTypeResolver.java \
+	Dimension.java \
+	DimensionType.java \
+	DimensionTypeResolver.java \
+	DimensionLattice.java \
 	Type.java \
-	TypeSystem.java \
-	TypeResolver.java
+	TypeSystem.java 
 
 EXTRA_SRCS =	$(JSRCS)
 

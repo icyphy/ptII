@@ -40,47 +40,37 @@ import collections.*;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayType
 /**
-A class representing the size of a multi-dimensional array as a type.
+A class representing the type of a multidimensional array.   The type
+of an array is represented as a composite type consisting of a Type object and
+a DimensionType.
 
 @author Steve Neuendorffer
 $Id$
 
 */
 
-public class ArrayType extends Type implements InequalityTerm
+public class ArrayType extends CompositeType 
 {
-    /**
-     * Create a new array type variable, initialized to 
-     * ArrayType.BOTTOM;
-     */
-    public ArrayType() {
-        this(new ArrayType(ArrayType.BOTTOM));
-        _isSettable = true;
-    }
-
     /** 
      * Create a new array type constant with the given characteristics.
-     * @param dimensions The number of dimensions of the new type.
-     * @param size An array of the size in each dimension of the new type.
+     * @param type The type of data contained in the array.
+     * @param dimension The size of the array.
      */
-    public ArrayType(int dimensions, int size[], Type type) {
-        _dimensions = dimensions;
-        _size = size;
+    public ArrayType(Type type, DimensionType dimension) {
+        _dimension = dimension;
  	_type = type;
-        _isSettable = false;
-    }
+   }
 
-    /**
-     * Create a new array type constant with the value given by the 
-     * given ArrayType.  If the given type is constant, then the new
-     * type will also be constant.  If the given type is variable, then the
-     * new type will also be variable.
+   /** Return true if the given type is equal to this type.   In other words, 
+     *  an object with this type can be expressed as an object of Type t with 
+     *  no conversion.
      */
-    public ArrayType(ArrayType type) {
-        _dimensions = type._dimensions;
-        _size = type._size;
- 	_type = type._type;
-        _isSettable = type._isSettable;
+    public boolean equals(Object type) {
+        if(!(type instanceof ArrayType)) return false;
+        ArrayType dtype = (ArrayType) type;
+        
+        if(!_dimension.equals(dtype._dimension)) return false;
+        return _type.equals(dtype._type);
     }
 
     /** Given a constraint on this Type, return an enumeration of constraints
@@ -88,91 +78,35 @@ public class ArrayType extends Type implements InequalityTerm
      *  If the constraint is not on array types, then throw an exception.
      */
     public Enumeration expandConstraint(Inequality constraint) {
-        LinkedList l = new LinkedList();
-        l.insertFirst(constraint);
+        LinkedList list = new LinkedList();
         
-        // Add a constraint on the types contained by the array type
-         
+        // Add a constraint on the types contained by the array type         
         ArrayType lesser = (ArrayType) constraint.getLesserTerm();
         ArrayType greater = (ArrayType) constraint.getGreaterTerm();
-        // FIXME Should not assume DataType
-        Inequality typecon = new Inequality((DataType)lesser._type, 
-                (DataType)greater._type);
-        l.appendElements(lesser._type.expandConstraint(typecon));
-        return l.elements();
+        Inequality newConstraint;
+        // Create a constraint on the Type
+        newConstraint = new Inequality(lesser._type, 
+                greater._type);
+        list.appendElements(lesser._type.expandConstraint(newConstraint));
+        // Create a constriant on the Dimension
+        newConstraint = new Inequality(lesser._dimension, 
+                greater._dimension);
+        list.appendElements(lesser._dimension.expandConstraint(newConstraint));
+        return list.elements();
     }
 
-    /** Return the Object associated with this term. If this term is
-     *  not associated with a particular Object, or it is not necessary
-     *  to obtain the reference of the associated Object, this method
-     *  can return <code>null</code>.
-     *  @return null.
+    /** Return the dimension type of this
+     *  array.
      */
-    public Object getAssociatedObject() {
-        return null;
+    public DimensionType getDimension() {
+        return _dimension;
     }
 
     /** Return the type that is associated with all the elements of this
      *  array.
      */
-    public Type getContainedType() {
+    public Type getType() {
         return _type;
-    }
-
-    /** Return the value of this term.  If this term is a constant,
-     *  return that constant; if this term is a variable, return the
-     *  current value of that variable; if this term is a function,
-     *  return the evaluation of that function based on the current
-     *  value of variables in the function.
-     *  @return an Object representing an element in the underlying CPO.
-     */
-    public Object getValue() {
-        ArrayType ctype = new ArrayType(this);
-        ctype._isSettable = false;
-        return ctype;
-    }
-
-    /** Return an array of variables contained in this term.
-     *  If this term is a constant, return an array of size zero;
-     *  if this term is a variable, return an array of size one that
-     *  contains this variable; if this term is a function, return an
-     *  array containing all the variables in the function.
-     *  @return an array of InequalityTerms
-     */
-    public InequalityTerm[] getVariables() {
-        InequalityTerm terms[];
-        if(isSettable()) {
-            terms = new InequalityTerm[1];
-            terms[0] = this;
-        } else {
-            terms = new InequalityTerm[0];
-        }
-        return terms;
-    }
-
-    /** Return true if the given type is equal to this type.   In other words, 
-     *  an object with this type can be expressed as an object of Type t with 
-     *  no conversion.
-     */
-    public boolean isEqualTo(Object type) {
-        if(!(type instanceof ArrayType)) return false;
-        ArrayType dtype = (ArrayType) type;
-        if(_dimensions != dtype._dimensions) return false;
-        int i;
-        for(i = 0; i < _dimensions; i++) {
-            if(_size[i] != dtype._size[i]) return false;
-        }
-        return _type.isEqualTo(dtype._type);
-    }
-
-    /** Check whether this term can be set to a specific element of the
-     *  underlying CPO. Only variable terms are settable, constant
-     *  and function terms are not.
-     *  @return <code>true</code> if this term is a variable;
-     *   <code>false</code> otherwise.
-     */
-    public boolean isSettable() {
-        return _isSettable;
     }
 
     /** Check whether the current type of this term is acceptable,
@@ -181,93 +115,27 @@ public class ArrayType extends Type implements InequalityTerm
      *  @return True if the current type is acceptable.
      */
     public boolean isValueAcceptable() {
-        if(this.isEqualTo(TOP)) return false;
-        if(this.isEqualTo(BOTTOM)) return false;
-        if(_dimensions < 0) return false;
-        if(_dimensions > 2) return false;
-        return this._type.isValueAcceptable();
-    }
-
-    /** Set the value of this term to the specified CPO element.
-     *  Only terms consisting of a single variable can have their
-     *  values set.
-     *  @param e an Object representing an element in the
-     *   underlying CPO.
-     *  @exception IllegalActionException If this term is not a variable.
-     */
-    public void setValue(Object e)
-            throws IllegalActionException {
-        if(!(e instanceof ArrayType)) 
-            throw new InternalErrorException(
-                    "Cannot setvalue of a ArrayType to something that" +
-                    " is not a ArrayType");
-        if(!isSettable()) throw new IllegalActionException( 
-                "This dimension type is a constant and cannot have its "+
-                "value set!");
-        ArrayType dtype = (ArrayType) e;
-        _dimensions = dtype._dimensions;
-        _size = dtype._size;        
-	//_type = dtype._type;
+        return _type.isValueAcceptable() && _dimension.isValueAcceptable();
     }
 
     /** Return a string representing this type
      */
     public String toString() {
         String s = new String("ArrayType(");
-        s += _dimensions + ", {";
-        int i;
-        for(i = 0; i < _dimensions; i++) {
-            s += _size[i] + ", ";
-        }
-        
-        s += "}, " + _type.toString();
+        s += _type.toString() + "," +
+            _dimension.toString();
         s += ")";
-        if(isSettable()) 
-            return "Var" + s;
-        else 
-            return "Const" + s;
+        return s;
     }
-        
-
-
-
-    /** Return the lattice associated with this type
-     */
-    public static CPO getTypeLattice() {
-        return ArrayTypeLattice.getInstance();
-    }
-
-   /** 
-     * An unspecified dimension type.
-     */
-    public static final ArrayType BOTTOM = new ArrayType(-1, null, 
-							 new DataType());
-    
-    /**
-     * A general dimension type.
-     */
-    public static final ArrayType TOP = new ArrayType(-2, null,
-						      new DataType());
 
     /** The number of dimensions of an object of this type.
      *  1 = 1D array, 2 = 2D array, etc.
      */
-    private int _dimensions;
+    private DimensionType _dimension;
    
-    /** The dimensions of an object of this type.
-     *  The array has a length given by _dimensions
-     */
-    private int _size[];
-    
     /** The type of the objects contained in this array.
      */
     private Type _type;
-
-    /** 
-     * True if this type is a constant type.  False if this type is a
-     * variable type.  This value is set at construction and cannot be changed.
-     */
-    private boolean _isSettable;
 }
 
 

@@ -52,7 +52,7 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test TypeResolver-1.0 {datatypes} {
     set t1 [java::new ptolemy.data.type.DataType \
-	    [java::field ptolemy.data.type.DataType INT]]
+	    [java::field ptolemy.data.type.Data INT]]
     set t2 [java::new ptolemy.data.type.DataType]
     list [$t1 toString] [$t2 toString]
 } {ConstDataType(INT) VarDataType(BOTTOM)}
@@ -74,8 +74,12 @@ test TypeResolver-1.1 {datatypes} {
 # 
 test TypeResolver-2.0 {arraytypes} {
     set dim [java::new {int[]} {2} {1 1}]
-    set t1 [java::new ptolemy.data.type.ArrayType 2 $dim\
-	    [java::field ptolemy.data.type.DataType INT]]
+    set tdim [java::new ptolemy.data.type.Dimension 2 $dim]
+    set dimtype [java::new ptolemy.data.type.DimensionType $tdim]
+    set datatype [java::new ptolemy.data.type.DataType \
+	    [java::field ptolemy.data.type.Data INT]]
+    set t1 [java::new ptolemy.data.type.ArrayType \
+	    $datatype $dimtype]
     set t2 [java::new ptolemy.data.type.ArrayType]
     list [$t1 toString] [$t2 toString]
 } {{ConstArrayType(2, {1, 1, }, ConstDataType(INT))} {VarArrayType(-1, {}, VarDataType(BOTTOM))}}
