@@ -53,7 +53,7 @@ import java.util.Iterator;
     @version $Id$
     @since  Ptolemy II 2.0
     @Pt.ProposedRating Red (<your email address>)
-    @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+    @Pt.AcceptedRating Red (ssb)
 */
 public class MethodCodeGenerator {
 

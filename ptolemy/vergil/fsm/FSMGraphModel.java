@@ -68,8 +68,8 @@ import diva.util.NullIterator;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class FSMGraphModel extends AbstractBasicGraphModel {
 

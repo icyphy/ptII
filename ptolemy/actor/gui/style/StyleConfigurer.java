@@ -67,8 +67,8 @@ import ptolemy.kernel.util.Settable;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 
 public class StyleConfigurer extends Query implements QueryListener {

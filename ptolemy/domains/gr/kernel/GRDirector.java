@@ -75,8 +75,8 @@ import java.util.List;
    @author C. Fong, Steve Neuendorffer, Contributor: Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating yellow (chf@eecs.berkeley.edu)
-   @Pt.AcceptedRating yellow (vogel@eecs.berkeley.edu)
+   @Pt.ProposedRating yellow (chf)
+   @Pt.AcceptedRating yellow (vogel)
 */
 public class GRDirector extends StaticSchedulingDirector {
 

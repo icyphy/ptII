@@ -63,8 +63,8 @@ import java.util.Stack;
    @author Neil Smyth and Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.1
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class UndoStackAttribute extends SingletonAttribute {
 

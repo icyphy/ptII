@@ -63,8 +63,8 @@ import java.net.URL;
    @author Edward A. Lee, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (bart)
    @see ptolemy.actor.CompositeActor
    @see ptolemy.actor.AtomicActor
 */

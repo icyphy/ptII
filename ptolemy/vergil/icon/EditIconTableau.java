@@ -50,8 +50,8 @@ import ptolemy.moml.LibraryAttribute;
    @author  Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class EditIconTableau extends Tableau {
 

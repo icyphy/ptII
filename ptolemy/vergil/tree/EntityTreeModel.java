@@ -55,8 +55,8 @@ Derived classes represent more (or less) of the Ptolemy II model.
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
-@Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+@Pt.ProposedRating Red (eal)
+@Pt.AcceptedRating Red (johnr)
 */
 public class EntityTreeModel implements TreeModel {
 

@@ -58,8 +58,8 @@ import java.util.Collection;
    @author Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Green (cxh)
 */
 public class KernelRuntimeException extends RuntimeException {
 

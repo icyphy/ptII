@@ -50,8 +50,8 @@ import ptolemy.math.Complex;
    @author Neil Smyth, Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (cxh)
 */
 public class DoubleToken extends ScalarToken {
 

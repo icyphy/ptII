@@ -126,8 +126,8 @@ import java.util.Stack;
     @author Shuvra S. Bhattacharyya, Ankush Varma
     @version $Id$
     @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ssb@eng.umd.edu)
-    @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+    @Pt.ProposedRating Red (ssb)
+    @Pt.AcceptedRating Red (ssb)
 */
 public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 

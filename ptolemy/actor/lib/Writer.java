@@ -50,8 +50,8 @@ import java.io.OutputStreamWriter;
    @author  Yuhong Xiong, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (mudit@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (yuhong)
+   @Pt.AcceptedRating Yellow (mudit)
 */
 public class Writer extends Sink {
 

@@ -45,7 +45,7 @@ package ptolemy.domains.pn.kernel.event;
    @author Mudit Goel
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (mudit@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (mudit)
    @Pt.AcceptedRating Red
 */
 

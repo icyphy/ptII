@@ -39,8 +39,8 @@ import ptolemy.data.type.Type;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class EventToken extends Token {
 

@@ -70,8 +70,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Charlie Zhong
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (czhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (czhong)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 
 public class TxCoordination extends MACActorBase {

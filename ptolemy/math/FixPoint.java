@@ -73,7 +73,7 @@ import java.math.BigInteger;
    @author Bart Kienhuis, Ed Willink, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4, rewritten for Ptolemy II 2.2
-   @Pt.ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
+   @Pt.ProposedRating Red (Ed.Willink)
    @Pt.AcceptedRating Red
    @see Precision
    @see Quantization

@@ -30,8 +30,8 @@ package ptolemy.graph.mapping;
 /** A mapping from objects into int values.
 
 @since Ptolemy II 4.0
-@Pt.ProposedRating Red (ssb@eng.umd.edu)
-@Pt.AcceptedRating Red (ssb@eng.umd.edu)
+@Pt.ProposedRating Red (ssb)
+@Pt.AcceptedRating Red (ssb)
 @author Shuvra S. Bhattacharyya, Shahrooz Shahparnia
 @version $Id$
 */

@@ -48,8 +48,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Edward A. Lee and Neil Smyth
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (nsmyth)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class RedoChangeRequest extends ChangeRequest {
 

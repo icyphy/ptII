@@ -104,8 +104,8 @@ import javax.sound.sampled.SourceDataLine;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (vogel@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (vogel)
+   @Pt.AcceptedRating Yellow (cxh)
    @see ptolemy.media.javasound.SoundCapture
 */
 

@@ -55,8 +55,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Michael Leung
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 
 public class BitsToInt extends SDFConverter {

@@ -60,7 +60,7 @@ import ptolemy.kernel.util.*;
    @author Eleftherios Matsikoudis
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class ChicAttribute extends StringAttribute {

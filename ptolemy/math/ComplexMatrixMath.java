@@ -48,8 +48,8 @@ COPYRIGHTENDKEY
    @author Jeff Tsay
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (ctsay@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (ctsay)
+   @Pt.AcceptedRating Red (ctsay)
 */
 public class ComplexMatrixMath {
 

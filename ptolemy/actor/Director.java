@@ -94,8 +94,8 @@ import java.util.Iterator;
    @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 public class Director extends Attribute implements Executable {
 

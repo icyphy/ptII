@@ -42,7 +42,7 @@ import ptolemy.domains.tm.kernel.ScheduleListener;
    @author Christopher Hylands, based on TestScheduleListener by Yuhong Xiong
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class TestScheduleListener implements ScheduleListener {

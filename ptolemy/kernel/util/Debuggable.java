@@ -36,8 +36,8 @@ package ptolemy.kernel.util;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (neuendor)
    @see DebugListener
    @see DebugEvent
 */

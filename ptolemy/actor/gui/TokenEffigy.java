@@ -58,8 +58,8 @@ import java.util.List;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class TokenEffigy extends Effigy {
 

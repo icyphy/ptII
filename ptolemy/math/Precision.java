@@ -76,8 +76,8 @@ import java.util.StringTokenizer;
    @author Bart Kienhuis
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (kienhuis)
+   @Pt.AcceptedRating Red (kienhuis)
    @see FixPoint
 */
 

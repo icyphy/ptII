@@ -55,8 +55,8 @@ import java.io.InputStreamReader;
    @author  Edward A. Lee, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Yellow (janneck)
    @deprecated Use ptolemy.util.MessageHandler.
 */
 public class MessageHandler {

@@ -43,8 +43,8 @@ import ptolemy.data.type.Type;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu, nsmyth@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (wbwu@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (yuhong)
+   @Pt.AcceptedRating Red (wbwu)
    @see Constants
 */
 public class GeneralToken extends Token {

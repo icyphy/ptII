@@ -87,8 +87,8 @@ import javax.swing.SwingUtilities;
  *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
  *  @version $Id$
  *  @since Ptolemy II 0.3
- *  @Pt.ProposedRating Yellow (davisj@eecs.berkeley.edu)
- *  @Pt.AcceptedRating Red (davisj@eecs.berkeley.edu)
+ *  @Pt.ProposedRating Yellow (davisj)
+ *  @Pt.AcceptedRating Red (davisj)
  */
 public class LocalZenoApplet extends PtolemyApplet {
 

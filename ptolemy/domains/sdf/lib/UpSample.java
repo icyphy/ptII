@@ -66,8 +66,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Steve Neuendorffer, Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Yellow (eal)
 */
 
 public class UpSample extends SDFTransformer {

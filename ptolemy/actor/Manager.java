@@ -131,8 +131,8 @@ import ptolemy.util.StringUtilities;
    // Contributors: Mudit Goel, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 
 public class Manager extends NamedObj implements Runnable {

@@ -72,8 +72,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu and Elaine Cheong
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (celaine@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (celaine@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (celaine)
+   @Pt.AcceptedRating Yellow (celaine)
 */
 
 public class LinearDifferenceEquationSystem extends Transformer {

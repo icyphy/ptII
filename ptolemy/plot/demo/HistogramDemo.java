@@ -40,8 +40,8 @@ import ptolemy.plot.HistogramApplet;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class HistogramDemo extends HistogramApplet {
 

@@ -130,8 +130,8 @@ import java.util.Set;
    @author  Jie Liu, Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Yellow (janneck)
    @see ptolemy.domains.de.kernel.DEEvent
 */
 public class TMDirector extends Director {

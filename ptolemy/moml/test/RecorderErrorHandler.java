@@ -42,8 +42,8 @@ import ptolemy.moml.ErrorHandler;
    @author Christopher Hylands Brooks
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class RecorderErrorHandler implements ErrorHandler {
 

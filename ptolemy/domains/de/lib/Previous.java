@@ -61,8 +61,8 @@ import java.util.List;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class Previous extends Transformer {
 

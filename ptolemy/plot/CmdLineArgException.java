@@ -36,8 +36,8 @@ package ptolemy.plot;
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class CmdLineArgException extends Exception {
     public CmdLineArgException() { super(); }

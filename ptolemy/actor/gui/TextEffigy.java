@@ -54,8 +54,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee, contributor Zoltan Kemenczy
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class TextEffigy extends Effigy {
 

@@ -51,8 +51,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Red (vogel)
 */
 public class CommandLineTemplate {
 

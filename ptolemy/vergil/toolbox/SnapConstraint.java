@@ -38,8 +38,8 @@ import java.awt.geom.Point2D;
 
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
    @author Edward A. Lee
 */
 public class SnapConstraint implements PointConstraint {

@@ -50,8 +50,8 @@ Abstract base class for a composite actor with several possible refinements.
 @author  Joern Janneck and Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
-@Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+@Pt.ProposedRating Red (eal)
+@Pt.AcceptedRating Red (eal)
 */
 public abstract class AbstractCase extends TypedCompositeActor {
 

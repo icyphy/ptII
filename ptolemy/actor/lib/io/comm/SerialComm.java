@@ -128,8 +128,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating red (winthrop@eecs.berkeley.edu)
-   @Pt.AcceptedRating red (winthrop@eecs.berkeley.edu)
+   @Pt.ProposedRating red (winthrop)
+   @Pt.AcceptedRating red (winthrop)
 */
 public class SerialComm extends TypedAtomicActor
     implements SerialPortEventListener {

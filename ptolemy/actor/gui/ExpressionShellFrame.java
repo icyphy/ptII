@@ -45,8 +45,8 @@ import javax.swing.JPanel;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
    @see ExpressionShellTableau
    @see ShellTextArea
    @see ExpressionShellEffigy

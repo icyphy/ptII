@@ -39,8 +39,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (nobody@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (nobody)
 */
 public class StateEvent implements DebugEvent {
 

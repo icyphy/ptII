@@ -96,8 +96,8 @@ import ptolemy.media.javasound.LiveSound;
    @author  Brian K. Vogel, Steve Neuendorffer
    @version  $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (chf)
    @see ptolemy.media.javasound.LiveSound
    @see AudioCapture
    @see AudioReader

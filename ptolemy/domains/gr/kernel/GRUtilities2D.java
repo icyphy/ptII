@@ -40,8 +40,8 @@ import java.awt.Color;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating yellow (chf@eecs.berkeley.edu)
-   @Pt.AcceptedRating yellow (vogel@eecs.berkeley.edu)
+   @Pt.ProposedRating yellow (chf)
+   @Pt.AcceptedRating yellow (vogel)
 */
 public class GRUtilities2D {
     public static Color makeColor(DoubleMatrixToken colorVector) {

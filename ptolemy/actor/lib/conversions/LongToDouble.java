@@ -46,8 +46,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Green (cxh)
 
    @see ptolemy.data.DoubleToken
    @see ptolemy.data.LongToken

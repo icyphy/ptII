@@ -59,8 +59,8 @@ import com.sun.j3d.utils.geometry.Triangulator;
     @author C. Fong
     @version $Id$
     @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (chf)
+    @Pt.AcceptedRating Red (chf)
 */
 public class CircularSweep3D extends GRShadedShape {
     /** Construct an actor with the given container and name.

@@ -115,8 +115,8 @@ import java.util.Vector;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class Histogram extends PlotBox {
 

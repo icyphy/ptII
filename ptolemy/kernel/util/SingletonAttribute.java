@@ -38,8 +38,8 @@ package ptolemy.kernel.util;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (janneck)
 */
 
 public class SingletonAttribute extends Attribute implements Singleton {

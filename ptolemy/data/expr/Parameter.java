@@ -66,8 +66,8 @@ import ptolemy.util.StringUtilities;
    @author Neil Smyth, Edward A. Lee, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (cxh)
 
    @see ptolemy.data.expr.PtParser
    @see ptolemy.data.Token

@@ -42,8 +42,8 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    <p>
 
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (shahrooz)
+   @Pt.AcceptedRating Red (ssb)
    @author Shahrooz Shahparnia
    @version $Id$
 */

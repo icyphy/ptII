@@ -68,8 +68,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Yang Zhao and Edward Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public interface PropertyTransformer {
 

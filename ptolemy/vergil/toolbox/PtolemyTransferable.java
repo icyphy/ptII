@@ -54,8 +54,8 @@ import javax.swing.UIManager;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class PtolemyTransferable implements Transferable, Serializable {
     // This class implements Serializable in hopes that

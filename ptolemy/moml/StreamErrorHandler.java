@@ -44,8 +44,8 @@ import java.io.PrintStream;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class StreamErrorHandler implements ErrorHandler {
 

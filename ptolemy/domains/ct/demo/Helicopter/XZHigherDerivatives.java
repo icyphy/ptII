@@ -58,8 +58,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  liuj
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (reviewmoderator)
 
 */
 public class XZHigherDerivatives extends TypedAtomicActor

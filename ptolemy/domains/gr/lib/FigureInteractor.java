@@ -54,8 +54,8 @@ import diva.canvas.toolbox.BasicFigure;
    @author Ismael M. Sarmiento
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (ismael@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (ismael)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class FigureInteractor extends AbstractInteractor implements KeyListener{
 

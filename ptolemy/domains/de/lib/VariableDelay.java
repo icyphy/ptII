@@ -51,8 +51,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (liuj)
 */
 public class VariableDelay extends DETransformer {
 

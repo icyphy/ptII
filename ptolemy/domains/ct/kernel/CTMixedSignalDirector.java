@@ -82,8 +82,8 @@ import java.util.Iterator;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (liuj)
+   @Pt.AcceptedRating Green (chf)
 */
 public class CTMixedSignalDirector extends CTMultiSolverDirector {
     /** Construct a director in the default workspace with an empty string

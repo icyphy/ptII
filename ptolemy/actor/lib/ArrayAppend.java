@@ -50,8 +50,8 @@ import ptolemy.kernel.util.Workspace;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (celaine@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (celaine)
+   @Pt.AcceptedRating Green (cxh)
 */
 
 public class ArrayAppend extends Transformer {

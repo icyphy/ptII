@@ -53,8 +53,8 @@ import java.util.Set;
    @author Xiaojun Liu, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuxj)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.data.expr.ASTPtRootNode
    @see ptolemy.data.expr.PtParser
    @see ptolemy.data.Token

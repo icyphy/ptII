@@ -41,8 +41,8 @@ package ptolemy.math;
    @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (ctsay)
+   @Pt.AcceptedRating Yellow (ctsay)
 */
 public class FloatArrayMath {
 

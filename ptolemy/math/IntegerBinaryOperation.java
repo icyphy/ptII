@@ -38,8 +38,8 @@ package ptolemy.math;
     @author Jeff Tsay
     @version $Id$
     @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (ctsay@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (ctsay@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (ctsay)
+    @Pt.AcceptedRating Red (ctsay)
 */
 public interface IntegerBinaryOperation {
 

@@ -61,7 +61,7 @@ import java.io.Serializable;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red
 
 */

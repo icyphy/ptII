@@ -96,8 +96,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class Integrator extends CTBaseIntegrator {

@@ -23,8 +23,8 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (eal@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Red (eal)
+   @AcceptedRating Red (cxh)
 */
 
 package ptolemy.domains.de.lib.test;

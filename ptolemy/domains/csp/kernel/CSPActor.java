@@ -102,8 +102,8 @@ import ptolemy.kernel.util.Workspace;
    @author Neil Smyth, Bilung Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (nsmyth@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (nsmyth)
+   @Pt.AcceptedRating Yellow (liuj)
    @see ConditionalBranch
    @see ConditionalReceive
    @see ConditionalSend

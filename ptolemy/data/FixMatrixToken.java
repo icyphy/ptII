@@ -50,8 +50,8 @@ import ptolemy.math.Quantizer;
    @author Bart Kienhuis, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Yellow (kienhuis)
    @see ptolemy.math.FixPoint
 */
 

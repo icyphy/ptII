@@ -44,8 +44,8 @@ import java.io.Writer;
    @author  Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
    @deprecated The 'import' MoML element is deprecated, use the 'source'
    attribute instead.
 */

@@ -63,8 +63,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jeff Tsay, Paul Whitaker, Adam Cataldo
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (acataldo@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (pwhitake)
+   @Pt.AcceptedRating Red (acataldo)
 */
 
 public class DotProduct extends TypedAtomicActor {

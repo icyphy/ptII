@@ -94,8 +94,8 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
    @author  Edward A. Lee, Manda Sutijono, Elaine Cheong
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 public class Query extends JPanel {
 
@@ -402,7 +402,7 @@ public class Query extends JPanel {
      *  @param label The label to attach to the entry.
      *  @param defaultValue Default value to appear in the entry box.
      *  @since Ptolemy II 3.1
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public void addPassword(String name, String label, String defaultValue) {
@@ -427,7 +427,7 @@ public class Query extends JPanel {
      *  @param defaultValue Default value to appear in the entry box.
      *  @param background The background color.
      *  @since Ptolemy II 3.1
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public void addPassword(
@@ -736,7 +736,7 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      *   This is a runtime exception, so it need not be declared explicitly.
      *  @since Ptolemy II 3.1
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public char [] getCharArrayValue(String name)

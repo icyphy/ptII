@@ -76,8 +76,8 @@ import ptolemy.kernel.util.Workspace;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (davisj)
+   @Pt.AcceptedRating Red (yuhong)
    @see ptolemy.domains.dde.kernel.NullToken
 */
 public class FeedBackDelay extends DDEActor {

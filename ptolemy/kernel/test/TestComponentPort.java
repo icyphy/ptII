@@ -44,7 +44,7 @@ import java.util.LinkedList;
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class TestComponentPort extends ComponentPort {

@@ -46,8 +46,8 @@ import java.io.Serializable;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 
 */
 public class Scene2DToken extends Token {

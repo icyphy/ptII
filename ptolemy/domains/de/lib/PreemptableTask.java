@@ -66,8 +66,8 @@ import java.util.LinkedList;
    @author Elaine Cheong and Yang Zhao and Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (celaine@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (celaine@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (celaine)
+   @Pt.AcceptedRating Yellow (celaine)
 */
 
 public class PreemptableTask extends DETransformer {

@@ -50,8 +50,8 @@ import java.util.Iterator;
     @author Ankush Varma
     @version $Id$
     @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ankush@eng.umd.edu)
-    @Pt.AcceptedRating Red (ankush@eng.umd.edu)
+    @Pt.ProposedRating Red (ankush)
+    @Pt.AcceptedRating Red (ankush)
 */
 
 public class RequiredFileGenerator {

@@ -71,8 +71,8 @@ import diva.util.xml.XmlReader;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
    @deprecated Use ptolemy.vergil.kernel.attributes.TextAttribute.
 */
 

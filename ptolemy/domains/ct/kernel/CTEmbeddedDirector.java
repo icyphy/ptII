@@ -57,8 +57,8 @@ import java.util.Iterator;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Yellow (chf)
    @see CTMultiSolverDirector
    @see CTTransparentDirector
 */

@@ -120,8 +120,8 @@ import java.net.URL;
    @version $Id$
    @see URIAttribute
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class FileAttribute extends StringAttribute {
 

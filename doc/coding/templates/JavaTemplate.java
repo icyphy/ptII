@@ -39,8 +39,8 @@ package MyPackageName;
    @version $Id$
    @see classname (refer to relevant classes, but not the base class)
    @since Ptolemy II x.x
-   @Pt.ProposedRating Red (yourname@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (yourname)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 
 public class ClassName {

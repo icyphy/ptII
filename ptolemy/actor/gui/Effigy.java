@@ -86,8 +86,8 @@ import ptolemy.moml.MoMLParser;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (celaine@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (celaine)
    @see ModelDirectory
    @see Tableau
 */

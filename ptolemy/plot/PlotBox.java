@@ -233,8 +233,8 @@ import javax.swing.SwingUtilities;
 
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class PlotBox extends JPanel implements Printable {
 
@@ -657,7 +657,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param legend The String naming the legend
      *  @return The legend dataset, or -1 if not found.
      *  @since Ptplot 5.2p1
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public synchronized int getLegendDataset(String legend) {

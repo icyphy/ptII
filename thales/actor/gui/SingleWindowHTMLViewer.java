@@ -69,7 +69,7 @@ import thales.vergil.navigable.NavigationPTree;
    @author J&eacute;r&ocirc;me Blanc, Soci&eacute;t&eacute; : Thales Research and technology, 01 sept. 2003
    @version $Id$
    @since Ptolemy II 3.1
-   @Pt.ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+   @Pt.ProposedRating Yellow (jerome.blanc)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class SingleWindowHTMLViewer

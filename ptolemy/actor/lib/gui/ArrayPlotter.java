@@ -71,8 +71,8 @@ import ptolemy.plot.Plot;
    @author  Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (cxh)
    @see SequenceScope
 */
 public class ArrayPlotter extends Plotter implements SequenceActor {

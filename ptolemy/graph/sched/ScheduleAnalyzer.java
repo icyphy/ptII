@@ -37,8 +37,8 @@ import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
    <p>
    @see ptolemy.graph.analysis.analyzer.GraphAnalyzer;
    @since Ptolemy II 4.0
-   @Pt.ProposedRating red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating red (ssb@eng.umd.edu)
+   @Pt.ProposedRating red (shahrooz)
+   @Pt.AcceptedRating red (ssb)
    @author Shahrooz Shahparnia
 */
 public interface ScheduleAnalyzer extends GraphAnalyzer {

@@ -94,8 +94,8 @@ that send on the channel and the channel port.
 @author Edward A. Lee and Xiaojun Liu
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-@Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@Pt.ProposedRating Green (cxh)
+@Pt.AcceptedRating Yellow (cxh)
 */
 
 public class WirelessIOPort

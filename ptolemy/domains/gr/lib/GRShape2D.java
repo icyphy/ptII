@@ -53,8 +53,8 @@ import diva.canvas.toolbox.BasicFigure;
     @author Steve Neuendorffer, Ismael M. Sarmiento
     @version $Id$
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (chf)
+    @Pt.AcceptedRating Red (chf)
 */
 abstract public class GRShape2D extends GRActor2D {
 

@@ -127,8 +127,8 @@ import java.util.Set;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (liuj)
+   @Pt.AcceptedRating Green (chf)
    @see ptolemy.actor.Director
 */
 public abstract class CTDirector extends StaticSchedulingDirector {

@@ -50,8 +50,8 @@ import diva.canvas.toolbox.BasicFigure;
    @author Ismael M. Sarmiento, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (ismael@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (ismael)
+   @Pt.AcceptedRating Yellow (chf)
 */
 public class Rectangle2D extends RectangularFigure2D {
 

@@ -89,8 +89,8 @@ Prentice Hall, 1989.
 @author Aleksandar Necakov, Research in Motion Limited
 @version $Id$
 @since Ptolemy II 1.0
-@Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+@Pt.ProposedRating Red (vogel)
+@Pt.AcceptedRating Red (cxh)
 */
     public class IIR extends Transformer {
 

@@ -55,8 +55,8 @@ import ptolemy.media.javasound.LiveSoundListener;
    @author Steve Neuendorffer
    @version  $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (chf)
    @see ptolemy.media.javasound.LiveSound
    @see AudioPlayer
    @see AudioCapture

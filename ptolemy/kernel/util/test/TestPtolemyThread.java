@@ -38,7 +38,7 @@ import ptolemy.kernel.util.PtolemyThread;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.3
-    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (cxh)
     @Pt.AcceptedRating Red (cxheecs.berkeley.edu)
 */
 public class TestPtolemyThread extends PtolemyThread {
@@ -138,7 +138,7 @@ public class TestPtolemyThread extends PtolemyThread {
      *  the message from parts.
      *  @param message The message.
      *  @since Ptolemy II 2.3
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public void debug(String message) {

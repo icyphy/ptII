@@ -66,8 +66,8 @@ import diva.gui.toolbox.FigureIcon;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
 */
 public abstract class WithIconGraphController extends BasicGraphController {
 

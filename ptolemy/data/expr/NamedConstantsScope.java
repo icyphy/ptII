@@ -44,8 +44,8 @@ import java.util.Set;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuxj)
+   @Pt.AcceptedRating Red (liuxj)
 */
 
 public class NamedConstantsScope implements ParserScope {

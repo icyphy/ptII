@@ -51,8 +51,8 @@ import java.net.URI;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class FileChooserStyle extends ParameterEditorStyle {

@@ -43,8 +43,8 @@ package ptolemy.kernel.util;
    @author Christopher Hylands, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (johnr)
 */
 
 public interface Nameable extends ModelErrorHandler {

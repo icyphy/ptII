@@ -57,8 +57,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (liuj)
 */
 public class Timer extends DETransformer {
 

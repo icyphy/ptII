@@ -103,8 +103,8 @@ import java.util.List;
    @author Yuhong Xiong, Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (yuhong)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 
 public class TypedIOPort extends IOPort implements Typeable {

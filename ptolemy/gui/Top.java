@@ -118,8 +118,8 @@ import javax.swing.filechooser.FileFilter;
    @author Edward A. Lee and Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Yellow (janneck)
 */
 public abstract class Top extends JFrame {
 

@@ -58,8 +58,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Lukito Muliadi, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (liuj)
+   @Pt.AcceptedRating Green (liuxj)
    @see DEReceiver
    @see ptolemy.actor.util.CalendarQueue
    @see DEDirector

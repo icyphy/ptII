@@ -46,8 +46,8 @@ import java.io.IOException;
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Red (cxh)
    @see BrowserEffigy
    @see BrowserLauncher
 */

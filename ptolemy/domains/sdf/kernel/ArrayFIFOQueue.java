@@ -58,8 +58,8 @@ import java.util.NoSuchElementException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Yellow (johnr)
 */
 public final class ArrayFIFOQueue implements Cloneable {
 

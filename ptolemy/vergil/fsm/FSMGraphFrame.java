@@ -62,8 +62,8 @@ import diva.graph.GraphPane;
    @author  Steve Neuendorffer, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class FSMGraphFrame extends ExtendedGraphFrame {
 

@@ -61,8 +61,8 @@ import javax.vecmath.Vector3d;
     @author C. Fong
     @version $Id$
     @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (chf)
+    @Pt.AcceptedRating Red (chf)
 */
 public class Rotate3D extends GRTransform {
 

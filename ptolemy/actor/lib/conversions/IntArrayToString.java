@@ -53,8 +53,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Winthrop Williams, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
+   @Pt.ProposedRating Red (winthrop)
+   @Pt.AcceptedRating Red (winthrop)
 */
 
 public class IntArrayToString extends TypedAtomicActor {

@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class IdentityActor extends AtomicActor {

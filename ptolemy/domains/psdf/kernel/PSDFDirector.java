@@ -81,8 +81,8 @@ import java.util.*;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 3.1
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class PSDFDirector extends SDFDirector {
 

@@ -47,8 +47,8 @@ import java.awt.Window;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (janneck)
 */
 public interface CloseListener {
 

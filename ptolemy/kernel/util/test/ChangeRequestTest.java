@@ -55,8 +55,8 @@ import java.util.Enumeration;
    @author  Edward A. Lee, Contributor: Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
    @see ptolemy.kernel.util.ChangeRequest
 
 */

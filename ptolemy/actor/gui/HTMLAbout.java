@@ -59,8 +59,8 @@ import javax.swing.event.HyperlinkEvent;
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
    @see HTMLViewer#hyperlinkUpdate(HyperlinkEvent)
 */
 public class HTMLAbout {

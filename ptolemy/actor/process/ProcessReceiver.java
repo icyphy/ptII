@@ -89,8 +89,8 @@ import ptolemy.data.Token;
    @author Neil Smyth, Mudit Goel, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (mudit@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (mudit)
+   @Pt.AcceptedRating Yellow (mudit)
    @see ptolemy.actor.process.BoundaryDetector
 
 */

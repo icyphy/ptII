@@ -42,8 +42,8 @@ import java.io.PrintStream;
    @author  Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (cxh)
    @see ptolemy.data.expr.Variable
 */
 public class StreamValueListener implements ValueListener {

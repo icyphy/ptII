@@ -63,8 +63,8 @@ import java.util.NoSuchElementException;
    @author Mudit Goel, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (johnr)
    @see Nameable
 */
 public final class NamedList implements Cloneable, Serializable {

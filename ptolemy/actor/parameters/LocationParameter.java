@@ -47,8 +47,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class LocationParameter extends Parameter implements Locatable {
 

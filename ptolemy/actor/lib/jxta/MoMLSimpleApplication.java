@@ -53,8 +53,8 @@ import java.io.StringWriter;
     @author Yang Zhao
     @version $Id$
     @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (cxh)
+    @Pt.AcceptedRating Red (eal)
 */
 public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
 

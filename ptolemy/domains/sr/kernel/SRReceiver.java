@@ -82,8 +82,8 @@ import ptolemy.kernel.util.InternalErrorException;
    @author Paul Whitaker, contributor: Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (pwhitake@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (pwhitake)
+   @Pt.AcceptedRating Green (pwhitake)
    @see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SRReceiver extends AbstractReceiver {
@@ -192,7 +192,7 @@ public class SRReceiver extends AbstractReceiver {
      *  @exception IllegalArgumentException If the state is unknown.
      *  @see #hasToken()
      *  @since Ptolemy II 2.1
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public boolean hasToken(int numberOfTokens)

@@ -52,8 +52,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Yang Zhao, Charlie Zhong
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (pjb2e)
 */
 
 public class NetworkActorBase extends TypedAtomicActor {

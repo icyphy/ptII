@@ -39,8 +39,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public interface ErrorHandler {
 

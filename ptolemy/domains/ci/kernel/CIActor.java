@@ -42,8 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 @author Yang Zhao
 @version $Id$
 @since Ptolemy II 2.2
-@Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@Pt.ProposedRating Yellow (cxh)
+@Pt.AcceptedRating Yellow (cxh)
 */
 public class CIActor extends Transformer {
 

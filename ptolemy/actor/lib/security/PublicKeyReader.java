@@ -46,8 +46,8 @@ returns a public key.
 @author  Christopher Brooks
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+@Pt.ProposedRating Yellow (cxh)
+@Pt.AcceptedRating Red (cxh)
 */
 public class PublicKeyReader extends KeyReader {
     /** Construct an actor with the given container and name.

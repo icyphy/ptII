@@ -79,8 +79,8 @@ import java.util.StringTokenizer;
    @author  Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (liuj)
    @deprecated Use DirectoryListing instead.
 */
 public class URLDirectoryReader extends URLReader {

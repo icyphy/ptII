@@ -44,7 +44,7 @@ import thales.actor.gui.SingleWindowHTMLViewer;
    @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 12 nov. 2003
    @version $Id$
    @since
-   @Pt.ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+   @Pt.ProposedRating Yellow (jerome.blanc)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class SingleWindowApplication extends VergilApplication {

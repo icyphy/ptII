@@ -63,8 +63,8 @@ import java.io.IOException;
    @author Winthrop Williams
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
+   @Pt.ProposedRating Red (winthrop)
+   @Pt.AcceptedRating Red (winthrop)
 */
 
 public class Datagram extends TypedAtomicActor

@@ -46,8 +46,8 @@ import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
    <p>
    @see ptolemy.graph.analysis.SinkNodeAnalysis
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (ssb@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (ssb)
+   @Pt.AcceptedRating Red (ssb)
    @author Ming Yung Ko, Shahrooz Shahparnia
    @version $Id$
 */

@@ -71,8 +71,8 @@ the Placeable interface is placed in the display region.
 @author Edward A. Lee, Elaine Cheong
 @version $Id$
 @since Ptolemy II 0.4
-@Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-@Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+@Pt.ProposedRating Green (eal)
+@Pt.AcceptedRating Yellow (janneck)
 */
 public class ModelPane extends JPanel implements CloseListener {
 

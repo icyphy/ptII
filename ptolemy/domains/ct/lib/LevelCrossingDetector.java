@@ -62,8 +62,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class LevelCrossingDetector extends Transformer
     implements CTStepSizeControlActor, CTEventGenerator {

@@ -58,8 +58,8 @@ import javax.swing.JButton;
    @author Edward A. Lee, Christopher Hylands, Contributor: Jeff Lane
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public abstract class PlotLive extends Plot implements Runnable {
 

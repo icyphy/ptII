@@ -47,8 +47,8 @@ import java.net.URL;
    @author Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (janneck)
 */
 public class ExecShellEffigy extends Effigy {
 

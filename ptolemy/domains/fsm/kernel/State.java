@@ -64,8 +64,8 @@ import java.util.StringTokenizer;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuxj)
+   @Pt.AcceptedRating Yellow (kienhuis)
    @see Transition
    @see FSMActor
    @see FSMDirector

@@ -51,8 +51,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Red (liuj)
 
 */
 public class CTTestValueSink extends TypedAtomicActor {

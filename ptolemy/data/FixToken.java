@@ -57,8 +57,8 @@ import ptolemy.math.Rounding;
    @see ptolemy.math.Quantization
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (kienhuis)
+   @Pt.AcceptedRating Yellow (kienhuis)
 */
 
 public class FixToken extends ScalarToken {

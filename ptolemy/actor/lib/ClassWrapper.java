@@ -86,8 +86,8 @@ import java.util.Iterator;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuxj)
+   @Pt.AcceptedRating Red (liuxj)
 */
 
 public class ClassWrapper extends TypedAtomicActor {

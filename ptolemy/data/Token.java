@@ -75,8 +75,8 @@ import java.io.Serializable;
    Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
 
    @see ScalarToken
    @see AbstractConvertibleToken

@@ -51,8 +51,8 @@ import ptolemy.util.StringUtilities;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class VergilErrorHandler implements ErrorHandler {
 

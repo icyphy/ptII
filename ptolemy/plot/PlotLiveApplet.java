@@ -38,8 +38,8 @@ package ptolemy.plot;
    @author Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class PlotLiveApplet extends PlotApplet {
 

@@ -55,8 +55,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Antonio Yordan-Nones, Colin Cochran (contributor Edward A. Lee)
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (djstone@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (eal@ptolemy.eecs.berkeley.edu)
+   @Pt.ProposedRating Green (djstone)
+   @Pt.AcceptedRating Green (eal)
 */
 
 public class StringMatches extends TypedAtomicActor {

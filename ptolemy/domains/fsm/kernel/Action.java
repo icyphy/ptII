@@ -54,8 +54,8 @@ import ptolemy.kernel.util.StringAttribute;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuxj)
+   @Pt.AcceptedRating Yellow (liuxj)
    @see ChoiceAction
    @see CommitAction
    @see Transition

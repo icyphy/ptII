@@ -118,8 +118,8 @@ import ptolemy.moml.MoMLChangeRequest;
    @author Edward A. Lee, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class IterateOverArray extends TypedCompositeActor {
 

@@ -46,8 +46,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (cxh)
 */
 abstract public class GRActor2D extends GRActor {
 

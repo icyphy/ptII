@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (ssachs@eecs.berkeley.edu)
+@ProposedRating Red (eal)
+@AcceptedRating Red (ssachs)
 */
 
 package ptolemy.actor.lib;

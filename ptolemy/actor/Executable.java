@@ -52,8 +52,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (davisj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (davisj)
 */
 public interface Executable {
 

@@ -133,8 +133,8 @@ import org.python.util.PythonInterpreter;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.3
-   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuxj)
+   @Pt.AcceptedRating Red (reviewmoderator)
    @see <a href="http://www.python.org" target="_top">Python</a>
    @see <a href="http://www.jython.org" target="_top">Jython</a>
 */

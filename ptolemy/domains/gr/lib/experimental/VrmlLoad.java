@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (chf@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (chf)
+@AcceptedRating Red (cxh)
 */
 
 package ptolemy.domains.gr.lib.experimental;

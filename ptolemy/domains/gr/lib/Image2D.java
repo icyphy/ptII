@@ -55,8 +55,8 @@ import diva.canvas.toolbox.ImageFigure;
    @author Ismael M. Sarmiento, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (ismael@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (ismael)
+   @Pt.AcceptedRating Yellow (chf)
 */
 public class Image2D extends GRActor2D {
 

@@ -34,7 +34,7 @@ import java.net.URL;
     @author Christopher Hylands Brooks
     @version $Id$
     @since Ptolemy II 3.1
-    @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+    @Pt.ProposedRating Green (cxh)
     @Pt.AcceptedRating Red
 */
 public class FindClass {

@@ -56,8 +56,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Neil Smyth, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (nsmyth@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (nsmyth)
+   @Pt.AcceptedRating Green (kienhuis)
 */
 
 public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {

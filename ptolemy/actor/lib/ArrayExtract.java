@@ -56,8 +56,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee, Elaine Cheong
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (celaine@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (celaine)
+   @Pt.AcceptedRating Green (cxh)
 */
 
 public class ArrayExtract extends Transformer {

@@ -73,8 +73,8 @@ import ptolemy.kernel.util.Settable;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class ComputeHistogram extends TypedAtomicActor {
 

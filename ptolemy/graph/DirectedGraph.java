@@ -60,8 +60,8 @@ import ptolemy.graph.analysis.TransitiveClosureAnalysis;
    Shahrooz Shahparnia
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (pwhitake)
+   @Pt.AcceptedRating Yellow (pwhitake)
 */
 public class DirectedGraph extends Graph {
 

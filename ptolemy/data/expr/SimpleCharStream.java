@@ -24,8 +24,8 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-  @AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+  @ProposedRating Yellow (nsmyth)
+  @AcceptedRating Yellow (yuhong)
 
   Created : May 1998
 

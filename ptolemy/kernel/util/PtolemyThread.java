@@ -42,8 +42,8 @@ import java.util.List;
     @author Lukito Muliadi, contributor: Edward A. Lee
     @version $Id$
     @since Ptolemy II 0.2
-    @Pt.ProposedRating Green (lmuliadi@eecs.berkeley.edu)
-    @Pt.AcceptedRating Green (liuj@eecs.berkeley.edu)
+    @Pt.ProposedRating Green (lmuliadi)
+    @Pt.AcceptedRating Green (liuj)
 */
 public class PtolemyThread extends Thread implements Debuggable {
 
@@ -125,7 +125,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  @param listener The listener to which to send debug messages.
      *  @see #removeDebugListener(DebugListener)
      *  @since Ptolemy II 2.3
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public synchronized void addDebugListener(DebugListener listener) {
@@ -146,7 +146,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *   to which debug messages are sent.
      *  @see #addDebugListener(DebugListener)
      *  @since Ptolemy II 2.3
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public synchronized void removeDebugListener(DebugListener listener) {
@@ -166,7 +166,7 @@ public class PtolemyThread extends Thread implements Debuggable {
     /** Send a debug event to all debug listeners that have registered.
      *  @param event The event.
      *  @since Ptolemy II 2.3
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     protected final void _debug(DebugEvent event) {
@@ -196,7 +196,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  the message from parts.
      *  @param message The message.
      *  @since Ptolemy II 2.3
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     protected final void _debug(String message) {
@@ -221,14 +221,14 @@ public class PtolemyThread extends Thread implements Debuggable {
 
     /** Flag that is true if there are debug listeners.
      *  @since Ptolemy II 2.3
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     protected boolean _debugging = false;
 
     /** The list of DebugListeners registered with this object.
      *  @since Ptolemy II 2.3
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     protected LinkedList _debugListeners = null;

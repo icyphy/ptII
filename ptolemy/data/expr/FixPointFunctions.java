@@ -90,8 +90,8 @@ import ptolemy.math.Quantizer;
    @author Bart Kienhuis, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (kienhuis)
+   @Pt.AcceptedRating Red (kienhuis)
    @see PtParser
    @see ptolemy.math.FixPoint
    @see ptolemy.math.Quantizer

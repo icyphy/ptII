@@ -35,8 +35,8 @@ package ptolemy.domains.gr.kernel;
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+@Pt.ProposedRating Red (chf)
+@Pt.AcceptedRating Red (chf)
 */
 public interface ViewScreenInterface {
 

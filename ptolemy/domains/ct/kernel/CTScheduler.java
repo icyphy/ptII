@@ -135,8 +135,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (liuj)
+   @Pt.AcceptedRating Yellow (johnr)
    @see ptolemy.actor.sched.Scheduler
 */
 

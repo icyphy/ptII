@@ -52,8 +52,8 @@ import javax.vecmath.Color3f;
     @author C. Fong, Steve Neuendorffer
     @version $Id$
     @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (chf)
+    @Pt.AcceptedRating Red (chf)
 */
 abstract public class GRShadedShape extends GRActor3D {
 

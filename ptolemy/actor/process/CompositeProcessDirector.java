@@ -118,8 +118,8 @@ import java.util.LinkedList;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (davisj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (mudit)
+   @Pt.AcceptedRating Yellow (davisj)
    @see Director
 */
 public class CompositeProcessDirector extends ProcessDirector {

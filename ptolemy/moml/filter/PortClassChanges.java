@@ -46,8 +46,8 @@ import java.util.Iterator;
     @author Haiyang Zheng
     @version $Id$
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (hyzheng@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (hyzheng@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (hyzheng)
+    @Pt.AcceptedRating Red (hyzheng)
 */
 public class PortClassChanges implements MoMLFilter {
 

@@ -61,8 +61,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Jie Liu, Edward A. Lee, Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (bart)
    @see Token
 */
 public interface Receiver {

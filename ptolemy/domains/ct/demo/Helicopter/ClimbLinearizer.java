@@ -51,8 +51,8 @@ import java.util.StringTokenizer;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class ClimbLinearizer extends TypedAtomicActor
     implements TimedActor{

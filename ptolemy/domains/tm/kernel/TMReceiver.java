@@ -71,8 +71,8 @@ import java.util.LinkedList;
    @author Edward A. Lee, Jie Liu
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Yellow (janneck)
    @see ptolemy.domains.tm.kernel.TMDirector
 */
 public class TMReceiver extends AbstractReceiver {

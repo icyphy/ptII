@@ -60,8 +60,8 @@ import java.util.List;
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (zhouye@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (zhouye)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class ArrayToElements extends Transformer {

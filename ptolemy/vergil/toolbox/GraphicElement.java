@@ -49,8 +49,8 @@ import java.util.Set;
    @author Steve Neuendorffer, John Reekie
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class GraphicElement {
     /**

@@ -108,8 +108,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Yellow (yuhong)
 */
 
 public class Clock extends TimedSource {

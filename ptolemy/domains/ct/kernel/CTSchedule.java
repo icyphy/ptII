@@ -71,8 +71,8 @@ import java.util.List;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Red (liuj)
 */
 public class CTSchedule extends Schedule {
 

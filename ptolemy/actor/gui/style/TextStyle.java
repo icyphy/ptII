@@ -51,8 +51,8 @@ import ptolemy.kernel.util.Settable;
    @author Zoltan Kemenczy, Research in Motion Ltd
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (zkemenczy@rim.net)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (zkemenczy)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class TextStyle extends ParameterEditorStyle {

@@ -56,8 +56,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jeff Tsay and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (ctsay)
+   @Pt.AcceptedRating Yellow (cxh)
    @see ptolemy.actor.lib.Select
 */
 

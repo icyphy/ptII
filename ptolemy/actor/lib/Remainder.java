@@ -67,8 +67,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @see MathFunction
    @since Ptolemy II 1.0.1
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class Remainder extends Transformer {
 

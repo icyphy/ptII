@@ -65,8 +65,8 @@ import ptolemy.kernel.util.Workspace;
    @author Mudit Goel, Edward A. Lee, Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (bart)
    @see Entity
    @see Relation
 */

@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@ProposedRating Red (neuendor)
+@AcceptedRating Red (johnr)
 */
 
 package ptolemy.domains.pdf.kernel;

@@ -44,8 +44,8 @@ import ptolemy.kernel.util.Workspace;
 
     @version $Id$
     @since Ptolemy II 0.4
-    @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (neuendor)
+    @Pt.AcceptedRating Red (cxh)
     @author Steve Neuendorffer
 */
 public class SDFTestRamp extends TypedAtomicActor {

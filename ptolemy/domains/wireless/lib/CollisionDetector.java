@@ -156,8 +156,8 @@ import ptolemy.kernel.util.Workspace;
    @author Yang Zhao, Xiaojun Liu, Edward Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
    @see PowerLossChannel
    @see GetProperties
    @see ptolemy.actor.lib.RecordDisassembler

@@ -34,8 +34,8 @@ package ptolemy.copernicus.c;
    @author Ankush Varma
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (ankush@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (ankush)
+   @Pt.AcceptedRating Red (ssb)
 */
 public class Utilities{
 

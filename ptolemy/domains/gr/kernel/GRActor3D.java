@@ -46,8 +46,8 @@ import javax.media.j3d.Node;
    @author C. Fong
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (chf@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (chf)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 abstract public class GRActor3D extends GRActor {
 

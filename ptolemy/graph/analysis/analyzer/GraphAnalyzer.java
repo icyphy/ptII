@@ -34,8 +34,8 @@ import ptolemy.graph.Graph;
    which analyze graphs and compute results, that will be accessed through methods
    that interfaces that extend this one will define.
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (shahrooz)
+   @Pt.AcceptedRating Red (ssb)
    @author Shahrooz Shahparnia
    @version $Id$
 */

@@ -43,8 +43,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Yellow (liuxj)
 */
 public abstract class FixedStepSolver extends ODESolver {
     /** Construct a solver in the default workspace with an empty

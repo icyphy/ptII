@@ -70,8 +70,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Yellow (yuhong)
 */
 
 public class Quantizer extends Transformer {

@@ -37,8 +37,8 @@ import java.util.EventListener;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 public interface QueryListener extends EventListener {
 

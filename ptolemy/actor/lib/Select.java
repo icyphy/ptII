@@ -70,8 +70,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (liuj)
 */
 
 public class Select extends Transformer {

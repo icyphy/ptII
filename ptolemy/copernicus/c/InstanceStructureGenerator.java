@@ -46,7 +46,7 @@ import java.util.LinkedList;
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (<your email address>)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.AcceptedRating Red (ssb)
 */
 public class  InstanceStructureGenerator extends CodeGenerator {
 

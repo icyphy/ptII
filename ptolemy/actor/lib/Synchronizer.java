@@ -48,8 +48,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Paul Whitaker
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (pwhitake)
+   @Pt.AcceptedRating Yellow (pwhitake)
 */
 
 public class Synchronizer extends Transformer {

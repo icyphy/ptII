@@ -43,7 +43,7 @@ import ptolemy.data.type.Type;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class TestTypeListener implements TypeListener {

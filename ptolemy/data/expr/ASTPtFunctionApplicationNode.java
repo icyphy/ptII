@@ -24,8 +24,8 @@ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
 LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (neuendor)
+@AcceptedRating Yellow (neuendor)
 
 Created : May 1998
 */

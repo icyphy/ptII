@@ -49,8 +49,8 @@ import ptolemy.math.ComplexMatrixMath;
    @author Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class ComplexMatrixToken extends MatrixToken {
 

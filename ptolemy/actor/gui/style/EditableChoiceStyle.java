@@ -55,8 +55,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 
 public class EditableChoiceStyle extends ChoiceStyle {

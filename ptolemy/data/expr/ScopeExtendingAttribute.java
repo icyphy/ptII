@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
+@ProposedRating Red (liuxj)
+@AcceptedRating Red (liuxj)
 
 */
 

@@ -73,8 +73,8 @@ import ptolemy.math.Rounding;
    @author Bart Kienhuis, Edward A. Lee, Ed Willink
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (pwhitake@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (pwhitake)
+   @Pt.AcceptedRating Green (pwhitake)
    @see ptolemy.data.FixToken
    @see ptolemy.math.Overflow
    @see ptolemy.math.Precision

@@ -50,8 +50,8 @@ package ptolemy.graph;
    @author Shuvra S. Bhattacharyya
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.graph.Node
 */
 public final class Edge extends Element {

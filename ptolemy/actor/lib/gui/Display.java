@@ -88,8 +88,8 @@ import javax.swing.text.BadLocationException;
    @author  Yuhong Xiong, Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (vogel@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (yuhong)
+   @Pt.AcceptedRating Yellow (vogel)
 */
 public class Display extends Sink implements Placeable {
 

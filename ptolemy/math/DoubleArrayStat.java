@@ -43,8 +43,8 @@ import java.util.Random;
    @author Jeff Tsay
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (ctsay@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (ctsay)
+   @Pt.AcceptedRating Red (ctsay)
 */
 public class DoubleArrayStat extends DoubleArrayMath {
 

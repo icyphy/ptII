@@ -66,8 +66,8 @@ import java.util.Iterator;
    @author Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (lmuliadi@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (lmuliadi)
+   @Pt.AcceptedRating Red (cxh)
    @see DEActor
 */
 public abstract class DEThreadActor extends DEActor implements Runnable {

@@ -50,8 +50,8 @@ import ptolemy.kernel.util.Workspace;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (yuhong)
 */
 
 public class CountTrues extends SDFTransformer {

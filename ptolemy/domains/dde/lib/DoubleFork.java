@@ -49,8 +49,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (davisj)
+   @Pt.AcceptedRating Red (cxh)
 
 */
 

@@ -53,8 +53,8 @@ import org.python.util.PythonInterpreter;
    @author Christopher Hylands and Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class PythonShellTableau extends Tableau
     implements ShellInterpreter {

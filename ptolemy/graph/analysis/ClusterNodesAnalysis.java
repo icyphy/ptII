@@ -44,8 +44,8 @@ import ptolemy.graph.analysis.strategy.ClusterNodesTransformerStrategy;
    that is, return the subgraph induced by the given collection of nodes.
 
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (shahrooz)
+   @Pt.AcceptedRating Red (ssb)
    @version $Id$
    @author Shahrooz Shahparnia based on a file by Shuvra S. Bhattacharyya and
    Ming-Yung Ko

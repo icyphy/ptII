@@ -120,8 +120,8 @@ import ptolemy.matlab.Engine.ConversionParameters;
    @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (zkemenczy@rim.net)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (zkemenczy)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class Expression extends TypedAtomicActor {
 

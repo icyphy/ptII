@@ -45,8 +45,8 @@ package ptolemy.graph.mapping;
     to make sure that that a candidate argument is in the domain.
 
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (ssb@eng.umd.edu)
-    @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+    @Pt.ProposedRating Red (ssb)
+    @Pt.AcceptedRating Red (ssb)
     @author Shuvra S. Bhattacharyya, Shahrooz Shahparnia
     @version $Id$
 */

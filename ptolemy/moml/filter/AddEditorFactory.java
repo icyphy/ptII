@@ -42,8 +42,8 @@ import ptolemy.moml.MoMLParser;
     @author Christopher Hylands, Edward A. Lee
     @version $Id$
     @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (cxh)
+    @Pt.AcceptedRating Red (cxh)
 */
 public class AddEditorFactory implements MoMLFilter {
 

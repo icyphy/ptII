@@ -46,8 +46,8 @@ import ptolemy.graph.analysis.analyzer.SourceNodeAnalyzer;
    <p>
    @see ptolemy.graph.analysis.SourceNodeAnalysis
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (shahrooz)
+   @Pt.AcceptedRating Red (ssb)
    @author Ming Yung Ko, Shahrooz Shahparnia
    @version $Id$
 */

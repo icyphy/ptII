@@ -63,8 +63,8 @@ import ptolemy.kernel.util.StringAttribute;
    @author C. Fong
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (chf@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (chf)
+   @Pt.AcceptedRating Green (janneck)
 */
 
 public class Round extends Transformer {

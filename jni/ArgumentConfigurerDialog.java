@@ -59,8 +59,8 @@ import ptolemy.util.MessageHandler;
    @author Edward A. Lee, V.Arnould
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Yellow (vincent.arnould@thalesgroup.com)
-   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
+   @Pt.ProposedRating Yellow (vincent.arnould)
+   @Pt.AcceptedRating Red (vincent.arnould)
 */
 public class ArgumentConfigurerDialog
     extends ComponentDialog

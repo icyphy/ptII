@@ -49,8 +49,8 @@ import ptolemy.moml.MoMLParser;
    @author Edward Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 public class TreeEditorPanel extends JScrollPane {
 

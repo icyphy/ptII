@@ -139,8 +139,8 @@ import java.util.StringTokenizer;
    @author Xiaojun Liu and Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuxj)
+   @Pt.AcceptedRating Yellow (liuxj)
    @see State
    @see Action
    @see ChoiceAction

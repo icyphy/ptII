@@ -96,7 +96,7 @@ import x10.Controller;
    @author Colin Cochran and Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class X10Interface extends TypedAtomicActor {

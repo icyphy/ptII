@@ -56,8 +56,8 @@ import java.util.List;
    @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (neuendor)
    @see ptolemy.actor.CompositeActor
    @see ptolemy.actor.IOPort
 */

@@ -62,8 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (djstone@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (net@ptolemy.eecs.berkeley.edu)
+   @Pt.ProposedRating Green (djstone)
+   @Pt.AcceptedRating Green (net)
 */
 
 public class StringReplace extends TypedAtomicActor {

@@ -49,8 +49,8 @@ import java.util.Map;
    @author Steve Neuendorffer, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
    @see ptolemy.data.expr.ASTPtRootNode
 */
 

@@ -92,8 +92,8 @@ import java.util.List;
    @author Xiaojun Liu, Yang Zhao
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuxj)
+   @Pt.AcceptedRating Red (liuxj)
 */
 public class CIDirector extends Director {
 

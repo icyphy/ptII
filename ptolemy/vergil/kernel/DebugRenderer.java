@@ -42,8 +42,8 @@ import java.awt.Color;
    @author Elaine Cheong
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (celaine@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (celaine@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (celaine)
+   @Pt.AcceptedRating Red (celaine)
 */
 public class DebugRenderer extends AnimationRenderer {
 

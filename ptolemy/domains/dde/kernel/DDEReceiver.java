@@ -97,8 +97,8 @@ import ptolemy.kernel.util.Workspace;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Green (davisj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (davisj)
+   @Pt.AcceptedRating Green (kienhuis)
    @see ptolemy.domains.dde.kernel.PrioritizedTimedQueue
    @see ptolemy.domains.dde.kernel.DDEThread
 */

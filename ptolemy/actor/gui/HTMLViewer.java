@@ -76,8 +76,8 @@ import ptolemy.util.MessageHandler;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (johnr)
 */
 
 public class HTMLViewer extends TableauFrame

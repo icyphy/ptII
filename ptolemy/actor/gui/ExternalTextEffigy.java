@@ -51,8 +51,8 @@ import java.net.URL;
    @author Zoltan Kemenczy, Research in Motion Limited
    @version $Id$
    @since Ptolemy II 2.2
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class ExternalTextEffigy extends TextEffigy {
 

@@ -54,8 +54,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (liuj)
+   @Pt.AcceptedRating Green (yuhong)
 */
 public interface CTDynamicActor extends Actor{
     /** Implementations of this method should emit the tentative outputs.

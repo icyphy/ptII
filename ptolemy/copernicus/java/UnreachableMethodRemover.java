@@ -53,8 +53,8 @@ import soot.jimple.toolkits.callgraph.ReachableMethods;
    @author Stephen Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 // FIXME: This is currently unsafe, because method bodies
 // for context classes don't exist in the method call graph.

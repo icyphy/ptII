@@ -38,8 +38,8 @@ package ptolemy.graph;
    @author Mingyung Ko
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (myko@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (myko)
+   @Pt.AcceptedRating Red (ssb)
 */
 public class GraphStateException extends GraphException {
 

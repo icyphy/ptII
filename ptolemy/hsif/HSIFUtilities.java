@@ -50,8 +50,8 @@ import org.w3c.dom.Document;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.2
-    @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (eal)
+    @Pt.AcceptedRating Red (cxh)
 
 */
 public class HSIFUtilities {

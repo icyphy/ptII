@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Workspace;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 
 public class CheckBoxStyle extends ParameterEditorStyle {

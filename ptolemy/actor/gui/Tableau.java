@@ -60,8 +60,8 @@ import ptolemy.util.StringUtilities;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
    @see Effigy
 */
 public class Tableau extends CompositeEntity {

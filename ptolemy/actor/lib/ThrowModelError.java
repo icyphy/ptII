@@ -54,8 +54,8 @@ import ptolemy.kernel.util.StringAttribute;
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (neuendor)
    @see ThrowException
    @see ptolemy.kernel.util.NamedObj#handleModelError(NamedObj, IllegalActionException)
 */

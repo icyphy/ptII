@@ -43,8 +43,8 @@ import ptolemy.data.type.Type;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (yuhong)
+   @Pt.AcceptedRating Yellow (wbwu)
    @see Constants
 */
 public class ConcreteMatrixToken extends MatrixToken {

@@ -41,8 +41,8 @@ import soot.Local;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuxj)
+   @Pt.AcceptedRating Red (liuxj)
    @see ptolemy.data.expr.ParserScope
 */
 

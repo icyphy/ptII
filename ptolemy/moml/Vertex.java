@@ -54,8 +54,8 @@ import java.util.List;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class Vertex extends Location {
 

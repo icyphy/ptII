@@ -77,8 +77,8 @@ import java.util.Iterator;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Yellow (liuxj)
 */
 public class DerivativeResolver extends ODESolver
     implements BreakpointODESolver {

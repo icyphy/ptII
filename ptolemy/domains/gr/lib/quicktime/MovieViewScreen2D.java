@@ -70,8 +70,8 @@ import quicktime.util.RawEncodedImage;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (chf)
+   @Pt.AcceptedRating Red (chf)
 */
 public class MovieViewScreen2D extends ViewScreen2D
     implements StdQTConstants, Errors {

@@ -59,8 +59,8 @@ import java.util.LinkedList;
    @author  Yuke Wang
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (yukewang@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (yukewang)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class PetriNetActor extends TypedCompositeActor  {
 

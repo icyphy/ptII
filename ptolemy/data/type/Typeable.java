@@ -44,8 +44,8 @@ import java.util.List;
    @author Yuhong Xiong, Xiaojun Liu, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (yuhong@eecs.berkeley.edu, liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (yuhong)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.graph.InequalityTerm
 */
 

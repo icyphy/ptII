@@ -47,7 +47,7 @@ import ptolemy.vergil.tree.ClassAndEntityTreeModel;
  @author J&eacute;r&ocirc;me Blanc & Benoit Masson  * 01 sept. 2003
  @version $Id$
  @since Ptolemy II 4.0
- @Pt.ProposedRating @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+ @Pt.ProposedRating @ProposedRating Yellow (jerome.blanc)
  @Pt.AcceptedRating @AcceptedRating
  */
 public class NavigationTreeModel extends ClassAndEntityTreeModel {

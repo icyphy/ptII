@@ -44,7 +44,7 @@ import ptolemy.domains.pn.kernel.event.PNProcessListener;
    @author Mudit Goel, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (mudit@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (mudit)
    @Pt.AcceptedRating Red
 */
 public class StringPNListener implements PNProcessListener {

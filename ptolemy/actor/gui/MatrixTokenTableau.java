@@ -46,8 +46,8 @@ import java.util.List;
    @author  Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (cxh)
    @see TokenEffigy
 */
 public class MatrixTokenTableau extends TokenTableau {

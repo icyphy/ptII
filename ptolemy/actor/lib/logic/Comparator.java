@@ -73,8 +73,8 @@ import ptolemy.kernel.util.StringAttribute;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (neuendor)
 */
 public class Comparator extends TypedAtomicActor {
 

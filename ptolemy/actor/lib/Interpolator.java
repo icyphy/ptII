@@ -75,8 +75,8 @@ import ptolemy.math.Interpolation;
    @author Sarah Packman, Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (yuhong)
+   @Pt.AcceptedRating Yellow (yuhong)
    @see ptolemy.math.Interpolation
 */
 

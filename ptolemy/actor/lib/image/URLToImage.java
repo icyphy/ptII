@@ -65,8 +65,8 @@ import javax.swing.ImageIcon;
    @author  Christopher Hylands
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class URLToImage extends Transformer {
     /** Construct an actor with the given container and name.

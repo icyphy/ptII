@@ -63,8 +63,8 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (chf)
+   @Pt.AcceptedRating Red (chf)
 */
 public class IconViewScreen3D extends ViewScreen {
 

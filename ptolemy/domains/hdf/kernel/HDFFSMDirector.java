@@ -25,8 +25,8 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (zhouye@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Red (zhouye)
+   @AcceptedRating Red (cxh)
 
 */
 

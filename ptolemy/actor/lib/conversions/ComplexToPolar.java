@@ -51,8 +51,8 @@ import ptolemy.math.Complex;
    @author Michael Leung, Edward A. Lee, and Paul Whitaker
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (pwhitake)
+   @Pt.AcceptedRating Green (cxh)
 */
 
 public class ComplexToPolar extends TypedAtomicActor {

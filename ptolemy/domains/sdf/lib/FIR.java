@@ -99,8 +99,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee, Bart Kienhuis, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
    @see ptolemy.data.Token
 */
 public class FIR extends SDFTransformer {

@@ -40,8 +40,8 @@ import java.io.PrintStream;
    @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (bart)
 */
 public class StreamExecutionListener implements ExecutionListener {
 

@@ -49,8 +49,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Mudit Goel, John S. Davis II
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (davisj)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class ExecEvent implements DebugEvent {

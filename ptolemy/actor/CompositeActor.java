@@ -108,8 +108,8 @@ import ptolemy.actor.parameters.ParameterPort;
    @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Yellow (neuendor)
    @see ptolemy.actor.IOPort
    @see ptolemy.actor.IORelation
    @see ptolemy.kernel.ComponentEntity

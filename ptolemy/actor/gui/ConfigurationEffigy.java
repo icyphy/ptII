@@ -41,8 +41,8 @@ import ptolemy.kernel.util.Workspace;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class ConfigurationEffigy extends PtolemyEffigy {
 

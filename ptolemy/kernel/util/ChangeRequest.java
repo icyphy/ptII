@@ -58,8 +58,8 @@ import java.util.List;
    @author  Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (neuendor)
    @see ChangeListener
 */
 public abstract class ChangeRequest {
@@ -250,7 +250,7 @@ public abstract class ChangeRequest {
     /** Set the description.
      *  @param description The description.
      *  @since Ptolemy II 3.1
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public void setDescription(String description) {

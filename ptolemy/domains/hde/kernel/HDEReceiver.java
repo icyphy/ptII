@@ -58,8 +58,8 @@ import ptolemy.kernel.util.IllegalActionException;
     @author Steve Neuendorffer, Jim Armstrong
     @version $Id$
     @since Ptolemy II 2.0
-    @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-    @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+    @Pt.ProposedRating Green (liuj)
+    @Pt.AcceptedRating Green (cxh)
 */
 public class HDEReceiver extends DEReceiver {
 

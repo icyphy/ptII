@@ -49,8 +49,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Edward A. Lee, Neil Smyth, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (wbwu)
 */
 public class StringToken extends AbstractConvertibleToken {
 

@@ -59,8 +59,8 @@ import java.awt.Container;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public interface Placeable {
 

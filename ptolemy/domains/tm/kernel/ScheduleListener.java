@@ -36,8 +36,8 @@ package ptolemy.domains.tm.kernel;
    @author  Johan Eker
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (johane@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johane@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (johane)
+   @Pt.AcceptedRating Red (johane)
    @see ptolemy.kernel.util.NamedObj
 
 */

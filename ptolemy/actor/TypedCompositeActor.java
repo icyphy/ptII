@@ -77,8 +77,8 @@ import java.util.List;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (lmuliadi@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (yuhong)
+   @Pt.AcceptedRating Green (lmuliadi)
    @see ptolemy.actor.TypedIOPort
    @see ptolemy.actor.TypedIORelation
    @see ptolemy.actor.TypedActor

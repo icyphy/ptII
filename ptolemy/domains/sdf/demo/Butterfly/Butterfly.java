@@ -54,8 +54,8 @@ import ptolemy.plot.Plot;
    @author Christopher Hylands and Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class Butterfly extends TypedCompositeActor {
 

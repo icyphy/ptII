@@ -45,8 +45,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (celaine@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (celaine)
+   @Pt.AcceptedRating Green (cxh)
 */
 
 public class ArrayLength extends Transformer {

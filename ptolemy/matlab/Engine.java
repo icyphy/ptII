@@ -163,8 +163,8 @@ import ptolemy.math.Complex;
    @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (zkemenczy@rim.net)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (zkemenczy)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class Engine {
     /** Load the "ptmatlab" native interface. Use a classpath-relative

@@ -45,8 +45,8 @@ import java.util.StringTokenizer;
     @author Zoltan Kemenczy, Research in Motion Ltd.
     @version $Id$
     @since Ptolemy II 2.1
-    @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-    @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+    @Pt.ProposedRating Green (neuendor)
+    @Pt.AcceptedRating Yellow (neuendor)
     @see ptolemy.data.expr.ParseTreeEvaluator
 */
 

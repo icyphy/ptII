@@ -53,8 +53,8 @@ import ptolemy.kernel.util.Workspace;
 @author Yang Zhao
 @version Backoff.java,v 1.3 2004/04/12 15:30:35 cxh Exp
 @since Ptolemy II 4.0
-@Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+@Pt.ProposedRating Yellow (eal)
+@Pt.AcceptedRating Red (pjb2e)
 */
 public class Backoff extends MACActorBase {
 

@@ -49,8 +49,8 @@ import java.awt.geom.Point2D;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (chf@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (chf)
+   @Pt.AcceptedRating Red (chf)
 */
 public class Translate2D extends GRTransform2D {
 

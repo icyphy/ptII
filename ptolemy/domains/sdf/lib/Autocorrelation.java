@@ -111,8 +111,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee and Yuhong Xiong
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 
 public class Autocorrelation extends SDFTransformer {

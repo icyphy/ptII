@@ -51,8 +51,8 @@ import javax.media.j3d.WakeupOnAWTEvent;
 @author C. Fong
 @version $Id$
 @since Ptolemy II 1.0
-@Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+@Pt.ProposedRating Red (chf)
+@Pt.AcceptedRating Red (chf)
 */
 public class MouseInput3D extends GRActor3D {
 

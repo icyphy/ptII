@@ -59,8 +59,8 @@ import java.util.List;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (yuhong)
+   @Pt.AcceptedRating Yellow (cxh)
    @see RecordDisassembler
 */
 

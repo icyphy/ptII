@@ -60,8 +60,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Bart Kienhuis and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (ssachs@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Yellow (ssachs)
 */
 
 public class DB extends Transformer {

@@ -56,8 +56,8 @@ import java.util.NoSuchElementException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (neuendor)
    @see ArrayFIFOQueue
 */
 public class SDFReceiver extends AbstractReceiver {

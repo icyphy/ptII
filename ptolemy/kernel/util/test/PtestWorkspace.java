@@ -46,7 +46,7 @@ NOTE: This is a very primitive test.  It does not check very much.
 @author Edward A. Lee, Lukito Muliadi
 @version $Id$
 @since Ptolemy II 0.2
-@Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+@Pt.ProposedRating Green (eal)
 @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 
 */

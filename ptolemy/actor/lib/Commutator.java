@@ -66,8 +66,8 @@ import ptolemy.kernel.util.Workspace;
    @author Mudit Goel, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (mudit@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (mudit)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class Commutator extends Transformer implements SequenceActor {
 

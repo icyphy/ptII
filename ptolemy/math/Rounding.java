@@ -86,7 +86,7 @@ import java.util.Map;
    @author Ed Willink
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
+   @Pt.ProposedRating Red (Ed.Willink)
    @Pt.AcceptedRating Red
 */
 public abstract class Rounding implements Cloneable, Serializable {

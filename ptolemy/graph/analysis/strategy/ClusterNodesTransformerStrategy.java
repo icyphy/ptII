@@ -45,8 +45,8 @@ import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
 
    @see ptolemy.graph.analysis.ClusterNodesAnalysis
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (shahrooz)
+   @Pt.AcceptedRating Red (ssb)
    @author Shahrooz Shahparnia based on a method by Ming Yung Ko.
    @version $Id$
 */

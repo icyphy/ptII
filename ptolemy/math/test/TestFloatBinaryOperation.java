@@ -38,8 +38,8 @@ import ptolemy.math.FloatBinaryOperation;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.0
-    @Pt.ProposedRating Red (ctsay@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (ctsay@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (ctsay)
+    @Pt.AcceptedRating Red (ctsay)
 */
 public class TestFloatBinaryOperation implements FloatBinaryOperation {
 

@@ -192,8 +192,8 @@ import java.util.Set;
    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (liuj)
+   @Pt.AcceptedRating Yellow (eal)
    @see DEReceiver
    @see ptolemy.actor.util.CalendarQueue
 */

@@ -50,8 +50,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Mike Wirthlin
  @version $Id$
  @since Ptolemy II 2.0
- @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
- @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
 */
 
 public class DominatorHashMap extends HashMap {

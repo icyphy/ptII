@@ -45,8 +45,8 @@ import java.util.List;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class TotallyOrderedSet {
     /** Construct the set with the given comparator. comparator is a blank

@@ -49,8 +49,8 @@ import ptolemy.math.FixPoint;
    @author Bart Kienhuis and Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (pwhitake@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (pwhitake)
+   @Pt.AcceptedRating Green (pwhitake)
    @see ptolemy.data.FixToken
 */
 

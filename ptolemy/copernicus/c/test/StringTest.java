@@ -37,8 +37,8 @@ A simple class for testing that the String and StringBuffer classes work.
 @author Ankush Varma
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Red (ssb@eng.umd.edu)
-@Pt.AcceptedRating Red (ssb@eng.umd.edu)
+@Pt.ProposedRating Red (ssb)
+@Pt.AcceptedRating Red (ssb)
 
 */
 

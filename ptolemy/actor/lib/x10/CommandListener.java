@@ -68,8 +68,8 @@ import x10.Command;
    @author Colin Cochran, Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal@ptolemy.eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (ptolemy)
 */
 
 public class CommandListener extends Receiver {

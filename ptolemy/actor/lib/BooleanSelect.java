@@ -67,8 +67,8 @@ import ptolemy.kernel.util.StringAttribute;
    @author Steve Neuendorffer, Adam Cataldo
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 */
 
 public class BooleanSelect extends TypedAtomicActor {

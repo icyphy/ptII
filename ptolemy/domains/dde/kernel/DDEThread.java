@@ -56,8 +56,8 @@ import java.util.Iterator;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (davisj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (davisj)
+   @Pt.AcceptedRating Yellow (yuhong)
    @see ptolemy.domains.dde.kernel.TimeKeeper
 */
 public class DDEThread extends ProcessThread {

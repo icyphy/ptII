@@ -44,7 +44,7 @@ import java.io.Serializable;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (yuhong)
    @Pt.AcceptedRating Red
 */
 

@@ -62,8 +62,8 @@ import ptolemy.math.Complex;
    @author Winthrop Williams, Steve Neuendorffer, Contributor: Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0 */
-   @Pt.ProposedRating Green (neuendor@robotics.eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (winthrop)
 public class UnsignedByteToken extends ScalarToken {
 
     /** Construct a token with byte 0.

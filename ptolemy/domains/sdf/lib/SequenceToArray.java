@@ -62,8 +62,8 @@ import java.util.List;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (yuhong)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 
 public class SequenceToArray extends SDFTransformer {

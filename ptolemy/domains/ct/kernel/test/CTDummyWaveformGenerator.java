@@ -43,8 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author   Jie Liu
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (cxh)
 
 */
 public class CTDummyWaveformGenerator extends TypedAtomicActor

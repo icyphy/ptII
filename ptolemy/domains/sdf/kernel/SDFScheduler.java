@@ -127,8 +127,8 @@ is somewhat conservative in this respect.
 @author Stephen Neuendorffer and Brian Vogel
 @version $Id$
 @since Ptolemy II 0.2
-@Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-@Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
+@Pt.ProposedRating Green (neuendor)
+@Pt.AcceptedRating Green (neuendor)
 */
 public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     /** Construct a scheduler with no container(director)

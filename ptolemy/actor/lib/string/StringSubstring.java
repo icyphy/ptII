@@ -54,8 +54,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Neil E. Turner and Edward A. Lee
    @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Green (net@eecs.berkeley.edu)
-@Pt.AcceptedRating Green (net@eecs.berkeley.edu)
+@Pt.ProposedRating Green (net)
+@Pt.AcceptedRating Green (net)
 */
 
 public class StringSubstring extends Transformer {

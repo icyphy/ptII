@@ -58,8 +58,8 @@ it can be used to construct hybrid systems using the CT domain.<p>
 @author David Hermann, Research In Motion Limited
 @version $Id$
 @since Ptolemy II 2.1
-@Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@Pt.ProposedRating Red (eal)
+@Pt.AcceptedRating Red (reviewmoderator)
 */
     public class TransitionRefinement extends Refinement {
 

@@ -38,8 +38,8 @@
     @author Paul C. Yang
     @version $Id$
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (ankush@eng.umd.edu)
-    @Pt.AcceptedRating Red (ankush@eng.umd.edu)
+    @Pt.ProposedRating Red (ankush)
+    @Pt.AcceptedRating Red (ankush)
 */
 
 

@@ -106,8 +106,8 @@ import ptolemy.kernel.util.Nameable;
    @author  Neil Smyth
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (nsmyth@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (nsmyth)
+   @Pt.AcceptedRating Green (kienhuis)
    <p>
    @see ptolemy.domains.csp.kernel.ConditionalBranch
 */

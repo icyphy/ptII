@@ -72,8 +72,8 @@ import com.sun.media.jai.codec.PNGEncodeParam;
    @author James Yeh, Christopher Hylands Brooks
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class JAIPNGWriter extends JAIWriter {

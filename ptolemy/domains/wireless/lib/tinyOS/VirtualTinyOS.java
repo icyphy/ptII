@@ -53,8 +53,8 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
     @author Yang Zhao, Xiaojun Liu
     @version $ $
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Yellow (zkemenczy@rim.net)
-    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.ProposedRating Yellow (zkemenczy)
+    @Pt.AcceptedRating Red (cxh)
 */
 public class VirtualTinyOS extends TypedAtomicActor {
 

@@ -96,8 +96,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Yellow (pwhitake)
    @see ptolemy.actor.lib.conversions.CartesianToPolar
    @see AbsoluteValue
    @see MathFunction

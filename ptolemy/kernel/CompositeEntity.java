@@ -95,8 +95,8 @@ import java.util.List;
    @author John S. Davis II, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (bart@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (bart)
 */
 public class CompositeEntity extends ComponentEntity {
 

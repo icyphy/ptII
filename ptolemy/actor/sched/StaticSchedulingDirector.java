@@ -59,8 +59,8 @@ import java.util.Iterator;
    @author Jie Liu, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
    @see ptolemy.actor.Director
    @see Scheduler
    @see Schedule

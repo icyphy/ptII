@@ -57,8 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 */
 
 public class BooleanSwitch extends TypedAtomicActor {

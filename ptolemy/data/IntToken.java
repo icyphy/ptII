@@ -47,8 +47,8 @@ import ptolemy.math.Complex;
    @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (wbwu@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (wbwu)
 */
 public class IntToken extends ScalarToken {
 

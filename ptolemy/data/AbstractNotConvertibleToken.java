@@ -56,8 +56,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (cxh)
 */
 public abstract class AbstractNotConvertibleToken extends Token {
 

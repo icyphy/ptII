@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (janneck@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Red (janneck)
+@AcceptedRating Red (reviewmoderator)
 */
 
 package ptolemy.domains.fairdf.kernel;

@@ -49,8 +49,8 @@ import org.w3c.dom.*;
    @author Yang Zhao
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (nsmyth)
+   @Pt.AcceptedRating Yellow (yuhong)
 
 */
 public class XMLParser {

@@ -82,8 +82,8 @@ import java.util.List;
    @author Edward A. Lee, Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (davisj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (davisj)
 */
 public class IORelation extends ComponentRelation {
 

@@ -43,8 +43,8 @@ import java.util.Comparator;
    @author Lukito Muliadi, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (liuj)
    @see ptolemy.actor.util.CalendarQueue
    @see java.util.Comparator
 */

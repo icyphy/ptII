@@ -49,8 +49,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.actor.gui.ExecEvent
    @see ptolemy.actor.gui.ExecEventListener
 */

@@ -40,8 +40,8 @@ import ptolemy.kernel.ComponentRelation;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
    @see FSMGraphModel.ArcModel
 */
 public class Arc {

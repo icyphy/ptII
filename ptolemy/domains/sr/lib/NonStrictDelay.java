@@ -70,8 +70,8 @@ import java.util.List;
    @author Paul Whitaker and Elaine Cheong
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (celaine@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (celaine)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 
 public class NonStrictDelay extends Transformer {

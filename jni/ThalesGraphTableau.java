@@ -54,8 +54,8 @@ import java.awt.Color;
    @author  Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (vincent.arnould@thalesgroup.com)
-   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
+   @Pt.ProposedRating Red (vincent.arnould)
+   @Pt.AcceptedRating Red (vincent.arnould)
 */
 public class ThalesGraphTableau extends ActorGraphTableau {
 

@@ -98,8 +98,8 @@ import diva.gui.toolbox.FigureIcon;
    @author Steve Neuendorffer, John Reekie, Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Red (johnr)
    @see EditIconFrame
    @see EditIconTableau
    @see ptolemy.actor.gui.Configuration

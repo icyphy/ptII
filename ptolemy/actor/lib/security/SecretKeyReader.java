@@ -52,8 +52,8 @@ description of symmetric vs. asymmetric algorithms.
 @author  Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+@Pt.ProposedRating Yellow (cxh)
+@Pt.AcceptedRating Red (cxh)
 */
 public class SecretKeyReader extends PrivateKeyReader {
     /** Construct an actor with the given container and name.

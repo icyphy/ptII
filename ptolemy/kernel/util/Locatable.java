@@ -40,8 +40,8 @@ package ptolemy.kernel.util;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Green (cxh)
    @see Location
 */
 public interface Locatable extends Settable {

@@ -25,8 +25,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (celaine@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@ProposedRating Green (celaine)
+@AcceptedRating Green (cxh)
 */
 package ptolemy.domains.hde.lib;
 import ptolemy.actor.TypedAtomicActor;

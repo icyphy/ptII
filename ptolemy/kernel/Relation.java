@@ -56,8 +56,8 @@ import java.util.List;
    @author Edward A. Lee, Neil Smyth
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (johnr)
    @see Port
    @see Entity
 */

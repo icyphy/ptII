@@ -45,8 +45,8 @@ import java.util.List;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (yuhong)
+   @Pt.AcceptedRating Green (liuxj)
 */
 public class TypeConflictException extends KernelException {
 

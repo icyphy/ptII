@@ -54,8 +54,8 @@ import java.util.LinkedList;
    @author Yang Zhao
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class MobileFunction extends TypedAtomicActor{
 

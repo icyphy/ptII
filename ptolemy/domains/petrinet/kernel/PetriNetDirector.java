@@ -232,8 +232,8 @@ import java.util.List;
    @author  Yuke Wang and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (yukewang@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (yukewang)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 
 public class PetriNetDirector extends Director {

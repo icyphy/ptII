@@ -55,8 +55,8 @@ import java.math.BigDecimal;
    @author Bart Kienhuis, Edward A. Lee, Ed Willink
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (kienhuis)
+   @Pt.AcceptedRating Red (kienhuis)
    @see FixPoint
    @see Overflow
    @see Precision

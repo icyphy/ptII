@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NamedObj;
    @author  Rowland R Johnson
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (rowland)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
    @see Effigy
 */

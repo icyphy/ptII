@@ -41,8 +41,8 @@ import java.util.Set;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.data.expr.ASTPtRootNode
 */
 

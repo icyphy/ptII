@@ -57,8 +57,8 @@ import ptolemy.plot.Plot;
    @author  Edward A. Lee, Bart Kienhuis
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (cxh)
 */
 public class SequencePlotter extends Plotter implements SequenceActor {
 

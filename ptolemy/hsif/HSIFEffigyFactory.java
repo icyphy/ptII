@@ -54,8 +54,8 @@ import java.net.URL;
    @author Haiyang Zheng, Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.2
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.actor.gui.Configuration
    @see Effigy
 */

@@ -69,8 +69,8 @@ import ptolemy.graph.analysis.strategy.CachedStrategy;
    that she/he is using.
 
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (shahrooz)
+   @Pt.AcceptedRating Red (ssb)
    @author Shahrooz Shahparnia, Shuvra S. Bhattacharyya
    @version $Id$
 */

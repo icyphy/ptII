@@ -78,8 +78,8 @@ import javax.swing.event.ChangeListener;
    @author Brian K. Vogel
    @version 1.0
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (vogel)
+   @Pt.AcceptedRating Red (vogel)
 */
 public class PitchSlider extends JFrame {
 

@@ -47,8 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (bart)
    @see ptolemy.actor.Receiver
 */
 public abstract class AbstractReceiver implements Receiver {

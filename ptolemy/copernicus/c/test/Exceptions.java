@@ -45,8 +45,8 @@ NestedExceptions.java
 @author Ankush Varma
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Red (ssb@eng.umd.edu)
-@Pt.AcceptedRating Red (ssb@eng.umd.edu)
+@Pt.ProposedRating Red (ssb)
+@Pt.AcceptedRating Red (ssb)
 
 */
 

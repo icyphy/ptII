@@ -205,8 +205,8 @@ import ptolemy.kernel.util.Workspace;
    @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (cxh)
 
    @see ptolemy.data.Token
    @see ptolemy.data.expr.PtParser

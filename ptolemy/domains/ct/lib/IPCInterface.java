@@ -36,8 +36,8 @@ package ptolemy.domains.ct.lib;
    @author  Jie Liu, William Wu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (cxh)
 */
 public interface IPCInterface {
     /** Return the name of the tool

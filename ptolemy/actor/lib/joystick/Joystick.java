@@ -72,8 +72,8 @@ import com.centralnexus.input.JoystickListener;
    @author Christopher Hylands, David Lee, Paul Yang
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating red (cxh)
+   @Pt.AcceptedRating red (cxh)
    @see ptolemy.actor.lib.io.comm.SerialComm
 */
 public class Joystick extends TypedAtomicActor implements JoystickListener {

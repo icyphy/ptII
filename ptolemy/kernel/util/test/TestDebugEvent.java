@@ -39,8 +39,8 @@ import ptolemy.kernel.util.NamedObj;
    @author  Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class TestDebugEvent implements DebugEvent {
 

@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
-@Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
+@Pt.ProposedRating Red (rowland)
+@Pt.AcceptedRating Red (rowland)
 */
 package ptolemy.data.unit;
 
@@ -43,7 +43,7 @@ import java.util.Vector;
    @author Rowland R Johnson
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class Unit implements UnitPresentation {

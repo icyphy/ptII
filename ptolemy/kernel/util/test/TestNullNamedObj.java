@@ -44,8 +44,8 @@ import ptolemy.kernel.util.Workspace;
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class TestNullNamedObj extends NamedObj {
 

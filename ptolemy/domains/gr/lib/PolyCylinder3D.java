@@ -58,8 +58,8 @@ in the X-Y plane to specify the polygonal shape for the base. The parameter
 @author C. Fong
 @version $Id$
 @since Ptolemy II 1.0
-@Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+@Pt.ProposedRating Red (chf)
+@Pt.AcceptedRating Red (chf)
 */
 public class PolyCylinder3D extends GRShadedShape {
 

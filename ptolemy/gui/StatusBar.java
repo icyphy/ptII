@@ -43,8 +43,8 @@ import javax.swing.border.EmptyBorder;
  *  @author John Reekie and Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 0.4
- *  @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
- *  @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+ *  @Pt.ProposedRating Yellow (eal)
+ *  @Pt.AcceptedRating Red (eal)
  */
 public class StatusBar extends JPanel {
 

@@ -123,8 +123,8 @@ import java.util.Set;
    @author Paul Whitaker
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (pwhitake@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (pwhitake)
+   @Pt.AcceptedRating Green (pwhitake)
 */
 public class SRDirector extends StaticSchedulingDirector {
 

@@ -48,8 +48,8 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
    @see ptolemy.graph.sched.ScheduleAnalysis
    @see ptolemy.graph.sched.ScheduleAnalyzer
    @since Ptolemy II 4.0
-   @Pt.ProposedRating red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating red (ssb@eng.umd.edu)
+   @Pt.ProposedRating red (shahrooz)
+   @Pt.AcceptedRating red (ssb)
    @author Shahrooz Shahparnia
 */
 public class ScheduleAnalysis extends Analysis {

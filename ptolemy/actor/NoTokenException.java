@@ -42,8 +42,8 @@ import ptolemy.kernel.util.Nameable;
    @author Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (lmuliadi@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (lmuliadi)
+   @Pt.AcceptedRating Green (neuendor)
    @see Receiver
 */
 public class NoTokenException extends KernelRuntimeException {

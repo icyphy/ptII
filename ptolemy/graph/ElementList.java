@@ -43,8 +43,8 @@ import java.util.List;
    @author Shuvra S. Bhattacharyya
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class ElementList extends LabeledList {
 

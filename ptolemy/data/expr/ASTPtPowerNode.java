@@ -43,8 +43,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Neil Smyth, Bart Kienhuis, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (nsmyth)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.data.expr.ASTPtRootNode
    @see ptolemy.data.expr.PtParser
    @see ptolemy.data.Token

@@ -40,8 +40,8 @@ package ptolemy.math;
    @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (ctsay)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class ExtendedMath {
 

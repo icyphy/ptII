@@ -128,8 +128,8 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
    @author Stephen Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class TokenToNativeTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer

@@ -82,8 +82,8 @@ import java.util.StringTokenizer;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (liuj)
 */
 public class Reader extends Source {
 

@@ -46,8 +46,8 @@ import java.util.List;
    @author Jie Liu, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu) This class was
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (cxh) This class was
    @see ptolemy.kernel.util.InvalidStateException
 */
 public class NotSchedulableException extends InvalidStateException {

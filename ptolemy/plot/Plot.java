@@ -207,8 +207,8 @@ import javax.swing.JComponent;
    @author Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class Plot extends PlotBox {
 
@@ -462,7 +462,7 @@ public class Plot extends PlotBox {
      *  @return false if setReuseDatasets() has not yet been called
      *  or if setReuseDatasets(false) has been called.
      *  @since Ptplot 5.3
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      *  @see #setReuseDatasets(boolean)
      */

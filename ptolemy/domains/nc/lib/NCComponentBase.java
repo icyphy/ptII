@@ -53,8 +53,8 @@ import ptolemy.kernel.util.Workspace;
    @author Elaine Cheong, Edward A. Lee, Yang Zhao
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class NCComponentBase extends AtomicActor {
 

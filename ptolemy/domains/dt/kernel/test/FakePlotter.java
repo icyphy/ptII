@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal)
+@AcceptedRating Green (cxh)
 */
 
 package ptolemy.domains.dt.kernel.test;

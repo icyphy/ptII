@@ -49,8 +49,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (mudit@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (mudit)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class Merge extends DETransformer  {
 

@@ -142,8 +142,8 @@ import ptolemy.util.MessageHandler;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (bilung@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (bilung)
 */
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.

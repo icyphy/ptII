@@ -144,8 +144,8 @@ import java.util.Iterator;
    @author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer, Edward Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
    @see ptolemy.data.expr.ASTPtFunctionApplicationNode
    @see ptolemy.data.expr.PtParser
 */

@@ -70,8 +70,8 @@ import java.util.Arrays;
    @author Yuhong Xiong, Mudit Goel, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (yuhong)
 */
 public abstract class ScalarToken extends Token
     implements BitwiseOperationToken {

@@ -188,8 +188,8 @@ import javax.sound.sampled.TargetDataLine;
    @author Brian K. Vogel and Neil E. Turner and Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (net@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (net)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.media.javasound.SoundReader
    @see ptolemy.media.javasound.SoundWriter
 */

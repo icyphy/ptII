@@ -54,8 +54,8 @@ import ptolemy.plot.Plot;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class SquareWave extends TypedCompositeActor {
 

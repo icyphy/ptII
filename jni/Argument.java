@@ -47,8 +47,8 @@ import ptolemy.util.StringUtilities;
    @author V.Arnould, Thales
    @version $Id$
    @since Ptolemy II 2.2
-   @Pt.ProposedRating Red (vincent.arnould@thalesgroup.com)
-   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
+   @Pt.ProposedRating Red (vincent.arnould)
+   @Pt.AcceptedRating Red (vincent.arnould)
    @see jni.GenericJNIActor
 */
 public class Argument extends Attribute implements Settable {

@@ -91,8 +91,8 @@ import ptolemy.graph.analysis.strategy.CachedStrategy;
    Shahrooz Shahparnia, Yuhong Xiong, Jie Liu.
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.graph.Edge
    @see ptolemy.graph.Node
 */

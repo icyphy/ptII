@@ -39,8 +39,8 @@
      @author Paul C. Yang, Ankush Varma
      @version $Id$
      @since Ptolemy II 4.0
-     @Pt.ProposedRating Red (ankush@eng.umd.edu)
-     @Pt.AcceptedRating Red (ankush@eng.umd.edu)
+     @Pt.ProposedRating Red (ankush)
+     @Pt.AcceptedRating Red (ankush)
 */
 
 public class NestedExceptions {

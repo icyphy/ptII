@@ -56,8 +56,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu, Elaine Cheong
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (celaine@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (celaine@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (celaine)
+   @Pt.AcceptedRating Yellow (celaine)
    @see VectorAssembler
 */
 public class VectorDisassembler extends Transformer {

@@ -55,8 +55,8 @@ import diva.canvas.toolbox.BasicFigure;
    @author Ismael M. Sarmiento, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (ismael@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (ismael)
+   @Pt.AcceptedRating Red (chf)
 */
 public abstract class RectangularFigure2D extends GRShape2D {
 

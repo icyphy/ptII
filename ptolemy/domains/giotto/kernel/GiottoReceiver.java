@@ -47,8 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author  Christoph Meyer Kirsch and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (cm@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cm)
+   @Pt.AcceptedRating Yellow (liuj)
    @see GiottoDirector
 */
 public class GiottoReceiver extends AbstractReceiver {

@@ -57,8 +57,8 @@ import java.util.Map;
    Brian K. Vogel, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating red (ssb@eng.umd.edu)
+   @Pt.ProposedRating red (shahrooz)
+   @Pt.AcceptedRating red (ssb)
    @see ptolemy.graph.sched.Firing
    @see ptolemy.graph.sched.Schedule
    @see ptolemy.graph.sched.ScheduleElement

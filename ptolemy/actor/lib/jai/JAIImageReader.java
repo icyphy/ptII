@@ -57,8 +57,8 @@ import com.sun.media.jai.codec.FileSeekableStream;
    @author James Yeh, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class JAIImageReader extends Source {

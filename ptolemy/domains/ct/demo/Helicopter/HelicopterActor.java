@@ -62,8 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  Jie Liu, John Koo
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class HelicopterActor extends TypedAtomicActor
     implements TimedActor {

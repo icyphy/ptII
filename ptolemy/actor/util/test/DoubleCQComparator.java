@@ -43,8 +43,8 @@ import ptolemy.actor.util.CQComparator;
    @author Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (liuj)
    @see CQComparator
    @see CalendarQueue
 */

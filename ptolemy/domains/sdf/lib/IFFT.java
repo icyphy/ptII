@@ -56,8 +56,8 @@ import ptolemy.math.SignalProcessing;
    @author Bart Kienhuis, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Yellow (eal)
    @see ptolemy.math.SignalProcessing#IFFTComplexOut
 */
 

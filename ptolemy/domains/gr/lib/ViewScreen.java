@@ -77,8 +77,8 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 @author C. Fong, Adam Cataldo, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
-@Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+@Pt.ProposedRating Red (chf)
+@Pt.AcceptedRating Red (chf)
 */
 public class ViewScreen extends GRActor3D
     implements Placeable, ViewScreenInterface {

@@ -73,8 +73,8 @@ import javax.media.jai.TiledImage;
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.1
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class DoubleMatrixToJAI extends Transformer {
 

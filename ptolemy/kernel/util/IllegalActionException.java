@@ -46,8 +46,8 @@ package ptolemy.kernel.util;
    @author Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Green (cxh)
 */
 public class IllegalActionException extends KernelException {
 

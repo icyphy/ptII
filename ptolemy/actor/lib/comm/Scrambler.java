@@ -151,8 +151,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee and Rachel Zhou
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class Scrambler extends Transformer {
 

@@ -42,8 +42,8 @@ import ptolemy.kernel.util.NamedObj;
    @author  Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
    @see Effigy
 */
 public class StandardOutTableau extends Tableau {

@@ -53,8 +53,8 @@ import java.util.StringTokenizer;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Green (cxh)
 */
 public class Location extends SingletonAttribute
     implements Locatable {

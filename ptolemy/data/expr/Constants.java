@@ -61,8 +61,8 @@ import java.util.Iterator;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuxj)
+   @Pt.AcceptedRating Red (liuxj)
    @see ptolemy.data.expr.PtParser
 */
 
@@ -89,7 +89,7 @@ public class Constants {
     /** Return a record representation of the constants.
      *  @return A record with the constants and their values.
      *  @since Ptolemy II 2.1
-     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.ProposedRating Red (cxh)
      *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public static RecordToken constants() {

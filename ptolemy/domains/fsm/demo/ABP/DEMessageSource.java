@@ -48,8 +48,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (liuxj)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class DEMessageSource extends TypedAtomicActor {
 

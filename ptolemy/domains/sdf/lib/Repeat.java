@@ -52,8 +52,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Shankar Rao, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 
 public class Repeat extends SDFTransformer {

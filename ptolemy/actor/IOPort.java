@@ -120,8 +120,8 @@ import java.util.List;
    @author Edward A. Lee, Jie Liu, Neil Smyth, Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class IOPort extends ComponentPort {
 

@@ -188,8 +188,8 @@ import java.net.UnknownHostException;
    by Chamberlain Fong, Xiaojun Liu, Edward Lee)
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (winthrop)
+   @Pt.AcceptedRating Yellow (winthrop)
 */
 public class DatagramReader extends TypedAtomicActor {
 

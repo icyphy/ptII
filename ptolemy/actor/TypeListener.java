@@ -41,8 +41,8 @@ package ptolemy.actor;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (yuhong)
+   @Pt.AcceptedRating Green (cxh)
    @see TypeEvent
    @see ptolemy.actor.TypedIOPort#addTypeListener
    @see ptolemy.actor.TypedIOPort#removeTypeListener

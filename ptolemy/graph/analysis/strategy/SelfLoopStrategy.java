@@ -45,8 +45,8 @@ import ptolemy.graph.analysis.analyzer.SelfLoopAnalyzer;
    <p>
    @see ptolemy.graph.analysis.SelfLoopAnalysis
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (ssb@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (ssb)
+   @Pt.AcceptedRating Red (ssb)
    @author Shuvra S. Bhattacharyya, Shahrooz Shahparnia
    @version $Id$
 */

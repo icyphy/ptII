@@ -45,8 +45,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (yuhong)
+   @Pt.AcceptedRating Yellow (wbwu)
 */
 public class ObjectToken extends Token {
 

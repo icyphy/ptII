@@ -96,8 +96,8 @@ import java.util.Iterator;
    @author Christopher Hylands Brooks, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu) 2/5/04
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu) 2/24/04
+   @Pt.ProposedRating Yellow (cxh) 2/5/04
+   @Pt.AcceptedRating Yellow (cxh) 2/24/04
 */
 public class Exec extends TypedAtomicActor {
 

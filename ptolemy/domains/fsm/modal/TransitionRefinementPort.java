@@ -62,8 +62,8 @@ import ptolemy.kernel.util.NamedObj;
    @author David Hermann, Research In Motion Limited
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (liuxj)
 */
 
 public class TransitionRefinementPort extends RefinementPort {

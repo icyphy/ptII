@@ -79,8 +79,8 @@ import com.sun.media.jai.codec.ImageEncodeParam;
    @author Christopher Hylands Brooks,James Yeh
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public abstract class JAIWriter extends Sink {

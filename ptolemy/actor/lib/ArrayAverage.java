@@ -58,8 +58,8 @@ import ptolemy.kernel.util.Workspace;
    @author Mark Oliver, Edward A. Lee
    @version $ID: ArrayAverage.java,v0.1 2003/07/01
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class ArrayAverage extends Transformer {

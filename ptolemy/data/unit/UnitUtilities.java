@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (yuhong@eecs.berkeley.edu)
+@Pt.ProposedRating Yellow (neuendor)
+@Pt.AcceptedRating Red (yuhong)
 
 */
 
@@ -57,7 +57,7 @@ import java.util.HashMap;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class UnitUtilities {

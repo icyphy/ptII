@@ -51,8 +51,8 @@ import ptolemy.kernel.util.DebugListener;
    @author Lukito Muliadi, Edward A. Lee, Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (liuj)
+   @Pt.AcceptedRating Green (cxh)
    @see DEReceiver
    @see ptolemy.actor.util.CalendarQueue
    @see DEEventQueue

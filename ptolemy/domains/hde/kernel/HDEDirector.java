@@ -171,8 +171,8 @@ import ptolemy.kernel.util.Workspace;
    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (liuj)
+   @Pt.AcceptedRating Yellow (eal)
    @see ptolemy.domains.de.kernel.DEReceiver
    @see ptolemy.actor.util.CalendarQueue
 */

@@ -55,8 +55,8 @@ import java.util.*;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
    @see ptolemy.actor.util.ConstVariableModelAnalysis
 */
 public class DependencyDeclaration extends Attribute {

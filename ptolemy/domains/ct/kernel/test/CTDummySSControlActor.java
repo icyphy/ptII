@@ -42,8 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class CTDummySSControlActor extends TypedAtomicActor
     implements CTStepSizeControlActor{

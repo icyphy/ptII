@@ -45,8 +45,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee, Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class Time {

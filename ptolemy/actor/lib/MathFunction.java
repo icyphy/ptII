@@ -78,8 +78,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author C. Fong
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (chf@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (chf)
+   @Pt.AcceptedRating Yellow (janneck)
    @see AbsoluteValue
    @see Remainder
    @see Scale

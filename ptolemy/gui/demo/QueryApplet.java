@@ -42,8 +42,8 @@ import javax.swing.UIManager;
    @author  Edward A. Lee, Manda Sutijono
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (eal)
    @see ptolemy.gui.Query
 */
 public class QueryApplet extends BasicJApplet implements QueryListener {

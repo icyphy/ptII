@@ -43,8 +43,8 @@ import java.awt.geom.Rectangle2D;
    @version $Id$
    @author Edward A. Lee
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class PortSite extends AbstractSite {
 

@@ -73,8 +73,8 @@ process has been received.
 @author Mudit Goel, John S. Davis II
 @version $Id$
 @since Ptolemy II 0.2
-@Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
-@Pt.AcceptedRating Green (davisj@eecs.berkeley.edu)
+@Pt.ProposedRating Green (mudit)
+@Pt.AcceptedRating Green (davisj)
 @see QueueReceiver
 @see ptolemy.actor.QueueReceiver
 */

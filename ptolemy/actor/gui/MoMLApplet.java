@@ -101,8 +101,8 @@ import java.net.URL;
    @author  Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 public class MoMLApplet extends PtolemyApplet {
 

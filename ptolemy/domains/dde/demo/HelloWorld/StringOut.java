@@ -48,8 +48,8 @@ import java.util.LinkedList;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (davisj)
+   @Pt.AcceptedRating Red (cxh)
 */
 public abstract class StringOut extends TypedAtomicActor {
 

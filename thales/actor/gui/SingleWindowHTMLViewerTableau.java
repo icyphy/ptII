@@ -51,7 +51,7 @@ import ptolemy.kernel.util.StringAttribute;
  @author J&eacute;r&ocirc;me Blanc & Benoit Masson
  @version $Id$
  @since Ptolemy II 4.0
- @Pt.ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+ @Pt.ProposedRating Yellow (jerome.blanc)
  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 
  */

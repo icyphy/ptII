@@ -57,8 +57,8 @@ import ptolemy.util.MessageHandler;
    @author  Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 public class BasicJApplet extends JApplet {
 

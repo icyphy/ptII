@@ -58,8 +58,8 @@ import java.util.TreeMap;
    @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 
 public class RecordToken extends AbstractNotConvertibleToken {

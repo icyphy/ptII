@@ -62,8 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Mike Kofi Okyere, Ismael M. Sarmiento
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (ismael@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (net@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (ismael)
+   @Pt.AcceptedRating Green (net)
 */
 
 public class StringFunction extends Transformer {

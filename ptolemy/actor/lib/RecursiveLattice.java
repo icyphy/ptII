@@ -104,8 +104,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee, Christopher Hylands, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class RecursiveLattice extends Transformer {
 

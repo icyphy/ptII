@@ -74,8 +74,8 @@ import ptolemy.kernel.util.StringAttribute;
    @author Paul Whitaker
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (pwhitake@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (pwhitake)
+   @Pt.AcceptedRating Green (pwhitake)
 */
 public class LogicFunction extends Transformer {
 

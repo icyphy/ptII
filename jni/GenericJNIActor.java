@@ -78,8 +78,8 @@ import java.util.Vector;
    @author Vincent Arnould (vincent.arnould@thalesgroup.com), Contributor: Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.2
-   @Pt.ProposedRating Red (vincent.arnould@thalesgroup.com)
-   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
+   @Pt.ProposedRating Red (vincent.arnould)
+   @Pt.AcceptedRating Red (vincent.arnould)
    @see JNIUtilities
 */
 public class GenericJNIActor extends TypedAtomicActor {

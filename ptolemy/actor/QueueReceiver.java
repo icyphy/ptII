@@ -54,8 +54,8 @@ import java.util.NoSuchElementException;
    @author Edward A. Lee, Lukito Muliadi, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (liuj@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (liuj)
    @see ptolemy.actor.util.FIFOQueue
 */
 public class QueueReceiver extends AbstractReceiver {

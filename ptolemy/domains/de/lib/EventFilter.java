@@ -47,8 +47,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Steve Neuendorffer and Sonia Sachs
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 
 public class EventFilter extends DETransformer {

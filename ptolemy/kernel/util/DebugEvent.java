@@ -41,8 +41,8 @@ package ptolemy.kernel.util;
    @author  Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (neuendor)
    @see DebugListener
    @see Debuggable
    @see ptolemy.actor.FiringEvent

@@ -60,8 +60,8 @@ import java.util.List;
    @author Zoltan Kemenczy, Research in Motion Limited
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (zkemenczy@rim.net)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (zkemenczy)
+   @Pt.AcceptedRating Red (cxh)
    @see ptolemy.actor.IORelation
 */
 

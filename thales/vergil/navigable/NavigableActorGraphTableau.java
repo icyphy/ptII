@@ -52,7 +52,7 @@ import thales.vergil.SingleWindowApplication;
    @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and Technology, 01 sept. 2003
    @version $Id$
    @since Ptolemy II 3.1
-   @Pt.ProposedRating Red (jerome.blanc@thalesgroup.com)
+   @Pt.ProposedRating Red (jerome.blanc)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class NavigableActorGraphTableau extends Tableau {

@@ -63,8 +63,8 @@ import diva.canvas.Figure;
    @author Ismael M. Sarmiento, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (ismael@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (ismael)
+   @Pt.AcceptedRating Yellow (chf)
 */
 public class Rotate2D extends GRTransform2D {
 

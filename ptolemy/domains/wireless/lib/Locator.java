@@ -61,8 +61,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Philip Baldwin, Xiaojun Liu and Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (pjb2e)
 */
 public class Locator extends TypedAtomicActor {
 

@@ -72,8 +72,8 @@ import java.util.List;
    @author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Yellow (eal)
    @see ptolemy.domains.de.lib.Inhibit
 */
 

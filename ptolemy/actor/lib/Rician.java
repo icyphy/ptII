@@ -58,8 +58,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (bilung@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (bilung)
 */
 
 public class Rician extends RandomSource {

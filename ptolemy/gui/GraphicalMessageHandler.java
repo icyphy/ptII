@@ -60,8 +60,8 @@ import ptolemy.util.StringUtilities;
    @author  Edward A. Lee, Steve Neuendorffer, and John Reekie
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 public class GraphicalMessageHandler extends MessageHandler {
 

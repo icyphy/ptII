@@ -47,8 +47,8 @@ import java.net.URL;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (yuhong)
+   @Pt.AcceptedRating Red (reviewmoderator)
 */
 
 public class Project {

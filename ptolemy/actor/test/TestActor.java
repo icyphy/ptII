@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee, Mudit Goel
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class TestActor extends AtomicActor {

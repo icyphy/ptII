@@ -56,8 +56,8 @@ import javax.swing.JOptionPane;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (janneck)
 */
 public class ModelFrame extends PtolemyFrame implements ExecutionListener {
 

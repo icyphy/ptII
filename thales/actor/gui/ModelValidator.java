@@ -56,7 +56,7 @@ a MoML file. Used to avoid MoMLparser bugs on older Ptolemy MoML files.</p>
  @author J&eacute;r&ocirc;me Blanc & Benoit Masson
  @version $Id$
  @since Ptolemy II 4.0
- @Pt.ProposedRating @ProposedRating Red (jerome.blanc@thalesgroup.com)
+ @Pt.ProposedRating @ProposedRating Red (jerome.blanc)
  @Pt.AcceptedRating @AcceptedRating
  */
 public class ModelValidator {

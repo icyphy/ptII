@@ -140,7 +140,7 @@ import net.jxta.resolver.ResolverService;
    @author Yang Zhao, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (ellen_zh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (ellen_zh)
    @Pt.AcceptedRating Red (cxheecs.berkeley.edu)
 */
 public class JXTALibrary extends EntityLibrary

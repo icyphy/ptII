@@ -60,8 +60,8 @@ import ptolemy.kernel.util.Workspace;
    @author Yuhong Xiong, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (bilung@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (bilung)
 */
 
 public class Ramp extends SequenceSource {

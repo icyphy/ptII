@@ -75,8 +75,8 @@ import ptolemy.kernel.util.Workspace;
    @author Mudit Goel, Neil Smyth, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (mudit@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (mudit)
+   @Pt.AcceptedRating Yellow (mudit)
 */
 public class ProcessThread extends PtolemyThread {
 

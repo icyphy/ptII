@@ -92,8 +92,8 @@ import java.util.List;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (liuj)
+   @Pt.AcceptedRating Green (chf)
    @see ptolemy.domains.ct.kernel.CTDirector
 */
 public class CTMultiSolverDirector extends CTDirector {

@@ -41,7 +41,7 @@ package ptolemy.media.javasound;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (vogel)
    @Pt.AcceptedRating Red
    @see LiveSoundListener
 */

@@ -96,8 +96,8 @@ import java.util.Set;
    @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 abstract public class CryptographyActor extends TypedAtomicActor {
 

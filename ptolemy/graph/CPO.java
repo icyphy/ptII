@@ -45,8 +45,8 @@ package ptolemy.graph;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (yuhong)
+   @Pt.AcceptedRating Green (kienhuis)
 */
 
 public interface CPO {

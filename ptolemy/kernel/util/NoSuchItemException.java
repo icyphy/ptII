@@ -37,8 +37,8 @@ package ptolemy.kernel.util;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Green (cxh)
 */
 public class NoSuchItemException extends KernelException {
     /** Construct an exception with a detail message.

@@ -72,7 +72,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Green(cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class GetProperties extends TypedAtomicActor {
 

@@ -40,8 +40,8 @@ import java.awt.geom.Ellipse2D;
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Red (ismael@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+@Pt.ProposedRating Red (ismael)
+@Pt.AcceptedRating Red (chf)
 */
 public class Circle2D extends GRShape2D {
 

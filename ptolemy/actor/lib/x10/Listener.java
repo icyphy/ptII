@@ -44,8 +44,8 @@ import x10.Command;
  *  @author Colin Cochran (contributor: Edward A. Lee)
  *  @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Green (eal@ptolemy.eecs.berkeley.edu)
-@Pt.AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
+@Pt.ProposedRating Green (eal)
+@Pt.AcceptedRating Yellow (ptolemy)
  */
 
 public class Listener extends Receiver {

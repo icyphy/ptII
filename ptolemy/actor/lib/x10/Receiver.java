@@ -54,8 +54,8 @@ import x10.UnitListener;
  * @author Colin Cochran and Edward A. Lee
  * @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
-@Pt.AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
+@Pt.ProposedRating Green (ptolemy)
+@Pt.AcceptedRating Yellow (ptolemy)
  */
 
 public class Receiver extends X10Interface {

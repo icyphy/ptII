@@ -39,8 +39,8 @@ import ptolemy.plot.PlotApplet;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating red (eal)
+   @Pt.AcceptedRating red (cxh)
 */
 public class PlotDemo extends PlotApplet {
 

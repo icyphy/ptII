@@ -89,8 +89,8 @@ import java.util.List;
    @author Edward A. Lee, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (bart)
 */
 public class ComponentPort extends Port {
 

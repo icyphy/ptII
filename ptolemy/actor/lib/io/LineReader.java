@@ -84,8 +84,8 @@ import ptolemy.kernel.util.Workspace;
    @author  Edward A. Lee, Yuhong Xiong
    @version $Id$
    @since Ptolemy II 2.2
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class LineReader extends Source {
 

@@ -43,8 +43,8 @@ import ptolemy.media.javasound.LiveSound;
    @author Brian K. Vogel, Neil E. Turner
    @version $Id$
    @since Ptolemy II 3.1
-   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (vogel)
+   @Pt.AcceptedRating Red (vogel)
 */
 public class LiveSines {
 

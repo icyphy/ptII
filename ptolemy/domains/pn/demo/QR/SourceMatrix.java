@@ -43,8 +43,8 @@ parameterized.
 @author Bart Kienhuis
 @version $Id$
 @since Ptolemy II 0.4
-@Pt.ProposedRating Red (kienhuis@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (kienhuis@eecs.berkeley.edu)
+@Pt.ProposedRating Red (kienhuis)
+@Pt.AcceptedRating Red (kienhuis)
 */
 
 

@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Red (yuhong)
+@AcceptedRating Red (reviewmoderator)
 */
 
 package ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock;

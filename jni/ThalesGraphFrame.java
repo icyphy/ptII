@@ -52,8 +52,8 @@ import diva.graph.GraphPane;
    @author  Steve Neuendorffer, Vincent Arnould, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Red (vincent.arnould@thalesgroup.com)
-   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
+   @Pt.ProposedRating Red (vincent.arnould)
+   @Pt.AcceptedRating Red (vincent.arnould)
 */
 public class ThalesGraphFrame extends ActorGraphFrame {
 

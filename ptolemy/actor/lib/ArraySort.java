@@ -53,8 +53,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Mark Oliver, Edward A. Lee
    @version $ID: ArraySort.java,v1.0 2003/07/09
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class ArraySort extends Transformer {

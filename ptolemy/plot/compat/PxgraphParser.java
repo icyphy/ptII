@@ -393,8 +393,8 @@ import java.util.Vector;
    @author Edward A. Lee and Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating red (eal)
+   @Pt.AcceptedRating red (cxh)
    @see PxgraphApplication
    @see PxgraphApplet
 */

@@ -50,8 +50,8 @@ import javax.media.j3d.Text3D;
 @author C. Fong
 @version $Id$
 @since Ptolemy II 1.0
-@Pt.ProposedRating Red (chf@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
+@Pt.ProposedRating Red (chf)
+@Pt.AcceptedRating Red (chf)
 */
 public class TextString3D extends GRShadedShape {
 

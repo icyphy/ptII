@@ -73,8 +73,8 @@ import java.util.Set;
    @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuxj)
+   @Pt.AcceptedRating Yellow (kienhuis)
    @see State
    @see InterfaceAutomatonTransition
 */

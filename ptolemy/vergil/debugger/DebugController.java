@@ -60,8 +60,8 @@ import javax.swing.SwingUtilities;
    @author Elaine Cheong
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (celaine@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (celaine@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (celaine)
+   @Pt.AcceptedRating Red (celaine)
 */
 public class DebugController extends SingletonConfigurableAttribute
     implements DebugListener {

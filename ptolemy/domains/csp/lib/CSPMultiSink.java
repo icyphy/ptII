@@ -51,8 +51,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Neil Smyth
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (nsmyth@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (nsmyth@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (nsmyth)
+   @Pt.AcceptedRating Red (nsmyth)
    @see ptolemy.domains.csp.kernel.CSPActor
 */
 public class CSPMultiSink extends CSPActor {

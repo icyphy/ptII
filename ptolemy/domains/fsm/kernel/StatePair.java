@@ -37,8 +37,8 @@ package ptolemy.domains.fsm.kernel;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (yuhong@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (yuhong)
+   @Pt.AcceptedRating Red (yuhong)
 */
 
 public class StatePair {

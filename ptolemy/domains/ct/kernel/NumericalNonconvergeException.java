@@ -39,8 +39,8 @@ import ptolemy.kernel.util.Nameable;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (liuj)
+   @Pt.AcceptedRating Yellow (chf)
 */
 public class NumericalNonconvergeException extends InvalidStateException {
     /** Constructs an Exception with only a detail message.

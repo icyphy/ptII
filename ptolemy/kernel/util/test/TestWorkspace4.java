@@ -46,7 +46,7 @@ import java.util.List;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 3.0
-   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 
 */

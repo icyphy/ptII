@@ -62,8 +62,8 @@ import ptolemy.kernel.util.Workspace;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.3
-   @Pt.ProposedRating Yellow (davisj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (davisj)
+   @Pt.AcceptedRating Yellow (yuhong)
    @see ptolemy.domains.dde.kernel.DDEThread
    @see ptolemy.domains.dde.kernel.NullToken
 */

@@ -108,8 +108,8 @@ import java.util.List;
    @author Zoltan Kemenczy, Sean Simmons, Research In Motion Limited
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (zkemenczy@rim.net)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (zkemenczy)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class MultiInstanceComposite extends TypedCompositeActor {
 

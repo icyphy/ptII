@@ -60,8 +60,8 @@ import javax.swing.KeyStroke;
    @author  Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (johnr)
 */
 public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 

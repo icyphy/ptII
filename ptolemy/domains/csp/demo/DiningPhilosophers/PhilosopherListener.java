@@ -32,8 +32,8 @@ package ptolemy.domains.csp.demo.DiningPhilosophers;
     @author Neil Smyth
     @version $Id$
     @since Ptolemy II 0.3
-    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (cxh)
+    @Pt.AcceptedRating Red (cxh)
 */
 public interface PhilosopherListener {
 

@@ -47,8 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Yuhong Xiong, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (cxh)
 */
 
 public class ArrayToken extends AbstractNotConvertibleToken {

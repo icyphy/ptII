@@ -55,8 +55,8 @@ import java.io.InputStream;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating red (eal)
+   @Pt.AcceptedRating red (cxh)
    @see PxgraphParser
    @see ptolemy.plot.PlotBox
    @see ptolemy.plot.Plot

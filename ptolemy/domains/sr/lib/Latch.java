@@ -57,8 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Paul Whitaker, Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu) Should support multiports
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Red (cxh) Should support multiports
 */
 
 public class Latch extends Transformer {

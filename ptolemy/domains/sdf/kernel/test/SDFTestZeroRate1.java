@@ -50,8 +50,8 @@ import ptolemy.kernel.util.Workspace;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (vogel)
+   @Pt.AcceptedRating Red (vogel)
 */
 
 public class SDFTestZeroRate1 extends Transformer {

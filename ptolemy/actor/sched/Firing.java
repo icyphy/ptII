@@ -55,8 +55,8 @@ import java.util.NoSuchElementException;
    @author Brian K. Vogel, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Green (vogel@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (vogel)
+   @Pt.AcceptedRating Yellow (chf)
    @see ptolemy.actor.sched.Schedule
    @see ptolemy.actor.sched.ScheduleElement
 */

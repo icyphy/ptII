@@ -35,8 +35,8 @@ import java.util.Map;
     values associated with the Map can be changed).
 
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (ssb@eng.umd.edu)
-    @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+    @Pt.ProposedRating Red (ssb)
+    @Pt.AcceptedRating Red (ssb)
     @author Shuvra S. Bhattacharyya
     @version $Id$
 */

@@ -55,7 +55,7 @@ import java.util.StringTokenizer;
    @author Ed Willink
    @version $Id$
    @since Ptolemy II 2.1
-   @Pt.ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
+   @Pt.ProposedRating Red (Ed.Willink)
    @Pt.AcceptedRating Red
    @see FixPoint
    @see Precision

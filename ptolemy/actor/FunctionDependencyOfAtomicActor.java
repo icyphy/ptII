@@ -59,8 +59,8 @@ import java.util.Iterator;
     @version $Id: FunctionDependencyOfAtomicActor.java,v 1.2 2004/02/21
     07:57:24 hyzheng Exp $
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (hyzheng@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (hyzheng@eecs.berkeley.edu)
+    @Pt.ProposedRating Red (hyzheng)
+    @Pt.AcceptedRating Red (hyzheng)
 */
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
 

@@ -77,8 +77,8 @@ import ptolemy.util.StringUtilities;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Yellow (neuendor)
 */
 public class EditParametersDialog extends ComponentDialog
     implements ChangeListener {

@@ -106,8 +106,8 @@ import ptolemy.kernel.util.NamedObj;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating Green (davisj@eecs.berkeley.edu)
-   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (davisj)
+   @Pt.AcceptedRating Green (kienhuis)
    @see ptolemy.domains.dde.kernel.DDEReceiver
    @see ptolemy.domains.dde.kernel.TimeKeeper
 */

@@ -43,8 +43,8 @@ import javax.swing.JFrame;
    @author Edward Lee
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Red (ctsay@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (ctsay@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (ctsay)
+   @Pt.AcceptedRating Red (ctsay)
 */
 public class TreeEditor extends JFrame {
 

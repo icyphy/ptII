@@ -36,8 +36,8 @@ package ptolemy.actor.lib.javasound.test.pitchshift;
 @author Brian K. Vogel
 @version $Id$
 @since Ptolemy II 1.0
-@Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
+@Pt.ProposedRating Red (vogel)
+@Pt.AcceptedRating Red (vogel)
 */
 public class PitchShift {
     /* Initialize the current output ring buffer read postition.

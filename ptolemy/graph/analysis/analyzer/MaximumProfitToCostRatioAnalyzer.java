@@ -33,8 +33,8 @@ import java.util.List;
    A common interface for all the maximum profit to cost analyzers.
    <p>
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (shahrooz)
+   @Pt.AcceptedRating Red (ssb)
    @see ptolemy.graph.analysis.MaximumProfitToCostRatioAnalysis
    @author Shahrooz Shahparnia
    @version $Id$

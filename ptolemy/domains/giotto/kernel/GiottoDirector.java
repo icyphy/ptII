@@ -79,8 +79,8 @@ import java.util.ListIterator;
    @author  Christoph Meyer Kirsch, Edward A. Lee and Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (cm@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (cm)
+   @Pt.AcceptedRating Red (eal)
    @see GiottoScheduler
    @see GiottoReceiver
 */

@@ -56,7 +56,7 @@ import javax.swing.SwingUtilities;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red
 */
 

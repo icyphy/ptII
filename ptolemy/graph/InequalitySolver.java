@@ -64,8 +64,8 @@ import ptolemy.kernel.util.InvalidStateException;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 // Note: To make it easier to reference the above paper, some of the

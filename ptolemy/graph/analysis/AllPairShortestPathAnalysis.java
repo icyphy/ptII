@@ -54,8 +54,8 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    The default analyzer runs in O(N^3) in which N is the number of nodes.
 
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
-   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
+   @Pt.ProposedRating Red (shahrooz)
+   @Pt.AcceptedRating Red (ssb)
    @version $Id$
    @author Shahrooz Shahparnia
    @see ptolemy.graph.Graph#nodeLabel

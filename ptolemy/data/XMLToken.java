@@ -49,8 +49,8 @@ import org.w3c.dom.Document;
    @author Yang Zhao
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class XMLToken extends Token {

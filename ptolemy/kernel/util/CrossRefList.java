@@ -64,8 +64,8 @@ of the list.
 @author Geroncio Galicia, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.2
-@Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-@Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
+@Pt.ProposedRating Green (eal)
+@Pt.AcceptedRating Green (bart)
 */
     public final class CrossRefList implements Serializable  {
 

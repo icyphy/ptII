@@ -51,8 +51,8 @@ import ptolemy.kernel.util.Nameable;
    @author Neil Smyth, Mudit Goel
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
-   @Pt.AcceptedRating Yellow (mudit@eecs.berkeley.edu)
+   @Pt.ProposedRating Green (mudit)
+   @Pt.AcceptedRating Yellow (mudit)
 */
 public class TerminateProcessException extends RuntimeException {
 

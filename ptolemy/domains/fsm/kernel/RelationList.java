@@ -62,8 +62,8 @@ ParseTreeEvaluatorForGuardExpression</i> _parseTreeEvaluator
 @author Haiyang Zheng
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Red (hyzheng@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (hyzheng@eecs.berkeley.edu)
+@Pt.ProposedRating Red (hyzheng)
+@Pt.AcceptedRating Red (hyzheng)
 @see ParseTreeEvaluatorForGuardExpression
 @see ptolemy.domains.fsm.kernel.Transition
 */

@@ -44,8 +44,8 @@ import java.util.List;
 @author Xiaojun Liu, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
+@Pt.ProposedRating Yellow (liuxj)
+@Pt.AcceptedRating Red (liuxj)
 */
 
 public interface Function {

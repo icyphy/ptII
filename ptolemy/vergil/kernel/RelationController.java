@@ -55,8 +55,8 @@ import java.awt.Color;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (johnr)
 */
 public class RelationController extends ParameterizedNodeController {
 

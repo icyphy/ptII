@@ -60,8 +60,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @deprecated Use MatrixToSequence instead.
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 
 public class MatrixToDouble extends SDFConverter {

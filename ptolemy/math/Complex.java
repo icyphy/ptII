@@ -58,8 +58,8 @@ import java.io.Serializable;
     @author Edward A. Lee, Jeff Tsay, Steve Neuendorffer, Adam Cataldo
     @version $Id$
     @since Ptolemy II 0.2
-    @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.ProposedRating Yellow (eal)
+    @Pt.AcceptedRating Red (cxh)
 */
 public class Complex implements Cloneable, Serializable {
 

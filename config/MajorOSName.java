@@ -31,7 +31,7 @@ COPYRIGHTENDKEY
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 3.0
-@Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+@Pt.ProposedRating Green (cxh)
 @Pt.AcceptedRating Red
 */
 public class MajorOSName {
