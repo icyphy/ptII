@@ -86,42 +86,44 @@ public class PNQueueReceiver extends QueueReceiver {
 	PNDirector director = ((PNDirector)((Actor)(getContainer().getContainer())).getDirector());
         Token result = null;
 	//System.out.println(getContainer().getFullName() +" in receiver.get");
-	try {
-            synchronized (this) {
+        
+        synchronized (this) {
+            try {
                 while (!_terminate && !super.hasToken()) {
                     //System.out.println(getContainer().getFullName()+" Reading block");
 		    director.readBlock();
 		    //System.out.println("After the readblocking.. I am "+getContainer().getFullName());
 		    _readpending = true;
-		    while (_readpending) {
+		    while (_readpending && !_terminate) {
 			//System.out.println("Waiting in the workspace");
 			workspace.wait(this);
 		    }
 		}
+                
                 //System.out.println("Halfway thru receiver.get()");
                 if (_terminate) {
                     throw new TerminateProcessException("");
                 } else {
-                    while (_pause) {
-                        //System.out.println(" Actually pausing");
-                        director.paused();
-                        workspace.wait(this);
+                    result = super.get();
+                    //Check if pending write to the Queue;
+                    if (_writepending) {
+                        //System.out.println(getContainer().getFullName()+" being unblocked");
+                        director.writeUnblock(this);
+                        _writepending = false;
+                        notifyAll(); //Wake up threads waiting on a write;
                     }
                 }
-                result = super.get();
-                //Check if pending write to the Queue
-                if (_writepending) {
-                    //System.out.println(getContainer().getFullName()+" being unblocked");
-                    director.writeUnblock(this);
-                    _writepending = false;
-                    notifyAll(); //Wake up threads waiting on a write;
+                
+                while (_pause) {
+                    //System.out.println(" Actually pausing");
+                    director.paused();
+                    workspace.wait(this);
                 }
+            } catch (IllegalActionException e) {
+                System.err.println(e.toString());
             }
-        } catch (IllegalActionException e) {
-            System.err.println(e.toString());
+            return result;
         }
-        return result;
-
     }
     
     public boolean hasRoom() throws IllegalActionException {
@@ -159,8 +161,8 @@ public class PNQueueReceiver extends QueueReceiver {
 	PNDirector director = (PNDirector)((Actor)(getContainer().getContainer())).getDirector();
 	//System.out.println("putting token in PNQueueReceiver and pause = "+_pause);
         
-	try {
-            synchronized(this) {
+        synchronized(this) {
+            try {
                 if (!super.hasRoom()) {
                     _writepending = true;
                     //System.out.println(getContainer().getFullName()+" being writeblocked");
@@ -176,24 +178,24 @@ public class PNQueueReceiver extends QueueReceiver {
                     throw new TerminateProcessException("");
                 } else { 
                     //token can be put in the queue;
-                    while (_pause) {
-                        //System.out.println("Pausing in puuuuuuuuuut");
-                        director.paused();
-                        workspace.wait(this);
+                    super.put(token);
+                    //Check if pending write to the Queue;
+                    if (_readpending) {
+                        director.readUnblock();
+                        _readpending = false;
+                        notifyAll(); 
+                        //Wake up all threads waiting on a write to this receiver;
                     }
                 }
-            
-                super.put(token);
-                //Check if pending write to the Queue;
-                if (_readpending) {
-                    director.readUnblock();
-                    _readpending = false;
-                    notifyAll(); 
-                    //Wake up all threads waiting on a write to this receiver;
+                while (_pause) {
+                    //System.out.println("Pausing in puuuuuuuuuut");
+                    director.paused();
+                    workspace.wait(this);
                 }
+                
+            } catch (IllegalActionException e) {
+                System.out.println(e.toString());
             }
-	} catch (IllegalActionException e) {
-            System.out.println(e.toString());
         }
     }
     
@@ -225,6 +227,7 @@ public class PNQueueReceiver extends QueueReceiver {
 
     public synchronized void setTerminate() {
 	_terminate = true;
+        //System.out.println("Terminating a receiver");
 	notifyAll();
     }
 

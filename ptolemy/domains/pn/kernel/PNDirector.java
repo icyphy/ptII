@@ -84,8 +84,8 @@ public class PNDirector extends Director {
      */
     public synchronized  void decreaseActiveCount() {
 	_activeActorsCount--;	    
-	//System.out.println("decreasing active count");
 	_checkForDeadlock();
+	//System.out.println("decreased active count");
         _checkForPause();
     }
     
@@ -94,7 +94,8 @@ public class PNDirector extends Director {
      */
     public void fire()
 	    throws IllegalActionException {
-                while (!_handleDeadlock());
+        while (!_handleDeadlock());
+        //System.out.println("Done firing");
     }
 
     /** This invokes the initialize() methods of all its deeply contained actors.
@@ -116,17 +117,11 @@ public class PNDirector extends Director {
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement(); 
                 actor.createReceivers();
+                actor.initialize();
                 PNThread pnt = new PNThread(actor, this);
                 _threadlist.insertFirst(pnt);
                 increaseActiveCount();
             }
-            // Enumeration threads = _threadlist.elements();
-//             //Starting threads;
-//             while (threads.hasMoreElements()) {
-//                 PNThread pnt = (PNThread)threads.nextElement();
-//                 //increaseActiveCount();
-//                 pnt.start();
-//             }
         }
     }
 
@@ -200,8 +195,8 @@ public class PNDirector extends Director {
     /** Does nothing for PN */
     public boolean postfire() throws IllegalActionException {
         //_terminateAll();
-	//FIXME: Return something
-	return true;
+        //System.out.println("Postifre printing " +_notdone);
+	return _notdone;
     }
 
     //FIXME: Should it always return true?
@@ -225,7 +220,7 @@ public class PNDirector extends Director {
     public Receiver newReceiver() {
         PNQueueReceiver rec =  new PNQueueReceiver();
         try {
-            //rec.setCapacity(-1);
+            //rec.setCapacity(1);
         } catch (Exception e) {
             //This exception should never be thrown, as size of queue should 
             //be 0, and capacity should be set to a non-negative number
@@ -366,7 +361,7 @@ public class PNDirector extends Director {
     // Finds the QueueReceiver with the smallest write capacity 
     // that is blocked on a write.
     private void _incrementLowestWriteCapacityPort() {
-        System.out.println("Incrementing capacity");    
+        //System.out.println("Incrementing capacity");    
         //FIXME: Should this be synchronized
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
@@ -424,10 +419,11 @@ public class PNDirector extends Director {
 	boolean urgentmut;
 	boolean deadl;
 	int writebl;
+        Workspace worksp = workspace();
 	synchronized (this) {
 	    while (!_deadlock && !_urgentMutations) {
 		//System.out.println("Waiting with mutations = "+_urgentMutations);
-		workspace().wait(this);
+		worksp.wait(this);
 		//System.out.println("Woken up hmm");
 	    }
 	    urgentmut = _urgentMutations;
@@ -444,9 +440,10 @@ public class PNDirector extends Director {
             //LinkedList pausedrecs = setPause(true);
             synchronized (this) {
                 while (!_paused) {
-                    workspace().wait(this);
+                    worksp.wait(this);
                 }
                 _paused = false;
+                _deadlock = false;
             }
             //isPaused();
 	    //System.out.println("Performed mutations");
@@ -477,8 +474,11 @@ public class PNDirector extends Director {
 	}
         if (writebl==0 && deadl) {
             //_terminate = true;
+            //FIXME: Terminate only if toplevel container
+                                                    
             _terminateAll();
             System.out.println("real deadlock. Everyone would be erased");
+            _notdone = false;
             return true;
         } else {
             //its an artificial deadlock;
@@ -541,6 +541,7 @@ public class PNDirector extends Director {
     //private CompositeEntity _container;
     // Is set when a deadlock occurs
     private boolean _deadlock = false;
+    private boolean _notdone = true;
     // Level of debugging output
     //private int _debug = 0;
     // The threadgroup in which all the stars are created.
