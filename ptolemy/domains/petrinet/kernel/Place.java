@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (yourname@eecs.berkeley.edu)
@@ -76,7 +76,7 @@ public class Place extends Transformer {
 
 
         //  We need multiport, but each channel has only one link.
-        // however, at this moment, we do not check how many links we have 
+        // however, at this moment, we do not check how many links we have
         // from one place to one transition.
         // yuke
 
@@ -91,7 +91,7 @@ public class Place extends Transformer {
     /** The number of initial tokens in the place. This is an integer. */
 
     public Parameter initialMarking;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

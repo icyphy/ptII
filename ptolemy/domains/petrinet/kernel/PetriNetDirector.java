@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
@@ -29,7 +29,7 @@
 
 package ptolemy.domains.petrinet.kernel;
 
-import ptolemy.actor.lib.Transformer; 
+import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -102,7 +102,7 @@ public class PetriNetDirector extends Director {
     // we have not implemented the fire all transitions till
     // no more transitions to fire yet.
 
-    //  
+    //
     // second problem is to choose from all the ready transition which one
     // to fire, and when it fires, it changes the state, and
     // we again to choose from many of the ready states
@@ -115,25 +115,25 @@ public class PetriNetDirector extends Director {
 
 
         Nameable container = getContainer();
-        if (container instanceof NamedObj) 
+        if (container instanceof NamedObj)
             System.out.println("firing, the top level in the director container is" + container.getFullName());
-  
+
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
-     
+
             while (actors.hasNext()) {
                 Transformer actor = (Transformer) actors.next();
 
                 if (actor instanceof Transition)  {
                     System.out.println("this is " + actor.getName()
-                            + " ************************************************************** " );               
+                            + " ************************************************************** " );
                     Transition transition = (Transition) actor;
                     if (transition.prefire()) {
-                        System.out.println("ready to fire transition********");     
+                        System.out.println("ready to fire transition********");
                         transition.fire();
                     }
-                    else 
+                    else
                         System.out.println("not ready to fire transition********");
                 }
 
@@ -141,7 +141,7 @@ public class PetriNetDirector extends Director {
         }
     }
 
- 
+
     // this method is about the same as the above fire method, except that
     // it returns after one fire.
     // we can further extend this to make it fire a specific transition.
@@ -151,13 +151,13 @@ public class PetriNetDirector extends Director {
 
 
         Nameable container = getContainer();
-        if (container instanceof NamedObj) 
+        if (container instanceof NamedObj)
             System.out.println("firing, the top level in the director container is" + container.getFullName());
-  
+
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
-     
+
             while (actors.hasNext()) {
                 Transformer actor = (Transformer) actors.next();
 
@@ -165,14 +165,14 @@ public class PetriNetDirector extends Director {
 
                     System.out.println("this is " + actor.getName()
                             + " ************************************************************** " );
-                
+
                     Transition transition = (Transition) actor;
                     if (transition.prefire()) {
-                        System.out.println("ready to fire transition********");     
+                        System.out.println("ready to fire transition********");
                         transition.fire();
-                        return;          
+                        return;
                     }
-                    else 
+                    else
                         System.out.println("not ready to fire transition********");
                 }
 
@@ -180,13 +180,13 @@ public class PetriNetDirector extends Director {
         }
     }
 
-   
+
 
 
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                      
+    ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -200,5 +200,5 @@ public class PetriNetDirector extends Director {
     ////                         private variables                 ////
 
 
-     
+
 }

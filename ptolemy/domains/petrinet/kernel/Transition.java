@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (yourname@eecs.berkeley.edu)
@@ -96,7 +96,7 @@ public class Transition extends Transformer {
     // to modify the marking at the input places. The method also checks
     // whether there is a weight in the middle of the place-transition
     // connection. The weight is defined as single-input single-output
-    // transformer to hold the weight of the arcs. 
+    // transformer to hold the weight of the arcs.
 
 
     public void fire() throws IllegalActionException {
@@ -109,47 +109,47 @@ public class Transition extends Transformer {
         Iterator outports=output.connectedPortList().iterator();
         while(outports.hasNext())  {
             IOPort weightport = (IOPort) outports.next();            //output port should be connected to weights.
-            if (weightport!= null) {                       
+            if (weightport!= null) {
                 Nameable arcweight = weightport.getContainer();
-                if (arcweight instanceof NamedObj) 
-                    System.out.println("the object is" + arcweight.getFullName()); 
+                if (arcweight instanceof NamedObj)
+                    System.out.println("the object is" + arcweight.getFullName());
                 if (arcweight instanceof Place || arcweight instanceof Transition)  {
-                    System.out.println("wrong connection, it should be weight here" + arcweight.getFullName()); 
+                    System.out.println("wrong connection, it should be weight here" + arcweight.getFullName());
                     return;
                 }
                 if (arcweight instanceof Weight)  {
                     Weight arc = (Weight ) arcweight;
                     int  tempweight= arc.getWeight();
-                    IOPort weightOutPort = arc.output; 
-     
+                    IOPort weightOutPort = arc.output;
+
                     Iterator placeports=weightOutPort.connectedPortList().iterator();
                     while(placeports.hasNext())  {
                         IOPort   placeport = (IOPort) placeports.next();
-                        if (placeport!= null) {                          
+                        if (placeport!= null) {
                             Nameable place = placeport.getContainer();
-                            if (place instanceof NamedObj) 
-                                System.out.println("the place is" + place.getFullName()); 
+                            if (place instanceof NamedObj)
+                                System.out.println("the place is" + place.getFullName());
                             if (place instanceof Transition || place instanceof Weight)  {
-                                System.out.println("wrong connection, it should be place here" + place.getFullName()); 
+                                System.out.println("wrong connection, it should be place here" + place.getFullName());
                                 return;
-                            }                        
+                            }
                             if (place instanceof Place)  {
                                 Place tempplace = (Place ) place;
-                                System.out.println("the old place weight is" + tempplace.getMarking()); 
+                                System.out.println("the old place weight is" + tempplace.getMarking());
                                 tempplace.increaseMarking(tempweight);
-                                System.out.println("the new place weight is" + tempplace.getMarking()); 
+                                System.out.println("the new place weight is" + tempplace.getMarking());
                             }
                         }      // for (if placeport)
                     } // for (while placeports)
-                }       //for arcweight        
+                }       //for arcweight
             }     // for  weightport
         }    //for outports
-        //   } 
+        //   }
         // for getwidth
-   
+
 
         //                 for(int j=0; j < input.getWidth(); j++)  {
-  
+
         System.out.println("start to decrease the place marking for input places"  );
 
         Iterator inports=input.connectedPortList().iterator();
@@ -157,41 +157,41 @@ public class Transition extends Transformer {
             IOPort weightport = (IOPort) inports.next();
             if (weightport!= null) {
                 Nameable arcweight = weightport.getContainer();
-                if (arcweight instanceof NamedObj) 
-                    System.out.println("the weight is" + arcweight.getFullName()); 
+                if (arcweight instanceof NamedObj)
+                    System.out.println("the weight is" + arcweight.getFullName());
                 if (arcweight instanceof Place || arcweight instanceof Transition)  {
-                    System.out.println("wrong connection, it should be weight here" + arcweight.getFullName()); 
+                    System.out.println("wrong connection, it should be weight here" + arcweight.getFullName());
                     return;
                 }
                 if (arcweight instanceof Weight)  {
-                    Weight arc = (Weight )  arcweight; 
+                    Weight arc = (Weight )  arcweight;
                     int  tempweight= arc.getWeight();
-                    IOPort weightOutPort = arc.input; 
+                    IOPort weightOutPort = arc.input;
                     Iterator placeports=weightOutPort.connectedPortList().iterator();
                     while(placeports.hasNext())  {
                         IOPort   placeport = (IOPort) placeports.next();
-                        if (placeport!= null) {                          
+                        if (placeport!= null) {
                             Nameable place = placeport.getContainer();
-                            if (place instanceof NamedObj) 
-                                System.out.println("the place is" + place.getFullName()); 
+                            if (place instanceof NamedObj)
+                                System.out.println("the place is" + place.getFullName());
                             if (place instanceof Transition || place instanceof Weight)  {
-                                System.out.println("wrong connection, it should be place here" + place.getFullName()); 
+                                System.out.println("wrong connection, it should be place here" + place.getFullName());
                                 return;
-                            }                        
-                            if (place instanceof Place)  { 
-                                Place tempplace = (Place ) place;  
-                                System.out.println("the arc weight is"+tempweight+" the place token is" + tempplace.getMarking());                                                                
+                            }
+                            if (place instanceof Place)  {
+                                Place tempplace = (Place ) place;
+                                System.out.println("the arc weight is"+tempweight+" the place token is" + tempplace.getMarking());
                                 tempplace.decreaseMarking(tempweight);
-                                System.out.println("the arc weight is"+tempweight+" the place token is" + tempplace.getMarking()); 
+                                System.out.println("the arc weight is"+tempweight+" the place token is" + tempplace.getMarking());
                             }
                         } // for (if placeport)
-                    }      // for (while placeports)                       
-                }//for arcweight   
+                    }      // for (while placeports)
+                }//for arcweight
             }     // for weightport
         }    //for inports
-        //              } 
+        //              }
         //for getwidth
-  
+
 
 
 
@@ -205,7 +205,7 @@ public class Transition extends Transformer {
 
     public boolean prefire() throws IllegalActionException {
         int k=input.getWidth();
-        boolean readyToFire = true;  
+        boolean readyToFire = true;
         System.out.println("--inside the prefire for transition--*the width is" + k);
 
 
@@ -215,43 +215,43 @@ public class Transition extends Transformer {
             IOPort weightport = (IOPort) inports.next();
             if (weightport!= null) {
                 Nameable arcweight = weightport.getContainer();
-                if (arcweight instanceof NamedObj) 
-                    System.out.println("the weight is" + arcweight.getFullName()); 
+                if (arcweight instanceof NamedObj)
+                    System.out.println("the weight is" + arcweight.getFullName());
                 if (arcweight instanceof Place || arcweight instanceof Transition)  {
-                    System.out.println("wrong connection, it should be weight here" + arcweight.getFullName()); 
+                    System.out.println("wrong connection, it should be weight here" + arcweight.getFullName());
                     return false;
                 }
                 if (arcweight instanceof Weight)  {
-                    Weight arc = (Weight )  arcweight; 
+                    Weight arc = (Weight )  arcweight;
                     int  tempweight= arc.getWeight();
-                    IOPort weightOutPort = arc.input; 
+                    IOPort weightOutPort = arc.input;
                     Iterator placeports=weightOutPort.connectedPortList().iterator();
                     while(placeports.hasNext())  {
                         IOPort   placeport = (IOPort) placeports.next();
-                        if (placeport!= null) {                          
+                        if (placeport!= null) {
                             Nameable place = placeport.getContainer();
-                            if (place instanceof NamedObj) 
-                                System.out.println("the place is" + place.getFullName()); 
+                            if (place instanceof NamedObj)
+                                System.out.println("the place is" + place.getFullName());
                             if (place instanceof Transition || place instanceof Weight)  {
-                                System.out.println("wrong connection, it should be place here" + place.getFullName()); 
+                                System.out.println("wrong connection, it should be place here" + place.getFullName());
                                 return false;
-                            }                        
-                            if (place instanceof Place)  { 
-                                Place tempplace = (Place ) place;  
-                                System.out.println("the arc weight is"+tempweight+" the place token is" + tempplace.getMarking());                                    
+                            }
+                            if (place instanceof Place)  {
+                                Place tempplace = (Place ) place;
+                                System.out.println("the arc weight is"+tempweight+" the place token is" + tempplace.getMarking());
                                 if ( tempweight > tempplace.getMarking() ) {
-                 
-                                    return false; 
+
+                                    return false;
                                 }
                             }
                         } // for (if placeport)
-                    }      // for (while placeports)                       
-                }//for arcweight   
+                    }      // for (while placeports)
+                }//for arcweight
             }     // for weightport
         }    //for inports
-        // } 
+        // }
         // for getwidth
-  
+
         return readyToFire;
     }
 
@@ -263,7 +263,7 @@ public class Transition extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-     
+
 
 
     ///////////////////////////////////////////////////////////////////
@@ -289,8 +289,8 @@ public class Transition extends Transformer {
 
 
 /*
-  if (input.hasToken(j))  {	
-  Token token = actor.input.get(j);  
+  if (input.hasToken(j))  {
+  Token token = actor.input.get(j);
   System.out.println(actor.getName()
   + " consuming input from channel " + j );
   }
@@ -301,10 +301,10 @@ public class Transition extends Transformer {
 /*      System.out.println("fire within transition ^^^^^^^^^^^^^^^^^^^^^^");
 
         for(int i=0; i < input.getWidth(); i++) {
-  
+
         if (input.hasToken(i)) {
         Token token = input.get(i);
-  
+
         System.out.println(getName()
         + " consuming input from channel " + i);
         }
@@ -325,16 +325,16 @@ public class Transition extends Transformer {
                   while(relations.hasNext()) {
                   IORelation relation = (IORelation) relations.next();
                   if (relation != null) {
-                       
+
                   Nameable container = relation.getContainer();
 
-                  if (container instanceof NamedObj) 
-                  System.out.println("the container is" + container.getFullName()); 
+                  if (container instanceof NamedObj)
+                  System.out.println("the container is" + container.getFullName());
                   }
                   }
 
 
 */
 
-           
-            
+
+
