@@ -68,10 +68,12 @@ all: jclass
 
 install: all
 
-# CLASSPATH="$(CLASSPATH)" appletviewer vergilViewer.htm
-
-demo:
+demo: demo_applet demo_vergil
+demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer FixFIR.htm
+
+demo_vergil:
+	$(PTII)/bin/vergil FixFIR.xml
 
 depend:
 	@echo "no dependencies in this directory"
