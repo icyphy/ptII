@@ -62,8 +62,11 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         super(g);
         _invokeGraph = invokeGraph;
         _sideEffectAnalysis = sideEffectAnalysis;
-        _countMap = new HashMap();
-
+        if(_debug) {
+            _countMap = new HashMap();
+        }
+        
+        // Initialize the representative objects for constructors.
         int index = 0;
         _constructorMap = new HashMap();
         for(Iterator units = g.getBody().getUnits().iterator();
@@ -201,11 +204,13 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
         if(_debug) System.out.println("maybe flow through " + d);
           
-        Integer i = (Integer)_countMap.get(d);
-        if(i == null) {
-            _countMap.put(d, new Integer(1));
-        } else {
-            _countMap.put(d, new Integer(i.intValue() + 1));
+        if(_debug) {
+            Integer i = (Integer)_countMap.get(d);
+            if(i == null) {
+                _countMap.put(d, new Integer(1));
+            } else {
+                _countMap.put(d, new Integer(i.intValue() + 1));
+            }
         }
       
         // If we have a method invocation, then alias information
@@ -220,19 +225,24 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                     Object node = nodes.next();
                     if(node instanceof SootField) {
                         SootField field = (SootField) node;
-                        // FIXME: properly compute this..
-                        boolean targetsAreInDifferentClass = true;
-                        if(field.isPrivate() && targetsAreInDifferentClass) {
+                        // FIXME: This is not quite correct...
+                        // A private field might
+                        // be affected by a method that is called back.
+                        // We really need to figure out a cheap side effect
+                        // analysis to handle what the method call does.
+                        if(field.isPrivate()) {
                             continue;
-                        } else if(Modifier.isFinal(field.getModifiers())) {
+                        } 
+                        // If the field is final, then it can never be
+                        // changed.  This is safe.
+                        if(Modifier.isFinal(field.getModifiers())) {
                             continue;
-                        } else {
-                            if(_debug) {
-                                System.out.println("unit " + unit + 
+                        } 
+                        if(_debug) {
+                            System.out.println("unit " + unit + 
                                     " kills " + field);
-                            }
-                            _setCanPointToAnything(out, node);
                         }
+                        _setCanPointToAnything(out, node);
                     }
                 }
              /*  } else {   
@@ -391,7 +401,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         }
     }        
    
-    // object can point to all objects.
+    // Set the given object to point to all possible objects.
     private void _setCanPointToAnything(GraphFlow graph, 
             Object object) {
 
@@ -399,17 +409,18 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         for(Iterator constructors = _constructorMap.keySet().iterator();
             constructors.hasNext();) {
             Value constructor = (Value)constructors.next();
+            //  System.out.println("constructorTarget = " + 
+            //        _constructorMap.get(constructor));
+            //System.out.println("constructorType = " + 
+            //        constructor.getType());
             if(object instanceof SootField) {
                 SootField field = (SootField)object;
                 // Only things that have a compatible type can be pointed to..
-                if(constructor.getType() instanceof RefType &&
-                        field.getType() instanceof RefType) {
-                    //        System.out.println("constructor = " + constructor.getClass());
-                    //System.out.println("object = " + object.getClass());
-                    if(constructor.getType().merge(field.getType(),
-                            Scene.v()).equals(constructor.getType())) {
-                        continue;
-                    }
+                Type constructorType = constructor.getType();
+                Type fieldType = field.getType();
+                if(!_isCompatibileAliasAssignment(constructorType, 
+                        fieldType)) {
+                    continue;
                 }
             }
             Object target = _constructorMap.get(constructor);
@@ -472,7 +483,48 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
             return false;
         }
     }
+    
+    // Return true if a reference object with the given type could
+    // possibly point to an aliasable object of the given type.
+    private boolean _isCompatibileAliasAssignment(Type objectType,
+            Type referenceType) {
+        // System.out.println("objectType = " + objectType);
+        //System.out.println("referenceType = " + objectType);
+        if(objectType instanceof ArrayType &&
+                referenceType instanceof ArrayType) {
+            objectType = ((ArrayType)objectType).baseType;
+            referenceType = ((ArrayType)referenceType).baseType;
+            // If either one is not an array of objects, then 
+            // return false.
+            if(!(objectType instanceof RefType) ||
+                    !(referenceType instanceof RefType)) {
+                if(objectType.equals(referenceType)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        // If they are both object types, or both arrays of objects,
+        // then check if the classes of each are compatible.
+        if(objectType instanceof RefType &&
+                referenceType instanceof RefType) {
+            Type mergeType = objectType.merge(referenceType, Scene.v());
+            //    System.out.println("mergeType = " + mergeType);
+            // If the field cannot point to the object 
+            // created by the constructor, then we don't need
+            // to create a possible alias.
+            if(mergeType.equals(referenceType)) {
+                //  System.out.println("killing");
+                return true;
+            }
+        }    
+        // They aren't even both object references, 
+        return false;
+    }
 
+    // A class that represents the points-to graph at a point in the
+    // program.
     private class GraphFlow extends HashMutableDirectedGraph {
         public boolean equals(Object object) {
             if(!(object instanceof GraphFlow)) {
@@ -539,12 +591,26 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
         };
     }
 
+    // A map from a statement to the number of times that statement
+    // is visited.  Used for debugging and profiling.
     private HashMap _countMap;
+
+    // An object that symbolically represents objects that are not
+    // explicitly represented.  Unknown references are assumed to
+    // point here until we see an assignment statement that sets the
+    // reference to point to some other object.
     private Object _universeRepresentative = 
     new String("universeRepresentative");
+    
+    // A map from constructor statements to the object that represents
+    // the result of the constructor.  This is used to ensure that we
+    // allocate exactly one representative for each constructor statement.
     private Map _constructorMap;
-    private List _localList;
+
+    // The invoke graph that is used to track method calls.
     private InvokeGraph _invokeGraph;
+
+    // The analysis that provides side effect information for methods.
     private SideEffectAnalysis _sideEffectAnalysis;
 
     // This object is used as a key into the flow maps.
