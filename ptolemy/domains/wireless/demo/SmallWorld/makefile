@@ -54,7 +54,6 @@ OTHER_FILES_TO_BE_JARED = \
 	SmallWorldRouter.xml \
 	SmallWorldRouter_loss.xml
 
-
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED)
