@@ -139,7 +139,7 @@ public class Dataflow extends AbstractDDI implements DDI {
     }
 
     /**
-     * _Selectaction picks an action for which the actor interpreter
+     * This method picks an action for which the actor interpreter
      * evaluates the guard to true. Note that this does not
      * necessarily mean that <em>all</em> preconditions for firing are
      * satisfied---the amount of "prechecking" depends on the model of
