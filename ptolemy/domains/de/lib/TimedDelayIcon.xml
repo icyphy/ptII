@@ -29,4 +29,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-23.0, -16.0]">
         </property>
     </property>
+    <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="delay">
+        </property>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, -2.0]">
+        </property>
+    </property>
 </property>

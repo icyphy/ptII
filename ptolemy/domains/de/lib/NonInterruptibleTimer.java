@@ -50,7 +50,17 @@ import ptolemy.kernel.util.NameDuplicationException;
    In other words, it can not be interrupted to respond new inputs. Instead,
    the new inputs will be queued and processed in a first come first serve
    (FCFS) fashion. This actor extends the Timer actor.
-
+   <p>
+   The key difference between the NonInterruptibleTimer actor and the Server
+   actor is how the service time is specified.  In the NonInterruptibleTimer 
+   actor, whenever an input arrives, the value of the input token specifies 
+   the service time.  This actor will guarantee that much service time to be 
+   given to that input.  In the Server actor, service times for inputs ar 
+   decided by the ServiceTime parameter, which may change any time during an 
+   execution. In particular, how much service time an input actually gets is 
+   decided the value of the ServiceTime parameter at the time the server is 
+   ready to serve that input.
+   
    @see Timer
    @author Haiyang Zheng
    @version $Id$
