@@ -46,7 +46,7 @@ import ptolemy.lang.java.nodetypes.*;
 
 /** A JavaVisitor that regenerates Java code from the abstract syntax tree.
  *
- *  @author Jeff Tsay
+ *  @author Jeff Tsay, Shuvra S. Bhattacharyya 
  */
 public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemanticConstants {
     public JavaCodeGenerator() {
@@ -829,7 +829,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
         e1StringList = _parenExpr(node.getExpr1(), e1StringList);
         e2StringList = _parenExpr(node.getExpr2(), e2StringList);
-        e3StringList = _parenExpr(node.getExpr3(), e2StringList);
+        e3StringList = _parenExpr(node.getExpr3(), e3StringList);
 
         return TNLManip.arrayToList(new Object[] {e1StringList, " ? ",
                                                       e2StringList, " : ", e3StringList});
