@@ -40,7 +40,7 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		#test doc
+DIRS = 		test #doc
 
 # Used to build jar files
 PTPACKAGE = 	kernel
