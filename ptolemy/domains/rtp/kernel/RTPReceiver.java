@@ -72,6 +72,12 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Methods from the ProcessReceivers interface.
      */
 
+    /** Clear this receiver of any contained tokens.
+      */
+     public void clear() {
+         reset();
+     }
+
     /** FIXME: Let it make sense.
      */
     public boolean isConnectedToBoundary() {
