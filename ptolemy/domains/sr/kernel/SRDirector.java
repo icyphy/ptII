@@ -308,16 +308,21 @@ public class SRDirector extends StaticSchedulingDirector {
         // Actors are postfired here since updating the state of contained
         // actors inherently updates the state of a composite actor.
 
+        LinkedList actorsPostfired = new LinkedList();
+
         Schedule schedule = _getSchedule();
         Iterator firingIterator = schedule.firingIterator();
         while (firingIterator.hasNext()) {
             Firing firing = (Firing) firingIterator.next();
             Actor actor = firing.getActor();
             if (_isIterationAllowed(actor)) {
-                if (_postfireActor(actor)) {
-                    _postfireReturns = true;
-                } else {
-                    _doNotAllowIterationOf(actor);
+                if (!actorsPostfired.contains(actor)) {
+                    if (_postfireActor(actor)) {
+                        _postfireReturns = true;
+                    } else {
+                        _doNotAllowIterationOf(actor);
+                    }
+                    actorsPostfired.add(actor);
                 }
             }
         }
