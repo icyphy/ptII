@@ -68,8 +68,10 @@ BAT_FILES = \
 	vergil.bat 
 
 EXTRA_SRCS = \
+	policy.all \
 	ptinvoke.in \
 	ptjacl.in \
+	startjini \
 	$(BAT_FILES)
 
 # Sources that may or may not be present, but if they are present, we don't
