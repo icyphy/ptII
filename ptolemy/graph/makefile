@@ -32,7 +32,7 @@
 
 ME =        ptolemy/graph
 
-DIRS =      analysis exception test demo
+DIRS =      analysis test demo
 
 # Root of the Java directory
 ROOT =      ../..
