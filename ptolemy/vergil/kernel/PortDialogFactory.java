@@ -41,9 +41,13 @@ import javax.swing.JMenuItem;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PortConfigurerDialog;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.gui.UnitConstraintsDialog;
+import ptolemy.data.unit.UnitConstraints;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import diva.gui.toolbox.JContextMenu;
 
@@ -60,12 +64,16 @@ from objects.
 public class PortDialogFactory implements MenuItemFactory {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    //// public methods ////
 
-    /** Add an item to the given context menu that will open a dialog
-     *  to add or remove ports from an object.
-     *  @param menu The context menu.
-     *  @param object The object whose ports are being manipulated.
+    /**
+     * Add an item to the given context menu that will open a dialog to add or
+     * remove ports from an object.
+     * 
+     * @param menu
+     *            The context menu.
+     * @param object
+     *            The object whose ports are being manipulated.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
         JMenuItem retv = null;
@@ -74,8 +82,7 @@ public class PortDialogFactory implements MenuItemFactory {
         final NamedObj target = object;
 
         // ensure that we actually have a target, and that it's an Entity.
-        if (!(target instanceof Entity))
-            return null;
+        if (!(target instanceof Entity)) return null;
         // Create a dialog for configuring the object.
         // First, identify the top parent frame.
         // Normally, this is a Frame, but just in case, we check.
@@ -84,19 +91,17 @@ public class PortDialogFactory implements MenuItemFactory {
         // when put in the background.
         // Note, this uses the "new" way of doing dialogs.
         Action configPortsAction = new AbstractAction(_configPorts) {
+
             public void actionPerformed(ActionEvent e) {
                 Component parent = menu.getInvoker();
                 while (parent.getParent() != null) {
                     parent = parent.getParent();
                 }
                 if (parent instanceof Frame) {
-                    DialogTableau dialogTableau =
-                        DialogTableau.createDialog(
-                            (Frame) parent,
-                            _configuration,
+                    DialogTableau dialogTableau = DialogTableau.createDialog(
+                            (Frame) parent, _configuration,
                             ((TableauFrame) parent).getEffigy(),
-                            PortConfigurerDialog.class,
-                            (Entity) target);
+                            PortConfigurerDialog.class, (Entity) target);
                     if (dialogTableau != null) {
                         dialogTableau.show();
                     }
@@ -105,58 +110,63 @@ public class PortDialogFactory implements MenuItemFactory {
         };
         retv = menu.add(configPortsAction, _configPorts);
 
-//        Action configUnitsAction = new AbstractAction(_configUnits) {
-//            public void actionPerformed(ActionEvent e) {
-//                Component parent = menu.getInvoker();
-//                while (parent.getParent() != null) {
-//                    parent = parent.getParent();
-//                }
-//                if (parent instanceof Frame) {
-//                    DialogTableau dialogTableau =
-//                        DialogTableau.createDialog(
-//                            (Frame) parent,
-//                            _configuration,
-//                            ((ActorGraphFrame) parent).getEffigy(),
-//                            UnitsConstraintsDialog.class,
-//                            (Entity) target);
-//                    if (dialogTableau != null) {
-//                        dialogTableau.show();
-//                    }
-//                }
-//            }
-//        };
-//        retv = menu.add(configUnitsAction, _configUnits);
-//
-//        Action solveUnitsAction = new AbstractAction(_solveUnits) {
-//            public void actionPerformed(ActionEvent e) {
-//                Component parent = menu.getInvoker();
-//                while (parent.getParent() != null) {
-//                    parent = parent.getParent();
-//                }
-//                if (parent instanceof Frame) {
-//                    Tableau tableau = ((ActorGraphFrame) parent).getTableau();
-//                    UnitConstraints.solve(tableau, target);
-//                }
-//            }
-//        };
-//        retv = menu.add(solveUnitsAction, _solveUnits);
+        Action configUnitsAction = new AbstractAction(_configUnits) {
+
+            public void actionPerformed(ActionEvent e) {
+                Component parent = menu.getInvoker();
+                while (parent.getParent() != null) {
+                    parent = parent.getParent();
+                }
+                if (parent instanceof Frame) {
+                    DialogTableau dialogTableau = DialogTableau.createDialog(
+                            (Frame) parent, _configuration,
+                            ((ActorGraphFrame) parent).getEffigy(),
+                            UnitConstraintsDialog.class, (Entity) target);
+                    if (dialogTableau != null) {
+                        dialogTableau.show();
+                    }
+                }
+            }
+        };
+        retv = menu.add(configUnitsAction, _configUnits);
+
+        Action solveUnitsAction = new AbstractAction(_solveUnits) {
+
+            public void actionPerformed(ActionEvent e) {
+                Component parent = menu.getInvoker();
+                while (parent.getParent() != null) {
+                    parent = parent.getParent();
+                }
+                if (parent instanceof Frame) {
+                    Tableau tableau = ((ActorGraphFrame) parent).getTableau();
+                    UnitConstraints.solve(tableau, target);
+                }
+            }
+        };
+        retv = menu.add(solveUnitsAction, _solveUnits);
 
         return retv;
     }
 
-    /** Set the configuration for use by the help screen.
-     *  @param configuration The configuration.
+    /**
+     * Set the configuration for use by the help screen.
+     * 
+     * @param configuration
+     *            The configuration.
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    //// private variables ////
 
     /** The configuration. */
     private static String _configPorts = "Configure Ports";
+
     private static String _configUnits = "Configure Units";
+
     private Configuration _configuration;
+
     private static String _solveUnits = "Solve Unit Constraints";
 }

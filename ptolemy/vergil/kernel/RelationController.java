@@ -32,11 +32,13 @@ package ptolemy.vergil.kernel;
 
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.ParameterizedNodeController;
@@ -96,6 +98,13 @@ public class RelationController extends ParameterizedNodeController {
                     (ActorGraphModel)getController().getGraphModel();
                 figure.setToolTipText(relation.getName(
                         model.getPtolemyModel()));
+                StringAttribute _colorAttr =
+                    (StringAttribute) (relation.getAttribute("_color"));
+                if (_colorAttr != null) {
+                    String _color = _colorAttr.getExpression();
+                    ((BasicFigure) figure).setFillPaint(
+                        SVGUtilities.getColor(_color));
+                }
             }
             return figure;
         }

@@ -64,6 +64,7 @@ import diva.canvas.connector.PerimeterSite;
 import diva.canvas.connector.TerminalFigure;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
@@ -121,12 +122,14 @@ public class IOPortController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Render the ports of components as triangles.  Multiports are
-     *  rendered hollow, while single ports are rendered filled.
-     */
+/**
+ * Render the ports of components as triangles. Multiports are rendered hollow,
+ * while single ports are rendered filled.
+ */
     public class EntityPortRenderer implements NodeRenderer {
+
         public Figure render(Object n) {
-            final Port port = (Port)n;
+            final Port port = (Port) n;
 
             // If the port has an attribute called "_hide", then
             // do not render it.
@@ -139,17 +142,17 @@ public class IOPortController extends AttributeController {
             // If ports are not IOPorts, then draw then as ports with
             // no direction.
             if (port instanceof IOPort) {
-                isInput = ((IOPort)port).isInput();
-                isOutput = ((IOPort)port).isOutput();
+                isInput = ((IOPort) port).isInput();
+                isOutput = ((IOPort) port).isOutput();
                 isInputOutput = isInput && isOutput;
-            } 
-            
-            // The shape that the port will have.  These are all
+            }
+
+            // The shape that the port will have. These are all
             // created as oriented to the West, i.e. the left side of
             // the actor.
             Shape shape;
 
-            if(isInputOutput) {
+            if (isInputOutput) {
                 Polygon2D.Double polygon = new Polygon2D.Double();
                 polygon.moveTo(0, -4);
                 polygon.lineTo(-4, -4);
@@ -161,7 +164,7 @@ public class IOPortController extends AttributeController {
                 polygon.lineTo(0, -4);
                 polygon.closePath();
                 shape = polygon;
-            } else if(isInput) {
+            } else if (isInput) {
                 Polygon2D.Double polygon = new Polygon2D.Double();
                 polygon.moveTo(-4, 0);
                 polygon.lineTo(-4, 4);
@@ -170,7 +173,7 @@ public class IOPortController extends AttributeController {
                 polygon.lineTo(-4, 0);
                 polygon.closePath();
                 shape = polygon;
-            } else if(isOutput) {
+            } else if (isOutput) {
                 Polygon2D.Double polygon = new Polygon2D.Double();
                 polygon.moveTo(4, 0);
                 polygon.lineTo(4, -4);
@@ -184,31 +187,39 @@ public class IOPortController extends AttributeController {
             }
 
             Color fill;
-            float lineWidth = (float)1.5;
+            float lineWidth = (float) 1.5;
             if (port instanceof ParameterPort) {
                 fill = Color.lightGray;
-                lineWidth = (float)0.0;
-            } else if (port instanceof IOPort && ((IOPort)port).isMultiport()) {
+                lineWidth = (float) 0.0;
+            } else if (port instanceof IOPort && ((IOPort) port).isMultiport()) {
                 fill = Color.white;
             } else {
                 fill = Color.black;
             }
 
-            ActorGraphModel model =
-                (ActorGraphModel)getController().getGraphModel();
+            StringAttribute _colorAttr = (StringAttribute) (port
+                    .getAttribute("_color"));
+            if (_colorAttr != null) {
+                String _color = _colorAttr.getExpression();
+                fill = SVGUtilities.getColor(_color);
+            }
+
+            ActorGraphModel model = (ActorGraphModel) getController()
+                    .getGraphModel();
 
             // Wrap the figure in a TerminalFigure to set the direction that
-            // connectors exit the port.  Note that this direction is the
+            // connectors exit the port. Note that this direction is the
             // same direction that is used to layout the port in the
             // Entity Controller.
-            StringAttribute cardinal = 
-                (StringAttribute)port.getAttribute("_cardinal");
+            StringAttribute cardinal = (StringAttribute) port
+                    .getAttribute("_cardinal");
 
             int direction;
             double rotation;
             //             if (!(port instanceof IOPort)) {
             //                 direction = SwingUtilities.SOUTH;
-            //             } else if (((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
+            //             } else if (((IOPort)port).isInput() &&
+            // ((IOPort)port).isOutput()) {
             //                 direction = SwingUtilities.SOUTH;
             //             } else if (((IOPort)port).isInput()) {
             //                 direction = SwingUtilities.WEST;
@@ -219,7 +230,6 @@ public class IOPortController extends AttributeController {
             //                 direction = SwingUtilities.SOUTH;
             //             }
 
-            
             if (cardinal == null) {
                 if (isInputOutput) {
                     direction = SwingUtilities.SOUTH;
@@ -253,26 +263,32 @@ public class IOPortController extends AttributeController {
             }
 
             // Transform the port shape so it is facing the right way.
-            AffineTransform transform = 
-                AffineTransform.getRotateInstance(Math.toRadians(rotation));
+            AffineTransform transform = AffineTransform.getRotateInstance(Math
+                    .toRadians(rotation));
             shape = ShapeUtilities.transformModify(shape, transform);
-            
-            Figure figure = new BasicFigure(shape, fill, (float)1.5) {
-                    // Override this because we want to show the type.
-                    // It doesn't work to set it once because the type
-                    // has not been resolved, and anyway, it may
-                    // change.
-                    public String getToolTipText() {
-                        String tipText = port.getName();
-                        if (port instanceof Typeable) {
-                            try {
-                                tipText = tipText + ", type:"
-                                    + ((Typeable)port).getType();
-                            } catch (IllegalActionException ex) {}
+
+            Figure figure = new BasicFigure(shape, fill, (float) 1.5) {
+
+                // Override this because we want to show the type.
+                // It doesn't work to set it once because the type
+                // has not been resolved, and anyway, it may
+                // change.
+                public String getToolTipText() {
+                    String tipText = port.getName();
+                    StringAttribute _descAttr = (StringAttribute) (port
+                            .getAttribute("_description"));
+                    if (_descAttr != null) {
+                        tipText = _descAttr.getExpression();
+                    } else if (port instanceof Typeable) {
+                        try {
+                            tipText = tipText + ", type:"
+                                    + ((Typeable) port).getType();
+                        } catch (IllegalActionException ex) {
                         }
-                        return tipText;
                     }
-                };
+                    return tipText;
+                }
+            };
             // Have to do this also, or the awt doesn't display any
             // tooltip at all.
 

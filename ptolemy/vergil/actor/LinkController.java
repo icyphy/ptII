@@ -44,15 +44,18 @@ import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.canvas.interactor.SelectionModel;
+import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.BasicEdgeController;
 import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.gui.toolbox.MenuCreator;
 
+import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.ConfigureAction;
@@ -197,6 +200,19 @@ public class LinkController extends BasicEdgeController {
             Relation relation = link.getRelation();
             if (relation != null) {
                 c.setToolTipText(relation.getName());
+                if (relation instanceof TypedIORelation) {
+                    StringAttribute _colorAttr = (StringAttribute) (relation
+                            .getAttribute("_color"));
+                    if (_colorAttr != null) {
+                        String _color = _colorAttr.getExpression();
+                        c.setStrokePaint(SVGUtilities.getColor(_color));
+                    }
+                    StringAttribute _descAttr = (StringAttribute) (relation
+                            .getAttribute("_description"));
+                    if (_descAttr != null) {
+                        c.setToolTipText(_descAttr.getExpression());
+                    }
+                }
             }
             return c;
         }
