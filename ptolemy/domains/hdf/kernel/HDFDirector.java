@@ -137,9 +137,9 @@ public class HDFDirector extends SDFDirector {
     }
 
     /** A Parameter representing the size of the schedule cache to
-     *  use. The default value is 100. If the value is less than
+     *  use. If the value is less than
      *  or equal to zero, then schedules will never be discarded
-     *  from the cache.
+     *  from the cache. The default value is 100.
      *  <p>
      *  Note that the number of schedules in an HDF model can be 
      *  exponential in the number of actors. Setting the cache size to a
@@ -148,17 +148,26 @@ public class HDFDirector extends SDFDirector {
      */
     public Parameter scheduleCacheSize;
 
-    /**
+    /** Return the scheduling sequence as an instance of Schedule.
+     *  For efficiency, this method maintains a schedule cache and
+     *  will attempt to return a cached version of the schedule.
+     *  If the cache does not contain the schedule for the current
+     *  hdf graph, then the schedule will be computed by calling
+     *  the getSchedule() method of the SDFScheduler.
+     *  <p>
+     *  The schedule cache uses a least-recently-used replacement
+     *  policy. The size of the cache is specified by the
+     *  scheduleCacheSize parameter. The default cache size is
+     *  100.
      *
-     *  @exception IllegalActionException If fixme.
+     *  @return The Schedule for the current hdf graph.
+     *
+     *  @exception IllegalActionException If there is a problem getting
+     *   the schedule.
      */
     public Schedule getSchedule() throws IllegalActionException{
 	Scheduler scheduler = 
 	    getScheduler();
-	if (scheduler == null) {
-	    throw new IllegalActionException(this, "Unable to get " + 
-					 "the SDF or HDF scheduler.");
-	}
 	Schedule schedule;
 	if (isScheduleValid()) {
 	    // This will return a the current schedule.
@@ -166,47 +175,67 @@ public class HDFDirector extends SDFDirector {
 	} else {
 	    // The schedule is no longer valid, so check the schedule
 	    // cache.
-
-	    // Convert the model to a moml string. Note: This can generate
-	    // quite a bit of text. This should still be more efficient
-	    // than solving the balance equations. Do
-	    // performance analysis to verify this.
-	    CompositeActor container =  (CompositeActor)getContainer();
-	    String momlKey = container.exportMoML();
-	    //System.out.println("MoML: " + momlKey);
-
-	    if (_scheduleCache.containsKey(momlKey)) {
+	    if (_inputPortList == null) {
+		_inputPortList = _getInputPortList();
+	    }
+	    if (_outputPortList == null) {
+		_outputPortList = _getOutputPortList();
+	    }
+	    Iterator inputPorts = _inputPortList.iterator();
+	    String rates = new String();
+	    while (inputPorts.hasNext()) {
+		IOPort inputPort = (IOPort)inputPorts.next();
+		int rate = 
+		    SDFScheduler.getTokenConsumptionRate(inputPort);
+		rates = rates + String.valueOf(rate);
+	    }
+	    Iterator outputPorts = _outputPortList.iterator();
+	    while (inputPorts.hasNext()) {
+		IOPort outputPort = (IOPort)outputPorts.next();
+		int rate = 
+		    SDFScheduler.getTokenProductionRate(outputPort);
+		rates = rates + String.valueOf(rate);
+	    }
+	    if (_debug_info) { 
+		System.out.println("Port rates = " + rates);
+	    }
+	    String rateKey = rates;
+	    int cacheSize = 
+		    ((IntToken)(scheduleCacheSize.getToken())).intValue();
+	    if (_scheduleCache.containsKey(rateKey)) {
 		// cache hit.
 		if (_debug_info) { 
 		    System.out.println(getName() + 
 				       " : Cache hit!");
 		}
-		// Remove the key from the list.
-		_scheduleKeyList.remove(momlKey);
-		// Now add the key to head of list.
-		_scheduleKeyList.add(0, momlKey);
-
-		schedule = (Schedule)_scheduleCache.get(momlKey);
+		if (cacheSize > 0) {
+		    // Remove the key from its old position in
+		    // the list.
+		    _scheduleKeyList.remove(rateKey);
+		    // and add the key to head of list.
+		    _scheduleKeyList.add(0, rateKey);
+		}
+		schedule = (Schedule)_scheduleCache.get(rateKey);
 	    } else {
 		// cache miss.
 		if (_debug_info) { 
 		    System.out.println(getName() + 
 				       " : Cache miss.");
 		}
-		// Add key to head of list.
-		_scheduleKeyList.add(0, momlKey);
-		int cacheSize = 
-		    ((IntToken)(scheduleCacheSize.getToken())).intValue();
-		if (_scheduleCache.size() >= cacheSize) {
-		    // cache is  full.
-		    // remove tail of list.
-		    _scheduleKeyList.remove(cacheSize - 1);
-		    // remove key from map.
-		    _scheduleCache.remove(momlKey);
-		}
+		if (cacheSize > 0) {
+		    while (_scheduleKeyList.size() >= cacheSize) {
+			// cache is  full.
+			// remove tail of list.
+			Object object = _scheduleKeyList.get(cacheSize - 1);
+			_scheduleKeyList.remove(cacheSize - 1);
+			_scheduleCache.remove(object);
+		    }
+		    // Add key to head of list.
+		    _scheduleKeyList.add(0, rateKey);
+		} 
 		// Add key/schedule to the schedule map.
 		schedule = scheduler.getSchedule();
-		_scheduleCache.put(momlKey, schedule);
+		_scheduleCache.put(rateKey, schedule);
 	    } 
 	}
 	return schedule;
@@ -217,7 +246,8 @@ public class HDFDirector extends SDFDirector {
      *  Otherwise an exception will occur.
      *
      *  @param actor The actor to return the firing count for.
-     *  @exception IllegalActionException I
+     *  @exception IllegalActionException If there is a problem computing
+     *   the firing count.
      */
     public int getFiringCount(Actor actor) throws IllegalActionException {
 	
@@ -238,12 +268,12 @@ public class HDFDirector extends SDFDirector {
 	    }
 
 	    if (_debug_info) { 
-		System.out.println(getName() + 
-     " :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
-				   ((Nameable)actor).getName());
-		System.out.println(getName() + 
-      " : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
-				   occurrence);
+		//System.out.println(getName() + 
+		//" :  _getFiringsPerSchedulIteration(): Actor in static schedule: " +
+		//	   ((Nameable)actor).getName());
+		//System.out.println(getName() + 
+		//" : _getFiringsPerSchedulIteration(): Actors in static schedule:" +
+		//	   occurrence);
 	    }
 	}
 	return occurrence;
@@ -304,9 +334,61 @@ public class HDFDirector extends SDFDirector {
         }
     }
 
+    /** Return a list of all the input ports contained by the
+     *  deeply contained entities of the container of this director.
+     *
+     *  @return The list of input ports.
+     */
+    private List _getInputPortList() {
+	CompositeActor container =  (CompositeActor)getContainer();
+	List actors = container.deepEntityList();
+	 Iterator actorIterator = actors.iterator();
+	 List inputPortList = new LinkedList();;
+	 List inputPortRateList = new LinkedList();
+	 while (actorIterator.hasNext()) {
+	     Actor containedActor = (Actor)actorIterator.next();
+	     List temporaryInputPortList = 
+		 containedActor.inputPortList();
+	     Iterator inputPortIterator = 
+		 temporaryInputPortList.iterator();
+	     while (inputPortIterator.hasNext()) {
+		 IOPort inputPort = (IOPort)inputPortIterator.next();
+		 inputPortList.add(inputPort);
+	     }
+	 }
+	 return inputPortList;
+    }
+
+    /** Return a list of all the output ports contained by the
+     *  deeply contained entities of the container of this director.
+     *
+     *  @return The list of output ports.
+     */
+    private List _getOutputPortList() {
+	CompositeActor container =  (CompositeActor)getContainer();
+	List actors = container.deepEntityList();
+	 Iterator actorIterator2 = actors.iterator();
+	 List outputPortList = new LinkedList();;
+	 List outputPortRateList = new LinkedList();
+	 while (actorIterator2.hasNext()) {
+	     Actor containedActor = (Actor)actorIterator2.next();
+	     List temporaryOutputPortList = 
+		 containedActor.outputPortList();
+	     Iterator outputPortIterator = 
+		 temporaryOutputPortList.iterator();
+	     while (outputPortIterator.hasNext()) {
+		 IOPort outputPort = (IOPort)outputPortIterator.next();
+		 outputPortList.add(outputPort);
+	     }
+	 }
+	 return outputPortList;
+    }
+
     // The hashmap for the schedule cache.
     private Map _scheduleCache;
     private List _scheduleKeyList;
+    private List _inputPortList;
+    private List _outputPortList;
 
     // Set to true to enable debugging.
     //private boolean _debug_info = true;
