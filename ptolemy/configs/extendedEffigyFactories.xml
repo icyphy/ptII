@@ -15,6 +15,6 @@
           class="ptolemy.actor.gui.ExpressionShellEffigy$ShellFactory"/>
   <!--entity name="Python Evaluator"
           class="ptolemy.actor.gui.python.PythonShellEffigy$ShellFactory"/-->
-  <entity name="Tcl Evaluator"
-          class="ptolemy.actor.gui.ptjacl.TclShellEffigy$ShellFactory"/>
+  <!--entity name="Tcl Evaluator"
+          class="ptolemy.actor.gui.ptjacl.TclShellEffigy$ShellFactory"/-->
 </group>

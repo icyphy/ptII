@@ -26,8 +26,8 @@
             class="ptolemy.actor.gui.ExpressionShellTableau$Factory"/>
   <!--property name="Python Evaluator"
             class="ptolemy.actor.gui.python.PythonShellTableau$Factory"/-->
-  <property name="Tcl Evaluator"
-            class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/>
+  <!--property name="Tcl Evaluator"
+            class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/-->
   <property name="Text Editor"
             class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
   <!-- FIXME: plot data tableau, etc. -->
