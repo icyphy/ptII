@@ -272,7 +272,7 @@ class CSpec
 	m_lexGen = lexGen;
 
 	/* Initialize regular expression token variables. */
-	m_current_token = m_lexGen.EOS;
+	m_current_token = CLexGen.EOS;
 	m_lexeme = '\0';
 	m_in_quote = false;
 	m_in_ccl = false;
@@ -1661,7 +1661,7 @@ class CMakeNfa
 
 	  /* Initialize current token variable 
 	     and create nfa. */
-	  /*m_spec.m_current_token = m_lexGen.EOS;
+	  /*m_spec.m_current_token = CLexGen.EOS;
 	  m_lexGen.advance();*/
 
 	  m_spec.m_nfa_start = machine();
@@ -1746,7 +1746,7 @@ class CMakeNfa
 	states = m_lexGen.getStates();
 
 	/* Begin: Added for states. */
-	m_spec.m_current_token = m_lexGen.EOS;
+	m_spec.m_current_token = CLexGen.EOS;
 	m_lexGen.advance();
 	/* End: Added for states. */
 	
@@ -1756,14 +1756,14 @@ class CMakeNfa
 
 	processStates(states,p.m_next);
 
-	while (m_lexGen.END_OF_INPUT != m_spec.m_current_token)
+	while (CLexGen.END_OF_INPUT != m_spec.m_current_token)
 	  {
 	    /* Make state changes HERE. */
 	    states = m_lexGen.getStates();
 	
 	    /* Begin: Added for states. */
 	    m_lexGen.advance();
-	    if (m_lexGen.END_OF_INPUT == m_spec.m_current_token)
+	    if (CLexGen.END_OF_INPUT == m_spec.m_current_token)
 	      { 
 		break;
 	      }
@@ -1806,7 +1806,7 @@ class CMakeNfa
 
 	pair = CAlloc.newCNfaPair();
 
-	if (m_lexGen.AT_BOL == m_spec.m_current_token)
+	if (CLexGen.AT_BOL == m_spec.m_current_token)
 	  {
 	    start = CAlloc.newCNfa(m_spec);
 	    start.m_edge = '\n';
@@ -1824,7 +1824,7 @@ class CMakeNfa
 	    end = pair.m_end;
 	  }
 
-	if (m_lexGen.AT_EOL == m_spec.m_current_token)
+	if (CLexGen.AT_EOL == m_spec.m_current_token)
 	  {
 	    m_lexGen.advance();
 	    end.m_next = CAlloc.newCNfa(m_spec);
@@ -1887,7 +1887,7 @@ class CMakeNfa
 
 	cat_expr(pair);
 	
-	while (m_lexGen.OR == m_spec.m_current_token)
+	while (CLexGen.OR == m_spec.m_current_token)
 	  {
 	    m_lexGen.advance();
 	    cat_expr(e2_pair);
@@ -1966,23 +1966,23 @@ class CMakeNfa
       {
 	switch (token)
 	  {
-	  case m_lexGen.CLOSE_PAREN:
-	  case m_lexGen.AT_EOL:
-	  case m_lexGen.OR:
-	  case m_lexGen.EOS:
+	  case CLexGen.CLOSE_PAREN:
+	  case CLexGen.AT_EOL:
+	  case CLexGen.OR:
+	  case CLexGen.EOS:
 	    return false;
 	    
-	  case m_lexGen.CLOSURE:
-	  case m_lexGen.PLUS_CLOSE:
-	  case m_lexGen.OPTIONAL:
+	  case CLexGen.CLOSURE:
+	  case CLexGen.PLUS_CLOSE:
+	  case CLexGen.OPTIONAL:
 	    CError.parse_error(CError.E_CLOSE,m_input.m_line_number);
 	    return false;
 
-	  case m_lexGen.CCL_END:
+	  case CLexGen.CCL_END:
 	    CError.parse_error(CError.E_BRACKET,m_input.m_line_number);
 	    return false;
 
-	  case m_lexGen.AT_BOL:
+	  case CLexGen.AT_BOL:
 	    CError.parse_error(CError.E_BOL,m_input.m_line_number);
 	    return false;
 
@@ -2013,9 +2013,9 @@ class CMakeNfa
 
 	term(pair);
 
-	if (m_lexGen.CLOSURE == m_spec.m_current_token
-	    || m_lexGen.PLUS_CLOSE == m_spec.m_current_token
-	    || m_lexGen.OPTIONAL == m_spec.m_current_token)
+	if (CLexGen.CLOSURE == m_spec.m_current_token
+	    || CLexGen.PLUS_CLOSE == m_spec.m_current_token
+	    || CLexGen.OPTIONAL == m_spec.m_current_token)
 	  {
 	    start = CAlloc.newCNfa(m_spec);
 	    end = CAlloc.newCNfa(m_spec);
@@ -2023,14 +2023,14 @@ class CMakeNfa
 	    start.m_next = pair.m_start;
 	    pair.m_end.m_next = end;
 
-	    if (m_lexGen.CLOSURE == m_spec.m_current_token
-		|| m_lexGen.OPTIONAL == m_spec.m_current_token)
+	    if (CLexGen.CLOSURE == m_spec.m_current_token
+		|| CLexGen.OPTIONAL == m_spec.m_current_token)
 	      {
 		start.m_next2 = end;
 	      }
 	    
-	    if (m_lexGen.CLOSURE == m_spec.m_current_token
-		|| m_lexGen.PLUS_CLOSE == m_spec.m_current_token)
+	    if (CLexGen.CLOSURE == m_spec.m_current_token
+		|| CLexGen.PLUS_CLOSE == m_spec.m_current_token)
 	      {
 		pair.m_end.m_next2 = pair.m_start;
 	      }
@@ -2065,12 +2065,12 @@ class CMakeNfa
 	    CUtility.enter("term",m_spec.m_lexeme,m_spec.m_current_token);
 	  }
 
-	if (m_lexGen.OPEN_PAREN == m_spec.m_current_token)
+	if (CLexGen.OPEN_PAREN == m_spec.m_current_token)
 	  {
 	    m_lexGen.advance();
 	    expr(pair);
 
-	    if (m_lexGen.CLOSE_PAREN == m_spec.m_current_token)
+	    if (CLexGen.CLOSE_PAREN == m_spec.m_current_token)
 	      {
 		m_lexGen.advance();
 	      }
@@ -2087,7 +2087,7 @@ class CMakeNfa
 	    start.m_next = CAlloc.newCNfa(m_spec);
 	    pair.m_end = start.m_next;
 
-	    if (m_lexGen.L == m_spec.m_current_token &&
+	    if (CLexGen.L == m_spec.m_current_token &&
 		Character.isLetter(m_spec.m_lexeme)) 
 	      {
 		isAlphaL = true;
@@ -2096,8 +2096,8 @@ class CMakeNfa
 	      {
 		isAlphaL = false;
 	      }
-	    if (false == (m_lexGen.ANY == m_spec.m_current_token
-			  || m_lexGen.CCL_START == m_spec.m_current_token
+	    if (false == (CLexGen.ANY == m_spec.m_current_token
+			  || CLexGen.CCL_START == m_spec.m_current_token
 			  || (m_spec.m_ignorecase && isAlphaL)))
 	      {
 		start.m_edge = m_spec.m_lexeme;
@@ -2115,7 +2115,7 @@ class CMakeNfa
 		    start.m_set.addncase(m_spec.m_lexeme);
 		  }
 		/* Match dot (.) using character class. */
-		else if (m_lexGen.ANY == m_spec.m_current_token)
+		else if (CLexGen.ANY == m_spec.m_current_token)
 		  {
 		    start.m_set.add((byte) '\n');
 		    if (false == m_spec.m_unix)
@@ -2127,7 +2127,7 @@ class CMakeNfa
 		else
 		  {
 		    m_lexGen.advance();
-		    if (m_lexGen.AT_BOL == m_spec.m_current_token)
+		    if (CLexGen.AT_BOL == m_spec.m_current_token)
 		      {
 			m_lexGen.advance();
 
@@ -2138,7 +2138,7 @@ class CMakeNfa
 			  }*/
 			start.m_set.complement();
 		      }
-		    if (false == (m_lexGen.CCL_END == m_spec.m_current_token))
+		    if (false == (CLexGen.CCL_END == m_spec.m_current_token))
 		      {
 			dodash(start.m_set);
 		      }
@@ -2177,15 +2177,15 @@ class CMakeNfa
 	      CUtility.enter("dodash",m_spec.m_lexeme,m_spec.m_current_token);
 	    }
 	  
-	  while (m_lexGen.EOS != m_spec.m_current_token 
-		 && m_lexGen.CCL_END != m_spec.m_current_token)
+	  while (CLexGen.EOS != m_spec.m_current_token 
+		 && CLexGen.CCL_END != m_spec.m_current_token)
 	    {
 	      // DASH loses its special meaning if it is first in class.
-	      if (m_lexGen.DASH == m_spec.m_current_token && -1 != first)
+	      if (CLexGen.DASH == m_spec.m_current_token && -1 != first)
 		{
 		  m_lexGen.advance();
 		  // DASH loses its special meaning if it is last in class.
-		  if (m_spec.m_current_token == m_lexGen.CCL_END)
+		  if (m_spec.m_current_token == CLexGen.CCL_END)
 		    {
 		      // 'first' already in set.
 		      set.add('-');
