@@ -51,10 +51,13 @@ ME =		ptolemy/actor/lib/jxta
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-JXTA_DIR=$(ROOT)/vendors/sun/jxta
-JXTALIB = $(JXTA_DIR)/jxta.jar;$(JXTA_DIR)/log4j.jar;$(JXTA_DIR)/beepcore.jar;$(JXTA_DIR)/jxtasecurity.jar;$(JXTA_DIR)/cryptix-asn1.jar;$(JXTA_DIR)/cryptix32.jar;$(JXTA_DIR)/jxtaptls.jar;$(JXTA_DIR)/minimalBC.jar;. 
+# $PTII/configure looks for JXTA and sets JXTA_DIR in
+# $PTII/mk/ptII.mk if it was found.
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JXTALIB)
+JXTA_JARS = $(JXTA_DIR)/jxta.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/log4j.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/beepcore.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/jxtasecurity.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/cryptix-asn1.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/cryptix32.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/jxtaptls.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/minimalBC.jar
+
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JXTA_JARS)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
@@ -66,8 +69,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Peer.java\
-	PtPeerDiscover.java\
+	Peer.java \
 	MoMLSimpleApplication.java
 
 EXTRA_SRCS =	$(JSRCS)
