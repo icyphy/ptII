@@ -57,6 +57,17 @@ set configs [glob *Configuration*.xml]
 cd test
 foreach i $configs {
     set parser [java::new ptolemy.moml.MoMLParser]
+
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+
+    
     set loader [[$parser getClass] getClassLoader]
     
 
@@ -73,20 +84,25 @@ foreach i $configs {
 	#puts "file name vergilConfiguration.xml: $inFile"
 
 	set infd [open $inFile]
-	set outfd [open vergilConfigurationNoMatlab.xml "w"]
+	set outfd [open vergilConfigurationNoMatlabNoSerialNoApps.xml "w"]
 	while {![eof $infd]} {
 	    set linein [gets $infd]
 	    regsub -all {.*matlab.*} $linein {} lineout
-	    puts $outfd $lineout
+	    # Filter out the serial actor because it does not work under Unix,
+	    # which is where the nightly build is run
+	    regsub -all {.*comm/comm.xml.*} $lineout {} lineout2
+	    # Filter out apps
+	    regsub -all {.*apps/apps.xml.*} $lineout2 {} lineout3
+	    puts $outfd $lineout3
 	}
 	close $infd
 	close $outfd
-	set i test/vergilConfigurationNoMatlab.xml
+	set i test/vergilConfigurationNoMatlabNoSerialNoApps.xml
     } 
 
     set URL [$loader getResource ptolemy/configs/$i]
     set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
-    # force everything to get expanded
+    puts " force everything to get expanded ptolemy/configs/$i"
     set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
     
     test "$i-1.1" "Test to see if $i contains any bad XML" {
