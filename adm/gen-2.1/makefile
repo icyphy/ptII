@@ -774,7 +774,9 @@ remote2distjdk1.4:
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE2PTIIDIST); rm -f config.status config.cache; \
-		PATH=/usr/local/j2se/bin:$$PATH ./configure; $(MAKE) -k JFLAGS=)
+		PTII=$(REMOTE2PTIIDIST) \
+		PATH=/usr/local/j2se/bin:$$PATH ./configure; \
+	PTII=$(REMOTE2PTIIDIST) $(MAKE) -k JFLAGS=)
 	@echo "$@ `date`"
 
 # Test with JDK1.4
@@ -785,7 +787,9 @@ $(REMOTE2PTJACL_JAR):
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE2PTIIDIST); cvs -d $(CVS_REPOSITORY) checkout tcl; \
-		cd tcl;	PATH=/usr/local/j2se/bin:$$PATH \
+		cd tcl;	\
+		PTII=$(REMOTE2PTIIDIST) \
+		PATH=/usr/local/j2se/bin:$$PATH \
 		$(MAKE) -k JFLAGS= install)
 	ls -l $@
 	@echo "$@ `date`"
@@ -796,6 +800,7 @@ remote2distjdk1.4test: $(REMOTE2PTJACL_JAR)
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE2PTIIDIST); \
+		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
 		$(MAKE) -k JFLAGS= tests)
 	@echo "$@ `date`"
