@@ -57,6 +57,7 @@ import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.MessageHandler;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
@@ -74,6 +75,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.ptolemy.GraphFrame;
 import ptolemy.vergil.ptolemy.kernel.AttributeController;
 import ptolemy.vergil.ptolemy.kernel.PortController;
+import ptolemy.vergil.ptolemy.kernel.PortDialogFactory;
 import ptolemy.vergil.ptolemy.kernel.PtolemyNodeController;
 import ptolemy.vergil.toolbox.FigureAction;
 
@@ -153,6 +155,17 @@ public class FSMGraphController extends FSMViewerController
         System.out.println("*** " + state.getFullName());
     }
 
+    /** Set the configuration.  The configuration is used when
+     *  opening documentation files.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
+        if (_portDialogFactory != null) {
+            _portDialogFactory.setConfiguration(configuration);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -184,6 +197,11 @@ public class FSMGraphController extends FSMViewerController
         // because it is a diva method.
         super.initializeInteraction();
         GraphPane pane = getGraphPane();
+
+        // Add a menu command to configure the ports.
+        _portDialogFactory = new PortDialogFactory();
+	_menuFactory.addMenuItemFactory(_portDialogFactory);
+        _portDialogFactory.setConfiguration(getConfiguration());
 
 	// Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
@@ -262,6 +280,9 @@ public class FSMGraphController extends FSMViewerController
             PortController._GENERIC_INOUT_MULTIPORT,
             "New input/output multiport",
             KeyEvent.VK_T);
+
+    /** The port dialog factory. */
+    private PortDialogFactory _portDialogFactory;
 
     /** Prototype state for rendering. */
     private static Location _prototypeState;
