@@ -57,6 +57,7 @@ port.  The element that is extracted is determined by the
 an exception will be thrown by the fire() method.
 
 @see LookupTable
+@see RecordDisassembler
 @author Edward A. Lee, Elaine Cheong
 @version $Id$
 */

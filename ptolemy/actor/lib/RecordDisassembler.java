@@ -65,8 +65,8 @@ record field.
 @author Yuhong Xiong
 @version $Id$
 @see RecordAssembler
+@see ArrayElement
 */
-
 public class RecordDisassembler extends TypedAtomicActor {
 
     /** Construct a RecordDisassembler with the given container and name.
