@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Corba utilities
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands (makefile) , based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -42,7 +42,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	CordinatorUtil
+PTPACKAGE = 	CoordinatorUtil
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
