@@ -140,6 +140,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  is exactly one transition enabled, then it is chosen and the choice
      *  actions contained by transition are executed. Return the destination
      *  state. If no transition is enabled, return the current state.
+     *  @param state The current state.
      *  @return The destination state, or the current state if no
      *   transition is enabled.
      *  @exception IllegalActionException If a non-transient state has
@@ -648,6 +649,16 @@ public class MultirateFSMDirector extends FSMDirector {
      *  on the given list of variables.  If a dependency declaration with that
      *  name already exists, then simply set its dependents list to the given
      *  list.
+     *  @param analysis The object that contains the dependency declarations.
+     *  @param port The IOPort to get rate variables from.
+     *  @param name The name of the IOPort.
+     *  @param dependents The dependents that the dependency declaration of the
+     *  given IO port depends on.
+     *  @exception IllegalActionException If a valid rate variable from the 
+     *  given port can not be found, or the variable does not contain a 
+     *  DependencyDeclaration attribute, or a new DependencyDeclaration object
+     *  can not be created, or can not associated with the analysis object the
+     *  newly created DependencyDeclaration object.
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             IOPort port, String name, List dependents)
@@ -672,10 +683,13 @@ public class MultirateFSMDirector extends FSMDirector {
 
     /** Declare the reconfiguration dependency in the given analysis
      *  associated wiht the parameter name of the given port.
-     *  @param analysis
-     *  @param port
-     *  @param parameterName
-     *  @exception IllegalActionException
+     *  @param analysis The object that contains the dependency declarations.
+     *  @param port The IOPort to get refinement rate variables from.
+     *  @param parameterName The name of the rate variables.
+     *  @exception IllegalActionException If can not get the refinement rate
+     *  variables from the given port, or can not add the dependency declaration
+     *  of the given port to the analysis object, or a declared constant rate 
+     *  variable does not contain a constant value.  
      */
     protected void _declareReconfigurationDependencyForRefinementRateVariables(
             ConstVariableModelAnalysis analysis, IOPort port, String parameterName)
@@ -718,6 +732,8 @@ public class MultirateFSMDirector extends FSMDirector {
      *  move up the hierarchy until we reach a container actor that does
      *  not have an MultirateFSMDirector director for its executive director,
      *  and return that container.
+     *  @return a composite actor that does not contain a MultirateFSMDirector
+     *  object.
      *  @exception IllegalActionException If the top-level director is an
      *   MultirateFSMDirector. This director is intended for use only inside
      *   some other domain.
@@ -748,6 +764,9 @@ public class MultirateFSMDirector extends FSMDirector {
      *  contained by ports connected to the given port on the inside.
      *  @param port The given port.
      *  @param parameterName The given parameter name.
+     *  @return A list of the variables with the given parameter name.
+     *  @exception IllegalActionException If can not get a rate variable
+     *  from the port that connected to the given port from inside.
      */
     protected List _getRefinementRateVariables(IOPort port,
             String parameterName)
@@ -774,6 +793,9 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @param actor The current refinement.
      *  @return True if any input token consumption rate is changed from its
      *   previous value.
+     *  @exception IllegalActionException If can not find the controller, or
+     *  the port connections between controller and refinements are not 
+     *  correct, or can not get valid token consumption rates for input ports. 
      */
     protected boolean _updateInputTokenConsumptionRates(TypedCompositeActor actor)
             throws IllegalActionException {
@@ -833,6 +855,8 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @param actor The current refinement.
      *  @return True if any of the output token production rate is changed from
      *   its previous value.
+     *  @exception IllegalActionException If can not get valid token consumption 
+     *  rates for input ports.
      */
     protected boolean _updateOutputTokenProductionRates(TypedCompositeActor actor)
             throws IllegalActionException {
