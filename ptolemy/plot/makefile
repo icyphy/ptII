@@ -100,11 +100,7 @@ ISJAVA_SRC = ptplot.isj
 EXTRA_SRCS = $(JSRCS) \
 	$(ISJAVA_SRC) \
 	copyright.txt \
-	histogram.bat \
-	index.htm \
-	ptplot.bat \
-	ptplot.in \
-	pxgraph.bat \
+	index.htm
 
 # Non-source files such as README files and subdirectories
 MISC_FILES = test #bean
@@ -153,24 +149,7 @@ all: sources ptplot jclass
 	ln -s ptplot histogram
 install: all jars \
 		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR) \
-		bin_install_dir
-	-chmod a+x ptplot
-	rm -f pxgraph
-	ln -s ptplot pxgraph
-	rm -f histogram
-	ln -s ptplot histogram
-	$(INSTALL_PROGRAM) ptplot $(BIN_INSTALL_DIR)
-	$(INSTALL_PROGRAM) pxgraph $(BIN_INSTALL_DIR)
-	$(INSTALL_PROGRAM) histogram $(BIN_INSTALL_DIR)
-	$(INSTALL_PROGRAM) ptplot.bat $(BIN_INSTALL_DIR)
-	$(INSTALL_PROGRAM) pxgraph.bat $(BIN_INSTALL_DIR)
-	$(INSTALL_PROGRAM) histogram.bat $(BIN_INSTALL_DIR)
-
-ptplot: ptplot.in ../../config.status
-	(cd ../..; ./config.status)
-# zip might not get the permissions of configure right, so we run /bin/sh
-../../config.status: ../../configure
-	(cd ../..; /bin/sh ./configure)
+	(cd ../../bin; $(MAKE) install)
 
 # Class files used in all applets and applications
 BASECLASSFILES = \
