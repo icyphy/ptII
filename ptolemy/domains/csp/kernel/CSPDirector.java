@@ -169,25 +169,6 @@ public class CSPDirector extends ProcessDirector {
         return newobj;
     }
 
-    /** Handles deadlocks, both real and timed, and changes to the
-     *  topology. It returns when a real deadlock (all processes blocked
-     *  trying to communicate) occurs.
-     */
-    // public synchronized void fire() {
-//         // Check if still deadlocked after transferring tokens
-//         // from ports of composite actor to internal actors.
-// 	boolean continueExec = true;
-// 	while (continueExec) {
-// 	    while (!_checkForDeadlock()) {
-// 	        // System.out.println("fire() waiting for deadlock.");
-// 	        workspace().wait(this);
-// 	    }
-// 	    // System.out.println("fire() handling deadlock.");
-// 	    continueExec = !_handleDeadlock();
-// 	}
-// 	// something may go here e.g. notify GUI
-//     }
-
     /** Returns the current model time.
      *  Note: this method may disappear if time is implemented in
      *  super classes.
@@ -258,8 +239,8 @@ public class CSPDirector extends ProcessDirector {
     public synchronized void setCurrentTime(double newTime)
             throws IllegalActionException {
         if (_actorsDelayed != 0) {
-            throw new IllegalActionException("CSPDirector.setCurrentTime() " +
-                    "can only be called when no processes are delayed.");
+            throw new IllegalActionException("CSPDirector.setCurrentTime()" 
+		    + " can only be called when no processes are delayed.");
         }
         _currentTime = newTime;
     }
@@ -283,8 +264,6 @@ public class CSPDirector extends ProcessDirector {
      *   throws it.
      */
     public void wrapup() throws IllegalActionException {
-        System.out.println(Thread.currentThread().getName() +
-                ": CSPDirector: about to end the model");
         if ((_actorsDelayed != 0 ) || _topologyChangesPending ||
                 (_getPausedActorsCount() != 0)) {
             /*throw new InvalidStateException( "CSPDirector wrapping up " +
@@ -326,9 +305,6 @@ public class CSPDirector extends ProcessDirector {
 	    throw new InvalidStateException(((Nameable)actor).getName() +
                     ": delayed for negative time.");
 	} else {
-            // System.out.println("Delaying actor " +
-            // ((Nameable)actor).getName()+
-            //    " for time " + delta + ".");
 	    _actorsDelayed++;
 	    // Enter the actor and the time to wake it up into the
 	    // LinkedList of delayed actors.
@@ -350,12 +326,6 @@ public class CSPDirector extends ProcessDirector {
      *  delayed, false otherwise.
      */
     protected synchronized boolean _checkForDeadlock() {
-	/*
-          System.out.println(Thread.currentThread().getName() +
-          ": _checkForDeadlock: Active = " +
-          _getActiveActorsCount() + ", blocked = " + _actorsBlocked +
-          ", delayed = " + _actorsDelayed );
-	*/
         if (_getActiveActorsCount() == (_actorsBlocked + _actorsDelayed)) {
             return true;
         }
@@ -407,14 +377,11 @@ public class CSPDirector extends ProcessDirector {
     protected synchronized boolean _handleDeadlock() {
         try {
             if (_topologyChangesPending) {
-                System.out.println("TOPOLOGY CHANGES PENDING!!");
                 _processTopologyRequests();
                 LinkedList newThreads = new LinkedList();
                 Enumeration newActors = _newActors();
                 while (newActors.hasMoreElements()) {
                     Actor actor = (Actor)newActors.nextElement();
-                    System.out.println("Adding and starting new actor; " +
-                            ((Nameable)actor).getName() + "\n");
                     actor.createReceivers();
                     actor.initialize();
                     String name = ((Nameable)actor).getName();
@@ -434,8 +401,6 @@ public class CSPDirector extends ProcessDirector {
             } else if (_actorsDelayed > 0) {
                 // Time deadlock.
                 double nextTime = _getNextTime();
-                System.out.println("\nCSPDirector: advancing time " +
-                        "to: " + nextTime);
                 _currentTime = nextTime;
 
                 // Now go through list of delayed actors
@@ -450,10 +415,6 @@ public class CSPDirector extends ProcessDirector {
                     if (Math.abs(val._resumeTime - nextTime) < tolerance) {
                         _delayedActorList.removeFirst();
                         val._actor._continue();
-                        /*
-                          System.out.println("\nresuming actor at time: " +
-                          val._resumeTime);
-                        */
                         _actorsDelayed--;
                     } else {
                         done = true;
