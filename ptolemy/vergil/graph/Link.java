@@ -186,8 +186,7 @@ public class Link {
 	    final String relationName = container.uniqueName("relation");
 	    // Note that we use no class so that we use the container's
 	    // factory method when this gets parsed
-	    moml.append("<relation name=\"" + relationName + 
-			"\" class=\"ptolemy.actor.TypedIORelation\"/>\n");
+	    moml.append("<relation name=\"" + relationName + "\"/>\n");
 	    moml.append("<link port=\"" + headPort.getName(container) + 
 			"\" relation=\"" + relationName + "\"/>\n");
 	    moml.append("<link port=\"" + tailPort.getName(container) + 
