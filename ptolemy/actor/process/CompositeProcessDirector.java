@@ -330,7 +330,7 @@ public class CompositeProcessDirector extends ProcessDirector {
     /** Stop the input branch controller of this director. This
      *  method will block until the input branch controller
      *  has stopped due to all of the branches it controls
-     *  stopping.
+     *  stopping, or until the calling thread is interrupted.
      */
     public void stopInputBranchController() {
         Workspace workspace = workspace();
@@ -342,13 +342,13 @@ public class CompositeProcessDirector extends ProcessDirector {
             return;
         }
         _inputBranchController.deactivateBranches();
-        while ( !_inputBranchController.isBlocked() ) {
+        while (!_inputBranchController.isBlocked()) {
             try {
                 workspace.wait(this);
             } catch (InterruptedException e) {
-                //TODO: determine best way to handle the exception
-                throw new InternalErrorException(this.getFullName()
-                        + "interrupted.");
+                // Exit the loop.
+                // FIXME: Is this the right thing to do?
+                break;
             }
         }
     }
@@ -371,9 +371,9 @@ public class CompositeProcessDirector extends ProcessDirector {
             try {
                 workspace.wait(this);
             } catch (InterruptedException e) {
-                //TODO: determine best way to handle the exception
-                throw new InternalErrorException(this.getFullName()
-                        + "interrupted.");
+                // Exit the loop.
+                // FIXME: Is this the right thing to do?
+                break;
             }
         }
     }
