@@ -331,7 +331,7 @@ public class HelicopterApplet extends CTApplet {
             vxPlot.plot.addLegend(0,"Vx");
 
             TimedPlotter pzPlot = new TimedPlotter(_toplevel, 
-                    "Vertival Position");
+                    "Vertical Position");
             pzPlot.setPanel(pzPanel);
             pzPlot.plot.setGrid(true);
             pzPlot.plot.setXRange(0.0, 70.0);
