@@ -28,6 +28,7 @@
 package pt.domains.pn.kernel;
 import pt.kernel.*;
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNAlternate
@@ -42,12 +43,15 @@ public class PNAlternate extends PNStar {
 	super();
     }
 
-    /** Constructor
-     */
-    public PNAlternate(String name) {
-        super(name);
+    public PNAlternate(Workspace workspace) {
+        super(workspace);
     }
-
+ 
+    public PNAlternate(CompositeEntity container, String name)
+             throws NameDuplicationException {
+        super(container, name);
+    }
+ 
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
@@ -58,12 +62,12 @@ public class PNAlternate extends PNStar {
      *  with the same name is added to the star
      * @exception GraphException is thrown if a port with a null name is passed
      */	
-    public void initialize(PNExecutive myExecutive)
-            throws NameDuplicationException, GraphException {
-        _input = addInPort(this, "input");
-        _output = addOutPort(this, "output");
-        _myExecutive = myExecutive;
-        _myExecutive.registerStar(this);
+    public void initialize()
+            throws NameDuplicationException, IllegalActionException {
+        _input = newInPort(this, "input");
+        _output1 = newOutPort(this, "output1");
+        _output2 = newOutPort(this, "output2");
+        super.initialize(this);
     }
     
     /** Reads one input from it's input port and writes this token to each 
@@ -71,31 +75,54 @@ public class PNAlternate extends PNStar {
      *  port. Goes through the list of ports in a circular order. 
      */
     public void run() {
-        int data;
+        IntToken data;
         try {
 	    int i;
 	    for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-            //while (true) {
-		Enumeration relations = _output.enumRelations();
-                while (relations.hasMoreElements()) {
-                    PNFifoRelation nextQueue = (PNFifoRelation)relations.nextElement();
-                    data = readFrom(_input);
-                    writeTo(_output, data, nextQueue);
-                    System.out.println(this.getName()+" writes "+data+
-                            " to "+ nextQueue.getName());
+                /* while (true) {
+                   Enumeration ports = getPorts();
+                   while (ports.hasMoreElements()) {
+                   PNPort port = (PNPort)ports.nextElement();
+                   if (port.isOutput()) {
+                   data = (IntToken)readFrom(_input);
+                   writeTo(port, data);
+                   try {
+                   System.out.println(this.getName()+" writes "+((IntToken)data).intValue()+" to "+ port.getFullName());
+                   } catch (InvalidStateException e) {
+                   System.out.println("InvalidStateException in alternate");
+                   }
+                   }
+                   }
+                */
+                data = (IntToken)readFrom(_input);
+                writeTo(_output1, data);
+                try {
+                    System.out.println(this.getName()+" writes "+
+                            ((IntToken)data).intValue()+" to "+
+                            _output1.getFullName());
+                } catch (InvalidStateException e) {
                 }
-            }
-        } catch (TerminationException e) {
+                data = (IntToken)readFrom(_input);
+                writeTo(_output2, data);
+                try {
+                    System.out.println(this.getName()+" writes "+
+                            ((IntToken)data).intValue()+" to "+
+                            _output2.getFullName());
+                } catch (InvalidStateException e) {
+                }
+            }                
+        } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+ this.getName());
             return;
         }
     }
-
+    
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
     /* The input port */
     private PNInPort _input;
     /* The output port */
-    private PNOutPort _output;
+    private PNOutPort _output1;
+    private PNOutPort _output2;
 }
