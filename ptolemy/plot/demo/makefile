@@ -79,7 +79,7 @@ EXTRA_SRCS = $(JSRCS) \
 
 # The data directory contains binary plot files that cannot be checked
 # into sccs.
-MISC_FILES = data $(DIRS) #doc test 
+MISC_FILES = data $(DIRS) doc #test 
 
 JCLASS1_0 = $(JSRCS1_0:%.java=%.class)
 JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
