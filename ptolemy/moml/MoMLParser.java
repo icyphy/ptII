@@ -551,7 +551,7 @@ public class MoMLParser extends HandlerBase {
                 MoMLParser newParser = new MoMLParser(_workspace);
                 URL xmlFile = new URL(base, source);
                 NamedObj reference =
-                        newParser.parse(base, xmlFile.openStream());
+                        newParser.parse(xmlFile, xmlFile.openStream());
                 if (_imports == null) {
                     _imports = new LinkedList();
                 }
