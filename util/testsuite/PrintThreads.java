@@ -137,17 +137,22 @@ public class PrintThreads {
      * We could use Thread.toString(), but that is hard to read.
      */
     public static String toThreadDescription(Thread thread) {
+	String name = "Unnamed thread"; 
+	String group = "Unnamed group";
 	try {
-	    String name = thread.getName();
-	    if (name == null)
-		name = "unknown thread";
-
-	    String group;
-	    if ((thread.getThreadGroup() == null)
-                    || (thread.getThreadGroup().getName() == null))
-		group = "unknown group";
-	    else
+	    if (thread == null) {
+		return new String("PrintThreads.toThreadDescription(): " +
+				     "thread argument == null\n   " +
+				     "This can happen if the thread was " +
+				     "killed while PrintThreads was called");
+	    }
+	    if (thread.getName() != null) {
+		name = thread.getName();
+	    }
+	    if ((thread.getThreadGroup() != null)
+		&& (thread.getThreadGroup().getName() != null)) {
 		group = thread.getThreadGroup().getName();
+	    }
 
 	    return _stringFormat(name, 35) + " " +
 		_stringFormat(group, 20) + " "  +
@@ -158,8 +163,9 @@ public class PrintThreads {
                 _stringFormat(new Boolean(thread.isAlive()).toString(), 5) +
                 (Thread.currentThread().equals(thread) ? " *": "  ");
 	} catch (Exception e) {
-	    return _stringFormat("unknown thread with bad state" + e,
-                    _getHeader().length() );
+	    return _stringFormat(name, 35) + " " +
+		_stringFormat(group, 20) + " "  +
+		"PrintThread.toThreadDescription(): Bad State!: " + e;
 	}
     }
 
