@@ -291,10 +291,14 @@ public class CompositeActorApplication implements ExecutionListener {
             _expectingClass = true;
         } else if (arg.equals("-help")) {
             System.out.println(_usage());
+            // quit the program if the user asked for help
+            System.exit(0);
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version 1.0, Build $Id$");
+            // quit the program if the user asked for the version            
+            System.exit(0);            
         } else if (arg.equals("")) {
             // Ignore blank argument.
         } else {
