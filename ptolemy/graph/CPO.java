@@ -52,13 +52,13 @@ public interface CPO
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Returns the bottom element of this CPO.
+    /** Return the bottom element of this CPO.
      *  @return an Object representing the bottom element, or
      *   <code>null</code> if the bottom does not exist.
      */
     public Object bottom();
 
-    /** Compares two elements in this CPO.
+    /** Compare two elements in this CPO.
      *  @param e1 an Object representing a CPO element.
      *  @param e2 an Object representing a CPO element.
      *  @return one of <code>CPO.STRICT_LESS, CPO.EQUAL,
@@ -68,7 +68,7 @@ public interface CPO
      */
     public int compare(Object e1, Object e2);
 
-    /** Computes the down-set of an element in this CPO.
+    /** Compute the down-set of an element in this CPO.
      *  @param e an Object representing an element in this CPO.
      *  @return an array of of Objects representing the elements in the
      *   down-set of the specified element.
@@ -77,7 +77,7 @@ public interface CPO
      */
     public Object[] downSet(Object e);    
 
-    /** Computes the greatest lower bound (GLB) of two elements.
+    /** Compute the greatest lower bound (GLB) of two elements.
      *  @param e1 an Object representing an element in this CPO.
      *  @param e2 an Object representing an element in this CPO.
      *  @return an Object representing the GLB of the two specified
@@ -85,18 +85,18 @@ public interface CPO
      *  @exception IllegalArgumentException at least one of the 
      *   specified Objects is not an element of this CPO.
      */
-    public Object glb(Object e1, Object e2);
+    public Object greatestLowerBound(Object e1, Object e2);
     
-    /** Computes the greatest lower bound (GLB) of a subset.
+    /** Compute the greatest lower bound (GLB) of a subset.
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the GLB of the subset, or
      *   <code>null</code> if the GLB does not exist.
      *  @exception IllegalArgumentException at least one Object
      *   in the specified array is not an element of this CPO.
      */
-    public Object glb(Object[] subset);
+    public Object greatestLowerBound(Object[] subset);
 
-    /** Computes the greatest element of a subset.
+    /** Compute the greatest element of a subset.
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
@@ -105,7 +105,7 @@ public interface CPO
      */
     public Object greatestElement(Object[] subset);
 
-    /** Computes the least element of a subset.
+    /** Compute the least element of a subset.
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the least element of the subset,
      *   or <code>null</code> if the least element does not exist.
@@ -114,7 +114,7 @@ public interface CPO
      */
     public Object leastElement(Object[] subset);
     
-    /** Computes the least upper bound (LUB) of two elements.
+    /** Compute the least upper bound (LUB) of two elements.
      *  @param e1 an Object representing an element in this CPO.
      *  @param e2 an Object representing element in this CPO.
      *  @return an Object representing the LUB of the two specified
@@ -122,24 +122,24 @@ public interface CPO
      *  @exception IllegalArgumentException at least one of the
      *   specified Objects is not an element of this CPO.
      */
-    public Object lub(Object e1, Object e2);
+    public Object leastUpperBound(Object e1, Object e2);
     
-    /** Computes the least upper bound (LUB) of a subset.
+    /** Compute the least upper bound (LUB) of a subset.
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the LUB of the subset, or
      *   <code>null</code> if the LUB does not exist.
      *  @exception IllegalArgumentException at least one Object
      *   in the specified array is not an element of this CPO.
      */
-    public Object lub(Object[] subset);
+    public Object leastUpperBound(Object[] subset);
  
-    /** Returns the top element of this CPO.
+    /** Return the top element of this CPO.
      *  @return an Object representing the top element, or null if
      *   the top does not exist.
      */
     public Object top();
 
-    /** Computes the up-set of an element in this CPO.
+    /** Compute the up-set of an element in this CPO.
      *  @param e an Object representing an element in this CPO.
      *  @return an array of Objects representing the elements in the
      *   up-set of the specified element.

@@ -41,7 +41,7 @@ $Id$
 */
 
 public interface InequalityTerm {
-    /** Sets the value of this term to the specified CPO element.
+    /** Set the value of this term to the specified CPO element.
      *  Only terms consisting of a single variable can have their
      *  values set.
      *  @param e an Object representing an element in the
@@ -51,7 +51,7 @@ public interface InequalityTerm {
     public void setValue(Object e)
             throws IllegalActionException;
 
-    /** Checks if this term can be set to a specific element of the
+    /** Check if this term can be set to a specific element of the
      *  underlining CPO. Only variable terms are settable, constant
      *  and function terms are not.
      *  @return <code>true</code> if this term is a variable;
@@ -59,7 +59,7 @@ public interface InequalityTerm {
      */
     public boolean isSettable();
  
-    /** Returns the value of this term.  If this term is a constant,
+    /** Return the value of this term.  If this term is a constant,
      *  that constant is returned; if this term is a variable, the
      *  current value of that variable is returned; if this term
      *  is a function, the evaluation of the function based on the current

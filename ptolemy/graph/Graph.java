@@ -44,7 +44,7 @@ $Id$
 
 public class Graph {
 
-    /** Constructs an empty graph.
+    /** Construct an empty graph.
      */
     public Graph() {
         _graph = new Vector();
@@ -52,7 +52,7 @@ public class Graph {
         _nodeIdTable = new Hashtable();
     }
     
-    /** Constructs an empty graph with enough storage allocated for the
+    /** Construct an empty graph with enough storage allocated for the
      *  specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
@@ -67,7 +67,7 @@ public class Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Adds a node to this graph.  The node is represented by the
+    /** Add a node to this graph.  The node is represented by the
      *  specified Object. The Object cannot be <code>null</code>.
      *  In addition, two Objects equal to each other, as determined
      *  by the <code>equals</code> method, cannot both be added.<p>
@@ -94,7 +94,7 @@ public class Graph {
         _nodeIdTable.put(o, new Integer(_graph.size() - 1));
     }
  
-    /** Adds an edge between two nodes.  Multiple edges
+    /** Add an edge between two nodes.  Multiple edges
      *  between the same nodes are allowed, and are considered different
      *  edges.  Self loop is also allowed.
      *
@@ -113,7 +113,7 @@ public class Graph {
 	_edgeCount++;
     }
 
-    /** Tests if the specified Object is a node in this graph. The
+    /** Test if the specified Object is a node in this graph. The
      *  Object is a node if it is equal to an Object specified in
      *  a successful <code>add</code> call. The equality is determined
      *  by the <code>equals</code> method.
@@ -125,7 +125,7 @@ public class Graph {
         return _nodeIdTable.containsKey(o);
     }
 
-    /** Returns a description of this graph.
+    /** Return a description of this graph.
      *  The form of the description is:<p>
      *  <pre>
      *  {class_name
@@ -157,7 +157,7 @@ public class Graph {
 	return result;
     }
 
-    /** Returns the total number of edges in this graph.  Multiple
+    /** Return the total number of edges in this graph.  Multiple
      *  connections between two nodes are counted multiple times.
      *  @return the total number of edges in this graph.
      */
@@ -165,7 +165,7 @@ public class Graph {
 	return _edgeCount;
     }
 
-    /** Returns all the edges in this graph in the form of a 2-D Object
+    /** Return all the edges in this graph in the form of a 2-D Object
      *  array. Each row of the array represents an edge, corresponding
      *  to a successful <code>addEdge</code> call, but the order of the
      *  rows is not necessarily the same as the calls. The array always
@@ -192,14 +192,14 @@ public class Graph {
 	return result;
     }
 
-    /** Returns the total number of nodes in this graph.
+    /** Return the total number of nodes in this graph.
      *  @return the total number of nodes in this graph.
      */
     public int getNodeCount() {
         return _nodeObject.size();
     }
 
-    /** Returns all the nodes in this graph in the form of an Objects array.
+    /** Return all the nodes in this graph in the form of an Objects array.
      *  The Objects are the ones passed in successful <code>add()</code>
      *  calls.
      *  @return an Object array
@@ -220,7 +220,7 @@ public class Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Returns the node ID of the specified node.
+    /** Return the node ID of the specified node.
      *  @param o an Object representing a graph node.
      *  @return the node id.
      *  @exception IllegalArgumentException the specified Object is not
@@ -236,7 +236,7 @@ public class Graph {
         return v.intValue();
     }
 
-    /** Returns the node in this graph with the specified node ID.
+    /** Return the node in this graph with the specified node ID.
      *  @param nodeId a node ID
      *  @return an Object representing a node.
      *  @exception IllegalArgumentException the node ID is negative

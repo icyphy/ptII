@@ -47,7 +47,7 @@ $Id$
 
 public class Inequality {
 
-    /** Constructs an inequality.
+    /** Construct an inequality.
      *  @param lesserTerm an <code>InequalityTerm</code> that is less than or
      *   equal to the second argument.
      *  @param greaterTerm an <code>InequalityTerm</code> that is greater than
@@ -68,7 +68,7 @@ public class Inequality {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Adds the specified <code>InequalityTerm</code> to the list of
+    /** Add the specified <code>InequalityTerm</code> to the list of
      *  variables in this inequality. The specified
      *  <code>InequalityTerm</code> should be a single variable, i.e.,
      *  it should return <code>true</code> in <code>settable</code>.
@@ -90,21 +90,21 @@ public class Inequality {
 	_variables.addElement(variable);
     }
 
-    /** Returns the greater term of this inequality.
+    /** Return the greater term of this inequality.
      *  @return an <code>InequalityTerm</code>
      */
-    public InequalityTerm greaterTerm() {
+    public InequalityTerm getGreaterTerm() {
         return _greaterTerm;
     }
  
-    /** Returns the lesser term of this inequality.
+    /** Return the lesser term of this inequality.
      *  @return an <code>InequalityTerm</code>
      */
-    public InequalityTerm lesserTerm() {
+    public InequalityTerm getLesserTerm() {
         return _lesserTerm;
     }
 
-    /** Tests if this inequality is satisfied with the current value
+    /** Test if this inequality is satisfied with the current value
      *  of variables.
      *  @param cpo a CPO over which this inequality is defined.
      *  @return <code>true</code> if this inequality is satisfied;
@@ -116,7 +116,7 @@ public class Inequality {
         return (result == CPO.STRICT_LESS || result == CPO.EQUAL);
     }
     
-    /** Returns all the variables in this inequality. The variables are
+    /** Return all the variables in this inequality. The variables are
      *  the ones added by the <code>addVariable</code>.
      *  @return an array of <code>InequalityTerms</code> that are 
      *   variables in this inequality.

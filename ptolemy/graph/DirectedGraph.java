@@ -45,13 +45,13 @@ $Id$
 
 public class DirectedGraph extends Graph {
 
-    /** Constructs an empty directed graph.
+    /** Construct an empty directed graph.
      */
     public DirectedGraph() {
         super();
     }
 
-    /** Constructs an empty directed graph with enough storage allocated
+    /** Construct an empty directed graph with enough storage allocated
      *  for the specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
@@ -64,7 +64,7 @@ public class DirectedGraph extends Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Adds a node to this graph.  The node is represented by the
+    /** Add a node to this graph.  The node is represented by the
      *  specified Object. The Object cannot be <code>null</code>.
      *  In addition, two Objects equal to each other, as determined
      *  by the <code>equals</code> method, cannot both be added.
@@ -83,7 +83,7 @@ public class DirectedGraph extends Graph {
 	_transitiveClosure = null;
     }
  
-    /** Adds a directed edge to connect two nodes. The first argument
+    /** Add a directed edge to connect two nodes. The first argument
      *  is the source node and the second the sink.  Multiple connections
      *  between two nodes are allowed, and are considered different
      *  edges. Self loop is also allowed.
@@ -104,7 +104,7 @@ public class DirectedGraph extends Graph {
 	_transitiveClosure = null;
     }
 
-    /** Tests if this graph is acyclic (is a DAG).
+    /** Test if this graph is acyclic (is a DAG).
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last graph
      *  mutation.  So the first call to this method after graph
@@ -120,7 +120,7 @@ public class DirectedGraph extends Graph {
         return _isAcyclic;
     }
 
-    /** Finds all the nodes that can be reached from the specified node.
+    /** Find all the nodes that can be reached from the specified node.
      *  The reachable nodes do not include the specific one unless 
      *  there is a loop from the specified node back to itself.
      *  The implementation computes the transitive closure of the
@@ -204,7 +204,7 @@ public class DirectedGraph extends Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Computes the transitive closure. Puts the result in the
+    /** Compute the transitive closure. Puts the result in the
      *  boolean array _transitiveClosure. If this graph is empty,
      *  set the dimension of _transitiveClosure to be 0 by 0.
      *  The implementation uses Warshall's algorithm, which can be
