@@ -7,10 +7,35 @@
 <h1><a name="ptplot changes">Ptplot Changes</a></h1>
 <H2>The changes between ptplot1.1 and ptplot1.2</H2>
 <MENU>
-<LI> Added support for JAR files
+<LI> Added support for JAR files.
 
 <LI> Added <A HREF="troubleshooting.html">Troubleshooting Ptplot</A>
 and <A HREF="ptplotfaq.html">Ptplot FAQ</A>.
+
+<LI> If <CODE>setXRange()</CODE> or <CODE>setYRange()</CODE> are not
+explicitly called by the user, then the data is padded slighly so that
+the data is not plotted on the axes.
+
+
+<LI> Raw binary files that consist only of 4 byte floats are now supported.
+Formerly, ptplot only supported Joe Buck's binary format, which used
+single characters as plot directives (see the
+<A HREF="../codeDoc/ptplot.Pxgraph.html">Pxgraph</A> documentation
+for details about this format).  The new raw binary format
+now reads the first byte, and if it is not a <CODE>d</CODE>, then
+the raw 4 byte float format is assumed.
+ <P>This format was prompted by a request from 
+John O'Sullivan&lt;John.OSullivan@analog.com&gt;.
+The <CODE>demo/data/bin.plt</CODE> was converted to the new raw 4 byte float
+format.
+
+<LI> Error bars are now generated.  If the data file contains a line that
+consists of four numbers, then the first two numbers are assumed to be the
+x and y values, and the last two numbers are assumed to be the lower and upper
+y values for the error bar.  The numbers can be separated by white space
+or a comma.
+ <br>The error bar code is based on a code fragment from
+Michael Altmann &lt;michael@email.labmed.umn.edu&gt;.
 </MENU>
 
 <H2>The changes between ptplot1.0 and ptplot1.1</H2>
