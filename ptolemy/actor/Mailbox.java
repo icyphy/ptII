@@ -28,6 +28,7 @@
 */
 
 package pt.actors;
+import pt.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Mailbox
@@ -38,7 +39,7 @@ token. Implement the Puttable interface.
 @author Jie Liu
 @version $Id$
 */
-public class Mailbox {
+public class Mailbox implements Puttable {
     /** Construct an empty Mailbox. The Mailbox must have a container, 
      * which is an IOPort. The container, once set, can't be changed.
      * FIXME: what if container = null?
@@ -86,9 +87,9 @@ public class Mailbox {
      * @exception TokenHolderFullException if the Mailbox has 
      *            unconsumed token.
      */	
-    public void put(Token token) throws TokenHoldererFullException{
+    public void put(Token token) throws TokenHolderFullException{
         if(!_isEmpty) {
-            throw new TokenHoldererFullException();
+            throw new TokenHolderFullException();
         }
         _token = token;
         _isEmpty = false;    
