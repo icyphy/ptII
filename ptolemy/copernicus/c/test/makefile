@@ -58,8 +58,10 @@ JSRCS = \
 # FIXME: add FIR.tcl
 JSIMPLE_TESTS = \
 	Object.tcl \
-	Simple.tcl \
+	ObjectSingle.tcl \
     ramp.tcl \
+	Simple.tcl \
+	SimpleSingle.tcl \
     FIRsingle.tcl
 
 # Graphical Java tests that use Tcl.
