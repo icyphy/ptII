@@ -36,7 +36,7 @@ DIRS =
 # Root of the Java directory
 ROOT =          ../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(X10_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(X10_JAR)$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar
 
 # Get configuration info
 CONFIG =        $(ROOT)/mk/ptII.mk
