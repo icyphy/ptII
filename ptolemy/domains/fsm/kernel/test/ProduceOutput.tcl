@@ -73,7 +73,7 @@ test ProduceOutput-1.3 {test clone} {
     set act0clone [java::cast ptolemy.domains.fsm.kernel.BroadcastOutput \
             [$t1 getAttribute act0]]
     set v0 [java::field $act0clone expression]
-    $v0 setToken [java::new ptolemy.data.StringToken "1 + 1"]
+    $v0 setExpression "1 + 1"
     set v1 [java::cast ptolemy.data.expr.Variable [$t1 getAttribute _act0]]
     list [$v1 getExpression]
 } {{1 + 1}}
@@ -91,7 +91,7 @@ test ProduceOutput-2.1 {test scope of evaluation variable} {
     set act0 [java::new ptolemy.domains.fsm.kernel.ProduceOutput $t0 act0]
     set v2 [java::cast ptolemy.data.expr.Variable [$t0 getAttribute _act0]]
     listToNames [[$v2 getScope] elementList]
-} {guardExpression preemptive triggerExpression _guard _trigger initialStateName v0 v1}
+} {preemptive _guard _trigger v0 v1}
 
 ######################################################################
 ####
@@ -101,8 +101,7 @@ test ProduceOutput-3.1 {test execution} {
     set dir [java::new ptolemy.actor.Director $e0 dir]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
     set p0 [java::new ptolemy.actor.TypedIOPort $fsm p0]
     $p0 setOutput true
     $p0 setMultiport true
@@ -114,10 +113,8 @@ test ProduceOutput-3.1 {test execution} {
     set act0 [java::cast ptolemy.domains.fsm.kernel.BroadcastOutput $act0]
     set expression [java::field $act0 expression]
     set pname [java::field $act0 portName]
-    set tok0 [java::new ptolemy.data.StringToken "p0"]
-    $pname setToken $tok0
-    set tok1 [java::new ptolemy.data.StringToken "v0 + 1"]
-    $expression setToken $tok1
+    $pname setExpression p0
+    $expression setExpression "v0 + 1"
     set tok2 [java::new {ptolemy.data.IntToken int} 0]
     $channel setToken $tok2
     $v0 setToken $tok2
@@ -139,8 +136,7 @@ test ProduceOutput-3.1 {test execution} {
     $act0 execute
     catch {$p1 get 0} msg1
     set re1 [[$p1 get 1] toString]
-    set tok0 [java::new ptolemy.data.StringToken "p2"]
-    $pname setToken $tok0
+    $pname setExpression p2
     catch {$act0 execute} msg2
     list $re0 $re1 $msg0 $msg1 $msg2
 } {1 2 {ptolemy.actor.NoTokenException: ..e1.p1:

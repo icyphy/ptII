@@ -40,6 +40,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -102,7 +103,7 @@ public class FSMDirector extends Director {
      */
     public FSMDirector() {
         super();
-        _createParameter();
+        _createAttribute();
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -112,7 +113,7 @@ public class FSMDirector extends Director {
      */
     public FSMDirector(Workspace workspace) {
         super(workspace);
-        _createParameter();
+        _createAttribute();
     }
 
     /** Construct a director in the given container with the given name.
@@ -130,25 +131,25 @@ public class FSMDirector extends Director {
     public FSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _createParameter();
+        _createAttribute();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Parameter specifying the name of the mode controller in the
+    /** Attribute specifying the name of the mode controller in the
      *  container of this director. This director must have a mode
      *  controller that has the same container as this director,
      *  otherwise an IllegalActionException will be thrown when action
      *  methods of this director are called.
      */
-    public Parameter controllerName = null;
+    public StringAttribute controllerName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
-     *  the <i>controllerName</i> parameter, record the change but do not
+     *  the <i>controllerName</i> attribute, record the change but do not
      *  check whether there is an FSMActor with the specified name in the
      *  container of this director.
      *  @param attribute The attribute that changed.
@@ -164,8 +165,8 @@ public class FSMDirector extends Director {
     }
 
     /** Clone the director into the specified workspace. This calls the
-     *  base class and then sets the parameter public members to refer
-     *  to the parameters of the new director.
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new director.
      *  @param workspace The workspace for the new director.
      *  @return A new director.
      *  @throws CloneNotSupportedException If a derived class contains
@@ -175,9 +176,9 @@ public class FSMDirector extends Director {
             throws CloneNotSupportedException {
         FSMDirector newObject = (FSMDirector)super.clone(workspace);
         newObject.controllerName =
-                (Parameter)newObject.getAttribute("controllerName");
+                (StringAttribute)newObject.getAttribute("controllerName");
         newObject._controllerVersion = -1;
-	newObject._localReceiverMaps = new HashMap();
+        newObject._localReceiverMaps = new HashMap();
         newObject._localReceiverMapsVersion = -1;
         return newObject;
     }
@@ -253,7 +254,7 @@ public class FSMDirector extends Director {
 
     /** Return the mode controller of this director. The name of the
      *  mode controller is specified by the <i>controllerName</i>
-     *  parameter. The mode controller must have the same container as
+     *  attribute. The mode controller must have the same container as
      *  this director.
      *  This method is read-synchronized on the workspace.
      *  @return The mode controller of this director.
@@ -265,21 +266,20 @@ public class FSMDirector extends Director {
         }
         try {
             workspace().getReadAccess();
-            StringToken tok = (StringToken)controllerName.getToken();
-            if (tok == null) {
+            String name = controllerName.getExpression();
+            if (name == null) {
                 throw new IllegalActionException(this, "No name for mode "
                         + "controller is set.");
             }
-            String ctrlName = tok.stringValue();
             Nameable container = getContainer();
             if (!(container instanceof CompositeActor)) {
                 throw new IllegalActionException(this, "No controller found.");
             }
             CompositeActor cont = (CompositeActor)container;
-            Entity entity = cont.getEntity(ctrlName);
+            Entity entity = cont.getEntity(name);
             if (entity == null) {
                 throw new IllegalActionException(this, "No controller found "
-                        + "with name " + ctrlName);
+                        + "with name " + name);
             }
             if (!(entity instanceof FSMActor)) {
                 throw new IllegalActionException(this, entity,
@@ -553,21 +553,20 @@ public class FSMDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Create the controllerName parameter.
-    private void _createParameter() {
+    // Create the controllerName attribute.
+    private void _createAttribute() {
         try {
             Attribute a = getAttribute("controllerName");
             if (a != null) {
                 a.setContainer(null);
             }
-            controllerName = new Parameter(this, "controllerName");
-            controllerName.setTypeEquals(BaseType.STRING);
+            controllerName = new StringAttribute(this, "controllerName");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(getName() + "Cannot create "
-                    + "controllerName parameter.");
+                    + "controllerName attribute.");
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() + "Cannot create "
-                    + "controllerName parameter.");
+                    + "controllerName attribute.");
         }
     }
 

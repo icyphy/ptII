@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+@AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -43,15 +43,15 @@ import ptolemy.data.type.BaseType;
 //// ProduceOutput
 /**
 A ProduceOutput action takes the token from evaluating the expression
-specified by the <i>expression</i> parameter and sends it to all receivers
-connected to the channel specified by the <i>channel</i> and <i>portName</i>
-parameters. This action is a choice action contained by a transition in an
-FSMActor, which will be called the associated FSMActor of this action. The
-port with name specified by the <i>portName</i> parameter must be an output
-port of the associated FSMActor and the channel specified must be within
-range, otherwise an exception will be thrown when this action is executed.
-The scope of the specified expression includes all the variables and
-parameters contained by the associated FSMActor.
+specified by the <i>expression</i> attribute and sends it to all receivers
+connected to the channel specified by the <i>channel</i> parameter and
+the <i>portName</i> attribute. This action is a choice action contained by
+a transition in an FSMActor, which will be called the associated FSMActor
+of this action. The port with name specified by the <i>portName</i> attribute
+must be an output port of the associated FSMActor and the channel specified
+must be within range, otherwise an exception will be thrown when this action
+is executed. The scope of the specified expression includes all the variables
+and parameters contained by the associated FSMActor.
 
 @author Xiaojun Liu
 @version $Id$
@@ -98,12 +98,12 @@ public class ProduceOutput extends BroadcastOutput {
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
-     *  the <i>portName</i> parameter, record the change but do not
+     *  the <i>portName</i> attribute, record the change but do not
      *  check whether the associated FSMActor has an output port with
      *  the specified name. If the changed attribute is the <i>channel</i>
      *  parameter, record the change but do not check whether the channel
      *  index specified is out of range. If the changed attribute is the
-     *  <i>expression</i> parameter, set the specified expression to the
+     *  <i>expression</i> attribute, set the specified expression to the
      *  variable for expression evaluation.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the superclass
@@ -134,9 +134,9 @@ public class ProduceOutput extends BroadcastOutput {
     }
 
     /** Take the token from evaluating the expression specified by the
-     *  <i>expression</i> parameter and send it to all connected
-     *  receivers of the channel specified by the <i>channel</i> and
-     *  <i>portName</i> parameters.
+     *  <i>expression</i> attribute and send it to all connected
+     *  receivers of the channel specified by the <i>channel</i> parameter
+     *  and the <i>portName</i> attribute.
      *  @exception IllegalActionException If expression evaluation fails,
      *   or the specified port is not found, or the specified channel is
      *   out of range, or sending to the channel throws a NoRoomException.

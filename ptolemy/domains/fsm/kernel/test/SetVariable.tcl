@@ -75,7 +75,7 @@ test SetVariable-1.3 {test clone} {
     set act0clone [java::cast ptolemy.domains.fsm.kernel.SetVariable \
             [$t1 getAttribute act0]]
     set v0 [java::field $act0clone expression]
-    $v0 setToken [java::new ptolemy.data.StringToken "1 + 1"]
+    $v0 setExpression "1 + 1"
     set v1 [java::cast ptolemy.data.expr.Variable [$t1 getAttribute _act0]]
     list [$v1 getExpression]
 } {{1 + 1}}
@@ -93,7 +93,7 @@ test SetVariable-2.1 {test scope of evaluation variable} {
     set act0 [java::new ptolemy.domains.fsm.kernel.SetVariable $t0 act0]
     set v2 [java::cast ptolemy.data.expr.Variable [$t0 getAttribute _act0]]
     listToNames [[$v2 getScope] elementList]
-} {guardExpression preemptive triggerExpression _guard _trigger initialStateName v0 v1}
+} {preemptive _guard _trigger v0 v1}
 
 ######################################################################
 ####
@@ -108,10 +108,8 @@ test SetVariable-3.1 {test execution} {
     set act0 [java::new ptolemy.domains.fsm.kernel.SetVariable $t0 act0]
     set expression [java::field $act0 expression]
     set vname [java::field $act0 variableName]
-    set tok0 [java::new ptolemy.data.StringToken "v1"]
-    $vname setToken $tok0
-    set tok1 [java::new ptolemy.data.StringToken "v0 + 1"]
-    $expression setToken $tok1
+    $vname setExpression v1
+    $expression setExpression "v0 + 1"
     set tok2 [java::new {ptolemy.data.IntToken int} 0]
     $v0 setToken $tok2
     $act0 execute
@@ -120,8 +118,7 @@ test SetVariable-3.1 {test execution} {
     $v0 setToken $tok2
     $act0 execute
     set re1 [$v1 getToken]
-    set tok0 [java::new ptolemy.data.StringToken "v2"]
-    $vname setToken $tok0
+    $vname setExpression v2
     catch {$act0 execute} msg
     list [$re0 toString] [$re1 toString] $msg
 } {1 2 {ptolemy.kernel.util.IllegalActionException: .e0.fsm and .e0.fsm.t0.act0:

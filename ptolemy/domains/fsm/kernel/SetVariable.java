@@ -31,6 +31,7 @@ package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.StringToken;
@@ -42,11 +43,11 @@ import ptolemy.data.type.BaseType;
 //// SetVariable
 /**
 A SetVariable action takes the token from evaluating the expression
-specified by the <i>expression</i> parameter and sets the value of the
-instance of Variable specified by the <i>variableName</i> parameter with
+specified by the <i>expression</i> attribute and sets the value of the
+instance of Variable specified by the <i>variableName</i> attribute with
 the token. This action is a commit action contained by a transition in
 an FSMActor, which will be called the associated FSMActor of this action.
-The variable with name specified by the <i>variableName</i> parameter
+The variable with name specified by the <i>variableName</i> attribute
 must be contained by the associated FSMActor, otherwise an exception will
 be thrown when this action is executed. The scope of the specified
 expression includes all the variables and parameters contained by the
@@ -80,36 +81,34 @@ public class SetVariable extends Action implements CommitAction {
     public SetVariable(Transition transition, String name)
             throws IllegalActionException, NameDuplicationException {
         super(transition, name);
-        expression = new Parameter(this, "expression");
-        expression.setTypeEquals(BaseType.STRING);
-        variableName = new Parameter(this, "variableName");
-        variableName.setTypeEquals(BaseType.STRING);
+        expression = new StringAttribute(this, "expression");
+        variableName = new StringAttribute(this, "variableName");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Parameter specifying an expression. The value set by this action
+    /** Attribute specifying an expression. The value set by this action
      *  is obtained by evaluating the expression. The scope of the
      *  expression includes all the variables and parameters of the
      *  associated FSMActor of this action.
      */
-    public Parameter expression = null;
+    public StringAttribute expression = null;
 
-    /** Parameter specifying the name of the variable. The variable
+    /** Attribute specifying the name of the variable. The variable
      *  must be contained by the associated FSMActor, otherwise an
      *  exception will be thrown when this action is executed.
      */
-    public Parameter variableName = null;
+    public StringAttribute variableName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
-     *  the <i>variableName</i> parameter, record the change but do not
+     *  the <i>variableName</i> attribute, record the change but do not
      *  check whether the associated FSMActor contains a variable with
      *  the specified name. If the changed attribute is the
-     *  <i>expression</i> parameter, set the specified expression to the
+     *  <i>expression</i> attribute, set the specified expression to the
      *  variable for expression evaluation.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the superclass
@@ -122,14 +121,14 @@ public class SetVariable extends Action implements CommitAction {
             _variableVersion = -1;
         }
         if (attribute == expression) {
-            StringToken tok = (StringToken)expression.getToken();
-            _evaluationVariable().setExpression(tok.stringValue());
+            String expr = expression.getExpression();
+            _evaluationVariable().setExpression(expr);
         }
     }
 
     /** Clone the action into the specified workspace. This calls the
-     *  base class and then sets the parameter public members to refer
-     *  to the parameters of the new action.
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new action.
      *  @param workspace The workspace for the new action.
      *  @return A new action.
      *  @throws CloneNotSupportedException If a derived class contains
@@ -138,15 +137,17 @@ public class SetVariable extends Action implements CommitAction {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         SetVariable newObject = (SetVariable)super.clone(workspace);
-        newObject.expression = (Parameter)newObject.getAttribute("expression");
-        newObject.variableName = (Parameter)newObject.getAttribute("variableName");
+        newObject.expression =
+	        (StringAttribute)newObject.getAttribute("expression");
+        newObject.variableName =
+	        (StringAttribute)newObject.getAttribute("variableName");
         newObject._variableVersion = -1;
         return newObject;
     }
 
     /** Take the token from evaluating the expression specified by the
-     *  <i>expression</i> parameter and set the value of the variable
-     *  specified by the <i>variableName</i> parameter with the token.
+     *  <i>expression</i> attribute and set the value of the variable
+     *  specified by the <i>variableName</i> attribute with the token.
      *  @exception IllegalActionException If expression evaluation fails,
      *   or the specified variable cannot take the token from evaluating
      *   the expression as value.
@@ -159,7 +160,7 @@ public class SetVariable extends Action implements CommitAction {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the variable specified by the <i>variableName</i> parameter.
+    /** Return the variable specified by the <i>variableName</i> attribute.
      *  This method is read-synchronized on the workspace.
      *  @return The specified variable.
      *  @exception IllegalActionException If the associated FSMActor does
@@ -172,15 +173,15 @@ public class SetVariable extends Action implements CommitAction {
         try {
             workspace().getReadAccess();
             FSMActor fsm = (FSMActor)getContainer().getContainer();
-            StringToken tok = (StringToken)variableName.getToken();
-            Attribute var = fsm.getAttribute(tok.stringValue());
+            String name = variableName.getExpression();
+            Attribute var = fsm.getAttribute(name);
             if (var == null) {
                 throw new IllegalActionException(fsm, this, "Cannot find "
-                        + "variable with name: " + tok.stringValue());
+                        + "variable with name: " + name);
             }
             if (!(var instanceof Variable)) {
                 throw new IllegalActionException(fsm, this, "The attribute "
-                        + "with name \"" + tok.stringValue() + "\" is not an "
+                        + "with name \"" + name + "\" is not an "
                         + "instance of Variable.");
             }
             _variable = (Variable)var;

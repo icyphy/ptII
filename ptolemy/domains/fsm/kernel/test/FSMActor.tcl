@@ -123,15 +123,12 @@ test FSMActor-4.1 {test setting initial state} {
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
     set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
-    set tok [java::new ptolemy.data.StringToken s0]
     set p [java::field $fsm initialStateName]
-    $p setToken $tok
+    $p setExpression s0
     set re0 [expr {[$fsm getInitialState] == $s0}]
-    set tok [java::new ptolemy.data.StringToken s1]
-    $p setToken $tok
+    $p setExpression s1
     set re1 [expr {[$fsm getInitialState] == $s1}]
-    set tok [java::new ptolemy.data.StringToken s2]
-    $p setToken $tok
+    $p setExpression s2
     catch {$fsm getInitialState} msg
     list $re0 $re1 $msg
 } {1 1 {ptolemy.kernel.util.IllegalActionException: ..fsm:
@@ -145,8 +142,7 @@ test FSMActor-5.1 {test creating input variables} {
     set dir [java::new ptolemy.actor.Director $e0 dir]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
     set p0 [java::new ptolemy.actor.TypedIOPort $fsm p0]
     $p0 setInput true
     set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
@@ -175,18 +171,15 @@ test FSMActor-6.1 {test action methods} {
 
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
     set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
     [java::field $s0 outgoingPort] link $t0
     [java::field $s1 incomingPort] link $t0
     $t0 setGuardExpression "(p1_0_S ? p1_0_V : 0) > 5"
     set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
-    set tok [java::new ptolemy.data.StringToken "p2"]
-    [java::field $act0 portName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken "p1_0_V + 1"]
-    [java::field $act0 expression] setToken $tok
+    [java::field $act0 portName] setExpression p2
+    [java::field $act0 expression] setExpression "p1_0_V + 1"
     set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
     $p1 setInput true
     $p1 setMultiport true
@@ -269,8 +262,7 @@ test FSMActor-7.1 {test exception when multiple transitions enabled} {
     set dir [java::new ptolemy.actor.Director $e0 dir]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
     set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
     [java::field $s0 outgoingPort] link $t0
@@ -317,7 +309,7 @@ test FSMActor-9.1 {test working with MoML} {
         </property>
     </property>
     <entity name="fsm" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;plusOne&quot;">
+        <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="plusOne">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -326,7 +318,7 @@ test FSMActor-9.1 {test working with MoML} {
             <property name="output"/>
         </port>
         <entity name="plusOne" class="ptolemy.domains.fsm.kernel.State">
-            <property name="refinementName" class="ptolemy.data.expr.Parameter">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -334,7 +326,7 @@ test FSMActor-9.1 {test working with MoML} {
             </port>
         </entity>
         <entity name="minusOne" class="ptolemy.domains.fsm.kernel.State">
-            <property name="refinementName" class="ptolemy.data.expr.Parameter">
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -342,58 +334,58 @@ test FSMActor-9.1 {test working with MoML} {
             </port>
         </entity>
         <relation name="t0" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;in_V == 1&quot;">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_V == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="act0" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;1&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
                 </property>
-                <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+                <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
                 </property>
             </property>
         </relation>
         <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;in_V == 0&quot;">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_V == 0">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
                 </property>
-                <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+                <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
                 </property>
             </property>
         </relation>
         <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;in_V == 1&quot;">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_V == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;-1&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1">
                 </property>
-                <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+                <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
                 </property>
             </property>
         </relation>
         <relation name="t3" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.data.expr.Parameter" value="&quot;in_V == 0&quot;">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_V == 0">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="triggerExpression" class="ptolemy.data.expr.Parameter">
+            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;0&quot;">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
                 </property>
-                <property name="portName" class="ptolemy.data.expr.Parameter" value="&quot;out&quot;">
+                <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
                 </property>
             </property>
         </relation>

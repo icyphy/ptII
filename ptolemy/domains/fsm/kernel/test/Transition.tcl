@@ -122,8 +122,7 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
     [java::field $s0 outgoingPort] link $t0
     [java::field $s1 incomingPort] link $t0
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
     set p0 [java::new ptolemy.actor.TypedIOPort $fsm p0]
     $p0 setInput true
     set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
@@ -147,7 +146,7 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
     set scope1 [[$guard getScope] elementList]
     set scope2 [[$trigger getScope] elementList]
     list [listToNames $scope1] [listToNames $scope2]
-} {{guardExpression preemptive triggerExpression _trigger initialStateName p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V} {guardExpression preemptive triggerExpression _guard initialStateName p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V}}
+} {{preemptive _trigger p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V} {preemptive _guard p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V}}
 
 test Transition-3.2 {test setting guard and trigger expression} {
     $t0 setGuardExpression "p0_V > 0"

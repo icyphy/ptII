@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Yellow (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -39,6 +39,7 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -90,7 +91,7 @@ the current state of the actor is set to the destination state of the
 transition.
 <p>
 An FSMActor enters its initial state during initialization. The name of the
-initial state is specified by the <i>initialStateName</i> parameter.
+initial state is specified by the <i>initialStateName</i> string attribute.
 <p>
 An FSMActor contains a set of variables for the input ports that can be
 referenced in the guard and trigger expressions of transitions. If an input
@@ -127,8 +128,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public FSMActor() {
         super();
         try {
-            initialStateName = new Parameter(this, "initialStateName");
-            initialStateName.setTypeEquals(BaseType.STRING);
+            initialStateName = new StringAttribute(this, "initialStateName");
         } catch (KernelException ex) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
@@ -146,8 +146,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public FSMActor(Workspace workspace) {
 	super(workspace);
         try {
-            initialStateName = new Parameter(this, "initialStateName");
-            initialStateName.setTypeEquals(BaseType.STRING);
+            initialStateName = new StringAttribute(this, "initialStateName");
         } catch (KernelException ex) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
@@ -169,23 +168,22 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public FSMActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        initialStateName = new Parameter(this, "initialStateName");
-        initialStateName.setTypeEquals(BaseType.STRING);
+        initialStateName = new StringAttribute(this, "initialStateName");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Parameter specifying the name of the initial state of this
+    /** Attribute specifying the name of the initial state of this
      *  actor.
      */
-    public Parameter initialStateName = null;
+    public StringAttribute initialStateName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
-     *  the <i>initialStateName</i> parameter, record the change but do
+     *  the <i>initialStateName</i> attribute, record the change but do
      *  not check whether this actor contains a state with the specified
      *  name.
      *  @param attribute The attribute that changed.
@@ -201,8 +199,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter public members to refer
-     *  to the parameters of the new actor.
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new actor.
      *  @param workspace The workspace for the new actor.
      *  @return A new FSMActor.
      *  @throws CloneNotSupportedException If a derived class contains
@@ -212,7 +210,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             throws CloneNotSupportedException {
         FSMActor newObject = (FSMActor)super.clone(workspace);
         newObject.initialStateName =
-                (Parameter)newObject.getAttribute("initialStateName");
+                (StringAttribute)newObject.getAttribute("initialStateName");
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         newObject._connectionMapsVersion = -1;
@@ -266,7 +264,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Return the initial state of this actor. The name of the initial
-     *  state is specified by the <i>initialStateName</i> parameter. An
+     *  state is specified by the <i>initialStateName</i> attribute. An
      *  exception is thrown if this actor does not contain a state with
      *  the specified name.
      *  This method is read-synchronized on the workspace.
@@ -280,11 +278,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         try {
             workspace().getReadAccess();
-            StringToken tok = (StringToken)initialStateName.getToken();
-            State st = (State)getEntity(tok.stringValue());
+            String name = initialStateName.getExpression();
+            State st = (State)getEntity(name);
             if (st == null) {
                 throw new IllegalActionException(this, "Cannot find "
-                        + "initial state with name \"" + tok.stringValue()
+                        + "initial state with name \"" + name
                         + "\".");
             }
             _initialState = st;
@@ -488,9 +486,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     /** Create receivers and input variables for the input ports of this
      *  actor. Set current state to the initial state. Throw an
      *  IllegalActionException if this actor does not contain a state with
-     *  name specified by the <i>initialStateName</i> parameter.
+     *  name specified by the <i>initialStateName</i> attribute.
      *  @exception IllegalActionException If this actor does not contain a
-     *   state with name specified by the <i>initialStateName</i> parameter.
+     *   state with name specified by the <i>initialStateName</i> attribute.
      */
     public void preinitialize() throws IllegalActionException {
         _createReceivers();
@@ -500,9 +498,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Reset current state to the initial state. Throw an
      *  IllegalActionException if this actor does not contain a state with
-     *  name specified by the <i>initialStateName</i> parameter.
+     *  name specified by the <i>initialStateName</i> attribute.
      *  @exception IllegalActionException If this actor does not contain a
-     *   state with name specified by the <i>initialStateName</i> parameter.
+     *   state with name specified by the <i>initialStateName</i> attribute.
      */
     public void reset() throws IllegalActionException {
         _gotoInitialState();
@@ -595,17 +593,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         } finally {
             _workspace.doneReading();
         }
-    }
-
-    /** Return the type constraints of this actor.
-     *  This method calls typeConstraintList() and convert the result into
-     *  an enumeration.
-     *  @return an enumeration of inequalities.
-     *  @see ptolemy.graph.Inequality
-     *  @deprecated Use typeConstraintList() instead.
-     */
-    public Enumeration typeConstraints()  {
-        return Collections.enumeration(typeConstraintList());
     }
 
     /** Do nothing.  Derived classes override this method to define
@@ -1053,7 +1040,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /*  Set the current state to the initial state. The name of the initial
-     *  state is specified by the <i>initialStateName</i> parameter. An
+     *  state is specified by the <i>initialStateName</i> attribute. An
      *  exception is thrown if this actor does not contain a state with
      *  the specified name.
      *  @exception IllegalActionException If this actor does not contain

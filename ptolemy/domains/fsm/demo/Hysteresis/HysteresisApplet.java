@@ -143,7 +143,7 @@ public class HysteresisApplet extends SDFApplet {
 	    State ctrls0 = new State(ctrl, "ctrls0");
 	    State ctrls1 = new State(ctrl, "ctrls1");
 
-	    ctrl.initialStateName.setToken(new StringToken("ctrls0"));
+	    ctrl.initialStateName.setExpression("ctrls0");
 
 	    Transition ctrlTrs0Tos1 = new Transition(ctrl, "ctrlTrs0Tos1");
             ctrls0.outgoingPort.link(ctrlTrs0Tos1);
@@ -157,14 +157,14 @@ public class HysteresisApplet extends SDFApplet {
 
 	    // The HDF director
             HDFFSMDirector sdrDir = new HDFFSMDirector(hdfActor, "hdfActorDirector");
-            sdrDir.controllerName.setToken(new StringToken("Controller"));
+            sdrDir.controllerName.setExpression("Controller");
 	    
 	    // Add a opaque composite actor. This actor will contain an
 	    // SDF model.
             TypedCompositeActor hdfActorState0 =
 		new TypedCompositeActor(hdfActor, "state0");
 	    // Set "state0" to be the submachine refining hdfActor's "ctrls0" state
-	    ctrls0.refinementName.setToken(new StringToken("state0"));
+	    ctrls0.refinementName.setExpression("state0");
 	    
 	    // Note: Currently, the names of all ports linked
 	    // to a common relation must have the same name.
@@ -210,7 +210,7 @@ public class HysteresisApplet extends SDFApplet {
             TypedCompositeActor hdfActorState1 =
 		new TypedCompositeActor(hdfActor, "state1");
 	    // Set "state1" to be the submachine refining hdfActor's "ctrls1" state
-	    ctrls1.refinementName.setToken(new StringToken("state1"));
+	    ctrls1.refinementName.setExpression("state1");
 
 	    // Add ports to state1.
 	    TypedIOPort hdfActorState1InPort = 

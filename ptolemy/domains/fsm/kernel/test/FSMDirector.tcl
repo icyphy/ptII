@@ -64,15 +64,13 @@ test FSMDirector-2.1 {test setting controller} {
     set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e0 dir]
     set v0 [java::field $dir controllerName]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
-    set tok [java::new ptolemy.data.StringToken fsm]
-    $v0 setToken $tok
+    $v0 setExpression fsm
     set re0 [expr {[$dir getController] == $fsm}]
     $fsm setContainer [java::null]
     catch {$dir getController} msg0
     $fsm setContainer $e0
     $fsm getContainer
-    set tok [java::new ptolemy.data.StringToken foo]
-    $v0 setToken $tok
+    $v0 setExpression foo
     catch {$dir getController} msg1
     list $re0 $msg0 $msg1
 } {1 {ptolemy.kernel.util.IllegalActionException: ..dir:
@@ -88,13 +86,10 @@ test FSMDirector-3.1 {test getNextIterationTime} {
     set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
     set fsmDir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 fsmDir]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
-    set tok [java::new ptolemy.data.StringToken fsm]
-    [java::field $fsmDir controllerName] setToken $tok
+    [java::field $fsmDir controllerName] setExpression fsm
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken e2]
-    [java::field $s0 refinementName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
+    [java::field $s0 refinementName] setExpression e2
     set e2 [java::new ptolemy.actor.TypedCompositeActor $e1 e2]
     set dir1 [java::new ptolemy.actor.Director $e2 dir1]
     $dir preinitialize
@@ -124,8 +119,7 @@ test FSMDirector-4.1 {test action methods} {
     set tok [java::new {ptolemy.data.IntToken int} 6]
     [java::field $e2 value] setToken $tok
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
-    set tok [java::new ptolemy.data.StringToken fsm]
-    [java::field $dir controllerName] setToken $tok
+    [java::field $dir controllerName] setExpression fsm
     set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
     $p0 setInput true
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
@@ -162,31 +156,23 @@ test FSMDirector-4.1 {test action methods} {
     [java::field $s0 incomingPort] link $t1
     [java::field $s0 outgoingPort] link $t2
     [java::field $s1 incomingPort] link $t2
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken e2]
-    [java::field $s0 refinementName] setToken $tok
-    [java::field $s1 refinementName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
+    [java::field $s0 refinementName] setExpression e2
+    [java::field $s1 refinementName] setExpression e2
     $t0 setGuardExpression "p1_V > 5"
     [java::field $t1 preemptive] setExpression "true"
     $t1 setGuardExpression "p1_V > 0"
     [java::field $t2 preemptive] setExpression "true"
     $t2 setGuardExpression "p1_V > 5"
     set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
-    set tok [java::new ptolemy.data.StringToken p2]
-    [java::field $act0 portName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken 1]
-    [java::field $act0 expression] setToken $tok
+    [java::field $act0 portName] setExpression p2
+    [java::field $act0 expression] setExpression 1
     set act1 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t1 act1]
-    set tok [java::new ptolemy.data.StringToken p2]
-    [java::field $act1 portName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken p1_V]
-    [java::field $act1 expression] setToken $tok
+    [java::field $act1 portName] setExpression p2
+    [java::field $act1 expression] setExpression p1_V
     set act2 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t2 act2]
-    set tok [java::new ptolemy.data.StringToken p2]
-    [java::field $act2 portName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken 0]
-    [java::field $act2 expression] setToken $tok
+    [java::field $act2 portName] setExpression p2
+    [java::field $act2 expression] setExpression 0
 
     [$e0 getManager] execute
     listToStrings [$rec getHistory 0]
@@ -200,8 +186,7 @@ test FSMDirector-5.1 {test fireAt} {
     set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
     set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
-    set tok [java::new ptolemy.data.StringToken fsm]
-    [java::field $dir controllerName] setToken $tok
+    [java::field $dir controllerName] setExpression fsm
     set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
     $p2 setOutput true
     $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
@@ -218,17 +203,14 @@ test FSMDirector-5.1 {test fireAt} {
 
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
     set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
     [java::field $s0 outgoingPort] link $t0
     [java::field $s1 incomingPort] link $t0
     $t0 setGuardExpression "true"
     set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
-    set tok [java::new ptolemy.data.StringToken p2]
-    [java::field $act0 portName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken -1000]
-    [java::field $act0 expression] setToken $tok
+    [java::field $act0 portName] setExpression p2
+    [java::field $act0 expression] setExpression -1000
 
     set mag [$e0 getManager]
     $mag initialize
@@ -250,8 +232,7 @@ test FSMDirector-6.1 {test transferInputs} {
     set e2 [java::new ptolemy.actor.TypedAtomicActor $e1 e2]
     set e3 [java::new ptolemy.actor.TypedAtomicActor $e1 e3]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
-    set tok [java::new ptolemy.data.StringToken fsm]
-    [java::field $dir controllerName] setToken $tok
+    [java::field $dir controllerName] setExpression fsm
     set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
     $p0 setInput true
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
@@ -281,12 +262,9 @@ test FSMDirector-6.1 {test transferInputs} {
     [java::field $s1 incomingPort] link $t0
     [java::field $s1 outgoingPort] link $t1
     [java::field $s0 incomingPort] link $t1
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken e2]
-    [java::field $s0 refinementName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken e3]
-    [java::field $s1 refinementName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
+    [java::field $s0 refinementName] setExpression e2
+    [java::field $s1 refinementName] setExpression e3
     $t0 setGuardExpression "p1_V > 5"
     [java::field $t1 preemptive] setExpression "true"
     $t1 setGuardExpression "p1_V > 5"
@@ -331,8 +309,7 @@ test FSMDirector-7.1 {test clone a modal model} {
     set tok [java::new {ptolemy.data.IntToken int} 6]
     [java::field $e2 value] setToken $tok
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
-    set tok [java::new ptolemy.data.StringToken fsm]
-    [java::field $dir controllerName] setToken $tok
+    [java::field $dir controllerName] setExpression fsm
     set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
     $p0 setInput true
     set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
@@ -362,31 +339,23 @@ test FSMDirector-7.1 {test clone a modal model} {
     [java::field $s0 incomingPort] link $t1
     [java::field $s0 outgoingPort] link $t2
     [java::field $s1 incomingPort] link $t2
-    set tok [java::new ptolemy.data.StringToken s0]
-    [java::field $fsm initialStateName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken e2]
-    [java::field $s0 refinementName] setToken $tok
-    [java::field $s1 refinementName] setToken $tok
+    [java::field $fsm initialStateName] setExpression s0
+    [java::field $s0 refinementName] setExpression e2
+    [java::field $s1 refinementName] setExpression e2
     $t0 setGuardExpression "p1_V > 5"
     [java::field $t1 preemptive] setExpression "true"
     $t1 setGuardExpression "p1_V > 0"
     [java::field $t2 preemptive] setExpression "true"
     $t2 setGuardExpression "p1_V > 5"
     set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
-    set tok [java::new ptolemy.data.StringToken p2]
-    [java::field $act0 portName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken 1]
-    [java::field $act0 expression] setToken $tok
+    [java::field $act0 portName] setExpression p2
+    [java::field $act0 expression] setExpression 1
     set act1 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t1 act1]
-    set tok [java::new ptolemy.data.StringToken p2]
-    [java::field $act1 portName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken p1_V]
-    [java::field $act1 expression] setToken $tok
+    [java::field $act1 portName] setExpression p2
+    [java::field $act1 expression] setExpression p1_V
     set act2 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t2 act2]
-    set tok [java::new ptolemy.data.StringToken p2]
-    [java::field $act2 portName] setToken $tok
-    set tok [java::new ptolemy.data.StringToken 0]
-    [java::field $act2 expression] setToken $tok
+    [java::field $act2 portName] setExpression p2
+    [java::field $act2 expression] setExpression 0
 
     set e1clone [java::cast ptolemy.actor.TypedCompositeActor \
             [$e1 clone]]

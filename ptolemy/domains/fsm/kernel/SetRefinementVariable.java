@@ -43,15 +43,15 @@ import ptolemy.data.type.BaseType;
 //// SetRefinementVariable
 /**
 A SetRefinementVariable action takes the token from evaluating the
-expression specified by the <i>expression</i> parameter and sets the
+expression specified by the <i>expression</i> attribute and sets the
 value of the instance of Variable specified by the <i>variableName</i>
-parameter with the token. This action is a commit action contained by
+attribute with the token. This action is a commit action contained by
 a transition in an FSMActor, which will be called the associated
 FSMActor of this action. The variable set by this action must be
 contained by the refinement of the destination state of the transition
 containing this action or an entity deeply contained by the refinement,
 otherwise an exception is thrown when this action is executed. The
-<i>variableName</i> parameter specifies the name of the variable
+<i>variableName</i> attribute specifies the name of the variable
 relative to the refinement. The scope of the specified expression
 includes all the variables and parameters contained by the associated
 FSMActor.
@@ -90,7 +90,7 @@ public class SetRefinementVariable extends SetVariable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the variable specified by the <i>variableName</i> parameter.
+    /** Return the variable specified by the <i>variableName</i> attribute.
      *  This method is read-synchronized on the workspace.
      *  @return The specified variable.
      *  @exception IllegalActionException If there is no variable with the
@@ -111,15 +111,15 @@ public class SetRefinementVariable extends SetVariable {
                         + "state of the containing transition has no "
                         + "refinement.");
             }
-            StringToken tok = (StringToken)variableName.getToken();
-            Attribute var = ref.getAttribute(tok.stringValue());
+            String name = variableName.getExpression();
+            Attribute var = ref.getAttribute(name);
             if (var == null) {
                 throw new IllegalActionException(ref, this, "Cannot find "
-                        + "variable with name: " + tok.stringValue());
+                        + "variable with name: " + name);
             }
             if (!(var instanceof Variable)) {
                 throw new IllegalActionException(ref, this, "The attribute "
-                        + "with name \"" + tok.stringValue() + "\" is not an "
+                        + "with name \"" + name + "\" is not an "
                         + "instance of Variable.");
             }
             _variable = (Variable)var;

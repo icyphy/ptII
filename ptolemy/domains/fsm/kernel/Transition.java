@@ -35,6 +35,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -92,13 +93,11 @@ public class Transition extends ComponentRelation {
     public Transition(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        guardExpression = new Parameter(this, "guardExpression");
-        guardExpression.setTypeEquals(BaseType.STRING);
+        guardExpression = new StringAttribute(this, "guardExpression");
         preemptive = new Parameter(this, "preemptive");
         preemptive.setTypeEquals(BaseType.BOOLEAN);
         preemptive.setToken(BooleanToken.FALSE);
-        triggerExpression = new Parameter(this, "triggerExpression");
-        triggerExpression.setTypeEquals(BaseType.STRING);
+        triggerExpression = new StringAttribute(this, "triggerExpression");
         _guard = new Variable(this, "_guard");
         _guard.setTypeEquals(BaseType.BOOLEAN);
         _trigger = new Variable(this, "_trigger");
@@ -108,17 +107,17 @@ public class Transition extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Parameter specifying the guard expression.
+    /** Attribute specifying the guard expression.
      */
-    public Parameter guardExpression = null;
+    public StringAttribute guardExpression = null;
 
     /** Parameter specifying whether this transition is preemptive.
      */
     public Parameter preemptive = null;
 
-    /** Parameter specifying the trigger expression.
+    /** Attribute specifying the trigger expression.
      */
-    public Parameter triggerExpression = null;
+    public StringAttribute triggerExpression = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -144,12 +143,12 @@ public class Transition extends ComponentRelation {
             workspace().incrVersion();
         }
         if (attribute == guardExpression) {
-            StringToken tok = (StringToken)guardExpression.getToken();
-            _guard.setExpression(tok.stringValue());
+            String expr = guardExpression.getExpression();
+            _guard.setExpression(expr);
         }
         if (attribute == triggerExpression) {
-            StringToken tok = (StringToken)triggerExpression.getToken();
-            _trigger.setExpression(tok.stringValue());
+            String expr = triggerExpression.getExpression();
+            _trigger.setExpression(expr);
         }
     }
 
@@ -164,8 +163,8 @@ public class Transition extends ComponentRelation {
     }
 
     /** Clone the transition into the specified workspace. This calls the
-     *  base class and then sets the parameter public members to refer to
-     *  the parameters of the new transition.
+     *  base class and then sets the attribute public members to refer to
+     *  the attributes of the new transition.
      *  @param workspace The workspace for the new transition.
      *  @return A new transition.
      *  @throws CloneNotSupportedException If a derived class contains
@@ -175,15 +174,15 @@ public class Transition extends ComponentRelation {
             throws CloneNotSupportedException {
         Transition newObject = (Transition)super.clone(workspace);
         newObject.guardExpression =
-                (Parameter)newObject.getAttribute("guardExpression");
+                (StringAttribute)newObject.getAttribute("guardExpression");
         newObject.preemptive = (Parameter)newObject.getAttribute("preemptive");
         newObject.triggerExpression =
-                (Parameter)newObject.getAttribute("triggerExpression");
+                (StringAttribute)newObject.getAttribute("triggerExpression");
         newObject._guard = (Variable)newObject.getAttribute("_guard");
         newObject._trigger = (Variable)newObject.getAttribute("_trigger");
         newObject._actionListsVersion = -1;
-	newObject._choiceActionList = new LinkedList();
-	newObject._commitActionList = new LinkedList();
+        newObject._choiceActionList = new LinkedList();
+        newObject._commitActionList = new LinkedList();
         newObject._stateVersion = -1;
         return newObject;
     }
@@ -295,11 +294,10 @@ public class Transition extends ComponentRelation {
      */
     public void setGuardExpression(String expression) {
         try {
-            guardExpression.setToken(new StringToken(expression));
+            guardExpression.setExpression(expression);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(getFullName()
-                    + " cannot set guard expression: "
-                    + ex.getMessage());
+            throw new InternalErrorException("Error in setting the "
+                    + "guard expression of a transition.");
         }
     }
 
@@ -309,11 +307,10 @@ public class Transition extends ComponentRelation {
      */
     public void setTriggerExpression(String expression) {
         try {
-            triggerExpression.setToken(new StringToken(expression));
+            triggerExpression.setExpression(expression);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(getFullName()
-                    + " cannot set trigger expression: "
-                    + ex.getMessage());
+            throw new InternalErrorException("Error in setting the "
+                    + "trigger expression of a transition.");
         }
     }
 

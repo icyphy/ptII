@@ -105,16 +105,13 @@ test State-3.1 {test setting refinement} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 e1]
     set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 e2]
     set re0 [java::isnull [$s0 getRefinement]]
-    set tok [java::new ptolemy.data.StringToken e1]
-    [java::field $s0 refinementName] setToken $tok
+    [java::field $s0 refinementName] setExpression e1
     set ref0 [java::cast ptolemy.kernel.Entity [$s0 getRefinement]]
     set re1 [$ref0 getFullName]
-    set tok [java::new ptolemy.data.StringToken e2]
-    [java::field $s0 refinementName] setToken $tok
+    [java::field $s0 refinementName] setExpression e2
     set ref1 [java::cast ptolemy.kernel.Entity [$s0 getRefinement]]
     set re2 [$ref1 getFullName]
-    set tok [java::new ptolemy.data.StringToken e3]
-    [java::field $s0 refinementName] setToken $tok
+    [java::field $s0 refinementName] setExpression e3
     catch {$s0 getRefinement} msg
     list $re0 $re1 $re2 $msg
 } {1 .e0.e1 .e0.e2 {ptolemy.kernel.util.IllegalActionException: .e0.fsm.s0:

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Yellow (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -36,9 +36,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 
 import java.util.List;
 import java.util.Iterator;
@@ -87,8 +84,7 @@ public class State extends ComponentEntity {
         super(container, name);
         incomingPort = new ComponentPort(this, "incomingPort");
         outgoingPort = new ComponentPort(this, "outgoingPort");
-        refinementName = new Parameter(this, "refinementName");
-        refinementName.setTypeEquals(BaseType.STRING);
+        refinementName = new StringAttribute(this, "refinementName");
 
         _setDefaultIcon("<svg>\n" +
 		"<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n" +
@@ -106,19 +102,20 @@ public class State extends ComponentEntity {
      */
     public ComponentPort outgoingPort = null;
 
-    /** Parameter specifying the name of the refinement. The refinement
+    /** Attribute specifying the name of the refinement. The refinement
      *  must be a TypedActor and have the same container as the FSMActor
      *  containing this state, otherwise an exception will be thrown
-     *  when getRefinement() is called. This parameter contains a null
-     *  token when the state is not refined.
+     *  when getRefinement() is called. This attribute has a null
+     *  expression or a null string as expression when the state is not
+     *  refined.
      */
-    public Parameter refinementName = null;
+    public StringAttribute refinementName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
-     *  the <i>refinementName</i> parameter, record the change but do
+     *  the <i>refinementName</i> attribute, record the change but do
      *  not check whether there is a TypedActor with the specified name
      *  and having the same container as the FSMActor containing this
      *  state.
@@ -135,8 +132,8 @@ public class State extends ComponentEntity {
     }
 
     /** Clone the state into the specified workspace. This calls the
-     *  base class and then sets the parameter and port public members
-     *  to refer to the parameters and ports of the new state.
+     *  base class and then sets the attribute and port public members
+     *  to refer to the attributes and ports of the new state.
      *  @param workspace The workspace for the new state.
      *  @return A new state.
      *  @throws CloneNotSupportedException If a derived class contains
@@ -145,19 +142,21 @@ public class State extends ComponentEntity {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         State newObject = (State)super.clone(workspace);
-        newObject.incomingPort = (ComponentPort)newObject.getPort("incomingPort");
-        newObject.outgoingPort = (ComponentPort)newObject.getPort("outgoingPort");
+        newObject.incomingPort =
+	        (ComponentPort)newObject.getPort("incomingPort");
+        newObject.outgoingPort =
+	        (ComponentPort)newObject.getPort("outgoingPort");
         newObject.refinementName =
-                (Parameter)newObject.getAttribute("refinementName");
+                (StringAttribute)newObject.getAttribute("refinementName");
         newObject._refinementVersion = -1;
         newObject._transitionListVersion = -1;
-	newObject._nonpreemptiveTransitionList = new LinkedList();
-	newObject._preemptiveTransitionList = new LinkedList();
+        newObject._nonpreemptiveTransitionList = new LinkedList();
+        newObject._preemptiveTransitionList = new LinkedList();
         return newObject;
     }
 
     /** Return the refinement of this state. The name of the refinement
-     *  is specified by the <i>refinementName</i> parameter. The refinement
+     *  is specified by the <i>refinementName</i> attribute. The refinement
      *  must be a TypedActor and have the same container as the FSMActor
      *  containing this state, otherwise an exception is thrown.
      *  This method is read-synchronized on the workspace.
@@ -171,16 +170,15 @@ public class State extends ComponentEntity {
         }
         try {
             workspace().getReadAccess();
-            StringToken tok = (StringToken)refinementName.getToken();
-            if (tok != null) {
-                String refName = tok.stringValue();
+            String name = refinementName.getExpression();
+            if (name != null && name != "") {
                 FSMActor cont = (FSMActor)getContainer();
                 TypedCompositeActor contContainer =
                         (TypedCompositeActor)cont.getContainer();
-                _refinement = (TypedActor)contContainer.getEntity(refName);
+                _refinement = (TypedActor)contContainer.getEntity(name);
                 if (_refinement == null) {
                     throw new IllegalActionException(this, "Cannot find "
-                            + "refinement with name \"" + refName
+                            + "refinement with name \"" + name
                             + "\" in " + contContainer.getFullName());
                 }
             } else {
