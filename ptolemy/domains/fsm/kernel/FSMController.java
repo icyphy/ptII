@@ -38,6 +38,8 @@ import ptolemy.actor.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.VariableList;
+import ptolemy.graph.Inequality;	/* Needed by javadoc */
+
 import java.util.Enumeration;
 import collections.LinkedList;
 
