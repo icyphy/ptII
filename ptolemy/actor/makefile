@@ -77,7 +77,6 @@ JSRCS = \
 	Sortable.java \
 	SortBinWidth.java \
 	SortedQueue.java \
-	TimeStamp.java \
 	TokenHolderFullException.java
 
 EXTRA_SRCS =	$(JSRCS)
