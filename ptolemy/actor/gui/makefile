@@ -117,6 +117,7 @@ JSRCS = \
 	PtExecuteApplication.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
+	PtolemyDialog.java \
 	PtolemyEffigy.java \
 	PtolemyQuery.java \
 	PtolemyTableauFactory.java \
@@ -191,6 +192,8 @@ OPTIONAL_FILES = \
 	'PtolemyApplet$$GoButtonListener.class' \
 	'PtolemyApplet$$StopButtonListener.class' \
 	'PtolemyApplication$$1.class' \
+	'PtolemyDialog$$1.class' \
+	'PtolemyDialog$$2.class' \
 	'PtolemyEffigy$$Factory.class' \
 	'PtolemyEffigy$$FactoryWithoutNew.class' \
 	'PtolemyFrame$$XMLOrMoMLFileFilter.class' \
