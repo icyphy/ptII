@@ -63,7 +63,9 @@ registered with the server to be notified of topology changes.
 
 @author John Reekie
 @version $Id$
-@see TopologyListener, TopologyEvent */
+@see TopologyListener
+@see TopologyEvent
+*/
 public abstract class TopologyChangeRequest {
 
     /** Construct a new mutation request with the given client. The
@@ -79,6 +81,7 @@ public abstract class TopologyChangeRequest {
     /** Perform the mutation represented by this object. This is an
      * abstract method, so subclasses must override this method
      * and use it to construct the queue of pending topology events.
+     * @exception Exception Throw in the derived classes.
      */
     public abstract void constructEventQueue() throws Exception;
 
@@ -111,7 +114,7 @@ public abstract class TopologyChangeRequest {
      * containing both the original exception and the exception
      * thrown on undo.
      *
-     * @throws TopologyChangeFailedException if the mutation failed
+     * @exception TopologyChangeFailedException if the mutation failed
      * @exception IllegalActionException If the change has already
      *   been implemented.
      */

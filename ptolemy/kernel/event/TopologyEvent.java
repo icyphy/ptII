@@ -352,6 +352,8 @@ public class TopologyEvent extends java.util.EventObject {
     }
 
     /** Undo the topology change represented by this event.
+     *  @exception Exception Thrown if setting the ComponentEntity container
+     *  to null fails.
      */
     public void undoTopologyChange() throws Exception {
 	switch (getID()) {
