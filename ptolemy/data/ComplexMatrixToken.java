@@ -93,7 +93,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    protected ComplexMatrixToken(final Complex[][] value, int copy)
+    public ComplexMatrixToken(final Complex[][] value, int copy)
             throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("ComplexMatrixToken: The "

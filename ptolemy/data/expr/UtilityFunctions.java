@@ -41,6 +41,8 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.Complex;
+import ptolemy.math.ComplexMatrixMath;
 import ptolemy.util.StringUtilities;
 
 import java.io.BufferedReader;
@@ -1069,16 +1071,77 @@ public class UtilityFunctions {
     /** Return a double zero matrix with the given number of rows and
      *  columns.
      *  @return The zero matrix with the given number of rows and
-     *  columns.
+     *   columns.
+     *  @deprecated Use zeroMatrixDouble instead.
      */
     public static DoubleMatrixToken zeroMatrix(int rows, int columns) {
+        return zeroMatrixDouble(rows, columns);
+    }
+    
+    /** Return a complex zero matrix with the given number of rows and
+     *  columns.
+     *  @return The zero matrix with the given number of rows and
+     *   columns.
+     */
+    public static ComplexMatrixToken zeroMatrixComplex(int rows, int columns) {
+        try {
+            return new ComplexMatrixToken(ComplexMatrixMath.zero(rows, columns));
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException("UtilityFunctions.zeroMatrixComplex: "
+                    + "Cannot create ComplexMatrixToken. "
+                    + ex.getMessage());
+        }
+    }
+    
+    /** Return a double zero matrix with the given number of rows and
+     *  columns.
+     *  @return The zero matrix with the given number of rows and
+     *   columns.
+     */
+    public static DoubleMatrixToken zeroMatrixDouble(int rows, int columns) {
         double[][] mtr = new double[rows][columns];
         DoubleMatrixToken result = null;
         try {
             result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("UtilityFunctions.zeroMatrix: "
+            throw new InternalErrorException("UtilityFunctions.zeroMatrixDouble: "
                     + "Cannot create DoubleMatrixToken. "
+                    + ex.getMessage());
+        }
+        return result;
+    }
+    
+    /** Return a int zero matrix with the given number of rows and
+     *  columns.
+     *  @return The zero matrix with the given number of rows and
+     *   columns.
+     */
+    public static IntMatrixToken zeroMatrixInt(int rows, int columns) {
+        int[][] mtr = new int[rows][columns];
+        IntMatrixToken result = null;
+        try {
+            result = new IntMatrixToken(mtr, IntMatrixToken.DO_NOT_COPY);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException("UtilityFunctions.zeroMatrixInt: "
+                    + "Cannot create IntMatrixToken. "
+                    + ex.getMessage());
+        }
+        return result;
+    }
+    
+    /** Return a long zero matrix with the given number of rows and
+     *  columns.
+     *  @return The zero matrix with the given number of rows and
+     *   columns.
+     */
+    public static LongMatrixToken zeroMatrixLong(int rows, int columns) {
+        long[][] mtr = new long[rows][columns];
+        LongMatrixToken result = null;
+        try {
+            result = new LongMatrixToken(mtr, LongMatrixToken.DO_NOT_COPY);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException("UtilityFunctions.zeroMatrixLong: "
+                    + "Cannot create LongMatrixToken. "
                     + ex.getMessage());
         }
         return result;

@@ -82,7 +82,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    protected LongMatrixToken(final long[][] value, final int copy)
+    public LongMatrixToken(final long[][] value, final int copy)
             throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("LongMatrixToken: The "

@@ -1087,6 +1087,17 @@ test Function-transpose {Test transpose} {
          [evaluate {identityMatrixLong(3)==transpose(identityMatrixLong(3))}] \
         } {true true true true}
 
+####################################################################
+# zeroMatrixComplex
+
+test Function-zeroMatrixComplex {Test zeroMatrixComplex} {
+    list [evaluate {zeroMatrixComplex(1, 2)}] \
+         [evaluate {zeroMatrixDouble(1, 2)}] \
+         [evaluate {zeroMatrixInt(1, 2)}] \
+         [evaluate {zeroMatrixLong(1, 2)}]
+ } {{[0.0 + 0.0i, 0.0 + 0.0i]} {[0.0, 0.0]} {[0, 0]} {[0L, 0L]}}
+
+
 ##### within is tested above.
 
 ####################################################################

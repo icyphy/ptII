@@ -103,7 +103,7 @@ public class IntMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    protected IntMatrixToken(int[][] value, int copy)
+    public IntMatrixToken(int[][] value, int copy)
             throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("IntMatrixToken: The specified "
