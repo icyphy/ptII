@@ -296,6 +296,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <doc>Create a constant sequence</doc>
                 <property name="_location" class="ptolemy.moml.Location" value="60.0, 104.5">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
@@ -366,6 +372,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="380.0, 114.5">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                    </property>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
