@@ -342,7 +342,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 
         /** Notify the listener that the change has failed with the
          *  specified exception.
-          *  @param change The change that has failed.
+         *  @param change The change that has failed.
          *  @param exception The exception that was thrown.
          */
         public void changeFailed(ChangeRequest change, Exception exception) {

@@ -253,26 +253,26 @@ public class ExternalIOPortController extends AttributeController {
                     figure = new NameWrapper(figure, port.getName());
                 }
                 figure = new TerminalFigure(figure, tsite)  {
-                    // Override this because the tooltip may change over time.
-                    // I.e., the port may change from being an input or
-                    // output, etc.
-                    public String getToolTipText() {
-                        String tipText = port.getName();
-                        if (port instanceof IOPort) {
-                            IOPort ioport = (IOPort)port;
-                            if (ioport.isInput()) {
-                                tipText += ", Input";
+                        // Override this because the tooltip may change over time.
+                        // I.e., the port may change from being an input or
+                        // output, etc.
+                        public String getToolTipText() {
+                            String tipText = port.getName();
+                            if (port instanceof IOPort) {
+                                IOPort ioport = (IOPort)port;
+                                if (ioport.isInput()) {
+                                    tipText += ", Input";
+                                }
+                                if (ioport.isOutput()) {
+                                    tipText += ", Output";
+                                }
+                                if (ioport.isMultiport()) {
+                                    tipText += ", Multiport";
+                                }
                             }
-                            if (ioport.isOutput()) {
-                                tipText += ", Output";
-                            }
-                            if (ioport.isMultiport()) {
-                                tipText += ", Multiport";
-                            }
+                            return tipText;
                         }
-                        return tipText;
-                    }
-                };
+                    };
                 // Have to do this as well or awt will not render a tooltip.
                 figure.setToolTipText(port.getName());
             } else {

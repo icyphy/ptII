@@ -117,7 +117,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 // composite, then find an object above it in the hierarchy
                 // that is.
                 AbstractBasicGraphModel graphModel =
-                        (AbstractBasicGraphModel)getGraphModel();
+                    (AbstractBasicGraphModel)getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
                 while (objToHighlight != null
                         && objToHighlight.getContainer() != toplevel) {
@@ -134,7 +134,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                             _animationRenderer = new AnimationRenderer();
                         }
                         FiringEvent.FiringEventType type
-                               = ((FiringEvent)event).getType();
+                            = ((FiringEvent)event).getType();
                         if (type == FiringEvent.BEFORE_ITERATE
                                 || type == FiringEvent.BEFORE_FIRE) {
                             _animationRenderer.renderSelected(figure);
@@ -203,7 +203,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 return _portController;
             } else {
                 throw new RuntimeException(
-                "Unrecognized object: " + semanticObject);
+                        "Unrecognized object: " + semanticObject);
             }
         } else if (object instanceof Port) {
             return _entityPortController;
@@ -238,11 +238,11 @@ public class ActorViewerGraphController extends RunnableGraphController {
     protected void _createControllers() {
         super._createControllers();
         _attributeController = new AttributeController(this,
-                 AttributeController.PARTIAL);
+                AttributeController.PARTIAL);
         _entityController = new ActorController(this,
-                 AttributeController.PARTIAL);
+                AttributeController.PARTIAL);
         _entityPortController = new IOPortController(this,
-                 AttributeController.PARTIAL);
+                AttributeController.PARTIAL);
         _relationController = new RelationController(this);
         _linkController = new LinkController(this);
     }

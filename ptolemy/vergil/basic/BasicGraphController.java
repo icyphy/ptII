@@ -94,7 +94,7 @@ to add commands to the menu or toolbar of the frame it is controlling.
 @since Ptolemy II 2.0
 */
 public abstract class BasicGraphController extends AbstractGraphController
-        implements DebugListener, ValueListener {
+    implements DebugListener, ValueListener {
 
     /** Create a new basic controller.
      */
@@ -174,10 +174,10 @@ public abstract class BasicGraphController extends AbstractGraphController
             // and its own interactors.
             if (semanticObject instanceof NamedObj) {
                 List factoryList = ((NamedObj)semanticObject)
-                        .attributeList(NodeControllerFactory.class);
+                    .attributeList(NodeControllerFactory.class);
                 if (factoryList.size() > 0) {
                     NodeControllerFactory factory = (NodeControllerFactory)
-                           factoryList.get(0);
+                        factoryList.get(0);
                     NamedObjController controller = factory.create(this);
                     controller.setConfiguration(getConfiguration());
                     _initializeInteraction(controller);
@@ -250,66 +250,66 @@ public abstract class BasicGraphController extends AbstractGraphController
             // Have to defer this to the event thread, or repaint
             // doesn't work properly.
             Runnable action = new Runnable() {
-                public void run() {
-                    Locatable location = (Locatable)settable;
-                    Figure figure = getFigure(location);
-                    Point2D origin = figure.getOrigin();
-                    double originalUpperLeftX = origin.getX();
-                    double originalUpperLeftY = origin.getY();
+                    public void run() {
+                        Locatable location = (Locatable)settable;
+                        Figure figure = getFigure(location);
+                        Point2D origin = figure.getOrigin();
+                        double originalUpperLeftX = origin.getX();
+                        double originalUpperLeftY = origin.getY();
 
-                    // NOTE: the following call may trigger an evaluation,
-                    // which results in another recursive call to this method.
-                    // Thus, we ignore the inside call and detect it with a
-                    // private variable.
-                    double[] newLocation;
-                    try {
-                        _inValueChanged = true;
-                        newLocation = location.getLocation();
-                    } finally {
-                        _inValueChanged = false;
-                    }
+                        // NOTE: the following call may trigger an evaluation,
+                        // which results in another recursive call to this method.
+                        // Thus, we ignore the inside call and detect it with a
+                        // private variable.
+                        double[] newLocation;
+                        try {
+                            _inValueChanged = true;
+                            newLocation = location.getLocation();
+                        } finally {
+                            _inValueChanged = false;
+                        }
 
-                    double translationX = newLocation[0] - originalUpperLeftX;
-                    double translationY = newLocation[1] - originalUpperLeftY;
+                        double translationX = newLocation[0] - originalUpperLeftX;
+                        double translationY = newLocation[1] - originalUpperLeftY;
 
-                    if (translationX != 0.0 || translationY != 0.0) {
-                        // The translate method supposedly handles the required
-                        // repaint.
-                        figure.translate(translationX, translationY);
+                        if (translationX != 0.0 || translationY != 0.0) {
+                            // The translate method supposedly handles the required
+                            // repaint.
+                            figure.translate(translationX, translationY);
 
-                        // Reroute edges linked to this figure.
-                        GraphModel model = getGraphModel();
-                        Object userObject = figure.getUserObject();
-                        if (userObject != null) {
-                            Iterator inEdges = model.inEdges(userObject);
-                            while (inEdges.hasNext()) {
-                                Figure connector = getFigure(inEdges.next());
-                                if (connector instanceof Connector) {
-                                    ((Connector)connector).reroute();
-                                }
-                            }
-                            Iterator outEdges = model.outEdges(userObject);
-                            while (outEdges.hasNext()) {
-                                Figure connector = getFigure(outEdges.next());
-                                if (connector instanceof Connector) {
-                                    ((Connector)connector).reroute();
-                                }
-                            }
-                            if (model.isComposite(userObject)) {
-                                Iterator edges = GraphUtilities
-                                        .partiallyContainedEdges(
-                                        userObject, model);
-                                while (edges.hasNext()) {
-                                    Figure connector = getFigure(edges.next());
+                            // Reroute edges linked to this figure.
+                            GraphModel model = getGraphModel();
+                            Object userObject = figure.getUserObject();
+                            if (userObject != null) {
+                                Iterator inEdges = model.inEdges(userObject);
+                                while (inEdges.hasNext()) {
+                                    Figure connector = getFigure(inEdges.next());
                                     if (connector instanceof Connector) {
                                         ((Connector)connector).reroute();
                                     }
                                 }
+                                Iterator outEdges = model.outEdges(userObject);
+                                while (outEdges.hasNext()) {
+                                    Figure connector = getFigure(outEdges.next());
+                                    if (connector instanceof Connector) {
+                                        ((Connector)connector).reroute();
+                                    }
+                                }
+                                if (model.isComposite(userObject)) {
+                                    Iterator edges = GraphUtilities
+                                        .partiallyContainedEdges(
+                                                userObject, model);
+                                    while (edges.hasNext()) {
+                                        Figure connector = getFigure(edges.next());
+                                        if (connector instanceof Connector) {
+                                            ((Connector)connector).reroute();
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
-                } /* end of run() method */
-            }; /* end of Runnable definition. */
+                    } /* end of run() method */
+                }; /* end of Runnable definition. */
             if (EventQueue.isDispatchThread()) {
                 action.run();
             } else {
@@ -330,7 +330,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      */
     protected void _createControllers() {
         _portController = new ExternalIOPortController(this,
-                 AttributeController.PARTIAL);
+                AttributeController.PARTIAL);
     }
 
     // NOTE: The following method name does not have a leading underscore
@@ -372,7 +372,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** The configure action. */
     protected static ConfigureAction _configureAction
-            = new ConfigureAction("Configure (Ctrl-E)");
+    = new ConfigureAction("Configure (Ctrl-E)");
 
     /** The interactor for creating context sensitive menus on the
      *  graph itself.
@@ -461,13 +461,13 @@ public abstract class BasicGraphController extends AbstractGraphController
                         if (_prototype.isInput() && _prototype.isOutput()) {
                             x = center.getX();
                             y = visiblePart.getY()
-                                   + visiblePart.getHeight() - _PORT_OFFSET;
+                                + visiblePart.getHeight() - _PORT_OFFSET;
                         } else if (_prototype.isInput()) {
                             x = visiblePart.getX() + _PORT_OFFSET;
                             y = center.getY();
                         } else if (_prototype.isOutput()) {
                             x = visiblePart.getX()
-                                   + visiblePart.getWidth() - _PORT_OFFSET;
+                                + visiblePart.getWidth() - _PORT_OFFSET;
                             y = center.getY();
                         } else {
                             x = center.getX();
@@ -503,7 +503,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             }
 
             AbstractBasicGraphModel graphModel =
-                    (AbstractBasicGraphModel)getGraphModel();
+                (AbstractBasicGraphModel)getGraphModel();
             final double[] point = SnapConstraint.constrainPoint(x, y);
             final CompositeEntity toplevel = graphModel.getPtolemyModel();
             NamedObj container =
@@ -542,21 +542,21 @@ public abstract class BasicGraphController extends AbstractGraphController
 
             MoMLChangeRequest request =
                 new MoMLChangeRequest(this, container, moml.toString()) {
-                protected void _execute() throws Exception {
-                    super._execute();
+                        protected void _execute() throws Exception {
+                            super._execute();
 
-                    // Set the location of the icon.
-                    // Note that this really needs to be done after
-                    // the change request has succeeded, which is why
-                    // it is done here.  When the graph controller
-                    // gets around to handling this, it will draw
-                    // the icon at this location.
-                    NamedObj newObject = toplevel.getPort(portName);
-                    Location location =
-                             (Location) newObject.getAttribute(locationName);
-                    location.setLocation(point);
-                }
-            };
+                            // Set the location of the icon.
+                            // Note that this really needs to be done after
+                            // the change request has succeeded, which is why
+                            // it is done here.  When the graph controller
+                            // gets around to handling this, it will draw
+                            // the icon at this location.
+                            NamedObj newObject = toplevel.getPort(portName);
+                            Location location =
+                                (Location) newObject.getAttribute(locationName);
+                            location.setLocation(point);
+                        }
+                    };
             request.setUndoable(true);
             container.requestChange(request);
             try {
@@ -575,7 +575,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** Factory for context menus. */
     public static class SchematicContextMenuFactory
-            extends PtolemyMenuFactory {
+        extends PtolemyMenuFactory {
 
         /** Create a new context menu factory associated with the
          *  specified controller.

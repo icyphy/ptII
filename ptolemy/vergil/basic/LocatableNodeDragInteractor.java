@@ -121,7 +121,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         //         = (PtolemyGraphController)_controller.getController();
         //GraphFrame frame = graphController.getFrame();
         BasicGraphController graphController
-                = (BasicGraphController)_controller.getController();
+            = (BasicGraphController)_controller.getController();
         BasicGraphFrame frame = graphController.getFrame();
 
         SelectionModel model = graphController.getSelectionModel();
@@ -144,7 +144,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 if (graphModel.isEdge(userObject) ||
                         graphModel.isNode(userObject)) {
                     NamedObj actual =
-                            (NamedObj)graphModel.getSemanticObject(userObject);
+                        (NamedObj)graphModel.getSemanticObject(userObject);
                     if (actual != null) {
                         namedObjSet.add(actual);
                     }
