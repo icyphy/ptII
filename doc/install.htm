@@ -165,22 +165,13 @@ To build Ptolemy II under Windows NT4.0:
 <li> Use the default Local Package Directory, which should be the
 directory you created above.
 
-<li> Select <CODE>c:\</CODE> as your install root directory
+<li> Select <CODE>c:\cygwin</CODE> as your install root directory.
 
-<li> Select 'Default Text File Type' of DOS
+<li> Select 'Default Text File Type' of DOS.
 
-<li> Ignore the warning "We recommend you do NOT use the root of your hard drive as the cygwin root. Proceed anyway?'  Click on Yes.
+<li> If you are not behind a firewall, click on direct connection.
 
-If you say no, then you will need to specify $PTII with
-the drive name in the path <CODE>c:/users/cxh/ptII</CODE>
-
-The Cygwin faq has a question about installing in C:\
- <!-- Don't include a link to the 'Why not install in c:\?' question
-here, it keeps moving around-->
-
-<li> If you are not behind a firewall, click on direct connection
-
-<li> Select a local mirror
+<li> Select a nearby mirror.
 
 <li> You will be presented with a list of packages to install.
  <br>A complete installation takes at least 75Mb.
@@ -191,6 +182,7 @@ here, it keeps moving around-->
 	<li> bash 
 	<li> cygwin
 	<li> fileutils - For <CODE>ls</CODE>
+	<li> grep - Used by configure
 	<li> make
 	<li> sed - Needed by config.status, which is created by configure
 	<li> shellutils - For <CODE>basename</CODE>
@@ -199,9 +191,10 @@ here, it keeps moving around-->
 
 	 <p> If you are serious about development you may also want: 
 	<ul>
+
+	<li> autoconf - requires gawk, grep, m4
 	<li> diff
 	<li> find
-	<li> grep
 	<li> gzip
 	<li> less
 	<li> tar
@@ -209,19 +202,21 @@ here, it keeps moving around-->
 	</ul>
 
 
-<li> Set the value of the <CODE>PTII</CODE> environment variable to the
+<li> <a name="settingptII">Set the value of the <CODE>PTII</CODE> environment variable</a>
+to the
 name of the directory where Ptolemy II is installed.
 Under Windows 2000, you set the environment variable via
 the Environment tab of the System control panel
 (<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
 <CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt; 
 <CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>
-Usually PTII is set using forward slashes, so something like
-<CODE>c:/users/cxh/ptII</CODE>
+ <p>The PTII value should be set using back slashes so that javac
+gets the right path if you've installed Cygwin in a location
+other than <CODE>C:\</CODE> such as <CODE>C:\Cygwin</CODE>
 
 <li> In the Environment tab, you should also set your path to include the location of the JDK bin directory (i.e. <CODE>C:\jdk1.3\bin</CODE>)
 
- <p>When you run C:\cygwin.bat, your path
+ <p>When you run cygwin.bat, your path
 should be set to include the Cygwin tools.  You can test this
 by typing <CODE>type make</CODE>, which should return
 <pre>
