@@ -113,6 +113,15 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return result;
     }
 
+    /** Return the current time obtained from the executive director.
+     *  @return The current time.
+     */
+    public double getCurrentTime() {
+        CompositeActor cont = (CompositeActor)getContainer();
+        Director execDir = (Director)cont.getExecutiveDirector();
+        return execDir.getCurrentTime();
+    }
+
     /** Return the next iteration time obtained from the executive director.
      *  @return The next iteration time.
      */
@@ -177,11 +186,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
         CompositeActor hs = (CompositeActor)getContainer();
         CTDirector dir = (CTDirector)hs.getExecutiveDirector();
-        if (tr != null) {
+        /*if (tr != null) {
             // update current time so that the destination refinement can
             // schedule its firing at the correct time.
             setCurrentTime(dir.getNextIterationTime());
-        }
+            }*/
         return super.postfire();
     }
 
