@@ -47,13 +47,13 @@ one of the strings will be changed.
 */
 public class StringToken extends ObjectToken {
 
-    /** Contruct a token with an empty string.
+    /** Construct a token with an empty string.
      */
     public StringToken() {
         this("");
     }
 
-    /** Contruct a token with the specified string.
+    /** Construct a token with the specified string.
      */
     public StringToken(String value) {
         if (value != null) {
@@ -68,7 +68,7 @@ public class StringToken extends ObjectToken {
 
     /** Return a new StringToken whose value is the string value
      *  of the argument token appended to the String contained in
-     *  this Ttoken.
+     *  this Token.
      *  @param token The token to add to this Token
      *  @exception IllegalActionException If the passed token is
      *   not of a type that can be added to this Tokens value in a
@@ -100,7 +100,7 @@ public class StringToken extends ObjectToken {
 
     /** Return a new StringToken whose value is the string value
      *  of the argument token prepended to the String contained in
-     *  this Ttoken.
+     *  this Token.
      *  @param token The token to concatenate this Token to.
      *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value in
@@ -145,7 +145,7 @@ public class StringToken extends ObjectToken {
      *  the result.
      *  @param token The token to lexicographically compare the value this
      *  Token with.
-     *  @return BooleanToken indicating result of comparision.
+     *  @return BooleanToken indicating result of comparison.
      *  @exception IllegalActionException Thrown if the passed token
      *  is not of a type that can be compared this Tokens value.
      */
