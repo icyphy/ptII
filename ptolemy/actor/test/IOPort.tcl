@@ -1001,7 +1001,7 @@ test IOPort-11.2 {Check liberalLink: link a linked relation from inside } {
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
     $p0 setMultiport true
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
-    $r1 setWidth 0
+    $r1 setWidth 1
     $p0 link $r1
     catch {$p0 link $r1} msg1
     list $msg1
@@ -1064,6 +1064,19 @@ test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
     list $msg1
 } {{}}
 
+test IOPort-11.6 {Check cannot link a relation twice to a single port} {
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
+    set r1 [java::new ptolemy.actor.IORelation $e0 R1]
+    $p0 setMultiport false
+    $r1 setWidth 1
+    $p0 link $r1
+    catch {$p0 link $r1} msg1
+    list $msg1
+} {{ptolemy.kernel.util.IllegalActionException: Attempt to link more than one relation to a single port.
+  in .<Unnamed Object>.P0 and .<Unnamed Object>.R1}}
 
 ######################################################################
 ####

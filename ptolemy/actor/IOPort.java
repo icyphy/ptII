@@ -1936,9 +1936,9 @@ public class IOPort extends ComponentPort {
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If the link crosses levels of
      *   the hierarchy, or the port has no container, or the relation
-     *   is not a ComponentRelation.
+     *   is not an instance of IORelation.
      */
-    public void link(ComponentRelation relation)
+    public void link(Relation relation)
             throws IllegalActionException {
         super.link(relation);
         _invalidate();
@@ -3040,62 +3040,58 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         if (_isInsideLinkable(relation.getContainer())) {
             // An inside link
-            if (!isInsideLinked(relation)) {
-                // Check for existing inside links
-                if (!isMultiport() && numInsideLinks() >= 1) {
+            // Check for existing inside links
+            if (!isMultiport() && numInsideLinks() >= 1) {
+                throw new IllegalActionException(this, relation,
+                        "Attempt to link more than one relation " +
+                        "to a single port.");
+            }
+            if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
+                // Relation is a bus.
+                if (!isMultiport()) {
                     throw new IllegalActionException(this, relation,
-                            "Attempt to link more than one relation " +
+                            "Attempt to link a bus relation " +
                             "to a single port.");
                 }
-                if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
-                    // Relation is a bus.
-                    if (!isMultiport()) {
-                        throw new IllegalActionException(this,  relation,
-                                "Attempt to link a bus relation " +
-                                "to a single port.");
-                    }
-                    if (!relation.isWidthFixed()) {
-                        // Make sure there are no other busses already
-                        // connected with unspecified widths.
-                        try {
-                            _getInsideWidth(null);
-                        } catch (InvalidStateException ex) {
-                            throw new IllegalActionException(this, relation,
-                                    "Attempt to link a second bus relation " +
-                                    "with unspecified width to the inside " +
-                                    "of a port.");
-                        }
+                if (!relation.isWidthFixed()) {
+                    // Make sure there are no other busses already
+                    // connected with unspecified widths.
+                    try {
+                        _getInsideWidth(null);
+                    } catch (InvalidStateException ex) {
+                        throw new IllegalActionException(this, relation,
+                                "Attempt to link a second bus relation " +
+                                "with unspecified width to the inside " +
+                                "of a port.");
                     }
                 }
             }
         } else {
             // An outside link
-            if (!isLinked(relation)) {
-                // Check for existing outside links
-                if (!isMultiport() && numLinks() >= 1) {
+            // Check for existing outside links
+            if (!isMultiport() && numLinks() >= 1) {
+                throw new IllegalActionException(this, relation,
+                        "Attempt to link more than one relation " +
+                        "to a single port.");
+            }
+            if (relation.getWidth() != 1 || !relation.isWidthFixed()) {
+                // Relation is a bus.
+                if (!isMultiport()) {
                     throw new IllegalActionException(this, relation,
-                            "Attempt to link more than one relation " +
+                            "Attempt to link a bus relation " +
                             "to a single port.");
                 }
-                if (relation.getWidth() != 1 || !relation.isWidthFixed()) {
-                    // Relation is a bus.
-                    if (!isMultiport()) {
-                        throw new IllegalActionException(this,  relation,
-                                "Attempt to link a bus relation " +
-                                "to a single port.");
-                    }
-                    Iterator relations = linkedRelationList().iterator();
-                    while (relations.hasNext()) {
-                        IORelation theRelation = (IORelation)relations.next();
-                        // A null link (supported since indexed links) might
-                        // yield a null relation here. EAL 7/19/00.
-                        if (theRelation != null &&
-                                !theRelation.isWidthFixed()) {
-                            throw new IllegalActionException(this, relation,
-                                    "Attempt to link a second bus relation " +
-                                    "with unspecified width to the outside " +
-                                    "of a port.");
-                        }
+                Iterator relations = linkedRelationList().iterator();
+                while (relations.hasNext()) {
+                    IORelation theRelation = (IORelation)relations.next();
+                    // A null link (supported since indexed links) might
+                    // yield a null relation here. EAL 7/19/00.
+                    if (theRelation != null &&
+                            !theRelation.isWidthFixed()) {
+                        throw new IllegalActionException(this, relation,
+                                "Attempt to link a second bus relation " +
+                                "with unspecified width to the outside " +
+                                "of a port.");
                     }
                 }
             }
