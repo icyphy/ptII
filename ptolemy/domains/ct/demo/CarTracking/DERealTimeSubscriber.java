@@ -145,9 +145,13 @@ public class DERealTimeSubscriber extends Source
             //        e.getMessage());
             System.err.println("Warning: " + e.getMessage());
         }
-     
-        // read the current data in the JavaSpaces, and use
-        // it as the initial condition
+    }
+
+    /** Register for notification. Only after initialize() can notified
+     *  event be allow to be output.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         TokenEntry entryTemplate = new TokenEntry(_entryName, 
                 null, null);
         // request for notification
@@ -163,6 +167,8 @@ public class DERealTimeSubscriber extends Source
                     "failed registering for notification. " + te.getMessage());
         }
     }
+        
+        
     
     /** Fork a new thread to handle the notify event.
      */
@@ -253,8 +259,7 @@ public class DERealTimeSubscriber extends Source
                         _tokenList.addLast(entry.token); 
                         try {
                             _container.getDirector().fireAt(_container, 
-                                    entry.serialNumber.doubleValue());
-                            //(double)System.currentTimeMillis());
+                                    (double)System.currentTimeMillis());
                         } catch (IllegalActionException ex) {
                             throw new InvalidStateException(_container,
                                     "can't register fireAt with the director."
