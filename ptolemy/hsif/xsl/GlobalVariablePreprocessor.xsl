@@ -134,7 +134,7 @@ xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
                 </xsl:for-each>
             </xsl:for-each>
 
-            <xsl:for-each select="descendant::Expr/descendant::VarRef">
+            <xsl:for-each select="descendant::Expr/descendant::VarRef|descendant::AExpr/descendant::VarRef">
                 <xsl:variable name="name" select="key('nid',@var)/@name"/>
                 <xsl:for-each select="//DNHA/IntegerVariable|//DNHA/RealVariable|//DNHA/BooleanVariable">
                     <xsl:if test="@name=$name">
