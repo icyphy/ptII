@@ -118,7 +118,7 @@ public class Clock extends TimedSource {
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 
-        int defaultValues[][] = {{1,0}};
+        int defaultValues[][] = {{1, 0}};
         IntMatrixToken defaultValueToken = new IntMatrixToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
         // Call this so that we don't have to copy its code here...
@@ -165,10 +165,11 @@ public class Clock extends TimedSource {
                         "Value of offsets is not a row vector.");
             }
             double previous = 0.0;
-            for (int j=0; j<offsts[0].length; j++) {
+            for (int j = 0; j < offsts[0].length; j++) {
                 if (offsts[0][j] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of offsets is not nondecreasing and nonnegative.");
+                            "Value of offsets is not nondecreasing " +
+                            "and nonnegative.");
                 }
                 previous = offsts[0][j];
             }
@@ -176,7 +177,8 @@ public class Clock extends TimedSource {
             double prd = ((DoubleToken)period.getToken()).doubleValue();
             if (prd <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Period is required to be positive.  Period given: " + prd);
+                        "Period is required to be positive.  " +
+                        "Period given: " + prd);
             }
         } else {
             super.attributeChanged(attribute);
@@ -304,7 +306,7 @@ public class Clock extends TimedSource {
 
         double[][] offsts =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
-        getDirector().fireAt(this,offsts[0][0]);
+        getDirector().fireAt(this, offsts[0][0]);
 
         _currentValue = _getValue(0).zero();
         _phase = 0;
@@ -324,7 +326,7 @@ public class Clock extends TimedSource {
         // A negative number here indicates that no future firing should
         // be scheduled.
         if (_tentativeNextFiringTime >= 0.0) {
-            getDirector().fireAt(this,_tentativeNextFiringTime);
+            getDirector().fireAt(this, _tentativeNextFiringTime);
         }
         return super.postfire();
     }
