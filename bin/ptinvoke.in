@@ -540,7 +540,7 @@ command line if Cygwin is present.
 local installation
 
 Each of the above commands takes a '-help' command line argument
-that will display usage information for that command. "For example:"
+that will display usage information for that command. For example:
     vergil -help
 EOF
 	exit
