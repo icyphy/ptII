@@ -111,8 +111,8 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
                 }
             } catch (Exception ex) {
                 StringBuffer sb = new StringBuffer();
-                for (int i=0; i<(num-1); i++) {
-                    if (i==0) {
+                for (int i = 0; i < (num-1); i++) {
+                    if (i == 0) {
                         sb.append(argValues[i].toString());
                     } else {
                         sb.append(", " + argValues[i].toString());
