@@ -2398,6 +2398,7 @@ else
 	if test -f "$X10_DIR/tjx10p-11/lib/x10.jar"; then
 	   X10_CLASSES=${X10_DIR}/tjx10p-11/lib/x10.jar
 	   AC_MSG_RESULT([$X10_CLASSES])
+	   PTX10_DIR=x10
 	else
 	   X10_CLASSES=
 	   AC_MSG_RESULT([no])
