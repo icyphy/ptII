@@ -222,13 +222,10 @@ public class SerialComm extends TypedAtomicActor
                 }
                 out.flush();
             }
-
-        } catch (Exception ex) {
-            if (_debugging) _debug("Win0" + ex.getMessage());
-            throw new IllegalActionException(this, "I/O error " +
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, "I/O error: " +
                     ex.getMessage());
         }
-
     }
 
     /** Preinitialize does the resource allocation for this actor.
@@ -243,7 +240,6 @@ public class SerialComm extends TypedAtomicActor
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
         try {
             String serialPortNameValue =
                     ((StringToken)(serialPortName.getToken())).stringValue();
@@ -262,8 +258,9 @@ public class SerialComm extends TypedAtomicActor
             _serialPort.notifyOnDataAvailable(true);
             // Directs serial events on this port to my serialEvent method.
         } catch (Exception ex) {
-            if (_debugging) _debug("Win1 " + ex.getClass().getName()
-                    + " " + ex.getMessage());
+            throw new IllegalActionException(this,
+                    "Communication port initialization failed: "
+                    + ex.toString());
         }
     }
 
