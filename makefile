@@ -29,11 +29,6 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Order matters here.
-# Go into util first so we get the latest version of the testsuite
-# Don't go down into collections, it does not have a makefile
-DIRS = util ptolemy doc gui #collections
-
 # Root of Ptolemy II directory
 ROOT =		.
 
@@ -44,8 +39,19 @@ VPATH =		$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/ptdir.mk
+# Order matters here.
+# Go into util first so we get the latest version of the testsuite
+# Don't go down into collections, it does not have a makefile
+DIRS = util ptolemy doc gui #collections
+
+EXTRA_SRCS = \
+	configure.in \
+	configure
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	config.log config.status config.cache
 
 # Glimpse is a tool that prepares an index of a directory tree.
 # glimpse is not included with Tycho, see http://glimpse.cs.arizona.edu
@@ -59,3 +65,20 @@ glimpse: .glimpse_exclude
 	$(GLIMPSEINDEX) -H `pwd` `pwd`
 	chmod a+r .glimpse_*
 	rm -f glimpse_exclude
+
+
+configure: configure.in
+	autoconf
+	#for dir in $(subdirs) ; do \
+	#	(cd $$dir; autoconf) \
+	#done;
+
+distclean:
+	rm -f mk/ptII.mk config.log config.status config.cache
+	#for dir in $(subdirs) ; do \
+	#	(cd $$dir; $(MAKE) $@) \
+	#done;
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
+
