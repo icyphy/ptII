@@ -30,27 +30,18 @@
 
 package ptolemy.actor.lib.joystick;
 
-import ptolemy.actor.lib.Source;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.data.DoubleMatrixToken;
-import java.util.Iterator;
-import java.util.Vector;
 
-import java.awt.*;
-import java.awt.event.*;
 import java.io.IOException;
 
-import com.centralnexus.input.*;
+//import com.centralnexus.input.*;
 
 //////////////////////////////////////////////////////////////////////////
 ////
