@@ -1647,10 +1647,17 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         "ptolemy.actor.lib.MathFunction not supported, since " 
                         + "it dynamically creates ports.");
             } else if (entity.getClass().getName().equals(
-                        "ptolemy.actor.lib.TypeTest")) {
+                               "ptolemy.actor.lib.TypeTest")) {
                 throw new RuntimeException("Code Generation for " + 
                         "ptolemy.actor.lib.TypeTest not supported, since " 
                         + "it walks around the model.");
+            } else if (entity.getClass().getName().equals(
+                               "ptolemy.actor.lib.RecordAssembler") ||
+                    entity.getClass().getName().equals(
+                            "ptolemy.actor.lib.RecordDisassembler")) {
+                throw new RuntimeException("Code Generation for " + 
+                        "some record actors not supported, since" 
+                        + "they iterate over ports.");
             } else if (entity instanceof CompositeActor) {
                 CompositeActor composite = (CompositeActor)entity;
                 _createCompositeActor(composite, newClassName, options);
