@@ -65,7 +65,6 @@ JSRCS = \
 	Actor.java \
 	AtomicIOPort.java \
 	CompositeActor.java \
-	ControlledActor.java \
 	DataComputingInit.java \
 	Director.java \
 	Executable.java \
