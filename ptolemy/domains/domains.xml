@@ -24,6 +24,7 @@
 	    <!-- Don't include rtp, we are not shipping it -->
 	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
 	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
+            <input source="ptolemy/domains/hde/lib/hdeentities.xml"/>
       </group>
     ?>
   </configure>
