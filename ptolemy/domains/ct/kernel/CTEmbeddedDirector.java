@@ -52,13 +52,13 @@ import ptolemy.kernel.util.Workspace;
    information is accessible from outer domain which has a continuous
    time and understands the meaning of step size.
 
+   @see CTMultiSolverDirector
+   @see CTTransparentDirector
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj)
-   @Pt.AcceptedRating Yellow (chf)
-   @see CTMultiSolverDirector
-   @see CTTransparentDirector
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public class CTEmbeddedDirector extends CTMultiSolverDirector
     implements CTTransparentDirector {
@@ -122,8 +122,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#emitTentativeOutputs()
+    /** Emit the tentative outputs of dynamic actors.
      */
     public void emitTentativeOutputs() {
         try {
@@ -181,7 +180,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             getCurrentODESolver().fireStateTransitionActors();
             // No seperate phase for producing output, because
             // a CT subsystem needs to produce output if it works
-            // as a state transition actor. 
+            // as one of state transition actors. 
             super.produceOutput();
         } else if (executionPhase 
             == CTExecutionPhase.GENERATINGEVENTS_PHASE) {
@@ -275,8 +274,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#goToMarkedState()
+    /** Restore the saved states, which include the iteration begin time and
+     *  the states of stateful actors.
      */
     public void goToMarkedState() {
         try {
@@ -296,60 +295,61 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     /** Call initialize method of super class.
      *  Remove the first breakpoint, the model start time, from the break 
      *  point table. 
-     *  @see ptolemy.actor.Executable#initialize()
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        // FIXME: why?
         getBreakPoints().removeFirst();
     }
-      /** Return true if this is the discrete phase execution.
-       *  @return True if this is the discrete phase execution.
-       */
-      public boolean isDiscretePhase() {
-          CTGeneralDirector executiveDirector = 
-              getEnclosingCTGeneralDirector();
-          if (executiveDirector != null) {
-              return getEnclosingCTGeneralDirector().isDiscretePhase();
-          } else {
-              // This should never happen because a CT model with
-              // a CTEmbeddedDirector must be used inside another CT model.
-              throw new InternalErrorException("A CT model with " +
-                  "a CTEmbeddedDirector must be used inside another CT model.");
-          }
-      }
+    
+    /** Return true if this is the discrete phase execution.
+     *  @return True if this is the discrete phase execution.
+     */
+    public boolean isDiscretePhase() {
+        CTGeneralDirector executiveDirector = 
+            getEnclosingCTGeneralDirector();
+        if (executiveDirector != null) {
+            return getEnclosingCTGeneralDirector().isDiscretePhase();
+        } else {
+            // This should never happen because a CT model with
+            // a CTEmbeddedDirector must be used inside another CT model.
+            throw new InternalErrorException("A CT model with " +
+            "a CTEmbeddedDirector must be used inside another CT model.");
+        }
+    }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isOutputAccurate()
+    /** Return true if all output step size control actors are satisfied
+     *  with the current step size. 
+     *  @return True if the current step size is accurate.
      */
     public boolean isOutputAccurate() {
         _outputAcceptable = _isOutputAccurate();
         return _outputAcceptable;
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isStateAccurate()
+    /** Return true if all state step size control actors are satisfied
+     *  with the current step size. 
+     *  @return True if the current step size is accurate.
      */
     public boolean isStateAccurate() {
         _stateAcceptable = _isStateAccurate();
         return _stateAcceptable;
     }
 
-      /** Return true if the current integration step
+    /** Return true if the current integration step
      *  is accurate. This is determined by asking all the
      *  step size control actors in the state transition schedule and
      *  output schedule.
      *  @return True if the current step is accurate.
      */
     public boolean isThisStepAccurate() {
-        _debug(getName() + ": Checking local actors for success.");
+        if (_debugging && _verbose) {
+            _debug(getName() + ": Checking local actors for success.");
+        }
         if (!_isStateAccurate()) {
-            //if (_debugging) _debug(getFullName() +
-            //        " current step not successful because of STATE.");
             _stateAcceptable = false;
             return false;
         } else if (!_isOutputAccurate()) {
-            //if (_debugging) _debug(getFullName() +
-            //        " current step not successful because of OUTPUT.");
             _stateAcceptable = true;
             _outputAcceptable = false;
             return false;
@@ -360,8 +360,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
     
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#markState()
+    /** Mark the known good states. Including the iteration begin time
+     *  and the states of the stateful actors.
      */
     public void markState() {
         try {
@@ -378,30 +378,16 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Update the states of actors directed by this director.
-     *  Discrete events at current time will be consumed and produced.
-     *  @return True if this is not a top-level director, or the simulation
-     *     is not finished and stop() has not been called.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-//    public boolean postfire() throws IllegalActionException {
-//        if (_debugging) _debug(getFullName(), " postfire.");
-//        // FIXME: this postfire method produces outputs
-//        //_discretePhaseExecution();
-//        updateContinuousStates();
-//        // The current time will be the begin time of the next iteration.
-//        _setIterationBeginTime(getCurrentTime());
-//        return !_stopRequested;
-//    }
-
     /** Return the predicted next step size, which is the minimum
      *  of the prediction from step size control actors.
      *  @return The predicted step size from this subsystem.
      */
     public double predictedStepSize() {
         try {
-            if (_debugging) _debug(getName(), "at " + getModelTime(),
+            if (_debugging) {
+                _debug(getName(), "at " + getModelTime(),
                     " predict next step size" + _predictNextStepSize());
+            }
             return _predictNextStepSize();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException (
@@ -409,25 +395,14 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Return true always. Recompute the schedules if there
-     *  was a mutation. Synchronize time with the outer domain,
+    /** Call super.prefire. Recompute the schedules if necessary. 
+     *  Synchronize time with the outer domain,
      *  and adjust the contents of the breakpoint table with
      *  respect to the current time.
-     *  @return True always.
+     *  @return True if the super.prefire returns true.
      */
     public boolean prefire() throws IllegalActionException {
-        // FIXME: the following code can be simplified into
-        // getScheduler().getSchedule();
-        // or 
-        // return true, 
-        // because the initialize
-        // method is responsible to get a valid schedule.
-        // FIXME: will this be affected by mobile models?
-        // I guess not, if the mobile model requests an initialization
-        // whenever a model change happens.
-        
         getScheduler().getSchedule();
-
         return super.prefire();
     }
 

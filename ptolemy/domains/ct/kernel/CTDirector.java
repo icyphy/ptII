@@ -51,7 +51,6 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
@@ -59,7 +58,7 @@ import ptolemy.math.Utilities;
    This is the abstract base class for directors in the CT domain.
    <P>
    A CTDirector has a CTScheduler which provides the schedules for firing
-   the actors in different phases of execution.
+   the actors in different phases of execution in one iteration.
    <P>
    A CTDirector may have more than one ODE solvers. In each iteration, one
    of the ODE solvers is taking charge of solving the ODEs. This solver
@@ -67,8 +66,8 @@ import ptolemy.math.Utilities;
    <P>
    The continuous time (CT) domain is a timed domain. There is a global
    notion of time that all the actors are aware of. Time is maintained
-   by the director. The method getCurrentTime() returns the current
-   notion of time. Time can be set by the setCurrentTime() method, but this
+   by the director. The method getModelTime() returns the current
+   notion of time. Time can be set by the setModelTime() method, but this
    method should not the called by the actors. Time can only be set
    by directors or their ODE solvers.
    <P>
@@ -106,31 +105,30 @@ import ptolemy.math.Utilities;
    is less than this resolution, then the fixed point is considered to have
    reached.
    Default value is 1e-6.
-   <LI> <code>timeResolution</code>: The minimum resolution
-   of time. If two time values differ less than this value,
-   they are considered equivalent. Default value is 1e-10.
+   <LI> <code>timeScale</code>: The number of the digits to the right of
+   the decimal point (the fractional part) of values of the model time. 
+   its default value for time scale is 10. The corresponding time resolution 
+   is 10^(-10). If two time values differ less than this value,
+   they are considered equivalent.
    <P>
    This director also maintains a breakpoint table to record all
-   predictable breakpoints that are greater than the current time.
-   The breakpoints are sorted in their chronological order in the table.
+   predictable breakpoints that are greater than or equal to the current time.
+   The breakpoints are sorted in their chronological order.
    Breakpoints at the same time (controlled by the time resolution parameter)
    are considered to be one. A breakpoint can be inserted into the table by
    calling the fireAt() method. The fireAt method may be requested
    by the director, which inserts the start time and stop time of the
    execution. In this case, the first parameter actor is null. The fireAt
-   method may also be requested by the actors and the requests are handled
-   differently depending on the second parameter time. If the time is the
-   current time, and if the actors are discrete actors, the actors are
-   added into a refireActor list and will be fired in the current iteration.
-   Otherwise, the time will be inserted into the breakpoint table.
+   method may also be requested by the actors and the requested firing time 
+   will be inserted into the breakpoint table.
    <p>
 
+   @see ptolemy.actor.Director
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (liuj)
-   @Pt.AcceptedRating Green (chf)
-   @see ptolemy.actor.Director
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public abstract class CTDirector extends StaticSchedulingDirector 
     implements TimedDirector, CTGeneralDirector {
@@ -342,8 +340,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     /** Override the fire method of the super class. In this abstract
      *  base class, nothing is performed. 
      */
-    public void fire() throws IllegalActionException {
-    }
+    public abstract void fire() throws IllegalActionException; 
     
     /** Handle the firing request from the contained actors.
      *  If the specified time is earlier than the current time, throw
@@ -352,7 +349,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  <p>
      *  From this director's point of view, it is irrelevant
      *  which actor requests the breakpoint. All actors will be
-     *  executed at every breakpoint. FIXME: difference between CT and DE.
+     *  executed at every breakpoint. 
      *  <p>
      *  If the actor is null, it indicates the time for the start or
      *  the stop of an execution. Otherwise, it is the actor that
@@ -430,7 +427,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Return the enclosing CT general director of this director. For 
-     *  CTMultiSolverDirector, null is always returned. Subclasses of this
+     *  this base class, null is always returned. Subclasses of this
      *  class, {@link ptolemy.domains.ct.kernel.CTEmbeddedDirector},
      *  may override this method.
      *
@@ -565,7 +562,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _valueResolution;
     }
 
-    /** Initialization after type resolution.
+    /** Initialize model after type resolution.
      *  In addition to calling the initialize() method of the super class,
      *  this method records the current system time as the "real" starting
      *  time of the execution. This starting time is used when the
@@ -580,8 +577,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
-        
-        // set current time and initialize the contained actors.
+        // set current time and initialize actors.
         super.initialize();
     }
 
@@ -592,6 +588,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return True if this is a breakpoint iteration.
      */
     public final boolean isBreakpointIteration() {
+        // FIXME: is thie method necessary?
         return _breakpointIteration;
     }
 
@@ -620,16 +617,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** If this director is not at top level, request a refiring at
      *  the first breakpoint. 
-     *  
-     *  FIXME: the rest of the breakpoints may not be interesting...
-     *  However, the stop time is important.
-     *  // If we constraint that  
-     * 
      *  Otherwise, if the stop() method has not been called and all the
      *  actors return true at postfire, return true. 
-     * 
-     *  FIXME: make this method finale.
-     * 
      *  @return True if the Director wants to be fired again in the
      *  future.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -657,9 +646,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  If this director does not have a container and a scheduler,
      *  or the director does not fit this level of hierarchy,
      *  an IllegalActionException will be thrown.
+     *  
      *  Invalidate the schedule. Clear statistical variables.
      *  Clear the break point table.
-     *  Preinitialize all the directed actors.
+     *  
+     *  Preinitialize all actors.
      *  Time does not have a meaning yet. So actors should not
      *  use a notion of time at the preinitialize stage.
      *
@@ -696,22 +687,21 @@ public abstract class CTDirector extends StaticSchedulingDirector
             throw new IllegalActionException( this,
                     "has no scheduler.");
         }
-
-        // Initialize the local variables except the time objects. 
-        _initializeLocalVariables();
-
         // NOTE: Force to reconstruct a CT schedule.
         // invalidate schedule
         scheduler.setValid(false);
+
+        // Initialize the local variables except the time objects. 
+        _initializeLocalVariables();
 
         super.preinitialize();
 
         // Time objects can only initialized in the end after 
         // the time scale and time resolutioin is set.
         // NOTE: This has to be called in the preinitialize method because
-        // the Time objects (_startTime and _stopTime) need the director
+        // time objects (_startTime and _stopTime) need the director
         // to provide a time resolution. 
-        // NOTE: Time resolution is provided bythe super class (Director)
+        // NOTE: Time resolution is provided by the super class (Director)
         // with the preinitialize method. So, this method must be called 
         // after the super.preinitialize() is called.
         // NOTE: _timeBase is not initialized here but in initialize method
@@ -720,47 +710,17 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _stopTime = new Time(this, _stopTimeValue);
         _iterationBeginTime = _startTime;
         _iterationEndTime = _stopTime;
-
-
     }
 
-    /** Set the current step size. The current step size
-     *  is very import during
-     *  the simulation and should NOT be changed in the middle of an
-     *  iteration.
+    /** Set the current step size. The current step size is used during an 
+     *  iteration and should NOT be changed in the middle of an iteration.
      *  @param stepSize The step size to be set.
      */
     public void setCurrentStepSize(double stepSize) {
-        // FIXME: we may not need to do this... since a small difference
-        // of step size does not matter considering the value error tolerance
-        // of the solvers...
-        // However, it does affect the stop time of the current iteration.
-        // double newStepsize = Utilities.round(stepsize, getTimeResolution());
         if (_debugging) {
-            _debug("----- Setting current step size to (adjusted) " 
-                + stepSize);
+            _debug("----- Setting current step size to " + stepSize);
         }
         _currentStepSize = stepSize;
-    }
-
-    /** Set a new value to the current time of the model, where the new
-     *  time can be earlier than the current time to support rollback.
-     *  This overrides the setCurrentTime() in the Director base class.
-     *  It is OK that the new time is less than the current time
-     *  in the director, since CT sometimes needs roll-back.
-     *  This is a critical parameter in an execution, and the
-     *  actors are not supposed to call it.
-     *  @param newTime The new current simulation time.
-     */
-    public void setModelTime(Time newTime) {
-        // FIXME: we must be very careful about this...
-        // If this feature is only necessary for the CTMixedSignalDirector,
-        // but not the others... put the following code into there only...
-        
-        if (_debugging) {
-            _debug("----- Setting current time to " + newTime);
-        }
-        _currentTime = newTime;
     }
 
     /** Mark the specified actor as having been prefired in the current
@@ -774,8 +734,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** Set the suggested next step size. If the argument is
      *  large than the maximum step size, then set the
-     *  suggested next step size to the
-     *  maximum step size.
+     *  suggested next step size to the maximum step size.
      *  @param stepsize The suggested next step size.
      */
     public void setSuggestedNextStepSize(double stepsize) {
@@ -790,6 +749,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ////                         protected methods                 ////
 
     /** Create and initialize all parameters to their default values.
+     *  This is called by the constructor.
      */
     protected void _initParameters() {
         try {
@@ -825,15 +785,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
             valueResolution.setExpression("1e-6");
             valueResolution.setTypeEquals(BaseType.DOUBLE);
             
-            timeScale = new Parameter(this, "timeScale",
-                    new IntToken(10));
+            timeScale = new Parameter(this, "timeScale", new IntToken(10));
             timeScale.setTypeEquals(BaseType.INT);
             
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
-
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
@@ -847,8 +805,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  class name, this method will try to instantiate it by looking
      *  for the java class.
      *  @param className The solver's full class name.
-     *  @exception IllegalActionException If the solver is unable to be
-     *       created.
+     *  @return a new ODE solver.
+     *  @exception IllegalActionException If the solver can not be created.
      */
     protected ODESolver _instantiateODESolver(String className)
             throws IllegalActionException {
@@ -874,8 +832,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     /** Set to indicate that this is an iteration just after a breakpoint.
      *  A CTDirector, after finding out that a breakpoint has happened at
      *  the current time, should call this method with a true argument.
-     *  In the next iteration,
-     *  the solver may be changed to handle the breakpoint.
+     *  In the next iteration, a new solver may be used to resolve states.
      *
      *  @param breakpoint True if this is a breakpoint iteration.
      */
@@ -939,7 +896,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  to ensure an iteration ends at an expected time without introducing
      *  small difference (as small as time resolution) via numerical 
      *  computation of solver.
-     *  @param time The iteration begin time.
+     *  @param time The iteration end time.
      */
     protected void _setIterationEndTime(Time time) {
         _iterationEndTime = time;
@@ -950,7 +907,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *
      *  @return False.
      */
-    protected boolean _writeAccessRequired() {
+    protected final boolean _writeAccessRequired() {
         return false;
     }
 
@@ -962,13 +919,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     protected boolean _postfireReturns = true;
 
-    // The real starting time in term of system millisecond counts.
+    /** The real starting time in term of system millisecond counts.
+     */
     protected long _timeBase;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Initialize the local variables of the CTDirector. 
+    // Initialize the local variables of the CTDirector. This is called in
+    // the preinitialize method.
     // NOTE: Time objects are not initialized. They are initialized at
     // the end of the preinitialize method of this director.
     private void _initializeLocalVariables() throws IllegalActionException {
@@ -993,8 +952,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
        // clear the existing breakpoint table or 
        // create a breakpoint table if necessary
-       if (_debugging) _debug(getFullName(),
-               "create/clear break point table.");
+       if (_debugging) {
+           _debug(getFullName(), "create/clear break point table.");
+       }
        TotallyOrderedSet breakpoints = getBreakPoints();
        if (breakpoints != null) {
            breakpoints.clear();
@@ -1008,46 +968,39 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     // Indicate whether this is a breakpoint iteration.
     private boolean _breakpointIteration = false;
-
     // A table for breakpoints.
     private TotallyOrderedSet _breakPoints;
 
-    // FIXME: are all the following private variables initialized before using?
-    // Yes, in the _initializeLocalVariables() method.
-    
+    // NOTE: all the following private variables are initialized
+    // in the _initializeLocalVariables() method before usage.
     // Current ODE solver.
     private ODESolver _currentSolver = null;
-
     // Simulation step sizes.
     private double _currentStepSize;
-
     // Indicate that this is the discrete phase.
     private boolean _discretePhase;
+    // the error tolerance for state resolution
     private double _errorTolerance;
-    
     // The private variable indicates the current execution phase of this
     // director.
     private CTExecutionPhase _executionPhase;
+    // the first step size used by solver.
     private double _initStepSize;
-
     // The begin time of a iteration. This value is remembered so that
     // we don't need to resolve it from the iteration end time and step size.
     private Time _iterationBeginTime;
-    
+    // the iteration end time.
     private Time _iterationEndTime;
     private int _maxIterations;
     private double _maxStepSize;
     private double _minStepSize;
-
-    /** Collection of actors that have been prefired(). */
+    // Collection of actors that have been prefired()
     private Set _prefiredActors = new HashSet();
-
     // Local copies of parameters.
     private Time _startTime;
     private double _startTimeValue;
     private Time _stopTime;
     private double _stopTimeValue;
     private double _suggestedNextStepSize;
-
     private double _valueResolution;
 }

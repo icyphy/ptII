@@ -186,16 +186,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             super.fire();
             return;
         }
+        
         CompositeActor container = (CompositeActor) getContainer();
         Director exe = container.getExecutiveDirector();
         
         _discretePhaseExecution();
         
+        // FIXME: this can be easily wrapped into the super class.
         // Mark states and prepare for roll back.
         _markStates();
         // Guarantee to stop at the iteration end time.
         _setIterationBeginTime(getModelTime());
-        
         // FIXME: the following statement may not be necessary.
         fireAt(null, getIterationEndTime());
 
@@ -212,6 +213,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     public void initialize() throws IllegalActionException {
         if (_debugging) _debug(getFullName() + " initialize.");
         super.initialize();
+        _mutationVersion = -1;
         if (!_isTopLevel()) {
             TypedCompositeActor container
                 = (TypedCompositeActor)getContainer();
@@ -227,12 +229,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_isTopLevel()) {
-            return super.postfire();
-        } else {
+        // FIXME: how to inform the upper level about the next scheduled 
+        // firing? 
+        if (!_isTopLevel()) {
             _secondPrefire = false;
-            return true;
         }
+        return super.postfire();
     }
 
     /** Always returns true, indicating that the (sub)system is always ready
@@ -432,8 +434,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _debug(getFullName() + " Catch up time" + getModelTime());
     }
 
-    /** 
-     *  
+    /** Call the super class method. After that, check wether any events
+     *  are produced at the end of this iteration. If so, ask the upper 
+     *  level to schedule a firing to react the events generated as this 
+     *  level. 
      */
     protected void _fireOneIteration() throws IllegalActionException {
         super._fireOneIteration();
@@ -441,6 +445,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             return;
         }
         // Check whether the iteration is interrupted by event.
+        // If so, ask the upper level to schedule a firing to react
+        // events generated at this level.
         Time refiringTime;
         CompositeActor container = (CompositeActor) getContainer();
         Director exe = container.getExecutiveDirector();
@@ -491,7 +497,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
-    /** Return true if the current fire phase is stopped due to
+    // FIXME: this method is very confusing. Need a better way to 
+    // handle events. The bottom line is that whenever an event is 
+    // generated, requrest a refiring and let the upper level react
+    // to the event.
+    /** Return true if the current iteration is stopped due to
      *  the occurrence of events (predictable or unpredictable).
      *  @return True if the current fire phase is stopped by an event.
      *  @exception IllegalActionException If thrown by the scheduler.
@@ -505,8 +515,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             while (!table.isEmpty()) {
                 breakpoint = (Time)table.first();
                 if (breakpoint.compareTo(now) < 0) {
-                    // The breakpoints in the past or at now.
-                    table.removeFirst();
+                    // The breakpoints in the past.
+                    // This should not happen. 
+                    throw new InternalErrorException("The breakpoint " +
+                            breakpoint + " is in the past.");
                 } else if (breakpoint.equals(now) &&
                         breakpoint.compareTo(getIterationEndTime()) < 0) {
                     // break point now! stopped by event
@@ -587,17 +599,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     ((Nameable)actor).getName());
             actor.goToMarkedState();
         }
-        // the overridden setCurrentTime method defined in CTDirector
-        // is used.
+        // the overridden setCurrentTime method defined in the super class
         setModelTime(_knownGoodTime);
     }
-
-    /** True argument sets the phase to be an event phase.
-     *  @param eventPhase True to set the current phase to an event phase.
-     *
-     protected void _setEventPhase(boolean eventPhase) {
-     _inEventPhase = eventPhase;
-     }*/
 
     /** Set the end time for this iteration. If the argument is
      *  less than the current time, then an InvalidStateException
@@ -663,10 +667,4 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     // The local variable of the run ahead length parameter.
     private double _runAheadLength;
-
-//    // The end time of an iteration.
-//    private double _iterationEndTime;
-//
-    // Indicate whether this is an event phase;
-    //private boolean _inEventPhase = false;
 }
