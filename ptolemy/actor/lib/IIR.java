@@ -158,7 +158,8 @@ public class IIR extends Transformer {
 	    // Note: a<sub>0</sub> must always be 1.
             // Issue a warning if it isn't.
             if
-                (!_denominator[0].isEqualTo(_denominator[0].one()).booleanValue()) {
+                (!_denominator[0].isEqualTo(_denominator[0].one())
+                        .booleanValue()) {
                 try {
                     MessageHandler.warning(
                             "First denominator value is required to be 1. "
