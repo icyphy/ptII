@@ -59,7 +59,7 @@ cycle mean and optimum cost to time ratio problems,
 Proceedings of the 36th ACM/IEEE conference on Design automation conference,
 p.37-42, June 21-25, 1999, New Orleans, Louisiana, United States
 <p>
-For a detailed mathematical description of the problem.
+for a detailed mathematical description of the problem.
 <p>
 @see ptolemy.graph.analysis.CycleMeanAnalysis
 @since Ptolemy II 2.0
