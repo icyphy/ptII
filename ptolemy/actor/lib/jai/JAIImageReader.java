@@ -76,6 +76,7 @@ public class JAIImageReader extends Source {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL.setExpression("$PTII/doc/img/PtolemyII.jpg");
     }
 
     ///////////////////////////////////////////////////////////////////
