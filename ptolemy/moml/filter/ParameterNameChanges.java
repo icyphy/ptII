@@ -196,7 +196,7 @@ public class ParameterNameChanges implements MoMLFilter {
                     + ": Update any Parameter names\n"
                     + "that have been renamed.\n"
                     + "Below are the actors that are affected, along "
-                    + "with the Parameter name \nand the new name:"
+                    + "with the Parameter name \nand the new name:\n"
                              );
         Iterator actors = _classesWithParameterNameChanges.keySet().iterator();
         while (actors.hasNext()) {

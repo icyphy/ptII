@@ -178,7 +178,7 @@ public class PortNameChanges implements MoMLFilter {
                     + ": Update any actor port names that have been\n"
                     + "renamed.\n"
                     + "Below are the actors that are affected, along\n"
-                    + "with the old port name and the new port name:");
+                    + "with the old port name and the new port name:\n");
         Iterator actors = _actorsWithPortNameChanges.keySet().iterator();
         while (actors.hasNext()) {
             String actor = (String)actors.next();

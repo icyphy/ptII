@@ -148,7 +148,7 @@ public class PortClassChanges implements MoMLFilter {
                     + ": Update any actor port classes that have been\n"
                     + "changed.\n"
                     + "Below are the actors that are affected, along\n"
-                    + "with the old port class and the new port class:");
+                    + "with the old port class and the new port class:\n");
         Iterator actors = _actorsWithPortClassChanges.keySet().iterator();
         while (actors.hasNext()) {
             String actor = (String)actors.next();
