@@ -36,7 +36,7 @@ ME =		ptolemy/actor/test
 ROOT =		../../..
 
 #FIXME: we should not need to include DIVA here
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
