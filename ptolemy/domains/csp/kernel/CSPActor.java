@@ -65,8 +65,8 @@ thread has finished it allows the actor thread to continue.
 <p>
 Time is supported by two methods, delay() and delay(double). These methods 
 do nothing if the simulation is untimed. If the simulation
-is timed. the first method just pauses the actor until the next time 
-artificial deadlock is reached and time is advanced. The second method 
+is timed, the first method just pauses the actor until the next occasion the
+director advances time. The second method 
 pauses the actor until time is advanced the argument time from the 
 current simulation time. Thus time is centralised in that it is 
 controlled by the director controlling this actor, and that 
