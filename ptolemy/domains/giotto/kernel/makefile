@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	GiottoCEmachineFrameworkGenerator.java \
 	GiottoCodeGenerator.java \
 	GiottoDirector.java \
 	GiottoReceiver.java \
@@ -63,6 +64,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'GiottoCEmachineFrameworkGenerator$$GiottoEditorFactory.class' \
 	'GiottoCodeGenerator$$GiottoEditorFactory.class' \
 	'GenerateVisitor$$ClassField.class' \
 	'GenerateVisitor$$MethodSignature.class' \
