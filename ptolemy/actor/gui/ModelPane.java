@@ -271,7 +271,16 @@ public class ModelPane extends JPanel implements CloseListener {
                     _controlPanel.add(pTitle);
                     _controlPanel.add(Box.createRigidArea(new Dimension(0, 8)));
                     _parameterQuery = new Configurer(model);
-                    _parameterQuery.setAlignmentX(LEFT_ALIGNMENT);
+                    if (_layout == HORIZONTAL) {
+                        _parameterQuery.setAlignmentX(LEFT_ALIGNMENT);
+                    } else {
+                        // If we don't align this with CENTER, then
+                        // the scrollbars in the Query get messed up when
+                        // the orientation of an applet is vertical
+                        // See SDF/Eye for an applet that displays
+                        // toplevel parameters, but not director parameters.
+                        _parameterQuery.setAlignmentX(CENTER_ALIGNMENT);
+                    }
                     _parameterQuery.setBackground(null);
                     _controlPanel.add(_parameterQuery);
                     if ((_show & DIRECTOR_PARAMETERS) != 0) {
