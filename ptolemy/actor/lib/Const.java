@@ -38,9 +38,10 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// Const
 /**
-Produce a constant output. The type and value of the
+Produce a constant output. The value of the
 output is that of the token contained by the <i>value</i> parameter,
-which by default is an IntToken with value 1.
+which by default is an IntToken with value 1. The type of the output
+is that of <i>value</i> parameter.
 
 @author Yuhong Xiong, Edward A. Lee
 @version $Id$
@@ -70,16 +71,29 @@ public class Const extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The value produced by this constant source. The type of this
-     *  parameter is Token, meaning that you can insert any token into
-     *  it.  By default, it contains an IntToken with value 1.  If the
+    /** The value produced by this constant source.
+     *  By default, it contains an IntToken with value 1.  If the
      *  type of this token is changed during the execution of a model,
-     *  then the manager will be asked to redo type resolution.
+     *  then the director will be asked to redo type resolution.
      */
-    public Parameter value = null;
+    public Parameter value;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Notify the director when a type change in the parameter occurs.
+     *  This will cause type resolution to be redone at the next opportunity.
+     *  It is assumed that type changes in the parameter are implemented
+     *  by the director's change request mechanism, so they are implemented
+     *  when it is safe to redo type resolution.
+     *  If there is no director, then do nothing.
+     */
+    public void attributeTypeChanged(Attribute attribute) {
+        Director dir = getDirector();
+        if (dir != null) {
+            dir.invalidateResolvedTypes();
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the value public variable in the new
@@ -90,18 +104,17 @@ public class Const extends Source {
     public Object clone(Workspace ws) {
         Const newobj = (Const)super.clone(ws);
         newobj.value = (Parameter)newobj.getAttribute("value");
+	// set the type constraint.
+	newobj.output.setTypeAtLeast(newobj.value);
         return newobj;
     }
 
-    /** Send the constant value to the output.
+    /** Send the token in the <i>value</i> parameter to the output.
      *  @exception IllegalActionException If it is thrown by the method
      *   sending out the token.
      */
     public void fire() throws IllegalActionException {
         output.broadcast(value.getToken());
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 }
 

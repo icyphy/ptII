@@ -66,6 +66,7 @@ JSRCS = \
 	Pulse.java \
 	Ramp.java \
 	Recorder.java \
+	SequenceActor.java \
 	SequenceSource.java \
 	Sin.java \
 	Show.java \

@@ -377,7 +377,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public Receiver newInsideReceiver() throws IllegalActionException {
         if (_director == null) {
             throw new IllegalActionException(this,
-                    "Cannot create a receiver without an executive director.");
+                    "Cannot create a receiver without a director.");
         }
         return _director.newReceiver();
     }

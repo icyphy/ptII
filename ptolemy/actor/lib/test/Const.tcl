@@ -83,11 +83,21 @@ test Const-1.3 {Test clone of Source base class} {
 #### Test Const in an SDF model
 #
 test Const-2.1 {test with the default output value} {
+    set e0 [sdfModel]
+    set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field $rec input]
     [$e0 getManager] run
-    # FIXME:  Should be iterToTokenValues when test suites can handle jdk 1.2.
     enumToTokenValues [$rec getRecord 0]
-} {3.1}
+} {1}
+
+test Const-2.1 {change output value and type and rerun} {
+    set p [getParameter $const value]
+    $p setExpression 3.0
+    [$e0 getManager] run
+    enumToTokenValues [$rec getRecord 0]
+} {3.0}
+
+# FIXME: Need a mechanism to test a change in parameter during a run.

@@ -119,7 +119,8 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     public void attributeTypeChanged(Attribute attribute)
            throws IllegalActionException {
        throw new IllegalActionException(this,
-       "Attribute type changes are not allowed.");
+       "Attribute type changes are not allowed. Attempt to change: "
+       + attribute.getName());
    }
 
     /** Create a new TypedIOPort with the specified name.

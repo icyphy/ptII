@@ -34,7 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.PassiveVariable;
+import ptolemy.data.expr.Variable;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,10 +79,10 @@ public class Expression extends TypedAtomicActor {
 
         expression = new Parameter(this, "expression", new StringToken(""));
 
-        _time = new PassiveVariable(workspace());
+        _time = new Variable(workspace());
         _time.setName("time");
         _time.setToken(new DoubleToken(0.0));
-        _firing = new PassiveVariable(workspace());
+        _firing = new Variable(workspace());
         _firing.setName("firing");
         _firing.setToken(new IntToken(0));
     }
@@ -113,11 +113,11 @@ public class Expression extends TypedAtomicActor {
             newobj.output = (TypedIOPort)newobj.getPort("output");
             expression = (Parameter)newobj.getAttribute("expression");
             // newobj._time =
-            //     new PassiveVariable(this, "time", new DoubleToken(0.0));
+            //     new Variable(this, "time", new DoubleToken(0.0));
             // newobj._firing =
-            //     new PassiveVariable(this, "firing", new IntToken(0));
-	    newobj._time = (PassiveVariable)newobj.getAttribute("time");
-	    newobj._firing = (PassiveVariable)newobj.getAttribute("firing");
+            //     new Variable(this, "firing", new IntToken(0));
+	    newobj._time = (Variable)newobj.getAttribute("time");
+	    newobj._firing = (Variable)newobj.getAttribute("firing");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -151,8 +151,7 @@ public class Expression extends TypedAtomicActor {
                     // if (attr != null) {
                     //    attr.setContainer(null);
                     //}
-                    PassiveVariable pVar =
-                        new PassiveVariable(workspace());
+                    Variable pVar = new Variable(workspace());
                     pVar.setName(portName);
                     _variables.prepend(pVar);
                 } catch (IllegalActionException ex) {
@@ -177,7 +176,7 @@ public class Expression extends TypedAtomicActor {
                 // Ignore to get shadowing.
             }
             // Attribute attr = getAttribute("_expression");
-            _expression = new PassiveVariable(workspace());
+            _expression = new Variable(workspace());
         } catch (IllegalActionException ex) {
             // Can't occur since these variables have names.
             throw new InternalErrorException(ex.getMessage());
@@ -200,8 +199,8 @@ public class Expression extends TypedAtomicActor {
             // FIXME: Handle multiports
             if(port.hasToken(0)) {
                 Token inputToken = port.get(0);
-                PassiveVariable var =
-                    (PassiveVariable)(_variables.get(port.getName()));
+                Variable var =
+                    (Variable)(_variables.get(port.getName()));
                 var.setToken(inputToken);
             }
         }
@@ -226,7 +225,7 @@ public class Expression extends TypedAtomicActor {
     ////                         private variables                 ////
 
     private NamedList _variables;
-    private PassiveVariable _time, _firing, _expression;
+    private Variable _time, _firing, _expression;
     private int _firingCount = 1;
 }
 

@@ -1,4 +1,4 @@
-/* An rectangular pulse source.
+/* A pulse source.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -38,16 +38,20 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// Pulse
 /**
-Produce a constant for some specified number of
-firings, followed by zeros. Any type of token may be specified
-for the constant.  The value of the zero tokens
-is determined by the zero() method of the token class.
+Produce a pulse with a shape specified by the parameters.
+The type of the output can be anything, although if interpolation
+is used, then the tokens of that type must support appropriate
+arithmetic operators.  Currently only linear interpolation
+is supported, so the tokens must support subtraction, multiplication by
+a double, and addition.  The default pulse that is produced
+is the Kronecker delta function, which consists of the integer
+one followed by an infinite number of zeros.
 
 @author Edward A. Lee
 @version $Id$
 */
 
-public class Pulse extends TypedAtomicActor {
+public class Pulse extends SequenceSource {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -61,7 +65,13 @@ public class Pulse extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        output = new TypedIOPort(this, "output", false, true);
+/*
+        int defaultIndexes[][] = {
+            {0, 1}
+        };
+        indexes = new Parameter(this, "indexes",
+                new IntMatrixToken(defaultIndexes));
+*/
         width = new Parameter(this, "width", new IntToken(1));
         value = new Parameter(this, "value");
     }

@@ -43,31 +43,25 @@ if {[string compare test [info procs test]] == 1} then {
 test Ramp-1.1 {test clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
-    $ramp typeConstraints
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setToken [java::new ptolemy.data.DoubleToken 2.5]
+    $step setExpression init
 
-    #set newobj [$ramp clone]
-    #set initVal [[[$newobj getAttribute init] getToken] doubleValue]
-    #set stepVal [[[$newobj getAttribute step] getToken] doubleValue]
+    set newobj [java::cast ptolemy.actor.lib.Ramp [$ramp clone]]
+    set newInit [getParameter $newobj init]
+    set newStep [getParameter $newobj step]
+    set initVal [[$newInit getToken] stringValue]
+    set stepVal [[$newStep getToken] stringValue]
 
-    set newobj [_testClone $ramp]
-    set initVal [_testDoubleValue $newobj init]
-    set stepVal [_testDoubleValue $newobj step]
     list $initVal $stepVal
-} {0.0 1.0}
+} {2.5 2.5}
 
 test Ramp-1.2 {test clone} {
-    set orginit [$ramp getAttribute init]
-    set dToken [java::new {ptolemy.data.DoubleToken double} 3.0]
+    $init setExpression 5.5
+    set stepValue [[$step getToken] stringValue]
+    set newStepValue [[$newStep getToken] stringValue]
 
-    #$orginit setToken $dToken
-    [java::cast ptolemy.data.expr.Parameter $orginit] \
-	    setToken $dToken
-    
-    #set orgInitVal [[[$ramp getAttribute init] getToken] doubleValue]
-    #set initVal [[[$newobj getAttribute init] getToken] doubleValue]
-    set orgInitVal [_testDoubleValue $ramp init]
-    set initVal [_testDoubleValue $newobj init]
-
-    list $orgInitVal $initVal
-} {3.0 0.0}
+    list $stepValue $newStepValue
+} {5.5 2.5}
 

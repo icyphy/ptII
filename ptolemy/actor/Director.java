@@ -282,6 +282,21 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
+    /** Indicate that resolved types in the system may no longer be valid.
+     *  This will force type resolution to be redone on the next iteration.
+     *  This method simply defers to the manager, notifying it.  If there
+     *  is no container, or if it has no manager, do nothing.
+     */
+    public void invalidateResolvedTypes() {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            Manager manager = container.getManager();
+            if (manager != null) {
+                manager.invalidateResolvedTypes();
+            }
+        }
+    }
+
     /** Return whether this director and all its lower level directors would
      *  ever need write access on the workspace. This method first check
      *  the 'personal' preference of this director, if this director wants

@@ -46,7 +46,7 @@ Produce an output token on each firing with a value that is
 incremented by the specified step each iteration. The
 first output and the step value are given by parameters.
 The type of the output is determined by the constraint that it must
-be greater than or equal to the types of the tokens in the parameters.
+be greater than or equal to the types of the parameters.
 Thus, this actor is
 polymorphic in the sense that its output data type can be that
 of any token type that supports addition.
@@ -97,6 +97,20 @@ public class Ramp extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Notify the director when type changes in the parameters occur.
+     *  This will cause type resolution to be redone at the next opportunity.
+     *  It is assumed that type changes in the parameters are implemented
+     *  by the director's change request mechanism, so they are implemented
+     *  when it is safe to redo type resolution.
+     *  If there is no director, then do nothing.
+     */
+    public void attributeTypeChanged(Attribute attribute) {
+        Director dir = getDirector();
+        if (dir != null) {
+            dir.invalidateResolvedTypes();
+        }
+    }
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>init</code> and <code>step</code>
      *  public members to the parameters of the new actor.
@@ -107,12 +121,15 @@ public class Ramp extends SequenceSource {
         Ramp newobj = (Ramp)super.clone(ws);
         newobj.init = (Parameter)newobj.getAttribute("init");
         newobj.step = (Parameter)newobj.getAttribute("step");
+	// set the type constraints.
+	newobj.output.setTypeAtLeast(newobj.init);
+	newobj.output.setTypeAtLeast(newobj.step);
         return newobj;
     }
 
     /** Set the state to equal the value of the <i>init</i> parameter.
      *  The state is incremented by the value of the <i>step</i>
-     *  parameter on each iteration.
+     *  parameter on each iteration (in the postfire() method).
      */
     public void initialize() {
         _stateToken = init.getToken();

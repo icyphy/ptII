@@ -42,7 +42,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// SequenceSource
 /**
-Base class for sequence-based sources.  A sequence-based source is
+Base class for sequence sources.  A sequence source is
 a source where the output value is logically a sequence, independent
 of time, but dependent on the iteration number.  For some time-based
 domains, such as CT, actors of this type probably do not make sense
@@ -60,7 +60,7 @@ work.
 @version $Id$
 */
 
-public class SequenceSource extends Source {
+public class SequenceSource extends Source implements SequenceActor {
 
     /** Construct an actor with the given container and name.
      *  The <i>lifetime</i> parameter is also constructed.
@@ -104,8 +104,9 @@ public class SequenceSource extends Source {
     /** Initialize the iteration counter.  A derived class must call
      *  this method in its initialize() method or the <i>lifetime</i>
      *  feature will not work.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
         _iterCount = 0;
     }
 
