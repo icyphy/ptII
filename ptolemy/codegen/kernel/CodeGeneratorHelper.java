@@ -28,8 +28,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedActor;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -126,7 +130,72 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         // could be used for a variable representing the connection.
         // This method needs to generate this name given
         // the input port name.
-        return name;
+        
+        // FIXME: Shouldn't we replace input port name to its
+        // source output port name?
+        // Need to implement a method that return the connected
+        // source port and channel number given an input port
+        // and a channel number. Setting up a look-up table during
+        // initialization when the variables are generated could
+        // make it much easier. zhouye
+        
+        StringBuffer result = new StringBuffer();
+        result.append(_component.getFullName());
+        result.append("_");
+        
+        if (name.charAt(0) == '#') {
+            throw new IllegalActionException(_component,
+                    "Reference not found: " + name); 
+        }
+        
+        if (_component instanceof Actor) {
+            Actor actor = (Actor)_component;    
+            
+            StringTokenizer tokenizer = new StringTokenizer(name, "#");
+            if (!tokenizer.hasMoreTokens() || tokenizer.countTokens() > 2) {
+                throw new IllegalActionException(_component,
+                        "Reference not found: " + name); 
+            }
+            String portName = tokenizer.nextToken().trim();
+            
+            Iterator inputPorts = actor.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                IOPort port = (IOPort)inputPorts.next();
+                // The channel is specified as $ref(port#channelNumber).   
+                if (port.getName().equals(portName)) {
+                    result.append(portName);
+                    if (tokenizer.hasMoreTokens()) {
+                        // append the channel number.
+                        // FIXME: Should check if the string after "#" is an integer.
+                        result.append("_");
+                        result.append(tokenizer.nextToken().trim());
+                    }
+                    return result.toString();
+                }
+            }
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort)outputPorts.next();
+                if (port.getName().equals(portName)) {
+                    result.append(portName);
+                    if (tokenizer.hasMoreTokens()) {
+                        // append the channel number.
+                        // FIXME: Shoul check if the string after "#" is an integer.
+                        result.append("_");
+                        result.append(tokenizer.nextToken().trim());
+                    }
+                    return result.toString();
+                }
+            }
+        }
+        // Try if the name is a parameter.
+        Attribute attribute = _component.getAttribute(name);
+        if (attribute != null) {
+            result.append(name);
+            return result.toString();
+        }
+        throw new IllegalActionException(_component,
+                "Reference not found: " + name);
     }
 
     /** Process the specified code, replacing macros with their
