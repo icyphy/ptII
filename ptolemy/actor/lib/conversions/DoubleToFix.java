@@ -92,7 +92,7 @@ public class DoubleToFix extends Transformer {
         FixToken result = null;
 	if (input.hasToken(0)) {
     	    DoubleToken in = (DoubleToken)input.get(0);
-            if ( _mode == "Round" ) { 
+            if ( _mode.equals("Round") ) { 
                 result = new FixToken( Quantizer.round(in.doubleValue(), _precision) );
             } else {
                 result = new FixToken( Quantizer.truncate(in.doubleValue(), _precision) );

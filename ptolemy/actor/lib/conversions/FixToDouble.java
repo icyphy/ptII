@@ -39,7 +39,22 @@ import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToDouble
-/** Read a FixToken and converts it to a DoubleToken. 
+/** Read a FixToken and converts it to a DoubleToken. Before doing so,
+scale the FixToken to the give precision. To fit the new precision, a
+rounding error may occur. In that case the value of the FixToken is
+determined, depending on the quanitzation mode selected. The following
+quantization modes are supported in case an overflow occurs.
+
+<ul> 
+<li> mode = 0, <b>Saturate</b>: The FixToken is set,
+depending on its sign, equal to the Max or Min value possible
+with the new given precision.
+<li> mode = 1, <b>Zero Saturate</b>: The FixToken is
+set equal to zero.
+<li> mode = 2, <b>Truncate</b>: bits are simply removed from
+the integer and fractional part of the FixToken in order to fit 
+into the new precision.     
+</ul>
 
 @author Bart Kienhuis 
 @version $Id$
@@ -62,17 +77,26 @@ public class FixToDouble extends Transformer {
         output.setTypeEquals(BaseType.DOUBLE);
 
         // Set the Parameter
-	precision = new Parameter(this, "precision", new StringToken(""));
+	precision = new Parameter(this, "precision", new StringToken("16/2"));
         precision.setTypeEquals(BaseType.STRING);              
+
+        // Set the Parameter
+	rounding = new Parameter(this, "rounding", new IntToken(0));
+        rounding.setTypeEquals(BaseType.INT);              
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    // FIXME: take precision into account.
+
     /** Precision of the FixPoint that is converted into a double.
      */
     public Parameter precision;
+
+
+    /** Select the mode when rouding the FixPoint to the given Precision.
+     */
+    public Parameter rounding;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -87,7 +111,10 @@ public class FixToDouble extends Transformer {
     public void fire() throws IllegalActionException {
 	if (input.hasToken(0)) {
     	    FixToken in = (FixToken)input.get(0);
-	    DoubleToken result = new DoubleToken( in.convertToDouble() );    
+            // Scale the FixToken to specific precision.
+            // If rounding occurs, select which mode.
+            FixToken scaled = in.scaleToPrecision( _precision, _rounding );
+	    DoubleToken result = new DoubleToken( scaled.convertToDouble() ); 
             output.send(0, result);
         }
     }
@@ -97,12 +124,17 @@ public class FixToDouble extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        // FIXME: Need to do the scaling in Quantizer
-        _precision = new Precision(precision.getToken().toString());        
+        _precision = new Precision(((StringToken)precision.getToken()).
+                toString());        
+        _rounding = ((IntToken)rounding.getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    // The Precision of the Actor.
     private Precision _precision = null;
+
+    // The rounding mode when fitting to the desired precision.
+    private int _rounding = 0;
 }
