@@ -71,8 +71,8 @@ test TimedQueueReceiver-3.1 {Check that hasToken() works for empty queue} {
 ####
 #
 test TimedQueueReceiver-3.2 {Check hasToken() for non-empty queue} {
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actor "port"]
+    set actor [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
     $tqr setReceivingTimeKeeper $keeper
@@ -88,8 +88,8 @@ test TimedQueueReceiver-3.2 {Check hasToken() for non-empty queue} {
 ####
 #
 test TimedQueueReceiver-4.1 {Check hasRoom() for finite, empty queue} {
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actor "port"]
+    set actor [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
     $tqr setReceivingTimeKeeper $keeper
@@ -102,8 +102,8 @@ test TimedQueueReceiver-4.1 {Check hasRoom() for finite, empty queue} {
 ####
 #
 test TimedQueueReceiver-4.2 {Check that hasRoom() works for full queue} {
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actor "port"]
+    set actor [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
     $tqr setReceivingTimeKeeper $keeper
@@ -120,8 +120,8 @@ test TimedQueueReceiver-4.2 {Check that hasRoom() works for full queue} {
 ####
 #
 test TimedQueueReceiver-4.3 {Check hasRoom() for infinite capacity queue} {
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actor "port"]
+    set actor [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
     $tqr setReceivingTimeKeeper $keeper
@@ -139,8 +139,8 @@ test TimedQueueReceiver-4.3 {Check hasRoom() for infinite capacity queue} {
 ####
 #
 test TimedQueueReceiver-5.1 {get(), put(), check _rcvrTime and _lastTime} {
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actor "port"]
+    set actor [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
     $tqr setReceivingTimeKeeper $keeper
@@ -175,12 +175,12 @@ test TimedQueueReceiver-5.1 {get(), put(), check _rcvrTime and _lastTime} {
 test TimedQueueReceiver-6.1 {Check for exception with put() given \
 	full queue} {
     set wkspc [java::new ptolemy.kernel.util.Workspace]
-    set comp [java::new ptolemy.actor.CompositeActor $wkspc]
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor \
+    set comp [java::new ptolemy.actor.TypedCompositeActor $wkspc]
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor \
 	    $comp "Receiver"]
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor \
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor \
 	    $comp "Sender"]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
     set rkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actorRcvr]
@@ -200,8 +200,8 @@ test TimedQueueReceiver-6.1 {Check for exception with put() given \
 #
 test TimedQueueReceiver-6.2 {Check for exception with get() given empty \
 	queue} {
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actor "port"]
+    set actor [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
     set t [java::new ptolemy.data.Token]
     catch {$tqr get} msg 
