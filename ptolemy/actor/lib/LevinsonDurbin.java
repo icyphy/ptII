@@ -108,10 +108,10 @@ and to the definition of partial-correlation (PARCOR)
 coefficients in the statistics literature.
 <p>
 <b>References</b>
-<p>[1]  
+<p>[1]
 J. Makhoul, "Linear Prediction: A Tutorial Review",
 <i>Proc. IEEE</i>, vol. 63, pp. 561-580, Apr. 1975.
-<p>[2]  
+<p>[2]
 S. M. Kay, <i>Modern Spectral Estimation: Theory & Application</i>,
 Prentice-Hall, Englewood Cliffs, NJ, 1988.
 

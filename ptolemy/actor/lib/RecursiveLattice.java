@@ -72,7 +72,7 @@ X(n) ---(+)-&gt;--o--&gt;----(+)-&gt;--o---&gt;-- ... -&gt;--(+)-&gt;--o---&gt;-
             X              X                      X          |
          -Kn \        -Kn-1 \                  -K1 \         V
           /   \          /   \                  /   \        |
-        (+)-&lt;--o--[z]--(+)-&lt;--o--[z]- ... -&lt;--(+)-&lt;--o--[z]--/    
+        (+)-&lt;--o--[z]--(+)-&lt;--o--[z]- ... -&lt;--(+)-&lt;--o--[z]--/
                w[1]           w[2]                   w[n]
 
 </pre>
@@ -94,10 +94,10 @@ The signs of the coefficients used in this actor are appropriate for values
 given by the LevinsonDurbin actor.
 <p>
 <b>References</b>
-<p>[1]  
+<p>[1]
 J. Makhoul, "Linear Prediction: A Tutorial Review",
 <i>Proc. IEEE</i>, Vol. 63, pp. 561-580, Apr. 1975.
-<p>[2]  
+<p>[2]
 S. M. Kay, <i>Modern Spectral Estimation: Theory & Application</i>,
 Prentice-Hall, Englewood Cliffs, NJ, 1988.
 
@@ -186,11 +186,11 @@ public class RecursiveLattice extends Transformer {
                 _forward[i] = k * _backward[i] + _forward[i-1];
             }
             output.broadcast(new DoubleToken(_forward[M]));
-            
+
             // Backward:  Compute the w's for the next round
             for (int i = 1; i < M ; i++) {
                 k = - _reflectionCoefs[M-1-i];
-                _backward[i] = _backward[i+1] + k*_forward[i+1];	
+                _backward[i] = _backward[i+1] + k*_forward[i+1];
             }
             _backward[M] = _forward[M];
         }
