@@ -219,8 +219,8 @@ public class FixToken extends ScalarToken {
             return divisor.divideReverse(this);
         } else {
 	    // argument type is lower or the same as FixPoint.
-	    FixToken comptoken = (FixToken)convert(divisor);
-            FixPoint result = _value.divide(comptoken.fixValue());
+	    FixToken convertedToken = (FixToken)convert(divisor);
+            FixPoint result = _value.divide(convertedToken.fixValue());
             return new FixToken(result);
         }
     }
@@ -313,8 +313,8 @@ public class FixToken extends ScalarToken {
             return token.isEqualTo(this);
         } else {
 	    // argument type is lower or the same as FixPoint.
-	    FixToken comptoken = (FixToken)convert(token);
-            FixPoint tem = comptoken.fixValue();
+	    FixToken convertedToken = (FixToken)convert(token);
+            FixPoint tem = convertedToken.fixValue();
 	    if (_value.equals(tem)) {
                 return new BooleanToken(true);
 	    }
@@ -450,8 +450,8 @@ public class FixToken extends ScalarToken {
             return rightArgument.subtractReverse(this);
         } else {
 	    // argument type is lower or the same as FixPoint.
-	    FixToken comptoken = (FixToken)convert(rightArgument);
-            FixPoint result = _value.subtract(comptoken.fixValue());
+	    FixToken convertedToken = (FixToken)convert(rightArgument);
+            FixPoint result = _value.subtract(convertedToken.fixValue());
             return new FixToken(result);
         }
     }
