@@ -128,8 +128,8 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    _ptQuery.addSlider("pitchSlider", "Pitch Scale Factor",
 			     1000, 400, 3000);
 
-	    _ptQuery.addLine("pitchLine", "Pitch Scale Factor x 1000",
-			     "1000");
+	    //_ptQuery.addLine("pitchLine", "Pitch Scale Factor x 1000",
+	    //	     "1000");
 
 	    frame.getContentPane().add(controlpanel, BorderLayout.CENTER);
 	    //Finish setting up the frame, and show it.
@@ -230,7 +230,7 @@ public class PitchShiftModel extends TypedCompositeActor {
             pitchShift.input.link(rel1);
 
 	    _ptQuery.attachParameter(pitchScaleSource.value, "pitchSlider");
-	    _ptQuery.attachParameter(pitchScaleSource.value, "pitchLine");
+	    //_ptQuery.attachParameter(pitchScaleSource.value, "pitchLine");
 	    //_ptQuery.attachParameter(soundSink.fileName, "pitchSlider");
 
 

@@ -133,7 +133,7 @@ public class AudioSink extends SDFAtomicActor {
 	sink = new Parameter(this, "sink",
                 new StringToken("speaker"));
 
-        sampleRate = new Parameter(this, "sampleRate", new IntToken(22050));
+        sampleRate = new Parameter(this, "sampleRate", new IntToken(44100));
         sampleRate.setTypeEquals(BaseType.INT);
 
         sampleSizeInBits = new Parameter(this, "sampleSizeInBits",
