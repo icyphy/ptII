@@ -63,6 +63,7 @@ JSRCS = \
 	PolyCylinder3D.java \
 	Sphere3D.java \
 	TextString3D.java \
+	Torus3D.java \
 	ViewScreen.java 
 
 EXTRA_SRCS =	$(JSRCS) \

@@ -13,6 +13,13 @@
 </rendition>
 </entity>
 
+<entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
+
 <entity name="Cone3D" class="ptolemy.domains.gr.lib.Cone3D">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.source</configure>
@@ -25,19 +32,13 @@
 </rendition>
 </entity>
 
-<entity name="Sphere3D" class="ptolemy.domains.gr.lib.Sphere3D">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
-</entity>
-
 <entity name="PolyCylinder3D" class="ptolemy.domains.gr.lib.PolyCylinder3D">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.source</configure>
 </rendition>
 </entity>
 
-<entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
+<entity name="Sphere3D" class="ptolemy.domains.gr.lib.Sphere3D">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.source</configure>
 </rendition>
@@ -48,6 +49,13 @@
 <configure>generic.source</configure>
 </rendition>
 </entity>
+
+<entity name="Torus3D" class="ptolemy.domains.gr.lib.Torus3D">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
 
 <entity name="Rotate3D" class="ptolemy.domains.gr.lib.Rotate3D">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
