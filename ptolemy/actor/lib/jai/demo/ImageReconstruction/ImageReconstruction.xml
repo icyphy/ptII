@@ -57,7 +57,7 @@
         </property>
     </entity>
     <entity name="JAIImageReader2" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen256x256.PNG">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen256x256.png">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 170.0]">
         </property>
