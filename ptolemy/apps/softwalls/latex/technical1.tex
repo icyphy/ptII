@@ -215,10 +215,60 @@ If the $\sin{\phi}$ factor is removed from the control signal, this problem disa
 \]
 This control scheme is more restrictive however, because a plane cannot stay in the softwall.  Any pilot between the inner and outer boundary will eventually be forced outside the outer boundary.
 
+\section{Criticality-Based Control}
+
+A measure of criticality assesses the level of threat that an aircraft poses to
+a no-fly zone. The softwall controller can adjust its bias according to an
+appropriate criticality measure.
+
+\subsection{Maintaining Responsivity}
+
+Figure A illustrates how the softwall controller maintains responsivity while
+biasing the pilot control. When there is no bias, the aircraft will turn as the
+pilot intends. When there is a bias of $M$ (the maximum rate of change in
+heading) to the right, the pilot will not be able to make the aircraft turn 
+left -- the aircraft will keep straight as the pilot tries to turn the rudder
+to the left extreme position. 
+When the bias increases to $3M/2$ to the right, the aircraft will turn right at
+a rate of at least $M/2$, whatever the pilot tries to do.
+
+\subsection{A Measure of Criticality}
+
+Here we propose a criticality measure based on how long it will take the plane
+to reach the no-fly zone in the worst case. Figure B illustrates this measure.
+The worst case trajectories are shown as dotted lines.
+
+Suppose the no-fly zone is defined by $\{(x,y)|\ x \geq b_{x}\}$. The 
+criticality measure does not depend on the aircraft's $y$-position. The
+equations for calculating $c(x, \theta)$ are:
+\[
+c(x, \theta) = \left\{ \begin{array}{ll}
+\frac{\theta}{M} + \frac{b_{x} - x - r_{min}\sin{\theta}}{v} & \mbox{if $x \leq b_{x} - r_{min}\sin{\theta},\ 0 \leq \theta \leq \pi/2$} \\
+\frac{\theta - \arcsin{\left( \frac{r_{min}\sin{\theta}-(b_{x} - x)}{r_{min}}\right) }}{M} & \mbox{if $x > b_{x} -r_{min}\sin{\theta},\ 0 \leq \theta \leq \pi/2$} \\
+\frac{2(\theta - \pi/2)}{M} + c(x, \pi - \theta) & \mbox{if $\pi/2 < \theta \leq \pi$} \\
+c(x, |\theta|) & \mbox{if $-\pi \leq \theta < 0$}
+\end{array}
+\right.
+\]
+Note that $v$, $r_{min}$, and $M$ are related by $M = v/r_{min}$.
+
+\subsection{A Malicious Pilot}
+
+Figure C illustrates the control strategy of a malicious pilot, who tries to
+fly the aircraft into the no-fly zone (maintaining $\theta = 0$).
+
+\subsection{Criticality-Based Softwall Controller}
+
+The bias produced by a proposed criticality-based controller is shown in figure
+D. The threshold $\pi/M$ is the value of $c(x, \theta)$ when $x = b_{x}$ (the 
+aircraft is on the boundary of the no-fly zone), and $\theta = \pi$ (the 
+aircraft is flying straight out of the no-fly zone). No bias is needed here.
+The threshold $2/M$ is equal to $c(b_{x}-2r_{min}, 0)$ -- the aircraft is flying
+head on to the no-fly zone, but still can be safely turned away at half the 
+maximum turning rate. Note that the bias level is at $3M/2$, so the plane will
+be turned at a rate of at least half the maximum, whatever the pilot tries to
+do. The sign (plus -- left, minus -- right) of the bias is chosen to be the
+same as $\theta$.
+
 \end{document}
-
-
-
-
-
 
