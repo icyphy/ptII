@@ -126,18 +126,14 @@ import ptolemy.kernel.util.Workspace;
    notion of iteration is different. One could try to imitate the SDF 
    iteration in DDF domain by controlling the number of firings in one
    iteration for some actors, such as requiring a plotter to plot a fixed
-   number of points in each iteration. Whichever notion of iteration is 
-   used, a model will have the same behavior in the sense that any
-   execution is a finite approximation to its denotational semantics.
+   number of points in each iteration. 
    <p>
    In DDF domain, the firing rule of any actor is specified by the token
-   consumption rates of its input ports. Continuing with the convention in
-   SDF, the default rate of each port is one unless explicitly specified.
-   A general DDF actor could change the consumption rates of its input
-   ports after each firing. For multiports, an array token could be used
-   to specify different rates for different channels connected to the same
-   multiport. Note that in SDF, all channels connected to the same multiport
-   have the same rate.  
+   consumption rates of its input ports. A general DDF actor could change 
+   the consumption rates of its input ports after each firing. For multiports, 
+   an array token could be used to specify different rates for different 
+   channels connected to the same multiport. Note that in SDF, all channels 
+   connected to the same multiport have the same rate.  
    <p>
    Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee. 
    See E. A. Lee etal, "The Almagest," documentation for Ptolemy Classic, 
