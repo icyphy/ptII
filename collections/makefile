@@ -144,6 +144,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: suball jclass ptcollections.jar
 install: subinstall jclass ptcollections.jar javadocs
 docs: javadocs
+PTAUXJAR = ptcollections.jar
 
 # jar file containing the .class files that Ptolemy II commonly uses
 # Once we upgrade to JDK1.2, this jar file is likely to go away
@@ -185,7 +186,45 @@ PTCOLLECTIONS_CLASSES = \
 	collections/UpdatableSet.class \
 	collections/UpdatableSetImpl.class
 
-ptcollections.jar: jclass #$(PTCOLLECTIONS_CLASSES)
+PTCOLLECTIONS_DEPENDENCIES = \
+	Assertable.class \
+	Bag.class \
+	CEImpl.class \
+	Cell.class \
+	Collection.class \
+	CollectionEnumeration.class \
+	Comparator.class \
+	CorruptedEnumerationException.class \
+	ElementSortedCollection.class \
+	HTEnumeration.class \
+	HashTableParams.class \
+	HashedMap.class \
+	HashedSet.class \
+	IllegalElementException.class \
+	ImplementationCheckable.class \
+	ImplementationError.class \
+	Keyed.class \
+	KeySortedCollection.class \
+	LLCell.class \
+	LLCellEnumeration.class \
+	LLPair.class \
+	LinkedList.class \
+	Map.class \
+	Predicate.class \
+	Pair.class \
+	Seq.class \
+	Set.class \
+	SortableCollection.class \
+	UpdatableCollection.class \
+	UpdatableImpl.class \
+	UpdatableMap.class \
+	UpdatableMapImpl.class \
+	UpdatableSeq.class \
+	UpdatableSeqImpl.class \
+	UpdatableSet.class \
+	UpdatableSetImpl.class
+
+$(PTAUXJAR): $(PTCOLLECTIONS_DEPENDENCIES)
 	(cd $(ROOT); $(JAR) cf collections/$@ $(PTCOLLECTIONS_CLASSES) )
 
 depend:
