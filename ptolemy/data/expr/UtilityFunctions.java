@@ -224,15 +224,38 @@ public class UtilityFunctions {
      */ 
     public static void loadLibrary(String library) {
         try {
-            System.loadLibrary(library);
+            if (library.indexOf(File.separator) == -1) {
+                // loadLibrary does not work if the library has a \ or / in it.
+                System.loadLibrary(library);
+            } else {
+                // load() does not work with relative paths.
+                System.load(library);
+            }
         } catch (UnsatisfiedLinkError ex) {
             String sharedLibrarySuffix = "dll";
-            String osName = StringUtilities.getProperty("osName");
+            String osName = StringUtilities.getProperty("os.name");
             if (osName.startsWith("SunOS")) {
                 sharedLibrarySuffix = "so";
+                // Under Solaris, libraries start with lib, so
+                // we find the last /, and if the next chars are not "lib"
+                // then we insert "lib".
+                int index = library.lastIndexOf("/");
+                if (index == -1) {
+                    if (!library.startsWith("lib")) {
+                        library = "lib" + library;
+                    } 
+                } else {
+                    if (!library.substring(index, index + 4).equals("/lib")) {
+                        library = library.substring(0, index) + "/lib"
+                            + library.substring(index + 1);
+                    }
+                }
             }
-	    String libraryWithSuffix = library + "." + sharedLibrarySuffix;
+	    String libraryWithSuffix =
+                library + "." + sharedLibrarySuffix;
+
 	    String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
+
 	    if (libraryPath.equals(libraryWithSuffix)) {
 		// UnsatisfiedLinkError does not have a (String, Throwable)
 		// constructor, so we call initCause().
@@ -263,7 +286,7 @@ public class UtilityFunctions {
 					     + "user.home (" + userDir
 					     + ") user.dir (" + userHome
 					     + ") and the classpath for '"
-					     + libraryPath + "', but that"
+					     + libraryPath + "', but that "
 					     + "was not found either.\n"
 					     + "classpath was: "
 					     + classpath);
@@ -272,6 +295,14 @@ public class UtilityFunctions {
 	    }
 
 	    // System.loadLibrary() does not handle pathnames with separators.
+
+            // If we get to here and load a library that includes references
+            // to libraries not in the PATH or LD_LIBRARY_PATH, then we will
+            // get and UnsatisfiedLinkError on the file we depend on.
+
+            // For example, if liba.so uses libb.so and we call this
+            // method on a, then libb.so will not be found.
+
             System.load(libraryPath);
         }
     }
