@@ -136,6 +136,19 @@ sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v cod
 
 <li> Consider fixing other Eclipse warnings.
 
+
+<li> Consider using 
+<a href="http://gcc.gnu.org/java/">GCJ: The GNU Compiler for Java</a>
+to report unused variables and other problems.  Note
+that GCJ3.4 will fail to compile awt and swing classes, but
+it is still worth getting the other error messages.
+<BLOCKQUOTE>
+cd $PTII
+make clean
+make -k JAVAC=gcj34 JFLAGS="-O2 -Wunused -Wextraneous-semicolon -Wno-deprecated -C" all &gt;&amp; make.out &amp;
+
+</BLOCKQUOTE>
+
 <li> Currently, we use 
 <a href="http://www.zerog.com" target="_top">Zerog's InstallAnywhere</a>
 to build Windows installers.  Building the Windows installer is fairly complex,
