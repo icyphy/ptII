@@ -338,6 +338,7 @@ public class DECQDirector extends DEDirector {
 
     /** Return false when the base class method return false, else request
      *  firing from outer domain (if embedded) then return true.
+     *  @exception IllegalActionException If super.postfire() throws it.
      */
     public boolean postfire() throws IllegalActionException {
 

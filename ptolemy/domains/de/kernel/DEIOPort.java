@@ -110,12 +110,15 @@ public class DEIOPort extends TypedIOPort {
      *  particular port. For example, a server actor might decide to not
      *  get input tokens when it is still busy with processing previous
      *  input.
+     *  @param flag True to allow pending tokens, false to disallow.
+     *  @exception IllegalActionException If this.getReceivers() throws it.
      */
-    public void allowPendingTokens(boolean b) throws IllegalActionException {
+    public void allowPendingTokens(boolean flag) 
+            throws IllegalActionException {
         Receiver[][] recs = getReceivers();
         for (int i = 0; i < recs.length ; i++) {
             for (int j = 0; j < recs[i].length ; j ++) {
-                ((DEReceiver)recs[i][j]).allowPendingTokens(b);
+                ((DEReceiver)recs[i][j]).allowPendingTokens(flag);
             }
         }
     }
