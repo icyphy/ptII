@@ -73,7 +73,7 @@ import ptolemy.kernel.util.NamedObj;
    constant because they depend on other variables which are not
    constant.  This class also recognizes dependence declarations
    represented by the {@link DependencyDeclaration} class.
-
+   
    <p> This class also keeps track of the "change context" of each
    dynamic variable.  The change context of a variable is an actor that
    contains that variable.  During a firing of the actor, the variable's
@@ -181,6 +181,13 @@ public class ConstVariableModelAnalysis {
         return new HashSet(variables);
     }
 
+    /** Return the parameter dependency graph constructed through this
+     *  analysis.
+     */
+    public DirectedGraph getDependencyGraph() {
+        return _dependencyGraph;
+    }
+
     /** Return the computed not constant variables for the given container.
      *  @exception RuntimeException If the constant variables for the
      *  container have not already been computed.
@@ -189,6 +196,34 @@ public class ConstVariableModelAnalysis {
         List variables = container.attributeList(Variable.class);
         variables.removeAll(getConstVariables(container));
         return new HashSet(variables);
+    }
+
+    /** Return the set of variables anywhere in the model that have
+     *  the given container as least change context.
+     */
+    public Set getVariablesWithChangeContext(NamedObj container) {
+        Set variableSet = new HashSet();
+        for(Iterator i = _variableToChangeContext.keySet().iterator();
+            i.hasNext();) {
+            Object key = i.next();
+            Object value = _variableToChangeContext.get(key);
+            if(value == container) {
+                variableSet.add(key);
+            }
+        }
+        return variableSet;
+    }
+
+    /** Return true if the variable has been analyzed by this analysis
+     *  and it depends on no other parameters.
+     */
+    public boolean isIndependent(Variable variable) {
+        if(_dependencyGraph.backwardReachableNodes(
+                   _dependencyGraph.node(variable)).size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
