@@ -128,14 +128,28 @@ public final class ASCII_CharStream
             bufcolumn = new int[buffersize];
         }
 
+    // This was 4096;
+    private static final int INIT_BUFFER_SIZE = 32;
+
     public ASCII_CharStream(java.io.Reader dstream, int startline,
             int startcolumn)
         {
-            this(dstream, startline, startcolumn, 4096);
+            this(dstream, startline, startcolumn, INIT_BUFFER_SIZE);
         }
     public void ReInit(java.io.Reader dstream, int startline,
             int startcolumn, int buffersize)
         {
+	    // System.out.println("ASCI_CharStream.ReInit(): buffersize="
+	    //                    + buffersize);
+	    // leak?
+	    try {
+		// System.out.println("ASCI_CharStream.ReInit(): closing "
+		//		   + inputStream);
+		inputStream.close();
+	    } catch (Exception ex) {
+		throw new RuntimeException("ASCII_CharStream: close failed? " 
+					   + ex);
+	    }
             inputStream = dstream;
             line = startline;
             column = startcolumn - 1;
@@ -155,31 +169,32 @@ public final class ASCII_CharStream
     public void ReInit(java.io.Reader dstream, int startline,
             int startcolumn)
         {
-            ReInit(dstream, startline, startcolumn, 4096);
+            ReInit(dstream, startline, startcolumn, INIT_BUFFER_SIZE);
         }
     public ASCII_CharStream(java.io.InputStream dstream, int startline,
             int startcolumn, int buffersize)
         {
+	    
             this(new java.io.InputStreamReader(dstream), startline,
-                    startcolumn, 4096);
+                    startcolumn, INIT_BUFFER_SIZE);
         }
 
     public ASCII_CharStream(java.io.InputStream dstream, int startline,
             int startcolumn)
         {
-            this(dstream, startline, startcolumn, 4096);
+            this(dstream, startline, startcolumn, INIT_BUFFER_SIZE);
         }
 
     public void ReInit(java.io.InputStream dstream, int startline,
             int startcolumn, int buffersize)
         {
             ReInit(new java.io.InputStreamReader(dstream), startline,
-                    startcolumn, 4096);
+                    startcolumn, INIT_BUFFER_SIZE);
         }
     public void ReInit(java.io.InputStream dstream, int startline,
             int startcolumn)
         {
-            ReInit(dstream, startline, startcolumn, 4096);
+            ReInit(dstream, startline, startcolumn, INIT_BUFFER_SIZE);
         }
     public final String GetImage()
         {
@@ -266,9 +281,16 @@ public final class ASCII_CharStream
 
     private final void ExpandBuff(boolean wrapAround)
         {
+	    // System.out.println("ASCII_CharStream.ExpandBuff(): "
+	    //                    + "expanding by 2x " + (bufsize*2) );
+	    /*
             char[] newbuffer = new char[bufsize + 2048];
             int newbufline[] = new int[bufsize + 2048];
             int newbufcolumn[] = new int[bufsize + 2048];
+	    */
+            char[] newbuffer = new char[bufsize * 2];
+            int newbufline[] = new int[bufsize * 2];
+            int newbufcolumn[] = new int[bufsize * 2];
 
             try
                 {
@@ -317,7 +339,9 @@ public final class ASCII_CharStream
                 }
 
 
-            bufsize += 2048;
+            //bufsize += 2048;
+	    // I am so cool!
+            bufsize += bufsize;
             available = bufsize;
             tokenBegin = 0;
         }
@@ -329,7 +353,7 @@ public final class ASCII_CharStream
                 {
                     if (available == bufsize)
                         {
-                            if (tokenBegin > 2048)
+                            if (tokenBegin > /*2048*/ (bufsize*2))
                                 {
                                     bufpos = maxNextCharInd = 0;
                                     available = tokenBegin;
@@ -341,7 +365,7 @@ public final class ASCII_CharStream
                         }
                     else if (available > tokenBegin)
                         available = bufsize;
-                    else if ((tokenBegin - available) < 2048)
+                    else if ((tokenBegin - available) < /*2048*/ (bufsize*2))
                         ExpandBuff(true);
                     else
                         available = tokenBegin;
