@@ -5,13 +5,21 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1><a name="plot classes">Plot Classes</a></h1>
-<h3>Authors</h3>
-<i>Christopher Hylands</i>
-<br>
+<table>
+<tr>
+<td><a href="demo/Marks.html"><img alt="Plot of demo/data.plt" width=400 height=400 src="demo/data/marks.gif"></a>
+<td align=center>
+<b>Authors</b><br>
 <i>Edward A. Lee</i>
-<h3>Contributors</h3>
+<br>
+<i>Christopher Hylands</i> <p>
+<b>Contributors</b> <br>
 <i>William Wu</i>
+
+</center>
+</table>
  <hr>
+
 <MENU>
 <LI> <A HREF="demo/index.html">Applet Demonstrations</A>
 <LI> <A HREF="doc/codeDoc/tree.html">The Java documentation for these classes</A>
@@ -56,14 +64,22 @@ Live (animated) data plots are supported by the
 This class is abstract; a derived class must be created to generate
 the data to plot (or collect it from some other application).
 <p>
-The application is implemented by the
-<a href="Pxgraph.java">Pxgraph</a> class.
+
+The top of this page contains a screen shot of the application in
+action.  The application is implemented by the 
+<a href="Pxgraph.java">Pxgraph</a> class.  The <CODE>Pxgraph</CODE> class
+includes support for printing and generating HTML for use with the
+<CODE>Plot</CODE> applet.
+
+ <P>
 Unix users can invoke the
 <A HREF="pxgraph"><CODE>pxgraph</CODE></A> Bourne Shell script to 
 simulate the <CODE>pxgraph</CODE> X11 binary 
 on machines where the X Window System is not available.
 Pxgraph is a slight extension of xgraph, written by Joe Buck, that
 reads binary files as well as ASCII.
+(Windows users can invoke the <A HREF="pxgraph.bat"><CODE>pxgraph.bat</CODE></A> DOS batch file.)
+
 <p>
 This code owes a heavy debt to David Harrison, author of xgraph.
  <P>
@@ -78,5 +94,8 @@ All rights reserved.
 <br>
 Last updated: $Date$,
 comments to: <author>eal@eecs.berkeley.edu</author>
+<br>
+Ptolemy Java Plot Website: 
+<A HREF="http://ptolemy.eecs.berkeley.edu/java/plot"><CODE>http://ptolemy.eecs.berkeley.edu/java/plot</CODE></A>
 </body>
 </html>
