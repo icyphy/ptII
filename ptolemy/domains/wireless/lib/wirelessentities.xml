@@ -45,22 +45,9 @@
 <entity name="WirelessToWired" class="ptolemy.domains.wireless.lib.WirelessToWired">
 </entity>
 
-<entity name="Network" class="ptolemy.moml.EntityLibrary">
-    <entity name="NetworkLayer" class="ptolemy.moml.EntityLibrary">
-        <entity name="PoissonNetwork" class="ptolemy.domains.wireless.lib.network.PoissonNetwork">
-        </entity>
-    </entity>
+<!--  Please do not include classes from wireless/lib/network here
+because we are not shipping those classes -->
 
-    <entity name="MAC" class="ptolemy.moml.EntityLibrary">
-        <entity name="IEEE80211MAC" class="ptolemy.domains.wireless.lib.network.mac.IEEE80211MAC">
-        </entity>
-    </entity>
-   <entity name="PHY" class="ptolemy.moml.EntityLibrary">
-        <entity name="IEEE80211PHY" class="ptolemy.domains.wireless.lib.network.IEEE80211PHY">
-        </entity>
-    </entity>
-
-</entity>  
       </group>
     ?>
   </configure>
