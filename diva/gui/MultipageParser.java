@@ -197,8 +197,8 @@ public class MultipageParser extends HandlerBase {
      * InputStream, or a Reader.  In the latter two cases, the input
      * character stream is provided.
      *
-     * @param publicId The public identifier, or null if none was supplied.
-     * @param systemId The system identifier.
+     * @param publicID The public identifier, or null if none was supplied.
+     * @param systemID The system identifier.
      * @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
