@@ -53,7 +53,6 @@ import ptolemy.actor.gui.TextEffigy;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
@@ -75,11 +74,7 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.AbstractGlobalLayout;
-import diva.graph.layout.GlobalLayout;
-import diva.graph.layout.IncrLayoutAdapter;
-import diva.graph.layout.IncrementalLayoutListener;
 import diva.gui.GUIUtilities;
-import diva.util.Filter;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorController
@@ -94,12 +89,18 @@ contains a command to rename the node and to configure its ports.
 In addition, a layout algorithm is applied so that
 the figures for ports are automatically placed on the sides of the
 figure for the entity.
+<p>
+NOTE: This class is abstract because it is missing the code for laying
+out ports. Use the concrete subclasses ActorInstanceController
+or ClassDefinitionController instead.
 
 @author Steve Neuendorffer and Edward A. Lee, Elaine Cheong
 @version $Id$
 @since Ptolemy II 2.0
+@see ActorInstanceController
+@see ClassDefinitionController
 */
-public class ActorController extends AttributeController {
+public abstract class ActorController extends AttributeController {
 
     /** Create an entity controller associated with the specified graph
      *  controller with full access.
@@ -160,33 +161,6 @@ public class ActorController extends AttributeController {
                     (BasicGraphController)getController());
             _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
         }
-
-
-        // The filter for the layout algorithm of the ports within this
-        // entity. This returns true only if the argument is a Port
-        // and the parent implements Locatable.
-        Filter portFilter = new Filter() {
-                public boolean accept(Object candidate) {
-                    GraphModel model = getController().getGraphModel();
-                    if (candidate instanceof Locatable &&
-                            model.getSemanticObject(candidate) instanceof Entity) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            };
-
-        // Anytime we add a port to an entity, we want to layout all the
-        // ports within that entity.
-        GlobalLayout layout = new EntityLayout();
-        controller.addGraphViewListener(
-                new IncrementalLayoutListener(
-                        new IncrLayoutAdapter(layout) {
-                                public void nodeDrawn(Object node) {
-                                    layout(node);
-                                }
-                            }, portFilter));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -236,8 +210,10 @@ public class ActorController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     
-    /** The action that handles edit custom icon.
-     */
+    /** The access level defined in the constructor. */
+    protected Access _access;
+
+    /** The action that handles edit custom icon. */
     protected EditIconAction _editIconAction = new EditIconAction();
             
     /** The action that handles look inside.  This is accessed by
@@ -245,14 +221,20 @@ public class ActorController extends AttributeController {
      */
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
 
-    /** The action that handles removing a custom icon.
-     */
+    /** The action that handles removing a custom icon. */
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private BreakpointDialogFactory _breakpointDialogFactory;
+
+    // Error message used when we can't find the inside definition.
+    private static String _CANNOT_FIND_MESSAGE
+            = "Cannot find inside definition. "
+            + "Perhaps source code is not installed? "
+            + "You can obtain source code for Berkeley actors at: "
+            + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
 
     private ListenToActorAction _listenToActorAction;
 
@@ -623,14 +605,4 @@ public class ActorController extends AttributeController {
             }
         }
     }
-
-    // Error message used when we can't find the inside definition.
-    private static String _CANNOT_FIND_MESSAGE
-            = "Cannot find inside definition. "
-            + "Perhaps source code is not installed? "
-            + "You can obtain source code for Berkeley actors at: "
-            + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
-
-    private Access _access;
-
 }

@@ -199,7 +199,11 @@ public class ActorViewerGraphController extends RunnableGraphController {
         } else if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
             if (semanticObject instanceof Entity) {
-                if (((Entity)semanticObject).isClassDefinition()) {
+                // In the viewer, there will not be a class definition
+                // controller that is distinct from the entity controller.
+                // In the edit, there will be.
+                if (_classDefinitionController != null
+                        && ((Entity)semanticObject).isClassDefinition()) {
                     return _classDefinitionController;
                 } else {
                     return _entityController;
@@ -249,9 +253,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 AttributeController.PARTIAL);
         // NOTE: Use an ordinary ActorController rather than
         // ClassDefinitionController because access is only PARTIAL.
-        _classDefinitionController = new ActorController(this,
+        _classDefinitionController = new ClassDefinitionController(this,
                 AttributeController.PARTIAL);
-        _entityController = new ActorController(this,
+        _entityController = new ActorInstanceController(this,
                 AttributeController.PARTIAL);
         _entityPortController = new IOPortController(this,
                 AttributeController.PARTIAL);
