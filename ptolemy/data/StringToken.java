@@ -27,7 +27,6 @@
 
 package ptolemy.data;
 
-import ptolemy.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 
