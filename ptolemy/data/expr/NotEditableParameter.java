@@ -1,4 +1,4 @@
-/* Parameter is another name for a Variable.
+/* A visible, but not editable parameter
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -41,10 +41,14 @@ import ptolemy.actor.gui.style.NotEditableLineStyle;
 //////////////////////////////////////////////////////////////////////////
 //// NotEditableParameter
 /**
-NotEditableParameter is almost identical to its base class variable,
-except that it is visible, but not editable in the user interface. This class is usually used by one part of ptolemy (say an analysis tool) to embed visible, but not persistant information in a model.
 
-By default, an instance of NotEditableParameter is visible, but not
+NotEditableParameter is almost identical to its base class variable,
+except that it is visible, but not editable in the user
+interface. This class is usually used by one part of ptolemy (say an
+analysis tool) to embed visible, but not persistent information in a
+model.
+
+<p>By default, an instance of NotEditableParameter is visible, but not
 editable as indicated by the fact that it returns NOT_EDITABLE in its
 getVisibility() method.  This can be overridden by calling
 setVisibility().
