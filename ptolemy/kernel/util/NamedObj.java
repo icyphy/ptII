@@ -707,13 +707,17 @@ public class NamedObj implements Nameable, Debuggable,
         }
 
         if (depth == 0 && getContainer() == null) {
-            // Add the version.
-            output.write(_getIndentPrefix(depth+1)
-                    + "<property name=\"_createdBy\" " 
-                    + "class=\"ptolemy.kernel.util.VersionAttribute\" "
-                    + "value=\""
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    + "\"/>\n");
+	    if (_attributes == null 
+		|| _attributes.get("_createdBy") == null) {
+		// If there is no _createdBy attribute, then add one.
+		output.write(_getIndentPrefix(depth+1)
+			     + "<property name=\"_createdBy\" " 
+			     + "class=\"ptolemy.kernel.util.VersionAttribute\" "
+			     + "value=\""
+			     + VersionAttribute.CURRENT_VERSION.getExpression()
+			     + "\">\n");
+		output.write(_getIndentPrefix(depth+1) + "</property>\n");
+	    }
   	}
 
 
