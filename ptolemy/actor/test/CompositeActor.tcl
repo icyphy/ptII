@@ -242,6 +242,12 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     $e2 connect $p2 $p5
     $e2 connect $p6 $p3
 
+    
+    # Call initialize on the director so that the receivers get created
+    # added Neil Smyth. Need to call this as receivers are no longer 
+    # created on the fly.
+    $director initialize
+
     set token [java::new ptolemy.data.StringToken foo]
     $p1 send 0 $token
     # check that token got only as far as p2
@@ -249,10 +255,11 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     set res2 [$p5 hasToken 0]
 
     $e2 prefire
-
+    
     set res3 [$p2 hasToken 0]
     set res4 [$p5 hasToken 0]
 
+    
     # Emulate a firing of e2.
     # Manually transfer the token via the output p6, as actor e2 would do.
     $p6 send 0 [$p5 get 0]
@@ -266,7 +273,7 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     $e2 postfire
     set res8 [$p4 hasToken 0]
     set res9 [[$p4 get 0] toString]
-
+    
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
 } {1 0 0 1 0 0 0 1 ptolemy.data.StringToken(foo)}
 
