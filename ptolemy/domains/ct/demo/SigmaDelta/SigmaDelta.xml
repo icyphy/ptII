@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SigmaDelta" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -48,7 +48,7 @@ to produce a countering electrostatic force.</text></svg></configure>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 819, 570}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {0, 0, 819, 563}, maximized = false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -69,6 +69,10 @@ to produce a countering electrostatic force.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 415.0">
         </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{302.0, 227.0}">
     </property>
     <entity name="CTSubsystem" class="ptolemy.actor.TypedCompositeActor">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
@@ -101,8 +105,6 @@ to produce a countering electrostatic force.</text></svg></configure>
             <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
             </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-            </property>
-            <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
@@ -329,7 +331,9 @@ to produce a countering electrostatic force.</text></svg></configure>
     <entity name="delay" class="ptolemy.domains.de.lib.TimedDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="0.02">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="171.0, 225.0">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 215.0]">
         </property>
     </entity>
     <entity name="FIR Filter" class="ptolemy.domains.sdf.lib.FIR">
@@ -341,11 +345,11 @@ to produce a countering electrostatic force.</text></svg></configure>
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.7, 0.3}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 225.0]">
         </property>
     </entity>
     <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 225.0]">
         </property>
     </entity>
     <entity name="Accumulator" class="ptolemy.actor.lib.Average">
