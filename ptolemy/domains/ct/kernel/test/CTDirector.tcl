@@ -76,7 +76,7 @@ test CTDirector-1.3 {Construct with a name and a container} {
 ######################################################################
 ####  Test methods in (abstract) CTDirector
 #
-test CTMultiSolverDirector-2.1 {Get default values} {
+test CTDirector-2.1 {Get default values} {
     set sys [java::new ptolemy.actor.TypedCompositeActor]
     $sys setName System
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
@@ -96,13 +96,13 @@ test CTMultiSolverDirector-2.1 {Get default values} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 1.79769313486e+308 0.1 1e-10 1e-06}
+} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 Infinity 0.1 1e-10 1e-06}
 
 
 ######################################################################
 ####  Test set parameters.
 #    
-test CTMultiSolverDirector-2.2 {set Parameters by expression} {
+test CTDirector-2.2 {set Parameters by expression} {
     #Note: Use above set up.
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]
@@ -176,7 +176,7 @@ test CTMultiSolverDirector-2.2 {set Parameters by expression} {
 ####  Test set parameters, same as above, but uses setToken
 #   
 #     
-test CTMultiSolverDirector-2.2a {set Parameters} {
+test CTDirector-2.2a {set Parameters} {
     #Note: Use above set up.
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]
@@ -247,7 +247,7 @@ test CTMultiSolverDirector-2.2a {set Parameters} {
 } {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 100.0 0.1 1e-11 0.1}
 
 
-test CTMultiSolverDirector-2.3 {sets and gets} {
+test CTDirector-2.3 {sets and gets} {
     #Note: Use above set up.
     $dir setCurrentTime 0.1
     $dir setCurrentStepSize 0.2
@@ -258,7 +258,7 @@ test CTMultiSolverDirector-2.3 {sets and gets} {
 #############################################################################
 #### Test set suggested next step size, it is larger than the maximum
 #    step size, so nothing has changed.
-test CTMultiSolverDirector-2.4 {suggested next step greater than max step} {
+test CTDirector-2.4 {suggested next step greater than max step} {
     #Note: Use above set up.
     $dir setSuggestedNextStepSize 0.5
     list [$dir getSuggestedNextStepSize]
@@ -267,7 +267,7 @@ test CTMultiSolverDirector-2.4 {suggested next step greater than max step} {
 #############################################################################
 #### Test set suggested next step size, it is less than the maximum
 #    step size, so it is effective.
-test CTMultiSolverDirector-2.5 {suggested next step less than max step} {
+test CTDirector-2.5 {suggested next step less than max step} {
     #Note: Use above set up.
     # Max step size is 0.3
     $dir setSuggestedNextStepSize 0.1
@@ -277,7 +277,7 @@ test CTMultiSolverDirector-2.5 {suggested next step less than max step} {
 ######################################################################
 ####  Test Breakpoints
 #  
-test CTMultiSolverDirector-3.1 {register a breakpoint} {     
+test CTDirector-3.1 {register a breakpoint} {     
     #Note: new set up.
     set sys [java::new ptolemy.actor.TypedCompositeActor]
     $sys setName System
@@ -309,14 +309,14 @@ test CTMultiSolverDirector-3.1 {register a breakpoint} {
     list $starttime $first $firstAgain $second $third $stoptime
 } {0.0 0.1 0.1 0.2 0.4 1.0}
 
-test CTMultiSolverDirector-3.2 {access empty breakpoint table} {     
+test CTDirector-3.2 {access empty breakpoint table} {     
     #Note: use above set up.
     $bptable removeFirst
     set nextone [$bptable first]
     list [expr {$nextone == [java::null]}]
 } {1}
 
-test CTMultiSolverDirector-3.3 {BreakpointODESolver} {
+test CTDirector-3.3 {BreakpointODESolver} {
     #Note: use above set up.
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]

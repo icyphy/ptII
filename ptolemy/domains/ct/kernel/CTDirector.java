@@ -81,7 +81,8 @@ import ptolemy.math.Utilities;
    is at the top level. Default value is 0.0.
    <LI> <code>stopTime</code>: The stop time of the simulation.
    This parameter is effective only if the director
-   is at the top level. Default value is Double.MAX_VALUE.
+   is at the top level. The default value is Infinity, which
+   results in execution that does not stop on its own.
    <LI> <code>initStepSize</code>: The suggested integration step size
    by the user. This will be the step size for fixed step
    size ODE solvers if there is no breakpoint. However, it is just
@@ -201,55 +202,52 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** ODE solving error tolerance, only effective in variable step
      *  size methods.
-     *  The default value is 1e-4, of type DoubleToken.
+     *  The default value is 1e-4, and the type is double.
      */
     public Parameter errorTolerance;
 
     /** User's hint for the initial integration step size.
-     *  The default value is 0.1, of
-     *  type DoubleToken.
+     *  The default value is 0.1, and the type is double.
      */
     public Parameter initStepSize;
 
     /** The maximum number of iterations in looking for a fixed-point.
-     *  The default value is 20, of type IntToken.
+     *  The default value is 20, and the type is int.
      */
     public Parameter maxIterations;
 
     /** User's guide for the maximum integration step size.
-     *  The default value is 1.0, of
-     *  type DoubleToken.
+     *  The default value is 1.0, and the type is double.
      */
     public Parameter maxStepSize;
 
     /** User's guide for the minimum integration step size.
-     *  The default value is 1e-5, of
-     *  type DoubleToken.
+     *  The default value is 1e-5, and the type is double.
      */
     public Parameter minStepSize;
 
-    /** Starting time of the simulation. The default value is 0.0, of
-     *  type DoubleToken.
+    /** Starting time of the simulation. The default value is 0.0,
+     *  and the type is double.
      */
     public Parameter startTime;
 
-    /** Stop time of the simulation. The default value is Double.MAX_VALUE, of
-     *  type DoubleToken.
+    /** Stop time of the simulation. The default value is Infinity, and
+     *  the type is double.
      */
     public Parameter stopTime;
 
-    /** Indicate whether the execution will synchronize to real time. The
-     *  default value is false.
+    /** Indicator whether the execution will synchronize to real time. The
+     *  default value is false, and the type is boolean.
      */
     public Parameter synchronizeToRealTime;
 
     /** The resolution in comparing time.
-     *  The default value is 1e-10, of type DoubleToken.
+     *  The default value is 1e-10, and the type is double.
      */
     public Parameter timeResolution;
 
     /** Value resolution in looking for a fixed-point.
-     *  The default value is 1e-6, of type DoubleToken.
+     *  The default value is 1e-6, and the type is double.
      */
     public Parameter valueResolution;
 
@@ -834,47 +832,46 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     protected void _initParameters() {
         try {
-            _stopTime = java.lang.Double.MAX_VALUE;
-            _startTime = 0.0;
-            _initStepSize = 0.1;
-            _minStepSize = 1e-5;
-            _maxStepSize = 1.0;
-            _maxIterations = 20;
-            _errorTolerance = 1e-4;
-            _valueResolution = 1e-6;
-
-            startTime = new Parameter(
-                    this, "startTime", new DoubleToken(0.0));
+            startTime = new Parameter(this, "startTime");
+            startTime.setExpression("0.0");
             startTime.setTypeEquals(BaseType.DOUBLE);
-            stopTime = new Parameter(this, "stopTime",
-                    new DoubleToken(_stopTime));
+            
+            stopTime = new Parameter(this, "stopTime");
+            stopTime.setExpression("Infinity");
             stopTime.setTypeEquals(BaseType.DOUBLE);
-            initStepSize = new Parameter(this, "initStepSize",
-                    new DoubleToken(_initStepSize));
+            
+            initStepSize = new Parameter(this, "initStepSize");
+            initStepSize.setExpression("0.1");
             initStepSize.setTypeEquals(BaseType.DOUBLE);
-            minStepSize = new Parameter(this, "minStepSize",
-                    new DoubleToken(_minStepSize));
+            
+            minStepSize = new Parameter(this, "minStepSize");
+            minStepSize.setExpression("1e-5");
             minStepSize.setTypeEquals(BaseType.DOUBLE);
-            maxStepSize = new Parameter(this, "maxStepSize",
-                    new DoubleToken(_maxStepSize));
+            
+            maxStepSize = new Parameter(this, "maxStepSize");
+            maxStepSize.setExpression("1.0");
             maxStepSize.setTypeEquals(BaseType.DOUBLE);
-            maxIterations = new Parameter(this, "maxIterations",
-                    new IntToken(_maxIterations));
+            
+            maxIterations = new Parameter(this, "maxIterations");
+            maxIterations.setExpression("20");
             maxIterations.setTypeEquals(BaseType.INT);
-            errorTolerance = new Parameter(this, "errorTolerance",
-                    new DoubleToken(_errorTolerance));
+            
+            errorTolerance = new Parameter(this, "errorTolerance");
+            errorTolerance.setExpression("1e-4");
             errorTolerance.setTypeEquals(BaseType.DOUBLE);
-            valueResolution = new Parameter(this, "valueResolution",
-                    new DoubleToken(_valueResolution));
+            
+            valueResolution = new Parameter(this, "valueResolution");
+            valueResolution.setExpression("1e-6");
             valueResolution.setTypeEquals(BaseType.DOUBLE);
+            
             timeResolution = new Parameter(this, "timeResolution",
                     new DoubleToken(getTimeResolution()));
             timeResolution.setTypeEquals(BaseType.DOUBLE);
+            
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime");
-            synchronizeToRealTime.setToken(new BooleanToken(false));
+            synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
-
 
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
