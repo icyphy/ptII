@@ -48,7 +48,8 @@ TCL_SRCS = \
 	testDefs.tcl \
 	testEnums.tcl
 
-JSRCS = 
+JSRCS = \
+	TestWorkspace.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -60,7 +61,8 @@ JSIMPLE_TESTS = \
 	NameDuplicationException.tcl \
 	NamedList.tcl \
 	NamedObj.tcl \
-	NoSuchItemException.tcl
+	NoSuchItemException.tcl \
+	Workspace.tcl
 
 
 # Graphical Java tests that use Tcl.
