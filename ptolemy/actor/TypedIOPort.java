@@ -763,7 +763,6 @@ public class TypedIOPort extends IOPort implements Typeable {
             }
 
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
-                // FIXME: should throw TypeConflictException.
                 throw new IllegalActionException(
                         "TypedIOPort$TypeTerm.setValue: The new type is not" +
                         " a substitution instance of the type of this port. " +
