@@ -87,18 +87,18 @@ public class Precision {
 	boolean done = false;
 	int type = 0;
 	StringTokenizer st = new StringTokenizer(n);
-	if ( n.indexOf('/',0) != -1 ) {
-	    done=true;
+	if ( n.indexOf('/', 0) != -1 ) {
+	    done = true;
 	    type = 1;
 	    st = new StringTokenizer(n,"/()");
 	}
-	if ( n.indexOf('.',0) != -1 ) {
-	    done=true;
+	if ( n.indexOf('.', 0) != -1 ) {
+	    done = true;
 	    type = 2;
 	    st = new StringTokenizer(n,".()");
 	}
-	if ( n.indexOf('^',0) != -1 ) {
-	    done=true;
+	if ( n.indexOf('^', 0) != -1 ) {
+	    done = true;
 	    type = 3;
 	    st = new StringTokenizer(n,"^()");
 	}
