@@ -145,7 +145,7 @@ PTPACKAGE_ROOTDIR = $(CLASSPATH)
 PTPACKAGE_DIR = ptolemy/plot
 # If you change PTVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
-PTVERSION =	2.0
+PTVERSION =	2.0a1
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 JARFILE = 	$(PTPACKAGE).jar
