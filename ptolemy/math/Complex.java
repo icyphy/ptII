@@ -22,6 +22,11 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -51,8 +56,8 @@ import  java.io.Serializable;
  *       suite, and influenced some of the method name choices.
  *  </ul>
  *
- *  @Author: Edward A. Lee
- *  @Version: $Id$
+ *  @author Edward A. Lee
+ *  @version $Id$
  */
 public final class Complex implements Cloneable, Serializable {
 
