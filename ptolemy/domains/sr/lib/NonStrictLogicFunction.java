@@ -128,6 +128,13 @@ public class NonStrictLogicFunction extends LogicFunction {
         }
     }
 
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *  
+     */
+    public void removeDependencies() {
+        removeDependency(input, output);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

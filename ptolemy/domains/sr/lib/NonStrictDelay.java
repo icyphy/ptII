@@ -155,6 +155,13 @@ public class NonStrictDelay extends Transformer {
         return super.postfire();
     }
 
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *  
+     */
+    public void removeDependencies() {
+        removeDependency(input, output);
+    }
+
     /** Override the method in the base class so that the type
      *  constraint for the <i>initialValue</i> parameter will be set
      *  if it contains a value.

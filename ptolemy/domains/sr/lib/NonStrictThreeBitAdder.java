@@ -149,6 +149,13 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
         if (low != null) lowBit.send(0, low);
     }
 
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *  
+     */
+    public void removeDependencies() {
+        removeDependency(inputBits, highBit);
+        removeDependency(inputBits, lowBit);
+    }
 }
 
 

@@ -94,4 +94,11 @@ public class NonStrictTokenToExpression extends TokenToExpression {
     public boolean prefire() throws IllegalActionException {
         return input.isKnown(0);
     }
+
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *  
+     */
+    public void removeDependencies() {
+        removeDependency(input, output);
+    }
 }
