@@ -146,7 +146,7 @@ JVMSIZE = -Xmx256m
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make COMPILEOPTIONS=-h
-COMPILEOPTIONS=
+#COMPILEOPTIONS= -compileOptions -h
 
 # Time that we should let code generation run before exiting in ms.
 WATCHDOGTIMEOUT =     600000
@@ -168,15 +168,15 @@ compileDemo: $(JCLASS)
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		-targetPackage   "$(TARGETPACKAGE)" \
 		-targetPath      "$(TARGETPATH)" \
-		-watchDogTimeout "$(WATCHDOGTIMEOUT)"
-		-compileOptions  "$(COMPILEOPTIONS)"
+		-watchDogTimeout "$(WATCHDOGTIMEOUT)" \
+		$(COMPILEOPTIONS)
 
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 
 runJava: runDemo
 runDemo:
-	(cd cg/$(MODEL); $(MAKE) runJava)
+	(cd cg/$(MODEL); $(MAKE) runDemo)
 
 treeShakeDemo:
 	cd $(ROOT)/$(TARGETPATH); $(MAKE) treeShake
