@@ -228,9 +228,9 @@ public class LongMatrixToken extends MatrixToken {
      *  conversion is possible from either this token to the specified
      *  one, or vice versa.
      *  @param token The token with which to test equality.
-     *  @return A booleanToken containing the result.
+     *  @return A BooleanToken containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not a matrix token; or lossless conversion is not possible.
+     *   not a matrix token, or lossless conversion is not possible.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
 	int compare = TypeLattice.compare(this, token);
