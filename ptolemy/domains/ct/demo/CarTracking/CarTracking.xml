@@ -88,8 +88,10 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 225.0">
         </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -5, 1032, 779}}">
     </property>
     <entity name="leading car" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 140.0">
@@ -261,6 +263,8 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             </port>
         </entity>
         <entity name="TimedSinewave" class="ptolemy.actor.lib.TimedSine">
+            <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+            </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 450]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[53, 160]">
@@ -278,15 +282,15 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="460.0, 280.0">
+            <vertex name="vertex1" value="460.0, 280.0">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="546.5454545454529, 230.4074074074078">
+            <vertex name="vertex1" value="546.5454545454529, 230.4074074074078">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="210.0, 320.0">
+            <vertex name="vertex1" value="210.0, 320.0">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -428,6 +432,12 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 165.0">
                 </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
@@ -483,6 +493,12 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 380.0">
                 </property>
                 <property name="miu" class="ptolemy.data.expr.Parameter" value="0.5">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -564,6 +580,8 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
                 <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
                 <property name="title" class="ptolemy.kernel.util.StringAttribute" value="fault">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="764.2429504394531, 225.25301361083984">
                 </property>
@@ -669,23 +687,23 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
                 </port>
             </entity>
             <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="500.0, 165.0">
+                <vertex name="vertex1" value="500.0, 165.0">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="350.0, 400.5">
+                <vertex name="vertex1" value="350.0, 400.5">
                 </vertex>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="385.0, 265.0">
+                <vertex name="vertex1" value="385.0, 265.0">
                 </vertex>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="130.0, 145.0">
+                <vertex name="vertex1" value="130.0, 145.0">
                 </vertex>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="525.0, 380.0">
+                <vertex name="vertex1" value="525.0, 380.0">
                 </vertex>
             </relation>
             <relation name="relation13" class="ptolemy.actor.TypedIORelation">
@@ -693,19 +711,19 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             <relation name="relation15" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="720.0, 165.5">
+                <vertex name="vertex1" value="720.0, 165.5">
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="180.0, 105.5">
+                <vertex name="vertex1" value="180.0, 105.5">
                 </vertex>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="165.0, 115.0">
+                <vertex name="vertex1" value="165.0, 115.0">
                 </vertex>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 135.0">
+                <vertex name="vertex1" value="150.0, 135.0">
                 </vertex>
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -713,7 +731,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="65.0, 125.0">
+                <vertex name="vertex1" value="65.0, 125.0">
                 </vertex>
             </relation>
             <link port="input" relation="relation17"/>
@@ -753,6 +771,14 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             <link port="3:SampleDelay.output" relation="relation2"/>
         </entity>
         <entity name="modal controller" class="ptolemy.vergil.fsm.modal.ModalModel">
+            <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                    </property>
+                    <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                    </property>
+                </property>
+            </property>
             <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
                 <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
                 </property>
@@ -883,6 +909,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="faulty_isPresent &amp;&amp; !faulty">
@@ -900,6 +928,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
                 <link port="regular.incomingPort" relation="relation3"/>
@@ -1072,6 +1102,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                 </relation>
                 <relation name="1:relation" class="ptolemy.domains.fsm.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
@@ -1090,6 +1122,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                 </relation>
                 <relation name="1:relation4" class="ptolemy.domains.fsm.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="tooClose">
@@ -1107,6 +1141,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
                 <link port="catch.incomingPort" relation="1:relation3"/>
@@ -1235,6 +1271,10 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 484, 508, 258}}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 203]">
+            </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="605.0, 95.0">
@@ -1254,19 +1294,19 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </configure>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="85.0, 170.0">
+            <vertex name="vertex1" value="85.0, 170.0">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="2:relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="648.32958984375, 180.50244140625">
+            <vertex name="vertex1" value="648.32958984375, 180.50244140625">
             </vertex>
         </relation>
         <relation name="2:relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="475.0, 265.0">
+            <vertex name="vertex1" value="475.0, 265.0">
             </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1276,11 +1316,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="350.0, 180.0">
+            <vertex name="vertex1" value="350.0, 180.0">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="475.0, 95.0">
+            <vertex name="vertex1" value="475.0, 95.0">
             </vertex>
         </relation>
         <link port="subscribe" relation="relation2"/>
@@ -1434,7 +1474,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="init" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="step" class="ptolemy.data.expr.Parameter" value="0.01">
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.01">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 250.0">
@@ -1445,6 +1485,9 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
             </port>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -1472,7 +1515,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="init" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="step" class="ptolemy.data.expr.Parameter" value="-1">
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 40.0">
@@ -1483,6 +1526,9 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
             </port>
         </entity>
         <entity name="Const22" class="ptolemy.actor.lib.Const">
@@ -1506,7 +1552,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="205.0, 335.0">
+            <vertex name="vertex1" value="205.0, 335.0">
             </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -1518,7 +1564,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="350.0, 145.0">
+            <vertex name="vertex1" value="350.0, 145.0">
             </vertex>
         </relation>
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
@@ -1530,7 +1576,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="100.0, 275.0">
+            <vertex name="vertex1" value="100.0, 275.0">
             </vertex>
         </relation>
         <link port="input" relation="relation23"/>
@@ -1592,6 +1638,10 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 6, 508, 280}}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 225]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -1778,7 +1828,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <relation name="1:relation8" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="1:relation7" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="315.0, 200.0">
+                <vertex name="vertex1" value="315.0, 200.0">
                 </vertex>
             </relation>
             <relation name="1:relation5" class="ptolemy.actor.TypedIORelation">
@@ -1826,11 +1876,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 115.0">
+            <vertex name="vertex1" value="150.0, 115.0">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="175.0, 160.0">
+            <vertex name="vertex1" value="175.0, 160.0">
             </vertex>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -1865,11 +1915,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="310.0, 190.0">
+        <vertex name="vertex1" value="310.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="325.0, 180.0">
+        <vertex name="vertex1" value="325.0, 180.0">
         </vertex>
     </relation>
     <link port="leading car.package" relation="relation"/>
