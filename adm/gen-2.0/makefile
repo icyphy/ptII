@@ -125,13 +125,10 @@ all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
 
-# The line #ptIInightly-mail#: Starting make clean at `date`
-# is special, the ptIInightly-mail script uses it
 clean:
 	@echo "#"
 	@echo "# Now cleaning old tar files in ~ptII/adm/gen-latest"
 	@echo "#"
-	@echo "#ptIInightly-mail#: Starting make clean at `date`"
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
 	rm -rf $(PTIIDIST) src installshield/*
 
@@ -385,11 +382,13 @@ remote1configure:
 	(cd $(REMOTE1PTIIDIST);	rm -f config.cache; PTII=$(REMOTE1PTIIDIST) ./configure)
 
 # Clean the remote1 tree
+# The line '#ptIInightly-mail#: Starting make clean at `date`'
+# is special, the ptIInightly-mail script uses it
 remote1distclean:
 	@echo "#"
 	@echo "# Now running make clean in $(REMOTE1PTIIDIST) on `hostname`"
 	@echo "#"
-	@echo "$@ `date`"
+	@echo "#ptIInightly-mail#: Starting make clean at `date`"
 	(cd $(REMOTE1PTIIDIST); \
 		$(MAKE) clean; \
 		find . -name codeDoc -exec rm -rf {} \;)
