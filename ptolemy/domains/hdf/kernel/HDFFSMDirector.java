@@ -169,7 +169,6 @@ public class HDFFSMDirector extends FSMDirector {
      *  mode controller. If the refinement of the current state of
      *  the mode controller is ready to fire, then fire the current
      *  refinement.
-     *
      *  @exception IllegalActionException If there is no controller.
      */
     public void fire() throws IllegalActionException {
@@ -211,9 +210,8 @@ public class HDFFSMDirector extends FSMDirector {
             ref[0].fire();
             _setInputsFromRefinement();
         }
-        if (_firingsSoFar == _firingsPerScheduleIteration - 1) {
-            // The HDFFSM Director has fired
-            // "_firingsPerScheduleIteration" times.
+        if (_firingsSoFar == _firingsPerIteration - 1) {
+            // The HDFFSM Director has fired "_firingsPerIteration" times.
             // Note _firingsSoFar starts at zero and is updated in postfire.
             _chooseTransition(st.nonpreemptiveTransitionList());
         }
@@ -221,31 +219,29 @@ public class HDFFSMDirector extends FSMDirector {
     }
 
     /** Get the number of firings per iteration of this director.
-     * @return The number of firings per iteration of this director.
+     *  @return The number of firings per iteration of this director.
      */
-    public int getFiringsPerScheduleIteration() {
-        return _firingsPerScheduleIteration;
+    public int getFiringsPerIteration() {
+        return _firingsPerIteration;
     }
 
     /** Get the number of firings so far of this director.
-     * @return The number of firings so far.
+     *  @return The number of firings so far.
      */
     public int getFiringsSoFar() {
         return _firingsSoFar;
     }
 
-    /** Invoke the initialize() method of each deeply contained actor.
-     *  Since type resolution has been completed, the initialize() method
-     *  of a contained actor may produce output or schedule events.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
+    /** Initialize the mode controller and all the refinements. If
+     *  reinitialization is desired, this method should recompute the
+     *  schedule of the initial states of the sub-layer HDFFSMDirector.
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (!_resetCurrentHDFFSM) {
+            // This is a sub-layer HDFFSMDirector. Recompute the schedule.
             _firingsSoFar = 0;
             FSMActor controller = getController();
             State initialState = controller.getInitialState();
@@ -265,8 +261,6 @@ public class HDFFSMDirector extends FSMDirector {
                     System.out.println(getName() + " : initialize()" +
                         "initial refinement is "
                         + curRefinement.getFullName());
-                    System.out.println(getName() + " : initialize(): " +
-                        "initial director is " + refinementDir.getFullName());
                 }
                 if (refinementDir instanceof HDFFSMDirector) {
                     refinementDir.initialize();
@@ -275,7 +269,6 @@ public class HDFFSMDirector extends FSMDirector {
                     refinementDir).getScheduler();
                     refinmentSched.setValid(false);
                     //refinmentSched.getSchedule();
-                    //System.out.println("getSchedule in HDFFSM initialize");
                     ((HDFDirector)refinementDir).getSchedule();
                     if (_debug_info) System.out.println(getName() +
                         " : initialize(): refinement's director : " +
@@ -318,7 +311,6 @@ public class HDFFSMDirector extends FSMDirector {
 
     /** Return a new receiver of a type compatible with this director.
      *  This returns an instance of SDFReceiver.
-     *
      *  @return A new SDFReceiver.
      */
     public Receiver newReceiver() {
@@ -340,12 +332,11 @@ public class HDFFSMDirector extends FSMDirector {
      *  director will be notified of the change in port rates. If
      *  a change in port rates occurs and this FSM is governed by
      *  an SDF director, an exception will occur.
-     *
      *  @return True if the mode controller wishes to be scheduled for
-     *   another iteration.
+     *  another iteration.
      *  @exception IllegalActionException If a refinement throws it,
-     *   if there is no controller, or if an inconsistency in port
-     *   rates is detected between refinement actors.
+     *  if there is no controller, or if an inconsistency in port
+     *  rates is detected between refinement actors.
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
@@ -364,22 +355,15 @@ public class HDFFSMDirector extends FSMDirector {
         // FIXME
         //boolean postfireReturn = currentRefinement.postfire();
         boolean postfireReturn = currentRefinement[0].postfire();
-        // Increment current firing count. This is the number of
-        // times the current refining HDF actor has been fired
-        // in the current iteration of the current static schedule
-        // of the SDF/HDF graph containing this FSM.
         _firingsSoFar++;
 
         if (_debug_info) {
             System.out.println(getFullName() + " :  postfire(): " +
                "_firingsSoFar = " + _firingsSoFar +
-               ", _firingsPerScheduleIteration = " +
-                               _firingsPerScheduleIteration);
+               ", _firingsPerIteration = " + _firingsPerIteration);
         }
 
-        // Check if the fire() has been called the number of
-        // times specified in the static schedule.
-        if (_firingsSoFar == _firingsPerScheduleIteration) {
+        if (_firingsSoFar == _firingsPerIteration) {
             // The current refinement has been fired the number
             // of times specified by the current static schedule.
             // A state transition can now occur.
@@ -408,7 +392,6 @@ public class HDFFSMDirector extends FSMDirector {
                 if (director instanceof HDFDirector) {
                     ((HDFDirector)director).invalidateSchedule();
                 }
-
             } else {
                 // The HDF/SDF graph in which this FSM is embedded has
                 // just finished one iteration, so make a state
@@ -419,14 +402,12 @@ public class HDFFSMDirector extends FSMDirector {
                 // state of the (enabled) transition.
                 // FIXME:
                 State newState = lastChosenTr.destinationState();
-
                 _setCurrentState(newState);
                 if (_debug_info) System.out.println(getName() +
                    " : postfire(): making state transition to: " +
                                            newState.getFullName());
                 Iterator actions = lastChosenTr.commitActionList().iterator();
                 while (actions.hasNext() && !_stopRequested) {
-                    //System.out.println("commit action in HDFFSM");
                     Action action = (Action)actions.next();
                     action.execute();
                 }
@@ -435,8 +416,6 @@ public class HDFFSMDirector extends FSMDirector {
                 if (resetToken.booleanValue()) {
                     setCurrentHDFFSMReset(true);
                     initialize();
-                    //FSMActor controller = getController();
-                    //State initialState = controller.getInitialState();
                 }
                 setCurrentHDFFSMReset(false);
                 curState = newState;
@@ -463,7 +442,6 @@ public class HDFFSMDirector extends FSMDirector {
                         refinementDir).getScheduler();
                     refinmentSched.setValid(false);
                     //refinmentSched.getSchedule();
-                    //System.out.println("getSchedule in HDFFSM postfire");
                     ((HDFDirector)refinementDir).getSchedule();
                 } else if (refinementDir instanceof SDFDirector) {
                     Scheduler refinmentSched = ((StaticSchedulingDirector)
@@ -499,7 +477,6 @@ public class HDFFSMDirector extends FSMDirector {
     }
 
     /** Return true if the mode controller is ready to fire.
-     *
      *  @exception IllegalActionException If there is no controller.
      */
     public boolean prefire() throws IllegalActionException {
@@ -515,18 +492,16 @@ public class HDFFSMDirector extends FSMDirector {
      *  the container of this director. This method is invoked
      *  once per execution, before any iteration, and before the
      *  initialize() method.
-     *
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it, or there is no controller.
      */
     public void preinitialize() throws IllegalActionException {
-        _firingsPerScheduleIteration = 1;
+        _firingsPerIteration = 1;
         _firingsSoFar = 0;
         _resetCurrentHDFFSM = true;
         super.preinitialize();
 
         FSMActor ctrl = getController();
-        // Attempt to get the initial state from the mode controller.
         State initialState = ctrl.getInitialState();
         if (_debug_info) {
             System.out.println(getName() + " : preinitialize(): " +
@@ -594,6 +569,12 @@ public class HDFFSMDirector extends FSMDirector {
         }
     }
 
+    /** Set the boolean flag that indicates whether the transition
+     *  in the current HDFFSMDirector resets the refinement.
+     *  @param resetCurrentHDFFSM The boolean flag indicating whether
+     *  the transition in the current HDFFSMDirector resets the
+     *  refinement.
+     */
     public void setCurrentHDFFSMReset(boolean resetCurrentHDFFSM) {
         _resetCurrentHDFFSM = resetCurrentHDFFSM;
     }
@@ -601,8 +582,8 @@ public class HDFFSMDirector extends FSMDirector {
     /** Set the number of firings per iteration of this director.
      *  @param firings Number of firings per iteration of this director.
      */
-    public void setFiringsPerScheduleIteration(int firings) {
-        _firingsPerScheduleIteration = firings;
+    public void setFiringsPerIteration(int firings) {
+        _firingsPerIteration = firings;
     }
 
     /** Return true if data are transferred from the input port of
@@ -747,7 +728,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  refinement can be found, or if the HDFDirector updateFiringCount
      *  method throws it.
      */
-    public void updateFiringCount
+    public void updateFiringsPerIteration
             (int directorFiringCount, boolean preinitializeFlag)
             throws IllegalActionException {
         FSMActor ctrl = getController();
@@ -778,13 +759,13 @@ public class HDFFSMDirector extends FSMDirector {
                     + refinementDir.getName());
             }
             if (refinementDir instanceof HDFFSMDirector) {
-                ((HDFFSMDirector)refinementDir).
-                    updateFiringCount(directorFiringCount, preinitializeFlag);
+                ((HDFFSMDirector)refinementDir).updateFiringsPerIteration(
+                    directorFiringCount, preinitializeFlag);
             } else if (refinementDir instanceof HDFDirector) {
                 ((HDFDirector)refinementDir).
                     setDirectorFiringsPerIteration(directorFiringCount);
-                ((HDFDirector)refinementDir).
-                    updateFiringCount(directorFiringCount, preinitializeFlag);
+                ((HDFDirector)refinementDir).updateFiringsPerIteration(
+                    directorFiringCount, preinitializeFlag);
             }
         }
     }
@@ -830,6 +811,14 @@ public class HDFFSMDirector extends FSMDirector {
             return container;
         }
 
+    /** Set the consumption rate of a port of an entity.
+     *  @param e Entity.
+     *  @param port The port.
+     *  @param rate Consumption rate to be set
+     *  @throws NotSchedulableException If the rate is negative,
+     *  or if the port is not an input port, or if the entity does
+     *  not contain such a port.
+     */
     private void _setTokenConsumptionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if (rate < 0) {
@@ -865,6 +854,14 @@ public class HDFFSMDirector extends FSMDirector {
         }
     }
 
+    /** Set the production rate of a port of an entity.
+     *  @param e Entity.
+     *  @param port The port.
+     *  @param rate Production rate to be set
+     *  @throws NotSchedulableException If the rate is negative,
+     *  or if the port is not an output port, or if the entity does
+     *  not contain such a port.
+     */
     private void _setTokenProductionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if (rate < 0) throw new NotSchedulableException(
@@ -894,14 +891,13 @@ public class HDFFSMDirector extends FSMDirector {
         }
     }
 
-    /* Extract the token consumption rates from the input
-     * ports of the current refinement and update the
-     * rates of the input ports of the HDF opaque composite actor
-     * containing the refinment. The resulting mutation will cause
-     * the SDF scheduler to compute a new schedule using the
-     * updated rate information.
-     *
-     * @param actor The current refinement.
+    /** Extract the token consumption rates from the input
+     *  ports of the current refinement and update the
+     *  rates of the input ports of the HDF opaque composite actor
+     *  containing the refinment. The resulting mutation will cause
+     *  the SDF scheduler to compute a new schedule using the
+     *  updated rate information.
+     *  @param actor The current refinement.
      */
     private void _updateInputTokenConsumptionRates(TypedCompositeActor actor)
             throws IllegalActionException {
@@ -964,9 +960,6 @@ public class HDFFSMDirector extends FSMDirector {
                 if (thisPortContainer.getFullName() ==
                     refineInPortContainer.getFullName() ||
                     temp.equals(thisPortContainer.getFullName())) {
-                    // The current port  is contained by the
-                    // container of the current refinment.
-                    // Update its consumption rate.
                     if (_debug_info) System.out.println(getName() +
                       " : _updateInputTokenConsumptionRates(): " +
                                          "Updating consumption " +
@@ -1049,9 +1042,6 @@ public class HDFFSMDirector extends FSMDirector {
                                     + "._Controller";
                 if (thisPortContainer.getFullName() ==
                     refineOutPortContainer.getFullName()) {
-                    // The current port  is contained by the
-                    // container of the current refinment.
-                    // Update its consumption rate.
                     if (_debug_info) System.out.println(getName() +
                         " : _updateOutputTokenProductionRates(): " +
                                             "Updating production " +
@@ -1083,9 +1073,13 @@ public class HDFFSMDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The number of times fire() has been called in the current
+    // The number of times fire() has been called in the top-level
     // iteration of the SDF graph containing this FSM.
     private int _firingsSoFar;
+
+    // The number of firings of this HDFFSM controller per
+    // top-level iteration.
+    private int _firingsPerIteration = 1;
 
     // Set to true to enable debugging.
     //private boolean _debug_info = true;
@@ -1095,8 +1089,5 @@ public class HDFFSMDirector extends FSMDirector {
     // has made a transition with "reset" set to be true.
     private boolean _resetCurrentHDFFSM = false;
 
-    // The firing count for the HDF actor (the container
-    // of this director) in the current schedule.
-    private int _firingsPerScheduleIteration = 1;
-    private int _cachedFiringCount = -1;
+    //private int _cachedFiringCount = -1;
 }

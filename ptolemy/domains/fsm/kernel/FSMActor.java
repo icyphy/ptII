@@ -1050,12 +1050,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         if (director instanceof HDFFSMDirector) {
             _firingsSoFar = ((HDFFSMDirector)director).getFiringsSoFar();
             _firingsPerScheduleIteration = 
-                ((HDFFSMDirector)director).getFiringsPerScheduleIteration();
-            //System.out.println("firingPerSchedulerIteration = " +
-            //    _firingsPerScheduleIteration);
+                ((HDFFSMDirector)director).getFiringsPerIteration();
         }
-        //System.out.println("firings = " + _firingsSoFar);
-        //System.out.println("firingsPerIteration = " + _firingsPerScheduleIteration);
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort)inPorts.next();

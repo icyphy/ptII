@@ -331,20 +331,13 @@ public class HDFDirector extends SDFDirector {
         getSchedule();
         CompositeActor container = (CompositeActor)getContainer();
         Director exeDirector = container.getExecutiveDirector();
-        //if ( exeDirector != null
-        //    || (! (exeDirector instanceof HDFFSMDirector))
-        //    || (! (exeDirector instanceof HDFDirector))
-        //    || (! (exeDirector instanceof SDFDirector))) {
-        //        System.out.println(container.getFullName());
-        //        //+ "'s exeDirector is" + exeDirector.getFullName());
-        //}
         if (exeDirector == null
-            //|| (! (exeDirector instanceof SDFDirector))
-            //|| (! (exeDirector instanceof HDFFSMDirector))
-            //|| (! (exeDirector instanceof HDFDirector))
+            || ((! (exeDirector instanceof SDFDirector))
+               && (! (exeDirector instanceof HDFFSMDirector))
+               &&(! (exeDirector instanceof HDFDirector)))
             ) {
             _directorFiringsPerIteration = 1;
-            updateFiringCount(1, false);
+            updateFiringsPerIteration(1, false);
         }
         return super.postfire();
     }
@@ -367,7 +360,7 @@ public class HDFDirector extends SDFDirector {
         Director exeDirector = container.getExecutiveDirector();
         if (exeDirector == null) {
             _directorFiringsPerIteration = 1;
-            updateFiringCount(1, true);
+            updateFiringsPerIteration(1, true);
         }
     }
 
@@ -390,7 +383,7 @@ public class HDFDirector extends SDFDirector {
      *  @exception IllegalActionException If no schedule can be found,
      *  or if the updateFiringsCount method in HDFFSMDirector throws it.
      */
-    public void updateFiringCount
+    public void updateFiringsPerIteration
         (int directorFiringCount, boolean preinitializeFlag)
             throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
@@ -405,15 +398,15 @@ public class HDFDirector extends SDFDirector {
                 if (director instanceof HDFFSMDirector) {
                     firingCount = firingCount * directorFiringCount;
                     ((HDFFSMDirector)director)
-                        .setFiringsPerScheduleIteration(firingCount);
-                    ((HDFFSMDirector)director)
-                        .updateFiringCount(firingCount, preinitializeFlag);
+                        .setFiringsPerIteration(firingCount);
+                    ((HDFFSMDirector)director).updateFiringsPerIteration(
+                        firingCount, preinitializeFlag);
                 } else if (director instanceof HDFDirector) {
                     firingCount = firingCount * directorFiringCount;
                     ((HDFDirector)director)
                         .setDirectorFiringsPerIteration(firingCount);
-                    ((HDFDirector)director)
-                        .updateFiringCount(firingCount, preinitializeFlag);
+                    ((HDFDirector)director).updateFiringsPerIteration(
+                        firingCount, preinitializeFlag);
                 }
             }
         }
