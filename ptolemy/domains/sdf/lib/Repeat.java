@@ -96,10 +96,8 @@ public class Repeat extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>numberOfTimes</i> parameter or the
-     *  <i>blockSize</i> parameter, then
-     *  set the rate of the ports, and invalidate
-     *  the schedule of the director.
+    /** Ensure that the numberOfTimes parameter and the blockSize
+     *  parameter are both positive.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */

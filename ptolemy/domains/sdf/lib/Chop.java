@@ -184,9 +184,8 @@ public class Chop extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Check the validity of parameter values, set production and
-     *  consumption rates on the ports, and, if necessary, invalidate
-     *  the current schedule.
+    /** Check the validity of parameter values and using the new
+     *  values, recompute the size of the internal buffers.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */

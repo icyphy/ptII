@@ -123,8 +123,7 @@ public class ArrayToSequence extends SDFTransformer {
     ////                         public methods                    ////
 
     /** If the argument is the <i>arrayLength</i> parameter, then
-     *  set the production rate of the output port, and invalidate
-     *  the schedule of the director.
+     *  check to make sure its value is not negative.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */

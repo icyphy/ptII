@@ -106,9 +106,7 @@ public class DownSample extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>factor</i> parameter, then
-     *  set the consumption rate of the input port, and invalidate
-     *  the schedule of the director.
+    /** Ensure that the factor and phase parameters are both positive.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */

@@ -95,9 +95,8 @@ public class FFT extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>order</i> parameter, then
-     *  set up the consumption and production constants, and invalidate
-     *  the schedule of the director.
+    /** Ensure that the order parameter is positive and recompute the
+     *  size of internal buffers.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */

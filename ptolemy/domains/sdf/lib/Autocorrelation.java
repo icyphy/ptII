@@ -184,9 +184,9 @@ public class Autocorrelation extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>order</i> parameter, then
-     *  set up the consumption and production constants, and invalidate
-     *  the schedule of the director.
+    /** Check to see that the numberOfInputs parameter is positive,
+     *  and that the numberOfLags parameter is positive.  Based on the
+     *  new values, recompute the size of the output array.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
@@ -249,7 +249,7 @@ public class Autocorrelation extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        boolean biasedValue = ((BooleanToken) biased.getToken()).booleanValue();
+        boolean biasedValue = ((BooleanToken)biased.getToken()).booleanValue();
         Token[] inputValues = input.get(0, _numberOfInputs);
         int notSymmetric = _symmetricOutput ? 0 : 1;
         // NOTE: Is there a better way to determine whether the input

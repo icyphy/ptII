@@ -121,9 +121,7 @@ public class VariableRecursiveLattice extends RecursiveLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>blockSize</i> parameter, then set
-     *  the production and consumption attributes of the ports and
-     *  invalidate the schedule.
+    /** Ensure that the blockSize parameter is positive.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the block size is invalid,
      *   or if the base class throws it.
