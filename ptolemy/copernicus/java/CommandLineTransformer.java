@@ -101,11 +101,11 @@ public class CommandLineTransformer extends SceneTransformer {
     }
 
     public String getDefaultOptions() {
-        return "";
+        return "iterations:50";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return super.getDeclaredOptions() + " iterations targetPackage";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -145,9 +145,9 @@ public class CommandLineTransformer extends SceneTransformer {
 
         // We know that we have exactly one model, so create it.
         // The final field for the model.
-        SootField modelField =
-            new SootField("_CGmodel", RefType.v(PtolemyUtilities.compositeActorClass),
-                    Modifier.PRIVATE | Modifier.FINAL);
+        SootField modelField = new SootField("_CGmodel", 
+                RefType.v(PtolemyUtilities.compositeActorClass),
+                Modifier.PRIVATE | Modifier.FINAL);
         mainClass.addField(modelField);
 
 
@@ -234,7 +234,8 @@ public class CommandLineTransformer extends SceneTransformer {
                             _insertIterateCalls(body, 
                                     unit, 
                                     modelClass,
-                                    modelLocal);
+                                    modelLocal,
+                                    options);
                             body.getUnits().remove(unit);
                         }
                     }
@@ -341,11 +342,10 @@ public class CommandLineTransformer extends SceneTransformer {
      *  class.
      */
     private void _insertIterateCalls(Body body, Unit unit,
-            SootClass modelClass, Local modelLocal) {
+            SootClass modelClass, Local modelLocal, Map options) {
         Chain units = body.getUnits();
         
-        //FIXME make parameter.
-        int iterationLimit = 50;
+        int iterationLimit = Options.getInt(options, "iterations");
         
         Local iterationLocal = null;
         if(iterationLimit > 1) {

@@ -194,9 +194,37 @@ public class ActorTransformer extends SceneTransformer {
                     body, entity, thisLocal, 
                     entity, thisLocal, entityInstanceClass);
                     
+            // Set the types of all the ports.
+            Local portLocal = Jimple.v().newLocal("port",
+                    RefType.v("ptolemy.kernel.Port"));
+            body.getLocals().add(portLocal);
+            Local ioportLocal =
+                Jimple.v().newLocal("typedport",
+                        PtolemyUtilities.ioportType);
+            body.getLocals().add(ioportLocal);
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
+                TypedIOPort port = (TypedIOPort)ports.next();
+                // Call the getPort method to get a reference to the port.
+                body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
+                        Jimple.v().newVirtualInvokeExpr(thisLocal,
+                                PtolemyUtilities.getPortMethod,
+                                StringConstant.v(port.getName()))));
+                // Then cast to TypedIOPort
+                body.getUnits().add(Jimple.v().newAssignStmt(ioportLocal,
+                        Jimple.v().newCastExpr(portLocal,
+                                PtolemyUtilities.ioportType)));
+                // Create a new type.
+                Local typeLocal =
+                    PtolemyUtilities.buildConstantTypeLocal(body,
+                            body.getUnits().getLast(), port.getType());
+                body.getUnits().add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newVirtualInvokeExpr(ioportLocal,
+                                PtolemyUtilities.portSetTypeMethod, typeLocal)));
+            }
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
-
+            
             // Remove super calls to the executable interface.
             // FIXME: This would be nice to do by inlining instead of
             // special casing.

@@ -33,6 +33,7 @@ import ptolemy.actor.CompositeActor;
 
 import ptolemy.copernicus.kernel.AliasAssignmentEliminator;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
+import ptolemy.copernicus.kernel.ClassWriter;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
@@ -123,6 +124,12 @@ public class Main extends KernelMain {
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot1",
+                ClassWriter.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot1",
+                JimpleWriter.v()));
+
         // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
                 InlineDirectorTransformer.v(_toplevel)));
@@ -136,6 +143,11 @@ public class Main extends KernelMain {
         // to getPort with references to those fields.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ffpt",
                 FieldsForPortsTransformer.v(_toplevel)));
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
+                ClassWriter.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
+                JimpleWriter.v()));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ls",
                 new TransformerAdapter(LocalSplitter.v())));
@@ -154,7 +166,12 @@ public class Main extends KernelMain {
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.cp",
                 new TransformerAdapter(CopyPropagator.v())));      
-       
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot3",
+                ClassWriter.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot3",
+                JimpleWriter.v()));
+
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -197,9 +214,13 @@ public class Main extends KernelMain {
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
 
-             
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
+                ClassWriter.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
+                JimpleWriter.v()));
+
         // Unroll loops with constant loop bounds.
-        //  Scene.v().getPack("jtp").add(new Transform("jtp.clu",
+        //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
 
         // Simplify to speed up instance equality elimination
@@ -209,15 +230,10 @@ public class Main extends KernelMain {
         
         // Remove tests of object equality that can be statically
         // determined.  The generated code ends up with alot of
-        // these that are really just dead code.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
-                JimpleWriter.v()));
-
+        // these that are really just dead code (usually from
+        // inlining the attributeChanged method).
         Scene.v().getPack("wjtp").add(new Transform("wjtp.iee",
                 InstanceEqualityEliminator.v()));
-
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple2",
-                JimpleWriter.v()));
         
         // Remove casts and instanceof Checks.
         //  Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",

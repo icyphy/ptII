@@ -212,7 +212,12 @@ public class CommandLineTemplate {
                 model.setManager(new Manager(model.workspace(), "manager"));
                 manager = model.getManager();
             }      
+            
+            long startTime = System.currentTimeMillis();
             manager.startRun();
+            System.out.println("Execution stats:");
+            System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
+        
         } catch (IllegalActionException ex) {
             // Model is already running.  Ignore.
             System.out.println("Exception = " + ex);
