@@ -46,7 +46,7 @@ TCL_SRCS = \
 
 
 JSRCS = \
-	TypeApplet.java
+	Type.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
 
