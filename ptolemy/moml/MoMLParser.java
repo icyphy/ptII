@@ -116,7 +116,7 @@ The parse() methods can be used for incremental parsing.  After
 creating an initial model using a call to parse(), further MoML
 fragments without top-level entity or class elements can be evaluated
 to modify the model.  You can specify the context in which the
-MoML to be interepreted by calling setContext().  However, the
+MoML to be interpreted by calling setContext().  However, the
 XML parser limits each fragment to one element.  So there always has
 to be one top-level element.  If you wish to evaluate a group of
 MoML elements in some context, set the context and then place your
