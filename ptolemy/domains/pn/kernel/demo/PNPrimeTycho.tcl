@@ -72,18 +72,20 @@ proc ExampleSystemTycho {} {
     startJRPCIfNecessary
     set DAGFileName [::tycho::tmpFileName exampleSystem .dag]
 
+    # Source description.tcl so that setCurrentUniverse is defined
+    $jrpc send "source [file join $TYCHO java pt kernel test description.tcl]"
+
+    # Build the Example System on the Tcl Blend side
     puts [$jrpc send "source \
 	    [file join $TYCHO java pt kernel test ExampleSystem.tcl]"]
 
     $jrpc send {eval setCurrentUniverse $e0}
 
-
     # Get the current Universe so we can inspect Entities and Relations
-
     # in the DAG.
-
     setCurrentUniverse [$jrpc send getCurrentUniverse]
 
+    # Set $description on the Tcl Blend side.
     $jrpc send {set description [eval $e0 description 4]}
 
     $jrpc send "description2DAG \"Example System\" $DAGFileName \$description"
