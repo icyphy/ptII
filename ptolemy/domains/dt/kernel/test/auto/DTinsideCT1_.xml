@@ -43,8 +43,12 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 345.0">
+        <property name="_location" class="ptolemy.moml.Location" value="154.0, 77.0">
         </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <entity name="typed composite actor1" class="ptolemy.actor.TypedCompositeActor">
         <property name="DT3" class="ptolemy.domains.dt.kernel.DTDirector">
@@ -57,7 +61,7 @@
             <property name="_location" class="ptolemy.moml.Location" value="492.0, 315.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 225.0">
+        <property name="_location" class="ptolemy.moml.Location" value="78.0, 219.0">
         </property>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -175,15 +179,29 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+        <property name="_location" class="ptolemy.moml.Location" value="192.0, 220.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="240.0, 225.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="typed composite actor1.port4" relation="relation3"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="typed composite actor1.port4" relation="relation"/>
     <link port="CurrentTime4.output" relation="relation2"/>
     <link port="CurrentTime4.trigger" relation="relation3"/>
     <link port="Discard0.input" relation="relation3"/>
     <link port="Discard1.input" relation="relation2"/>
+    <link port="ZeroOrderHold.input" relation="relation"/>
+    <link port="ZeroOrderHold.output" relation="relation3"/>
 </entity>
