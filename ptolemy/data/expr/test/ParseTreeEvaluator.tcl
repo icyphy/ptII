@@ -274,26 +274,20 @@ test ParseTreeEvaluator-7.4 {Test many levels of parenthesis nesting} {
 ####
 # 
 test ParseTreeEvaluator-8.1.1 {Test bitwise operators} {
-    list "[theTest "false&false"] [theTest "false|false"] \
-	[theTest "false\#false"] [theTest "~false"]\n \
+    list [theTest "false&false"] [theTest "false|false"] \
+	[theTest "false\#false"] [theTest "~false"] \
 	[theTest "false&true"] [theTest "false|true"] \
-	[theTest "false\#true"] \n\
+	[theTest "false\#true"] \
 	[theTest "true&false"] [theTest "true|false"] \
-	[theTest "true\#false"] \n\
+	[theTest "true\#false"] \
 	[theTest "true&true"] [theTest "true|true"] \
-	[theTest "true\#true"] [theTest "~true"]\n\
-	[theTest "5&2"] [theTest "5|2"] [theTest "5\#4"] [theTest "~5"]\n\
+	[theTest "true\#true"] [theTest "~true"] \
+	[theTest "5&2"] [theTest "5|2"] [theTest "5\#4"] [theTest "~5"] \
 	[theTest "5ub&2ub"] [theTest "5ub|2ub"] [theTest "5ub\#4ub"] \
-	[theTest "~5ub"]\n\
+	[theTest "~5ub"] \
 	[theTest "5L&2L"] [theTest "5L|2L"] [theTest "5L\#4L"] \
-	[theTest "~5L"]"
-} {{false false  false true
-  false true  true 
- false true  true 
- true true  true false
- 0 7 1 -6
- 0ub 7ub 1ub  250ub
- 0L 7L 1L  -6L}}
+	[theTest "~5L"]
+} {false false false true false true true false true true true true true false 0 7 1 -6 0ub 7ub 1ub 250ub 0L 7L 1L -6L}
 
 test ParseTreeEvaluator-8.1.2 {Test bitwise operators on doubles} {
     catch {theTest "5.0&2.0"} errMsg1
@@ -307,6 +301,12 @@ test ParseTreeEvaluator-8.1.2 {Test bitwise operators on doubles} {
  ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.IntMatrixToken '[1, 0; 0, 1]' and ptolemy.data.IntMatrixToken '[1, 2; 3, 4]'
  ptolemy.kernel.util.IllegalActionException: bitwiseNot operation not supported between ptolemy.data.DoubleToken '5.0' and ptolemy.data.DoubleToken '5.0'}}
 
+test ParseTreeEvaluator-8.1.3 {Test bitwise operators on mixed types} {
+    list [theTest "5L&2"] [theTest "5|2L"] [theTest "5ub\#4"] [theTest "~5L"]\
+	[theTest "5L&2ub"] [theTest "5ub|2"] [theTest "5ub\#4ub"] \
+	[theTest "~5ub"]\
+	[theTest "5L&2L"]
+} {0L 7L 1 -6L 0L 7 1ub 2}
 
 ######################################################################
 ####
