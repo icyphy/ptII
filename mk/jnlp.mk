@@ -226,6 +226,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
+	ptolemy/actor/lib/x10/x10.jar \
 	lib/ptCal.jar \
 	lib/saxon7.jar \
 	ptolemy/caltrop/caltrop.jar \
