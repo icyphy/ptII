@@ -102,7 +102,7 @@ public class PlotApplication extends PlotFrame {
 
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
-     *  @exception Exception Not thrown.
+     *  @exception Exception Not thrown in this base class.
      */
     public PlotApplication() throws Exception {
         this(null);
