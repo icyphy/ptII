@@ -273,9 +273,6 @@ public class Manager extends NamedObj implements Runnable {
         }
         // Report the execution time.
         long endTime = (new Date()).getTime();
-
-        // Report the execution time.
-        long endTime = (new Date()).getTime();
         System.out.println("ptolemy.actor.Manager run(): elapsed time: "
                 + (endTime - startTime) + " ms");
     }
