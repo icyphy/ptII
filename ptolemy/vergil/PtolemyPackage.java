@@ -222,7 +222,6 @@ public class PtolemyPackage implements Package {
         _directorComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-		    System.out.println("test");
 		    Director director = (Director) e.getItem();
 		    PtolemyDocument d = (PtolemyDocument)
 			_application.getCurrentDocument();
@@ -250,7 +249,7 @@ public class PtolemyPackage implements Package {
     /**
      * Add a visual notation to the list of visual notations.
      */
-    public void addNotation(VisualNotation notation) {
+    public void addNotation(PtolemyNotation notation) {
 	_notationModel.addElement(notation);
     }
 
@@ -293,7 +292,7 @@ public class PtolemyPackage implements Package {
     /**
      * Remove a notation from the list of notations
      */
-    public void removeNotation(VisualNotation notation) {
+    public void removeNotation(PtolemyNotation notation) {
 	_notationModel.removeElement(notation);
     }
 

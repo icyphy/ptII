@@ -102,13 +102,8 @@ public class EntityPortController extends NodeController {
         // Create a figure for it
 	//System.out.println("adding port");
 	Figure nf = getNodeRenderer().render(node);
-	double normal;
-	if(direction == SwingConstants.EAST) normal = 0;
-	else if(direction == SwingConstants.NORTH) normal = Math.PI/2;
-	else if(direction == SwingConstants.WEST) normal = Math.PI;
-	else if(direction == SwingConstants.SOUTH) normal = -Math.PI/2;
-	else throw new RuntimeException("bad direction");
-
+	double normal = CanvasUtilities.getNormal(direction);
+	
 	Site tsite = new PerimeterSite(nf, 0);
 	tsite.setNormal(normal);
 	tsite = new FixedNormalSite(tsite);
