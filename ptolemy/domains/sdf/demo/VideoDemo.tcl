@@ -52,14 +52,22 @@ $manager addExecutionListener $listener
 
 # Build the system
 set source [java::new ptolemy.domains.sdf.lib.vq.ImageSequence $sys Source]
+##set contrast [java::new ptolemy.domains.sdf.lib.vq.ImageContrast $sys contrast]
+set SNR [java::new ptolemy.domains.sdf.lib.vq.SNR $sys SNR]
 set part [java::new ptolemy.domains.sdf.lib.vq.ImagePartition $sys Part]
 set encode [java::new ptolemy.domains.sdf.lib.vq.HTVQEncode $sys encode]
 set decode [java::new ptolemy.domains.sdf.lib.vq.VQDecode $sys decode]
 set unpart [java::new ptolemy.domains.sdf.lib.vq.ImageUnpartition $sys Unpart]
 set display [java::new ptolemy.domains.sdf.lib.vq.ImageDisplay $sys Display]
+set print [java::new ptolemy.actor.lib.Print $sys Print]
 
 # Identify the ports
 set source_image [$source getPort image]
+set SNR_inoriginal [$SNR getPort inoriginal]
+set SNR_inmodified [$SNR getPort inmodified]
+set SNR_SNRvalue [$SNR getPort SNRvalue]
+##set contrast_incontrast [$contrast getPort incontrast]
+##set contrast_outcontrast [$contrast getPort outcontrast]
 set part_image [$part getPort image]
 set part_partition [$part getPort partition]
 set encode_imagepart [$encode getPort imagepart]
@@ -69,21 +77,34 @@ set decode_imagepart [$decode getPort imagepart]
 set unpart_image [$unpart getPort image]
 set unpart_partition [$unpart getPort partition]
 set display_image [$display getPort image]
+set print_input [$print getPort input]
 
 # Connect the ports
 set r1 [$sys connect $source_image $part_image R1]
-set r2 [$sys connect $part_partition $encode_imagepart R2]
-set r3 [$sys connect $encode_index $decode_index R3]
-set r4 [$sys connect $decode_imagepart $unpart_partition R4]
-set r5 [$sys connect $unpart_image $display_image R5]
+$SNR_inoriginal link $r1
+##set r2 [$sys connect $contrast_outcontrast $part_image R2]
+set r3 [$sys connect $part_partition $encode_imagepart R3]
+set r4 [$sys connect $encode_index $decode_index R4]
+set r5 [$sys connect $decode_imagepart $unpart_partition R5]
+set r6 [$sys connect $unpart_image $display_image R6]
+$SNR_inmodified link $r6
+set r7 [$sys connect $SNR_SNRvalue $print_input R7]
 
-#set debug ptolemy.domains.sdf.kernel.Debug
-#set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
-#java::call $debug register $debugger
+set debug ptolemy.domains.sdf.kernel.Debug
+set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
+java::call $debug register $debugger
 
 # Run it
 set param [$dir getAttribute Iterations]
 $param setToken [java::new {ptolemy.data.IntToken int} 60]
+
+# For imageScale testing, we now default the outmax and outmin to be
+# 255 and 0
+
+#set param [$contra getAttribute outmax]
+#$param setToken [java::new {ptolemy.data.IntToken int} 255]
+#set param [$contra getAttribute outmin]
+#$param setToken [java::new {ptolemy.data.IntToken int} 0]
 $manager run
 
 

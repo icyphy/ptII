@@ -1,3 +1,4 @@
+
 /* An applet that uses Ptolemy II SDF domain.
 
  Copyright (c) 1999 The Regents of the University of California.
@@ -79,20 +80,32 @@ public class HTVQApplet extends SDFApplet {
 
 	    Panel displayPanel = new Panel();
 	    add(displayPanel, "North");
-	    displayPanel.setLayout(new BorderLayout(15, 15));
-	    displayPanel.setSize(420, 200);
-
+	    displayPanel.setLayout(new BorderLayout());
+	    //displayPanel.setSize(480, 200);
+	    
 	    Panel originalPanel = new Panel();
-	    originalPanel.setSize(200, 200);
-	    displayPanel.add(originalPanel, "West");
+	    //originalPanel.setSize(200, 200);
+	    displayPanel.add("West", originalPanel);
+            
+            Panel compressedPanel = new Panel();
+	    //compressedPanel.setSize(200, 200);
+	    displayPanel.add("Center", compressedPanel);
 
-	    Panel compressedPanel = new Panel();
-	    compressedPanel.setSize(200, 200);
-	    displayPanel.add(compressedPanel, "East");
-
+            Panel prnPanel = new Panel();
+            prnPanel.add(new Label("SNR (dB)"));
+            prnPanel.setLayout(new BorderLayout());
+            displayPanel.add("East", prnPanel);
+            
+            Panel labelPanel = new Panel();
+            labelPanel.add(new Label("SNR (dB)"));
+            prnPanel.add("North", labelPanel);
+            
 	    ImageSequence source = new ImageSequence(_toplevel, "Source");
             source.setBaseURL(getDocumentBase());
 
+            //added SNR actor
+            SNR ratio = new SNR(_toplevel, "SNR");
+                    
             ImagePartition part = new ImagePartition(_toplevel, "Part");
 
 	    HTVQEncode encode = new HTVQEncode(_toplevel, "Encoder");
@@ -109,12 +122,19 @@ public class HTVQApplet extends SDFApplet {
 
 	    ImageDisplay original = new ImageDisplay(_toplevel, "Original");
 	    original.setPanel(originalPanel);
+            
+            Print prn = new Print(_toplevel, "Print");
+            prn.setPanel(prnPanel);
+            prn.textArea.setColumns(10);
+            prn.textArea.setRows(7);
+            prnPanel.validate();
 
 	    TypedIORelation r;
             r = (TypedIORelation) _toplevel.connect(
                     (TypedIOPort)source.getPort("image"),
                     (TypedIOPort)part.getPort("image"), "R1");
             ((TypedIOPort)original.getPort("image")).link(r);
+            ((TypedIOPort)ratio.getPort("inoriginal")).link(r);
 
             r = (TypedIORelation) _toplevel.connect(
                     (TypedIOPort)part.getPort("partition"),
@@ -131,6 +151,12 @@ public class HTVQApplet extends SDFApplet {
             r = (TypedIORelation) _toplevel.connect(
                     (TypedIOPort)unPartition.getPort("image"),
                     (TypedIOPort)consumer.getPort("image"), "R5");
+            ((TypedIOPort)ratio.getPort("inmodified")).link(r);
+
+            r = (TypedIORelation) _toplevel.connect(
+                    (TypedIOPort)ratio.getPort("SNRvalue"),
+                    (TypedIOPort)prn.getPort("input"), "R6");
+
 
         } catch (Exception ex) {
             report("Setup failed:", ex);
@@ -163,3 +189,5 @@ public class HTVQApplet extends SDFApplet {
         }
     }
 }
+
+

@@ -66,10 +66,10 @@ public final class SNR extends SDFAtomicActor {
         //for right now, don't set the 
         //outputport.
         
-        //SDFIOPort outputport = (SDFIOPort) newPort("SNRvalue");
-        //outputport.setOutput(true);
-        //setTokenProductionRate(outputport, 1);
-        //outputport.setDeclaredType(IntToken.class);
+        SDFIOPort outputport = (SDFIOPort) newPort("SNRvalue");
+        outputport.setOutput(true);
+        setTokenProductionRate(outputport, 1);
+        outputport.setDeclaredType(DoubleToken.class);
         
         SDFIOPort inputport1 = (SDFIOPort) newPort("inoriginal");
         inputport1.setInput(true);
@@ -156,12 +156,12 @@ public final class SNR extends SDFAtomicActor {
      *  
      *  Summary:
      *  Loop thru both of the original image and the modified image
-     *  and find the Signal Power and Noise Power
+     *  and find the Signal Power and Noise Power.
      *         signalPower--- sum of the square of the all original
-     *                        image pixel values
+     *                        image pixel values.
      *         noisePower --- sum of the square of all of the difference
      *                        between the original image pixels value
-     *                        and the modified image pixels value
+     *                        and the modified image pixels value.
      *
      *  Assume that color is bounded from 0 to 255 inclusively.
      *  @exception IllegalActionException if image color is out-of-bound.
@@ -190,7 +190,7 @@ public final class SNR extends SDFAtomicActor {
         // variable Power of Signal to Noise Ration in dB scale
         double SNR; 
         
-        //SDFIOPort outputport = (SDFIOPort) getPort("SNRvalue");
+        SDFIOPort outputport = (SDFIOPort) getPort("SNRvalue");
         SDFIOPort inputport1 = (SDFIOPort) getPort("inoriginal");
         SDFIOPort inputport2 = (SDFIOPort) getPort("inmodified");
         
@@ -238,8 +238,8 @@ public final class SNR extends SDFAtomicActor {
             Math.log (10.0) ;
         
         message = new DoubleToken(SNR);
-        //outputport.send(0, message);
-        System.out.println ("SNR = "+SNR);
+        outputport.send(0, message);
+        //System.out.println ("SNR = "+ SNR + " dB");
     }
     
     DoubleToken message;
