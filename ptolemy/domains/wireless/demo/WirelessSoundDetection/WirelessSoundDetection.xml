@@ -1,0 +1,1028 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="wirelessSoundDetection" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 630]">
+    </property>
+    <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="randomizeGraph" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Red Circle - Sound Detected by Sensor Node
+Blue Circle - Broadcast Mode
+Yellow Circle - Wireless message Received
+</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="790.0, 715.0">
+        </property>
+    </property>
+    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="302.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="76.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+        </property>
+        <property name="rounding" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="800.0, 715.0">
+        </property>
+    </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:28; font-family:Garamond; fill:blue">Color Key</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="860.0, 680.0">
+        </property>
+    </property>
+    <entity name="SoundSensor" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor">
+        <property name="signalRadius" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="soundRange" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.05}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="antenna2" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor$1">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.05}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <doc>General Sensor actor</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="640.0, 575.0">
+        </property>
+        <port name="wirelessOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="wirelessIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="soundIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="CompositeSensor2" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor">
+        <property name="signalRadius" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="soundRange" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.05}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="antenna2" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor$1">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.05}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <doc>General Sensor actor</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 480.0">
+        </property>
+        <port name="wirelessOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="wirelessIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="soundIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="SoundSource" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="circle1" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.0}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="circle2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.0}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="circle3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.0}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="circle4" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="soundRange*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="soundRange*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.0}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.actor.parameters.LocationParameter" value="[334.729635533386, 496.9615506024416]">
+        </property>
+        <property name="soundRange" class="ptolemy.data.expr.Parameter" value="300">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 100.0">
+            </property>
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
+            </property>
+            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 115.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+            </property>
+        </property>
+        <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 190.0">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_hide" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
+        <entity name="Clock" class="ptolemy.actor.lib.Clock">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+            </property>
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+            </property>
+            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <doc>Create a set of pulses</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 190.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="_location">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="630.0, 390.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[sin(x)*200 + 300, sin(y)*200 + 300]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 390.0">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="x" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="y" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Clock2" class="ptolemy.actor.lib.Clock">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0}">
+            </property>
+            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <doc>Create a set of pulses</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 370.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/36">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 380.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.data.expr.Parameter" value="PI/2.0">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/36">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 455.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="305.0, 380.0">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="320.0, 455.0">
+            </vertex>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="145.0, 370.0">
+            </vertex>
+        </relation>
+        <link port="soundOPort" relation="relation"/>
+        <link port="Clock.output" relation="relation"/>
+        <link port="SetVariable.input" relation="relation2"/>
+        <link port="Expression.output" relation="relation2"/>
+        <link port="Expression.x" relation="relation3"/>
+        <link port="Expression.y" relation="relation4"/>
+        <link port="Clock2.output" relation="relation5"/>
+        <link port="Ramp.output" relation="relation3"/>
+        <link port="Ramp.trigger" relation="relation5"/>
+        <link port="Ramp2.output" relation="relation4"/>
+        <link port="Ramp2.trigger" relation="relation5"/>
+    </entity>
+    <entity name="CompositeSensor3" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor">
+        <property name="signalRadius" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="soundRange" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.05}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="antenna2" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor$1">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.05}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 250.0">
+        </property>
+        <port name="wirelessOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="wirelessIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="soundIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="CompositeSensor4" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor">
+        <property name="signalRadius" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="soundRange" class="ptolemy.data.expr.Parameter" value="200">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.05}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="antenna2" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor$1">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="signalRadius*2">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 0.05}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <doc>General Sensor actor</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 350.0">
+        </property>
+        <port name="wirelessOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="wirelessIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="soundIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="output"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="WirelessSoundTracker" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="circle1" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.5}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+            <property name="circle2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.5, 1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.5, 0.0, 0.5}">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.actor.parameters.LocationParameter" value="[555.0, 435.0]">
+        </property>
+        <property name="signalRadius" class="ptolemy.data.expr.Parameter" value="300">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 85.0">
+            </property>
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
+            </property>
+            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 55.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Location coordinate system has
+Y increasing downwards, but plotter
+has Y increasing upwards.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 260.0">
+            </property>
+        </property>
+        <port name="wirelessIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+            <property name="input"/>
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
+            </property>
+            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 190.0">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <entity name="SoundTracker" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundTracker">
+            <property name="signalPropagationSpeed" class="ptolemy.data.expr.Parameter" value="340.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 190.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
+                </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                </property>
+            </port>
+            <port name="outputX" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+            </port>
+            <port name="outputY" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                </property>
+            </port>
+        </entity>
+        <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 81, 405, 444}}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[397, 389]">
+            </property>
+            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 190.0">
+            </property>
+            <port name="inputX" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="inputY" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Detected Sound Positions</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="500.0"/>
+<yRange min="-500.0" max="0.0"/>
+<noGrid/>
+<default connected="no" marks="dots"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
+            </property>
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 245.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="wirelessIPort" relation="relation2"/>
+        <link port="SoundTracker.input" relation="relation2"/>
+        <link port="SoundTracker.outputX" relation="relation"/>
+        <link port="SoundTracker.outputY" relation="relation4"/>
+        <link port="XYPlotter.inputX" relation="relation"/>
+        <link port="XYPlotter.inputY" relation="relation3"/>
+        <link port="Scale.input" relation="relation4"/>
+        <link port="Scale.output" relation="relation3"/>
+    </entity>
+    <entity name="RadioChannel" class="ptolemy.domains.wireless.lib.CircularRangeChannel">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 45.0">
+        </property>
+    </entity>
+    <entity name="SoundChannel" class="ptolemy.domains.wireless.lib.CircularRangeChannel">
+        <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="340.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 45.0">
+        </property>
+    </entity>
+</entity>
