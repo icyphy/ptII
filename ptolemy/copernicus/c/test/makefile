@@ -65,12 +65,16 @@ CLEANLIB = _cleanLib.tcl
 JSIMPLE_TESTS = \
 	$(CLEANLIB) \
     Arrays.tcl\
+    CaffeineApp.tcl \
     Cases.tcl \
     CommandLine.tcl \
+    Clone.tcl \
     Exceptions.tcl\
     FIR2.tcl \
     FIRSingle.tcl \
+    HashSetTest.tcl \
     LinkedListTest.tcl \
+    Linpack.tcl\
     InnerField.tcl \
     InnerLocal.tcl \
     InstanceOfTest.tcl \
@@ -79,7 +83,8 @@ JSIMPLE_TESTS = \
     PrintStreamTest.tcl \
     RightShift.tcl \
     Simple.tcl \
-    SimpleSingle.tcl
+    SimpleSingle.tcl \
+    StringTest.tcl
 
 # Disabled tests:
 #   FIR.tcl

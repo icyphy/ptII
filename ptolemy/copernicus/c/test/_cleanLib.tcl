@@ -51,10 +51,15 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 test _cleanLib-1.1 {Clean all files from previous run} {
 
     set lib testOutput
+    set cache invoke.cache
 
     # Remove any existing library
     if {[file isdirectory $lib]} {
         file delete -force $lib
+    }
+    # Remove any previous InvokeGraph cache.
+    if {[file exist $cache]} {
+        file delete -force $cache
     }
     
     set dummy 0

@@ -1,5 +1,4 @@
-/*
-A class that sets an 2-dimensional integer array and prints it out.
+/* A simple class for testing that the String and StringBuffer classes work.
 
 Copyright (c) 2001-2003 The University of Maryland
 All rights reserved.
@@ -31,13 +30,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 
-
-
 //////////////////////////////////////////////////////////////////////////
-//// Terp
+//// StringTest
 /**
 
-A class that sets an 2-dimensional integer array and prints it out.
+A simple class for testing that the String and StringBuffer classes work.
 
 @author Ankush Varma
 @version $Id$
@@ -45,24 +42,48 @@ A class that sets an 2-dimensional integer array and prints it out.
 
 */
 
-public class Array2DInt{
+public class  StringTest{
 
     public static void main(String args[]) {
-        // Initialize array.
-        int data[][] = new int[2][];
-        data [0] = new int[2];
-        data [1] = new int[2];
-
-        // Set the data.
-        data[0][0] = 0;
-        data[0][1] = 1;
-        data[1][0] = 10;
-        data[1][1] = 11;
-
-        // Print out the data.
-        System.out.println(data[0][0]);
-        System.out.println(data[0][1]);
-        System.out.println(data[1][0]);
-        System.out.println(data[1][1]);
+        testStringConstructors();
+        testStringMethods();
+        testStringBuffer();
     }
+
+    // Test the important constructors of java.lang.String.
+    public static void testStringConstructors() {
+        String a = new String();
+        System.out.println(a);
+
+        // Initialize with char Array.
+        char[] charArray = {'a', 'b', 'c', 'd', 'e'};
+        a = new String(charArray);
+        System.out.println(a);
+
+        a = new String(charArray, 2, 2);
+        System.out.println(a);
+
+        // Initialize with String.
+        a = "123";
+        String b = new String(a);
+        System.out.println(b);
+
+    }
+
+    // Test some methods of the String class.
+    public static void testStringMethods() {
+        String a = "abcde";
+        char[] b = new char[2];
+
+        a.getChars(1, 3, b, 0);
+        System.out.println(new String(b));
+    }
+
+    // Test the important stuff in StringBuffers.
+    public static void testStringBuffer() {
+        StringBuffer buffer = new StringBuffer("Et tu, brute?!");
+        buffer.append("\nThen fall, Caesar!");
+        System.out.println(buffer);
+    }
+        
 }

@@ -57,13 +57,12 @@ public class  LinkedListTest{
         list.addLast("4");
         list.addFirst("0");
 
-        /*
-          LinkedList list2 = new LinkedList();
-          list.addAll(list2);
-          list2.add("5");
-          list2.add("6");
-          list.addAll(list2);
-        */
+        
+        LinkedList list2 = new LinkedList();
+        list.addAll(list2);
+        list2.add("5");
+        list2.add("6");
+        list.addAll(list2);
 
         // Test Iterator.
         Iterator items = list.iterator();
@@ -83,7 +82,6 @@ public class  LinkedListTest{
 
         // Test removeFirst()
         for (int i = 0; i < size; i++) {
-            // FIXME: Make this an Object print instead of a String print.
             System.out.println(list.removeFirst());
         }
     }

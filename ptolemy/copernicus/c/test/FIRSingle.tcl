@@ -63,6 +63,7 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     
     set outputDir testOutput/FIRSingle.out
     set runtimeDir ../../../runtime
+    set gcDir $PTII/vendors/gc/gc6.1/
     
     # Remove the .out directory if it exists.
     if {[file isdirectory $outputDir]} {
@@ -106,13 +107,13 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     cd $outputDir
 
     # Generate the required .o files.
-    exec gcc -c -I $runtimeDir FIRSingle.c
+    exec gcc -c -I $runtimeDir -I $gcDir FIRSingle.c
     exec gcc -c -I $runtimeDir -I . ../../FIRSingleMain.c
     exec gcc -c    $runtimeDir/pccg_runtime_single.c
 
     # Link the .o files into the executable.
     set exeFile firSingle.exe
-    eval exec gcc -o $exeFile [glob *.o]
+    eval exec gcc -o $exeFile [glob *.o] $PTII/lib/libgc.a
 
     # Run the executible.
     # The nightly build does not have . in the path, so we use ./ here.
@@ -121,10 +122,7 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     
     # Turn newlines into spaces.
     regsub -all "\n" $output "" output
-    # No space needed at end of line.
-    #regsub -all " $" $output "" output
-    
-    #regsub -all "
+    regsub -all "
 " $output "" output
 
     # Check if the output is correct.

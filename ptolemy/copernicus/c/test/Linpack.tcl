@@ -1,11 +1,4 @@
-# Tests Copernicus C Code generation for Exception functionality.
-# Replaces the following tests:
-# BasicException.java
-# GlobalExceptions.java
-# InheritedException.java
-# NestedExceptions.java
-#
-#
+# Tests Copernicus C Code generation for the Linpack benchmark.
 # @Author: Ankush Varma
 #
 # @Version: $Id$
@@ -55,24 +48,16 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test Arrays-1.1 {Generate all required files for Arrays.java} {
+test Linpack-1.1 {Generate all required files for Linpack.java} {
 
-    set className Arrays
+    set className Linpack
     set outputDir testOutput/$className
     set output [generateC $className]
- 
-    # Check if the output is correct.
-    set template [exec java $className]
+    
+    # Move the additional class file to the test directory.
+    file rename -force ../../DataItem.class .
 
-    # Turn newlines into spaces.
-    regsub -all "\n" $template " " template
-    regsub -all "
-" $template "" template
-    
-    #set template "0 10 20 30 40 50 60 70 80 90 0 1 10 11 0 1 2 I, said the sparrow. With my bow and arrow."
-    
-    # Test output
-    string first $template $output
-  
+    # We cannot use a template because results may vary.
+    string first $output $output
 } {0}
 

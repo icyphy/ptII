@@ -1,5 +1,4 @@
-/*
-A class that sets an array of Objects and prints it out.
+/* A simple class for testing that the clone() function.
 
 Copyright (c) 2001-2003 The University of Maryland
 All rights reserved.
@@ -30,14 +29,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
-
-
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// Terp
+//// Clone
 /**
 
-A class that sets an array of Objects and prints it out.
+A simple class for testing that the clone() function.
 
 @author Ankush Varma
 @version $Id$
@@ -45,23 +43,20 @@ A class that sets an array of Objects and prints it out.
 
 */
 
-public class ArrayOfObjects{
+public class  Clone implements Cloneable{
 
     public static void main(String args[]) {
-        // Initialize array.
-        String data[] = new String[2];
+        Clone object = new Clone();
+        Clone object2 = null;
 
-        // Set the data.
-        data[0] = new String("I, said the sparrow.");
-        data[1] = new String("With my bow and arrow.");
-
-        // Print out the data.
-        for (int i = 0; i < 2; i++) {
-            // The toString is because System.out.println(Object) isn't up
-            // yet.
-            System.out.println(data[i].toString());
+        // Implicit use of "super".
+        try {
+            object2 = (Clone)object.clone();
+        }
+        catch (CloneNotSupportedException e) {
         }
 
-
+        System.out.println(object.hashCode() == object2.hashCode());
+        
     }
 }

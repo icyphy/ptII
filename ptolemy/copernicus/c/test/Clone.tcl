@@ -1,10 +1,4 @@
-# Tests Copernicus C Code generation for Exception functionality.
-# Replaces the following tests:
-# BasicException.java
-# GlobalExceptions.java
-# InheritedException.java
-# NestedExceptions.java
-#
+# Tests Copernicus C Code generation for Clone.java
 #
 # @Author: Ankush Varma
 #
@@ -55,21 +49,18 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test Arrays-1.1 {Generate all required files for Arrays.java} {
+test Clone-1.1 {Generate all required files for Clone.java} {
 
-    set className Arrays
-    set outputDir testOutput/$className
+    set className Clone
     set output [generateC $className]
- 
-    # Check if the output is correct.
-    set template [exec java $className]
+       
+    # Solaris needs the -classpath.
+    set template [exec java -classpath . $className]
 
     # Turn newlines into spaces.
     regsub -all "\n" $template " " template
     regsub -all "
 " $template "" template
-    
-    #set template "0 10 20 30 40 50 60 70 80 90 0 1 10 11 0 1 2 I, said the sparrow. With my bow and arrow."
     
     # Test output
     string first $template $output

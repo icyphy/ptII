@@ -48,6 +48,11 @@ public class Linpack{
     public static void main(String[] args) {
         Linpack a = new Linpack();
         a.run_benchmark(500, 500*2);
+
+        System.out.println(a.mflops_result);
+        System.out.println(a.residn_result);
+        System.out.println(a.time_result);
+        System.out.println(a.eps_result);
     }
 
     final double abs (double d) {
