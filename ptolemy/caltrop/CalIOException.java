@@ -28,6 +28,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.caltrop;
 
+//////////////////////////////////////////////////////////////////////////
+//// CalIOException
 /**
 An exception used to indicate an IO error during interpretation of a
 CAL actor in Ptolemy.  This can occur during the getting/putting of a

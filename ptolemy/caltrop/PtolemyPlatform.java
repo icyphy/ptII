@@ -64,15 +64,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+//////////////////////////////////////////////////////////////////////////
+//// PtolemyPlatform
 /**
 The PtolemyPlatform class contains code that configures the CAL
 interpreter infrastructure for use inside the Ptolemy II software. In
 particular, it contains a context and a method that creates the global
 environment to be used with Ptolemy.
 
- @author Jörn W. Janneck <janneck@eecs.berkeley.edu>, Christopher Chang <cbc@eecs.berkeley.edu>
- @version $Id$
- @since Ptolemy II 3.1
+@author Jörn W. Janneck <janneck@eecs.berkeley.edu>, Christopher Chang <cbc@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
 */
 public class PtolemyPlatform {
 
