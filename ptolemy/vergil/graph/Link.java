@@ -321,6 +321,38 @@ public class Link extends Attribute {
 	}
     }
 
+    /** Return a description of this variable.  This returns the same
+     *  information returned by toString(), but with optional indenting
+     *  and brackets.
+     *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A string describing this variable.
+     */
+    protected String _description(int detail, int indent, int bracket) {
+        try {
+            workspace().getReadAccess();
+            String result;
+	    if (bracket == 1 || bracket == 2) {
+                result = super._description(detail, indent, 1);
+            } else {
+                result = super._description(detail, indent, 0);
+            }
+            result += " head {\n";
+	    result += _getIndentPrefix(indent+1) + _head.toString() + "\n";
+	    
+            result += _getIndentPrefix(indent) + "} tail {\n";
+	    result += _getIndentPrefix(indent+1) + _tail.toString() + "\n";
+	    result += _getIndentPrefix(indent) + "}";
+            if (bracket == 2) {
+                result += "}";
+            }
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
     private Object _head; 
     private Object _tail;
     private ComponentRelation _relation;
