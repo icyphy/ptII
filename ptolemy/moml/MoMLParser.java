@@ -718,7 +718,25 @@ public class MoMLParser extends HandlerBase {
             if (base == null) {
                 _parser.parse(null, null, buffered);
             } else {
-                _parser.parse(base.toExternalForm(), null, buffered);
+                // If we have tmp.moml and tmp/tmp2.moml and tmp.moml
+                // contains     <entity name="tmp2" class="tmp.tmp2">
+                // then we want to be sure that we set _xmlFile properly
+
+                // FIXME: I'm not sure if it is necessary to check to
+                // see if _xmlFile is null before hand, but it seems
+                // like it is safer to check before resetting it to null.
+                boolean xmlFileWasNull = false;
+                if (_xmlFile == null) {
+                    xmlFileWasNull = true;
+                    _xmlFile = new URL(base.toExternalForm());
+                }
+            	try {
+                    _parser.parse(base.toExternalForm(), null, buffered);
+            	} finally {
+                    if (xmlFileWasNull) {
+                        _xmlFile = null;
+                    }
+            	}
             }
         } catch (CancelException ex) {
             // Parse operation cancelled.
