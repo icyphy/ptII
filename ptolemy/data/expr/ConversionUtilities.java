@@ -375,6 +375,10 @@ public class ConversionUtilities {
             } else if (tokenClass.equals(Double.class) ||
                     tokenClass.equals(Double.TYPE)) {
                 return BaseType.DOUBLE;
+            } else if (tokenClass.equals(Float.class) ||
+                    tokenClass.equals(Float.TYPE)) {
+                // Note that we lose some information here..  oh well.
+                return BaseType.DOUBLE;
             } else if (tokenClass.equals(Complex.class)) {
                 return BaseType.COMPLEX;
             } else if (tokenClass.equals(FixPoint.class)) {

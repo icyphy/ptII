@@ -1,4 +1,4 @@
-/* CachedMethod provides a fast hashtable based lookup for methods
+/* CachedMethod provides methods for reflecting methods based on token types.
 
   Copyright (c) 1998-2003 The Regents of the University of California and
   Research in Motion Limited.
@@ -47,39 +47,47 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// CachedMethod
 /**
+An instance of this class represents a method or function that is
+invoked by the Ptolemy II expression evaluator.  Instances of this
+class are returned by the static findMethod() method, and can be
+invoked by the apply() method.
 
-An instance of this class represents a method or function that is invoked
-by the Ptolemy II expression evaluator.  Instances of this class are
-created by the findMethod() method and then stored in a hash table.
-Repeated calls to findMethod() for the same method will return the
-instance from the hash table, which is considerably faster than finding
-the method again.  Finding methods is particularly expensive for
-polymorphic methods and methods that take native types.
-<p>
-The functions represented by instances of this class are static methods
-of classes that are registered with the parser (using
-PtParser.registerFunctionClass()).  The methods represented
-by instances of this class are methods of a Token and its subclasses.
-<p>
-Instances of this class have a type returned by getType(), which
+<p> This class is used to represent two distinct types of Java methods
+that can be invoked.  The METHOD type corresponds to an instance
+method of a java class, invoked on an object of an appropriate class
+(the <it>base class</it>).  The FUNCTION type corresponds to a static
+method of a java class.
+
+<p> This class provides several services that distinguish it from
+Java's built-in reflection mechanism:
+1) Methods are found based on name and the types of ptolemy token
+   arguments, represented by instances of the ptolemy.data.type.Type
+   base class.
+2) FUNCTIONS are searched for in a set of classes registered with the
+   parser.
+3) METHODS are searched for a base class, and in all superclasses of
+   the base class.
+4) Found methods, represented by instances of this class, are cached
+   and indexed to improve the speed of method lookup.  The cache is
+   synchronized so that it can be safely accessed from multiple
+   threads.
+5) Allows for the possibility of several automatic conversions that
+   increase the applicability of single methods
+
+<p> Instances of this class have a type returned by getType(), which
 is a bitwise OR of either {@link #REAL} or {@link #MISSING} with
-either {@link #FUNCTION} or {@link #METHOD}.  REAL indicates that
-the method or function has been searched for and found, while
-MISSING indicates that it has been searched for and not found.
-FUNCTION indicates that it is a function (a static method of a
-class registered with the parser), while METHOD indicates that it
-is a method of a Token.
-<p>
-The cache is cleared by PtParser.registerFunctionClass() so that any
-changes to the registered function classes cause the cache to be
-re-generated.
-<p>
-Note that this class maintains the cache totally using instances of
-ptolemy.data.type.Type.  While this is somewhat constraining since it
-prevents using this class for reflecting things that are not methods
-on ptolemy tokens, it makes it much easier to maintain the cache,
-perform coherent type conversions on invocation, and generate code from
-the expression language.
+either {@link #FUNCTION} or {@link #METHOD}.  REAL indicates that the
+method or function has been searched for and found, while MISSING
+indicates that it has been searched for and not found.  FUNCTION
+indicates that it is a function (a static method of a class registered
+with the parser), while METHOD indicates that it is a method of a
+Token.
+
+<p> Additional classes to be searched for static methods can be added
+through the method registerFunctionClass() in PtParser.  This class
+assumes that new classes are added to the search path before models
+are constructed, and simply clears the internal cache and index when
+new classes are registered.
 
 @author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer, Edward Lee
 @version $Id$
@@ -89,11 +97,30 @@ the expression language.
 */
 
 public class CachedMethod {
-
-    // FIXME: should the constructor be private? The correct entry point
-    // is findMethod().
-    /** Construct a new CachedMethod and compute its hashcode. */
-    public CachedMethod(String methodName, Type[] argTypes,
+    /** Construct a new CachedMethod.  Generally speaking, it is not
+     *  necessary for any users of this class to invoke this method. 
+     *  The static findMethod() method finds the appropriate method
+     *  for a given set of argument types and invokes this 
+     *  constructor to create a cached method.
+     *
+     *  @param methodName The name of the encapsulated method.
+     *  @param argTypes An array of token types that can be passed to
+     *  the method, subject to the given set of conversions.  For a
+     *  FUNCTION, the number of argument types must be the same as the
+     *  number of arguments to the given method.  For a METHOD, there
+     *  is an additional type in the array (the first) corresponding
+     *  to the type of object the method is getting invoked on.
+     *  @param method The Java method that will be invoked by the
+     *  invoke() method.
+     *  @param conversions An array of conversions that will convert
+     *  arguments of the corresponding argument types to arguments
+     *  that the method will accept.  If the method accepts Token
+     *  arguments, then this array will contain IDENTITY conversions.
+     *  This array must be the same size as the number of arguments to
+     *  the method.
+     *  @param type The type of the method.
+     */
+    protected CachedMethod(String methodName, Type[] argTypes,
             Method method, ArgumentConversion[] conversions, int type) {
         // Note clones for safety...
         _methodName = methodName;
@@ -106,57 +133,50 @@ public class CachedMethod {
         }
         _type = type;
 
-        // compute the hashcode, based on the method name and argument types.
+        // Compute the hashcode, based on the method name and argument
+        // types.
         _hashcode = methodName.hashCode();
         for (int i = 0; i < argTypes.length; i++) {
             _hashcode += argTypes[i].hashCode();
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    // FIXME: Should this be private?
-    /** Add the specified instance of this class to the cache.
-     *  @param cachedMethod The instance to add to the cache.
-     */
-    public static void add(CachedMethod cachedMethod) {
-        _cachedMethods.put(cachedMethod, cachedMethod);
-    }
-
+    
     /** Clear the cache.
      */
     public static void clear() {
         _cachedMethods.clear();
     }
-
+    
     /** Return true if the argument is an instance of CachedMethod
      *  that represents the same method or function as this instance.
      *  Note that if this returns true, then both this instance and
      *  the argument will have the same hashcode, as required by Hashtable.
-     *  @param arg The object to compare to.
+     *  @param object The object to compare to.
      *  @return True if the argument represents the same method or function.
      */
-    public boolean equals(Object arg) {
-        if (arg == this) {
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
-        if (!(arg instanceof CachedMethod)) {
+        if (!(object instanceof CachedMethod)) {
             return false;
         }
-        CachedMethod argMethod = (CachedMethod)arg;
-        if (!_methodName.equals(argMethod._methodName)) {
+        CachedMethod cachedMethod = (CachedMethod)object;
+        if (!_methodName.equals(cachedMethod._methodName)) {
             return false;
         }
         if ((_type & (FUNCTION+METHOD)) !=
-                (argMethod._type & (FUNCTION+METHOD))) {
+                (cachedMethod._type & (FUNCTION+METHOD))) {
             return false;
         }
-        if (_argTypes.length != argMethod._argTypes.length) {
+        if (_argTypes.length != cachedMethod._argTypes.length) {
             return false;
         }
         for (int i = 0; i < _argTypes.length; i++) {
-            if (!_argTypes[i].equals(argMethod._argTypes[i])) {
+            if (!_argTypes[i].equals(cachedMethod._argTypes[i])) {
                 return false;
             }
         }
@@ -178,120 +198,34 @@ public class CachedMethod {
      *  @param type FUNCTION or METHOD.
      *  @return A function or method.
      */
-    public static CachedMethod findMethod(
-            String methodName,
-            Type[] argTypes,
-            int type)
-            throws IllegalActionException {
-        //  System.out.println("findMethod(" + methodName + ")");
+    public static CachedMethod findMethod(String methodName,
+            Type[] argTypes, int type) throws IllegalActionException {
+                
+                
         // Check to see if there is a cache already.
-        CachedMethod cachedMethod = get(methodName, argTypes, type);
+        CachedMethod cachedMethod = _getCachedMethod(
+                methodName, argTypes, type);
         if (cachedMethod != null) {
-            // System.out.println("in cache");
+            //    System.out.println("in cache");
             return cachedMethod;
         }
-        // System.out.println("not in cache");
+        //  System.out.println("not in cache");
 
+        // First look for the method or function in the normal place.  
         if (type == METHOD) {
-            // Try to reflect the method.
-            int num = argTypes.length;
-            ArgumentConversion[] conversions =
-                new ArgumentConversion[num - 1];
-
-            Class destTokenClass = argTypes[0].getTokenClass();
-            Type[] methodArgTypes;
-            if (num == 1) {
-                methodArgTypes = null;
-            } else {
-                methodArgTypes = new Type[num - 1];
-                for (int i = 1; i < num; i++) {
-                    methodArgTypes[i-1] = argTypes[i];
-                }
-            }
-
-            try {
-                Method method = _polymorphicGetMethod(destTokenClass,
-                        methodName, methodArgTypes, conversions);
-                if (method != null) {
-                    cachedMethod = new CachedMethod(methodName, argTypes,
-                            method, conversions, type+REAL);
-                }
-            } catch (SecurityException security) {
-                // If we are running under an Applet, then we
-                // may end up here if, for example, we try
-                // to invoke the non-existent quantize function on
-                // java.lang.Math.
-            }
-
-            if (cachedMethod == null) {
-                // Native convert the base class.
-                //  System.out.println("Checking for array map");
-                destTokenClass = ConversionUtilities
-                        .convertTokenTypeToJavaType(argTypes[0]);
-
-                Method method = _polymorphicGetMethod(destTokenClass,
-                        methodName, methodArgTypes, conversions);
-                if (method != null) {
-                    cachedMethod = new BaseConvertCachedMethod(
-                            methodName, argTypes, method, NATIVE, conversions,
-                            type+REAL);
-                }
-            }
-        } else { //if (type == FUNCTION) {
-            ArgumentConversion[] conversions =
-                new ArgumentConversion[argTypes.length];
-            // Search the registered function classes
-            Iterator allClasses =
-                PtParser.getRegisteredClasses().iterator();
-            // Keep track of multiple matches, to try to find the
-            // most specific one.
-            Method preferredMethod = null;
-            ArgumentConversion[] preferredConversions = null;
-            while (allClasses.hasNext() && cachedMethod == null) {
-                Class nextClass = (Class)allClasses.next();
-                // System.out.println("Examining registered class: "
-                //        + nextClass);
-                try {
-                    Method method = _polymorphicGetMethod
-                        (nextClass, methodName, argTypes, conversions);
-                    if (method != null) {
-                        // System.out.println("Found match: " + method);
-                        // Compare to previous match, if there has
-                        // been one.
-                        if (preferredMethod == null
-                                || _areConversionsPreferable(
-                                        conversions,
-                                        method.getParameterTypes(),
-                                        preferredConversions,
-                                        preferredMethod.getParameterTypes())) {
-                            // Either there is no previous match,
-                            // or the current match is preferable
-                            // or equivalent to the previous match.
-                            preferredMethod = method;
-                            preferredConversions = (ArgumentConversion[])
-                                conversions.clone();
-                        }
-                    }
-                } catch (SecurityException security) {
-                    // If we are running under an Applet, then we
-                    // may end up here if, for example, we try
-                    // to invoke the non-existent quantize function on
-                    // java.lang.Math.
-                }
-            }
-            if (preferredMethod != null) {
-                // System.out.println("*** Chosen method: "
-                //        + preferredMethod);
-                // System.out.println("*** Chosen conversions: "
-                //        + preferredConversions[0]);
-                cachedMethod = new CachedMethod(methodName, argTypes,
-                        preferredMethod, preferredConversions, type+REAL);
-            }
+            cachedMethod = _findMETHOD(methodName, argTypes);
+        } else if (type == FUNCTION) {
+            cachedMethod = _findFUNCTION(methodName, argTypes);
+        } else {
+            throw new IllegalActionException("Attempted to find a method " +
+                    "with an invalid type = " + type);
         }
 
+        // We didn't find in the normal place, so try unrolling
+        // array and matrices.
         if (cachedMethod == null) {
             // System.out.println("Checking for array map");
-
+            
             // Go Look for an ArrayMapped method, instead.
             // Check if any arguments are of array type.
             boolean hasArray = false;
@@ -319,7 +253,7 @@ public class CachedMethod {
                 }
             }
         }
-
+        
         if (cachedMethod == null) {
             // System.out.println("Checking for matrix map");
             // Go Look for a MatrixMapped method, instead.
@@ -340,7 +274,7 @@ public class CachedMethod {
                     isArrayArg[i] = false;
                 }
             }
-
+            
             if (hasArray) {
                 CachedMethod mapCachedMethod =
                     findMethod(methodName, newArgTypes, type);
@@ -351,50 +285,47 @@ public class CachedMethod {
                 }
             }
         }
-
+        
         if (cachedMethod == null) {
             // System.out.println("not found...");
             // If we haven't found anything by this point, then give
-            // up...
+            // up...  Store an invalid cached method, so we don't try 
+            // the same search any more.
             cachedMethod = new CachedMethod(methodName, argTypes,
                     null, null, type+MISSING);
         }
-
+        
         // Add the method we found, or the placeholder for the missing method.
-        add(cachedMethod);
+        _addCachedMethod(cachedMethod);
         return cachedMethod;
     }
 
-    /** Return the CachedMethod that corresponds to methodName and
-     *  argTypes if it had been cached previously.
-     */
-    public static CachedMethod get(
-            String methodName, Type[] argTypes, int type) {
-        CachedMethod key = new CachedMethod(
-                methodName, argTypes, null, null, type);
-        // System.out.println("findMethod:" + key);
-        CachedMethod method = (CachedMethod)_cachedMethods.get(key);
-        return method;
-    }
-
-    /** Return the conversions the are applied to the arguments of this
-     *  function or method.
+    /** Return the conversions the are applied to the arguments of
+     *  this function or method.  Note that in most cases, it is not
+     *  necessary to call this method, as the invoke() method provides
+     *  all the necessary information.  It is provided for code, such
+     *  as the code generator that need more than the usual amount of
+     *  information about methods that have been found.
      *  @return The conversions applied to the arguments.
      */
     public ArgumentConversion[] getConversions() {
         return _conversions;
     }
 
-    /** Return the method or function associated with this instance, or null
-     *  if none has been found.
+    /** Return the method or function associated with this instance,
+     *  or null if none has been found.  Note that in most cases, it
+     *  is not necessary to call this method, as the invoke() method
+     *  provides all the necessary information.  It is provided for
+     *  code, such as the code generator that need more than the usual
+     *  amount of information about methods that have been found.
      *  @return The method associated with this instance.
      */
     public Method getMethod() {
         return _method;
     }
 
-    /** Return the type of this class, which is one of
-     *  REAL or MISSING or'ed with one of METHOD or FUNCTION.
+    /** Return the type of this class, which is one of REAL or MISSING
+     *  or'ed with one of METHOD or FUNCTION.
      *  @return The type of this class.
      */
     public int getType() {
@@ -402,7 +333,11 @@ public class CachedMethod {
     }
 
     /** Return the type of the token that results from an invocation
-     *  of this method.
+     *  of this method.  Note that in most cases, it is not necessary
+     *  to call this method, as the invoke() method provides all the
+     *  necessary information.  It is provided for code, such as the
+     *  code generator that need more than the usual amount of
+     *  information about methods that have been found.
      *  @exception IllegalActionException If this method or function
      *   was not found (it is MISSING).
      */
@@ -430,9 +365,10 @@ public class CachedMethod {
     /** Apply the method or function represented by this object to
      *  the specified arguments.  This method performs any necessary
      *  conversions on token arguments, and, if necessary,
-     *  converts the returned value into a token.
+     *  converts the returned value into a token.  This method may be
+     *  overridden by derived classes to implement non-standard conversions.
      *  @param argValues An array of Token objects that will be used
-     *   as the arguments.
+     *  as the arguments.
      *  @return The result of the method invocation, as a Token.
      *  @exception IllegalActionException If this cached method is
      *   MISSING, or the invoked method throws it.
@@ -535,6 +471,10 @@ public class CachedMethod {
         return (_type & MISSING) == MISSING;
     }
 
+    /** Return true if the search for the method or function represented
+     *  by this object turned up nothing.
+     *  @return True if there is no such method.
+     */
     public boolean isReal() {
         return (_type & REAL) == REAL;
     }
@@ -681,7 +621,6 @@ public class CachedMethod {
         return true;
     }
 
-
     /** Return a conversion to convert the second argument into the class
      *  given by the first argument. If no such conversion is possible, then
      *  the returned conversion is IMPOSSIBLE.
@@ -822,14 +761,158 @@ public class CachedMethod {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Add the specified instance of this class to the cache.
+     *  @param cachedMethod The instance to add to the cache.
+     */
+    private static void _addCachedMethod(CachedMethod cachedMethod) {
+        _cachedMethods.put(cachedMethod, cachedMethod);
+    }
+    
+    // Find a CachedMethod of type METHOD, in a class that extends
+    // from the type indicated by argTypes[0], that accepts arguments
+    // argTypes[1..length].  Return null if no method can be found.
+    private static CachedMethod _findMETHOD(
+            String methodName, Type[] argTypes)        
+            throws IllegalActionException {
+        CachedMethod cachedMethod = null;
+        // Try to reflect the method.
+        int num = argTypes.length;
+        ArgumentConversion[] conversions = new ArgumentConversion[num - 1];
+        
+        Class destTokenClass = argTypes[0].getTokenClass();
+        Type[] methodArgTypes;
+        if (num == 1) {
+            methodArgTypes = null;
+        } else {
+            methodArgTypes = new Type[num - 1];
+            for (int i = 1; i < num; i++) {
+                methodArgTypes[i-1] = argTypes[i];
+            }
+        }
+        
+        try {
+            Method method = _polymorphicGetMethod(destTokenClass,
+                    methodName, methodArgTypes, conversions);
+            if (method != null) {
+                cachedMethod = new CachedMethod(methodName, argTypes,
+                        method, conversions, METHOD+REAL);
+            }
+        } catch (SecurityException security) {
+            // If we are running under an Applet, then we
+            // may end up here if, for example, we try
+            // to invoke the non-existent quantize function on
+            // java.lang.Math.
+        }
+        
+        if (cachedMethod == null) {
+            // Native convert the base class.
+            // System.out.println("Checking for base conversion");
+            destTokenClass = ConversionUtilities
+                .convertTokenTypeToJavaType(argTypes[0]);
+            
+            Method method = _polymorphicGetMethod(destTokenClass,
+                    methodName, methodArgTypes, conversions);
+            if (method != null) {
+                cachedMethod = new BaseConvertCachedMethod(
+                        methodName, argTypes, method, NATIVE, conversions,
+                        METHOD+REAL);
+            }
+        }
+        return cachedMethod;
+    }
+
+    // Find a CachedMethod of type FUNCTION, in a registered class,
+    // that accepts arguments argTypes[0..length].  Return null if no
+    // method can be found.
+    private static CachedMethod _findFUNCTION(
+            String methodName, Type[] argTypes)
+            throws IllegalActionException {
+        CachedMethod cachedMethod = null;
+        ArgumentConversion[] conversions =
+            new ArgumentConversion[argTypes.length];
+        // Search the registered function classes
+        Iterator allClasses =
+            PtParser.getRegisteredClasses().iterator();
+        // Keep track of multiple matches, to try to find the
+        // most specific one.
+        Method preferredMethod = null;
+        ArgumentConversion[] preferredConversions = null;
+        while (allClasses.hasNext() && cachedMethod == null) {
+            Class nextClass = (Class)allClasses.next();
+          //   System.out.println("Examining registered class: "
+            //                     + nextClass);
+            try {
+                Method method = _polymorphicGetMethod
+                    (nextClass, methodName, argTypes, conversions);
+                if (method != null) {
+                    // System.out.println("Found match: " + method);
+                    // Compare to previous match, if there has
+                    // been one.
+                    if (preferredMethod == null
+                            || _areConversionsPreferable(
+                                    conversions,
+                                    method.getParameterTypes(),
+                                    preferredConversions,
+                                    preferredMethod.getParameterTypes())) {
+                        // Either there is no previous match,
+                        // or the current match is preferable
+                        // or equivalent to the previous match.
+                        preferredMethod = method;
+                        preferredConversions = (ArgumentConversion[])
+                            conversions.clone();
+                    }
+                }
+            } catch (SecurityException security) {
+                // If we are running under an Applet, then we
+                // may end up here if, for example, we try
+                // to invoke the non-existent quantize function on
+                // java.lang.Math.
+            }
+        }
+        if (preferredMethod != null) {
+            // System.out.println("*** Chosen method: "
+            //        + preferredMethod);
+            // System.out.println("*** Chosen conversions: "
+            //        + preferredConversions[0]);
+            cachedMethod = new CachedMethod(methodName, argTypes,
+                    preferredMethod, preferredConversions, FUNCTION+REAL);
+        }
+        return cachedMethod;
+    }
+    
+    /** Return the CachedMethod that corresponds to methodName and
+     *  argTypes if it had been cached previously.
+     */
+    private static CachedMethod _getCachedMethod(
+            String methodName, Type[] argTypes, int type) {
+        CachedMethod key = new CachedMethod(
+                methodName, argTypes, null, null, type);
+        // System.out.println("findMethod:" + key);
+        CachedMethod method = (CachedMethod)_cachedMethods.get(key);
+        return method;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The method name.
     private String _methodName;
+    // The token types of the arguments.
     private Type[] _argTypes;
+    // The Java method to be invoked.
     private Method _method;
+    // Conversions that convert the types of the arguments to types
+    // acceptable by the given method.
     private ArgumentConversion[] _conversions;
+    // The precomputed hashcode for this cached method.
     private int _hashcode;
+    // The type.
     private int _type;
+    // The static table containing cached methods.  Note that a
+    // synchronized hashtable is used to provide safe access to the
+    // table of methods from multiple threads.
     private static Hashtable _cachedMethods = new Hashtable();
 
     ///////////////////////////////////////////////////////////////////
@@ -984,7 +1067,7 @@ public class CachedMethod {
         private CachedMethod _cachedMethod;
         private boolean[] _reducedArgs;
     }
-
+    
     //////////////////////////////////////////////////////////////////
     //// MatrixMapCachedMethod
 
