@@ -69,6 +69,11 @@ public class LongToken extends ScalarToken {
      *   be created with the given String.
      */
     public LongToken(String init) throws IllegalActionException {
+        // Throw away the ending L or l, if necessary.
+        init = init.trim();
+        if(init.endsWith("L") || init.endsWith("l")) {
+            init = init.substring(0, init.length() - 1);
+        }
         try {
             _value = Long.parseLong(init);
         } catch (NumberFormatException e) {

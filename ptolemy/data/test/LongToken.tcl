@@ -74,6 +74,14 @@ test LongToken-1.2 {Create an instance from a string value} {
 ######################################################################
 ####
 # 
+test LongToken-1.2 {Create an instance from a string value} {
+    set token [java::new {ptolemy.data.LongToken String} "5L"]
+    $token toString
+} {5L}
+
+######################################################################
+####
+# 
 test LongToken-2.0 {Create a non-empty instance and query its value as an long} {
     set p [java::new {ptolemy.data.LongToken long} 3]
     set res1 [$p longValue]
