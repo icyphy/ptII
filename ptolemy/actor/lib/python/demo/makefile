@@ -31,7 +31,8 @@
 
 ME =		ptolemy/actor/lib/python/demo
 
-DIRS =		PythonScale
+DIRS =		Ptolemnizer \
+		PythonScale
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -49,6 +50,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	Ptolemnizer/Ptolemnizer.jar \
 	PythonScale/PythonScale.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
