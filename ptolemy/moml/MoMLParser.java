@@ -36,8 +36,10 @@ import ptolemy.kernel.*;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Configurable;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.Documentation;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.expr.Variable;
+
 
 // Java imports.
 import java.awt.Container;
