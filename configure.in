@@ -94,15 +94,22 @@ so we search for the java compiler.])
 
     # The default location that we look for the JDK.  This should probably
     # be a list that includes /usr/local/jdk and /opt/jdk
-    DEFAULT_JDK=/opt/jdk1.1.6
     if test ! -d "$PTJAVA_DIR"; then
-	AC_MSG_WARN(['${PTJAVA_DIR}' is not a directory, using the default '${DEFAULT_JDK}'])
+	DEFAULT_JDK=/opt/jdk1.1.6
 	if test -d "$DEFAULT_JDK"; then
 	    PTJAVA_DIR=`cd $DEFAULT_JDK; pwd`	
-	else
+	    AC_MSG_WARN(['${PTJAVA_DIR}' is not a directory, using the default '${DEFAULT_JDK}'])
+
+	else 
+	    DEFAULT_JDK=/usr/java
+	    if test -d "$DEFAULT_JDK"; then
+		PTJAVA_DIR=`cd $DEFAULT_JDK; pwd`	
+		AC_MSG_WARN(['${PTJAVA_DIR}' is not a directory, using the default '${DEFAULT_JDK}'])
+	    else
 			    AC_MSG_ERROR([
 Java directory $DEFAULT_JDK doesn't exist.
 Try --with-java=DIR, or set the PTJAVA_DIR environment variable.])
+	    fi
 	fi	
     fi	
 fi
