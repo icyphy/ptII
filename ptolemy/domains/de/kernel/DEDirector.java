@@ -328,9 +328,9 @@ public class DEDirector extends Director {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         DEDirector newObject = (DEDirector)(super.clone(workspace));
-        newObject.startTime = 
+        newObject.startTime =
             (Parameter)newObject.getAttribute("startTime");
-        newObject.stopTime = 
+        newObject.stopTime =
             (Parameter)newObject.getAttribute("stopTime");
         newObject.stopWhenQueueIsEmpty =
             (Parameter)newObject.getAttribute("stopWhenQueueIsEmpty");
@@ -633,7 +633,7 @@ public class DEDirector extends Director {
         //boolean  = ((BooleanToken)stopWhenQueueIsEmpty.getToken()).
         //    booleanValue();
         if (_noMoreActorsToFire && _exceedStopTime) {
-            return false; 
+            return false;
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
         }
@@ -1257,7 +1257,7 @@ public class DEDirector extends Director {
     // Set to true when the time stamp of the token to be dequeue has
     // exceeded the stopTime.
     private boolean _exceedStopTime = false;
-    
+
     // The real time at which the model begins executing.
     private long _realStartTime = 0;
 

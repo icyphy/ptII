@@ -23,7 +23,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (frederic.boulanger@supelec.fr)
-@AcceptedRating Red 
+@AcceptedRating Red
 */
 
 package ptolemy.vergil.debugger;
@@ -87,7 +87,7 @@ public class ActorWatcher implements Nameable {
     }
 
     /** Refresh all elements that display a value. This method is called
-     * each time the user has to enter a command : he can eventually 
+     * each time the user has to enter a command : he can eventually
      * decide what to do depending on the displayed values
      */
     public void refresh() {
@@ -97,17 +97,17 @@ public class ActorWatcher implements Nameable {
 	while (attributes.hasNext()) {
 	    try {
 		Variable attribute = (Variable)attributes.next();
-		valueList.addElement(new String(attribute.getToken().toString())); 
+		valueList.addElement(new String(attribute.getToken().toString()));
 	    } catch (IllegalActionException e) {}
 	}
 	edit(_attributeList);
 	_frame.setVisible(true);
     }
 
-    /** 
+    /**
      * Build a visual representation of the watcher. For each target
      * value it builds a swing component to display this values
-     * @param attributeList The list of attributes to display. 
+     * @param attributeList The list of attributes to display.
      */
     public void edit(NamedList attributeList) {
 	_attributeList = attributeList;
@@ -118,13 +118,13 @@ public class ActorWatcher implements Nameable {
 	panel.setLayout(new GridLayout(size, 2, 2, 10));
 	while (attributes.hasNext()) {
 	    // Build a swing component to display attribute
-	    // and add it to the frame 
+	    // and add it to the frame
 	    // ONLY for string displayable parameter
 	    Variable attribute = (Variable)attributes.next();
 	    JLabel label = new JLabel(attribute.getName());
 	    panel.add(label);
 	    try {
-		String nextValue = 
+		String nextValue =
 		    new String((attribute.getToken()).toString());
 		JTextField text = new JTextField(nextValue);
 		valueList.addElement(nextValue);
@@ -133,7 +133,7 @@ public class ActorWatcher implements Nameable {
 	}
 	_frame.setContentPane(panel);
 
-		
+
     }
 
     ///////////////////////////////////////////////////////////////////

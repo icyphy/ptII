@@ -41,7 +41,7 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Firing
 /**
-This class is a schedule element that contains a reference to an actor. 
+This class is a schedule element that contains a reference to an actor.
 This class is used together with Schedule to construct a static schedule.
 This class contains a reference to an actor, and is used to represent an
 actor term
@@ -56,7 +56,7 @@ to an actor. The getActor() method will return a reference to this actor.
 
 public class Firing extends ScheduleElement {
     /** Construct a firing with a default iteration count equal to one.
-     *  
+     *
      */
     public Firing() {
 	super();
@@ -68,16 +68,16 @@ public class Firing extends ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the actor invocation sequence of the schedule in the 
+    /** Return the actor invocation sequence of the schedule in the
      *  form of a sequence of actors. For a valid schedule, all of the
      *  lowest-level nodes should be an instance of Firing. If the
-     *  schedule is not valid, then the returned iterator will contain 
+     *  schedule is not valid, then the returned iterator will contain
      *  null elements.
      *  <p>
      *  Note that the behavior of an iterator is unspecified if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
-     *  
+     *
      * @return An iterator over a sequence of actors.
      */
     public Iterator actorIterator() {
@@ -87,18 +87,18 @@ public class Firing extends ScheduleElement {
     }
 
     /** Return the actor invocation sequence in the form
-     *  of a sequence of firings. 
+     *  of a sequence of firings.
      *  Since this ScheduleElement is a Firing, the
      *  iterator returned will contain exactly one Firing (this Firing).
      *  <p>
      *  Note that the behavior of an iterator is unspecified if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
-     *  
+     *
      *  @return An iterator over a sequence of firings.
      */
     public Iterator firingIterator() {
-	return _firing.iterator();	
+	return _firing.iterator();
     }
 
     /** Get the actor associated with this Firing. The setActor()
@@ -126,8 +126,8 @@ public class Firing extends ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods               ////
 
-    /** Update the list of actor invocations, if necessary. The list 
-     *  needs to be updated when setActor() has been invoked since 
+    /** Update the list of actor invocations, if necessary. The list
+     *  needs to be updated when setActor() has been invoked since
      *  the last invocation of actorIterator().
      *
      */
@@ -142,7 +142,7 @@ public class Firing extends ScheduleElement {
 	    for (int i = 0; i < getIterationCount(); i++) {
 		_actorInvocations.add(getActor());
 	    }
-	} 
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

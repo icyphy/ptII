@@ -103,7 +103,7 @@ public class StaticSchedulingDirector extends Director {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new director with no container, no pending mutations,
-     *  no topology listeners, and a clone of the original scheduler, 
+     *  no topology listeners, and a clone of the original scheduler,
      *  if one existed.
      *
      *  @param workspace The workspace for the cloned object.
@@ -123,7 +123,7 @@ public class StaticSchedulingDirector extends Director {
 	    }
 	    return newObject;
 	} catch (Exception ex) {
-	    throw new CloneNotSupportedException("Clone failed:" + 
+	    throw new CloneNotSupportedException("Clone failed:" +
 						 ex.getMessage());
 	}
     }

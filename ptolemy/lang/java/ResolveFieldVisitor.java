@@ -524,7 +524,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         while (methods.hasNext()) {
             MethodDecl method = (MethodDecl) methods.next();
 
-	    
+
 	    debugMatches.append("-" + method.toString() + " " + method.getName());
 	    List formalTypes = method.getParams();
 	    Iterator formalItr2 = formalTypes.iterator();

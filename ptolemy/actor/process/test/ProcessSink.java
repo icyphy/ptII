@@ -67,7 +67,7 @@ public class ProcessSink extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      */
     public void fire() throws IllegalActionException {
         Token token = input.get(0);
@@ -79,13 +79,13 @@ public class ProcessSink extends Sink {
         /*
         */
     }
-    
-    /** 
+
+    /**
      */
     public boolean postfire() {
         return false;
     }
-    
+
     private String _name;
 
 }

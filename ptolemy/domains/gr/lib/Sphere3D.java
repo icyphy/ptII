@@ -67,10 +67,10 @@ public class Sphere3D extends GRShadedShape {
     public Sphere3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         radius = new Parameter(this, "radius", new DoubleToken(0.5));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -83,15 +83,15 @@ public class Sphere3D extends GRShadedShape {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a Java3D sphere.
      *  @return the Java3D Sphere
-     */    
+     */
     public Node getNodeObject() {
         return (Node) containedNode;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -104,7 +104,7 @@ public class Sphere3D extends GRShadedShape {
         containedNode = new Sphere((float)_getRadius(),Sphere.GENERATE_NORMALS,_appearance);
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

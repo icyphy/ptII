@@ -67,7 +67,7 @@ public class LineCoder extends SDFTransformer {
 
         table = new Parameter(this, "table");
         table.setTypeEquals(new ArrayType(BaseType.NAT));
-        table.setExpression("[-1.0, 1.0]"); 
+        table.setExpression("[-1.0, 1.0]");
 
         wordLength = new Parameter(this, "wordLength", new IntToken(1));
         wordLength.setTypeEquals(BaseType.INT);
@@ -137,7 +137,7 @@ public class LineCoder extends SDFTransformer {
             InequalityTerm elemTerm = paramType.getElementTypeTerm();
             newobj.output.setTypeAtLeast(elemTerm);
         } catch (IllegalActionException ex) {
-            // Ignore..  
+            // Ignore..
             // FIXME: This try..catch seems bogus...  ArrayToSequence
             // doesn't need it..
         }

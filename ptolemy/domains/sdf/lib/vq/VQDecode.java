@@ -75,7 +75,7 @@ public class VQDecode extends SDFTransformer {
         codeBook.setTypeEquals(BaseType.STRING);
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
         blockCount.setTypeEquals(BaseType.INT);
-         
+
         _blockCount = ((IntToken)blockCount.getToken()).intValue();
         output.setTokenProductionRate(_blockCount);
         input.setTokenConsumptionRate(_blockCount);

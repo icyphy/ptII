@@ -33,7 +33,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Debuggable;
 
 //////////////////////////////////////////////////////////////////////////
-//// ReflectTest 
+//// ReflectTest
 
 /** This class is a test input file to ASTReflect
 

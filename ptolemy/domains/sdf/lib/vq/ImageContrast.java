@@ -96,7 +96,7 @@ public class ImageContrast extends Transformer {
         int i, j;
         int frame[];
         int frameElement;
-        
+
         IntMatrixToken message = (IntMatrixToken) input.get(0);
         frame = message.intArray();
 

@@ -40,8 +40,8 @@ import ptolemy.kernel.util.UserSettable;
 //////////////////////////////////////////////////////////////////////////
 //// LineStyle
 /**
-This attribute annotates user settable attributes to specify 
-an arbitrary type-in line style for configuring the containing attribute.  
+This attribute annotates user settable attributes to specify
+an arbitrary type-in line style for configuring the containing attribute.
 This style can be used with any UserSettable attribute.
 
 @see EditorPaneFactory
@@ -87,10 +87,10 @@ C     *  @return True.
     }
 
     /** Create a new type-in line
-     *  entry in the given query associated with the 
+     *  entry in the given query associated with the
      *  attribute containing this style.  The name of the entry is
      *  the name of the attribute.  Attach the attribute to the created entry.
-     *  
+     *
      *  @param query The query into which to add the entry.
      */
     public void addEntry(PtolemyQuery query) {

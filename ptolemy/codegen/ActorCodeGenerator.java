@@ -104,7 +104,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         Class actorClass = actor.getClass();
 
-        File sourceFile; 
+        File sourceFile;
         try {
             sourceFile =
                 SearchPath.NAMED_PATH.openSource(actorClass.getName());
@@ -178,7 +178,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             sourceFile = SearchPath.NAMED_PATH.openSource(sourceName);
         } catch (IOException e) {
             throw new RuntimeException("regenerated source code not found " +
-                    "for entity " + actorInfo.actor + 
+                    "for entity " + actorInfo.actor +
                     " in source file " + sourceName);
         }
 
@@ -281,21 +281,21 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         // restore the old type personality
         StaticResolution.setDefaultTypeVisitor(oldTypeVisitor);
-        
+
         // Now remove the extra imports by reloading the nodes once
         // again. (Pass 2 must be run again because of the new
         // types introduced by converting from Extended Java to Java.)
         Iterator classNameItr = classNameList.iterator();
-                
+
         LinkedList importFilteredList = new LinkedList();
-         
+
         while (classNameItr.hasNext()) {
             //unitNode = StaticResolution.loadFileName(
             // _makeOutputFilename((String) classNameItr.next()), 2);
 
 	    String className = (String)classNameItr.next();
 
-	    System.out.println("ActorCodeGenerator.pass3(): " + 
+	    System.out.println("ActorCodeGenerator.pass3(): " +
 			       "openSource(" +className +")");
 
             File file;
@@ -309,19 +309,19 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
 	    // Don't use reflection here, we want to read the file back in,
             // it probably is not yet compiled.
-            unitNode = 
+            unitNode =
 		StaticResolution.loadFile(file, 2);
-             
+
             // a new visitor must be created for each CompileUnitNode
             // to clear the usage maps
-            unitNode.accept(new FindExtraImportsVisitor(true, null), null); 
+            unitNode.accept(new FindExtraImportsVisitor(true, null), null);
             importFilteredList.add(unitNode);
         }
-        
+
         _rewriteSources(importFilteredList, classNameList);
 
         // clear the compile unit nodes from the cache to free memory
-        _invalidateSources(classNameList, 2);                
+        _invalidateSources(classNameList, 2);
     }
 
     /** Invalidate the list of compile unit nodes from the cache in
@@ -358,8 +358,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
     /** Return the output filename of the file corresponding the the
      *  argument class name.
      */
-    protected String _makeOutputFilename(String className) {        
-        return _outputDirectoryName + className + ".java";            
+    protected String _makeOutputFilename(String className) {
+        return _outputDirectoryName + className + ".java";
     }
 
 
@@ -400,7 +400,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
     /** Make a list of CompileUnitNodes that contain the superclasses of
      *  the given className, while is found in the given fileName. Also
-     *  make a list of strings that are the corresponding (primary) class names. 
+     *  make a list of strings that are the corresponding (primary) class names.
      *  Return both these lists in an array.
      *  The lists should start from the class that immediately extends a known
      *  actor class (such as TypedAtomicActor), and goes to the class given
@@ -521,7 +521,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             //String className = (String) classNameItr.next();
 	    // Get the classname without the package name
 	    String className =
-		StringManip.partAfterLast((String)classNameItr.next(), 
+		StringManip.partAfterLast((String)classNameItr.next(),
 					  '.');
 
             String newClassName = "CG_" +  className + "_" + actorName;
@@ -533,7 +533,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             renameMap.put(className, newClassName);
 
 	    //renamedClassNameList.addLast(newClassName);
-	    renamedClassNameList.addLast(_outputPackageName + 
+	    renamedClassNameList.addLast(_outputPackageName +
 					 '.' + newClassName);
         }
 
@@ -608,7 +608,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         protected String _className;
     }
-    
+
     /** A factory that create instances of the domain-specific transformation
      *  classes.
      */

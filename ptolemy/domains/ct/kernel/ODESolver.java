@@ -49,7 +49,7 @@ solving algorithms.
 The behavior of integrators also changes
 when changing ODE solver, so this class provides some methods
 for the integrators too, including the fire() method and the step size
-control related methods. Here we use the strategy and delegation design 
+control related methods. Here we use the strategy and delegation design
 patterns. CTBaseIntegrator delegated its corresponding
 methods to this class. And subclasses of this class provide concrete
 implementations of these methods.
@@ -63,7 +63,7 @@ possitive integer.
 A round counter is a counter
 for the number of fire() rounds in one iteration to help the actors that
 may behave differently under different rounds. The round can be got by
-the getRound() method. The incrementRound() method will increase the 
+the getRound() method. The incrementRound() method will increase the
 counter by one, and resetRound() will always reset the counter to 0.
 <P>
 Conceptually, ODE solvers do not maintain simulation parameters,
@@ -158,7 +158,7 @@ public abstract class ODESolver extends NamedObj {
             throws  IllegalActionException;
 
     /** The isThisStepAccurate() method of integrators is delegated to
-     *  this method. It returns true if the current integration step 
+     *  this method. It returns true if the current integration step
      *  is accurate from the argument integrator's point of view.
      *  @param integrator The integrator of that calls this method.
      *  @return True if the integrator finds the step accurate.
@@ -183,7 +183,7 @@ public abstract class ODESolver extends NamedObj {
     /** Return true if the state of the system is resolved successfully.
      *  Different solvers may implement it differently.
      *
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      * May be thrown by derived classes if the exception is thrown by
      * one of the execution methods of some actors.
      */

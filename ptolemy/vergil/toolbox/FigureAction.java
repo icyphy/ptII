@@ -45,12 +45,12 @@ import ptolemy.moml.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FigureAction
-/** 
-An action that is attached to a figure on a named object.  
+/**
+An action that is attached to a figure on a named object.
 Such an action is usually fired
 in two ways.  The first way is through an ActionInteractor that is attached
 to the figure.  The second way is through a context menu that is created
-on the figure.  Unfortunately, the source of the event is different in 
+on the figure.  Unfortunately, the source of the event is different in
 these two cases.  This class makes it easy to write an action that is
 accessed by either mechanism.
 
@@ -58,7 +58,7 @@ accessed by either mechanism.
 @version $Id$
 */
 public class FigureAction extends AbstractAction {
-    
+
     public FigureAction(String name) {
 	super(name);
     }
@@ -73,10 +73,10 @@ public class FigureAction extends AbstractAction {
 	    GraphPane pane = (GraphPane)layer.getCanvasPane();
 	    GraphController controller = pane.getGraphController();
 	    GraphModel model = controller.getGraphModel();
-	   
+
 	    Figure figure = (Figure) event.getFigureSource();
 	    // Set the target.
-	    if(figure == null) {	
+	    if(figure == null) {
 		_target = (NamedObj) model.getRoot();
 	    } else {
 		Object object = figure.getUserObject();
@@ -127,7 +127,7 @@ public class FigureAction extends AbstractAction {
 	private SourceType(String name) {
 	    _name = name;
 	}
-	
+
 	public String getName() {
 	    return _name;
 	}

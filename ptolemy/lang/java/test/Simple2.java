@@ -1,5 +1,5 @@
 /* Test out a simple class with no methods, constructors or fields
-but with an import statement. 
+but with an import statement.
 
 
  Copyright (c) 2000 The Regents of the University of California.
@@ -37,7 +37,7 @@ import ptolemy.lang.java.test.Simple;
 //// Simple2
 
 /** Test out a simple class with no methods, constructors or fields
-but with an import statement. 
+but with an import statement.
 
 @author Jeff Tsay, Christopher Hylands
 @version $Id$

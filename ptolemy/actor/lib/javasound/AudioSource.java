@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (vogel@eecs.berkeley.edu)
-@AcceptedRating 
+@AcceptedRating
 */
 
 package ptolemy.actor.lib.javasound;
@@ -59,9 +59,9 @@ actor captures audio samples from the audio input port of the
 computer which typically includes the microphone, line-in, or cd
 audio. When capture from a sound file is used, the audio source is
 a sound file specified as a URL. Note that it is still possible to
-specify local files as a URL.  The mode that is used is controlled 
-by the <i>pathName</i> parameter. If <i>pathName</i> is set to the 
-string "", then live capture mode is used, otherwise samples are 
+specify local files as a URL.  The mode that is used is controlled
+by the <i>pathName</i> parameter. If <i>pathName</i> is set to the
+string "", then live capture mode is used, otherwise samples are
 captured from a sound file.
 <p>
 <h2>Notes on modes and required parameters</h2>
@@ -77,14 +77,14 @@ prevent overflow of the internal audio capture buffer.
 Overflow should be avoided, since it will result in loss of
 data.
 <p>
-The following parameters are relevant to live capture mode, and 
+The following parameters are relevant to live capture mode, and
 should be set accordingly. In all cases, an exception is thrown if
 an illegal parameter value is used:
 <ul>
 <li><i>pathName</i> should be set to "". The absence of a URL
 name tells this actor to use live capture mode. The default
 value of this parameter is "".
-<li><i>sampleRate</i> should be set to desired sample rate, in Hz. 
+<li><i>sampleRate</i> should be set to desired sample rate, in Hz.
 The default value is 8000.
 <li><i>sampleSizeInBits</i> should be set to desired bit
 resolution. The default value is 16.
@@ -102,15 +102,15 @@ should be used. The default value is 4096.
 <p>(2) Capture from a sound file (via URL).
 <p>
 The following parameters are relevant to audio capture from
-a sound file, and should be set accordingly. In all cases, an 
+a sound file, and should be set accordingly. In all cases, an
 exception is thrown if an illegal parameter value is used:
 <ul>
 <li><i>pathName</i> should be set to the name of the file, specified
 as a fully qualified string representation of a URL. The default
 value is the string "", which causes live capture mode to be used.
 </ul>
-<p>The sound file is not periodically repeated by this actor, so 
-postfire() will therefore return false when the end of the sound 
+<p>The sound file is not periodically repeated by this actor, so
+postfire() will therefore return false when the end of the sound
 file is reached.
 <p>
 There are security issues involved with accessing files and audio
@@ -190,7 +190,7 @@ public class AudioSource extends Source {
     /** The desired sample rate to use, in Hz.
      *  Valid values
      *  are dependent on the audio hardware (sound card), but typically
-     *  include at least 8000, 11025, 22050, 44100, and 48000. The 
+     *  include at least 8000, 11025, 22050, 44100, and 48000. The
      *  default value of the sample rate is 8000 Hz.
      *  <p>
      *  Note that it is only necessary to set this parameter for the
@@ -214,7 +214,7 @@ public class AudioSource extends Source {
     /** The number desired number of bits per sample.
      *  Allowed values are dependent
      *  on the audio hardware, but typically at least include
-     *  8 and 16. The default value is 16. 
+     *  8 and 16. The default value is 16.
      *  <p>
      *  Note that it is only necessary to set this parameter for the
      *  case where audio is captured in real-time from the microphone
@@ -241,12 +241,12 @@ public class AudioSource extends Source {
 
     /** Requested size of the internal audio input
      *  buffer in samples. A particular Java implementation may choose
-     *  to ignore this parameter. This controls the delay in samples 
+     *  to ignore this parameter. This controls the delay in samples
      *  from the time audio sample are read by this
      *  actor until the audio is actually heard at the speaker. A lower
      *  bound on the latency is given by
      *  (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
-     *  Ideally, the smallest value that gives acceptable performance 
+     *  Ideally, the smallest value that gives acceptable performance
      *  (no underflow) should be used. Allowable values are dependent
      *  on the platform, jdk, and audio hardware. The default value is 4096.
      *  <p>
@@ -269,9 +269,9 @@ public class AudioSource extends Source {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if(_debugging) _debug("AudioSource: attributeChanged() invoked on: " + 
+	if(_debugging) _debug("AudioSource: attributeChanged() invoked on: " +
 			      attribute.getName());
-	//System.out.println("AudioSource: attributeChanged() invoked on: " + 
+	//System.out.println("AudioSource: attributeChanged() invoked on: " +
 	//		      attribute.getName());
 	if (attribute == channels) {
 	    _channels =
@@ -326,18 +326,18 @@ public class AudioSource extends Source {
      *  causes audio samples to be captured from the audio source,
      *  which can be a sound file or live capture from the audio
      *  input device (e.g., the microphone or line-in).
-     *  One token is written to the output port in an iteration. 
-     *  When live capture mode is used, this method should be invoked 
-     *  often enough to prevent overflow of the internal audio capture 
-     *  buffer. Overflow should be avoided, since it will result in loss 
+     *  One token is written to the output port in an iteration.
+     *  When live capture mode is used, this method should be invoked
+     *  often enough to prevent overflow of the internal audio capture
+     *  buffer. Overflow should be avoided, since it will result in loss
      *  of data.
      *  <p>
-     *  This method should be called instead of the prefire(), 
+     *  This method should be called instead of the prefire(),
      *  fire(), and postfire() methods when this actor is used in a
      *  domain that supports vectorized actors. It is recommended for
-     *  performance reasons that a large value of <i>count</i> be used 
-     *  when this actor is used in live capture mode. This actor is 
-     *  optimized to provide good performance even if the value of 
+     *  performance reasons that a large value of <i>count</i> be used
+     *  when this actor is used in live capture mode. This actor is
+     *  optimized to provide good performance even if the value of
      *  <i>count</i> changes often.
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
@@ -377,7 +377,7 @@ public class AudioSource extends Source {
 		// Copy a sample to the output array.
 		// For each channel.
 		for (int j = 0; j < _channels; j++) {
-		    
+
 		    _audioSendArray[i] =
 			new DoubleToken(_audioInDoubleArray[j][_getSamplesArrayPointer]);
 		}
@@ -398,7 +398,7 @@ public class AudioSource extends Source {
 	    return COMPLETED;
 	} else {
 	    // Read was unsuccessful, so output an array of zeros.
-	    // This generally means that the end of the sound file 
+	    // This generally means that the end of the sound file
 	    // has been reached.
 	    // Convert to DoubleToken[].
 	    for (int i = 0; i < count; i++) {
@@ -412,14 +412,14 @@ public class AudioSource extends Source {
 	}
     }
 
-    /** Capture and output a single audio sample on each channel. 
+    /** Capture and output a single audio sample on each channel.
      *  This method causes audio samples to be captured from the audio source,
      *  which can be a sound file or live capture from the audio
      *  input device (e.g., the microphone or line-in).
-     *  One token is written to the output port in an invocation. 
-     *  When live capture mode is used, this method should be invoked 
-     *  often enough to prevent overflow of the internal audio capture 
-     *  buffer. Overflow should be avoided, since it will result in loss 
+     *  One token is written to the output port in an invocation.
+     *  When live capture mode is used, this method should be invoked
+     *  often enough to prevent overflow of the internal audio capture
+     *  buffer. Overflow should be avoided, since it will result in loss
      *  of data.
      *  @return True if there are samples available from the
      *  audio source. False if there are no more samples (end
@@ -527,7 +527,7 @@ public class AudioSource extends Source {
             // parameter accordingly.
             _channels = _soundCapture.getChannels();
             channels.setToken(new IntToken(_channels));
-        } 
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

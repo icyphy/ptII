@@ -1,5 +1,5 @@
-/* A ProcessReceiver is an interface for receivers in the process oriented 
-domains. 
+/* A ProcessReceiver is an interface for receivers in the process oriented
+domains.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -40,11 +40,11 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver
 /**
-A ProcessReceiver is an interface for receivers in the process oriented 
+A ProcessReceiver is an interface for receivers in the process oriented
 domains. It adds methods to the Receiver interface for setting flags that
 indicate whether a termination of the simulation has been requested.
-In addition, methods are available to accomodate hierarchical 
-heterogeneity via composite actors. 
+In addition, methods are available to accomodate hierarchical
+heterogeneity via composite actors.
 <P>
 In process oriented domains, simulations are normally ended on the
 detection of a deadlock. During a deadlock, processes or the
@@ -65,11 +65,11 @@ public synchronized void requestFinish() {
 </code>
 <P>
 <P>
-To accomodate hierarchical heterogeneity, an instantiation of 
+To accomodate hierarchical heterogeneity, an instantiation of
 ProcessReceiver must be able to determine its topological location
-with respect to boundary ports. A boundary port is an opaque port 
-that is contained by a composite actor. This ability is enforced 
-with the isConnectedToBoundary(), isConnectedToBoundaryOutside(), 
+with respect to boundary ports. A boundary port is an opaque port
+that is contained by a composite actor. This ability is enforced
+with the isConnectedToBoundary(), isConnectedToBoundaryOutside(),
 isConnectedToBoundaryInside(), isInsideBoundary() and isOutsideBoundary()
 methods. For convenience, the BoundaryDetector class is available to
 to simplify the implementation of these methods.
@@ -82,12 +82,12 @@ The process receiver then knows to register any blocks with
 the branch rather than with a director as is occurs in non-composite
 cases.
 <P>
-Note that it is not necessary for an implementation of ProcessReceiver to 
-be used in the ports of an opaque composite actor. It is perfectly fine 
-for a ProcessReceiver implementation to be used in the ports of an atomic 
-actor. In such cases the get() and put() methods are called without the 
-use of a branch object. If blocking reads or writes occur they are 
-registered with the controlling director without the need for a branch 
+Note that it is not necessary for an implementation of ProcessReceiver to
+be used in the ports of an opaque composite actor. It is perfectly fine
+for a ProcessReceiver implementation to be used in the ports of an atomic
+actor. In such cases the get() and put() methods are called without the
+use of a branch object. If blocking reads or writes occur they are
+registered with the controlling director without the need for a branch
 or branch controller.
 
 
@@ -104,22 +104,22 @@ public interface ProcessReceiver extends Receiver {
     /** Get a token from this receiver and pass in a branch object as
      *  an argument. This method can accomodate blocking reads at the
      *  boundary of composite actors. If the branch argument is not
-     *  null it is assumed that the receiver is at or connected to 
-     *  the boundary of a composite actor and any blocks are 
+     *  null it is assumed that the receiver is at or connected to
+     *  the boundary of a composite actor and any blocks are
      *  registered with the branch. If the branch is null than the
      *  receiver is not associated with a composite actor boundary
      *  and blocks are registered with a director.
      */
-    public Token get(Branch controllingBranch); 
+    public Token get(Branch controllingBranch);
 
-    /** Return true if this receiver is connected to the inside of a 
+    /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  It is suggested that this method be implemented using
-     *  the BoundaryDetector class although such an implementation 
+     *  the BoundaryDetector class although such an implementation
      *  is not necessary.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
@@ -127,14 +127,14 @@ public interface ProcessReceiver extends Receiver {
      */
     public boolean isConnectedToBoundary();
 
-    /** Return true if this receiver is connected to the inside of a 
+    /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  It is suggested that this method be implemented using
-     *  the BoundaryDetector class although such an implementation 
+     *  the BoundaryDetector class although such an implementation
      *  is not necessary.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
@@ -142,14 +142,14 @@ public interface ProcessReceiver extends Receiver {
      */
     public boolean isConnectedToBoundaryInside();
 
-    /** Return true if this receiver is connected to the outside of a 
+    /** Return true if this receiver is connected to the outside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the outside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  It is suggested that this method be implemented using
-     *  the BoundaryDetector class although such an implementation 
+     *  the BoundaryDetector class although such an implementation
      *  is not necessary.
      *  @return True if this receiver is contained on the outside of
      *   a boundary port; return false otherwise.
@@ -158,21 +158,21 @@ public interface ProcessReceiver extends Receiver {
     public boolean isConnectedToBoundaryOutside();
 
     /** Return true if this receiver is a consumer receiver. A process
-     *  receiver is a consumer receiver if it is connected to a 
+     *  receiver is a consumer receiver if it is connected to a
      *  boundary port.
-     *  @return True if this is a consumer receiver; return 
+     *  @return True if this is a consumer receiver; return
      *   false otherwise.
      */
-    public boolean isConsumerReceiver(); 
+    public boolean isConsumerReceiver();
 
     /** Return true if this receiver is contained on the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
      *  on the inside of a boundary port then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  It is suggested that this method be implemented using
-     *  the BoundaryDetector class although such an implementation 
+     *  the BoundaryDetector class although such an implementation
      *  is not necessary.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
@@ -184,33 +184,33 @@ public interface ProcessReceiver extends Receiver {
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
      *  on the outside of a boundary port then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  It is suggested that this method be implemented using
-     *  the BoundaryDetector class although such an implementation 
+     *  the BoundaryDetector class although such an implementation
      *  is not necessary.
      *  @return True if this receiver is contained on the outside of
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
      */
     public boolean isOutsideBoundary();
-    
+
     /** Return true if this receiver is a producer receiver. A process
      *  receiver is a producer receiver if it is contained on the
      *  inside or outside of a boundary port.
-     *  @return True if this is a producer receiver; return false 
+     *  @return True if this is a producer receiver; return false
      *   otherwise.
      */
-    public boolean isProducerReceiver(); 
+    public boolean isProducerReceiver();
 
     /** Determine if this receiver is read blocked.
-     *  @return True if this receiver is read blocked; return 
+     *  @return True if this receiver is read blocked; return
      *   false otherwise.
      */
     public boolean isReadBlocked();
-    
+
     /** Determine if this receiver is write blocked.
-     *  @return True if this receiver is write blocked; return 
+     *  @return True if this receiver is write blocked; return
      *   false otherwise.
      */
     public boolean isWriteBlocked();
@@ -218,7 +218,7 @@ public interface ProcessReceiver extends Receiver {
     /** Set a local flag requesting that the simulation be finished.
      */
     public void requestFinish();
-    
+
     /** Reset the local flags of this receiver. Use this method when
      *  restarting execution.
      */
@@ -227,12 +227,12 @@ public interface ProcessReceiver extends Receiver {
     /** Put a token into this receiver and pass in a branch object as
      *  an argument. This method can accomodate blocking writes at the
      *  boundary of composite actors. If the branch argument is not
-     *  null it is assumed that the receiver is at or connected to 
-     *  the boundary of a composite actor and any blocks are 
+     *  null it is assumed that the receiver is at or connected to
+     *  the boundary of a composite actor and any blocks are
      *  registered with the branch. If the branch is null than the
      *  receiver is not associated with a composite actor boundary
      *  and blocks are registered with a director.
      */
-    public void put(Token token, Branch controllingBranch); 
+    public void put(Token token, Branch controllingBranch);
 
 }

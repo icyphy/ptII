@@ -167,7 +167,7 @@ public class Type extends SDFApplet implements ChangeListener {
             visPanel.setLayout(new BorderLayout());
             visPanel.setBackground(getBackground());
             _jgraph = _constructLatticeModel();
-            visPanel.add(_jgraph, BorderLayout.WEST);            
+            visPanel.add(_jgraph, BorderLayout.WEST);
 
             // Place items in the top-level.
             getContentPane().add(_ioPanel, BorderLayout.NORTH);
@@ -336,18 +336,18 @@ public class Type extends SDFApplet implements ChangeListener {
         Object nObject = model.createNode(BaseType.OBJECT);
         Object nScalar = model.createNode(BaseType.SCALAR);
         Object nLong = model.createNode(BaseType.LONG);
- 
-        gc.addNode(nGeneral, 230, 30); 
+
+        gc.addNode(nGeneral, 230, 30);
         gc.addNode(nScalar, 120, 80);
-        gc.addNode(nString, 170, 55); 
-        gc.addNode(nComplex, 90, 125); 
-        gc.addNode(nDouble, 90, 170);  
-        gc.addNode(nLong, 170, 140);  
-        gc.addNode(nInt, 120, 220);  
-        gc.addNode(nBoolean, 250, 120); 
-        gc.addNode(nObject, 340, 140); 
-        gc.addNode(nNaT, 230, 260);      
-	
+        gc.addNode(nString, 170, 55);
+        gc.addNode(nComplex, 90, 125);
+        gc.addNode(nDouble, 90, 170);
+        gc.addNode(nLong, 170, 140);
+        gc.addNode(nInt, 120, 220);
+        gc.addNode(nBoolean, 250, 120);
+        gc.addNode(nObject, 340, 140);
+        gc.addNode(nNaT, 230, 260);
+
         Object e;
         e = model.createEdge(null);
 	gc.addEdge(e, nObject, nNaT);
@@ -387,7 +387,7 @@ public class Type extends SDFApplet implements ChangeListener {
 
         return jgraph;
     }
-        
+
     // Initialize the trace model.
     //
     private void _initTraceModel(TraceModel model) {
@@ -756,7 +756,7 @@ public class Type extends SDFApplet implements ChangeListener {
         // Return the rendered visual representation of this node.
         public Figure render(Object n) {
 	    Object typeObj = _controller.getGraphModel().getSemanticObject(n);
-	    
+
 	    // Create a colored circle
             BasicFigure figure = new BasicEllipse(0, 0, _size, _size);
 

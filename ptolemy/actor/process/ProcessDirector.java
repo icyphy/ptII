@@ -49,7 +49,7 @@ In the process oriented domains, the director controlling a model
 needs to keep track of the state of the model. In particular it needs
 to maintain an accurate count of the number of active processes under
 its control and any processes that are blocked for whatever reason (trying
-to read from an empty channel as in PN). 
+to read from an empty channel as in PN).
 These counts, and perhaps other counts, are needed by the
 director to control and respond when deadlock is detected (no processes
 can make progress), or to respond to requests from higher in the hierarchy.
@@ -62,7 +62,7 @@ the approach that should be followed.
 <P>
 This base class is not sufficient for executing hierarchical, heterogeneous
 models. In order to accomodate hierarchical, heterogeneity the subclass
-CompositeProcessDirector must be used. 
+CompositeProcessDirector must be used.
 <P>
 <P>
 @author Mudit Goel, Neil Smyth, John S. Davis II
@@ -179,7 +179,7 @@ public class ProcessDirector extends Director {
                 Actor actor = (Actor)actors.next();
                 actor.initialize();
             }
-        } 
+        }
 	setCurrentTime(0.0);
     }
 
@@ -228,7 +228,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if( _debugging ) _debug(_name+": returning _notDone = " 
+        if( _debugging ) _debug(_name+": returning _notDone = "
                 + _notDone);
 	return _notDone;
     }
@@ -249,15 +249,15 @@ public class ProcessDirector extends Director {
             procThread.start();
         }
         _newActorThreadList.clear();
-        
+
         return true;
     }
 
     /** Request that execution stop at the conclusion of the current
-     *  iteration. Call stopThread on each of the process threads that 
-     *  contain actors controlled by this director and call stopFire on 
-     *  the actors that are contained by these threads. This method is 
-     *  non-blocking. 
+     *  iteration. Call stopThread on each of the process threads that
+     *  contain actors controlled by this director and call stopFire on
+     *  the actors that are contained by these threads. This method is
+     *  non-blocking.
      */
     public void stopFire() {
  	Iterator threads = _actorThreadList.iterator();
@@ -273,26 +273,26 @@ public class ProcessDirector extends Director {
 
     /** Throw an IllegalActionException as an indication that this method
      *  should not be used within process domains.
-     * 
-     *  @exception IllegalActionException in all cases as this method 
+     *
+     *  @exception IllegalActionException in all cases as this method
      *   should not be invoked within the process domains.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
 	throw new IllegalActionException(this, "transferInputs() is not " +
 	        "intended for use by directors in the process domains.");
     }
-    
+
     /** Throw an IllegalActionException as an indication that this method
      *  should not be used within process domains.
-     * 
-     *  @exception IllegalActionException in all cases as this method 
+     *
+     *  @exception IllegalActionException in all cases as this method
      *   should not be invoked within the process domains.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
 	throw new IllegalActionException(this, "transferOutputs() is not " +
 	        "intended for use by directors in the process domains.");
     }
-    
+
     /** Terminates all threads under control of this director immediately.
      *  This abrupt termination will not allow normal cleanup actions
      *  to be performed, and the model should be recreated after calling
@@ -330,7 +330,7 @@ public class ProcessDirector extends Director {
      */
     public void wrapup() throws IllegalActionException {
         if( _debugging ) _debug(_name+": calling wrapup()");
-        
+
 	Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
@@ -358,7 +358,7 @@ public class ProcessDirector extends Director {
             // Now wake up all the receivers.
             (new NotifyThread(recs)).start();
         }
-        
+
         return;
     }
 
@@ -369,8 +369,8 @@ public class ProcessDirector extends Director {
      *  receiver that instigated the newly blocked actor. This method
      *  may be overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
-     * 
-     * @param rcvr The receiver whose data transfer is blocked. 
+     *
+     * @param rcvr The receiver whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
         _blockedActorCount++;
@@ -381,8 +381,8 @@ public class ProcessDirector extends Director {
      *  receivers that instigated the newly blocked actor. This method
      *  may be overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
-     * 
-     * @param rcvrs The receivers whose data transfer is blocked. 
+     *
+     * @param rcvrs The receivers whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(LinkedList rcvrs) {
         _blockedActorCount++;
@@ -390,11 +390,11 @@ public class ProcessDirector extends Director {
     }
 
     /** Decrease the count of blocked actors by one and unregister the
-     *  receiver that was previously blocked. This method may be 
+     *  receiver that was previously blocked. This method may be
      *  overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
-     * 
-     * @param rcvr The receiver whose data transfer was previously blocked. 
+     *
+     * @param rcvr The receiver whose data transfer was previously blocked.
      */
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
         _blockedActorCount--;
@@ -402,11 +402,11 @@ public class ProcessDirector extends Director {
     }
 
     /** Decrease the count of blocked actors by one and unregister the
-     *  receivers that were previously blocked. This method may be 
+     *  receivers that were previously blocked. This method may be
      *  overridden in derived classes to added domain specific
      *  functionality. Implementations of this method must be synchronized.
-     * 
-     * @param rcvrs The receivers whose data transfer was previously blocked. 
+     *
+     * @param rcvrs The receivers whose data transfer was previously blocked.
      */
     protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
         _blockedActorCount--;
@@ -431,7 +431,7 @@ public class ProcessDirector extends Director {
     }
 
     /** Decrease by one the count of active processes under the control of
-     *  this director. 
+     *  this director.
      *  This method should be called only when an active thread that was
      *  registered using _increaseActiveCount() is terminated.
      *  This count is used to detect deadlocks for termination and other
@@ -451,8 +451,8 @@ public class ProcessDirector extends Director {
 	return _actorsActive;
     }
 
-    /** Return the number of actors that are currently blocked. 
-     *  @return Return the number of actors that are currently blocked. 
+    /** Return the number of actors that are currently blocked.
+     *  @return Return the number of actors that are currently blocked.
      */
     protected synchronized int _getBlockedActorsCount() {
 	return _blockedActorCount;
@@ -488,10 +488,10 @@ public class ProcessDirector extends Director {
     }
 
     /** Return false indicating that deadlock has not been resolved
-     *  and that execution will be discontinued. In derived classes, 
-     *  override this method to obtain domain specific handling of 
-     *  deadlocks. Return false if a real deadlock has occurred and 
-     *  the simulation can be ended. Return true if the simulation 
+     *  and that execution will be discontinued. In derived classes,
+     *  override this method to obtain domain specific handling of
+     *  deadlocks. Return false if a real deadlock has occurred and
+     *  the simulation can be ended. Return true if the simulation
      *  can proceed given additional data and need not be terminated.
      * @return False.
      * @exception IllegalActionException Not thrown in this base class.
@@ -504,7 +504,7 @@ public class ProcessDirector extends Director {
     ////                         protected variables               ////
 
     // A flag for determining whether successive iterations will be
-    // permitted. 
+    // permitted.
     protected boolean _notDone = true;
 
     ///////////////////////////////////////////////////////////////////
@@ -523,7 +523,7 @@ public class ProcessDirector extends Director {
     //A copy of threads started since the last invocation of prefire().
     private LinkedList _newActorThreadList;
 
-    
+
     private String _name = null;
-    
+
 }

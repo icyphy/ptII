@@ -85,11 +85,11 @@ public class Repeat extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The repetition factor. 
+    /** The repetition factor.
      */
     public Parameter numberOfTimes;
 
-    /** The number of tokens in a block. 
+    /** The number of tokens in a block.
      */
     public Parameter blockSize;
 
@@ -98,7 +98,7 @@ public class Repeat extends SDFTransformer {
 
     /** Consume <i>blockSize</i> input tokens from the input port.
      *  Produce <i>blocksize*numberOfTimes</i>
-     *  tokens on the output port, consisting of <i>numberOfTimes</i> 
+     *  tokens on the output port, consisting of <i>numberOfTimes</i>
      *  repetitions of the input.  For example, if <i>blockSize</i> = 3 and
      *  <i>numberOfTimes</i> = 2, then on the following input:<br>
      *  <pre>  1 2 3 4 5 6</pre><br>

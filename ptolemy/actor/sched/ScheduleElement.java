@@ -42,8 +42,8 @@ A schedule can be thought of as a structure that consists of an iteration
 count and a list of schedule elements. A schedule element can contain
 an actor, or it can contain another schedule. For a valid schedule,
 all of the lowest-level schedule elements must contain an actor. It is
-up to the scheduler to enforce this, however. The Schedule class is a 
-schedule element that contains a schedule. The Firing class is a schedule 
+up to the scheduler to enforce this, however. The Schedule class is a
+schedule element that contains a schedule. The Firing class is a schedule
 element that contains an actor. Therefore,
 the top-level schedule element must be an instance of Schedule, and all
 of the lowest-level elements must each be an instance of Firing.
@@ -69,12 +69,12 @@ public abstract class ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the actor invocation sequence of the schedule in the 
+    /** Return the actor invocation sequence of the schedule in the
      *  form of a sequence of actors. For a valid schedule, all of the
      *  lowest-level nodes should be an instance of Firing. If the
-     *  schedule is not valid, then the returned iterator will contain 
+     *  schedule is not valid, then the returned iterator will contain
      *  null elements.
-     *  
+     *
      * @return An iterator over a sequence of actors.
      */
     public abstract Iterator actorIterator();
@@ -83,7 +83,7 @@ public abstract class ScheduleElement {
      *  of a sequence of firings. For a valid schedule, all of the
      *  lowest-level nodes must be an instance of Firing. If not, then
      *  the returned iterator will contain null elements.
-     *  
+     *
      *  @return An iterator over a sequence of firings.
      */
     public abstract Iterator firingIterator();
@@ -100,7 +100,7 @@ public abstract class ScheduleElement {
 
     /** Set the iteration count for this schedule. The
      *  getIterationCount() method will return the value set
-     *  by this method. If this method is not invoked, a default 
+     *  by this method. If this method is not invoked, a default
      *  value of one will be used.
      *  @param count The iteration count for this schedule.
      */

@@ -80,7 +80,7 @@ public class HysteresisApplet extends SDFApplet {
 	    // Create and configure Sine transformer
 	    Sine sineSig = new Sine(_toplevel, "sineSig");
 	    sineSig.omega.setToken(new DoubleToken(0.1));
-          
+
 	    // Create and configure noise source
             Gaussian noise = new Gaussian(_toplevel, "noise");
             noise.standardDeviation.setToken(new DoubleToken(0.2));
@@ -94,7 +94,7 @@ public class HysteresisApplet extends SDFApplet {
             // Place the hystplotter in the applet in such a way that it fills
             // the available space.
             hystplotter.place(getContentPane());
-	    
+
             hystplotter.plot.setBackground(getBackground());
             hystplotter.plot.setGrid(false);
             hystplotter.plot.setTitle("Threshold = 0.3, Noise std dev = 0.2");
@@ -105,18 +105,18 @@ public class HysteresisApplet extends SDFApplet {
             hystplotter.plot.setPointsPersistence(200);
 
 	    // Create and configure the SDF test acotor which refines
-	    // to a FSM.	    
+	    // to a FSM.
 	    TypedCompositeActor hdfActor =
 		new TypedCompositeActor(_toplevel, "hdfActor");
-        
+
 	    // create ports
-	    TypedIOPort hdfActorInPort = 
+	    TypedIOPort hdfActorInPort =
 		(TypedIOPort)hdfActor.newPort("dataIn");
             hdfActorInPort.setInput(true);
             hdfActorInPort.setTypeEquals(BaseType.DOUBLE);
-	    
 
-            TypedIOPort hdfActorOutPort = 
+
+            TypedIOPort hdfActorOutPort =
 		(TypedIOPort)hdfActor.newPort("dataOut");
             hdfActorOutPort.setOutput(true);
             hdfActorOutPort.setTypeEquals(BaseType.DOUBLE);
@@ -130,12 +130,12 @@ public class HysteresisApplet extends SDFApplet {
 	    // states and transitions
 
 	    // Create useless redundant ports for the sake of akwardness.
- 	    TypedIOPort ctrlActInPort = 
+ 	    TypedIOPort ctrlActInPort =
 		(TypedIOPort)ctrl.newPort("dataIn");
             ctrlActInPort.setInput(true);
             ctrlActInPort.setTypeEquals(BaseType.DOUBLE);
 
-            TypedIOPort ctrlOutPort = 
+            TypedIOPort ctrlOutPort =
 		(TypedIOPort)ctrl.newPort("dataOut");
             ctrlOutPort.setOutput(true);
             ctrlOutPort.setTypeEquals(BaseType.DOUBLE);
@@ -149,7 +149,7 @@ public class HysteresisApplet extends SDFApplet {
             ctrls0.outgoingPort.link(ctrlTrs0Tos1);
             ctrls1.incomingPort.link(ctrlTrs0Tos1);
             ctrlTrs0Tos1.setGuardExpression("dataIn_V < -0.3");
-            
+
 	    Transition ctrlTrs1Tos0 = new Transition(ctrl, "ctrlTrs1Tos0");
             ctrls0.incomingPort.link(ctrlTrs1Tos0);
             ctrls1.outgoingPort.link(ctrlTrs1Tos0);
@@ -158,27 +158,27 @@ public class HysteresisApplet extends SDFApplet {
 	    // The HDF director
             HDFFSMDirector sdrDir = new HDFFSMDirector(hdfActor, "hdfActorDirector");
             sdrDir.controllerName.setExpression("Controller");
-	    
+
 	    // Add a opaque composite actor. This actor will contain an
 	    // SDF model.
             TypedCompositeActor hdfActorState0 =
 		new TypedCompositeActor(hdfActor, "state0");
 	    // Set "state0" to be the submachine refining hdfActor's "ctrls0" state
 	    ctrls0.refinementName.setExpression("state0");
-	    
+
 	    // Note: Currently, the names of all ports linked
 	    // to a common relation must have the same name.
 
 	    // Add ports to hdfActorState0.
 
 	    // Add an input port.
-	    TypedIOPort hdfActorState0InPort = 
+	    TypedIOPort hdfActorState0InPort =
 		(TypedIOPort)hdfActorState0.newPort("dataIn");
             hdfActorState0InPort.setInput(true);
             hdfActorState0InPort.setTypeEquals(BaseType.DOUBLE);
 
 	    // Add an output port.
-	    TypedIOPort hdfActorState0OutPort = 
+	    TypedIOPort hdfActorState0OutPort =
 		 (TypedIOPort)hdfActorState0.newPort("dataOut");
             hdfActorState0OutPort.setOutput(true);
             hdfActorState0OutPort.setTypeEquals(BaseType.DOUBLE);
@@ -201,7 +201,7 @@ public class HysteresisApplet extends SDFApplet {
 
 	    // For Const actor, no input port is required.
 	    hdfActorState0.connect(hdfActorState0InPort, const0.trigger);
-	    
+
 	    hdfActorState0.connect(const0.output, hdfActorState0OutPort);
 	    ///////////// End of hdfActorState0 config.
 
@@ -213,16 +213,16 @@ public class HysteresisApplet extends SDFApplet {
 	    ctrls1.refinementName.setExpression("state1");
 
 	    // Add ports to state1.
-	    TypedIOPort hdfActorState1InPort = 
+	    TypedIOPort hdfActorState1InPort =
 		(TypedIOPort)hdfActorState1.newPort("dataIn");
             hdfActorState1InPort.setInput(true);
             hdfActorState1InPort.setTypeEquals(BaseType.DOUBLE);
 
-	    TypedIOPort hdfActorState1OutPort = 
+	    TypedIOPort hdfActorState1OutPort =
 	    (TypedIOPort)hdfActorState1.newPort("dataOut");
             hdfActorState1OutPort.setOutput(true);
             hdfActorState1OutPort.setTypeEquals(BaseType.DOUBLE);
-	    
+
 	    // Set up hdfActorState1 to contain an SDFDirector and an SDF diagram.
 	    try {
 		// Initialization
@@ -234,11 +234,11 @@ public class HysteresisApplet extends SDFApplet {
 	    } catch (Exception ex) {
 		report("Failed to setup SDF director 1 and scheduler:\n", ex);
 	    }
-	    
+
 	    // Add an SDF Actor to state1 and connect up ports.
 	    Const const1 = new Const(hdfActorState1, "Const1");
 	    const1.value.setToken(new DoubleToken(1));
-	    
+
 	    // For Const actor, no input port is required.
 	    hdfActorState1.connect(hdfActorState1InPort, const1.trigger);
 
@@ -261,7 +261,7 @@ public class HysteresisApplet extends SDFApplet {
 	    _toplevel.connect(rampSig.output, sineSig.input);
 	    _toplevel.connect(sineSig.output, add.plus);
 	    _toplevel.connect(noise.output, add.plus);
-	    
+
 	    _toplevel.connect(hdfActorOutPort, hystplotter.input);
 
 	    TypedIORelation noisyRel =
@@ -294,7 +294,7 @@ public class HysteresisApplet extends SDFApplet {
      *  values in the query box first and set parameters.
      *  @exception IllegalActionException If topology changes on the
      *   model or parameter changes on the actors throw it.
-     */     
+     */
     protected void _go() throws IllegalActionException {
         // If an exception occurred during initialization, then we don't
         // want to run here.  The model is probably not complete.

@@ -42,11 +42,11 @@ import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// IntToBits
-/** 
-This actor converts an IntToken into a sequence of 32 consecutive 
+/**
+This actor converts an IntToken into a sequence of 32 consecutive
 BooleanTokens.  The most significant bit is the first boolean
 token send out.  The least significant bit is the last boolean token send out.
-  
+
 @author Michael Leung
 @version $Id$
 */

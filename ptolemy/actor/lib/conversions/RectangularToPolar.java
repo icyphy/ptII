@@ -52,42 +52,42 @@ The implementation uses java.lang.Math.atan2(), which gives
 the following documentation:
 <p>
 "This method computes the phase <i>theta</i> by computing an arc tangent
- of <code>y/x</code> in the range of -<i>pi</i> to <i>pi</i>. Special 
+ of <code>y/x</code> in the range of -<i>pi</i> to <i>pi</i>. Special
  cases:
  <ul>
- <li>If either argument is NaN, then the result is NaN. 
- <li>If the first argument is positive zero and the second argument 
- is positive, or the first argument is positive and finite and the 
- second argument is positive infinity, then the result is positive 
- zero. 
- <li>If the first argument is negative zero and the second argument 
- is positive, or the first argument is negative and finite and the 
- second argument is positive infinity, then the result is negative zero. 
- <li>If the first argument is positive zero and the second argument 
- is negative, or the first argument is positive and finite and the 
- second argument is negative infinity, then the result is the 
- <code>double</code> value closest to pi. 
- <li>If the first argument is negative zero and the second argument 
- is negative, or the first argument is negative and finite and the 
- second argument is negative infinity, then the result is the 
- <code>double</code> value closest to -pi. 
- <li>If the first argument is positive and the second argument is 
- positive zero or negative zero, or the first argument is positive 
- infinity and the second argument is finite, then the result is the 
- <code>double</code> value closest to pi/2. 
- <li>If the first argument is negative and the second argument is 
- positive zero or negative zero, or the first argument is negative 
- infinity and the second argument is finite, then the result is the 
- <code>double</code> value closest to -pi/2. 
- <li>If both arguments are positive infinity, then the result is the 
- <code>double</code> value closest to pi/4. 
- <li>If the first argument is positive infinity and the second argument 
- is negative infinity, then the result is the <code>double</code> 
- value closest to 3*pi/4. 
- <li>If the first argument is negative infinity and the second argument 
- is positive infinity, then the result is the <code>double</code> value 
- closest to -pi/4. 
- <li>If both arguments are negative infinity, then the result is the 
+ <li>If either argument is NaN, then the result is NaN.
+ <li>If the first argument is positive zero and the second argument
+ is positive, or the first argument is positive and finite and the
+ second argument is positive infinity, then the result is positive
+ zero.
+ <li>If the first argument is negative zero and the second argument
+ is positive, or the first argument is negative and finite and the
+ second argument is positive infinity, then the result is negative zero.
+ <li>If the first argument is positive zero and the second argument
+ is negative, or the first argument is positive and finite and the
+ second argument is negative infinity, then the result is the
+ <code>double</code> value closest to pi.
+ <li>If the first argument is negative zero and the second argument
+ is negative, or the first argument is negative and finite and the
+ second argument is negative infinity, then the result is the
+ <code>double</code> value closest to -pi.
+ <li>If the first argument is positive and the second argument is
+ positive zero or negative zero, or the first argument is positive
+ infinity and the second argument is finite, then the result is the
+ <code>double</code> value closest to pi/2.
+ <li>If the first argument is negative and the second argument is
+ positive zero or negative zero, or the first argument is negative
+ infinity and the second argument is finite, then the result is the
+ <code>double</code> value closest to -pi/2.
+ <li>If both arguments are positive infinity, then the result is the
+ <code>double</code> value closest to pi/4.
+ <li>If the first argument is positive infinity and the second argument
+ is negative infinity, then the result is the <code>double</code>
+ value closest to 3*pi/4.
+ <li>If the first argument is negative infinity and the second argument
+ is positive infinity, then the result is the <code>double</code> value
+ closest to -pi/4.
+ <li>If both arguments are negative infinity, then the result is the
  <code>double</code> value closest to -3*pi/4.</ul>"
  </ul>
 

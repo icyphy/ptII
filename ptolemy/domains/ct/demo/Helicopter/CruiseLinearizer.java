@@ -218,7 +218,7 @@ public class CruiseLinearizer extends TypedAtomicActor
                 String valueToken = stokens.nextToken();
                 _alphaP[index++] = (new Double(valueToken)).doubleValue();
             }
-            
+
             taps = ((StringToken)paramAlphaV.getToken()).stringValue();
             stokens = new StringTokenizer(taps);
             index = 0;

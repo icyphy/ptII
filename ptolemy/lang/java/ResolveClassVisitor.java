@@ -129,7 +129,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 		//superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
 		//System.out.println("ResolveClassVisitor." +
                 //			 "visitClassDeclNode():" +
-		//			 "Calling JavaDecl.getDecl " + 
+		//			 "Calling JavaDecl.getDecl " +
 		//			 superClass);
 		superDecl = (ClassDecl) JavaDecl.getDecl(superClass);
 	    } catch (Exception e) {
@@ -358,7 +358,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 	    //
 	    // FIXME: I'm not sure if the above is true, so I've commented
 	    // out the code below
-	    // sun.misc.URLClassPath$JarLoader extends 
+	    // sun.misc.URLClassPath$JarLoader extends
 	    // sun.misc.URLClassPath$Loader
 	    // both have a getResource(java.lang.String, boolean) method
 	    // To verify, use

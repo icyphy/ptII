@@ -83,7 +83,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	_toplevel = toplevel;
 	toplevel.addChangeListener(new GraphChangeListener());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -97,15 +97,15 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * @exception GraphException if the operation fails.
      */
     public abstract void disconnectEdge(Object eventSource, Object edge);
-	
+
     /**
      * Return the property of the object associated with
      * the given property name.  In this implementation
      * properties are stored in variables of the graph object (which is
-     * always a Ptolemy NamedObj).  If no variable with the given name 
+     * always a Ptolemy NamedObj).  If no variable with the given name
      * exists in the object, then return null.  Otherwise retrieve the
-     * token from the variable.  If the token is an instance of ObjectToken, 
-     * then get the value from the token and return it.  Otherwise, return 
+     * token from the variable.  If the token is an instance of ObjectToken,
+     * then get the value from the token and return it.  Otherwise, return
      * the result of calling toString on the token.
      * @param object The graph object, which is assumed to be an instance of
      * NamedObj.
@@ -125,7 +125,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	    return null;
 	}
     }
-    
+
     /**
      * Return the toplevel composite entity of this ptolemy model.
      */
@@ -150,7 +150,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * always a Ptolemy NamedObj).  If no variable with the given name exists
      * in the graph object, then create a new variable contained
      * by the graph object with the given name.
-     * If the value is a string, then set the expression of the variable 
+     * If the value is a string, then set the expression of the variable
      * to that string. Otherwise create a new object token contained the
      * value and place that in the variable instead.
      * The operation is performed in a ptolemy change request.
@@ -158,15 +158,15 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * @param propertyName The property name.
      * @param value The new value of the property.
      */
-    public void setProperty(final Object object, 
+    public void setProperty(final Object object,
 			    final String propertyName,
 			    final Object value) {
 	throw new UnsupportedOperationException("hack");
     }
-    
+
     /**
      * Set the semantic object correspoding to the given node, edge,
-     * or composite.  The semantic objects in this graph model are 
+     * or composite.  The semantic objects in this graph model are
      * fixed, so this method throws an UnsupportedOperationException.
      * @param object The graph object that represents a node or an edge.
      * @param semantic The semantic object to associate with the given
@@ -187,20 +187,20 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * and when they occur, issues a GraphEvent so that any views of
      * this graph model can come back and update themselves.  Note that
      * although the graph model uses mutations to make changes to the ptolemy
-     * model, those graph events are not handled here.  
+     * model, those graph events are not handled here.
      * Instead, they are handled in the base class since they can be easily
      * propagated at a finer level of granularity than is possible here.
      */
     public class GraphChangeListener implements ChangeListener {
 
         /** Notify the listener that a change has been successfully executed.
-	 *  If the originator of this change is not this graph model, then 
+	 *  If the originator of this change is not this graph model, then
 	 *  issue a graph event to indicate that the structure of the graph
 	 *  has changed.
 	 *  @param change The change that has been executed.
 	 */
 	public void changeExecuted(ChangeRequest change) {
-	    // Ignore anything that comes from this graph model.  
+	    // Ignore anything that comes from this graph model.
 	    // the other methods take care of issuing the graph event in
 	    // that case.
 	    if(change.getOriginator() == AbstractPtolemyGraphModel.this) {
@@ -213,11 +213,11 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	    // FIXME this causes a threading bug apparently.
 	    SwingUtilities.invokeLater(new Runnable() {
 		public void run() {
-		    // Otherwise notify any graph listeners 
+		    // Otherwise notify any graph listeners
 		    // that the graph might have
 		    // completely changed.
 		    dispatchGraphEvent(new GraphEvent(
-			AbstractPtolemyGraphModel.this, 
+			AbstractPtolemyGraphModel.this,
 			GraphEvent.STRUCTURE_CHANGED, getRoot()));
 		}
 	    });
@@ -235,8 +235,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
                 MessageHandler.error("Change failed", exception);
             }
 	    // Just in case something happened to the graph.
-	    dispatchGraphEvent(new GraphEvent(AbstractPtolemyGraphModel.this, 
-					      GraphEvent.STRUCTURE_CHANGED, 
+	    dispatchGraphEvent(new GraphEvent(AbstractPtolemyGraphModel.this,
+					      GraphEvent.STRUCTURE_CHANGED,
 					      getRoot()));
         }
     }

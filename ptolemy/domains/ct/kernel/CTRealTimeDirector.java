@@ -111,7 +111,7 @@ public class CTRealTimeDirector extends CTMultiSolverDirector {
     public void initialize() throws IllegalActionException {
         System.out.println("_timebase = " +  System.currentTimeMillis());
         super.initialize();
-        _timebase = System.currentTimeMillis(); 
+        _timebase = System.currentTimeMillis();
     }
 
     /** Call postfire() on all actors. For a correct CT simulation,
@@ -134,7 +134,7 @@ public class CTRealTimeDirector extends CTMultiSolverDirector {
                         "Sleep Interruptted" + e.getMessage());
             }
         } else {
-            if(_debugging) _debug("Warning: " + getFullName() + 
+            if(_debugging) _debug("Warning: " + getFullName() +
                     " cannot achieve real-time performance",
                     " at simulation time " + getCurrentTime());
         }

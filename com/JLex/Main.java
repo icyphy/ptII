@@ -4,7 +4,7 @@
   Contact at ejberk@princeton.edu.
 
   Version 1.2.4, 7/24/99, [C. Scott Ananian]
-   Correct the parsing of '-' in character classes, closing active 
+   Correct the parsing of '-' in character classes, closing active
      bug #1.  Behaviour follows egrep: leading and trailing dashes in
      a character class lose their special meaning, so [-+] and [+-] do
      what you would expect them to.
@@ -27,7 +27,7 @@
    integer sequences as "value:length" pairs.
    Improvement: generated .java file reduced 2 times, .class file
      reduced 6 times for sample grammar. No 64K errors.
-   Possible negatives: Some editors and OSs may not be able to handle 
+   Possible negatives: Some editors and OSs may not be able to handle
      the huge one-line generated string. String unpacking may be slower
      than direct array initialization.
 
@@ -61,21 +61,21 @@
 
   Version 1.1.3, 12/11/96, [Elliot Berk]
   Notes:
-    Converted assertion failure on invalid character class 
+    Converted assertion failure on invalid character class
      when a dash '-' is not preceded with a start-of-range character.
      Converted this into parse error E_DASH.
 
   Version 1.1.2, October 30, 1996 [Elliot Berk]
     Fixed BitSet bugs by installing a BitSet class of my own,
-     called JavaLexBitSet.  Fixed support for '\r', non-UNIX 
+     called JavaLexBitSet.  Fixed support for '\r', non-UNIX
      sequences.  Added try/catch block around lexer generation
-     in main routine to moderate error information presented 
-     to user.  Fixed macro expansion, so that macros following 
+     in main routine to moderate error information presented
+     to user.  Fixed macro expansion, so that macros following
      quotes are expanded correctly in regular expressions.
      Fixed dynamic reallocation of accept action buffers.
 
   Version 1.1.1, September 3, 1996 [Andrew Appel]
-    Made the class "Main" instead of "JavaLex", 
+    Made the class "Main" instead of "JavaLex",
      improved the installation instructions to reflect this.
 
   Version 1.1, August 15, 1996  [Andrew Appel]
@@ -153,12 +153,12 @@ class CSpec
   /***************************************************************
     Member Variables
     **************************************************************/
-    
+
   /* Lexical States. */
-  Hashtable m_states; /* Hashtable taking state indices (Integer) 
+  Hashtable m_states; /* Hashtable taking state indices (Integer)
 			 to state name (String). */
 
-  /* Regular Expression Macros. */ 
+  /* Regular Expression Macros. */
   Hashtable m_macros; /* Hashtable taking macro name (String)
 				to corresponding char buffer that
 				holds macro definition. */
@@ -167,14 +167,14 @@ class CSpec
   CNfa m_nfa_start; /* Start state of NFA machine. */
   Vector m_nfa_states; /* Vector of states, with index
 				 corresponding to label. */
-  
+
   Vector m_state_rules[]; /* An array of Vectors of Integers.
 				    The ith Vector represents the lexical state
-				    with index i.  The contents of the ith 
+				    with index i.  The contents of the ith
 				    Vector are the indices of the NFA start
 				    states that can be matched while in
 				    the ith lexical state. */
-				    
+
 
   int m_state_dtrans[];
 
@@ -182,9 +182,9 @@ class CSpec
   Vector m_dfa_states; /* Vector of states, with index
 				 corresponding to label. */
   Hashtable m_dfa_sets; /* Hashtable taking set of NFA states
-				  to corresponding DFA state, 
+				  to corresponding DFA state,
 				  if the latter exists. */
-  
+
   /* Accept States and Corresponding Anchors. */
   Vector m_accept_vector;
   int m_anchor_array[];
@@ -237,17 +237,17 @@ class CSpec
   int m_yylex_throw_read;
 
   /* Class, function, type names. */
-  char m_class_name[] = {          
-    'Y', 'y', 'l', 
-    'e', 'x' 
+  char m_class_name[] = {
+    'Y', 'y', 'l',
+    'e', 'x'
     };
   char m_implements_name[] = {};
   char m_function_name[] = {
-    'y', 'y', 'l', 
-    'e', 'x' 
+    'y', 'y', 'l',
+    'e', 'x'
     };
   char m_type_name[] = {
-    'Y', 'y', 't', 
+    'Y', 'y', 't',
     'o', 'k', 'e',
     'n'
     };
@@ -261,7 +261,7 @@ class CSpec
   static final int NONE = 0;
   static final int START = 1;
   static final int END = 2;
-  
+
   /***************************************************************
     Function: CSpec
     Description: Constructor.
@@ -302,7 +302,7 @@ class CSpec
 
 	m_nfa_start = null;
 	m_nfa_states = new Vector();
-	
+
 	m_dfa_states = new Vector();
 	m_dfa_sets = new Hashtable();
 
@@ -410,7 +410,7 @@ class CEmit
 
   /***************************************************************
     Function: emit_imports
-    Description: Emits import packages at top of 
+    Description: Emits import packages at top of
     generated source file.
     **************************************************************/
   /*void emit_imports
@@ -418,24 +418,24 @@ class CEmit
      CSpec spec,
      OutputStream outstream
      )
-      throws java.io.IOException      
+      throws java.io.IOException
 	{
 	  set(spec,outstream);
-	  
+
 	  if (CUtility.DEBUG)
 	    {
 	      CUtility.assert(null != m_spec);
 	      CUtility.assert(null != m_outstream);
 	    }*/
-	  
+
 	  /*m_outstream.writeBytes("import java.lang.String;\n");
 	  m_outstream.writeBytes("import java.lang.System;\n");
 	  m_outstream.writeBytes("import java.io.BufferedReader;\n");
 	  m_outstream.writeBytes("import java.io.InputStream;\n");*/
-	/*  
+	/*
 	  reset();
 	}*/
-  
+
   /***************************************************************
     Function: print_details
     Description: Debugging output.
@@ -452,13 +452,13 @@ class CEmit
 	CAccept accept;
 	boolean tr;
 
-	System.out.println("---------------------- Transition Table " 
+	System.out.println("---------------------- Transition Table "
 			   + "----------------------");
-	
+
 	for (i = 0; i < m_spec.m_row_map.length; ++i)
 	  {
 	    System.out.print("State " + i);
-	    
+
 	    accept = (CAccept) m_spec.m_accept_vector.elementAt(i);
 	    if (null == accept)
 	      {
@@ -467,14 +467,14 @@ class CEmit
 	    else
 	      {
 		System.out.println(" [accepting, line "
-				 + accept.m_line_number 
+				 + accept.m_line_number
 				 + " <"
 				 + (new java.lang.String(accept.m_action,0,
 					       accept.m_action_read))
 				 + ">]");
 	      }
 	    dtrans = (CDTrans) m_spec.m_dtrans_vector.elementAt(m_spec.m_row_map[i]);
-	    
+
 	    tr = false;
 	    state = dtrans.m_dtrans[m_spec.m_col_map[0]];
 	    if (CDTrans.F != state)
@@ -513,7 +513,7 @@ class CEmit
 	      }
 	  }
 
-	System.out.println("---------------------- Transition Table " 
+	System.out.println("---------------------- Transition Table "
 			   + "----------------------");
       }
 
@@ -526,16 +526,16 @@ class CEmit
      CSpec spec,
      OutputStream outstream
      )
-      throws java.io.IOException      
+      throws java.io.IOException
 	{
 	  set(spec,outstream);
-	  
+
 	  if (CUtility.DEBUG)
 	    {
 	      CUtility.assert(null != m_spec);
 	      CUtility.assert(null != m_outstream);
 	    }
-	  
+
 	  if (CUtility.OLD_DEBUG) {
 	    print_details();
 	  }
@@ -545,7 +545,7 @@ class CEmit
 	  emit_helpers();
 	  emit_driver();
 	  emit_footer();
-	  
+
 	  reset();
 	}
 
@@ -564,7 +564,7 @@ class CEmit
 	    CUtility.assert(null != m_spec);
 	    CUtility.assert(null != m_outstream);
 	  }
-	  
+
 	  /* Constants */
 	  m_outstream.writeBytes("\tprivate final int YY_BUFFER_SIZE = 512;\n");
 
@@ -579,7 +579,7 @@ class CEmit
 	  m_outstream.writeBytes("\tprivate final char YY_EOF = \'\\uFFFF\';\n");
 	  if (m_spec.m_integer_type || true == m_spec.m_yyeof)
 	    m_outstream.writeBytes("\tpublic final int YYEOF = -1;\n");
-	  
+
           /* User specified class code. */
 	  if (null != m_spec.m_class_code)
 	    {
@@ -609,7 +609,7 @@ class CEmit
 	    }*/
 	  m_outstream.writeBytes("\n");
 
-	  
+
 	  /* Function: first constructor (Reader) */
 	  m_outstream.writeBytes("\t");
 	  if (true == m_spec.m_public) {
@@ -617,11 +617,11 @@ class CEmit
 	  }
           m_outstream.writeBytes(new String(m_spec.m_class_name));
 	  m_outstream.writeBytes(" (java.io.Reader reader)");
-	  
+
 	  if (null != m_spec.m_init_throw_code)
 	    {
-	      m_outstream.writeBytes("\n"); 
-	      m_outstream.writeBytes("\t\tthrows "); 
+	      m_outstream.writeBytes("\n");
+	      m_outstream.writeBytes("\t\tthrows ");
 	      m_outstream.writeBytes(new String(m_spec.m_init_throw_code,0,
 						m_spec.m_init_throw_read));
 	      m_outstream.writeBytes("\n\t\t{\n");
@@ -631,7 +631,7 @@ class CEmit
 	      m_outstream.writeBytes(" {\n");
 	    }
 
-	  m_outstream.writeBytes("\t\tthis ();\n");	  
+	  m_outstream.writeBytes("\t\tthis ();\n");
 	  m_outstream.writeBytes("\t\tif (null == reader) {\n");
 	  m_outstream.writeBytes("\t\t\tthrow (new Error(\"Error: Bad input "
 				 + "stream initializer.\"));\n");
@@ -647,11 +647,11 @@ class CEmit
 	  }
           m_outstream.writeBytes(new String(m_spec.m_class_name));
 	  m_outstream.writeBytes(" (java.io.InputStream instream)");
-	  
+
 	  if (null != m_spec.m_init_throw_code)
 	    {
-	      m_outstream.writeBytes("\n"); 
-	      m_outstream.writeBytes("\t\tthrows "); 
+	      m_outstream.writeBytes("\n");
+	      m_outstream.writeBytes("\t\tthrows ");
 	      m_outstream.writeBytes(new String(m_spec.m_init_throw_code,0,
 						m_spec.m_init_throw_read));
 	      m_outstream.writeBytes("\n\t\t{\n");
@@ -660,8 +660,8 @@ class CEmit
 	    {
 	      m_outstream.writeBytes(" {\n");
 	    }
-	  
-	  m_outstream.writeBytes("\t\tthis ();\n");	  
+
+	  m_outstream.writeBytes("\t\tthis ();\n");
 	  m_outstream.writeBytes("\t\tif (null == instream) {\n");
 	  m_outstream.writeBytes("\t\t\tthrow (new Error(\"Error: Bad input "
 				 + "stream initializer.\"));\n");
@@ -674,11 +674,11 @@ class CEmit
 	  m_outstream.writeBytes("\tprivate ");
           m_outstream.writeBytes(new String(m_spec.m_class_name));
 	  m_outstream.writeBytes(" ()");
-	  
+
 	  if (null != m_spec.m_init_throw_code)
 	    {
-	      m_outstream.writeBytes("\n"); 
-	      m_outstream.writeBytes("\t\tthrows "); 
+	      m_outstream.writeBytes("\n");
+	      m_outstream.writeBytes("\t\tthrows ");
 	      m_outstream.writeBytes(new String(m_spec.m_init_throw_code,0,
 						m_spec.m_init_throw_read));
 	      m_outstream.writeBytes("\n\t\t{\n");
@@ -687,7 +687,7 @@ class CEmit
 	    {
 	      m_outstream.writeBytes(" {\n");
 	    }
-	  
+
 	  m_outstream.writeBytes("\t\tyy_buffer = new char[YY_BUFFER_SIZE];\n");
 	  m_outstream.writeBytes("\t\tyy_buffer_read = 0;\n");
 	  m_outstream.writeBytes("\t\tyy_buffer_index = 0;\n");
@@ -737,16 +737,16 @@ class CEmit
 	  while (states.hasMoreElements())
 	    {
 	      state = (String) states.nextElement();
-	      
+
 	      if (CUtility.DEBUG)
 		{
 		  CUtility.assert(null != state);
 		}
-	      
-	      m_outstream.writeBytes("\tprivate final int " 
-				     + state 
-				     + " = " 
-				     + (m_spec.m_states.get(state)).toString() 
+
+	      m_outstream.writeBytes("\tprivate final int "
+				     + state
+				     + " = "
+				     + (m_spec.m_states.get(state)).toString()
 				     + ";\n");
 	      /*++index;*/
 	    }
@@ -769,7 +769,7 @@ class CEmit
 
   /***************************************************************
     Function: emit_helpers
-    Description: Emits helper functions, particularly 
+    Description: Emits helper functions, particularly
     error handling and input buffering.
     **************************************************************/
   private void emit_helpers
@@ -791,8 +791,8 @@ class CEmit
 
 	    if (null != m_spec.m_eof_throw_code)
 	      {
-		m_outstream.writeBytes("\n"); 
-		m_outstream.writeBytes("\t\tthrows "); 
+		m_outstream.writeBytes("\n");
+		m_outstream.writeBytes("\t\tthrows ");
 		m_outstream.writeBytes(new String(m_spec.m_eof_throw_code,0,
 						  m_spec.m_eof_throw_read));
 		m_outstream.writeBytes("\n\t\t{\n");
@@ -811,7 +811,7 @@ class CEmit
 	  }
 
 	emit_states();
-	
+
 	/* Function: yybegin */
 	m_outstream.writeBytes("\tprivate void yybegin (int state) {\n");
 	m_outstream.writeBytes("\t\tyy_lexical_state = state;\n");
@@ -874,21 +874,21 @@ class CEmit
 
 	m_outstream.writeBytes("\t\treturn yy_buffer[yy_buffer_index++];\n");
 	m_outstream.writeBytes("\t}\n");
-	
+
 	/* Function: yy_move_start */
 	m_outstream.writeBytes("\tprivate void yy_move_start () {\n");
 	if (m_spec.m_count_lines)
 	  {
 	    if (m_spec.m_unix)
 	      {
-		m_outstream.writeBytes("\t\tif ((byte) '\\n' " 
+		m_outstream.writeBytes("\t\tif ((byte) '\\n' "
 				       + "== yy_buffer[yy_buffer_start]) {\n");
 	      }
 	    else
-	      {		
-		m_outstream.writeBytes("\t\tif ((byte) '\\n' " 
-				       + "== yy_buffer[yy_buffer_start]\n"); 
-		m_outstream.writeBytes("\t\t\t|| (byte) '\\r' " 
+	      {
+		m_outstream.writeBytes("\t\tif ((byte) '\\n' "
+				       + "== yy_buffer[yy_buffer_start]\n");
+		m_outstream.writeBytes("\t\t\t|| (byte) '\\r' "
 				       + "== yy_buffer[yy_buffer_start]) {\n");
 	      }
 	    m_outstream.writeBytes("\t\t\t++yyline;\n");
@@ -913,15 +913,15 @@ class CEmit
 	    if (m_spec.m_count_lines)
 	      {
 		m_outstream.writeBytes("\t\tint i;\n");
-		m_outstream.writeBytes("\t\tfor (i = yy_buffer_start; " 
+		m_outstream.writeBytes("\t\tfor (i = yy_buffer_start; "
 				       + "i < yy_buffer_index; ++i) {\n");
 		if (m_spec.m_unix)
 		  {
 		    m_outstream.writeBytes("\t\t\tif ((byte) '\\n' == yy_buffer[i]) {\n");
 		  }
 		else
-		  {		
-		    m_outstream.writeBytes("\t\t\tif ((byte) '\\n' == yy_buffer[i] || " 
+		  {
+		    m_outstream.writeBytes("\t\t\tif ((byte) '\\n' == yy_buffer[i] || "
 					   + "(byte) '\\r' == yy_buffer[i]) {\n");
 		  }
 		m_outstream.writeBytes("\t\t\t\t++yyline;\n");
@@ -930,7 +930,7 @@ class CEmit
 	      }
 	    if (m_spec.m_count_chars)
 	      {
-		m_outstream.writeBytes("\t\tyychar = yychar\n"); 
+		m_outstream.writeBytes("\t\tyychar = yychar\n");
 		m_outstream.writeBytes("\t\t\t+ yy_buffer_index - yy_buffer_start;\n");
 	      }
 	  }
@@ -1008,7 +1008,7 @@ m_outstream.writeBytes("      int sequenceInteger = 0;\n");
 
 m_outstream.writeBytes("      int commaIndex;\n");
 m_outstream.writeBytes("      String workString;\n");
-     
+
 m_outstream.writeBytes("      int res[][] = new int[size1][size2];\n");
 m_outstream.writeBytes("      for (int i= 0; i < size1; i++)\n");
 m_outstream.writeBytes("	for (int j= 0; j < size2; j++)\n");
@@ -1020,14 +1020,14 @@ m_outstream.writeBytes("		if (commaIndex == -1)\n");
 m_outstream.writeBytes("		  workString = st;\n");
 m_outstream.writeBytes("		else\n");
 m_outstream.writeBytes("		  workString = st.substring(0, commaIndex);\n");
-m_outstream.writeBytes("		st = st.substring(commaIndex+1);\n");  
+m_outstream.writeBytes("		st = st.substring(commaIndex+1);\n");
 m_outstream.writeBytes("		colonIndex = workString.indexOf(':');\n");
 m_outstream.writeBytes("		if (colonIndex == -1)\n");
 m_outstream.writeBytes("		  {\n");
 m_outstream.writeBytes("		    res[i][j] = Integer.parseInt(workString);\n");
 m_outstream.writeBytes("		  }\n");
 m_outstream.writeBytes("		else \n");
-m_outstream.writeBytes("		  {\n");		
+m_outstream.writeBytes("		  {\n");
 m_outstream.writeBytes("		    lengthString = workString.substring(colonIndex+1);  \n");
 m_outstream.writeBytes("		    sequenceLength = Integer.parseInt(lengthString);\n");
 m_outstream.writeBytes("		    workString = workString.substring(0,colonIndex);\n");
@@ -1072,10 +1072,10 @@ m_outstream.writeBytes("    }\n");
 	m_outstream.writeBytes(new String(m_spec.m_class_name,0,
 					  m_spec.m_class_name.length));
         if (m_spec.m_implements_name.length > 0) {
-	   m_outstream.writeBytes(" implements ");	
+	   m_outstream.writeBytes(" implements ");
 	   m_outstream.writeBytes(new String(m_spec.m_implements_name,0,
 					  m_spec.m_implements_name.length));
-	}	  
+	}
 	m_outstream.writeBytes(" {\n");
       }
 
@@ -1107,12 +1107,12 @@ m_outstream.writeBytes("    }\n");
 	for (elem = 0; elem < size; ++elem)
 	  {
 	    accept = (CAccept) m_spec.m_accept_vector.elementAt(elem);
-	    
+
 	    if (null != accept)
 	      {
 		is_start = (0 != (m_spec.m_anchor_array[elem] & CSpec.START));
 		is_end = (0 != (m_spec.m_anchor_array[elem] & CSpec.END));
-		
+
 		if (is_start && true == is_end)
 		  {
 		    m_outstream.writeBytes("\t\tYY_START | YY_END");
@@ -1130,16 +1130,16 @@ m_outstream.writeBytes("    }\n");
 		    m_outstream.writeBytes("\t\tYY_NO_ANCHOR");
 		  }
 	      }
-	    else 
+	    else
 	      {
 		m_outstream.writeBytes("\t\tYY_NOT_ACCEPT");
 	      }
-	    
+
 	    if (elem < size - 1)
 	      {
 		m_outstream.writeBytes(",");
 	      }
-	    
+
 	    m_outstream.writeBytes("\n");
 	  }
 	m_outstream.writeBytes("\t};\n");
@@ -1148,7 +1148,7 @@ m_outstream.writeBytes("    }\n");
 	for (i = 0; i < m_spec.m_col_map.length; ++i)
 	  {
 	    m_outstream.writeBytes((new Integer(m_spec.m_col_map[i])).toString());
-	    
+
 	    if (i < m_spec.m_col_map.length - 1)
 	      {
 		m_outstream.writeBytes(",");
@@ -1169,7 +1169,7 @@ m_outstream.writeBytes("    }\n");
 	for (i = 0; i < m_spec.m_row_map.length; ++i)
 	  {
 	    m_outstream.writeBytes((new Integer(m_spec.m_row_map[i])).toString());
-	    
+
 	    if (i < m_spec.m_row_map.length - 1)
 	      {
 		m_outstream.writeBytes(",");
@@ -1200,7 +1200,7 @@ m_outstream.writeBytes("    }\n");
 	int sequenceLength = 0; // RL - length of the number sequence
 	boolean sequenceStarted = false; // RL - has number sequence started?
 	int previousInt = -20; // RL - Bogus -20 state.
-	
+
 	// RL - Output matrix size
 	m_outstream.writeBytes((new Integer(size)).toString());
 	m_outstream.writeBytes(",");
@@ -1208,12 +1208,12 @@ m_outstream.writeBytes("    }\n");
 	m_outstream.writeBytes(",");
 	m_outstream.writeBytes("\n\"");
 
-	//  RL - Output matrix 
+	//  RL - Output matrix
 	for (elem = 0; elem < size; ++elem)
 	  {
 
 	    dtrans = (CDTrans) m_spec.m_dtrans_vector.elementAt(elem);
-	    
+
 	    for (i = 0; i < m_spec.m_dtrans_ncols; ++i)
 	      {
 		int writeInt = dtrans.m_dtrans[i];
@@ -1265,7 +1265,7 @@ m_outstream.writeBytes("    }\n");
 
   /***************************************************************
     Function: emit_driver
-    Description: 
+    Description:
     **************************************************************/
   private void emit_driver
     (
@@ -1277,7 +1277,7 @@ m_outstream.writeBytes("    }\n");
 	      CUtility.assert(null != m_spec);
 	      CUtility.assert(null != m_outstream);
 	    }
-	  
+
 	  emit_table();
 
 	  if (m_spec.m_integer_type)
@@ -1305,7 +1305,7 @@ m_outstream.writeBytes("    }\n");
 	  m_outstream.writeBytes("\t\tthrows java.io.IOException");
 	  if (null != m_spec.m_yylex_throw_code)
 	    {
-	      m_outstream.writeBytes(", "); 
+	      m_outstream.writeBytes(", ");
 	      m_outstream.writeBytes(new String(m_spec.m_yylex_throw_code,0,
 						m_spec.m_yylex_throw_read));
 	      m_outstream.writeBytes("\n\t\t{\n");
@@ -1319,7 +1319,7 @@ m_outstream.writeBytes("    }\n");
 	  m_outstream.writeBytes("\t\tint yy_anchor = YY_NO_ANCHOR;\n");
 	  /*m_outstream.writeBytes("\t\tint yy_state "
 	    + "= yy_initial_dtrans(yy_lexical_state);\n");*/
-	  m_outstream.writeBytes("\t\tint yy_state " 
+	  m_outstream.writeBytes("\t\tint yy_state "
 				 + "= yy_state_dtrans[yy_lexical_state];\n");
 	  m_outstream.writeBytes("\t\tint yy_next_state = YY_NO_STATE;\n");
 	  /*m_outstream.writeBytes("\t\tint yy_prev_stave = YY_NO_STATE;\n");*/
@@ -1350,27 +1350,27 @@ m_outstream.writeBytes("    }\n");
 				 + "yy_next(yy_state,yy_lookahead);\n");*/
 	  m_outstream.writeBytes("\t\t\t\tyy_next_state = "
  	   + "yy_nxt[yy_rmap[yy_state]][yy_cmap[yy_lookahead]];\n");
-	  
+
 	  m_outstream.writeBytes("\t\t\t}\n");
 
 	  if (NOT_EDBG)
 	    {
-	      m_outstream.writeBytes("java.lang.System.out.println(\"Current state: \"" 
+	      m_outstream.writeBytes("java.lang.System.out.println(\"Current state: \""
 				     + " + yy_state\n");
-	      m_outstream.writeBytes("+ \"\tCurrent input: \"\n"); 
+	      m_outstream.writeBytes("+ \"\tCurrent input: \"\n");
 	      m_outstream.writeBytes(" + ((char) yy_lookahead));\n");
 	    }
 	  if (NOT_EDBG)
 	    {
-	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"State = \"" 
+	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"State = \""
 				     + "+ yy_state);\n");
-	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"Accepting status = \"" 
+	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"Accepting status = \""
 				     + "+ yy_this_accept);\n");
-	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"Last accepting state = \"" 
+	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"Last accepting state = \""
 				     + "+ yy_last_accept_state);\n");
-	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"Next state = \"" 
+	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"Next state = \""
 				     + "+ yy_next_state);\n");
-	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"Lookahead input = \"" 
+	      m_outstream.writeBytes("\t\t\tjava.lang.System.out.println(\"Lookahead input = \""
 				     + "+ ((char) yy_lookahead));\n");
 	    }
 
@@ -1388,7 +1388,7 @@ m_outstream.writeBytes("    }\n");
 	  m_outstream.writeBytes("\t\t\t}\n");
 
 	  m_outstream.writeBytes("\t\t\telse {\n");
-	  m_outstream.writeBytes("\t\t\t\tif (YY_EOF == yy_lookahead " 
+	  m_outstream.writeBytes("\t\t\t\tif (YY_EOF == yy_lookahead "
 				 + "&& true == yy_initial) {\n");
 	  if (null != m_spec.m_eof_code)
 	    {
@@ -1399,7 +1399,7 @@ m_outstream.writeBytes("    }\n");
 	    {
 	      m_outstream.writeBytes("\t\t\t\t\treturn YYEOF;\n");
 	    }
-	  else if (null != m_spec.m_eof_value_code) 
+	  else if (null != m_spec.m_eof_value_code)
 	    {
 	      m_outstream.writeBytes(new String(m_spec.m_eof_value_code,0,
 						m_spec.m_eof_value_read));
@@ -1410,9 +1410,9 @@ m_outstream.writeBytes("    }\n");
 	    }
 
 	  m_outstream.writeBytes("\t\t\t\t}\n");
-	  
+
 	  m_outstream.writeBytes("\t\t\t\telse if (YY_NO_STATE == yy_last_accept_state) {\n");
-	  
+
 
 	  /*m_outstream.writeBytes("\t\t\t\t\tyy_error(YY_E_MATCH,false);\n");
     	  m_outstream.writeBytes("\t\t\t\t\tyy_initial = true;\n");
@@ -1435,7 +1435,7 @@ m_outstream.writeBytes("    }\n");
 	  m_outstream.writeBytes("\t\t\t\t\tyy_to_mark();\n");
 
 	  m_outstream.writeBytes("\t\t\t\t\tyy_anchor = yy_acpt[yy_last_accept_state];\n");
-	  /*m_outstream.writeBytes("\t\t\t\t\tyy_anchor " 
+	  /*m_outstream.writeBytes("\t\t\t\t\tyy_anchor "
 	    + "= yy_accept(yy_last_accept_state);\n");*/
 	  m_outstream.writeBytes("\t\t\t\t\tif (0 != (YY_END & yy_anchor)) {\n");
 	  m_outstream.writeBytes("\t\t\t\t\t\tyy_pushback();\n");
@@ -1454,7 +1454,7 @@ m_outstream.writeBytes("    }\n");
 	  /*m_outstream.writeBytes("\t\t\t\t\t\treturn null;\n");*/
 	  m_outstream.writeBytes("\t\t\t\t\tcase -1:\n");
 	  m_outstream.writeBytes("\t\t\t\t\t}\n");
-	  
+
     	  m_outstream.writeBytes("\t\t\t\t\tyy_initial = true;\n");
 	  m_outstream.writeBytes("\t\t\t\t\tyy_state "
 				 + "= yy_state_dtrans[yy_lexical_state];\n");
@@ -1470,7 +1470,7 @@ m_outstream.writeBytes("    }\n");
 	  m_outstream.writeBytes("\t\t\t\t\t\tyy_last_accept_state = yy_state;\n");
 	  m_outstream.writeBytes("\t\t\t\t\t}\n");
 
-	  m_outstream.writeBytes("\t\t\t\t}\n");	  
+	  m_outstream.writeBytes("\t\t\t\t}\n");
 	  m_outstream.writeBytes("\t\t\t}\n");
 	  m_outstream.writeBytes("\t\t}\n");
 	  m_outstream.writeBytes("\t}\n");
@@ -1482,12 +1482,12 @@ m_outstream.writeBytes("    }\n");
 	  m_outstream.writeBytes("\t\t\t\n");
 	  m_outstream.writeBytes("\t\t}\n");*/
 	}
-  
+
   /***************************************************************
     Function: emit_actions
-    Description:     
+    Description:
     **************************************************************/
-  private void emit_actions 
+  private void emit_actions
     (
      String tabs
      )
@@ -1497,10 +1497,10 @@ m_outstream.writeBytes("    }\n");
 	  int size;
 	  int bogus_index;
 	  CAccept accept;
-	  
+
 	  if (CUtility.DEBUG)
 	    {
-	      CUtility.assert(m_spec.m_accept_vector.size() 
+	      CUtility.assert(m_spec.m_accept_vector.size()
 			      == m_spec.m_anchor_array.length);
 	    }
 
@@ -1509,9 +1509,9 @@ m_outstream.writeBytes("    }\n");
 	  for (elem = 0; elem < size; ++elem)
 	    {
 	      accept = (CAccept) m_spec.m_accept_vector.elementAt(elem);
-	      if (null != accept) 
+	      if (null != accept)
 		{
-		  m_outstream.writeBytes(tabs + "case " + elem 
+		  m_outstream.writeBytes(tabs + "case " + elem
 					 /*+ (new Integer(elem)).toString()*/
 					 + ":\n");
 		  m_outstream.writeBytes(tabs + "\t");
@@ -1524,10 +1524,10 @@ m_outstream.writeBytes("    }\n");
 		}
 	    }
 	}
-  
+
   /***************************************************************
     Function: emit_footer
-    Description:     
+    Description:
     **************************************************************/
   private void emit_footer
     (
@@ -1644,7 +1644,7 @@ class CMakeNfa
      CSpec spec,
      CInput input
      )
-      throws java.io.IOException      
+      throws java.io.IOException
 	{
 	  int i;
 	  CNfa elem;
@@ -1661,13 +1661,13 @@ class CMakeNfa
 	      m_spec.m_state_rules[i] = new Vector();
 	    }
 
-	  /* Initialize current token variable 
+	  /* Initialize current token variable
 	     and create nfa. */
 	  /*m_spec.m_current_token = CLexGen.EOS;
 	  m_lexGen.advance();*/
 
 	  m_spec.m_nfa_start = machine();
-	  
+
 	  /* Set labels in created nfa machine. */
 	  size = m_spec.m_nfa_states.size();
 	  for (i = 0; i < size; ++i)
@@ -1684,17 +1684,17 @@ class CMakeNfa
 
 	  if (m_spec.m_verbose)
 	    {
-	      System.out.println("NFA comprised of " 
-				 + (m_spec.m_nfa_states.size() + 1) 
+	      System.out.println("NFA comprised of "
+				 + (m_spec.m_nfa_states.size() + 1)
 				 + " states.");
 	    }
 
 	  reset();
 	}
-     
+
   /***************************************************************
     Function: discardCNfa
-    Description: 
+    Description:
     **************************************************************/
   private void discardCNfa
     (
@@ -1716,7 +1716,7 @@ class CMakeNfa
       {
 	int size;
 	int i;
-	
+
 	size = m_spec.m_states.size();
 	for (i = 0; i <  size; ++i)
 	  {
@@ -1734,7 +1734,7 @@ class CMakeNfa
   private CNfa machine
     (
      )
-      throws java.io.IOException 
+      throws java.io.IOException
       {
 	CNfa start;
 	CNfa p;
@@ -1751,7 +1751,7 @@ class CMakeNfa
 	m_spec.m_current_token = CLexGen.EOS;
 	m_lexGen.advance();
 	/* End: Added for states. */
-	
+
 	start = CAlloc.newCNfa(m_spec);
       	p = start;
 	p.m_next = rule();
@@ -1762,19 +1762,19 @@ class CMakeNfa
 	  {
 	    /* Make state changes HERE. */
 	    states = m_lexGen.getStates();
-	
+
 	    /* Begin: Added for states. */
 	    m_lexGen.advance();
 	    if (CLexGen.END_OF_INPUT == m_spec.m_current_token)
-	      { 
+	      {
 		break;
 	      }
 	    /* End: Added for states. */
-	    
+
 	    p.m_next2 = CAlloc.newCNfa(m_spec);
 	    p = p.m_next2;
 	    p.m_next = rule();
-	    
+
 	    processStates(states,p.m_next);
 	  }
 
@@ -1785,7 +1785,7 @@ class CMakeNfa
 
 	return start;
       }
-  
+
   /***************************************************************
     Function: rule
     Description: Recursive descent regular expression parser.
@@ -1793,9 +1793,9 @@ class CMakeNfa
   private CNfa rule
     (
      )
-      throws java.io.IOException 
+      throws java.io.IOException
       {
-	CNfaPair pair; 
+	CNfaPair pair;
 	CNfa p;
 	CNfa start = null;
 	CNfa end = null;
@@ -1830,7 +1830,7 @@ class CMakeNfa
 	  {
 	    m_lexGen.advance();
 	    end.m_next = CAlloc.newCNfa(m_spec);
-	    
+
 	    /* This is the way he does it. */
 	    end.m_edge = CNfa.CCL;
 	    end.m_set = new CSet();
@@ -1841,7 +1841,7 @@ class CMakeNfa
 	      {
 		end.m_set.add('\r');
 	      }
-		
+
 	    end = end.m_next;
 	    anchor = anchor | CSpec.END;
 	  }
@@ -1861,7 +1861,7 @@ class CMakeNfa
 
 	return start;
       }
-	    
+
   /***************************************************************
     Function: expr
     Description: Recursive descent regular expression parser.
@@ -1870,11 +1870,11 @@ class CMakeNfa
     (
      CNfaPair pair
      )
-      throws java.io.IOException 
+      throws java.io.IOException
       {
 	CNfaPair e2_pair;
 	CNfa p;
-	
+
 	if (CUtility.DESCENT_DEBUG)
 	  {
 	    CUtility.enter("expr",m_spec.m_lexeme,m_spec.m_current_token);
@@ -1888,7 +1888,7 @@ class CMakeNfa
 	e2_pair = CAlloc.newCNfaPair();
 
 	cat_expr(pair);
-	
+
 	while (CLexGen.OR == m_spec.m_current_token)
 	  {
 	    m_lexGen.advance();
@@ -1898,7 +1898,7 @@ class CMakeNfa
 	    p.m_next2 = e2_pair.m_start;
 	    p.m_next = pair.m_start;
 	    pair.m_start = p;
-	    
+
 	    p = CAlloc.newCNfa(m_spec);
 	    pair.m_end.m_next = p;
 	    e2_pair.m_end.m_next = p;
@@ -1910,7 +1910,7 @@ class CMakeNfa
 	    CUtility.leave("expr",m_spec.m_lexeme,m_spec.m_current_token);
 	  }
       }
-	    
+
   /***************************************************************
     Function: cat_expr
     Description: Recursive descent regular expression parser.
@@ -1919,7 +1919,7 @@ class CMakeNfa
     (
      CNfaPair pair
      )
-      throws java.io.IOException 
+      throws java.io.IOException
       {
 	CNfaPair e2_pair;
 
@@ -1932,9 +1932,9 @@ class CMakeNfa
 	  {
 	    CUtility.assert(null != pair);
 	  }
-	
+
 	e2_pair = CAlloc.newCNfaPair();
-	
+
 	if (first_in_cat(m_spec.m_current_token))
 	  {
 	    factor(pair);
@@ -1947,7 +1947,7 @@ class CMakeNfa
 	    /* Destroy */
 	    pair.m_end.mimic(e2_pair.m_start);
 	    discardCNfa(e2_pair.m_start);
-	    
+
 	    pair.m_end = e2_pair.m_end;
 	  }
 
@@ -1956,7 +1956,7 @@ class CMakeNfa
 	    CUtility.leave("cat_expr",m_spec.m_lexeme,m_spec.m_current_token);
 	  }
       }
-  
+
   /***************************************************************
     Function: first_in_cat
     Description: Recursive descent regular expression parser.
@@ -1973,7 +1973,7 @@ class CMakeNfa
 	  case CLexGen.OR:
 	  case CLexGen.EOS:
 	    return false;
-	    
+
 	  case CLexGen.CLOSURE:
 	  case CLexGen.PLUS_CLOSE:
 	  case CLexGen.OPTIONAL:
@@ -2003,7 +2003,7 @@ class CMakeNfa
     (
      CNfaPair pair
      )
-      throws java.io.IOException 
+      throws java.io.IOException
       {
 	CNfa start = null;
 	CNfa end = null;
@@ -2021,7 +2021,7 @@ class CMakeNfa
 	  {
 	    start = CAlloc.newCNfa(m_spec);
 	    end = CAlloc.newCNfa(m_spec);
-	    
+
 	    start.m_next = pair.m_start;
 	    pair.m_end.m_next = end;
 
@@ -2030,13 +2030,13 @@ class CMakeNfa
 	      {
 		start.m_next2 = end;
 	      }
-	    
+
 	    if (CLexGen.CLOSURE == m_spec.m_current_token
 		|| CLexGen.PLUS_CLOSE == m_spec.m_current_token)
 	      {
 		pair.m_end.m_next2 = pair.m_start;
 	      }
-	    
+
 	    pair.m_start = start;
 	    pair.m_end = end;
 	    m_lexGen.advance();
@@ -2047,7 +2047,7 @@ class CMakeNfa
 	    CUtility.leave("factor",m_spec.m_lexeme,m_spec.m_current_token);
 	  }
       }
-      
+
   /***************************************************************
     Function: term
     Description: Recursive descent regular expression parser.
@@ -2056,7 +2056,7 @@ class CMakeNfa
     (
      CNfaPair pair
      )
-      throws java.io.IOException 
+      throws java.io.IOException
       {
 	CNfa start;
 	boolean isAlphaL;
@@ -2090,11 +2090,11 @@ class CMakeNfa
 	    pair.m_end = start.m_next;
 
 	    if (CLexGen.L == m_spec.m_current_token &&
-		Character.isLetter(m_spec.m_lexeme)) 
+		Character.isLetter(m_spec.m_lexeme))
 	      {
 		isAlphaL = true;
-	      } 
-	    else 
+	      }
+	    else
 	      {
 		isAlphaL = false;
 	      }
@@ -2108,11 +2108,11 @@ class CMakeNfa
 	    else
 	      {
 		start.m_edge = CNfa.CCL;
-		
+
 		start.m_set = new CSet();
 
 		/* Match case-insensitive letters using character class. */
-		if (m_spec.m_ignorecase && isAlphaL) 
+		if (m_spec.m_ignorecase && isAlphaL)
 		  {
 		    start.m_set.addncase(m_spec.m_lexeme);
 		  }
@@ -2170,16 +2170,16 @@ class CMakeNfa
     (
      CSet set
      )
-      throws java.io.IOException 
+      throws java.io.IOException
 	{
 	  int first = -1;
-	  
+
 	  if (CUtility.DESCENT_DEBUG)
 	    {
 	      CUtility.enter("dodash",m_spec.m_lexeme,m_spec.m_current_token);
 	    }
-	  
-	  while (CLexGen.EOS != m_spec.m_current_token 
+
+	  while (CLexGen.EOS != m_spec.m_current_token
 		 && CLexGen.CCL_END != m_spec.m_current_token)
 	    {
 	      // DASH loses its special meaning if it is first in class.
@@ -2195,11 +2195,11 @@ class CMakeNfa
 		    }
 		  for ( ; first <= m_spec.m_lexeme; ++first)
 		    {
-		      if (m_spec.m_ignorecase) 
+		      if (m_spec.m_ignorecase)
 			set.addncase((char)first);
 		      else
 			set.add(first);
-		    }  
+		    }
 		}
 	      else
 		{
@@ -2212,7 +2212,7 @@ class CMakeNfa
 
 	      m_lexGen.advance();
 	    }
-	  
+
 	if (CUtility.DESCENT_DEBUG)
 	  {
 	    CUtility.leave("dodash",m_spec.m_lexeme,m_spec.m_current_token);
@@ -2236,13 +2236,13 @@ class CMinimize
     Function: CMinimize
     Description: Constructor.
     **************************************************************/
-  CMinimize 
+  CMinimize
     (
      )
       {
 	reset();
       }
-  
+
   /***************************************************************
     Function: reset
     Description: Resets member variables.
@@ -2289,7 +2289,7 @@ class CMinimize
 	/* Remove redundant states. */
 	minimize();
 
-	/* Column and row compression. 
+	/* Column and row compression.
 	   Save accept states in auxilary vector. */
 	reduce();
 
@@ -2314,10 +2314,10 @@ class CMinimize
 	for (i = 0; i < n; ++i)
 	  {
 	    dtrans = (CDTrans) m_spec.m_dtrans_vector.elementAt(i);
-	    dtrans.m_dtrans[dest] = dtrans.m_dtrans[src]; 
+	    dtrans.m_dtrans[dest] = dtrans.m_dtrans[src];
 	  }
-      }	
-	
+      }
+
   /***************************************************************
     Function: row_copy
     Description: Copies source row into destination row.
@@ -2331,12 +2331,12 @@ class CMinimize
 	CDTrans dtrans;
 
 	dtrans = (CDTrans) m_spec.m_dtrans_vector.elementAt(src);
-	m_spec.m_dtrans_vector.setElementAt(dtrans,dest); 
-      }	
-	
+	m_spec.m_dtrans_vector.setElementAt(dtrans,dest);
+      }
+
   /***************************************************************
     Function: col_equiv
-    Description: 
+    Description:
     **************************************************************/
   private boolean col_equiv
     (
@@ -2352,18 +2352,18 @@ class CMinimize
 	for (i = 0; i < n; ++i)
 	  {
 	    dtrans = (CDTrans) m_spec.m_dtrans_vector.elementAt(i);
-	    if (dtrans.m_dtrans[col1] != dtrans.m_dtrans[col2]) 
+	    if (dtrans.m_dtrans[col1] != dtrans.m_dtrans[col2])
 	      {
 		return false;
 	      }
 	  }
-	
+
 	return true;
       }
 
   /***************************************************************
     Function: row_equiv
-    Description: 
+    Description:
     **************************************************************/
   private boolean row_equiv
     (
@@ -2377,21 +2377,21 @@ class CMinimize
 
 	dtrans1 = (CDTrans) m_spec.m_dtrans_vector.elementAt(row1);
 	dtrans2 = (CDTrans) m_spec.m_dtrans_vector.elementAt(row2);
-	
+
 	for (i = 0; i < m_spec.m_dtrans_ncols; ++i)
 	  {
-	    if (dtrans1.m_dtrans[i] != dtrans2.m_dtrans[i]) 
+	    if (dtrans1.m_dtrans[i] != dtrans2.m_dtrans[i])
 	      {
 		return false;
 	      }
 	  }
-	
+
 	return true;
       }
 
   /***************************************************************
     Function: reduce
-    Description: 
+    Description:
     **************************************************************/
   private void reduce
     (
@@ -2408,7 +2408,7 @@ class CMinimize
 	int size;
 
 	set = new JavaLexBitSet();
-	
+
 	/* Save accept nodes and anchor entries. */
 	size = m_spec.m_dtrans_vector.size();
 	m_spec.m_anchor_array = new int[size];
@@ -2420,7 +2420,7 @@ class CMinimize
 	    m_spec.m_anchor_array[i] = dtrans.m_anchor;
 	    dtrans.m_accept = null;
 	  }
-	
+
 	/* Allocate column map. */
 	m_spec.m_col_map = new int[m_spec.m_dtrans_ncols];
 	for (i = 0; i < m_spec.m_dtrans_ncols; ++i)
@@ -2459,9 +2459,9 @@ class CMinimize
 	      }
 
 	    set.set(i);
-	    
+
 	    m_spec.m_col_map[i] = reduced_ncols;
-	    
+
 	    /* UNDONE: Optimize by doing all comparisons in one batch. */
 	    for (j = i + 1; j < m_spec.m_dtrans_ncols; ++j)
 	      {
@@ -2481,19 +2481,19 @@ class CMinimize
 		++k;
 
 		set.clear(i);
-		
+
 		j = m_spec.m_col_map[i];
-		
+
 		if (CUtility.DEBUG)
 		  {
 		    CUtility.assert(j <= i);
 		  }
-		
+
 		if (j == i)
 		  {
 		    continue;
 		  }
-		
+
 		col_copy(j,i);
 	      }
 	  }
@@ -2545,7 +2545,7 @@ class CMinimize
 	    set.set(i);
 
 	    m_spec.m_row_map[i] = reduced_nrows;
-	    
+
 	    /* UNDONE: Optimize by doing all comparisons in one batch. */
 	    for (j = i + 1; j < nrows; ++j)
 	      {
@@ -2565,19 +2565,19 @@ class CMinimize
 		++k;
 
 		set.clear(i);
-		
+
 		j = m_spec.m_row_map[i];
-		
+
 		if (CUtility.DEBUG)
 		  {
 		    CUtility.assert(j <= i);
 		  }
-		
+
 		if (j == i)
 		  {
 		    continue;
 		  }
-		
+
 		row_copy(j,i);
 	      }
 	  }
@@ -2592,7 +2592,7 @@ class CMinimize
 
   /***************************************************************
     Function: fix_dtrans
-    Description: Updates CDTrans table after minimization 
+    Description: Updates CDTrans table after minimization
     using groups, removing redundant transition table states.
     **************************************************************/
   private void fix_dtrans
@@ -2685,7 +2685,7 @@ class CMinimize
 
 		new_group = new Vector();
 		added = false;
-		
+
 		first = (CDTrans) dtrans_group.elementAt(0);
 		for (j = 1; j < group_size; ++j)
 		  {
@@ -2705,7 +2705,7 @@ class CMinimize
 			      {
 				CUtility.assert(dtrans_group.elementAt(j) == next);
 			      }
-			    
+
 			    dtrans_group.removeElementAt(j);
 			    --j;
 			    --group_size;
@@ -2734,7 +2734,7 @@ class CMinimize
 						== true);
 				CUtility.assert(dtrans_group.size() == group_size);
 				CUtility.assert(i == m_ingroup[first.m_label]);
-				CUtility.assert((m_group.size() - 1) 
+				CUtility.assert((m_group.size() - 1)
 						== m_ingroup[next.m_label]);
 			      }
 
@@ -2777,10 +2777,10 @@ class CMinimize
 
 	m_group = new Vector();
 	group_count = 0;
-	
+
 	size = m_spec.m_dtrans_vector.size();
 	m_ingroup = new int[size];
-	
+
 	for (i = 0; i < size; ++i)
 	  {
 	    group_found = false;
@@ -2792,11 +2792,11 @@ class CMinimize
 		CUtility.assert(false == group_found);
 		CUtility.assert(group_count == m_group.size());
 	      }
-	    
+
 	    for (j = 0; j < group_count; ++j)
 	      {
 		dtrans_group = (Vector) m_group.elementAt(j);
-		
+
 		if (CUtility.DEBUG)
 		  {
 		    CUtility.assert(false == group_found);
@@ -2804,7 +2804,7 @@ class CMinimize
 		  }
 
 		first = (CDTrans) dtrans_group.elementAt(0);
-		
+
 		if (CUtility.SLOW_DEBUG)
 		  {
 		    CDTrans check;
@@ -2826,7 +2826,7 @@ class CMinimize
 		    dtrans_group.addElement(dtrans);
 		    m_ingroup[i] = j;
 		    group_found = true;
-		    
+
 		    if (CUtility.DEBUG)
 		      {
 			CUtility.assert(j == m_ingroup[dtrans.m_label]);
@@ -2835,7 +2835,7 @@ class CMinimize
 		    break;
 		  }
 	      }
-	    
+
 	    if (false == group_found)
 	      {
 		dtrans_group = new Vector();
@@ -2845,7 +2845,7 @@ class CMinimize
 		++group_count;
 	      }
 	  }
-	
+
 	if (m_spec.m_verbose
 	    && true == CUtility.OLD_DUMP_DEBUG)
 	  {
@@ -2874,7 +2874,7 @@ class CMinimize
 	    System.out.print(dtrans.m_label + " ");
 	  }
       }
-  
+
   /***************************************************************
     Function: pgroups
     **************************************************************/
@@ -2885,7 +2885,7 @@ class CMinimize
 	int i;
 	int dtrans_size;
 	int group_size;
-	
+
 	group_size = m_group.size();
 	for (i = 0; i < group_size; ++i)
 	  {
@@ -2893,13 +2893,13 @@ class CMinimize
 	    pset((Vector) m_group.elementAt(i));
 	    System.out.println("}\n");
 	  }
-	
+
 	System.out.println("");
 	dtrans_size = m_spec.m_dtrans_vector.size();
 	for (i = 0; i < dtrans_size; ++i)
 	  {
-	    System.out.println("\tstate " + i 
-			       + " is in group " 
+	    System.out.println("\tstate " + i
+			       + " is in group "
 			       + m_ingroup[i]);
 	  }
       }
@@ -2933,8 +2933,8 @@ class CNfa2Dfa
       }
 
   /***************************************************************
-    Function: set 
-    Description: 
+    Function: set
+    Description:
     **************************************************************/
   private void set
     (
@@ -2948,8 +2948,8 @@ class CNfa2Dfa
       }
 
   /***************************************************************
-    Function: reset 
-    Description: 
+    Function: reset
+    Description:
     **************************************************************/
   private void reset
     (
@@ -2985,7 +2985,7 @@ class CNfa2Dfa
 	  }
 
 	free_dfa_states();
-      }     
+      }
 
    /***************************************************************
     Function: make_dtrans
@@ -3006,7 +3006,7 @@ class CNfa2Dfa
 	CNfa nfa;
 	int istate;
 	int nstates;
-	
+
 	System.out.print("Working on DFA states.");
 
 	/* Reference passing type and initializations. */
@@ -3024,13 +3024,13 @@ class CNfa2Dfa
 		m_spec.m_state_dtrans[istate] = CDTrans.F;
 		continue;
 	      }
-		
+
 	    /* Create start state and initialize fields. */
 	    bunch.m_nfa_set = (Vector) m_spec.m_state_rules[istate].clone();
 	    sortStates(bunch.m_nfa_set);
-	    
+
 	    bunch.m_nfa_bit = new JavaLexBitSet();
-	    
+
 	    /* Initialize bit set. */
 	    size = bunch.m_nfa_set.size();
 	    for (i = 0; size > i; ++i)
@@ -3038,14 +3038,14 @@ class CNfa2Dfa
 		nfa = (CNfa) bunch.m_nfa_set.elementAt(i);
 		bunch.m_nfa_bit.set(nfa.m_label);
 	      }
-	    
+
 	    bunch.m_accept = null;
 	    bunch.m_anchor = CSpec.NONE;
 	    bunch.m_accept_index = CUtility.INT_MAX;
-	    
+
 	    e_closure(bunch);
 	    add_to_dstates(bunch);
-	    
+
 	    m_spec.m_state_dtrans[istate] = m_spec.m_dtrans_vector.size();
 
 	    /* Main loop of CDTrans creation. */
@@ -3053,7 +3053,7 @@ class CNfa2Dfa
 	      {
 		System.out.print(".");
 		System.out.flush();
-		
+
 		if (CUtility.DEBUG)
 		  {
 		    CUtility.assert(false == dfa.m_mark);
@@ -3061,12 +3061,12 @@ class CNfa2Dfa
 
 		/* Get first unmarked node, then mark it. */
 		dfa.m_mark = true;
-		
+
 		/* Allocate new CDTrans, then initialize fields. */
 		dtrans = new CDTrans(m_spec.m_dtrans_vector.size(),m_spec);
 		dtrans.m_accept = dfa.m_accept;
 		dtrans.m_anchor = dfa.m_anchor;
-		
+
 		/* Set CDTrans array for each character transition. */
 		for (i = 0; i < m_spec.m_dtrans_ncols; ++i)
 		  {
@@ -3075,50 +3075,50 @@ class CNfa2Dfa
 			CUtility.assert(0 <= i);
 			CUtility.assert(m_spec.m_dtrans_ncols > i);
 		      }
-		    
+
 		    /* Create new dfa set by attempting character transition. */
 		    move(dfa.m_nfa_set,dfa.m_nfa_bit,i,bunch);
 		    if (null != bunch.m_nfa_set)
 		      {
 			e_closure(bunch);
 		      }
-		    
+
 		    if (CUtility.DEBUG)
 		      {
-			CUtility.assert((null == bunch.m_nfa_set 
+			CUtility.assert((null == bunch.m_nfa_set
 					 && null == bunch.m_nfa_bit)
-					|| (null != bunch.m_nfa_set 
+					|| (null != bunch.m_nfa_set
 					    && null != bunch.m_nfa_bit));
 		      }
-		    
+
 		    /* Create new state or set state to empty. */
 		    if (null == bunch.m_nfa_set)
 		      {
 			nextstate = CDTrans.F;
 		      }
-		    else 
+		    else
 		      {
 			nextstate = in_dstates(bunch);
-			
+
 			if (NOT_IN_DSTATES == nextstate)
 			  {
 			    nextstate = add_to_dstates(bunch);
 			  }
 		      }
-		    
+
 		    if (CUtility.DEBUG)
 		      {
 			CUtility.assert(nextstate < m_spec.m_dfa_states.size());
 		      }
-		    
+
 		    dtrans.m_dtrans[i] = nextstate;
 		  }
-		
+
 		if (CUtility.DEBUG)
 		  {
 		    CUtility.assert(m_spec.m_dtrans_vector.size() == dfa.m_label);
 		  }
-		
+
 		m_spec.m_dtrans_vector.addElement(dtrans);
 	      }
 	  }
@@ -3128,7 +3128,7 @@ class CNfa2Dfa
 
   /***************************************************************
     Function: free_dfa_states
-    **************************************************************/  
+    **************************************************************/
   private void free_dfa_states
     (
      )
@@ -3139,7 +3139,7 @@ class CNfa2Dfa
 
   /***************************************************************
     Function: free_nfa_states
-    **************************************************************/  
+    **************************************************************/
   private void free_nfa_states
     (
      )
@@ -3177,14 +3177,14 @@ class CNfa2Dfa
 	bunch.m_accept = null;
 	bunch.m_anchor = CSpec.NONE;
 	bunch.m_accept_index = CUtility.INT_MAX;
-	
+
 	/* Create initial stack. */
 	nfa_stack = new Stack();
 	size = bunch.m_nfa_set.size();
 	for (i = 0; i < size; ++i)
 	  {
 	    state = (CNfa) bunch.m_nfa_set.elementAt(i);
-	    
+
 	    if (CUtility.DEBUG)
 	      {
 		CUtility.assert(bunch.m_nfa_bit.get(state.m_label));
@@ -3197,7 +3197,7 @@ class CNfa2Dfa
 	while (false == nfa_stack.empty())
 	  {
 	    state = (CNfa) nfa_stack.pop();
-	    
+
 	    if (CUtility.OLD_DUMP_DEBUG)
 	      {
 		if (null != state.m_accept)
@@ -3210,7 +3210,7 @@ class CNfa2Dfa
 		  }
 	      }
 
-	    if (null != state.m_accept 
+	    if (null != state.m_accept
 		&& state.m_label < bunch.m_accept_index)
 	      {
 		bunch.m_accept_index = state.m_label;
@@ -3245,7 +3245,7 @@ class CNfa2Dfa
 			  {
 			    CUtility.assert(false == bunch.m_nfa_bit.get(state.m_next.m_label));
 			  }
-			
+
 			bunch.m_nfa_bit.set(state.m_next.m_label);
 			bunch.m_nfa_set.addElement(state.m_next);
 			nfa_stack.push(state.m_next);
@@ -3260,7 +3260,7 @@ class CNfa2Dfa
 			  {
 			    CUtility.assert(false == bunch.m_nfa_bit.get(state.m_next2.m_label));
 			  }
-			
+
 			bunch.m_nfa_bit.set(state.m_next2.m_label);
 			bunch.m_nfa_set.addElement(state.m_next2);
 			nfa_stack.push(state.m_next2);
@@ -3292,7 +3292,7 @@ class CNfa2Dfa
 	int size;
 	int index;
 	CNfa state;
-	
+
 	bunch.m_nfa_set = null;
 	bunch.m_nfa_bit = null;
 
@@ -3300,7 +3300,7 @@ class CNfa2Dfa
 	for (index = 0; index < size; ++index)
 	  {
 	    state = (CNfa) nfa_set.elementAt(index);
-	    
+
 	    if (b == state.m_edge
 		|| (CNfa.CCL == state.m_edge
 		    && true == state.m_set.contains(b)))
@@ -3311,9 +3311,9 @@ class CNfa2Dfa
 		      {
 			CUtility.assert(null == bunch.m_nfa_bit);
 		      }
-		    
+
 		    bunch.m_nfa_set = new Vector();
-		    /*bunch.m_nfa_bit 
+		    /*bunch.m_nfa_bit
 			= new JavaLexBitSet(m_spec.m_nfa_states.size());*/
 		    bunch.m_nfa_bit = new JavaLexBitSet();
 		  }
@@ -3325,14 +3325,14 @@ class CNfa2Dfa
 		bunch.m_nfa_bit.set(state.m_next.m_label);
 	      }
 	  }
-	
+
 	if (null != bunch.m_nfa_set)
 	  {
 	    if (CUtility.DEBUG)
 	      {
 		CUtility.assert(null != bunch.m_nfa_bit);
 	      }
-	    
+
 	    sortStates(bunch.m_nfa_set);
 	  }
 
@@ -3383,15 +3383,15 @@ class CNfa2Dfa
 
 	if (CUtility.OLD_DEBUG)
 	  {
-	    System.out.print("NFA vector indices: ");  
-	    
+	    System.out.print("NFA vector indices: ");
+
 	    for (index = 0; index < size; ++index)
 	      {
 		elem = (CNfa) nfa_set.elementAt(index);
 		System.out.print(elem.m_label + " ");
 	      }
 	    System.out.print("\n");
-	  }	
+	  }
 
 	return;
       }
@@ -3423,7 +3423,7 @@ class CNfa2Dfa
 		if (m_spec.m_verbose && true == CUtility.OLD_DUMP_DEBUG)
 		  {
 		    System.out.println("---------------");
-		    System.out.print("working on DFA state " 
+		    System.out.print("working on DFA state "
 				     + m_unmarked_dfa
 				     + " = NFA states: ");
 		    m_lexGen.print_set(dfa.m_nfa_set);
@@ -3438,12 +3438,12 @@ class CNfa2Dfa
 
 	return null;
       }
-  
+
   /***************************************************************
     function: add_to_dstates
     Description: Takes as input a CBunch with details of
     a dfa state that needs to be created.
-    1) Allocates a new dfa state and saves it in 
+    1) Allocates a new dfa state and saves it in
     the appropriate CSpec vector.
     2) Initializes the fields of the dfa state
     with the information in the CBunch.
@@ -3455,25 +3455,25 @@ class CNfa2Dfa
      )
       {
 	CDfa dfa;
-	
+
 	if (CUtility.DEBUG)
 	  {
 	    CUtility.assert(null != bunch.m_nfa_set);
 	    CUtility.assert(null != bunch.m_nfa_bit);
-	    CUtility.assert(null != bunch.m_accept 
+	    CUtility.assert(null != bunch.m_accept
 			    || CSpec.NONE == bunch.m_anchor);
 	  }
 
 	/* Allocate, passing CSpec so dfa label can be set. */
 	dfa = CAlloc.newCDfa(m_spec);
-	
+
 	/* Initialize fields, including the mark field. */
 	dfa.m_nfa_set = (Vector) bunch.m_nfa_set.clone();
 	dfa.m_nfa_bit = (JavaLexBitSet) bunch.m_nfa_bit.clone();
 	dfa.m_accept = bunch.m_accept;
 	dfa.m_anchor = bunch.m_anchor;
 	dfa.m_mark = false;
-	
+
 	/* Register dfa state using BitSet in CSpec Hashtable. */
 	m_spec.m_dfa_sets.put(dfa.m_nfa_bit,dfa);
 	/*registerCDfa(dfa);*/
@@ -3497,7 +3497,7 @@ class CNfa2Dfa
      )
       {
 	CDfa dfa;
-	
+
 	if (CUtility.OLD_DEBUG)
 	  {
 	    System.out.print("Looking for set : ");
@@ -3512,7 +3512,7 @@ class CNfa2Dfa
 	      {
 		System.out.println(" FOUND!");
 	      }
-	    
+
 	    return dfa.m_label;
 	  }
 
@@ -3539,7 +3539,7 @@ class CAlloc
      )
       {
 	CDfa dfa;
-	
+
 	dfa = new CDfa(spec.m_dfa_states.size());
 	spec.m_dfa_states.addElement(dfa);
 
@@ -3548,20 +3548,20 @@ class CAlloc
 
   /***************************************************************
     Function: newCNfaPair
-    Description: 
+    Description:
     **************************************************************/
   static CNfaPair newCNfaPair
     (
      )
       {
 	CNfaPair pair = new CNfaPair();
-	
+
 	return pair;
       }
 
   /***************************************************************
     Function: newCNfa
-    Description: 
+    Description:
     **************************************************************/
   static CNfa newCNfa
     (
@@ -3573,11 +3573,11 @@ class CAlloc
 	/* UNDONE: Buffer this? */
 
 	p = new CNfa();
-	
+
 	/*p.m_label = spec.m_nfa_states.size();*/
 	spec.m_nfa_states.addElement(p);
 	p.m_edge = CNfa.EPSILON;
-	
+
 	return p;
       }
 }
@@ -3606,10 +3606,10 @@ public class Main
 	  }
 
 	/* Note: For debuging, it may be helpful to remove the try/catch
-	   block and permit the Exception to propagate to the top level. 
+	   block and permit the Exception to propagate to the top level.
 	   This gives more information. */
-	try 
-	  {	
+	try
+	  {
 	    lg = new CLexGen(arg[0]);
 	    lg.generate();
 	  }
@@ -3618,7 +3618,7 @@ public class Main
 	    System.out.println(e.getMessage());
 	  }
       }
-}    
+}
 
 /***************************************************************
   Class: CDTrans
@@ -3657,7 +3657,7 @@ class CDTrans
 /***************************************************************
   Class: CDfa
   **************************************************************/
-class CDfa 
+class CDfa
 {
   /***************************************************************
     Member Variables
@@ -3737,7 +3737,7 @@ class CAccept
 	int elem;
 
 	m_action_read = accept.m_action_read;
-	
+
 	m_action = new char[m_action_read];
 	for (elem = 0; elem < m_action_read; ++elem)
 	  {
@@ -3758,7 +3758,7 @@ class CAccept
 	int elem;
 
 	m_action_read = accept.m_action_read;
-	
+
 	m_action = new char[m_action_read];
 	for (elem = 0; elem < m_action_read; ++elem)
 	  {
@@ -3800,7 +3800,7 @@ class CNfaPair
     **************************************************************/
   CNfa m_start;
   CNfa m_end;
-  
+
   /***************************************************************
     Function: CNfaPair
     **************************************************************/
@@ -3815,7 +3815,7 @@ class CNfaPair
 
 /***************************************************************
   Class: CInput
-  Description: 
+  Description:
  **************************************************************/
 class CInput
 {
@@ -3829,7 +3829,7 @@ class CInput
   private int m_buffer_index; /* Current index into input buffer. */
 
   boolean m_eof_reached; /* Whether EOF has been encountered. */
-  boolean m_pushback_line; 
+  boolean m_pushback_line;
 
   char m_line[]; /* Line buffer. */
   int m_line_read; /* Number of bytes read into line buffer. */
@@ -3843,10 +3843,10 @@ class CInput
   private static final int BUFFER_SIZE = 1024;
   static final boolean EOF = true;
   static final boolean NOT_EOF = false;
-  
+
   /***************************************************************
     Function: CInput
-    Description: 
+    Description:
     **************************************************************/
   CInput
     (
@@ -3882,13 +3882,13 @@ class CInput
     Guarantees not to return a blank line, or a line
     of zero length.
     **************************************************************/
-  boolean getLine 
+  boolean getLine
     (
      )
       throws java.io.IOException
       {
 	int elem;
-	
+
 	/* Has EOF already been reached? */
 	if (m_eof_reached)
 	  {
@@ -3901,7 +3901,7 @@ class CInput
 
 	    return true;
 	  }
-	
+
 	/* Pushback current line? */
 	if (m_pushback_line)
 	  {
@@ -3947,13 +3947,13 @@ class CInput
 			System.out.print(new String(m_line,0,
 						    m_line_read));
 		      }
-		    
+
 		    m_line_index = 0;
 		    return true;
 		  }
 		m_buffer_index = 0;
 	      }
-	    
+
 	    m_line_read = 0;
 	    while ((byte) '\n' != m_buffer[m_buffer_index]
 		   && (byte) '\r' != m_buffer[m_buffer_index])
@@ -3961,7 +3961,7 @@ class CInput
 		m_line[m_line_read] = (char) m_buffer[m_buffer_index];
 
 		++m_buffer_index;
-		
+
 		/* Refill buffer? */
 		if (m_buffer_index >= m_buffer_read)
 		  {
@@ -3972,7 +3972,7 @@ class CInput
 
 			/* Check for empty lines and discard them. */
 			elem = 0;
-			while (CUtility.isspace(m_line[elem])) 
+			while (CUtility.isspace(m_line[elem]))
 			  {
 			    ++elem;
 			    if (elem == m_line_read)
@@ -3980,9 +3980,9 @@ class CInput
 				break;
 			      }
 			  }
-			
+
 			if (elem < m_line_read)
-			  {			  
+			  {
 			    if (CUtility.OLD_DEBUG)
 			      {
 				System.out.print("Line 4:");
@@ -3990,8 +3990,8 @@ class CInput
 							    0,
 							    m_line_read));
 			      }
-			    
-			      
+
+
 			    m_line_index = 0;
 			    return false;
 			  }
@@ -4026,12 +4026,12 @@ class CInput
 	       New Source: */
 	    if ((byte) '\r' == m_buffer[m_buffer_index])
 	      {
-		/* This is a hack and may propagate 
+		/* This is a hack and may propagate
 		   some (pre-existing) line counting bugs on non-UNIX,
 		   but otherwise it will work fine.
 		   The only effect will be some bad error messages.
 		   The other option is to do some massive
-		   hacking on the input routines 
+		   hacking on the input routines
 		   that may destabilize the code. */
 		m_line[m_line_read] = '\n';
 		++m_line_read;
@@ -4045,10 +4045,10 @@ class CInput
 	      }
 	    /* End of New Source. */
 	    ++m_line_number;
-	    
+
 	    /* Check for empty lines and discard them. */
 	    elem = 0;
-	    while (CUtility.isspace(m_line[elem])) 
+	    while (CUtility.isspace(m_line[elem]))
 	      {
 		++elem;
 		if (elem == m_line_read)
@@ -4056,7 +4056,7 @@ class CInput
 		    break;
 		  }
 	      }
-	    
+
 	    if (elem < m_line_read)
 	      {
 		break;
@@ -4077,7 +4077,7 @@ class CInput
 /********************************************************
   Class: Utility
   *******************************************************/
-class CUtility 
+class CUtility
 {
   /********************************************************
     Constants
@@ -4093,7 +4093,7 @@ class CUtility
   static final boolean OLD_DUMP_DEBUG = false;
   static final boolean FOODEBUG = false;
   static final boolean DO_DEBUG = false;
-  
+
   /********************************************************
     Constants: Integer Bounds
     *******************************************************/
@@ -4114,8 +4114,8 @@ class CUtility
      int token
      )
       {
-	System.out.println("Entering " + descent 
-			   + " [lexeme: " + lexeme 
+	System.out.println("Entering " + descent
+			   + " [lexeme: " + lexeme
 			   + "] [token: " + token + "]");
       }
 
@@ -4130,8 +4130,8 @@ class CUtility
      int token
      )
       {
-	System.out.println("Leaving " + descent 
-			   + " [lexeme:" + lexeme 
+	System.out.println("Leaving " + descent
+			   + " [lexeme:" + lexeme
 			   + "] [token:" + token + "]");
       }
 
@@ -4204,12 +4204,12 @@ class CUtility
 	else if ('a' <= c && 'f' >= c)
 	  {
 	    return (char) (c - 'a' + 10);
-	  }	    
+	  }
 	else if ('A' <= c && 'F' >= c)
 	  {
 	    return (char) (c - 'A' + 10);
 	  }
-	
+
 	CError.impos("Bad hexidecimal digit" + c);
 	return 0;
       }
@@ -4244,7 +4244,7 @@ class CUtility
 	  {
 	    return (char) (c - '0');
 	  }
-	
+
 	CError.impos("Bad octal digit " + c);
 	return 0;
       }
@@ -4264,7 +4264,7 @@ class CUtility
 
 	return false;
       }
-	
+
   /********************************************************
     Function: isspace
     *******************************************************/
@@ -4273,7 +4273,7 @@ class CUtility
      char c
      )
       {
-	if ('\b' == c 
+	if ('\b' == c
 	    || '\t' == c
 	    || '\n' == c
 	    || '\f' == c
@@ -4282,7 +4282,7 @@ class CUtility
 	  {
 	    return true;
 	  }
-	
+
 	return false;
       }
 
@@ -4299,7 +4299,7 @@ class CUtility
 	    {
 	    return true;
 	  }
-	
+
 	return false;
       }
 
@@ -4316,7 +4316,7 @@ class CUtility
 	  {
 	    return true;
 	  }
-	
+
 	return false;
       }
 
@@ -4338,14 +4338,14 @@ class CUtility
 
   /********************************************************
     Function: bytencmp
-    Description: Compares up to n elements of 
+    Description: Compares up to n elements of
     byte array a[] against byte array b[].
-    The first byte comparison is made between 
+    The first byte comparison is made between
     a[a_first] and b[b_first].  Comparisons continue
     until the null terminating byte '\0' is reached
     or until n bytes are compared.
-    Return Value: Returns 0 if arrays are the 
-    same up to and including the null terminating byte 
+    Return Value: Returns 0 if arrays are the
+    same up to and including the null terminating byte
     or up to and including the first n bytes,
     whichever comes first.
     *******************************************************/
@@ -4364,7 +4364,7 @@ class CUtility
 	  {
 	    /*System.out.print((char) a[a_first + elem]);
 	    System.out.print((char) b[b_first + elem]);*/
-			     
+
 	    if ('\0' == a[a_first + elem] && '\0' == b[b_first + elem])
 	      {
 		/*System.out.println("return 0");*/
@@ -4423,7 +4423,7 @@ class CUtility
 /********************************************************
   Class: CError
   *******************************************************/
-class CError 
+class CError
 {
   /********************************************************
     Function: impos
@@ -4460,12 +4460,12 @@ class CError
   static final int E_SYNTAX = 16;
   static final int E_BRACE = 17;
   static final int E_DASH = 18;
-  
+
   /********************************************************
     Constants
     Description: String messages for parse_error();
     *******************************************************/
-  static final String errmsg[] = 
+  static final String errmsg[] =
     {
       "Malformed regular expression.",
       "Missing close parenthesis.",
@@ -4488,7 +4488,7 @@ class CError
       "Special character dash - in character class [...] must\n"
 	+ "\tbe preceded by start-of-range character."
     };
-  
+
   /********************************************************
     Function: parse_error
     Description:
@@ -4499,7 +4499,7 @@ class CError
      int line_number
      )
       {
-	System.out.println("Error: Parse error at line " 
+	System.out.println("Error: Parse error at line "
 			   + line_number + ".");
 	System.out.println("Description: " + errmsg[error_code]);
 	throw new Error("Parse error.");
@@ -4509,7 +4509,7 @@ class CError
 /********************************************************
   Class: CSet
   *******************************************************/
-class CSet 
+class CSet
 {
   /********************************************************
     Member Variables
@@ -4564,7 +4564,7 @@ class CSet
 	add(Character.toTitleCase(c));
 	add(Character.toUpperCase(c));
       }
-  
+
   /********************************************************
     Function: contains
     *******************************************************/
@@ -4574,14 +4574,14 @@ class CSet
      )
       {
 	boolean result;
-	
+
 	result = m_set.get(i);
-	
+
 	if (m_complement)
 	  {
 	    return (false == result);
 	  }
-	
+
 	return result;
       }
 
@@ -4595,7 +4595,7 @@ class CSet
       {
 	m_complement = set.m_complement;
 	m_set = (JavaLexBitSet) set.m_set.clone();
-      } 
+      }
 }
 
 /********************************************************
@@ -4607,21 +4607,21 @@ class CNfa
     Member Variables
     *******************************************************/
   int m_edge;  /* Label for edge type:
-			 character code, 
-			 CCL (character class), 
+			 character code,
+			 CCL (character class),
 			 [STATE,
 			 SCL (state class),]
-			 EMPTY, 
+			 EMPTY,
 			 EPSILON. */
-  
+
   CSet m_set;  /* Set to store character classes. */
   CNfa m_next;  /* Next state (or null if none). */
-  
+
   CNfa m_next2;  /* Another state with type == EPSILON
-			   and null if not used.  
+			   and null if not used.
 			   The NFA construction should result in two
 			   outgoing edges only if both are EPSILON edges. */
-  
+
   CAccept m_accept;  /* Set to null if nonaccepting state. */
   int m_anchor;  /* Says if and where pattern is anchored. */
 
@@ -4644,7 +4644,7 @@ class CNfa
   static final int CCL = -1;
   static final int EMPTY = -2;
   static final int EPSILON = -3;
-   
+
   /********************************************************
     Function: CNfa
     *******************************************************/
@@ -4673,7 +4673,7 @@ class CNfa
      )
       {
 	m_edge = nfa.m_edge;
-	
+
 	if (null != nfa.m_set)
 	  {
 	    if (null == m_set)
@@ -4706,7 +4706,7 @@ class CNfa
 /***************************************************************
   Class: CLexGen
   **************************************************************/
-class CLexGen 
+class CLexGen
 {
   /***************************************************************
     Member Variables
@@ -4716,16 +4716,16 @@ class CLexGen
 
   private CInput m_input; /* Input buffer class. */
 
-  private Hashtable m_tokens; /* Hashtable that maps characters to their 
+  private Hashtable m_tokens; /* Hashtable that maps characters to their
 				 corresponding lexical code for
 				 the internal lexical analyzer. */
   private CSpec m_spec; /* Spec class holds information
 			   about the generated lexer. */
-  private boolean m_init_flag; /* Flag set to true only upon 
+  private boolean m_init_flag; /* Flag set to true only upon
 				  successful initialization. */
 
   private CMakeNfa m_makeNfa; /* NFA machine generator module. */
-  private CNfa2Dfa m_nfa2dfa; /* NFA to DFA machine (transition table) 
+  private CNfa2Dfa m_nfa2dfa; /* NFA to DFA machine (transition table)
 				 conversion module. */
   private CMinimize m_minimize; /* Transition table compressor. */
   private CEmit m_emit; /* Output module that emits source code
@@ -4763,7 +4763,7 @@ class CLexGen
   /***************************************************************
     Function: CLexGen
     **************************************************************/
-  CLexGen 
+  CLexGen
     (
      String filename
      )
@@ -4771,7 +4771,7 @@ class CLexGen
       {
 	/* Successful initialization flag. */
 	m_init_flag = false;
-	
+
 	/* Open input stream. */
 	m_instream = new FileInputStream(filename);
 	if (null == m_instream)
@@ -4782,7 +4782,7 @@ class CLexGen
 	  }
 
 	/* Open output stream. */
-	m_outstream 
+	m_outstream
 	  = new DataOutputStream(new BufferedOutputStream(
 		new FileOutputStream(filename + ".java")));
 	if (null == m_outstream)
@@ -4811,10 +4811,10 @@ class CLexGen
 	m_tokens.put(new Character('{'),new Integer(OPEN_CURLY));
 	m_tokens.put(new Character('|'),new Integer(OR));
 	m_tokens.put(new Character('}'),new Integer(CLOSE_CURLY));
-      
+
 	/* Initialize spec structure. */
 	m_spec = new CSpec(this);
-	
+
 	/* Nfa to dfa converter. */
 	m_nfa2dfa = new CNfa2Dfa();
 	m_minimize = new CMinimize();
@@ -4828,7 +4828,7 @@ class CLexGen
 
   /***************************************************************
     Function: generate
-    Description: 
+    Description:
     **************************************************************/
   void generate
     (
@@ -4864,7 +4864,7 @@ class CLexGen
 
 	if (m_spec.m_verbose)
 	  {
-	    System.out.println("Processing second section -- " 
+	    System.out.println("Processing second section -- "
 			       + "JLex declarations.");
 	  }
 	userDeclare();
@@ -4893,7 +4893,7 @@ class CLexGen
 	  {
 	    details();
 	  }
-	
+
 	m_outstream.close();
       }
 
@@ -4935,8 +4935,8 @@ class CLexGen
 		/* Eof reached. */
 		CError.parse_error(CError.E_EOF,0);
 	      }
-	    
-	    if (2 <= m_input.m_line_read 
+
+	    if (2 <= m_input.m_line_read
 		&& '%' == m_input.m_line[0]
 		&& '%' == m_input.m_line[1])
 	      {
@@ -4979,11 +4979,11 @@ class CLexGen
 	       && false == CUtility.isnewline(m_input.m_line[elem]))
 	  {
 	    ++elem;
-	  } 
+	  }
 
 	/* Allocate non-terminated buffer of exact length. */
 	buffer = new char[elem - m_input.m_line_index];
-	
+
 	/* Copy. */
 	elem = 0;
 	while (m_input.m_line_index < m_input.m_line_read
@@ -5021,7 +5021,7 @@ class CLexGen
       {
 	if (CUtility.DEBUG)
 	  {
-	    CUtility.assert(INIT_CODE == specified 
+	    CUtility.assert(INIT_CODE == specified
 			    || CLASS_CODE == specified
 			    || EOF_CODE == specified
 			    || EOF_VALUE_CODE == specified
@@ -5038,18 +5038,18 @@ class CLexGen
 	  {
 	    CError.parse_error(CError.E_INTERNAL,0);
 	  }
-	
+
 	if (null == prev_code)
 	  {
 	    prev_code = new char[BUFFER_SIZE];
 	    prev_read = 0;
 	  }
-	
+
 	if (prev_read >= prev_code.length)
 	  {
 	    prev_code = CUtility.doubleSize(prev_code);
 	  }
-	
+
 	m_input.m_line_index = start_dir.length - 1;
 	while (true)
 	  {
@@ -5059,7 +5059,7 @@ class CLexGen
 		  {
 		    CError.parse_error(CError.E_EOF,m_input.m_line_number);
 		  }
-		
+
 		if (0 == CUtility.charncmp(m_input.m_line,
 					   0,
 					   end_dir,
@@ -5067,17 +5067,17 @@ class CLexGen
 					   end_dir.length - 1))
 		  {
 		    m_input.m_line_index = end_dir.length - 1;
-		    
+
 		    switch (specified)
 		      {
 		      case CLASS_CODE:
 			m_spec.m_class_read = prev_read;
 			break;
-			
+
 		      case INIT_CODE:
 			m_spec.m_init_read = prev_read;
 			break;
-			
+
 		      case EOF_CODE:
 			m_spec.m_eof_read = prev_read;
 			break;
@@ -5093,11 +5093,11 @@ class CLexGen
 		      case YYLEX_THROW_CODE:
 			m_spec.m_yylex_throw_read = prev_read;
 			break;
-			
+
 		      case EOF_THROW_CODE:
 			m_spec.m_eof_throw_read = prev_read;
 			break;
-			
+
 		      default:
 			CError.parse_error(CError.E_INTERNAL,m_input.m_line_number);
 			break;
@@ -5124,76 +5124,76 @@ class CLexGen
   /***************************************************************
     Member Variables: JLex directives.
     **************************************************************/
-  private char m_state_dir[] = { 
-    '%', 's', 't', 
+  private char m_state_dir[] = {
+    '%', 's', 't',
     'a', 't', 'e',
     '\0'
     };
-  
-  private char m_char_dir[] = { 
+
+  private char m_char_dir[] = {
     '%', 'c', 'h',
     'a', 'r',
     '\0'
     };
 
-  private char m_line_dir[] = { 
+  private char m_line_dir[] = {
     '%', 'l', 'i',
     'n', 'e',
     '\0'
     };
 
-  private char m_cup_dir[] = { 
+  private char m_cup_dir[] = {
     '%', 'c', 'u',
-    'p', 
+    'p',
     '\0'
     };
 
-  private char m_class_dir[] = { 
-    '%', 'c', 'l', 
+  private char m_class_dir[] = {
+    '%', 'c', 'l',
     'a', 's', 's',
     '\0'
     };
 
-  private char m_implements_dir[] = { 
-    '%', 'i', 'm', 'p', 'l', 'e', 'm', 'e', 'n', 't', 's', 
+  private char m_implements_dir[] = {
+    '%', 'i', 'm', 'p', 'l', 'e', 'm', 'e', 'n', 't', 's',
     '\0'
     };
 
-  private char m_function_dir[] = { 
+  private char m_function_dir[] = {
     '%', 'f', 'u',
     'n', 'c', 't',
     'i', 'o', 'n',
     '\0'
     };
 
-  private char m_type_dir[] = { 
+  private char m_type_dir[] = {
     '%', 't', 'y',
     'p', 'e',
     '\0'
     };
 
-  private char m_integer_dir[] = { 
+  private char m_integer_dir[] = {
     '%', 'i', 'n',
-    't', 'e', 'g', 
+    't', 'e', 'g',
     'e', 'r',
     '\0'
     };
 
-  private char m_intwrap_dir[] = { 
+  private char m_intwrap_dir[] = {
     '%', 'i', 'n',
-    't', 'w', 'r', 
+    't', 'w', 'r',
     'a', 'p',
     '\0'
     };
 
-  private char m_full_dir[] = { 
-    '%', 'f', 'u', 
+  private char m_full_dir[] = {
+    '%', 'f', 'u',
     'l', 'l',
     '\0'
     };
 
-  private char m_unicode_dir[] = { 
-    '%', 'u', 'n', 
+  private char m_unicode_dir[] = {
+    '%', 'u', 'n',
     'i', 'c', 'o',
     'd', 'e',
     '\0'
@@ -5202,126 +5202,126 @@ class CLexGen
   private char m_ignorecase_dir[] = {
     '%', 'i', 'g',
     'n', 'o', 'r',
-    'e', 'c', 'a', 
+    'e', 'c', 'a',
     's', 'e',
     '\0'
     };
 
-  private char m_notunix_dir[] = { 
+  private char m_notunix_dir[] = {
     '%', 'n', 'o',
-    't', 'u', 'n', 
+    't', 'u', 'n',
     'i', 'x',
     '\0'
     };
 
-  private char m_init_code_dir[] = { 
-    '%', 'i', 'n', 
+  private char m_init_code_dir[] = {
+    '%', 'i', 'n',
     'i', 't', '{',
     '\0'
     };
 
-  private char m_init_code_end_dir[] = { 
-    '%', 'i', 'n', 
+  private char m_init_code_end_dir[] = {
+    '%', 'i', 'n',
     'i', 't', '}',
     '\0'
     };
 
-  private char m_init_throw_code_dir[] = { 
-    '%', 'i', 'n', 
+  private char m_init_throw_code_dir[] = {
+    '%', 'i', 'n',
     'i', 't', 't',
     'h', 'r', 'o',
     'w', '{',
     '\0'
     };
 
-  private char m_init_throw_code_end_dir[] = { 
-    '%', 'i', 'n', 
+  private char m_init_throw_code_end_dir[] = {
+    '%', 'i', 'n',
     'i', 't', 't',
     'h', 'r', 'o',
     'w', '}',
     '\0'
     };
 
-  private char m_yylex_throw_code_dir[] = { 
-    '%', 'y', 'y', 'l', 
+  private char m_yylex_throw_code_dir[] = {
+    '%', 'y', 'y', 'l',
     'e', 'x', 't',
     'h', 'r', 'o',
     'w', '{',
     '\0'
     };
 
-  private char m_yylex_throw_code_end_dir[] = { 
-    '%', 'y', 'y', 'l', 
+  private char m_yylex_throw_code_end_dir[] = {
+    '%', 'y', 'y', 'l',
     'e', 'x', 't',
     'h', 'r', 'o',
     'w', '}',
     '\0'
     };
 
-  private char m_eof_code_dir[] = { 
-    '%', 'e', 'o', 
+  private char m_eof_code_dir[] = {
+    '%', 'e', 'o',
     'f', '{',
     '\0'
     };
 
-  private char m_eof_code_end_dir[] = { 
-    '%', 'e', 'o', 
+  private char m_eof_code_end_dir[] = {
+    '%', 'e', 'o',
     'f', '}',
     '\0'
     };
 
-  private char m_eof_value_code_dir[] = { 
-    '%', 'e', 'o', 
-    'f', 'v', 'a', 
+  private char m_eof_value_code_dir[] = {
+    '%', 'e', 'o',
+    'f', 'v', 'a',
     'l', '{',
     '\0'
     };
 
-  private char m_eof_value_code_end_dir[] = { 
-    '%', 'e', 'o', 
+  private char m_eof_value_code_end_dir[] = {
+    '%', 'e', 'o',
     'f', 'v', 'a',
     'l', '}',
     '\0'
     };
 
-  private char m_eof_throw_code_dir[] = { 
-    '%', 'e', 'o', 
+  private char m_eof_throw_code_dir[] = {
+    '%', 'e', 'o',
     'f', 't', 'h',
     'r', 'o', 'w',
     '{',
     '\0'
     };
 
-  private char m_eof_throw_code_end_dir[] = { 
-    '%', 'e', 'o', 
+  private char m_eof_throw_code_end_dir[] = {
+    '%', 'e', 'o',
     'f', 't', 'h',
     'r', 'o', 'w',
     '}',
     '\0'
     };
 
-  private char m_class_code_dir[] = { 
+  private char m_class_code_dir[] = {
     '%', '{',
     '\0'
     };
 
-  private char m_class_code_end_dir[] = { 
+  private char m_class_code_end_dir[] = {
     '%', '}',
     '\0'
     };
 
-  private char m_yyeof_dir[] = { 
+  private char m_yyeof_dir[] = {
     '%', 'y', 'y',
     'e', 'o', 'f',
     '\0'
     };
-  
-  private char m_public_dir[] = { 
+
+  private char m_public_dir[] = {
     '%', 'p', 'u',
-    'b', 'l', 'i', 
+    'b', 'l', 'i',
     'c', '\0'
     };
-  
+
   /***************************************************************
     Function: userDeclare
     Description:
@@ -5332,7 +5332,7 @@ class CLexGen
       throws java.io.IOException
 	{
 	  int elem;
-	  
+
 	  if (CUtility.DEBUG)
 	    {
 	      CUtility.assert(null != this);
@@ -5352,8 +5352,8 @@ class CLexGen
 	  while (false == m_input.getLine())
 	    {
 	      /* Look for double percent. */
-	      if (2 <= m_input.m_line_read 
-		  && '%' == m_input.m_line[0] 
+	      if (2 <= m_input.m_line_read
+		  && '%' == m_input.m_line[0]
 		  && '%' == m_input.m_line[1])
 		{
 		  /* Mess around with line. */
@@ -5365,7 +5365,7 @@ class CLexGen
 
 		  m_input.m_pushback_line = true;
 		  /* Check for and discard empty line. */
-		  if (0 == m_input.m_line_read 
+		  if (0 == m_input.m_line_read
 		      || '\r' == m_input.m_line[0]
 		      || '\n' == m_input.m_line[0])
 		    {
@@ -5406,7 +5406,7 @@ class CLexGen
 							 CLASS_CODE);
 			  break;
 			}
-	      
+
 		      /* Bad directive. */
 		      CError.parse_error(CError.E_DIRECT,
 					 m_input.m_line_number);
@@ -5423,10 +5423,10 @@ class CLexGen
 			  m_input.m_line_index = m_char_dir.length;
 			  m_spec.m_count_chars = true;
 			  break;
-			}	
+			}
 		      else if (0 == CUtility.charncmp(m_input.m_line,
 						      0,
-						      m_class_dir, 
+						      m_class_dir,
 						      0,
 						      m_class_dir.length - 1))
 			{
@@ -5445,12 +5445,12 @@ class CLexGen
 			  m_spec.m_cup_compatible = true;
 			  break;
 			}
-	      
+
 		      /* Bad directive. */
 		      CError.parse_error(CError.E_DIRECT,
 					 m_input.m_line_number);
 		      break;
-		      
+
 		    case 'e':
 		      if (0 == CUtility.charncmp(m_input.m_line,
 						 0,
@@ -5491,7 +5491,7 @@ class CLexGen
 						       EOF_THROW_CODE);
 			  break;
 			}
-	      
+
 		      /* Bad directive. */
 		      CError.parse_error(CError.E_DIRECT,
 					 m_input.m_line_number);
@@ -5576,7 +5576,7 @@ class CLexGen
 			}
 		      else if (0 == CUtility.charncmp(m_input.m_line,
 						      0,
-						      m_implements_dir, 
+						      m_implements_dir,
 						      0,
 						      m_implements_dir.length - 1))
 			{
@@ -5672,7 +5672,7 @@ class CLexGen
 		      CError.parse_error(CError.E_DIRECT,
 					 m_input.m_line_number);
 		      break;
-		     
+
 		    case 't':
 		      if (0 == CUtility.charncmp(m_input.m_line,
 						 0,
@@ -5754,17 +5754,17 @@ class CLexGen
 
 	      if (CUtility.OLD_DEBUG)
 		{
-		  System.out.println("Line number " 
-				     + m_input.m_line_number + ":"); 
+		  System.out.println("Line number "
+				     + m_input.m_line_number + ":");
 		  System.out.print(new String(m_input.m_line,
 					      0,m_input.m_line_read));
 		}
 	    }
 	}
-	 
+
   /***************************************************************
     Function: userRules
-    Description: Processes third section of JLex 
+    Description: Processes third section of JLex
     specification and creates minimized transition table.
     **************************************************************/
   private void userRules
@@ -5789,13 +5789,13 @@ class CLexGen
 	  }
 
 	/* UNDONE: Need to handle states preceding rules. */
-	
+
 	if (m_spec.m_verbose)
 	  {
 	    System.out.println("Creating NFA machine representation.");
 	  }
 	m_makeNfa.thompson(this,m_spec,m_input);
-	
+
 	/*print_nfa();*/
 
 	if (CUtility.DEBUG)
@@ -5831,7 +5831,7 @@ class CLexGen
      )
       {
 	int i;
-	
+
 	System.out.print(" [");
 	for (i = 0; i < m_spec.m_dtrans_ncols; ++i)
 	  {
@@ -5853,14 +5853,14 @@ class CLexGen
      )
       {
 	int index;
-	
+
 	if (null == state)
 	  {
 	    return (new String("--"));
 	  }
 
 	index = m_spec.m_nfa_states.indexOf(state);
-	
+
 	return ((new Integer(index)).toString());
       }
 
@@ -5889,10 +5889,10 @@ class CLexGen
 
 	  case (int) '\r':
 	    return (new String("\\r"));
-	    
+
 	  case (int) ' ':
 	    return (new String("\\ "));
-	    
+
 	  default:
 	    return ((new Character((char) i)).toString());
 	  }
@@ -5915,16 +5915,16 @@ class CLexGen
 	int j;
 	int vsize;
 	String state;
-     
+
 	System.out.println("--------------------- NFA -----------------------");
-	
+
 	size = m_spec.m_nfa_states.size();
 	for (elem = 0; elem < size; ++elem)
 	  {
 	    nfa = (CNfa) m_spec.m_nfa_states.elementAt(elem);
-	    
+
 	    System.out.print("Nfa state " + plab(nfa) + ": ");
-	    
+
 	    if (null == nfa.m_next)
 	      {
 		System.out.print("(TERMINAL)");
@@ -5933,7 +5933,7 @@ class CLexGen
 	      {
 		System.out.print("--> " + plab(nfa.m_next));
 		System.out.print("--> " + plab(nfa.m_next2));
-		
+
 		switch (nfa.m_edge)
 		  {
 		  case CNfa.CCL:
@@ -5942,8 +5942,8 @@ class CLexGen
 
 		  case CNfa.EPSILON:
 		    System.out.print(" EPSILON ");
-		    break; 
-		    
+		    break;
+
 		  default:
 		    System.out.print(" " + interp_int(nfa.m_edge));
 		    break;
@@ -5954,12 +5954,12 @@ class CLexGen
 	      {
 		System.out.print(" (START STATE)");
 	      }
-	    
+
 	    if (null != nfa.m_accept)
 	      {
-		System.out.print(" accepting " 
+		System.out.print(" accepting "
 				 + ((0 != (nfa.m_anchor & CSpec.START)) ? "^" : "")
-				 + "<" 
+				 + "<"
 				 + (new String(nfa.m_accept.m_action,0,
 					       nfa.m_accept.m_action_read))
 				 + ">"
@@ -5981,14 +5981,14 @@ class CLexGen
 		CUtility.assert(null != index);
 	      }
 
-	    System.out.println("State \"" + state 
-			       + "\" has identifying index " 
+	    System.out.println("State \"" + state
+			       + "\" has identifying index "
 			       + index.toString() + ".");
 	    System.out.print("\tStart states of matching rules: ");
-	    
+
 	    i = index.intValue();
 	    vsize = m_spec.m_state_rules[i].size();
-	    
+
 	    for (j = 0; j < vsize; ++j)
 	      {
 		nfa = (CNfa) m_spec.m_state_rules[i].elementAt(j);
@@ -6007,7 +6007,7 @@ class CLexGen
     Description: Parses the state area of a rule,
     from the beginning of a line.
     < state1, state2 ... > regular_expression { action }
-    Returns null on only EOF.  Returns all_states, 
+    Returns null on only EOF.  Returns all_states,
     initialied properly to correspond to all states,
     if no states are found.
     Special Notes: This function treats commas as optional
@@ -6026,7 +6026,7 @@ class CLexGen
 	Integer index;
 	int i;
 	int size;
-	
+
 	if (CUtility.DEBUG)
 	  {
 	    CUtility.assert(null != this);
@@ -6042,7 +6042,7 @@ class CLexGen
 	while (CUtility.isspace(m_input.m_line[m_input.m_line_index]))
 	  {
 	    ++m_input.m_line_index;
-    
+
 	    while (m_input.m_line_index >= m_input.m_line_read)
 	      {
 		/* Must just be an empty line. */
@@ -6058,7 +6058,7 @@ class CLexGen
 	if ('<' == m_input.m_line[m_input.m_line_index])
 	  {
 	    ++m_input.m_line_index;
-	   
+
 	    states = new JavaLexBitSet();
 
 	    /* Parse states. */
@@ -6081,7 +6081,7 @@ class CLexGen
 		    while (CUtility.isspace(m_input.m_line[m_input.m_line_index]))
 		      {
 			++m_input.m_line_index;
-			
+
 			while (m_input.m_line_index >= m_input.m_line_read)
 			  {
 			    if (m_input.getLine())
@@ -6092,7 +6092,7 @@ class CLexGen
 			      }
 			  }
 		      }
-		    
+
 		    if (',' != m_input.m_line[m_input.m_line_index])
 		      {
 			break;
@@ -6141,7 +6141,7 @@ class CLexGen
 		states.set(index.intValue());
 	      }
 	  }
-	
+
 	if (null == all_states)
 	  {
 	    all_states = new JavaLexBitSet();
@@ -6152,7 +6152,7 @@ class CLexGen
 		all_states.set(i);
 	      }
 	  }
-	
+
 	if (m_input.m_line_index < m_input.m_line_read)
 	  {
 	    m_advance_stop = true;
@@ -6162,7 +6162,7 @@ class CLexGen
 
   /********************************************************
     Function: expandMacro
-    Description: Returns false on error, true otherwise. 
+    Description: Returns false on error, true otherwise.
     *******************************************************/
   private boolean expandMacro
     (
@@ -6194,7 +6194,7 @@ class CLexGen
 	    CError.parse_error(CError.E_INTERNAL,m_input.m_line_number);
 	    return ERROR;
 	  }
-	
+
 	start_macro = m_input.m_line_index;
 	elem = m_input.m_line_index + 1;
 	if (elem >= m_input.m_line_read)
@@ -6202,7 +6202,7 @@ class CLexGen
 	    CError.impos("Unfinished macro name");
 	    return ERROR;
 	  }
-	
+
 	/* Get macro name. */
 	start_name = elem;
 	while ('}' != m_input.m_line[elem])
@@ -6210,7 +6210,7 @@ class CLexGen
 	    ++elem;
 	    if (elem >= m_input.m_line_read)
 	      {
-		CError.impos("Unfinished macro name at line " 
+		CError.impos("Unfinished macro name at line "
 			     + m_input.m_line_number);
 		return ERROR;
 	      }
@@ -6245,7 +6245,7 @@ class CLexGen
 	  {
 	    System.out.println("expanded escape: " + def);
 	  }
-		
+
 	/* Replace macro in new buffer,
 	   beginning by copying first part of line buffer. */
 	replace = new char[m_input.m_line.length];
@@ -6258,7 +6258,7 @@ class CLexGen
 		CUtility.assert(rep_elem < replace.length);
 	      }
 	  }
-	
+
 	/* Copy macro definition. */
 	if (rep_elem >= replace.length)
 	  {
@@ -6267,7 +6267,7 @@ class CLexGen
 	for (def_elem = 0; def_elem < def.length(); ++def_elem)
 	  {
 	    replace[rep_elem] = def.charAt(def_elem);
-	    
+
 	    ++rep_elem;
 	    if (rep_elem >= replace.length)
 	      {
@@ -6283,18 +6283,18 @@ class CLexGen
 	for (elem = end_macro + 1; elem < m_input.m_line_read; ++elem)
 	  {
 	    replace[rep_elem] = m_input.m_line[elem];
-	    
+
 	    ++rep_elem;
 	    if (rep_elem >= replace.length)
 	      {
 		replace = CUtility.doubleSize(replace);
 	      }
-	  } 
-	
+	  }
+
 	/* Replace buffer. */
 	m_input.m_line = replace;
 	m_input.m_line_read = rep_elem;
-	
+
 	if (CUtility.OLD_DEBUG)
 	  {
 	    System.out.println(new String(m_input.m_line,0,m_input.m_line_read));
@@ -6333,7 +6333,7 @@ class CLexGen
 	   macro_name macro_definition */
 
 	elem = 0;
-	
+
 	/* Skip white space preceding macro name. */
 	while (CUtility.isspace(m_input.m_line[elem]))
 	  {
@@ -6361,7 +6361,7 @@ class CLexGen
 	count_name = elem - start_name;
 
 	/* Check macro name. */
-	if (0 == count_name) 
+	if (0 == count_name)
 	  {
 	    /* Nonexistent macro name. */
 	    CError.parse_error(CError.E_MACDEF,m_input.m_line_number);
@@ -6413,7 +6413,7 @@ class CLexGen
 	      {
 		in_quote = !in_quote;
 	      }
-	    
+
 	    if ('\\' == m_input.m_line[elem] && false == saw_escape)
 	      {
 		saw_escape = true;
@@ -6437,9 +6437,9 @@ class CLexGen
 	      }
 	  }
 	count_def = elem - start_def;
-	  
+
 	/* Check macro definition. */
-	if (0 == count_def) 
+	if (0 == count_def)
 	  {
 	    /* Nonexistent macro name. */
 	    CError.parse_error(CError.E_MACDEF,m_input.m_line_number);
@@ -6474,7 +6474,7 @@ class CLexGen
     for them in state hashtable in CSpec structure.
     State declaration should be of the form:
     %state name0[, name1, name2 ...]
-    (But commas are actually optional as long as there is 
+    (But commas are actually optional as long as there is
     white space in between them.)
     **************************************************************/
   private void saveStates
@@ -6519,7 +6519,7 @@ class CLexGen
 	  {
 	    if (CUtility.OLD_DEBUG)
 	      {
-		System.out.println("line read " + m_input.m_line_read 
+		System.out.println("line read " + m_input.m_line_read
 				   + "\tline index = " + m_input.m_line_index);
 	      }
 
@@ -6533,7 +6533,7 @@ class CLexGen
 		    return;
 		  }
 	      }
-	    
+
 	    /* Look for state name. */
 	    start_state = m_input.m_line_index;
 	    while (false == CUtility.isspace(m_input.m_line[m_input.m_line_index])
@@ -6550,10 +6550,10 @@ class CLexGen
 
 	    if (CUtility.OLD_DEBUG)
 	      {
-		System.out.println("State name \"" 
+		System.out.println("State name \""
 				   + new String(m_input.m_line,start_state,count_state)
 				   + "\".");
-		System.out.println("Integer index \"" 
+		System.out.println("Integer index \""
 				   + m_spec.m_states.size()
 				   + "\".");
 	      }
@@ -6561,7 +6561,7 @@ class CLexGen
 	    /* Enter new state name, along with unique index. */
 	    m_spec.m_states.put(new String(m_input.m_line,start_state,count_state),
 				new Integer(m_spec.m_states.size()));
-	    
+
 	    /* Skip comma. */
 	    if (',' == m_input.m_line[m_input.m_line_index])
 	      {
@@ -6585,7 +6585,7 @@ class CLexGen
      )
       {
 	char r;
-	
+
 	/* Debug checks. */
 	if (CUtility.DEBUG)
 	  {
@@ -6626,7 +6626,7 @@ class CLexGen
 
 	      case '^':
 		++m_input.m_line_index;
-		r = (char) (CUtility.toupper(m_input.m_line[m_input.m_line_index]) 
+		r = (char) (CUtility.toupper(m_input.m_line[m_input.m_line_index])
 		     - '@');
 		++m_input.m_line_index;
 		return r;
@@ -6652,7 +6652,7 @@ class CLexGen
 		    ++m_input.m_line_index;
 		  }
 		return r;
-		
+
 	      default:
 		if (false == CUtility.isoctdigit(m_input.m_line[m_input.m_line_index]))
 		  {
@@ -6663,7 +6663,7 @@ class CLexGen
 		  {
 		    r = CUtility.oct2bin(m_input.m_line[m_input.m_line_index]);
 		    ++m_input.m_line_index;
-		    
+
 		    if (CUtility.isoctdigit(m_input.m_line[m_input.m_line_index]))
 		      {
 			r = (char) (r << 3);
@@ -6682,10 +6682,10 @@ class CLexGen
 	      }
 	  }
       }
-	
+
   /********************************************************
     Function: packAccept
-    Description: Packages and returns CAccept 
+    Description: Packages and returns CAccept
     for action next in input stream.
     *******************************************************/
   CAccept packAccept
@@ -6724,12 +6724,12 @@ class CLexGen
 		return null;
 	      }
 	  }
-	
+
 	/* Look for beginning of action. */
 	while (CUtility.isspace(m_input.m_line[m_input.m_line_index]))
 	  {
 	    ++m_input.m_line_index;
-	    
+
 	    /* Get a new line, if needed. */
 	    while (m_input.m_line_index >= m_input.m_line_read)
 	      {
@@ -6740,13 +6740,13 @@ class CLexGen
 		  }
 	      }
 	  }
-	
+
 	/* Look for brackets. */
 	if ('{' != m_input.m_line[m_input.m_line_index])
 	  {
-	    CError.parse_error(CError.E_BRACE,m_input.m_line_number); 
+	    CError.parse_error(CError.E_BRACE,m_input.m_line_number);
 	  }
-	
+
 	/* Copy new line into action buffer. */
 	brackets = 0;
 	inquotes = inslashcomment = instarcomment = false;
@@ -6769,7 +6769,7 @@ class CLexGen
 		else // note that inside a star comment, slashed means starred
 		    slashed = ('*' == m_input.m_line[m_input.m_line_index]);
 	    } else if (!inslashcomment) { // not in comment, look for /* or //
-		inslashcomment = 
+		inslashcomment =
 		    (slashed && '/' == m_input.m_line[m_input.m_line_index]);
 		instarcomment =
 		    (slashed && '*' == m_input.m_line[m_input.m_line_index]);
@@ -6785,7 +6785,7 @@ class CLexGen
 	      else if ('}' == m_input.m_line[m_input.m_line_index])
 		{
 		  --brackets;
-		
+
 		  if (0 == brackets)
 		    {
 		      ++action_index;
@@ -6795,7 +6795,7 @@ class CLexGen
 		    }
 		}
 	    }
-	    
+
 	    ++action_index;
 	    /* Double the buffer size, if needed. */
 	    if (action_index >= action.length)
@@ -6819,7 +6819,7 @@ class CLexGen
 		  }
 	      }
 	  }
-	    
+
 	accept = new CAccept(action,action_index,m_input.m_line_number);
 
 	if (CUtility.DEBUG)
@@ -6848,7 +6848,7 @@ class CLexGen
       {
 	boolean saw_escape = false;
 	Integer code;
-	
+
 	/*if (m_input.m_line_index > m_input.m_line_read) {
 	  System.out.println("m_input.m_line_index = " + m_input.m_line_index);
 	  System.out.println("m_input.m_line_read = " + m_input.m_line_read);
@@ -6876,17 +6876,17 @@ class CLexGen
 	      {
 		CError.parse_error(CError.E_SYNTAX,m_input.m_line_number);
 	      }
-	    
+
 	    while (true)
 	      {
-		if (false == m_advance_stop  
+		if (false == m_advance_stop
 		    || m_input.m_line_index >= m_input.m_line_read)
 		  {
 		    if (m_input.getLine())
 		      {
 			/* EOF has already been reached,
 			   so return appropriate code. */
-			
+
 			m_spec.m_current_token = END_OF_INPUT;
 			m_spec.m_lexeme = '\0';
 			return m_spec.m_current_token;
@@ -6903,14 +6903,14 @@ class CLexGen
 		  {
 		    ++m_input.m_line_index;
 		  }
-		
+
 		if (m_input.m_line_index < m_input.m_line_read)
 		  {
 		    break;
 		  }
 	      }
 	  }
-	
+
 	if (CUtility.DEBUG) {
 	  CUtility.assert(m_input.m_line_index <= m_input.m_line_read);
 	}
@@ -6924,7 +6924,7 @@ class CLexGen
 		  {
 		    break;
 		  }
-	       
+
 		if (m_input.m_line_index >= m_input.m_line_read)
 		  {
 		    m_spec.m_current_token = EOS;
@@ -6936,7 +6936,7 @@ class CLexGen
 	      {
 		m_spec.m_in_quote = !m_spec.m_in_quote;
 		++m_input.m_line_index;
-		
+
 		if (m_input.m_line_index >= m_input.m_line_read)
 		  {
 		    m_spec.m_current_token = EOS;
@@ -6956,7 +6956,7 @@ class CLexGen
 	  CUtility.assert(m_input.m_line_index <= m_input.m_line_read);
 	}
 
-	/* Look for backslash, and corresponding 
+	/* Look for backslash, and corresponding
 	   escape sequence. */
 	if ('\\' == m_input.m_line[m_input.m_line_index])
 	  {
@@ -6972,7 +6972,7 @@ class CLexGen
 	    if (false == m_spec.m_in_ccl &&
 		CUtility.isspace(m_input.m_line[m_input.m_line_index]))
 	      {
-		/* White space means the end of 
+		/* White space means the end of
 		   the current regular expression. */
 
 		m_spec.m_current_token = EOS;
@@ -6993,7 +6993,7 @@ class CLexGen
 	  }
 	else
 	  {
-	    if (saw_escape 
+	    if (saw_escape
 		&& (m_input.m_line_index + 1) < m_input.m_line_read
 		&& '\"' == m_input.m_line[m_input.m_line_index + 1])
 	      {
@@ -7006,7 +7006,7 @@ class CLexGen
 		++m_input.m_line_index;
 	      }
 	  }
-	
+
 	code = (Integer) m_tokens.get(new Character(m_spec.m_lexeme));
 	if (m_spec.m_in_quote || true == saw_escape)
 	  {
@@ -7067,8 +7067,8 @@ class CLexGen
 		CUtility.assert(null != def);
 	      }
 
-	    System.out.println("Macro name \"" + name 
-			       + "\" has definition \"" 
+	    System.out.println("Macro name \"" + name
+			       + "\" has definition \""
 			       + def + "\".");
 	  }
 
@@ -7085,11 +7085,11 @@ class CLexGen
 		CUtility.assert(null != index);
 	      }
 
-	    System.out.println("State \"" + state 
-			       + "\" has identifying index " 
+	    System.out.println("State \"" + state
+			       + "\" has identifying index "
 			       + index.toString() + ".");
 	  }
-	    
+
 	System.out.println("\n\t** Character Counting **");
 	if (false == m_spec.m_count_chars)
 	  {
@@ -7130,7 +7130,7 @@ class CLexGen
 	else
 	  {
 	    System.out.println("Generating UNIX-specific code.");
-	    System.out.println("(This means that \"\\n\" is a " 
+	    System.out.println("(This means that \"\\n\" is a "
 			       + "newline, rather than \"\\r\\n\".)");
 	  }
 
@@ -7145,7 +7145,7 @@ class CLexGen
 	    System.out.println("Not generating CUP compatible code.");
 	    System.out.println("(No current results.)");
 	  }
-	
+
 	if (CUtility.FOODEBUG) {
 	  if (null != m_spec.m_nfa_states && null != m_spec.m_nfa_start)
 	    {
@@ -7175,7 +7175,7 @@ class CLexGen
      Vector nfa_set
      )
       {
-	int size; 
+	int size;
 	int elem;
 	CNfa nfa;
 
@@ -7185,7 +7185,7 @@ class CLexGen
 	  {
 	    System.out.print("empty ");
 	  }
-	
+
 	for (elem = 0; elem < size; ++elem)
 	  {
 	    nfa = (CNfa) nfa_set.elementAt(elem);
@@ -7213,7 +7213,7 @@ class CLexGen
 	Integer index;
 
 	System.out.println("/*---------------------- DFA -----------------------");
-	
+
 	states = m_spec.m_states.keys();
 	while (states.hasMoreElements())
 	  {
@@ -7226,8 +7226,8 @@ class CLexGen
 		CUtility.assert(null != index);
 	      }
 
-	    System.out.println("State \"" + state 
-			       + "\" has identifying index " 
+	    System.out.println("State \"" + state
+			       + "\" has identifying index "
 			       + index.toString() + ".");
 
 	    i = index.intValue();
@@ -7254,9 +7254,9 @@ class CLexGen
 		  }
 		else
 		  {
-		    System.out.print(" * State " + i 
+		    System.out.print(" * State " + i
 				     + " [accepting, line "
-				     + dtrans.m_accept.m_line_number 
+				     + dtrans.m_accept.m_line_number
 				     + " <"
 				     + (new String(dtrans.m_accept.m_action,0,
 						   dtrans.m_accept.m_action_read))
@@ -7264,9 +7264,9 @@ class CLexGen
 		    if (CSpec.NONE != dtrans.m_anchor)
 		      {
 			System.out.print(" Anchor: "
-					 + ((0 != (dtrans.m_anchor & CSpec.START)) 
+					 + ((0 != (dtrans.m_anchor & CSpec.START))
 					    ? "start " : "")
-					 + ((0 != (dtrans.m_anchor & CSpec.END)) 
+					 + ((0 != (dtrans.m_anchor & CSpec.END))
 					    ? "end " : ""));
 		      }
 		  }
@@ -7281,9 +7281,9 @@ class CLexGen
 		  }
 		else
 		  {
-		    System.out.print(" * State " + i 
+		    System.out.print(" * State " + i
 				     + " [accepting, line "
-				     + accept.m_line_number 
+				     + accept.m_line_number
 				     + " <"
 				     + (new String(accept.m_action,0,
 						   accept.m_action_read))
@@ -7291,9 +7291,9 @@ class CLexGen
 		    if (CSpec.NONE != m_spec.m_anchor_array[i])
 		      {
 			System.out.print(" Anchor: "
-					 + ((0 != (m_spec.m_anchor_array[i] & CSpec.START)) 
+					 + ((0 != (m_spec.m_anchor_array[i] & CSpec.START))
 					    ? "start " : "")
-					 + ((0 != (m_spec.m_anchor_array[i] & CSpec.END)) 
+					 + ((0 != (m_spec.m_anchor_array[i] & CSpec.END))
 					    ? "end " : ""));
 		      }
 		  }
@@ -7310,17 +7310,17 @@ class CLexGen
 					 + " on ");
 			chars_printed = 0;
 		      }
-		    
+
 		    str = interp_int((int) j);
 		    System.out.print(str);
-				
-		    chars_printed = chars_printed + str.length(); 
+
+		    chars_printed = chars_printed + str.length();
 		    if (56 < chars_printed)
 		      {
 			System.out.print("\n *             ");
 			chars_printed = 0;
 		      }
-		    
+
 		    last_transition = dtrans.m_dtrans[j];
 		  }
 	      }
@@ -7331,7 +7331,7 @@ class CLexGen
 }
 
 /*
- * @(#)BitSet.java	1.12 95/12/01  
+ * @(#)BitSet.java	1.12 95/12/01
  *
  * Revision: 10/21/96
  * Modified by Elliot Joel Berk (ejberk@princeton.edu), for the purposes
@@ -7357,7 +7357,7 @@ class CLexGen
 
 /**
  * A set of bits. The set automatically grows as more bits are
- * needed. 
+ * needed.
  *
  * @version 	1.12, 01 Dec 1995
  * @author Arthur van Hoff, revised by Elliot Joel Berk
@@ -7423,8 +7423,8 @@ final class JavaLexBitSet implements Cloneable {
      */
     public boolean get(int bit) {
 	int n = bit>>BITS;
-	return (n < bits.length) ? 
-		((bits[n] & (1L << (bit & MASK))) != 0) : 
+	return (n < bits.length) ?
+		((bits[n] & (1L << (bit & MASK))) != 0) :
 		false;
     }
 
@@ -7517,7 +7517,7 @@ final class JavaLexBitSet implements Cloneable {
      * Clones the JavaLexBitSet.
      */
     public Object clone() {
-	try { 
+	try {
 	    JavaLexBitSet set = (JavaLexBitSet)super.clone();
 	    set.bits = new long[bits.length];
 	    System.arraycopy(bits, 0, set.bits, 0, bits.length);
@@ -7547,18 +7547,18 @@ final class JavaLexBitSet implements Cloneable {
 
 /************************************************************************
   JLEX COPYRIGHT NOTICE, LICENSE AND DISCLAIMER.
-  
+
   Copyright 1996 by Elliot Joel Berk
-  
+
   Permission to use, copy, modify, and distribute this software and its
   documentation for any purpose and without fee is hereby granted,
   provided that the above copyright notice appear in all copies and that
   both the copyright notice and this permission notice and warranty
   disclaimer appear in supporting documentation, and that the name of
-  Elliot Joel Berk not be used in advertising or publicity pertaining 
+  Elliot Joel Berk not be used in advertising or publicity pertaining
   to distribution of the software without specific, written prior permission.
-  
-  Elliot Joel Berk disclaims all warranties with regard to this software, 
+
+  Elliot Joel Berk disclaims all warranties with regard to this software,
   including all implied warranties of merchantability and fitness.  In no event
   shall Elliot Joel Berk be liable for any special, indirect or consequential
   damages or any damages whatsoever resulting from loss of use, data or

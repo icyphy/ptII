@@ -48,7 +48,7 @@ This Class provides a parser for read matrices in matlab format.
 
 public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, MatrixParserConstants {/*@bgen(jjtree)*/
   protected static JJTMatrixParserState jjtree = new JJTMatrixParserState();
-    /** Read a Matrix from File. 
+    /** Read a Matrix from File.
         @exception IllegalActionException If an error occurs during parsing.
     */
     public Vector readMatrix() throws IllegalActionException {

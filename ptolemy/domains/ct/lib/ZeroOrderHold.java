@@ -72,8 +72,8 @@ public class ZeroOrderHold extends Transformer
      */
     public ZeroOrderHold(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);        
-        // FIXME: Are they always DOUBLE? 
+        super(container, name);
+        // FIXME: Are they always DOUBLE?
         //input.setTypeEquals(BaseType.DOUBLE);
         //output.setTypeEquals(BaseType.DOUBLE);
         output.setTypeAtLeast(input);

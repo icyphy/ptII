@@ -803,7 +803,7 @@ public class Query extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         friendly methods                  ////
 
-    /** Notify all registered listeners that something changed for the 
+    /** Notify all registered listeners that something changed for the
      *  specified entry, if it indeed has changed.  The stringValue()
      *  method is used to check the current value against the previously
      *  notified value, or the original value if there have been no

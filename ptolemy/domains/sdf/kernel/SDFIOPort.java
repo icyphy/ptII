@@ -120,7 +120,7 @@ public final class SDFIOPort extends TypedIOPort {
 	setInput(isinput);
         setOutput(isoutput);
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 

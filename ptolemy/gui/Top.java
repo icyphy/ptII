@@ -219,7 +219,7 @@ public abstract class Top extends JFrame {
             // Set up the menus.
             _fileMenu.setMnemonic(KeyEvent.VK_F);
             _helpMenu.setMnemonic(KeyEvent.VK_H);
-            
+
             // Open button = ctrl-o.
             _fileMenuItems[0].setAccelerator(
                     KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
@@ -278,9 +278,9 @@ public abstract class Top extends JFrame {
             _addMenus();
 
             _menubar.add(_helpMenu);
-            
+
             setJMenuBar(_menubar);
-            
+
             // Add a status bar.
             getContentPane().add(_statusBar, BorderLayout.SOUTH);
         }
@@ -487,7 +487,7 @@ public abstract class Top extends JFrame {
 	    } catch (Exception ex) {
 		MessageHandler.error("Printing Failed", ex);
 	    }
-	} 
+	}
     }
 
     /** Save the model to the current file, determined by the
@@ -540,11 +540,11 @@ public abstract class Top extends JFrame {
                         query,
                         "Save Changes?",
                         JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, 
+                        JOptionPane.QUESTION_MESSAGE,
                         null,
                         null,
                         null);
-        
+
                 if (selected == 1) {
                     return false;
                 }
@@ -591,11 +591,11 @@ public abstract class Top extends JFrame {
                 query,
                 "Save Changes?",
                 JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE, 
+                JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
                 options[0]);
-        
+
         if (selected == 0) {
             return _save();
         } else if(selected == 1) {

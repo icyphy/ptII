@@ -353,15 +353,15 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Invoke a specified number of iterations of the actor. An
-     *  iteration is equivalant to invoking prefire(), fire(), and 
-     *  postfire(), in that order. In an iteration, if prefire() 
-     *  returns true, then fire() will be called once, followed by 
-     *  postfire(). Otherwise, if prefire() returns false, fire() 
+     *  iteration is equivalant to invoking prefire(), fire(), and
+     *  postfire(), in that order. In an iteration, if prefire()
+     *  returns true, then fire() will be called once, followed by
+     *  postfire(). Otherwise, if prefire() returns false, fire()
      *  and postfire() are not invoked, and this method returns
      *  NOT_READY. If postfire() returns false, then no more
      *  iterations are invoked, and this method returns STOP_ITERATING.
      *  Otherwise, it returns COMPLETED.
-     *  
+     *
      *  @param count The number of iterations to perform.
      *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
      *  @exception IllegalActionException If iterating is not
@@ -656,7 +656,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  Throw an exception if there is more than one transition enabled.
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
-     *  @exception IllegalActionException If there is more than one 
+     *  @exception IllegalActionException If there is more than one
      *   transition enabled, or if thrown by any choice action contained
      *   by the enabled transition.
      */

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (frederic.boulanger@supelec.fr)
-@AcceptedRating Red 
+@AcceptedRating Red
 */
 
 package ptolemy.vergil.debugger;
@@ -39,9 +39,9 @@ import ptolemy.data.*;
 //// Breakpoint
 /**
 This class implements a breakpoint.  A breakpoint is essentially a boolean
-variable that wishes to pause execution when it evaluates to true.  Note that 
+variable that wishes to pause execution when it evaluates to true.  Note that
 this class does not actually halt execution.  Instead, an instance of the
-DebugController class listens for firing events that are sent from a 
+DebugController class listens for firing events that are sent from a
 director and when an actor is executed that contains a breakpoint with a
 name corresponding to the name of a called method, will suspend the executing
 thread.
@@ -53,7 +53,7 @@ thread.
 @version $Id$
 */
 public class Breakpoint extends Variable {
-   
+
     /** Construct a new breakpoint in the given actor, with the given name.
      * @param actor The actor that contains the breakpoint.
      * @param method The name of the method from executable interface
@@ -62,22 +62,22 @@ public class Breakpoint extends Variable {
      * @exception NameDuplicationException If the container already contains
      * an object with the given name.
      */
-    public Breakpoint(NamedObj actor, String method) 
+    public Breakpoint(NamedObj actor, String method)
 	throws IllegalActionException, NameDuplicationException {
 
       	super(actor, method);
 	if(!(actor instanceof Actor))
 	    throw new IllegalActionException("Breakpoints can only be " +
 					     "contained by Actors");
-	
+
 	setExpression("true");
     }
 
     /////////////////////////////////////////////////////////////////
     //  Public methods
 
-    /** Evaluate the boolean expression of the breakpoint and 
-     * returns the boolean value. 
+    /** Evaluate the boolean expression of the breakpoint and
+     * returns the boolean value.
      * @return a boolean true will stop the execution
      */
     public boolean evaluateCondition() {

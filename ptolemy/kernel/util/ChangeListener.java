@@ -49,8 +49,8 @@ public interface ChangeListener {
     ////                         public methods                    ////
 
     /** React to a change request has been successfully executed.
-     *  This method is called after a change request 
-     *  has been executed sucessfully. 
+     *  This method is called after a change request
+     *  has been executed sucessfully.
      *  @param change The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change);

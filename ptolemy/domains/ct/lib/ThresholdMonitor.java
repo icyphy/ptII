@@ -202,7 +202,7 @@ public class ThresholdMonitor extends TypedAtomicActor
         return dir.getCurrentStepSize();
     }
 
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

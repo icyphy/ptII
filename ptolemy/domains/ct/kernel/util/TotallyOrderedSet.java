@@ -139,7 +139,7 @@ public class TotallyOrderedSet {
     }
 
     /** Insert the given element, keeping the set sorted. If the set
-     *  contains an element "equals" to the given element, 
+     *  contains an element "equals" to the given element,
      *  then do nothing.
      *  The equivalence relation is defined by the comparator.
      *  If the type of given element
@@ -204,8 +204,8 @@ public class TotallyOrderedSet {
         return _set.remove(index);
     }
 
-    /** Remove and return the first element, ie. the <i>"smallest"</i> 
-     *  element in the set.. Thrown an exception 
+    /** Remove and return the first element, ie. the <i>"smallest"</i>
+     *  element in the set.. Thrown an exception
      *  if the set is empty.
      *  @return The removed element.
      *  @exception NoSuchElementException If the set is empty.

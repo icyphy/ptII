@@ -47,17 +47,17 @@ import java.util.Iterator;
 /**
 This "odesolver" resolves the derivative with respect to the current time
 and current state of the system. For example, if the ODE is
-<pre> 
+<pre>
     x' = f(x,t)
 </pre>,
-the current time is t0, and 
+the current time is t0, and
 <pre>
     x(t0) = x0.
 </pre>
-This method calculate 
+This method calculate
 <pre>
     x'(t0) = f(x(t0), t0).
-</pre> 
+</pre>
 
 <P>
 The derivative is obtained by
@@ -65,9 +65,9 @@ firing the system for one iteration.
 This is used for preparing the history for other
 methods. This is typically used as a breakpoint solver.
 Note that time does not progress after one iteration of this solver.
-So it can not be used as an ODESolver. 
-It assumes that the state is continuous after the breakpoint. 
-This may not be true if there are impulses in the system. 
+So it can not be used as an ODESolver.
+It assumes that the state is continuous after the breakpoint.
+This may not be true if there are impulses in the system.
 In that case, use ImpulseBESolver as the breakpoint solver for a better result.
 
 @author Jie Liu
@@ -77,14 +77,14 @@ public class DerivativeResolver extends ODESolver {
 
     /** Construct a solver in the default workspace with the name
      *  "CT_Derivative_Resolver". The solver is added to the list of
-     *  objects in the workspace. 
+     *  objects in the workspace.
      *  Increment the version number of the workspace.
      */
     public DerivativeResolver() {
        this(null);
     }
 
-    /** Construct a solver in the given workspace with the name 
+    /** Construct a solver in the given workspace with the name
      *  "CT_Derivative_Resolver".
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -135,7 +135,7 @@ public class DerivativeResolver extends ODESolver {
     }
 
     /** Return true, since there is no step size control.
-     * 
+     *
      *  @param integrator The integrator of that calls this method.
      *  @return True always.
      */
@@ -147,7 +147,7 @@ public class DerivativeResolver extends ODESolver {
     /** Return the initial step size of the director. Since this solver
      *  is always used as the breakpoint solver, the next integration
      *  step will use the initial step size.
-     *  
+     *
      *  @param integrator The integrator of that calls this method.
      *  @return The initial step size.
      */

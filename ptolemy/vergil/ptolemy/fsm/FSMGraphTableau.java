@@ -107,7 +107,7 @@ import javax.swing.SwingUtilities;
 @version $Id$
 */
 public class FSMGraphTableau extends Tableau {
-  
+
     public FSMGraphTableau(PtolemyEffigy container,
 			      String name)
 	throws IllegalActionException, NameDuplicationException {
@@ -122,11 +122,11 @@ public class FSMGraphTableau extends Tableau {
             "Cannot graphically edit a model that is not a CompositeEntity.");
         }
 	CompositeEntity entity = (CompositeEntity)model;
-	
+
 	FSMGraphFrame frame = new FSMGraphFrame(entity, this);
 	setFrame(frame);
 	frame.setBackground(BACKGROUND_COLOR);
-	frame.pack(); 
+	frame.pack();
 	frame.centerOnScreen();
 	frame.setVisible(true);
     }
@@ -140,7 +140,7 @@ public class FSMGraphTableau extends Tableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
-    
+
     /** A factory that creates graph editing tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
@@ -148,7 +148,7 @@ public class FSMGraphTableau extends Tableau {
 	 *  The container argument must not be null, or a
 	 *  NullPointerException will be thrown.  This entity will use the
 	 *  workspace of the container for synchronization and version counts.
-	 *  If the name argument is null, 
+	 *  If the name argument is null,
 	 *  then the name is set to the empty string.
 	 *  Increment the version of the workspace.
 	 *  @param container The container entity.
@@ -163,7 +163,7 @@ public class FSMGraphTableau extends Tableau {
 	    super(container, name);
 	}
 
-	/** Create a tableau in the default workspace with no name for the 
+	/** Create a tableau in the default workspace with no name for the
 	 *  given Effigy.  The tableau will created with a new unique name
 	 *  in the given model proxy.  If this factory cannot create a tableau
 	 *  for the given proxy (perhaps because the proxy is not of the
@@ -175,11 +175,11 @@ public class FSMGraphTableau extends Tableau {
 	 *  tableau.
 	 */
 	public Tableau createTableau(Effigy proxy) throws Exception {
-	    if(!(proxy instanceof PtolemyEffigy)) 
+	    if(!(proxy instanceof PtolemyEffigy))
 		return null;
 	    PtolemyEffigy effigy = (PtolemyEffigy)proxy;
 	    if(effigy.getModel() instanceof FSMActor) {
-		FSMGraphTableau tableau = 
+		FSMGraphTableau tableau =
 		    new FSMGraphTableau((PtolemyEffigy)proxy,
 					proxy.uniqueName("tableau"));
 		return tableau;

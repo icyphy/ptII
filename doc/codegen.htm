@@ -30,7 +30,7 @@ about running Ptolemy II code generation systems under the PalmOS.
 <pre>
 cd $PTII/ptolemy/lang/java
 make PrintTree
-</pre> 
+</pre>
 This rule sets the CLASSPATH and then runs
 <pre>
 java ptolemy.lang.java.PrintTree ./nodetypes/IntLitNode.java
@@ -41,7 +41,7 @@ and prints out the AST.
 <pre>
 cd $PTII/ptolemy/lang/java
 make RegenerateCode
-</pre> 
+</pre>
 This rule sets the CLASSPATH and then runs
 <pre>
 java ptolemy.lang.java.RegenerateCode ./nodetypes/IntLitNode.java
@@ -53,7 +53,7 @@ comments and whitespace
 <pre>
 cd $PTII/ptolemy/lang/java
 make analysis
-</pre> 
+</pre>
 This rule sets the CLASSPATH and then runs
 <pre>
 java ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
@@ -65,7 +65,7 @@ semantic analysis, which resolves names.
 <pre>
 cd $PTII/ptolemy/lang/java
 make codegen
-</pre> 
+</pre>
 This rule sets the CLASSPATH and then reads in the Ptolemy
 simulation from
 <a href="../ptolemy/domains/sdf/demo/orthocom"><code>ptolemy/domains/sdf/demo/orthocom</code></a> and generates code in
@@ -122,7 +122,7 @@ in <code>$PTII/ptolemy/lang/java</code> which reads in
 <code>$PTII/ptolemy/lang/java/NodeTypes.def</code> which reads in
 
 <dt><a href="../ptolemy/lang/java"><code>ptolemy/lang/java/ptbyacc</code></a>
-<dd> C Source code for a Ptolemy II specific version of 
+<dd> C Source code for a Ptolemy II specific version of
 <a href="#ptbyacc"><code>ptbyacc</code></a>.
 
 <dt><a href="../ptolemy/domains/sdf/codegen"><code>ptolemy/domains/sdf/codegen</code></a>
@@ -133,11 +133,11 @@ The SDFTypeIdentifier class identifies TypedAtomicActor and SDF ports.
 
 <h2><a name="ptbyacc"><code>ptbyacc</code></a></h2>
 <code>ptbyacc</code> is a parser generator written in C that
-read in 
-<a href="../ptolemy/lang/java/jparser.y"><code>ptolemy/lang/java/jparser.y</code></a>, 
-and generates 
+read in
+<a href="../ptolemy/lang/java/jparser.y"><code>ptolemy/lang/java/jparser.y</code></a>,
+and generates
 <a href="../ptolemy/lang/java/JavaParserval.java"><code>ptolemy/lang/java/JavaParserval.java</code></a>
-and the <code>.tbl</code> files in 
+and the <code>.tbl</code> files in
 <code>ptolemy/lang/java</code>
 
 <p> The original <code>byacc</code> source can be found at
@@ -154,7 +154,7 @@ the directory where the JavaParser class is located.  If the <code>.bin</code>
 files cannot be found, then the <code>.tbl</code> files are loaded
 and <code>.bin</code> files are generated.
 To regenerate the <code>.bin</code> files, run
-<code>make update_tables</code> in 
+<code>make update_tables</code> in
 <code>$PTII/ptolemy/lang/java</code>.
 <br><bold>FIXME: make the read method static so that this is true</bold>
 

@@ -52,7 +52,7 @@ import ptolemy.domains.ct.lib.ZeroOrderHold;
 An actor that controls the following car. It has three inputs, which
 are the position of the first car, its correctness, and the position
 of the second car. It one output, which is the driving force
-to the cat. It operates in two modes, "normal" and "erroneous". 
+to the cat. It operates in two modes, "normal" and "erroneous".
 In the normal mode, it trusts the in-coming information from the
 first car, and uses a PI controller to generate the force.
 In the erroneous mode, it uses a Bang-Bang control law.
@@ -65,29 +65,29 @@ In the "decelaration" mode, it outputs 0.
 */
 
 public class SimpleModalController extends CTCompositeActor {
-    
+
      /** Construct the composite actor, the director, and all
       *  the actors contained.
       */
-    public SimpleModalController(TypedCompositeActor container, String name) 
+    public SimpleModalController(TypedCompositeActor container, String name)
              throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // create ports.
-        
+
         correctness = new TypedIOPort(this, "correctness");
         correctness.setInput(true);
         correctness.setTypeEquals(BaseType.BOOLEAN);
 
-        leadingPosition = new TypedIOPort(this, "leadingPosition");     
+        leadingPosition = new TypedIOPort(this, "leadingPosition");
         leadingPosition.setInput(true);
         leadingPosition.setMultiport(false);
-        leadingPosition.setTypeEquals(BaseType.DOUBLE); 
+        leadingPosition.setTypeEquals(BaseType.DOUBLE);
 
-        followingPosition = new TypedIOPort(this, "followingPosition");     
+        followingPosition = new TypedIOPort(this, "followingPosition");
         followingPosition.setInput(true);
         followingPosition.setMultiport(false);
-        followingPosition.setTypeEquals(BaseType.DOUBLE); 
+        followingPosition.setTypeEquals(BaseType.DOUBLE);
 
         incomingForce = new TypedIOPort(this, "incomingForce");
         incomingForce.setInput(true);
@@ -105,11 +105,11 @@ public class SimpleModalController extends CTCompositeActor {
         TypedIOPort correct = new TypedIOPort(controller, "correct");
         correct.setInput(true);
         correct.setTypeEquals(BaseType.BOOLEAN);
-           
+
         State normal = new State(controller, "normal");
         State erroneous = new State(controller, "erroneous");
         controller.initialStateName.setExpression("normal");
-        
+
         Transition goWrong = new Transition(controller, "goWrong");
         normal.outgoingPort.link(goWrong);
         erroneous.incomingPort.link(goWrong);
@@ -122,7 +122,7 @@ public class SimpleModalController extends CTCompositeActor {
         normal.incomingPort.link(goRight);
         goRight.setGuardExpression("correct_V");
         //ResetRefinement reset2 = new ResetRefinement(goRight, "reset2");
-        
+
         // create director.
         HSDirector modalDirector = new HSDirector(this, "modalDirector");
         modalDirector.controllerName.setExpression("Controller");
@@ -134,22 +134,22 @@ public class SimpleModalController extends CTCompositeActor {
             CTCompositeActor(this, "normalRefinement");
         normal.refinementName.setExpression("normalRefinement");
 
-        TypedIOPort normalLeadingInput = new 
+        TypedIOPort normalLeadingInput = new
             TypedIOPort(normalRefinement, "normalLeadingInput", true, false);
         normalLeadingInput.setMultiport(false);
         normalLeadingInput.setTypeEquals(BaseType.DOUBLE);
 
-        TypedIOPort normalFollowingInput = new 
+        TypedIOPort normalFollowingInput = new
             TypedIOPort(normalRefinement, "normalFollowingInput", true, false);
         normalFollowingInput.setMultiport(false);
         normalFollowingInput.setTypeEquals(BaseType.DOUBLE);
 
-        TypedIOPort normalForceInput = new 
+        TypedIOPort normalForceInput = new
             TypedIOPort(normalRefinement, "normalForceInput", true, false);
         normalForceInput.setMultiport(false);
         normalForceInput.setTypeEquals(BaseType.DOUBLE);
-        
-        TypedIOPort normalForceOutput = new 
+
+        TypedIOPort normalForceOutput = new
             TypedIOPort(normalRefinement, "normalForceOutput", false, true);
         normalForceOutput.setMultiport(false);
         normalForceOutput.setTypeEquals(BaseType.DOUBLE);
@@ -170,26 +170,26 @@ public class SimpleModalController extends CTCompositeActor {
         exprF.setTypeEquals(BaseType.DOUBLE);
 
         expr.output.setTypeEquals(BaseType.DOUBLE);
-        
+
         expr.expression.setExpression("exprF");
 
         normalRefinement.connect(normalLeadingInput, exprP1);
         normalRefinement.connect(normalFollowingInput, exprP2);
         normalRefinement.connect(normalForceInput, exprF);
         normalRefinement.connect(expr.output, normalForceOutput);
-        
+
         // end of normalRefinement.
-        
+
         // erroneous state refinement
         CTCompositeActor erroRefinement = new
             CTCompositeActor(this, "erroRefinement");
         erroneous.refinementName.setExpression("erroRefinement");
 
-        TypedIOPort erroForceOutput = new 
+        TypedIOPort erroForceOutput = new
             TypedIOPort(erroRefinement, "erroForceOutput", false, true);
         erroForceOutput.setMultiport(false);
         erroForceOutput.setTypeEquals(BaseType.DOUBLE);
-        
+
         // erroneous refinement director.
         CTEmbeddedDirector erroRefinementDirector = new
             CTEmbeddedDirector(erroRefinement, "erroRefinementDirector");
@@ -204,14 +204,14 @@ public class SimpleModalController extends CTCompositeActor {
             CTSubscriber(erroRefinement, "farMonitor");
         farMonitor.entryName.setToken(new StringToken("TooFar"));
 
-        BangBangController bangbang = 
+        BangBangController bangbang =
             new BangBangController(erroRefinement, "BangBang");
         bangbang.highValue.setToken(new DoubleToken(2.0));
 
         erroRefinement.connect(closeMonitor.output, bangbang.tooLarge);
         erroRefinement.connect(farMonitor.output, bangbang.tooSmall);
         erroRefinement.connect(bangbang.output, erroForceOutput);
-     
+
         // connection in the controller level.
         connect(correctness, correct);
         connect(leadingPosition, normalLeadingInput);
@@ -220,16 +220,16 @@ public class SimpleModalController extends CTCompositeActor {
         connect(followingPosition, normalFollowingInput);
         TypedIORelation forceRel = (TypedIORelation)
             connect(normalForceOutput, drivingForce);
-        erroForceOutput.link(forceRel);  
+        erroForceOutput.link(forceRel);
     }
 
     ////////////////////////////////////////////////////////////////////
     ////                    ports and parameters                    ////
-    
+
     /** leading car position input.
      */
     public TypedIOPort leadingPosition;
-    
+
     /** following car position input.
      */
     public TypedIOPort followingPosition;
@@ -247,5 +247,5 @@ public class SimpleModalController extends CTCompositeActor {
     public TypedIOPort drivingForce;
 
 }
-        
+
 

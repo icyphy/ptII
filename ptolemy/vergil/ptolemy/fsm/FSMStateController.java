@@ -121,7 +121,7 @@ public class FSMStateController extends LocatableNodeController {
 		}
 	    } catch (KernelException ex) {
 		throw new InternalErrorException("could not create icon " +
-						 "in " + object + " even " + 
+						 "in " + object + " even " +
 						 "though one did not exist");
 	    }
 

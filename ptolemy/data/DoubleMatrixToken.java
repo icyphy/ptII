@@ -70,8 +70,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *  constructed will not affect the content of this token.
      *  If copy is DO_NOT_COPY, just reference the array (do not copy
      *  its contents). This saves some time and memory.
-     *  The argument array should NOT be modified after this constructor 
-     *  is called to preserve immutability.          
+     *  The argument array should NOT be modified after this constructor
+     *  is called to preserve immutability.
      *  @exception NullPointerException If the specified array
      *   is null.
      */
@@ -274,8 +274,8 @@ public class DoubleMatrixToken extends MatrixToken {
         } else {
             // type of specified token <= DoubleMatrixToken
             DoubleMatrixToken tem = (DoubleMatrixToken) convert(t);
-        
-            return new BooleanToken(DoubleMatrixMath.within(_value, 
+
+            return new BooleanToken(DoubleMatrixMath.within(_value,
              tem._getInternalDoubleMatrix(), 0.0));
         }
     }
@@ -387,7 +387,7 @@ public class DoubleMatrixToken extends MatrixToken {
                     + "token " + t.getClass().getName() + " is not lower than "
                     + getClass().getName());
        }
-       
+
        // Check if t is matrix. In that case we must convert t into a
        // DoubleMatrixToken because matrix multiplication is not
        // commutative.
@@ -395,11 +395,11 @@ public class DoubleMatrixToken extends MatrixToken {
           // multiply is commutative on double matrices, for scalar types.
           return multiply(t);
        } else {
-          // the specified token is not a scalar       
+          // the specified token is not a scalar
           DoubleMatrixToken tem = (DoubleMatrixToken) this.convert(t);
           return new DoubleMatrixToken(DoubleMatrixMath.multiply(
                       tem._getInternalDoubleMatrix(), _value), DO_NOT_COPY);
-       }       
+       }
     }
 
     /** Return a new Token representing the left multiplicative
@@ -447,8 +447,8 @@ public class DoubleMatrixToken extends MatrixToken {
                 t.getClass().getName();
             throw new IllegalActionException(msg);
         } else if (compare == CPO.LOWER) {
-            Token me = t.convert(this);            
-            return me.subtract(t); 
+            Token me = t.convert(this);
+            return me.subtract(t);
         } else {
             // type of the specified token <= DoubleMatrixToken
             double[][] result = null;
@@ -465,7 +465,7 @@ public class DoubleMatrixToken extends MatrixToken {
                     "matrices with different dimensions.");
                 }
 
-                result = DoubleMatrixMath.subtract(_value, 
+                result = DoubleMatrixMath.subtract(_value,
                  tem._getInternalDoubleMatrix());
             }
             return new DoubleMatrixToken(result, DO_NOT_COPY);
@@ -473,7 +473,7 @@ public class DoubleMatrixToken extends MatrixToken {
     }
 
     /** Return a new Token whose value is the value of this Token
-     *  subtracted from the value of the argument Token. 
+     *  subtracted from the value of the argument Token.
      *  The type of the specified token must be lower than DoubleMatrixToken.
      *  @param t The token to add this Token to.
      *  @return A new token containing the result.
@@ -489,7 +489,7 @@ public class DoubleMatrixToken extends MatrixToken {
                     + getClass().getName());
         }
         // add the argument Token to the negative of this Token
-        DoubleMatrixToken negativeToken = 
+        DoubleMatrixToken negativeToken =
          new DoubleMatrixToken(DoubleMatrixMath.negative(_value), DO_NOT_COPY);
         return negativeToken.add(t);
     }
@@ -520,5 +520,5 @@ public class DoubleMatrixToken extends MatrixToken {
     ////                         private variables                 ////
     private final double[][] _value;
     private final int _rowCount;
-    private final int _columnCount;        
+    private final int _columnCount;
 }

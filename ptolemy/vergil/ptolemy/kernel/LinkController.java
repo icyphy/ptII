@@ -120,7 +120,7 @@ public class LinkController extends EdgeController {
 	    if(object instanceof Port) return super.acceptHead(c, f);
 	    if(object instanceof Vertex) return super.acceptHead(c, f);
 	    if(object instanceof Location &&
-	       ((Location)object).getContainer() instanceof Port) 
+	       ((Location)object).getContainer() instanceof Port)
 		return super.acceptHead(c, f);
 	    return false;
         }
@@ -130,7 +130,7 @@ public class LinkController extends EdgeController {
 	    if(object instanceof Port) return super.acceptTail(c, f);
 	    if(object instanceof Vertex) return super.acceptTail(c, f);
 	    if(object instanceof Location &&
-	       ((Location)object).getContainer() instanceof Port) 
+	       ((Location)object).getContainer() instanceof Port)
 		return super.acceptHead(c, f);
 	    return false;
         }
@@ -155,7 +155,7 @@ public class LinkController extends EdgeController {
             //AbstractConnector c = new StraightConnector(tailSite, headSite);
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
-	    
+
 	    Link link = (Link)edge;
 	    Relation relation = link.getRelation();
 	    if(relation != null) {
@@ -177,7 +177,7 @@ public class LinkController extends EdgeController {
             Figure f = evt.getTarget();
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
-            PtolemyGraphModel model =  
+            PtolemyGraphModel model =
 		(PtolemyGraphModel) getController().getGraphModel();
 	    switch (evt.getEnd()) {
 	    case ConnectorEvent.HEAD_END:
@@ -192,8 +192,8 @@ public class LinkController extends EdgeController {
 	    }
             // rerender the edge.  This is necessary for several reasons.
             // First, the edge is only associated with a relation after it
-            // is fully connected.  Second, edges that aren't 
-            // connected should be erased (which this will rather 
+            // is fully connected.  Second, edges that aren't
+            // connected should be erased (which this will rather
             // conveniently take care of for us
             getController().rerenderEdge(edge);
         }

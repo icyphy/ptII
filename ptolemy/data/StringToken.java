@@ -84,7 +84,7 @@ public class StringToken extends Token {
         int typeInfo = TypeLattice.compare(this, token);
         try {
             if (token instanceof StringToken) {
-                String result = 
+                String result =
                     _value + ((StringToken)token).stringValue();
                 return new StringToken(result);
             } else if (typeInfo == CPO.HIGHER) {
@@ -188,7 +188,7 @@ public class StringToken extends Token {
         }
     }
 
-    /** Return the string that this token contains.  Note that this is 
+    /** Return the string that this token contains.  Note that this is
      *  different than the toString method, which returns a string expression
      *  that has double quotes around it.
      *  @return The contained string.
@@ -198,7 +198,7 @@ public class StringToken extends Token {
     }
 
     /** Return the value of this Token as a string.  The string will begin
-     *  and end with double quotes, indicating a string constant in the 
+     *  and end with double quotes, indicating a string constant in the
      *  expression language.
      *  @return A String.
      */

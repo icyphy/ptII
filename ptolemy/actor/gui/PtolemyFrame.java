@@ -100,11 +100,11 @@ public abstract class PtolemyFrame extends TableauFrame {
      */
     protected Image _getDefaultIconImage() {
 	if(_defaultIconImage == null) {
-	    URL url = 
+	    URL url =
 		getClass().getResource("/doc/img/PtolemyIISmallIcon.gif");
 	    Toolkit tk = Toolkit.getDefaultToolkit();
             _defaultIconImage = tk.createImage(url);
-	}	
+	}
 	return _defaultIconImage;
     }
 

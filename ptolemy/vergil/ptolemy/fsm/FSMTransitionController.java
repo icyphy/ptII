@@ -74,7 +74,7 @@ public class FSMTransitionController extends EdgeController {
     public FSMTransitionController(GraphController controller) {
 	super(controller);
 	// Create and set up the target for connectors
-	
+
 	SelectionModel sm = controller.getSelectionModel();
 	SelectionInteractor interactor =
             (SelectionInteractor) getEdgeInteractor();
@@ -164,7 +164,7 @@ public class FSMTransitionController extends EdgeController {
             Figure f = evt.getTarget();
             Object edge = c.getUserObject();
             Object node = (f == null) ? null : f.getUserObject();
-            FSMGraphModel model =  
+            FSMGraphModel model =
 		(FSMGraphModel) getController().getGraphModel();
 	    switch (evt.getEnd()) {
 	    case ConnectorEvent.HEAD_END:
@@ -175,12 +175,12 @@ public class FSMTransitionController extends EdgeController {
 		break;
 	    default:
 		throw new IllegalStateException(
-						"Cannot handle both ends of an edge being dragged.");                
+						"Cannot handle both ends of an edge being dragged.");
 	    }
             // rerender the edge.  This is necessary for several reasons.
             // First, the edge is only associated with a relation after it
-            // is fully connected.  Second, edges that aren't 
-            // connected should be erased (which this will rather 
+            // is fully connected.  Second, edges that aren't
+            // connected should be erased (which this will rather
             // conveniently take care of for us
             // There is a bug in this I need to track down first.
             //  getController().rerenderEdge(edge);

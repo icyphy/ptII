@@ -10,16 +10,16 @@
 Ptplot 4.1 requires Swing, which is shipped as part of JDK1.2.
 (In theory, it is possible to install Swing with JDK1.1, but we have not
 tried it).  To run Ptplot 4.1 applets, you must install the version 1.2
-or later of the 
+or later of the
 <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>
 
 <p>If you do not want to require your users to install the JDK1.2 plugin,
 then you should stick with Ptplot3.1, which does not use Swing.
 
-<p>Ptplot is distributed in several formats. 
+<p>Ptplot is distributed in several formats.
 <menu>
  <li>The usual <a href="#tarorzip">tar file and zip file format.</a>
- <li>An experimental format using the 
+ <li>An experimental format using the
 <a href="#installshield">Installshield JShield installer.</a>
  <li>As part of the Ptolemy II distribution - This page covers the
  above two cases, for information about installing Ptolemy II
@@ -49,7 +49,7 @@ then see
 with Cygwin.
 <ol>
 
-<li> Be sure that JDK1.2 is installed, and that <CODE>javac</CODE> 
+<li> Be sure that JDK1.2 is installed, and that <CODE>javac</CODE>
 is in your path.
 
 <li> Untar or unzip the Ptplot distribution.
@@ -106,7 +106,7 @@ the applets can still be run with JDK1.1.x, so we don't require
 JDK1.2.
 
 <li> Installing Ptplot in a directory whose pathname has a  space  in it
-seem to cause problems with the start up scripts.  
+seem to cause problems with the start up scripts.
 
 
 <li> If you choose the Microsoft jvm, which sometimes found at
@@ -115,9 +115,9 @@ This is probably because the format window uses Swing facilities that
 are not in <CODE>jview</CODE>
 
 <li> Ideally, Ptplot should be installed on machines with JDK1.2.
-It is best if you install Java before installing Ptplot.  However 
+It is best if you install Java before installing Ptplot.  However
 The Installshield applet installer can download and install a JRE for you.
-Usually the JRE that can be downloaded via the Installshield applet installer 
+Usually the JRE that can be downloaded via the Installshield applet installer
 is JDK1.1.7B.  We were able to substitute in the JRE 1.2.2 .exe file
 so that under Windows, JRE1.2.2 is properly installed.  However, we
 were not able to get this to work under Solaris, it appears that
@@ -140,12 +140,12 @@ that determines some information about your environment and
 then modifies a few files.
 
 When the <a href="../../../configure"><CODE>configure</CODE></a>
- script is run, it reads in 
+ script is run, it reads in
 <a href="../../../mk/ptII.mk.in"><CODE>mk/ptII.mk.in</CODE></a>
 and
 <a href="../../../bin/ptinvoke.in"><CODE>bin/ptinvoke.in</CODE></a>
 
-generates 
+generates
 <a href="../../../mk/ptII.mk.in"><CODE>mk/ptII.mk</CODE></a>
 and
 <a href="../../../bin/ptplot"><CODE>bin/ptplot</CODE></a>
@@ -175,8 +175,8 @@ PTJAVA_DIR=/opt/jdk1.2.1
 
 
 <h3><a name="windowswithoutcygwin">Using Ptplot under Windows without Cygwin</a></h3>
-Below are the instructions for using Ptplot 
-if you are under Windows and you do not have the Cygwin and have 
+Below are the instructions for using Ptplot
+if you are under Windows and you do not have the Cygwin and have
 downloaded the tar or zip files.
 
 <ol>
@@ -229,16 +229,16 @@ C:\ptplot4.1\ptolemy\plot&gt;ptplot.bat
 
 
 <h3>Installing Ptplot as an applet</h3>
-Ptplot includes several jar files, which are collections of 
+Ptplot includes several jar files, which are collections of
 Java <CODE>.class</CODE> files
 <dl>
 
 <dt> <CODE>plotapplet.jar</CODE>
-<dd>  .class files necessary for simple JDK1.1 
+<dd>  .class files necessary for simple JDK1.1
 browser applets - no pxgraph, no plotml.
 
 <dt> <CODE>pxgraphapplet.jar</CODE>
-<dd> .class files necessary for simple JDK1.1 
+<dd> .class files necessary for simple JDK1.1
 browser applets with pxgraph classes, no plotml.
 Applets that use the <CODE>pxgraphargs</CODE> applet parameter
 should use this jar file.
@@ -278,7 +278,7 @@ Under Unix and Windows with the Cygwin toolkit,
 <li> <CODE>ptplot</CODE> - A modern plot application that
 with a menubar and such.
 <li> <CODE>histogram</CODE> - A histogram plot application
-<li> <CODE>pxgraph</CODE> - A plot application that 
+<li> <CODE>pxgraph</CODE> - A plot application that
 is mostly backward compatible with the older X11 <CODE>pxgraph</CODE>
 program
 </menu>
@@ -298,7 +298,7 @@ then <CODE>ptolemy.plot.plotml.HistogramMLApplication</CODE> is run
  <p>If the <CODE>ptplot</CODE> script is copied to <CODE>pxgraph</CODE>,
 then <CODE>ptolemy.plot.compat.PxgraphApplication</CODE> is run
 
- <p>Under Unix, you can use a hard link to create the histogram and 
+ <p>Under Unix, you can use a hard link to create the histogram and
 pxgraph script:
 <pre>
 cd $PTII/bin
@@ -307,7 +307,7 @@ ln ptplot pxgraph
 </pre>
 
  <p>Under Windows, three .bat scripts are provided:
-<CODE>ptplot.bat</CODE>, <CODE>histogram.bat</CODE> and 
+<CODE>ptplot.bat</CODE>, <CODE>histogram.bat</CODE> and
 <CODE>pxgraph.bat</CODE>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>

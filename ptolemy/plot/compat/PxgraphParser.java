@@ -839,7 +839,7 @@ public class PxgraphParser {
 		// Flag that we are starting a new data set.
 		_firstinset = true;
 		// Flag that we have not seen a DataSet line in this file.
-		_sawfirstdataset = false;                           
+		_sawfirstdataset = false;
 
 
                 c = in.readByte();

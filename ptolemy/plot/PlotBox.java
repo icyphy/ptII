@@ -828,7 +828,7 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _resetButton = new JButton("R");
             }
-	    // FIXME: If we failed to get an image, then the letter "R" 
+	    // FIXME: If we failed to get an image, then the letter "R"
 	    // Is not likely to fit into a 20x20 button.
             _resetButton.setPreferredSize(new Dimension(20,20));
             _resetButton.setToolTipText(
@@ -854,7 +854,7 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _formatButton = new JButton("S");
             }
-	    // FIXME: If we failed to get an image, then the letter "S" 
+	    // FIXME: If we failed to get an image, then the letter "S"
 	    // Is not likely to fit into a 20x20 button.
             _formatButton.setPreferredSize(new Dimension(20,20));
             _formatButton.setToolTipText(
@@ -880,7 +880,7 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _fillButton = new JButton("F");
             }
-	    // FIXME: If we failed to get an image, then the letter "F" 
+	    // FIXME: If we failed to get an image, then the letter "F"
 	    // Is not likely to fit into a 20x20 button.
             _fillButton.setPreferredSize(new Dimension(20,20));
             _fillButton.setToolTipText(
@@ -1852,7 +1852,7 @@ public class PlotBox extends JPanel implements Printable {
      *  <i>clip</i> argument, if <code>true</code>, states
      *  that the point should not be drawn if
      *  it is out of range.
-     * 
+     *
      *  Note that this method is not synchronized, so the caller should be.
      *  Moreover this method should always be called from the event thread
      *  when being used to write to the screen.
@@ -1880,7 +1880,7 @@ public class PlotBox extends JPanel implements Printable {
                 "Ptolemy plot package\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version " + PTPLOT_RELEASE + 
+                "Version " + PTPLOT_RELEASE +
 	        ", Build: $Id$\n\n" +
                 "Key bindings:\n" +
                 "   Cntr-c:  copy plot to clipboard (EPS format)\n" +

@@ -49,11 +49,11 @@ import javax.sound.sampled.*;
    (mono) and multichannel audio (stereo) are supported. This class,
    along with SoundPlayback, intends to provide an easy to use interface
    to Java Sound, Java's audio API. Java Sound supports the capture
-   of audio data, but only at the byte level, which is audio format 
-   specific. This class, however, provides higher level support for the 
-   capture of double or integer valued samples from the computer's audio 
+   of audio data, but only at the byte level, which is audio format
+   specific. This class, however, provides higher level support for the
+   capture of double or integer valued samples from the computer's audio
    input port or any supported sound file type. This class is therefore
-   useful when it one desires to capture audio samples in an audio format 
+   useful when it one desires to capture audio samples in an audio format
    independent way.
    <p>
    Depending on available audio
@@ -70,7 +70,7 @@ import javax.sound.sampled.*;
    constructor is used, there will be a small
    delay between the time that the audio enters the microphone or
    line-in and the time that the corresponding audio samples are
-   available via getSamples() or getSamplesInt(). 
+   available via getSamples() or getSamplesInt().
    This latency can be adjusted by setting the <i>bufferSize</i>
    constructor parameter. Another constructor creates a sound capture
    object that captures audio from a sound file specified as a URL.
@@ -81,12 +81,12 @@ import javax.sound.sampled.*;
    invoked to obtain audio data in the form of a multidimensional
    array of audio sample values. getSamples() will return audio
    sample values in the range [-1, 1]. getSamplesInt() will return
-   audio samples in the range 
+   audio samples in the range
    (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
    bits_per_sample is the number of bits per sample.
    For the case where
    audio is captured from the mic or line-in, it is important to
-   invoke getSamples() or getSamplesInt() often enough to prevent 
+   invoke getSamples() or getSamplesInt() often enough to prevent
    overflow of
    the internal audio buffer. The size of the internal buffer is
    set in the constructor. Note that it is possible (but probably
@@ -167,8 +167,8 @@ public class SoundCapture {
 
     /** Construct a sound capture object that captures audio from a
      *  sound file specified as a URL. Note that it is still possible
-     *  to capture audio from a file on the local file system. For 
-     *  example, to capture from a sound file located at 
+     *  to capture audio from a file on the local file system. For
+     *  example, to capture from a sound file located at
      *  "C:\someDir\someFile.wave", <i>pathName</i>
      *  should be set to "file:///C:/someDir/someFile.wave".
      *  <p>
@@ -220,7 +220,7 @@ public class SoundCapture {
      */
     public int getChannels() throws IllegalStateException {
 	if (_isAudioCaptureActive == true) {
-	    return _channels;	    
+	    return _channels;
 	} else {
 	    throw new IllegalStateException("SoundCapture: " +
 	    "getChannels() was called while audio capture was" +
@@ -306,7 +306,7 @@ public class SoundCapture {
 		// Real-time capture.
 		numBytesRead = _targetLine.read(_data, 0,
 				_productionRate*_frameSizeInBytes);
-		
+
 	    } else {
 		// Capture audio from file.
 		numBytesRead =
@@ -321,7 +321,7 @@ public class SoundCapture {
 		return _audioInDoubleArray;
 	    } else if (numBytesRead != _data.length) {
 		// Read fewer samples than productionRate many samples.
-		
+
 		// FIXME: Output the samples that were read + zeros?
 		return null;
 	    } else if (numBytesRead == -1) {
@@ -392,7 +392,7 @@ public class SoundCapture {
 		// Real-time capture.
 		numBytesRead = _targetLine.read(_data, 0,
 				_productionRate*_frameSizeInBytes);
-		
+
 	    } else {
 		// Capture audio from file.
 		numBytesRead =
@@ -407,7 +407,7 @@ public class SoundCapture {
 		return _audioInIntArray;
 	    } else if (numBytesRead != _data.length) {
 		// Read fewer samples than productionRate many samples.
-		
+
 		// FIXME: Output the samples that were read + zeros?
 		return null;
 	    } else if (numBytesRead == -1) {
@@ -429,11 +429,11 @@ public class SoundCapture {
      *  done, then getSamples() will throw an exception when
      *  it is invoked. It is safe
      *  to call getSamples() immediately after this method returns.
-     *  This method must not be called more than 
+     *  This method must not be called more than
      *  once between invocations of stopCapture(). Calling
-     *  this method more than once between invocations of 
+     *  this method more than once between invocations of
      *  stopCapture() will cause this method to throw an exception.
-     *  
+     *
      *  @exception IOException If there is a problem setting up
      *  the system for audio capture. This will occur if the
      *  a URL cannot be opened or if the audio in port cannot
@@ -441,7 +441,7 @@ public class SoundCapture {
      *  @exception IllegalStateException If this method is called
      *  more than once between invocations of stopCapture().
      */
-    public void startCapture() throws IOException, 
+    public void startCapture() throws IOException,
                                IllegalStateException {
 	if (_isAudioCaptureActive == false) {
 	    // FIXME: check and throw Exceptions
@@ -592,11 +592,11 @@ public class SoundCapture {
      */
     private void _startCaptureFromFile() throws IOException {
 	// Load audio from a URL.
-	
+
 	// Create a URL corresponding to the sound file location.
 	URL soundURL =
 	    new URL(_pathName);
-	
+
 	if (soundURL != null) {
 	    try {
 		_audioInputStream =
@@ -604,26 +604,26 @@ public class SoundCapture {
 	    } catch (UnsupportedAudioFileException e) {
 		throw new IOException("Unsupported AudioFile :" +
 				      e);
-	    } 
+	    }
 	}
-	
+
 	// make sure we have something to play
 	if (_audioInputStream == null) {
 	    throw new IOException("No loaded audio to play back");
 	}
-	
+
 	AudioFormat origFormat = _audioInputStream.getFormat();
 	// Now convert to PCM_SIGNED_BIG_ENDIAN so that can get double
 	// representation of samples.
 	float sampleRate = origFormat.getSampleRate();
 	//System.out.println("SoundCapture: sampling rate = " +
 	//	   sampleRate);
-	
+
 	_sampleSizeInBits = origFormat.getSampleSizeInBits();
 	_bytesPerSample = _sampleSizeInBits/8;
 	//System.out.println("SoundCapture: sample size in bits = " +
 	//	   _sampleSizeInBits);
-	
+
 	_channels = origFormat.getChannels();
 	boolean signed = true;
 	boolean bigEndian = true;
@@ -631,13 +631,13 @@ public class SoundCapture {
 					     _sampleSizeInBits, _channels,
 					     signed, bigEndian);
 	//System.out.println("Converted format: " + format.toString());
-	
+
 	_properFormatAudioInputStream =
 	    AudioSystem.getAudioInputStream(format, _audioInputStream);
 	_frameSizeInBytes = format.getFrameSize();
 	// Array of audio samples in byte format.
 	_data = new byte[_productionRate*_frameSizeInBytes];
-	
+
 	// Initialize the index to the first sample of the sound file.
 	_index = 0;
     }

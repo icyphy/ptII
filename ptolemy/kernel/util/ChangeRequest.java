@@ -96,7 +96,7 @@ public abstract class ChangeRequest {
 
     /** Execute the change.  This method invokes the protected method
      *  _execute(), takes care of reporting execution to any listeners
-     *  and then wakes up any threads that might be waiting in a call to 
+     *  and then wakes up any threads that might be waiting in a call to
      *  waitForCompletion().  Listeners that are attached directly to this
      *  object (using the addChangeListener() and removeChangeListener()
      *  methods) are notified first of the status of the request, followed
@@ -105,16 +105,16 @@ public abstract class ChangeRequest {
      *  exception was not reported to any global listeners, then the
      *  exception's stack trace is printed to System.err.
      *  <p>
-     *  This method should be called exactly once, by the object that 
+     *  This method should be called exactly once, by the object that
      *  the change request was queued with.  Attempting to call this
      *  method more than once will throw an exception.
      */
     public final synchronized void execute() {
-        if(!_pending) throw new InternalErrorException("Attempted to " + 
+        if(!_pending) throw new InternalErrorException("Attempted to " +
                 "execute a change request that had already been executed.");
         _exception = null;
         // This flag is set if an exception is caught.  If the exception
-        // is reported to any listeners set with setListeners, then 
+        // is reported to any listeners set with setListeners, then
         // the flag is reset to false.  If we get to the end and the
         // flag is still true, then we write out to standard error.
         boolean needToReport = false;
@@ -236,7 +236,7 @@ public abstract class ChangeRequest {
      *  the list of listeners in the top-level object.
      *  <p>
      *  Note that an alternative to using listeners is to call
-     *  waitForCompletion(), although this may cause undesirable 
+     *  waitForCompletion(), although this may cause undesirable
      *  synchronization between the different threads.
      *
      *  @param listeners A list of instances of ChangeListener.
@@ -252,11 +252,11 @@ public abstract class ChangeRequest {
     /** Wait for execution (or failure) of this change request.
      *  The calling thread is suspended until the execute() method
      *  completes.  If an exception occurs processing the request,
-     *  then this method will throw that exception.  
+     *  then this method will throw that exception.
      *  <p>
-     *  Note that using this method may cause the model to deadlock 
+     *  Note that using this method may cause the model to deadlock
      *  and not be able to proceed.  This is especially true if it
-     *  is called from the Swing thread, and any actors in the 
+     *  is called from the Swing thread, and any actors in the
      *  model (such as plotters) wait for swing events.
      *  @exception Exception If the execution of the change request
      *   throws it.

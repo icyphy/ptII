@@ -74,7 +74,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to the fact that a change has been successfully executed.
      *  This method does nothing.
      *  @param change The change that has been executed.
@@ -172,8 +172,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 	if(container != null
                 && !(container instanceof ModelDirectory)
                 && !(container instanceof PtolemyEffigy)) {
-	    throw new IllegalActionException(this, container, 
-		    "The container can only be set to an " + 
+	    throw new IllegalActionException(this, container,
+		    "The container can only be set to an " +
                     "instance of ModelDirectory or PtolemyEffigy.");
 	}
     }
@@ -268,7 +268,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 		    try {
 			// If the following fails, we should remove the effigy.
 			toplevel = parser.parse(base, in.openStream());
-		    
+
 			if (toplevel != null) {
 			    effigy.setModel(toplevel);
 
@@ -278,7 +278,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			    URLAttribute url =
 				    new URLAttribute(toplevel, "_url");
 			    url.setURL(in);
-		    
+
 			    // This is used by TableauFrame in its
 			    //_save() method.
 			    effigy.url.setURL(in);

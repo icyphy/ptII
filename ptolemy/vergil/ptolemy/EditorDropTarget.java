@@ -165,7 +165,7 @@ public class EditorDropTarget extends DropTarget {
                 StringBuffer moml = new StringBuffer();
                 // If the dropObj defers to something else, then we
                 // have to check the parent of the object
-                // for import attributes, and then we have to 
+                // for import attributes, and then we have to
                 // generate import statements.  Note that everything
                 // imported by the parent will be imported now by
                 // the object into which this is dropped.
@@ -261,7 +261,7 @@ public class EditorDropTarget extends DropTarget {
         // Create an icon if necessary for the specified object, and
         // set its location to the specified point.
         // Note that this needs to be done after the change request
-        // that creates the object has succeeded.			
+        // that creates the object has succeeded.
         private void _setLocation(NamedObj newObject, Point point)
                throws Exception {
             if (newObject == null) {
@@ -274,7 +274,7 @@ public class EditorDropTarget extends DropTarget {
             if(location == null) {
                 location = new Location(newObject, "_location");
             }
-			
+
             double coords[] = new double[2];
             coords[0] = ((int)point.x);
             coords[1] = ((int)point.y);

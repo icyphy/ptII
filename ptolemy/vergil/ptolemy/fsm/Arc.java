@@ -66,7 +66,7 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// Arc
 /**
-Instances of this class represent an arc between two states in a state 
+Instances of this class represent an arc between two states in a state
 machine visualization.  To see how this class is used and links are made
 using this class, see ArcModel in FSMGraphModel.
 
@@ -93,7 +93,7 @@ public class Arc {
      */
     public Object getTail() {
 	return _tail;
-    } 
+    }
 
     /** Set the head of this link.  This will be the icon of a state.
      */
@@ -112,18 +112,18 @@ public class Arc {
      */
     public void setTail(Object tail) {
 	_tail = tail;
-    } 
+    }
 
     /** Return a string representation of this link.
      */
     public String toString() {
-	return "Arc(" 
-	    + _head + ", " 
-	    + _tail + ", " 
+	return "Arc("
+	    + _head + ", "
+	    + _tail + ", "
 	    + _relation + ")";
     }
 
-    private Object _head; 
+    private Object _head;
     private Object _tail;
     private ComponentRelation _relation;
 }

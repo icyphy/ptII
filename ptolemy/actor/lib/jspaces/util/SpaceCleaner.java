@@ -52,25 +52,25 @@ public class SpaceCleaner {
     public static void main(String[] args) {
         try {
             TokenEntry allToken = new TokenEntry();
-            
+
             JavaSpace space = SpaceFinder.getSpace();
-            
+
             IndexEntry allIndex = new IndexEntry();
 
 	    while(true) {
-                IndexEntry index = 
+                IndexEntry index =
                     (IndexEntry)space.takeIfExists(
                             allIndex, null, Long.MAX_VALUE);
                 if(index == null) {
                     break;
                 } else {
                     System.out.println("Taken from JavaSpaces IndexEntry: " +
-                            index.name + " " + index.type +" "+ 
+                            index.name + " " + index.type +" "+
                             index.getPosition());
                 }
             }
              while(true) {
-                TokenEntry token = 
+                TokenEntry token =
                     (TokenEntry)space.takeIfExists(
                             allToken, null, Long.MAX_VALUE);
                 if(token == null) {

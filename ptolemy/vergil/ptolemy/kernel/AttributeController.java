@@ -68,7 +68,7 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// AttributeController
 /**
-This class provides interaction with nodes that represent Ptolemy II 
+This class provides interaction with nodes that represent Ptolemy II
 attributes.
 (Or, more specifically, with the icon that is contained in an attribute.)
 
@@ -94,11 +94,11 @@ public class AttributeController extends LocatableNodeController {
             (NodeInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
 
-	// Initialize the menu creator. 
+	// Initialize the menu creator.
 	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
     }
- 
+
     /** Get the menu factory that will create context menus for this
      *  controller.
      */
@@ -128,7 +128,7 @@ public class AttributeController extends LocatableNodeController {
 		}
 	    } catch (KernelException ex) {
 		throw new InternalErrorException("could not create icon " +
-						 "in " + object + " even " + 
+						 "in " + object + " even " +
 						 "though one did not exist");
 	    }
 

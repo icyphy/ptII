@@ -256,8 +256,8 @@ public class Scheduler extends NamedObj {
      *  (Same as calling CompositeActor.deepGetEntities()).
      *  The derived classes should
      *  override this method and add their scheduling algorithms here.
-     *  This method should not be called directly, but rather the  
-     *  getSchedule() method will call it when the schedule is invalid. So 
+     *  This method should not be called directly, but rather the
+     *  getSchedule() method will call it when the schedule is invalid. So
      *  it is not synchronized on the workspace.
      *
      * @see ptolemy.kernel.CompositeEntity#deepGetEntities()

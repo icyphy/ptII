@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Delay
-/** 
+/**
 This actor outputs a set of initial tokens during the initialize()
 method, and subsequently passes the input tokens to the output.
 It is used to break dependency cycles in directed loops of SDF models.
@@ -74,11 +74,11 @@ public class Delay extends SDFTransformer {
     public Delay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // FIXME: this parameter should be an array type.
         initialOutputs = new Parameter(this, "initialOutputs");
         initialOutputs.setTypeEquals(new ArrayType(BaseType.NAT));
-        initialOutputs.setExpression("[0]"); 
+        initialOutputs.setExpression("[0]");
 
         output.setTokenInitProduction(1);
 
@@ -133,7 +133,7 @@ public class Delay extends SDFTransformer {
             InequalityTerm elemTerm = paramType.getElementTypeTerm();
             newobj.output.setTypeAtLeast(elemTerm);
         } catch (IllegalActionException ex) {
-            // Ignore..  
+            // Ignore..
             // FIXME: This try..catch seems bogus...  ArrayToSequence
             // doesn't need it..
         }
@@ -161,7 +161,7 @@ public class Delay extends SDFTransformer {
     /** Check that the <i>initialOutputs</i> parameter contains an
      *  array token.  Set the <i>tokenInitProduction</i> parameter of
      *  the output port to the length of the value of <i>initialOutputs</i>
-     *  Note that the value and type <i>initialOutputs</i> are observed 
+     *  Note that the value and type <i>initialOutputs</i> are observed
      *  only here.  If the value or type change during execution
      *  of the model, the change will not take effect until the next
      *  execution.

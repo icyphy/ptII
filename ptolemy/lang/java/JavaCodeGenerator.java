@@ -1,7 +1,7 @@
 /*
 A JavaVisitor that regenerates Java code from the abstract syntax tree.
-For efficiency reasons, the return value of each visit method returns a 
-string list, which is a List composed of Strings or string lists. 
+For efficiency reasons, the return value of each visit method returns a
+string list, which is a List composed of Strings or string lists.
 _stringListToString() converts a string list into a flattened String.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
@@ -57,16 +57,16 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     public static String writeCodeFragment(TreeNode node) {
         JavaCodeGenerator jcg = new JavaCodeGenerator();
         Object retval = node.accept(jcg, null);
-     
+
         if (retval instanceof String) {
            return (String) retval;
-        } 
+        }
 
         return _stringListToString((List) retval);
     }
 
-    /** Write out the code files for each member of the argument list of 
-     *  CompileUnitNodes to the files with names corresponding to the members 
+    /** Write out the code files for each member of the argument list of
+     *  CompileUnitNodes to the files with names corresponding to the members
      *  of the argument filename list.
      */
     public static void writeCompileUnitNodeList(List unitList, List filenameList) {
@@ -219,7 +219,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
         // for new version:
         // return retList;
-        
+
         return _stringListToString(retList);
     }
 

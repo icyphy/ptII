@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -53,16 +53,16 @@ import javax.swing.JPanel;
 //////////////////////////////////////////////////////////////////////////
 //// DocumentationViewerTableau
 /**
-A tableau representing the documentation of a ptolemy class.  
+A tableau representing the documentation of a ptolemy class.
 The class documentation that is viewed is given by the <i>dottedClass</i>
 parameter.  This class assumes
 that class documentation for all classes has been created in the
 <code>doc/codeDoc</code> directory relative to some point in the classpath.
 In other words, if <i>dottedClass</i>
-<code>ptolemy.gui.DocumentationViewer</code>, then this class will attempt 
-to load the resource 
+<code>ptolemy.gui.DocumentationViewer</code>, then this class will attempt
+to load the resource
 <code>doc/codeDoc/ptolemy/gui/DocumentationViewer.html</code>.
-To automatically create documentation for the ptolemy tree in 
+To automatically create documentation for the ptolemy tree in
 ptII/doc (which should be in the classpath), run make in that directory.
 <p>
 The constructor of this
@@ -83,7 +83,7 @@ public class DocumentationViewerTableau extends Tableau {
      *  @param name The name.
      *  @exception IllegalActionException If the container does not accept
      *   this entity (this should not occur).
-     *  @exception NameDuplicationException If the name coincides with an 
+     *  @exception NameDuplicationException If the name coincides with an
      *   attribute already in the container.
      */
     public DocumentationViewerTableau(Effigy container, String name)
@@ -126,8 +126,8 @@ public class DocumentationViewerTableau extends Tableau {
                 ((HTMLViewer)getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                "Cannot find documentation for: " + docName + 
-		"\n" + ex.toString() + 
+                "Cannot find documentation for: " + docName +
+		"\n" + ex.toString() +
 		"\nTry Running \"make\" in ptII/doc.");
             }
         } else {
@@ -147,7 +147,7 @@ public class DocumentationViewerTableau extends Tableau {
             throws CloneNotSupportedException {
         DocumentationViewerTableau newObject =
                  (DocumentationViewerTableau)super.clone(workspace);
-        newObject.dottedClass = 
+        newObject.dottedClass =
 	    (StringAttribute)newObject.getAttribute("dottedClass");
         return newObject;
     }

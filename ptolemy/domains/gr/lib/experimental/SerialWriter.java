@@ -23,7 +23,7 @@ public class SerialWriter extends TypedAtomicActor {
 
         super(container, name);
         _init();
-        
+
         input = new TypedIOPort(this,"input");
         input.setInput(true);
         input.setTypeEquals(BaseType.INT);
@@ -34,14 +34,14 @@ public class SerialWriter extends TypedAtomicActor {
 
 
     public TypedIOPort input;
-    
+
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         SerialWriter newobj = (SerialWriter) super.clone();
         newobj.input = (TypedIOPort) getPort("input");
         return newobj;
     }
-    
-    
+
+
     public void initialize() throws IllegalActionException {
         try {
             outputStream.write(255);
@@ -59,7 +59,7 @@ public class SerialWriter extends TypedAtomicActor {
             outputStream.write(255);
             outputStream.write(4);
             outputStream.write(128);
-        } catch (Exception e) {}        
+        } catch (Exception e) {}
     }
 
 
@@ -76,21 +76,21 @@ public class SerialWriter extends TypedAtomicActor {
             }
         }
     }
-    
+
 
     private void _init() {
-   
+
         Enumeration portList = CommPortIdentifier.getPortIdentifiers();
         CommPortIdentifier portId = null;
         SerialPort serialPort = null;
-        
+
 
         while (portList.hasMoreElements()) {
             portId = (CommPortIdentifier) portList.nextElement();
             if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 		        System.out.println(portId.getName());
                 if (portId.getName().equals("COM2")) {
-                    
+
                     try {
                         serialPort = (SerialPort) portId.open("SimpleWriteApp", 2000);
 				        System.out.println("Serial Port open "+serialPort);
@@ -116,7 +116,7 @@ public class SerialWriter extends TypedAtomicActor {
                 }
             }
         }
-        
+
     }
 
     private OutputStream outputStream = null;

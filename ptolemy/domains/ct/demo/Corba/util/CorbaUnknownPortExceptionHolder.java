@@ -8,9 +8,9 @@
 package ptolemy.domains.ct.demo.Corba.util;
 public final class CorbaUnknownPortExceptionHolder
      implements org.omg.CORBA.portable.Streamable{
-    //	instance variable 
+    //	instance variable
     public ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException value;
-    //	constructors 
+    //	constructors
     public CorbaUnknownPortExceptionHolder() {
 	this(null);
     }

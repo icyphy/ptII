@@ -42,10 +42,10 @@ import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// RealToComplex
-/** 
+/**
 This actor converts a pair of real tokens to a single complex token.
 At each firing of the actor, it will consume at exactly one token
-from each input port and convert them in to 
+from each input port and convert them in to
 a complex token. If either port is empty, nothing is produced.
 
 @author Michael Leung, Jie Liu, Edward A. Lee
@@ -79,22 +79,22 @@ public class RealToComplex extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The real part input. This has type DoubleToken. 
+    /** The real part input. This has type DoubleToken.
      */
     public TypedIOPort real;
 
-    /** The imaginary part input. This has type DoubleToken. 
+    /** The imaginary part input. This has type DoubleToken.
      */
     public TypedIOPort imag;
 
-    /** The output port. This has type ComplexToken. 
+    /** The output port. This has type ComplexToken.
      */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume exactly one token from each input port and convert them to 
+    /** Consume exactly one token from each input port and convert them to
      *  a complex token. If either input port is empty, do nothing.
      *
      *  @exception IllegalActionException If there is no director.

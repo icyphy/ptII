@@ -49,7 +49,7 @@ explicitly provided since there exists not a lossless conversion
 between these two types in the type lattice and thus the type system
 cannot resolve this conversion automatically.
 
-<p> 
+<p>
 
 The actor reads in a single DoubleToken from its input port and
 converts it to a FixToken with a given precision. In this process,

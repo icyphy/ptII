@@ -128,7 +128,7 @@ public class DEChannel extends TypedAtomicActor {
                 double maxDelayValue =
                     ((DoubleToken)maxDelay.getToken()).doubleValue(
 );
-                double delayValue = minDelayValue + 
+                double delayValue = minDelayValue +
                     (maxDelayValue - minDelayValue)*Math.random();
                 _nextOutTime = now + delayValue;
                 dir.fireAt(this, now + delayValue);

@@ -171,18 +171,18 @@ public class FeedBackDelay extends DDEActor {
             DDEThread ddeThread = (DDEThread)thread;
             if( token instanceof NullToken ) {
                 if( delayNullVal ) {
-                    _sendOutToken( token, 
+                    _sendOutToken( token,
                             getDirector().getCurrentTime() + getDelay() );
                 } else {
-                    _sendOutToken( token, 
+                    _sendOutToken( token,
                             getDirector().getCurrentTime() );
                 }
             } else {
                 if( delayRealVal ) {
-                    _sendOutToken( token, 
+                    _sendOutToken( token,
                             getDirector().getCurrentTime() + getDelay() );
                 } else {
-                    _sendOutToken( token, 
+                    _sendOutToken( token,
                             getDirector().getCurrentTime() );
                 }
             }

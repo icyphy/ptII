@@ -80,13 +80,13 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     ////                         public methods                    ////
 
     /** Get a token from the mailbox receiver and specify a null
-     *  Branch to control the execution of this method. 
+     *  Branch to control the execution of this method.
      * @return The token contained by this receiver.
      */
     public Token get() {
         return get(null);
     }
-    
+
     /** Retrieve a Token from the receiver by rendezvous. This method
      *  does not return until the rendezvous has been completed.
      *  If a put has already been reached, it notifies the waiting put
@@ -108,7 +108,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         try {
             if (_isPutWaiting()) {
                 _setPutWaiting(false);  //needs to be done here
-                
+
                 // See FIXME below
                 tmp = _token;
                 _setRendezvousComplete(false);
@@ -129,7 +129,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 while (_isConditionalSendWaiting()) {
                     _checkFlagsAndWait();
                 }
-                
+
         	_checkFlags();
                 prepareToBlock(branch);
                 // _getDirector()._actorBlocked(this);
@@ -138,7 +138,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
         	_checkFlags();
-                
+
                 // FIXME: This is a race condition that could
                 // lead to a deadlock false alarm. This should
                 // be done as soon as setGetWaiting(false) is
@@ -165,18 +165,18 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** Return true. This method returns true in all cases
-     *  to prevent the possibility of busy waiting with 
+     *  to prevent the possibility of busy waiting with
      *  polymorphic actors.
-     *  @return True. 
+     *  @return True.
      */
     public synchronized boolean hasRoom() {
         return true;
     }
 
     /** Return true. This method returns true in all cases
-     *  to prevent the possibility of busy waiting with 
+     *  to prevent the possibility of busy waiting with
      *  polymorphic actors.
-     *  @return True. 
+     *  @return True.
      */
     public boolean hasRoom(int tokens) {
 	return true;
@@ -215,11 +215,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 	 return _boundaryDetector.isConnectedToBoundary();
      }
 
-    /** Return true if this receiver is connected to the inside of a 
+    /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller
      *  @return True if this receiver is connected to the inside of
@@ -230,11 +230,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 	return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
-    /** Return true if this receiver is connected to the outside of a 
+    /** Return true if this receiver is connected to the outside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the outside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller
      *  @return True if this receiver is connected to the outside of
@@ -324,14 +324,14 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             _otherBranch = branch;
         }
     }
-            
+
     /** Put a token into the mailbox receiver and specify a null
-     *  Branch to control the execution of this method. 
+     *  Branch to control the execution of this method.
      */
     public void put(Token token) {
         put(token, null);
     }
-            
+
     /** Place a Token into the receiver via rendezvous. This method
      *  does not return until the rendezvous has been completed.
      *  If get has already been reached, it notifies the waiting get
@@ -354,7 +354,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             _token = t; // perform transfer
             if (_isGetWaiting()) {
                 _setGetWaiting(false);  //needs to be done here
-                
+
                 // See FIXME below
                 _setRendezvousComplete(false);
                 notifyAll(); //wake up the waiting get
@@ -384,7 +384,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     _checkFlagsAndWait();
                 }
         	_checkFlags();
-                
+
                 // FIXME: This is a race condition that could
                 // lead to a deadlock false alarm. This should
                 // be done as soon as setGetWaiting(false) is
@@ -446,17 +446,17 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         	    (getContainer().getContainer())).getDirector());
             */
             _getDirector()._actorUnBlocked(this);
-            
+
         }
         notifyAll();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** This method wraps the wait() call between checks on the state
      *  of the receiver. The flags checked are whether the receiver
-     *  has been finished. The actions taken depending on the flags 
+     *  has been finished. The actions taken depending on the flags
      *  apply to whatever process this method was invoked from.
      *  Note: It should only be called from CSPReceiver and conditional
      *  rendezvous branches, and then only from code that already has
@@ -643,7 +643,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     private boolean _readBlocked = false;
     private boolean _writeBlocked = false;
-    
+
     // Flag indicating whether or not a get is waiting at this receiver.
     private boolean _getWaiting = false;
 
@@ -672,6 +672,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     private Token _token;
 
     private BoundaryDetector _boundaryDetector;
-    
+
     private Branch _otherBranch = null;
 }

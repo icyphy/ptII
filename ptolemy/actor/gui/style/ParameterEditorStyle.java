@@ -41,9 +41,9 @@ import ptolemy.kernel.util.UserSettable;
 //// ParameterEditorStyle
 /**
 This attribute annotates user settable attributes to specify the style
-used for configuring the containing attribute.  
+used for configuring the containing attribute.
 The EditorPaneFactory class uses concrete subclasses
-of this base class as a strategy pattern for creating entries in 
+of this base class as a strategy pattern for creating entries in
 an interactive parameter editor.  This class expects that the container
 will implement the UserSettable interface.
 
@@ -88,12 +88,12 @@ public abstract class ParameterEditorStyle extends Attribute {
      */
     public abstract boolean acceptable(UserSettable param);
 
-    /** Create a new entry in the given query associated with the 
+    /** Create a new entry in the given query associated with the
      *  attribute containing this style.  The name of the entry should be
      *  the name of the attribute.  The attribute should be attached to
      *  the entry so that changes in its value are reflected in the
      *  query.
-     *  
+     *
      *  @param query The query into which to add the entry.
      *  @exception IllegalActionException If the containing attribute
      *   has a value that cannot be edited using this style.

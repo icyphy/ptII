@@ -11,12 +11,12 @@
 <H1>Process Network Demo</H1>
 <P><!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
-<!-- 
-     The HTML below is for the Java Plugin.  The first  
+<!--
+     The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape
  -->
-<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" 
- width=600 height=600 name="QR" 
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+ width=600 height=600 name="QR"
  codebase="http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0">
 <PARAM NAME=CODE VALUE=ptolemy.domains.pn.demo.QR.QR.class>
 <PARAM NAME=CODEBASE VALUE=../../../../..>
@@ -26,18 +26,18 @@ applet is displayed on a XGA screen-->
 <PARAM NAME="background" VALUE="#faf0e6">
 <PARAM NAME="defaultStopTime" VALUE="100">
 <COMMENT>
-<EMBED type="application/x-java-applet;version=1.2.2" 
+<EMBED type="application/x-java-applet;version=1.2.2"
   code=ptolemy.domains.pn.demo.QR.QR
-  codebase=../../../../.. 
-  archive="ptolemy/ptsupport.jar, 
-           ptolemy/domains/pn/pn.jar, 
-           ptolemy/domains/pn/demo/QR/QR.jar" 
-  name="QR" 
-  width=600 height=600 background="#faf0e6" 
-  defaultStopTime="100" 
+  codebase=../../../../..
+  archive="ptolemy/ptsupport.jar,
+           ptolemy/domains/pn/pn.jar,
+           ptolemy/domains/pn/demo/QR/QR.jar"
+  name="QR"
+  width=600 height=600 background="#faf0e6"
+  defaultStopTime="100"
   pluginspage="http://java.sun.com/products/plugin/1.2.2/plugin-install.html">
 <NOEMBED></COMMENT>
-<I>If you were able to run applets, you would have a demo here.</I> 
+<I>If you were able to run applets, you would have a demo here.</I>
 </NOEMBED>
 </EMBED>
 </OBJECT>
@@ -59,18 +59,18 @@ In the demo, if we select 10 QR-updates for an array of 6 antenna's,
 the following R matrix must be found: </P>
 
 <PRE>
-# name: Rout 
-# type: matrix 
-# rows: 6 
-# columns: 6 
+# name: Rout
+# type: matrix
+# rows: 6
+# columns: 6
 
-270.843 206.234  60.482 -39.318 -89.100 -38.568 
-  0.000 144.933 181.192 172.919 104.333  10.488 
-  0.000   0.000  32.964  18.280  10.909   9.170 
-  0.000   0.000   0.000  24.739   7.446   7.208 
-  0.000   0.000   0.000   0.000  20.30   11.206 
+270.843 206.234  60.482 -39.318 -89.100 -38.568
+  0.000 144.933 181.192 172.919 104.333  10.488
+  0.000   0.000  32.964  18.280  10.909   9.170
+  0.000   0.000   0.000  24.739   7.446   7.208
+  0.000   0.000   0.000   0.000  20.30   11.206
   0.000   0.000   0.000   0.000   0.000   8.535
-</PRE> 
+</PRE>
 <P>
 
 The QR algorithm describes a linear algebra problem in which a matrix
@@ -89,7 +89,7 @@ for j = 1:1:N,
     [r(j,i)] = _ReadMatrix_Zeros_64x64();
   end
 end
- 
+
 %% Initialize Matrix x
 for k = 1:1:K,
   for j = 1:1:N,
@@ -130,7 +130,7 @@ whereas the Matlab description executes sequentially. </P>
 <center>
 <IMG SRC="QRprocessnetwork.gif" WIDTH=622 HEIGHT=317>
 </center>
-</P> 
+</P>
 
 <P>
 In process <A HREF="ND_2.java">ND_2</A>, a large matrix is stored that

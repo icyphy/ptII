@@ -433,7 +433,7 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.doneReading();
         }
     }
- 
+
     /** Return a sequence of MoML link attributes that describe
      *  any link between objects (ports, entities, and relations) that are
      *  present in the <i>filter</i> argument.  Both ends of the link
@@ -1053,7 +1053,7 @@ public class CompositeEntity extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     private void _addIcon() {
 	_setDefaultIcon("<svg>\n" +
                "<rect x=\"0\" y=\"0\" width=\"60\" " +

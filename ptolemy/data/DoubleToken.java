@@ -480,7 +480,7 @@ public class DoubleToken extends ScalarToken {
      *  whose magnitudes are very large or very small, except for zero which
      *  is always represented as 0.0.  The behavior is roughly the same as
      *  Double.toString(), except that we limit the precision to seven
-     *  fractional digits.  If you really must have better precision, 
+     *  fractional digits.  If you really must have better precision,
      *  then use <code>Double.toString(token.doubleValue())</code>.
      *  @return A String representing the double value of this token.
      */
@@ -490,7 +490,7 @@ public class DoubleToken extends ScalarToken {
             return _regularFormat.format(_value);
         } else {
             return _exponentialFormat.format(_value);
-	}    
+	}
     }
 
     /** Returns a new token representing the additive identity.
@@ -504,8 +504,8 @@ public class DoubleToken extends ScalarToken {
     ////                         private variables                 ////
     private double _value;
 
-    private static DecimalFormat _regularFormat = 
+    private static DecimalFormat _regularFormat =
     new DecimalFormat("#####0.0######");
-    private static DecimalFormat _exponentialFormat = 
+    private static DecimalFormat _exponentialFormat =
     new DecimalFormat("0.0######E0##");
 }

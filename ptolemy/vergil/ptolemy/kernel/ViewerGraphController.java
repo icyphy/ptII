@@ -172,15 +172,15 @@ public class ViewerGraphController extends GraphController {
 	if(object instanceof Vertex) {
             return _relationController;
         } else if(object instanceof Location &&
-		  getGraphModel().getSemanticObject(object) 
+		  getGraphModel().getSemanticObject(object)
 		  instanceof Entity) {
             return _entityController;
 	} else if(object instanceof Location &&
-		  getGraphModel().getSemanticObject(object) 
+		  getGraphModel().getSemanticObject(object)
 		  instanceof Attribute) {
             return _attributeController;
-	} else if(object instanceof Location && 
-		  getGraphModel().getSemanticObject(object) 
+	} else if(object instanceof Location &&
+		  getGraphModel().getSemanticObject(object)
 		  instanceof Port) {
 	    return _portController;
 	} else if(object instanceof Port) {
@@ -238,7 +238,7 @@ public class ViewerGraphController extends GraphController {
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
 
-    
+
     // The interactor for creating context sensitive menus on the
     // graph itself.
     private MenuCreator _menuCreator;
@@ -253,7 +253,7 @@ public class ViewerGraphController extends GraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                          inner classes                    ////
-    public static class SchematicContextMenuFactory 
+    public static class SchematicContextMenuFactory
 	extends PtolemyMenuFactory {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
@@ -261,14 +261,14 @@ public class ViewerGraphController extends GraphController {
 	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new EditDirectorParametersFactory());
 	    addMenuItemFactory(new EditDirectorParameterStylesFactory());
-	}	
-	
+	}
+
 	public NamedObj _getObjectFromFigure(Figure source) {
 	    return (NamedObj)getController().getGraphModel().getRoot();
 	}
     }
 
-    public static class EditDirectorParametersFactory 
+    public static class EditDirectorParametersFactory
 	extends EditParametersFactory {
 	protected String _getName() {
 	    return "Edit Director Parameters";
@@ -278,13 +278,13 @@ public class ViewerGraphController extends GraphController {
 	    if(object instanceof Actor) {
 		return ((Actor)object).getDirector();
 	    } else {
-		throw new InternalErrorException("Object " + 
+		throw new InternalErrorException("Object " +
 		    object.getFullName() + "is not a director.");
 	    }
-	}	
+	}
     }
 
-    public static class EditDirectorParameterStylesFactory 
+    public static class EditDirectorParameterStylesFactory
 	extends EditParameterStylesFactory {
 	protected String _getName() {
 	    return "Edit Director Parameter Styles";
@@ -294,10 +294,10 @@ public class ViewerGraphController extends GraphController {
 	    if(object instanceof Actor) {
 		return ((Actor)object).getDirector();
 	    } else {
-		throw new InternalErrorException("Object " + 
+		throw new InternalErrorException("Object " +
 		    object.getFullName() + "is not a director.");
 	    }
-	}	
+	}
     }
 }
 

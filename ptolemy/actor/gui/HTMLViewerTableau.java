@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -39,7 +39,7 @@ import java.net.URL;
 //// HTMLViewerTableau
 /**
 A tableau representing a rendered HTML view in a toplevel window.
-The URL that is viewed is given by the <i>url</i> parameter, and 
+The URL that is viewed is given by the <i>url</i> parameter, and
 can be either an absolute URL, a system fileName, or a resource that
 can be loaded relative to the classpath.  For more information about how
 the URL is specified, see MoMLApplication.specToURL().
@@ -66,7 +66,7 @@ public class HTMLViewerTableau extends Tableau {
      *  @param name The name.
      *  @exception IllegalActionException If the container does not accept
      *   this entity (this should not occur).
-     *  @exception NameDuplicationException If the name coincides with an 
+     *  @exception NameDuplicationException If the name coincides with an
      *   attribute already in the container.
      */
     public HTMLViewerTableau(Effigy container, String name)
@@ -124,7 +124,7 @@ public class HTMLViewerTableau extends Tableau {
 	/** Create a factory with the given name and container.
 	 *  The container argument must not be null, or a
 	 *  NullPointerException will be thrown.
-	 *  If the name argument is null, 
+	 *  If the name argument is null,
 	 *  then the name is set to the empty string.
 	 *  @param container The container.
 	 *  @param name The name.

@@ -46,9 +46,9 @@ import java.util.Iterator;
 //// ExplicitRK23Solver
 /**
 This class implements the Explicit Runge-Kutta 2(3) ODE solving method.
-For an ODE of the form: 
+For an ODE of the form:
 <pre>
-    dx/dt = f(x, t), x(0) = x0 
+    dx/dt = f(x, t), x(0) = x0
 </pre>
 it does the following:
 <pre>
@@ -59,7 +59,7 @@ it does the following:
 </pre>,
 and error control:
 <pre>
-    K3 = f(x(n+1), tn+h); 
+    K3 = f(x(n+1), tn+h);
     LTE = h*[(-5.0/72.0)*K0 + (1.0/12.0)*K1 + (1.0/9.0)*K2 + (-1.0/8.0)*K3]
 </pre>
 <P>
@@ -112,7 +112,7 @@ public class ExplicitRK23Solver extends ODESolver {
         return 4;
     }
 
-    /** Return 1 always. The history information about the last 
+    /** Return 1 always. The history information about the last
      *  step is needed.
      *  @return 1.
      */
@@ -120,7 +120,7 @@ public class ExplicitRK23Solver extends ODESolver {
         return 0;
     }
 
-    /** Provide the fire() method for integrators under this solver. 
+    /** Provide the fire() method for integrators under this solver.
      *  It performs the ODE solving algorithm.
      *
      *  @param integrator The integrator of that calls this method.
@@ -164,10 +164,10 @@ public class ExplicitRK23Solver extends ODESolver {
         integrator.output.broadcast(new DoubleToken(outvalue));
     }
 
-    /** Return true if the integration is accurate for the given 
+    /** Return true if the integration is accurate for the given
      *  integrator. It estimates the local truncation error for that
      *  integrator and compare it with the error tolerance.
-     *  
+     *
      *  @param integrator The integrator of that calls this method.
      *  @return True if the integration is successful.
      */
@@ -205,7 +205,7 @@ public class ExplicitRK23Solver extends ODESolver {
      *  under this solver. It uses the algorithm in the class comments
      *  to predict the next step size based on the current estimation
      *  of the local truncation error.
-     *  
+     *
      *  @param integrator The integrator of that calls this method.
      *  @return The next step size suggested by the given integrator.
      */
@@ -227,7 +227,7 @@ public class ExplicitRK23Solver extends ODESolver {
      *  Resolve the state of the integrators at time:
      *  CurrentTime+CurrentStepSize. It gets the state transition
      *  schedule from the scheduler and fire for one iteration,
-     *  (which consists of 4 rounds). 
+     *  (which consists of 4 rounds).
      *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.

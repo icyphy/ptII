@@ -193,7 +193,7 @@ public class PNApplet extends PtolemyApplet {
     // protected CompositeActor _toplevel;
 
     /** The director for the top-level composite actor, created in the
-     *  init() method. 
+     *  init() method.
      */
     protected BasePNDirector _director;
 

@@ -54,7 +54,7 @@ import ptolemy.plot.Render;
 
 /** FIXME
 A MatrixVisualizer.  This plotter contains an instance of the Render
-class from the Ptolemy plot package as a public member. 
+class from the Ptolemy plot package as a public member.
 
 @author  Neil Turner
 @version $Id$
@@ -127,7 +127,7 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == xMax) {
-            _xMax = ((DoubleToken)xMax.getToken()).doubleValue();       
+            _xMax = ((DoubleToken)xMax.getToken()).doubleValue();
         } else if (attribute == xMin) {
             _xMin = ((DoubleToken)xMin.getToken()).doubleValue();
         } else if (attribute == yMax) {
@@ -246,7 +246,7 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
              _container.add(render);
              render.setBackground(_container.getBackground());
          }
-     
+
  // If configurations have been deferred, implement them now.
 //         if (_configureSources != null) {
 //             Iterator sources = _configureSources.iterator();

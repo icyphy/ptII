@@ -84,21 +84,21 @@ public class RealTimePublisher extends Sink
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	jspaceName = new Parameter(this, "jspaceName", 
+    	jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
-        entryName = new Parameter(this, "entryName", 
+        entryName = new Parameter(this, "entryName",
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
-        
+
         input.setMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The Java Space name. The default name is "JavaSpaces" of 
+    /** The Java Space name. The default name is "JavaSpaces" of
      *  type StringToken.
      */
     public Parameter jspaceName;
@@ -150,11 +150,11 @@ public class RealTimePublisher extends Sink
      */
     public boolean postfire() throws IllegalActionException {
         if(input.hasToken(0)) {
-            
+
             String name = ((StringToken)entryName.getToken()).stringValue();
             Long serialNumber = new Long(System.currentTimeMillis());
             Token token = input.get(0);
-            //System.out.println(getName() + " has token for the space: " 
+            //System.out.println(getName() + " has token for the space: "
             //        + getDirector().getCurrentTime() + " "
             //        + name + " " + token);
             TokenEntry template = new TokenEntry(name, null, null);
@@ -169,16 +169,16 @@ public class RealTimePublisher extends Sink
                     try {
                     FileOutputStream ostream = new FileOutputStream("t1");
                     ObjectOutputStream p = new ObjectOutputStream(ostream);
-                    
+
                     p.writeObject(entry);
                     p.flush();
                     ostream.close();
                     } catch (Exception ex) {
                     System.err.println(ex.getMessage());
                     }
-                    }   
+                    }
                 */
-                //System.out.println(getName() + 
+                //System.out.println(getName() +
                 //        " write to space: " +  serialNumber + " "+ token);
             } catch (RemoteException re) {
                 throw new IllegalActionException(this, "Cannot write into " +
@@ -199,7 +199,7 @@ public class RealTimePublisher extends Sink
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // The Java space;
     private JavaSpace _space;
 

@@ -68,7 +68,7 @@ public class Cone3D extends GRShadedShape {
         radius = new Parameter(this, "radius", new DoubleToken(0.5));
         height = new Parameter(this, "height", new DoubleToken(0.7));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -77,17 +77,17 @@ public class Cone3D extends GRShadedShape {
      *  The default value of this parameter is 0.5
      */
     public Parameter height;
-    
+
     /** The radius of the base of the cone
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is 0.7
      */
     public Parameter radius;
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
      *  @param workspace The workspace for the new object.
@@ -105,7 +105,7 @@ public class Cone3D extends GRShadedShape {
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a cone.
      *  @return the Java3D cone.
-     */    
+     */
     public Node getNodeObject() {
         return (Node) containedNode;
     }
@@ -131,7 +131,7 @@ public class Cone3D extends GRShadedShape {
     private double _getRadius() throws IllegalActionException {
         return ((DoubleToken) radius.getToken()).doubleValue();
     }
-    
+
     /**  Return the value of the height parameter
      *  @return the height of the cone
      *  @exception IllegalActionException If the value of some parameters can't
@@ -139,8 +139,8 @@ public class Cone3D extends GRShadedShape {
      */
     private double _getHeight() throws IllegalActionException  {
         return ((DoubleToken) height.getToken()).doubleValue();
-    }    
-    
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -67,7 +67,7 @@ public class WaitingTime1 extends DETransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create the ports
-        
+
         output.setTypeEquals(BaseType.DOUBLE);
         input.setTypeEquals(BaseType.GENERAL);
     }

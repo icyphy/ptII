@@ -91,7 +91,7 @@ public class SDFTestDelay extends TypedAtomicActor {
          * types of tokens are valid for this actor.
          */
         input.setTypeEquals(BaseType.INT);
-        
+
         /* Similarly for the output port */
         output = new SDFIOPort(this,"output", false, true);
         output.setTokenProductionRate(1);

@@ -354,7 +354,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("short / other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_INT:
           switch (kind2) {
@@ -379,7 +379,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("int / other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_LONG:
           switch (kind2) {
@@ -393,7 +393,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return node;
           }
           throw new RuntimeException("long / other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_FLOAT:
           switch (kind2) {
@@ -418,7 +418,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
 
           }
           throw new RuntimeException("float / other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_DOUBLE:
           switch (kind2) {
@@ -440,7 +440,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("double / other type not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
           switch (kind2) {
@@ -464,7 +464,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("complex / other type not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:
           switch (kind2) {
@@ -475,7 +475,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("fix point / other type not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
           case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:
@@ -484,7 +484,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX:
           // what is the meaning of divide in these cases?
-          // break; 
+          // break;
         }
         throw new RuntimeException("DivNode contains one or more unknown types");
         // return null;
@@ -503,7 +503,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         switch (kind1) {
           case TypeIdentifier.TYPE_KIND_BOOLEAN:
           throw new RuntimeException("boolean % other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_BYTE:
           switch (kind2) {
@@ -517,7 +517,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return node;
           }
           throw new RuntimeException("byte % other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_SHORT:
           switch (kind2) {
@@ -534,7 +534,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return node;
           }
           throw new RuntimeException("short % other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_INT:
           switch (kind2) {
@@ -552,7 +552,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return node;
           }
           throw new RuntimeException("int % other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_LONG:
           switch (kind2) {
@@ -564,19 +564,19 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return node;
           }
           throw new RuntimeException("long % x not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_DOUBLE:
           throw new RuntimeException("double % x not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
           throw new RuntimeException("complex % x not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:
           throw new RuntimeException("fix point % x not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
           case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:
@@ -585,7 +585,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX:
           throw new RuntimeException("matrix % x not supported");
-          // break; 
+          // break;
         }
         throw new RuntimeException("RemNode contains one or more unknown types");
         // return null;
@@ -621,7 +621,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new NotNode(new CandNode(expr1, expr2)));
           }
           throw new RuntimeException("boolean + other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_BYTE:
           switch (kind2) {
@@ -643,7 +643,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("byte + other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_SHORT:
           switch (kind2) {
@@ -668,7 +668,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("short + other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_INT:
           switch (kind2) {
@@ -692,7 +692,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               TNLManip.addFirst(convertExprToKind(expr1, kind1, kind2)));
           }
           throw new RuntimeException("int + other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_LONG:
           switch (kind2) {
@@ -706,7 +706,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return node;
           }
           throw new RuntimeException("long + other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_FLOAT:
           switch (kind2) {
@@ -731,7 +731,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
 
           }
           throw new RuntimeException("float + other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_DOUBLE:
           switch (kind2) {
@@ -751,7 +751,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(convertExprToKind(expr1, kind1, kind2)));
           }
           throw new RuntimeException("double + other type not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
           switch (kind2) {
@@ -767,7 +767,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               TNLManip.addFirst(convertExprToKind(expr2, kind2, kind1)));
           }
           throw new RuntimeException("complex + other type not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:
           switch (kind2) {
@@ -778,7 +778,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("fix point + other type not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
           case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:
@@ -824,7 +824,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              new NotNode(new CandNode(expr1, expr2)));
           }
           throw new RuntimeException("boolean - other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_BYTE:
           switch (kind2) {
@@ -846,7 +846,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("byte - other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_SHORT:
           switch (kind2) {
@@ -871,7 +871,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("short - other type not supported");
-          // break; 
+          // break;
 
 
           case TypeIdentifier.TYPE_KIND_INT:
@@ -897,7 +897,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("int - other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_LONG:
           switch (kind2) {
@@ -911,7 +911,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             return node;
           }
           throw new RuntimeException("long - other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_FLOAT:
           switch (kind2) {
@@ -936,7 +936,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
 
           }
           throw new RuntimeException("float - other type not supported");
-          // break; 
+          // break;
 
           case TypeIdentifier.TYPE_KIND_DOUBLE:
           switch (kind2) {
@@ -957,7 +957,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("double - other type not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX:
           switch (kind2) {
@@ -973,7 +973,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               TNLManip.addFirst(convertExprToKind(expr2, kind2, kind1)));
           }
           throw new RuntimeException("complex - other type not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT:
           switch (kind2) {
@@ -984,7 +984,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
              TNLManip.addFirst(expr2));
           }
           throw new RuntimeException("fix point - other type not supported");
-          // break; 
+          // break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
           case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:
@@ -1049,27 +1049,27 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
         switch (kind) {
           case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
           className = "BooleanMatrixMath"; // this class does not exist yet
-          break; 
+          break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:
           className = "IntegerMatrixMath";
-          break; 
+          break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:
           className = "LongMatrixMath";
-          break; 
+          break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX:
           className = "DoubleMatrixMath";
-          break; 
+          break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX:
           className = "ComplexMatrixMath";
-          break; 
+          break;
 
           case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX:
           className = "FixPointMatrixMath"; // this class does not exist yet
-          break; 
+          break;
 
           default:
           throw new RuntimeException("kind is not a matrix kind");
@@ -1136,7 +1136,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
              TNLManip.addFirst(expr));
           }
-          break; 
+          break;
 
           case TypeIdentifier.TYPE_KIND_BOOLEAN:
           switch (targetKind) {
@@ -1146,7 +1146,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String"))),
              TNLManip.addFirst(expr));
           }
-          break; 
+          break;
 
           case TypeIdentifier.TYPE_KIND_BYTE:
           switch (targetKind) {
@@ -1180,7 +1180,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
               TNLManip.addFirst(new CastNode(DoubleTypeNode.instance, expr)),
                AbsentTreeNode.instance);
           }
-          break; 
+          break;
 
           case TypeIdentifier.TYPE_KIND_SHORT:
           switch (targetKind) {

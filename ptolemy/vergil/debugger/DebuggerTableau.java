@@ -92,7 +92,7 @@ A debugging tableau for ptolemy models.
 @version $Id$
 */
 public class DebuggerTableau extends Tableau {
-  
+
     public DebuggerTableau(PtolemyEffigy container,
 			      String name)
 	throws IllegalActionException, NameDuplicationException {
@@ -104,11 +104,11 @@ public class DebuggerTableau extends Tableau {
             "Cannot debug a model that is not a CompositeActor.");
         }
 	CompositeActor actor = (CompositeActor)model;
-	
+
 	DebuggerFrame frame = new DebuggerFrame(actor, this);
 	setFrame(frame);
 	frame.setBackground(BACKGROUND_COLOR);
-	frame.pack(); 
+	frame.pack();
 	frame.centerOnScreen();
 	frame.setVisible(true);
     }
@@ -120,7 +120,7 @@ public class DebuggerTableau extends Tableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
-    
+
     /** A factory that creates debugging tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
@@ -128,7 +128,7 @@ public class DebuggerTableau extends Tableau {
 	 *  The container argument must not be null, or a
 	 *  NullPointerException will be thrown.  This entity will use the
 	 *  workspace of the container for synchronization and version counts.
-	 *  If the name argument is null, 
+	 *  If the name argument is null,
 	 *  then the name is set to the empty string.
 	 *  Increment the version of the workspace.
 	 *  @param container The container entity.
@@ -143,21 +143,21 @@ public class DebuggerTableau extends Tableau {
 	    super(container, name);
 	}
 
-	/** Create a tableau in the default workspace with no name for the 
+	/** Create a tableau in the default workspace with no name for the
 	 *  given Effigy.  The tableau will created with a new unique name
 	 *  in the given model proxy.  If this factory cannot create a tableau
 	 *  for the given proxy (perhaps because the proxy is not of the
 	 *  appropriate subclass) then return null.
 	 *  @param proxy The model proxy.
-	 *  @return A new KernelGraphTableau, if the proxy is a 
+	 *  @return A new KernelGraphTableau, if the proxy is a
 	 *  PtolemyEffigy, or null otherwise.
 	 *  @exception Exception If an exception occurs when creating the
 	 *  tableau.
 	 */
 	public Tableau createTableau(Effigy proxy) throws Exception {
-	    if(!(proxy instanceof PtolemyEffigy)) 
+	    if(!(proxy instanceof PtolemyEffigy))
 		return null;
-	    DebuggerTableau tableau = 
+	    DebuggerTableau tableau =
 		new DebuggerTableau((PtolemyEffigy)proxy,
 				       proxy.uniqueName("tableau"));
 	    return tableau;

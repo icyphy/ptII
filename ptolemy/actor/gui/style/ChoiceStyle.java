@@ -43,8 +43,8 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ChoiceStyle
 /**
-This attribute annotates user settable attributes to specify 
-an uneditable combobox style for configuring the containing attribute.  
+This attribute annotates user settable attributes to specify
+an uneditable combobox style for configuring the containing attribute.
 An uneditable combobox is restricted to only the values specified as the
 combobox options.  No arbitrary value can be entered.
 For an editable combobox, use EditableChoiceStyle instead.
@@ -97,8 +97,8 @@ public class ChoiceStyle extends ParameterEditorStyle {
 	return !attributeList(UserSettable.class).isEmpty();
     }
 
-    /** Create a new uneditable 
-     *  combo box entry in the given query associated with the 
+    /** Create a new uneditable
+     *  combo box entry in the given query associated with the
      *  attribute containing this style.  The name of the entry is
      *  the name of the attribute.  Attach the attribute to the created entry.
      *
@@ -123,7 +123,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
     }
 
     /** Whether or not the combobox is editable.  EditableComboBox changes
-     *  this to create an editable combo box.  In this base class the 
+     *  this to create an editable combo box.  In this base class the
      *  value is false.
      */
     protected boolean _isEditable = false;

@@ -109,7 +109,7 @@ public class DEMessageSource extends TypedAtomicActor {
         }
         DEDirector dir = (DEDirector)getDirector();
         double now = dir.getCurrentTime();
-        double maxDelayValue = 
+        double maxDelayValue =
             ((DoubleToken)maxDelay.getToken()).doubleValue();
 
 	if (next.hasToken(0)) {

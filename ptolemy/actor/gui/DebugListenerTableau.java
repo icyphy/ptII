@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -71,7 +71,7 @@ public class DebugListenerTableau extends Tableau {
      *  @param name The name.
      *  @exception IllegalActionException If the container does not accept
      *   this entity (this should not occur).
-     *  @exception NameDuplicationException If the name coincides with an 
+     *  @exception NameDuplicationException If the name coincides with an
      *   attribute already in the container.
      */
     public DebugListenerTableau(Effigy container, String name)
@@ -134,7 +134,7 @@ public class DebugListenerTableau extends Tableau {
      */
     public static class DebugListenerFrame extends TextEditor
 	    implements DebugListener {
-		
+
 	/** Create a debug listener that displays messages in a top-level
 	 *  window.
 	 */
@@ -145,17 +145,17 @@ public class DebugListenerTableau extends Tableau {
 	    text.setRows(20);
 	    pack();
 	}
-	
+
 	///////////////////////////////////////////////////////////////////
 	////                         public methods                    ////
-	
+
 	/** Display a string representation of the specified event.
 	 */
 	public void event(DebugEvent event) {
 	    text.append(event.toString() + "\n");
 	    scrollToEnd();
 	}
-	
+
 	/** Display the specified message.
 	 */
 	public void message(String message) {

@@ -52,7 +52,7 @@ The FE method approximate the x(t+h) as:
 <pre>
     x(t+h) =  x(t) + h * f(x(t), u(t), t)
 </pre>
-No error control and step size control is performed. This is the 
+No error control and step size control is performed. This is the
 simplest algorithm for solving an ODE. It is a first order method,
 and has stability problem for some systems.
 

@@ -64,8 +64,8 @@ Equivalent to the negation of <i>or</i>.
 Equivalent to the negation of <i>xor</i>.
 </ul>
 <p>
-NOTE: All operators have 
-a single input port, which is a multiport, and a single output port, which 
+NOTE: All operators have
+a single input port, which is a multiport, and a single output port, which
 is not a multiport.  All ports have type boolean.
 <p>
 This actor is not strict.  That is, it does not require that each input
@@ -184,7 +184,7 @@ public class LogicFunction extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Consume at most one input token from each channel, and produce a 
+    /** Consume at most one input token from each channel, and produce a
      *  token on the output port.
      *  @exception IllegalActionException If there is no director.
      */
@@ -223,7 +223,7 @@ public class LogicFunction extends Transformer {
                 if (old == null) {
                     result = in;
                 } else {
-                    BooleanToken negatedResult = 
+                    BooleanToken negatedResult =
                         (BooleanToken)((old.not()).multiply(in.not()));
                     result = negatedResult.not();
                 }

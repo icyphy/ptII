@@ -60,8 +60,8 @@ This application creates one or more Ptolemy II models given a classname
 on the command line, and then executes those models, each in its own
 thread.  Each specified class should be derived from CompositeActor.
 Each will be created in its own workspace.  No way of controlling the model
-after its creation (such as run control panel) is provided by this class, 
-other than automatically executing the model after it is instantiated.  
+after its creation (such as run control panel) is provided by this class,
+other than automatically executing the model after it is instantiated.
 Derived classes (such as PtolemyApplication) are instead responsible for
 providing such an interface.
 <p>
@@ -78,13 +78,13 @@ If more than one model is given on the command line, then the
 parameter values will be set for all models that have such
 a parameter.
 (In reality, "-iterations 2" will also work.)
-<p> 
+<p>
 This class implements the ExecutionListener interface so that it can count
 the number of actively executing models.  The waitForFinish method can
 then be used to determine when all of the models created by this application
 have finished.  It also contains a separate instance of ExecutionListener
 as an inner class that is  used to report the state of execution.  Subclasses
-may choose not to use this inner class for execution reporting if they 
+may choose not to use this inner class for execution reporting if they
 report the state of executing models in a different way.
 <p>
 NOTE: This application does not exit when the specified models finish
@@ -92,7 +92,7 @@ executing.  This is because if it did, then the any displays created
 by the models would disappear immediately.  However, it would be better
 if the application were to exit when all displays have been closed.
 This currently does not happen.
-<p> 
+<p>
 This class is used by the codegen facility.
 
 @author Edward A. Lee, Brian K. Vogel, and Steve Neuendorffer
@@ -119,7 +119,7 @@ public class CompositeActorApplication
             throws Exception {
         if (args != null) {
             _parseArgs(args);
-            
+
 	    // start the models.
             if (start) {
 		Iterator models = _models.iterator();
@@ -133,8 +133,8 @@ public class CompositeActorApplication
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Reduce the count of executing models by one.  If the number of 
-     *  executing models drops ot zero, then notify threads that might 
+    /** Reduce the count of executing models by one.  If the number of
+     *  executing models drops ot zero, then notify threads that might
      *  be waiting for this event.
      *  @param manager The manager calling this method.
      *  @param ex The exception being reported.
@@ -146,8 +146,8 @@ public class CompositeActorApplication
         }
     }
 
-    /**  Reduce the count of executing models by one.  If the number of 
-     *  executing models drops ot zero, then notify threads that might 
+    /**  Reduce the count of executing models by one.  If the number of
+     *  executing models drops ot zero, then notify threads that might
      *  be waiting for this event.
      *  @param manager The manager calling this method.
      */
@@ -271,7 +271,7 @@ public class CompositeActorApplication
 	public void executionError(Manager manager, Exception ex) {
 	    report(ex);
 	}
-	
+
 	/** Report that execution of the model has finished by printing a
 	 *  message to stdout.
 	 *  This is method is called by the specified manager.
@@ -280,7 +280,7 @@ public class CompositeActorApplication
 	public synchronized void executionFinished(Manager manager) {
 	    report("Execution finished.");
 	}
-	
+
 	/** Report that a manager state has changed.
 	 *  This is method is called by the specified manager.
 	 *  @param manager The manager calling this method.
@@ -297,24 +297,24 @@ public class CompositeActorApplication
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Parse a command-line argument.  The recognized arguments, which 
+    /** Parse a command-line argument.  The recognized arguments, which
      *  result in this method returning true are summarized below:
      *  <ul>
-     *  <li>If the argument is "-class", then attempt to interpret 
-     *  the next argument as the fully qualified classname of a class 
-     *  to instantiate as a ptolemy model.  The model will be created, 
+     *  <li>If the argument is "-class", then attempt to interpret
+     *  the next argument as the fully qualified classname of a class
+     *  to instantiate as a ptolemy model.  The model will be created,
      *  added to the directory of models, and then executed.
-     *  In this base class, the fully qualified classname is used as a 
-     *  name for the model.  In derived classes, a canonical URL or file 
+     *  In this base class, the fully qualified classname is used as a
+     *  name for the model.  In derived classes, a canonical URL or file
      *  name might be used.
      *  <li>If the argument is "-help", then print a help message.
-     *  <li>If the argument is "-test", then set a flag that will 
+     *  <li>If the argument is "-test", then set a flag that will
      *  abort execution of any created models after two seconds.
      *  <li>If the argument is "-version", then print a short version message.
      *  <li>If the argument is "", then ignore it.
      *  </ul>
      *  Otherwise, the argument is ignored and false is returned.
-     *  
+     *
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
@@ -328,7 +328,7 @@ public class CompositeActorApplication
             _test = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version 1.1, Build $Id$");
-            // quit the program if the user asked for the version            
+            // quit the program if the user asked for the version
             // Don't call System.exit(0) here, it will break the test suites
         } else if (arg.equals("")) {
             // Ignore blank argument.
@@ -408,7 +408,7 @@ public class CompositeActorApplication
             boolean match = false;
             Iterator models = _models.iterator();
             while(models.hasNext()) {
-		CompositeActor model = 
+		CompositeActor model =
 		    (CompositeActor) models.next();
 		Attribute attribute = model.getAttribute(name);
 		if (attribute instanceof Variable) {

@@ -48,7 +48,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.actor.lib.jspaces.Publisher;
-import ptolemy.actor.lib.RealTimeDelay; 
+import ptolemy.actor.lib.RealTimeDelay;
 
 
 import java.util.StringTokenizer;
@@ -148,7 +148,7 @@ public class StockServer extends TypedCompositeActor {
             // and a real time delay
 	    RealTimeDelay sink = new RealTimeDelay(this, "sink");
             sink.delay.setToken(new LongToken(30000));
-            
+
 	    String allTickers = ((StringToken)tickers.getToken()).stringValue();
 	    StringTokenizer st = new StringTokenizer(allTickers);
 	    int numQuotes = 0;
@@ -159,7 +159,7 @@ public class StockServer extends TypedCompositeActor {
 						"publisher" + numQuotes);
 	        numQuotes++;
 
-	        TypedIORelation relation = 
+	        TypedIORelation relation =
                     (TypedIORelation)connect(quote.output, publisher.input);
 	        sink.input.link(relation);
 

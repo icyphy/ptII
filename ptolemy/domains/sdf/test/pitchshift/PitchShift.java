@@ -59,13 +59,13 @@ public class PitchShift {
 
 	readPos = (_inputRingBufWritePos - outputDelay + ringBufSize) %
 	    ringBufSize;
-	
+
 	// The input ring buffer:
 	_inputRingBuf = new double[RING_BUFFER_SIZE];
-	
+
 	// The output ring buffer:
 	_outputRingBuf = new double[RING_BUFFER_SIZE];
-	
+
 	_outputRingBufPitchMarkerPos = 0;
 	// Starting period. Initialize to default (unvoiced) pitch.
 	inputPeriodLength = 100;
@@ -134,8 +134,8 @@ public class PitchShift {
 		/* That is, check if the the outputRingBufPitchMarkerPos
 		 *  lags nputRingBufWritePos.
 		 */
-		
-		
+
+
 		outLag = 1;
 		inHalfAway = (_inputRingBufWritePos + ringBufSize/2) %
 		    ringBufSize;
@@ -158,7 +158,7 @@ public class PitchShift {
 			outLag = 0;
 		    }
 		}
-		
+
 		while (outLag == 1) {
 	              // Do an OLA
 
@@ -173,8 +173,8 @@ public class PitchShift {
 		    } else {
 			correctedPitchScale = pitchScaleIn;
 		    }
-		    
-		    
+
+
                                 // Period scale factor.
 		    periodRatio = 1.0/(correctedPitchScale);
 		    _outputRingBufPitchMarkerPos =
@@ -197,7 +197,7 @@ public class PitchShift {
 
 			windowVal = (1 + Math.cos(Math.PI*olaIndex/
 						  (float)inputPeriodLength))*0.5;
-			
+
 			_outputRingBuf[(olaIndex +
 					_outputRingBufPitchMarkerPos +
 					ringBufSize) % ringBufSize] +=
@@ -254,33 +254,33 @@ public class PitchShift {
 	    // End of all interesting processing.
 	    ////////////////////////////////////////////////////////
 	    ////////////////////////////////////////////////////////
-	    
+
 	    // Read an output sample from the output Ring buffer.
 	    out[curOutSamp] = _outputRingBuf[readPos];
 	    //*out = inputRingBuf[readPos];
-	    
+
 	    // Now set the element just read from to zero, since it is no
 	    // longer needed.
 	    _outputRingBuf[readPos] = 0;
-	    
+
 	    // Update the pointers.
 	    _inputRingBufWritePos++;
 	    // Make the write postition pointer wrap back to the begining after it
 	    // reaches the end of the buffer.
 	    _inputRingBufWritePos %= ringBufSize;
-	    
+
 	    readPos++;
 	    // Make the write postition pointer wrap back to the begining after it
 	    // reaches the end of the buffer.
 	    readPos %= ringBufSize;
-	    
-	    
+
+
 	    curInSamp++;
 	    curOutSamp++;
 	    inputPitchInPtr++;
 	    size--;
 	}
-	
+
 	return out;
     }
 

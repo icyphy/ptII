@@ -83,12 +83,12 @@ public class SequenceToDoubleMatrix extends SDFTransformer {
         // the number of rows is defaulted to 1
         rows = new Parameter(this, "rows", new IntToken(1));
         rows.setTypeEquals(BaseType.INT);
-        
+
         // the number of columns is defaulted to 1
         columns = new Parameter(this, "columns", new IntToken(1));
         columns.setTypeEquals(BaseType.INT);
-      
-        // set the token consumption rate 
+
+        // set the token consumption rate
         attributeChanged(columns);
 
         output.setTokenProductionRate(1);
@@ -113,16 +113,16 @@ public class SequenceToDoubleMatrix extends SDFTransformer {
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == rows) || (attribute == columns)) {           
+        if ((attribute == rows) || (attribute == columns)) {
            int iRows = ((IntToken) rows.getToken()).intValue();
-           int iColumns = ((IntToken) columns.getToken()).intValue();        
-                
+           int iColumns = ((IntToken) columns.getToken()).intValue();
+
            input.setTokenConsumptionRate(iRows * iColumns);
            Director dir = getDirector();
 
            if (dir != null) {
               dir.invalidateSchedule();
-           }                
+           }
         } else {
            super.attributeChanged(attribute);
         }
@@ -131,14 +131,14 @@ public class SequenceToDoubleMatrix extends SDFTransformer {
     /** Consume the inputs and produce the output DoubleMatrixToken.
      *  @exception IllegalActionException Not thrown in this base class
      */
-    public void fire() throws IllegalActionException {    
+    public void fire() throws IllegalActionException {
         int iRows = ((IntToken) rows.getToken()).intValue();
-        int iColumns = ((IntToken) columns.getToken()).intValue();        
+        int iColumns = ((IntToken) columns.getToken()).intValue();
 
         double[][] matrix = new double[iRows][iColumns];
 
-        for (int i = 0; i < iRows; i++) {        
-            for (int j = 0; j < iColumns; j++) { 
+        for (int i = 0; i < iRows; i++) {
+            for (int j = 0; j < iColumns; j++) {
                 matrix[i][j] = ((ScalarToken) input.get(0)).doubleValue();
             }
         }

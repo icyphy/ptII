@@ -58,22 +58,22 @@ public class KeyInput extends GRActor {
         keycode.setOutput(true);
         keycode.setTypeEquals(BaseType.INT);
     }
-    
+
     public TypedIOPort sceneGraphOut;
     public TypedIOPort keycode;
-    
+
     public void makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
     }
-   
+
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         KeyInput newobj = (KeyInput) super.clone(workspace);
-        
+
         newobj.sceneGraphOut = (TypedIOPort) newobj.getPort("sceneGraphOut");
         newobj.keycode = (TypedIOPort) newobj.getPort("keycode");
         return newobj;
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
   	    userInputNode = new BranchGroup();
@@ -82,11 +82,11 @@ public class KeyInput extends GRActor {
   	    userInputNode.addChild(_react);
   	    _hasData = false;
     }
-    
+
     public Node getNodeObject() {
         return (Node) userInputNode;
     }
-    
+
     public void fire() throws IllegalActionException  {
         if (_hasData) {
             keycode.send(0, new IntToken((int)_keycode));
@@ -94,22 +94,22 @@ public class KeyInput extends GRActor {
             _hasData = false;
         }
     }
-    
+
     private class _React extends Behavior {
-        
+
         public void initialize() {
             this.wakeupOn(new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED));
         }
-        
+
         public void processStimulus(Enumeration criteria) {
             WakeupCriterion wakeup;
             int eventId;
             AWTEvent[] event;
-        
+
             while (criteria.hasMoreElements()) {
                 wakeup = (WakeupCriterion) criteria.nextElement();
                 event = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
-              	for (int i=0; i<event.length; i++) { 
+              	for (int i=0; i<event.length; i++) {
 	                eventId = event[i].getID();
 	                if (eventId == KeyEvent.KEY_PRESSED) {
 	                    _keycode = ((KeyEvent) event[i]).getKeyChar();

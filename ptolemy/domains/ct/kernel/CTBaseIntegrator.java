@@ -77,12 +77,12 @@ which has beed confirmed by all the step size control actors.
 <I>tentative state</I>: This is the value of the state variable
 which has not been confirmed. It is a starting point for other actors
 to estimate the accuracy of this integration step.
-<I>history</I>: The previous states and their derivatives. History may 
+<I>history</I>: The previous states and their derivatives. History may
 be used by multistep methods.
 <P>
 For different ODE solving methods, the functionality
 of an integrator may be different. The delegation and strategy design
-patterns are used in this class, ODESolver class, and the concrete 
+patterns are used in this class, ODESolver class, and the concrete
 ODE solver classes. Some solver-dependent methods of integrators are
 delegated to the ODE solvers.
 <P>
@@ -95,7 +95,7 @@ DoubleToken.
 <P>
 An integrator can possibly have several auxiliary variables for the
 the ODE solvers to use. The number of the auxiliary variables is checked
-before each iteration. The ODE solver class provides the number of 
+before each iteration. The ODE solver class provides the number of
 variables needed for that particular solver.
 The auxiliary variables can be set and get by setAuxVariables()
 and getAuxVariables() methods.
@@ -111,7 +111,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     /** Construct an integrator, with a name  and a container.
      *  The integrator is in the same workspace as the container.
-     *  
+     *
      * @param container The container.
      * @param name The name
      * @exception NameDuplicationException If the name is used by another
@@ -137,7 +137,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port. This is a single port of type double. 
+    /** The input port. This is a single port of type double.
      */
     public TypedIOPort input;
 
@@ -259,7 +259,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Go to the marked state. After calling the markState() method,
-     *  calling this method will bring the integrator back to the 
+     *  calling this method will bring the integrator back to the
      *  marked state. This method is used
      *  for rollbacking the excution to a previous time point.
      */
@@ -300,7 +300,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _history.clear();
     }
 
-    /** Return true if this integration step is accurate from this 
+    /** Return true if this integration step is accurate from this
      *  integrator's point of view.
      *  This method delegates to the integratorIsAccurate() method of
      *  the current ODE solver.
@@ -362,12 +362,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
     public boolean prefire() throws IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
         if (dir == null) {
-            throw new IllegalActionException( this, 
+            throw new IllegalActionException( this,
                     " does not have a director.");
         }
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
         if (solver == null) {
-            throw new IllegalActionException( this, 
+            throw new IllegalActionException( this,
                     " does not have an ODE solver.");
         }
         int n = solver.getIntegratorAuxVariableCount();
@@ -524,12 +524,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
             return _entries.size();
         }
 
-        /** Return the index-th entry in the history. 
+        /** Return the index-th entry in the history.
          *  The index starts from 0. If the current time index is n,
          *  then calling this method with argument 0 will return
          *  the history of time index n-1.
          *  @param index The index of the entry.
-         *  @return The double matrix storing the index-th state and 
+         *  @return The double matrix storing the index-th state and
          *         its derivative in history.
          */
         public double[] getEntry(int index) {
@@ -537,14 +537,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
         }
 
         /** Push the new state-derivative pair into the history.
-         *  If the number of entries exceeds the capacity 
+         *  If the number of entries exceeds the capacity
          *  after the pushing , then the oldest entry will be lost.
          *  @param state The state.
          *  @param derivative THe derivative of the state.
          *  @exception IllegalActionException If the capacity
          *  of history is less than or equal to zero.
          */
-        public void pushEntry(double state, double derivative) 
+        public void pushEntry(double state, double derivative)
                 throws IllegalActionException {
             if (_capacity >0) {
                 DoubleDouble entry = new DoubleDouble(state, derivative);
@@ -562,7 +562,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
             }
         }
 
-        
+
         /** Rebalance the history information
          *  with repect to the current step size, such that the information
          *  in the history list are equaly distanced, and the

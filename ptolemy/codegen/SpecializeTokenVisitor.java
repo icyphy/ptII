@@ -346,7 +346,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                             methodName.equals("divideReverse") ||
                             methodName.equals("modulo") ||
                             methodName.equals("moduloReverse")) {
-                        // Constrain the return value to be >= both 
+                        // Constrain the return value to be >= both
                         // the accessedObject and the first argument
 
                         _solver.addInequality(new Inequality(accessedObjTerm,
@@ -586,7 +586,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         }
 
         public String toString() {
-            return "ConstantTerm: value = " + _classDecl.getName() + 
+            return "ConstantTerm: value = " + _classDecl.getName() +
                 ", _decl = " + _decl;
         }
 

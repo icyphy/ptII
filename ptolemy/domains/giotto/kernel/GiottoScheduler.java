@@ -211,10 +211,10 @@ public class GiottoScheduler extends Scheduler {
 		// Makes sure that current actor will be read again.
 		Actor dummy = (Actor) (iterator.previous());
 
-		// Recursive call where 'lastFrequency' becomes current 
+		// Recursive call where 'lastFrequency' becomes current
                 // 'frequency'
 		// and 'frequency' becomes the frequency of the current actor.
-		higherFrequencyList = 
+		higherFrequencyList =
                     _treeSchedule(iterator, frequency, actorFrequency);
 
 		// Redundant break because recursive call

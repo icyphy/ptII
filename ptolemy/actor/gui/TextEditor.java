@@ -97,7 +97,7 @@ public class TextEditor extends TableauFrame {
 
     /** The text area. */
     public JTextArea text;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                            public methods                 ////
 

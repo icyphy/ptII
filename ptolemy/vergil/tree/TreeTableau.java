@@ -56,7 +56,7 @@ This class provides a tree view for ptolemy models.
 @version $Id$
 */
 public class TreeTableau extends Tableau {
-  
+
     public TreeTableau(PtolemyEffigy container, String name)
 	throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -68,14 +68,14 @@ public class TreeTableau extends Tableau {
                     + "not a CompositeEntity.");
         }
 	CompositeEntity entity = (CompositeEntity)model;
-	
+
 	TreeFrame frame = new TreeFrame(entity);
 	frame.setBackground(BACKGROUND_COLOR);
 	setFrame(frame);
         // Give a reasonable default size.
         size.setExpression("300x500");
 	frame.setTableau(this);
-	frame.pack(); 
+	frame.pack();
 	frame.centerOnScreen();
 	frame.setVisible(true);
     }
@@ -88,7 +88,7 @@ public class TreeTableau extends Tableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
-    
+
     /** This is a top-level window containing a tree-view of a composite
      *  entity.
      */
@@ -103,7 +103,7 @@ public class TreeTableau extends Tableau {
 	    PTree pane = new PTree(new FullTreeModel(entity));
 	    getContentPane().add(new JScrollPane(pane), BorderLayout.CENTER);
 	}
-	
+
         ///////////////////////////////////////////////////////////////
         ////                     protected methods                 ////
 
@@ -126,7 +126,7 @@ public class TreeTableau extends Tableau {
 	 *  The container argument must not be null, or a
 	 *  NullPointerException will be thrown.  This entity will use the
 	 *  workspace of the container for synchronization and version counts.
-	 *  If the name argument is null, 
+	 *  If the name argument is null,
 	 *  then the name is set to the empty string.
 	 *  Increment the version of the workspace.
 	 *  @param container The container entity.
@@ -168,7 +168,7 @@ public class TreeTableau extends Tableau {
                     previous.show();
                     return previous;
                 } else {
-                    PtolemyEffigy ptEffigy = (PtolemyEffigy)effigy; 
+                    PtolemyEffigy ptEffigy = (PtolemyEffigy)effigy;
                     NamedObj model = ptEffigy.getModel();
                     if (model instanceof CompositeEntity) {
                         return new TreeTableau(ptEffigy, "treeTableau");

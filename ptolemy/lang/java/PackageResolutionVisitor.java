@@ -1,4 +1,4 @@
-/* PackageResolutionVisitor  
+/* PackageResolutionVisitor
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.

@@ -52,7 +52,7 @@ A token that contains a set of label/token pairs.
 
 public class RecordToken extends Token {
 
-    /** Construct a RecordToken with the specified labeles and values. 
+    /** Construct a RecordToken with the specified labeles and values.
      *  The labels and values array must have the same length, and have one
      *  to one correspondance. That is, the i'th entry in the labels array
      *  is the label for the i'th value in the values array. Both arrays
@@ -231,7 +231,7 @@ public class RecordToken extends Token {
      *  {<label>=<value>, <label>=<value>, ...}
      *  The record fields are listed in the lexicographical order of the
      *  labels determined by the java.lang.String.compareTo() method.
-     *  @return A String beginning with "{" that contains label and value 
+     *  @return A String beginning with "{" that contains label and value
      *  pairs separated by commas, ending with "}".
      */
     public String toString() {

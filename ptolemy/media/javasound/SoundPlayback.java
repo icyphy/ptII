@@ -45,17 +45,17 @@ import javax.sound.sampled.*;
    (mono) and multichannel audio (stereo) are supported. This class,
    along with SoundCapture, intends to provide an easy to use interface
    to Java Sound, Java's audio API. Java Sound supports the writing
-   of audio data to a sound file or the computer's audio output port, 
+   of audio data to a sound file or the computer's audio output port,
    but only at the byte level, which is audio format specific. This class,
    however, provides higher level support for the writing of double
    or integer valued samples to the computer's audio output port or
    any supported sound file type. This class is therefore useful when
-   it one desires to playback audio samples in an audio format independent 
+   it one desires to playback audio samples in an audio format independent
    way.
    <p>
-   Depending on available system resources, it may be possible to 
-   run an instance of this class and an instance of SoundCapture 
-   concurrently. This allows for the concurrent capture, signal 
+   Depending on available system resources, it may be possible to
+   run an instance of this class and an instance of SoundCapture
+   concurrently. This allows for the concurrent capture, signal
    processing, and playback of audio data.
    <p>
    <h2>Usage</h2>
@@ -98,7 +98,7 @@ import javax.sound.sampled.*;
 
 public class SoundPlayback {
 
-    /** Construct a sound playback object that plays audio through the 
+    /** Construct a sound playback object that plays audio through the
      *  computer's speaker. Note
      *  that when this constructor is used, putSamples() should be
      *  called often enough to prevent underflow of the internal audio
@@ -150,13 +150,13 @@ public class SoundPlayback {
 	//      + putSamplesSize);
     }
 
-    /** Construct a sound playback object that writes audio to 
+    /** Construct a sound playback object that writes audio to
      *  a sound file with the specified name.  Valid sound file
      *  formats are WAVE (.wav), AIFF (.aif, .aiff), AU (.au). The file
      *  format is automatically determined from the file extension.
      *  The sound file will be initialized when startPlayback() is
-     *  called. If there is a problem creating the sound file, an 
-     *  IOException will be thrown in startPlayback(). 
+     *  called. If there is a problem creating the sound file, an
+     *  IOException will be thrown in startPlayback().
      *  Thereafter, each call to putSamples() will add
      *  <i>putSamplesSize</i> samples to the sound file. To
      *  close and save the sound file, call stopPlayback().
@@ -256,22 +256,22 @@ public class SoundPlayback {
 	//System.out.println("SoundPlayback: putSamples(): invoked");
 	if (_isAudioPlaybackActive == true) {
 	    if (_playbackMode == "speaker") {
-		
+
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _doubleArrayToByteArray(putSamplesArray,
 						_bytesPerSample,
 						_channels);
-		
+
 		// Note: _data is a byte array containing data to
 		// be written to the output device.
 		// Note: consumptionRate is amount of data to write, in bytes.
-		
+
 		// Now write the array to output device.
 		_sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
 	    } else if (_playbackMode == "file") {
 		//System.out.println("SoundPlayback: putSamples(): file");
-		
+
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _doubleArrayToByteArray(putSamplesArray,
@@ -311,7 +311,7 @@ public class SoundPlayback {
      *  then append the audio data contained in <i>putSamplesArray</i>
      *  to the sound file specified in the constructor.
      *  <p>
-     *  The samples should be in the range 
+     *  The samples should be in the range
      *  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)). Samples
      *  that are outside this range will be hard-clipped.
      *  @param putSamplesArray A two dimensional array containing
@@ -336,22 +336,22 @@ public class SoundPlayback {
 	//System.out.println("SoundPlayback: putSamples(): invoked");
 	if (_isAudioPlaybackActive == true) {
 	    if (_playbackMode == "speaker") {
-		
+
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _intArrayToByteArray(putSamplesArray,
 						_bytesPerSample,
 						_channels);
-		
+
 		// Note: _data is a byte array containing data to
 		// be written to the output device.
 		// Note: consumptionRate is amount of data to write, in bytes.
-		
+
 		// Now write the array to output device.
 		_sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
 	    } else if (_playbackMode == "file") {
 		//System.out.println("SoundPlayback: putSamples(): file");
-		
+
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _intArrayToByteArray(putSamplesArray,
@@ -385,7 +385,7 @@ public class SoundPlayback {
      *  @exception IllegalStateException If this method is called
      *  more than once between invocations of stopCapture().
      */
-    public void startPlayback() throws IOException, 
+    public void startPlayback() throws IOException,
                                IllegalStateException {
 	//System.out.println("SoundPlayback: startPlayback(): invoked");
 	if (_isAudioPlaybackActive == false) {
@@ -420,7 +420,7 @@ public class SoundPlayback {
      *  closed.
      *
      *  @exception IOException If there is a problem closing the
-     *   audio resources, or if the "write audio data 
+     *   audio resources, or if the "write audio data
      *   to file" constructor was used  and the sound file has an
      *   unsupported format.
      */
@@ -573,7 +573,7 @@ public class SoundPlayback {
 	}
     }
 
-    /* Convert a double array of audio samples into a byte array of 
+    /* Convert a double array of audio samples into a byte array of
      * audio samples in linear signed pcm big endian format. The
      * samples contained in <i>doubleArray</i> should be in the
      * range (-1,1). Samples outside this range will be hard clipped
@@ -620,10 +620,10 @@ public class SoundPlayback {
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
 		// Perform clipping, if necessary.
-		if (doubleArray[currChannel][currSamp] >= 
+		if (doubleArray[currChannel][currSamp] >=
 		    maxDoubleValuedSample) {
 		    l = (int)maxSample - 2;
-		} else if (doubleArray[currChannel][currSamp] <= 
+		} else if (doubleArray[currChannel][currSamp] <=
 			   -maxDoubleValuedSample) {
 		    l = (int)(-maxSample) + 2;
 		} else {
@@ -638,7 +638,7 @@ public class SoundPlayback {
 		// Copy the byte representation of current sample to
 		// the linear signed pcm big endian formatted byte array.
 		for (int i = 0; i < bytesPerSample; i += 1) {
-                    byteArray[currSamp*bytesPerSample*channels + 
+                    byteArray[currSamp*bytesPerSample*channels +
                             bytesPerSample*currChannel + i] = b[i];
 		}
 	    }
@@ -646,7 +646,7 @@ public class SoundPlayback {
 	return byteArray;
     }
 
-    /* Convert a integer array of audio samples into a byte array of 
+    /* Convert a integer array of audio samples into a byte array of
      * audio samples in linear signed pcm big endian format.
      * The samples contained by <i>intArray</i> should be in the range
      * (-2^(bits_per_sample/2), 2^(bits_per_sample/2)). Samples that
@@ -704,7 +704,7 @@ public class SoundPlayback {
 		// Copy the byte representation of current sample to
 		// the linear signed pcm big endian formatted byte array.
 		for (int i = 0; i < bytesPerSample; i += 1) {
-                    byteArray[currSamp*bytesPerSample*channels + 
+                    byteArray[currSamp*bytesPerSample*channels +
                             bytesPerSample*currChannel + i] = b[i];
 		}
 	    }

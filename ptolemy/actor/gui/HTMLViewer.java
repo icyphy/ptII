@@ -57,7 +57,7 @@ import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewer
 /**
-This class is a toplevel frame that can view HTML documents. 
+This class is a toplevel frame that can view HTML documents.
 It supports printing and will save the text to a .html file.
 The url that is viewed can be changed by calling the <i>setPage</i> method.
 
@@ -151,7 +151,7 @@ public class HTMLViewer extends TableauFrame
 
 // FIXME: This should be handled in Top...
 
-    /** Print the documentation to a printer.  The documentation will be 
+    /** Print the documentation to a printer.  The documentation will be
      *  scaled to fit the width of the paper, growing to as many pages as
      *  is necessary.
      *  @param graphics The context into which the page is drawn.
@@ -164,8 +164,8 @@ public class HTMLViewer extends TableauFrame
     public int print(Graphics graphics, PageFormat format,
             int index) throws PrinterException {
 
-	Dimension dimension = pane.getSize();   
-	
+	Dimension dimension = pane.getSize();
+
 	// How much do we have to scale the width?
 	double scale = format.getImageableWidth() / dimension.getWidth();
 	double scaledHeight = dimension.getHeight() * scale;
@@ -180,9 +180,9 @@ public class HTMLViewer extends TableauFrame
 		     (int)format.getImageableY());
 	at.translate(0, -(format.getImageableHeight() * index));
 	at.scale(scale, scale);
-	
+
         ((Graphics2D) graphics).transform(at);
-	        
+
         pane.paint(graphics);
         return Printable.PAGE_EXISTS;
     }

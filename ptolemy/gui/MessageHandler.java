@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -56,7 +56,7 @@ class.
 @version $Id$
 */
 public class MessageHandler {
-    
+
     // This constructor is private because the class is a singleton.
     private MessageHandler() {
     }
@@ -90,7 +90,7 @@ public class MessageHandler {
         Object[] message = new Object[1];
 	String string = info;
 	message[0] = ellipsis(string, 400);
-	
+
         Object[] options = {"Dismiss"};
 
         // Show the MODAL dialog
@@ -99,7 +99,7 @@ public class MessageHandler {
                 message,
                 "Error",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE, 
+                JOptionPane.ERROR_MESSAGE,
                 null,
                 options,
                 options[0]);
@@ -110,7 +110,7 @@ public class MessageHandler {
      *  is not shown.  By default, only the message of the exception
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
-     * 
+     *
      *  @param info The message.
      *  @param exception The exception.
      *  @see CancelException
@@ -131,7 +131,7 @@ public class MessageHandler {
 	    string = exception.getMessage();
 	}
 	message[0] = ellipsis(string, 400);
-	
+
         Object[] options = {"Dismiss", "Display Stack Trace"};
 
         // Show the MODAL dialog
@@ -140,11 +140,11 @@ public class MessageHandler {
                 message,
                 "Exception",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE, 
+                JOptionPane.ERROR_MESSAGE,
                 null,
                 options,
                 options[0]);
-        
+
         if(selected == 1) {
             showStackTrace(exception, info);
         }
@@ -176,7 +176,7 @@ public class MessageHandler {
         stext.setPreferredSize(new Dimension(600, 300));
         text.setCaretPosition(0);
         text.setEditable(false);
-        
+
         // We want to stack the text area with another message
         Object[] message = new Object[2];
         String string;
@@ -187,7 +187,7 @@ public class MessageHandler {
         }
         message[0] = ellipsis(string, 400);
         message[1] = stext;
-        
+
         // Show the MODAL dialog
         JOptionPane.showMessageDialog(
                 _context,
@@ -215,22 +215,22 @@ public class MessageHandler {
                 message,
                 "Warning",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE, 
+                JOptionPane.WARNING_MESSAGE,
                 null,
                 options,
                 options[0]);
-        
+
         if(selected == 1) {
             throw new CancelException();
         }
     }
 
-    /** Show the specified message and exception information 
+    /** Show the specified message and exception information
      *  in a modal dialog.  If the user
      *  clicks on the "Cancel" button, then throw an exception.
      *  This gives the user the option of not continuing the
      *  execution, something that is particularly useful if continuing
-     *  execution will result in repeated warnings.  
+     *  execution will result in repeated warnings.
      *  By default, only the message of the exception
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
@@ -249,11 +249,11 @@ public class MessageHandler {
                 message,
                 "Warning",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE, 
+                JOptionPane.WARNING_MESSAGE,
                 null,
                 options,
                 options[0]);
-        
+
         if(selected == 1) {
             showStackTrace(exception, info);
         } else if(selected == 2) {

@@ -93,7 +93,7 @@ public class SequenceToArray extends SDFTransformer {
     public void fire() throws IllegalActionException {
 	int length = input.getTokenConsumptionRate();
 	Token[] valueArray = input.get(0, length);
-	
+
         output.send(0, new ArrayToken(valueArray));
     }
 

@@ -70,10 +70,10 @@ public class DotProduct extends TypedAtomicActor {
         super(container, name);
       	input1 = new TypedIOPort(this, "input1", true, false);
         input1.setTypeAtMost(BaseType.DOUBLE_MATRIX);
-                
+
         input2 = new TypedIOPort(this, "input2", true, false);
         input2.setTypeAtMost(BaseType.DOUBLE_MATRIX);
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
     }
@@ -81,12 +81,12 @@ public class DotProduct extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The first input port. This has type MatrixToken, and should be 
+    /** The first input port. This has type MatrixToken, and should be
      *  given matrices with only one row.
      */
     public TypedIOPort input1 = null;
 
-    /** The second input port. This has type MatrixToken, and should be 
+    /** The second input port. This has type MatrixToken, and should be
      *  given matrices with only one row.
      */
     public TypedIOPort input2 = null;

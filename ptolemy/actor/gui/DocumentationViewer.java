@@ -56,9 +56,9 @@ import java.net.URL;
 This class is a viewer for documentation of ptolemy classes.  It assumes
 that class documentation for all classes has been created in the
 <code>doc/codeDoc</code> directory relative to some point in the classpath.
-In other words, if the Object is an instance of 
-<code>ptolemy.gui.DocumentationViewer</code, then this class will attempt 
-to load the resource 
+In other words, if the Object is an instance of
+<code>ptolemy.gui.DocumentationViewer</code, then this class will attempt
+to load the resource
 <code>doc.codeDoc.ptolemy.gui.DocumentationViewer.html</code>.
 To automatically create documentation for the ptolemy tree in this directory,
 run make in the doc directory.
@@ -70,7 +70,7 @@ run make in the doc directory.
 
 public class DocumentationViewer extends HTMLViewer {
 
-    /** Construct a viewer for the documentation of the class of 
+    /** Construct a viewer for the documentation of the class of
      *  the specified object.  If the documentation cannot be found, then
      *  display an error message.
      */

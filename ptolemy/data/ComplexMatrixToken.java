@@ -71,8 +71,8 @@ public class ComplexMatrixToken extends MatrixToken {
      *  constructed will not affect the content of this token.
      *  If copy is DO_NOT_COPY, just reference the array (do not copy
      *  its contents). This saves some time and memory.
-     *  The argument array should NOT be modified after this constructor 
-     *  is called to preserve immutability.          
+     *  The argument array should NOT be modified after this constructor
+     *  is called to preserve immutability.
      *  @exception NullPointerException If the specified array
      *   is null.
      */
@@ -85,7 +85,7 @@ public class ComplexMatrixToken extends MatrixToken {
         } else {
            _value = ComplexMatrixMath.allocCopy(value);
         }
-    } 
+    }
 
     // FIXME: finish this method after array is added to the
     //               expression language.
@@ -143,7 +143,7 @@ public class ComplexMatrixToken extends MatrixToken {
                              "matrices with different dimension.");
                 }
 
-                result = ComplexMatrixMath.add(tem._getInternalComplexMatrix(), 
+                result = ComplexMatrixMath.add(tem._getInternalComplexMatrix(),
                                                _value);
             }
             return new ComplexMatrixToken(result, DO_NOT_COPY);
@@ -269,7 +269,7 @@ public class ComplexMatrixToken extends MatrixToken {
             // type of specified token <= ComplexMatrixToken
             ComplexMatrixToken tem = (ComplexMatrixToken) convert(t);
             return new BooleanToken(
-             ComplexMatrixMath.arePartsWithin(_value, 
+             ComplexMatrixMath.arePartsWithin(_value,
               tem._getInternalComplexMatrix(), 0.0));
         }
     }
@@ -314,7 +314,7 @@ public class ComplexMatrixToken extends MatrixToken {
     public int getRowCount() {
         return _rowCount;
     }
-    
+
     /** Return a new token whose value is the product of this token
      *  and the argument. The type of the specified token
      *  must be such that either it can be converted to the type
@@ -348,7 +348,7 @@ public class ComplexMatrixToken extends MatrixToken {
             if (t.getType() == BaseType.COMPLEX) {
                // multiply by a complex number
                Complex c = ((ComplexToken) t).complexValue();
-               result = ComplexMatrixMath.multiply(_value, c);            
+               result = ComplexMatrixMath.multiply(_value, c);
             } else if (t instanceof ScalarToken) {
                 // multiply by a double
                 double scalar = ((ScalarToken)t).doubleValue();
@@ -386,7 +386,7 @@ public class ComplexMatrixToken extends MatrixToken {
                     + "token " + t.getClass().getName() + " is not lower than "
                     + getClass().getName());
        }
-       
+
        // Check if t is matrix. In that case we must convert t into a
        // ComplexMatrixToken because matrix multiplication is not
        // commutative.
@@ -394,13 +394,13 @@ public class ComplexMatrixToken extends MatrixToken {
           // multiply is commutative on complex matrices, for scalar types.
           return multiply(t);
        } else {
-          // the specified token is not a scalar       
+          // the specified token is not a scalar
           ComplexMatrixToken tem = (ComplexMatrixToken) this.convert(t);
           return new ComplexMatrixToken(ComplexMatrixMath.multiply(
                       tem._getInternalComplexMatrix(), _value), DO_NOT_COPY);
-       }       
+       }
     }
-    
+
     /** Return a new Token whose value is the value of the argument Token
      *  subtracted from the value of this Token. The type of the specified token
      *  must be such that either it can be converted to the type
@@ -426,8 +426,8 @@ public class ComplexMatrixToken extends MatrixToken {
                 t.getClass().getName();
             throw new IllegalActionException(msg);
         } else if (compare == CPO.LOWER) {
-            Token me = t.convert(this);            
-            return me.subtract(t); 
+            Token me = t.convert(this);
+            return me.subtract(t);
         } else {
             // type of the specified token <= ComplexMatrixToken
             Complex[][] result = null;
@@ -444,7 +444,7 @@ public class ComplexMatrixToken extends MatrixToken {
                     "matrices with different dimensions.");
                 }
 
-                result = ComplexMatrixMath.subtract(_value, 
+                result = ComplexMatrixMath.subtract(_value,
                  tem._getInternalComplexMatrix());
             }
             return new ComplexMatrixToken(result, DO_NOT_COPY);
@@ -452,7 +452,7 @@ public class ComplexMatrixToken extends MatrixToken {
     }
 
     /** Return a new Token whose value is the value of this Token
-     *  subtracted from the value of the argument Token. 
+     *  subtracted from the value of the argument Token.
      *  The type of the specified token must be lower than ComplexMatrixToken.
      *  @param t The token to add this Token to.
      *  @return A new token containing the result.
@@ -468,7 +468,7 @@ public class ComplexMatrixToken extends MatrixToken {
                     + getClass().getName());
         }
         // add the argument Token to the negative of this Token
-        ComplexMatrixToken negativeToken = 
+        ComplexMatrixToken negativeToken =
          new ComplexMatrixToken(ComplexMatrixMath.negative(_value), DO_NOT_COPY);
         return negativeToken.add(t);
     }
@@ -510,8 +510,8 @@ public class ComplexMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Return a reference to the internal 2-D array of complex numbers that 
-     *  represents this Token. Because no copying is done, the contents must 
+    /** Return a reference to the internal 2-D array of complex numbers that
+     *  represents this Token. Because no copying is done, the contents must
      *  NOT be modified to preserve the immutability of Token.
      *  @return A 2-D complex array.
      */

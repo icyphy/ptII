@@ -221,7 +221,7 @@ token. The precondition is
 
 
 If there is no data in a non-blocking domain,
-then the precondition fails. 
+then the precondition fails.
 This can be tested by calling <CODE>hasToken()</CODE>.
 NoSuchItemException
 (preferably with a better name) should therefore
@@ -239,7 +239,7 @@ exception.
 
 
 <h2><a name="HTML documentation conventions">HTML documentation conventions</a></h2>
-If you are writing HTML documentation, please follow these conventions	
+If you are writing HTML documentation, please follow these conventions
 <menu>
 
 <li> <a href="templates/text.htm"><CODE>$PTII/doc/coding/templates/text.htm</CODE></a> is a template of what a HTML text file should look like
@@ -251,7 +251,7 @@ not be centered
 <li> If you refer to a web page outside of the Ptolemy II tree, be sure
 to use the <CODE>_top</CODE> target so that when the user
 clicks on the link, the Ptolemy II pages are obscured and the
-remote page is opened in the full browser window.  For example, 
+remote page is opened in the full browser window.  For example,
 the HTML should look like:
 <pre>
 &lt;a href="http://www.javasoft.com" target="_top"&gt;JavaSoft&lt;/a&gt;
@@ -298,14 +298,14 @@ widgets, such as plots.
 
 <li> The explanation of the demo should follow the applet.
 
-<li> It is best if the applet does not bring up separate windows, all of 
+<li> It is best if the applet does not bring up separate windows, all of
 the activity should occur within the main browser window.
 
 
 <li> All applets should use the <a href="../install.htm#Plugin">JDK1.2
 plugin</a>.  Using the plugin complicates the html for the applet.
-The Java Plugin website includes a converter that converts an html file 
-from a JDK1.1 applet to a JDK1.2 plugin.  The resulting html 
+The Java Plugin website includes a converter that converts an html file
+from a JDK1.1 applet to a JDK1.2 plugin.  The resulting html
 has two sections, one for Internet Explorer, one for Netscape.
  <br> The section within <CODE>&lt;Object ... &lt;COMMENT</CODE> is
 for Internet Explorer.
@@ -322,7 +322,7 @@ twice, once for IE, once for Netscape
 	your applet.  Usually all the classes that are in the
 	demo directory go into this jar file.  If this is the
 	case, then the makefile should set <CODE>PTPACKAGE</CODE>
-	to the name of the demo, and then the install rule should depend 
+	to the name of the demo, and then the install rule should depend
 	on <CODE>PTCLASSJAR</CODE>:
 <pre>
 PTPACKAGE = 	BusContention
@@ -412,7 +412,7 @@ copyrights, then you should be sure to include the copyrights.
 Berkeley, then you should include the date from that file.
 
 <h2><a name="emacs">Emacs</a></h2>
-Emacs includes  the <CODE>cc-mode</CODE>, which will auto-indent Java 
+Emacs includes  the <CODE>cc-mode</CODE>, which will auto-indent Java
 code.
  <p>To set up Emacs to follow the Ptolemy II coding style, see
 <a href="../../util/testsuite/ptjavastyle.el"><CODE>$PTII/util/testsuite/ptjavastyle.el</CODE></a> and follow

@@ -51,7 +51,7 @@ import javax.swing.*;
 A factory that adds an action to the given context menu that will configure
 parameter styles on the given object.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
 */
 public class EditParameterStylesFactory extends MenuItemFactory {

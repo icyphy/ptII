@@ -42,12 +42,12 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
 /**
-An binary, orthogonal communication system. Randomly choose a bit, 
+An binary, orthogonal communication system. Randomly choose a bit,
 send the signal associated with the bit, add Gaussian noise to
 the signal, and attempt to recover the bit using the maximum
 likelihood decision rule. The difference between the send and output
 bit is output on the screen. (0 = no error; 1,-1 = error).
- 
+
 This class is used as a demonstration of the codegen facility, which is
 why it is written in Java instead of using MoML.
 
@@ -57,8 +57,8 @@ why it is written in Java instead of using MoML.
 public class OrthogonalCom extends TypedCompositeActor {
 
     public OrthogonalCom(Workspace w) throws IllegalActionException {
-        super(w);               
-                        
+        super(w);
+
         try {
             setDirector(new SDFDirector(this, "director"));
 
@@ -70,79 +70,79 @@ public class OrthogonalCom extends TypedCompositeActor {
            Const signal1 = new Const(this, "signal1");
            signal1.value.setToken(new DoubleMatrixToken(
              new double[][] {{ 1, 1, 1, 1, 1, 1, 1, 1 }}));
-        
+
            Const signal2 = new Const(this, "signal2");
            signal2.value.setToken(new DoubleMatrixToken(
              new double[][] {{ 1, 1, 1, 1, -1, -1, -1, -1 }}));
-        
+
            // Signal selector
            Multiplexor mux = new Multiplexor(this, "mux");
 
            // Adder
            AddSubtract adder = new AddSubtract(this, "adder");
-        
+
            // Gaussian noise
            Gaussian noise = new Gaussian(this, "noise");
            noise.standardDeviation.setToken(new DoubleToken(2.0));
-                
+
            // Convert noise samples into matrix.
-           SequenceToDoubleMatrix noisePacker = 
-            new SequenceToDoubleMatrix(this, "noisePacker");            
-                      
-           // Pack 8 samples into each matrix.           
-           noisePacker.columns.setToken(new IntToken(8));                
-                                            
+           SequenceToDoubleMatrix noisePacker =
+            new SequenceToDoubleMatrix(this, "noisePacker");
+
+           // Pack 8 samples into each matrix.
+           noisePacker.columns.setToken(new IntToken(8));
+
            // Correlators
            DotProduct correlator1 = new DotProduct(this, "correlator1");
            DotProduct correlator2 = new DotProduct(this, "correlator2");
-                
+
            // Decision
            MaxIndex decision = new MaxIndex(this, "decision");
-        
+
            // Displays
            FileWriter outputBitDisplay =
 	       new FileWriter(this, "outputBitDisplay");
-           
+
            AddSubtract diff = new AddSubtract(this, "diff");
-           
+
            // Connect everything up.
            TypedIORelation r0 = (TypedIORelation) newRelation("r0");
            bitSource.output.link(r0);
            mux.select.link(r0);
            diff.plus.link(r0);
-                      
+
            TypedIORelation r1 = (TypedIORelation) newRelation("r1");
-           signal1.output.link(r1);           
+           signal1.output.link(r1);
            mux.input.link(r1);
            correlator1.input1.link(r1);
-           
+
            TypedIORelation r2 = (TypedIORelation) newRelation("r2");
-           signal2.output.link(r2);           
+           signal2.output.link(r2);
            mux.input.link(r2);
            correlator2.input1.link(r2);
-           
+
            TypedIORelation r3 = (TypedIORelation) newRelation("r3");
-           adder.output.link(r3);           
+           adder.output.link(r3);
            correlator1.input2.link(r3);
            correlator2.input2.link(r3);
-                                                       
+
            connect(noise.output, noisePacker.input);
-           
+
            connect(mux.output, adder.plus);
            connect(noisePacker.output, adder.plus);
-                                                  
+
            connect(correlator1.output, decision.input);
            connect(correlator2.output, decision.input);
-           
-           connect(decision.output, diff.minus);           
-           
+
+           connect(decision.output, diff.minus);
+
            connect(diff.output, outputBitDisplay.input);
-           
+
            // A hack to get code generation to work.
            outputBitDisplay.input.setTypeEquals(BaseType.INT);
-                                            
+
         } catch (NameDuplicationException nde) {
            throw new RuntimeException(nde.toString());
-        }                                                   
-    }       
+        }
+    }
 }

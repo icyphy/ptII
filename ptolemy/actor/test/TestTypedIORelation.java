@@ -39,7 +39,7 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// TestTypedIORelation
 /**
-Class for testing TypedIORelation 
+Class for testing TypedIORelation
 @author Christopher Hylands
 @version $Id$
 */

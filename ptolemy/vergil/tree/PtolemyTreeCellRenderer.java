@@ -47,7 +47,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 /**
 A tree cell renderer for Ptolemy objects.  This renderer just adds the
 objects name to the default rendition.
- 
+
 @see #PtolemyTreeModel
 @author Steve Neuendorffer and Edward A. Lee
 @version $Revision$
@@ -64,22 +64,22 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
      *  attributes and use those.
      */
     public Component getTreeCellRendererComponent(JTree tree,
-	Object value, boolean selected, boolean expanded, boolean leaf, 
+	Object value, boolean selected, boolean expanded, boolean leaf,
 	int row, boolean hasFocus) {
-	
+
 	DefaultTreeCellRenderer component = (DefaultTreeCellRenderer)
-	    super.getTreeCellRendererComponent(tree, value, 
-		selected, expanded, leaf, row, hasFocus);	
+	    super.getTreeCellRendererComponent(tree, value,
+		selected, expanded, leaf, row, hasFocus);
 	if(value instanceof NamedObj) {
 	    NamedObj object = (NamedObj) value;
-	    // Fix the background colors because transparent 
+	    // Fix the background colors because transparent
 	    // labels don't work quite right.
 	    if(!selected) {
 		component.setBackground(tree.getBackground());
 		component.setOpaque(true);
 	    } else {
 		component.setOpaque(false);
-	    }	    
+	    }
 	    component.setText(object.getName());
 
             // Render an icon, if one has been defined.
@@ -91,7 +91,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 		// rendered in the tree.
 		if(object.getAttribute("_iconDescription") != null) {
 		    // FIXME: may want to use another type of icon
-		    // FIXME: this code is the same as in 
+		    // FIXME: this code is the same as in
 		    // EntityController.
 		    EditorIcon icon;
 		    try {
@@ -101,13 +101,13 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 			}
 		    } catch (KernelException ex) {
 			throw new InternalErrorException(
-                                "could not create icon in " + object + 
+                                "could not create icon in " + object +
                                 " even though one did not exist.");
 		    }
 		    // Wow.. this is a confusing line of code.. :)
 		    component.setIcon(icon.createIcon());
 		}
-                
+
                 Attribute tooltipAttribute = object.getAttribute("tooltip");
                 if (tooltipAttribute != null
                         && tooltipAttribute instanceof Documentation) {

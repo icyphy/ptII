@@ -131,7 +131,7 @@ public class CTPeriodicSampler extends Transformer
     public void emitCurrentEvents() {
         if(_hasCurrentEvent) {
             try {
-                for (int i = 0; 
+                for (int i = 0;
                      i < Math.min(input.getWidth(), output.getWidth());
                      i++) {
                     if(input.hasToken(i)) {

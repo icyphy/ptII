@@ -24,7 +24,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (frederic.boulanger@supelec.fr)
-@AcceptedRating Red 
+@AcceptedRating Red
 */
 
 package ptolemy.vergil.debugger;
@@ -44,13 +44,13 @@ import ptolemy.vergil.debugger.*;
 //////////////////////////////////////////////////////////////////////////
 //// BreakpointEditor
 /**
-A user interface for editing a breakpoint.  The condition is 
+A user interface for editing a breakpoint.  The condition is
 displayed in a text box and can be edited.  The method that the
 breakpoint is active on can also be edited.
-The changes are validated when return is pressed after 
-editing the condition or the Ok button is activated. The 
+The changes are validated when return is pressed after
+editing the condition or the Ok button is activated. The
 cancel button will close the window without changing at all
-the breakpoint 
+the breakpoint
 
 @author B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
 @version $Id$
@@ -61,7 +61,7 @@ public class BreakpointEditor extends JFrame implements ActionListener {
      *  @param breakpoint The breakpoint to edit.
      */
     public BreakpointEditor(Breakpoint breakpoint) {
-       
+
 	super("EditBreakpoint");
 	_breakpoint = breakpoint;
 	_actor = (Actor)_breakpoint.getContainer();
@@ -71,14 +71,14 @@ public class BreakpointEditor extends JFrame implements ActionListener {
 	// Condition Panel
 	JPanel textPanel = new JPanel();
 	textPanel.setBorder(new TitledBorder("Condition ="));
-	
+
 	//Text field
 	textField = new JTextField(_breakpoint.getExpression(), 20);
 	textField.addActionListener(this);
-	
+
 	textPanel.add(textField);
 
-	// Button panel 
+	// Button panel
 	JPanel buttonPanel = new JPanel();
 	buttonPanel.setLayout(new BorderLayout());
 
@@ -154,7 +154,7 @@ public class BreakpointEditor extends JFrame implements ActionListener {
 	    });
 	group.add(radioButton);
 	buttonBox.add(radioButton);
-	
+
 	radioPanel.add(buttonBox);
 
 	//Lay out the content pane.
@@ -169,11 +169,11 @@ public class BreakpointEditor extends JFrame implements ActionListener {
 	setLocation(500, 300);
 	setVisible(true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**  
+    /**
      * Get the condition from the text field and make the necessery changes
      * to the value of the breakpoint.
      */
@@ -181,7 +181,7 @@ public class BreakpointEditor extends JFrame implements ActionListener {
 	String condition = textField.getText();
 	try {
 	    _breakpoint.setName(_selectedMethod);
-	    _breakpoint.setExpression(condition);	    
+	    _breakpoint.setExpression(condition);
 	} catch (NullPointerException ex) {
 	    System.out.println(ex.getMessage());
 	} catch (IllegalActionException ex) {

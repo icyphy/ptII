@@ -456,7 +456,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  then put the taken object in the history queue. If the capacity
      *  of the history queue would be exceeded by this, then first remove
      *  the oldest object in the history queue.
-     * 
+     *
      *  @param obj An array of objects from the queue.
      *  @param count The number of objects to return.
      *  @exception NoSuchElementException If the queue is empty.

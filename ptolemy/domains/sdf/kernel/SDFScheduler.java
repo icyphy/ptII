@@ -560,7 +560,7 @@ public class SDFScheduler extends Scheduler {
                 try {
                     Fraction presentFiring =
                         (Fraction) firings.get(connectedActor);
-		    if(presentFiring == null) {			
+		    if(presentFiring == null) {
 		    } else if(presentFiring.equals(Fraction.ZERO)) {
                         // create the entry in the firing table
                         firings.put(connectedActor, desiredFiring);
@@ -1004,7 +1004,7 @@ public class SDFScheduler extends Scheduler {
                     connectedOutputPortList.add(cport);
                 }
             }
-            // First set the consumption rate, using the 
+            // First set the consumption rate, using the
             // connected input ports.
             Iterator inputPorts = connectedInputPortList.iterator();
             if(inputPorts.hasNext()) {
@@ -1031,7 +1031,7 @@ public class SDFScheduler extends Scheduler {
                         "!");
             }
 
-            // Now set the production and initproduction rates, using the 
+            // Now set the production and initproduction rates, using the
             // connected output ports.
             Iterator outputPorts = connectedOutputPortList.iterator();
             if(outputPorts.hasNext()) {
@@ -1195,7 +1195,7 @@ public class SDFScheduler extends Scheduler {
         boolean stillReadyToSchedule = true;
         // update tokensWaiting on the actor's input ports.
 
-        Iterator inputPorts = 
+        Iterator inputPorts =
 	    ((Actor) currentActor).inputPortList().iterator();
         while(inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();

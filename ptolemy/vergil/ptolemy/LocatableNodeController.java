@@ -127,7 +127,7 @@ public class LocatableNodeController extends NodeController {
     /** Set the desired location of this node.  Throw an exception if the
      *  node can not be given a desired location.
      */
-    public void setLocation(Object n, double[] location) 
+    public void setLocation(Object n, double[] location)
             throws IllegalActionException {
 	if(n instanceof Locatable) {
             ((Locatable)n).setLocation(location);

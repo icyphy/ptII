@@ -341,11 +341,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             }
             if (runlength == 0 ) {
                 // This only happens when the current time of the outside
-                // domain is the stop time. So return false and stop 
+                // domain is the stop time. So return false and stop
                 // executing.
                 return false;
             }
-    
+
             if(_debugging) _debug( "Current Time " + getCurrentTime()
                     + "Outside domain current time " + _outsideTime
                     + " next iteration time " + nextIterTime

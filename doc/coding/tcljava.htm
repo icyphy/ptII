@@ -148,7 +148,7 @@ package require java
 </pre>
 
 Note that <B>tclblend_init</B> is only read if the Tcl Blend C shared
-library was compiled with JDK1.2.  
+library was compiled with JDK1.2.
 
 <P><DT><A NAME="M5"><B>java::new</B></A><DD>
 The <B>java::new</B> command is used to create new instances of Java
@@ -162,7 +162,7 @@ and passed to the constructor.
 See the CLASS LOADING section in the <B><A HREF="http://dev.scriptics.com/man/java1.1/TclJava/javaload.htm">java::load</A></B> man page for a
 description on how classes are resolved and loaded into the VM.  Any
 of the java commands that reference a java class also use the
-mechanism described in CLASS LOADING. 
+mechanism described in CLASS LOADING.
 <P>
 The <I>arraySignature</I> argument consists of a class name or a
 primitive data type followed by one or more pairs of brackets.  The
@@ -341,12 +341,12 @@ be garbage collected.  If <I>javaObj</I> does not have an existing lock a
 Tcl error is generated.
 
 <P><DT><A NAME="M24"><B>java::defineclass</B></A><DD>
-The <B>java::defineclass</B> command is used to convert a string of bytes 
+The <B>java::defineclass</B> command is used to convert a string of bytes
 into a Java Class object.  The <I>classData</I> argument is a string of
-bytes that compose a class.  For example, the <I>classData</I> 
+bytes that compose a class.  For example, the <I>classData</I>
 string could be from reading a Java class file.  <I>ClassData</I>
 is passed to the TclClassLoader, where the TclClassLoader attempts to
-construct a Java Class object from the bytes.  If <I>classData</I> 
+construct a Java Class object from the bytes.  If <I>classData</I>
 does not represent a valid class, <B>java::defineclass</B> returns a
 null object, otherwise it will return a handle to the Java Class
 object.  A class is not valid if; the TclClassLoader cannot decipher a
@@ -364,7 +364,7 @@ future calls (e.g. <B>java::new</B>) the class defined by
 <PRE>set file [open Foo.class r]
 
 # Tcl Blend users must call 'fconfigure $file -translate binary'
-set data [read $file]       
+set data [read $file]
 
 # This returns a Java Class object.
 set class [java::defineclass $data]
@@ -372,7 +372,7 @@ set class [java::defineclass $data]
 # Get an instance of the object.
 set object [$class newInstance]
 
-# The class is now loaded into the VM, so the 
+# The class is now loaded into the VM, so the
 # following call also works.
 set object [java::new Foo]</PRE>
 <P><DT><A NAME="M25"><B>java::getinterp</B></A><DD>
@@ -462,7 +462,7 @@ To retrieve a k-dimensional subarray of an n-dimensional array,
 specify an <I>indexList</I> with <I>n - k</I> index values.  For
 example, the following commands result in <I>subArray</I> containing a
 1-dimensional char array handle that refers to a[1][0], the internal
-value of which is {e f}. 
+value of which is {e f}.
 
 <PRE>set a [java::new {char[][][]} {2 2 2} {{{a b} {c d}} {{e f} {g h}}}]
 set subArray [$a get {1 0}]</PRE>
@@ -615,7 +615,7 @@ set o [java::new java.lang.Object]
 java::lock $o
 
 # Convert the Java object to a Tcl List.  This decrements
-# the ref count by one.  The ref count equals one and the 
+# the ref count by one.  The ref count equals one and the
 # Java object remains valid.
 llength $o
 

@@ -248,7 +248,7 @@ public class CSPDirector extends CompositeProcessDirector {
     protected synchronized void _actorBlocked(CSPReceiver rcvr) {
         super._actorBlocked(rcvr);
     }
- 
+
     /** Called by a CSPActor when it wants to delay. When the
      *  director has advanced time to "getCurrentTime() + delta", the process
      *  corresponding to the actor will continue. Note that actors

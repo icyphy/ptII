@@ -43,7 +43,7 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// EditableChoiceStyle
 /**
-This attribute annotates user settable attributes to specify 
+This attribute annotates user settable attributes to specify
 an editable combobox style for configuring the containing attribute.
 An editable combobox allows an arbitrary value to be entered in the
 combobox.
@@ -89,7 +89,7 @@ public class EditableChoiceStyle extends ChoiceStyle {
     }
 
     /** Create a new editable
-     *  combo box entry in the given query associated with the 
+     *  combo box entry in the given query associated with the
      *  attribute containing this style.  The name of the entry is
      *  the name of the attribute.  Attach the attribute to the created entry.
      *
@@ -102,7 +102,7 @@ public class EditableChoiceStyle extends ChoiceStyle {
 	// This method is only here for documentation.
     }
 
-    /** Whether or not the combobox is editable. In this class the 
+    /** Whether or not the combobox is editable. In this class the
      *  value is true.
      */
     protected boolean _isEditable = true;

@@ -149,7 +149,7 @@ public class Parameter extends Variable implements UserSettable {
         String value = getExpression();
         String valueTerm = "";
         if(value != null && !value.equals("")) {
-            valueTerm = " value=\"" + 
+            valueTerm = " value=\"" +
                 StringUtilities.escapeForXML(value) + "\"";
         }
 

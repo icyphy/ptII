@@ -529,8 +529,8 @@ public class CTMultiSolverDirector extends CTDirector {
                     + ((NamedObj)a).getName());
             successful = successful && a.isThisStepAccurate();
         }
-        if(_debugging) 
-            _debug(getFullName() + " output successful ? " + successful); 
+        if(_debugging)
+            _debug(getFullName() + " output successful ? " + successful);
         return successful;
     }
 
@@ -550,10 +550,10 @@ public class CTMultiSolverDirector extends CTDirector {
             if(_debugging) _debug("Checking State Step Size Control Actor: " +
                     ((NamedObj)a).getName() + " " + thisSuccessful);
             successful = successful && thisSuccessful;
-            
+
         }
-        if(_debugging) 
-            _debug(getFullName() + " state successful ? " + successful); 
+        if(_debugging)
+            _debug(getFullName() + " state successful ? " + successful);
         return successful;
     }
 

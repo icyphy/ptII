@@ -67,7 +67,7 @@ public class TextEffigy extends Effigy {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the document that this is an effigy of.
      *  @return The document, or null if none has been set.
      */
@@ -89,7 +89,7 @@ public class TextEffigy extends Effigy {
             CompositeEntity container, String text)
             throws Exception {
         // Create a new effigy.
-        TextEffigy effigy = new TextEffigy(container, 
+        TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
         Document doc = new DefaultStyledDocument();
         effigy.setDocument(doc);
@@ -97,7 +97,7 @@ public class TextEffigy extends Effigy {
             doc.insertString(0, text, null);
         }
         return effigy;
-    }		
+    }
 
     /** Create a new effigy in the given container by reading the specified
      *  URL. If the specified URL is null, then create a blank effigy.
@@ -117,7 +117,7 @@ public class TextEffigy extends Effigy {
             CompositeEntity container, URL base, URL in)
             throws Exception {
         // Create a new effigy.
-        TextEffigy effigy = new TextEffigy(container, 
+        TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
         Document doc = new DefaultStyledDocument();
         effigy.setDocument(doc);
@@ -135,7 +135,7 @@ public class TextEffigy extends Effigy {
         }
         effigy.url.setURL(in);
         return effigy;
-    }		
+    }
 
     /** Set the document that this is an effigy of.
      *  @param document The document
@@ -220,7 +220,7 @@ public class TextEffigy extends Effigy {
                  throws Exception {
             // Create a new effigy.
             return newTextEffigy(container, base, in);
-	}		
+	}
     }
 }
 

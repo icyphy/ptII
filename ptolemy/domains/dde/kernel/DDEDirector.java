@@ -58,8 +58,8 @@ occur if attempts to produce data are made when the corresponding
 receiver is full.
 <P>
 In conjunction with the blocking read/write facilities, the DDE
-domain uses a distributed, local notion of time. In a network of 
-actors governed by a DDEDirector each actor has a local notion of 
+domain uses a distributed, local notion of time. In a network of
+actors governed by a DDEDirector each actor has a local notion of
 time. Several features of the DDEDirector are intended to facilitate
 these local notions of time.
 <P>
@@ -331,20 +331,20 @@ public class DDEDirector extends CompositeProcessDirector {
     ////                        protected methods                  ////
 
     /** Apply an algorithm to resolve an internal deadlock and return
-     *  true if the algorithm is successful. If the algorithm is 
+     *  true if the algorithm is successful. If the algorithm is
      *  unsuccessful then return false. The algorithm applied was
      *  created by Thomas Parks for resolving internal deadlocks in
-     *  which one or more actors are write blocked. 
+     *  which one or more actors are write blocked.
      *
      *  @return True if an internal deadlock has been resolved;
      *   otherwise return false.
      */
-    protected synchronized boolean _resolveInternalDeadlock() 
+    protected synchronized boolean _resolveInternalDeadlock()
 	 throws IllegalActionException {
 	if( _writeBlockedQs.size() > 0 ) {
 	    _incrementLowestCapacityPort();
 	    return true;
-	} 
+	}
 	return false;
     }
 
@@ -361,10 +361,10 @@ public class DDEDirector extends CompositeProcessDirector {
     }
 
     /** Register the receiver that instigated the newly blocked actor
-     *  and increment the count of blocked actors by one. 
-     *  Note whether the receiver is read blocked or write blocked. 
-     * 
-     *  @param rcvr The receiver whose data transfer is blocked. 
+     *  and increment the count of blocked actors by one.
+     *  Note whether the receiver is read blocked or write blocked.
+     *
+     *  @param rcvr The receiver whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(DDEReceiver rcvr) {
         if( rcvr.isWriteBlocked() ) {
@@ -378,10 +378,10 @@ public class DDEDirector extends CompositeProcessDirector {
     }
 
     /** Register the receivers that instigated the newly blocked actor.
-     *  and increment the count of blocked actors by one. 
-     *  Note whether the receivers are read blocked or write blocked. 
-     * 
-     *  @param rcvr The receivers whose data transfer is blocked. 
+     *  and increment the count of blocked actors by one.
+     *  Note whether the receivers are read blocked or write blocked.
+     *
+     *  @param rcvr The receivers whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(LinkedList rcvrs) {
 	Iterator rcvrIterator = rcvrs.iterator();
@@ -393,17 +393,17 @@ public class DDEDirector extends CompositeProcessDirector {
     }
 
     /** Unregister the specified receiver that was previously blocked
-     *  and decrement the count of blocked actors by one. 
-     * 
-     *  @param rcvr The receiver whose data transfer was 
-     *   previously blocked. 
+     *  and decrement the count of blocked actors by one.
+     *
+     *  @param rcvr The receiver whose data transfer was
+     *   previously blocked.
      */
     protected synchronized void _actorUnBlocked(DDEReceiver rcvr) {
         if( rcvr.isWriteBlocked() ) {
 	    if( _writeBlockedQs == null ) {
                 // FIXME: throw exception???
 	    }
-            _writeBlockedQs.remove(rcvr); 
+            _writeBlockedQs.remove(rcvr);
         }
 	super._actorUnBlocked(rcvr);
 	notifyAll();
@@ -481,11 +481,11 @@ public class DDEDirector extends CompositeProcessDirector {
 
     private class ReceiverCapacityComparator implements Comparator {
 
-        /** Compare two objects (specified as arguments) according to 
+        /** Compare two objects (specified as arguments) according to
 	 *  their respective capacities and return 1 if the second
 	 *  object (argument) is larger than the first object; return
 	 *  0 if the capacities are equal and return -1 if the first
-	 *  object's capacity is larger than the second. 
+	 *  object's capacity is larger than the second.
          *  @exception ClassCastException If fst and scd are
          *   not instances of DDEReceiver.
          */

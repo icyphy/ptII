@@ -33,7 +33,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Debuggable;
 
 //////////////////////////////////////////////////////////////////////////
-//// ReflectTest 
+//// ReflectTest
 
 /** This class is a test input file to ASTReflect
 
@@ -62,7 +62,7 @@ public class ReflectTest extends NamedObj implements Debuggable {
 	    int foo [][][] = {
 		{{1,2},{3,4}},
 		{{5,6},{7,8}}
-	    };	 
+	    };
 	    return foo;
 	}
     }

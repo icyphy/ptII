@@ -91,7 +91,7 @@ public final class ASTReflect {
 
     /** Use reflection to generate the ClassDeclNode of a class.
      *  @param myClass The class to be analyzed.
-     *  @return The ClassDeclNode of that class. 
+     *  @return The ClassDeclNode of that class.
      */
     public static ClassDeclNode ASTClassDeclNode(Class myClass) {
 	int modifiers =
@@ -140,7 +140,7 @@ public final class ASTReflect {
      *	constructors and inner classes.  This node includes information
      *  about the package.
      *  @param myClass The class to be analyzed.
-     *  @return The CompileUnitNode of that class. 
+     *  @return The CompileUnitNode of that class.
      */
     public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
 
@@ -180,7 +180,7 @@ public final class ASTReflect {
     }
 
     /** Return a list of constructors where each element contains
-     *  a ConstructorDeclNode for that constructor.   
+     *  a ConstructorDeclNode for that constructor.
      *  @param myClass The class to be analyzed.
      *  @return The List of constructorDeclNodes for the class.
      */
@@ -262,7 +262,7 @@ public final class ASTReflect {
     	return innerClassesOrInterfacesList;
     }
 
-    /** Return an AST that contains an interface declaration. 
+    /** Return an AST that contains an interface declaration.
      *  @param myClass The class to be analyzed.
      *  @return The InterfaceDeclNode of the class.
      */

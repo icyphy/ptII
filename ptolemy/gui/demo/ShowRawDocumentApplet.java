@@ -61,7 +61,7 @@ public class ShowRawDocumentApplet extends BasicJApplet {
     ////                         public methods                    ////
 
     /** Read applet parameters, open the URL and display the contents
-     *  in a TextArea.   
+     *  in a TextArea.
      */
     public void init() {
         super.init();

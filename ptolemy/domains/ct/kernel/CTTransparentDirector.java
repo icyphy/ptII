@@ -32,7 +32,7 @@ package ptolemy.domains.ct.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// CTTransparentDirector
 /**
-Interface for CT transparent directors. Transparent directors in the CT 
+Interface for CT transparent directors. Transparent directors in the CT
 domain can transfer its internal step size control information to the
 executive director. It defines methods to support the step size control
 queries by the executive CTDirector, such that after the internal

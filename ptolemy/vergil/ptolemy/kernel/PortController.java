@@ -80,7 +80,7 @@ public class PortController extends LocatableNodeController {
 	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -97,8 +97,8 @@ public class PortController extends LocatableNodeController {
         _menuCreator.setMenuFactory(factory);
     }
 
-    /** Render the external ports of a graph as a 5-sided tab thingy.  
-     *  Multiports are rendered hollow, 
+    /** Render the external ports of a graph as a 5-sided tab thingy.
+     *  Multiports are rendered hollow,
      *  while single ports are rendered filled.
      */
     public class PortRenderer implements NodeRenderer {
@@ -133,8 +133,8 @@ public class PortController extends LocatableNodeController {
 			polygon.lineTo(0, -5);
 			polygon.lineTo(-6, -5);
 			polygon.lineTo(-6, 5);
-		    } 
-		    
+		    }
+
 		    polygon.closePath();
 
 		    if(ioport.isMultiport()) {
@@ -152,7 +152,7 @@ public class PortController extends LocatableNodeController {
 		    fill = Color.black;
 		}
 		figure = new BasicFigure(polygon, fill, (float)1.5);
-                PtolemyGraphModel model = 
+                PtolemyGraphModel model =
                     (PtolemyGraphModel)getController().getGraphModel();
                 figure.setToolTipText(port.getName(model.getToplevel()));
 
@@ -160,8 +160,8 @@ public class PortController extends LocatableNodeController {
 		    direction = SwingUtilities.NORTH;
 		} else {
 		    IOPort ioport = (IOPort)port;
-				
-		    if(ioport.isInput() && 
+
+		    if(ioport.isInput() &&
 		       ioport.isOutput()) {
 		    direction = SwingUtilities.NORTH;
 		    } else if(ioport.isInput()) {
@@ -173,7 +173,7 @@ public class PortController extends LocatableNodeController {
 			direction = SwingUtilities.NORTH;
 		    }
 		}
-		double normal = CanvasUtilities.getNormal(direction);	    
+		double normal = CanvasUtilities.getNormal(direction);
 		Site tsite = new PerimeterSite(figure, 0);
 		tsite.setNormal(normal);
 		tsite = new FixedNormalSite(tsite);
@@ -186,7 +186,7 @@ public class PortController extends LocatableNodeController {
 		polygon.closePath();
 
 		figure = new BasicFigure(polygon, Color.black);
-	    }			    
+	    }
 	    return figure;
 	}
     }

@@ -45,7 +45,7 @@ import diva.util.java2d.PaintedList;
 //// XMLIcon
 /**
 An icon is the graphical representation of a schematic entity.
-This icon contains a set of graphic elements.  These graphic elements can 
+This icon contains a set of graphic elements.  These graphic elements can
 be added manually or created automatically by configuring the icon with
 appropriate XML code.  Each graphic element represents a primitive graphical
 object that will be used to create a figure or a Swing icon.   If this
@@ -100,7 +100,7 @@ public class XMLIcon extends EditorIcon {
             // FIXME
             // _description.addValueListener(_updateListener);
         }
-            
+
         if(_paintedList == null) {
        	    return _createDefaultBackgroundFigure();
         } else {
@@ -121,7 +121,7 @@ public class XMLIcon extends EditorIcon {
      */
     public String toString() {
         String str = super.toString() + "(";
-       
+
         return str + ")";
     }
 
@@ -179,7 +179,7 @@ public class XMLIcon extends EditorIcon {
 	XmlReader reader = new XmlReader();
 	reader.parse(document, in);
 	XmlElement root = document.getRoot();
-      	
+
         _paintedList = SVGParser.createPaintedList(root);
     }
 

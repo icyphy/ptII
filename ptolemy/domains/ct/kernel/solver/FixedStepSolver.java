@@ -40,7 +40,7 @@ import ptolemy.domains.ct.kernel.ODESolver;
 //// FixedStepSolver
 /**
 Abstract base class for fixed step size (no error control) ODE solvers.
-It provide base implementation for some methods that are shared by 
+It provide base implementation for some methods that are shared by
 all fixed-stepsize solvers.
 
 @author Jie Liu
@@ -54,7 +54,7 @@ public abstract class FixedStepSolver extends ODESolver {
     public FixedStepSolver() {
         super();
     }
-    
+
     /** Construct a solver in the given workspace with a null string name.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -70,7 +70,7 @@ public abstract class FixedStepSolver extends ODESolver {
     ////                         public methods                    ////
 
     /** Return true always, since no error control is performed.
-     *  The method is final, and all extended classes should comply to 
+     *  The method is final, and all extended classes should comply to
      *  this.
      *
      *  @param integrator The integrator that wants to do the test.

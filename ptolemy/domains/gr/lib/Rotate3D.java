@@ -48,7 +48,7 @@ import javax.vecmath.*;
 /** Conceptually, this actor takes 3D geometry in its input and produces a rotated
 version in its output. In reality, this actor encapsulates a Java3D TransformGroup
 which is converted into a node in the resulting Java3D scene graph. This actor will
-only have meaning in the GR domain. 
+only have meaning in the GR domain.
 
 The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and <i>axisDirectionZ</i>
 determine the direction of the axis of rotation.  The parameters <i>baseX</i>,
@@ -74,31 +74,31 @@ public class Rotate3D extends GRTransform {
 
    	    angle.setTypeEquals(BaseType.DOUBLE);
 	    initialAngle = new Parameter(this, "initialAngle", new DoubleToken(0.0));
-	    
+
 	    axisDirection = new Parameter(this, "axis direction",
                     new DoubleMatrixToken(new double[][] {{ 0.0, 1.0, 0.0}} ));
-	    
+
   	    pivotLocation  = new Parameter(this, "pivot location",
   	                new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
-  	      	    
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The amount of rotation during firing. If this transform is in
      *  accumulate mode, the angle value is accumulated for each firing.
      */
     public TypedIOPort angle;
-   
+
 
     /** The initial angle of rotation
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is 0.0.
      */
     public Parameter initialAngle;
-    
-    
+
+
     /** The direction of the axis of rotation
      *  The parameter should contain a DoubleMatrixToken
      *  The default value of this parameter is [0.0, 1.0, 0.0]
@@ -109,20 +109,20 @@ public class Rotate3D extends GRTransform {
      *  This parameter should contain a DoubleMatrixToken
      *  The default value of this parameter is [0.0, 0.0, 0.0]
      */
-    
+
     public Parameter pivotLocation;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Connect other Java3D nodes as children of the encapsulated node in 
+
+    /** Connect other Java3D nodes as children of the encapsulated node in
      *  this actor
      *  @param node The child Java3D node.
      */
     public void addChild(Node node) {
         _bottomTranslate.addChild(node);
     }
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
      *  @param ws The workspace for the new object.
@@ -138,7 +138,7 @@ public class Rotate3D extends GRTransform {
         newobj.pivotLocation = (Parameter) newobj.getAttribute("pivot location");
         return newobj;
     }
-    
+
     /** Change the rotation angle depending on the value given in the input port
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
@@ -148,9 +148,9 @@ public class Rotate3D extends GRTransform {
             if (angle.hasToken(0)) {
                 double in = ((DoubleToken)angle.get(0)).doubleValue();
                 double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
-                
+
                 DoubleMatrixToken axis = (DoubleMatrixToken) axisDirection.getToken();
-       
+
                 _xAxis = (float) axis.getElementAt(0,0);
                 _yAxis = (float) axis.getElementAt(0,1);
                 _zAxis = (float) axis.getElementAt(0,2);
@@ -167,7 +167,7 @@ public class Rotate3D extends GRTransform {
             }
         }
     }
-    
+
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor TransformGroup
      *  @return the Java3D TransformGroup
@@ -176,35 +176,35 @@ public class Rotate3D extends GRTransform {
         return (Node) _topTranslate;
     }
 
-    
+
     /** Setup the initial rotation
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
     public void initialize() throws IllegalActionException {
-    
+
         DoubleMatrixToken axis = (DoubleMatrixToken) axisDirection.getToken();
-       
+
         _xAxis = (float) axis.getElementAt(0,0);
         _yAxis = (float) axis.getElementAt(0,1);
         _zAxis = (float) axis.getElementAt(0,2);
-        
+
         DoubleMatrixToken pivot = (DoubleMatrixToken) pivotLocation.getToken();
-        
+
 
         _baseX = (float) pivot.getElementAt(0,0);
         _baseY = (float) pivot.getElementAt(0,1);
         _baseZ = (float) pivot.getElementAt(0,2);
-        
+
         double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
-        
-   	    _accumulatedAngle = originalAngle; 
-        
+
+   	    _accumulatedAngle = originalAngle;
+
    	    _rotation = new Transform3D();
-   	    
-   	    
+
+
         _topTranslate = new TransformGroup();
-	    
+
         _middleRotate = new TransformGroup();
         _middleRotate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         _bottomTranslate = new TransformGroup();
@@ -212,25 +212,25 @@ public class Rotate3D extends GRTransform {
 	    _bottomTranslate.setCapability(Group.ALLOW_CHILDREN_WRITE);
 	    _bottomTranslate.setCapability(Group.ALLOW_CHILDREN_EXTEND);
 
-        
-        
+
+
         Transform3D topTransform = new Transform3D();
         topTransform.setTranslation(new Vector3d(_baseX,_baseY,_baseZ));
         _topTranslate.setTransform(topTransform);
-        
+
         Quat4d quat = new Quat4d();
         quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,originalAngle));
         _rotation.set(quat);
         _middleRotate.setTransform(_rotation);
-        
+
         Transform3D bottomTransform = new Transform3D();
         bottomTransform.setTranslation(new Vector3d(-_baseX,-_baseY,-_baseZ));
         _bottomTranslate.setTransform(bottomTransform);
         _topTranslate.addChild(_middleRotate);
         _middleRotate.addChild(_bottomTranslate);
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

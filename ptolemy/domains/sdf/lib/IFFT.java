@@ -105,11 +105,11 @@ public class IFFT extends SDFTransformer {
                 + " but must be greater than zero.");
             }
             _transformSize = (int)Math.pow(2, _orderValue );
-            
+
             // Set the correct consumption/production values
             _productionRate = _transformSize;
             _consumptionRate = _transformSize;
-            
+
             input.setTokenConsumptionRate(_consumptionRate);
             output.setTokenProductionRate(_productionRate);
 

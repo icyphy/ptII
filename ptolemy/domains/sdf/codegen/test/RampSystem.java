@@ -47,20 +47,20 @@ import ptolemy.kernel.util.*;
 public class RampSystem extends TypedCompositeActor {
 
     public RampSystem(Workspace w) throws IllegalActionException {
-        super(w);               
-        
+        super(w);
+
         try {
            setDirector(new SDFDirector(this, "director"));
 	       //Const ramp = new Const(this, "ramp");
            Ramp ramp = new Ramp(this, "ramp");
            FileWriter fileWriter = new FileWriter(this, "fileWriter");
-           connect(ramp.output, fileWriter.input);           
+           connect(ramp.output, fileWriter.input);
 
            // A hack to get code generation to work
            fileWriter.input.setTypeEquals(BaseType.INT);
-                                            
+
         } catch (NameDuplicationException e) {
            throw new RuntimeException(e.toString());
-        }                                                   
-    }       
+        }
+    }
 }

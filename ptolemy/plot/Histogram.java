@@ -151,7 +151,7 @@ public class Histogram extends PlotBox {
     public synchronized void addPoint(final int dataset, final double value) {
         Runnable doAddPoint = new Runnable() {
             public void run() {
-                _addPoint(dataset, value);               
+                _addPoint(dataset, value);
             }
         };
         _deferIfNecessary(doAddPoint);
@@ -192,7 +192,7 @@ public class Histogram extends PlotBox {
                 _clear(format);
             }
         };
-        _deferIfNecessary(doClear); 
+        _deferIfNecessary(doClear);
     }
 
     /** Rescale so that the data that is currently plotted just fits.
@@ -433,10 +433,10 @@ public class Histogram extends PlotBox {
                     }
                 }
                 return true;
-            } else if (lcLine.startsWith("bars:") || 
+            } else if (lcLine.startsWith("bars:") ||
                     lcLine.startsWith("bargraph:")) {
                 // The PlotML code uses barGraph, but the older style
-                // uses bars 
+                // uses bars
                 int comma = line.indexOf(",", 5);
                 String barwidth;
                 String baroffset = null;
@@ -628,7 +628,7 @@ public class Histogram extends PlotBox {
      * calling this method so that it calls _drawPlot(), which sets
      * _xscale and _yscale. Note that this does not check the dataset
      * index.  It is up to the caller to do that.
-     * 
+     *
      * Note that this method is not synchronized, so the caller should be.
      * Moreover this method should always be called from the event thread
      * when being used to write to the screen.

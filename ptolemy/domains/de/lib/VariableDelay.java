@@ -42,9 +42,9 @@ import ptolemy.actor.TypedIOPort;
 //////////////////////////////////////////////////////////////////////////
 //// VariableDelay
 /**
-This actor works exactly as the ptolemy.domains.de.lib.Delay actor, 
+This actor works exactly as the ptolemy.domains.de.lib.Delay actor,
 except that the amount of time delayed is specified by a incoming
-token throught the delay port, in stead of a parameter  
+token throught the delay port, in stead of a parameter
 
 @see ptolemy.domains.de.lib.Delay
 @author Jie Liu
@@ -63,7 +63,7 @@ public class VariableDelay extends DETransformer {
     public VariableDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        defaultDelay = new Parameter(this, 
+        defaultDelay = new Parameter(this,
                 "defaultDelay", new DoubleToken(1.0));
         defaultDelay.setTypeEquals(BaseType.DOUBLE);
         input.delayTo(output);

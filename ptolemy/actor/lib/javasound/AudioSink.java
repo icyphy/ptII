@@ -53,8 +53,8 @@ import ptolemy.media.javasound.*;
 //// AudioSink
 /**
 Read audio samples from the input port and send the data to an
-appropriate sink (speaker or sound file). This actor can operate in 
-two distinct modes: live playback, and record to a sound file. The 
+appropriate sink (speaker or sound file). This actor can operate in
+two distinct modes: live playback, and record to a sound file. The
 input port is of type
 DoubleToken. Each DoubleToken read from the input represents one sample
 of the audio data and should be in the range [-1, 1]. Single channel
@@ -64,15 +64,15 @@ audio, tokens are read from channel 0 of the input port. For stereo
 (right) of the input port.
 <p>
 <h2>Notes on audio sinks and required parameters</h2>
-<p>(1) Using live playback mode. 
+<p>(1) Using live playback mode.
 <p>
 When this actor is in "live playback mode", this actor should
 be fired often enough (by invoking postfire() or iterate()) to
 prevent underflow of the internal audio playback buffer.
-Underflow should be avoided, since it will result in audio 
+Underflow should be avoided, since it will result in audio
 discontinuities (heard as clicks) in the output.
 <p>
-The following parameters are relevant to live playback mode, and 
+The following parameters are relevant to live playback mode, and
 should be set accordingly. In all cases, an exception is thrown if
 an illegal parameter value is used:
 <ul>
@@ -95,7 +95,7 @@ should be used.
 <p>(2) Write to a sound file on the native file system.
 <p>
 The following parameters are relevant to writing to a sound
-file. In all cases, an 
+file. In all cases, an
 exception is thrown if an illegal parameter value is used:
 <ul>
 <li><i>channels</i> should be set to desired number of audio
@@ -180,7 +180,7 @@ public class AudioSink extends Sink {
     /** The desired sample rate to use, in Hz. Valid values
      *  are determined by the hardware, but typically at
      *  least include : 8000, 11025, 22050, 44100, and 48000.
-     *  The default value of the sample rate is 8000 Hz. 
+     *  The default value of the sample rate is 8000 Hz.
      *  <p>
      *  It is safe to change this parameter during execution.
      *  However, doing so in file writing mode will cause all data
@@ -197,7 +197,7 @@ public class AudioSink extends Sink {
     /** The desired number of bits per sample.
      *  The default value is 16. Allowed values are determined
      *  by the hardware and Java implementation, but typically at
-     *  least include 8 and 16 bits. 
+     *  least include 8 and 16 bits.
      *  <p>
      *  It is safe to change this parameter during execution.
      *  However, doing so in file writing mode will cause all data
@@ -224,9 +224,9 @@ public class AudioSink extends Sink {
     /** Requested size of the internal audio playback buffer, in samples.
      *  This parameter controls the output latency. Ideally, the
      *  smallest value that gives acceptable performance (no overflow)
-     *  should be used. The default value is 4096.  
+     *  should be used. The default value is 4096.
      *  This parameter is taken as a hint and a Java implementation may
-     *  choose to ignore it. 
+     *  choose to ignore it.
      *  <p>
      *  This parameter has no effect when the audio data is only
      *  saved to a file.
@@ -247,9 +247,9 @@ public class AudioSink extends Sink {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if(_debugging) _debug("AudioSink: attributeChanged() invoked on: " + 
+	if(_debugging) _debug("AudioSink: attributeChanged() invoked on: " +
 			      attribute.getName());
-	//System.out.println("AudioSink: attributeChanged() invoked on: " + 
+	//System.out.println("AudioSink: attributeChanged() invoked on: " +
 	//	      attribute.getName());
 	if (attribute == channels) {
 	    _channels =
@@ -317,18 +317,18 @@ public class AudioSink extends Sink {
     /** If there are at least <i>count</i> tokens on the input
      *  port, invoke <i>count</i> iterations of this actor.
      *  Otherwise, do nothing, and return a value of NOT_READY.
-     *  One token is read from each channel in an iteration. 
+     *  One token is read from each channel in an iteration.
      *  The audio output is either
-     *  a sound file and/or the speaker, depending on the current 
-     *  mode, which is controlled by the value of the <i>pathName</i> 
+     *  a sound file and/or the speaker, depending on the current
+     *  mode, which is controlled by the value of the <i>pathName</i>
      *  parameter.
      *  <p>
-     *  This method should be called instead of the prefire(), 
+     *  This method should be called instead of the prefire(),
      *  fire(), and postfire() methods when this actor is used in a
      *  domain that supports vectorized actors. It is recommended for
-     *  performance reasons that a large value of <i>count</i> be used 
-     *  when this actor is used in live playback mode. This actor is 
-     *  optimized to provide good performance even if the value of 
+     *  performance reasons that a large value of <i>count</i> be used
+     *  when this actor is used in live playback mode. This actor is
+     *  optimized to provide good performance even if the value of
      *  <i>count</i> changes often.
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
@@ -358,7 +358,7 @@ public class AudioSink extends Sink {
 		// putSamples() is full, then call putSamples().
 		// Array argument to putSamples() is not full yet,
 		// so write another sample for each channel.
-		_audioPutArray[m][_curElement] = 
+		_audioPutArray[m][_curElement] =
 		    ((DoubleToken)_inArray[m][k]).doubleValue();
 	    }
 	    // Increment pointer.
@@ -385,8 +385,8 @@ public class AudioSink extends Sink {
     }
 
     /** At most one token is read from each channel and written to the
-     *  audio output. The audio output is either a sound file and/or 
-     *  the speaker, depending on the current mode, which is 
+     *  audio output. The audio output is either a sound file and/or
+     *  the speaker, depending on the current mode, which is
      *  controlled by the value of the <i>pathName</i> parameter.
      *  @exception IllegalActionException If audio cannot be played.
      */
@@ -415,7 +415,7 @@ public class AudioSink extends Sink {
 	    ((IntToken)channels.getToken()).intValue();
     }
 
-    /** Close the specified file and any open audio resources, 
+    /** Close the specified file and any open audio resources,
      *  if any.
      *  @exception IllegalActionException If the audio resources
      *   cannot be freed.
@@ -491,14 +491,14 @@ public class AudioSink extends Sink {
 	    int channelsInt = ((IntToken)channels.getToken()).intValue();
 	    int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
 	    int putSamplesSize = _putSampleSize;
-	    
+
 	    _soundPlayback = new SoundPlayback(pathNameString,
                     sampleRateInt,
                     sampleSizeInBitsInt,
                     channelsInt,
                     bufferSizeInt,
                     putSamplesSize);
-	} 
+	}
 	try {
 	    // Start audio playback.
 	    _soundPlayback.startPlayback();
@@ -518,7 +518,7 @@ public class AudioSink extends Sink {
     private int _channels;
     private int _putSampleSize;
     private double[][] _audioPutArray;
-    // Pointer to the current sample of the array parameter of 
+    // Pointer to the current sample of the array parameter of
     // putSamples() method of SoundPlayback.
     private int _curElement;
     private Token[][] _inArray;

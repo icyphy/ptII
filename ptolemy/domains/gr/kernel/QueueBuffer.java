@@ -1,4 +1,4 @@
-/* A queue with constant capacity and optional history. 
+/* A queue with constant capacity and optional history.
    (adopted from Steve Neuendorffer's ArrayFIFOQueue)
 
  Copyright (c) 1997-2000 The Regents of the University of California.
@@ -275,9 +275,9 @@ public final class QueueBuffer implements Cloneable {
         }
     }
 
-    
 
-    
+
+
     /** Set queue capacity. Use INFINITE_CAPACITY to indicate unbounded
      *  capacity (which is the default). If the current size of the
      *  queue exceeds the desired capacity, throw an exception.

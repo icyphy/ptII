@@ -94,7 +94,7 @@ The plot data can be specified in any of three data formats:
 
 The main class implementing the plotter component is
 <a href="../../../doc/codeDoc/ptolemy/plot/Plot.html">Plot</a>.
-It is derived from 
+It is derived from
 <a href="../../../doc/codeDoc/ptolemy/plot/PlotBox.html">PlotBox</a>,
 which provides only the axes and
 decorations of the plot.  This is implemented in a base class so that
@@ -119,30 +119,30 @@ The most commonly used built-in classes are those in the plotml
 package, which can read PlotML files and the older textual syntax.
 These classes are include:
 <ul>
-  <li> PlotMLApplet: A simple applet that can read PlotML files off the web and 
+  <li> PlotMLApplet: A simple applet that can read PlotML files off the web and
     render them.
-  <li>EditablePlotMLApplet: A version that allows editing of any data set in the 
+  <li>EditablePlotMLApplet: A version that allows editing of any data set in the
     plot.
   <li>PlotMLFrame: A top-level window containing a plot defined by a PlotML file.
-  <li>PlotMLApplication: An application that can be invoked from the command line 
+  <li>PlotMLApplication: An application that can be invoked from the command line
     and reads PlotML files.
-  <li>EditablePlotMLApplication: An extension that allows editing of any data 
+  <li>EditablePlotMLApplication: An extension that allows editing of any data
     set in the plot.
 </ul>
 
- 
-<p>The last of these is the class invoked by the <i>ptplot</i> command-line script. 
-  It can open plot files, edit them, print them, and save them. There are simpler 
-  version of some of these in the <i>plot</i> package that cannot read PlotML 
-  files, but can read an older, simpler syntax. The only reason to use these simpler 
-  versions is for the slightly smaller jar file sizes, which can improve the responsivity 
+
+<p>The last of these is the class invoked by the <i>ptplot</i> command-line script.
+  It can open plot files, edit them, print them, and save them. There are simpler
+  version of some of these in the <i>plot</i> package that cannot read PlotML
+  files, but can read an older, simpler syntax. The only reason to use these simpler
+  versions is for the slightly smaller jar file sizes, which can improve the responsivity
   of applets.
-<p><a href="../demo/TwoPlotExample.java">TwoPlotExample</a> is a very simple sample 
-  Ptplot application that uses only core classes in the <i>plot</i> package, and 
+<p><a href="../demo/TwoPlotExample.java">TwoPlotExample</a> is a very simple sample
+  Ptplot application that uses only core classes in the <i>plot</i> package, and
   exercises complete control over the layout of the page.
-<p>Backward compatibility with the C <CODE>pxgraph</CODE> program is provided 
-  in the compat package by the <a href="../compat/PxgraphApplet.java">PxgraphApplet</a> 
-  and <a href="../compat/PxgraphApplication.java">PxgraphApplication</a> classes 
+<p>Backward compatibility with the C <CODE>pxgraph</CODE> program is provided
+  in the compat package by the <a href="../compat/PxgraphApplet.java">PxgraphApplet</a>
+  and <a href="../compat/PxgraphApplication.java">PxgraphApplication</a> classes
   in the <i>compat</i> package.
 <P><A NAME="xgraph">This</A> code owes a heavy debt to David
 Harrison, the original author of <CODE>xgraph</CODE>, which runs under

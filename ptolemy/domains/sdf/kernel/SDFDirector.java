@@ -142,13 +142,13 @@ public class SDFDirector extends StaticSchedulingDirector {
     /** A Parameter representing the requested vectorization factor.
      *  The director will attempt to construct a single appearance
      *  schedule that minimizes actor activations, using the value
-     *  of this parameter as the global blocking factor. This parameter 
-     *  serves only as a suggestion, and the director is free to ignore 
+     *  of this parameter as the global blocking factor. This parameter
+     *  serves only as a suggestion, and the director is free to ignore
      *  it or to use a different factor. Allowable values for this
-     *  parameter consist of positive integers. An exception will occur 
-     *  if the value is not a positive integer. It is currently unsafe 
-     *  to set the value of this parameter to be greater than one if the SDF 
-     *  graph contains loops. The default value is an IntToken with the 
+     *  parameter consist of positive integers. An exception will occur
+     *  if the value is not a positive integer. It is currently unsafe
+     *  to set the value of this parameter to be greater than one if the SDF
+     *  graph contains loops. The default value is an IntToken with the
      *  value one.
      */
     public Parameter vectorizationFactor;
@@ -182,10 +182,10 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  <p>
      *  Iterating an actor involves calling the actor's iterate() method,
      *  which is equivalent to calling the actor's  prefire(), fire() and
-     *  postfire() methods in succession.  If iterate() returns NOT_READY, 
-     *  indicating that the actor is not ready to execute, then an 
-     *  IllegalActionException will be thrown. The values returned from 
-     *  iterate() are recorded and are used to determine the value that 
+     *  postfire() methods in succession.  If iterate() returns NOT_READY,
+     *  indicating that the actor is not ready to execute, then an
+     *  IllegalActionException will be thrown. The values returned from
+     *  iterate() are recorded and are used to determine the value that
      *  postfire() will return at the end of the director's iteration.
      *  @exception IllegalActionException If any actor executed by this
      *  actor return false in prefire.
@@ -210,7 +210,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 		Actor actor = (Actor)firing.getActor();
 		int iterationCount = firing.getIterationCount();
 
-		if(_debugging) {		    
+		if(_debugging) {
 		  _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
 		}
 
@@ -223,7 +223,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 		// optimum vectorized schedule. I.e., first try to
 		// obtain a single appearance schedule. Then, try
 		// to minimize the number of actor activations.
-		int factor = 
+		int factor =
                     ((IntToken) (vectorizationFactor.getToken())).intValue();
 		if (factor < 1) {
 		    throw new IllegalActionException(this,
@@ -231,7 +231,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 			 "Valid values consist of positive integers. " +
                          "The supplied value was: " + factor);
 		}
-		int returnVal = 
+		int returnVal =
 		  actor.iterate(factor*iterationCount);
 		if (returnVal == COMPLETED) {
 		    _postfirereturns = _postfirereturns && true;
@@ -253,7 +253,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  schedule sets the rate parameters of the external ports).
      *  The order in which the actors are initialized is arbitrary.
      *  @exception IllegalActionException If the initialize() method of
-     *  one of the associated actors throws it, or if there is no 
+     *  one of the associated actors throws it, or if there is no
      *  scheduler.
      */
     public void initialize() throws IllegalActionException {
@@ -300,16 +300,16 @@ public class SDFDirector extends StaticSchedulingDirector {
 	    for(channel = 0; channel < inputPort.getWidth(); channel++) {
 		if(!receivers[channel][0].hasToken(threshold)) {
 		    if(_debugging) {
-                        _debug("Channel " + channel + 
+                        _debug("Channel " + channel +
                                " does not have enough tokens." +
-                               " Prefire returns false on " + 
+                               " Prefire returns false on " +
                                container.getFullName());
                     }
                     return false;
 		}
 	    }
 	}
-	if(_debugging) _debug("Prefire returns true on " + 
+	if(_debugging) _debug("Prefire returns true on " +
 			      container.getFullName());
 	return true;
     }

@@ -42,8 +42,8 @@ import javax.swing.*;
 import javax.swing.tree.*;
 
 /**
-A list cell renderer for Ptolemy objects.  
- 
+A list cell renderer for Ptolemy objects.
+
 @author Steve Neuendorffer
 @version $Id$
 */
@@ -52,14 +52,14 @@ public class PtolemyListCellRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(
 	JList list, Object value, int index,
 	boolean isSelected, boolean cellHasFocus) {
-	
+
 	DefaultListCellRenderer component = (DefaultListCellRenderer)
-	    super.getListCellRendererComponent(list, value, 
-		index, isSelected, cellHasFocus);	
+	    super.getListCellRendererComponent(list, value,
+		index, isSelected, cellHasFocus);
 	if(value instanceof NamedObj) {
 	    NamedObj object = (NamedObj) value;
 	    component.setText(object.getName());
-	}	    
+	}
 	return component;
     }
 }

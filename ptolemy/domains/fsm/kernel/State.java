@@ -188,7 +188,7 @@ public class State extends ComponentEntity {
             return _refinement;
         } finally {
             workspace().doneReading();
-        }            
+        }
     }
 
     /** Return the list of non-preemptive outgoing transitions from

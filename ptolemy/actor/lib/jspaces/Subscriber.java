@@ -52,7 +52,7 @@ import java.util.Iterator;
 /**
 A subscriber to the Java Spaces. This actor register a TokenEntry
 of interest to the JavaSpaces. When get notified, it reads the
-TokenEntry. Entries are not ordered. New entry will overwrite the 
+TokenEntry. Entries are not ordered. New entry will overwrite the
 old one, if the actor is not fired during the time.
 
 If the parameter "blocking" is set to true, the actor will block
@@ -137,12 +137,12 @@ public class Subscriber extends Source implements RemoteEventListener {
      */
     public void preinitialize() throws IllegalActionException {
         _entryName = ((StringToken)entryName.getToken()).stringValue();
-   
+
         _lookupThread = Thread.currentThread();
-        
+
         _space = SpaceFinder.getSpace(
                 ((StringToken)jspaceName.getToken()).stringValue());
-        
+
         _lookupThread = null;
 
         // export this object so that the space can call back
@@ -157,15 +157,15 @@ public class Subscriber extends Source implements RemoteEventListener {
         //_tokenList = new LinkedList();
         //FIXME: set type by the token read.
         output.setTypeEquals(defaultToken.getToken().getType());
-        
+
         TokenEntry template = new TokenEntry(_entryName, null, null);
-        
+
         // request for notification
         try {
             _eventReg = _space.notify(
                     template, null, this, Lease.FOREVER, null);
             _notificationSeq = _eventReg.getSequenceNumber();
-            
+
         } catch (Exception e) {
             throw new IllegalActionException( this,
                     "error reading from the JavaSpace." +
@@ -303,7 +303,7 @@ public class Subscriber extends Source implements RemoteEventListener {
                     } else {
                         //System.out.println(getName() +
                         //        " reads successfully.");
-                        
+
                         _lastReadToken = entry.token;
                     }
                     _lock.notifyAll();

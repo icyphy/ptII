@@ -50,7 +50,7 @@ import javax.swing.*;
 A factory that adds an action to the given context menu that will configure
 parameters on the given object.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
 */
 public class EditParametersFactory extends MenuItemFactory {
@@ -64,7 +64,7 @@ public class EditParametersFactory extends MenuItemFactory {
 	// ensure that we actually have a target.
 	if(target == null) return null;
 	Action action = new AbstractAction(name) {
-	    public void actionPerformed(ActionEvent e) {	    
+	    public void actionPerformed(ActionEvent e) {
 		// Create a dialog for configuring the object.
                 // FIXME: First argument below should be a parent window
                 // (a JFrame).

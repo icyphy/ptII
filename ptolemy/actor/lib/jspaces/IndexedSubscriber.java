@@ -179,10 +179,10 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                 //read for 10 seconds.
                 // FIXME: should 10000 be a paramter?
                 while(true) {
-                    indexmin = 
+                    indexmin =
                         (IndexEntry)_space.read(_minTemplate, null, 10000);
                     if (indexmin == null) {
-                        System.err.println(getName() + 
+                        System.err.println(getName() +
                                 ": The publisher (min index) is not ready." +
                                 " Try again...");
                     } else {
@@ -190,9 +190,9 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                     }
                 }
             }
-                
+
             long minimum = indexmin.getPosition();
-            
+
             _maxTemplate = new IndexEntry(_entryName, "maximum", null);
             IndexEntry indexmax;
             if(_blocking) {
@@ -202,11 +202,11 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
                 while (true) {
                     // read for 10 seconds.
                     // FIXME: should 10000 be a paramter?
-                    indexmax = 
+                    indexmax =
                         (IndexEntry)_space.read(_maxTemplate, null, 10000);
                     if (indexmax == null) {
-                        System.err.println(getName() + 
-                                " The publisher (max index) is not ready. "+ 
+                        System.err.println(getName() +
+                                " The publisher (max index) is not ready. "+
                                 " Try again...");
                     } else {
                         break;

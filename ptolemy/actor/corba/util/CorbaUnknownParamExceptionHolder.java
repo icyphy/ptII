@@ -8,9 +8,9 @@
 package ptolemy.actor.corba.util;
 public final class CorbaUnknownParamExceptionHolder
      implements org.omg.CORBA.portable.Streamable{
-    //	instance variable 
+    //	instance variable
     public ptolemy.actor.corba.util.CorbaUnknownParamException value;
-    //	constructors 
+    //	constructors
     public CorbaUnknownParamExceptionHolder() {
 	this(null);
     }

@@ -41,7 +41,7 @@ import ptolemy.actor.lib.*;
 
 ///////////////////////////////////////////////////////////////
 /// BitsToInt
-/** 
+/**
 This actor converts a sequence of 32 consecutive BooleanTokens into a
 single IntToken.  The most significant bit is the first boolean
 token received.  The least significant bit is the last boolean token received.

@@ -63,58 +63,58 @@ public class Translate3D extends GRTransform {
     public Translate3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         xTranslate = new TypedIOPort(this, "xtranslate",true,false);
 	    xTranslate.setTypeEquals(BaseType.DOUBLE);
 	    yTranslate = new TypedIOPort(this, "ytranslate",true,false);
 	    yTranslate.setTypeEquals(BaseType.DOUBLE);
 	    zTranslate = new TypedIOPort(this, "ztranslate",true,false);
 	    zTranslate.setTypeEquals(BaseType.DOUBLE);
-	    
-	    
+
+
 	    initialXTranslation = new Parameter(this, "xTranslation", new DoubleToken(0.0));
   	    initialYTranslation = new Parameter(this, "yTranslation", new DoubleToken(0.0));
   	    initialZTranslation = new Parameter(this, "zTranslation", new DoubleToken(0.0));
-  	    
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The amount of translation in the x-axis during firing. If this transform
      *  is in accumulate mode, the translation value is accumulated for each firing.
      */
     public TypedIOPort xTranslate;
-    
+
     /** The amount of translation in the y-axis during firing. If this transform
      *  is in accumulate mode, the translation value is accumulated for each firing.
      */
     public TypedIOPort yTranslate;
-    
+
     /** The amount of translation in the z-axis during firing. If this transform
      *  is in accumulate mode, the translation value is accumulated for each firing.
      */
     public TypedIOPort zTranslate;
-    
+
     /** The initial translation in the x-axis
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is 0.0.
      */
     public Parameter initialXTranslation;
-    
+
     /** The initial translation in the y-axis
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is 0.0.
      */
     public Parameter initialYTranslation;
-    
+
     /** The initial translation in the z-axis
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is 0.0.
      */
     public Parameter initialZTranslation;
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -135,7 +135,7 @@ public class Translate3D extends GRTransform {
         newobj.initialZTranslation = (Parameter)newobj.getAttribute("zTranslation");
         return newobj;
     }
- 
+
     /** Check the input ports for translation inputs.  Convert the translation
      *  tokens into a Java3D transformation.
      *  @exception IllegalActionException If the value of some parameters can't
@@ -147,7 +147,7 @@ public class Translate3D extends GRTransform {
         double yOffset = _initialYTranslation;
         double zOffset = _initialZTranslation;
         boolean isAccumulating = _isAccumulating();
-        
+
         if (xTranslate.getWidth() != 0) {
             if (xTranslate.hasToken(0)) {
                 double in = ((DoubleToken) xTranslate.get(0)).doubleValue();
@@ -155,7 +155,7 @@ public class Translate3D extends GRTransform {
                 xOffset = xOffset + in;
             }
         }
-        
+
         if (yTranslate.getWidth() != 0) {
             if (yTranslate.hasToken(0)) {
                 double in = ((DoubleToken) yTranslate.get(0)).doubleValue();
@@ -163,7 +163,7 @@ public class Translate3D extends GRTransform {
                 yOffset = yOffset + in;
             }
         }
-        
+
         if (zTranslate.getWidth() != 0) {
             if (zTranslate.hasToken(0)) {
                 double in = ((DoubleToken) zTranslate.get(0)).doubleValue();
@@ -171,7 +171,7 @@ public class Translate3D extends GRTransform {
                 zOffset = zOffset + in;
             }
         }
-        
+
         if (isAccumulating) {
             xOffset = xOffset + _accumulatedX - _initialXTranslation;
             _accumulatedX = xOffset;
@@ -181,19 +181,19 @@ public class Translate3D extends GRTransform {
             _accumulatedZ = zOffset;
         }
 
-        
+
         if (applyTransform) {
             Transform3D transform = new Transform3D();
     	    transform.setTranslation(new Vector3d(xOffset,yOffset,zOffset));
     	    transformNode.setTransform(transform);
         }
-        
+
     }
- 
+
     /** Setup the initial translation.
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
-     */   
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _initialXTranslation = ((DoubleToken) initialXTranslation.getToken()).doubleValue();
@@ -215,27 +215,27 @@ public class Translate3D extends GRTransform {
     public Node getNodeObject() {
         return (Node) transformNode;
     }
-    
-    
+
+
     /** Add a scene graph child node to this actor
      */
     public void addChild(Node node) {
         transformNode.addChild(node);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private double _initialXTranslation;
     private double _initialYTranslation;
     private double _initialZTranslation;
     private double _accumulatedX;
     private double _accumulatedY;
     private double _accumulatedZ;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     protected TransformGroup transformNode;
 
 }

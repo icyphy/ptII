@@ -48,11 +48,11 @@ import javax.vecmath.*;
 version in its output. In reality, this actor encapsulates a Java3D TransformGroup
 which is converted into a node in the resulting Java3D scene graph. This actor will
 only have meaning in the GR domain. Scaling can be done uniformly or non-uniformly.
-Uniform scaling scales the input geometry equally in all directions. Uniform scaling 
+Uniform scaling scales the input geometry equally in all directions. Uniform scaling
 is done through modification of the <i>scaleFactor</i> parameter. Non-uniform scaling
-involves preferential scaling of the input geometry in a specified Cartesian axis. 
+involves preferential scaling of the input geometry in a specified Cartesian axis.
 Non-uniform scaling is done through modification of the <i>xScale<i>, <i>yScale<i/>,
-and <i>zScale<i/> parameters. 
+and <i>zScale<i/> parameters.
 
 @author C. Fong
 */
@@ -69,32 +69,32 @@ public class Scale3D extends GRTransform {
     public Scale3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         scaleInput = new TypedIOPort(this, "scale input");
         scaleInput.setInput(true);
-        
+
         scaleFactor = new Parameter(this, "scaleFactor",new DoubleToken(1.0));
 	    scaleFactor.setTypeEquals(BaseType.DOUBLE);
 	    xScale = new Parameter(this, "xScale", new DoubleToken(1.0));
   	    yScale = new Parameter(this, "yScale", new DoubleToken(1.0));
   	    zScale = new Parameter(this, "zScale", new DoubleToken(1.0));
     }
-    
+
     public Node getNodeObject() {
         return (Node) transformNode;
     }
-    
+
      /** Add a scene graph child node to this actor
      */
     public void addChild(Node node) {
         transformNode.addChild(node);
     }
 
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The amount of rescaling during firing. If this transform is in
      *  accumulate mode, the scaling value is accumulated
      */
@@ -105,40 +105,40 @@ public class Scale3D extends GRTransform {
      *  The default value of this parameter is the DoubleToken 1.0
      */
     public Parameter scaleFactor;
-   
+
     /** The scale factor in the Cartesian x-axis.
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is the DoubleToken 1.0
      */
     public Parameter xScale;
-    
+
     /** The scale factor in the Cartesian y-axis.
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is the DoubleToken 1.0
      */
     public Parameter yScale;
-    
+
     /** The scale factor in the Cartesian z-axis.
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is the DoubleToken 1.0
      */
     public Parameter zScale;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Setup the transformation needed for scaling
-     */    
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
    	    transformNode = new TransformGroup();
 	    transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         Transform3D scaleTransform = new Transform3D();
-        scaleTransform.setScale(new Vector3d(_getScaleX(),_getScaleY(),_getScaleZ()));        
+        scaleTransform.setScale(new Vector3d(_getScaleX(),_getScaleY(),_getScaleZ()));
         transformNode.setTransform(scaleTransform);
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -163,7 +163,7 @@ public class Scale3D extends GRTransform {
         double yFactor = ((DoubleToken) yScale.getToken()).doubleValue();
         return factor * yFactor;
     }
-    
+
     /** Get the scaling factor in the z-axis
      *  @return the scaling factor in the z-axis
      *  @exception IllegalActionException If the value of some parameters can't
@@ -177,6 +177,6 @@ public class Scale3D extends GRTransform {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     protected TransformGroup transformNode;
 }

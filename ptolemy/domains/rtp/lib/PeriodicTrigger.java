@@ -61,7 +61,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
 
     ////////////////////////////////////////////////////////////////////
     ////                  Ports and Parameters                      ////
-    
+
     /** The output port.
      */
     public TypedIOPort output;
@@ -94,12 +94,12 @@ public class PeriodicTrigger extends TypedAtomicActor {
 
     /** Once the frequency is updated, calculate the execution period.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == frequency) {
             double f = ((DoubleToken)(frequency.getToken())).doubleValue();
             if (f > 1000) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "does not support frequency higher than 1000.");
             }
             _period = 1000.0/f;

@@ -317,7 +317,7 @@ public class FSMDirector extends Director {
      *  iteration. Execute the commit actions contained by the last
      *  chosen transition of the mode controller and set its current
      *  state to the destination state of the transition.
-     *  If this director is at the top level, it will return the 
+     *  If this director is at the top level, it will return the
      *  postfire() value of the current refinement.
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
@@ -334,7 +334,7 @@ public class FSMDirector extends Director {
             Nameable container = getContainer();
             if (container instanceof CompositeActor &&
                    ((CompositeActor)container).getExecutiveDirector() != null) {
-                // Not at the top level, ignore the return value from 
+                // Not at the top level, ignore the return value from
                 // the current refinement.
                 result = true;
             }
@@ -347,7 +347,7 @@ public class FSMDirector extends Director {
         return result;
     }
 
-    /** Return true if the mode controller is ready to fire. 
+    /** Return true if the mode controller is ready to fire.
      *  If this model is not at the top level and the current
      *  time of this director lags behind that of the executive director,
      *  update the current time to that of the executive director. Record

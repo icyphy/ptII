@@ -167,22 +167,22 @@ notation as a a factory
 */
 public abstract class GraphFrame extends PtolemyFrame
     implements Printable, ClipboardOwner, ChangeListener {
-   
+
     public GraphFrame(CompositeEntity entity, Tableau tableau) {
         super(entity, tableau);
 
         entity.addChangeListener(this);
 
 	getContentPane().setLayout(new BorderLayout());
-	
+
 	GraphPane pane = _createGraphPane();
 
 	_jgraph = new JGraph(pane);
 	//	GraphController _controller =
 	//    _jgraph.getGraphPane().getGraphController();
-	
+
 	new EditorDropTarget(_jgraph);
-	
+
 	ActionListener deletionListener = new DeletionListener();
 	_jgraph.registerKeyboardAction(deletionListener, "Delete",
                   KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
@@ -192,11 +192,11 @@ public abstract class GraphFrame extends PtolemyFrame
 	_jgraph.setAlignmentX(1);
 	_jgraph.setAlignmentY(1);
 	_jgraph.setBackground(BACKGROUND_COLOR);
-	
+
 	// Ugh..  I hate setting the size like this.
 	_jgraph.setPreferredSize(new Dimension(600, 450));
 	_jgraph.setSize(600, 450);
-	
+
 	// wrap the graph editor in a scroll pane.
 	_graphScrollPane = new JScrollPane(_jgraph);
 	_graphScrollPane.setVerticalScrollBarPolicy(
@@ -270,12 +270,12 @@ public abstract class GraphFrame extends PtolemyFrame
         _libraryScrollPane = new JScrollPane(_library);
         _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
         _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
-	
+
 	// create the palette on the left.
 	_palettePane = new JPanel();
 	_palettePane.setBorder(null);
         _palettePane.setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
-	    
+
 	_palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
 	_palettePane.add(_graphPanner, BorderLayout.SOUTH);
 
@@ -295,7 +295,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	_saveInLibraryAction = new SaveInLibraryAction();
 	_importLibraryAction = new ImportLibraryAction();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -324,10 +324,10 @@ public abstract class GraphFrame extends PtolemyFrame
     }
 
     /** Get the currently selected objects from this document, if any,
-     * and place them on the given clipboard. 
+     * and place them on the given clipboard.
      */
     public void copy() {
-	Clipboard clipboard = 
+	Clipboard clipboard =
 	    java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
 	GraphPane graphPane = _jgraph.getGraphPane();
 	GraphController controller =
@@ -339,31 +339,31 @@ public abstract class GraphFrame extends PtolemyFrame
 	for(int i = 0; i < selection.length; i++) {
 	    if(selection[i] instanceof Figure) {
 		Object userObject = ((Figure)selection[i]).getUserObject();
-		NamedObj actual = 
+		NamedObj actual =
 		    (NamedObj)graphModel.getSemanticObject(userObject);
 		if(objectSet.contains(actual)) continue;
 		objectSet.add(actual);
 	    }
 	}
-	
-	StringWriter buffer = new StringWriter();	   
+
+	StringWriter buffer = new StringWriter();
 	try {
 	    Iterator elements = objectSet.iterator();
 	    while(elements.hasNext()) {
 		NamedObj element = (NamedObj) elements.next();
-		// first level to avoid obnoxiousness with 
+		// first level to avoid obnoxiousness with
 		// toplevel translations.
 		element.exportMoML(buffer, 1);
 	    }
 	    CompositeEntity container = (CompositeEntity)graphModel.getRoot();
 	    buffer.write(container.exportLinks(1, objectSet));
-	 
-	    // The code below does not use a PtolemyTransferable, 
+
+	    // The code below does not use a PtolemyTransferable,
 	    // to work around
 	    // a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
 	    // is that cut and paste through the system clipboard to native
-	    // applications doesn't work unless you use string selection. 
-	    clipboard.setContents(new StringSelection(buffer.toString()), 
+	    // applications doesn't work unless you use string selection.
+	    clipboard.setContents(new StringSelection(buffer.toString()),
 				  this);
 	}
 	catch (Exception ex) {
@@ -371,7 +371,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	}
 
     }
- 
+
     /** Remove the currently selected objects from this document, if any,
      *  and place them on the given clipboard.  If the document does not
      *  support such an operation, then do nothing.
@@ -381,7 +381,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	copy();
     }
 
-    /** Return the jgraph instance that this view uses to represent the 
+    /** Return the jgraph instance that this view uses to represent the
      *  ptolemy model.
      */
     public JGraph getJGraph() {
@@ -405,7 +405,7 @@ public abstract class GraphFrame extends PtolemyFrame
 
     /** Do nothing.
      */
-    public void lostOwnership(Clipboard clipboard, 
+    public void lostOwnership(Clipboard clipboard,
 			      Transferable transferable) {
     }
 
@@ -415,14 +415,14 @@ public abstract class GraphFrame extends PtolemyFrame
      * for copying the data.
      */
     public void paste () {
-	Clipboard clipboard = 
+	Clipboard clipboard =
 	    java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
 	Transferable transferable = clipboard.getContents(this);
 	GraphPane graphPane = _jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
 	GraphModel model = controller.getGraphModel();
-	if(transferable == null) 
+	if(transferable == null)
 	    return;
 	try {
 	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
@@ -435,16 +435,16 @@ public abstract class GraphFrame extends PtolemyFrame
 	    toplevel.requestChange(
                 new MoMLChangeRequest(this, toplevel, moml.toString()));
 	} catch (UnsupportedFlavorException ex) {
-	    System.out.println("Transferable object didn't " + 
+	    System.out.println("Transferable object didn't " +
 			       "support stringFlavor: " +
 			       ex.getMessage());
 	} catch (IOException ex) {
-	    System.out.println("IOException when pasting: " + 
+	    System.out.println("IOException when pasting: " +
 			       ex.getMessage());
 	} catch (Exception ex) {
 	    ex.printStackTrace();
 	    throw new RuntimeException(ex.getMessage());
-	} 
+	}
     }
 
     /** Print the document to a printer, represented by the specified graphics
@@ -566,7 +566,7 @@ public abstract class GraphFrame extends PtolemyFrame
     protected JScrollPane _libraryScrollPane;
     protected JPanel _palettePane;
     protected JSplitPane _splitPane;
-	
+
     protected JToolBar _toolbar;
     protected JMenu _editMenu;
     protected Action _cutAction;
@@ -590,10 +590,10 @@ public abstract class GraphFrame extends PtolemyFrame
     private class CopyAction extends AbstractAction {
 	public CopyAction() {
 	    super("Copy");
-	    putValue("tooltip", 
+	    putValue("tooltip",
 		     "Copy the current selection onto the clipboard.");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, 
-		     KeyStroke.getKeyStroke(KeyEvent.VK_C, 
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+		     KeyStroke.getKeyStroke(KeyEvent.VK_C,
 					    java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
 		     new Integer(KeyEvent.VK_C));
@@ -607,10 +607,10 @@ public abstract class GraphFrame extends PtolemyFrame
     private class CutAction extends AbstractAction {
 	public CutAction() {
 	    super("Cut");
-	    putValue("tooltip", 
+	    putValue("tooltip",
 		     "Cut the current selection onto the clipboard.");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, 
-		     KeyStroke.getKeyStroke(KeyEvent.VK_X, 
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+		     KeyStroke.getKeyStroke(KeyEvent.VK_X,
 					    java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
 		     new Integer(KeyEvent.VK_T));
@@ -624,10 +624,10 @@ public abstract class GraphFrame extends PtolemyFrame
     private class PasteAction extends AbstractAction {
 	public PasteAction() {
 	    super("Paste");
-	    putValue("tooltip", 
+	    putValue("tooltip",
 		     "Paste the contents of the clipboard.");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, 
-		     KeyStroke.getKeyStroke(KeyEvent.VK_V, 
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+		     KeyStroke.getKeyStroke(KeyEvent.VK_V,
 					    java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
 		     new Integer(KeyEvent.VK_P));
@@ -642,8 +642,8 @@ public abstract class GraphFrame extends PtolemyFrame
 	public LayoutAction() {
 	    super("Automatic Layout");
 	    putValue("tooltip", "Layout the Graph");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, 
-		     KeyStroke.getKeyStroke(KeyEvent.VK_L, 
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+		     KeyStroke.getKeyStroke(KeyEvent.VK_L,
 					    java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
 		     new Integer(KeyEvent.VK_L));
@@ -654,7 +654,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    } catch (Exception ex) {
 		MessageHandler.error("Layout failed", ex);
 	    }
-	}      
+	}
     }
 
     private class SaveInLibraryAction extends AbstractAction {
@@ -666,23 +666,23 @@ public abstract class GraphFrame extends PtolemyFrame
 	}
 	public void actionPerformed(ActionEvent e) {
 	    try {
-		PtolemyEffigy effigy = 
+		PtolemyEffigy effigy =
 		    (PtolemyEffigy)getTableau().getContainer();
 		NamedObj object = effigy.getModel();
 		if(object == null) return;
-		StringWriter buffer = new StringWriter();	   
+		StringWriter buffer = new StringWriter();
 		object.exportMoML(buffer, 1);
-		Configuration configuration = 
+		Configuration configuration =
 		    (Configuration)effigy.toplevel();
 		NamedObj library = configuration.getEntity("actor library");
 		if(library == null) return;
 		ChangeRequest request =
-		    new MoMLChangeRequest(this, library, buffer.toString()); 
+		    new MoMLChangeRequest(this, library, buffer.toString());
 		library.requestChange(request);
 	    } catch (IOException ex) {
 		// Ignore.
 	    }
-	}      
+	}
     }
 
     public class EditIconAction extends FigureAction {
@@ -692,7 +692,7 @@ public abstract class GraphFrame extends PtolemyFrame
 
 	public void actionPerformed(ActionEvent e) {
 	    // Figure out what entity.
-	    super.actionPerformed(e);		
+	    super.actionPerformed(e);
 	    NamedObj object = getTarget();
 	    if(!(object instanceof Entity)) return;
 	    Entity entity = (Entity) object;
@@ -708,7 +708,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    } else if(iconList.size() == 1) {
 		icon = (XMLIcon)iconList.get(0);
 	    } else {
-		throw new InternalErrorException("entity " + entity + 
+		throw new InternalErrorException("entity " + entity +
                        " contains more than one icon");
 	    }
 	    // FIXME make a tableau.
@@ -717,13 +717,13 @@ public abstract class GraphFrame extends PtolemyFrame
 	    new IconEditor(appContext, icon);
 	}
     }
-    
+
     private class ExecuteSystemAction extends AbstractAction {
 	public ExecuteSystemAction() {
 	    super("Go");
 	    putValue("tooltip", "Execute The Model");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, 
-		     KeyStroke.getKeyStroke(KeyEvent.VK_G, 
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+		     KeyStroke.getKeyStroke(KeyEvent.VK_G,
 					    java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
 		     new Integer(KeyEvent.VK_G));
@@ -731,40 +731,40 @@ public abstract class GraphFrame extends PtolemyFrame
 
 	public void actionPerformed(ActionEvent e) {
 	    try {
-		PtolemyEffigy effigy = 
+		PtolemyEffigy effigy =
 		    (PtolemyEffigy)getTableau().getContainer();
 		new RunTableau(effigy, effigy.uniqueName("tableau"));
 	    } catch (Exception ex) {
 		MessageHandler.error("Execution Failed", ex);
-	    }	    
+	    }
 	}
     }
-     
+
     public class GetDocumentationAction extends FigureAction {
 	public GetDocumentationAction() {
 	    super("Get Documentation");
 	}
-	public void actionPerformed(ActionEvent e) {	    
+	public void actionPerformed(ActionEvent e) {
 	    // Create a dialog for configuring the object.
 	    // FIXME this should probably be one frame for each class.
-	    super.actionPerformed(e);		
+	    super.actionPerformed(e);
 	    NamedObj target = getTarget();
-	    String className = target.getClass().getName();     
+	    String className = target.getClass().getName();
 	    try {
 		System.out.println(className);
 		Effigy effigy = (Effigy)getTableau().getContainer();
-		DocumentationViewerTableau viewer = 
-		    new DocumentationViewerTableau(effigy, 
+		DocumentationViewerTableau viewer =
+		    new DocumentationViewerTableau(effigy,
 					  effigy.uniqueName("tableau"));
 		viewer.dottedClass.setExpression(className);
 		viewer.show();
 	    } catch (Exception ex) {
-		MessageHandler.error("Could not view Documentation for " + 
+		MessageHandler.error("Could not view Documentation for " +
 				     className, ex);
 	    }
 	}
     };
-        
+
     public class ImportLibraryAction extends AbstractAction {
 	public ImportLibraryAction() {
 	    super("Import Library");
@@ -777,7 +777,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    // FIXME this code is mostly copied from Top.
 	    JFileChooser chooser = new JFileChooser();
 	    chooser.setDialogTitle("Select a library");
-	    
+
 	    if (_getDirectory() != null) {
 		chooser.setCurrentDirectory(_getDirectory());
 	    } else {
@@ -803,9 +803,9 @@ public abstract class GraphFrame extends PtolemyFrame
 			int count = reader.read(chars, 0, 50);
 			buffer.append(chars, 0, count);
 		    }
-		    PtolemyEffigy effigy = 
+		    PtolemyEffigy effigy =
 			(PtolemyEffigy)getTableau().getContainer();
-		    Configuration configuration = 
+		    Configuration configuration =
 			(Configuration)effigy.toplevel();
 		    NamedObj library =
 			configuration.getEntity("actor library");
@@ -813,7 +813,7 @@ public abstract class GraphFrame extends PtolemyFrame
 		    ChangeRequest request =
 			new MoMLChangeRequest(this, library,
 					      buffer.toString(),
-					      file.toURL()); 
+					      file.toURL());
 		    library.requestChange(request);
                     _setDirectory(chooser.getCurrentDirectory());
 		} catch (Exception ex) {
@@ -832,7 +832,7 @@ public abstract class GraphFrame extends PtolemyFrame
     // the graph, because the level layout algorithm doesn't understand
     // how to layout hierarchical nodes.
     private class PtolemyLayout extends LevelLayout {
-	
+
 	/**
 	 * Construct a new levelizing layout with a vertical orientation.
 	 */
@@ -843,14 +843,14 @@ public abstract class GraphFrame extends PtolemyFrame
 	/**
 	 * Copy the given graph and make the nodes/edges in the copied
 	 * graph point to the nodes/edges in the original.
-	 */ 
+	 */
 	protected Object copyComposite(Object origComposite) {
 	    LayoutTarget target = getLayoutTarget();
 	    GraphModel model = target.getGraphModel();
 	    diva.graph.basic.BasicGraphModel local = getLocalGraphModel();
 	    Object copyComposite = local.createComposite(null);
 	    HashMap map = new HashMap();
-	    
+
 	    // Copy all the nodes for the graph.
 	    for(Iterator i = model.nodes(origComposite); i.hasNext(); ) {
 		Object origNode = i.next();
@@ -867,27 +867,27 @@ public abstract class GraphFrame extends PtolemyFrame
 		    map.put(origNode, copyNode);
 		}
 	    }
-	    
+
 	    // Add all the edges.
-	    Iterator i = 
-		GraphUtilities.partiallyContainedEdges(origComposite, model); 
+	    Iterator i =
+		GraphUtilities.partiallyContainedEdges(origComposite, model);
 	    while(i.hasNext()) {
 		Object origEdge = i.next();
 		Object origTail = model.getTail(origEdge);
 		Object origHead = model.getHead(origEdge);
 		if(origHead != null && origTail != null) {
-		    Figure tailFigure = 
+		    Figure tailFigure =
 			(Figure)target.getVisualObject(origTail);
-		    Figure headFigure = 
+		    Figure headFigure =
 			(Figure)target.getVisualObject(origHead);
-		    // Swap the head and the tail if it will improve the 
+		    // Swap the head and the tail if it will improve the
 		    // layout, since LevelLayout only uses directed edges.
 		    if(tailFigure instanceof Terminal) {
 			Terminal terminal = (Terminal)tailFigure;
 			Site site = terminal.getConnectSite();
 			if(site instanceof FixedNormalSite) {
 			    double normal = site.getNormal();
-			    int direction = 
+			    int direction =
 				CanvasUtilities.getDirection(normal);
 			    if(direction == SwingUtilities.WEST) {
 				Object temp = origTail;
@@ -900,7 +900,7 @@ public abstract class GraphFrame extends PtolemyFrame
 			Site site = terminal.getConnectSite();
 			if(site instanceof FixedNormalSite) {
 			    double normal = site.getNormal();
-			    int direction = 
+			    int direction =
 				CanvasUtilities.getDirection(normal);
 			    if(direction == SwingUtilities.EAST) {
 				Object temp = origTail;
@@ -912,7 +912,7 @@ public abstract class GraphFrame extends PtolemyFrame
 
 		    origTail =
 			_getParentInGraph(model, origComposite, origTail);
-		    origHead = 
+		    origHead =
 			_getParentInGraph(model, origComposite, origHead);
 		    Object copyTail = map.get(origTail);
 		    Object copyHead = map.get(origHead);
@@ -924,15 +924,15 @@ public abstract class GraphFrame extends PtolemyFrame
  		    }
 		}
 	    }
-	    
+
 	    return copyComposite;
 	}
 
-	// Unfortunately, the head and/or tail of the edge may not 
+	// Unfortunately, the head and/or tail of the edge may not
 	// be directly contained in the graph.  In this case, we need to
-	// figure out which of their parents IS in the graph 
+	// figure out which of their parents IS in the graph
 	// and calculate the cost of that instead.
-	private Object _getParentInGraph(GraphModel model, 
+	private Object _getParentInGraph(GraphModel model,
 					 Object graph, Object node) {
 	    while(node != null && !model.containsNode(graph, node)) {
 		Object parent = model.getParent(node);
@@ -955,7 +955,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	public PtolemyLayoutTarget(GraphController controller) {
 	    super(controller);
 	}
-    
+
 	/**
 	 * Translate the figure associated with the given node in the
 	 * target's view by the given delta.
@@ -984,7 +984,7 @@ public abstract class GraphFrame extends PtolemyFrame
     }
 
     private class DeletionListener implements ActionListener {
-	/** 
+	/**
 	 * Delete any nodes or edges from the graph that are currently
 	 * selected.  In addition, delete any edges that are connected to
 	 * any deleted nodes.
@@ -994,7 +994,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    GraphPane graphPane = jgraph.getGraphPane();
 	    GraphController controller =
 		(GraphController)graphPane.getGraphController();
-	    AbstractPtolemyGraphModel graphModel = 
+	    AbstractPtolemyGraphModel graphModel =
 		(AbstractPtolemyGraphModel)controller.getGraphModel();
 	    SelectionModel model = controller.getSelectionModel();
 	    Object selection[] = model.getSelectionAsArray();
@@ -1004,7 +1004,7 @@ public abstract class GraphFrame extends PtolemyFrame
 		userObjects[i] = ((Figure)selection[i]).getUserObject();
 		model.removeSelection(selection[i]);
 	    }
-	    
+
 	    // Remove all the edges first, since if we remove the nodes first,
 	    // then removing the nodes might remove some of the edges.
 	    for(int i = 0; i < userObjects.length; i++) {

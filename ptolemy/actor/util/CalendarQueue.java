@@ -179,7 +179,7 @@ public class CalendarQueue implements Debuggable {
 
     /** Return entry that is at the head of the
      *  queue (i.e. the one that will be obtained by the next take()).
-     *  If the queue is empty, then throw an InvalidStateException, 
+     *  If the queue is empty, then throw an InvalidStateException,
      *  since the emptiness can be tested.
      *
      *  @return Object The smallest entry in the queue.

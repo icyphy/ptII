@@ -57,7 +57,7 @@ import java.util.StringTokenizer;
 This attribute represents a location in a schematic.  In some respects
 it can be thought of as a basic implementation of the Locatable interface.
 It is usually used to specify the location of objects that need
-a graphical location, and have no other way of specifying it (such as 
+a graphical location, and have no other way of specifying it (such as
 an external port).
 
 @author Steve Neuendorffer and Edward A. Lee
@@ -115,7 +115,7 @@ public class Location extends Attribute implements Locatable, Settable {
         String value = getExpression();
         String valueTerm = "";
         if(value != null && !value.equals("")) {
-            valueTerm = " value=\"" + 
+            valueTerm = " value=\"" +
                 StringUtilities.escapeForXML(value) + "\"";
         }
 
@@ -176,7 +176,7 @@ public class Location extends Attribute implements Locatable, Settable {
      */
     public void setExpression(String expression)
             throws IllegalActionException {
-        
+
         // Parse the specification: a comma specified list of doubles.
         StringTokenizer tokenizer = new StringTokenizer(expression, ",");
         double[] location = new double[tokenizer.countTokens()];
@@ -204,7 +204,7 @@ public class Location extends Attribute implements Locatable, Settable {
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
      */
-    public void setLocation(double[] location) 
+    public void setLocation(double[] location)
             throws IllegalActionException {
         _location = location;
 

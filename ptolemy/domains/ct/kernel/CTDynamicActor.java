@@ -45,7 +45,7 @@ y = g(x, u, t)<BR>
 are dynamic actors.
 <P>
 There is one method defined in this interface, which is
-emitTentativeOutput(). 
+emitTentativeOutput().
 The tentative output is the output if the current integration step is
 accurate. It may not be the "real" output, if there is an "missed" event
 reported by some event detectors.

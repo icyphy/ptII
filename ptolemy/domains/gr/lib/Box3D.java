@@ -47,10 +47,10 @@ import javax.vecmath.*;
 //// Box3D
 /** This actor contains the geometry and appearance specifications for a GR
 box.  The output port is used to connect this actor to the Java3D scene
-graph. This actor will only have meaning in the GR domain. 
+graph. This actor will only have meaning in the GR domain.
 
     The parameters <i>xLength</i>, <i>yHeight</i>, and <i>zWidth</i> determine
-the dimensions of box.  
+the dimensions of box.
 
 @author C. Fong
 */
@@ -67,12 +67,12 @@ public class Box3D extends GRShadedShape {
     public Box3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         xLength = new Parameter(this, "xLength", new DoubleToken(0.5));
         yHeight = new Parameter(this, "yHeight", new DoubleToken(0.5));
         zWidth = new Parameter(this, "zWidth", new DoubleToken(0.5));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -81,20 +81,20 @@ public class Box3D extends GRShadedShape {
      *  The default value of this parameter is the DoubleToken 0.5
      */
     public Parameter xLength;
-    
+
     /** The height of the box in the y-axis.
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is the DoubleToken 0.5
      */
     public Parameter yHeight;
-    
+
     /** The width of the box in the z-axis.
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is the DoubleToken 0.5
      */
     public Parameter zWidth;
-  
-  
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -116,7 +116,7 @@ public class Box3D extends GRShadedShape {
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a Java3D box.
      *  @return the Java3D box.
-     */    
+     */
     public Node getNodeObject() {
         return (Node) containedNode;
     }
@@ -134,8 +134,8 @@ public class Box3D extends GRShadedShape {
         containedNode = new Box((float)_getLength(),(float) _getWidth(),
                    (float) _getHeight(), Box.GENERATE_NORMALS,_appearance);
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -148,8 +148,8 @@ public class Box3D extends GRShadedShape {
         double value = ((DoubleToken) xLength.getToken()).doubleValue();
         return value / 2.0;
     }
-    
-    
+
+
     /** Return the value of the width parameter
      *  @return the width of the box
      *  @exception IllegalActionException If the value of some parameters can't
@@ -168,10 +168,10 @@ public class Box3D extends GRShadedShape {
     private double _getHeight() throws IllegalActionException  {
         double value = ((DoubleToken) zWidth.getToken()).doubleValue();
         return value / 2.0;
-    }    
- 
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-   
+
     private Box containedNode;
 }

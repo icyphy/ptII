@@ -47,10 +47,10 @@ import ptolemy.domains.sdf.kernel.*;
 /**
 This actor implements a type polymorphic finite-impulse response
 filter with multirate capability. Since this filter operates on
-Tokens, it is polymorphic in the type of data it operates on. 
+Tokens, it is polymorphic in the type of data it operates on.
 <p>
 Note that the current implementation of this actor only reads its
-parameters during initialization, so the filter cannot be 
+parameters during initialization, so the filter cannot be
 changed during execution.
 <p>
 When the <i>decimation</i> (<i>interpolation</i>)
@@ -85,8 +85,8 @@ the latest (most recent) samples are the ones selected.
 The decimationPhase must be strictly less than
 the decimation ratio.
 <p>
-<i>Note: in this description "sample rate" refers to the physical sampling 
-rate of an A/D converter in the system.  In other words, the number of 
+<i>Note: in this description "sample rate" refers to the physical sampling
+rate of an A/D converter in the system.  In other words, the number of
 data samples per second.  This is not usually specified anywhere in an
 SDF system, and most definitely does NOT correspond to the SDF rate parameters
 of this actor.  This actor automatically sets the rates of the input
@@ -168,7 +168,7 @@ public class FIR extends SDFTransformer {
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == taps) {	 
+        if (attribute == taps) {
         } else {
             super.attributeTypeChanged(attribute);
         }
@@ -191,13 +191,13 @@ public class FIR extends SDFTransformer {
             InequalityTerm elemTerm = paramType.getElementTypeTerm();
             newobj.output.setTypeAtLeast(elemTerm);
         } catch (IllegalActionException ex) {
-            // Ignore..  
+            // Ignore..
             // FIXME: This try..catch seems bogus...  ArrayToSequence
             // doesn't need it..
         }
         return newobj;
     }
-    
+
     /** Consume the inputs and produce the outputs of the FIR filter.
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
@@ -271,7 +271,7 @@ public class FIR extends SDFTransformer {
         ArrayToken tapsToken = (ArrayToken)(taps.getToken());
 
         _taps = tapsToken.arrayValue();
-        
+
         // Get a token representing zero in the appropriate type.
 	_zero = _taps[0].zero();
 

@@ -252,7 +252,7 @@ public abstract class TableauFrame extends Top {
 	    // Check to see if we have an effigy factory, and whether it
             // is capable of creating blank effigies.
 	    final Configuration configuration = getConfiguration();
-	    EffigyFactory effigyFactory = 
+	    EffigyFactory effigyFactory =
                     (EffigyFactory)configuration.getEntity("effigyFactory");
             boolean canCreateBlank = false;
             final ModelDirectory directory = getDirectory();
@@ -485,7 +485,7 @@ public abstract class TableauFrame extends Top {
                                 confirm,
                                 "Discard changes?",
                                 JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE, 
+                                JOptionPane.QUESTION_MESSAGE,
                                 null,
                                 null,
                                 null);
@@ -498,7 +498,7 @@ public abstract class TableauFrame extends Top {
                     }
                     previousOpen.closeTableaux();
                 }
-                
+
                 if (file.exists()) {
                     // Ask for confirmation before overwriting a file.
                     String query = "Overwrite " + file.getName() + "?";
@@ -508,11 +508,11 @@ public abstract class TableauFrame extends Top {
                             query,
                             "Overwrite file?",
                             JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE, 
+                            JOptionPane.QUESTION_MESSAGE,
                             null,
                             null,
                             null);
-        
+
                     if (selected == 1) {
                         return false;
                     }
@@ -571,7 +571,7 @@ public abstract class TableauFrame extends Top {
     private PtolemyEffigy _findEffigyForModel(
             CompositeEntity composite, NamedObj model) {
         if (composite != null) {
-            Iterator effigies = 
+            Iterator effigies =
                    composite.entityList(PtolemyEffigy.class).iterator();
             while (effigies.hasNext()) {
                 PtolemyEffigy effigy = (PtolemyEffigy)effigies.next();

@@ -53,7 +53,7 @@ import java.util.Iterator;
 //// CarInformationSubscriber
 /**
 A subscriber to the JavaSpaces for car information and do a sanity
-check. It outputs whether the data subscribed is reliable, and 
+check. It outputs whether the data subscribed is reliable, and
 the data recieved which are the force, velocity and position of
 another car.
 
@@ -76,13 +76,13 @@ public class CarInformationSubscriber extends TypedAtomicActor
     public CarInformationSubscriber(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	jspaceName = new Parameter(this, "jspaceName", 
+    	jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
-        entryName = new Parameter(this, "entryName", 
+        entryName = new Parameter(this, "entryName",
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
-        
+
         correct = new TypedIOPort(this, "correct", false, true);
         correct.setMultiport(false);
         correct.setTypeEquals(BaseType.BOOLEAN);
@@ -110,7 +110,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
     /** Output for the force. Default is 0.0.
      */
     public TypedIOPort force;
-    
+
     /** Output for the velocity. Default is 0.0.
      */
     public TypedIOPort velocity;
@@ -119,7 +119,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
      */
     public TypedIOPort position;
 
-    /** The Java Space name. The default name is "JavaSpaces" of 
+    /** The Java Space name. The default name is "JavaSpaces" of
      *  type StringToken.
      */
     public Parameter jspaceName;
@@ -150,14 +150,14 @@ public class CarInformationSubscriber extends TypedAtomicActor
             //        e.getMessage());
             System.err.println("Warning: " + e.getMessage());
         }
-                
+
         // read the current data in the JavaSpaces, and use
         // it as the initial condition
-        TokenEntry entryTemplate = new TokenEntry(_entryName, 
+        TokenEntry entryTemplate = new TokenEntry(_entryName,
                 null, null);
         TokenEntry entry;
         boolean ready = false;
-        while(!ready) { 
+        while(!ready) {
             try {
                 entry = (TokenEntry)_space.readIfExists(
                         entryTemplate, null, 1000);
@@ -177,25 +177,25 @@ public class CarInformationSubscriber extends TypedAtomicActor
             } else {
                 ready = true;
                 _lastData = (ArrayToken)entry.token;
-                // set container's parameter so they could be used by other 
+                // set container's parameter so they could be used by other
                 // actors.
-                TypedCompositeActor container = 
+                TypedCompositeActor container =
                     (TypedCompositeActor)getContainer();
-                Parameter initialVelocity = 
+                Parameter initialVelocity =
                     (Parameter)container.getAttribute("initialVelocity");
                 if(initialVelocity != null) {
                     initialVelocity.setToken(_lastData.getElement(2));
                 }
-                Parameter initialPosition = 
+                Parameter initialPosition =
                     (Parameter)container.getAttribute("initialPosition");
                 if(initialPosition != null) {
-                    initialPosition.setToken(new DoubleToken(-20.0 + 
+                    initialPosition.setToken(new DoubleToken(-20.0 +
                             ((DoubleToken)
                                     (_lastData.getElement(3))).doubleValue()));
                 }
             }
         }
-        
+
         // request for notification
         try {
             _eventReg = _space.notify(
@@ -216,7 +216,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
         NotifyHandler nh = new NotifyHandler(this, event);
         new Thread(nh).start();
     }
-    
+
     /** Always output the last set of subscribed data.
      *  The new data only takes effect after postfire.
      */
@@ -227,8 +227,8 @@ public class CarInformationSubscriber extends TypedAtomicActor
         velocity.send(0, _lastData.getElement(2));
         position.send(0, _lastData.getElement(3));
     }
-    
-    /** Check whether the newly comed set of data is correct, 
+
+    /** Check whether the newly comed set of data is correct,
      *  if there is any.
      */
     public boolean postfire() throws IllegalActionException {
@@ -238,38 +238,38 @@ public class CarInformationSubscriber extends TypedAtomicActor
             double lastTimeStamp =
                 ((DoubleToken)_lastData.getElement(0)).doubleValue();
             //System.out.println("last time stamp " + lastTimeStamp);
-            double lastF = 
+            double lastF =
                 ((DoubleToken)_lastData.getElement(1)).doubleValue();
             //System.out.println("last force " + lastF);
-            double lastV = 
+            double lastV =
                 ((DoubleToken)_lastData.getElement(2)).doubleValue();
             //System.out.println("last velocity " + lastV);
-            double lastP = 
+            double lastP =
                 ((DoubleToken)_lastData.getElement(3)).doubleValue();
             //System.out.println("last position " + lastP);
-            
+
             synchronized(_lock) {
                 // do the sanity check.
                 double currentPosition =
                     ((DoubleToken)_currentData.getElement(3)).doubleValue();
                 if (currentPosition >= lastP) {
-                    double currentTimeStamp = 
+                    double currentTimeStamp =
                         ((DoubleToken)_currentData.getElement(0)).doubleValue();
                     double timeInterval = currentTimeStamp - lastTimeStamp;
                     //System.out.println("time interval: " + timeInterval);
                     double fovermiu = lastF/_miu;
                     double expt = Math.exp((-1.0) * _miu * timeInterval);
-                    double computedVelocity = 
+                    double computedVelocity =
                         (lastV - fovermiu) * expt + fovermiu;
                     //System.out.println("computed v: " + computedVelocity);
                     double computedPosition = lastP +
                         (1.0/_miu)*(lastV - fovermiu) * (1.0 - expt) +
                         fovermiu * timeInterval;
                     //System.out.println("computed p: " + computedPosition);
-                    double currentVelocity = 
+                    double currentVelocity =
                         ((DoubleToken)_currentData.getElement(2)).doubleValue();
                     //System.out.println("read velocity: " +currentVelocity);
-                    
+
                     //System.out.println("read position: " +currentPosition);
                     if(Math.abs(currentVelocity - computedVelocity) < _eps &&
                             Math.abs(currentPosition - computedPosition) <
@@ -289,30 +289,30 @@ public class CarInformationSubscriber extends TypedAtomicActor
                 }
             }
         }
-        //System.out.println("CORRECT" + _correct); 
+        //System.out.println("CORRECT" + _correct);
         correct.send(0, new BooleanToken(_correct));
         return true;
-    }                    
-    
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The entry name.
     private String _entryName;
-    
+
     // The space to read from.
     private JavaSpace _space;
-    
+
     // Indicating whether there's new data came in.
     private boolean _hasNewData;
-    
-    // The correctness of the current outputs, which are the last set of 
+
+    // The correctness of the current outputs, which are the last set of
     // subscribed data.
     private boolean _correct = true;
 
     // The lock that the access of local variables are synchronized on.
     private Object _lock = new Object();
-  
+
     // Last set of data.
     private ArrayToken _lastData;
 
@@ -321,22 +321,22 @@ public class CarInformationSubscriber extends TypedAtomicActor
 
     // Used to identify the event registration
     private EventRegistration _eventReg;
-    
+
     // Used to identify notification.
     private long _notificationSeq;
-    
+
     // Constants in the model
     // Friction coefficient
     private final double _miu = 0.5;
-    
+
     // error tolerance.
     private final double _eps = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-    
+
     public class NotifyHandler implements Runnable {
-        
+
         /** construct the notify handler
          */
         public NotifyHandler(TypedAtomicActor container, RemoteEvent event) {
@@ -346,17 +346,17 @@ public class CarInformationSubscriber extends TypedAtomicActor
 
         //////////////////////////////////////////////////////////////
         ////                     public methods                   ////
-                
+
         /** Read the entry token from the javaspaces.
          */
         public void run() {
             // check if it is the right notification
             if (_event.getSource().equals(_eventReg.getSource()) &&
-                    _event.getID() == _eventReg.getID() && 
+                    _event.getID() == _eventReg.getID() &&
                     _event.getSequenceNumber() > _notificationSeq) {
                 // grab a lock and read all new entries.
                 synchronized(_lock) {
-                    TokenEntry entryTemplate = new TokenEntry(_entryName, 
+                    TokenEntry entryTemplate = new TokenEntry(_entryName,
                             null, null);
                     TokenEntry entry;
                     try {
@@ -368,7 +368,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
                                 e.getMessage());
                     }
                     if(entry == null) {
-                        System.out.println(getName() + 
+                        System.out.println(getName() +
                                 " read null from space");
                     } else {
                         _currentData = (ArrayToken)entry.token;
@@ -377,13 +377,13 @@ public class CarInformationSubscriber extends TypedAtomicActor
                 }
             }
         }
-        
+
         //////////////////////////////////////////////////////////////
         ////                     private variables                ////
-        
+
         // the container
         private TypedAtomicActor _container;
-        
+
         // the event
         private RemoteEvent _event;
     }

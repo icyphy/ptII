@@ -256,7 +256,7 @@ public class TimeKeeper {
 	}
 
 	if( !_rcvrList.contains( tqr ) ) {
-	    // Add receiver to list with a touch of 
+	    // Add receiver to list with a touch of
             // optimization before actually sorting.
 	    if( time > 0 ) {
 		_rcvrList.addFirst( tqr );

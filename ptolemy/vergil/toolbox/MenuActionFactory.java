@@ -46,14 +46,14 @@ import java.awt.event.*;
 /**
 A factory that adds a given action a given context menu.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
 */
 public class MenuActionFactory extends MenuItemFactory {
     public MenuActionFactory(Action action) {
 	_action = action;
     }
-    
+
     /**
      * Add an item to the given context menu that will configure the
      * parameters on the given target.
@@ -61,7 +61,7 @@ public class MenuActionFactory extends MenuItemFactory {
     public JMenuItem create(JContextMenu menu, NamedObj object) {
 	return menu.add(_action, (String)_action.getValue(Action.NAME));
     }
-    
+
     /**
      * Get the name of the items that will be created.  This is provided so
      * that factory can be overriden slightly with the name changed.

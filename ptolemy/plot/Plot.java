@@ -230,7 +230,7 @@ public class Plot extends PlotBox {
             final double y, final boolean connected) {
         Runnable doAddPoint = new Runnable() {
             public void run() {
-                _addPoint(dataset, x, y, 0, 0, connected, false);               
+                _addPoint(dataset, x, y, 0, 0, connected, false);
             }
         };
         _deferIfNecessary(doAddPoint);
@@ -295,7 +295,7 @@ public class Plot extends PlotBox {
                 _clear(format);
             }
         };
-        _deferIfNecessary(doClear); 
+        _deferIfNecessary(doClear);
    }
 
     /** Clear the plot of data points in the specified dataset.
@@ -317,7 +317,7 @@ public class Plot extends PlotBox {
                 _clear(dataset);
             }
         };
-        _deferIfNecessary(doClear); 
+        _deferIfNecessary(doClear);
     }
 
     /** Erase the point at the given index in the given dataset.  If
@@ -462,7 +462,7 @@ public class Plot extends PlotBox {
                 synchronized (Plot.this) {
                     // Create a sample plot.
                     clear(true);
-                    
+
                     setTitle("Sample plot");
                     setYRange(-4, 4);
                     setXRange(0, 100);
@@ -475,11 +475,11 @@ public class Plot extends PlotBox {
                     addYTick("PI", Math.PI);
                     setMarksStyle("none");
                     setImpulses(true);
-                    
+
                     boolean first = true;
                     for (int i = 0; i <= 100; i++) {
                         double xvalue = (double)i;
-                        
+
                         // NOTE: jdk 1.3beta has a bug exhibited here.
                         // The value of the second argument in the calls
                         // to addPoint() below is corrupted the second
@@ -490,7 +490,7 @@ public class Plot extends PlotBox {
                         // For some bizarre reason, this problem goes
                         // away when this code is executed in the event
                         // dispatch thread.
-                        
+
                         addPoint(0, xvalue,
                                 5 * Math.cos(Math.PI * i/20), !first);
                         addPoint(1, xvalue,
@@ -1748,7 +1748,7 @@ public class Plot extends PlotBox {
      * reset all parameters to their initial conditions, including
      * the persistence, plotting format, and axes formats.
      * For the change to take effect, you must call repaint().
-     * 
+     *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
      * be called via _deferIfNecessary().
@@ -1784,7 +1784,7 @@ public class Plot extends PlotBox {
 
     /** Clear the plot of data points in the specified dataset.
      *  This calls repaint() to request an update of the display.
-     * 
+     *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
      * be called via _deferIfNecessary().
@@ -1805,7 +1805,7 @@ public class Plot extends PlotBox {
      * calling this method so that it calls _drawPlot(), which sets
      * _xscale and _yscale. Note that this does not check the dataset
      * index.  It is up to the caller to do that.
-     * 
+     *
      * Note that this method is not synchronized, so the caller should be.
      * Moreover this method should always be called from the event thread
      * when being used to write to the screen.
@@ -1913,7 +1913,7 @@ public class Plot extends PlotBox {
             PlotPoint pt = (PlotPoint)pts.elementAt(index);
             long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
             long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
-            
+
             // Erase line to the next point, if appropriate.
             if (index < pts.size() - 1) {
                 PlotPoint nextp = (PlotPoint)pts.elementAt(index+1);
@@ -1924,7 +1924,7 @@ public class Plot extends PlotBox {
                 nextx, nexty,  xpos, ypos, true);
                 nextp.connected = false;
             }
-            
+
             // Draw decorations that may be specified on a per-dataset basis
             Format fmt = (Format)_formats.elementAt(dataset);
             if (fmt.impulsesUseDefault) {
@@ -1932,18 +1932,18 @@ public class Plot extends PlotBox {
             } else {
                 if (fmt.impulses) _drawImpulse(graphics, xpos, ypos, true);
             }
-            
+
             // Check to see whether the dataset has a marks directive
             int marks = _marks;
             if (!fmt.marksUseDefault) marks = fmt.marks;
             if (marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
-            
+
             if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
             if (pt.errorBar)
             _drawErrorBar(graphics, dataset, xpos,
             _lry - (long)((pt.yLowEB - _yMin) * _yscale),
             _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
-            
+
             // Restore the color, in case the box gets redrawn.
             graphics.setColor(_foreground);
             if (_pointsPersistence > 0 || _xPersistence > 0.0) {

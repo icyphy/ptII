@@ -121,13 +121,13 @@ public class Select extends TypedAtomicActor {
      *  an input port does not have a token.
      */
     public void fire() throws IllegalActionException {
-        
+
         if (select.getWidth() != 0) {
             if (select.hasToken(0)) {
                 double selectValue = ((DoubleToken) select.get(0)).doubleValue();
                 int index = 0;
                 int width = input.getWidth();
-                
+
                 if (width == 2 ) {
                     if (selectValue > 0 ) {
                         index = 1;
@@ -136,8 +136,8 @@ public class Select extends TypedAtomicActor {
                     }
                 } else {
                     index = (int) selectValue;
-                }                   
-                    
+                }
+
                 if (index < width) {
                     for (int i = 0; i < width; i++) {
                         if (input.hasToken(i)) {
@@ -146,7 +146,7 @@ public class Select extends TypedAtomicActor {
 	                            output.send(0, token);
 	                        }
 	                    }
-	                }   
+	                }
 	            }
 	        }
 	    }

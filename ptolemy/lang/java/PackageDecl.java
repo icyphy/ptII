@@ -118,7 +118,7 @@ public class PackageDecl extends JavaDecl
 	 * StaticResolution.importPackage calls
 	 * StaticResolution.SYSTEM_PACKAGE.getScope(), which calls
 	 * PackageDecl.getScope(), which calls this method
-	 * 
+	 *
 	 */
 
         //System.out.println("PackageDecl._initScope("
@@ -134,7 +134,7 @@ public class PackageDecl extends JavaDecl
             _scope = new Scope(_container.getScope());
         }
 
-        // Use the contents of the system jar file to get java.* etc. files 
+        // Use the contents of the system jar file to get java.* etc. files
         if (fullName().equals("") ||
                 SearchPath.systemPackageSet.contains(fullName('.'))) {
             _initScopeSystemPackages(SearchPath.systemClassSet,
@@ -152,7 +152,7 @@ public class PackageDecl extends JavaDecl
                     SearchPath.ptolemyCorePackageSet);
 
             if (fullName('.').equals("ptolemy.data")) {
-                // ptolemy.data and ptolemy.data.type are part of the 
+                // ptolemy.data and ptolemy.data.type are part of the
                 // ptolemy II core, so we can use reflection, but
                 // ptolemy.data.expr is not part of the core, so
                 // we need to add it by hand so that we can parse
@@ -279,15 +279,15 @@ public class PackageDecl extends JavaDecl
         Iterator packages = packageSet.iterator();
         while(packages.hasNext()) {
             String systemPackageName = (String) packages.next();
-            // Add the package 
-            // if it is a subpackage of packageName, _or_ 
+            // Add the package
+            // if it is a subpackage of packageName, _or_
             // if the packageName is "" and the
             // systemPackage does not contain a .
             //
             // We need to check to see if the string contains
-	    // a . because 
+	    // a . because
 	    // if packageName == java and systemPackageName == javax
-            // then partBeforeLast will fail. 
+            // then partBeforeLast will fail.
             if (systemPackageName.startsWith(packageName) &&
                     systemPackageName.indexOf('.') != -1 &&
                     StringManip.partBeforeLast(systemPackageName,
@@ -301,7 +301,7 @@ public class PackageDecl extends JavaDecl
 		//		   "Packages(): adding package: " + shortSystemPackageName);
                 _scope.add(new PackageDecl(shortSystemPackageName, this));
             } else {
-                if (packageName.equals("") && 
+                if (packageName.equals("") &&
                         systemPackageName.indexOf('.') == -1 &&
                         !systemPackageName.equals("META-INF")
                     ) {

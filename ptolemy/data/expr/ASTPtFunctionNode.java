@@ -92,7 +92,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     }
 
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalActionException 
+            throws IllegalActionException
         {
         int args = jjtGetNumChildren();
         if (_isArrayRef) {
@@ -152,7 +152,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
                 return tree.evaluateParseTree();
             } else {
-                throw new IllegalActionException("The function \"eval\" is" + 
+                throw new IllegalActionException("The function \"eval\" is" +
                         " reserved for reinvoking the parser, and takes" +
                         " exactly one String argument.");
             }
@@ -230,10 +230,10 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 // get the exception produced by the invoked function
                 throw new IllegalActionException(
                         ex.getTargetException().getMessage());
-            } catch (Exception ex)  {                
+            } catch (Exception ex)  {
                 new IllegalActionException(ex.getMessage());
             }
- 
+
             if (foundMethod) {
                 if (result instanceof ptolemy.data.Token) {
                     return (ptolemy.data.Token)result;
@@ -257,7 +257,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                             " not a valid type: boolean, complex, fixpoint" +
                             " double, int, long  and String, or a Token.");
                 }
-            } 
+            }
         }
         // If reach here it means the function was not found on the
         // search path.
@@ -272,7 +272,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         throw new IllegalActionException("No matching function " + _funcName
                 + "( " + sb + " ).");
     }
-   
+
 
     public ASTPtFunctionNode(int id) {
         super(id);

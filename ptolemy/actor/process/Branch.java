@@ -1,5 +1,5 @@
-/* A Branch transfers tokens through a channel that crosses a composite 
-actor boundary. 
+/* A Branch transfers tokens through a channel that crosses a composite
+actor boundary.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -39,33 +39,33 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Branch
 /**
-A Branch transfers tokens through a channel that crosses a composite 
-actor boundary. Branch implements the Runnable class and the execution 
-of a branch object is controlled by an instantiation of the 
-BranchController class. Each branch object is assigned two receiver 
-objects and each of these receiver objects must implement the 
-ProcessReceiver class. One of the assigned receivers is referred to as 
-the producer receiver (the channel source) and the other is referred to 
-as the consumer receiver (the channel destination). 
+A Branch transfers tokens through a channel that crosses a composite
+actor boundary. Branch implements the Runnable class and the execution
+of a branch object is controlled by an instantiation of the
+BranchController class. Each branch object is assigned two receiver
+objects and each of these receiver objects must implement the
+ProcessReceiver class. One of the assigned receivers is referred to as
+the producer receiver (the channel source) and the other is referred to
+as the consumer receiver (the channel destination).
 <P>
-During its execution a branch attempts to get data from the producer 
-receiver and put data in the consumer receiver. The communication 
-semantics of the producer receiver get() method are dependent upon the 
-model of computation associated with the producer receiver. In cases 
-where a blocking read occurs, the producer receiver registers the block 
-with the calling branch leading to a blocked branch. So that the producer 
-receiver knows which branch to register the block with, a branch always 
-invokes the receiver's get() method by passing itself as an argument. 
-A blocked branch registers the block with the branch controller that it 
-is assigned to. 
+During its execution a branch attempts to get data from the producer
+receiver and put data in the consumer receiver. The communication
+semantics of the producer receiver get() method are dependent upon the
+model of computation associated with the producer receiver. In cases
+where a blocking read occurs, the producer receiver registers the block
+with the calling branch leading to a blocked branch. So that the producer
+receiver knows which branch to register the block with, a branch always
+invokes the receiver's get() method by passing itself as an argument.
+A blocked branch registers the block with the branch controller that it
+is assigned to.
 <P>
-Putting data in a consumer receiver is symmetrically analogous to getting 
-data from a producer receiver. In cases where a blocking write occurs, 
-the consumer receiver registers the block with the calling branch leading 
-to a blocked branch. So that the consumer receiver knows which branch to 
-register the block with, a branch always invokes the receiver's put() 
-method by passing itself as an argument. 
- 
+Putting data in a consumer receiver is symmetrically analogous to getting
+data from a producer receiver. In cases where a blocking write occurs,
+the consumer receiver registers the block with the calling branch leading
+to a blocked branch. So that the consumer receiver knows which branch to
+register the block with, a branch always invokes the receiver's put()
+method by passing itself as an argument.
+
 @author John S. Davis II
 @version $Id$
 */
@@ -73,42 +73,42 @@ method by passing itself as an argument.
 public class Branch implements Runnable {
 
     /** Construct a branch object with a branch controller.
-     * 
+     *
      *  @param cntlr The branch controller assigned to this branch.
      *  @deprecated Use this constructor for testing purposes only.
      */
-    public Branch(BranchController cntlr) throws 
+    public Branch(BranchController cntlr) throws
     	    IllegalActionException {
         _controller = cntlr;
     }
- 
-    /** Construct a branch object with a producer receiver, a consumer 
+
+    /** Construct a branch object with a producer receiver, a consumer
      *  receiver and a branch controller.
-     * 
+     *
      *  @param prodRcvr The producer receiver assigned to this branch.
      *  @param consRcvr The consumer receiver assigned to this branch.
      *  @param cntlr The branch controller assigned to this branch.
      *  @exception IllegalActionException If the receivers assigned to
      *   this branch are null or improperly configured.
      */
-    public Branch(ProcessReceiver prodRcvr, ProcessReceiver consRcvr, 
+    public Branch(ProcessReceiver prodRcvr, ProcessReceiver consRcvr,
 	    BranchController cntlr) throws IllegalActionException {
         _controller = cntlr;
-        
+
         if( prodRcvr == null || consRcvr == null ) {
             throw new IllegalActionException("The boundary "
             	    + "receivers of this branch are null.");
         }
         if( !prodRcvr.isProducerReceiver() ) {
 	    String name = ((Nameable)consRcvr.getContainer()).getName();
-            throw new IllegalActionException("Receiver: " + name + 
+            throw new IllegalActionException("Receiver: " + name +
 		    " Not producer receiver");
         }
 	_prodRcvr = prodRcvr;
-        
+
         if( !consRcvr.isConsumerReceiver() ) {
 	    String name = ((Nameable)consRcvr.getContainer()).getName();
-            throw new IllegalActionException("Receiver: " + name + 
+            throw new IllegalActionException("Receiver: " + name +
 		    " Not consumer receiver");
         }
 	_consRcvr = consRcvr;
@@ -118,7 +118,7 @@ public class Branch implements Runnable {
     ////                         public methods                    ////
 
     /** Return the consumer receiver that this branch puts data into.
-     * 
+     *
      *  @return The consumer receiver that this branch puts data into.
      *  @see ptolemy.actor.process.BoundaryDetector
      */
@@ -127,7 +127,7 @@ public class Branch implements Runnable {
     }
 
     /** Return the producer receiver that this branch gets data from.
-     * 
+     *
      * @return The producer receiver that this branch gets data from.
      * @see ptolemy.actor.process.BoundaryDetector
      */
@@ -135,8 +135,8 @@ public class Branch implements Runnable {
         return _prodRcvr;
     }
 
-    /** Return true if this branch is active. 
-     * 
+    /** Return true if this branch is active.
+     *
      *  @return True if this branch is still alive.
      */
     public boolean isActive() {
@@ -147,7 +147,7 @@ public class Branch implements Runnable {
      *  is blocked. The blocked receiver, either the producer
      *  or consumer receiver (but not both) are passed as an
      *  argument according to which one is blocked.
-     * 
+     *
      *  @param rcvr The receiver assigned to this branch that
      *   is blocked.
      */
@@ -159,10 +159,10 @@ public class Branch implements Runnable {
     }
 
     /** Register that the receiver controlled by this branch
-     *  is no longer blocked. 
+     *  is no longer blocked.
      *
-     *  @param rcvr The receiver assigned to this branch for 
-     *   which a block is being removed. 
+     *  @param rcvr The receiver assigned to this branch for
+     *   which a block is being removed.
      */
     public void registerRcvrUnBlocked(ProcessReceiver rcvr) {
     	if( _rcvrBlocked ) {
@@ -171,9 +171,9 @@ public class Branch implements Runnable {
         }
     }
 
-    /** Repeatedly transfer a single token between the producer 
+    /** Repeatedly transfer a single token between the producer
      *  receiver and the consumer receiver as long as the branch
-     *  is active or until a TerminateProcessException is thrown. 
+     *  is active or until a TerminateProcessException is thrown.
      *  NOTE: This method could probably be more efficient.
      */
     public void run() {
@@ -186,10 +186,10 @@ public class Branch implements Runnable {
             return;
         }
     }
-    
+
     /** Set a flag indicating this branch is no longer active.
-     * 
-     *  @param value A boolean indicating whether this branch is 
+     *
+     *  @param value A boolean indicating whether this branch is
      *   still active.
      */
     public void setActive(boolean value) {
@@ -207,10 +207,10 @@ public class Branch implements Runnable {
         } else if ( _consRcvr == null ) {
             return;
         }
-        Token token = _prodRcvr.get(this); 
+        Token token = _prodRcvr.get(this);
         _consRcvr.put(token, this);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     ////                       protected methods                  ////
 

@@ -106,7 +106,7 @@ public class LookUpTable extends Transformer {
 	    IntMatrixToken defIndexToken = new IntMatrixToken(defIndexes);
         indexes = new Parameter(this, "indexes", defIndexToken);
         indexes.setTypeEquals(BaseType.INT_MATRIX);
-        
+
         System.out.println("row col "+defIndexToken.getRowCount()+" "+defIndexToken.getColumnCount());
 
 	    double[][] defValues = new double[1][];
@@ -122,11 +122,11 @@ public class LookUpTable extends Transformer {
 
 	    int defPeriod = _interpolation.getPeriod();
 	    int columnCount = defIndexToken.getColumnCount();
-	    
+
 	    int requiredPeriod = defIndexToken.getElementAt(0,columnCount-1) + 1;//0,columnCount);
 	    System.out.println("req per"+requiredPeriod);
 	    _interpolation.setPeriod(requiredPeriod);
-       
+
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
     }
@@ -181,13 +181,13 @@ public class LookUpTable extends Transformer {
 	    	    _interpolation.setValues(valueMatrix[0]);
 	        } else if (attribute == indexes) {
 	            IntMatrixToken index = (IntMatrixToken)indexes.getToken();
-	            
+
 	            int[][] indexMatrix = index.intMatrix();
 	            int columnCount = index.getColumnCount();
 	            int requiredPeriod = index.getElementAt(0,columnCount-1)+1;
         	    System.out.println("req per"+requiredPeriod);
 	            _interpolation.setPeriod(requiredPeriod);
-	    
+
 	    	    if (indexMatrix.length != 1 || indexMatrix[0].length == 0) {
 		            throw new IllegalActionException(
                             "Interpolator.attributeChanged: The " +
@@ -239,12 +239,12 @@ public class LookUpTable extends Transformer {
 	        // If some parameters are changed by setExpression(), they are not
 	        // evaluated. Force evaluation. This will cause attributeChanged()
 	        // to be called if any parameter is changed.
-	    
+
 	        Token token = values.getToken();
 	        token = indexes.getToken();
 	        //token = period.getToken();
 	        token = order.getToken();
-	    
+
 	        if (input.getWidth() != 0) {
                 if (input.hasToken(0)) {
                     double inputValue = ((DoubleToken) input.get(0)).doubleValue();

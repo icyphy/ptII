@@ -78,11 +78,11 @@ public class CTSubscriber extends Source
     public CTSubscriber(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	jspaceName = new Parameter(this, "jspaceName", 
+    	jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
-        entryName = new Parameter(this, "entryName", 
+        entryName = new Parameter(this, "entryName",
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -91,7 +91,7 @@ public class CTSubscriber extends Source
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The Java Space name. The default name is "JavaSpaces" of 
+    /** The Java Space name. The default name is "JavaSpaces" of
      *  type StringToken.
      */
     public Parameter jspaceName;
@@ -122,10 +122,10 @@ public class CTSubscriber extends Source
             //        e.getMessage());
             System.err.println("Warning: " + e.getMessage());
         }
-                
+
         // read the current data in the JavaSpaces, and use
         // it as the initial condition
-        TokenEntry entryTemplate = new TokenEntry(_entryName, 
+        TokenEntry entryTemplate = new TokenEntry(_entryName,
                 null, null);
         // request for notification
         try {
@@ -152,9 +152,9 @@ public class CTSubscriber extends Source
             }
         }
     }
-        
+
     /** Return true if there is an event notified.
-     *  @return True if there is a new event notification 
+     *  @return True if there is a new event notification
      *  in the last iteratoin.
      */
     public boolean hasCurrentEvent() {
@@ -166,7 +166,7 @@ public class CTSubscriber extends Source
     public void notify(RemoteEvent event) {
         NotifyHandler nh = new NotifyHandler(this, event);
         new Thread(nh).start();
-    }    
+    }
 
     /** If the token is not emitted in the last iteration, just forget it.
      */
@@ -174,16 +174,16 @@ public class CTSubscriber extends Source
         _hasNewToken = false;
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The entry name.
     private String _entryName;
-    
+
     // The space to read from.
     private JavaSpace _space;
-    
+
     // Indicating whether there's new data came in.
     private boolean _hasNewToken = false;
 
@@ -195,15 +195,15 @@ public class CTSubscriber extends Source
 
     // Used to identify the event registration
     private EventRegistration _eventReg;
-    
+
     // Used to identify notification.
     private long _notificationSeq;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-    
+
     public class NotifyHandler implements Runnable {
-        
+
         /** construct the notify handler
          */
         public NotifyHandler(TypedAtomicActor container, RemoteEvent event) {
@@ -213,17 +213,17 @@ public class CTSubscriber extends Source
 
         //////////////////////////////////////////////////////////////
         ////                     public methods                   ////
-                
+
         /** Read the entry token from the javaspaces.
          */
         public void run() {
             // check if it is the right notification
             if (_event.getSource().equals(_eventReg.getSource()) &&
-                    _event.getID() == _eventReg.getID() && 
+                    _event.getID() == _eventReg.getID() &&
                     _event.getSequenceNumber() > _notificationSeq) {
                 // grab a lock and read all new entries.
                 synchronized(_lock) {
-                    TokenEntry entryTemplate = new TokenEntry(_entryName, 
+                    TokenEntry entryTemplate = new TokenEntry(_entryName,
                             null, null);
                     TokenEntry entry;
                     try {
@@ -235,7 +235,7 @@ public class CTSubscriber extends Source
                                 e.getMessage());
                     }
                     if(entry == null) {
-                        System.out.println(getName() + 
+                        System.out.println(getName() +
                                 " read null from space");
                     } else {
                         _notifiedToken = (Token)entry.token;
@@ -244,13 +244,13 @@ public class CTSubscriber extends Source
                 }
             }
         }
-        
+
         //////////////////////////////////////////////////////////////
         ////                     private variables                ////
-        
+
         // the container
         private TypedAtomicActor _container;
-        
+
         // the event
         private RemoteEvent _event;
     }

@@ -70,7 +70,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
         // Create a linked list from the child tokens
         _numbers = new LinkedList(Arrays.asList(_childTokens));
 
-        // Create a local copy of the _lexicalTokens. This 
+        // Create a local copy of the _lexicalTokens. This
         // allows use to manipulate _tokens, while the list
         // _lexicalTokens remains the same, allowing for
         // reevaluation of the expression when needed.
@@ -87,7 +87,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
                 itr.remove();
                 int times = 1;
                 try {
-                    times = 
+                    times =
                     ((ptolemy.data.ScalarToken)
                             _numbers.get(index+1)).intValue();
                 } catch (Exception e) {
@@ -113,23 +113,23 @@ public class ASTPtProductNode extends ASTPtRootNode {
 
 
         // Check if the expression was only a 'power' expression
-        if ( _numbers.size() == 1 ) {             
-            return (ptolemy.data.Token) _numbers.get(0);           
+        if ( _numbers.size() == 1 ) {
+            return (ptolemy.data.Token) _numbers.get(0);
         } else {
-            
+
             // Resolve the rest of the expression.
             result = _childTokens[0];
-            
+
             itr = _tokens.listIterator(0);
             index = 1;
             while( itr.hasNext() ) {
 
                 Token x = (Token)itr.next();
                 op = x.image;
-                        
+
                 ptolemy.data.Token base = (ptolemy.data.Token)
                     _numbers.get(index);
-                
+
                 if (op.compareTo("*") == 0) {
                     result = result.multiply(base);
                 } else if (op.compareTo("/") == 0) {
@@ -144,7 +144,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
                 index++;
             }
         }
-        return result;              
+        return result;
     }
 
 
@@ -180,7 +180,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
             ptolemy.data.Token n = (ptolemy.data.Token)itr.next();
             System.out.print(" " + n.toString() );
         }
-        
+
         System.out.println(" \n============================= " );
     }
 }

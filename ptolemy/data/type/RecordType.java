@@ -172,7 +172,7 @@ public class RecordType extends StructuredType {
      *  converted losslessly to a token of this type; If this type is a
      *  variable, the argument is compatible if its type is a substitution
      *  instance of this type, or if it can be converted losslessly to a
-     *  substitution instance of this type. 
+     *  substitution instance of this type.
      *  @param t A Token.
      *  @return True if the argument is compatible with this type.
      */

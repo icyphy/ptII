@@ -68,7 +68,7 @@ the old ones.
 @version $Id$
 */
 
-public class CarInformationPublisher extends TypedAtomicActor 
+public class CarInformationPublisher extends TypedAtomicActor
     implements TimedActor, CTStepSizeControlActor {
 
     /** Construct an actor with the given container and name.
@@ -83,14 +83,14 @@ public class CarInformationPublisher extends TypedAtomicActor
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	jspaceName = new Parameter(this, "jspaceName", 
+    	jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
-        entryName = new Parameter(this, "entryName", 
+        entryName = new Parameter(this, "entryName",
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
-        
+
         samplingPeriod = new Parameter(this, "samplingPeriod",
                 new DoubleToken(1.0));
         samplingPeriod.setTypeEquals(BaseType.DOUBLE);
@@ -101,7 +101,7 @@ public class CarInformationPublisher extends TypedAtomicActor
 
         force = new TypedIOPort(this, "force", true, false);
         force.setMultiport(false);
-        
+
         velocity = new TypedIOPort(this, "velocity", true, false);
         velocity.setMultiport(false);
 
@@ -124,7 +124,7 @@ public class CarInformationPublisher extends TypedAtomicActor
      */
     public TypedIOPort position;
 
-    /** The Java Space name. The default name is "JavaSpaces" of 
+    /** The Java Space name. The default name is "JavaSpaces" of
      *  type StringToken.
      */
     public Parameter jspaceName;
@@ -147,7 +147,7 @@ public class CarInformationPublisher extends TypedAtomicActor
 
     /** Return true always, meaning that the current integration step is
      *  always acceptable.
-     *  @return True 
+     *  @return True
      */
     public boolean isThisStepAccurate() {
         return true;
@@ -217,12 +217,12 @@ public class CarInformationPublisher extends TypedAtomicActor
 	    String name = ((StringToken)entryName.getToken()).stringValue();
             if(Math.abs(getDirector().getCurrentTime()-_nextSamplingTime)
                     < ((CTDirector)getDirector()).getTimeResolution()){
-                _nextSamplingTime += 
+                _nextSamplingTime +=
                     ((DoubleToken)samplingPeriod.getToken()).doubleValue();
                 getDirector().fireAt(this, _nextSamplingTime);
                 Token[] tokens = new Token[4];
                 if(!((BooleanToken)malfunctioning.getToken()).booleanValue()) {
-                    tokens[0] = 
+                    tokens[0] =
                         new DoubleToken(getDirector().getCurrentTime());
                     tokens[1] = force.get(0);
                     tokens[2] = velocity.get(0);
@@ -246,14 +246,14 @@ public class CarInformationPublisher extends TypedAtomicActor
                     try {
                     FileOutputStream ostream = new FileOutputStream("tmp");
                     ObjectOutputStream p = new ObjectOutputStream(ostream);
-                    
+
                     p.writeObject(entry);
                     p.flush();
                     ostream.close();
                     } catch (Exception ex) {
                     System.err.println(ex.getMessage());
                     }
-                    }   
+                    }
                 */
             }
 	} catch (RemoteException re) {
@@ -274,7 +274,7 @@ public class CarInformationPublisher extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // The Java space;
     private JavaSpace _space;
 

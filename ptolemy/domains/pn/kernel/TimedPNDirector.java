@@ -38,14 +38,14 @@ import ptolemy.actor.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 
-import java.util.Enumeration; 
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedPNDirector
 /**
 A TimedPNDirector governs the execution of a CompositeActor with
 Kahn-MacQueen process networks (PN) semantics extended by introduction of a
-notion of global time. 
+notion of global time.
 <p>
 The thread that calls the various execution methods (initialize, prefire, fire
 and postfire) on the director is referred to as the <i>directing thread</i>.
@@ -59,7 +59,7 @@ The threads are created in initialize() and started in the prefire() method
 of the ProcessDirector. A process is considered <i>active</i> from its
 creation until its termination. An active process can block when trying to
 read from a channel (read-blocked), when trying to write to a channel
-(write-blocked), or when waiting for time to progress (time-blocked). Time 
+(write-blocked), or when waiting for time to progress (time-blocked). Time
 can progress for an active process in this model of computation only when the
 process is  blocked.
 <p>
@@ -91,7 +91,7 @@ time. All active processes that are not blocked and are executing concurrently
 are executing at the same global time. A process that wants time to advance,
 suspends itself by calling the fireAt() method of the director and specifies
 the time it wants to be awakened at. Time can advance only when a timed
-deadlock occurs. In such a case, the director advances time to the time when 
+deadlock occurs. In such a case, the director advances time to the time when
 the first timed-blocked process can be awakened.
 <p>
 
@@ -148,8 +148,8 @@ public class TimedPNDirector extends BasePNDirector {
 
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (It must be added
-     *  by the user if he wants it to be there). The result is a new director 
-     *  with no container and no topology listeners. The count of active 
+     *  by the user if he wants it to be there). The result is a new director
+     *  with no container and no topology listeners. The count of active
      *  processes is zero. The parameter "Initial_queue_capacity" has the
      *  same value as the director being cloned.
      *

@@ -151,11 +151,11 @@ import javax.swing.SwingUtilities;
 @version $Id$
 */
 public class FSMGraphFrame extends GraphFrame {
-   
+
     public FSMGraphFrame(CompositeEntity entity, Tableau tableau) {
 	super(entity, tableau);
     }
-	    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -178,7 +178,7 @@ public class FSMGraphFrame extends GraphFrame {
 	// These two things control the view of a ptolemy model.
 	_controller = new FSMGraphController();
 	FSMGraphModel graphModel = new FSMGraphModel(getModel());
-	
+
 	GraphPane pane = new GraphPane(_controller, graphModel);
 	_newStateAction = _controller.getNewStateAction();
 
@@ -205,7 +205,7 @@ public class FSMGraphFrame extends GraphFrame {
 	    addMenuItemFactory(new MenuActionFactory(_editIconAction));
 	}
     }
-            
+
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
 	public LookInsideAction() {
@@ -213,7 +213,7 @@ public class FSMGraphFrame extends GraphFrame {
 	}
 	public void actionPerformed(ActionEvent e) {
 	    // Figure out what entity.
-	    super.actionPerformed(e);		
+	    super.actionPerformed(e);
 	    NamedObj object = getTarget();
 	    if(!(object instanceof CompositeEntity)) return;
 	    CompositeEntity entity = (CompositeEntity)object;
@@ -230,7 +230,7 @@ public class FSMGraphFrame extends GraphFrame {
     /**
      * The factory for creating context menus on relations.
      */
-    private class TransitionContextMenuFactory 
+    private class TransitionContextMenuFactory
 	extends PtolemyMenuFactory {
 	public TransitionContextMenuFactory(GraphController controller) {
 	    super(controller);
@@ -239,7 +239,7 @@ public class FSMGraphFrame extends GraphFrame {
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

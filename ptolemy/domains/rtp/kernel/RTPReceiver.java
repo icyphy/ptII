@@ -98,7 +98,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
         return false;
     }
 
-    /** 
+    /**
      */
     public boolean isProducerReceiver() {
         return false;

@@ -38,8 +38,8 @@ public class GRDebug {
     public GRDebug(boolean debugOn) {
         _debugOn = debugOn;
     }
-    
-    
+
+
     public static final void println(Object obj) {
         if (_debugOn) {
             System.out.println(obj.toString());
@@ -50,13 +50,13 @@ public class GRDebug {
             System.out.print(obj.toString());
         }
     }
-    
+
     public static final void prompt(String str) {
         if (_debugOn) {
             JOptionPane.showMessageDialog(null,str,"MessageDialog",JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public static final void printStackTrace() {
         if (_debugOn) {
             try {
@@ -66,6 +66,6 @@ public class GRDebug {
 		    }
 		}
     }
- 
+
     private static boolean _debugOn = false;
 }

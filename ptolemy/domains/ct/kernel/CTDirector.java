@@ -425,7 +425,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public final double getNextIterationTime() {
         return getIterationBeginTime() + getCurrentStepSize();
     }
-    
+
     /** Return the start time parameter value.
      *  @return the start time.
      */
@@ -595,7 +595,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             Actor actor = (Actor)allactors.next();
             if(_debugging) _debug("Invoking preinitialize(): ",
                     ((NamedObj)actor).getFullName());
-            //System.out.println("Invoking preinitialize(): " + 
+            //System.out.println("Invoking preinitialize(): " +
             //        ((NamedObj)actor).getFullName());
             actor.preinitialize();
         }

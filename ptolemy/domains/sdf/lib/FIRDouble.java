@@ -71,7 +71,7 @@ public class FIRDouble extends FIR {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
-        taps.setTypeEquals(new ArrayType(BaseType.DOUBLE));        
+        taps.setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ public class FIRDouble extends FIR {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         ArrayToken tapsToken = (ArrayToken)(taps.getToken());
         _taps = new double[tapsToken.length()];
         for (int i = 0; i < _taps.length; i++) {

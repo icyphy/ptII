@@ -35,29 +35,29 @@ import ptolemy.actor.Actor;
 //////////////////////////////////////////////////////////////////////////
 //// CTStepSizeControlActor
 /**
-Interface for actors that controls integration step sizes for handling 
-unpredictable breakpoints or controlling numerical error. 
+Interface for actors that controls integration step sizes for handling
+unpredictable breakpoints or controlling numerical error.
 Typically, the actors that implement this interface are dynamic actors
 and event detectors.
 <P>
 Actors can affect the integration step size in two ways. The first one
 is by introducing predictable breakpoints. When the fireAt() method of
-the CTDirector is called with an argument <i>t</i>, 
+the CTDirector is called with an argument <i>t</i>,
 the CTDirector will treat <i>t</i> as a breakpoint. Actors that only
-introduce predictable breakpoints need not to implement this interface. 
+introduce predictable breakpoints need not to implement this interface.
 <P>
 The second way of controlling step size is through the accuracy checking
 after each integration step. Accuracy, in this context, means that
-the numerical integration error is less than the error tolerance and 
-there is no (unpredictable) breakpoints within this step.  
-Actors that uses this mechanism need to implement this interface.  
-At the end of each integration step, each CTStepSizeControlActors 
-will be asked whether this step is accurate by calling their 
+the numerical integration error is less than the error tolerance and
+there is no (unpredictable) breakpoints within this step.
+Actors that uses this mechanism need to implement this interface.
+At the end of each integration step, each CTStepSizeControlActors
+will be asked whether this step is accurate by calling their
 isThisStepAccurate() method.
 If it returns false, that actor
-will then be asked to suggest a refined step size. If there are more 
-than one actors find that this step is not accurate, then the 
-smallest of the suggested step size will be 
+will then be asked to suggest a refined step size. If there are more
+than one actors find that this step is not accurate, then the
+smallest of the suggested step size will be
 used by the director to restart the integration step.
 
 If all step size control actors find the integration step is accurate,
@@ -76,7 +76,7 @@ public interface CTStepSizeControlActor extends Actor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the current integration step is accurate 
+    /** Return true if the current integration step is accurate
      *  from this actor's point of view.
      *  Actors that implement this interface will interpret "accurate"
      *  themselves. For example, for integrators, "accurate" could

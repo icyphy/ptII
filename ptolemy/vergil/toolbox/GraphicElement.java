@@ -52,7 +52,7 @@ i.e. a line, box, textbox, etc.
 public class GraphicElement {
     /**
      * Create a new GraphicElement with the given type.
-     * By default, the GraphicElement contains no attributes and an empty 
+     * By default, the GraphicElement contains no attributes and an empty
      * label
      */
     public GraphicElement(String type) {

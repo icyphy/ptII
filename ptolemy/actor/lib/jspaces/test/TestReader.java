@@ -55,23 +55,23 @@ public class TestReader {
             TokenEntry yhoo = new TokenEntry();
             yhoo.name = "YHOO";
             JavaSpace space = SpaceFinder.getSpace();
-            
+
             IndexEntry minimum = new IndexEntry(
                     "YHOO", "minimum", null);
             IndexEntry maximum = new IndexEntry(
                     "YHOO", "maximum", null);
 	    while(true) {
                 Thread.sleep(1000l);
-                IndexEntry min = 
+                IndexEntry min =
                     (IndexEntry)space.read(minimum, null, Long.MAX_VALUE);
-                IndexEntry max = 
+                IndexEntry max =
                     (IndexEntry)space.read(maximum, null, Long.MAX_VALUE);
                 if (min.getPosition() <= max.getPosition()) {
                     TokenEntry result =
                         (TokenEntry)space.read(yhoo, null, Long.MAX_VALUE);
                     DoubleToken tok = (DoubleToken)result.token;
-                    System.out.println(" MIN: " + min.getPosition() + 
-                            "YHOO " + tok.doubleValue() + 
+                    System.out.println(" MIN: " + min.getPosition() +
+                            "YHOO " + tok.doubleValue() +
                             " MAX: " + max.getPosition());
                 }
 	    }

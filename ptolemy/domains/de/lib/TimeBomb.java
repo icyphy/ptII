@@ -45,7 +45,7 @@ import java.util.Hashtable;
 //// TimeBomb
 /**
 This actor works similar to a Delay actor, but the amount of delay
-(or the firing time in the future) is computed from the input token 
+(or the firing time in the future) is computed from the input token
 rather than a parameter.
 The actor has an input port that taks a double number which is a future
 time. When that time is reached, a token is produced from the output.
@@ -53,8 +53,8 @@ The produced token is set by the parameter "bombValue".
 <p>
 The behavior on each firing is to read a token from the input,
 if there is one, and registers a refire to the director at that time.
-When the time is reached, it produces the token specified in the 
-parameter. 
+When the time is reached, it produces the token specified in the
+parameter.
 
 @author Jie Liu
 @version $Id$
@@ -79,7 +79,7 @@ public class TimeBomb extends DETransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -121,12 +121,12 @@ public class TimeBomb extends DETransformer {
                 _tokens.put(new Double(getDirector().getCurrentTime()),
                         bombValue);
             }
-        } 
+        }
     }
 
     /** If the current time is one of the time bomb triggering time,
      *  produces the corresponding data.
-     *  
+     *
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {

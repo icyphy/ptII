@@ -67,7 +67,7 @@ public class PSNR extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
-     
+
         signal = new TypedIOPort(this, "signal", true, false);
         signal.setTypeEquals(BaseType.INT_MATRIX);
 

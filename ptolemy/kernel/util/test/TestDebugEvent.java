@@ -42,8 +42,8 @@ Class used to test DebugEvent
 @version $Id$
 */
 public class TestDebugEvent implements DebugEvent {
-    
-    /** 
+
+    /**
      * Create a new firing event with the given source, actor, and type.
      */
     public TestDebugEvent(NamedObj source) {
@@ -53,14 +53,14 @@ public class TestDebugEvent implements DebugEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      * Return the director that activated this event.
      */
     public NamedObj getSource() {
 	return _source;
     }
 
-    /** 
+    /**
      * Return the the name of the source
      */
     public String toString() {

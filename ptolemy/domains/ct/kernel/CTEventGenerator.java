@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// CTEventGenerator
 /**
-Interface for CT actors that convert continuous time signals to 
+Interface for CT actors that convert continuous time signals to
 discrete events. Typical
 implementations of event generator are samplers, event detectors, etc.
 

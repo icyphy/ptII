@@ -88,7 +88,7 @@ public class LocalZenoApplet extends DDEApplet {
         topPanel.setBackground(getBackground());
 
 	// The '3' argument specifies 'go' and 'stop' buttons.
-	// If we need a layout button in the future, then change the '2' to 
+	// If we need a layout button in the future, then change the '2' to
 	// a '3'.
 	topPanel.add( _createRunControls(2), BorderLayout.NORTH );
 
@@ -494,7 +494,7 @@ public class LocalZenoApplet extends DDEApplet {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
-                        if(state == ExecEvent.WAITING) 
+                        if(state == ExecEvent.WAITING)
 			    figure.setFillPaint(Color.yellow);
 			else if(state == ExecEvent.ACCESSING)
                             figure.setFillPaint(Color.green);
@@ -526,7 +526,7 @@ public class LocalZenoApplet extends DDEApplet {
 	/** The graph controller
 	 */
 	private GraphController _controller;
-	
+
 	public ThreadRenderer(GraphController controller) {
 	    _controller = controller;
 	}
@@ -535,7 +535,7 @@ public class LocalZenoApplet extends DDEApplet {
          * Return the rendered visual representation of this node.
          */
         public Figure render(Object n) {
-            ComponentEntity actor = (ComponentEntity) 
+            ComponentEntity actor = (ComponentEntity)
 		_controller.getGraphModel().getSemanticObject(n);
 
             boolean isEllipse =

@@ -45,7 +45,7 @@ public class ReflectTestFields {
 
     public Boolean myBoolean;
     public Character myCharacter;
-    public Byte myByte; 
+    public Byte myByte;
     public Short myShort;
     public Integer myInteger;
     public Long myLong;
@@ -57,7 +57,7 @@ public class ReflectTestFields {
 
     protected boolean _myBoolean;
     protected char _myCharacter;
-    protected byte _myByte; 
+    protected byte _myByte;
     protected short _myShort;
     protected int _myInteger;
     protected long _myLong;

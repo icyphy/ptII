@@ -19,11 +19,11 @@ import ptolemy.kernel.util.*;
 
 
 public class ArmController extends TypedAtomicActor {
-  
+
     public ArmController(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         input = new TypedIOPort(this,"input");
         input.setInput(true);
         input.setTypeEquals(BaseType.INT);
@@ -36,7 +36,7 @@ public class ArmController extends TypedAtomicActor {
     public Parameter stepSize;
     public TypedIOPort input;
     public TypedIOPort output;
-    
+
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         ArmController newobj = (ArmController) super.clone();
         newobj.input = (TypedIOPort) getPort("input");
@@ -54,7 +54,7 @@ public class ArmController extends TypedAtomicActor {
      currentValue = 128;
      delta = 1;
     }
-    
+
 
     private IntToken value;
     private boolean sendsignal = false;
@@ -177,7 +177,7 @@ public class ArmController extends TypedAtomicActor {
                         currentValue = wristValue;
                         //System.out.println(currentValue);
                         sendsignal = true;
-                        break; 
+                        break;
                       }
             case 't': {
                         currentControl = gripper;
@@ -203,7 +203,7 @@ public class ArmController extends TypedAtomicActor {
                         sendsignal = true;
                         break;
                       }
-            case 'y': { 
+            case 'y': {
                         currentControl = servo6;
                         delta = stepsize;
                         servo6Value = servo6Value + delta;
@@ -240,7 +240,7 @@ public class ArmController extends TypedAtomicActor {
     int currentValue = 128;
     int delta = 1;
 
-    
+
     private final IntToken delimiter = new IntToken(255);
     private final IntToken base = new IntToken(0);
     private final IntToken shoulder = new IntToken(1);
@@ -251,7 +251,7 @@ public class ArmController extends TypedAtomicActor {
     private final IntToken nullControl = new IntToken(255);
 
     private IntToken currentControl = nullControl;
-    
+
     private final int baseLowerLimit = 1;
     private final int baseUpperLimit = 254;
     private final int shoulderLowerLimit = 1;
@@ -265,5 +265,5 @@ public class ArmController extends TypedAtomicActor {
     private final int servo6LowerLimit = 40;
     private final int servo6UpperLimit = 200;
 
-    
+
 }

@@ -142,15 +142,15 @@ public class FSMViewerController extends GraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                          inner classes                    ////
-   
-    public static class SchematicContextMenuFactory 
+
+    public static class SchematicContextMenuFactory
 	extends PtolemyMenuFactory {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
-	}	
-	
+	}
+
 	public NamedObj _getObjectFromFigure(Figure source) {
 	    return (NamedObj)getController().getGraphModel().getRoot();
 	}

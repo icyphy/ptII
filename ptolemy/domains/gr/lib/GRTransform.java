@@ -48,7 +48,7 @@ import javax.vecmath.*;
 /** An abstract base class for a transform operator of GR shapes. This actor
 will only have meaning in the GR domain.
 
-The parameter <i>accumulate</i> determines whether transformations are 
+The parameter <i>accumulate</i> determines whether transformations are
 accumulated or reset during firing.
 
 @author C. Fong
@@ -70,11 +70,11 @@ public class GRTransform extends GRActor {
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
         sceneGraphIn.setInput(true);
 	    sceneGraphIn.setMultiport(true);
-	    
+
 	    sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
 	    sceneGraphOut.setOutput(true);
 	    sceneGraphOut.setTypeEquals(BaseType.OBJECT);
-	    
+
 	    accumulate = new Parameter(this, "accumulate", new BooleanToken(false));
     }
 
@@ -85,13 +85,13 @@ public class GRTransform extends GRActor {
      *  the scene graph
      */
     public TypedIOPort sceneGraphIn;
-    
+
     /** The output port for connecting to other GR Actors in
      *  the scene graph
      */
     public TypedIOPort sceneGraphOut;
-    
-    /** Boolean value determining whether transformations are 
+
+    /** Boolean value determining whether transformations are
      *  accumulated or reset for each firing
      */
     public Parameter accumulate;
@@ -99,7 +99,7 @@ public class GRTransform extends GRActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   
+
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
@@ -114,8 +114,8 @@ public class GRTransform extends GRActor {
         newobj.sceneGraphOut = (TypedIOPort) newobj.getPort("sceneGraphOut");
         return newobj;
     }
-    
-    
+
+
     public void makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
         for(int i=0;i<width;i++) {
@@ -127,18 +127,18 @@ public class GRTransform extends GRActor {
         }
         sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
     }
-    
-    
+
+
     /** Setup the transform object
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /**  Return the value of the <i>accumulate</i> parameter
      *  @return the accumlation mode
      *  @exception IllegalActionException If the value of some parameters can't
@@ -147,5 +147,5 @@ public class GRTransform extends GRActor {
     protected boolean _isAccumulating() throws IllegalActionException {
         return ((BooleanToken) accumulate.getToken()).booleanValue();
     }
-    
+
 }

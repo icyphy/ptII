@@ -170,11 +170,11 @@ public class RaisedCosine extends FIR {
         int len = ((IntToken)(length.getToken())).intValue();
         boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
         if(ebw < 0.0) {
-            throw new IllegalActionException(this, "Excess bandwidth was " + 
+            throw new IllegalActionException(this, "Excess bandwidth was " +
                     ebw + " which is not greater than or equal to zero.");
         }
         if(len <= 0) {
-            throw new IllegalActionException(this, "Length was " + 
+            throw new IllegalActionException(this, "Length was " +
                     len + " which is not greater than zero.");
         }
 

@@ -167,7 +167,7 @@ master exports MoML.
 public class MoMLParser extends HandlerBase {
 
     /** Construct a parser that creates a new workspace into which to
-     *  put the entities created by the parse() method.  
+     *  put the entities created by the parse() method.
      */
     public MoMLParser() {
         this(null);
@@ -175,7 +175,7 @@ public class MoMLParser extends HandlerBase {
 
     /** Construct a parser that creates entities
      *  in the specified workspace.  If the argument is null,
-     *  create a new workspace with an empty name.  Classes will be 
+     *  create a new workspace with an empty name.  Classes will be
      *  created using the classloader that created this class.
      *  @param workspace The workspace into which to place entities.
      */
@@ -192,7 +192,7 @@ public class MoMLParser extends HandlerBase {
 
     /** Construct a parser that creates entities in the specified workspace.
      *  If the workspace argument is null, then
-     *  create a new workspace with an empty name. Classes will be 
+     *  create a new workspace with an empty name. Classes will be
      *  created using the classloader that created this class.
      *  @param workspace The workspace into which to place entities.
      *  @param loader The class loader that will be used to create classes,
@@ -237,7 +237,7 @@ public class MoMLParser extends HandlerBase {
         // If we have a non-default namespace, then prepend the namespace.
         // This needs to be done for every attribute whose value is a name.
         if (_namespace != DEFAULT_NAMESPACE &&
-                (name.equals("name") 
+                (name.equals("name")
                 || name.equals("port")
                 || name.equals("relation")
                 || name.equals("vertex")
@@ -359,7 +359,7 @@ public class MoMLParser extends HandlerBase {
                         _base, _configureSource, _currentCharData.toString());
             } catch (NoClassDefFoundError e) {
                 // If we are running without a display and diva.jar
-                // is not in the classpath, then we may get" 
+                // is not in the classpath, then we may get"
                 // "java.lang.NoClassDefFoundError: diva/canvas/Figure"
             }
         } else if (elementName.equals("doc")) {
@@ -373,7 +373,7 @@ public class MoMLParser extends HandlerBase {
 
             // Create a new doc element only if there is character data.
             if (_currentCharData.length() > 0) {
-                Documentation doc 
+                Documentation doc
                         = new Documentation(_current, _currentDocName);
                 doc.setValue(_currentCharData.toString());
             }
@@ -501,7 +501,7 @@ public class MoMLParser extends HandlerBase {
         // responsible for handling changes, unless there already is a
         // parser, in which case we just set the parser.
         // FIXME: Should we check the class rather than casting?
-        ParserAttribute parserAttribute = 
+        ParserAttribute parserAttribute =
                (ParserAttribute)_toplevel.getAttribute("_parser");
         if (parserAttribute == null) {
             parserAttribute = new ParserAttribute(_toplevel, "_parser");
@@ -572,7 +572,7 @@ public class MoMLParser extends HandlerBase {
             // work under Solaris.
 	    base = new URL("file", null, cwd + "/");
 	}
-		
+
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
         FileReader input = new FileReader(new File(new File(cwd), filename));
@@ -705,7 +705,7 @@ public class MoMLParser extends HandlerBase {
                     Map.Entry entry = (Map.Entry)attributes.next();
                     if (entry.getValue() != null) {
                         _currentCharData.append(" "
-                               + entry.getKey() 
+                               + entry.getKey()
                                + "=\""
                                + entry.getValue()
                                + "\"");
@@ -1052,7 +1052,7 @@ public class MoMLParser extends HandlerBase {
                     String className = (String)_attributes.get("class");
                     Class newClass = null;
                     if (className != null) {
-                        newClass = 
+                        newClass =
 			    Class.forName(className, true, _classLoader);
                     }
 
@@ -1477,7 +1477,7 @@ public class MoMLParser extends HandlerBase {
                     } else {
                         throw new XmlException(
                                "File "
-                               + classAsFile 
+                               + classAsFile
                                + " does not define a ComponentEntity.",
                                _currentExternalEntity(),
                                _parser.getLineNumber(),
@@ -1490,14 +1490,14 @@ public class MoMLParser extends HandlerBase {
                             && !className.endsWith("." + referenceName)) {
                         throw new XmlException(
                                "File "
-                               + classAsFile 
+                               + classAsFile
                                + " does not define a class named "
                                + className,
                                _currentExternalEntity(),
                                _parser.getLineNumber(),
                                _parser.getColumnNumber());
                     }
-                    
+
                     // Set the classname and source of the import.
                     reference.getMoMLInfo().className = className;
 
@@ -1770,7 +1770,7 @@ public class MoMLParser extends HandlerBase {
                 input = xmlFile.openStream();
 
             } catch (Exception anotherException) {
-                errorMessage.append("2. Failed to open '" + source + 
+                errorMessage.append("2. Failed to open '" + source +
                 "' using class loader:\n" + anotherException + "\n");
 
                 // Failed to open relative to the classpath.
@@ -1787,14 +1787,14 @@ public class MoMLParser extends HandlerBase {
                         input = xmlFile.openStream();
                     }
                 } catch (Exception exception) {
-                    errorMessage.append("3. Failed to open '" + xmlFile + 
+                    errorMessage.append("3. Failed to open '" + xmlFile +
                     "' relative to the user directory:\n" + exception + "\n");
                 }
             }
         }
         if (input == null) {
-            throw new XmlException("Cannot open import file: " + source + 
-                    "\nUsing base: " + base + 
+            throw new XmlException("Cannot open import file: " + source +
+                    "\nUsing base: " + base +
                     "\nTried the following:\n" +
                     errorMessage,
                    _currentExternalEntity(),

@@ -217,7 +217,7 @@ public class AccelerLinearizer extends TypedAtomicActor
                 String valueToken = stokens.nextToken();
                 _alphaP[index++] = (new Double(valueToken)).doubleValue();
             }
-            
+
             taps = ((StringToken)paramAlphaA.getToken()).stringValue();
             stokens = new StringTokenizer(taps);
             index = 0;

@@ -114,17 +114,17 @@ import ptolemy.vergil.toolbox.XMLIcon;
 //////////////////////////////////////////////////////////////////////////
 //// IconEditor
 /**
-IconEditor class.  This class is a stand-alone application that 
-creates java2d shapes. 
+IconEditor class.  This class is a stand-alone application that
+creates java2d shapes.
 
-@author Nick Zamora (nzamor@uclink4.berkeley.edu) 
+@author Nick Zamora (nzamor@uclink4.berkeley.edu)
 @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
 @version $Id$
 */
 public class IconEditor {
-    /** Setup the window for the icon editor application.  This 
-     * window will include a toolbar of different shapes, a pull-down 
-     * menu of different thicknesses, pull down menus for the colors, 
+    /** Setup the window for the icon editor application.  This
+     * window will include a toolbar of different shapes, a pull-down
+     * menu of different thicknesses, pull down menus for the colors,
      * and the main drawing window.
      */
      public static void main(String argv[])
@@ -133,8 +133,8 @@ public class IconEditor {
 	// Make a new instance of the IconEditor class.
 	IconEditor iconEditor = new IconEditor(context);
     }
-  
-    /** 
+
+    /**
      * Create a new icon editor acting on an empty icon.
      */
     public IconEditor(AppContext context)
@@ -142,11 +142,11 @@ public class IconEditor {
         this(context, new XMLIcon(new NamedObj(), "icon"));
     }
 
-    /** 
+    /**
      * Create a new icon editor acting on the given icon.
      */
     public IconEditor(AppContext context, XMLIcon icon) {
-        // First point the local context and icon to the ones being 
+        // First point the local context and icon to the ones being
         // passed in.
 	_context = context;
 	_icon = icon;
@@ -154,11 +154,11 @@ public class IconEditor {
 	_editorPane = new IconEditorPane(icon);
 	_context.getContentPane().add("Center", _editorPane);
 
-	// Register the delete keyboard key press from the user and 
+	// Register the delete keyboard key press from the user and
 	// listen for it.
-	GUIUtilities.addHotKey(_editorPane, deletionListener, 
+	GUIUtilities.addHotKey(_editorPane, deletionListener,
 			       KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
-	
+
 	// Cut, Copy, and Paste keyboard shortcuts are registered.
 	GUIUtilities.addHotKey(_editorPane, cutAction,
 			       KeyStroke.getKeyStroke(KeyEvent.VK_X, 2));
@@ -172,10 +172,10 @@ public class IconEditor {
 	// New, Open, Save, and Print keyboard shortcuts are registered.
 	GUIUtilities.addHotKey(_editorPane, newIconAction,
 			       KeyStroke.getKeyStroke(KeyEvent.VK_N, 2));
-	
+
 	GUIUtilities.addHotKey(_editorPane, openIconAction,
 			       KeyStroke.getKeyStroke(KeyEvent.VK_O, 2));
-	
+
 	GUIUtilities.addHotKey(_editorPane, saveIconAction,
 			       KeyStroke.getKeyStroke(KeyEvent.VK_S, 2));
 
@@ -184,9 +184,9 @@ public class IconEditor {
 
 	_editorPane.setRequestFocusEnabled(true);
 
-	// Make a toolbar for the different colors and shapes and 
-	// add it to the main _context frame.  Also, make another 
-	// toolbar for the different thicknesses and add that to the 
+	// Make a toolbar for the different colors and shapes and
+	// add it to the main _context frame.  Also, make another
+	// toolbar for the different thicknesses and add that to the
 	// main _context frame.
 	JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
 	_context.getContentPane().add("North", toolBar);
@@ -205,44 +205,44 @@ public class IconEditor {
 	_menuEdit.setMnemonic('E');
 	_menuHelp = new JMenu("Help");
 	_menuHelp.setMnemonic('H');
-	
+
 	// Add the file, edit, and help menus to the menu bar.
 	_menuBar.add(_menuFile);
 	_menuBar.add(_menuEdit);
 	_menuBar.add(_menuHelp);
 
-	// Add "New", "Open", "Save", "Save As", "Print", and "Exit" 
+	// Add "New", "Open", "Save", "Save As", "Print", and "Exit"
 	// to the "File" menu.
-	GUIUtilities.addMenuItem(_menuFile, newIconAction, 'N', 
+	GUIUtilities.addMenuItem(_menuFile, newIconAction, 'N',
 				  "Create a new icon and discard this one");
-	GUIUtilities.addMenuItem(_menuFile, openIconAction, 'O', 
+	GUIUtilities.addMenuItem(_menuFile, openIconAction, 'O',
 				  "Open an icon from a file");
-	GUIUtilities.addMenuItem(_menuFile, saveIconAction, 'S', 
+	GUIUtilities.addMenuItem(_menuFile, saveIconAction, 'S',
 				  "Save this icon");
-	GUIUtilities.addMenuItem(_menuFile, saveIconAsAction, 'A', 
+	GUIUtilities.addMenuItem(_menuFile, saveIconAsAction, 'A',
 				  "Save as ...");
-	GUIUtilities.addMenuItem(_menuFile, printIconAction, 'P', 
+	GUIUtilities.addMenuItem(_menuFile, printIconAction, 'P',
 				  "Print this icon");
-	GUIUtilities.addMenuItem(_menuFile, exitIconAction, 'E', 
-				  "Close the " + _context.getTitle() + 
+	GUIUtilities.addMenuItem(_menuFile, exitIconAction, 'E',
+				  "Close the " + _context.getTitle() +
 				 " window");
-        
+
 	// Add "Cut", "Copy", and "Paste" functions to the edit menu.
-	GUIUtilities.addMenuItem(_menuEdit, cutAction, 'C', 
+	GUIUtilities.addMenuItem(_menuEdit, cutAction, 'C',
 				 "Cut the selected shape");
-	GUIUtilities.addMenuItem(_menuEdit, copyAction, 'O', 
+	GUIUtilities.addMenuItem(_menuEdit, copyAction, 'O',
 				 "Copy the selected shape");
 	GUIUtilities.addMenuItem(_menuEdit, pasteAction, 'P',
 				 "Paste the shape previously cut or copied");
 
 	// Add "About" to the help menu.
-	GUIUtilities.addMenuItem(_menuHelp, helpAction, 'A', 
+	GUIUtilities.addMenuItem(_menuHelp, helpAction, 'A',
 				  "About the Icon Editor");
-	
-	// Set up the buttons for the multiple toolbars.  These buttons 
-	// are instantiated with gif image files and these files must be 
+
+	// Set up the buttons for the multiple toolbars.  These buttons
+	// are instantiated with gif image files and these files must be
 	// located in a sub-directory from this one named "gifs".
-	
+
 	URL Rectangle = getClass().getResource("gifs/rect.gif");
 	URL Line = getClass().getResource("gifs/line.gif");
 	URL Quad = getClass().getResource("gifs/quad.gif");
@@ -260,9 +260,9 @@ public class IconEditor {
 	URL thinner = getClass().getResource("gifs/thinner.gif");
 	URL thicker = getClass().getResource("gifs/thicker.gif");
 
-	// Now that I have the names of all the gif files, 
-	// add them to the appropriate tool bars with the appropriate 
-	// actions. 
+	// Now that I have the names of all the gif files,
+	// add them to the appropriate tool bars with the appropriate
+	// actions.
 	GUIUtilities.addToolBarButton(toolBar, rectangleAction,
 				       "Rectangle", new ImageIcon(Rectangle));
 	GUIUtilities.addToolBarButton(toolBar, lineAction,
@@ -271,12 +271,12 @@ public class IconEditor {
 				       "Quadratic Curve", new ImageIcon(Quad));
 	GUIUtilities.addToolBarButton(toolBar, cubicAction,
 				       "Cubic Curve", new ImageIcon(Cubic));
-	GUIUtilities.addToolBarButton(toolBar, circleAction, 
+	GUIUtilities.addToolBarButton(toolBar, circleAction,
 				       "Circle", new ImageIcon(Circle));
-	GUIUtilities.addToolBarButton(toolBar, ellipseAction, 
+	GUIUtilities.addToolBarButton(toolBar, ellipseAction,
 				       "Ellipse", new ImageIcon(Ellipse));
 
-	// Now I add the pull-down menus for the colors of the outline and 
+	// Now I add the pull-down menus for the colors of the outline and
 	// fill of the shapes and the thickness of the outline.
 	BasicComboBoxRenderer renderer = new BasicComboBoxRenderer();
 	renderer.setPreferredSize(new Dimension(27, 27));
@@ -284,7 +284,7 @@ public class IconEditor {
 	_fillComboBox = new JComboBox();
 	_outlineComboBox = new JComboBox();
 	_thicknessComboBox = new JComboBox();
-	
+
 	_fillComboBox.setRenderer(renderer);
 	_outlineComboBox.setRenderer(renderer);
 	_thicknessComboBox.setRenderer(renderer);
@@ -293,7 +293,7 @@ public class IconEditor {
 	toolBar.add(_outlineComboBox);
 	toolBar.add(_thicknessComboBox);
 
-	// And I need to fill up the thickness pull-down menu 
+	// And I need to fill up the thickness pull-down menu
 	// with the appropriate images.
 	_thicknessComboBox.addItem(new ImageIcon(thickness1));
 	_thicknessComboBox.addItem(new ImageIcon(thickness2));
@@ -311,39 +311,39 @@ public class IconEditor {
 	_outlineComboBox.addItem(new ImageIcon(More));
 	_fillComboBox.addItem(new ImageIcon(More));
 
-	// A pull-down menu needs a tool tip and an associated 
-	// action.  
-	_outlineComboBox.setToolTipText 
+	// A pull-down menu needs a tool tip and an associated
+	// action.
+	_outlineComboBox.setToolTipText
 	   ("Choose a color to be the outline color of the selected shape(s)");
 	_outlineComboBox.addActionListener(outlineAction);
 	_outlinePaint = _colors[_outlineComboBox.getSelectedIndex()];
-	_fillComboBox.setToolTipText 
+	_fillComboBox.setToolTipText
 	   ("Choose a color to be the fill color of the selected shape(s)");
 	_fillComboBox.addActionListener(fillAction);
 	_fillPaint = _colors[_fillComboBox.getSelectedIndex()];
-	_thicknessComboBox.setToolTipText 
+	_thicknessComboBox.setToolTipText
 	   ("Choose a thickness for the outline(s) of the selected shape(s)");
 	_thicknessComboBox.addActionListener(thicknessAction);
 
-	// In addition to the thickness pull-down menu, there is also 
+	// In addition to the thickness pull-down menu, there is also
 	// an option to increment or decrement the thickness of a shape's
 	// outline.  Here are the buttons associated with those functions.
-	GUIUtilities.addToolBarButton 
+	GUIUtilities.addToolBarButton
 	   (toolBar, thinnerAction,
-	     "Thinner Outline(s) for the Selected Shape(s)", 
+	     "Thinner Outline(s) for the Selected Shape(s)",
 	     new ImageIcon(thinner));
-	GUIUtilities.addToolBarButton 
+	GUIUtilities.addToolBarButton
 	   (toolBar, thickerAction,
-	     "Thicker Outline(s) for the Selected Shape(s)", 
+	     "Thicker Outline(s) for the Selected Shape(s)",
 	     new ImageIcon(thicker));
 
-	
+
 	// Set-up the possible file extensions for opening and saving icons.
 	_filter.addExtension(FILE_FORMAT_EXTENSION);
 	_filter.setDescription(FILE_FORMAT_EXTENSION + " extension only.");
 	_fileChooser.setFileFilter(_filter);
 
-	
+
 	// Sets the size of the main window in pixels.
 	_context.setSize(WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL);
 	showEditorDialog();
@@ -351,7 +351,7 @@ public class IconEditor {
     }
 
     //         StringBufferInputStream xml_stream = null;
-    //         xml_stream = new StringBufferInputStream("<xmlgraphic> <rectangle coords=\"0 0 60 40\" fill=\"white\"/> <polygon coords=\"10 10 50 20 10 30\" fill=\"blue\"/> </xmlgraphic>\n");	       
+    //         xml_stream = new StringBufferInputStream("<xmlgraphic> <rectangle coords=\"0 0 60 40\" fill=\"white\"/> <polygon coords=\"10 10 50 20 10 30\" fill=\"blue\"/> </xmlgraphic>\n");
 
     // When you click exit in the file menu of the menubar.
     Action exitIconAction = new AbstractAction("Exit") {
@@ -387,7 +387,7 @@ public class IconEditor {
     private JComboBox _fillComboBox;
     private JComboBox _outlineComboBox;
 
-    // Used to distinguish which color we are changing, the fill of 
+    // Used to distinguish which color we are changing, the fill of
     // the shape or the outline of the shape.
     private boolean _changingFill;
 
@@ -401,7 +401,7 @@ public class IconEditor {
     private Paint _outlinePaint = new Color(255, 213, 20);
     private Paint _fillPaint = new Color(0, 0, 170);
 
-    // Here is the figure kept in memory for the "cut" or 
+    // Here is the figure kept in memory for the "cut" or
     // "pasted" figure.
     private VersatileFigure _cutOrCopiedFigure = null;
 
@@ -410,7 +410,7 @@ public class IconEditor {
     // The help "About" frame.
     private JFrame _helpFrame;
 
-    // Constants for the program.  Decreasing MOUSE_SENSITIVITY will require 
+    // Constants for the program.  Decreasing MOUSE_SENSITIVITY will require
     // the user to be more precise when trying to click on figures.
     private static final double MOUSE_SENSITIVITY = 4.0;
 
@@ -418,7 +418,7 @@ public class IconEditor {
     private static final int WINDOW_SIZE_HORIZONTAL = 600;
     private static final int WINDOW_SIZE_VERTICAL = 300;
 
-    // This is the extension we allow for opening and saving files within the 
+    // This is the extension we allow for opening and saving files within the
     // program.
     private static final String FILE_FORMAT_EXTENSION = "xml";
 
@@ -435,38 +435,38 @@ public class IconEditor {
 			     Color.red,
 			     Color.white,
 			     Color.yellow};
-    
+
     // The type of data that is operable via the cut, copy, and paste commands.
-    public static final DataFlavor dataFlavor = 
+    public static final DataFlavor dataFlavor =
         new DataFlavor(VersatileFigure.class, "Versatile Figure");
 
     ////////////////////////////////////////////////////////////////////////
     /////////////////////    Anonymous Classes     ////////////////////////
 
-    // Here are the definitions for all the actions that take place 
-    // when a button is clicked in one of the active windows, or a 
-    // menu item is selected from the toolbar at the top of the 
-    // window.  Also, when you click "OK" or "Cancel" in the color 
+    // Here are the definitions for all the actions that take place
+    // when a button is clicked in one of the active windows, or a
+    // menu item is selected from the toolbar at the top of the
+    // window.  Also, when you click "OK" or "Cancel" in the color
     // window or file window, then that action code becomes invoked.
-    // Each of these inner classes define the response for 
+    // Each of these inner classes define the response for
     // exactly one button or selection.
 
     // When the rectangle button is pressed.
-    // Because this action is similar to the lineAction, 
-    // quadraticAction, cubicAction, circleAction, and 
+    // Because this action is similar to the lineAction,
+    // quadraticAction, cubicAction, circleAction, and
     // ellipseAction, only this action is commented.
     Action rectangleAction = new AbstractAction("Rectangle") {
         public void actionPerformed(ActionEvent e) {
-	    // Create a new figure with the given outline 
-	    // thickness and stroke color.  This figure 
-	    // is placed on the canvas, underneath the 
+	    // Create a new figure with the given outline
+	    // thickness and stroke color.  This figure
+	    // is placed on the canvas, underneath the
 	    // rectangle button in the toolbar.
-	    VersatileFigure figure = new VersatileFigure 
+	    VersatileFigure figure = new VersatileFigure
 	    (new PaintedShape(new Rectangle2D.Double
-				  (8.0, 10.0, 20.0, 20.0), 
+				  (8.0, 10.0, 20.0, 20.0),
 				   _outlineThickness, _outlinePaint));
 
-	    // This figure begins with a fill color that is 
+	    // This figure begins with a fill color that is
 	    // currently selected.
 	    figure.setFillPaint(_fillPaint);
 
@@ -478,10 +478,10 @@ public class IconEditor {
     // When the straight line button is pressed.
     Action lineAction = new AbstractAction("Line") {
         public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure 
+	    VersatileFigure figure = new VersatileFigure
 	       (new PaintedShape(new Line2D.Double
-				  (45.0, 10.0, 65.0, 30.0), 
-				   _outlineThickness, _outlinePaint)); 
+				  (45.0, 10.0, 65.0, 30.0),
+				   _outlineThickness, _outlinePaint));
 	    figure.setFillPaint(_fillPaint);
 	    _editorPane.addFigure(figure);
     	}
@@ -490,9 +490,9 @@ public class IconEditor {
     // When the quadratic curve button is pressed.
     Action quadraticAction = new AbstractAction("Quadratic Curve") {
         public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure 
+	    VersatileFigure figure = new VersatileFigure
 	       (new PaintedShape(new QuadCurve2D.Double
-				  (77.0, 10.0, 87.0, 20.0, 97.0, 30.0), 
+				  (77.0, 10.0, 87.0, 20.0, 97.0, 30.0),
 				   _outlineThickness, _outlinePaint));
 
 	    figure.setFillPaint(_fillPaint);
@@ -503,9 +503,9 @@ public class IconEditor {
     // When the cubic curve button is pressed.
     Action cubicAction = new AbstractAction("Cubic Curve") {
         public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure 
+	    VersatileFigure figure = new VersatileFigure
 	       (new PaintedShape(new CubicCurve2D.Double
-				  (110.0, 10.0, 117.0, 17.0, 
+				  (110.0, 10.0, 117.0, 17.0,
 				    123.0, 23.0, 130.0, 30.0),
 				   _outlineThickness, _outlinePaint));
 
@@ -517,9 +517,9 @@ public class IconEditor {
     // When the circle button is pressed.
     Action circleAction = new AbstractAction("Circle") {
         public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure 
+	    VersatileFigure figure = new VersatileFigure
 	    (new PaintedShape(new Ellipse2D.Double
-				  (148.0, 10.0, 20.0, 20.0), 
+				  (148.0, 10.0, 20.0, 20.0),
 				   _outlineThickness, _outlinePaint));
 
 	    figure.setFillPaint(_fillPaint);
@@ -530,15 +530,15 @@ public class IconEditor {
     // When the ellipse button is pressed.
     Action ellipseAction = new AbstractAction("Ellipse") {
         public void actionPerformed(ActionEvent e) {
-	    VersatileFigure figure = new VersatileFigure 
+	    VersatileFigure figure = new VersatileFigure
 	       (new PaintedShape(new Ellipse2D.Double
-				  (183.0, 10.0, 20.0, 30.0), 
+				  (183.0, 10.0, 20.0, 30.0),
 				   _outlineThickness, _outlinePaint));
 	    figure.setFillPaint(_fillPaint);
 	    _editorPane.addFigure(figure);
 	}
     };
-  
+
     // When the fill color combo box is chosen.
     Action fillAction = new AbstractAction() {
         public void actionPerformed(ActionEvent e) {
@@ -546,8 +546,8 @@ public class IconEditor {
 	    int itemCount = _fillComboBox.getItemCount();
 	    if(selection == itemCount - 1) {
 	        _changingFill = true;
-	        _dialog = JColorChooser.createDialog 
-		   (_editorPane, "Choose A Fill Color", true, 
+	        _dialog = JColorChooser.createDialog
+		   (_editorPane, "Choose A Fill Color", true,
 		     _colorChooser, okAction, cancelAction);
 		_dialog.setVisible(true);
 	    } else {
@@ -564,8 +564,8 @@ public class IconEditor {
 	    int itemCount = _outlineComboBox.getItemCount();
 	    if(selection == itemCount - 1) {
 	        _changingFill = false;
-	        _dialog = JColorChooser.createDialog 
-		(_editorPane, "Choose An Outline Color", true, 
+	        _dialog = JColorChooser.createDialog
+		(_editorPane, "Choose An Outline Color", true,
 		 _colorChooser, okAction, cancelAction);
 		_dialog.setVisible(true);
 	    } else {
@@ -582,11 +582,11 @@ public class IconEditor {
 	    if(oldWidth != 0.0 && oldWidth > 1.0) {
 		_outlineThickness = oldWidth - 1.0f;
 		_editorPane.setThickness(_outlineThickness);
-		
+
 	    }
 	}
     };
-	
+
     // When the thicker button is pressed.
     Action thickerAction = new AbstractAction("Thicker") {
         public void actionPerformed(ActionEvent e) {
@@ -620,8 +620,8 @@ public class IconEditor {
     };
 
     // When you click cut in the edit menu of the menubar.
-    // The cut operation grabs the system clipboard, then puts 
-    // the currently selected item onto the clipboard, and removes 
+    // The cut operation grabs the system clipboard, then puts
+    // the currently selected item onto the clipboard, and removes
     // the currently selected item from the canvas.
     Action cutAction = new AbstractAction("Cut") {
         public void actionPerformed(ActionEvent e) {
@@ -641,8 +641,8 @@ public class IconEditor {
     };
 
     // When you click paste in the edit menu of the menubar.
-    // The paste operation grabs the system clipboard, then gets the 
-    // current data object on the clipboard, makes a copy of it, 
+    // The paste operation grabs the system clipboard, then gets the
+    // current data object on the clipboard, makes a copy of it,
     // and adds it to the figure layer of the canvas.
     // If something goes wrong, the machine should beep.
     Action pasteAction = new AbstractAction("Paste") {
@@ -651,7 +651,7 @@ public class IconEditor {
 	    _editorPane.paste(c);
 	}
     };
-	
+
     // When you click new in the file menu of the menubar.
     Action newIconAction = new AbstractAction("New") {
         public void actionPerformed(ActionEvent e) {
@@ -662,15 +662,15 @@ public class IconEditor {
     // When you click open in the file menu of the menubar.
     Action openIconAction = new AbstractAction("Open") {
         public void actionPerformed(ActionEvent e) {
-	    int choice = 
+	    int choice =
 	    _fileChooser.showOpenDialog(_context.makeComponent());
 	    if(choice == JFileChooser.CANCEL_OPTION) {
 	        //System.out.println("You have cancelled your open file choice");
 	    } else {
-	        //System.out.println("You have chosen to open this file: " + 
+	        //System.out.println("You have chosen to open this file: " +
 	        //		    _fileChooser.getSelectedFile().getName());
 	        _editorPane.clear();
-		//FIXME: Here is where I would import an xml file to this 
+		//FIXME: Here is where I would import an xml file to this
 	        //canvas.
 	    }
 	}
@@ -680,20 +680,20 @@ public class IconEditor {
     Action saveIconAction = new AbstractAction("Save") {
         public void actionPerformed(ActionEvent e) {
 	    System.out.println("Save");
-	    // FIXME 
+	    // FIXME
 	}
     };
 
     // When you click save as in the file menu of the menubar.
     Action saveIconAsAction = new AbstractAction("Save As...") {
         public void actionPerformed(ActionEvent e) {
-	    int choice = 
+	    int choice =
 	    _fileChooser.showSaveDialog(_context.makeComponent());
 	    if(choice == JFileChooser.CANCEL_OPTION) {
-	        //System.out.println("You have cancelled your 
+	        //System.out.println("You have cancelled your
 	        //                     save choice.");
 	    } else {
-	      //System.out.println("You chose to save this file: " + 
+	      //System.out.println("You chose to save this file: " +
 	      //		    _fileChooser.getSelectedFile().getName());
 	    }
 	}
@@ -704,13 +704,13 @@ public class IconEditor {
 	    _editorPane.print();
 	}
     };
-    
+
     // When you click about in the help menu of the menubar.
     Action helpAction = new AbstractAction("About") {
         public void actionPerformed(ActionEvent e) {
 	    // FIXME Dialog.
 	    _helpFrame = new JFrame("About Icon Editor");
-	    JButton jButton = new JButton 
+	    JButton jButton = new JButton
 	       ("Author: Nick Zamora, Version: " +
 		"$version$");
 	    jButton.addActionListener(helpOkAction);
@@ -772,7 +772,7 @@ public class IconEditor {
 	    return 25;
 	}
 	public void paintIcon(Component c,
-			  Graphics g, 
+			  Graphics g,
 			  int x,
 			  int y) {
 	    g.setColor(_color);
@@ -780,12 +780,12 @@ public class IconEditor {
        	}
 	private Color _color;
     }
-	    
-    // Listen for the delete key from the keyboard.  When the delete key is 
-    // pressed, the currently selected figure is removed from the _layer and 
-    // unselected from the selection model.  Pressing the delete key is unlike 
-    // the cut command from the edit menu in the toolbar in that the delete 
-    // command is irreversible.  "Paste" will NOT return a figure that has 
+
+    // Listen for the delete key from the keyboard.  When the delete key is
+    // pressed, the currently selected figure is removed from the _layer and
+    // unselected from the selection model.  Pressing the delete key is unlike
+    // the cut command from the edit menu in the toolbar in that the delete
+    // command is irreversible.  "Paste" will NOT return a figure that has
     // been deleted from the canvas.
     Action deletionListener = new AbstractAction() {
         public void actionPerformed(ActionEvent evt) {

@@ -68,13 +68,13 @@ public class SpaceFinder {
                     new RMISecurityManager());
             }
 
-            System.out.println("java.security.policy=" + 
+            System.out.println("java.security.policy=" +
                     System.getProperty("java.security.policy") + "\n" +
-                    "outrigger.spacename=" + 
+                    "outrigger.spacename=" +
                     System.getProperty("outrigger.spacename") + "\n" +
-                    "com.sun.jini.lookup.groups=" + 
+                    "com.sun.jini.lookup.groups=" +
                     System.getProperty("com.sun.jini.lookup.groups") + "\n" +
-                    "java.rmi.server.codebase=" + 
+                    "java.rmi.server.codebase=" +
                     System.getProperty("java.rmi.server.codebase") + "\n");
 
 
@@ -107,7 +107,7 @@ public class SpaceFinder {
                 return (JavaSpace)rh.proxy();
             }
 
-            
+
 
 
         } catch (Exception ex) {
@@ -115,7 +115,7 @@ public class SpaceFinder {
 			ex.getClass().getName() + " " + ex.getMessage());
         }
     }
-    
+
     /** Return a JavaSpace with the default name "JavaSpaces".
      *  @return A JavaSpace.
      *  @exception IllegalActionException If a JavaSpace cannot be

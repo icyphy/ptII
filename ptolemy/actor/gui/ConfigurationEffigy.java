@@ -88,7 +88,7 @@ public class ConfigurationEffigy extends PtolemyEffigy {
      *  Derived classes may override this method to constrain the container
      *  to subclasses of CompositeEntity. This method is write-synchronized
      *  to the workspace and increments its version number.
-     *  This class overrides the base class to additionally set the model 
+     *  This class overrides the base class to additionally set the model
      *  that this effigy views to be its toplevel container.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a

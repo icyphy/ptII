@@ -40,9 +40,9 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A visitor that reports or eliminates unnecessary import statements.
- *  The CompileUnitNode must have gone through pass 2 resolution.  
+ *  The CompileUnitNode must have gone through pass 2 resolution.
  *
- *  This visitor might not report or remove all unnecessary import statements, 
+ *  This visitor might not report or remove all unnecessary import statements,
  *  but it should not report or remove import statements that are necessary.
  *
  *  @author Jeff Tsay
@@ -89,9 +89,9 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
                 if (obj != NullValue.instance) {
                     // import was needed, and returned
                     neededImports.addLast(obj);
-                }                
-            }            
-            node.setImports(neededImports);            
+                }
+            }
+            node.setImports(neededImports);
         }
 
         return node;
@@ -120,7 +120,7 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
         PackageDecl pkgDecl = (PackageDecl) JavaDecl.getDecl(name);
 
         // do not remove the java.lang package
-        if (pkgDecl == StaticResolution.JAVA_LANG_PACKAGE) {            
+        if (pkgDecl == StaticResolution.JAVA_LANG_PACKAGE) {
             return node;
         }
 
@@ -141,7 +141,7 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
 
         NameNode name = node.getName();
-        
+
         // find the declaration of the type. We cannot remove
         // statements importing the specific type
 
@@ -178,7 +178,7 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
             return  _packageOfType((ClassDecl) container);
         }
 
-        throw new RuntimeException("container of class \"" + 
+        throw new RuntimeException("container of class \"" +
                 classDecl.getName() + "\" is not a package nor a user type");
 
         // return null;

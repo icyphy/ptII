@@ -55,7 +55,7 @@ import javax.swing.SwingUtilities;
 /**
 This class is an editor for the styles of the parameters of an object.
 It allows a user to graphically change the ParameterEditorStyles contained
-within the user settable attributes of a named object. 
+within the user settable attributes of a named object.
 It is very similar in spirit and style to Configurer, which edits the actual
 values of the attributes.
 <p>
@@ -84,9 +84,9 @@ public class StyleConfigurer extends Query implements QueryListener {
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _object = object;
-        
+
 	setTextWidth(25);
-	
+
 	try {
 	    // FIXME this list should not be statically specified.
 	    // Note that fixing this will probably move the accept method
@@ -112,7 +112,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             = object.attributeList(UserSettable.class).iterator();
         while (params.hasNext()) {
             UserSettable param = (UserSettable)params.next();
-      
+
 	    // Get the current style.
 	    boolean foundOne = false;
 	    Iterator styles = ((NamedObj)param)
@@ -122,7 +122,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 		foundOne = true;
 		foundStyle = (ParameterEditorStyle)styles.next();
 	    }
-	    
+
 	    List styleList = new ArrayList();
 	    // The index of the default;
 	    int defaultIndex = 0;
@@ -141,9 +141,9 @@ public class StyleConfigurer extends Query implements QueryListener {
 		    count++;
 		}
 	    }
-	    String styleArray[] = 
+	    String styleArray[] =
 		(String[])styleList.toArray(new String[count]);
-	    
+
 	    addChoice(param.getName(), param.getName(),
 		      styleArray, styleArray[defaultIndex]);
 	}

@@ -315,7 +315,7 @@ public class ComponentEntity extends Entity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     private void _addIcon() {
 	_setDefaultIcon("<svg>\n" +
                "<rect x=\"0\" y=\"0\" width=\"60\" " +

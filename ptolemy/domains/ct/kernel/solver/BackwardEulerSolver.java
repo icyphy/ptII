@@ -58,7 +58,7 @@ state, h is the step size, and x'(t+h) is the derivative of x(t+h).
 The formula above is an algebraic equation, and this method uses fixed
 point iteration to solve it.
 <P>
-This method does not perform step size control other than reducing the 
+This method does not perform step size control other than reducing the
 step sizes when the fixed-point iteration does not converge.
 
 @author Jie Liu
@@ -76,7 +76,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         this(null);
     }
 
-    /** Construct a solver in the given workspace with the name 
+    /** Construct a solver in the given workspace with the name
      *  "CT_Backward_Euler_Solver".
      *  If the workspace argument is null, use the default workspace.
      *  The solver is added to the list of objects in the workspace.
@@ -98,7 +98,7 @@ public class BackwardEulerSolver extends FixedStepSolver
     ////                         public methods                    ////
 
     /** Return 1. The integrator only need one auxiliary variable.
-     * 
+     *
      *  @return 1.
      */
     public int getIntegratorAuxVariableCount() {
@@ -203,9 +203,9 @@ public class BackwardEulerSolver extends FixedStepSolver
         return true;
     }
 
-    /** Vote for whether a fixed point has reached. The final result 
+    /** Vote for whether a fixed point has reached. The final result
      *  is the <i>and</i> of all votes.
-     *  
+     *
      *  @param converge True if vote for convergence.
      */
     public void voteForConvergence(boolean converge) {

@@ -117,7 +117,7 @@ public class EffigyFactory extends CompositeEntity {
      *  URL. If the specified URL is null, then create a blank effigy.
      *  The specified base is used to expand any relative file references
      *  within the URL.  This base class defers to each contained effigy
-     *  factory until one returns an effigy.  If there are no 
+     *  factory until one returns an effigy.  If there are no
      *  contained effigies, or if none
      *  returns an effigy, then this method returns null. Subclasses will
      *  override this method to create an effigy of an appropriate type.
@@ -129,7 +129,7 @@ public class EffigyFactory extends CompositeEntity {
      *  @exception Exception If the stream cannot be read, or if the data
      *   is malformed in some way.
      */
-    public Effigy createEffigy(CompositeEntity container, URL base, URL in) 
+    public Effigy createEffigy(CompositeEntity container, URL base, URL in)
 	    throws Exception {
 	Effigy effigy = null;
 	Iterator factories = entityList(EffigyFactory.class).iterator();

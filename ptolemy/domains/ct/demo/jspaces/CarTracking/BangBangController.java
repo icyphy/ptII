@@ -72,14 +72,14 @@ public class BangBangController extends TypedAtomicActor
         lowValue = new Parameter(this, "lowValue",
                 new DoubleToken(10.0));
         lowValue.setTypeEquals(BaseType.DOUBLE);
-        
+
         tooSmall = new TypedIOPort(this, "tooSmall", true, false);
         tooSmall.setTypeEquals(BaseType.BOOLEAN);
 
-        tooLarge = 
+        tooLarge =
             new TypedIOPort(this, "tooLarge", true, false);
         tooLarge.setTypeEquals(BaseType.BOOLEAN);
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
     }
@@ -133,7 +133,7 @@ public class BangBangController extends TypedAtomicActor
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastToken = new DoubleToken(_lowValue);
-        
+
     }
 
     /** Read one token from the input and save it so that the
@@ -160,7 +160,7 @@ public class BangBangController extends TypedAtomicActor
     // latest inputs for leader.
     private double _tooSmall;
 
-    // Last output token, if nothing changed in this iteration, 
+    // Last output token, if nothing changed in this iteration,
     // just output it.
     private DoubleToken _lastToken;
 

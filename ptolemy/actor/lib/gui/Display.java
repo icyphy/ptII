@@ -145,7 +145,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
                 textArea.setColumns(numColumns);
             }
         }
-        
+
 
         /* NOTE: Does not work...
            else if (attribute == tabSize) {
@@ -203,7 +203,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
     /** Set the background */
     public Color getBackground() {
 	return _scrollPane.getBackground();
-    } 
+    }
 
     /** Specify the container in which the data should be displayed.
      *  An instance of JTextArea will be added to that container.
@@ -227,7 +227,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
             textArea = new JTextArea();
             _scrollPane = new JScrollPane(textArea);
             _frame.getContentPane().add(_scrollPane);
-            // FIXME: uncomment the two lines below to use the Display actor 
+            // FIXME: uncomment the two lines below to use the Display actor
             // inside a non-toplevel composite actor in Vergil
             // _frame.setSize(200,200);
             // _frame.setVisible(true);
@@ -293,7 +293,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
     /** Set the background */
     public void setBackground(Color background) {
 	_scrollPane.setBackground(background);
-    } 
+    }
 
     /** Override the base class to make sure the end of the text is visible.
      */
@@ -305,7 +305,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected members                   ////
 

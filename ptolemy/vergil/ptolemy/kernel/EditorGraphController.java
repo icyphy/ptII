@@ -71,7 +71,7 @@ import javax.swing.event.*;
 A Graph Controller for the Ptolemy II schematic editor.  In addition to the
 interaction allowed in the viewer, this controller allows nodes to be
 dragged and dropped onto its graph.  Relations can be created by
-control-clicking on the background.  Links can be created by control-clicking 
+control-clicking on the background.  Links can be created by control-clicking
 and dragging on a port or a relation.  In addition links can be created by
 clicking and dragging on the ports that are inside an entity.
 Anything can be deleted by selecting it and pressing
@@ -148,12 +148,12 @@ public class EditorGraphController extends ViewerGraphController {
 	    // Standard toolbar icons are 25x25 pixels.
 	    NodeRenderer renderer = getPortController().getNodeRenderer();
 	    Figure figure = renderer.render(null);
-	    
+
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
 	    putValue("tooltip", "Create a New External Port");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, 
-		     KeyStroke.getKeyStroke(KeyEvent.VK_E, 
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+		     KeyStroke.getKeyStroke(KeyEvent.VK_E,
 					    java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
 		     new Integer(KeyEvent.VK_E));
@@ -165,17 +165,17 @@ public class EditorGraphController extends ViewerGraphController {
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
-	       getSourceType() == MENUBAR_TYPE) {	
+	       getSourceType() == MENUBAR_TYPE) {
 		// no location in the action, so make something up.
-		Point2D point = pane.getSize();    
+		Point2D point = pane.getSize();
 		x = point.getX()/2;
 		y = point.getY()/2;
-	    } else {		    
+	    } else {
 		x = getX();
 		y = getY();
 	    }
-		
-	    PtolemyGraphModel graphModel = 
+
+	    PtolemyGraphModel graphModel =
 		(PtolemyGraphModel)getGraphModel();
 	    final double finalX = x;
 	    final double finalY = y;
@@ -185,11 +185,11 @@ public class EditorGraphController extends ViewerGraphController {
 	    // Create the port.
 	    StringBuffer moml = new StringBuffer();
 	    moml.append("<port name=\"" + portName + "\">\n");
-	    moml.append("<property name=\"" + locationName + 
+	    moml.append("<property name=\"" + locationName +
 	    		"\" class=\"ptolemy.moml.Location\"/>\n");
 	    moml.append("</port>");
-	    
-	    ChangeRequest request = 
+
+	    ChangeRequest request =
 		new MoMLChangeRequest(this, toplevel, moml.toString()) {
 		    protected void _execute() throws Exception {
 			super._execute();
@@ -197,14 +197,14 @@ public class EditorGraphController extends ViewerGraphController {
 			// Note that this really needs to be done after
 			// the change request has succeeded, which is why
 			// it is done here.  When the graph controller
-			// gets around to handling this, it will draw 
+			// gets around to handling this, it will draw
 			// the icon at this location.
-			
+
 			// FIXME: Have to know whether this is an entity,
 			// port, etc. For now, assuming it is an entity.
 			NamedObj newObject =
 			toplevel.getPort(portName);
-			Location location = 
+			Location location =
 			(Location) newObject.getAttribute(locationName);
 
 			double point[] = new double[2];
@@ -232,7 +232,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    // Standard toolbar icons are 25x25 pixels.
 	    NodeRenderer renderer = getRelationController().getNodeRenderer();
 	    Figure figure = renderer.render(null);
-	    
+
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
 	    putValue("tooltip", "Control-click to create a new relation");
@@ -246,23 +246,23 @@ public class EditorGraphController extends ViewerGraphController {
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
-	       getSourceType() == MENUBAR_TYPE) {	
+	       getSourceType() == MENUBAR_TYPE) {
 		// no location in the action, so make something up.
 		// FIXME this is a lousy way to do this.
-		Point2D point = pane.getSize();    
+		Point2D point = pane.getSize();
 		x = point.getX()/2;
 		y = point.getY()/2;
 	    } else {
 		x = getX();
 		y = getY();
 	    }
-	    
-	    PtolemyGraphModel graphModel = 
+
+	    PtolemyGraphModel graphModel =
 		(PtolemyGraphModel)getGraphModel();
 	    final double finalX = x;
 	    final double finalY = y;
 	    final CompositeEntity toplevel = graphModel.getToplevel();
-	 		
+
 	    final String relationName = toplevel.uniqueName("relation");
 	    final String vertexName = "vertex1";
 	    // Create the relation.
@@ -270,8 +270,8 @@ public class EditorGraphController extends ViewerGraphController {
 	    moml.append("<relation name=\"" + relationName + "\">\n");
 	    moml.append("<vertex name=\"" + vertexName + "\"/>\n");
 	    moml.append("</relation>");
-	    
-	    ChangeRequest request = 
+
+	    ChangeRequest request =
 		new MoMLChangeRequest(this, toplevel, moml.toString()) {
 		    protected void _execute() throws Exception {
 			super._execute();
@@ -279,16 +279,16 @@ public class EditorGraphController extends ViewerGraphController {
 			// Note that this really needs to be done after
 			// the change request has succeeded, which is why
 			// it is done here.  When the graph controller
-			// gets around to handling this, it will draw 
+			// gets around to handling this, it will draw
 			// the icon at this location.
-			
+
 			// FIXME: Have to know whether this is an entity,
 			// port, etc. For now, assuming it is an entity.
 			NamedObj newObject =
 			toplevel.getRelation(relationName);
-			Vertex vertex = 
+			Vertex vertex =
 			(Vertex) newObject.getAttribute(vertexName);
-						
+
 			double point[] = new double[2];
 			point[0] = ((int)finalX);
 			point[1] = ((int)finalY);
@@ -303,10 +303,10 @@ public class EditorGraphController extends ViewerGraphController {
 	    }
 	}
     }
- 
+
     ///////////////////////////////////////////////////////////////
     //// RelationCreator
-    
+
     /** An interactor for creating ports.
      */
     protected class RelationCreator extends ActionInteractor {
@@ -315,7 +315,7 @@ public class EditorGraphController extends ViewerGraphController {
             setAction(_newRelationAction);
 	}
     }
-	
+
     ///////////////////////////////////////////////////////////////
     //// LinkCreator
 
@@ -328,37 +328,37 @@ public class EditorGraphController extends ViewerGraphController {
         public void mousePressed(LayerEvent event) {
 	    Figure source = event.getFigureSource();
             NamedObj sourceObject = (NamedObj) source.getUserObject();
-	    
+
 	    // Create the new edge.
 	    Link link = new Link();
 	    // Set the tail, going through the model so the link is added
 	    // to the list of links.
             PtolemyGraphModel model = (PtolemyGraphModel)getGraphModel();
 	    model.getLinkModel().setTail(link, sourceObject);
-		
+
             try {
 		// add it to the foreground layer.
-		FigureLayer layer = 
+		FigureLayer layer =
 		    getGraphPane().getForegroundLayer();
 		Site headSite, tailSite;
-	
+
 		// Temporary sites.  One of these will get blown away later.
-		headSite = new AutonomousSite(layer, 
-					      event.getLayerX(), 
-					      event.getLayerY());          
-		tailSite = new AutonomousSite(layer, 
-					      event.getLayerX(), 
-					      event.getLayerY());          
+		headSite = new AutonomousSite(layer,
+					      event.getLayerX(),
+					      event.getLayerY());
+		tailSite = new AutonomousSite(layer,
+					      event.getLayerX(),
+					      event.getLayerY());
 		// Render the edge.
 		Connector c =
 		    getEdgeController(link).render(link, layer, tailSite, headSite);
 		// get the actual attach site.
-		tailSite = 
-		    getEdgeController(link).getConnectorTarget().getTailSite(c, source, 
+		tailSite =
+		    getEdgeController(link).getConnectorTarget().getTailSite(c, source,
 							    event.getLayerX(),
 							    event.getLayerY());
 		if(tailSite == null) {
-		    throw new RuntimeException("Invalid connector target: " + 
+		    throw new RuntimeException("Invalid connector target: " +
 			"no valid site found for tail of new connector.");
 		}
 

@@ -119,7 +119,7 @@ public class PtolemyQuery extends Query
             Iterator styles = ((NamedObj)attribute)
                     .attributeList(ParameterEditorStyle.class).iterator();
             while (styles.hasNext() && !foundStyle) {
-                ParameterEditorStyle style = 
+                ParameterEditorStyle style =
                         (ParameterEditorStyle)styles.next();
                 try {
                     style.addEntry(this);
@@ -190,7 +190,7 @@ public class PtolemyQuery extends Query
         // Handle tool tips.  This is almost certainly an instance
         // of NamedObj, but check to be sure.
         if (attribute instanceof NamedObj) {
-            Attribute tooltipAttribute = 
+            Attribute tooltipAttribute =
                    ((NamedObj)attribute).getAttribute("tooltip");
             if (tooltipAttribute != null
                     && tooltipAttribute instanceof Documentation) {
@@ -241,7 +241,7 @@ public class PtolemyQuery extends Query
                     parent = (NamedObj)castAttribute.getContainer();
                 }
 		String moml = "<property name=\""
-		    + castAttribute.getName(parent) 
+		    + castAttribute.getName(parent)
 		    + "\" value=\""
 		    + StringUtilities.escapeForXML(stringValue(name))
 		    + "\"/>";
@@ -249,14 +249,14 @@ public class PtolemyQuery extends Query
 		        this,         // originator
 		        parent,       // context
                         moml,         // MoML code
-                        null);        // base                
+                        null);        // base
 	    } else {
 		// If the attribute is not a NamedObj, then we
 		// set its value directly.
 		request = new ChangeRequest(this, name) {
 		    protected void _execute() throws IllegalActionException {
 			attribute.setExpression(stringValue(name));
-			
+
 			// Here, we need to handle instances of Variable
 			// specially.  This is too bad...
 			if (attribute instanceof Variable) {

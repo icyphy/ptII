@@ -18,7 +18,7 @@ The DDE domain's use of time serves as the point of divergence in the
 respective designs of DDE and PN. Time progress is communicated between
 actors by passing tokens that have time stamps associated with them. In
 a network of DDE actors each actor has a local notion of time. To
-facilitate this local notion of time, actors in a DDE model adhere to 
+facilitate this local notion of time, actors in a DDE model adhere to
 the following constraints.
 
 <UL>
@@ -30,7 +30,7 @@ the following constraints.
 	     tokens with time stamps greater than or equal to that
 	     of P1.
 	<LI> If an actor has two or more input ports with pending
-	     time stamps that are identical, then a local input 
+	     time stamps that are identical, then a local input
 	     port prioritization rule must be invoked to determine
 	     the ordering of these <I>simultaneous</I> tokens.
 </UL>
@@ -40,18 +40,18 @@ with the <I>conservative</I> blocking mechanism of Chandy and Misra's
 distributed discrete event system.
 <P>
 We are approaching the DDE model of computation as the intersection
-between dataflow and discrete event semantics. This allows us to 
+between dataflow and discrete event semantics. This allows us to
 study DDE semantics from two different perspectives. In particular,
 we can benefit from denotational semantics that are based on metric
 spaces (the Banach oriented DE approach) or posets (the Tarskian
-oriented dataflow approach). Matthews offers a partial metric 
-topology which incorporates both of these mathematical tools. 
+oriented dataflow approach). Matthews offers a partial metric
+topology which incorporates both of these mathematical tools.
 
 <OL>
-	<LI> Misra, Jayadev, "Distributed Discrete Event Simulation," 
+	<LI> Misra, Jayadev, "Distributed Discrete Event Simulation,"
 	     <I>ACM Computing Surveys</I>, vol. 18, no. 1, March
 	     1986, pp 39-65.
-	<LI> Fujimoto, Richard M., "Parallel Discrete Event Simulation," 
+	<LI> Fujimoto, Richard M., "Parallel Discrete Event Simulation,"
 	     <I>Communications of the ACM</I>, vol. 33, no. 10, October
 	     1990, pp 30-53.
 	<LI> Matthews, S. G., "Partial Metric Topology," General

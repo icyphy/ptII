@@ -142,11 +142,11 @@ notation as a a factory
 @version $Id$
 */
 public class KernelGraphFrame extends GraphFrame {
-   
+
     public KernelGraphFrame(CompositeEntity entity, Tableau tableau) {
 	super(entity, tableau);
     }
-	    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -168,7 +168,7 @@ public class KernelGraphFrame extends GraphFrame {
 	// These two things control the view of a ptolemy model.
 	_controller = new EditorGraphController();
 	PtolemyGraphModel graphModel = new PtolemyGraphModel(getModel());
-	
+
 	GraphPane pane = new GraphPane(_controller, graphModel);
 	_newPortAction = _controller.getNewPortAction();
 	_newRelationAction = _controller.getNewRelationAction();
@@ -268,18 +268,18 @@ public class KernelGraphFrame extends GraphFrame {
 		}
 		return null;
 	    }
-	    
+
 	    /**
-	     * Get the name of the items that will be created. 
+	     * Get the name of the items that will be created.
 	     * This is provided so
 	     * that factory can be overriden slightly with the name changed.
 	     */
 	    protected String _getName() {
 		return null;
-	    }     
+	    }
 	}
     }
-    
+
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
 	public LookInsideAction() {
@@ -287,7 +287,7 @@ public class KernelGraphFrame extends GraphFrame {
 	}
 	public void actionPerformed(ActionEvent e) {
 	    // Figure out what entity.
-	    super.actionPerformed(e);		
+	    super.actionPerformed(e);
 	    NamedObj object = getTarget();
 	    if(!(object instanceof CompositeEntity)) return;
 	    CompositeEntity entity = (CompositeEntity)object;
@@ -313,7 +313,7 @@ public class KernelGraphFrame extends GraphFrame {
                     // There is no pre-existing effigy.  Create one.
                     effigy = new PtolemyEffigy(getTableau().workspace());
                     effigy.setModel(entity);
-                    
+
                     // Look to see whether the model has a URLAttribute.
                     List attributes = entity.attributeList(URLAttribute.class);
                     if (attributes.size() > 0) {
@@ -321,7 +321,7 @@ public class KernelGraphFrame extends GraphFrame {
                         // inserted by MoMLParser.
 
                         URL url = ((URLAttribute)attributes.get(0)).getURL();
-                        
+
                         // Set the url and identifier of the effigy.
                         effigy.url.setURL(url);
                         effigy.identifier.setExpression(url.toExternalForm());
@@ -330,7 +330,7 @@ public class KernelGraphFrame extends GraphFrame {
                         ModelDirectory directory = getDirectory();
                         effigy.setName(directory.uniqueName(entity.getName()));
                         effigy.setContainer(directory);
-                        
+
                         // Create a default tableau.
                         getConfiguration().createPrimaryTableau(effigy);
 
@@ -353,17 +353,17 @@ public class KernelGraphFrame extends GraphFrame {
                                 effigy.setName(parentEffigy.uniqueName(
                                         entity.getName()));
                                         effigy.setContainer(parentEffigy);
-                                    
+
                                 // Set the identifier of the effigy to be that
                                 // of the parent with the model name appended.
                                 effigy.identifier.setExpression(
                                         parentEffigy.identifier.getExpression()
                                         + "#" + entity.getName());
-                                        
+
                                 // Set the url of the effigy to that of
                                 // the parent.
                                 effigy.url.setURL(parentEffigy.url.getURL());
-                                        
+
                                 // Indicate success.
                                 isContainerSet = true;
                             }
@@ -378,7 +378,7 @@ public class KernelGraphFrame extends GraphFrame {
                             effigy.identifier.setExpression(
                                     entity.getFullName());
                         }
-                                
+
                         getConfiguration().createPrimaryTableau(effigy);
                     }
                 } catch (Exception ex) {
@@ -387,11 +387,11 @@ public class KernelGraphFrame extends GraphFrame {
             }
 	}
     }
-      
+
     /**
      * The factory for creating context menus on relations.
      */
-    private class RelationContextMenuFactory 
+    private class RelationContextMenuFactory
 	extends PtolemyMenuFactory {
 	public RelationContextMenuFactory(GraphController controller) {
 	    super(controller);
@@ -400,7 +400,7 @@ public class KernelGraphFrame extends GraphFrame {
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

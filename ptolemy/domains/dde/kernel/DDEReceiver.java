@@ -63,7 +63,7 @@ receiver's get() method will result in the minimum advancement of local
 time with respect to all of the receivers controlled by the TimeKeeper.
 If the get() method of multiple receivers will result in a minimum
 but identical local time advancement, then the hasToken() method of the
-receiver with the highest priority will return true (the others will 
+receiver with the highest priority will return true (the others will
 return false).
 <P>
 If a receiver with a nonnegative receiver time is empty, then the
@@ -74,7 +74,7 @@ Note that hasToken() blocks while get() does not block.
 <P>
 DDEReceivers process certain events that are hidden from view by
 ports and actors. In particular, NullTokens have time stamps with
-a value of PrioritizedTimedQueue.IGNORE. NullTokens allow actors 
+a value of PrioritizedTimedQueue.IGNORE. NullTokens allow actors
 to communicate information on their local time advancement to
 neighboring actors without the need for an actual data exchange.
 NullTokens are passed at the receiver level and circumvent the
@@ -117,7 +117,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	_boundaryDetector = new BoundaryDetector(this);
     }
 
-    /** Construct an empty receiver with the specified IOPort 
+    /** Construct an empty receiver with the specified IOPort
      *  container and priority.
      * @param container The IOPort that contains this receiver.
      * @param priority The priority of this receiver.
@@ -131,13 +131,13 @@ public class DDEReceiver extends PrioritizedTimedQueue
     ////                         public methods                    ////
 
     /** Get a token from the mailbox receiver and specify a null
-     *  Branch to control the execution of this method. 
+     *  Branch to control the execution of this method.
      * @return The token contained by this receiver.
      */
     public Token get() {
         return get(null);
     }
-    
+
     /** Return a token from the queue. If no token is available,
      *  then throw a NoTokenException. If at any point during
      *  this method this receiver is scheduled for termination,
@@ -184,7 +184,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	}
     }
 
-    /** Return true if the receiver has room for putting the given number of 
+    /** Return true if the receiver has room for putting the given number of
      *  tokens into it (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
@@ -200,8 +200,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  this method will return true only if this receiver is sorted
      *  first with respect to the other receivers contained by this
      *  receiver's actor. The sorting rules are found in
-     *  ptolemy.domains.dde.kernel.RcvrComparator. Blocking reads 
-     *  occurring during this methods execution will be registered 
+     *  ptolemy.domains.dde.kernel.RcvrComparator. Blocking reads
+     *  occurring during this methods execution will be registered
      *  with the local director.
      *  <P>
      *  If at any point during this method this receiver is scheduled
@@ -213,7 +213,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
     public boolean hasToken() {
     	return hasToken(null);
     }
-    
+
     /** Return true if the get() method of this receiver will return a
      *  token without throwing a NoTokenException. This method will
      *  perform a blocking read if this receiver is empty and has a
@@ -221,7 +221,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  this method will return true only if this receiver is sorted
      *  first with respect to the other receivers contained by this
      *  receiver's actor. The sorting rules are found in
-     *  ptolemy.domains.dde.kernel.RcvrComparator. Blocking reads 
+     *  ptolemy.domains.dde.kernel.RcvrComparator. Blocking reads
      *  occurring during this method's execution will be registered
      *  with the branch object (parameter) if it is non-null; otherwise
      *  blocking reads will be registered with the local director.
@@ -337,11 +337,11 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	// FIXME hack - consults neuendor's new mechanism.
     }
 
-    /** Return true if this receiver is a consumer receiver. A 
-     *  receiver is a consumer receiver if it is connected to a 
+    /** Return true if this receiver is a consumer receiver. A
+     *  receiver is a consumer receiver if it is connected to a
      *  boundary port.
      *
-     *  @return True if this is a consumer receiver; return 
+     *  @return True if this is a consumer receiver; return
      *   false otherwise.
      */
     public boolean isConsumerReceiver() {
@@ -350,12 +350,12 @@ public class DDEReceiver extends PrioritizedTimedQueue
         }
     	return false;
     }
- 
-    /** Return true if this receiver is connected to the inside of a 
+
+    /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the inside of
@@ -366,11 +366,11 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	return _boundaryDetector.isConnectedToBoundary();
     }
 
-    /** Return true if this receiver is connected to the inside of a 
+    /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is connected to the inside of
@@ -381,13 +381,13 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
-    /** Return true if this receiver is connected to the outside of a 
+    /** Return true if this receiver is connected to the outside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the outside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
-     *  This method is not synchronized so the caller should be. 
+     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is connected to the outside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
@@ -396,11 +396,11 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
-    /** Return true if this receiver is a producer receiver. A 
+    /** Return true if this receiver is a producer receiver. A
      *  receiver is a producer receiver if it is contained on the
      *  inside or outside of a boundary port.
      *
-     *  @return True if this is a producer receiver; return false 
+     *  @return True if this is a producer receiver; return false
      *   otherwise.
      */
     public boolean isProducerReceiver() {
@@ -414,7 +414,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
      *  on the inside of a boundary port then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the inside of
@@ -429,7 +429,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
      *  on the outside of a boundary port then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the outside of
@@ -443,27 +443,27 @@ public class DDEReceiver extends PrioritizedTimedQueue
     /** Return true if this receiver is read blocked; return false
      *  otherwise.
      *
-     *  @return True if this receiver is read blocked; return 
+     *  @return True if this receiver is read blocked; return
      *   false otherwise.
      */
     public boolean isReadBlocked() {
         return _readBlocked;
     }
-    
+
     /** Return true if this receiver is write blocked; return false
      *  otherwise.
      *
-     *  @return True if this receiver is write blocked; return 
+     *  @return True if this receiver is write blocked; return
      *   false otherwise.
      */
     public boolean isWriteBlocked() {
         return _writeBlocked;
     }
-    
+
     /** Prepare to register a block. If the branch object specified as
      *  a parameter is non-null then register the block with the branch.
-     *  If the branch object specified as a parameter is null then 
-     *  register the block with the local director. 
+     *  If the branch object specified as a parameter is null then
+     *  register the block with the local director.
      *
      *  @param branch The Branch managing execution of this method.
      */
@@ -478,18 +478,18 @@ public class DDEReceiver extends PrioritizedTimedQueue
             _otherBranch = branch;
         }
     }
-            
+
     /** Do a blocking write on the queue. Set the time stamp to be
-     *  the current time of the sending actor. If the current time 
-     *  is greater than the completionTime of this 
-     *  receiver, then set the time stamp to INACTIVE and the token 
-     *  to null. If the queue is full, then inform the director that 
-     *  this receiver is blocking on a write and wait until room 
-     *  becomes available. When room becomes available, put the 
-     *  token and time stamp in the queue and inform the director 
-     *  that the block no longer exists. If at any point during this 
-     *  method this receiver is scheduled for termination, then throw 
-     *  a TerminateProcessException which will cease activity for the 
+     *  the current time of the sending actor. If the current time
+     *  is greater than the completionTime of this
+     *  receiver, then set the time stamp to INACTIVE and the token
+     *  to null. If the queue is full, then inform the director that
+     *  this receiver is blocking on a write and wait until room
+     *  becomes available. When room becomes available, put the
+     *  token and time stamp in the queue and inform the director
+     *  that the block no longer exists. If at any point during this
+     *  method this receiver is scheduled for termination, then throw
+     *  a TerminateProcessException which will cease activity for the
      *  actor that contains this receiver.
      *  @param token The token to put in the queue.
      *  @exception TerminateProcessException If activity is scheduled
@@ -498,18 +498,18 @@ public class DDEReceiver extends PrioritizedTimedQueue
     public void put(Token token) {
     	put(token, null);
     }
-    
+
     /** Do a blocking write on the queue. Set the time stamp to be
-     *  the current time of the sending actor. If the current time 
-     *  is greater than the completionTime of this receiver, then 
-     *  set the time stamp to INACTIVE and the token to null. If the 
-     *  queue is full then perform a blocking write until room becomes 
+     *  the current time of the sending actor. If the current time
+     *  is greater than the completionTime of this receiver, then
+     *  set the time stamp to INACTIVE and the token to null. If the
+     *  queue is full then perform a blocking write until room becomes
      *  available. If the specified branch object parameter is null
      *  then register blocking writes with the local director. If
      *  the specified branch object is non-null then register blocking
-     *  writes with the branch object. 
+     *  writes with the branch object.
      *  <P>
-     *  If at any point during this method this receiver is scheduled 
+     *  If at any point during this method this receiver is scheduled
      *  for termination, then throw a TerminateProcessException which
      *  will cease activity for the actor that contains this receiver.
      *  @param token The token to put in the queue.
@@ -528,15 +528,15 @@ public class DDEReceiver extends PrioritizedTimedQueue
     }
 
     /** Do a blocking write on the queue. Set the time stamp to be
-     *  the time specified by the time parameter. If the specified time 
-     *  is greater than the completionTime of this receiver, then set 
-     *  the time stamp to INACTIVE and the token to null. If the queue is 
-     *  full, then inform the director that this receiver is blocking on a 
-     *  write and wait until room becomes available. When room becomes 
-     *  available, put the token and time stamp in the queue and inform the 
-     *  director that the block no longer exists. If at any point during this 
-     *  method this receiver is scheduled for termination, then throw a 
-     *  TerminateProcessException which will cease activity for the actor 
+     *  the time specified by the time parameter. If the specified time
+     *  is greater than the completionTime of this receiver, then set
+     *  the time stamp to INACTIVE and the token to null. If the queue is
+     *  full, then inform the director that this receiver is blocking on a
+     *  write and wait until room becomes available. When room becomes
+     *  available, put the token and time stamp in the queue and inform the
+     *  director that the block no longer exists. If at any point during this
+     *  method this receiver is scheduled for termination, then throw a
+     *  TerminateProcessException which will cease activity for the actor
      *  that contains this receiver.
      *  @param token The token to put in the queue.
      *  @param time The specified time stamp.
@@ -546,7 +546,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
     public void put(Token token, double time) {
     	put(token, time, null);
     }
-    
+
     /** Do a blocking write on the queue. If at any point during
      *  this method this receiver is scheduled for termination,
      *  then throw a TerminateProcessException which will cease
@@ -642,11 +642,11 @@ public class DDEReceiver extends PrioritizedTimedQueue
             DDEDirector director = ((DDEDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());
             director._actorUnBlocked(this);
-            
+
         }
         notifyAll();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     package friendly methods   	   ////
 

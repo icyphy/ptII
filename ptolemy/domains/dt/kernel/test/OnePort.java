@@ -42,7 +42,7 @@ import ptolemy.math.Complex;
 
 
 public class OnePort extends TypedAtomicActor {
-    public OnePort(CompositeEntity container, String name) 
+    public OnePort(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = (SDFIOPort) newPort("input");
@@ -52,40 +52,40 @@ public class OnePort extends TypedAtomicActor {
         inrate= new Parameter(this, "inrate", new IntToken(1));
         _inrate = 1;
 
-        
+
         output = (SDFIOPort) newPort("output");
         output.setOutput(true);
         output.setTokenProductionRate(1);
         output.setTypeSameAs(input);
         outrate = new Parameter(this, "outrate", new IntToken(1));
         _outrate = 1;
-        
-        
-        
+
+
+
         initialOutputs = new Parameter(this, "initialOutputs",
                              new IntMatrixToken(defaultValues));
-                             
-                             
+
+
         //Parameter tokenInitProduction = new Parameter(output,"tokenInitProduction",
         //                     new IntMatrixToken(defaultValues));
-        
+
     }
-    
+
     public SDFIOPort input;
     public SDFIOPort output;
-    
+
     public Parameter inrate;
     public Parameter outrate;
 
     public Parameter initialOutputs;
-    
+
     public Parameter value;
     public Parameter step;
     //public Parameter tokenInitProduction;
-    
+
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         Director dir = getDirector();
-        
+
         if (dir != null) {
             _inrate = ((IntToken) inrate.getToken()).intValue();
             _outrate = ((IntToken) outrate.getToken()).intValue();
@@ -95,7 +95,7 @@ public class OnePort extends TypedAtomicActor {
         }
     }
 
-    
+
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         OnePort newObject = (OnePort)(super.clone(workspace));
@@ -106,13 +106,13 @@ public class OnePort extends TypedAtomicActor {
         return newObject;
     }
 
-     
+
     public final void fire() throws IllegalActionException  {
         int i;
         int integer, remainder;
         DoubleToken token = new DoubleToken(0.0);;
         _buffer = new Token[_inrate];
-        
+
         _buffer[0] = token;
 
         //DTDebug debug = new DTDebug(true);
@@ -129,13 +129,13 @@ public class OnePort extends TypedAtomicActor {
                 //}
             }
         }
-   
+
         for(i=0;i<_outrate;i++) {
             //output.send(0, new DoubleToken(0.0));
             output.send(0, _buffer[i%_inrate]);
         }
     }
-    
+
     private int _inrate;
     private int _outrate;
     private int defaultValues[][] = {{0,0}};

@@ -179,7 +179,7 @@ public class ZeroCrossingDetector extends Transformer
      *  and the current trigger are both zero, then no new event is
      *  detected. If this step crosses zero, then the refined integration
      *  step size is computed by linear interpolation.
-     *  @return True if the trigger input in this integration step 
+     *  @return True if the trigger input in this integration step
      *          does not cross zero.
      */
     public boolean isThisStepAccurate() {

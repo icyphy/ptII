@@ -69,14 +69,14 @@ public class TrackingAlarm extends DEActor {
         awayThreshold = new Parameter(this, "awayThreshold",
                 new DoubleToken(10.0));
         awayThreshold.setTypeEquals(BaseType.DOUBLE);
-        
+
         leaderPosition = new TypedIOPort(this, "leaderPosition", true, false);
         leaderPosition.setTypeEquals(BaseType.DOUBLE);
 
-        followerPosition = 
+        followerPosition =
             new TypedIOPort(this, "followerPosition", true, false);
         followerPosition.setTypeEquals(BaseType.DOUBLE);
-        
+
         tooClose = new TypedIOPort(this, "tooClose", false, true);
         tooClose.setTypeEquals(BaseType.BOOLEAN);
 
@@ -151,11 +151,11 @@ public class TrackingAlarm extends DEActor {
     public void fire() throws IllegalActionException {
         if (leaderPosition.hasToken(0)) {
             _hasLeaderInformation = true;
-            _leaderPosition = 
+            _leaderPosition =
                 ((DoubleToken)leaderPosition.get(0)).doubleValue();
         }
         if (followerPosition.hasToken(0)) {
-            double follower = 
+            double follower =
                 ((DoubleToken)followerPosition.get(0)).doubleValue();
             if (_hasLeaderInformation) {
                 _hasLeaderInformation = false;

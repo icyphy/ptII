@@ -195,7 +195,7 @@ public class PNDirector extends BasePNDirector {
 	    _mutationsRequested = false;
             //Loop until a deadlock other than an artificial deadlock is
             //detected.
-            while( _readBlockCount != _getActiveActorsCount() ) { 
+            while( _readBlockCount != _getActiveActorsCount() ) {
                 //Sleep until a deadlock is detected or mutations are requested
 		while( !_areActorsDeadlocked() ) {
 		    worksp.wait(this);

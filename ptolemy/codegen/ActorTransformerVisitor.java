@@ -113,7 +113,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         if (className.startsWith("CG_") && className.endsWith("_" + _actorName)) {
             return _actorClassDeclNode(node, args);
         }
-                
+
         return node;
     }
 
@@ -1099,14 +1099,14 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // or indirectly) implement Actor or SequenceActor
         Iterator interfaceItr = node.getInterfaces().iterator();
         List modifiedInterfaceList = new LinkedList();
-        
+
         while (interfaceItr.hasNext()) {
-            TypeNameNode interfaceTypeNode = 
+            TypeNameNode interfaceTypeNode =
              (TypeNameNode) interfaceItr.next();
-            
-            ClassDecl interfaceDecl = 
-             (ClassDecl) JavaDecl.getDecl((NamedNode) interfaceTypeNode); 
-             
+
+            ClassDecl interfaceDecl =
+             (ClassDecl) JavaDecl.getDecl((NamedNode) interfaceTypeNode);
+
             if (!_typePolicy.isSuperInterface(
                     PtolemyTypeIdentifier.ACTOR_DECL,
                     interfaceDecl) &&
@@ -1114,18 +1114,18 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                             PtolemyTypeIdentifier.SEQUENCE_ACTOR_DECL,
                             interfaceDecl)
                 ) {
-               modifiedInterfaceList.add(interfaceTypeNode);   
+               modifiedInterfaceList.add(interfaceTypeNode);
             } else {
-               System.err.println("Warning: Interface \"" + 
-                interfaceDecl.getName() + 
-                "\" removed from implements list of class \"" + 
+               System.err.println("Warning: Interface \"" +
+                interfaceDecl.getName() +
+                "\" removed from implements list of class \"" +
                 node.getName().getIdent() + "\".");
-            }                
+            }
         }
-        
+
         node.setInterfaces(modifiedInterfaceList);
-        
-        
+
+
         List memberList = node.getMembers();
 
         memberList = TNLManip.traverseList(this, null, memberList);
@@ -1191,7 +1191,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         if (_isBaseClass && (fieldAccessNode.classID() == SUPERFIELDACCESSNODE_ID)) {
             if (methodName.equals("initialize") ||
 		methodName.equals("fire") ||
-		methodName.equals("preinitialize") || 
+		methodName.equals("preinitialize") ||
 		methodName.equals("wrapup")) {
                 return NullValue.instance;
             }

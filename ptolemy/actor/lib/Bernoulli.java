@@ -104,7 +104,7 @@ public class Bernoulli extends RandomSource {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_random.nextDouble() < 
+        if (_random.nextDouble() <
                 ((DoubleToken)(trueProbability.getToken())).doubleValue() ) {
             _current = true;
         } else {

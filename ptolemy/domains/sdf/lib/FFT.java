@@ -46,7 +46,7 @@ import ptolemy.math.SignalProcessing;
 /**
 This actor calculates the FFT of a complex input array.
 The order of the FFT determines the number of tokens that
-will be consumed and produced on each firing. The order is 
+will be consumed and produced on each firing. The order is
 the base-2 logarithm of the size. The default order is 8,
 which means that 2<sup>8</sup> = 256 tokens are read and 2<sup>8</sup>
 = 256 tokens are produced.
@@ -105,14 +105,14 @@ public class FFT extends SDFTransformer {
                 + " but must be greater than zero.");
             }
             _transformSize = (int)Math.pow(2, _orderValue );
-            
+
             // Set the correct consumption/production values
             _productionRate = _transformSize;
             _consumptionRate = _transformSize;
-            
+
             input.setTokenConsumptionRate(_consumptionRate);
             output.setTokenProductionRate(_productionRate);
-            
+
             _inComplexArray = new Complex[_consumptionRate];
             _outTokenArray = new ComplexToken[_productionRate];
 

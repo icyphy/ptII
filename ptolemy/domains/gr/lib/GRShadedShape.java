@@ -50,7 +50,7 @@ import javax.vecmath.*;
 properties. The parameters <i>redComponent</i>, <i>greenComponent</i>,
 <i>blueComponent</i> determine the color of the object.  The parameter
 <i>shininess</i> determines the Phong exponent used in calculating
-the shininess of the object. 
+the shininess of the object.
 
 @author C. Fong
 */
@@ -73,15 +73,15 @@ public class GRShadedShape extends GRActor {
         sceneGraphOut.setTypeEquals(BaseType.OBJECT);
         rgbColor = new Parameter(this,"RGB color",
                     new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
-        
+
         shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
-        
+
         pose = new Parameter(this,"pose",
                new DoubleMatrixToken(_pose));
-        
+
         _color = new Color3f(1.0f,1.0f,1.0f);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -89,22 +89,22 @@ public class GRShadedShape extends GRActor {
      *  the scene graph
      */
     public TypedIOPort sceneGraphOut;
-    
+
     /** The red, green, and blue color components of the 3D shape
      */
     public Parameter rgbColor;
-   
+
     /** The shininess of the 3D shape
      */
     public Parameter shininess;
-    
+
     /** The initial pose of the 3D shape
      */
     public Parameter pose;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
      *  @param ws The workspace for the new object.
@@ -114,28 +114,28 @@ public class GRShadedShape extends GRActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GRShadedShape newobj = (GRShadedShape)super.clone(workspace);
-        
+
         newobj.sceneGraphOut = (TypedIOPort)newobj.getPort("sceneGraphOut");
         newobj.rgbColor = (Parameter)newobj.getAttribute("rgbColor");
         newobj.shininess = (Parameter) newobj.getAttribute("shininess");
         return newobj;
     }
-    
+
     public void makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Create the material appearance of the shaded 3D actor
      */
     protected void _createAppearance() {
 
         _material = new Material();
         _appearance = new Appearance();
-        
+
         _material.setDiffuseColor(_color);
         if (_shine > 1.0) {
             _material.setSpecularColor(whiteColor);
@@ -145,27 +145,27 @@ public class GRShadedShape extends GRActor {
         }
         _appearance.setMaterial(_material);
     }
-    
+
     /** Create the color of the shaded 3D actor
      */
     protected void _createModel() throws IllegalActionException {
-        
+
         super._createModel();
-        
+
         DoubleMatrixToken color = (DoubleMatrixToken) rgbColor.getToken();
-       
+
         _color.x = (float) color.getElementAt(0,0);
         _color.y = (float) color.getElementAt(0,1);
         _color.z = (float) color.getElementAt(0,2);
         _shine = (float) ((DoubleToken) shininess.getToken()).doubleValue();
-        
+
         _createAppearance();
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    
+
     protected Color3f _color;
     protected Appearance _appearance;
     protected Material _material;

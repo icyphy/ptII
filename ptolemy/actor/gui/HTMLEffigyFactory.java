@@ -114,7 +114,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
             }
         }
         // Create a new effigy.
-        HTMLEffigy effigy = new HTMLEffigy(container, 
+        HTMLEffigy effigy = new HTMLEffigy(container,
                 container.uniqueName("effigy"));
         effigy.url.setURL(in);
         // FIXME: What to do about the base?

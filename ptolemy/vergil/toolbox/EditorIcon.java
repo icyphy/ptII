@@ -50,25 +50,25 @@ import javax.swing.SwingConstants;
 //// EditorIcon
 /**
 An icon represnts the visual representation of a schematic entity.
-Every icon has a name, along with the data necessary for creating 
+Every icon has a name, along with the data necessary for creating
 a visual representation.
 EditorIcons are capable of creating a visual representation representing
-the icon as either a Swing icon (e.g. an instance of javax.swing.Icon), 
+the icon as either a Swing icon (e.g. an instance of javax.swing.Icon),
 or as a Diva figure (e.g. an instanceof of diva.canvas.Figure).
-In general, one or the other will form the basis of the visual representation, 
+In general, one or the other will form the basis of the visual representation,
 and the other will be created from the first, using either a SwingWrapper
 or a FigureIcon.  In other words, this class is a factory for visual
 representations.
 <p> In this base class, the visual representation as a Diva
 figure is created by adding a label representing the name of the entity that
-contains this icon to a background figure which is created by the 
+contains this icon to a background figure which is created by the
 createBackgroundFigure method.  The visual representation as a Swing icon
 is created from the background figure using a FigureIcon.
-Thus, most subclasses that which to modify the visual representation can 
+Thus, most subclasses that which to modify the visual representation can
 simply override the createBackgroundFigure method.
 <p> Subclasses that wish to create the figure or the icon in a different way
 entirely (for example, starting with a Swing icon and creating the figure using
-a SwingWrapper) should override both the createBackgroundFigure and 
+a SwingWrapper) should override both the createBackgroundFigure and
 createIcon methods.
 <p>
 This visual representation created by this base class is just a simple white
@@ -94,14 +94,14 @@ public class EditorIcon extends Attribute {
     }
 
     /**
-     * Create a new Diva figure that visually represents this icon. 
+     * Create a new Diva figure that visually represents this icon.
      * The figure will be an instance of
      * CompositeFigure with the figure returned by createBackgroundFigure
      * as its background.  This method adds a LabelFigure to the
      * CompositeFigure that contains the name of the container of this icon.
      * Subclasses of this
      * class should never return null, even if the icon has not been properly
-     * initialized. 
+     * initialized.
      * @return A new CompositeFigure.
      * @see diva.canvas.CompositeFigure
      */
@@ -122,21 +122,21 @@ public class EditorIcon extends Attribute {
     /**
      * Create a new background figure based on this icon.  This should
      * manufacture a new figure each time, since figures are cheap and contain
-     * their own location.  This base class returns a default background 
+     * their own location.  This base class returns a default background
      * figure which is a simple white box.  Subclasses will generally override
      * this method to create more interesting figures.  Subclasses of this
      * class should never return null, even if the icon has not been properly
-     * initialized. 
+     * initialized.
      * @return A new figure.
      */
     public Figure createBackgroundFigure() {
 	return _createDefaultBackgroundFigure();
     }
 
-    /** 
+    /**
      * Create a new Swing icon that visually represents this icon.
      * The default implementation in this base class creates the Swing icon
-     * from the background figure, so it is not necessary to override this 
+     * from the background figure, so it is not necessary to override this
      * method in most cases.  Note that the Swing icon does NOT include a
      * label for the name, since that is usually added separately in a
      * Swing component.
@@ -148,7 +148,7 @@ public class EditorIcon extends Attribute {
         if(_iconCache != null) {
 	    return _iconCache;
         }
-        
+
         // No cached object, so rerender the icon.
 	Figure figure = createBackgroundFigure();
 	_iconCache = new FigureIcon(figure, 20, 15);
@@ -171,7 +171,7 @@ public class EditorIcon extends Attribute {
 
     /**
      * Create a new default background figure.
-     * Subclasses of this class should generally override 
+     * Subclasses of this class should generally override
      * the createBackgroundFigure method instead.  This method is provided
      * so that subclasses are always able to create a default figure even if
      * an error occurs or the subclass has not been properly initialized.

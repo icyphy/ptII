@@ -150,9 +150,9 @@ public class SDFReceiver extends AbstractReceiver {
      *  specifies the number of valid tokens to get in the returned
      *  array. The length of the returned array will be at least euqal to
      *  <i>count</i>. This method may sometimes return an array with
-     *  length greater than <i>count</i>, in which case, only the first 
+     *  length greater than <i>count</i>, in which case, only the first
      *  <i>count</i> elements are valid. This behavior is allowed so that
-     *  this method can choose to reallocate the returned token array 
+     *  this method can choose to reallocate the returned token array
      *  only when the vector length is increased.
      *
      *  @param count The number of valid tokens to get in the
@@ -211,8 +211,8 @@ public class SDFReceiver extends AbstractReceiver {
 	    // finite number of tokens.
 	    return true;
 	}
-	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
+	if(tokens < 1)
+	    throw new IllegalActionException("The number of " +
 					     "tokens must be greater than 0");
 	return (_queue.size() + tokens) < _queue.getCapacity();
     }
@@ -233,8 +233,8 @@ public class SDFReceiver extends AbstractReceiver {
      *  than one.
      */
     public boolean hasToken(int tokens) throws IllegalActionException {
-	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
+	if(tokens < 1)
+	    throw new IllegalActionException("The number of " +
 					     "tokens must be greater than 0");
         return _queue.size() >= tokens;
     }
@@ -276,7 +276,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  exception is thrown if <i>count</i> is greater then
      *  the length of the token array.
      *
-     *  @param token The token array that contains tokens to be put 
+     *  @param token The token array that contains tokens to be put
      *   into the receiver.
      *  @param count The number of tokens from <i>token</i> to
      *   put in the receiver.

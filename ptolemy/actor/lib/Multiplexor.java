@@ -70,10 +70,10 @@ public class Multiplexor extends Transformer {
         super(container, name);
 
     	input.setMultiport(true);
-                
+
         select = new TypedIOPort(this, "select", true, false);
         select.setTypeEquals(BaseType.INT);
-                
+
         output.setTypeSameAs(input);
     }
 

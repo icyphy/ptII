@@ -116,7 +116,7 @@ public class ProcessAudio implements Runnable {
 	// Capture specific stuff:
 
         int sampleSizeInBits = 16;
-        int channels = 1; 
+        int channels = 1;
 
 	int inBufferSize = 6000;  // Internal buffer size for capture.
 	int outBufferSize = 6000; // Internal buffer size for playback.
@@ -124,16 +124,16 @@ public class ProcessAudio implements Runnable {
 	// Amount of data to read or write from/to the internal buffer
 	// at a time. This should be set smaller than the internal buffer
 	// size!
-	int getSamplesSize = 256; 
+	int getSamplesSize = 256;
 
-	SoundCapture soundCapture = 
+	SoundCapture soundCapture =
 	    new SoundCapture((float)sampleRate, sampleSizeInBits,
 			     channels, inBufferSize,
 			     getSamplesSize);
 
 	int putSamplesSize = getSamplesSize;
 
-// Construct a sound playback object that plays audio 
+// Construct a sound playback object that plays audio
 	//through the computer's speaker.
 	SoundPlayback soundPlayback = new SoundPlayback((float)sampleRate,
 					  sampleSizeInBits,
@@ -149,8 +149,8 @@ public class ProcessAudio implements Runnable {
 	    System.err.println(ex);
 	}
 
-	
-	double[][] capturedSamplesArray = 
+
+	double[][] capturedSamplesArray =
 	    new double[channels][getSamplesSize];
 
 
@@ -165,7 +165,7 @@ public class ProcessAudio implements Runnable {
 
 	while (thread != null) {
 	    try {
-		
+
 		// Read in some captured audio.
 		capturedSamplesArray = soundCapture.getSamples();
 

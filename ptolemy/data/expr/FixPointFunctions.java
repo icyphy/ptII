@@ -41,7 +41,7 @@ import ptolemy.math.Quantizer;  // For javadoc
 //////////////////////////////////////////////////////////////////////////
 //// FixPointFunctions
 
-/** 
+/**
 
 This class provides static functions for operating on Fixpoint numbers
 in the Ptolemy II expression language. The added functionality is
@@ -75,7 +75,7 @@ back again into a double value. Each entry is quantized using the same
 precision. The result is an instance of <i>DoubleMatrixToken</i>.<p>
 
 <pre>quantize([ -.040609, -.001628, .17853, .37665, .37665, .17853,
--.001628, -.040609 ], 10, 2)</pre><p> 
+-.001628, -.040609 ], 10, 2)</pre><p>
 
 
 </ul>
@@ -168,7 +168,7 @@ public class FixPointFunctions {
      *  it into a fixed point value with a particular precision and
      *  then back again into a double value.
      *
-     *  <p><pre>quantize(5.34, 10, 4)</pre><p> 
+     *  <p><pre>quantize(5.34, 10, 4)</pre><p>
      *
      *  In the example shown, the value of 5.34 is converted into a
      *  fixed point value that uses 10 bits, of which 4 bits are used
@@ -183,7 +183,7 @@ public class FixPointFunctions {
      */
     public static Token quantize(double value, int numberOfBits,
             int integerBits) {
-        FixPoint fixValue = Quantizer.round(value, 
+        FixPoint fixValue = Quantizer.round(value,
                 new Precision(numberOfBits, integerBits));
         return new DoubleToken( fixValue.doubleValue());
     }

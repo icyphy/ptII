@@ -114,7 +114,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	String noExtensionFilename = canonicalFilename;
 
 	if (canonicalFilename.indexOf(File.separatorChar) != -1 &&
-	    canonicalFilename.indexOf('.') != -1) { 
+	    canonicalFilename.indexOf('.') != -1) {
 	    // This is probably a real filename
 	    noExtensionFilename =
 		StringManip.partBeforeLast(canonicalFilename, '.');
@@ -176,7 +176,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     /** Returns a String representation of node, with qualifiers separated
      *	by periods, if node is a NameNode. If node is AbsentTreeNode.instance,
-     *  return "absent name". 
+     *  return "absent name".
      */
     public static String nameString(TreeNode node) {
         if (node == AbsentTreeNode.instance) {
@@ -218,12 +218,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         if (((categories & CG_METHOD) == 0) && possibles.moreThanOne()) {
             if ((categories & CG_USERTYPE) != 0) {
                 System.err.println("Warning: ambiguous reference to " +
-                        name.getIdent() + 
-                        // " in " + 
+                        name.getIdent() +
+                        // " in " +
                         //((currentPackage == null) ?
                         //        "?" : currentPackage.fullName()) +
                         //"." +
-                        //((currentClass == null) ? 
+                        //((currentClass == null) ?
                         //        "?" : currentClass.toString()) +
                         ", using most specific one.");
 
@@ -417,7 +417,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	    resolveFieldVisitor.resolveCall(scopeIter, methodArgs);
     }
 
-    
+
     /** Load the class by name.  The classname does not have a
      *  .class or .java suffix.  The classname should include
      *  the package name, for example "java.lang.Object"
@@ -650,7 +650,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 scope.add(type); // conflicts appear on use only
             }
         }
-	
+
         //System.out.println("StaticResolution._importPackage(" +
         //        name.getIdent() + ") :" +
         //        scope.toString());
@@ -737,7 +737,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             }
         }
 
-        if (!possibles.hasNext() & ((categories & CG_CLASS) == 1) && currentPackage != null) { 
+        if (!possibles.hasNext() & ((categories & CG_CLASS) == 1) && currentPackage != null) {
   	    // Use reflection
   	    ClassDeclNode classDeclNode =
   		ASTReflect.lookupClassDeclNode(currentPackage.fullName() +
@@ -791,7 +791,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     // do partial resolution only.
     private static CompileUnitNode _loadCanonicalFile(
             String filename, int pass) {
-        //System.out.println("StaticResolution._loadCanonicalFile: " + 
+        //System.out.println("StaticResolution._loadCanonicalFile: " +
 	//		   filename);
 	System.out.print(".");
 
@@ -839,7 +839,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		//   (ClassDecl) interfaceDeclNode.getDefinedProperty(DECL_KEY);
 		if (classDecl == null) {
 		    throw new RuntimeException("could not find class or " +
-					     "interface \"" + name + 
+					     "interface \"" + name +
 					     "\" in bootstrap scope: "
 					     + scope);
 		}
@@ -858,7 +858,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		//   (ClassDecl) classDeclNode.getDefinedProperty(DECL_KEY);
 		if (classDecl == null) {
 		    throw new RuntimeException("could not find class or " +
-					     "interface \"" + name + 
+					     "interface \"" + name +
 					     "\" in bootstrap scope: "
 					     + scope);
 		}

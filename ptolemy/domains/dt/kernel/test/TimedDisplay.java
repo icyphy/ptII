@@ -1,4 +1,4 @@
-/* TimeDisplay test actor 
+/* TimeDisplay test actor
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -62,17 +62,17 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
         rowsDisplayed.setToken(new IntToken(20));
     }
 
-    
+
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimedDisplay newObject = (TimedDisplay)super.clone(workspace);
         return newObject;
     }
-    
- 
+
+
     public void place(Container container) {
         super.place(container);
         _scrollPane.setPreferredSize(new Dimension(400,200));
-        
+
     }
 
     public boolean postfire() throws IllegalActionException {
@@ -82,11 +82,11 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
                 Token token = input.get(i);
                 Director director = getDirector();
                 String value = " ";
-                
+
                 if (director != null) {
                     value = ""+director.getCurrentTime();
                 }
-                
+
                 //String value = (director.getCurrentTime()).toString();
                 textArea.append(value);
 

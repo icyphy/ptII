@@ -8,9 +8,9 @@
 package ptolemy.actor.corba.util;
 public final class CorbaUnknownPortExceptionHolder
      implements org.omg.CORBA.portable.Streamable{
-    //	instance variable 
+    //	instance variable
     public ptolemy.actor.corba.util.CorbaUnknownPortException value;
-    //	constructors 
+    //	constructors
     public CorbaUnknownPortExceptionHolder() {
 	this(null);
     }

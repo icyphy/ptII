@@ -53,11 +53,11 @@ public class SDFTestJoin extends TypedAtomicActor {
         input1 = new SDFIOPort(this,"input1", true, false);
         input1.setTokenConsumptionRate(1);
         input1.setTypeEquals(BaseType.GENERAL);
-        
+
         input2 = new SDFIOPort(this,"input2", true, false);
         input2.setTokenConsumptionRate(1);
         input2.setTypeEquals(BaseType.GENERAL);
-        
+
         output = new SDFIOPort(this,"output", false, true);
         output.setTokenProductionRate(2);
         output.setTypeEquals(BaseType.GENERAL);

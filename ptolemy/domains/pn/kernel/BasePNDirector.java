@@ -274,7 +274,7 @@ public class BasePNDirector extends CompositeProcessDirector {
             System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
 	    return _notDone;
 	} else {
-            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone 
+            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone
 		    + " again.");
 	    return _notDone;
 	}
@@ -350,7 +350,7 @@ public class BasePNDirector extends CompositeProcessDirector {
     protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
         if( rcvr.isReadBlocked() ) {
 	    _readBlockCount++;
-        } 
+        }
         if( rcvr.isWriteBlocked() ) {
 	    _writeblockedQueues.add(rcvr);
 	    _writeBlockCount++;

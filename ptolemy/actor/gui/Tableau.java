@@ -147,7 +147,7 @@ public class Tableau extends ComponentEntity {
     public JFrame getFrame () {
 	return _frame;
     }
-    
+
     /** Return the title of this tableau.  Subclasses can override this to
      *  provide a better description of themselves.  This base class
      *  returns the value set by a call to setTitle(), if it has been
@@ -168,7 +168,7 @@ public class Tableau extends ComponentEntity {
     }
 
     /** Return true if this tableau is a master, which means that
-     *  if that if its window is closed, then all other windows associated 
+     *  if that if its window is closed, then all other windows associated
      *  with the model are also closed.
      *  @return True if the tableau is a master.
      */
@@ -203,17 +203,17 @@ public class Tableau extends ComponentEntity {
                 // will trigger dispose() to get called.
 		_frame.hide();
 	    }
-	    
+
             if (isMaster() && oldContainer != null) {
                 // Window is a master.  Close the model which will close all
 		// other tableaux.
 		oldContainer.setContainer(null);
             }
-	} else if(container instanceof Effigy) {	
+	} else if(container instanceof Effigy) {
 	    super.setContainer(container);
 	} else {
-	    throw new IllegalActionException(this, container, 
-		"The container can only be set to an " + 
+	    throw new IllegalActionException(this, container,
+		"The container can only be set to an " +
 		"instance of Effigy");
 	}
     }

@@ -73,7 +73,7 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute {
 
     /** Construct an attribute with the given container and name.
      *  If an attribute already exists with the same name as the one
-     *  specified here, that is an instance of class 
+     *  specified here, that is an instance of class
      *  SingletonConfigurableAttribute (or a derived class), then that
      *  attribute is removed before this one is inserted in the container.
      *  @param container The container.

@@ -62,14 +62,14 @@ public class MouseInput3D extends GRActor {
         y = new TypedIOPort(this, "y");
         y.setOutput(true);
         y.setTypeEquals(BaseType.INT);
-        
+
     }
-    
+
     public TypedIOPort sceneGraphOut;
     public TypedIOPort x;
     public TypedIOPort y;
-    
-   
+
+
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MouseInput3D newobj = (MouseInput3D)super.clone(workspace);
         newobj.sceneGraphOut = (TypedIOPort) newobj.getPort("sceneGraphOut");
@@ -77,7 +77,7 @@ public class MouseInput3D extends GRActor {
         newobj.y = (TypedIOPort) newobj.getPort("y");
         return newobj;
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
   	    obj = new BranchGroup();
@@ -86,11 +86,11 @@ public class MouseInput3D extends GRActor {
   	    obj.addChild(_react);
   	    _hasData = false;
     }
-    
+
     public Node getNodeObject() {
         return (Node) obj;
     }
-    
+
     public void fire() throws IllegalActionException  {
         if (_hasData) {
             x.send(0, new IntToken(_xClicked));
@@ -99,27 +99,27 @@ public class MouseInput3D extends GRActor {
             System.out.println("clicked location -> "+_xClicked+" "+_yClicked);
         }
     }
-    
+
     public void makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
     }
-    
+
     private class _React extends Behavior {
-        
+
         public void initialize() {
             this.wakeupOn(new WakeupOnAWTEvent(MouseEvent.MOUSE_PRESSED));
         }
-        
+
         public void processStimulus(Enumeration criteria) {
             System.out.println("new stimulus");
             WakeupCriterion wakeup;
             int eventId;
             AWTEvent[] event;
-        
+
             while (criteria.hasMoreElements()) {
                 wakeup = (WakeupCriterion) criteria.nextElement();
                 event = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
-              	for (int i=0; i<event.length; i++) { 
+              	for (int i=0; i<event.length; i++) {
 	                eventId = event[i].getID();
 	                if (eventId == MouseEvent.MOUSE_PRESSED) {
             	        _xClicked = ((MouseEvent)event[i]).getX();
@@ -132,10 +132,10 @@ public class MouseInput3D extends GRActor {
             this.wakeupOn(new WakeupOnAWTEvent(MouseEvent.MOUSE_PRESSED));
         }
     }
-    
+
     protected _React _react;
     protected BranchGroup obj;
-    
+
     boolean _hasData;
     int _xClicked;
     int _yClicked;

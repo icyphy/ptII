@@ -306,7 +306,7 @@ public class ModelPane extends JPanel {
 	    add(_displays);
 	    _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
 	    _displays.setBackground(getBackground());
-    
+
 	    // Put placeable objects in a reasonable place
 	    for(Iterator i = _model.deepEntityList().iterator();
 		i.hasNext();) {

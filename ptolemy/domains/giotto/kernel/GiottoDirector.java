@@ -349,26 +349,26 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 		    double currentTime = getCurrentTime();
 
-		    int actorFrequency = 
+		    int actorFrequency =
                         GiottoActorComparator.getFrequency(actor);
 
-		    _nextIterationTime = 
+		    _nextIterationTime =
                         currentTime + (_period / actorFrequency);
 
 		    if (_debugging)
-			_debug("Prefiring " + 
+			_debug("Prefiring " +
                                 ((NamedObj)actor).getFullName());
 
 		    if (actor.prefire()) {
 			if (_debugging)
-			    _debug("Firing " + 
+			    _debug("Firing " +
                                     ((NamedObj)actor).getFullName());
 
 			actor.fire();
 		    }
 
 		    if (_debugging)
-			_debug("Postfiring " + 
+			_debug("Postfiring " +
                                 ((NamedObj)actor).getFullName());
 
 		    if (!actor.postfire())
@@ -397,20 +397,20 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    // Assumption: sameFrequencyList is non-empty.
 		    Actor actor = (Actor) sameFrequencyList.get(0);
 
-		    int maxFrequency = 
+		    int maxFrequency =
                         GiottoActorComparator.getFrequency(actor);
 
 		    setCurrentTime(currentTime + (_period / maxFrequency));
 
 		    if (_synchronizeToRealTime) {
-			long elapsedTime = System.currentTimeMillis() 
+			long elapsedTime = System.currentTimeMillis()
                             - _realStartTime;
 
-			double elapsedTimeInSeconds = 
+			double elapsedTimeInSeconds =
                             ((double) elapsedTime) / 1000.0;
 
 			if (currentTime > elapsedTimeInSeconds) {
-			    long timeToWait = (long) ((currentTime - 
+			    long timeToWait = (long) ((currentTime -
                                     elapsedTimeInSeconds) * 1000.0);
 
 			    if (timeToWait > 0) {
@@ -444,7 +444,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 		    List outputPortList = actor.outputPortList();
 
-		    Enumeration outputPorts = 
+		    Enumeration outputPorts =
                         Collections.enumeration(outputPortList);
 
 		    while (outputPorts.hasMoreElements()) {
@@ -456,7 +456,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			    Receiver[] receiverArray = channelArray[i];
 
 			    for (int j = 0; j < receiverArray.length; j++) {
-				GiottoReceiver receiver = 
+				GiottoReceiver receiver =
                                     (GiottoReceiver) receiverArray[j];
 
 				receiver.update();

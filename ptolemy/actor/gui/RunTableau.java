@@ -85,7 +85,7 @@ public class RunTableau extends Tableau {
             "Cannot run a model that is not a CompositeActor.");
         }
 	CompositeActor actor = (CompositeActor)model;
-	
+
 	// Create a manager.
         Manager manager = actor.getManager();
         if (manager == null) {
@@ -100,7 +100,7 @@ public class RunTableau extends Tableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-   
+
     // FIXME: should be somewhere else?
     // Default background color is a light grey.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
@@ -153,10 +153,10 @@ public class RunTableau extends Tableau {
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected variables               ////
-        
+
         /** Debug menu for this frame. */
         protected JMenu _debugMenu;
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         inner classes                     ////
 
@@ -205,7 +205,7 @@ public class RunTableau extends Tableau {
 	 *  The container argument must not be null, or a
 	 *  NullPointerException will be thrown.  This entity will use the
 	 *  workspace of the container for synchronization and version counts.
-	 *  If the name argument is null, 
+	 *  If the name argument is null,
 	 *  then the name is set to the empty string.
 	 *  Increment the version of the workspace.
 	 *  @param container The container entity.

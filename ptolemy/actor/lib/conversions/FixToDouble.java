@@ -43,7 +43,7 @@ import ptolemy.math.FixPoint;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToDouble
-/**  
+/**
 
 This actor converts a FixToken into a DoubleToken. This conversion is
 explicitly provided since there exists not a lossless conversion
@@ -138,7 +138,7 @@ public class FixToDouble extends Transformer {
             // Scale the FixToken to specific precision. If rounding
             // occurs, select which overflow mode to use.
             FixPoint value = in.fixValue();
-            FixPoint newvalue = Quantizer.round(value, 
+            FixPoint newvalue = Quantizer.round(value,
                     _precision, _overflow);
 	    DoubleToken result = new DoubleToken( newvalue.doubleValue());
             output.send(0, result);

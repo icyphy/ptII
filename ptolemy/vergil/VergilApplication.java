@@ -82,7 +82,7 @@ public class VergilApplication extends MoMLApplication {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
         }
-        
+
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
             try {
@@ -113,7 +113,7 @@ public class VergilApplication extends MoMLApplication {
      */
     protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
-	
+
 	// FIXME: This code is Dog slow for some reason.
 	URL inurl = specToURL("ptolemy/configs/vergilWelcomeWindow.xml");
         _parser.reset();

@@ -40,7 +40,7 @@ import ptolemy.data.Token;
 /**
 The receiver for the continuous time domain. This is a mailbox with
 capacity one, and any token put in the receiver overwrites
-any token previously present in the reciever. As a consquence, 
+any token previously present in the reciever. As a consquence,
 hasRoom() method always returns true. The get() method will consume
 the token if there exists one. After the consumption, the hasToken()
 method will return false, until a token is put into this receiver.
@@ -76,9 +76,9 @@ public class CTReceiver extends Mailbox {
     /** Put a token into this receiver. If the argument is null,
      *  then this receiver will not contain any token after this method
      *  returns. If the receiver already has a token, then the new token
-     *  will override the old token, and the old 
-     *  token will be lost. 
-     * 
+     *  will override the old token, and the old
+     *  token will be lost.
+     *
      *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this class.
      */
@@ -88,7 +88,7 @@ public class CTReceiver extends Mailbox {
         }
         super.put(token);
         // Uncomment the following lines when debugging the receiver.
-        // System.out.println(getContainer().getFullName() + 
+        // System.out.println(getContainer().getFullName() +
         //        " received " + token);
     }
 }

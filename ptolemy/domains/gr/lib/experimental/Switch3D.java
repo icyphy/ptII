@@ -100,7 +100,7 @@ public class Switch3D extends GRTransform {
      *  an input port does not have a token.
      */
     public void fire() throws IllegalActionException {
-        
+
 	    if (select.getWidth() != 0) {
             if (select.hasToken(0)) {
                 int index = (int) ((DoubleToken) select.get(0)).doubleValue();
@@ -115,7 +115,7 @@ public class Switch3D extends GRTransform {
 	        }
 	    }
     }
-    
+
     /** Setup the transform object
      */
     public void initialize() throws IllegalActionException {
@@ -123,12 +123,12 @@ public class Switch3D extends GRTransform {
         detachableGroup = new BranchGroup();
         detachableGroup.setCapability(BranchGroup.ALLOW_DETACH);
     }
-    
-    
+
+
     public Node getNodeObject() {
         return null;
     }
-    
+
     public void makeSceneGraphConnection() throws IllegalActionException {
         _previousIndex = -1;
         int width = sceneGraphIn.getWidth();
@@ -142,7 +142,7 @@ public class Switch3D extends GRTransform {
                 detachableGroup.addChild(n);
             }
         }
-        
+
         width = sceneGraphOut.getWidth();
         System.out.println("width "+width);
         attachmentGroup = new BranchGroup[width];
@@ -154,7 +154,7 @@ public class Switch3D extends GRTransform {
             sceneGraphOut.send(i,new ObjectToken(attachmentGroup[i]));
         }
     }
-    
+
     private BranchGroup detachableGroup;
     private BranchGroup[] attachmentGroup;
     private int _previousIndex = -1;

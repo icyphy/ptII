@@ -106,11 +106,11 @@ public class Switch extends Transformer {
      *  an input port does not have a token.
      */
     public void fire() throws IllegalActionException {
-        
+
 	    if (select.getWidth() != 0) {
             if (select.hasToken(0)) {
                 int index = (int) ((DoubleToken) select.get(0)).doubleValue();
-            
+
                 int width = output.getWidth();
                 if (index < width) {
                     if (input.hasToken(0)) {

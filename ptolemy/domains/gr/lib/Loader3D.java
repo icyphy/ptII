@@ -74,27 +74,27 @@ public class Loader3D extends GRShadedShape {
         super(container, name);
         filename = new Parameter(this, "filename", new StringToken("chopper.obj"));
     }
-    
+
     public Parameter filename;
-    
+
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Loader3D newObject = (Loader3D)super.clone(workspace);
         return newObject;
     }
-    
-    
 
-   
+
+
+
    public Node getNodeObject() {
        return (Node) obj.getSceneGroup();
    }
 
     protected void _createModel() throws IllegalActionException {
         String fileName = (String) ((StringToken) filename.getToken()).stringValue();
-        
+
         //Appearance ap = new Appearance();
         //ap.setColoringAttributes(new ColoringAttributes(_color.x,_color.y,_color.z,ColoringAttributes.SHADE_GOURAUD));
-        
+
     	int flags = ObjectFile.RESIZE;
     	//if (!noTriangulate) flags |= ObjectFile.TRIANGULATE;
 	    //if (!noStripify) flags |= ObjectFile.STRIPIFY;

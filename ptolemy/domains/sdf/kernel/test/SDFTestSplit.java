@@ -49,11 +49,11 @@ public class SDFTestSplit extends TypedAtomicActor {
         input = new SDFIOPort(this, "input", true, false);
         input.setTokenConsumptionRate(2);
         input.setTypeEquals(BaseType.INT);
-        
+
         output1 = new SDFIOPort(this, "output1", false, true);
         output1.setTokenProductionRate(1);
         output1.setTypeEquals(BaseType.INT);
-        
+
         output2 = new SDFIOPort(this, "output2", false, true);
         output2.setTokenProductionRate(1);
         output2.setTypeEquals(BaseType.INT);

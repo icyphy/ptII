@@ -43,7 +43,7 @@ import ptolemy.actor.lib.Transformer;
 //// CTTriggeredSampler
 /**
 This actor samples the continuous input signal when there is a discrete
-event presents at the "trigger" input. 
+event presents at the "trigger" input.
 The actor has a multi-inputport and a multi-outputport. Singals in
 each input channel are sampled and produced to corresponding output
 channel.
@@ -114,7 +114,7 @@ public class CTTriggeredSampler extends Transformer
         try {
             if (trigger.hasToken(0)) {
                 trigger.get(0);
-                for (int i = 0; 
+                for (int i = 0;
                      i < Math.min(input.getWidth(), output.getWidth());
                      i++) {
                     if(input.hasToken(i)) {

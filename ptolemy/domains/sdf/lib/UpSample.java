@@ -48,13 +48,13 @@ import java.util.List;
 //// UpSample
 /**
 This actor upsamples an input stream by an integer factor by inserting
-tokens with value zero.  The upsample factor is given by the 
-<i>tokenProductionRate</i> parameter of the output port.  
+tokens with value zero.  The upsample factor is given by the
+<i>tokenProductionRate</i> parameter of the output port.
 On each firing, this actor reads one sample from the input
 and copies that token to the output.  Then it outputs a sequence of zero
 tokens of the same type as the input token so that the total number
-of tokens created during the firing is the same as the 
-<i>tokenProductionRate</i> parameter of the output port. 
+of tokens created during the firing is the same as the
+<i>tokenProductionRate</i> parameter of the output port.
 By default, this actor sets the value of this parameter to be two,
 so the output sample rate is twice that of the input.
 <p>
@@ -94,7 +94,7 @@ public class UpSample extends SDFTransformer {
     ////                         public methods                    ////
 
     /** Consume the input Token and produce the same token on the output.
-     *  Then create a number of zero tokens of the same type as the 
+     *  Then create a number of zero tokens of the same type as the
      *  input token on the output port, so that output.tokenProductionRate
      *  tokens are created in total.  If there is not token on the input,
      *  then this method throws a NoTokenException (which is a runtime
@@ -105,9 +105,9 @@ public class UpSample extends SDFTransformer {
 	Token token = input.get(0);
         // Send the first token.
         output.send(0, token);
-        
+
         // count is the number of zero tokens to create.
-        int count = output.getTokenProductionRate() - 1;       
+        int count = output.getTokenProductionRate() - 1;
         for(int i = 0; i < count; i++)
             output.send(0, token.zero());
     }

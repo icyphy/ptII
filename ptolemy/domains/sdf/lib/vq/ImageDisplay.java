@@ -114,7 +114,7 @@ public class ImageDisplay extends Sink implements Placeable {
     }
 
     /**
-     * Fire this actor.  
+     * Fire this actor.
      * Consume an IntMatrixToken from the input port.  If the image is
      * not the same size as the previous image, or this is the first
      * image, then create a new Picture object to represent the image,
@@ -193,11 +193,11 @@ public class ImageDisplay extends Sink implements Placeable {
     /** Set the background */
     public Color getBackground() {
 	return _container.getBackground();
-    } 
+    }
     /** Set the background */
     public void setBackground(Color background) {
 	_container.setBackground(background);
-    } 
+    }
 
     /** Set the container that this actor should display data in.  If place
      * is not called, then the actor will create its own frame for display.

@@ -80,11 +80,11 @@ public class DERealTimeSubscriber extends DEActor
     public DERealTimeSubscriber(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	jspaceName = new Parameter(this, "jspaceName", 
+    	jspaceName = new Parameter(this, "jspaceName",
                 new StringToken("JavaSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
 
-        entryName = new Parameter(this, "entryName", 
+        entryName = new Parameter(this, "entryName",
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
 
@@ -95,7 +95,7 @@ public class DERealTimeSubscriber extends DEActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The Java Space name. The default name is "JavaSpaces" of 
+    /** The Java Space name. The default name is "JavaSpaces" of
      *  type StringToken.
      */
     public Parameter jspaceName;
@@ -137,7 +137,7 @@ public class DERealTimeSubscriber extends DEActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        TokenEntry entryTemplate = new TokenEntry(_entryName, 
+        TokenEntry entryTemplate = new TokenEntry(_entryName,
                 null, null);
         // request for notification
         try {
@@ -152,13 +152,13 @@ public class DERealTimeSubscriber extends DEActor
                     "failed registering for notification. " + te.getMessage());
         }
     }
-        
+
     /** Fork a new thread to handle the notify event.
      */
     public void notify(RemoteEvent event) {
         NotifyHandler nh = new NotifyHandler(this, event);
         new Thread(nh).start();
-    }      
+    }
 
     /** Return true, and produce the oldest token in the list.
      *  This is the token at the correct time, since both the director
@@ -171,21 +171,21 @@ public class DERealTimeSubscriber extends DEActor
             }
         }
         return true;
-    }  
-    
-    
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The entry name.
     private String _entryName;
-    
+
     // The space to read from.
     private JavaSpace _space;
-    
+
     // Indicating whether there's new data came in.
     private boolean _hasNewToken;
- 
+
     // Last set of data. Also serves as the synchronization lock.
     private ArrayToken _lastData;
 
@@ -194,15 +194,15 @@ public class DERealTimeSubscriber extends DEActor
 
     // Used to identify the event registration
     private EventRegistration _eventReg;
-    
+
     // Used to identify notification.
     private long _notificationSeq;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-    
+
     public class NotifyHandler implements Runnable {
-        
+
         /** construct the notify handler
          */
         public NotifyHandler(TypedAtomicActor container, RemoteEvent event) {
@@ -212,17 +212,17 @@ public class DERealTimeSubscriber extends DEActor
 
         //////////////////////////////////////////////////////////////
         ////                     public methods                   ////
-                
+
         /** Read the entry token from the javaspaces.
          */
         public void run() {
             // check if it is the right notification
             if (_event.getSource().equals(_eventReg.getSource()) &&
-                    _event.getID() == _eventReg.getID() && 
+                    _event.getID() == _eventReg.getID() &&
                     _event.getSequenceNumber() > _notificationSeq) {
                 // grab a lock and read new entry.
                 // System.out.println(_container.getName() + " notified.");
-                TokenEntry entryTemplate = new TokenEntry(_entryName, 
+                TokenEntry entryTemplate = new TokenEntry(_entryName,
                         null, null);
                 synchronized(_tokenList) {
                     TokenEntry entry;
@@ -235,15 +235,15 @@ public class DERealTimeSubscriber extends DEActor
                                 e.getMessage());
                     }
                     if(entry == null) {
-                        System.err.println(getName() + 
+                        System.err.println(getName() +
                                 " read null from space");
                     } else {
-                        //System.out.println(getName() + 
-                        //        " take from space: " 
+                        //System.out.println(getName() +
+                        //        " take from space: "
                         //        + entry.serialNumber + " " + entry.token);
-                        _tokenList.addLast(entry.token); 
+                        _tokenList.addLast(entry.token);
                         try {
-                            _container.getDirector().fireAt(_container, 
+                            _container.getDirector().fireAt(_container,
                                     (double)System.currentTimeMillis()/1000.0);
                         } catch (IllegalActionException ex) {
                             throw new InvalidStateException(_container,
@@ -256,13 +256,13 @@ public class DERealTimeSubscriber extends DEActor
                 //Thread.currentThread().yield();
             }
         }
-        
+
         //////////////////////////////////////////////////////////////
         ////                     private variables                ////
-        
+
         // the container
         private TypedAtomicActor _container;
-        
+
         // the event
         private RemoteEvent _event;
     }

@@ -35,11 +35,11 @@
 version in its output. In reality, this actor encapsulates a Java3D TransformGroup
 which is converted into a node in the resulting Java3D scene graph. This actor will
 only have meaning in the GR domain. Scaling can be done uniformly or non-uniformly.
-Uniform scaling scales the input geometry equally in all directions. Uniform scaling 
+Uniform scaling scales the input geometry equally in all directions. Uniform scaling
 is done through modification of the <i>scaleFactor</i> parameter. Non-uniform scaling
-involves preferential scaling of the input geometry in a specified Cartesian axis. 
+involves preferential scaling of the input geometry in a specified Cartesian axis.
 Non-uniform scaling is done through modification of the <i>xScale<i>, <i>yScale<i/>,
-and <i>zScale<i/> parameters. 
+and <i>zScale<i/> parameters.
 
 @author C. Fong
 */
@@ -69,9 +69,9 @@ public class TextString3D extends GRShadedShape {
         super(container, name);
         text = new Parameter(this, "text", new StringToken("Ptolemy"));
     }
-    
+
     public Parameter text;
-    
+
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         Font3D font3D = new Font3D(new Font("Helvetica", Font.PLAIN, 1),
@@ -83,18 +83,18 @@ public class TextString3D extends GRShadedShape {
         containedNode.setAppearance(_appearance);
     }
 
-    
+
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TextString3D newObject = (TextString3D) super.clone(workspace);
         newObject.text = (Parameter) newObject.getAttribute("text");
         return newObject;
     }
-    
-    
+
+
     public Node getNodeObject() {
         return (Node) containedNode;
     }
-   
+
 
     private String _getText() throws IllegalActionException {
         return ((StringToken) text.getToken()).stringValue();
@@ -102,6 +102,6 @@ public class TextString3D extends GRShadedShape {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-   
+
     private Shape3D containedNode;
 }

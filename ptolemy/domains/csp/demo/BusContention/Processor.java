@@ -257,7 +257,7 @@ public class Processor extends CSPActor {
     }
 
     /** Wrapup this actor by first calling the super class
-     *  wrapup method and then generating an event that 
+     *  wrapup method and then generating an event that
      *  will set the final state of this actor for the
      *  graphical user interface.
      * @exception IllegalActionException If the super class
@@ -267,7 +267,7 @@ public class Processor extends CSPActor {
         super.wrapup();
         _debug( new ExecEvent( this, ExecEvent.WAITING ) );
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

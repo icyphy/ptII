@@ -70,8 +70,8 @@ import javax.swing.event.*;
 /**
 This class provides interaction with nodes that represent Ptolemy II entities.
 (Or, more specifically, with the icon that is contained in an entity.)
-A layout algorithm is applied so that the figures for ports are 
-automatically placed on the sides of the figure for the entity.  
+A layout algorithm is applied so that the figures for ports are
+automatically placed on the sides of the figure for the entity.
 Standard selection and movement interaction is
 provided.  In addition, right clicking on the entity will create a context
 menu for the entity.
@@ -94,20 +94,20 @@ public class EntityController extends LocatableNodeController {
             (NodeInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
 
-	/*	
+	/*
 	VergilApplication application = VergilApplication.getInstance();
 	Action action = application.getAction("Look Inside");
 	ActionInteractor actionInteractor = new ActionInteractor(action);
 	actionInteractor.setConsuming(false);
 	actionInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 	interactor.addInteractor(actionInteractor);
-	
+
 
 	// FIXME this is a horrible dance so that the actioninteractor gets
 	// the events before the drag interactor.
 	interactor.setDragInteractor(interactor.getDragInteractor());
 	*/
-        // Initialize the menu creator. 
+        // Initialize the menu creator.
 	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
 
@@ -134,12 +134,12 @@ public class EntityController extends LocatableNodeController {
 
     /** This layout algorithm is responsible for laying out the ports
      * within an entity.
-     */    
+     */
     public class EntityLayout extends AbstractGlobalLayout {
 	public EntityLayout() {
 	    super(new BasicLayoutTarget(getController()));
 	}
-	
+
 	public void layout(Object node) {
 	    GraphModel model = getController().getGraphModel();
 	    Iterator nodes = model.nodes(node);
@@ -149,7 +149,7 @@ public class EntityController extends LocatableNodeController {
 	    int inCount = 0;
 	    int outCount = 0;
 	    int inOutCount = 0;
-	    
+
 	    while(nodes.hasNext()) {
 		Port port = (Port) nodes.next();
 		if(!(port instanceof IOPort)) {
@@ -169,19 +169,19 @@ public class EntityController extends LocatableNodeController {
 		    }
 		}
 	    }
-	    CompositeFigure figure = 
+	    CompositeFigure figure =
 		(CompositeFigure)getLayoutTarget().getVisualObject(node);
-	    
+
 	    _placePortFigures(figure, inputs, inCount,
 			      SwingConstants.WEST);
 	    _placePortFigures(figure, outputs, outCount,
 			      SwingConstants.EAST);
 	    _placePortFigures(figure, inouts, inOutCount,
 			      SwingConstants.SOUTH);
-	    
+
 	}
-	
-	private void _placePortFigures(CompositeFigure figure, List portList, 
+
+	private void _placePortFigures(CompositeFigure figure, List portList,
 					int count, int direction) {
 	    Iterator ports = portList.iterator();
 	    int number = 0;
@@ -192,18 +192,18 @@ public class EntityController extends LocatableNodeController {
 		// If there is no figure, then ignore this port.  This may
 		// happen if the port hasn't been rendered yet.
 		if(portFigure == null) continue;
-		Rectangle2D portBounds = 
+		Rectangle2D portBounds =
 		    portFigure.getBounds();
-		BoundsSite site = 
-		    new BoundsSite(figure.getBackgroundFigure(), 0, 
-				   direction, 
+		BoundsSite site =
+		    new BoundsSite(figure.getBackgroundFigure(), 0,
+				   direction,
 				   100.0 * number / (count+1));
-		CanvasUtilities.translateTo(portFigure, 
+		CanvasUtilities.translateTo(portFigure,
 					    site.getX(), site.getY());
-	    }		    
-	}	    
+	    }
+	}
     }
- 
+
     /** Get the menu factory that will create context menus for this
      *  controller.
      */
@@ -233,12 +233,12 @@ public class EntityController extends LocatableNodeController {
 		}
 	    } catch (KernelException ex) {
 		throw new InternalErrorException("could not create icon " +
-						 "in " + object + " even " + 
+						 "in " + object + " even " +
 						 "though one did not exist");
 	    }
 
 	    Figure figure = icon.createFigure();
-            PtolemyGraphModel model = 
+            PtolemyGraphModel model =
                 (PtolemyGraphModel)getController().getGraphModel();
             figure.setToolTipText(object.getName(model.getToplevel()));
 	    return figure;

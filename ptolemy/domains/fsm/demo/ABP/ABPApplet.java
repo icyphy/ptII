@@ -125,7 +125,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
 
             // the plot
             _plot = new TimedPlotter(_toplevel, "Plot");
- 
+
             // sender - a hierarchical FSM
             TypedCompositeActor sender =
                     new TypedCompositeActor(_toplevel, "Sender");
@@ -655,7 +655,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
                 (TypedIORelation)_toplevel.newRelation("monitor");
             sdrMonitor.link(sysR11);
             _plot.input.link(sysR11);
-    
+
             // Configure the plotter.
             _plot.place(getContentPane());
             _plot.plot.setBackground(getBackground());
@@ -696,7 +696,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
      *  values in the query box first and set parameters.
      *  @exception IllegalActionException If topology changes on the
      *   model or parameter changes on the actors throw it.
-     */     
+     */
     protected void _go() throws IllegalActionException {
         // If an exception occurred during initialization, then we don't
         // want to run here.  The model is probably not complete.
@@ -708,12 +708,12 @@ public class ABPApplet extends DEApplet implements QueryListener {
         if (_manager.getState() != _manager.IDLE) return;
 
         // Set the values from the query.
-         
+
         _forward.dropRate.setToken
             (new DoubleToken(_query.doubleValue("forwardRate")));
         _backward.dropRate.setToken
             (new DoubleToken(_query.doubleValue("backwardRate")));
- 
+
         // The the X range of the plotter to show the full run.
         // The method being called is a protected member of DEApplet.
         _plot.plot.setXRange(0.0, _getStopTime());
@@ -736,16 +736,16 @@ public class ABPApplet extends DEApplet implements QueryListener {
 
     // message source
     private DEMessageSource _msgSrc;
-    
+
     // timer
     private DETimer _timer;
 
     // forward packet channel
     private DEChannel _forward;
-    
+
     // backward packet channel
     private DEChannel _backward;
-    
+
     // the plot
     private TimedPlotter _plot;
 }

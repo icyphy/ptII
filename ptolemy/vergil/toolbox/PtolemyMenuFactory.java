@@ -46,21 +46,21 @@ import javax.swing.SwingConstants;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyMenuFactory
 /**
-A menu factory that contains a list of item factories.  
+A menu factory that contains a list of item factories.
 When asked to create a context menu, This class first
 takes the figure and finds the ptolemy object associated with it.  Then it
 passes the ptolemy object to each menu item factory that it contains to add
 the menu items.  Lastly, it returns the resulting menu.  This seems simple,
 except for the fact that for different types of figures, and different
 visual notations, the mapping between figure and the interesting ptolemy
-object is different.  Hence, Node and Edge Controllers will often need 
+object is different.  Hence, Node and Edge Controllers will often need
 subclasses of this factory to get the correct ptolemy object.
 
 @author Steve Neuendorffer
 @version $Id$
 */
 public class PtolemyMenuFactory extends MenuFactory {
-    
+
     /** Create a new menu factory that contains no menu item factories.
      */
     public PtolemyMenuFactory(GraphController controller) {
@@ -73,7 +73,7 @@ public class PtolemyMenuFactory extends MenuFactory {
     public void addMenuItemFactory(MenuItemFactory factory) {
 	_factoryList.add(factory);
     }
-    
+
     /**
      * Create an instance of the menu associated with this factory.
      */
@@ -101,24 +101,24 @@ public class PtolemyMenuFactory extends MenuFactory {
     public List menuItemFactoryList() {
 	return Collections.unmodifiableList(_factoryList);
     }
-    
+
     /** Remove the given menu item factory from the factory list.
      */
     public void removeMenuItemFactory(MenuItemFactory factory) {
         _factoryList.remove(factory);
     }
-    
+
     /** Return the Ptolemy object that the given figure represents.
      *  In this base class, we assume that the figure is attached to a
      *  a diva.graph.model object, and that object is attached to the
-     *  correct ptolemy object.  In many cases, this is not the case, 
+     *  correct ptolemy object.  In many cases, this is not the case,
      *  and you will have to override this function.
      */
     protected NamedObj _getObjectFromFigure(Figure figure) {
 	Object object = figure.getUserObject();
 	return (NamedObj)_controller.getGraphModel().getSemanticObject(object);
     }
-    
+
     /** The menu item factories.
      */
     private List _factoryList;

@@ -82,7 +82,7 @@ has a <i>target</i>, "moml", which specifies that it contains MoML code.
 The keyword "moml" in the processing instruction must
 be exactly as above, or the entire processing instruction will
 be ignored.  The populate() method
-strips off the processing instruction and evaluates the MoML elements.  
+strips off the processing instruction and evaluates the MoML elements.
 The group element allows the library contents to be given as a set
 of elements (the MoML parser requires that there always be a single
 top-level element, which in this case will be the group element).

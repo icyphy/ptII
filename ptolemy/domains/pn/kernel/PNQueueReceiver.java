@@ -113,7 +113,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             _otherBranch = branch;
         }
     }
-            
+
     /** Unblock this receiver and register this new state with
      *  either the monitoring branch or the local director. If
      *  there is no blocked branch waiting, then register the
@@ -127,11 +127,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             BasePNDirector director = ((BasePNDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());
             director._actorUnBlocked(this);
-            
+
         }
         notifyAll();
     }
-    
+
     /** Get a token from this receiver. If the receiver is empty then
      *  block until a token becomes available. Use the local director
      *  to manage blocking reads that occur. If this receiver is
@@ -143,7 +143,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     public Token get() {
         return get(null);
     }
-    
+
     /** Remove and return the oldest token from the FIFO queue contained
      *  in the receiver. Terminate the calling process by throwing a
      *  TerminateProcessException if requested.
@@ -155,7 +155,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  process was suspended), take the oldest token from the FIFO queue.
      *  Check if any process is blocked on a write to this
      *  receiver. If a process is indeed blocked, then unblock the
-     *  process, and inform the director of the same. 
+     *  process, and inform the director of the same.
      *  Otherwise return.
      *  @return The oldest Token read from the queue
      */
@@ -189,7 +189,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             return result;
         }
     }
-    
+
     /** Return true since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
      *  @return true
@@ -198,7 +198,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return true;
     }
 
-    /** Return true if the receiver has room for putting the given number of 
+    /** Return true if the receiver has room for putting the given number of
      *  tokens into it (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
@@ -207,8 +207,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  than one.
      */
     public boolean hasRoom(int tokens) throws IllegalActionException {
-	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
+	if(tokens < 1)
+	    throw new IllegalActionException("The number of " +
 					     "tokens must be greater than 0");
 	return true;
     }
@@ -222,23 +222,23 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     }
 
     /** Return true if get() will succeed in returning a token the given
-     *  number of times.  
+     *  number of times.
      *  @return true
      *  @exception IllegalActionException If the number of tokens is less
      *  than one.
      */
     public boolean hasToken(int tokens) throws IllegalActionException {
-	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
+	if(tokens < 1)
+	    throw new IllegalActionException("The number of " +
 					     "tokens must be greater than 0");
         return true;
     }
 
-    /** Return true if this receiver is connected to the inside of a 
+    /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller
      *  @return True if this receiver is connected to the inside of
@@ -249,11 +249,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return _boundaryDetector.isConnectedToBoundary();
     }
 
-    /** Return true if this receiver is connected to the inside of a 
+    /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller
      *  @return True if this receiver is connected to the inside of
@@ -264,11 +264,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
-    /** Return true if this receiver is connected to the outside of a 
+    /** Return true if this receiver is connected to the outside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
      *  to the outside of a boundary port, then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller
      *  @return True if this receiver is connected to the outside of
@@ -293,7 +293,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
      *  on the inside of a boundary port then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the inside of
@@ -308,7 +308,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
      *  on the outside of a boundary port then return true; otherwise
-     *  return false. 
+     *  return false.
      *  <P>
      *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the outside of
@@ -362,7 +362,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     public void put(Token token) {
         put(token, null);
     }
-    
+
     /** Put a token on the queue contained in this receiver.
      *  If the queue is full, then suspend the calling process (blocking
      *  write) and inform the director of the same. Resume the process on

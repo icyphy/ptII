@@ -50,7 +50,7 @@ import javax.swing.tree.*;
 /**
 This class provides a tree view of a ptolemy model, showing only the
 entities of the model.  The class supports drag-and-drop.
- 
+
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
@@ -98,8 +98,8 @@ public class PTree extends JTree {
 	    if(source instanceof JTree) {
 		JTree tree = (JTree) source;
 		Point sourcePoint = e.getDragOrigin();
-		TreePath path = 
-		    tree.getPathForLocation(sourcePoint.x, 
+		TreePath path =
+		    tree.getPathForLocation(sourcePoint.x,
 					    sourcePoint.y);
 		// If we didn't select anything.. then don't drag.
 		if(path == null) return;
@@ -113,7 +113,7 @@ public class PTree extends JTree {
 		    e.startDrag(DragSource.DefaultCopyNoDrop,
 				transferable, dsl);
 
-		}	  
+		}
 	    }
 	}
     };

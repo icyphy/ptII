@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -59,7 +59,7 @@ public class TextEditorTableau extends Tableau {
      *  @param name The name.
      *  @exception IllegalActionException If the container does not accept
      *   this entity (this should not occur).
-     *  @exception NameDuplicationException If the name coincides with an 
+     *  @exception NameDuplicationException If the name coincides with an
      *   attribute already in the container.
      */
     public TextEditorTableau(TextEffigy container, String name)
@@ -99,7 +99,7 @@ public class TextEditorTableau extends Tableau {
 	 *  The container argument must not be null, or a
 	 *  NullPointerException will be thrown.  This entity will use the
 	 *  workspace of the container for synchronization and version counts.
-	 *  If the name argument is null, 
+	 *  If the name argument is null,
 	 *  then the name is set to the empty string.
 	 *  Increment the version of the workspace.
 	 *  @param container The container entity.

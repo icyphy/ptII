@@ -101,8 +101,8 @@ public class RelationController extends LocatableNodeController {
         _menuCreator.setMenuFactory(factory);
     }
 
-    /** 
-     * The renderer for relation node.  This class creates a Figure that 
+    /**
+     * The renderer for relation node.  This class creates a Figure that
      * looks like a black diamond.
      */
     public class RelationRenderer implements NodeRenderer {
@@ -120,7 +120,7 @@ public class RelationController extends LocatableNodeController {
 	    if(n != null) {
 		Vertex vertex = (Vertex)n;
 		Relation relation = (Relation) vertex.getContainer();
-                PtolemyGraphModel model = 
+                PtolemyGraphModel model =
                     (PtolemyGraphModel)getController().getGraphModel();
                 figure.setToolTipText(relation.getName(model.getToplevel()));
 	    }

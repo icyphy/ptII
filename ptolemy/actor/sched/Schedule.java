@@ -39,22 +39,22 @@ import java.util.NoSuchElementException;
 //////////////////////////////////////////////////////////////////////////
 //// Schedule
 /**
-This class is a schedule. A schedule 
+This class is a schedule. A schedule
 consists of an iteration count and a list of schedule elements.
 A schedule element can correspond to a single actor, or a schedule
 element can itself be a schedule. This nesting can be arbitrarily deep.
-However, for the schedule to be valid, all of the lowest-level schedule elements 
+However, for the schedule to be valid, all of the lowest-level schedule elements
 must correspond to an actor. If this were not the case, then the actor
 invocation sequence corresponding to the schedule would contain null
 elements. It is up to the scheduler to enforce this requirement.
 <p>
 <h1>Terminology</h1>
-A schedule (or schedule loop) has the form 
+A schedule (or schedule loop) has the form
 (n,S<sub>1</sub>,S<sub>2</sub>...,S<sub>m</sub>)
-where n is a positive integer called the iteration count, and S<sub>i</sub> 
-is either another schedule loop or an actor. The schedule can be expressed as 
-a sequence S<sub>1</sub>S<sub>2</sub>...S<sub>m</sub> where 
-S<sub>i</sub> is either an actor or a schedule loop. 
+where n is a positive integer called the iteration count, and S<sub>i</sub>
+is either another schedule loop or an actor. The schedule can be expressed as
+a sequence S<sub>1</sub>S<sub>2</sub>...S<sub>m</sub> where
+S<sub>i</sub> is either an actor or a schedule loop.
 <p>
 <h1>Usage</h1>
 In this implementation,
@@ -64,7 +64,7 @@ Otherwise, if S<sub>i</sub> corresponds to a schedule, then S<sub>i</sub>
 will be an instance of Schedule.
 <p>
 The Schedule class is a schedule element that contains an iteration
-count and a list of schedule elements. The 
+count and a list of schedule elements. The
 Firing class is a schedule element that contains only a reference to
 an actor and an iteration count for that actor. Therefore,
 the top-level schedule element must be an instance of Schedule, and all
@@ -73,7 +73,7 @@ The iteration count is set by the setIterationCount() method. If this
 method is not invoked, a default value of one will be used.
 The add() and remove() methods are used to add or remove schedule elements.
 Only elements
-of type ScheduleElement (Schedule or Firing) may be added to the schedule list. 
+of type ScheduleElement (Schedule or Firing) may be added to the schedule list.
 Otherwise an exception will
 occur.
 <p>
@@ -156,7 +156,7 @@ public class Schedule extends ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Append the specified schedule element to the end of the schedule 
+    /** Append the specified schedule element to the end of the schedule
      *  list. This element must be an instance of Schedule or Firing.
      *
      * @param sa The schedule element to add.
@@ -166,8 +166,8 @@ public class Schedule extends ScheduleElement {
 	_schedule.add(sa);
     }
 
-    /** Insert the specified schedule element at the specified position in 
-     *  the schedule list. This element must be an instance of Schedule 
+    /** Insert the specified schedule element at the specified position in
+     *  the schedule list. This element must be an instance of Schedule
      *  or Firing.
      *
      *  @param index The index at which the specified element is to be
@@ -175,29 +175,29 @@ public class Schedule extends ScheduleElement {
      *  @param sa The schedule element to add.
      */
     public void add(int index, ScheduleElement sa) {
-	_scheduleVersion++; 
+	_scheduleVersion++;
 	_schedule.add(index, sa);
     }
 
-    /** Return the actor invocation sequence of the schedule in the 
+    /** Return the actor invocation sequence of the schedule in the
      *  form of a sequence of actors. For a valid schedule, all of the
      *  lowest-level nodes should be an instance of Firing. If the
-     *  schedule is not valid, then the returned iterator will contain 
+     *  schedule is not valid, then the returned iterator will contain
      *  null elements.
      *  <p>
      *  Note that the behavior of this iterator is unspecified if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
-     *  
+     *
      * @return An iterator over a sequence of actors.
      */
     public Iterator actorIterator() {
 	List returnActors = new LinkedList();
-	// Iterator over the elements directly contained by this 
+	// Iterator over the elements directly contained by this
 	// schedule.
 	Iterator scheduleItems = _schedule.iterator();
 	while (scheduleItems.hasNext()) {
-	    ScheduleElement scheduleElement = 
+	    ScheduleElement scheduleElement =
 		(ScheduleElement)scheduleItems.next();
 	    Iterator actors = scheduleElement.actorIterator();
 	    while (actors.hasNext()) {
@@ -217,16 +217,16 @@ public class Schedule extends ScheduleElement {
      *  Note that the behavior of this iterator is unspecified if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
-     *  
+     *
      *  @return An iterator over a sequence of firings.
      */
     public Iterator firingIterator() {
 	List returnFirings = new LinkedList();
-	// Iterator over the elements directly contained by this 
+	// Iterator over the elements directly contained by this
 	// schedule.
 	Iterator scheduleItems = _schedule.iterator();
 	while (scheduleItems.hasNext()) {
-	    ScheduleElement scheduleElement = 
+	    ScheduleElement scheduleElement =
 		(ScheduleElement)scheduleItems.next();
 	    Iterator firings = scheduleElement.firingIterator();
 	    while (firings.hasNext()) {
@@ -259,7 +259,7 @@ public class Schedule extends ScheduleElement {
      *
      *  @param index The index of the schedule element to be removed.
      *  @return The schedule element that was removed.
-     */ 
+     */
     public ScheduleElement remove(int index) {
 	_scheduleVersion++;
 	return((ScheduleElement)_schedule.remove(index));

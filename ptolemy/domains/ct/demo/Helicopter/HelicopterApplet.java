@@ -204,7 +204,7 @@ public class HelicopterApplet extends CTApplet {
             Transition tr4 = new Transition(hsctrl, "tr4");
             climbState.outgoingPort.link(tr4);
             cruise2State.incomingPort.link(tr4);
-            // 
+            //
             tr4.setGuardExpression("(outputV_V > 4.9) && (outputV_V < 5.1) " +
                     "&& (inputPz_V > -10.05) && (inputPz_V < -9.95)");
 

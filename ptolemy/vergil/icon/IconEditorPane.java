@@ -109,7 +109,7 @@ import ptolemy.vergil.toolbox.XMLIcon;
 //// IconEditorPane
 /**
 
-@author Nick Zamora (nzamor@uclink4.berkeley.edu) 
+@author Nick Zamora (nzamor@uclink4.berkeley.edu)
 @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
 @version $Id$
 */
@@ -123,11 +123,11 @@ public class IconEditorPane extends JCanvas {
 
         // Instantiate the color chooser for the color button.
         _colorChooser = new JColorChooser();
-      
+
   	_pane =(GraphicsPane) this.getCanvasPane();
 	_layer = _pane.getForegroundLayer();
 	_layer.setPickHalo(MOUSE_SENSITIVITY);
-	
+
 	// I have to make the figures "drag-able".
 	_interactor1.addInteractor(new DragInteractor());
 	_interactor2.addInteractor(new DragInteractor());
@@ -137,29 +137,29 @@ public class IconEditorPane extends JCanvas {
 	_interactor1.setPrototypeDecorator(new PathManipulator());
 	_interactor2.setPrototypeDecorator(new BoundsManipulator());
 	_interactor3.setPrototypeDecorator(new CircleManipulator());
-	
-	// This next part allows the user to select multiple figures 
-	// with the mouse by dragging a rectangle box around the figures 
+
+	// This next part allows the user to select multiple figures
+	// with the mouse by dragging a rectangle box around the figures
 	// the user wishes to be selected.
 	_selectionDragger = new SelectionDragger(_pane);
 	_selectionDragger.addSelectionInteractor(_interactor1);
 	_selectionDragger.addSelectionInteractor(_interactor2);
 	_selectionDragger.addSelectionInteractor(_interactor3);
 
-	// Begin with the elements specified in the icon passed into 
+	// Begin with the elements specified in the icon passed into
 	// the constructor.
 	addXMLIcon(icon);
     }
 
     //         StringBufferInputStream xml_stream = null;
-    //         xml_stream = new StringBufferInputStream("<xmlgraphic> <rectangle coords=\"0 0 60 40\" fill=\"white\"/> <polygon coords=\"10 10 50 20 10 30\" fill=\"blue\"/> </xmlgraphic>\n");	       
+    //         xml_stream = new StringBufferInputStream("<xmlgraphic> <rectangle coords=\"0 0 60 40\" fill=\"white\"/> <polygon coords=\"10 10 50 20 10 30\" fill=\"blue\"/> </xmlgraphic>\n");
 
 
     ////////////////////////////////////////////////////////////////////////
     ///////////////////      Private variables.       /////////////////////
 
     // The icon of the icon editor application.
-  
+
     private XMLIcon _icon;
 
     // Create the combo box for the toolbars(pull-down menus)
@@ -170,7 +170,7 @@ public class IconEditorPane extends JCanvas {
 
     private JComboBox _outlineComboBox;
 
-    // Used to distinguish which color we are changing, the fill of 
+    // Used to distinguish which color we are changing, the fill of
     // the shape or the outline of the shape.
 
     private boolean _changingFill;
@@ -188,7 +188,7 @@ public class IconEditorPane extends JCanvas {
     private SelectionInteractor _interactor2 = new SelectionInteractor(_m);
 
     private SelectionInteractor _interactor3 = new SelectionInteractor(_m);
-  
+
     // For dragging
 
     private SelectionDragger _selectionDragger;
@@ -205,7 +205,7 @@ public class IconEditorPane extends JCanvas {
 
     private Paint _fillColor = new Color(0, 0, 170);
 
-    // Here is the figure kept in memory for the "cut" or 
+    // Here is the figure kept in memory for the "cut" or
     // "pasted" figure.
 
     private VersatileFigure _cutOrCopiedFigure = null;
@@ -224,7 +224,7 @@ public class IconEditorPane extends JCanvas {
 
     private JFrame _helpFrame;
 
-    // Constants for the program.  Decreasing MOUSE_SENSITIVITY will require 
+    // Constants for the program.  Decreasing MOUSE_SENSITIVITY will require
     // the user to be more precise when trying to click on figures.
 
     private static final double MOUSE_SENSITIVITY = 4.0;
@@ -235,21 +235,21 @@ public class IconEditorPane extends JCanvas {
 
     private static final int WINDOW_SIZE_VERTICAL = 300;
 
-    // This is the extension we allow for opening and saving files within the 
+    // This is the extension we allow for opening and saving files within the
     // program.
 
     private static final String FILE_FORMAT_EXTENSION = "xml";
 
     // The type of data that is operable via the cut, copy, and paste commands.
-    
-    public static final DataFlavor dataFlavor = 
+
+    public static final DataFlavor dataFlavor =
         new DataFlavor(VersatileFigure.class, "Versatile Figure");
 
     //////////////////////////////////////////////////////////////////////
     //////////////////      Private methods.            /////////////////
 
     //////////////////////////////////////////////////////////////////////
-    //////////////////      Inner Classes.              /////////////////  
+    //////////////////      Inner Classes.              /////////////////
 
     //////////////////////////////////////////////////////////////////////
     /////////////////      Public Methods               /////////////////
@@ -257,7 +257,7 @@ public class IconEditorPane extends JCanvas {
     public void addFigure(VersatileFigure figure) {
 	// Get the shape of this figure.
 	Shape shape = figure.getShape();
-	
+
 	// Now assign an appropriate interactor for the shape.
 	if(shape instanceof RectangularShape) {
 	    figure.setInteractor(_interactor2);
@@ -276,7 +276,7 @@ public class IconEditorPane extends JCanvas {
 	} else {
 	    throw new RuntimeException("unknown shape: " + shape);
 	}
-	
+
 	// Finally, add the figure to the figure layer.
 	_layer.add(figure);
 
@@ -284,14 +284,14 @@ public class IconEditorPane extends JCanvas {
 	_selectionDragger.expandSelection(_interactor2, _currentFigure);
     }
 
-    /** I need to setup the icon that was passed in, possibly from 
-     * another application.  I enumerate over the graphical elements 
-     * contained within the XMLIcon and, for each element, I create a 
-     * versatile figure from it and add it to the FigureLayer.  Also, 
-     * I set up an appropriate interactor for each figure so that the 
+    /** I need to setup the icon that was passed in, possibly from
+     * another application.  I enumerate over the graphical elements
+     * contained within the XMLIcon and, for each element, I create a
+     * versatile figure from it and add it to the FigureLayer.  Also,
+     * I set up an appropriate interactor for each figure so that the
      * figure can be edited.
      *
-     * Note that this icon being added adds its graphic elements to 
+     * Note that this icon being added adds its graphic elements to
      * the _icon member associated with this instance.
      */
     public void addXMLIcon(XMLIcon my_icon) {
@@ -301,15 +301,15 @@ public class IconEditorPane extends JCanvas {
 	// And as long as the icon has more elements...
 	while(i.hasNext()) {
             // Create a new figure represented by this graphic element.
-	    VersatileFigure figure = 
+	    VersatileFigure figure =
 		new VersatileFigure((PaintedObject)i.next());
-	
+
 	    addFigure(figure);
 	}
     }
 
     /**
-     * Clear all the figures and remove all the graphic elements from the 
+     * Clear all the figures and remove all the graphic elements from the
      * icon.
      */
     public void clear() {
@@ -339,7 +339,7 @@ public class IconEditorPane extends JCanvas {
     }
 
     /**
-     * Put the currently selected item onto the given clipboard, and remove 
+     * Put the currently selected item onto the given clipboard, and remove
      * the currently selected item from the canvas.
      */
     public void cut(Clipboard clipboard) {
@@ -353,7 +353,7 @@ public class IconEditorPane extends JCanvas {
 		_layer.remove(_currentFigure);
 		vector.add(_currentFigure);
 	    }
-	    SimpleSelection s = new SimpleSelection(vector, 
+	    SimpleSelection s = new SimpleSelection(vector,
 						    dataFlavor);
 	    clipboard.setContents(s, s);
 	} else {
@@ -379,7 +379,7 @@ public class IconEditorPane extends JCanvas {
 	}
     }
 
-    /** 
+    /**
      * Return the fill color of the currently selected figures.  If
      * no figures are selected or the selected figures have different fills,
      * then return null.
@@ -394,12 +394,12 @@ public class IconEditorPane extends JCanvas {
 	    } else {
 		if(paint != v.getFillPaint())
 		    return null;
-	    }		       
+	    }
 	}
 	return paint;
     }
 
-    /** 
+    /**
      * Return the outline thickness of the currently selected figures.  If
      * no figures are selected or the selected figures have different fills,
      * then return null.
@@ -414,12 +414,12 @@ public class IconEditorPane extends JCanvas {
 	    } else {
 		if(thickness != v.getLineWidth());
 		    return 0.0f;
-	    }		       
+	    }
 	}
 	return thickness;
     }
 
-    /** 
+    /**
      * Return the stroke color of the currently selected figures.  If
      * no figures are selected or the selected figures have different colors,
      * then return null.
@@ -434,7 +434,7 @@ public class IconEditorPane extends JCanvas {
 	    } else {
 		if(paint != v.getStrokePaint())
 		    return null;
-	    }		       
+	    }
 	}
 	return paint;
     }
@@ -446,16 +446,16 @@ public class IconEditorPane extends JCanvas {
         return _icon;
     }
 
-    /** 
+    /**
      * Get the
-     * current data object on the clipboard, copy of it, 
+     * current data object on the clipboard, copy of it,
      * and add it to the figure layer of the canvas.
      * If something goes wrong, beep.
      */
     public void paste(Clipboard clipboard) {
 	// clear the current selection
 	_m.clearSelection();
-	
+
 	Transferable t = clipboard.getContents(this);
 	if(t == null) {
 	    getToolkit().beep();
@@ -473,12 +473,12 @@ public class IconEditorPane extends JCanvas {
 		    if(vf2.getInteractor() instanceof SelectionInteractor) {
 			_selectionDragger.expandSelection
 			    ((SelectionInteractor)vf2.getInteractor(), vf2);
-		    } 
+		    }
 		}
 	    } else {
 		getToolkit().beep();
 	    }
-	} 
+	}
 	catch(Exception ex) {
 	    getToolkit().beep();
 	}
@@ -497,13 +497,13 @@ public class IconEditorPane extends JCanvas {
 	    }
 	    catch(Exception ex) {
 	        JOptionPane.showMessageDialog(this,
-		"Printing failed:\n" + ex.toString(), 
+		"Printing failed:\n" + ex.toString(),
 		"Print Error", JOptionPane.WARNING_MESSAGE);
 	    }
 	}
     }
 
-    /** 
+    /**
      * Change the fill color of the selected figure(s).
      * If nothing it currently selected, then beep.
      * @param c The new color for the selected figure(s).

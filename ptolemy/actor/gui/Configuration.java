@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -90,7 +90,7 @@ public class Configuration extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create the first tableau for the given effigy, using the 
+    /** Create the first tableau for the given effigy, using the
      *  tableau factory.  This is called after an effigy is first opened,
      *  or when a new effigy is created.
      *  @exception Exception if an error occurs while creating the tableau.
@@ -110,9 +110,9 @@ public class Configuration extends CompositeEntity {
     }
 
     /** If a model with the specified name is present in the directory,
-     *  then find all the tableaux of that model and make them 
+     *  then find all the tableaux of that model and make them
      *  visible; otherwise, read a model from the specified URL
-     *  and create a default tableau for the model and add the tableau 
+     *  and create a default tableau for the model and add the tableau
      *  to this directory.
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.
@@ -176,7 +176,7 @@ public class Configuration extends CompositeEntity {
      *  and call show() on them.  If there is no directory, then do nothing.
      */
     public void showAll() {
-	final ModelDirectory directory = 
+	final ModelDirectory directory =
 	    (ModelDirectory)getEntity("directory");
 	if(directory == null) return;
         _showTableaux(directory);

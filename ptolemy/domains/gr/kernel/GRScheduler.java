@@ -194,7 +194,7 @@ public class GRScheduler extends Scheduler {
             throw new NotSchedulableException(this, "Check expression of "
                     + "rate and initial production parameters.");
         }
-        
+
         Iterator Actors = firings.keySet().iterator();
 
         while(Actors.hasNext()) {
@@ -233,7 +233,7 @@ public class GRScheduler extends Scheduler {
         return Collections.enumeration(result);
     }
 
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -307,7 +307,7 @@ public class GRScheduler extends Scheduler {
         //return ((Integer) _firingvector.get(entity)).intValue();
     }
 
-  
+
     /** Propagate the number of fractional firings decided for this actor
      *  through the specified input port.   Set and verify the fractional
      *  firing for each Actor that is connected through this input port.
@@ -371,7 +371,7 @@ public class GRScheduler extends Scheduler {
                 try {
                     Fraction presentFiring =
                         (Fraction) firings.get(connectedActor);
-		    if(presentFiring == null) {			
+		    if(presentFiring == null) {
 		    } else if(presentFiring.equals(Fraction.ZERO)) {
                         // create the entry in the firing table
                         firings.put(connectedActor, desiredFiring);
@@ -872,7 +872,7 @@ public class GRScheduler extends Scheduler {
         boolean stillReadyToSchedule = true;
         // update tokensWaiting on the actor's input ports.
 
-        Iterator inputPorts = 
+        Iterator inputPorts =
 	    ((Actor) currentActor).inputPortList().iterator();
         while(inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
@@ -1133,7 +1133,7 @@ public class GRScheduler extends Scheduler {
     private class _NamedObjComparator implements Comparator {
         public int compare(Object o1, Object o2) {
             if((o1 instanceof NamedObj)&&(o2 instanceof NamedObj)) {
-    
+
                 // Compare names.
                 NamedObj n1 = (NamedObj) o1;
                 NamedObj n2 = (NamedObj) o2;

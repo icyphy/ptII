@@ -106,7 +106,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
                 _debug(getFullName() + "update..."+((Nameable)next).getName());
                 next.postfire();
             }
-            
+
             dir.setCurrentStepSize(-dir.getCurrentStepSize());
             if (super.resolveStates()) {
                 dir.setCurrentStepSize(-dir.getCurrentStepSize());

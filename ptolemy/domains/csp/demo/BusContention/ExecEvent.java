@@ -86,20 +86,20 @@ public class ExecEvent implements DebugEvent {
 	private ExecEventType(String name) {
 	    _name = name;
 	}
-	
+
 	public String getName() {
 	    return _name;
 	}
 	private String _name;
     }
-    
-    public static ExecEventType BLOCKED = 
+
+    public static ExecEventType BLOCKED =
 	new ExecEventType("blocked");
-    public static ExecEventType ACCESSING = 
+    public static ExecEventType ACCESSING =
 	new ExecEventType("accessing");
-    public static ExecEventType WAITING = 
+    public static ExecEventType WAITING =
 	new ExecEventType("waiting");
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                 /////
 

@@ -24,7 +24,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (frederic.boulanger@supelec.fr)
-@AcceptedRating Red 
+@AcceptedRating Red
 */
 
 package ptolemy.vergil.debugger;
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.*;
 /**
 An execution listener that suspends execution based on breakpoints.
 This class is created by a debugger frame to handle the logic of breakpoints.
-   
+
 @author B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
 @version $Id$
 */
@@ -52,14 +52,14 @@ public class DebugController implements DebugListener {
 
     //Boolean that becomes false  when the Button END is pushed
     public boolean notFinished;
-    
-    //Boolean that becomes true when the Button Step In is pushed 
+
+    //Boolean that becomes true when the Button Step In is pushed
     public boolean stepInPause;
-    
+
     //List that contain the Watchers.
     public NamedList watcherList = new NamedList();
 
-   /** 
+   /**
      * Construct a new debug controller with a reference to the given
      * debugger.
      * @param frame The debugger frame that created this controller.
@@ -90,7 +90,7 @@ public class DebugController implements DebugListener {
     /**
      * Ignore debug events that aren't firing events.  Firing events
      * are dispatched an appropriate method according to type.
-     */   
+     */
     public void event(DebugEvent debugEvent) {
 	if(debugEvent instanceof FiringEvent) {
 	    FiringEvent event = (FiringEvent) debugEvent;
@@ -106,7 +106,7 @@ public class DebugController implements DebugListener {
 	}
     }
 
-    /** 
+    /**
      * This method is called just prior to an actor being prefired.  If
      * a breakpoint named "prefire" is contained within the given actor, then
      * pause execution and await user input from the DebuggerFrame.
@@ -115,13 +115,13 @@ public class DebugController implements DebugListener {
     public void prefireEvent(Actor actor) {
 	if (notFinished) {
 	    _method = "prefire";
-	    _frame.displayResult("Before prefiring " + 
+	    _frame.displayResult("Before prefiring " +
 		 ((Nameable)actor).getFullName());
-	    Breakpoint breakpoint = (Breakpoint) 
+	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("prefire");
 	    if(breakpoint != null && breakpoint.evaluateCondition()) {
 		_frame.displayResult("Breakpoint encountered!");
-		waitUserCommand();		
+		waitUserCommand();
 	    }
 
 	    _test();
@@ -137,16 +137,16 @@ public class DebugController implements DebugListener {
     public void fireEvent(Actor actor) {
 	if (notFinished) {
 	    _method = "fire";
-	    _frame.displayResult("Before firing " + 
+	    _frame.displayResult("Before firing " +
 		((Nameable) actor).getFullName());
-	    Breakpoint breakpoint = (Breakpoint) 
+	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("fire");
 	    if(breakpoint != null && breakpoint.evaluateCondition()) {
 		_frame.displayResult("Breakpoint encountered!");
 		waitUserCommand();
 	    }
-	    
-	    // Will hide the stepin button in the interface if the 
+
+	    // Will hide the stepin button in the interface if the
 	    // actor is not an opaque composite atomic.
 	    ComponentEntity entity = (ComponentEntity) actor;
 	    if (!entity.isAtomic() && entity.isOpaque()) {
@@ -157,17 +157,17 @@ public class DebugController implements DebugListener {
 
 	    _test();
 
-	    // stepInPause can be true only if isAtomic is 
+	    // stepInPause can be true only if isAtomic is
 	    // true because the button Step In
-	    // cannot be used if actor is atomic 
+	    // cannot be used if actor is atomic
 	    if (stepInPause) {
 		stepInPause = false;
 		_command = "pause";
 	    }
-	}			
+	}
     }
 
-    /** 
+    /**
      * This method is called just prior to an actor being postfired.  If
      * a breakpoint named "postfire" is contained within the given actor, then
      * pause execution and await user input from the DebuggerFrame.
@@ -176,13 +176,13 @@ public class DebugController implements DebugListener {
     public void postfireEvent(Actor actor) {
 	if (notFinished) {
 	    _method = "postfire";
-	    _frame.displayResult("Before postfiring " + 
+	    _frame.displayResult("Before postfiring " +
 		((Nameable)actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("postfire");
 	    if (breakpoint != null && breakpoint.evaluateCondition()) {
 		_frame.displayResult("Breakpoint encountered!");
-		waitUserCommand();		    	       
+		waitUserCommand();
 	    }
 	    _test();
 	}
@@ -190,18 +190,18 @@ public class DebugController implements DebugListener {
 
     /**
      * This method is called just after an actor is postfired.  If
-     * a breakpoint named "postpostfire" is contained within the given actor, 
+     * a breakpoint named "postpostfire" is contained within the given actor,
      * then pause execution and await user input from the DebuggerFrame.
      * @param actor The actor that was just postfired.
      */
     public void postpostfireEvent(Actor actor) {
-        TypedCompositeActor container = 
+        TypedCompositeActor container =
 	    (TypedCompositeActor) ((NamedObj)actor).getContainer();
 
 	if (notFinished) {
 	    // Refresh ExecState
 	    _method = "postpostfire";
-	    _frame.displayResult("After postfiring " + 
+	    _frame.displayResult("After postfiring " +
 		       ((Nameable)actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("postpostfire");
@@ -220,10 +220,10 @@ public class DebugController implements DebugListener {
 	}
     }
 
-    /** 
-     * This method is called after a firing event has been handled. 
+    /**
+     * This method is called after a firing event has been handled.
      * Depending on the event and the current command,
-     * it chooses to pause the execution or not. 
+     * it chooses to pause the execution or not.
      * It may also change the current command to "pause" if the firing
      * event completed the previous command.
      */
@@ -245,15 +245,15 @@ public class DebugController implements DebugListener {
 		stepInPause = true;
 		_command = "pause";
 	    } else {
-		_frame.displayResult("Error : Can't step in here");    
+		_frame.displayResult("Error : Can't step in here");
 	    }
 	}
     }
 
-    /** 
+    /**
      * Synchronize the DebugController with the DebuggerFrame,
      * and wait for an entry by the user. See the actionListener of
-     * the DebuggerFrame for a more effective comprehension. 
+     * the DebuggerFrame for a more effective comprehension.
      * @param state The execution state of the calling director.
      */
     public synchronized void waitUserCommand() {
@@ -264,7 +264,7 @@ public class DebugController implements DebugListener {
 	}
 
 	_commandNotEntered = true;
-	_frame.displayResult("Please, enter a command.");       
+	_frame.displayResult("Please, enter a command.");
 	while (_commandNotEntered) {
 	    _frame.putCmd = true;
 	    try {
@@ -278,7 +278,7 @@ public class DebugController implements DebugListener {
 
     /**
      * Called by the Frame when a command is entered, to allow the execution
-     * thread to continue. 
+     * thread to continue.
      */
     public synchronized void commandEntered() {
 	_commandNotEntered = false;
@@ -293,8 +293,8 @@ public class DebugController implements DebugListener {
     //boolean that allows to synchronize DebugController and DebuggerFrame.
     private boolean _commandNotEntered = true;
 
-    // a link to DebuggerFrame 
+    // a link to DebuggerFrame
     private DebuggerFrame _frame;
 }
 
-    
+

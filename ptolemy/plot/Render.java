@@ -50,7 +50,7 @@ public class Render extends PlotBox {
      */
     public Render() {
         setGrid(false);
-        
+
 	 _setPadding(0.0);
 
         int[] rgb = new int[256];
@@ -60,7 +60,7 @@ public class Render extends PlotBox {
         _colormap[0] = rgb;
         _colormap[1] = rgb;
         _colormap[2] = rgb;
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,9 +81,9 @@ public class Render extends PlotBox {
         _imageData.add(newStripe);
 
 //         // Get the graphics context.
-// 
+//
 //         Graphics graphics = getGraphics();
-// 
+//
 //         // Draw the stripe if the graphics context ... ISTHERE(?)...
 //         if (graphics != null) {
 //             _drawStripe(graphics, newStripe, x);
@@ -101,7 +101,7 @@ public class Render extends PlotBox {
     public synchronized int[][] getColormap() {
         return _colormap;
     }
-    
+
     /** Get the x increment.
      */
     public synchronized double getXIncrement() {
@@ -158,7 +158,7 @@ public class Render extends PlotBox {
                     System.arraycopy(stripe1, 0, stripe2, 1,
                                      stripe2.length - 1);
                     stripe2[0] = _LOWCOLOR;
-                    
+
 		    // Reset the data structure.
 		    clearData();
 
@@ -182,13 +182,13 @@ public class Render extends PlotBox {
 
 		    // Set the x and y ranges according to the data.  The
 		    // x-range start value is getXOffset().  Similarly for the
-		    // y-range start value.  To calculate the high end of the 
-		    // x-range take the number of stripes in the data 
+		    // y-range start value.  To calculate the high end of the
+		    // x-range take the number of stripes in the data
 		    // structure and multiply it by the horizontal increment.
 		    // For the high value of the y-range take the number of
 		    // data elements per stripe and multiply it by the
 		    // verticle increment.
-                    setXRange(getXOffset(), 
+                    setXRange(getXOffset(),
 			      _imageData.size() * getXIncrement());
                     setYRange(getYOffset(),
 			      ((int[])_imageData.getFirst()).length *
@@ -392,12 +392,12 @@ public class Render extends PlotBox {
 	if (height < 1){
 	    height = 1;
 	}
-	 
+
 	// Convert the colorValue into it's r, g, and b.
 	int r = _colormap[0][colorValue];
 	int g = _colormap[1][colorValue];
 	int b = _colormap[2][colorValue];
- 
+
 	// Set the color.
 	graphics.setColor(new Color(r, g, b));
 

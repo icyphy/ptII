@@ -114,7 +114,7 @@ public class BusContentionApplet extends CSPApplet {
 	getContentPane().setLayout( new BorderLayout(5, 5) );
 
 	// The '2' argument specifies 'go' and 'stop' buttons.
-	// If we need a layout button in the future, then change the '2' to 
+	// If we need a layout button in the future, then change the '2' to
 	// a '3'.
 	getContentPane().add( _createRunControls(2), BorderLayout.NORTH );
 
@@ -129,20 +129,20 @@ public class BusContentionApplet extends CSPApplet {
 	getContentPane().add( _divaPanel, BorderLayout.SOUTH );
 
         _graph = constructGraph();
-	
+
 	final BasicGraphModel finalGraphModel = _graph;
 	// display the graph.
 	final GraphController gc = new BusContentionGraphController();
-	
+
 	final GraphPane gp = new GraphPane(gc, _graph);
 	_jgraph = new JGraph(gp);
 	_jgraph.repaint();
 
 	// Adding it to the center so that it fills the containing panel.
 	_divaPanel.add(_jgraph, BorderLayout.CENTER );
-		
+
 	_jgraph.setBackground(getBackground());
-	
+
 	StateListener listener =
             new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_processActor1.addDebugListener(listener);
@@ -210,7 +210,7 @@ public class BusContentionApplet extends CSPApplet {
 	e = model.createEdge(null);
 	model.setEdgeHead(this, e, n3);
 	model.setEdgeTail(this, e, n6);
-	
+
 	return model;
     }
 
@@ -478,7 +478,7 @@ public class BusContentionApplet extends CSPApplet {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
-                        if(state == ExecEvent.WAITING) 
+                        if(state == ExecEvent.WAITING)
 			    figure.setFillPaint(Color.yellow);
 			else if(state == ExecEvent.ACCESSING)
                             figure.setFillPaint(Color.green);
@@ -511,7 +511,7 @@ public class BusContentionApplet extends CSPApplet {
 	/** The graph controller
 	 */
 	private GraphController _controller;
-	
+
 	public ThreadRenderer(GraphController controller) {
 	    _controller = controller;
 	}
@@ -520,7 +520,7 @@ public class BusContentionApplet extends CSPApplet {
          * Return the rendered visual representation of this node.
          */
         public Figure render(Object n) {
-            ComponentEntity actor = (ComponentEntity) 
+            ComponentEntity actor = (ComponentEntity)
 		_controller.getGraphModel().getSemanticObject(n);
 
             boolean isEllipse =

@@ -79,8 +79,8 @@ public class PtExecuteApplication extends MoMLApplication
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Reduce the count of executing models by one.  If the number of 
-     *  executing models drops ot zero, then notify threads that might 
+    /** Reduce the count of executing models by one.  If the number of
+     *  executing models drops ot zero, then notify threads that might
      *  be waiting for this event.
      *  @param manager The manager calling this method.
      *  @param ex The exception being reported.
@@ -92,8 +92,8 @@ public class PtExecuteApplication extends MoMLApplication
         }
     }
 
-    /**  Reduce the count of executing models by one.  If the number of 
-     *  executing models drops ot zero, then notify threads that might 
+    /**  Reduce the count of executing models by one.  If the number of
+     *  executing models drops ot zero, then notify threads that might
      *  be waiting for this event.
      *  @param manager The manager calling this method.
      */

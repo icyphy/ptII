@@ -23,7 +23,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (frederic.boulanger@supelec.fr)
-@AcceptedRating Red 
+@AcceptedRating Red
 */
 
 package ptolemy.vergil.debugger;
@@ -74,7 +74,7 @@ import ptolemy.vergil.ptolemy.*;
 //// DebuggerFrame
 /**
    This class creates the interface for the debugger.
-   The frame is composed of a menubar, a toolbar, and a scrollbar 
+   The frame is composed of a menubar, a toolbar, and a scrollbar
    where the messages are displayed (Through the use of the
    function displayResult). Its coded on java swing add makes
    use of actionListener to acknowledge the user command (Selection
@@ -90,11 +90,11 @@ import ptolemy.vergil.ptolemy.*;
    Menus: breakpoint and watcher
    - add: creates breakpoint and calls BreakpointEditor/Watcher.
    - delete: deletes breakpoint/watcher from displayList.
-   - edit: calls BreakpointEditor/Watcher.   
-   GetSelectedActor is a method that gets the selected actor on 
+   - edit: calls BreakpointEditor/Watcher.
+   GetSelectedActor is a method that gets the selected actor on
    the vergil interface.
-   Function to enable and disable the use of buttons or menus are 
-   also implemented; 
+   Function to enable and disable the use of buttons or menus are
+   also implemented;
 @author SUPELEC team
 @version $Id$
 @see DebuggerUI
@@ -110,15 +110,15 @@ public class DebuggerFrame extends PtolemyFrame
     JButton rsm, end, stop, step, stepIn, stepOut, mstep, quit;
     JMenu breakpointMenu, watcherMenu;
     public boolean putCmd = false;
-    
-    
+
+
 
     // a NamedObj element to keep reference on object to edit
     protected NamedObj element = null;
 
-    
+
     /** Constructor
-     */    
+     */
     public DebuggerFrame(CompositeActor actor, Tableau tableau) {
 	super(actor, tableau);
 
@@ -126,11 +126,11 @@ public class DebuggerFrame extends PtolemyFrame
 	_toolbar = new JToolBar();
 
 	///////////////////////////////////////////////////////////////////////
-        //Add regular components (buttons, scrollpane,...) 
+        //Add regular components (buttons, scrollpane,...)
 	//to the window, using the default BorderLayout.
-  
+
     }
-    
+
     public void _addMenus() {
 	JMenuItem menuItem;
 	// Create scrollpane (Text area used for output)
@@ -147,7 +147,7 @@ public class DebuggerFrame extends PtolemyFrame
 	getContentPane().add(_toolbar, BorderLayout.NORTH);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
 	setLocation(450,0);
-    
+
 	final JFrame packframe = this;
 	Action packer = new AbstractAction() {
 	    public void actionPerformed(ActionEvent event) {
@@ -160,12 +160,12 @@ public class DebuggerFrame extends PtolemyFrame
 	    new javax.swing.Timer(200, packer);
 	timer.setRepeats(false);
 	timer.start();
-	
+
        	//////////////////////////////////////////////////////////
         //Build the Breakpoint menu.
-	///////////////////////////////////////////////////////// 
+	/////////////////////////////////////////////////////////
         breakpointMenu = new JMenu("Breakpoint");
-        breakpointMenu.setMnemonic(KeyEvent.VK_B); 
+        breakpointMenu.setMnemonic(KeyEvent.VK_B);
         breakpointMenu.getAccessibleContext().setAccessibleDescription("Breakpoint tools");
         _menubar.add(breakpointMenu);
 
@@ -184,7 +184,7 @@ public class DebuggerFrame extends PtolemyFrame
 			    } catch (IllegalActionException ex) {
 			    }
 			    JFrame editFrame = new BreakpointEditor(brkpt);
-			    displayResult("Breakpoint successfully added on " 
+			    displayResult("Breakpoint successfully added on "
 					  + actor.getFullName() +" !");
 		    } else displayResult ("An actor must be selected before " +
 					  "adding a breakpoint.");
@@ -199,12 +199,12 @@ public class DebuggerFrame extends PtolemyFrame
 		public void actionPerformed(ActionEvent e) {
 		    NamedObj actor = getSelectedActor();
 		    if (actor != null) {
-			DisplayList list = 
-			    new DisplayList((Actor)actor, DebuggerFrame.this, 
+			DisplayList list =
+			    new DisplayList((Actor)actor, DebuggerFrame.this,
 					    DisplayList.EDIT_B);
 		    }
 		}
-	    }); 
+	    });
         breakpointMenu.add(menuItem);
 
        //Delete breakpoint JMenuItem
@@ -217,14 +217,14 @@ public class DebuggerFrame extends PtolemyFrame
 			DisplayList list = new DisplayList((Actor)actor, DebuggerFrame.this, DisplayList.DEL);
 		    }
 		}
-	    }); 
+	    });
         breakpointMenu.add(menuItem);
 
 	//////////////////////////////////////////////////////////
         //Build the Watcher menu.
 	/////////////////////////////////////////////////////////
         watcherMenu = new JMenu("Watcher");
-        watcherMenu.setMnemonic(KeyEvent.VK_W);  // Activates menu 
+        watcherMenu.setMnemonic(KeyEvent.VK_W);  // Activates menu
 	                                  //by pressed keys
         watcherMenu.getAccessibleContext().setAccessibleDescription(
                 "Watcher tools");
@@ -239,7 +239,7 @@ public class DebuggerFrame extends PtolemyFrame
 		public void actionPerformed(ActionEvent e) {
 		    displayResult("Action for Add Watcher");
 		}
-	    }); 
+	    });
         watcherMenu.add(menuItem);
 
        //edit Watcher JMenuItem
@@ -253,7 +253,7 @@ public class DebuggerFrame extends PtolemyFrame
 		    //editWatcher.setLocation(550,300);
 		    //editWatcher.setVisible(true);
 		}
-	    }); 
+	    });
         watcherMenu.add(menuItem);
 
        //Delete Watcher JMenuItem
@@ -263,15 +263,15 @@ public class DebuggerFrame extends PtolemyFrame
 		public void actionPerformed(ActionEvent e) {
 		    displayResult("Action for delete watcher");
 		}
-	    }); 
+	    });
         watcherMenu.add(menuItem);
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-                            
-    /** This function displays messages on the scroll panel of 
+
+    /** This function displays messages on the scroll panel of
      *  the DebuggerFrame
      * @see ptolemy.vergil.debugger.MMI.DebuggerFrame#displayResult(String actionDescription)
      * @param a message string
@@ -279,19 +279,19 @@ public class DebuggerFrame extends PtolemyFrame
     public  void displayResult(String actionDescription) {
 	output.append(actionDescription + newline);
     }
-    
+
      /** Does nothing
      * @param e an action event
      */
     public void actionPerformed(ActionEvent e) {}
-    
+
      /** Return the command entered
      * @return a reference on the command string
-     */  
+     */
     public String getuserCommand() {
 	return _cmd;
     }
-    
+
     /** Does nothing
      * @param e an item event
      */
@@ -300,7 +300,7 @@ public class DebuggerFrame extends PtolemyFrame
     //////////////////////////////////////////////////////////
     //Several methods to enable and disable buttons and menus
     /////////////////////////////////////////////////////////
-    /** Disable the button 
+    /** Disable the button
      * @param index : index of the button (in the creation order)
      */
     public void disableButton(int index) {
@@ -323,23 +323,23 @@ public class DebuggerFrame extends PtolemyFrame
      */
     public void enableButton(int index) {
 	switch(index){
-	    //	case 1: go.setEnabled(true); 
+	    //	case 1: go.setEnabled(true);
 	    // break;
-	case 2: rsm.setEnabled(true); 
+	case 2: rsm.setEnabled(true);
 	    break;
-	case 3: end.setEnabled(true); 
+	case 3: end.setEnabled(true);
 	    break;
-	case 4: stop.setEnabled(true); 
+	case 4: stop.setEnabled(true);
 	    break;
-	case 5: step.setEnabled(true); 
+	case 5: step.setEnabled(true);
 	    break;
-	case 6: stepIn.setEnabled(true); 
+	case 6: stepIn.setEnabled(true);
 	    break;
-	case 7: stepOut.setEnabled(true); 
+	case 7: stepOut.setEnabled(true);
 	    break;
-	case 8: mstep.setEnabled(true); 
+	case 8: mstep.setEnabled(true);
 	    break;
-	case 9: quit.setEnabled(true); 
+	case 9: quit.setEnabled(true);
 	    break;
 	default : break;
 	}
@@ -407,7 +407,7 @@ public class DebuggerFrame extends PtolemyFrame
 	disableAllButtons();
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -417,7 +417,7 @@ public class DebuggerFrame extends PtolemyFrame
      */
     protected void addButtons() {
 	JButton button = null;
-	
+
 	//Resume button
 	rsm = new JButton("RSM");
 	rsm.setMnemonic(KeyEvent.VK_R);
@@ -434,7 +434,7 @@ public class DebuggerFrame extends PtolemyFrame
 		}
 	    });
 	_toolbar.add(rsm);
-	
+
 	//End button
 	end = new JButton("END");
 	end.setMnemonic(KeyEvent.VK_E);
@@ -456,17 +456,17 @@ public class DebuggerFrame extends PtolemyFrame
 		}
 	    });
 	_toolbar.add(end);
-	
+
 	//Stop button
 	stop = new JButton("STOP");
- 	stop.setMnemonic(KeyEvent.VK_T);      
+ 	stop.setMnemonic(KeyEvent.VK_T);
 	stop.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    // Here we must stop the execution of the model
-		    
+
 		    //    if (putCmd) {
-			//In fact, exit directly. 
-			
+			//In fact, exit directly.
+
 		    //_cmd ="stop";
 		    //displayResult("Command entered = stop");
 		    //_controller.cmdNotEntered = false;
@@ -482,7 +482,7 @@ public class DebuggerFrame extends PtolemyFrame
 
 	//Step button
 	step = new JButton("Step");
-	step.setMnemonic(KeyEvent.VK_S);	
+	step.setMnemonic(KeyEvent.VK_S);
 	step.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    if (putCmd) {
@@ -497,7 +497,7 @@ public class DebuggerFrame extends PtolemyFrame
 		}
 	    });
 	_toolbar.add(step);
-	
+
 	//Step in button
 	stepIn = new JButton("S.in");
 	stepIn.setMnemonic(KeyEvent.VK_I);
@@ -514,7 +514,7 @@ public class DebuggerFrame extends PtolemyFrame
 		}
 	    });
 	_toolbar.add(stepIn);
-	
+
 	//Step out button
 	stepOut = new JButton("S.out");
 	stepOut.setMnemonic(KeyEvent.VK_O);
@@ -532,7 +532,7 @@ public class DebuggerFrame extends PtolemyFrame
 		}
 	    });
 	_toolbar.add(stepOut);
-	
+
 	//MicroStep button
 	mstep = new JButton("µStep");
 	mstep.setMnemonic(KeyEvent.VK_P);
@@ -548,11 +548,11 @@ public class DebuggerFrame extends PtolemyFrame
 		    }
 		}
 	    });
-	_toolbar.add(mstep);   
+	_toolbar.add(mstep);
 	_toolbar.addSeparator();
 
 	//Quit button
-	//    It generates a window dialog to make sure the user 
+	//    It generates a window dialog to make sure the user
 	//really wants to quit the debugger.
 	quit = new JButton("QUIT");
 	quit.setMnemonic(KeyEvent.VK_Q);
@@ -564,7 +564,7 @@ public class DebuggerFrame extends PtolemyFrame
 			DebuggerFrame.this.dispose();
 		}
 	    });
-	_toolbar.add(quit);   
+	_toolbar.add(quit);
     }
 
     /** Write the model to the specified file.
@@ -589,24 +589,24 @@ public class DebuggerFrame extends PtolemyFrame
 	    PtolemyDocument d = (PtolemyDocument) v.getDocument();
 	    JGraph g = (JGraph) v.getComponent();
 	    GraphPane graphPane = g.getGraphPane();
-	    GraphController controller = 
+	    GraphController controller =
 		(GraphController) graphPane.getGraphController();
 	    Object selection[] = controller.getSelectionModel().getSelectionAsArray();;
 	    if (selection.length == 1) {
 		if (selection[0] instanceof Figure) {
-		    Object obj = ((Figure)selection[0]).getUserObject(); 
+		    Object obj = ((Figure)selection[0]).getUserObject();
 		    if (obj instanceof NamedObj) {
 			NamedObj userobj = (NamedObj)obj;
 			if (userobj instanceof ptolemy.moml.Icon) {
-			    ptolemy.moml.Icon icon = 
+			    ptolemy.moml.Icon icon =
 				(ptolemy.moml.Icon)userobj;
-			    ComponentEntity entity = 
+			    ComponentEntity entity =
 				(ComponentEntity)icon.getContainer();
 			    NamedObj actor = (NamedObj)entity;
 			    selectedActor = actor;
 			} else {
 			    displayResult("Error !");
-			} 
+			}
 		    }  else {
 			displayResult("You must select an ACTOR !");
 		    }
@@ -620,7 +620,7 @@ public class DebuggerFrame extends PtolemyFrame
 	*/
 	return selectedActor;
     }
-    
+
     //////////////////////////////////////////////////////////
     //               Private Variables                      //
 

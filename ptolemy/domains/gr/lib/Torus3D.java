@@ -46,11 +46,11 @@ import javax.vecmath.*;
 //// Torus3D
 /** This actor contains the geometry and appearance specifications for a GR
 torus.  The output port is used to connect this actor to the
-Java3D scene graph. This actor will only have meaning in the GR domain. 
+Java3D scene graph. This actor will only have meaning in the GR domain.
 
-    The parameter <i>hullRadius</i> determines the radius of torus ring. The 
+    The parameter <i>hullRadius</i> determines the radius of torus ring. The
 parameter <i>crossSectionRadius</i> determines the radius of the torus cross-section.
-The parameter <i>slices</i> determines the number of polygonal slices used in the 
+The parameter <i>slices</i> determines the number of polygonal slices used in the
 creating the torus.
 
 
@@ -69,16 +69,16 @@ public class Torus3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        
-      	
+
+
         angleSpan = new Parameter(this, "span of revolution", new DoubleToken(2*Math.PI));
         slices = new Parameter(this, "slices", new IntToken(28));
-        crossSectionRadius 
+        crossSectionRadius
               = new Parameter(this,"cross-section radius", new DoubleToken(0.15));
-        hullRadius 
+        hullRadius
               = new Parameter(this,"hull radius",new DoubleToken(0.75));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -86,25 +86,25 @@ public class Torus3D extends GRShadedShape {
      *  This parameter should contain a DoubleToken.
      */
     public Parameter crossSectionRadius;
-    
+
     /** The radius of the torus outer hull
      *  This parameter should contain a DoubleToken.
      */
     public Parameter hullRadius;
-    
+
     /** The span of torus sweep angle
      *  This parameter should contain a DoubleToken.
      */
     public Parameter angleSpan;
-    
+
     /** The number of slices
      *  This parameter should contain a IntToken.
      */
     public Parameter slices;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
      *  @param workspace The workspace for the new object.
@@ -112,7 +112,7 @@ public class Torus3D extends GRShadedShape {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    
+
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Torus3D newObject = (Torus3D)super.clone(workspace);
         newObject.angleSpan = (Parameter) newObject.getAttribute("angleSpan");
@@ -123,7 +123,7 @@ public class Torus3D extends GRShadedShape {
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a circular sweep.
      *  @return the Java3D circular sweep
-     */    
+     */
     public Node getNodeObject() {
         return (Node) containedNode;
     }
@@ -136,7 +136,7 @@ public class Torus3D extends GRShadedShape {
      *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
-    
+
         super._createModel();
         int numberOfSlices = _getSlices();
         float data[] = new float[numberOfSlices * 2];
@@ -147,23 +147,23 @@ public class Torus3D extends GRShadedShape {
         double span = _getAngleSpan();
         float innerRadius = _getCrossSectionRadius();
         float outerRadius = _getHullRadius();
-        
+
         int[] stripCount = new int[numberOfQuads];
-        
+
         int i,j,k,l,m;
         for(i=0; i < numberOfQuads; i++) {
             stripCount[i] = 4;
         }
-        
+
         j=0;
         for(i=0; i < numberOfSlices ; i++) {
             double theta = Math.PI - 2 * Math.PI * i / (numberOfSlices - 1);
-            data[j++] = outerRadius + 
+            data[j++] = outerRadius +
                         innerRadius * (float) Math.cos(theta);
             data[j++] = innerRadius * (float) Math.sin(theta);
         }
-        
-        
+
+
         k = l = m = 0;
         for(i=0; i < numberOfSweepVertices - 1;i++) {
             for(j=0; j<numberOfSlices; j++) {
@@ -171,8 +171,8 @@ public class Torus3D extends GRShadedShape {
                 float sinFactor1 = (float) Math.sin(span*j/numberOfSlices);
                 float cosFactor2 = (float) Math.cos(span*(j+1)/numberOfSlices);
                 float sinFactor2 = (float) Math.sin(span*(j+1)/numberOfSlices);
-               
-                
+
+
                 polydata[k]   = data[m] * cosFactor1;
                 polydata[k+1] = data[m+1];
                 polydata[k+2] = data[m] * sinFactor1;
@@ -192,12 +192,12 @@ public class Torus3D extends GRShadedShape {
             }
             m = m + 2;
         }
-        
-        
+
+
         GeometryInfo gi = new GeometryInfo(GeometryInfo.POLYGON_ARRAY);
         gi.setCoordinates(polydata);
         gi.setStripCounts(stripCount);
-        
+
         Triangulator tr = new Triangulator();
         tr.triangulate(gi);
         gi.recomputeIndices();
@@ -209,13 +209,13 @@ public class Torus3D extends GRShadedShape {
         Stripifier st = new Stripifier();
         st.stripify(gi);
         gi.recomputeIndices();
-        
+
         containedNode = new Shape3D();
         containedNode.setAppearance(_appearance);
         containedNode.setGeometry(gi.getGeometryArray());
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -234,7 +234,7 @@ public class Torus3D extends GRShadedShape {
      *   be obtained
      */
     private float _getHullRadius() throws IllegalActionException {
-       return (float) ((DoubleToken) hullRadius.getToken()).doubleValue();    
+       return (float) ((DoubleToken) hullRadius.getToken()).doubleValue();
     }
 
     /** Return the number of slices
@@ -245,7 +245,7 @@ public class Torus3D extends GRShadedShape {
     private int _getSlices() throws IllegalActionException {
        return ((IntToken) slices.getToken()).intValue();
     }
-    
+
     /** Return the angle span of the sweep
      *  @return the angle span of the sweep
      *  @exception IllegalActionException If the value of some parameters can't
@@ -253,11 +253,11 @@ public class Torus3D extends GRShadedShape {
      */
     private double _getAngleSpan() throws IllegalActionException  {
         return ((DoubleToken) angleSpan.getToken()).doubleValue();
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-   
+
     private Shape3D containedNode;
 }

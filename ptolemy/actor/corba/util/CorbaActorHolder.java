@@ -8,9 +8,9 @@
 package ptolemy.actor.corba.util;
 public final class CorbaActorHolder
      implements org.omg.CORBA.portable.Streamable{
-    //	instance variable 
+    //	instance variable
     public ptolemy.actor.corba.util.CorbaActor value;
-    //	constructors 
+    //	constructors
     public CorbaActorHolder() {
 	this(null);
     }

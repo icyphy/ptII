@@ -79,8 +79,8 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        TNLManip.traverseList(this, 
-         TNLManip.addFirst(node.getDefinedProperty(SCOPE_KEY)), 
+        TNLManip.traverseList(this,
+         TNLManip.addFirst(node.getDefinedProperty(SCOPE_KEY)),
          node.getDefTypes());
 
         return null;
@@ -138,7 +138,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(SCOPE_KEY));
 
 	//System.out.println("ResolveTypesVisitor:_visitUserTypeNode: " +
-	//		   node.getName().getIdent() + 
+	//		   node.getName().getIdent() +
 	//		   " interfaces: " + node.getInterfaces());
         TNLManip.traverseList(this, childArgs, node.getInterfaces());
         TNLManip.traverseList(this, childArgs, node.getMembers());

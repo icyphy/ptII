@@ -74,7 +74,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *   actor with this name.
      */
     public MatrixViewer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  
+            throws NameDuplicationException, IllegalActionException
         {
             super(container, name);
             input.setMultiport(false);
@@ -105,9 +105,9 @@ public class MatrixViewer extends Sink implements Placeable {
      *   attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException 
+            throws IllegalActionException
         {
-            if (attribute == width) {                
+            if (attribute == width) {
                 _width = ((IntToken)width.getToken()).intValue();
             } else if (attribute == height) {
                 _height = ((IntToken)height.getToken()).intValue();
@@ -153,7 +153,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *  otherwise the table is place in the given
      *  container. Furthermore, if a frame has been created in the
      *  place method, it is explicitly made visible.
-     * 
+     *
      *  @exception IllegalActionException If the parent class
      *  throws it.
      */
@@ -191,18 +191,18 @@ public class MatrixViewer extends Sink implements Placeable {
             //attributeChanged( width );
         } catch ( Exception e ){
         }
-    
+
         // create a table
         _table = new JTable();
         // Avoid reordering of the tables by the user
-        _table.getTableHeader().setReorderingAllowed(false);            
+        _table.getTableHeader().setReorderingAllowed(false);
         // Do not adjust column widths automatically, use a scrollbar
         _table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         // add scroll pane to the table
         _scrollPane = new JScrollPane(_table);
         _scrollPane.setPreferredSize( getPreferredSize() );
-       
+
         if (_container == null) {
             // place the table in its own frame.
             _frame = new JFrame(getFullName());
@@ -218,7 +218,7 @@ public class MatrixViewer extends Sink implements Placeable {
     ////                         private variables                 ////
 
     /** Container into which this plot should be placed */
-    private Container _container = null; 
+    private Container _container = null;
 
     /** Frame into which plot is placed, if any. */
     private JFrame _frame = null;

@@ -83,7 +83,7 @@ public class Round extends Transformer {
         function = new StringAttribute(this, "function");
         function.setExpression("round");
         _function = _ROUND;
-        
+
         // Ports
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.INT);
@@ -100,7 +100,7 @@ public class Round extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-            
+
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
@@ -127,7 +127,7 @@ public class Round extends Transformer {
         }
     }
 
-    /** This computes the specified rounded value of the input. 
+    /** This computes the specified rounded value of the input.
      *  This consumes and produces at most one token for each firing.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
@@ -211,7 +211,7 @@ public class Round extends Transformer {
         }
         return result;
     }
-    
+
 
 
     ///////////////////////////////////////////////////////////////////

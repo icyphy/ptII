@@ -74,7 +74,7 @@ public class EntityPortController extends NodeController {
 	super(controller);
 	setNodeRenderer(new EntityPortRenderer());
 	//SelectionModel sm = controller.getSelectionModel();
-	// Ports of entities do not use a selection interactor with 
+	// Ports of entities do not use a selection interactor with
 	// the same selection model as
 	// the rest of the first level figures.
 	// If this is allowed, then the port can be deleted.
@@ -119,10 +119,10 @@ public class EntityPortController extends NodeController {
             }
 	    Figure figure = new BasicFigure(polygon, fill, (float)1.5);
 
-            PtolemyGraphModel model = 
+            PtolemyGraphModel model =
                 (PtolemyGraphModel)getController().getGraphModel();
             figure.setToolTipText(port.getName(model.getToplevel()));
-	    
+
 	    // Wrap the figure in a TerminalFigure to set the direction that
 	    // connectors exit the port.  Note that this direction is the
 	    // same direction that is used to layout the port in the
@@ -140,7 +140,7 @@ public class EntityPortController extends NodeController {
 		// should never happen
 		direction = SwingUtilities.SOUTH;
 	    }
-	    double normal = CanvasUtilities.getNormal(direction);	    
+	    double normal = CanvasUtilities.getNormal(direction);
 	    Site tsite = new PerimeterSite(figure, 0);
 	    tsite.setNormal(normal);
 	    tsite = new FixedNormalSite(tsite);

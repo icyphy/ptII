@@ -85,7 +85,7 @@ public class UtilityFunctions {
      * @exception IllegalActionException If for the given filename
      *   a file cannot be opened.
      * */
-    public static StringToken readFile(String filename)             
+    public static StringToken readFile(String filename)
             throws IllegalActionException {
 
                 // temporary hack, need to work out way to obtain the path.
@@ -116,7 +116,7 @@ public class UtilityFunctions {
                     }
                 } catch (FileNotFoundException e) {
                     // what should we do here?
-                    throw new IllegalActionException("File not found:\n" + 
+                    throw new IllegalActionException("File not found:\n" +
                             e.toString() );
                 }
                 //System.out.println("Contents of file are: " + result);
@@ -133,41 +133,41 @@ public class UtilityFunctions {
      * @exception IllegalActionException If for the given filename
      *   a file cannot be opened.
      */
-    public static MatrixToken readMatrix(String filename) 
-            throws IllegalActionException 
+    public static MatrixToken readMatrix(String filename)
+            throws IllegalActionException
         {
 
             DoubleMatrixToken returnMatrix = null;
-            
+
             File fileT = new File(filename);
             FileReader fin = null;
-                
+
             // Vector containing the matrix
             Vector k = null;
-                
+
             // Parameters for the Matrix
             int row = -1;
             int column = -1;
-                
+
             // Matlab Matrices always start at 1 instead of 0.
             int posRow = 1;
             int posColumn = 1;
             double[][] mtr = null;
-                            
+
             if (fileT.exists()) {
-            
+
                 try {
                     // Open the matrix file
                     fin = new FileReader(fileT);
                 } catch (FileNotFoundException e) {
                     throw new IllegalActionException("FIle Not FOUND");
                 }
-                    
+
 
                 // Read the file and convert it into a matrix
                 mp.ReInit( fin );
                 k = mp.readMatrix( );
-                    
+
                 if ( column == -1 ) {
                     // The column size of the matrix
                     column = k.size();
@@ -175,10 +175,10 @@ public class UtilityFunctions {
 
                 Iterator i = k.iterator();
                 while( i.hasNext() ) {
-                    Vector l = (Vector) i.next();                    
-                    if ( row == -1 ) { 
+                    Vector l = (Vector) i.next();
+                    if ( row == -1 ) {
                                 // the row size.
-                        row = l.size();                        
+                        row = l.size();
                                 // create a new matrix definition
                         mtr = new double[column+1][row+1];
                     } else {
@@ -187,7 +187,7 @@ public class UtilityFunctions {
                                     " size needs to be the same for all" +
                                     " rows");
                         }
-                    }                    
+                    }
                     Iterator j = l.iterator();
                     while( j.hasNext() ) {
                         Double s = (Double) j.next();
@@ -202,11 +202,11 @@ public class UtilityFunctions {
                 k.removeAll(k);
                 returnMatrix =  new DoubleMatrixToken(mtr);
             } else {
-                throw new IllegalActionException("ReadMatrix: File " + 
+                throw new IllegalActionException("ReadMatrix: File " +
                         filename + " not Found");
             }
-            
-            return returnMatrix;      
+
+            return returnMatrix;
         }
 
     /** The Matrix Parser. The Matrix parser is recreated for the standard

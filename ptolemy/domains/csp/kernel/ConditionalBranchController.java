@@ -288,7 +288,7 @@ public class ConditionalBranchController {
 	    }
         }
     }
-    
+
     /** Registers the calling branch as failed. It reduces the count
      *  of active branches, and if all the active branches have
      *  finished, it wakes notifies chooseBranch() to continue.
@@ -334,8 +334,8 @@ public class ConditionalBranchController {
     }
 
     /** Decrease the count of branches that are read blocked.
-     *  If the actor was previously registered as being blocked, 
-     *  register this actor with the director as no longer being 
+     *  If the actor was previously registered as being blocked,
+     *  register this actor with the director as no longer being
      *  blocked.
      */
     protected void _branchUnblocked(CSPReceiver rcvr) {
@@ -353,7 +353,7 @@ public class ConditionalBranchController {
             }
         }
     }
- 
+
     /** Release the status of the calling branch as the first branch
      *  to be ready to rendezvous. This method is only called when both
      *  sides of a communication at a receiver are conditional. In
@@ -436,7 +436,7 @@ public class ConditionalBranchController {
     // Contains the number of branches that were actually started for
     // the most recent conditional rendezvous.
     private int _branchesStarted = 0;
-    
+
     // Contains the ID of the branch currently trying to rendezvous. It
     // is -1 if no branch is currently trying.
     private int _branchTrying = -1;
@@ -457,5 +457,5 @@ public class ConditionalBranchController {
     // Need to keep a list of them in case the execution of the model is
     // terminated abruptly.
     private LinkedList _threadList = null;
-    
+
 }

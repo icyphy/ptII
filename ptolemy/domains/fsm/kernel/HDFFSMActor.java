@@ -77,20 +77,20 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMActor
 /**
-An HDFFSMActor can be used in a modal model to represent the mode control 
+An HDFFSMActor can be used in a modal model to represent the mode control
 logic. A state can have a TypedCompositeActor refinement. This class
 must be used instead of FSMActor, if HDFFSMDirector is the local
 director.
 <p>
 An HDFFSMActor contains a set of states and transitions. A transition has
 a guard expression. A transition is enabled when its guard expression
-is true. A state transition can only occur immediatly following a 
-"Type B firing" [1], which is the last firing of the HDF actor in the 
+is true. A state transition can only occur immediatly following a
+"Type B firing" [1], which is the last firing of the HDF actor in the
 current iteration of the current HDF schedule.
 <p>
 When a type B firing occurs, the outgoing transitions of the current state
 are examined. An IllegalActionException is thrown if there is more than one
-enabled transition. If there is exactly one enabled transition then 
+enabled transition. If there is exactly one enabled transition then
 the current state of the actor is set to the destination state of the
 transition.
 <p>
@@ -161,7 +161,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

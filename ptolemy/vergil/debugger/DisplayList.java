@@ -24,7 +24,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (frederic.boulanger@supelec.fr)
-@AcceptedRating Red 
+@AcceptedRating Red
 */
 
 package ptolemy.vergil.debugger;
@@ -48,7 +48,7 @@ A selection window for editing breakpoints.
 */
 public class DisplayList extends JFrame implements ActionListener {
 
-    /** 
+    /**
      * Construct a new frame that lists the breakpoints for the given actor.
      * @param actor The actor with breakpoints.
      * @param frame The toplevel frame.
@@ -86,7 +86,7 @@ public class DisplayList extends JFrame implements ActionListener {
 	    group.add(radioButton);
 	    box.add(radioButton);
 	}
-	
+
 	JPanel buttonPanel = new JPanel();
 	buttonPanel.setLayout(new BorderLayout());
 
@@ -101,8 +101,8 @@ public class DisplayList extends JFrame implements ActionListener {
 			case EDIT_W :
 			    break;
 			case DEL :
-			    try {			    
-				Workspace w = 
+			    try {
+				Workspace w =
 				    ((NamedObj) selectedItem).workspace();
 				w.getWriteAccess();
 				((Attribute) selectedItem).setContainer(null);
@@ -118,20 +118,20 @@ public class DisplayList extends JFrame implements ActionListener {
 		}
 	    });
 	buttonPanel.add(button, BorderLayout.WEST);
-       
+
 	button = new JButton("Cancel");
-	button.addActionListener(this); 
+	button.addActionListener(this);
 	buttonPanel.add(button, BorderLayout.EAST);
-	
+
 	panel.setLayout(new BorderLayout());
 	panel.add(box, BorderLayout.CENTER);
 	panel.add(buttonPanel, BorderLayout.SOUTH);
-	
+
 	setContentPane(panel);
 	pack();
 	setLocation(500, 300);
 	setVisible(true);
-	
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -154,5 +154,5 @@ public class DisplayList extends JFrame implements ActionListener {
     private Actor _actor;
     static final int EDIT_B = 0;
     static final int EDIT_W = 1;
-    static final int DEL = 2;      
+    static final int DEL = 2;
 }

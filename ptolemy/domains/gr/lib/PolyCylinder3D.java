@@ -46,7 +46,7 @@ import com.sun.j3d.utils.geometry.*;
 //// PolyCylinder3D
 /**
 
-This actor produces a generalized cylindrical shape in the GR domain. 
+This actor produces a generalized cylindrical shape in the GR domain.
 The output port is used to connect this actor to the Java3D scene
 graph. This actor will only have meaning in the GR domain.
 
@@ -59,7 +59,7 @@ in the X-Y plane to specify the polygonal shape for the base. The parameter
 */
 
 public class PolyCylinder3D extends GRShadedShape {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -84,8 +84,8 @@ public class PolyCylinder3D extends GRShadedShape {
         polygon.setTypeEquals(new ArrayType(BaseType.ANY));
         thickness = new Parameter(this, "thickness", new DoubleToken(0.3));
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -95,17 +95,17 @@ public class PolyCylinder3D extends GRShadedShape {
      *  The default shape for this polygon is a triangle
      */
     public Parameter polygon;
-    
+
     /** The thickness of the generalized cylinder
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is the DoubleToken 0.3
      */
     public Parameter thickness;
-    
-   
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
      *  @param workspace The workspace for the new object.
@@ -119,17 +119,17 @@ public class PolyCylinder3D extends GRShadedShape {
         newObject.thickness = (Parameter) newObject.getAttribute("thickness");
         return newObject;
     }
-    
+
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a generalized polygonal cylinder.
      *  @return the generalized polygonal cylinder
-     */   
+     */
     public Node getNodeObject() {
         return (Node) containedNode;
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -138,9 +138,9 @@ public class PolyCylinder3D extends GRShadedShape {
      *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
-    
+
         super._createModel();
-        
+
         float data[] = _getPolygon();
         int numberOfVertices = _getVertexCount();
         int[] stripCount = new int[2+numberOfVertices];
@@ -153,11 +153,11 @@ public class PolyCylinder3D extends GRShadedShape {
         int j=0;
         int k=0;
         float thickness = (float) _getThickness();
-        
+
         data[numberOfVertices*3] = data[0];
         data[numberOfVertices*3+1] = data[1];
         data[numberOfVertices*3+2] = data[2] - thickness;
-        
+
         j = numberOfVertices*3 - 3;
         k = numberOfVertices*3 + 3;
         for(i=1; i<numberOfVertices;i++) {
@@ -167,39 +167,39 @@ public class PolyCylinder3D extends GRShadedShape {
             j = j - 3;
             k = k + 3;
         }
-        
+
         j = 0;
         k = 2 * 3 * numberOfVertices;
         for(i=0; i<numberOfVertices;i++) {
-            data[k]   = data[j];   
+            data[k]   = data[j];
             data[k+1] = data[j+1];
             data[k+2] = data[j+2];
-            
+
             data[k+3] = data[j];
             data[k+4] = data[j+1];
             data[k+5] = data[j+2] - thickness;
-            
+
             j = j + 3;
             if (j == numberOfVertices*3) {
                 j = 0;
             }
-            
-            
+
+
             data[k+6] = data[j];
             data[k+7] = data[j+1];
             data[k+8] = data[j+2] - thickness;
-            
+
             data[k+9]  = data[j];
             data[k+10] = data[j+1];
             data[k+11] = data[j+2];
             k = k + 12;
         }
-        
-           
+
+
         GeometryInfo gi = new GeometryInfo(GeometryInfo.POLYGON_ARRAY);
         gi.setCoordinates(data);
         gi.setStripCounts(stripCount);
-        
+
         Triangulator tr = new Triangulator();
         tr.triangulate(gi);
         gi.recomputeIndices();
@@ -211,13 +211,13 @@ public class PolyCylinder3D extends GRShadedShape {
         Stripifier st = new Stripifier();
         st.stripify(gi);
         gi.recomputeIndices();
-        
+
         containedNode = new Shape3D();
         containedNode.setAppearance(_appearance);
         containedNode.setGeometry(gi.getGeometryArray());
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -233,13 +233,13 @@ public class PolyCylinder3D extends GRShadedShape {
         float[] data = new float[numberOfElements*18];
         int i=0;
         int j=0;
-   
+
         for(i=0 ;i < numberOfElements * 2; i = i + 2) {
             data[j++] = (float) ((DoubleToken)arrayToken.getElement(i)).doubleValue();
             data[j++] = (float) ((DoubleToken) arrayToken.getElement(i+1)).doubleValue();
             data[j++] = 0.0f;
         }
-        
+
         return data;
     }
 
@@ -251,7 +251,7 @@ public class PolyCylinder3D extends GRShadedShape {
     private double _getThickness() throws IllegalActionException  {
         return ((DoubleToken) thickness.getToken()).doubleValue();
     }
-    
+
     /** Get the number of vertices in the 2D polygonal base of this generalized cylinder
      *  @return the number of vertices in the base polygon
      *  @exception IllegalActionException If the value of some parameters can't
@@ -260,11 +260,11 @@ public class PolyCylinder3D extends GRShadedShape {
     private int _getVertexCount() throws IllegalActionException {
         ArrayToken arrayToken = ((ArrayToken) polygon.getToken());
         int numberOfElements = arrayToken.length()/2;
-        
+
         return numberOfElements;
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

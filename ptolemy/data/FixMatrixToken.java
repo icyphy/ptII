@@ -330,7 +330,7 @@ public class FixMatrixToken extends MatrixToken {
      *  identity with the same precision as the current
      *  FixMatrixToken. The returned token contains an identity matrix
      *  whose dimension is the same as the number of rows of the
-     *  matrix contained in this token.  
+     *  matrix contained in this token.
      *  @return A new Token containing the left multiplicative identity.
      */
     public Token one() {
@@ -348,7 +348,7 @@ public class FixMatrixToken extends MatrixToken {
      *  identity with the same precision as the current
      *  FixMatrixToken.. The returned token contains an identity
      *  matrix whose dimension is the same as the number of columns of
-     *  the matrix contained in this token.  
+     *  the matrix contained in this token.
      *  @return A new Token containing the right multiplicative identity.
      */
     public Token oneRight() {
@@ -366,7 +366,7 @@ public class FixMatrixToken extends MatrixToken {
      *  same precision as the current FixMatrixToken.  The returned
      *  token contains a matrix whose elements are all zero, and the
      *  size of the matrix is the same as the matrix contained in this
-     *  token.  
+     *  token.
      *  @return A new Token containing the additive identity.
      */
     public Token zero() {
@@ -391,7 +391,7 @@ public class FixMatrixToken extends MatrixToken {
 
     /** The number of rows of the matrix. */
     private int _rowCount = 0;
-    
+
     /** The number of column of the matrix. */
     private int _columnCount = 0;
 }

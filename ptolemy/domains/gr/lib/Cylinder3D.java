@@ -68,7 +68,7 @@ public class Cylinder3D extends GRShadedShape {
         radius = new Parameter(this, "radius", new DoubleToken(0.5));
         height = new Parameter(this, "height", new DoubleToken(0.7));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -77,13 +77,13 @@ public class Cylinder3D extends GRShadedShape {
      *  The default value of this parameter is the 0.5
      */
     public Parameter radius;
-    
+
     /** The height of the cylinder
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is the 0.7
      */
     public Parameter height;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -105,7 +105,7 @@ public class Cylinder3D extends GRShadedShape {
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a Java3D Cylinder.
      *  @return the Java3D Cylinder
-     */    
+     */
     public Node getNodeObject() {
         return (Node) containedNode;
     }
@@ -120,14 +120,14 @@ public class Cylinder3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
        super._createModel();
        containedNode = new Cylinder((float) _getRadius(),(float) _getHeight(),
-                                    Cylinder.GENERATE_NORMALS,_appearance);      
+                                    Cylinder.GENERATE_NORMALS,_appearance);
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    
+
     /** Return the value of the radius parameter
      *  @return the radius of the cylinder
      *  @exception IllegalActionException If the value of some parameters can't
@@ -136,7 +136,7 @@ public class Cylinder3D extends GRShadedShape {
     private double _getRadius() throws IllegalActionException {
         return ((DoubleToken) radius.getToken()).doubleValue();
     }
-    
+
     /** Return the value of the height parameter
      *  @return the height of the cylinder
      *  @exception IllegalActionException If the value of some parameters can't
@@ -145,7 +145,7 @@ public class Cylinder3D extends GRShadedShape {
     private double _getHeight() throws IllegalActionException  {
         return ((DoubleToken) height.getToken()).doubleValue();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

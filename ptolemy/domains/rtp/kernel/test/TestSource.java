@@ -59,7 +59,7 @@ public class TestSource extends Source {
 
     ////////////////////////////////////////////////////////////////////
     ////                          Parameters                        ////
-    
+
     /** The execution frequency, in terms of Hz. Default is 2.0.
      */
     public Parameter frequency;
@@ -69,12 +69,12 @@ public class TestSource extends Source {
 
     /** Once the frequency is updated, calculate the execution period.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == frequency) {
             double f = ((DoubleToken)(frequency.getToken())).doubleValue();
             if (f > 1000) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "does not support frequency higher than 1000.");
             }
             _period = 1000.0/f;

@@ -71,7 +71,7 @@ public class FixToken extends ScalarToken {
      *
      *  @param value the value that needs to be converted into a FixToken.
      *  @param precision the precision of the FixToken.
-     *  @exception IllegalArgumentException If the format of the 
+     *  @exception IllegalArgumentException If the format of the
      *  precision string is incorrect.
      *  @see ptolemy.math.Quantizer
      */
@@ -98,7 +98,7 @@ public class FixToken extends ScalarToken {
      *  @param numberOfBits total number of bits available for the
      *  FixToken.
      *  @param integerBits the number of integer bits available for
-     *  the FixToken.  
+     *  the FixToken.
      *  @exception IllegalArgumentException If the supplied precision
      *  is incorrect.
      *  @see ptolemy.math.Quantizer
@@ -469,7 +469,7 @@ public class FixToken extends ScalarToken {
     }
 
     /** Return a new token representing the additive identity with
-     *  the same precision as this FixToken.  
+     *  the same precision as this FixToken.
      *
      *  @return A new Token containing the additive identity.
      */

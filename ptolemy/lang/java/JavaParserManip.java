@@ -95,7 +95,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 	JavaParser p = new JavaParser();
 
 	//System.out.println("JavaParserManip: Calling " +
-	//			     "JavaParser.init() " + 
+	//			     "JavaParser.init() " +
 	//			     StringManip.baseFilename(filename));
 
 	try {
@@ -153,7 +153,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
         Class myClass = ASTReflect.pathNameToClass(className);
         if (myClass != null) {
             //System.out.println("JavaParserManip.parseCanonicalClassName: " +
-            //        "Calling ASTCompileUnitNode on " + 
+            //        "Calling ASTCompileUnitNode on " +
             //        myClass.getName() + " " +
             //        className);
             loadedAST = ASTReflect.ASTCompileUnitNode(myClass);
@@ -161,7 +161,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 
         if (loadedAST == null) {
             throw new NullPointerException("JavaParserManip.parseCanonical" +
-                    "ClassName(" + className + "): loadedAST was null " + 
+                    "ClassName(" + className + "): loadedAST was null " +
                     "myClass:" +
                     ((myClass==null) ? "null" : myClass.getName()) +
                     " Perhaps your classpath is wrong, or the class name is" +

@@ -161,7 +161,7 @@ public class BaseType implements Type, Serializable {
     /** The bottom element of the data type lattice. This type has two
      *  roles. It represents either a type variable or "not a type". When
      *  it represents a type variable, it is called ANY since a type variable
-     *  may be changed to any type. The two objects ANY and NAT are 
+     *  may be changed to any type. The two objects ANY and NAT are
      *  the same BaseType instance.
      *  @see #NAT
      */

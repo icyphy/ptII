@@ -13,7 +13,7 @@ on the <a href="codegen.htm">Ptolemy II Code Generation</a> facility.
 
  <p>In June, 1999, Sun Microsystems released a Java Virtual Machine
 that ran under PalmOS.  The first release of this product was called
-the KVM, where the K stood for kilobytes, indicating that the 
+the KVM, where the K stood for kilobytes, indicating that the
 virtual machine would run in a very small memory footprint (50-80k of object
 code).
 <BLOCKQUOTE>
@@ -23,7 +23,7 @@ code).
 
 
  <p>In May 2000, Sun released the Java 2 Micro Edition (J2ME), which
-uses the KVM and Connected, Limited Device Configuration (CLDC) technology 
+uses the KVM and Connected, Limited Device Configuration (CLDC) technology
 to provide a Java environment under PalmOS.
 
  <p>The CLDC implementation for PalmOS is fairly limited in many ways.
@@ -37,14 +37,14 @@ Unfortunately, the download/run/reset cycle took far too long.
 Fortunately, there are several simulators available for PalmOS.  Palm
 OS Emulator (POSE) is available from the Palm website, but it requires
 a copy of a Palm ROM image.  The Palm CLDC ships with a primitive
-emulator for testing J2ME code only.  We used both emulators for 
+emulator for testing J2ME code only.  We used both emulators for
 our testing, and only occaisionally ran code on the actual hardware.
 
  <p>The overall procedure:
 <ol>
 <li> Generate .java files using the Ptolemy II code generation facility.
 
-<li> Compile the .java files while setting the 
+<li> Compile the .java files while setting the
 <CODE>javac</CODE> bootclasspath to include the KVM classes
 
 <li> The J2ME can verify classes using an alternative verification scheme.
@@ -59,11 +59,11 @@ preverified and roughly 5% larger in size
 
 <li> Run the Java Palm Simulator on the preverified .class files
 
-<li> Generate a PalmOS binary by running the 
+<li> Generate a PalmOS binary by running the
 <CODE>palm.database.MakePalmApp</CODE> Java application
 
 <li> Download the PalmOS binary to the PalmOS Emulator that runs
-under Windows.  
+under Windows.
 
 <li> Download the PalmOS binary to the real PalmOS hardware.
 
@@ -171,7 +171,7 @@ printed run times for the Ramp codegen, but the actual walk clock time was more 
 Tutorial with sample code, links
 
 <li> <a href="http://www.trantor.de/kawt/" target="_top">KAWT Project</a>
-An abstract window toolkit for the KVM 
+An abstract window toolkit for the KVM
 
 <li> <a href="http://www.billday.com/KVMArchive/index.html" target="_top">Billday.com KVMArchive</a>
 </menu>
@@ -180,11 +180,11 @@ An abstract window toolkit for the KVM
 The Ptolemy II tree has hacks in it so that it can be used to build
 binaries to run on the Palm.
 <ol>
-<li> Download 
+<li> Download
 <a href="http://www.sun.com/software/communitysource/j2me/download.html" target="_top">j2me</a>.  Note that you need to grab two files
 <dl>
 <dt><code>j2me_cldc-1_0-src-winsol.zip</code>
-<dd> The J2ME CLDC Reference implementation. 
+<dd> The J2ME CLDC Reference implementation.
 <dt><code>j2me_cldc-1_0-src-palm_overlay.zip</code>
 <dd> The PalmOS specific files
 </dl>
@@ -195,7 +195,7 @@ create a directory named <CODE>$PTII/vendors/sun/j2me_cldc</CODE>.
 <li> Unzip <code>j2me_cldc-1_0-src-palm_overlay.zip</code>
 from within <CODE>$PTII/vendors/sun/j2me_cldc</CODE>.
 Note that you will extract this file from within the directory
-that was just created by the previous step.  If you 
+that was just created by the previous step.  If you
 are asked about overwriting any files, say 'yes'.
 
 
@@ -225,8 +225,8 @@ hotsync the Palm or Handspring.
 <dd> The kvm Palm Program (required)
 <dt> <CODE>KVMutil.prc</CODE>
 <dd> The kvm Palm Utilities program which allows you to look at
-stderr and stdout 
-<dt> Several demos 
+stderr and stdout
+<dt> Several demos
 <dd> (optional)
 </dl>
 Transfer <CODE>KVM.pdb</CODE> and <CODE>KVMutil.prc</CODE> and any
@@ -332,8 +332,8 @@ javac directly, then you may get verifier errors.
 <a href="http://java.sun.com/products/cldc/faqs.html"><code>http://java.sun.com/products/cldc/faqs.html</code></a> says
 <blockquote>
 Specifically, some features of larger Java virtual machine implementations, like double and long data types, are not supported. For more detail on
-specific differences, see the K virtual machine whitepaper at 
-<a href="http://java.sun.com/products/kvm/wp/KVMwp.pdf">http://java.sun.com/products/kvm/wp/KVMwp.pdf</a>  
+specific differences, see the K virtual machine whitepaper at
+<a href="http://java.sun.com/products/kvm/wp/KVMwp.pdf">http://java.sun.com/products/kvm/wp/KVMwp.pdf</a>
 </blockquote>
 At run time, lines like:
 <pre>
@@ -346,18 +346,18 @@ ALERT: Error verifying class ptolemy/apps/kvm/hello/Hello
 even though preverify does not indicate that there is an error
 
 <h3>Verifier errors</h3>
-The most common error message is 
+The most common error message is
 <code>ALERT: Error verifying class <i>foo/bar/baz</i></code>
 Unfortunately, this error is not very descriptive.
 To get better error messages:
 <ol>
-<li> Modify the 
-<code>j2me_cldc/kvm/VmCommon/src/class.c</code> so that 
+<li> Modify the
+<code>j2me_cldc/kvm/VmCommon/src/class.c</code> so that
 the return code is printed by modifying <code>initializeClass()</code>:
 <pre>
 	if (results = verifyClass(thisClass)) {
 	    START_TEMPORARY_ROOTS
-	    sprintf(str_buffer, 
+	    sprintf(str_buffer,
 		    "Error verifying class %s: error code: %d", className(thisClass), results);
 	    fatalError(str_buffer);
             END_TEMPORARY_ROOTS
@@ -378,7 +378,7 @@ above.
 <menu>
 <li><a href="http://www.wabasoft.com"><code>http://www.wabasoft.com</code></a>
 <li><a href="http://www.cygnus.uwa.edu.au/~rnielsen/wextras/"><code>http://www.cygnus.uwa.edu.au/~rnielsen/wextras/</code></a> - Waba Extras including access to the serial port
-</menu> 
+</menu>
 Waba is an open source Java Virtual Machine for the Palm.
 
 <h3>Installing Waba SDK for Ptolemy II</h3>

@@ -46,7 +46,7 @@ import ptolemy.kernel.util.*;
  */
 public abstract class MenuItemFactory {
     /**
-     * Add an item to the given context menu.  The menu item should act on the 
+     * Add an item to the given context menu.  The menu item should act on the
      * given figure.
      */
     public abstract JMenuItem create(JContextMenu menu, NamedObj object);
@@ -60,7 +60,7 @@ public abstract class MenuItemFactory {
     /**
      * Given the object that is the target of the MenuFactory, return a new
      * object that is related to the original.  This is provided so that
-     * the target of a menu item can be different from the target of the 
+     * the target of a menu item can be different from the target of the
      * menu that it is contained in.  In this base class, just return the
      * object that is passed in, since menu items will usually have the
      * same target as the menu.

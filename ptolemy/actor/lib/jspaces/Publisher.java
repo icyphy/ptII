@@ -155,10 +155,10 @@ public class Publisher extends Sink {
 	try {
             if (input.hasToken(0)) {
                 Token token = input.get(0);
-                String name = 
+                String name =
                     ((StringToken)entryName.getToken()).stringValue();
                 long time = ((LongToken)leaseTime.getToken()).longValue();
-            
+
                 TokenEntry template = new TokenEntry(name, null, null);
                 _space.takeIfExists(template, null, 500);
                 TokenEntry entry = new TokenEntry(name,

@@ -51,7 +51,7 @@ import javax.swing.tree.TreeCellRenderer;
 
 //////////////////////////////////////////////////////////////////////////
 //// TreeEditorPanel
-/** 
+/**
 A panel that displays a Ptolemy II model in a JTree.
 
 @author Edward Lee
@@ -95,14 +95,14 @@ public class TreeEditorPanel extends JScrollPane {
             try {
                 File file = new File(filename);
                 instream = new FileInputStream(file);
-                
+
                 // Strangely, the XmlParser does not want as base the
                 // directory containing the file, but rather the
                 // file itself.
                 File directory = new File(file.getAbsolutePath());
                 // base = new URL("file", null, directory);
                 base = file.toURL();
-            } catch (FileNotFoundException ex2) { 
+            } catch (FileNotFoundException ex2) {
                 URL inurl = Class.forName("ptolemy.kernel.util.NamedObj").
                 getClassLoader().getResource(filename);
                 instream = inurl.openStream();
@@ -120,7 +120,7 @@ public class TreeEditorPanel extends JScrollPane {
             }
             tree.setCellRenderer(cellRenderer);
             tree.setScrollsOnExpand(true);
-            
+
             setViewportView(tree);
         } else {
             throw new IllegalActionException(

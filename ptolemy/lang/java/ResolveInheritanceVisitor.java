@@ -97,7 +97,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         } else {
             if (me != StaticResolution.OBJECT_DECL) {
                 throw new RuntimeException("ResolveInheritanceVisitor." +
-                        "visitClassDeclNode: " + me + 
+                        "visitClassDeclNode: " + me +
                         "has no superclass, yet is not Object");
             }
         }
@@ -233,7 +233,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     }
 
     // Return true iff MEMBER would be hidden or overridden by a
-    // declaration in TO. 
+    // declaration in TO.
     private boolean _overriddenIn(JavaDecl member, ClassDecl to) {
         Scope scope = to.getScope();
         String memberName = member.getName();
@@ -286,7 +286,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
   	                throw new RuntimeException(to.getName() +
                                 ": overriding of " + memberName +
                                 " changes return type: " +
-                                d.getType() + " vs. " + 
+                                d.getType() + " vs. " +
                                 methodMember.getType());
                     }
 
@@ -359,7 +359,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         // FIXME : even Titanium appears to be having trouble
         return true;
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

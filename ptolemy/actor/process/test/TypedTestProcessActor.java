@@ -37,9 +37,9 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// TypedTestProcessActor
 /**
-A TypedTestProcessActor is a simple atomic actor that is used for 
-testing the actor package constructs for Processes. It overrides 
-the action methods to return false in the postfire after the first 
+A TypedTestProcessActor is a simple atomic actor that is used for
+testing the actor package constructs for Processes. It overrides
+the action methods to return false in the postfire after the first
 invocation of fire method.
 
 @author Edward A. Lee, Mudit Goel, John S. Davis II

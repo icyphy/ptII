@@ -48,12 +48,12 @@ import java.util.List;
 //// DownSample
 /**
 This actor downsamples an input stream by an integer factor by
-removing tokens.  The downsample factor is given by the 
-<i>tokenConsumptionRate</i> parameter of the input port.  
+removing tokens.  The downsample factor is given by the
+<i>tokenConsumptionRate</i> parameter of the input port.
 On each firing, this actor reads a number of tokens from the input
-and copies only the first token to the output.  
-The number of tokens consumed during the firing is the same as the 
-<i>tokenConsumptionRate</i> parameter of the input port. 
+and copies only the first token to the output.
+The number of tokens consumed during the firing is the same as the
+<i>tokenConsumptionRate</i> parameter of the input port.
 By default, this actor sets the value of this parameter to be two,
 so the input sample rate is twice that of the output.
 <p>
@@ -105,9 +105,9 @@ public class DownSample extends SDFTransformer {
 	Token token = input.get(0);
         // Send the first token.
         output.send(0, token);
-        
+
         // count is the number of zero tokens to create.
-        int count = input.getTokenConsumptionRate() - 1;   
+        int count = input.getTokenConsumptionRate() - 1;
         Token array[] = input.get(0, count);
         // ignore the other consumed tokens.
     }

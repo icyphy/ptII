@@ -56,7 +56,7 @@ import java.util.LinkedList;
 /**
 A Transition has a source state and a destination state. A transition has
 a guard expression and a trigger expression. Both expressions should evaluate
-to a boolean value. The trigger of a transition must be true whenever the 
+to a boolean value. The trigger of a transition must be true whenever the
 guard is true. A transition is enabled and can be taken when its guard is true.
 A transition is triggered and must be taken when its trigger is true.
 <p>
@@ -207,7 +207,7 @@ public class Transition extends ComponentRelation {
         return _destinationState;
     }
 
-    /** Return the guard expression. The guard expression should evaluate 
+    /** Return the guard expression. The guard expression should evaluate
      *  to a boolean value.
      *  @return The guard expression.
      */
@@ -288,7 +288,7 @@ public class Transition extends ComponentRelation {
         super.setContainer(container);
     }
 
-    /** Set the guard expression. The guard expression should evaluate 
+    /** Set the guard expression. The guard expression should evaluate
      *  to a boolean value.
      *  @param expression The guard expression.
      */
@@ -301,7 +301,7 @@ public class Transition extends ComponentRelation {
         }
     }
 
-    /** Set the trigger expression. The trigger expression should evaluate 
+    /** Set the trigger expression. The trigger expression should evaluate
      *  to a boolean value.
      *  @param expression The trigger expression.
      */

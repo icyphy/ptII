@@ -36,9 +36,9 @@ import ptolemy.math.SignalProcessing;
 //////////////////////////////////////////////////////////////////////////
 //// PitchDetector
 /** Perform pitch detection on an input signal using an autocorrelation
- *  estimate. The autocorrelation estimate is computed using the 
+ *  estimate. The autocorrelation estimate is computed using the
  *  DFT (an FFT algorithm is used) for efficiency.
-    
+
 @author Brian K. Vogel
 @version $Id$
 */
@@ -47,8 +47,8 @@ public class PitchDetector {
     /** Initialize the pitch detector.
      *  Parameter <i>vectorSize</i> sets the vector size to be used by
      *  <i>performPitchDetect()</i>. <i>vectorSize</i> may be any length.
-     *  @param vectorSize The length of the array parameter to 
-     *   performPitchDetect(). 
+     *  @param vectorSize The length of the array parameter to
+     *   performPitchDetect().
      *  @param sampleRate The sample rate to use, in Hz. 22050 or
      *   44100 is recomended.
      */
@@ -111,7 +111,7 @@ public class PitchDetector {
 	    if (curSkipSmaple == 0) {
 		if (_recentInputArrayPos < _recentInputArraySize) {
 		    // Ok to read in another samples, array not full yet.
-		    
+
 		    // Read in an input sample.
 		    _recentInputArray[_recentInputArrayPos] =
 			inputArray[vectorLoopPos];
@@ -119,7 +119,7 @@ public class PitchDetector {
 		} else  {
 		    // Step 2. Take DFT of recent input padded with zeros.
 		    _dftInput = SignalProcessing.FFTComplexOut(_recentInputArray);
-		    
+
 		    // Step 3. Take the Mag^2 of the DFT.
 		    for (int ind2 = 0; ind2 <
 			     _recentInputArray.length; ind2++) {
@@ -139,12 +139,12 @@ public class PitchDetector {
 			}
 		    }
 		    // Step 5. Find the peak in the the autocorrelation estimate.
-		    
+
 		    // Find the index at which the autocorrelation funtion
 		    // becomes less than the threshold.
 		    int firstZzeroIndex = -1;
 		    double closeEnoughToZero = 0.25;
-		    
+
 		    for (int j = _minAutoCorInd; j < _maxAutoCorInd; j++) {
 			if (_autocorEst[j] < closeEnoughToZero) {
 			    firstZzeroIndex = j;
@@ -155,7 +155,7 @@ public class PitchDetector {
 		    double maxv = 0;
 		    int maxInd = 0;
 		    if (firstZzeroIndex > 0) {
-			for (int m = firstZzeroIndex; m <  
+			for (int m = firstZzeroIndex; m <
 				 _maxAutoCorInd; m++) {
 			    if (_autocorEst[m] > maxv) {
 				maxv = _autocorEst[m];
@@ -187,7 +187,7 @@ public class PitchDetector {
 
     ///////////////////////////////////////////////////////////////
     ///              private variables                        /////
-    
+
     // Array to hold recent input. Note that the size of this
     // array is independent from the size of the array read in
     // by performPitchDetect().

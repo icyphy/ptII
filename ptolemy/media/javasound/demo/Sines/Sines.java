@@ -1,4 +1,4 @@
-/* A simple application that demonstrates the use of SoundPlayback 
+/* A simple application that demonstrates the use of SoundPlayback
   by performing simple additive synthesis in real-time.
 
  Copyright (c) 2000 The Regents of the University of California.
@@ -34,7 +34,7 @@ package ptolemy.media.javasound.demo.Sines;
 import ptolemy.media.javasound.*;
 
 ////////////////////////////////////////////////////
-/** A simple application that demonstrates the use of SoundPlayback. 
+/** A simple application that demonstrates the use of SoundPlayback.
    This application synthesizes and plays a simple harmonic
    signal, using simple additive synthesis. The signal
    is the some of a few harmonically related sinusoids.
@@ -58,11 +58,11 @@ public class Sines {
 	// Amount of data to read or write from/to the internal buffer
 	// at a time. This should be set smaller than the internal buffer
 	// size!
-	int getSamplesSize = 25; 
+	int getSamplesSize = 25;
 
 	int putSamplesSize = getSamplesSize;
 
-	// Construct a sound playback object that plays audio 
+	// Construct a sound playback object that plays audio
 	//through the computer's speaker.
 	SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
 					  sampleSizeInBits,
@@ -77,7 +77,7 @@ public class Sines {
 	    System.err.println(ex);
 	}
 
-	double[][] samplesArray = 
+	double[][] samplesArray =
 	    new double[channels][getSamplesSize];
 	double[] samples = new double[channels];
 
@@ -107,7 +107,7 @@ public class Sines {
 		}
 	} catch (Exception ex) {
 	    System.err.println(ex);
-	}   
+	}
     }
 
 }

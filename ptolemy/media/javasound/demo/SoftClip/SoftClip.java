@@ -58,16 +58,16 @@ public class SoftClip {
 	// Amount of data to read or write from/to the internal buffer
 	// at a time. This should be set smaller than the internal buffer
 	// size!
-	int getSamplesSize = 256; 
+	int getSamplesSize = 256;
 
-	SoundCapture soundCapture = 
+	SoundCapture soundCapture =
 	    new SoundCapture(sampleRate, sampleSizeInBits,
 			     channels, inBufferSize,
 			     getSamplesSize);
 
 	int putSamplesSize = getSamplesSize;
 
-	// Construct a sound playback object that plays audio 
+	// Construct a sound playback object that plays audio
 	//through the computer's speaker.
 	SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
 					  sampleSizeInBits,
@@ -83,8 +83,8 @@ public class SoftClip {
 	    System.err.println(ex);
 	}
 
-	
-	double[][] capturedSamplesArray = 
+
+	double[][] capturedSamplesArray =
 	    new double[channels][getSamplesSize];
 
 	try{
@@ -110,6 +110,6 @@ public class SoftClip {
 		}
 	} catch (Exception ex) {
 	    System.err.println(ex);
-	}   
+	}
     }
 }

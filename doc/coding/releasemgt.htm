@@ -33,16 +33,16 @@ coding standard.
 <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
 the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
 
-<li> Run the nightly build, build a release and run 
+<li> Run the nightly build, build a release and run
 <CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the files.
 
 <pre>
 find . -type f -print &gt; ~/tmp/ff
-sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v gif` 
+sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v gif`
 </pre>
 
 <li> Tag the tree as the release tree and create a branch
-For more information about CVS, see the 
+For more information about CVS, see the
 <a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">Gigascale CVS Pages</a>
 
  <p>To make a branch for 0.4beta, use the following command:

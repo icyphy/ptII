@@ -67,7 +67,7 @@ import javax.swing.event.*;
 //// FSMGraphController
 /**
 A Graph Controller for FSM models.  This controller allows nodes to be
-dragged and dropped onto its graph. 
+dragged and dropped onto its graph.
 Arcs can be created by control-clicking and dragging on
 a port.  Anything can be deleted by selecting it and pressing
 the delete key on the keyboard.
@@ -129,30 +129,30 @@ public class FSMGraphController extends FSMViewerController {
 	    // to the list of links.
             FSMGraphModel model = (FSMGraphModel)getGraphModel();
 	    model.getArcModel().setTail(link, sourceObject);
-		
+
             try {
 		// add it to the foreground layer.
-		FigureLayer layer = 
+		FigureLayer layer =
 		    getGraphPane().getForegroundLayer();
 		Site headSite, tailSite;
-	
+
 		// Temporary sites.  One of these will get blown away later.
-		headSite = new AutonomousSite(layer, 
-					      event.getLayerX(), 
-					      event.getLayerY());          
-		tailSite = new AutonomousSite(layer, 
-					      event.getLayerX(), 
-					      event.getLayerY());          
+		headSite = new AutonomousSite(layer,
+					      event.getLayerX(),
+					      event.getLayerY());
+		tailSite = new AutonomousSite(layer,
+					      event.getLayerX(),
+					      event.getLayerY());
 		// Render the edge.
 		Connector c =
 		    getEdgeController(link).render(link, layer, tailSite, headSite);
 		// get the actual attach site.
-		tailSite = 
-		    getEdgeController(link).getConnectorTarget().getTailSite(c, source, 
+		tailSite =
+		    getEdgeController(link).getConnectorTarget().getTailSite(c, source,
 							    event.getLayerX(),
 							    event.getLayerY());
 		if(tailSite == null) {
-		    throw new RuntimeException("Invalid connector target: " + 
+		    throw new RuntimeException("Invalid connector target: " +
 			"no valid site found for tail of new connector.");
 		}
 
@@ -169,7 +169,7 @@ public class FSMGraphController extends FSMViewerController {
 		layer.grabPointer(event, gh);
             } catch (Exception ex) {
                 MessageHandler.error("Drag connection failed:", ex);
-            }	    
+            }
 	}
     }
 
@@ -183,7 +183,7 @@ public class FSMGraphController extends FSMViewerController {
 	    // Standard toolbar icons are 25x25 pixels.
 	    //	    NodeRenderer renderer = new FSMStateController.StateRenderer();
 	    //Figure figure = renderer.render(null);
-	    
+
 	    // FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    //putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
 	    putValue("tooltip", "Control-click to create a new state.");
@@ -197,35 +197,35 @@ public class FSMGraphController extends FSMViewerController {
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
-	       getSourceType() == MENUBAR_TYPE) {	
+	       getSourceType() == MENUBAR_TYPE) {
 		// no location in the action, so make something up.
 		// FIXME this is a lousy way to do this.
-		Point2D point = pane.getSize();    
+		Point2D point = pane.getSize();
 		x = point.getX()/2;
 		y = point.getY()/2;
 	    } else {
 		x = getX();
 		y = getY();
 	    }
-	    
-	    FSMGraphModel graphModel = 
+
+	    FSMGraphModel graphModel =
 		(FSMGraphModel)getGraphModel();
 	    final double finalX = x;
 	    final double finalY = y;
 	    final CompositeEntity toplevel = graphModel.getToplevel();
-	 		
+
 	    final String stateName = toplevel.uniqueName("state");
 	    // Create the state.
 	    StringBuffer moml = new StringBuffer();
 	    final String locationName = "location1";
-	   moml.append("<entity name=\"" + stateName + 
+	   moml.append("<entity name=\"" + stateName +
 			"\" class=\"ptolemy.domains.fsm.kernel.State\">\n");
-	    moml.append("<property name=\"" + locationName + 
+	    moml.append("<property name=\"" + locationName +
 	    		"\" class=\"ptolemy.moml.Location\"/>\n");
 	    moml.append("</entity>\n");
-		    
-	    
-	    ChangeRequest request = 
+
+
+	    ChangeRequest request =
 		new MoMLChangeRequest(this, toplevel, moml.toString()) {
 		    protected void _execute() throws Exception {
 			super._execute();
@@ -233,16 +233,16 @@ public class FSMGraphController extends FSMViewerController {
 			// Note that this really needs to be done after
 			// the change request has succeeded, which is why
 			// it is done here.  When the graph controller
-			// gets around to handling this, it will draw 
+			// gets around to handling this, it will draw
 			// the icon at this location.
-			
+
 			// FIXME: Have to know whether this is an entity,
 			// port, etc. For now, assuming it is an entity.
 			NamedObj newObject =
 			toplevel.getEntity(stateName);
-			Location location = 
+			Location location =
 			(Location) newObject.getAttribute(locationName);
-						
+
 			double point[] = new double[2];
 			point[0] = ((int)finalX);
 			point[1] = ((int)finalY);
@@ -257,10 +257,10 @@ public class FSMGraphController extends FSMViewerController {
 	    }
 	}
     }
- 
+
     ///////////////////////////////////////////////////////////////
     //// RelationCreator
-    
+
     protected class StateCreator extends ActionInteractor {
 	public StateCreator() {
 	    super();

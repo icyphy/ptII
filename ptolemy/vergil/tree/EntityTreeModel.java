@@ -164,10 +164,10 @@ public class EntityTreeModel implements TreeModel {
 	}
 
 	/** Trigger an update of the entire tree.
-	 */	
+	 */
 	public void changeFailed(ChangeRequest change, Exception exception) {
 	    valueForPathChanged(new TreePath(getRoot()), getRoot());
-	}	
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

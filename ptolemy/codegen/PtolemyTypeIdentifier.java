@@ -387,7 +387,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     // actor interface type
     public static final ClassDecl ACTOR_DECL;
     public static final TypeNameNode ACTOR_TYPE;
-    
+
     // SequenceActor is a marker interface that we remove
     // in ActorTransformerVisitor
     public static final ClassDecl SEQUENCE_ACTOR_DECL;
@@ -487,21 +487,21 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         //System.out.println("PtolemyTypeIdentifier<static>: load Complex");
 
-        CompileUnitNode complexUnit = 
+        CompileUnitNode complexUnit =
             StaticResolution.loadClassName("ptolemy.math.Complex", 1);
         COMPLEX_DECL = (ClassDecl) StaticResolution.findDecl(complexUnit,
                 "Complex", CG_CLASS);
         COMPLEX_TYPE = COMPLEX_DECL.getDefType();
 
 
-        CompileUnitNode fixPointUnit = 
+        CompileUnitNode fixPointUnit =
             StaticResolution.loadClassName("ptolemy.math.FixPoint", 1);
         FIX_POINT_DECL = (ClassDecl) StaticResolution.findDecl(fixPointUnit,
                 "FixPoint", CG_CLASS);
         FIX_POINT_TYPE = FIX_POINT_DECL.getDefType();
 
 
-        CompileUnitNode tokenUnit = 
+        CompileUnitNode tokenUnit =
             StaticResolution.loadClassName("ptolemy.data.Token", 1);
         TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(tokenUnit,
                 "Token", CG_CLASS);
@@ -800,7 +800,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 };
 
         _TOKEN_CONTAINED_TYPES = new TypeNode[] {
-            // the first and third entries are hacks to allow for 
+            // the first and third entries are hacks to allow for
             // unresolved token types
             IntTypeNode.instance, BoolTypeNode.instance, IntTypeNode.instance,
                 IntTypeNode.instance, DoubleTypeNode.instance,

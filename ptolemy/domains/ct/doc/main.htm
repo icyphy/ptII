@@ -8,7 +8,7 @@
 <body>
 <h1>Continuous Time</h1>
 <P>
-The Continuous Time (CT) Domain aims to help the design of systems that 
+The Continuous Time (CT) Domain aims to help the design of systems that
 have continuous dynamic, for example, analog circuits, mechanical systems,
 and the continuous environment for embedded systems. Models in the CT
 domain has the form of ordinary differential equations (ODEs):
@@ -18,12 +18,12 @@ domain has the form of ordinary differential equations (ODEs):
 where <CODE>x</CODE> is the state of the system, <CODE>u</CODE> is the
 input, and <CODE>y</CODE> is the output. Time <CODE>t</CODE>in the model
 is continuous, and <CODE>dx/dt</CODE> is the derivative of <CODE>x</CODE>
-with respective to time. 
+with respective to time.
 <p>
 The simulation of a continuous-time system is to solve (numerically)
 the ODEs of the system. There is a variety of ODE solving methods developed
 in decades. A class of them, called the time marching methods, discretizes
-time into discrete points and finds the value of <CODE>x</CODE> at these 
+time into discrete points and finds the value of <CODE>x</CODE> at these
 points at an increasing order of time. Ptolemy II implements some of the
 time marching methods, like the forward Euler method, the backward Euler
 method, the 2(3) order Runge-Kutta method, and the trapezoidal rule method.
@@ -31,8 +31,8 @@ method, the 2(3) order Runge-Kutta method, and the trapezoidal rule method.
 The CT domain in Ptolemy II supports the interaction with event-based
 domains, like the discrete event (DE) domain and the finite state machine
 (FSM) domain, which yields the mixed-signal modeling and the hybrid system
-modeling. Event detectors are built in the CT domain library, so that 
+modeling. Event detectors are built in the CT domain library, so that
 the CT domain can always provide event-based interface to other domains
-when needed. 
+when needed.
 </body>
 </html>

@@ -24,11 +24,11 @@ Ptolemy II uses JDK1.2.2, which is available from
 
 <h3><a name="Plugin">JDK Plugin</a></h3>
 All of the applet demonstrations use JDK1.2, so to run the applets
-in Netscape 4.7 or Internet Explorer 5.0 under Windows, you will need to use 
+in Netscape 4.7 or Internet Explorer 5.0 under Windows, you will need to use
 the <a href="http://www.javasoft.com/products/plugin/" target="_top">Java Plugin</a>
- <p>Currently, the JDK1.2.2 plugin is included in the JDK1.2.2 download for 
+ <p>Currently, the JDK1.2.2 plugin is included in the JDK1.2.2 download for
 Windows.
- <p>If you are running under Solaris 2.6 or 2.7, you can 
+ <p>If you are running under Solaris 2.6 or 2.7, you can
 <a href="http://www.sun.com/solaris/netscape/" target="_top">download</a>
 a separate plugin or a complete Netscape installation.
  <p>If your platform is not supported by the plugin, you can run
@@ -42,7 +42,7 @@ Each Java directory contains a <CODE>test</CODE> subdirectory that contains
 Tcl files that use Jacl to test the Ptolemy II Java code.
 
  <p>Jacl is <B>only</B> necessary if you are planning on running
-the Ptolemy II test suite.  
+the Ptolemy II test suite.
 
  <p>We use a customized version of Jacl called Ptjacl.
 The primary difference between Ptjacl and Jacl1.1 is that Ptjacl
@@ -96,7 +96,7 @@ java Java1_1
 </pre>
 
 <li> <CODE>$PTII/configure</CODE> looks for JavaCC in
-the <CODE>$PTII/vendors/sun/JavaCC</CODE> directory.  If 
+the <CODE>$PTII/vendors/sun/JavaCC</CODE> directory.  If
 <CODE>configure</CODE> does not find JavaCC there, then it looks
 for the <CODE>javacc</CODE> binary your path.  You may also
 use the <CODE>--with-javacc=DIR</CODE> <CODE>configure</CODE> argument.
@@ -112,7 +112,7 @@ files and the <CODE>javadoc</CODE> output, so it is not
 necessary to 'build' or run <CODE>make</CODE> to use Ptolemy II.
 
 <h3><a name="Unix">Unix</a></h3>
- If you would like to rebuild from the Java sources under Unix,  
+ If you would like to rebuild from the Java sources under Unix,
 you should set the <CODE>PTII</CODE> environment variable in your
 environment.  Under C Shell:
 <pre>
@@ -156,8 +156,8 @@ To build Ptolemy II under Windows NT4.0:
 <li> <a name="bin_sh_exe">Part</a>
  of the GNU-win32 installation includes setting up
 <CODE>/bin/sh.exe</CODE> for use from <CODE>make</CODE>.
-It is better if you copy <CODE>bash.exe</CODE> to 
-<CODE>/bin</CODE> instead of <CODE>sh.exe</CODE> - 
+It is better if you copy <CODE>bash.exe</CODE> to
+<CODE>/bin</CODE> instead of <CODE>sh.exe</CODE> -
 some of the makefiles have problem if <CODE>sh.exe</CODE>
 is used.
   <br>The commands to copy <CODE>bash.exe</CODE> are:
@@ -168,7 +168,7 @@ cp /bin/bash.exe /bin/sh.exe
 </pre>
 
 <li> Create <CODE>/etc/passwd</CODE> and <CODE>/etc/group</CODE>
-by running 
+by running
 <pre>
 mkdir /etc
 mkpasswd -l -g > /etc/passwd
@@ -179,11 +179,11 @@ without any arguments.  The Cygwin faq also covers these programs.
 If you do not set up <CODE>/etc/passwd</CODE>, then <CODE>chown</CODE>
 may have problems.
 
-<li> Set the value of the <CODE>PTII</CODE> environment variable to the 
+<li> Set the value of the <CODE>PTII</CODE> environment variable to the
 name of the directory where Ptolemy II is installed.
 Under NT, you set the environment variable via
-the Environment tab of the System control panel 
-(<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt; 
+the Environment tab of the System control panel
+(<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
 <CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt; Environment)
 
 <li> In the Environment tab, you should also set your path to include the location of the JDK bin directory (i.e. <CODE>C:\jdk1.1.6\bin</CODE>)
@@ -193,9 +193,9 @@ by typing <CODE>type make</CODE>, which should return
 <pre>
 make is /cygnus/CYGWIN~1/H-I586~1/bin/make
 </pre>
-If <CODE>make</CODE> cannot be found, then 
-you may also need to add the Cygwin bin directory 
-<CODE>\cygnus\cygwin-b20\H-i586-cygwin32\bin</CODE> 
+If <CODE>make</CODE> cannot be found, then
+you may also need to add the Cygwin bin directory
+<CODE>\cygnus\cygwin-b20\H-i586-cygwin32\bin</CODE>
 to your path
 
 <li> Optional: Install Jacl, see the instructions

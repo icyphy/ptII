@@ -224,7 +224,7 @@ public class Effigy extends CompositeEntity {
 
     /** Override the base class so that tableaux contained by this object
      *  are removed before this effigy is removed from the ModelDirectory.
-     *  This causes the frames associated with those tableaux to be 
+     *  This causes the frames associated with those tableaux to be
      *  closed.
      *  @param container The directory in which to list this effigy.
      *  @exception IllegalActionException If the proposed container is not
@@ -352,8 +352,8 @@ public class Effigy extends CompositeEntity {
 	if(container != null
                 && !(container instanceof ModelDirectory)
                 && !(container instanceof Effigy)) {
-	    throw new IllegalActionException(this, container, 
-		    "The container can only be set to an " + 
+	    throw new IllegalActionException(this, container,
+		    "The container can only be set to an " +
                     "instance of ModelDirectory or Effigy.");
 	}
     }

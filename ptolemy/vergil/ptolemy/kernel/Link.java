@@ -70,8 +70,8 @@ relation, OR a binary connection between two ports.  In the first
 case, the relation is represented by an explicit node in the graph.  In the
 second case, there is no explicit node representing the relation and
 the edge runs directly from one port to the other.  Connections are made
-and broken by the graph model depending on 
-which of the above contexts the link is being used in.  
+and broken by the graph model depending on
+which of the above contexts the link is being used in.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -86,7 +86,7 @@ public class Link {
     }
 
     /** Return the relation that this link represents.  If the link goes
-     *  from a port to a port, then this is the only way to get at the 
+     *  from a port to a port, then this is the only way to get at the
      *  relation.  If the link goes from a vertex to a port, then the
      *  relation will be the container of the vertex.
      */
@@ -99,7 +99,7 @@ public class Link {
      */
     public Object getTail() {
 	return _tail;
-    } 
+    }
 
     /** Set the head of this link.   This may be a port, or a vertex
      *  in a relation.
@@ -107,8 +107,8 @@ public class Link {
     public void setHead(Object head) {
 	_head = head;
     }
-    
-    /** Set the relation for this link.  
+
+    /** Set the relation for this link.
      */
     public void setRelation(ComponentRelation relation) {
 	_relation = relation;
@@ -119,18 +119,18 @@ public class Link {
      */
     public void setTail(Object tail) {
 	_tail = tail;
-    } 
+    }
 
     /** Return a string representation of this link.
      */
     public String toString() {
-	return "Link(" 
-	    + _head + ", " 
-	    + _tail + ", " 
+	return "Link("
+	    + _head + ", "
+	    + _tail + ", "
 	    + _relation + ")";
     }
 
-    private Object _head; 
+    private Object _head;
     private Object _tail;
     private ComponentRelation _relation;
 }

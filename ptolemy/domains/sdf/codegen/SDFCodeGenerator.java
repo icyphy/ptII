@@ -171,7 +171,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         System.out.println("SDFCodeGenerator: Starting to accumulate " +
                 "class info ---" +
                 (System.currentTimeMillis() - startTime) + " ms " +
-			   " totalMemory: " + runtime.totalMemory() + 
+			   " totalMemory: " + runtime.totalMemory() +
 			   " freeMemory: " + runtime.freeMemory());
 
 
@@ -181,7 +181,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         System.out.println("\nSDFCodeGenerator: " +
                 "Done accumulating class info ---" +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() + 
+			   " totalMemory: " + runtime.totalMemory() +
 			   " freeMemory: " + runtime.freeMemory());
 
         System.out.println("SDFCodeGenerator: calling System.gc()");
@@ -189,7 +189,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         System.out.println("SDFCodeGenerator: pass1 ---" +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() + 
+			   " totalMemory: " + runtime.totalMemory() +
 			   " freeMemory: " + runtime.freeMemory());
 
 
@@ -208,7 +208,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         System.out.println("\nSDFCodeGenerator: pass2 ---" +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() + 
+			   " totalMemory: " + runtime.totalMemory() +
 			   " freeMemory: " + runtime.freeMemory());
 
         actorItr = _actorSet.iterator();
@@ -228,7 +228,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         System.out.println("\nSDFCodeGenerator: pass3 ---" +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() + 
+			   " totalMemory: " + runtime.totalMemory() +
 			   " freeMemory: " + runtime.freeMemory());
 
         renamedSourceItr = renamedSourceList.iterator();
@@ -240,7 +240,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
         System.out.println("\nSDFCodeGenerator: done " +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() + 
+			   " totalMemory: " + runtime.totalMemory() +
 			   " freeMemory: " + runtime.freeMemory());
     }
 
@@ -343,14 +343,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 importList, TNLManip.addFirst(classDeclNode));
 
         String outFileName = _packageDirectoryName +  "CG_Main.java";
-                
+
         // Remove extra imports in the source code before writing to a file,
         // namely those for Complex and FixPoint added previously.
         // The CompileUnitNode must first undergo pass 2.
         unitNode.setProperty(IDENT_KEY, _packageDirectoryName + "CG_Main");
         unitNode = StaticResolution.loadCompileUnit(unitNode, 2);
         unitNode.accept(new FindExtraImportsVisitor(true, null), null);
-                
+
         JavaCodeGenerator.writeCompileUnitNodeList(TNLManip.addFirst(unitNode),
                 TNLManip.addFirst(outFileName));
     }
@@ -407,7 +407,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 	    TypeNameNode dateTypeNode =
 		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
 					      "Date"));
-	
+
 	    AllocateNode allocateStartTimeNode =
 		new AllocateNode(dateTypeNode,
 				 new LinkedList(),
@@ -628,7 +628,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 	    TypeNameNode dateTypeNode =
 		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
 					      "Date"));
-	
+
 	    AllocateNode allocateEndTimeNode =
 		new AllocateNode(dateTypeNode,
 				 new LinkedList(),
@@ -806,7 +806,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 } // for (int channel = 0; channel < inputWidth; channel++) ...
 
 
-                //System.out.println("connected buffers for port " + 
+                //System.out.println("connected buffers for port " +
                 //  port.getName() + " of actor " + actor.getName());
                 for (int ch = 0; ch < inputWidth; ch++) {
                     //System.out.println("ch " + ch + ": " + bufferNames[ch]);

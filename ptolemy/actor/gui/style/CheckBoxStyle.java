@@ -43,11 +43,11 @@ import ptolemy.kernel.util.UserSettable;
 //////////////////////////////////////////////////////////////////////////
 //// CheckBoxStyle
 /**
-This attribute annotates user settable attributes to specify 
-a checkbox style for configuring the containing attribute.  
-This style is only valid for boolean valued attributes, so this class 
+This attribute annotates user settable attributes to specify
+a checkbox style for configuring the containing attribute.
+This style is only valid for boolean valued attributes, so this class
 expects that the container will be an instance of Parameter that contains
-a boolean token. 
+a boolean token.
 
 @see EditorPaneFactory
 @see ParameterEditorStyle
@@ -85,7 +85,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
 
     /** Return true if this style is acceptable for the given parameter.
      *  @param param The attribute that this annotates.
-     *  @return True if the argument is a parameter that contains a 
+     *  @return True if the argument is a parameter that contains a
      *  boolean token.
      */
     public boolean acceptable(UserSettable param) {
@@ -102,10 +102,10 @@ public class CheckBoxStyle extends ParameterEditorStyle {
 	}
     }
 
-    /** Create a new check box entry in the given query associated with the 
+    /** Create a new check box entry in the given query associated with the
      *  parameter containing this style.  The name of the entry is
      *  the name of the parameter.  Attach the parameter to the created entry.
-     *  
+     *
      *  @param query The query into which to add the entry.
      *  @exception IllegalActionException If the containing parameter
      *  does not contain a boolean token.

@@ -1,4 +1,4 @@
-/* A transferable object that contains a named object. 
+/* A transferable object that contains a named object.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -38,12 +38,12 @@ import java.awt.datatransfer.*;
 import java.io.*;
 import java.util.*;
 
-/** 
+/**
 A transferable object that contains a local JVM reference to a
-number of named objects.  To get a reference to an iterator on the objects, 
+number of named objects.  To get a reference to an iterator on the objects,
 request data with the data flavor given in the static namedObjFlavor variable.
-This class will also return a MoML representation of the objects, if 
-data is requested with the DataFlavor.stringFlavor or 
+This class will also return a MoML representation of the objects, if
+data is requested with the DataFlavor.stringFlavor or
 DataFlavor.plainTextFlavor.
 
 @author Steve Neuendorffer
@@ -51,17 +51,17 @@ DataFlavor.plainTextFlavor.
 */
 public class PtolemyTransferable implements Transferable {
 
-    /** 
+    /**
      * Create a new transferable object that contains no objects.
      */
     public PtolemyTransferable() {
         _objectList = new LinkedList();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      * Add the given named object to the objects contained in this
      * transferable.  If the object already exists in this transferable,
      * then do not add it again.
@@ -78,7 +78,7 @@ public class PtolemyTransferable implements Transferable {
     public synchronized DataFlavor[] getTransferDataFlavors() {
 	return _flavors;
     }
-    
+
     /**
      * Return true if the given data flavor is supported.
      */
@@ -88,19 +88,19 @@ public class PtolemyTransferable implements Transferable {
 	    if(_flavors[i].equals(flavor)) return true;
 	return false;
     }
-    
+
     /**
      * Return an object that represents the data contained within this
      * transferable with the given flavor.  If the flavor is namedObjFlavor,
      * return an iterator of the objects that this transferable refers to.
      * If the flavor
      * is DataFlavor.plainTextFlavor, return an InputStream that contains a
-     * MoML representation of the objects.  If the flavor is 
+     * MoML representation of the objects.  If the flavor is
      * DataFlavor.stringFlavor return a string that contains the MoML
      * representation.
      *
      * @return An object with the given flavor.
-     * @exception UnsupportedFlavorException If the given flavor is 
+     * @exception UnsupportedFlavorException If the given flavor is
      * not supported.
      */
     public Object getTransferData(DataFlavor flavor)
@@ -119,7 +119,7 @@ public class PtolemyTransferable implements Transferable {
     }
 
     /**
-     * Remove the given object from this transferable. 
+     * Remove the given object from this transferable.
      * If the object does not exist in the transferable, then do nothing.
      */
     public void removeObject(NamedObj object) {
@@ -131,19 +131,19 @@ public class PtolemyTransferable implements Transferable {
     ///////////////////////////////////////////////////////////////////
     ////                        public variables                   ////
 
-    /** 
+    /**
      * The flavor that requests a local virtual machine
      * reference to the contained object.
-     */	
+     */
     public static final DataFlavor namedObjFlavor =
 	new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
 		       "ptolemy.kernel.util.NamedObj", "Named Object");
-    
+
     // Return a string with a moml description of all the objects in the list.
     public String _getMoML() throws IOException {
         StringWriter buffer = new StringWriter();
 	buffer.write("<group>\n");
-        Iterator elements = 
+        Iterator elements =
             Collections.unmodifiableList(_objectList).iterator();
         while(elements.hasNext()) {
             NamedObj element = (NamedObj) elements.next();
@@ -153,7 +153,7 @@ public class PtolemyTransferable implements Transferable {
 	buffer.write("</group>\n");
         return buffer.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

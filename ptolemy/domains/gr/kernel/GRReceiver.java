@@ -92,7 +92,7 @@ public class GRReceiver extends AbstractReceiver {
       	_queue = new QueueBuffer(size);
         _init();
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -103,7 +103,7 @@ public class GRReceiver extends AbstractReceiver {
     public Enumeration elements() {
         return _queue.elements();
     }
-    
+
     /** Remove the first token (the oldest one) from the receiver and
      *  return it. If there is no token in the receiver, throw an
      *  exception.
@@ -121,7 +121,7 @@ public class GRReceiver extends AbstractReceiver {
         }
         return t;
     }
-    
+
     /** Return a token in the receiver or its history. If the offset
      *  argument is zero, return the oldest token in the receiver.
      *  If the offset is 1, return the second oldest token, etc. The
@@ -150,15 +150,15 @@ public class GRReceiver extends AbstractReceiver {
                     + " in history.");
         }
     }
-    
+
     /** Return the capacity, or INFINITE_CAPACITY if it is unbounded.
      *  @return The capacity of the receiver.
      */
     public int getCapacity() {
         return _queue.getCapacity();
     }
-    
-   
+
+
     /** Return true if put() will succeed in accepting a token.
      *  @return A boolean indicating whether a token can be put in this
      *   receiver.
@@ -166,7 +166,7 @@ public class GRReceiver extends AbstractReceiver {
     public boolean hasRoom() {
         return !_queue.isFull();
     }
-    
+
     /** Return true if put() will succeed in accepting the specified
      *  number of tokens.
      *  @param tokens The number of tokens.
@@ -181,17 +181,17 @@ public class GRReceiver extends AbstractReceiver {
 	    // finite number of tokens.
 	    return true;
 	}
-	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
+	if(tokens < 1)
+	    throw new IllegalActionException("The number of " +
 					     "tokens must be greater than 0");
 	return (_queue.size() + tokens) < _queue.getCapacity();
     }
-    
-    
+
+
 
     /** Determine the source and destination ports that use this
      *  receiver in their communications.  The source and destination
-     *  ports are distinct for each receiver. 
+     *  ports are distinct for each receiver.
      *  @param director The director that directs this receiver
      */
     public void determineEnds(Director director) {
@@ -206,9 +206,9 @@ public class GRReceiver extends AbstractReceiver {
         boolean isCrossHierarchyOutputPort = isNonAtomicContainer && isOutput;
         // Note: when this is true, the container is _opaque_
         // because otherwise the port won't contain a receiver.
-    	
+
     	_localDirector = director;
-    	
+
     	if (isCrossHierarchyOutputPort) {
     	    listOfConnectedPorts = _toPort.insidePortList();
     	} else {
@@ -216,14 +216,14 @@ public class GRReceiver extends AbstractReceiver {
     	    //listOfConnectedPorts = _toPort.deepConnectedOutPortList();
     	    listOfConnectedPorts = _toPort.deepConnectedPortList();
     	}
-    	    
+
     	Iterator portListIterator = listOfConnectedPorts.iterator();
     	foundReceiver:
     	while (portListIterator.hasNext()) {
     	    connectedPort = (IOPort) portListIterator.next();
     	    if (connectedPort.isOutput()) {
     		    Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
-    		    
+
     		    for(int i=0;i<connectedPort.getWidth();i++) {
     			    for(int j=0;j<remoteReceivers[i].length;j++) {
     			        if (remoteReceivers[i][j] == this) {
@@ -234,7 +234,7 @@ public class GRReceiver extends AbstractReceiver {
                                     "internal GR error: Receiver with null source");
                             }
                             break foundReceiver;
-    			        } 
+    			        }
     			    }
     		    }
     	    } else if (connectedPort.getContainer() instanceof TypedCompositeActor) {
@@ -248,15 +248,15 @@ public class GRReceiver extends AbstractReceiver {
     	        }
     	        break foundReceiver;
     	    } else if (connectedPort.isInput()) {
-    	       // This case occurs when the destination port and 
+    	       // This case occurs when the destination port and
     	       // the queried connected port are both input ports;
     	       // and both of them are not input ports of
     	       // opaque nontoplevel TypeCompositeActors.
     	       // This case should be ignored.
     	       // The search for the source Actor will proceed
-    	    } 
+    	    }
     	}
-    	
+
     	if (_fromPort == null) {
     	    // This should only happen in this case:
             //           ----------------------
@@ -264,7 +264,7 @@ public class GRReceiver extends AbstractReceiver {
             //           |                    |
             //           |     ---------      |
             //           |     |       |      |
-            // dangling >>>===>R>      |      | 
+            // dangling >>>===>R>      |      |
             //           |     |       |      |
             //           |     ---------      |
             //           |                    |
@@ -280,17 +280,17 @@ public class GRReceiver extends AbstractReceiver {
     	    }
     	}
     }
-    
 
-   
-    
+
+
+
     /** Return the port that feeds this Receiver
      *  @return The port that feeds this receiver.
      */
     public TypedIOPort getSourcePort() {
         return (TypedIOPort) _fromPort;
     }
-    
+
 
     /** Put a token to the receiver. If the port feeding this
      *  receiver is null, report an internal error.
@@ -301,7 +301,7 @@ public class GRReceiver extends AbstractReceiver {
         if (_fromPort == null) {
             throw new InternalErrorException(
                       "internal GR error: Receiver with null source");
-        } 
+        }
         // FIXME: maybe use t.getType() instead?
         if ((token instanceof ObjectToken) && (detachableGroup != null)) {
             Object value = ((ObjectToken)token).getValue();
@@ -319,7 +319,7 @@ public class GRReceiver extends AbstractReceiver {
                     "Queue is at capacity. Cannot put a token.");
         }
     }
-    
+
     /** Return true if get() will succeed in returning a token.
      *  @return A boolean indicating whether there is a token in this
      *  receiver.
@@ -327,7 +327,7 @@ public class GRReceiver extends AbstractReceiver {
     public boolean hasToken() {
         return !_queue.isEmpty();
     }
-    
+
     /** Return true if get() will succeed in returning a token the given
      *  number of times.
      *  @return A boolean indicating whether there are the given number of
@@ -336,12 +336,12 @@ public class GRReceiver extends AbstractReceiver {
      *  than one.
      */
     public boolean hasToken(int tokens) throws IllegalActionException {
-	if(tokens < 1) 
-	    throw new IllegalActionException("The number of " + 
+	if(tokens < 1)
+	    throw new IllegalActionException("The number of " +
 					     "tokens must be greater than 0");
         return _queue.size() >= tokens;
     }
-    
+
     /** Enumerate the tokens stored in the history queue, which are
      *  the N most recent tokens taken from the receiver, beginning with
      *  the oldest, where N is less than or equal to the history capacity.
@@ -360,7 +360,7 @@ public class GRReceiver extends AbstractReceiver {
     public int historySize() {
         return _queue.historySize();
     }
-    
+
     /** Set receiver capacity. Use INFINITE_CAPACITY to indicate unbounded
      *  capacity (which is the default). If the number of tokens currently
      *  in the receiver exceeds the desired capacity, throw an exception.
@@ -401,8 +401,8 @@ public class GRReceiver extends AbstractReceiver {
     public int size() {
         return _queue.size();
     }
-    
- 
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -417,7 +417,7 @@ public class GRReceiver extends AbstractReceiver {
     private Token[] _tokenArray;
     ///////////////////////////////////////////////////////////////////
     ////                  package-access methods                   ////
-   
+
     /**  For debugging purposes. Display pertinent information about
      *   this receiver.
      */
@@ -425,71 +425,71 @@ public class GRReceiver extends AbstractReceiver {
         String fromString;
         String fromTypeString;
         String toString;
-        
+
         if (_from == null) {
             fromString="0";
         } else {
             fromString=((Nameable) _from).getName();
         }
-        
+
         if (_fromPort == null) {
             fromTypeString = "dangling input port";
         } else {
             fromTypeString = (((TypedIOPort)_fromPort).getType()).toString();
         }
-        
+
         fromString += " (" + fromTypeString + ")";
-        
+
         if (_to == null) {
             toString="0";
         } else {
             toString=((Nameable) _to).getName();
         }
-        
+
         toString += " (" + ((TypedIOPort)_toPort).getType() + ")";
-        
+
         debug.println(fromString+" "+toString+" ");
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Initialize the DTReceiver.  Set the cached information regarding
      *  source and destination actors to null.  Set the local time to
-     *  zero. 
+     *  zero.
      */
     private void _init() {
         _from = null;
         _to   = null;
         debug = new GRDebug(false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                  package-access variables                 ////
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The director that directs this receiver; should be a DTDirector
     private Director _localDirector;
-    
+
     // The actor feeding this receiver
     private Actor _from;
-    
+
     // The actor containing this receiver
     private Actor _to;
-    
+
     // The port feeding this receiver
     private IOPort _fromPort;
-    
+
     // The port containing this receiver
     private IOPort _toPort;
-    
+
     BranchGroup detachableGroup;
     BranchGroup dummyGroup;
     BranchGroup attachmentGroup;
-    
+
     public void createGroupNode() {
         detachableGroup = new BranchGroup();
         detachableGroup.setCapability(BranchGroup.ALLOW_DETACH);
@@ -501,7 +501,7 @@ public class GRReceiver extends AbstractReceiver {
         attachmentGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         attachmentGroup.addChild(detachableGroup);
     }
-    
+
     public void addChild(Node node) {
         detachableGroup.addChild(node);
     }
@@ -509,18 +509,18 @@ public class GRReceiver extends AbstractReceiver {
     public Node getNodeObject() {
         return (Node) attachmentGroup;
     }
-    
+
     public void detachBranch() {
         detachableGroup.detach();
         dummyGroup.addChild(detachableGroup);
     }
-    
+
     public void attachBranch() {
         detachableGroup.detach();
         attachmentGroup.addChild(detachableGroup);
     }
-    
-    
+
+
     // display for debugging purposes
     private GRDebug debug;
 

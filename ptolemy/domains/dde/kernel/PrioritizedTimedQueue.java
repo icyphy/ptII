@@ -86,14 +86,14 @@ next oldest token from the other receivers contained by the actor in
 question will be consumed and the token time stamped IGNORE will be
 dropped. The IGNORE time stamp is useful in feedback topologies in which
 an actor should ignore inputs from a feedback cycle when the model's
-execution is just beginning. FeedBackDelay actors output a single IGNORE 
+execution is just beginning. FeedBackDelay actors output a single IGNORE
 token during their initialize() methods for just this reason. In general,
 IGNORE tokens should not be handled unless fundamental changes to the
 DDE kernel are intended.
 <P>
-The values of the package friendly variables IGNORE, INACTIVE and ETERNITY 
-are arbitrary as long as they have unique, negative values. ETERNITY is 
-used in conjunction with the completionTime to indicate that an actor 
+The values of the package friendly variables IGNORE, INACTIVE and ETERNITY
+are arbitrary as long as they have unique, negative values. ETERNITY is
+used in conjunction with the completionTime to indicate that an actor
 should continue executing indefinitely.
 <P>
 Note that a PrioritizedTimedQueue is intended for use within a
@@ -268,8 +268,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE && time != IGNORE ) {
 	    NamedObj actor = (NamedObj)_container.getContainer();
-	    throw new IllegalArgumentException(actor.getName() + 
-		    " - Attempt to set current time to the past; time = " 
+	    throw new IllegalArgumentException(actor.getName() +
+		    " - Attempt to set current time to the past; time = "
                     + time + ". The _lastTime was " + _lastTime);
 	} else if( time < 0.0 && time != INACTIVE && time != IGNORE ) {
 	    NamedObj actor = (NamedObj)_container.getContainer();
@@ -289,10 +289,10 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
 	if( containerName.endsWith("2") || invokerName.endsWith("2") ) {
 	if( token instanceof NullToken ) {
-	    System.out.println(invokerName + " put NullToken into the receiver of " 
+	    System.out.println(invokerName + " put NullToken into the receiver of "
                     + containerName + " at " + time + ". Last time is " + _lastTime);
 	} else {
-	    System.out.println(invokerName + " put RealToken into the receiver of " 
+	    System.out.println(invokerName + " put RealToken into the receiver of "
                     + containerName + " at " + time + ". Last time is " + _lastTime);
 	}
 	}
@@ -405,7 +405,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     // be ignored.
     static final double IGNORE = -1.0;
 
-    // This time value indicates that the receiver is no longer 
+    // This time value indicates that the receiver is no longer
     // active.
     static final double INACTIVE = -2.0;
 

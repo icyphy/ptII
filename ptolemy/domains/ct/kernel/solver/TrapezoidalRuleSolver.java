@@ -107,7 +107,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
      */
     public int getHistoryCapacityRequirement() {
         return 2;
-    }   
+    }
 
     /** The fire() method for integrators under this solver. It performs
      *  the ODE solving algorithm.
@@ -172,7 +172,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
     }
 
     /** Provide the suggestedNextStepSize() method for integrators under
-     *  this solver. If this step (with step size 'h') is successful, 
+     *  this solver. If this step (with step size 'h') is successful,
      *  the local truncation error is 'lte', and the local truncation
      *  error tolerance is 'errtol', then the suggested next step size is:
      *  <pre>
@@ -195,7 +195,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
         return newh;
     }
 
-    /** Return true if the fixed point iteration is converged. This is 
+    /** Return true if the fixed point iteration is converged. This is
      *  the result of all voteForConvergence() in the current integration
      *  step.
      *  @return True if all the votes are true.
@@ -277,7 +277,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
         return true;
     }
 
-    /** Vote for whether a fixed point has reached. The final result 
+    /** Vote for whether a fixed point has reached. The final result
      *  is the <i>and</i> of all votes.
      *  @param converge True if vote for converge.
      */
