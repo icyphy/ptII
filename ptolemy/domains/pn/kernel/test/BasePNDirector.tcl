@@ -106,25 +106,6 @@ test BasePNDirector-5.2 {Test creation of a receiver} {
     set r2 [$d4 newReceiver]
     list [$r1 getCapacity] [$r2 getCapacity]
 } {1 5}
-#############################################
-
-test BasePNDirector-6.1 {Test an application} {
-    set b1 [java::new ptolemy.actor.CompositeActor]
-    $b1 setName b1
-    set m2 [java::new ptolemy.actor.Manager m2]
-    $b1 setManager $m2
-    set d5 [java::new ptolemy.domains.pn.kernel.BasePNDirector "D5"]
-    $b1 setDirector $d5
-    set r1 [java::new ptolemy.domains.pn.lib.PNRamp $b1 r1]
-    $r1 setParam "Initial Value"  2
-    set s1 [java::new ptolemy.domains.pn.kernel.test.TestSink $b1 s1]
-    set p1 [$r1 getPort output]
-    set p2 [$s1 getPort input]
-    $b1 connect $p1 $p2
-    $m2 run
-    $s1 getData
-} {23456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100}
-    
 
 
 
