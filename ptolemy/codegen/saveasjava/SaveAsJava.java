@@ -91,6 +91,14 @@ class SaveAsJava {
                 + " IllegalActionException {\n" + _indent(2) 
                 + "super(w);\n\n" + _indent(2) + "try {\n";
 
+        // When exporting MoML, we want to identify the class
+        // as the parent class rather than this class so that this class
+        // need not be present to instantiate the model.
+        code += _indent(2)
+                + "getMoMLInfo().className = \""
+                + _getClassName(compositeModel)
+                + "\";\n";
+
         // Generate attributes.
         code += _generateAttributes(compositeModel);
 
@@ -360,11 +368,15 @@ class SaveAsJava {
     ////                         private methods                   ////
 
     /** Given a string, replace all quotation marks with escaped
-     *  quotation marks.
+     *  quotation marks, and all backslashes with double backslashes.
+     *  This is because the Java compiler interprets quotation marks
+     *  as closing the string, and backslashes as escaping special
+     *  characters.
      *  @param string The string to escape.
      *  @return A new string with quotation marks replaced.
      */
     private static String _escapeQuotes(String string) {
+        string = StringUtilities.substitute(string, "\\", "\\\\");
         string = StringUtilities.substitute(string, "\"", "\\\"");
         return string;
     }

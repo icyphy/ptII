@@ -170,11 +170,11 @@ public class GeneratorTableau extends Tableau {
             // configuration information, use that.  Otherwise, make one.
             GeneratorTableauAttribute attribute =
                    (GeneratorTableauAttribute)
-                   model.getAttribute("_generatorTableauAttribute",
+                   model.getAttribute("_generator",
                    GeneratorTableauAttribute.class);
             if(attribute == null) {
                 attribute = new GeneratorTableauAttribute(
-                        model, "_generatorTableauAttribute");
+                        model, "_generator");
             }
             Configurer configurer = new Configurer(attribute);
             final GeneratorTableauAttribute options = attribute;
