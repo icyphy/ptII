@@ -645,7 +645,9 @@ public abstract class GraphFrame extends PtolemyFrame
 		if(object == null) return;
 		StringWriter buffer = new StringWriter();	   
 		object.exportMoML(buffer, 1);
-		NamedObj library = _topLibrary.getEntity("actor library");
+		Configuration configuration = 
+		    (Configuration)effigy.toplevel();
+		NamedObj library = configuration.getEntity("actor library");
 		if(library == null) return;
 		ChangeRequest request =
 		    new MoMLChangeRequest(this, library, buffer.toString()); 
