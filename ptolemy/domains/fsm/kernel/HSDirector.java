@@ -137,7 +137,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
             _firstFire = false;
         }
-        _ctrl._setInputVariables();
+        _ctrl._readInputs();
         if (_debugging) _debug(getName(), " find FSMActor " + _ctrl.getName());
         Transition tr =
             _ctrl._chooseTransition(_st.preemptiveTransitionList());
@@ -173,7 +173,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             actor.fire();
         }
 
-        _ctrl._setInputsFromRefinement();
+        _ctrl._readOutputsFromRefinement();
 
         // Note that the output actions associated with the transition
         // are executed.
@@ -197,7 +197,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                         transitionActors[i].postfire();
                     }
                 }
-                _ctrl._setInputsFromRefinement();
+                _ctrl._readOutputsFromRefinement();
                 // execute the output actions, since these are normally
                 // executed in chooseTransition, but the outputs may
                 // have been changed by the transition refinemenets
@@ -379,7 +379,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 IOPort p = (IOPort)outports.next();
                 transferOutputs(p);
             }
-            _ctrl._setInputsFromRefinement();
+            _ctrl._readOutputsFromRefinement();
         }
         // FIXME: why do we need to execute the update actions again in postfire?
         // From Xiaojun: actions of the event triggered transition need to be 

@@ -982,14 +982,14 @@ public class FSMActor extends CompositeEntity
         }
     }
 
-    /** Set the value of the shadow variables for the channel of the port.
-     *  If the specified port is not an input port, then do nothing.
-     *  @see #_createInputVariables(IOPort port)
+    /** Read tokens from the given channel of the given input port and
+     *  make them accessible to the expressions of guards and
+     *  transitions through the port scope.  If the specified port is
+     *  not an input port, then do nothing.
      *  @param port An input port of this actor.
      *  @param channel A channel of the input port.
      *  @exception IllegalActionException If the port is not contained by
-     *   this actor, or if the shadow variable cannot take the token
-     *   read from the channel (should not occur).
+     *   this actor.
      */
     protected void _readInputs(IOPort port, int channel)
             throws IllegalActionException {
@@ -997,7 +997,7 @@ public class FSMActor extends CompositeEntity
         String portChannelName = portName + "_" + channel;
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
-                    "Cannot set input variables for port "
+                    "Cannot read inputs from port "
                     + "not contained by this FSMActor.");
         }
         if (!port.isInput()) {
@@ -1037,7 +1037,7 @@ public class FSMActor extends CompositeEntity
                 tokenListArray[channel].add(0, token);
             }
             if (_debugging) {
-                _debug("total tokens available at port: "
+                _debug("Total tokens available at port: "
                     + port.getFullName() + "  ");
             }
 
@@ -1068,7 +1068,7 @@ public class FSMActor extends CompositeEntity
                 }
             }
         } else {
-            // FIXME!
+            // FIXME how to deal with unknown?
 //             shadowVariables[channel][0].setUnknown(true);
 //             shadowVariables[channel][1].setUnknown(true);
 //             shadowVariables[channel][2].setUnknown(true);

@@ -445,7 +445,7 @@ public abstract class AbstractActionsAttribute extends Action
                      elements.hasNext();) {
                     String name = (String)elements.next();
                     InequalityTerm term = _scope.getTypeTerm(name);
-                    if(term.isSettable()) {
+                    if(term != null && term.isSettable()) {
                         termList.add(term);
                     }
                 }

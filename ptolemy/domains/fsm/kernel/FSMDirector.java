@@ -208,7 +208,7 @@ public class FSMDirector extends Director
             _debug(getFullName(), "fire at time: " + getCurrentTime());
         }
         FSMActor ctrl = getController();
-        ctrl._setInputVariables();
+        ctrl._readInputs();
         if (_debugging) {
             _debug(getFullName(), " find FSMActor " + ctrl.getName());
         }
@@ -257,7 +257,7 @@ public class FSMDirector extends Director
             }
         }
 
-        ctrl._setInputsFromRefinement();
+        ctrl._readOutputsFromRefinement();
 
         tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
 
@@ -277,7 +277,7 @@ public class FSMDirector extends Director
                         actors[i].postfire();
                     }
                 }
-                ctrl._setInputsFromRefinement();
+                ctrl._readOutputsFromRefinement();
                 //execute the output actions
                 Iterator actions = tr.choiceActionList().iterator();
                 while (actions.hasNext()) {
@@ -483,7 +483,7 @@ public class FSMDirector extends Director
         if (exception instanceof InvariantViolationException) {
         
             FSMActor fsm = getController();
-            fsm._setInputsFromRefinement();
+            fsm._readOutputsFromRefinement();
             State st = fsm.currentState();
             Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());
    
@@ -892,7 +892,8 @@ public class FSMDirector extends Director
      *  @param state The state to set.
      *  @exception IllegalActionException If there is no controller.
      */
-    protected void _setCurrentState(State state) throws IllegalActionException {
+    protected void _setCurrentState(State state)
+            throws IllegalActionException {
         if (_controller != null) {
             _controller._currentState = state;
         } else {
@@ -920,9 +921,9 @@ public class FSMDirector extends Director
      *  @exception IllegalActionException If a shadow variable cannot take
      *   the token read from its corresponding channel (should not occur).
      */
-    protected void _setInputsFromRefinement() throws IllegalActionException {
+    protected void _readOutputsFromRefinement() throws IllegalActionException {
         if (_controller != null) {
-            _controller._setInputsFromRefinement();
+            _controller._readOutputsFromRefinement();
         }
     }
     
@@ -931,9 +932,9 @@ public class FSMDirector extends Director
      *  @exception IllegalActionException If a shadow variable cannot take
      *   the token read from its corresponding channel (should not occur).
      */
-    protected void _setInputVariables() throws IllegalActionException {
+    protected void _readInputs() throws IllegalActionException {
         if (_controller != null) {
-            _controller._setInputVariables();
+            _controller._readInputs();
         }
     }
 
