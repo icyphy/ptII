@@ -3,6 +3,8 @@
 # @Author: John Li
 # @Author: Paul Whitaker
 #
+# @Version: $Id$
+#
 # @Copyright (c) 1997-2000 The Regents of the University of California.
 # All rights reserved.
 #
