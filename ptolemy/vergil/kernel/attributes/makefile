@@ -48,6 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AbstractTextAttribute.java \
+	AttributeExpressionAttribute.java \
 	AttributeValueAttribute.java \
 	DocumentationAttribute.java \
 	EllipseAttribute.java \

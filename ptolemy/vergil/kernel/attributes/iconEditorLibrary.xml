@@ -35,4 +35,8 @@
     <property name="attributeName" value=""/>
     <property name="displayWidth" value="6"/>
   </property>
+  <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+    <property name="attributeName" value=""/>
+    <property name="displayWidth" value="6"/>
+  </property>
 </entity>
