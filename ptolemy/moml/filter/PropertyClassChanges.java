@@ -47,8 +47,40 @@ import java.util.Set;
 method, it will cause MoMLParser to filter so that models from
 earlier releases will run in the current release.
 
-<p>This class will filter for actors that have had port name changes, and
-for classes with property where the class name has changed
+<p>This class will filter for classes with properties where the class
+name has changed.
+
+<p>For example, after Ptolemy II 2.0.1, the Expression actor
+changed in such a way that the expression property changed from
+being a Parameter to being a StringAttribute.  To add this
+change to this filter, we add a code to the static section at
+the bottom of the file.
+<pre>
+        // Expression: After 2.0.1, expression
+        // property is now a StringAttribute
+        HashMap expressionClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        expressionClassChanges.put("expression",
+                "ptolemy.kernel.util.StringAttribute");
+</pre>
+The expressionClassChange HashMap maps property names to the new
+classname
+
+<pre>
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.actor.lib.Expression",
+                    expressionClassChanges);
+</pre>
+The _actorsWithPropertyClassChanges HashMap contains all the classes
+such as Expression that have changes and each class has a map
+of the property changes that are to be made.
+
+<p> Conceptually, how the code works is that when we see a class while
+parsing, we check to see if the class is in _actorsWithPropertyClassChanges.
+If the class was present in the HashMap, then as we go through the
+code, we look for property names that need to have their classes changed.
+
 
 @author Christopher Hylands, Edward A. Lee
 @version $Id$
@@ -222,6 +254,16 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges
             .put("ptolemy.actor.lib.javasound.AudioReader",
                     sourceURLClassChanges);
+
+        // Expression
+        HashMap expressionClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        expressionClassChanges.put("expression",
+                "ptolemy.kernel.util.StringAttribute");
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.actor.lib.Expression",
+                    expressionClassChanges);
 
         // ImagePartition
         HashMap inputOutputTypedIOPortClassChanges = new HashMap();
