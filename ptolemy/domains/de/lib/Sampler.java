@@ -125,7 +125,7 @@ public class Sampler extends DETransformer {
     public TypedIOPort trigger;
 
     /** The value that is output when no input has yet been received.
-     *  FIXME: ???The type should be the same as the input port.
+     *  The type should be the same as the input port.
      *  @see #typeConstraintList()
      */
     public Parameter initialValue;
@@ -241,9 +241,14 @@ public class Sampler extends DETransformer {
 
         try {
             if (initialValue.getToken() != null) {
+                // Set type of initialValue to be equal to input type
                 Inequality ineq = new Inequality(initialValue.getTypeTerm(),
-                        output.getTypeTerm());
+                        input.getTypeTerm());
                 typeConstraints.add(ineq);
+                ineq = new Inequality(input.getTypeTerm(),
+                        initialValue.getTypeTerm());
+                typeConstraints.add(ineq);
+
             }
         } catch (IllegalActionException ex) {
             // Errors in the initialValue parameter should already
