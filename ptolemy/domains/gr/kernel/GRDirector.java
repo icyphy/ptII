@@ -98,15 +98,15 @@ public class GRDirector extends StaticSchedulingDirector {
      *  base class and then copies the parameter of this director.  The new
      *  actor will have the same parameter values as the old.
      *  The period parameter is explicitly cloned in this method.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         _reset();
-        GRDirector newobj = (GRDirector)(super.clone(ws));
+        GRDirector newobj = (GRDirector)(super.clone(workspace));
         newobj.iterations = (Parameter) newobj.getAttribute("iterations");
         newobj.iterationTimeUpperBound = (Parameter)
             newobj.getAttribute("iteration time upper bound");

@@ -70,8 +70,8 @@ public class GRScheduler extends Scheduler {
      *
      *  @param workspace Object for synchronization and version tracking.
      */
-    public GRScheduler(Workspace ws) {
-        super(ws);
+    public GRScheduler(Workspace workspace) {
+        super(workspace);
         _localMemberInitialize();
     }
 
