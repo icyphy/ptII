@@ -534,13 +534,12 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel \
-i	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/vq \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/de \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/petrinet/kernel \
@@ -577,6 +576,7 @@ i	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces/util \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/de \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hde \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm \
