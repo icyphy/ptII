@@ -101,7 +101,8 @@ OPTIONAL_FILES = \
 	'IconEditor$$7.class' \
 	'IconEditor$$8.class' \
 	'IconEditor$$9.class' \
-	'IconEditor$$BlockIcon.class'
+	'IconEditor$$BlockIcon.class' \
+	'UpdatedValueIcon$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
