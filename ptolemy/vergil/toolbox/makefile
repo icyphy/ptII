@@ -54,6 +54,7 @@ JSRCS = \
 	ConfigureAction.java \
 	EditIconAction.java \
 	FigureAction.java \
+	FileEditorTableauFactory.java \
 	GraphicElement.java \
 	MenuActionFactory.java \
 	MenuItemFactory.java \
