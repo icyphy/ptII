@@ -7,15 +7,22 @@
 AudioSink actors. The model consists of an AudioSource connected
 to an AudioSink.</doc>
 <!---@author Brian K. Vogel-->
+    
     <director class="ptolemy.domains.sdf.kernel.SDFDirector">
       <property name="iterations" value="0">
         <doc>Number of iterations in an execution.</doc>
       </property>
     </director>
 
+    <!-- Define toplevel parameters -->
+    <property name="sampleRate" value = "44100"
+                     class="ptolemy.data.expr.Parameter">
+       <doc>Sampling Rate in Hz</doc>
+    </property>
+
     <entity name="soundSource" class="ptolemy.domains.sdf.lib.javasound.AudioSource">
       <property name="tokenProductionRate" value="256"></property>
-      <property name="sampleRate" value="44100"></property>
+      <property name="sampleRate" value="sampleRate"></property>
       <property name="source" value="&quot;mic&quot;"></property>
       <property name="channels" value="1"></property>
       <property name="bufferSize" value="4096"></property>
@@ -24,7 +31,7 @@ to an AudioSink.</doc>
 
     <entity name="soundSink" class="ptolemy.domains.sdf.lib.javasound.AudioSink">
       <property name="tokenConsumptionRate" value="256"></property>
-      <property name="sampleRate" value="44100"></property>
+      <property name="sampleRate" value="sampleRate"></property>
       <property name="sink" value="&quot;speaker&quot;"></property>
       <property name="channels" value="1"></property>
       <property name="bufferSize" value="4096"></property>

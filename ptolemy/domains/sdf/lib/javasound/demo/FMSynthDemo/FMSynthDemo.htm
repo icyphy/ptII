@@ -1,0 +1,57 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>FM Synthesis Demo</TITLE>
+</HEAD>
+<BODY>
+
+<H1>FM Synthesis Demo</H1>
+<font color="#cc0000">This demo requires a Pentium II 400 MHz class processor or faster and the Java v1.3 RC1 plugin.</font>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first 
+     section is for IE, the second is for Netscape
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+ width=500 height=100
+ name="HTVQ"
+ codebase="http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0">
+<PARAM NAME=CODE VALUE=ptolemy.domains.sdf.lib.javasound.demo.FMSynthDemo.FMSynthDemo.class>
+<PARAM NAME=CODEBASE VALUE=../../../../../../..>
+<PARAM NAME=ARCHIVE VALUE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar">
+<PARAM NAME="name" VALUE="HTVQ">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<PARAM NAME="iterations" value="0">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2.2"
+ code=ptolemy.domains.sdf.lib.javasound.demo.FMSynthDemo.FMSynthDemo
+ codebase=../../../../../../..
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar"
+ name="HTVQ"
+ width=500 height=100
+ background="#faf0e6"
+ iterations="0"
+ pluginspage="http://java.sun.com/products/plugin/1.2.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I>
+</NOEMBED></EMBED>
+</OBJECT>
+</center>
+
+<p>
+This applet consists of a simple FM instrument implemented in the SDF domain. The Chowning FM synthesis technique is used. In Chowning FM synthesis, a carrier oscillator has its frequency modulated by a modulating oscillator. The slider labled &quot;Carrier Frequency&quot; sets the fundamental frequency (pitch). The slider labled &quot;Harmonicity Ratio&quot; sets the modulating oscillator's frequency, which is the product of the harmonicity ratio and the carrier frequency. The slider labled &quot;Modulation&quot; scales the output of the modulator oscillator before it enters the carrier oscillator.  The model looks like the following:
+<p><br>
+<center>
+<IMG SRC="FMSynthModel.gif" ALT="FM Synthesis Model">
+</center><br>
+The simple FM technique is typically used to simulate brass instrument tones. More sophisticated FM synthesis techniques were employed in many comercial synthesizers (e.g., Yamaha DX7) and computer sound cards (e.g., SoundBlaster 16) before wavetable synthesis became more popular.
+</body>
+</html>
