@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Continuous Time domain demos
+# Makefile for Ptolemy II ct StickyBall demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Xiaojun Liu
 #
-# @Version: $Id$
+# @Version: : ptmkmodel,v 1.5 1999/05/11 16:32:12 cxh Exp $
 #
-# @Copyright (c) 1998-1999 The Regents of the University of California.
+# @Copyright (c) 1999 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo
-
-DIRS = Helicopter Lorenz SigmaDelta StickyBall Thermostat
+ME =		ptolemy/domains/ct/demo/StickyBall
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../
 
 CLASSPATH =	$(ROOT)
 
@@ -42,54 +40,39 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-TCL_SRCS = \
-	ExpoBE.tcl \
-	ExpoBERK23.tcl \
-	ExpoFE.tcl \
-	ExpoMix.tcl \
-	ExpoRK23.tcl \
-	RampBE.tcl \
-	RampBERK23.tcl \
-	RampFE.tcl \
-	RampMix.tcl \
-	RampRK23.tcl \
-	RampSample.tcl \
-	RandomRamp.tcl \
-	WaveBE.tcl \
-	WaveFE.tcl \
-	WaveBERK23.tcl
-
+# Used to build jar files
+PTPACKAGE = 	StickyBall
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	WaveBERK23.java 
+	StickyBallApplet.java
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
+EXTRA_SRCS = \
+	StickyBall.htm \
+	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-demo: subdemo
+demo: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer StickyBall.htm
 
 depend:
 	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
