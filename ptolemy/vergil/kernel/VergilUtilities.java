@@ -52,7 +52,7 @@ public class VergilUtilities {
     ////                         public methods                    ////
 
     /** Return true if we are running under MacOS look and feel. */
-    public boolean macOSLookAndFeel() {
+    public static boolean macOSLookAndFeel() {
         // Dan Higgins writes:
         // "Apple suggests in their tech note 2042 (http://developer.apple.com/
         // documentation/Java/Conceptual/Java131Development/x_platform/
