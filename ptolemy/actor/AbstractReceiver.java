@@ -135,6 +135,19 @@ public abstract class AbstractReceiver implements Receiver {
     public IOPort getContainer() {
         return _container;
     }
+    
+    /**  Return the current time associated with this receiver. For 
+     *   non-DT receivers, this method reverts to the director's
+     *   getCurrentTime() method.  In DT, there is a local time 
+     *   associated with every receiver.
+     *   @return The current time associated with this receiver.
+     */
+    public double getCurrentTime() {
+        IOPort containerPort = getContainer();
+        Actor containerActor = (Actor) containerPort.getContainer();
+        Director containerDirector = containerActor.getDirector();
+        return containerDirector.getCurrentTime();        
+    }
 
     /** Return true if the receiver has room to put a token into it
      *  (via the put() method).

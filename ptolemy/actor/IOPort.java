@@ -664,6 +664,38 @@ public class IOPort extends ComponentPort {
                     "get: channel index is out of range.");
         }
     }
+    
+    /** Return the current time associated with a certain channel.
+     *  In domains other than DT, this method reverts to the director's
+     *  getCurrentTime() method.  In DT, there is a local time 
+     *  associated with each channel of each port.
+     *  @return The current time associated with a certain channel 
+     */
+    public double getCurrentTime(int channelIndex) 
+                                     throws IllegalActionException {
+        AbstractReceiver[][] localReceivers;
+        try {
+            try {
+                _workspace.getReadAccess();
+                // Note that the getReceivers() method might throw an
+                // IllegalActionException if there's no director.
+                localReceivers = (AbstractReceiver[][]) getReceivers();
+                if (localReceivers[channelIndex] == null) {
+                    throw new IllegalActionException(this,
+                            "no receiver at index: "
+                            + channelIndex + ".");
+                }
+            } finally {
+                _workspace.doneReading();
+            }
+            return localReceivers[channelIndex][0].getCurrentTime();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may be thrown if the port is not an input port.
+            throw new IllegalActionException(this,
+                    "getCurrentTime: channel index is out of range.");
+        }
+    }
+
 
     /** If the port is an opaque output port, return the receivers that
      *  receive data from all inside linked relations.
