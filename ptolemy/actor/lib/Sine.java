@@ -137,4 +137,48 @@ public class Sine extends Transformer {
             output.send(0, new DoubleToken(result));
         }
     }
+
+    /** Invoke a specified number of iterations of this actor. One
+     *  iteration computes the sine of a single token. This
+     *  method therefore computes the sine of <i>count</i> input
+     *  tokens. An invocation of this method will cause this actor
+     *  to consume and produce <i>count</i> tokens.
+     *  <p>
+     *  This method should be called instead of the usual prefire(), 
+     *  fire(), postfire() methods when this actor is used in a
+     *  domain that supports vectorized actors.
+     *  @param count The number of iterations to perform.
+     *  @return True if the actor was successfully iterated the
+     *   specified number of times. Otherwise, return false.
+     *  @exception IllegalActionException If one of the Executable
+     *   methods throws it.
+     */
+    public boolean iterate(int count) throws IllegalActionException {
+	// Check if we need to reallocate the output token array.
+	if (count > _resultArray.length) {
+	    _resultArray = new DoubleToken[count];
+	}
+
+        if (input.hasToken(0, count)) {
+	    // NOTE: _inArray.length may be > count, in which case
+	    // only the first count tokens are valid.
+            _inArray = (DoubleToken[])input.get(0, count);
+            double A = ((DoubleToken)amplitude.getToken()).doubleValue();
+            double w = ((DoubleToken)omega.getToken()).doubleValue();
+            double p = ((DoubleToken)phase.getToken()).doubleValue();
+	    for (int i = 0; i < count; i++) {
+		double result = A*Math.sin(w*_inArray[i].doubleValue()+p);
+		_resultArray[i] = new DoubleToken(result);
+	    }
+            output.send(0, _resultArray, count);
+        }
+	return (true);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private DoubleToken[] _inArray;
+    private DoubleToken[] _resultArray = new DoubleToken[1];
+
 }
