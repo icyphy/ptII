@@ -622,12 +622,5 @@ public class PetriNetDirector extends Director {
             return 0;
         }
     }
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-
 }
 
