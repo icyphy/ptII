@@ -301,7 +301,7 @@ public class Plot extends PlotBox {
      *  For the change to take effect, you must call repaint().
      *  @param format If true, clear the format controls as well.
      */
-    public synchronized void clear (boolean format) {
+    public synchronized void clear(boolean format) {
         super.clear(format);
         _currentdataset = -1;
         int size = _points.size();
@@ -373,7 +373,7 @@ public class Plot extends PlotBox {
      *  This method calls repaint(), which eventually causes the display
      *  to be updated.
      */
-    public synchronized void fillPlot () {
+    public synchronized void fillPlot() {
         if (_xyInvalid) {
             // Recalculate the boundaries based on currently visible data
             _xBottom = Double.MAX_VALUE;
@@ -1013,7 +1013,7 @@ public class Plot extends PlotBox {
     /** Turn bars on or off (for bar charts).
      *  @param on If true, turn bars on.
      */
-    public void setBars (boolean on) {
+    public void setBars(boolean on) {
         _bars = on;
     }
 
@@ -1024,7 +1024,7 @@ public class Plot extends PlotBox {
      *  @param width The width of the bars.
      *  @param offset The offset per data set.
      */
-    public void setBars (double width, double offset) {
+    public void setBars(double width, double offset) {
         _barwidth = width;
         _baroffset = offset;
         _bars = true;
@@ -1036,7 +1036,7 @@ public class Plot extends PlotBox {
      *  connected, individual points can be not connected by giving the
      *  appropriate argument to addPoint().
      */
-    public void setConnected (boolean on) {
+    public void setConnected(boolean on) {
         _connected = on;
     }
 
@@ -1045,7 +1045,7 @@ public class Plot extends PlotBox {
      *  disabled.  A plot with such lines is also known as a stem plot.
      *  @param on If true, draw a stem plot.
      */
-    public void setImpulses (boolean on) {
+    public void setImpulses(boolean on) {
         _impulses = on;
     }
 
@@ -1056,7 +1056,7 @@ public class Plot extends PlotBox {
      *  @param on If true, draw a stem plot.
      *  @param dataset The dataset to which this should apply.
      */
-    public void setImpulses (boolean on, int dataset) {
+    public void setImpulses(boolean on, int dataset) {
         _checkDatasetIndex(dataset);
         Format fmt = (Format)_formats.elementAt(dataset);
         fmt.impulses = on;
@@ -1068,7 +1068,7 @@ public class Plot extends PlotBox {
      *  sets, then recycled.
      *  @param style A string specifying the style for points.
      */
-    public void setMarksStyle (String style) {
+    public void setMarksStyle(String style) {
         if (style.equalsIgnoreCase("none")) {
             _marks = 0;
         } else if (style.equalsIgnoreCase("points")) {
@@ -1087,7 +1087,7 @@ public class Plot extends PlotBox {
      *  @param style A string specifying the style for points.
      *  @param dataset The dataset to which this should apply.
      */
-    public void setMarksStyle (String style, int dataset) {
+    public void setMarksStyle(String style, int dataset) {
         _checkDatasetIndex(dataset);
         Format fmt = (Format)_formats.elementAt(dataset);
         if (style.equalsIgnoreCase("none")) {
@@ -1112,7 +1112,7 @@ public class Plot extends PlotBox {
      *  @param numsets The number of data sets.
      *  @deprecated
      */
-    public void setNumSets (int numsets) {
+    public void setNumSets(int numsets) {
         if (numsets < 1) {
             throw new IllegalArgumentException("Number of data sets ("+
                     numsets + ") must be greater than 0.");
@@ -1138,7 +1138,7 @@ public class Plot extends PlotBox {
      *  sweeps and points persistence are set then sweeps take
      *  precedence.
      */
-    public void setPointsPersistence (int persistence) {
+    public void setPointsPersistence(int persistence) {
         //   FIXME: No file format yet.
         _pointsPersistence = persistence;
     }
@@ -1153,7 +1153,7 @@ public class Plot extends PlotBox {
      *  <b> This feature is not implemented yet, so this method has no
      *  effect</b>.
      */
-    public void setSweepsPersistence (int persistence) {
+    public void setSweepsPersistence(int persistence) {
         //   * FIXME: No file format yet.
         _sweepsPersistence = persistence;
     }
@@ -1202,7 +1202,7 @@ public class Plot extends PlotBox {
      *  @param ypos The y position.
      *  @param clip If true, then do not draw outside the range.
      */
-    protected void _drawBar (Graphics graphics, int dataset,
+    protected void _drawBar(Graphics graphics, int dataset,
             long xpos, long ypos, boolean clip) {
         if (clip) {
             if (ypos < _uly) {
@@ -1247,7 +1247,7 @@ public class Plot extends PlotBox {
      *  @param yHighEBPos The upper y position of the error bar.
      *  @param clip If true, then do not draw above the range.
      */
-    protected void _drawErrorBar (Graphics graphics, int dataset,
+    protected void _drawErrorBar(Graphics graphics, int dataset,
             long xpos, long yLowEBPos, long yHighEBPos,
             boolean clip) {
         _drawLine(graphics, dataset, xpos - _ERRORBAR_LEG_LENGTH, yHighEBPos,
@@ -1266,7 +1266,7 @@ public class Plot extends PlotBox {
      *  @param ypos The y position.
      *  @param clip If true, then do not draw outside the range.
      */
-    protected void _drawImpulse (Graphics graphics,
+    protected void _drawImpulse(Graphics graphics,
             long xpos, long ypos, boolean clip) {
         if (clip) {
             if (ypos < _uly) {
@@ -1297,7 +1297,7 @@ public class Plot extends PlotBox {
      *  @param endy The ending y position.
      *  @param clip If true, then do not draw outside the range.
      */
-    protected void _drawLine (Graphics graphics,
+    protected void _drawLine(Graphics graphics,
             int dataset, long startx, long starty, long endx, long endy,
             boolean clip) {
 
@@ -1551,7 +1551,7 @@ public class Plot extends PlotBox {
      *  @param line A command line.
      *  @return True if the line is recognized.
      */
-    protected boolean _parseLine (String line) {
+    protected boolean _parseLine(String line) {
         boolean connected = false;
         if (_connected) connected = true;
         // parse only if the super class does not recognize the line.

@@ -204,7 +204,7 @@ public class LogicAnalyzerFrame extends Frame {
 
     /** Print the plot.
      */
-    protected void _print () {
+    protected void _print() {
         // The awt uses properties to set the defaults:
         // awt.print.destination   - can be "printer" or "file"
         // awt.print.printer       - print command
@@ -217,7 +217,7 @@ public class LogicAnalyzerFrame extends Frame {
 
         // Accept the defaults... But if you want to change them,
         // do something like this...
-        // Properties newprops= new Properties();
+        // Properties newprops = new Properties();
         // newprops.put("awt.print.destination", "file");
         // newprops.put("awt.print.fileName", _outputFile);
         // PrintJob printjob = getToolkit().getPrintJob(this,

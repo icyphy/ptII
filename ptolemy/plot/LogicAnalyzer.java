@@ -1,6 +1,6 @@
 /* A logic analyzer.
 
-Copyright (c) 1997-1998 The Regents of the University of California.
+Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -86,7 +86,7 @@ public class LogicAnalyzer extends PlotBox {
      *  For the change to take effect, you must call repaint().
      *  @param format If true, clear the format controls as well.
      */
-    public synchronized void clear (boolean format) {
+    public synchronized void clear(boolean format) {
         super.clear(format);
         _currentdataset = -1;
         int size = _points.size();
@@ -148,7 +148,7 @@ public class LogicAnalyzer extends PlotBox {
      *  This method calls repaint(), which eventually causes the display
      *  to be updated.
      */
-    public synchronized void fillPlot () {
+    public synchronized void fillPlot() {
         if (_xyInvalid) {
             // Recalculate the boundaries based on currently visible data
             _xBottom = Double.MAX_VALUE;
@@ -228,7 +228,7 @@ public class LogicAnalyzer extends PlotBox {
      *  @param numsets The number of data sets.
      *  @deprecated
      */
-    public void setNumSets (int numsets) {
+    public void setNumSets(int numsets) {
         if (numsets < 1) {
             throw new IllegalArgumentException("Number of data sets ("+
                     numsets + ") must be greater than 0.");
@@ -304,7 +304,7 @@ public class LogicAnalyzer extends PlotBox {
      *  @param endy The ending y position.
      *  @param clip If true, then do not draw outside the range.
      */
-    protected void _drawLine (Graphics graphics,
+    protected void _drawLine(Graphics graphics,
             int dataset, long startx, long starty, long endx, long endy,
             boolean clip) {
 
