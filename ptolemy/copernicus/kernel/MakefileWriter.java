@@ -36,8 +36,15 @@ import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.attributes.URIAttribute; 
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.StringUtilities;
+import ptolemy.moml.MoMLFilter;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.gui.GUIStringUtilities;
 import ptolemy.actor.gui.JNLPUtilities;
 
@@ -64,6 +71,7 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -99,7 +107,7 @@ public class MakefileWriter extends SceneTransformer {
 
     public String getDeclaredOptions() {
         return super.getDeclaredOptions() +
-            " targetPackage outDir templateDirectory";
+            " _generatorAttributeFileName outDir targetPackage templateDirectory";
     }
 
 
@@ -168,13 +176,16 @@ public class MakefileWriter extends SceneTransformer {
      *  @param options The options Map.
      *  This transformer uses the following options:
      *  <dl>
-     *  <dt>targetPackage
-     *  <dd>The package where the generated code will reside, for example:
-     *  <code>ptolemy.copernicus.applet.cg.Butterfly</code>
+     *  <dd>_generatorAttributeFileName
+     *  <dd>The pathname to the {@link GeneratorAttribute} that contains
+     *  the keys and values will we use to update the makefile template with.
      *  <dt>outDir
      *  <dd>The absolute path to the directory where the generated code
      *  will reside, for example:
      *  <code>c:/ptII/ptolemy/copernicus/applet/cg/Butterfly</code>
+     *  <dt>targetPackage
+     *  <dd>The package where the generated code will reside, for example:
+     *  <code>ptolemy.copernicus.applet.cg.Butterfly</code>
      *  <dt>templateDirectory
      *  <dd>The directory where we should read the makefile.in file
      *  
@@ -185,88 +196,114 @@ public class MakefileWriter extends SceneTransformer {
         System.out.println("MakefileWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
-	_outputDirectory = Options.getString(options, "outDir");
+        //System.out.println(_model.description());
 
-	// Determine where $PTII is so that we can find the right directory.
-	_ptIIDirectory = null;
-        try {
-            // NOTE: getProperty() will probably fail in applets, which
-            // is why this is in a try block.
-	    // NOTE: This property is set by the vergil startup script.
-	    _ptIIDirectory =
-                GUIStringUtilities.getProperty("ptolemy.ptII.dir");
-        } catch (SecurityException security) {
-            throw new InternalErrorException(null, security,
-                    "Could not find "
-                    + "'ptolemy.ptII.dir'"
-                    + " property.  Vergil should be "
-                    + "invoked with -Dptolemy.ptII.dir"
-                    + "=\"$PTII\"");
+        // Read in the GeneratorAttribute and use it for substitution
+
+        // Note that this option has a leading _
+	_generatorAttributeFileName = Options.getString(options,
+                "_generatorAttributeFileName");
+
+        if (_generatorAttributeFileName.length() == 0) {
+            throw new InternalErrorException("Could not find "
+                    + "_generatorAttributeFileName soot command line option. "
+                    + "Usually, _generatorAttributeFileName contains the file "
+                    + "name of the MoML that contains the GeneratorAttribute"
+                    + "we are to use to create the makefile.  See "
+                    + "ptolemy/copernicus/Copernicus.java for details");
         }
 
-	_ptIIUserDirectory = Options.getString(options, "putIIUserDir");
+        System.out.println("MakefileWriter: parsing " + 
+                _generatorAttributeFileName);
 
-	// If the targetPackage is foo.bar, and the model is MyModel,
-	// the we will do mkdir $PTII/foo/bar/MyModel/
-	_targetPackage = Options.getString(options, "targetPackage");
+        GeneratorAttribute generatorAttribute = null;
+        try {
+            // We need the GeneratorAttribute, but we already
+            // filtered it out in KernelMain, and we updated
+            // it in copernicus.kernel.Copernicus, so we
+            // the values inside the GeneratorAttribute inside _model
+            // are likely to be wrong.
+            MoMLParser parser = new MoMLParser();
 
-	_sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
+            CompositeActor toplevel;
+
+            // Get the old filters, save them, add our own 
+            // filters, use them, remove our filters,
+            // and then readd the old filters in the finally clause.
+            // We do something 
+            // similar in GeneratorAttribute.updateModelAttributes()
+            List oldFilters = parser.getMoMLFilters();
+            parser.setMoMLFilters(null);
+            try {
+                // Handle Backward Compatibility.
+                parser.addMoMLFilters(BackwardCompatibility.allFilters());
+
+                // We don't call parseFile() here because it calls gets
+                // the user.dir property.
+                toplevel = (CompositeActor)parser
+                    .parse(null,
+                            new File(_generatorAttributeFileName).toURL());
+            } finally {
+                // Restore the saved momlfilters
+                parser.setMoMLFilters(oldFilters);
+            }
+
+            generatorAttribute = (GeneratorAttribute)
+                toplevel.getAttribute(Copernicus.GENERATOR_NAME, 
+                        GeneratorAttribute.class);
+            if (generatorAttribute == null) {
+                System.out.println("MakefileWriter: Warning, parsing '"
+                        + _generatorAttributeFileName
+                        + "' did not contain an attribute "
+                        + " called '" + Copernicus.GENERATOR_NAME + "'"
+                        + toplevel.exportMoML());
+                generatorAttribute = new GeneratorAttribute(
+                        toplevel, Copernicus.GENERATOR_NAME);
+            }
+        } catch (Exception ex) {
+            throw new InternalErrorException(_model, ex, "Problem getting the"
+                    + " _generator attribute");
+        }
+
+
+
+	_outputDirectory = Options.getString(options, "outDir");
+        if (!_outputDirectory.endsWith("/")) {
+            _outputDirectory = _outputDirectory + "/";
+        }
 
 	// Create the directory where we will create the files.
 	File outDirFile = new File(_outputDirectory);
-	if (outDirFile.isDirectory()) {
-	    System.out.println(" Warning: '" + outDirFile
-                    + "' already exists.");
-	}
-	outDirFile.mkdirs();
-
-	// Set up the HashMap we will use when we read in files like
-	// makefile.in and search for strings like @codebase@ and substitute
-	// in the value of _codeBase.
-	_substituteMap = new HashMap();
-	_substituteMap.put("@outDir@", _outputDirectory);
-	_substituteMap.put("@ptIIDirectory@", _ptIIDirectory);
-	_substituteMap.put("@ptIIUserDirectory@", _ptIIUserDirectory);
-	_substituteMap.put("@sanitizedModelName@",
-                _sanitizedModelName);
-	_substituteMap.put("@targetPackage@", _targetPackage);
-
-	// Print out the map for debugging purposes
-	Iterator keys = _substituteMap.keySet().iterator();
-	while (keys.hasNext()) {
-	    String key = (String)keys.next();
-	    System.out.println("MakefileWriter: '" + key + "' '" +
-                    (String)_substituteMap.get(key) + "'");
+	if (!outDirFile.isDirectory()) {
+            outDirFile.mkdirs();
 	}
 
-	// Read in the templates and generate new files.
+	_targetPackage = Options.getString(options, "targetPackage");
 
-	// The directory that contains the templates.
-	// FIXME: this could be a Ptolemy parameter?
-
-	//_templateDirectory =
-	//    StringUtilities.substitute(Options.getString(options,
-        //            "templateDirectory"),
-        //            "$PTII", _ptIIDirectory);
 	_templateDirectory = Options.getString(options, "templateDirectory");
-
         if (!_templateDirectory.endsWith("/")) {
             _templateDirectory = _templateDirectory + "/";
         }
 
-	System.out.println("MakefileWriter: _templateDirectory: '"
-			   + _templateDirectory + "'");
 
 	try {
-	    Copernicus.substitute(_templateDirectory + "makefile.in",
-				    _substituteMap,
-				    _outputDirectory + "/makefile");
-	} catch (IOException ex) {
+            Map substituteMap = Copernicus.newMap(generatorAttribute); 
+            substituteMap.put("@outDir@", _outputDirectory);
+            substituteMap.put("@targetPackage@", _targetPackage);
+            substituteMap.put("@templateDirectory@", _templateDirectory);
+            System.out.println("MakefileWriter: reading '"
+                    + _templateDirectory + "makefile.in'\n\t writing '" 
+                    + _outputDirectory + "makefile'");
+
+            Copernicus.substitute(_templateDirectory + "makefile.in",
+                    substituteMap,
+                    _outputDirectory + "makefile");
+	} catch (Exception ex) {
 	    // This exception tends to get eaten by soot, so we print as well.
-	    System.err.println("Problem writing makefile or html files:" + ex);
+	    System.err.println("Problem writing makefile:" + ex);
 	    ex.printStackTrace();
-	    throw new InternalErrorException("Problem writing the makefile "
-                    + "or htm files: " + ex);
+	    throw new InternalErrorException(_model, ex,
+                    "Problem writing the makefile");
 	}
     }
 
@@ -302,6 +339,11 @@ public class MakefileWriter extends SceneTransformer {
 
     // The relative path to $PTII, for example "../../..".
     private String _codeBase;
+
+    // The file name of the MoML file that contains the GeneratorAttribute
+    // that contains the key/value pairs we will use when substituting
+    // in the makefile.
+    private String _generatorAttributeFileName;
 
     // The model we are generating code for.
     private CompositeActor _model;
