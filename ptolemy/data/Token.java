@@ -28,6 +28,9 @@
 @AcceptedRating none
 
 */
+package ptolemy.data;
+
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Token
@@ -42,64 +45,44 @@ Not all derived classes are required to implement these methods,
 so the default implementation in this base class triggers an exception.
 <p>
 
-@author Neil Smyth, Edward A. Lee
+@author Neil Smyth
 @version $Id$
 
 */
-
-package ptolemy.data;
-
-import ptolemy.kernel.util.IllegalActionException;
-
 public abstract class Token {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new token whose value is the sum of this token
-     *  and the argument. It should be overridden in derived
+    /** Return a new token whose value is the value of the 
+     *  argument Token added to the value of this Token.
+     *  It should be overridden in derived
      *  classes to provide type specific actions for add.
-     *  @param a The token whose value we add to the value of this token.
+     *  @param leftArg The token whose value we add to the value of
+     *   this token.
      *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
+     *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token add(Token a) throws IllegalActionException {
+    public Token add(Token leftArg) throws IllegalActionException {
         String str = "Add method not supported on ";
         str = str + this.getClass().getName() + " objects";
         throw new IllegalActionException(str);
     }
 
-    /** Return a new token whose value is the sum of this token
-     *  and the argument. It should be overridden in derived classes
+    /** Return a new token whose value is the value of this 
+     *  Token added to the value of the argument Token.
+     *  It should be overridden in derived classes
      *  to provide type specific actions for add.
-     *  @param a The token containing the value to which we add the
+     *  @param rightArg The token containing the value to which we add the
      *   value of this token to get the value of the new token.
-     *  @exception IllegalActionException Thrown if this method is not
+     *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token addR(Token a) throws IllegalActionException {
+    public Token addR(Token rightArg) throws IllegalActionException {
         String str = "Addr method not supported on ";
         str = str + this.getClass().getName() + " objects";
         throw new IllegalActionException(str);
-    }
-
-    /** Convert the specified token into an instance of Token.
-     *  Since all the token classes are derived from this base class,
-     *  no conversion is needed. This method just returns the specified
-     *  token. The derived classes should override this method to
-     *  convert a token type further down the type hierarchy to the
-     *  type of itself.
-     *  @param token A Token.
-     *  @return The same Token as the argument.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *   Derived  classes may throw it if the conversion cannot be carried
-     *   out in a lossless fashion.
-     */
-    public static Token convert(Token token)
-	    throws IllegalActionException {
-	return token;
     }
 
     /** Return a new Token whose value is the value of this token
@@ -124,7 +107,7 @@ public abstract class Token {
      *  actions for divide.
      *  @param dividend The Token whose value we divide by the value of
      *   this Token.
-     *  @exception IllegalActionException Thrown if this method is not
+     *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
@@ -148,23 +131,16 @@ public abstract class Token {
         throw new IllegalActionException(str);
     }
 
-    /** This method should be overridden where appropriate in subclasses.
-     *  @return Whether this Token is an array or not.
-     */
-    public boolean isArray() {
-        return false;
-    }
-
     /** Return a new Token whose value is the value of this token
      *  modulo the value of the argument token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for modulo.
-     *  @param token The token whose value we do modulo with.
+     *  @param rightArg The token whose value we do modulo with.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token modulo(Token token) throws  IllegalActionException {
+    public Token modulo(Token rightArg) throws  IllegalActionException {
         String str = "Modulo method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
@@ -174,12 +150,12 @@ public abstract class Token {
      *  modulo the value of this token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for modulo.
-     *  @param token The token whose value we modulo on.
+     *  @param leftArg The token whose value we modulo on.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token moduloR(Token token) throws IllegalActionException {
+    public Token moduloR(Token leftArg) throws IllegalActionException {
         String str = "ModuloR method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
@@ -187,6 +163,8 @@ public abstract class Token {
 
     /** Return a new Token whose value is the value of this Token
      *  multiplied with the value of the argument Token.
+     *  It should be overridden in derived classes to provide type specific
+     *  actions for multiply.
      *  @param rightFactor The token whose value we multiply the value of this
      *   Token with.
      *  @exception IllegalActionException If this method is not
@@ -228,6 +206,7 @@ public abstract class Token {
     }
 
     /** Return the value of the Token as a String.
+     *  It should be overridden in subclasses.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return The value of the token as a String.
