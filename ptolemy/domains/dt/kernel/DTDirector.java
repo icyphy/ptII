@@ -427,6 +427,8 @@ public class DTDirector extends SDFDirector {
         _requestRefireAt(0.0);
         _actorTable = new ArrayList();
         _allActorsTable = new Hashtable();
+        _receiverTable = new ArrayList();
+        _buildReceiverTable();
         _buildActorTable();
         _buildOutputPortTable();
         super.initialize();
@@ -529,19 +531,11 @@ public class DTDirector extends SDFDirector {
     }
 
     /** Return a new receiver consistent with the DT domain.
-     *  This function is called when a connection between an output port
-     *  of an actor and an input port of another actor is made in Vergil.
-     *  This function is also called during the preinitialize() stage of
-     *  a toplevel director.  This function may also be called prior to
-     *  the preinitialize() stage of a non-toplevel director.
      *
      *  @return A new DTReceiver.
      */
     public Receiver newReceiver() {
-
-        DTReceiver currentReceiver = new DTReceiver();
-        _receiverTable.add(currentReceiver);
-        return currentReceiver;
+        return new DTReceiver();
     }
 
 
@@ -675,10 +669,6 @@ public class DTDirector extends SDFDirector {
         _reset();
     }
 
-
-
-
-
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
@@ -765,6 +755,56 @@ public class DTDirector extends SDFDirector {
         _debugViewActorTable();
         _debugViewReceiverTable();
     }
+
+    /** Build the internal cache of all the receivers directed by this 
+     *  director.
+     */
+    private void _buildReceiverTable() throws IllegalActionException {
+        CompositeActor container = (CompositeActor) getContainer();
+        if (container != null) {
+            Iterator allActors = container.deepEntityList().iterator();
+            while(allActors.hasNext()) {
+                Actor actor = (Actor) allActors.next();
+                // Get all input ports
+                Iterator allInputs = actor.inputPortList().iterator();
+                while(allInputs.hasNext()){
+                    IOPort inputPort = (IOPort)allInputs.next();
+                    Receiver[][] receivers = inputPort.getReceivers();
+                    if(receivers != null) {
+                        for(int i = 0; i < receivers.length; i++) {
+                            if (receivers[i] != null) {
+                                for(int j = 0; j < receivers[i].length; j++) {
+                                    if (receivers[i][j] != null) {
+                                        _receiverTable.add(receivers[i][j]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Also add the inside receivers in the ports of the 
+            // composite actor that contains this director.
+            Iterator compositePorts = container.outputPortList().iterator();
+            while(compositePorts.hasNext()) {
+                IOPort outputPort = (IOPort)compositePorts.next();
+                Receiver[][] receivers = outputPort.getInsideReceivers();
+                if(receivers != null) {
+                    for(int i = 0; i < receivers.length; i++) {
+                        if (receivers[i] != null) {
+                            for(int j = 0; j < receivers[i].length; j++) {
+                                if (receivers[i][j] != null) {
+                                    _receiverTable.add(receivers[i][j]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+                                        
 
     /** Build the internal cache of all the ports directed by this director
      */
