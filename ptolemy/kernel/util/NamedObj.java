@@ -1954,6 +1954,17 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** Object for locking accesses to change request list and status.
+     *  NOTE: We could have used _changeRequests or _changeListeners,
+     *  but those lists are only created when needed.  A simple
+     *  Object here is presumably cheaper than a list, but it is
+     *  truly unfortunate to have to carry this in every NamedObj.
+     */
+    protected Object _changeLock = new Object();
+    
+    /** A list of pending change requests. */
+    protected List _changeRequests;
     
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
@@ -1982,17 +1993,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** A list of weak references to change listeners. */
     private List _changeListeners;
     
-    /** Object for locking accesses to change request list and status.
-     *  NOTE: We could have used _changeRequests or _changeListeners,
-     *  but those lists are only created when needed.  A simple
-     *  Object here is presumably cheaper than a list, but it is
-     *  truly unfortunate to have to carry this in every NamedObj.
-     */
-    private Object _changeLock = new Object();
-    
-    /** A list of pending change requests. */
-    private List _changeRequests;
-
     /** @serial Instance of a workspace that can be used if no other
      *  is specified.
      */
