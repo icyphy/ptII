@@ -111,7 +111,7 @@ ISJAVA = /users/ptII/vendors/installshield/isjava25/bin/isjava
 # The fixtmpdist rule should be defined in the calling makefile
 dists: sources install distsfiles
 # We split up the dists rule to aid in debugging
-distsfiles: $(PTTMPDIST) fixtmpdist $(PTDISTS) isjavadists
+distsfiles: $(PTTMPDIST) fixtmpdist $(PTDISTS) #isjavadists
 
 # This name is a little too close to distclean
 distsclean:
