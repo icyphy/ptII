@@ -75,7 +75,8 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate 
+                = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
     }

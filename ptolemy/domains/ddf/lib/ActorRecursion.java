@@ -287,15 +287,15 @@ public class ActorRecursion extends TypedCompositeActor {
 
             if (port.isInput() && !matchingPortType.isCompatible(portType)) {
                 throw new IllegalActionException(this,
-                        "The type of the port " + port.getName() + " of the actor "
-                        + getName()
+                        "The type of the port " + port.getName() 
+                        + " of the actor " + getName()
                         + " must be the same or less than the matching port.");
             }
 
             if (port.isOutput() && !portType.isCompatible(matchingPortType)) {
                 throw new IllegalActionException(this,
-                        "The type of the port " + port.getName() + " of the actor "
-                        + getName() + " must "
+                        "The type of the port " + port.getName() 
+                        + " of the actor " + getName() + " must "
                         + "be the same or less than the matching port.");
             }
         }
@@ -317,7 +317,8 @@ public class ActorRecursion extends TypedCompositeActor {
             throws IllegalActionException, CloneNotSupportedException {
         try {
             // Clone the composite actor.
-            CompositeActor clone = (CompositeActor) _recursionActor.clone(workspace());
+            CompositeActor clone 
+                    = (CompositeActor) _recursionActor.clone(workspace());
 
             // Place the clone inside this actor.
             clone.setContainer(this);
@@ -462,7 +463,7 @@ public class ActorRecursion extends TypedCompositeActor {
         }
 
         throw new IllegalActionException(this,
-                "Can not find a " + "container with name " + recursionActorValue);
+                "Can not find a container with name " + recursionActorValue);
     }
 
     /** Read rate parameters of input ports of all actors receiving tokens
@@ -496,8 +497,8 @@ public class ActorRecursion extends TypedCompositeActor {
             for (int i = 0; i < farReceivers.length; i++) {
                 if (i < outputPort.getWidthInside()) {
                     for (int j = 0; j < farReceivers[i].length; j++) {
-                        SDFReceiver farReceiver = (SDFReceiver) farReceivers[i][j];
-                        
+                        SDFReceiver farReceiver 
+                                = (SDFReceiver) farReceivers[i][j];
                         int rate = _getTokenConsumptionRate(farReceiver);
                         // According to the definition of deferrability,
                         // we need to find the minimum rate associated with
