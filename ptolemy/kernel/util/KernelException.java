@@ -104,17 +104,17 @@ public class KernelException extends Exception {
 
     /** Return the stack trace as a String.
      *  This method is useful if we are catching and rethrowing
-     *  an exception.  This method should be used instead of
+     *  an throwable.  This method should be used instead of
      *  Throwable.printStackTrace(), which prints the stack trace
      *  to stderr, which is likely to be hidden if we are running
      *  a Ptolemy application from anything but a shell console.
-     *  @param exception An exception. 
-     *  @return The stack trace of the exception.
+     *  @param throwable An throwable. 
+     *  @return The stack trace of the throwable.
      */
-    public static String stackTraceToString(Exception exception) {
+    public static String stackTraceToString(Throwable throwable) {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
-        exception.printStackTrace(printWriter);
+        throwable.printStackTrace(printWriter);
         return stringWriter.toString();
     }
 
