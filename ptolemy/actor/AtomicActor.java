@@ -193,21 +193,14 @@ public class AtomicActor extends ComponentEntity implements Actor {
 	}
     }
 
-    /** Perform domain-specific initialization by calling the
-     *  initialize(Actor) method of the director. The director may
-     *  reject the actor by throwing an exception if the actor is
-     *  incompatible with the domain.  Process-oriented directors
-     *  Derived classes override this method to perform
-     *  actions that should occur once at the beginning of an execution,
-     *  but after type resolution.
-     *  Derived classes should be sure to call super.initialize(), however,
-     *  so that domain-specific initialization is done.
-     *  Derived classes can produce output data and schedule events.
+    /** Initialize this actor.  Derived classes override this method
+     *  to perform actions that should occur once at the beginning of
+     *  an execution, but after type resolution.  Derived classes can
+     *  produce output data and schedule events.
      *
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-        getDirector().initialize(this);
     }
 
     /** List all the input ports.

@@ -321,18 +321,15 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is opaque, invoke the initialize() method of its local
-     *  director. Otherwise, throw an exception.
-     *  Before that, if this is not a top-level composite actor,
-     *  perform domain-specific initialization by calling the
-     *  initialize(Actor) method of the executive director.
-     *  This method is read-synchronized on the workspace, so the
-     *  initialize() method of the director need not be (assuming it is only
-     *  called from here).
+    /** Initialize this actor.  If this actor is opaque, invoke the
+     *  initialize() method of its local director. Otherwise, throw an
+     *  exception.  This method is read-synchronized on the workspace,
+     *  so the initialize() method of the director need not be
+     *  (assuming it is only called from here).
      *
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's initialize() method throws it, or if the actor is not
-     *   opaque.
+     *  @exception IllegalActionException If there is no director, or
+     *  if the director's initialize() method throws it, or if the
+     *  actor is not opaque.
      */
     public void initialize() throws IllegalActionException {
         try {
@@ -341,10 +338,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 throw new IllegalActionException(this,
                         "Cannot fire a non-opaque actor.");
             }
-            Director executive = getExecutiveDirector();
-            if (executive != null) {
-                executive.initialize(this);
-            }
+
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().initialize();
