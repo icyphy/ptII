@@ -317,7 +317,7 @@ public class Plot extends PlotBox {
             _formats = new Vector();
             _marks = 0;
             _pointsPersistence = 0;
-            _sweepsPersistence = 0;
+            _xPersistence = 0;
             _bars = false;
             _barwidth = 0.5;
             _baroffset = 0.05;
@@ -690,10 +690,6 @@ public class Plot extends PlotBox {
     /** Specify the number of data sets to be plotted together.
      *  This method is deprecated, since it is no longer necessary to
      *  specify the number of data sets ahead of time.
-     *  It has the effect of clearing all previously plotted points.
-     *  This method should be called before setPointsPersistence().
-     *  This method throws IllegalArgumentException if the number is less
-     *  than 1.  This is a runtime exception, so it need not be declared.
      *  @param numsets The number of data sets.
      *  @deprecated
      */
@@ -733,7 +729,7 @@ public class Plot extends PlotBox {
      *  on the next call to addPoint().
      */
     public void setPointsPersistence(int persistence) {
-        //   FIXME: No file format yet.
+        // NOTE: No file format.  It's not clear it makes sense to have one.
         _pointsPersistence = persistence;
     }
 
@@ -745,19 +741,27 @@ public class Plot extends PlotBox {
         _reusedatasets = on;
     }
 
-    /** A sweep is a sequence of points where the value of X is
-     *  increasing.  A point that is added with a smaller x than the
-     *  previous point increments the sweep count.  Calling this method
-     *  with a non-zero argument sets the persistence of the plot to
-     *  the given number of sweeps.  Calling with a zero argument turns
-     *  off this feature.  If both sweeps and points persistence are
-     *  set then sweeps take precedence.
-     *  <b> This feature is not implemented yet, so this method has no
-     *  effect</b>.
+    /** Calling this method with a positive argument sets the
+     *  persistence of the plot to the given width in units of the
+     *  horizontal axis. Calling
+     *  with a zero argument turns off this feature, reverting to
+     *  infinite memory (unless points persistence is set).  If both
+     *  X and points persistence are set then both are applied,
+     *  meaning that points that are old by either criterion will
+     *  be erased.
+     *  <p>
+     *  Setting the X persistence greater than zero forces the plot to
+     *  be drawn in XOR mode, which allows points to be quickly and
+     *  efficiently erased.  However, there is a bug in Java (as of
+     *  version 1.3), where XOR mode does not work correctly with
+     *  double buffering.  Thus, if you call this with an argument
+     *  greater than zero, then we turn off double buffering for this
+     *  panel <i>and all of its parents</i>.  This actually happens
+     *  on the next call to addPoint().
      */
-    public void setSweepsPersistence(int persistence) {
-        //   * FIXME: No file format yet.
-        _sweepsPersistence = persistence;
+    public void setXPersistence(double persistence) {
+        // NOTE: No file format.  It's not clear it makes sense to have one.
+        _xPersistence = persistence;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1642,6 +1646,27 @@ public class Plot extends PlotBox {
             }
         }
 
+        Vector pts = (Vector)_points.elementAt(dataset);
+        int size = pts.size();
+
+        // If X persistence has been set, then delete any old points.
+        if (_xPersistence > 0.0) {
+            int numToDelete = 0;
+            while(numToDelete < size) {
+                PlotPoint old = (PlotPoint)(pts.elementAt(numToDelete));
+                if (x - old.originalx <= _xPersistence) break;
+                numToDelete++;
+            }
+            for (int i=0; i < numToDelete; i++) {
+                erasePoint(dataset, 0);
+            }
+        }
+
+        PlotPoint pt = new PlotPoint();
+        // Original value of x before wrapping.
+        pt.originalx = x;
+
+        // Modify x if wrapping.
         if(_wrap && _xRangeGiven) {
             double width = _xhighgiven - _xlowgiven;
             if (x < _xlowgiven) {
@@ -1659,8 +1684,6 @@ public class Plot extends PlotBox {
         if (y < _yBottom) _yBottom = y;
         if (y > _yTop) _yTop = y;
 
-        // FIXME: Ignoring sweeps for now.
-        PlotPoint pt = new PlotPoint();
         pt.x = x;
         pt.y = y;
         pt.connected = connected && _isConnected(dataset);
@@ -1675,9 +1698,7 @@ public class Plot extends PlotBox {
             pt.errorBar = true;
         }
 
-        Vector pts = (Vector)_points.elementAt(dataset);
         // If this is the first point in the dataset, clear the connected bit.
-        int size = pts.size();
         if (size == 0) {
             pt.connected = false;
         } else if(_wrap && _xRangeGiven) {
@@ -1686,13 +1707,15 @@ public class Plot extends PlotBox {
             if (old.x > x) pt.connected = false;
         }
         pts.addElement(pt);
+        // If points persistence has been set, then delete one old point.
         if (_pointsPersistence > 0) {
             if (size > _pointsPersistence) erasePoint(dataset, 0);
         }
         // Draw the point on the screen only if the plot is showing.
         if (_showing) {
 
-            if (_pointsPersistence > 0 && isDoubleBuffered()) {
+            if ((_pointsPersistence > 0 || _xPersistence > 0.0)
+                    && isDoubleBuffered()) {
                 // NOTE: Double buffering has a bug in Java (in at least
                 // version 1.3) where there is a one pixel alignment problem
                 // that prevents XOR drawing from working correctly.
@@ -1810,7 +1833,7 @@ public class Plot extends PlotBox {
      */
     private void _drawPlotPoint(Graphics graphics,
             int dataset, int index) {
-        if (_pointsPersistence > 0) {
+        if (_pointsPersistence > 0 || _xPersistence > 0.0) {
             // To allow erasing to work by just redrawing the points.
             graphics.setXORMode(_background);
         }
@@ -1863,7 +1886,7 @@ public class Plot extends PlotBox {
 
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
-        if (_pointsPersistence > 0) {
+        if (_pointsPersistence > 0 || _xPersistence > 0.0) {
             // Restore paint mode in case axes get redrawn.
             graphics.setPaintMode();
         }
@@ -1885,7 +1908,7 @@ public class Plot extends PlotBox {
     private void _erasePoint(Graphics graphics,
             int dataset, int index) {
         // Set the color
-        if (_pointsPersistence > 0) {
+        if (_pointsPersistence > 0 || _xPersistence > 0.0) {
             // To allow erasing to work by just redrawing the points.
             graphics.setXORMode(_background);
         }
@@ -1933,7 +1956,7 @@ public class Plot extends PlotBox {
 
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
-        if (_pointsPersistence > 0) {
+        if (_pointsPersistence > 0 || _xPersistence > 0.0) {
             // Restore paint mode in case axes get redrawn.
             graphics.setPaintMode();
         }
@@ -1957,8 +1980,8 @@ public class Plot extends PlotBox {
     /** @serial Number of points to persist for. */
     private int _pointsPersistence = 0;
 
-    /** @serial Number of sweeps to persist for. */
-    private int _sweepsPersistence = 0;
+    /** @serial Persistence in units of the horizontal axis. */
+    private double _xPersistence = 0.0;
 
     /** @serial True if this is a bar plot. */
     private boolean _bars = false;
