@@ -1195,8 +1195,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
-
 	_iterationCount = 0;
         _unitIndex = 0;
 	Iterator receivers = _receivers.iterator();
@@ -1204,6 +1202,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    GiottoReceiver receiver = (GiottoReceiver) receivers.next();
 	    receiver.reset();
 	}
+
+	super.initialize();
 
         // Iterate through all output ports to see if any have initialValue
         // parameters.
