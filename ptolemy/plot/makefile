@@ -37,7 +37,8 @@ CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
 JPACKAGE = 	ptplot
-JVERSION =	1.0
+JPACKAGE_DIR = 	ptplot
+JVERSION =	1.1
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		ptplot/$(JPACKAGE).zip
 
@@ -54,12 +55,7 @@ JSRCS1_0 = \
 	Plot.java \
 	PlotApplet.java \
 	PlotDataException.java \
-	PlotDemo.java \
-	PlotFourierSeries.java \
 	PlotLive.java \
-	PlotLive.java \
-	PlotLiveDemo.java \
-	PlotLiveDemoApplet.java \
 	PlotPoint.java
 
 # Sources that require JDK1.1 and later.
