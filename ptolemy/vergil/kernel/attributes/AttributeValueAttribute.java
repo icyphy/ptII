@@ -1,6 +1,6 @@
-/* An attribute for a visible text annotation.
+/* An attribute with a reference to a rectangle.
 
-Copyright (c) 2004 The Regents of the University of California.
+Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -28,38 +28,29 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.kernel.attributes;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-
-import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.gui.style.TextStyle;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.vergil.icon.TextIcon;
 
 //////////////////////////////////////////////////////////////////////////
-//// TextAttribute
+//// AttributeValueAttribute
 /**
-   This is an attribute that is rendered as text annotation.
-   <p>
-   @author Edward A. Lee
+   This is a text attribute whose text string is derived from the
+   expression of a parameter.  <p>
+   @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
-public class TextAttribute extends AbstractTextAttribute {
+public class AttributeValueAttribute extends AbstractTextAttribute {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -74,41 +65,82 @@ public class TextAttribute extends AbstractTextAttribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public TextAttribute(NamedObj container, String name)
+    public AttributeValueAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Don't use StringParameter here because variable
-        // substitution would be strange.
-        text = new StringAttribute(this, "text");
-        text.setExpression("Double click to edit text.");
-        TextStyle style = new TextStyle(text, "_style");
-        style.height.setExpression("20");
-        style.width.setExpression("80");
+        attributeName = new StringAttribute(this, "attributeName");
+        displayWidth = new Parameter(this, "displayWidth");
+        displayWidth.setExpression("6");
+        displayWidth.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The text.  This is a string that defaults to
-     *  "Double click to edit text."
+    /** The name of the attribute of the container whose value to display. */
+    public StringAttribute attributeName;
+
+    /** The number of characters to display. This is an integer, with
+     *  default value 6.
      */
-    public StringAttribute text;
+    public Parameter displayWidth;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a changes in the attributes by changing the icon.
+    /** React to a changes in the attributes by changing
+     *  the icon.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == text) {
-            _icon.setText(text.getExpression());
+        if (attribute == attributeName) {
+            _attributeName = attributeName.getExpression();
+            _icon.setText(_getText());
+        } else if(attribute == displayWidth) {
+            _displayWidth =
+                ((IntToken) displayWidth.getToken()).intValue();
+            _icon.setText(_getText());
         } else {
             super.attributeChanged(attribute);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Return the a new string that contains the expression of the
+     *  referred to attribute.
+     *  @return A new shape.
+     */
+    protected String _getText() {
+        NamedObj container = (NamedObj)getContainer();
+        if (container != null) {
+            Attribute associatedAttribute = 
+                ModelScope.getScopedVariable(null, container, _attributeName);
+            if (associatedAttribute instanceof Settable) {
+                String value = ((Settable)associatedAttribute).getExpression();
+                String truncated = value;
+                int width = _displayWidth;
+                if (value.length() > width) {
+                    truncated = value.substring(0, width) + "...";
+                }
+                if (truncated.length() == 0) {
+                    truncated = " ";
+                }
+                return truncated;
+            }
+        }
+        return "???";
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected members                  ////
+
+    /** Most recent value of the rounding parameter. */
+    protected int _displayWidth = 0;
+    protected String _attributeName = "";
 }

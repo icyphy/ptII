@@ -31,4 +31,8 @@
     <property name="centered" value="true"/>
     <property name="fillColor" value="{1.0, 1.0, 1.0, 1.0}"/>
   </property>
+  <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+    <property name="attributeName" value=""/>
+    <property name="displayWidth" value="6"/>
+  </property>
 </entity>

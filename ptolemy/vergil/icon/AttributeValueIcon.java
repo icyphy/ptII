@@ -105,10 +105,7 @@ public class AttributeValueIcon extends XMLIcon {
         if (truncated == null) {
             truncated = " ";
         }
-        // NOTE: This violates the Diva MVC architecture!
-        // This attribute is part of the model, and should not have
-        // a reference to this figure.  By doing so, it precludes the
-        // possibility of having multiple views on this model.
+
         LabelFigure label = new LabelFigure(truncated,
                 _labelFont, 1.0, SwingConstants.CENTER);
         Rectangle2D backBounds = result.getBackgroundFigure().getBounds();
