@@ -28,7 +28,9 @@ on this page concern installing the Full version.
 
 <ol>
 
-<li> Install JDK1.3 and have the <code>make</code> command available.
+<li> Install JDK1.3, add the jdk bin directory to your path
+so that <CODE>javac</CODE> and <CODE>java</CODE> are available,
+and have the <code>make</code> command available.
 
 <li> Set the PTII environment variable to the top level Ptolemy directory,
 that is the directory above this directory
@@ -85,6 +87,21 @@ Ptolemy II has been developed under JDK1.3.0, which is available from
 <p>Ptolemy II has also been successfully built and run with JDK1.2.2.
 We recommend JDK1.3 over JDK1.2.2.  If you have problems with under
 JDK1.2.2, please upgrade to JDK1.3.
+
+<p>The Java download is available in several formats.
+<dl>
+<dt> JRE - Java Runtime Environment
+<dd> Runtime only
+ <br>If you are planning on only using the prebuilt Ptolemy II
+actors, you can download the JRE.
+<dt> JDK - Java Development Kit
+<dd> Runtime and development tools like the Java compiler <CODE>javac</CODE>
+ <br>If you are planning on writing your own actors or recompiling
+from sources, download the JDK.  If you install the JDK, be sure
+that the <CODE>bin</CODE> directory is in your path so that
+the <CODE>javac</CODE> and <CODE>java</CODE> commands are available.
+</dl>
+
 
 <h3><a name="Plugin">Java Plug-in</a></h3>
  <!-- Note: the plug-in is called "The Java Plug-in", not "The JDK Plugin"-->
@@ -242,62 +259,90 @@ Windows '98 we recommend upgrading Windows 2000.
 <ol>
 <li>Install JDK1.3 from
 <a href="http://java.sun.com/j2se/1.3/" target="_top"><CODE>http://java.sun.com/j2se/1.3/</CODE></a>
+ <p>Be sure to add the <CODE>bin</CODE> directory
+to your path so that <CODE>javac</CODE> and <CODE>java</CODE>
+are available.
 
 <li> Install the Cygwin toolkit from
 <a href="http://sources.redhat.com/cygwin/" target="_top"><CODE>http://sources.redhat.com/cygwin/</CODE></a>
  <p>Complete installation instructions can be found at
-<a href="http://sources.redhat.com/cygwin/faq" target="_top"><CODE>http://sources.redhat.com/cygwin/faq</CODE></a>, below is a summary:
+<a href="http://sources.redhat.com/cygwin/faq" target="_top"><CODE>http://sources.redhat.com/cygwin/faq</CODE></a>,
+<p>The Cygwin installer tends to change
+over time, but below is a summary of the steps
+necessary:
  <ol>
  <li> Create an empty directory
 
- <li> Download <a href="http://sources.redhat.com/cygwin/setup.exe"><CODE>http://sources.redhat.com/cygwin/setup.exe</CODE></a> and save it in the empty directory
+ <li> Download <a href="http://sources.redhat.com/cygwin/setup.exe"><CODE>http://sources.redhat.com/cygwin/setup.exe</CODE></a>
+and save it in the empty directory
 
- <li> Click on <CODE>setup</CODE>
+ <li> Click on <CODE>setup</CODE>, then <code>Next</code>
 
- <li> Select Install from Internet
+ <li> Select <code>Install from Internet</code>, then 
+click on <code>Next</code>
+
+ <li> Use the default install root directory, which should
+be <CODE>c:/cygwin</CODE>
+
+ <li> Select 'Default Text File Type' of DOS, then <code>Next</code>
 
  <li> Use the default Local Package Directory, which should be the
  directory you created above.
 
- <li> Select <CODE>c:\cygwin</CODE> as your install root directory.
-
- <li> Select 'Default Text File Type' of DOS.
-
- <li> If you are not behind a firewall, click on direct connection.
-
- <li> Select a nearby mirror.
+ <li> If you are not behind a firewall, click on direct connection,
+then click <code>Next</code>
+ <li> Select a nearby mirror, then click <code>Next</code>
 
  <li> You will be presented with a list of packages to install.
   <br>A complete installation takes at least 75Mb.
 
   <p>At the minimum, select the packages below, which is roughly a
   3Mb download
-	that expands into an 8.7Mb installation.
+        that expands into an 8.7Mb installation.
+   <ul>
+        <li> Base Category
+        <ul>
+         <li> ash -  For <CODE>/bin/sh</CODE>
+         <li> bash
+         <li> cygwin
+         <li> diff - Configure uses <CODE>cmp</CODE>
+         <li> fileutils - For <CODE>ls</CODE>
+         <li> grep - Used by configure
+         <li> sed - Needed by config.status, which is created by configure
+         <li> sh-utils - For <CODE>basename</CODE>
+         <li> textutils - For <CODE>cat</CODE> and <CODE>tr</CODE>
+        </ul>
+        <li> Devel Category
+        <ul>
+         <li> make
+        </ul>
+
+        
+        </ul>
+
+         <p> If you are serious about development you may also want:
+        <ul>
+
+        <li> Devel Category
 	<ul>
-	<li> ash -  For <CODE>/bin/sh</CODE>
-	<li> bash
-	<li> cygwin
-	<li> diff - Configure uses <CODE>cmp</CODE>
-	<li> fileutils - For <CODE>ls</CODE>
-	<li> grep - Used by configure
-	<li> make
-	<li> sed - Needed by config.status, which is created by configure
-	<li> shellutils - For <CODE>basename</CODE>
-	<li> textutils - For <CODE>cat</CODE> and <CODE>tr</CODE>
+	 <li> autoconf - requires gawk and m4 from the Interepreters Category
+	 <li> cvs
 	</ul>
+        <li> Net Category
+        <ul>
+         <li> openssh - cvs may need this
+        </ul>
+        <li> Base Category
+        <ul>
+         <li> findutils
+         <li> gzip
+         <li> tar
+        </ul>
+        <li> Text Category: less
+        </ul>
+      </ol>
+  </menu>
 
-	 <p> If you are serious about development you may also want:
-	<ul>
-
-	<li> autoconf - requires gawk, grep, m4
-	<li> findutils
-	<li> gzip
-	<li> less
-	<li> tar
-	<li> Rebuilding in java/lang/ptbyacc requires gcc and w32api
-	</ul>
-
-</ol>
 
 <li> <a name="settingptII">Set the value of the <CODE>PTII</CODE> environment variable</a>
 to the
