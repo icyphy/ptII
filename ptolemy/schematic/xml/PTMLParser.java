@@ -98,11 +98,13 @@ public class PTMLParser extends HandlerBase{
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
-        if(value == null) throw new XmlException("Attribute with name " + 
+        // Hmm.. this is legal for implied values.
+        /*       if(value == null) throw new XmlException("Attribute with name " + 
                 name + " has no value",
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
-                _parser.getColumnNumber());
+                _parser.getColumnNumber());*/
+
         _attributes.putAt(name, value);
     }
 
@@ -357,6 +359,8 @@ public class PTMLParser extends HandlerBase{
      * entity.  This is a map from a String representing the attribute's name
      * to a string representing the attribute's value.
      */
+    // FIXME need a HashMap here.
+
     private LLMap _attributes;
 
     /* The current element being created in the parse tree.
