@@ -380,6 +380,7 @@ case `basename "$0"` in
 	help="Do deep codegen"
 	javastartupclass=ptolemy.copernicus.kernel.Copernicus
 	javasourcedir=
+	javaflag="-Xmx256M"
         ;;
     copernicusjhdl)
 	help="Do deep jhdl codegen"
