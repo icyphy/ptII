@@ -56,7 +56,7 @@ in the receiver overwrites any token previously present in the receiver.
 As a consequence, hasRoom() method always returns true.
 <P>
 The behavior of the get() method depends on the type of the receiver.
-If it is CONTINUOUS, then get() only reads the value. Consequitive get()
+If it is CONTINUOUS, then get() only reads the value. Consecutive get()
 will return the same token if no put() has been called. For a CONTINUOUS
 CTReceiver, hasToken() will always return true after the first put()
 has been called. For a DISCRETE

@@ -189,7 +189,7 @@ public class CTScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** These are syntact suger for signal types, which are defined in
+    /** These are syntactic sugar for signal types, which are defined in
      *  CTReceiver.
      *  Signal type: CONTINUOUS.
      */
@@ -392,7 +392,7 @@ public class CTScheduler extends Scheduler {
                 _signalTypeMap.setType(inPort, DISCRETE);
               } else {
                 throw new IllegalActionException(inPort,
-                    "Unrecongnized signal type. It should be a String of "
+                    "Unrecognized signal type. It should be a String of "
                     + "either \"CONTINUOUS\" or \"DISCRETE\".");
               }
             } else {
@@ -845,7 +845,7 @@ public class CTScheduler extends Scheduler {
     private SignalTypeMap _signalTypeMap;
 
 
-    // Static Emumerations of signal types.
+    // Static Enumerations of signal types.
 
 
 
