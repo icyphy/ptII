@@ -570,7 +570,7 @@ set isRunningNightlyBuild \
    [java::call System getProperty ptolemy.ptII.isRunningNightlyBuild]
 
 if {"$isRunningNightlyBuild" == "true"} {
-   set timeOutSeconds 600
+   set timeOutSeconds 1200
    puts "testDefs.tcl: nightly build, so setting time out to\
 	$timeOutSeconds seconds"
    java::new util.testsuite.WatchDog [expr {$timeOutSeconds * 1000}]
