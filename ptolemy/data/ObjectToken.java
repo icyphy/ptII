@@ -35,8 +35,8 @@ import ptolemy.graph.CPO;
 //// ObjectToken
 /**
 A token that contains a reference to an arbitrary object.
-Note that when this token is cloned, the clone will refer to exactly
-the same object.  Thus, care must be exercised to ensure that actors do
+Note that when this token constructred, the object passed to the constructor
+is not cloned. Thus, care must be exercised to ensure that actors do
 not modify that object in a nondeterministic way, unless such nondeterminism
 is acceptable.
 
@@ -57,7 +57,7 @@ public class ObjectToken extends Token {
      */
     public ObjectToken(Object value)
             throws IllegalActionException {
-        setValue(value);
+        _value = value;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,26 +97,10 @@ public class ObjectToken extends Token {
     }
 
     /** Return the value of the token, a reference to an object.
-     	FIXME: this method should only be in leaf classes
-        public Object getValue() {
-        return _value;
-        }
-    */
-
-    /** Return the value of the token, a reference to an object.
-     	FIXME: this method should only be in leaf classes */
-    public Object getObject() {
-        return _value;
-    }
-
-
-    /** Set the value of the token to be a reference to the specified object.
-     *  @exception IllegalActionException Argument is not of the appropriate
-     *   type (may be thrown by derived classes, but is not thrown here).
+     *  @return The Object in this token.
      */
-    public void setValue(Object value)
-            throws IllegalActionException {
-        _value = value;
+    public Object getValue() {
+        return _value;
     }
 
     /** Return the string description of the object.  If there is no such
