@@ -42,6 +42,9 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS =	index.htm
+
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 MISC_FILES =	$(DIRS)
