@@ -33,7 +33,8 @@ ME =		ptolemy/configs
 
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
-DIRS =		doc dsp full hyvisual jni jxta ptiny visualsense test
+DIRS =		doc dsp full hyvisual jni jxta ptiny SingleWindow \
+		visualsense test
 
 # Root of the Java directory
 ROOT =		../..
@@ -64,6 +65,7 @@ OTHER_FILES_TO_BE_JARED = \
 	basicLibrary.xml \
 	basicUtilities.xml \
 	basicUtilitiesFSM.xml \
+	customize.xml \
 	defaultFullConfiguration.xml \
 	experimentalDirectors.xml \
 	extendedEffigyFactories.xml \
@@ -80,7 +82,10 @@ OTHER_FILES_TO_BE_JARED = \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
 	utilitiesLibrary.xml \
+	utilityColorAttribute.xml \
 	utilityCompositeActor.xml \
+	utilityFileParameter.xml \
+	utilityIDAttribute.xml \
 	utilityIntRangeParameter.xml \
 	utilityModalModel.xml \
 	utilityModelReference.xml \
@@ -89,7 +94,9 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityPortParameter.xml \
 	utilityRequireVersion.xml \
 	utilityRunCompositeActor.xml \
-	utilityScopeExtender.xml
+	utilityScopeExtender.xml \
+	utilityStringParameter.xml \
+	utilityVisualModelReference.xml
 
 # Include these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
