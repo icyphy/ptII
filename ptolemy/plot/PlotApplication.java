@@ -134,11 +134,11 @@ public class PlotApplication extends PlotFrame {
                 throw new RuntimeException("cancelled");
             } catch (IOException ex) {
                 System.err.println("Error reading input: " + ex
-                + "\n" + _usage());
+                        + "\n" + _usage());
                 throw new RuntimeException("cancelled");
             } catch (CmdLineArgException ex) {
                 System.err.println("Command line format error: " + ex
-                + "\n" + _usage());
+                        + "\n" + _usage());
                 throw new RuntimeException("cancelled");
             }
             String _cmdfile = plot.getCmdLineFilename();
@@ -339,23 +339,23 @@ public class PlotApplication extends PlotFrame {
             {"-version", "Version",  ""},
         };
         String result = "Usage: plot [ options ] [=WxH+X+Y] [file ...]\n\n"
-                + " options that take values as second args:\n";
+            + " options that take values as second args:\n";
 
         int i;
         for(i = 0; i < commandOptions.length; i++) {
             result += " " + commandOptions[i][0] +
-                    " " + commandOptions[i][1] +
-                    " " + commandOptions[i][4] + "\n";
+                " " + commandOptions[i][1] +
+                " " + commandOptions[i][4] + "\n";
         }
         result += "\nBoolean flags:\n";
         for(i = 0; i < commandFlags.length; i++) {
             result += " " + commandFlags[i][0] +
-                    " " + commandFlags[i][2] + "\n";
+                " " + commandFlags[i][2] + "\n";
         }
         result += "\nThe following pxgraph features are not supported:\n"
-                + " * Directives in pxgraph input files\n"
-                + " * Xresources\n"
-                + "For complete documentation, see the pxgraph program docs.";
+            + " * Directives in pxgraph input files\n"
+            + " * Xresources\n"
+            + "For complete documentation, see the pxgraph program docs.";
         return result;
     }
 
