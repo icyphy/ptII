@@ -128,12 +128,18 @@ JSRCS = \
 	Writer.java
 
 OTHER_FILES_TO_BE_JARED = \
+	PowerEstimate.xml \
+	Sinewave.xml \
+	array.xml \
+	communications.xml \
+	filtering.xml \
 	flowcontrol.xml \
 	math.xml \
 	signalprocessing.xml \
-	Sinewave.xml \
 	sinks.xml \
-	sources.xml
+	sources.xml \
+	spectrum.xml \
+	statistical.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
