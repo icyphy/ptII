@@ -1,4 +1,4 @@
-/* The node controller for relations (and vertexes)
+/* The node controller for relations (and verteces)
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -72,6 +72,7 @@ menu for the entity.
 @version $Id$
 */
 public class RelationController extends LocatableNodeController {
+
     public RelationController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new RelationRenderer());
@@ -102,6 +103,10 @@ public class RelationController extends LocatableNodeController {
 	}
     }
 
+    /** 
+     * The renderer for relation node.  This class creates a Figure that 
+     * looks like a black diamond.
+     */
     public class RelationRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    double h = 12.0;
@@ -118,5 +123,6 @@ public class RelationController extends LocatableNodeController {
 	}
     }
 
+    // The interactor that creates menus.
     private MenuCreator _menuCreator;
 }
