@@ -154,6 +154,23 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         return true;
     }
 
+    /** Clone the director into the specified workspace. This calls the
+     *  super class and then copies the parameter of this director.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws) 
+	    throws CloneNotSupportedException {
+        CTMixedSignalDirector newobj =
+            (CTMixedSignalDirector)(super.clone(ws));
+        newobj.runAheadLength =
+            (Parameter)newobj.getAttribute("runAheadLength");
+        return newobj;
+    }
+
     /** Return the end time of this director's firing.
      *
      *  @return The fire end time.
@@ -205,6 +222,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             exe.fireAt(ca, exe.getCurrentTime());
             return;
         } else {
+            _eventPhaseExecution();
             while(true) {
                 if(isBPIteration()) {
                     // Just after a breakpoint iteration. This is the known
@@ -441,7 +459,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     protected void _initParameters() {
         super._initParameters();
         try {
-            _runAheadLength = 1.0;
+            _runAheadLength = 0.1;
             runAheadLength = new Parameter(this,
                     "runAheadLength", new DoubleToken(_runAheadLength));
             runAheadLength.setTypeEquals(BaseType.DOUBLE);
