@@ -174,6 +174,7 @@ public class SetVariable extends TypedAtomicActor
      *  the actor's container with the correct name.  This method
      *  gets write access on the workspace.
      *  @exception IllegalActionException If the variable cannot be found.
+     *  @return The attribute modified by this actor.
      */
     public Attribute getModifiedVariable() throws IllegalActionException {
         NamedObj container = (NamedObj) getContainer();
