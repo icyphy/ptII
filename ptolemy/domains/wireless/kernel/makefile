@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	AtomicWirelessChannel.java \
 	ChannelPort.java \
+	PropertyTransformer.java \
 	WirelessChannel.java \
 	WirelessComposite.java \
 	WirelessDirector.java \

@@ -30,9 +30,11 @@
 package ptolemy.domains.wireless.kernel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
@@ -161,13 +163,6 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         return _channelPort;
     }
 
-    /** Initialize the _portPropertyTransformer set.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _portPropertyTransformer = new HashMap();
-    }
-
     /** Return a list of input ports that can potentially receive data
      *  from this channel.  This includes input ports contained by
      *  entities contained by the container of this channel that
@@ -265,21 +260,36 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         removeDependency(_channelPort, _channelPort);
     }
     
-    /** Register a PropertyTransformer for a channel. The channel may 
-     *  invoke its PropertyTransformers for each token delivered by this
-     *  channel.
+    /** Register a property transformer for transmissions from the specified
+     *  port.  If null is given for the port, then the property transformer
+     *  will be used for all transmissions through this channel.
+     *  If the property transformer is already registered, then no changes
+     *  are made.
+     *  @param transformer The property transformer to be registered.
+     *  @param port The port whose transmissions should be subject to the
+     *   property transformer, or null to make them subject to all
+     *   transmissions through this channel.
      */
-    public void registerPropertyTransformer(PropertyTransformer transformer) {
-        //do nothing here, the extended class should over write this method
-        //when it is needed. see TerrainChannel.
+    public void registerPropertyTransformer(
+            PropertyTransformer transformer, WirelessIOPort port) {
+        if (port != null) {
+            if (_propertyTransformersByPort == null) {
+                _propertyTransformersByPort = new HashMap();
+            }
+            Set transformers = (Set)_propertyTransformersByPort.get(port);
+            if (transformers == null) {
+                transformers = new HashSet();
+                _propertyTransformersByPort.put(port, transformers);
+            }
+            transformers.add(transformer);
+        } else {
+            if (_propertyTransformers == null) {
+                _propertyTransformers = new HashSet();
+            }
+            _propertyTransformers.add(transformer);
+        }
     }
     
-    /** Register a PropertyTransformer for a wirelessIOPort.
-     */
-    public void registerPropertyTransformer(WirelessIOPort port, 
-            PropertyTransformer transformer) {
-        _portPropertyTransformer.put(port, transformer);
-    }
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This includes input ports contained by
      *  the container of this channel that
@@ -369,6 +379,69 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             workspace().doneReading();
         }
     }
+    
+    /** Transform the properties to take into account channel losses,
+     *  noise, etc., for transmission between the specified source
+     *  and the specified destination.  In this base class, the
+     *  specified properties are merged with the defaultProperties
+     *  so that the resulting properties contain at least all the
+     *  fields of the defaultProperties. In addition, any property
+     *  transformers that have been registered are applied.
+     *  @param properties The transmit properties.
+     *  @param source The sending port.
+     *  @param destination The receiving port.
+     *  @return The transformed properties.
+     *  @exception IllegalActionException If the properties cannot
+     *   be transformed. Not thrown in this base class.
+     *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
+     */
+    public RecordToken transformProperties(
+            RecordToken properties,
+            WirelessIOPort source,
+            WirelessIOPort destination)
+            throws IllegalActionException {
+        RecordToken result = properties;
+        Token defaultPropertiesValue = defaultProperties.getToken();
+        if (properties != null &&
+                defaultPropertiesValue instanceof RecordToken) {
+            result = RecordToken.merge(
+                    properties, (RecordToken)defaultPropertiesValue);
+        }
+
+        if(_propertyTransformersByPort != null) {
+            Set transformers = (Set)_propertyTransformersByPort.get(source);
+            if (transformers != null) {
+                Iterator iterator = transformers.iterator();
+                while (iterator.hasNext()) {
+                    PropertyTransformer transformer
+                            = (PropertyTransformer)iterator.next();
+                    result = transformer.transformProperties(
+                            result, source, destination);
+                }
+            }
+        }
+        if(_propertyTransformers != null) {
+            Iterator iterator = _propertyTransformers.iterator();
+            while (iterator.hasNext()) {
+                PropertyTransformer transformer
+                        = (PropertyTransformer)iterator.next();
+                result = transformer.transformProperties(
+                        result, source, destination);
+            }
+        }
+        
+        if (_debugging) {
+            if (result != null) {
+                _debug(" * transmit properties: \""
+                        + result.toString()
+                        + "\".");
+            } else {
+                _debug(" * no transmit properties.\"");
+            }
+        }
+        
+        return result;
+    }
 
     /** Transmit the specified token from the specified port with the
      *  specified properties.  All ports that are in range will receive
@@ -416,6 +489,30 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             }
         } finally {
             workspace().doneReading();
+        }
+    }
+
+    /** Unregister a property transformer for transmissions from the specified
+     *  port (or null for a generic property transformer). If the transformer
+     *  has not been registered, then do nothing.
+     *  @param transformer The property transformer to unregister.
+     *  @param port The port whose transmissions should be subject to the
+     *   property transformer, or null to for a generic transformer.
+     *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
+     */
+    public void unregisterPropertyTransformer(
+            PropertyTransformer transformer, WirelessIOPort port) {
+        if (port != null) {
+            if (_propertyTransformersByPort != null) {
+                Set transformers = (Set)_propertyTransformersByPort.get(port);
+                if (transformers != null) {
+                    transformers.remove(transformer);
+                }
+            }
+        } else {
+            if (_propertyTransformers != null) {
+                _propertyTransformers.remove(transformer);
+            }
         }
     }
 
@@ -602,58 +699,6 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         return receiversInRangeList;
     }
 
-    /** Transform the properties to take into account channel losses,
-     *  noise, etc., for transmission between the specified sender
-     *  and the specified receiver.  In this base class, the
-     *  specified properties are merged with the defaultProperties
-     *  so that the resulting properties contain at least all the
-     *  fields of the defaultProperties.
-     *  @param properties The transmit properties.
-     *  @param sender The sending port.
-     *  @param receiver The receiving port.
-     *  @return The transformed properties.
-     *  @exception IllegalActionException If the properties cannot
-     *   be transformed. Not thrown in this base class.
-     */
-    protected RecordToken _transformProperties(
-            RecordToken properties,
-            WirelessIOPort sender,
-            WirelessReceiver receiver)
-            throws IllegalActionException {
-        RecordToken result = properties;
-        Token defaultPropertiesValue = defaultProperties.getToken();
-        if (properties != null &&
-                defaultPropertiesValue instanceof RecordToken) {
-            result = RecordToken.merge(
-                    properties, (RecordToken)defaultPropertiesValue);
-        }
-        if (_debugging) {
-            if (result != null) {
-                _debug(" * transmit properties: \""
-                        + result.toString()
-                        + "\".");
-            } else {
-                _debug(" * no transmit properties.\"");
-            }
-        }
-
-        WirelessIOPort destination = (WirelessIOPort)receiver.getContainer();
-
-        if(_portPropertyTransformer.get(sender) != null) {
-            PropertyTransformer propertyTransformer = (PropertyTransformer)
-                _portPropertyTransformer.get(sender);
-            result = propertyTransformer.
-                getProperty(result, sender, destination);
-        }
-        if(_portPropertyTransformer.get(destination) != null) {
-            PropertyTransformer propertyTransformer = (PropertyTransformer)
-                _portPropertyTransformer.get(destination);
-            result = propertyTransformer.
-                getProperty(result, sender, destination);
-        }
-        return result;
-    }
-
     /** Transmit the specified token to the specified receiver.
      *  If necessary, the token will be converted to the resolved
      *  type of the port containing the specified receiver.
@@ -681,11 +726,11 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                 WirelessIOPort destination = (WirelessIOPort)
                     receiver.getContainer();
                 Token newToken = destination.convert(token);
-                // Bundle the properties.
-                Token transformedProperties = _transformProperties(
+                // Transform the properties.
+                Token transformedProperties = transformProperties(
                         properties,
                         sender,
-                        receiver);
+                        destination);
                 receiver.put(newToken, transformedProperties);
             }
         } else {
@@ -707,13 +752,6 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      */
     protected boolean _receiversInRangeCacheValid = false;
 
-    /** The PropertyTransformers that have been registered
-     *  @see #registerPropertyTransformer(WirelessIOPort, PropertyTransformer)
-     */  
-    protected HashMap _portPropertyTransformer;
-
-    //protected boolean _portPropertyTransformerInitialized = false;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -722,6 +760,17 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     private long _listeningInputPortsVersion = -1L;
     private List _listeningOutputPorts;
     private long _listeningOutputPortsVersion = -1L;
+
+    /** The property transformers that have been registered without
+     *  specifying a port.
+     */  
+    private Set _propertyTransformers;
+
+    /** The property transformers that have been registered to
+     *  operate on transmissions from a particular port,
+     *  indexed by port.
+     */  
+    private HashMap _propertyTransformersByPort;
 
     private HashMap _receiversInRangeCache;
     private HashMap _receiversInRangeCacheVersion;

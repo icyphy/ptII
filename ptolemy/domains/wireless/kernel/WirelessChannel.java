@@ -32,9 +32,9 @@ package ptolemy.domains.wireless.kernel;
 
 import java.util.List;
 
+import ptolemy.actor.Actor;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.domains.wireless.kernel.PropertyTransformer;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 
@@ -47,7 +47,7 @@ Interface for wireless channels.
 @version $Id$
 @since Ptolemy II 3.1
 */
-public interface WirelessChannel extends Nameable {
+public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -81,20 +81,27 @@ public interface WirelessChannel extends Nameable {
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
     public List listeningOutputPorts() throws IllegalActionException;
-
-    /** Register a PropertyTransformer for a channel. The channel may 
-     *  invoke its PropertyTransformers for each token delivered by this
-     *  channel.
+    
+    /** Register a property transformer for transmissions from the specified
+     *  port.  If null is given for the port, then the property transformer
+     *  will be used for all transmissions through this channel. Note that
+     *  if multiple property transformers are registered that can operate
+     *  on a given transmission, then the order in which they are applied
+     *  is arbitrary.  Thus, property transformers should implement
+     *  commutative operations on the properties (such as multiplying
+     *  a field by a value).
+     *  If the property transformer is already registered with a particular
+     *  port, then an implementer of this method not register it again with
+     *  that port.  Similarly, if a property transformer is registered with
+     *  no port, then an implementer of this method should not register
+     *  it again with no port.
+     *  @param transformer The property transformer to be registered.
+     *  @param port The port whose transmissions should be subject to the
+     *   property transformer, or null to make them subject to all
+     *   transmissions through this channel.
      */
     public void registerPropertyTransformer(
-            PropertyTransformer transformer);
-    
-    /** Register a PropertyTransformer for a wirelessIOPort.
-     *  @param port The port with which the PropertyTransformer is registered.
-     *  @param transformer The PropertyTransformer to be registered.
-     */
-    public void registerPropertyTransformer(WirelessIOPort port,
-            PropertyTransformer transformer);
+            PropertyTransformer transformer, WirelessIOPort port);
 
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This must include input ports contained by
@@ -134,4 +141,15 @@ public interface WirelessChannel extends Nameable {
     public void transmit(Token token, WirelessIOPort port,
             RecordToken properties)
             throws IllegalActionException;
+            
+    /** Unregister a property transformer for transmissions from the specified
+     *  port (or null for a generic property transformer). If the transformer
+     *  has not been registered, then do nothing.
+     *  @param transformer The property transformer to unregister.
+     *  @param port The port whose transmissions should be subject to the
+     *   property transformer, or null to for a generic transformer.
+     *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
+     */
+    public void unregisterPropertyTransformer(
+            PropertyTransformer transformer, WirelessIOPort port);
 }

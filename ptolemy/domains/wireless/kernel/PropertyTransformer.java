@@ -1,4 +1,4 @@
-/* Interface for PropertyTransformers in the wireless domain.
+/* Interface for property transformers in the wireless domain.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (davisj@eecs.berkeley.edu)
 */
 
@@ -36,7 +36,16 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// PropertyTransformer
 /**
-Interface for Property Transformer.
+Interface for property transformers.  Property transformers are components
+that register with the channel a callback that they can use to modify
+the transmit properties of a transmission. They can register to modify
+the transmit properties of transmissions from a specific port, or they
+can register to modify all transmissions through the channel.
+Note that if multiple property transformers are registered that can operate
+on a given transmission, then the order in which they are applied
+is arbitrary.  Thus, property transformers should implement
+commutative operations on the properties (such as multiplying
+a field by a value).
 
 @author Yang Zhao and Edward Lee
 @version $Id$
@@ -47,15 +56,19 @@ public interface PropertyTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the interested properties. Some of the feilds of
-     *  the property may be modified. 
-     *  @param properties The transform properties.
-     *  @param sender The sending port.
-     *  @param receiver The receiving port.
-     *  @return The property.
-     *  @exception IllegalActionException If failed to execute the model.
+    /** Modify the specified properties and return a new token with the
+     *  modifications.  Implementers may also return the specified token
+     *  unchanged.
+     *  @param properties The properties to modify.
+     *  @param source The sending port.
+     *  @param destination The receiving port.
+     *  @return The (possibly) modified properties record.
+     *  @exception IllegalActionException If the properties cannot be
+     *   transformed for some reason.
      */
-    public RecordToken getProperty(RecordToken properties,
-            WirelessIOPort sender, WirelessIOPort receiver)
+    public RecordToken transformProperties(
+            RecordToken properties,
+            WirelessIOPort source,
+            WirelessIOPort destination)
             throws IllegalActionException;
 }

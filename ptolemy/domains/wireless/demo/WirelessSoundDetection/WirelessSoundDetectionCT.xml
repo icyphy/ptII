@@ -4,7 +4,7 @@
 <entity name="WirelessSoundDetectionCT" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 777}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 775}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 659]">
     </property>
@@ -280,7 +280,7 @@ GraphicalLocator)</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="soundRange" class="ptolemy.data.expr.Parameter" value="200">
+        <property name="soundRange" class="ptolemy.data.expr.Parameter" value="300">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -361,7 +361,7 @@ GraphicalLocator)</text></svg></configure>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[299.233955556881, 300.6427876096865]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[334.7296355333859, 496.9615506024417]">
         </property>
         <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -484,18 +484,6 @@ GraphicalLocator)</text></svg></configure>
             <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 160.0">
                 </property>
-                <port name="magnitude" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="angle" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="x" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="y" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <entity name="1:Integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -525,13 +513,6 @@ GraphicalLocator)</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 100.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <entity name="Const2" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="dtheta">
@@ -545,13 +526,6 @@ GraphicalLocator)</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 205.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[x + 300, y + 300]">
@@ -564,9 +538,6 @@ GraphicalLocator)</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 175.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
                 <port name="x" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -579,14 +550,6 @@ GraphicalLocator)</text></svg></configure>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 165.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -841,7 +804,7 @@ location can be found, then plot that location.</text></svg></configure>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={587, 476, 385, 406}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={627, 0, 385, 406}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[377, 351]">
             </property>
@@ -856,8 +819,8 @@ location can be found, then plot that location.</text></svg></configure>
 <title>Detected Sound Positions</title>
 <xLabel>meters</xLabel>
 <yLabel>meters</yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="500.0"/>
+<yRange min="-500.0" max="0.0"/>
 <noGrid/>
 <default connected="no" marks="dots"/>
 </plot>?>

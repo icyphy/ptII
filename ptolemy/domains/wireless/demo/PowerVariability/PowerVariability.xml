@@ -545,9 +545,9 @@ power is shown on the plot.</text></svg></configure>
                 </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
                 </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
                 </property>

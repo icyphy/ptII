@@ -1,4 +1,4 @@
-/* An actor that provides transmission properties.
+/* An actor that transforms transmission properties using another model.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -44,13 +44,14 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.domains.wireless.kernel.AtomicWirelessChannel;
 import ptolemy.domains.wireless.kernel.PropertyTransformer;
+import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -58,25 +59,37 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
-//// TransformProperty
+//// TransmitPropertyTransformer
 
 /**
-This actor implements the PropertyTransformer interface. It register itself
-and its connected WirelessIOPort with the wireless channel which the 
-WirelessIOPort uses. On each firing, it simply sends the token from the <i>data</i>
-input<i> ports, and outputs the data on the 
-<i>output</i> port. The channel may call it getProperty() method to get
-the property as a RecordToken. 
+This actor reads input tokens and sends them unmodified to the output;
+its role is not to operate on input tokens, but rather to modify the
+properties of a transmission. 
 
+This actor implements the PropertyTransformer interface with a callback
+that can be use to modify the transmit properties of a transmission. 
+It register itself and its connected wireless
+output port with the channel that the wireless output port uses. 
+The channel will call its transformProperties() method for each 
+transmission from the registed output port.
+
+//FIXME: this is going to be changed to work like RunCompositActor.
 This actor has a <i>modelFileOrURL<i> parameter that specify a model used 
-to calculate the properties. When getProperty() is called, it calles the
+to calculate the properties. When transforeProperties() is called, it calles the
 ModelUtilities.executeModel() method to execute the specified model and
-return the result to the channel.
+return the (possibly) modified property to the channel.
 
-@author Yang Zhao
-@version $ $
+The specified model should claculate/modify the propertis based on the sender's 
+location and the receiver's location. It should contains attributes of 
+"SenderLocation", "ReceiverLocation" and "Properties". This actor will use
+this attributes to pass the sender and receriver's location and the current
+properties information to the specified model and get the new properties back
+from it.
+ 
+@author Yang Zhao, Edward Lee
+@version $Id$
 */
-public class TransformProperty extends TypedAtomicActor 
+public class TransmitPropertyTransformer extends TypedAtomicActor 
         implements PropertyTransformer {
 
     /** Construct an actor with the specified container and name.
@@ -87,17 +100,16 @@ public class TransformProperty extends TypedAtomicActor
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public TransformProperty(CompositeEntity container, String name)
+    public TransmitPropertyTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        data = new TypedIOPort(this, "data", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeSameAs(data);
+        output.setTypeSameAs(input);
         // Create and configure the parameters.
         modelFileOrURL = new FileParameter(this, "modelFileOrURL");
-        //Crate the icon.
-        //FIXME: create a better icon here...
+        // Create the icon.
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
@@ -108,21 +120,23 @@ public class TransformProperty extends TypedAtomicActor
     ////                     ports and parameters                  ////
     
     /** Port that receives the data to be transmitted on the <i>output</i>
-     *  port.
+     *  port. The type is unconstrained.
      */
-    public TypedIOPort data;
+    public TypedIOPort input;
 
-    /** Port that sends data to a wireless output.
+    /** Port that sends data to a wireless output. The type is constrained
+     *  to be the same as the input.
      */
     public TypedIOPort output;
 
     /** The file name or URL of the model that this actor invokes to 
-     *  transforme property.
+     *  transform properties.
      */
     public FileParameter modelFileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
     /** Override the base class to parse the model specified if the
      *  attribue is modelFileOrURL.
      *  @param attribute The attribute that changed.
@@ -144,6 +158,14 @@ public class TransformProperty extends TypedAtomicActor
                 MoMLParser parser = new MoMLParser();
                 try {
                      _model = parser.parse(null, url);
+                     if (_model instanceof CompositeActor) {
+                         _executable = (CompositeActor) _model;
+                     } else {
+                         throw new IllegalActionException(
+                             this,
+                             "the modelFileOrURL doesn't parse to a" +
+                             "CompositeActor");
+                     }
                 } catch (Exception ex) {
                     throw new IllegalActionException(
                         this,
@@ -154,16 +176,13 @@ public class TransformProperty extends TypedAtomicActor
                 // URL is null... delete the current model.
                 _model = null;
             }
-            //Set this flag to false, so this actor will register the
-            // new model with the channel.
-            _registeredWithChannel = false;
         } else {
             super.attributeChanged(attribute);
         }
     }
  
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then resets the type constraints.
+     *  base class and dissociates itself with the specified model.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -171,65 +190,30 @@ public class TransformProperty extends TypedAtomicActor
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        TransformProperty newObject = (TransformProperty)(super.clone(workspace));
+        TransmitPropertyTransformer newObject = (TransmitPropertyTransformer)(super.clone(workspace));
         
         newObject._model = null;
+        // Force instantiation of the model.
+        try {
+            newObject.attributeChanged(newObject.modelFileOrURL);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
+        
         // set the type constraints
-        newObject.output.setTypeSameAs(newObject.data);
+        newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
     
-    /** Read at most one token from the <i>data</i>
+    /** Read at most one token from the <i>input</i>
      *  port and simply transmit the data on the <i>output</i> port.
      *  If it has not registered with the channel, then register.
      */
     public void fire() throws IllegalActionException {
 
         super.fire();
-        // Note that an sensor node may call the channel to register a 
-        // PropertyTransformer. And the channel
-        // create the HashMap from a port to its registed 
-        // PropertyTransformer in its initialize(). But we have no control about whose 
-        // Initialize() method will be executed first. So we do it in
-        // the fire method if it has register with the channel.
-        // FIXME: this might be too late...
-        if (!_registeredWithChannel && _model instanceof CompositeActor ) {
-            
-            _executable = (CompositeActor)_model;
-            Manager manager = _executable.getManager();
-            if(manager == null) {
-                manager = new Manager(_executable.workspace(), "Manager");
-                _executable.setManager(manager);
-            }
-            Iterator connectedPorts = output.sinkPortList().iterator();
-            while (connectedPorts.hasNext()) {
-                IOPort port = (IOPort)connectedPorts.next();
-                if (!port.isInput() && port instanceof WirelessIOPort) {
-                    // Found the port.
-                    Entity container = (Entity)(port.getContainer());
-                    String channelName
-                            = ((WirelessIOPort)port).outsideChannel.stringValue();
-                    CompositeEntity container2 = (CompositeEntity)
-                            container.getContainer();
-                    if (container2 == null) {
-                        throw new IllegalActionException(this,
-                        "The container does not have a container.");         
-                    }
-                    Entity channel = container2.getEntity(channelName);
-                    if (channel instanceof AtomicWirelessChannel) {
-                        ((AtomicWirelessChannel)channel).
-                                registerPropertyTransformer(
-                                (WirelessIOPort)port, this);
-                        _registeredWithChannel = true;
-                    } else {
-                        throw new IllegalActionException(this,
-                        "The connected port does not refer to a valid channel.");
-                    }
-                }
-            }
-        }
-        if (data.hasToken(0)) {
-            Token inputValue = data.get(0);
+        if (input.hasToken(0)) {
+            Token inputValue = input.get(0);
             if (_debugging) {
                 _debug("Input data received: " + inputValue.toString());
             }
@@ -237,11 +221,39 @@ public class TransformProperty extends TypedAtomicActor
         }
     }
     
-    /** Initialize the _registeredWithChannel.
+    /** Register itself with the channel as a PropertyTranformer
+     *  for its connected wireless output port.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _registeredWithChannel = false;
+        Iterator connectedPorts = output.sinkPortList().iterator();
+        while (connectedPorts.hasNext()) {
+            IOPort port = (IOPort)connectedPorts.next();
+            if (!port.isInput() && port instanceof WirelessIOPort) {
+                // Found the port.
+                Entity container = (Entity)(port.getContainer());
+                String channelName
+                        = ((WirelessIOPort)port).outsideChannel.stringValue();
+                CompositeEntity container2 = (CompositeEntity)
+                        container.getContainer();
+                if (container2 == null) {
+                    throw new IllegalActionException(this,
+                    "The container does not have a container.");         
+                }
+                Entity channel = container2.getEntity(channelName);
+                if (channel instanceof WirelessChannel) {
+                    //Cach it here, so no need to do it again in wrapup().
+                    _channel = (WirelessChannel)channel;
+                    _wirelessIOPort = (WirelessIOPort)port;
+                    ((WirelessChannel)channel).
+                            registerPropertyTransformer(this,
+                            (WirelessIOPort)port);
+                } else {
+                    throw new IllegalActionException(this,
+                    "The connected port does not refer to a valid channel.");
+                }
+            }
+        }
     }
 
 
@@ -279,7 +291,7 @@ public class TransformProperty extends TypedAtomicActor
      * @return The modified transform properties.
      * @exception IllegalActionException If failed to execute the model. 
      */
-    public RecordToken getProperty(RecordToken properties, 
+    public RecordToken transformProperties(RecordToken properties, 
             WirelessIOPort sender, WirelessIOPort destination) 
             throws IllegalActionException {
         if (_executable!= null) {
@@ -317,7 +329,17 @@ public class TransformProperty extends TypedAtomicActor
             }
             return (RecordToken)results.get("Properties");
         }
-        return null;
+        //if _executable is null, we assume no modification.
+        return properties;
+    }
+    
+    /** Override the base class to call wrap up to unregister this with the
+     *  channel.
+     */
+    public void wrapup() throws IllegalActionException{
+        super.wrapup();
+        _channel.unregisterPropertyTransformer(this,
+                _wirelessIOPort);
     }
     
     /** Return the location of the given WirelessIOPort. 
@@ -339,12 +361,13 @@ public class TransformProperty extends TypedAtomicActor
         }
         return location.getLocation();
     }
+    
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
     private CompositeActor _executable;
     private NamedObj _model;
-     
-    private boolean _registeredWithChannel = false;
+    private WirelessChannel _channel;
+    private WirelessIOPort _wirelessIOPort; 
     // Name of the location attribute.
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
 }

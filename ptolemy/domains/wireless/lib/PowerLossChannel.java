@@ -39,7 +39,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
-import ptolemy.domains.wireless.kernel.WirelessReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -183,15 +182,15 @@ public class PowerLossChannel extends LimitedRangeChannel {
      *  @exception IllegalActionException If the properties cannot
      *   be transformed. Not thrown in this base class.
      */
-    protected RecordToken _transformProperties(
+    public RecordToken transformProperties(
             RecordToken properties,
-            WirelessIOPort sender, 
-            WirelessReceiver receiver)
+            WirelessIOPort source, 
+            WirelessIOPort destination)
             throws IllegalActionException {
         // Use the superclass to merge the record argument with the
-        // default properties.
-        RecordToken merged = super._transformProperties(
-                properties, sender, receiver);
+        // default properties and to apply registered transformers.
+        RecordToken merged = super.transformProperties(
+                properties, source, destination);
                 
         // Get the transmit power.
         ScalarToken transmitPower = (ScalarToken)merged.get("power");
@@ -200,7 +199,6 @@ public class PowerLossChannel extends LimitedRangeChannel {
         // with the new value of "distance."
         double powerLossFactorValue
                 = ((DoubleToken)powerLossFactor.getToken()).doubleValue();
-        
 
         // Calculate the receive power.
         double receivePower

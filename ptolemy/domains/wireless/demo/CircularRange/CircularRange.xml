@@ -354,6 +354,10 @@ require physical connectivity.</text></svg></configure>
                 </property>
                 <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}">
                 </property>
+                <property name="width" value="10">
+                </property>
+                <property name="height" value="30">
+                </property>
             </property>
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="200.0">

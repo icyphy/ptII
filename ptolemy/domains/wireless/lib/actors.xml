@@ -26,7 +26,7 @@
 <entity name="TerrainProperty" class="ptolemy.domains.wireless.lib.TerrainProperty">
 </entity>
 
-<entity name="TransformProperty" class="ptolemy.domains.wireless.lib.TransformProperty">
+<entity name="TransmitPropertyTransformer" class="ptolemy.domains.wireless.lib.TransmitPropertyTransformer">
 </entity>
 
 <entity name="Triangulator" class="ptolemy.domains.wireless.lib.Triangulator">

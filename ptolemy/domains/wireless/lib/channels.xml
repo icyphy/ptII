@@ -25,10 +25,6 @@
 <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
 <doc></doc>
 </entity>
-
-<entity name="TerrainChannel" class="ptolemy.domains.wireless.lib.TerrainChannel">
-<doc></doc>
-</entity>
       </group>
     ?>
   </configure>

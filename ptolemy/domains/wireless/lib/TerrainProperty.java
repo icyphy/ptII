@@ -33,7 +33,6 @@ package ptolemy.domains.wireless.lib;
 import java.awt.Polygon;
 import java.awt.Shape;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -42,8 +41,8 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.wireless.kernel.AtomicWirelessChannel;
 import ptolemy.domains.wireless.kernel.PropertyTransformer;
+import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -64,7 +63,7 @@ the <i>channelName<i> parameter. The channel may call it
 getProperty() method to get the property. 
 
 @author Yang Zhao
-@version $ $
+@version $Id$
 */
 public class TerrainProperty extends TypedAtomicActor 
         implements PropertyTransformer {
@@ -181,9 +180,10 @@ public class TerrainProperty extends TypedAtomicActor
         CompositeEntity container = (CompositeEntity) getContainer();
         _channelName = channelName.stringValue();
         Entity channel = container.getEntity(_channelName);
-        if (channel instanceof AtomicWirelessChannel) {
-            ((AtomicWirelessChannel)channel).
-                    registerPropertyTransformer(this);
+        if (channel instanceof WirelessChannel) {
+            _channel = (WirelessChannel)channel;
+            ((WirelessChannel)channel).
+                    registerPropertyTransformer(this, null);
         } else {
             throw new IllegalActionException(this,
             "The channel nam" +
@@ -191,14 +191,11 @@ public class TerrainProperty extends TypedAtomicActor
         }
     }
 
-
-
-
     /** Check whether the path between the sender and receiver is
      *  intersected with the terrain shape. If yes, set the "power" feild
      *  in the property to be zero, otherwise, do nothing.
-     *  FIXME: should the terrain property affects the power value
-     *  or should it affects the receivers in range?
+     *  FIXME: should the terrain property affect the power value
+     *  or should it affect the receivers in range?
      *  FIXME: check java.util to see if there is standard method to 
      *  do this check...
      * @param properties The transform properties.
@@ -207,7 +204,7 @@ public class TerrainProperty extends TypedAtomicActor
      * @return The modified transform properties.
      * @exception IllegalActionException If failed to execute the model. 
      */
-    public RecordToken getProperty(RecordToken properties, 
+    public RecordToken transformProperties(RecordToken properties, 
             WirelessIOPort sender, WirelessIOPort destination) 
             throws IllegalActionException {
         double[] p1 = _locationOf(sender);
@@ -258,6 +255,15 @@ public class TerrainProperty extends TypedAtomicActor
         }
     }
     
+    /** Override the base class to call wrap up to unregister this with the
+     *  channel.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        if(_channel != null){
+            _channel.unregisterPropertyTransformer(this, null);
+        }
+    }
     /** Return the location of the given WirelessIOPort. 
      *  @param port A port with a location.
      *  @return The location of the port.
@@ -280,6 +286,7 @@ public class TerrainProperty extends TypedAtomicActor
     
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
+    private WirelessChannel _channel;
     private int[] _xPoints, _yPoints;
     private EditorIcon _icon;
     private FilledShapeAttribute _terrain;

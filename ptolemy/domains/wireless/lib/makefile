@@ -62,9 +62,8 @@ JSRCS = \
 	Locator.java \
 	NodeRandomizer.java \
 	PowerLossChannel.java \
-	TerrainChannel.java \
 	TerrainProperty.java \
-	TransformProperty.java \
+	TransmitPropertyTransformer.java \
 	Triangulator.java \
 	WiredToWireless.java \
 	WirelessToWired.java
