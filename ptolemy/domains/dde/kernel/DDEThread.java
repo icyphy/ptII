@@ -36,6 +36,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
+import java.util.Hashtable;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -116,6 +117,31 @@ public class DDEThread extends ProcessThread {
                 }
             }
 	}
+    }
+
+    /** Start this thread and initialize the time keeper to a future time
+     *  if specified in the director's initial time table. Use this method
+     *  to facilitate any calls to DDEDirector.fireAt() that occur prior
+     *  to the creation of this thread. If fireAt() was called for time
+     *  'T' with respect to the actor that this thread controls, then set 
+     *  the current time of this threads TimeKeeper to time 'T.'
+     */
+    public void start() {
+	Actor actor = getActor();
+	DDEDirector director = (DDEDirector)actor.getDirector();
+	Hashtable table = director.getInitialTimeTable();
+	String name = ((Nameable)actor).getName();
+	if( table != null ) {
+	    System.out.println(name+":  DDEDirector table is not null");
+	    Double dTime = (Double)table.get(actor);
+	    if( dTime != null ) {
+		double time = dTime.doubleValue();
+		System.out.println(name+":  DDEDirector table contains time of " + time);
+		_timeKeeper.setCurrentTime( time );
+		System.out.println(name+":  DDEThread.start() at time" + time);
+	    }
+	}
+	super.start();
     }
 
     /** End the execution of the actor under the control of this
