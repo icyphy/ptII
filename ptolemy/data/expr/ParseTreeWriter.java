@@ -90,7 +90,9 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
+        _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
+        _writer.print(")");
     }
     public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException  {
@@ -140,7 +142,9 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
+        _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
+        _writer.print(")");
     }
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
@@ -178,7 +182,9 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
+        _writer.print("(");
         _printChildrenSeparated(node, node.getLexicalTokenList());
+        _writer.print(")");
     }
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
@@ -199,15 +205,21 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
+        _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
+        _writer.print(")");
     }
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
+        _writer.print("(");
         _printChildrenSeparated(node, node.getOperator().image);
+        _writer.print(")");
     }
     public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
+        _writer.print("(");
         _printChildrenSeparated(node, node.getLexicalTokenList());
+        _writer.print(")");
     }
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {

@@ -37,7 +37,7 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-# Uncomment this to get a full report, or set in your Tcl shell window.
+# Uncomment this to get a full report, or set in your Tcl shell 
 # set VERBOSE 1
 
 # If a file contains non-graphical tests, then it should be named .tcl
@@ -923,16 +923,18 @@ test PtParser-17.1 {Test assignment lists.} {
     set ra [ $p generateAssignmentMap "a=1;b=2+3;c=function(x) 4+5" ]
     set names [$ra keySet]
     listToObjects $names
-} {}
+} {a b c}
+
 test PtParser-17.2 {Test assignment lists.} {
     set p [java::new ptolemy.data.expr.PtParser]
     set ra [ $p generateAssignmentMap "a.g=1;b.g=2+3;c.g=function(x) 4+5" ]
     set names [$ra keySet]
     listToObjects $names
-} {}
+} {a.g b.g c.g}
+
 test PtParser-17.2 {Test assignment lists.} {
     set p [java::new ptolemy.data.expr.PtParser]
     set ra [ $p generateAssignmentMap "a.g(1)=1;b(2)=2+3;c.g.h(3)=function(x) 4+5" ]
     set names [$ra keySet]
     listToObjects $names
-} {}
+} {a.g(1) b(2) c.g.h(3)}

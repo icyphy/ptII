@@ -302,10 +302,10 @@ test ParseTreeFreeVariableCollector-16.3 {Test property} {
 
 test ParseTreeFreeVariableCollector-17.1 {Test correct scoping in function definitions.} {
     list [theTest "function(x) x + p3"] [theTest "4 + p1(6)"]
-} {{}{}}
+} {p3 {}}
 
 test ParseTreeFreeVariableCollector-17.2 {Test nested function definitions.} {
     list [theTest "function (y) function(x) x + y + p3"] [theTest "p1(6)"] [theTest "p2(4)"]
-} {p3 p1 p2}
+} {p3 p1 p2} {function application needs variable resolution}
 
 
