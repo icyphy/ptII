@@ -45,7 +45,13 @@ DIRS = 		event test
 # Used to build jar files
 PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		event/event.jar
+
+PTCLASSALLJAR = kernel.jar
 
 JSRCS = BasePNDirector.java \
 	PNDirector.java \
@@ -63,13 +69,14 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	$(PTCLASSALLJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 
 depend:
