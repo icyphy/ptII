@@ -440,6 +440,17 @@ public class MoMLParser extends HandlerBase {
         } else {
             _parser.parse(base.toExternalForm(), null, buffered);
         }
+        // Add a parser attribute to the toplevel to indicate a parser
+        // responsible for handling changes, unless there already is a
+        // parser, in which case we just set the parser.
+        // FIXME: Should we check the class rather than casting?
+        ParserAttribute parserAttribute = 
+               (ParserAttribute)_toplevel.getAttribute("_parser");
+        if (parserAttribute == null) {
+            parserAttribute = new ParserAttribute(_toplevel, "_parser");
+        }
+        parserAttribute.setParser(this);
+
         return _toplevel;
     }
 
@@ -812,13 +823,10 @@ public class MoMLParser extends HandlerBase {
                 // import prevails.
                 _imports.add(0, reference);
 
-                MoMLAttribute attr = new MoMLAttribute(_current,
+                ImportAttribute attr = new ImportAttribute(_current,
                        _current.uniqueName("_import"));
-                attr.appendMoMLDescription("<import base=\""
-                        + _base.toExternalForm()
-                        + "\" source=\""
-                        + source
-                        + "\"/>");
+                attr.setBase(baseSpec);
+                attr.setSource(source);
 
             } else if (elementName.equals("input")) {
                 String source = (String)_attributes.get("source");
@@ -1482,8 +1490,9 @@ public class MoMLParser extends HandlerBase {
                 _parser.getColumnNumber());
             }
 
-            // Clone it.
-            ComponentEntity newEntity = (ComponentEntity)reference.clone();
+            // Clone it into the workspace of the container.
+            ComponentEntity newEntity =
+                   (ComponentEntity)reference.clone(container.workspace());
 
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
@@ -1659,49 +1668,57 @@ public class MoMLParser extends HandlerBase {
      */
     private NamedObj _parse(MoMLParser parser, URL base, String source)
             throws Exception {
-        URL xmlFile = new URL(base, source);
-        InputStream input = null;
+        URL xmlFile = null;
         StringBuffer errorMessage = new StringBuffer();
+        InputStream input = null;
         try {
+            xmlFile = new URL(base, source);
             input = xmlFile.openStream();
         } catch (IOException ioException) {
-            // Cannot open the file. Try to open it relative
-            // to the current working directory.
-            errorMessage.append("1. Failed to open '" + xmlFile + "':\n" + 
-                    ioException + "\n");
+            errorMessage.append("1. Failed to open '" + source + "' with base '"
+                    + base + "':\n" + ioException + "\n");
+            // That failed.  Try opening it relative to the classpath.
             try {
-                String cwd = System.getProperty("user.dir");
-                if (cwd != null) {
-                    // We have to append a trailing / here for this to
-                    // work under Solaris.
-                    base = new URL("file", null, cwd + "/");
-                    xmlFile = new URL(base, source);
-                    input = xmlFile.openStream();
+                // FIXME: Shouldn't this use the base somehow?
+                xmlFile = _classLoader.getResource(source);
+                if (xmlFile == null) {
+                    throw new Exception("Class loader returns null.");
                 }
-            } catch (Exception exception) {
-                errorMessage.append("2. Failed to open '" + xmlFile + 
-                        "':\n" + exception + "\n");
-                // That failed.  Try opening it relative to the classpath.
+                input = xmlFile.openStream();
+
+            } catch (Exception anotherException) {
+                errorMessage.append("2. Failed to open '" + source + 
+                "' using class loader:\n" + anotherException + "\n");
+
+                // Failed to open relative to the classpath.
+                // Try relative to the current working directory.
+                // NOTE: This is last because it will fail with a
+                // security exception in applets.
                 try {
-                    xmlFile = _classLoader.getResource(source);
-                    if (xmlFile != null) {
+                    String cwd = System.getProperty("user.dir");
+                    if (cwd != null) {
+                        // We have to append a trailing "/" here for this to
+                        // work under Solaris.
+                        base = new URL("file", null, cwd + File.pathSeparator);
+                        xmlFile = new URL(base, source);
                         input = xmlFile.openStream();
                     }
-                } catch (Exception anotherException) {
+                } catch (Exception exception) {
                     errorMessage.append("3. Failed to open '" + xmlFile + 
-                            "':\n" + anotherException + "\n");
+                    "' relative to the user directory:\n" + exception + "\n");
                 }
             }
         }
         if (input == null) {
             throw new XmlException("Cannot open import file: " + source + 
                     "\nUsing base: " + base + 
-                    "\nTried the following files:\n" +
+                    "\nTried the following:\n" +
                     errorMessage,
                    _currentExternalEntity(),
                    _parser.getLineNumber(),
                    _parser.getColumnNumber());
         }
+        // If we get here, then xmlFile cannot possibly be null.
         NamedObj toplevel = parser.parse(xmlFile, xmlFile.openStream());
 
         // Add a URL attribute to the toplevel to indicate where it was
@@ -1850,7 +1867,6 @@ public class MoMLParser extends HandlerBase {
         }
         return result;
     }
-
 
     // Given a name that is either absolute (with a leading period)
     // or relative to _current, find a component entity with that name.

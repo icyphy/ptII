@@ -61,6 +61,12 @@ parent in the containment hierarchy of its argument that has other
 objects deferring their MoML definitions to it.  That is the correct
 context to use for a change request.
 <p>
+The parser used to implement the change will be the parser contained
+by a ParserAttribute of the top-level element of the context.  If no
+context is given, or there is no ParserAttribute in its top level,
+then a new parser is created, and a new ParserAttribute is placed
+in the top level.
+<p>
 NOTE: A significant subtlety remains.  If the parent
 returned by getDeferredToParent() itself has a parent that
 is deferred to, then changes will <i>not</i> propagate to the
@@ -74,8 +80,10 @@ Perhaps MoML should not permit inner classes.
 */
 public class MoMLChangeRequest extends ChangeRequest {
 
-    /** Construct a mutation request for the specified parser.
+    /** Construct a mutation request.
      *  The originator is the source of the change request.
+     *  Since no context is given, a new parser will be used, and it
+     *  will create a new top level.
      *  A listener to changes will probably want to check the originator
      *  so that when it is notified of errors or successful completion
      *  of changes, it can tell whether the change is one it requested.
@@ -83,38 +91,10 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  All external references are assumed to be absolute URLs.  Whenever
      *  possible, use a different constructor that specifies the base.
      *  @param originator The originator of the change request.
-     *  @param parser The parser to execute the request.
      *  @param request The mutation request in MoML.
      */
-    public MoMLChangeRequest(
-             Object originator, MoMLParser parser, String request) {
-	this(originator, parser, request, null);
-    }
-
-    /** Construct a mutation request for the specified parser.
-     *  The originator is the source of the change request.
-     *  A listener to changes will probably want to check the originator
-     *  so that when it is notified of errors or successful completion
-     *  of changes, it can tell whether the change is one it requested.
-     *  Alternatively, it can call waitForCompletion().
-     *  External references will be resolved relative to the given base URL.
-     *  @param originator The originator of the change request.
-     *  @param parser The parser to execute the request, or null to use
-     *   the default parser.
-     *  @param request The mutation request in MoML.
-     *  @param base The URL relative to which external references should
-     *  be resolved.
-     */
-    public MoMLChangeRequest(
-             Object originator, MoMLParser parser, String request, URL base) {
-        super(originator, request);
-        if (parser == null) {
-            _parser = _staticParser;
-        } else {
-            _parser = parser;
-        }
-        _context = parser.getToplevel();
-	_base = base;
+    public MoMLChangeRequest(Object originator, String request) {
+	this(originator, null, request, null);
     }
 
     /** Construct a mutation request to be executed in the specified context.
@@ -134,19 +114,21 @@ public class MoMLChangeRequest extends ChangeRequest {
      */
     public MoMLChangeRequest(
             Object originator, NamedObj context, String request) {
-	this(originator, _staticParser, context, request, null);
+	this(originator, context, request, null);
     }
 
-     /** Construct a mutation request to be executed in the specified context.
+    /** Construct a mutation request to be executed in the specified context.
      *  The context is typically a Ptolemy II container, such as an entity,
      *  within which the objects specified by the MoML code will be placed.
-     *  This method resets and uses a parser that is a static member
-     *  of this class.
+     *  If the top-level containing the specified context has a
+     *  ParserAttribute, then the parser associated with that attribute
+     *  is used.  Otherwise, a new parser is created, and set to be the
+     *  top-level parser.
      *  A listener to changes will probably want to check the originator
      *  so that when it is notified of errors or successful completion
      *  of changes, it can tell whether the change is one it requested.
-     *  Alternatively, it can call waitForCompletion().
-     *  External references will be resolved relative to the given base URL.
+     *  Alternatively, it can call waitForCompletion(), although there
+     *  is severe risk of deadlock when doing that.
      *  @param originator The originator of the change request.
      *  @param context The context in which to execute the MoML.
      *  @param request The mutation request in MoML.
@@ -155,36 +137,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      */
     public MoMLChangeRequest(
             Object originator, NamedObj context, String request, URL base) {
-	this(originator, _staticParser, context, request, base);
-    }
-
-    /** Construct a mutation request to be executed in the specified context.
-     *  The context is typically a Ptolemy II container, such as an entity,
-     *  within which the objects specified by the MoML code will be placed.
-     *  This method resets and uses a parser that is a static member
-     *  of this class.
-     *  A listener to changes will probably want to check the originator
-     *  so that when it is notified of errors or successful completion
-     *  of changes, it can tell whether the change is one it requested.
-     *  Alternatively, it can call waitForCompletion().
-     *  All external references are assumed to be absolute URLs.  Whenever
-     *  possible, use a different constructor that specifies the base.
-     *  @param originator The originator of the change request.
-     *  @param parser The parser to execute the request.
-     *  @param context The context in which to execute the MoML.
-     *  @param request The mutation request in MoML.
-     *  @param base The URL relative to which external references should
-     *   be resolved.
-     */
-    public MoMLChangeRequest(
-            Object originator, MoMLParser parser, NamedObj context,
-            String request, URL base) {
         super(originator, request);
-        if (parser == null) {
-            _parser = _staticParser;
-        } else {
-            _parser = parser;
-        }
         _context = context;
 	_base = base;
     }
@@ -221,7 +174,24 @@ public class MoMLChangeRequest extends ChangeRequest {
      *   while evaluating the request.
      */
     protected void _execute() throws Exception {
-	_parser.reset();
+        // Check to see whether there is a parser...
+        if (_context != null) {
+            NamedObj toplevel = _context.toplevel();
+            ParserAttribute parserAttribute = 
+                    (ParserAttribute)toplevel.getAttribute("_parser");
+            if (parserAttribute != null) {
+                _parser = parserAttribute.getParser();
+                _parser.reset();
+            }
+        }
+        if (_parser == null) {
+            // There is no previously associated parser.
+            _parser = new MoMLParser();
+        }
+        // NOTE: To see what is being parsed, uncomment the following:
+        // System.out.println("****** Executing MoML change:");
+        // System.out.println(getDescription());
+
         try {
             _parser._propagating = _propagating;
             
@@ -250,11 +220,10 @@ public class MoMLChangeRequest extends ChangeRequest {
                     // Make the request by queueing a new change request.
                     // This needs to be done because we have no assurance
                     // that just because this change request is being
-                    // executed now that the propogated one is safe to
+                    // executed now that the propagated one is safe to
                     // execute.
                     MoMLChangeRequest newChange = new MoMLChangeRequest(
                             getOriginator(),
-                            _parser,
                             other,              // context
                             getDescription(),   // MoML code
                             _base);
@@ -282,7 +251,4 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     // Indicator of whether this request is the result of a propagating change.
     private boolean _propagating = false;
-
-    // A generic parser to use if no parser is specified.
-    private static MoMLParser _staticParser = new MoMLParser();
 }

@@ -235,10 +235,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          public Effigy createEffigy(
                  CompositeEntity container, URL base, URL in)
                  throws Exception {
+            // Create a blank effigy.
+            PtolemyEffigy effigy = new PtolemyEffigy(
+                    container, container.uniqueName("effigy"));
 	    if (in == null) {
-                // Create a blank effigy.
-                PtolemyEffigy effigy = new PtolemyEffigy(
-                        container, container.uniqueName("effigy"));
                 // If this factory contains an entity called "blank", then
                 // clone that.
                 NamedObj entity = getEntity("blank");
@@ -259,36 +259,39 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     return null;
                 }
-                _parser.reset();
-                NamedObj toplevel = _parser.parse(base, in.openStream());
+                MoMLParser parser = new MoMLParser();
+                NamedObj toplevel = null;
+                try {
+                    // If the following fails, we should remove the effigy.
+                    toplevel = parser.parse(base, in.openStream());
 
-                if (toplevel != null) {
-                    // Create an effigy for the model.
-                    PtolemyEffigy effigy = new PtolemyEffigy(
-                            container, container.uniqueName("effigy"));
-                    effigy.setModel(toplevel);
+                    if (toplevel != null) {
+                        effigy.setModel(toplevel);
 
-                    // Identify the URL from which the model was read by
-                    // inserting an attribute into both the model and the
-                    // effigy.
-                    URLAttribute url = new URLAttribute(
-                            toplevel, toplevel.uniqueName("url"));
-                    url.setURL(in);
+                        // Identify the URL from which the model was read by
+                        // inserting an attribute into both the model and the
+                        // effigy.
+                        URLAttribute url = new URLAttribute(
+                                toplevel, toplevel.uniqueName("url"));
+                        url.setURL(in);
 
-                    // This is used by TableauFrame in its _save() method.
-                    effigy.url.setURL(in);
+                        // This is used by TableauFrame in its _save() method.
+                        effigy.url.setURL(in);
 
-                    return effigy;
+                        return effigy;
+                    } else {
+                        effigy.setContainer(null);
+                    }
+                } finally {
+                    // If we failed to populate the effigy with a model,
+                    // then we remove the effigy from its container.
+                    if (toplevel == null) {
+                        effigy.setContainer(null);
+                    }
                 }
                 return null;
             }
 	}
-
-        ///////////////////////////////////////////////////////////////
-        ////                     private members                   ////
-
-        // The parser to use to read MoML files.
-        private static MoMLParser _parser = new MoMLParser();
     }
 }
 

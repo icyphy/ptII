@@ -79,6 +79,7 @@ is used to update the location of the node as the figure moves.
 @version $Id$
 */
 public class LocatableNodeController extends NodeController {
+
     public LocatableNodeController(GraphController controller) {
 	super(controller);
         NodeInteractor nodeInteractor = (NodeInteractor) getNodeInteractor();
@@ -96,7 +97,7 @@ public class LocatableNodeController extends NodeController {
         setLocation(node, location);
     }
 
-    /** Draw the node at it's location.
+    /** Draw the node at its location.
      */
     public Figure drawNode(Object n) {
         Figure nf = super.drawNode(n);

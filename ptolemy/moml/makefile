@@ -50,12 +50,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =	EntityLibrary.java \
 	ErrorHandler.java \
 	Icon.java \
+	ImportAttribute.java \
 	Locatable.java \
 	Location.java \
 	Vertex.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
 	MoMLParser.java \
+	ParserAttribute.java \
 	URLAttribute.java
 
 EXTRA_SRCS =	$(JSRCS) \

@@ -116,6 +116,7 @@ EXTRA_SRCS =	$(JSRCS) \
 	genericicons.xml \
 	math.xml \
 	signalprocessing.xml \
+	SignalProcessingActors.xml \
 	sinks.xml \
 	sources.xml
 

@@ -68,7 +68,7 @@ test MoMLChangeRequest-1.1 {Test adding an entity} {
     set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
     $toplevel setManager $manager
 
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <model name=".top">
             <entity name="const" class="ptolemy.actor.lib.Const"/>
         </model>
@@ -102,7 +102,7 @@ test MoMLChangeRequest-1.1 {Test adding an entity} {
 
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.2 {Test adding another entity} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <model name=".top">
             <entity name="rec" class="ptolemy.actor.lib.Recorder"/>
         </model>
@@ -115,7 +115,7 @@ test MoMLChangeRequest-1.2 {Test adding another entity} {
 
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.3 {Test adding a relation} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <model name=".top">
             <relation name="r" class="ptolemy.actor.TypedIORelation"/>
         </model>
@@ -127,7 +127,7 @@ test MoMLChangeRequest-1.3 {Test adding a relation} {
 
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.4 {Test adding a pair of links} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <model name=".top">
             <link relation="r" port="const.output"/>
             <link relation="r" port="rec.input"/>
@@ -140,7 +140,7 @@ test MoMLChangeRequest-1.4 {Test adding a pair of links} {
 
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.5 {Test changing a parameter} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <model name=".top">
             <entity name="const">
                 <property name="value" value="2"/>
@@ -157,7 +157,7 @@ test MoMLChangeRequest-1.5 {Test changing a parameter} {
 
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.5 {Test deleting an entity} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <model name=".top">
             <deleteEntity name="const"/>
         </model>
@@ -190,7 +190,7 @@ test MoMLChangeRequest-1.5 {Test deleting an entity} {
 
 #----------------------------------------------------------------------
 test MoMLChangeRequest-1.6 {Test deleting a relation} {
-    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $parser {
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <model name=".top">
             <deleteRelation name="r"/>
         </model>
@@ -312,6 +312,8 @@ test MoMLChangeRequest-2.2 {Test propagation} {
     # NOTE: exportMoML won't give a full description.
     $toplevel description
 } {ptolemy.kernel.CompositeEntity {.top} attributes {
+    {ptolemy.moml.ParserAttribute {.top._parser} attributes {
+    }}
 } ports {
 } entities {
     {ptolemy.kernel.CompositeEntity {.top.gen} attributes {
@@ -381,6 +383,8 @@ test MoMLChangeRequest-3.2 {Test propagation} {
     # NOTE: exportMoML won't give a full description.
     $toplevel description
 } {ptolemy.kernel.CompositeEntity {.top} attributes {
+    {ptolemy.moml.ParserAttribute {.top._parser} attributes {
+    }}
 } ports {
 } entities {
     {ptolemy.kernel.CompositeEntity {.top.gen} attributes {

@@ -30,6 +30,16 @@
 
 package ptolemy.vergil.ptolemy;
 
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.gui.MessageHandler;
+import ptolemy.moml.Icon;
+import ptolemy.moml.ImportAttribute;
+import ptolemy.moml.Location;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.toolbox.EditorIcon;
+import ptolemy.vergil.toolbox.PtolemyTransferable;
+
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.JGraph;
@@ -45,14 +55,6 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.gui.MessageHandler;
-import ptolemy.moml.Location;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.toolbox.EditorIcon;
-import ptolemy.vergil.toolbox.PtolemyTransferable;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget
@@ -160,7 +162,30 @@ public class EditorDropTarget extends DropTarget {
                 // FIXME: Might consider giving a simpler name and then
                 // displaying the classname in the icon.
                 final String name = container.uniqueName(dropObj.getName());
-                String moml = dropObj.exportMoML(name);
+
+                // Create the MoML command.
+                StringBuffer moml = new StringBuffer();
+                // If the dropObj defers to something else, then we
+                // have to check the parent of the object
+                // for import attributes, and then we have to 
+                // generate import statements.  Note that everything
+                // imported by the parent will be imported now by
+                // the object into which this is dropped.
+                moml.append("<group>");
+                if (dropObj.getDeferMoMLDefinitionTo() != null) {
+                    CompositeEntity sourceContainer =
+                           (CompositeEntity)dropObj.getContainer();
+                    if (sourceContainer != null) {
+                        Iterator imports = sourceContainer.attributeList(
+                                ImportAttribute.class).iterator();
+                        while (imports.hasNext()) {
+                            moml.append(((ImportAttribute)imports.next())
+                                    .exportMoML());
+                        }
+                    }
+                }
+                moml.append(dropObj.exportMoML(name));
+                moml.append("</group>");
 
                 // NOTE: Have to know whether this is an entity,
                 // port, etc. This seems awkward.
@@ -168,7 +193,10 @@ public class EditorDropTarget extends DropTarget {
                 if (dropObj instanceof ComponentEntity) {
 
                     // Dropped object is an entity.
-                    request = new MoMLChangeRequest(this, container, moml) {
+                    // FIXME: Should use the parser from the PtolemyEffigy,
+                    // so that undo will work.
+                    request = new MoMLChangeRequest(
+                            this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
                             NamedObj newObject = container.getEntity(name);
@@ -180,7 +208,7 @@ public class EditorDropTarget extends DropTarget {
 
                     // Dropped object is a port.
                     request = new MoMLChangeRequest(
-                            this, container, moml) {
+                            this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
                             NamedObj newObject = container.getPort(name);
@@ -192,7 +220,7 @@ public class EditorDropTarget extends DropTarget {
 
                     // Dropped object is a relation.
                     request = new MoMLChangeRequest(
-                            this, container, moml) {
+                            this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
                             NamedObj newObject = container.getRelation(name);
@@ -204,7 +232,7 @@ public class EditorDropTarget extends DropTarget {
 
                     // Dropped object is an attribute.
                     request = new MoMLChangeRequest(
-                            this, container, moml) {
+                            this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
                             NamedObj newObject = container.getAttribute(name);

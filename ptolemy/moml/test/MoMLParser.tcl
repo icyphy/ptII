@@ -2137,3 +2137,70 @@ test MoMLParser-9.1 {test namespaces} {
     </entity>
 </model>
 }
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+   <entity name="A" class="ptolemy.actor.TypedAtomicActor">
+      <port name="out" class="ptolemy.actor.TypedIOPort">
+         <property name="output"/>
+      </port>
+   </entity>
+   <entity name="B" class="ptolemy.actor.TypedAtomicActor">
+      <port name="in" class="ptolemy.actor.TypedIOPort">
+         <property name="input"/>
+      </port>
+   </entity>
+   <entity name="C" class="ptolemy.actor.TypedAtomicActor">
+      <port name="in" class="ptolemy.actor.TypedIOPort">
+         <property name="input"/>
+      </port>
+   </entity>
+
+   <relation name="r" class="ptolemy.actor.TypedIORelation">
+       <vertex name="v1"/>
+       <vertex name="v2" pathTo="v1"/>
+   </relation>
+
+   <link port="A.out" relation="r" vertex="v1"/>
+   <link port="B.in" relation="r" vertex="v1"/>
+   <link port="C.in" relation="r" vertex="v2"/>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-10.1 {test vertex} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="A" class="ptolemy.actor.TypedAtomicActor">
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="B" class="ptolemy.actor.TypedAtomicActor">
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="C" class="ptolemy.actor.TypedAtomicActor">
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="r" class="ptolemy.actor.TypedIORelation">
+        <vertex name="v1" class="ptolemy.moml.Vertex">
+        </vertex>
+        <vertex name="v2" class="ptolemy.moml.Vertex">
+        </vertex>
+    </relation>
+    <link port="A.out" relation="r"/>
+    <link port="B.in" relation="r"/>
+    <link port="C.in" relation="r"/>
+</model>
+}

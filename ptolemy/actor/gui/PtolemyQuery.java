@@ -243,13 +243,8 @@ public class PtolemyQuery extends Query
 		    + "\" value=\""
 		    + stringValue(name)
 		    + "\"/>";
-		// FIXME: In order for undo to work, the PtolemyQuery
-		// needs to have a MoMLParser given to it rather than
-		// creating a new one.  This will need to be passed to
-		// the MoMLChangeRequest.
 		request = new MoMLChangeRequest(
 		        this,         // originator
-		        null,         // parser  -- FIXME: see above.
 		        parent,       // context
                         moml,         // MoML code
                         null);        // base
