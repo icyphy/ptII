@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
+@AcceptedRating Red (johnr@eecs.berkeley.edu)
 
 */
 
@@ -49,7 +49,7 @@ A CTDirector that uses real time. This director can only be the top level
 director. When initializing, it set the start time to be the computer
 time. At the postfire stage of each iteration, it waits until the
 computer time has progressed to the director time.
-FIXME: still under development.
+FIXME: still under development, and may be merged to CTDirector.
 @author  Jie Liu
 @version $Id$
 @see ptolemy.domains.ct.kernel.CTDirector

@@ -76,7 +76,8 @@ public interface CTStepSizeControlActor extends Actor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the current integration step is accurate
+    /** Implementations of this method should return
+     *  true if the current integration step is accurate
      *  from this actor's point of view.
      *  Actors that implement this interface will interpret "accurate"
      *  themselves. For example, for integrators, "accurate" could
@@ -88,7 +89,8 @@ public interface CTStepSizeControlActor extends Actor{
      */
     public boolean isThisStepAccurate();
 
-    /** Return the predicted next step size. If the current integration
+    /** Implementations of this method should return
+     *  the predicted next step size. If the current integration
      *  step is accurate, the actor will be asked for the prediction
      *  of the next step size. If the actor that implement this interface
      *  does not know how to predict the next step size, it should
@@ -97,7 +99,8 @@ public interface CTStepSizeControlActor extends Actor{
      */
     public double predictedStepSize();
 
-    /** Return the refined step size for restarting the current step.
+    /** Implementations of this method should return
+     *  the refined step size for restarting the current step.
      *  If this actor returns false when calling isThisStepAccurate,
      *  then it will
      *  be asked for a refined step size.

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -52,18 +52,21 @@ public interface CTTransparentDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the current integration step is accurate from
+    /** Implementations of this method should return
+     *  true if the current integration step is accurate from
      *  this director's point of view.
      *  @return True if the current step is accurate.
      */
     public boolean isThisStepAccurate();
 
-    /** Return the predicted next step size if this step is accurate.
+    /** Implementations of this method should return
+     *  the predicted next step size if this step is accurate.
      *  @return The predicted step size.
      */
     public double predictedStepSize();
 
-    /** Return the refined step size if this step is not accurate.
+    /** Implementations of this method should return 
+     *  the refined step size if this step is not accurate.
      *  @return The refined step size.
      */
     public double refinedStepSize();

@@ -52,13 +52,15 @@ should be restored.
 */
 public interface CTStatefulActor extends Actor {
 
-    /** Go to the marked state. If there's no marked state, throws
+    /** Implementations of this method should go to the marked state. 
+     *  If there's no marked state, throws
      *  an exception.
      *  @exception IllegalActionException If there were no marked state.
      */
     public void goToMarkedState() throws IllegalActionException ;
 
-    /** Mark the current state of the actor.
+    /** Implementations of this method should mark the current state
+     *  of the actor.
      */
     public void markState();
 

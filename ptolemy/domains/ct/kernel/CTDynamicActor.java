@@ -57,7 +57,7 @@ emitted for exciting the event generating and the output schedule.
 @version $Id$
 */
 public interface CTDynamicActor extends Actor{
-    /** Emit the tentative outputs.
+    /** Implementations of this method should emit the tentative outputs.
      *  @exception IllegalActionException If the data transfer is not
      *       completed.
      */

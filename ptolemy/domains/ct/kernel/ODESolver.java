@@ -47,7 +47,7 @@ may implement these methods according to individual ODE
 solving algorithms.
 <P>
 The behavior of integrators also changes
-when changing ODE solver, so this class provides some methods
+when changing the ODE solver, so this class provides some methods
 for the integrators too, including the fire() method and the step size
 control related methods. Here we use the strategy and delegation design
 patterns. CTBaseIntegrator delegated its corresponding
