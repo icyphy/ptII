@@ -44,11 +44,18 @@ $univ setManager $manager
 set source [java::new ptolemy.domains.csp.lib.CSPSource $univ Source]
 set sink [java::new ptolemy.domains.csp.lib.CSPSink $univ Sink]
 
+set param [java::new ptolemy.data.expr.Parameter]
+$param setName neil
+$param setExpression 1000
+$param evaluate
+
+$param setContainer $sink
+
 set input [java::field $sink input]
 set output [java::field $source output]
 
 set relation [$univ connect $output $input R1]
-#puts [ $univ description 1023]
+puts [ $univ description 1023]
 
 # For now this just returns, a bug
 puts [$manager {go int} 1]
