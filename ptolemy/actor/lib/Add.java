@@ -133,7 +133,7 @@ public class Add extends TypedAtomicActor {
 	LinkedList result = new LinkedList();
 	result.appendElements(super.typeConstraints());
 
-	TypeTerm scalar = new TypeTerm(ScalarToken.class);
+	TypeConstant scalar = new TypeConstant(ScalarToken.class);
 	Inequality ineq = new Inequality(output.getTypeTerm(), scalar);
 	result.insertLast(ineq);
 

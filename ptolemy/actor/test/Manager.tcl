@@ -118,7 +118,7 @@ test Manager-8.4 {Test type resolution} {
 
     catch {$manager resolveTypes} msg
     list $msg
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following ports:
+} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following Typeables:
   .E0.E1.P1: NaT
 }}
 
@@ -232,7 +232,7 @@ test Manager-8.8 {Test type resolution} {
 
     catch {$manager resolveTypes} msg
     list $msg
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following ports:
+} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following Typeables:
   .E0.E2.P23: ptolemy.data.DoubleToken
   .E0.E4.P4: ptolemy.data.IntToken
 }}

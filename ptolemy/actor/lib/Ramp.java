@@ -167,10 +167,10 @@ public class Ramp extends TypedAtomicActor {
 	LinkedList result = new LinkedList();
 	Class initType = init.getToken().getClass();
 	Class stepType = step.getToken().getClass();
-        Inequality ineq = new Inequality(new TypeTerm(initType),
+        Inequality ineq = new Inequality(new TypeConstant(initType),
                 output.getTypeTerm());
 	result.insertLast(ineq);
-        ineq = new Inequality(new TypeTerm(stepType),
+        ineq = new Inequality(new TypeConstant(stepType),
                 output.getTypeTerm());
 	result.insertLast(ineq);
 

@@ -465,36 +465,6 @@ public class TypedIOPort extends IOPort {
         super._linkInside((TypedIORelation)relation);
     }
 
-    /** Set the resolved type of this port.  The type is represented
-     *  by an instance of Class that is an element in the type lattice.
-     *  If the specified type is different from the old type, this
-     *  method notifies the typelisteners registered on this port
-     *  by calling their typeChanged() method.
-     *  Note that this method should not be used directly. It should
-     *  only be used by the type resolution algorithm.
-     *  This method is write-synchronized on the workspace.
-     *  @param type an instance of Class that is an element in the type
-     *   lattice.
-     */
-    protected void _setResolvedType(Class c) {
-	try {
-	    workspace().getWriteAccess();
-
-	    if (_resolvedType != c && _typeListeners.size() > 0) {
-		TypeEvent event = new TypeEvent(this, _resolvedType, c);
-		Enumeration listeners = _typeListeners.elements();
-		while (listeners.hasMoreElements()) {
-		    ((TypeListener)listeners.nextElement()).typeChanged(event);
-		}
-	    }
-
-	    _resolvedType = c;
-	    _convertMethod = null;
-	} finally {
-	    workspace().doneWriting();
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
 
@@ -514,6 +484,31 @@ public class TypedIOPort extends IOPort {
         }
     }
 
+    // Set the resolved type of this port.  The type is represented
+    // by an instance of Class that is an element in the type lattice.
+    // If the specified type is different from the old type, this
+    // method notifies the typelisteners registered on this port
+    // by calling their typeChanged() method.
+    // This method is write-synchronized on the workspace.
+    private void _setResolvedType(Class c) {
+	try {
+	    workspace().getWriteAccess();
+
+	    if (_resolvedType != c && _typeListeners.size() > 0) {
+		TypeEvent event = new TypeEvent(this, _resolvedType, c);
+		Enumeration listeners = _typeListeners.elements();
+		while (listeners.hasMoreElements()) {
+		    ((TypeListener)listeners.nextElement()).typeChanged(event);
+		}
+	    }
+
+	    _resolvedType = c;
+	    _convertMethod = null;
+	} finally {
+	    workspace().doneWriting();
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -525,5 +520,84 @@ public class TypedIOPort extends IOPort {
 
     // Listeners for type change.
     private LinkedList _typeListeners = new LinkedList();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    private class TypeTerm implements InequalityTerm {
+
+	// pass the port reference in the constructor so it can be
+	// returned by getAssociatedObject().
+	private TypeTerm(TypedIOPort port) {
+	    _port = port;
+	}
+
+	///////////////////////////////////////////////////////////////
+	////                       public methods                  ////
+
+	/** Return this TypedIOPort.
+	 *  @return A TypedIOPort.
+	 */
+	public Object getAssociatedObject() {
+	    return _port;
+	}
+
+	/** Return the type of this TypedIOPort.
+	 */
+	public Object getValue() {
+	    return getResolvedType();
+        }
+
+        /** Return this TypeTerm in an array if this term represent
+	 *  a type variable. This term represents a type variable
+	 *  if the type of this port is undeclared. If the type of
+	 *  this port is declared, return an array of size zero.
+	 *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+	    Class declared = getDeclaredType();
+	    if (declared == null) {
+	    	InequalityTerm[] variable = new InequalityTerm[1];
+	    	variable[0] = this;
+	    	return variable;
+	    }
+	    return (new InequalityTerm[0]);
+        }
+
+        /** Test if this term represents a type variable.
+	 *  This term represents a type variable if the type of this
+	 *  port is undeclared.
+         *  @return True if this term represents a type variable;
+	 *  false otherwise.
+         */
+        public boolean isSettable() {
+	    Class declared = getDeclaredType();
+	    if (declared == null) {
+		return true;
+	    }
+	    return false;
+        }
+
+        /** Set the resolved type of this port if this port has an
+	 *  undeclared type.
+         *  @exception IllegalActionException If this port has a
+	 *   declared type.
+         */
+        public void setValue(Object e) throws IllegalActionException {
+	    Class declared = getDeclaredType();
+	    if (declared == null) {
+		_setResolvedType((Class)e);
+		return;
+	    }
+
+	    throw new IllegalActionException("TypeTerm.setValue: Cannot set "
+                + "the value of a type constant.");
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       private variable                ////
+
+        private TypedIOPort _port = null;
+    }
 }
 

@@ -237,15 +237,18 @@ public final class Manager extends NamedObj implements Runnable {
 		    while (unsatisfied.hasMoreElements()) {
 		        Inequality ineq =
                             (Inequality)unsatisfied.nextElement();
-		        TypeTerm term = (TypeTerm)ineq.getLesserTerm();
-		        TypedIOPort port = term.getPort();
-		        if (port != null) {
-			    conflicts.insertLast(port);
+		        InequalityTerm term =
+					(InequalityTerm)ineq.getLesserTerm();
+			// FIXME: change Object to Typeable
+		        Object typeObj = term.getAssociatedObject();
+		        if (typeObj != null) {
+			    conflicts.insertLast(typeObj);
 		        }
-		        term = (TypeTerm)ineq.getGreaterTerm();
-		        port = term.getPort();
-		        if (port != null) {
-			    conflicts.insertLast(port);
+		        term = (InequalityTerm)ineq.getGreaterTerm();
+			// FIXME: change Object to Typeable
+		        typeObj = term.getAssociatedObject();
+		        if (typeObj != null) {
+			    conflicts.insertLast(typeObj);
 		        }
 		    }
                 }
@@ -253,11 +256,10 @@ public final class Manager extends NamedObj implements Runnable {
 	        // check if any resolved type is NaT, or abstract, or interface
 	        Enumeration var = solver.variables();
 	        while (var.hasMoreElements()) {
-		    TypeTerm term = (TypeTerm)var.nextElement();
-		    TypedIOPort port = term.getPort();
-		    Class type = port.getResolvedType();
+		    InequalityTerm term = (InequalityTerm)var.nextElement();
+		    Class type = (Class)term.getValue();
 		    if ( !TypeLattice.isInstantiableType(type)) {
-		        conflicts.insertLast(port);
+		        conflicts.insertLast(term.getAssociatedObject());
 		    }
 	        }
 	    }
@@ -265,7 +267,7 @@ public final class Manager extends NamedObj implements Runnable {
 	    if (conflicts.size() > 0) {
 		throw new TypeConflictException(conflicts.elements(),
                         "Type conflicts occurred in " + toplevel.getFullName()
-			+ " on the following ports:");
+			+ " on the following Typeables:");
 	    }
 	} catch (IllegalActionException iae) {
 	    // this should not happen.
