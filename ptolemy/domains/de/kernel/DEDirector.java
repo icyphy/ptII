@@ -756,7 +756,8 @@ public class DEDirector extends Director {
 
                 double currentTime = currentEvent.timeStamp();
                 // Advance current time.
-                _debug("******* Setting current time to: " + currentTime);
+                _debug("******* Setting current time to: ",
+                        Double.toString(currentTime));
                 try {
                     setCurrentTime(currentTime);
                 } catch (IllegalActionException ex) {
