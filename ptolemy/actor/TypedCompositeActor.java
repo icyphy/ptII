@@ -36,6 +36,8 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.Typeable;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalitySolver;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -162,75 +164,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If this composite actor is opaque, perform static type checking.
-     *  Specifically, this method scans all the connections within this
-     *  composite between opaque TypedIOPorts, if the ports on both ends
-     *  of the connection have declared types, the types of both ports
-     *  are examined to see if the type of the port at the source end
-     *  of the connection is less than or equal to the type at the
-     *  destination port. If not, the two ports have a type conflict.
-     *  If the type of the ports on one or both ends of a connection is
-     *  not declared, the connection is skipped by this method and left
-     *  to the type resolution mechanism.
-     *  This method returns a List of TypedIOPorts that have
-     *  type conflicts. If no type conflict is detected, an empty
-     *  list is returned.
-     *  If this TypedCompositeActor contains other opaque
-     *  TypedCompositeActors, the checkType() methods of the contained
-     *  TypedCompositeActors are called to check types further down the
-     *  hierarchy.
-     *  @return A list of TypedIOPort where type conflicts occur.
-     *  @exception IllegalActionException If this composite actor is not
-     *   opaque.
-     */
-    public List checkTypes() throws IllegalActionException {
-	try {
-	    workspace().getReadAccess();
-
-	    if (!isOpaque()) {
-                throw new IllegalActionException(this,
-                        "Cannot check types on a non-opaque actor.");
-            }
-
-	    List result = new LinkedList();
-
-	    Iterator entities = deepEntityList().iterator();
-	    while (entities.hasNext()) {
-	        // check types on contained actors
-	        TypedActor actor = (TypedActor)entities.next();
-		if (actor instanceof TypedCompositeActor) {
-		    result.addAll(((TypedCompositeActor)actor).checkTypes());
-		}
-
-	        // type check from all the ports on the contained actor
-	        // to the ports that the actor can send data to.
-		Iterator ports = ((Entity)actor).portList().iterator();
-		while (ports.hasNext()) {
-		    TypedIOPort sourcePort = (TypedIOPort)ports.next();
-		    Receiver[][] receivers = sourcePort.getRemoteReceivers();
-
-		    List destinationPorts = _receiverToPort(receivers);
-		    result.addAll(_checkTypesFromTo(sourcePort,
-                            destinationPorts));
-		}
-	    }
-
-	    // also need to check connection from the input ports on
-	    // this composite actor to input ports of contained actors.
-	    Iterator boundaryPorts = portList().iterator();
-	    while (boundaryPorts.hasNext()) {
-		TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
-		Receiver[][] receivers = sourcePort.deepGetReceivers();
-		List destinationPorts = _receiverToPort(receivers);
-	    	result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
-	    }
-
-	    return result;
-	} finally {
-	    workspace().doneReading();
-	}
-    }
-
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
@@ -281,6 +214,84 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         } finally {
             workspace().doneWriting();
         }
+    }
+
+    /** Do type checking and type resolution on the specified composite actor.
+     *  The specified actor must be the top level container of the model.
+     *  @param topLevel The top level TypedCompositeActor.
+     *  @exception TypeConflictException If a type conflict is detected.
+     */
+    public static void resolveTypes(TypedCompositeActor topLevel)
+            throws TypeConflictException {
+	try {
+            List conflicts = new LinkedList();
+
+	    // check declared types across all connections.
+            List typeConflicts = topLevel._checkDeclaredTypes();
+            conflicts.addAll(typeConflicts);
+
+	    // collect and solve type constraints.
+            List constraintList = topLevel.typeConstraintList();
+	    if (constraintList.size() > 0) {
+                InequalitySolver solver = new InequalitySolver(
+                                                       TypeLattice.lattice());
+       	        Iterator constraints = constraintList.iterator();
+                while (constraints.hasNext()) {
+                    Inequality ineq = (Inequality)constraints.next();
+                    solver.addInequality(ineq);
+	        }
+
+                // find the least solution (most specific types)
+                boolean resolved = solver.solveLeast();
+
+	        // If some inequalities are not satisfied, or type variables
+	        // are resolved to unacceptable types, such as
+	        // BaseType.UNKNOWN, add the inequalities to the list of type
+	        // conflicts.
+	        Iterator inequalities = constraintList.iterator();
+	        while (inequalities.hasNext()) {
+	            Inequality inequality = (Inequality)inequalities.next();
+	            if ( !inequality.isSatisfied(TypeLattice.lattice())) {
+	                conflicts.add(inequality);
+		    } else {
+		        // check if type variables are resolved to unacceptable
+		        //types
+		        InequalityTerm[] lesserVariables =
+			        inequality.getLesserTerm().getVariables();
+		        InequalityTerm[] greaterVariables =
+			        inequality.getGreaterTerm().getVariables();
+		        boolean added = false;
+		        for (int i=0; i<lesserVariables.length; i++) {
+		            InequalityTerm variable = lesserVariables[i];
+		            if ( !variable.isValueAcceptable()) {
+		                conflicts.add(inequality);
+		                added = true;
+			        break;
+			    }
+		        }
+		        if (added == false) {
+		            for (int i=0; i<greaterVariables.length; i++) {
+		                InequalityTerm variable = greaterVariables[i];
+			        if ( !variable.isValueAcceptable()) {
+		                    conflicts.add(inequality);
+			            break;
+			        }
+			    }
+		        }
+	            }
+	        }
+            }
+
+   	    if (conflicts.size() > 0) {
+	        throw new TypeConflictException(conflicts,
+                        "Type conflicts occurred in " + topLevel.getFullName()
+                        + " on the following inequalities:");
+	    }
+        } catch (IllegalActionException illegalAction) {
+	    // this should not happen. The exception means that
+	    // _checkDeclaredType is called on an transparent actor.
+	    throw new InternalErrorException(illegalAction.getMessage());
+	}
     }
 
     /** Return the type constraints of this typed composite actor, if it
@@ -451,6 +462,65 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    // If this composite actor is opaque, perform static type checking.
+    // Specifically, this method scans all the connections within this
+    // composite between opaque TypedIOPorts, if the ports on both ends
+    // of the connection have declared types, the types of both ports
+    // are examined to see if the type of the port at the source end
+    // of the connection is less than or equal to the type at the
+    // destination port. If not, the two ports have a type conflict.
+    // If the type of the ports on one or both ends of a connection is
+    // not declared, the connection is skipped by this method and left
+    // to the type resolution mechanism.
+    // This method returns a List of TypedIOPorts that have
+    // type conflicts. If no type conflict is detected, an empty
+    // list is returned.
+    // If this TypedCompositeActor contains other opaque
+    // TypedCompositeActors, the _checkDeclaredType() methods of the contained
+    // TypedCompositeActors are called to check types further down the
+    // hierarchy.
+    private List _checkDeclaredTypes() throws IllegalActionException {
+        if (!isOpaque()) {
+            throw new IllegalActionException(this,
+                    "Cannot check types on a non-opaque actor.");
+        }
+
+	List result = new LinkedList();
+
+	Iterator entities = deepEntityList().iterator();
+	while (entities.hasNext()) {
+	    // check types on contained actors
+	    TypedActor actor = (TypedActor)entities.next();
+	    if (actor instanceof TypedCompositeActor) {
+	        result.addAll(
+		        ((TypedCompositeActor)actor)._checkDeclaredTypes());
+	    }
+
+	    // type check from all the ports on the contained actor
+	    // to the ports that the actor can send data to.
+	    Iterator ports = ((Entity)actor).portList().iterator();
+	    while (ports.hasNext()) {
+	        TypedIOPort sourcePort = (TypedIOPort)ports.next();
+		Receiver[][] receivers = sourcePort.getRemoteReceivers();
+
+		List destinationPorts = _receiverToPort(receivers);
+		result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
+	    }
+	}
+
+	// also need to check connection from the input ports on
+	// this composite actor to input ports of contained actors.
+	Iterator boundaryPorts = portList().iterator();
+	while (boundaryPorts.hasNext()) {
+	    TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
+	    Receiver[][] receivers = sourcePort.deepGetReceivers();
+	    List destinationPorts = _receiverToPort(receivers);
+	    result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
+	}
+
+	return result;
+    }
 
     // Check types from a source port to a group of destination ports,
     // assuming the source port is connected to all the ports in the
