@@ -72,7 +72,9 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'BasicModularGraphModel$$BasicEdgeModel.class' \
+	'BasicModularGraphModel$$BasicNodeModel.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

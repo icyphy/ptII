@@ -75,7 +75,27 @@ MISC_FILES =	#alljtests.tcl alljsimpletests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'ConcreteFigures$$BasicRectangleFactory1.class' \
+	'ConcreteFigures$$BasicRectangleFactory2.class' \
+	'ConcreteFigures$$CompositeFigureFactory1.class' \
+	'ConcreteFigures$$IconFigureFactory.class' \
+	'ConcreteFigures$$ImageFigureFactory.class' \
+	'ConcreteFigures$$LabelFigureFactory.class' \
+	'ConcreteFigures$$PaneWrapperFactory.class' \
+	'FigureTest$$1.class' \
+	'FigureTest$$2.class' \
+	'FigureTest$$3.class' \
+	'FigureTest$$4.class' \
+	'FigureTest$$5.class' \
+	'FigureTest$$6.class' \
+	'FigureTest$$7.class' \
+	'FigureTest$$FigureFactory.class' \
+	'FigureTest$$RegionTestCase.class' \
+	'JCanvasTest$$1.class' \
+	'JCanvasTest$$2.class' \
+	'JCanvasTest$$CanvasFactory.class' \
+	'JCanvasTest$$FramedCanvas.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 

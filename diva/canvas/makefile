@@ -97,15 +97,16 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR) \
-	'AbstractGraphController$$1.class' \
-	'AbstractGraphController$$ChangeListener.class' \
-	'AbstractGraphModel$$1.class' \
-	'BasicEdgeController$$1.class' \
-	'BasicEdgeController$$EdgeDropper.class' \
-	'GraphUtilities$$1.class' \
-	'GraphUtilities$$2.class' \
-	'GraphUtilities$$PartiallyContainedEdgeFilter.class' \
-	'GraphUtilities$$TotallyContainedEdgeFilter.class'
+	'BasicZList$$1.class' \
+	'BasicZList$$2.class' \
+	'BasicZList$$EnclosedGSet.class' \
+	'BasicZList$$GSet.class' \
+	'BasicZList$$IntersectedGSet.class' \
+	'CanvasUtilities$$1.class' \
+	'DamageRegion$$1.class' \
+	'DamageRegion$$RectangleDamageRegion.class' \
+	'GraphicsPane$$1.class' \
+	'GraphicsPane$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

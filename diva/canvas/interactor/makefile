@@ -89,13 +89,27 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'BoundsGeometry$$1.class' \
+	'BoundsGeometry$$BoundsSite.class' \
+	'BoundsManipulator$$1.class' \
+	'BoundsManipulator$$Resizer.class' \
+	'CircleGeometry$$1.class' \
+	'CircleGeometry$$CircleSite.class' \
+	'CircleManipulator$$1.class' \
+	'CircleManipulator$$Resizer.class' \
+	'package.html PathGeometry$$1.class' \
+	'PathGeometry$$CloseSegment.class' \
+	'PathGeometry$$Vertex.class' \
+	'PathManipulator$$1.class' \
+	'PathManipulator$$Resizer.class' \
+	'SelectionEvent$$1.class' \
+	'SelectionEvent$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -70,8 +70,8 @@ OPTIONAL_FILES = \
 	'EditorTutorial$$1.class' \
 	'EditorTutorial$$LayoutActionListener.class' \
 	'EditorTutorial$$LayoutWidget.class' \
-	'EditorTutorial$$LayoutWidget$LayoutActionListener.class' \
-	'EditorTutorial$$LayoutWidget$SelectionListener.class' \
+	'EditorTutorial$$LayoutWidget$$LayoutActionListener.class' \
+	'EditorTutorial$$LayoutWidget$$SelectionListener.class' \
 	'NestedTutorial$$1.class' \
 	'NestedTutorial$$2.class' \
 	'NodeRendererTutorial$$1.class' \

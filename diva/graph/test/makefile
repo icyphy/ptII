@@ -74,7 +74,12 @@ MISC_FILES =	#alljtests.tcl alljsimpletests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'BasicGraphModelTest$$1.class' \
+	'BasicGraphModelTest$$2.class' \
+	'BasicGraphModelTest$$3.class' \
+	'BasicGraphModelTest$$BasicGraphModelFactory.class' \
+	'BasicGraphModelTest$$GraphFactory.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
