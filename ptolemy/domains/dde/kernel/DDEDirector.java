@@ -116,13 +116,13 @@ public class DDEDirector extends CompositeProcessDirector {
         super();
 
 	try {
-            double val = PrioritizedTimedQueue.ETERNITY;
+            double value = PrioritizedTimedQueue.ETERNITY;
 	    stopTime = new
-                Parameter(this, "stopTime", new DoubleToken(val) );
-	} catch( IllegalActionException e ) {
-	    throw new InternalErrorException( e.toString() );
-        } catch (NameDuplicationException e) {
-            throw new InvalidStateException( e.toString() );
+                Parameter(this, "stopTime", new DoubleToken(value));
+	} catch( IllegalActionException illegalAction ) {
+	    throw new InternalErrorException(this, illegalAction, null);
+        } catch (NameDuplicationException nameDuplication) {
+            throw new InvalidStateException(this, nameDuplication, null);
 	}
     }
 
@@ -136,13 +136,13 @@ public class DDEDirector extends CompositeProcessDirector {
         super(workspace);
 
 	try {
-            double val = PrioritizedTimedQueue.ETERNITY;
+            double value = PrioritizedTimedQueue.ETERNITY;
 	    stopTime = new
-                Parameter(this, "stopTime", new DoubleToken(val) );
-	} catch( IllegalActionException e ) {
-	    throw new InternalErrorException( e.toString() );
-        } catch (NameDuplicationException e) {
-            throw new InvalidStateException( e.toString() );
+                Parameter(this, "stopTime", new DoubleToken(value) );
+	} catch( IllegalActionException illegalAction ) {
+	    throw new InternalErrorException(this, illegalAction, null);
+        } catch (NameDuplicationException nameDuplication) {
+            throw new InvalidStateException(this, nameDuplication, null);
 	}
     }
 
@@ -164,13 +164,13 @@ public class DDEDirector extends CompositeProcessDirector {
         super(container, name);
 
 	try {
-            double val = PrioritizedTimedQueue.ETERNITY;
+            double value = PrioritizedTimedQueue.ETERNITY;
 	    stopTime = new
-                Parameter(this, "stopTime", new DoubleToken(val) );
-	} catch( IllegalActionException e ) {
-	    throw new InternalErrorException( e.toString() );
-        } catch (NameDuplicationException e) {
-            throw new InvalidStateException( e.toString() );
+                Parameter(this, "stopTime", new DoubleToken(value) );
+	} catch( IllegalActionException illegalAction ) {
+	    throw new InternalErrorException(this, illegalAction, null);
+        } catch (NameDuplicationException nameDuplication) {
+            throw new InvalidStateException(this, nameDuplication, null);
 	}
     }
 
