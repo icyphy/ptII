@@ -73,7 +73,7 @@ located. Then at each firing phase (prefire(), fire() and
 postfire()), this actor will first transfer all the current
 input tokens to the remote actor, and call the corresponding
 methods of the remote actor, then transfer the output
-values. If any of these actoions failed, an Exception
+values. If any of these actions failed, an Exception
 will be thrown.
 <P>
 FIXME: In the current implementation, all the values are
