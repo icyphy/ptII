@@ -1,6 +1,6 @@
 /* A Fraction.
 
- Copyright (c) 1997-1998 The Regents of the University of California.
+ Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,7 +30,7 @@
 
 
 // do we want to make this a token class?
-// upside: consistant interface, might be useful for domains.
+// upside: consistent interface, might be useful for domains.
 // downside: work
 
 package ptolemy.math;
