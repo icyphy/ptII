@@ -686,6 +686,8 @@ public class Plot extends PlotBox {
             int barrx = (int)(barlx + _barwidth * _xscale);
             if (barlx < _ulx) barlx = _ulx;
             if (barrx > _lrx) barrx = _lrx;
+            // Make sure that a bar is always at least one pixel wide.
+            if (barlx >= barrx) barrx = barlx+1;
             // The y position of the zero line.
             long zeroypos = _lry - (long) ((0-_yMin) * _yscale);
             if (_lry < zeroypos) zeroypos = _lry;
