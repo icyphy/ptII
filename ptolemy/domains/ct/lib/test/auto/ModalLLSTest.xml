@@ -21,8 +21,6 @@
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -46,6 +44,8 @@
             </property>
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
         </property>
@@ -77,24 +77,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{305, 60}">
         </property>
     </property>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplingPeriod">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 160.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-        </port>
-    </entity>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -105,6 +87,8 @@
             </property>
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
@@ -205,8 +189,6 @@ create refinements for the states. Then delete this annotation.</text>
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -228,6 +210,8 @@ create refinements for the states. Then delete this annotation.</text>
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="288.71875, 324.9375">
                 </property>
@@ -436,10 +420,28 @@ create refinements for the states. Then delete this annotation.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 135.0">
         </property>
     </entity>
-    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.2103333333333, 1.4427867222222, 1.6996864591759, 1.9836034851326, 2.297379118319, -1.0, -1.0, -1.0, -1.0, -1.0, 2.2103333333333, 2.4427867222222, 2.6996864591759, 2.9836034851326, 3.297379118319, -2.2103333333333, -2.4427867222222, -2.6996864591759, -2.9836034851326, -3.297379118319}">
+    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplingPeriod">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 160.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.2103333333333, 1.4427867222222, 1.6996864591759, 1.9836047491827, 2.2973894518722, -1.0, -1.0, -1.0, -1.0, -1.0, 2.2103333333333, 2.4427867222222, 2.6996864591759, 2.9836047491827, 3.2973894518722, -2.2103404567165, -2.4427945947478, -2.6996951596288, -2.9836143647522, -3.2974000781857}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -449,22 +451,24 @@ create refinements for the states. Then delete this annotation.</text>
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="425.0, 160.0">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="PeriodicSampler.input" relation="relation3"/>
-    <link port="PeriodicSampler.output" relation="relation4"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{285.0, 160.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="425.0, 160.0">
+        </vertex>
+    </relation>
     <link port="modal model.port" relation="relation5"/>
     <link port="modal model.port2" relation="relation2"/>
-    <link port="modal model.port3" relation="relation3"/>
+    <link port="modal model.port3" relation="relation"/>
     <link port="EventSource.output" relation="relation2"/>
     <link port="ContinuousClock.output" relation="relation5"/>
+    <link port="PeriodicSampler.input" relation="relation"/>
+    <link port="PeriodicSampler.output" relation="relation4"/>
     <link port="NonStrictTest.input" relation="relation4"/>
 </entity>
