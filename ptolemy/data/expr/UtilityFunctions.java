@@ -315,10 +315,18 @@ public class UtilityFunctions {
      *  to use environment variables, user names etc. in
      *  creating a file path. An empty string
      *  is returned if the specified file could not be located.
-     *  FIXME: what do with format of file?, e.g. if file is
-     *  spread over many lines should we remove the newlines
-     *  and make one long one line string?<p>
-     *  Use readFile({@link #findFile}) to specify files relative to the
+     *  If the contents of the file consists of more than one line,
+     *  then \n characters are converted to spaces, and \r characters
+     *  are removed.  For example, if a file contains
+     *  <pre>
+     *  "   
+     *  foo
+     *  "
+     *  </pre>
+     *  Then <code>eval(readfile("foo.txt"))</code> will return
+     *  <code>" foo "</code>.  FIXME: this is a bug, we need to be smarter
+     *  here.   
+     *  <br>Use readFile({@link #findFile}) to specify files relative to the
      *  current user directory or classpath.<p>
      *  A StringToken can be converted to any valid Token it represents
      *  with the Ptolemy II expression language eval() function.

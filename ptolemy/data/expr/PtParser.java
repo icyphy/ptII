@@ -161,7 +161,31 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      */
     public ASTPtRootNode generateParseTree(String stringIn)
             throws IllegalActionException {
-        String str = stringIn.replace('\n', ' ');
+
+        String str;
+        // Most of the time?, we do not have a newline so
+        // skip the \r \n checking?
+        if (stringIn.indexOf('\n') == -1) {
+            str = stringIn;
+        } else {
+            String strTmp = stringIn.replace('\n', ' ');
+            if (strTmp.indexOf('\r') == -1) {
+                str = strTmp;
+            } else {
+                // Remove all the \r characters
+                // readFile() needs this under Windows, see
+                // actor/lib/test/Const.tcl
+                int last = 0;
+                int found = 0;
+                StringBuffer buffer = new StringBuffer();
+                while ((found = strTmp.indexOf('\r', last)) != -1) {
+                    buffer.append( strTmp.substring(last, found));
+                    last = found + 1;
+                }
+                str = buffer.toString();
+            }
+        }
+
         Reader reader = new StringReader(str);
         this.ReInit(reader);
         ASTPtRootNode rootNode;
@@ -1861,22 +1885,6 @@ String tidied, x;
     return retval;
   }
 
-  final private boolean jj_3_5() {
-    if (jj_scan_token(52)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_2() {
-    if (jj_scan_token(45)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(FUNCTION)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(45)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
   final private boolean jj_3_7() {
     if (jj_scan_token(FUNCTION)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -1911,6 +1919,22 @@ String tidied, x;
 
   final private boolean jj_3_6() {
     if (jj_scan_token(ID)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(45)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3_5() {
+    if (jj_scan_token(52)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3_2() {
+    if (jj_scan_token(45)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(FUNCTION)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_scan_token(45)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
