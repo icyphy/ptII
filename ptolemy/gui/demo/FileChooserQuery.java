@@ -1,4 +1,4 @@
-/* Standalon Application demonstrating the Query class.
+/* Standalone Application demonstrating the Query class.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
