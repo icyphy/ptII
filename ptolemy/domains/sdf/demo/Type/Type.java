@@ -283,8 +283,10 @@ public class Type extends SDFApplet implements ChangeListener {
         _plotter.plot.setSize(390, 200);
         _plotter.plot.setBackground(getBackground());
         _plotter.plot.setGrid(true);
-        _plotter.plot.setXRange(0.0, 10.0);
-        _plotter.plot.setYRange(0.0, 20.0);
+	// Set initial size of the plotter to what the initial
+	// results will look like
+        _plotter.plot.setXRange(1.0, 8.0);
+        _plotter.plot.setYRange(0.0, 14.0);
 	_plotter.plot.setConnected(false);
 	_plotter.plot.setImpulses(true);
 	_plotter.plot.setMarksStyle("dots");
