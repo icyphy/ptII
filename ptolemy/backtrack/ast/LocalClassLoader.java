@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -76,8 +76,9 @@ import java.util.Set;
 
    @author Thomas Feng
    @version $Id$
-   @since Ptolemy II 4.1
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public class LocalClassLoader extends URLClassLoader {
 
@@ -136,7 +137,7 @@ public class LocalClassLoader extends URLClassLoader {
     public void importClass(String classFullName) {
         int lastDotPos = classFullName.lastIndexOf('.');
         _importedClasses.add(
-                new ClassImport(classFullName.substring(0, lastDotPos),
+                new ClassImport(classFullName.substring(0, lastDotPos), 
                         classFullName.substring(lastDotPos + 1)));
     }
 
@@ -145,8 +146,9 @@ public class LocalClassLoader extends URLClassLoader {
      *  the import list to be considered at a later call to {@link
      *  #searchForClass(String)}.
      *  <p>
-     *  Class importations in the form of "<tt>import packageName.className</tt>"
-     *  takes precedence over package importations in the form of
+     *  Class importations in the form of
+     *  "<tt>import packageName.className</tt>" takes precedence
+     *  over package importations in the form of
      *  "<tt>import packageName.*</tt>".
      *
      *  @param packageName The full name of the package to be
@@ -156,12 +158,139 @@ public class LocalClassLoader extends URLClassLoader {
         _importedPackages.add(packageName);
     }
 
+    /** Search for a class with its partial name in the current class
+     *  or current package.
+     *
+     *  @param name The partial name of the class to be loaded.
+     *  @return The class loaded with the given name in the scope.
+     *  @exception ClassNotFoundException If the class cannot be found.
+     *  @see #searchForClass(StringBuffer, Class)
+     */
+    public Class searchForClass(String name) throws ClassNotFoundException {
+        return searchForClass(new StringBuffer(name), _currentClass);
+    }
+
+    /** Search for a class with a partial name in the given scope.
+     *  It is called in {@link #loadClass(String, boolean)}.
+     *  <p>
+     *  It takes the following steps in this name resolving:
+     *  <ol>
+     *    <li>Check if the name represents an array. An array type
+     *      is treated as a special class in Java. The name of an
+     *      array is either like "<tt>char[]</tt>" (source
+     *      representation) or like "<tt>[C</tt>" (JVM internal
+     *      representation). If this is the case, it recursively
+     *      calls itself with the type of the elements in the array
+     *      (if not primitive), and then loads the array class and
+     *      return.
+     *    </li>
+     *    <li>Check if the name corresponds to a nested class in
+     *      the current class. In JVM representation, nested class
+     *      names are separated with "$" from their containers. If
+     *      so, the nested class is returned.
+     *    </li>
+     *    <li>Check if the name is already a full class name, e.g., 
+     *      "<tt>java.lang.Class</tt>". If so, the class is loaded
+     *      with {@link URLClassLoader#loadClass(String, boolean)}
+     *      and returned. Nested classes (case 2) take precedence
+     *      over this full name resolution.
+     *    </li>
+     *    <li>For every class explicitly imported with {@link
+     *      #importClass(String)}, check if its simple class name
+     *      (the last part) is the same as the first part of the
+     *      class name to be searched for. If so, the imported
+     *      class is loaded, and if necessary, its nested classes
+     *      are searched.
+     *    </li>
+     *    <li>Check if the partial name is relative to the current
+     *      package.
+     *    </li>
+     *    <li>Check if the partial name is relative to any package
+     *      explicitly imported with {@link #importPackage(String)}.
+     *      The implicitly imported package "<tt>java.lang</tt>" is
+     *      also searched.
+     *    </li>
+     *  </ol>
+     *  <p>
+     *  This function is considerably slower than {@link #loadClass(String)}, 
+     *  which does not do a search but takes the given name for the
+     *  full class name.
+     *
+     *  @param name The partial name of the class to be loaded.
+     *  @param currentClass The current class to be used as the scope.
+     *   If it is <tt>null</tt>, current class is not considered.
+     *  @return The class loaded with the given name in the scope.
+     *  @exception ClassNotFoundException If the class cannot be found.
+     *  @see #importClass(String)
+     *  @see #importPackage(String)
+     */
+    // Not supporting anonymous classes like "Class$1".
+    public Class searchForClass(StringBuffer name, Class currentClass)
+            throws ClassNotFoundException {
+        // Nested classes requires "$" separator between classes.
+        StringBuffer dollarName = 
+            new StringBuffer(name.toString().replace('.', '$'));
+
+        // Check if the name represents an array.
+        // If c == null and no exception, it means "name" is not an array class.
+        Class c = _checkArrayClass(name, true);
+
+        // Check for nested classes in the current class.
+        if (c == null)
+            c = _checkNestedClass(dollarName, currentClass);
+
+        if (c == null)
+            c = _checkFullClassName(name);
+
+        if (c == null) {
+            Iterator importedClassesIter = _importedClasses.iterator();
+            while (c == null && importedClassesIter.hasNext())
+                c = _checkClassNameWithImportClass(dollarName, 
+                        (ClassImport)importedClassesIter.next());
+        }
+
+        if (c == null && _packageName != null)
+            c = _checkClassNameWithImportPackage(dollarName, _packageName);
+
+        if (c == null) {
+            Iterator importedPackagesIter = _importedPackages.iterator();
+            while (c == null && importedPackagesIter.hasNext())
+                c = _checkClassNameWithImportPackage(dollarName, 
+                        (String)importedPackagesIter.next());
+        }
+
+        if (c == null)
+            c = _checkClassNameWithImportPackage(dollarName, "java.lang");
+
+        // If still no success, fall back to tries by replacing "."'s
+        // with "$"'s.
+        if (c == null) {
+            int lastDotPos = name.length();
+            while (c == null && lastDotPos != -1) {
+                lastDotPos = name.lastIndexOf(".", lastDotPos);
+                if (lastDotPos >= 0) {
+                    name.setCharAt(lastDotPos, '$');
+                    try {
+                        c = super.loadClass(name.toString());
+                    } catch (ClassNotFoundException e) {
+                    } catch (NoClassDefFoundError e) {
+                    }
+                }
+            }
+        }
+
+        if (c == null)
+            throw new ClassNotFoundException(name.toString());
+        else
+            return c;
+    }
+
     /** Set the current class within which class names are to be
      *  solved with {@link #loadClass(String)}. This class can be
      *  an interface, a nested class, and an anonymous class
      *  (created at instantiation), as well as any normal class.
      *  <p>
-     *  This function is the same as call <tt>setCurrentClass(c,
+     *  This function is the same as call <tt>setCurrentClass(c, 
      *  true)</tt>.
      *
      *  @param c The class to be set as the current class. When it
@@ -257,9 +386,10 @@ public class LocalClassLoader extends URLClassLoader {
      *  @param resolve Whether {@link #resolveClass(Class)} should be
      *   called.
      *  @return The class loaded with the given name in the scope.
-     *  @throws ClassNotFoundException If the class cannot be found.
+     *  @exception ClassNotFoundException If the class cannot be found.
      */
-    protected Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
+    protected Class loadClass(String name, boolean resolve)
+            throws ClassNotFoundException {
         if (_loadedClasses.containsKey(name))
             return (Class)_loadedClasses.get(name);
 
@@ -284,131 +414,6 @@ public class LocalClassLoader extends URLClassLoader {
         }
     }
 
-    /** Search for a class with its partial name in the current class
-     *  or current package.
-     *
-     *  @param name The partial name of the class to be loaded.
-     *  @return The class loaded with the given name in the scope.
-     *  @throws ClassNotFoundException Thrown when the class cannot be found.
-     *  @see #searchForClass(StringBuffer, Class)
-     */
-    protected Class searchForClass(String name) throws ClassNotFoundException {
-        return searchForClass(new StringBuffer(name), _currentClass);
-    }
-
-    /** Search for a class with a partial name in the given scope.
-     *  It is called in {@link #loadClass(String, boolean)}.
-     *  <p>
-     *  It takes the following steps in this name resolving:
-     *  <ol>
-     *    <li>Check if the name represents an array. An array type
-     *      is treated as a special class in Java. The name of an
-     *      array is either like "<tt>char[]</tt>" (source
-     *      representation) or like "<tt>[C</tt>" (JVM internal
-     *      representation). If this is the case, it recursively
-     *      calls itself with the type of the elements in the array
-     *      (if not primitive), and then loads the array class and
-     *      return.
-     *    </li>
-     *    <li>Check if the name corresponds to a nested class in
-     *      the current class. In JVM representation, nested class
-     *      names are separated with "$" from their containers. If
-     *      so, the nested class is returned.
-     *    </li>
-     *    <li>Check if the name is already a full class name, e.g.,
-     *      "<tt>java.lang.Class</tt>". If so, the class is loaded
-     *      with {@link URLClassLoader#loadClass(String, boolean)}
-     *      and returned. Nested classes (case 2) take precedence
-     *      over this full name resolution.
-     *    </li>
-     *    <li>For every class explicitly imported with {@link
-     *      #importClass(String)}, check if its simple class name
-     *      (the last part) is the same as the first part of the
-     *      class name to be searched for. If so, the imported
-     *      class is loaded, and if necessary, its nested classes
-     *      are searched.
-     *    </li>
-     *    <li>Check if the partial name is relative to the current
-     *      package.
-     *    </li>
-     *    <li>Check if the partial name is relative to any package
-     *      explicitly imported with {@link #importPackage(String)}.
-     *      The implicitly imported package "<tt>java.lang</tt>" is
-     *      also searched.
-     *    </li>
-     *  </ol>
-     *  <p>
-     *  This function is considerably slower than {@link #loadClass(String)},
-     *  which does not do a search but takes the given name for the
-     *  full class name.
-     *
-     *  @param name The partial name of the class to be loaded.
-     *  @param currentClass The current class to be used as the scope.
-     *   If it is <tt>null</tt>, current class is not considered.
-     *  @return The class loaded with the given name in the scope.
-     *  @throws ClassNotFoundException Thrown when the class cannot be found.
-     *  @see #importClass(String)
-     *  @see #importPackage(String)
-     */
-    // Not supporting anonymous classes like "Class$1".
-    protected Class searchForClass(StringBuffer name, Class currentClass)
-            throws ClassNotFoundException {
-        // Nested classes requires "$" separator between classes.
-        StringBuffer dollarName = new StringBuffer(name.toString().replace('.', '$'));
-
-        // Check if the name represents an array.
-        // If c == null and no exception, it means "name" is not an array class.
-        Class c = _checkArrayClass(name, true);
-
-        // Check for nested classes in the current class.
-        if (c == null)
-            c = _checkNestedClass(dollarName, currentClass);
-
-        if (c == null)
-            c = _checkFullClassName(name);
-
-        if (c == null) {
-            Iterator importedClassesIter = _importedClasses.iterator();
-            while (c == null && importedClassesIter.hasNext())
-                c = _checkClassNameWithImportClass(dollarName,
-                        (ClassImport)importedClassesIter.next());
-        }
-
-        if (c == null && _packageName != null)
-            c = _checkClassNameWithImportPackage(dollarName, _packageName);
-
-        if (c == null) {
-            Iterator importedPackagesIter = _importedPackages.iterator();
-            while (c == null && importedPackagesIter.hasNext())
-                c = _checkClassNameWithImportPackage(dollarName,
-                        (String)importedPackagesIter.next());
-        }
-
-        if (c == null)
-            c = _checkClassNameWithImportPackage(dollarName, "java.lang");
-
-        // If still no success, fall back to tries by replacing "."'s with "$"'s.
-        if (c == null) {
-            int lastDotPos = name.length();
-            while (c == null && lastDotPos != -1) {
-                lastDotPos = name.lastIndexOf(".", lastDotPos);
-                if (lastDotPos >= 0) {
-                    name.setCharAt(lastDotPos, '$');
-                    try {
-                        c = super.loadClass(name.toString());
-                    } catch (ClassNotFoundException e) {
-                    } catch (NoClassDefFoundError e) {
-                    }
-                }
-            }
-        }
-
-        if (c == null)
-            throw new ClassNotFoundException(name.toString());
-        else
-            return c;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
 
@@ -421,13 +426,14 @@ public class LocalClassLoader extends URLClassLoader {
      *
      *  @param name The name of the class to be loaded.
      *  @param search If <tt>true</tt>, the class for elements in the
-     *   array is searched for with {@link #searchForClass(StringBuffer, Class)};
+     *   array is searched for with {@link
+     *   #searchForClass(StringBuffer, Class)};
      *   otherwise, the name of the class for elements is considered
      *   a complete class name, and {@link #loadClass(String)} is used
      *   to load it.
      *  @return The class loaded if not <tt>null</tt>. If the name does
      *   not refer to an array class, the return value is <tt>null</tt>.
-     *  @throws ClassNotFoundException Thrown when the name refers to
+     *  @exception ClassNotFoundException If the name refers to
      *   an array class but the class cannot be loaded.
      *  @see #searchForClass(StringBuffer, Class)
      */
@@ -450,7 +456,8 @@ public class LocalClassLoader extends URLClassLoader {
         } else if (name.charAt(nameEnd) == ']') {
             while (name.charAt(nameEnd) == ']')
                 nameEnd -= 2;   // Remove "[]".
-            isPrimitiveArray = Type.isPrimitive(name.substring(nameStart, nameEnd + 1));
+            isPrimitiveArray = 
+                Type.isPrimitive(name.substring(nameStart, nameEnd + 1));
         } else
             return null;    // Not array.
 
@@ -462,8 +469,12 @@ public class LocalClassLoader extends URLClassLoader {
         } else {
             // Try to load the object class.
             Class c = search ?
-                    searchForClass(new StringBuffer(name.substring(nameStart, nameEnd + 1)), _currentClass) :
-                    super.loadClass(name.substring(nameStart, nameEnd + 1), true);
+                    searchForClass(
+                            new StringBuffer(
+                                    name.substring(nameStart, nameEnd + 1)), 
+                                    _currentClass) :
+                    super.loadClass(name.substring(nameStart, nameEnd + 1), 
+                            true);
             name.delete(nameStart, nameEnd + 1);
             name.insert(nameStart, c.getName());
 
@@ -483,16 +494,17 @@ public class LocalClassLoader extends URLClassLoader {
      *   enclosing class.
      *  @param importedClass The data structure that specifies an imported
      *   class.
-     *  @return The class loaded if found. If no such class is found,
+     *  @return The class loaded if found. If no such class is found, 
      *   <tt>null</tt> is returned.
      */
-    private Class _checkClassNameWithImportClass(StringBuffer dollarName, ClassImport importedClass) {
+    private Class _checkClassNameWithImportClass(StringBuffer dollarName, 
+            ClassImport importedClass) {
         int dotPos = dollarName.indexOf("$");
         if (dotPos == -1)
             dotPos = dollarName.length();
-        if (importedClass.className.equals(dollarName.substring(0, dotPos))) {
+        if (importedClass._className.equals(dollarName.substring(0, dotPos))) {
             dollarName.insert(0, '.');
-            dollarName.insert(0, importedClass.packageName);
+            dollarName.insert(0, importedClass._packageName);
             try {
                 String className = dollarName.toString();
                 Class c = super.loadClass(className);
@@ -503,7 +515,7 @@ public class LocalClassLoader extends URLClassLoader {
             } catch (NoClassDefFoundError e) {
                 return null;
             } finally {
-                dollarName.delete(0, importedClass.packageName.length() + 1);
+                dollarName.delete(0, importedClass._packageName.length() + 1);
             }
         }
         else
@@ -519,10 +531,11 @@ public class LocalClassLoader extends URLClassLoader {
      *   enclosing class.
      *  @param packageName The name of the package (may contain ".") in
      *   which the class is searched for.
-     *  @return The class loaded if found. If no such class is found,
+     *  @return The class loaded if found. If no such class is found, 
      *   <tt>null</tt> is returned.
      */
-    private Class _checkClassNameWithImportPackage(StringBuffer dollarName, String packageName) {
+    private Class _checkClassNameWithImportPackage(StringBuffer dollarName, 
+            String packageName) {
         dollarName.insert(0, '.');
         dollarName.insert(0, packageName);
         try {
@@ -544,7 +557,7 @@ public class LocalClassLoader extends URLClassLoader {
      *  its postfix, separated with a ".".
      *
      *  @param name The name of the class to be loaded.
-     *  @return The class loaded if found. If no such class is found,
+     *  @return The class loaded if found. If no such class is found, 
      *   <tt>null</tt> is returned.
      */
     private Class _checkFullClassName(StringBuffer name) {
@@ -579,7 +592,8 @@ public class LocalClassLoader extends URLClassLoader {
      *   error occurs while loading, the return value is <tt>null</tt>.
      *  @see #searchForClass(StringBuffer, boolean, Class)
      */
-    private Class _checkNestedClass(StringBuffer dollarName, Class currentClass) {
+    private Class _checkNestedClass(StringBuffer dollarName, 
+            Class currentClass) {
         if (currentClass == null)
             return null;
 
@@ -623,7 +637,7 @@ public class LocalClassLoader extends URLClassLoader {
                 workList.add(superClass);
 
             Class[] interfaces = c.getInterfaces();
-            for (int i=0; i<interfaces.length; i++)
+            for (int i = 0; i < interfaces.length; i++)
                 if (!handledSet.contains(interfaces[i]))
                     workList.add(interfaces[i]);
         }
@@ -643,7 +657,7 @@ public class LocalClassLoader extends URLClassLoader {
             return new URL[0];
 
         URL[] urls = new URL[strings.length];
-        for (int i=0; i<strings.length; i++)
+        for (int i = 0; i < strings.length; i++)
             try {
                 urls[i] = new File(strings[i]).toURL();
             } catch (MalformedURLException e) {
@@ -670,23 +684,23 @@ public class LocalClassLoader extends URLClassLoader {
          *   it.
          */
         protected ClassImport(String packageName, String className) {
-            this.packageName = packageName;
-            this.className = className;
+            _packageName = packageName;
+            _className = className;
         }
 
         /** The package name of the importation.
          */
-        protected String packageName;
+        protected String _packageName;
 
         /** The simple class name of the importation.
          */
-        protected String className;
+        protected String _className;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private fields                     ////
 
-    /** The list of imported packages. Each element is a {@link String},
+    /** The list of imported packages. Each element is a {@link String}, 
      *  possibly with "." in it.
      */
     private List _importedPackages = new LinkedList();
