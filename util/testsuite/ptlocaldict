@@ -459,6 +459,8 @@ dfm
 doc
 docs
 doctoc
+downsample
+downsamples
 downsampled
 downsampling
 dtd
@@ -644,6 +646,9 @@ unimorphic
 uninterruptable
 upcasting
 uppercase
+upsample
+upsamples
+upsampling
 util
 vergil
 vocoder
