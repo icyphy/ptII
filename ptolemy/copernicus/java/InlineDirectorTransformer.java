@@ -45,7 +45,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.StringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
