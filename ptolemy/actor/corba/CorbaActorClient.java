@@ -40,7 +40,7 @@ import java.util.Enumeration;
 import java.util.StringTokenizer;
 import org.omg.CORBA.*;
 import org.omg.CosNaming.*;
-import ptolemy.actor.corba.CorbaActor.*;
+import ptolemy.actor.corba.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CorbaActorClient
@@ -206,7 +206,7 @@ public class CorbaActorClient extends TypedAtomicActor {
             NameComponent path[] = {namecomp};
             // locate the remote actor
             _remoteActor = 
-                ptolemy.actor.corba.CorbaActor.CorbaActorHelper.narrow(
+                ptolemy.actor.corba.util.CorbaActorHelper.narrow(
                         ncRef.resolve(path));
         } catch (Exception ex) {
             throw new IllegalActionException(this,
