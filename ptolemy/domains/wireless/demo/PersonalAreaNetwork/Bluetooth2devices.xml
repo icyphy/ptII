@@ -4,7 +4,7 @@
 <entity name="Bluetooth2devices" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 660]">
     </property>
@@ -24,8 +24,6 @@
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="randomizeLocations" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="range" class="ptolemy.data.expr.Parameter" value="{{0.0, 500.0}, {0.0, 500.0}}">
         </property>
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
@@ -122,14 +120,14 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 250.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{408.5, 330.0}">
+    </property>
     <entity name="RadioChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=200}">
         </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.05">
-        </property>
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
-        </property>
-        <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 35.0">
         </property>
@@ -137,10 +135,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
     <entity name="BluetoothDevice1_MasterRole" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="box1" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-                </property>
-                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
-                </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
                 </property>
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
@@ -150,8 +144,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.09, 0.1, 0.9, 0.6}">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
                 </property>
                 <property name="rounding" class="ptolemy.data.expr.Parameter" value="0.8">
                 </property>
@@ -187,10 +179,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range = range}">
             </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 440.0">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -199,26 +187,13 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0}">
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
             </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="-60.0, 380.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 325.0">
@@ -244,39 +219,14 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </port>
         </entity>
         <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2, 3}">
-            </property>
-            <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 320.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 430.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="control" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
             <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="==">
@@ -298,20 +248,9 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
                 </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 460.0">
             </property>
-            <port name="left" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="right" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Const2" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="50">
@@ -325,13 +264,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 395.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Const3" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="3">
@@ -345,29 +277,10 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 510.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 460.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="control" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Comparator2" class="ptolemy.actor.lib.logic.Comparator">
             <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
@@ -384,25 +297,12 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 475.0">
             </property>
-            <port name="left" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="right" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="0.0, 395.0">
@@ -455,10 +355,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
     <entity name="BluetoothSlaveRole" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="circle1" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-                </property>
-                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
-                </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.3, 0.1, 1.0}">
                 </property>
                 <property name="width" class="ptolemy.data.expr.Parameter" value="35">
@@ -469,25 +365,15 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
                 </property>
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.1, 0.0, 0.8, 0.4}">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
-                </property>
             </property>
             <property name="circle2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-                </property>
-                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
-                </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.7, 0.1, 1.0}">
                 </property>
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                 </property>
                 <property name="height" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
-                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.1, 0.8, 0.7}">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
                 </property>
             </property>
         </property>
@@ -511,7 +397,7 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 180.0">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 660]">
         </property>
@@ -554,15 +440,15 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 460.0">
             </property>
         </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="0.5062055879335">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{341.9843749999999, 419.1746672276621}">
+        </property>
         <port name="port" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range = range}">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="-365.0, 135.0">
             </property>
@@ -597,30 +483,12 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
         <entity name="Hold mode" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="725.0, 170.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="control" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="delay">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 65.0">
             </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
             <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="==">
@@ -637,29 +505,14 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, -90.0">
             </property>
-            <port name="left" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="right" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <doc>Create a constant sequence</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -669,13 +522,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, -100.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Comparator2" class="ptolemy.actor.lib.logic.Comparator">
             <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="==">
@@ -692,25 +538,12 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 25.0">
             </property>
-            <port name="left" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="right" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Const2" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="2">
@@ -724,13 +557,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 15.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Comparator3" class="ptolemy.actor.lib.logic.Comparator">
             <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="==">
@@ -747,25 +573,12 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 120.0">
             </property>
-            <port name="left" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="right" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Const3" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="3">
@@ -779,29 +592,10 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 95.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 115.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="control" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Comparator4" class="ptolemy.actor.lib.logic.Comparator">
             <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="==">
@@ -818,25 +612,12 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="-70.0, 10.0">
             </property>
-            <port name="left" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="right" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Expression3" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="t">
@@ -874,13 +655,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="-180.0, 70.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Comparator5" class="ptolemy.actor.lib.logic.Comparator">
             <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="==">
@@ -897,25 +671,12 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="-65.0, 80.0">
             </property>
-            <port name="left" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="right" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="or">
@@ -937,50 +698,17 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                 </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 45.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Output if in sniff mode" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 285.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="control" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Output if in Data mode" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="660.0, 430.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="control" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Expression4" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="delay">
@@ -1007,20 +735,10 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </port>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={543, 363, 292, 229}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={861, 378, 292, 229}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="1125.0, 220.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Const5" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;sniff mode&quot;">
@@ -1034,67 +752,19 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 220.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="BooleanSwitch5" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="775.0, 230.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="control" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="-435.0, -80.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="BooleanSwitch6" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="900.0, 85.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="control" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Const6" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="0">
@@ -1108,29 +778,12 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="735.0, 65.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={561, 378, 292, 229}, maximized=false}">
             </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="-200.0, 290.0">
             </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={843, 364, 292, 229}}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="-175.0, 285.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Const7" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Hold mode&quot;">
@@ -1144,13 +797,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="685.0, -145.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Const8" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Data mode&quot;">
@@ -1164,29 +810,10 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 415.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="955.0, 140.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="control" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1213,8 +840,6 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
             </vertex>
         </relation>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation19" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1257,6 +882,8 @@ to it via the bluetooth sensor nodes in the area.</text></svg></configure>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="port" relation="relation22"/>
         <link port="RD.input" relation="relation22"/>
