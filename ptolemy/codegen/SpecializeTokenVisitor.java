@@ -147,15 +147,15 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
                 // Replace the declaration type with "Token" as an indication
                 // for later passes.
-                //declToTokenTypeMap.put(typedDecl,
-                //        PtolemyTypeIdentifier.TOKEN_TYPE.clone());
+                declToTokenTypeMap.put(typedDecl,
+                        PtolemyTypeIdentifier.TOKEN_TYPE.clone());
 
 		// FIXME: This is totally wrong
-                System.err.println("Warning: SpecializeTokenVisitor" 
-				   + ".specializeTokens(): defaulting to " 
-				   + "integer");
-                declToTokenTypeMap.put(typedDecl,
-                        PtolemyTypeIdentifier.INT_TOKEN_TYPE.clone());
+                //System.err.println("Warning: SpecializeTokenVisitor" 
+		//		   + ".specializeTokens(): defaulting to " 
+		//		   + "integer");
+                //declToTokenTypeMap.put(typedDecl,
+                //        PtolemyTypeIdentifier.INT_TOKEN_TYPE.clone());
             } else {
                 TypeNameNode typeNode =
                     (TypeNameNode) value.getDefType().clone();
