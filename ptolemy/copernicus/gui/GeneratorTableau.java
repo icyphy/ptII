@@ -59,9 +59,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringUtilities;
 
+import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -83,6 +86,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import java.util.Iterator;
@@ -168,10 +172,6 @@ public class GeneratorTableau extends Tableau {
 		_save();
 	    }
 
-            JPanel component = new JPanel();
-            component.setLayout(new BoxLayout(component, BoxLayout.X_AXIS));
-
-	    
             // Caveats panel.
             JPanel caveatsPanel = new JPanel();
             caveatsPanel.setBorder(
@@ -209,16 +209,11 @@ public class GeneratorTableau extends Tableau {
 
             JPanel left = new JPanel();
             left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
-
-            //component.add(caveatsPanel);
             left.add(caveatsPanel);
 
             // Panel for push buttons.
             JPanel buttonPanel = new JPanel();
-            //buttonPanel.setLayout(new GridLayout(7, 1));
             buttonPanel.setLayout(new GridLayout(1, 4));
-            //buttonPanel.setBorder(
-            //        BorderFactory.createEmptyBorder(2, 0, 2, 0));
 
             // Button panel first.
             JButton parametersButton = new JButton("Parameters");
@@ -227,28 +222,19 @@ public class GeneratorTableau extends Tableau {
 				+ "display a summary.");
             buttonPanel.add(parametersButton);
 
-            //buttonPanel.add(Box.createVerticalStrut(5));
-
             JButton goButton = new JButton("Generate");
             goButton.setToolTipText("Generate code");
             buttonPanel.add(goButton);
-
-            //buttonPanel.add(Box.createVerticalStrut(5));
 
             JButton stopButton = new JButton("Cancel");
             stopButton.setToolTipText("Terminate executing processes");
             buttonPanel.add(stopButton);
 
-            //buttonPanel.add(Box.createVerticalStrut(5));
             JButton clearButton = new JButton("Clear");
             clearButton.setToolTipText("Clear Log");
             buttonPanel.add(clearButton);
 
-            //controlPanel.add(buttonPanel);
 	    left.add(buttonPanel);
-
-            // Add space right of the buttons
-            //controlPanel.add(Box.createHorizontalStrut(20));
 
             // Next, put in a panel to configure the code generator.
             // If the model contains an attribute with tableau
@@ -269,25 +255,30 @@ public class GeneratorTableau extends Tableau {
             Configurer configurer = new Configurer(attribute);
             final GeneratorAttribute options = attribute;
 
-
             JPanel controlPanel = new JPanel();
             controlPanel.add(configurer);
-	    JScrollPane scrollPane = new JScrollPane(controlPanel);
-	    left.add(scrollPane, BorderLayout.CENTER);
-            //component.add(controlPanel);
-	    //left.add(controlPanel);
+	    JScrollPane scrollPane =
+		new JScrollPane(controlPanel);
 
-            // Add space under the control panel.
-	    //component.add(Box.createVerticalStrut(10));
-	    component.add(left);
+	    left.add(scrollPane, BorderLayout.CENTER);
 
 	    // Create a JTextAreaExec without Start and Cancel buttons.
 	    final JTextAreaExec exec =
-		new JTextAreaExec("Code Generator Commands", false);
-	    component.add(exec);
+	    new JTextAreaExec("Code Generator Commands", false);
 
-            getContentPane().add(component, BorderLayout.CENTER);
+	    JSplitPane splitPane =
+		new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+			       left, exec);
+	    splitPane.setOneTouchExpandable(true);
 
+	    // Adjust the divider so that the control panel does not
+	    // have a horizontal scrollbar.
+	    Dimension preferred = left.getPreferredSize();
+	    splitPane.setDividerLocation((int)(preferred.width + 20));
+
+            getContentPane().add(splitPane, BorderLayout.CENTER);
+
+	    // ActionListeners for the buttons
             parametersButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
 			try {
@@ -594,7 +585,8 @@ public class GeneratorTableau extends Tableau {
 	    results.add(Copernicus.commandToRun(generatorAttribute));
 	} catch (Exception ex) {
 	    throw new InternalErrorException(model, ex,
-					     "Failed generate command strings");
+					     "Failed to generate "
+					     + "command strings");
 	}
 	return results;
     }

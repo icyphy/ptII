@@ -33,6 +33,7 @@ package ptolemy.copernicus.kernel;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
@@ -57,6 +58,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -208,6 +210,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
     public void sanityCheckAndUpdateParameters(String modelPathOrURL)
 	throws IllegalActionException, NameDuplicationException {
 
+	// If necessary, initialize.
 	if (!_initialized) {
 	    initialize();
 	}
@@ -296,6 +299,9 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 					       + "mkdirs() failed");
 	    }
 	}
+
+	_updateNecessaryClassPath();
+
     }
 
     /** Return a String representation of this object. */
@@ -439,6 +445,103 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
         }
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Update the value of the necessaryClassPath, where for each
+    // element in necessaryClasses, we look for that class, and append
+    // the jar file where it was found.  This is only necessary for
+    // Java Web Start and other installations that are shipped as
+    // separate jar files
+    private void _updateNecessaryClassPath() throws IllegalActionException {
+
+	ArrayToken necessaryClassesToken =
+	    (ArrayToken)
+	     ((Parameter)getAttribute("necessaryClasses"))
+	     .getToken();
+	     
+
+	List classPathList = new LinkedList();
+	for(int i = 0; i < necessaryClassesToken.length(); i++) {
+	    String necessaryClass = 
+		((StringToken)necessaryClassesToken.getElement(i))
+		.stringValue();
+
+	    String necessaryResource =
+		StringUtilities.substitute(necessaryClass, ".", "/")
+		+ ".class";
+
+	    URL necessaryURL = Thread.currentThread()
+		.getContextClassLoader().getResource(necessaryResource);
+
+	    if (necessaryURL != null) {
+		String resourceResults = necessaryURL.getFile();
+
+		// Strip off the file:/ and the necessaryResource.
+		if (resourceResults.startsWith("file:/")) {
+		    resourceResults = resourceResults.substring(6);
+		}
+
+		// Strip off the name of the resource we were looking for
+		// so that we are left with the directory or jar file 
+		// it is in
+		resourceResults =
+		    resourceResults.substring(0,resourceResults.length()-
+					      necessaryResource.length());
+
+		// Strip off the file:/
+		if (resourceResults.startsWith("file:/")) {
+		    resourceResults = resourceResults.substring(6);
+		}
+
+		// Strip off the trailing !
+		if (resourceResults.endsWith("!/")) {
+		    resourceResults =
+			resourceResults.substring(0,
+						  resourceResults.length()-2);
+		}
+
+
+		// Unfortunately, under Windows, URL.getFile() may
+		// return things like /c:/ptII, so we create a new
+		// File and get its path, which will return c:\ptII
+		File resourceFile = new File(resourceResults);
+
+		// Convert backslashes 
+		String sanitizedResourceName =
+		    StringUtilities.substitute(resourceFile.getPath(),
+					       "\\", "/");
+		if (!classPathList.contains(sanitizedResourceName)) {
+		    classPathList.add(sanitizedResourceName);
+		}
+	    }
+	}
+
+	// Convert the list of directories to a classpath with separators.
+
+	// We could use property("path.separator") here, but if the user
+	// changes the classPathSeparator parameter, then we better use it.
+	String classPathSeparator =
+	    ((StringToken)
+	     ((Parameter)getAttribute("classPathSeparator"))
+	     .getToken()).stringValue();
+
+
+	StringBuffer necessaryClassPath = new StringBuffer();
+	
+	Iterator classPaths = classPathList.iterator();
+	while (classPaths.hasNext()) {
+	    if (necessaryClassPath.length() > 0) {
+		necessaryClassPath.append(classPathSeparator);
+	    }
+	    necessaryClassPath.append(classPaths.next());
+	} 
+
+	((Parameter)getAttribute("necessaryClassPath"))
+	    .setExpression("\"" + necessaryClassPath.toString()
+			   + "\"");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

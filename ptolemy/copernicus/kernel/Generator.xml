@@ -142,9 +142,21 @@ $Id$
 
      <property name="classPath" 
                class="ptolemy.data.expr.Parameter"
-	       value="ptIIUserDirectory + classPathSeparator + property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses"
+	       value="ptIIUserDirectory + classPathSeparator + property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses + classPathSeparator + necessaryClassPath"
 	       >
 	       <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
+     </property>
+
+     <property name="necessaryClasses" 
+               class="ptolemy.data.expr.Parameter"
+	       value="{&quot;ptolemy.domains.sdf.kernel.SDFScheduler&quot;,&quot;ptolemy.copernicus.java.Main&quot;,&quot;ptolemy.kernel.util.NamedObj&quot;,&quot;soot.gui.ICompilationListener&quot;,&quot;jasmin.Main&quot;}">
+	       <doc>An array of Strings, where each element names a class that needs to be present in the classpath </doc>
+     </property>
+
+     <property name="necessaryClassPath" 
+               class="ptolemy.data.expr.Parameter"
+	       value="ptII + &quot;ptolemy/domains/sdf/sdf.jar&quot;" >
+	       <doc>Class path that refers to necessary classes. Derived from necessaryClasses</doc>
      </property>
 
      <property name="classPathSeparator" 

@@ -1,2 +1,9 @@
+# This file contains the commmand template that is preprocessed
+# by ptolemy.copernicus.kernel.Copernicus to create the command
+# that will run the generated code.
+#
+# @author Christopher Hylands
+# @version $Id$
+#
 appletviewer
-	"@root@/@targetPath@/@model@.htm"
+	"@ptIIUserDirectory@/@targetPath@/@modelName@.htm"
