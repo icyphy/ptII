@@ -458,29 +458,36 @@ public class GenericJNIActor extends TypedAtomicActor {
 					     + tab[0]);
 	}
 
+        // FIXME: This adds to the path everytime the actor is initialized
+        // FIXME: This does not work for me anyway.  I think the
+        // java.library.path needs to be set by the environment before
+        // the java process starts or else it needs to be set with
+        // -Djava.library.path when java is invoked
+
         // Add the value of libraryDirectory to the java.library.path
         // First, look relative to the current directory (user.dir)
         // Second, look relative to $PTII
-        System.setProperty("java.library.path",
-                StringUtilities.getProperty("user.dir")
-                + File.separator
-                + libraryDirectoryValue
-                + File.pathSeparator
 
-                + StringUtilities
-                .getProperty("ptolemy.ptII.dir")
-                + File.separator
-                + libraryDirectoryValue
-                + File.pathSeparator
+//         System.setProperty("java.library.path",
+//                 StringUtilities.getProperty("user.dir")
+//                 + File.separator
+//                 + libraryDirectoryValue
+//                 + File.pathSeparator
 
-                + StringUtilities.getProperty("user.dir")
-                + File.separator
-                + "jni"
-                + File.separator
-                + "jnitestDeux"
-                + File.pathSeparator
+//                 + StringUtilities
+//                 .getProperty("ptolemy.ptII.dir")
+//                 + File.separator
+//                 + libraryDirectoryValue
+//                 + File.pathSeparator
 
-                + System.getProperty("java.library.path"));
+//                 + StringUtilities.getProperty("user.dir")
+//                 + File.separator
+//                 + "jni"
+//                 + File.separator
+//                 + "jnitestDeux"
+//                 + File.pathSeparator
+
+//                 + System.getProperty("java.library.path"));
 
         _methods = null;
 
@@ -576,15 +583,20 @@ public class GenericJNIActor extends TypedAtomicActor {
 
                 throw new Exception("Class '" + _class
                         + "' cannot be instantiated.\n"
-                        + "Be sure that the library "
+                        + "If you are running under Windows, "
+                        + "be sure that the directory containing the library "
                         + "is in your PATH.\n"
+                        + "If you are running under Solaris, "
+                        + "be sure that the directory containing the library "
+                        + "is in your LD_LIBRARY_PATH and that the library "
+                        + "name begin with 'lib' and end with '.so'.\n"
                         + "You may need to exit, set your "
-                        + "path to include the directory "
-                        + "that contains the dll and "
+                        + "PATH or LD_LIBRARY_PATH to include the directory "
+                        + "that contains the shared library and "
                         + "restart.\n"
                         + "For example, under Windows "
                         + "in a Cygwin bash shell:\n"
-                        + "PATH=c:/ptII/jni/dll\n"
+                        + "PATH=/cygdrive/c/ptII/jni/dll:${PATH}\n"
                         + "export PATH\n"
                         + "vergil -jni foo.xml\n"
                         + "A common error is that "
