@@ -1,12 +1,8 @@
 /*******************************************************************
 Dummy C code for overridden method 
-<java.lang.System: void initializeSystemClass()>
-
-Contains initializations needed to get System.out.println() and other
-needed functionality to be supported.
+<java.lang.Throwable: java.lang.String toString()>
 
 Copyright (c) 2001-2003 The University of Maryland.
-
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the above
@@ -32,9 +28,21 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @version $Id$
 */
 
-i806420721_PrintStream out;
-out = malloc (sizeof (struct i806420721_PrintStream));
-out->class = &Vi806420721_PrintStream;
-Vi1199917187_System.classvars.f0857384033_out = out;
-Vi1199917187_System.classvars.f0857393738_err = out;
+/* FIXME: Does not display error message thrown. Need to enable
+ * dependencies of native methods to do so.
+*/
+
+char* name = instance->class->name;
+int length = strlen(name) + 1; /* Because   of trailing \0 */
+i1195259493_String string = malloc(sizeof(struct i1195259493_String));
+string->class = &Vi1195259493_String;
+string->f01486352994_count = length;
+string->f1860107401_value = pccg_array_allocate(
+        (PCCG_CLASS_PTR)malloc(sizeof(PCCG_ARRAY_char_elem)), 
+        sizeof(char), 1, 1, length);
+
+strcpy(string->f1860107401_value->array_data, name);
+
+return string;
+
 
