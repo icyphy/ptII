@@ -560,6 +560,7 @@ public class Manager extends NamedObj implements Runnable {
 	if (_state == IDLE) {
 	    try {
 		_processChangeRequests();
+                _setState(IDLE);
 	    } catch (IllegalActionException e) {
 		// FIXME: Don't catch. requestChange() should
 		// throw IllegalActionException. I am not making
