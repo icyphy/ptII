@@ -25,9 +25,6 @@
         </property>
       </entity>
     </entity>
-    <entity name="Entity Library" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.moml.EntityLibrary"/>
-    </entity>
     <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
     <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
   </entity>
@@ -67,18 +64,20 @@
     <!-- Default utilities library. -->
     <class name="utilities" extends="ptolemy.moml.EntityLibrary">
       <configure>
+        <?moml
           <group>
     <!-- Blank composite actor. -->
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/> 
     <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor"/> 
-    <entity name="entity library" class="ptolemy.moml.EntityLibrary"/> 
           </group>
+        ?>
       </configure>
     </class>
 
     <!-- Default director library. -->
     <class name="director library" extends="ptolemy.moml.EntityLibrary">
       <configure>
+        <?moml
           <group>
 
       <doc>default director library</doc>
@@ -124,13 +123,15 @@
       <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
 
           </group>
+        ?>
       </configure>
     </class>
 
     <!-- Default entity library to appear in the library browser. -->
     <class name="actor library" extends="ptolemy.moml.EntityLibrary">
       <configure>
-        <group>
+        <?moml
+          <group>
             <doc>default entity library</doc>
             <input source="../actor/lib/sources.xml"/>
             <input source="../actor/lib/sinks.xml"/>
@@ -143,6 +144,7 @@
             <input source="../domains/ct/lib/ctentities.xml"/>
             <input source="../domains/de/lib/deentities.xml"/>
           </group>
+        ?>
       </configure>
     </class>
 
@@ -150,10 +152,12 @@
     <!-- It depends on the 3D graphics package of Java being present. -->
     <class name="Graphics" extends="ptolemy.moml.EntityLibrary">
       <configure>
+        <?moml
           <group>
             <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector"/>
             <input source="../domains/gr/lib/grentities.xml"/>
           </group>
+        ?>
       </configure>
     </class>
   </entity>
