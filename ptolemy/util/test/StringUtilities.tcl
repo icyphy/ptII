@@ -81,3 +81,59 @@ test StringUtilities-1.5 {substitution checks} {
 test StringUtilities-1.6 {substitution checks} {
     java::call ptolemy.util.StringUtilities escapeForXML "\"My n&me is <&rf>\""
 } {&quot;My n&amp;me is &lt;&amp;rf&gt;&quot;}
+
+test StringUtilities-2.0 {abbreviate short string} {
+    java::call ptolemy.util.StringUtilities abbreviate "short string"
+} {short string}
+
+test StringUtilities-2.1 {abbreviate long string} {
+    java::call ptolemy.util.StringUtilities abbreviate \
+	"This string is long, and should be abbreviated, it is more than 80 characters long"
+} {This string is long, and should be ab. . .ed, it is more than 80 characters long}
+
+
+test StringUtilities-2.2 {abbreviate null string} {
+    java::call ptolemy.util.StringUtilities abbreviate [java::null]
+} {<Unnamed>}
+
+test StringUtilities-3.1 {create a preferences directory} {
+    set dir [java::call ptolemy.util.StringUtilities preferencesDirectory]
+    file isdirectory $dir	
+} {1}
+
+
+test StringUtilities-4.1 {split short string} {
+    java::call ptolemy.util.StringUtilities split "short string"
+} {short string}
+
+test StringUtilities-4.2 {split long string} {
+    java::call ptolemy.util.StringUtilities split \
+	"This string is long, and should be abbreviated, it is more than 80 characters long, is it not?"
+} {This string is long, and should be abbreviated, it is more than 80 characters l
+ng, is it not?}
+
+test StringUtilities-4.3 {split with null} {
+    java::call ptolemy.util.StringUtilities split [java::null]
+} {<Unnamed>}
+
+
+test StringUtilities-6.1 {usageString} {
+    set commandOptions [java::new {java.lang.String[][]} {2 2} \
+        {{{-class}  {<classname>}} \
+        {{-<parameter name>} {<parameter value>}}}]
+
+    set commandFlags [java::new {java.lang.String[]} {3} \
+	{{-help} {-test} {-version}}]
+	
+    java::call ptolemy.util.StringUtilities usageString \
+	test \
+	$commandOptions \
+	$commandFlags
+} {Usage: test
+
+Options that take values:
+ -class <classname>
+ -<parameter name> <parameter value>
+
+Boolean flags:
+ -help -test -version}
