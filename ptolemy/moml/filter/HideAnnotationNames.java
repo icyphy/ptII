@@ -125,17 +125,12 @@ public class HideAnnotationNames implements MoMLFilter {
                 .equals(_currentAnnotationFullName)) {
             _currentlyProcessingAnnotation = false;
             _currentAnnotationFullName = null;
-            boolean markModified = true;
             try {
                 new Parameter(container, "_hideName");
+            	MoMLParser.setModified(true);
             } catch (NameDuplicationException ex) {        	
                 // Ignore, the container already has a _hideName.
                 // The Network model has this problem.
-                // However, we do not mark the object as modified.
-                markModified = false;
-            }
-            if (markModified) {
-            	MoMLParser.setModified(true);
             }
         }
         return elementName;
