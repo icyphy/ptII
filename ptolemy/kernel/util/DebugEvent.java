@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -35,11 +35,14 @@ package ptolemy.kernel.util;
 /**
 An interface for events that can be used for debugging.  These events will
 generally be subclassed to create events with more meaning (such as
-a FiringEvent).
+a FiringEvent).  Debug events should always have a useful string 
+representation, so that the generic listeners (such as StreamListener)
+can display them reasonably.
 
 @author  Steve Neuendorffer
 @version $Id$
 @see DebugListener
+@see Debuggable
 @see ptolemy.actor.FiringEvent
 */
 public interface DebugEvent {
@@ -47,7 +50,14 @@ public interface DebugEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** The source of the event.
+    /** Return the source of the event.
+     *  @return The ptolemy object that published this event.
      */
     public NamedObj getSource();
+  
+    /** Return a string representation of this event.
+     *  @return A user-readable string describing the event.
+     */
+    public String toString();
 }
+
