@@ -65,10 +65,12 @@ JSRCS = \
 	ASTPtRootNode.java \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java \
+	PassiveVariable.java \
 	Parameter.java \
 	ParameterEvent.java \
 	ParameterListener.java \
-	UtilityFunctions.java
+	UtilityFunctions.java \
+	Variable.java
 
 EXTRA_SRCS =	PtParser.jjt $(JSRCS)
 
@@ -120,25 +122,26 @@ depend:
 
 $(OPTIONAL_JSRCS): PtParser.java
 
-PtParser.java: PtParser.jj
-	@echo "This command runs JavaCC, which can be downloaded from"
-	@echo "http://www.sun.com/suntest"
-	@echo "You only need install JavaCC if you modify PtParser.jjt"
-	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
-	@echo "derived from PtParser.jjt"
-	@echo "If you don't have JavaCC, you can workaround this with"
-	@echo "   touch PtParser.jj PtParser.java"
-	CLASSPATH="$(CLASSPATH)" $(JAVACC) PtParser.jj
-
-PtParser.jj: $(EXTRA_SRCS)
-	@echo "This command runs JJTree, which is part of JavaCC"
-	@echo "JavaCC can be downloaded from http://www.sun.com/suntest"
-	@echo "You only need install JavaCC if you modify PtParser.jjt"
-	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
-	@echo "derived from PtParser.jjt"
-	@echo "If you don't have JavaCC, you can workaround this with"
-	@echo "   touch PtParser.jj PtParser.java"
-	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
+# Uncomment this to work on the parser.
+# PtParser.java: Ptarser.jj
+# 	@echo "This command runs JavaCC, which can be downloaded from"
+# 	@echo "http://www.sun.com/suntest"
+# 	@echo "You only need install JavaCC if you modify PtParser.jjt"
+# 	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
+# 	@echo "derived from PtParser.jjt"
+# 	@echo "If you don't have JavaCC, you can workaround this with"
+# 	@echo "   touch PtParser.jj PtParser.java"
+# 	CLASSPATH="$(CLASSPATH)" $(JAVACC) PtParser.jj
+# 
+# PtParser.jj: $(EXTRA_SRCS)
+# 	@echo "This command runs JJTree, which is part of JavaCC"
+# 	@echo "JavaCC can be downloaded from http://www.sun.com/suntest"
+# 	@echo "You only need install JavaCC if you modify PtParser.jjt"
+# 	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
+# 	@echo "derived from PtParser.jjt"
+# 	@echo "If you don't have JavaCC, you can workaround this with"
+# 	@echo "   touch PtParser.jj PtParser.java"
+# 	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
 
 # This rule is useful for cvs committing the derived files
 # For example:
