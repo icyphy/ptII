@@ -39,6 +39,7 @@ include $(CONFIG)
 JPACKAGE = 	plot
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
+JZIP =		$(JPACKAGE).zip
 
 DIRS = 	demo #doc test
 
@@ -63,8 +64,6 @@ JCLASS = \
 	PlotLive.class \
 	PlotLiveDemo.class \
 	PlotPoint.class
-
-JZIP = plot.zip
 
 all: jclass
 
