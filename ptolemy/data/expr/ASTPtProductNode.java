@@ -2,20 +2,22 @@
 
 package pt.data.parser;
 
+import collections.LinkedList;
+
 public class ASTPtProductNode extends ASTPtSimpleNode {
- java.util.LinkedList _tokenList = new java.util.LinkedList();
+    LinkedList _tokenList = new LinkedList();
 
     protected void _resolveValue() throws Exception {
-        if (getNumChildren() != ( _tokenList.size() +1) ) {
+        if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
             throw new ParseException();
         }
         _ptToken = _ptToken.add(_ptToken, childTokens[0]);
         int size = _tokenList.size();
         for (int i=0; i<size; i++) {
-            Token x = (Token)_tokenList.getFirst();
-            if (x.kind == MULTIPLY) {
+            Token x = (Token)_tokenList.take();
+            if (x.image.compareTo("*") == 0) {
                 _ptToken = _ptToken.multiply(_ptToken, childTokens[i+1]);
-            } else if (x.kind == DIVIDE) {
+            } else if (x.image.compareTo("/") == 0) {
                 _ptToken = _ptToken.divide(_ptToken, childTokens[i+1]);
             } else {
                 throw new Exception();

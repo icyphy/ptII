@@ -2,7 +2,7 @@
 
 package pt.data.parser;
 
-public class ASTPtUnaryNode extends SimpleNode {
+public class ASTPtUnaryNode extends ASTPtSimpleNode {
     boolean isMinus = false;
    
      protected void _resolveValue() throws Exception {

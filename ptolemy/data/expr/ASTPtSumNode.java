@@ -3,6 +3,7 @@
 package pt.data.parser;
 
 import java.util.*;
+import collections.LinkedList;
 
 public class ASTPtSumNode extends ASTPtSimpleNode {
     LinkedList _tokenList = new LinkedList();
@@ -14,10 +15,11 @@ public class ASTPtSumNode extends ASTPtSimpleNode {
         _ptToken = _ptToken.add(_ptToken, childTokens[0]);
         int size = _tokenList.size();
         for (int i=0; i<size; i++) {
-            Token x = (Token)_tokenList.getFirst();
-            if (x.kind == PLUS) {
+            // When start using 1.2 will change this
+            Token x = (Token)_tokenList.take();
+            if (x.image.compareTo("+") == 0) {
                 _ptToken = _ptToken.add(_ptToken, childTokens[i+1]);
-            } else if (x.kind == MINUS) {
+            } else if (x.image.compareTo("-") == 0) {
                 _ptToken = _ptToken.subtract(_ptToken, childTokens[i+1]);
             } else {
                 throw new Exception();
