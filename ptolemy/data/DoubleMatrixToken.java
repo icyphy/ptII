@@ -287,6 +287,89 @@ public class DoubleMatrixToken extends MatrixToken {
         return BaseType.DOUBLE_MATRIX;
     }
 
+    /** Test that the value of this Token is close to the argument
+     *  Token.  The value of the ptolemy.math.Complex epsilon field is
+     *  used to determine whether the two Tokens are close.
+     *
+     *  <p> Two tokens are considered close only if the specified token
+     *  is also a matrix token with the same dimension, and all the
+     *  corresponding elements of the matrices are close, and lossless
+     *  conversion is possible from either this token to the specified
+     *  one, or vice versa.
+     *
+     *  <p>If A and B are the values of elements of the tokens, and if
+     *  the following is true:
+     *  <pre>
+     *  abs(A-B) < epsilon 
+     *  </pre>
+     *  then A and B are considered close.
+     * 
+     *  @see ptolemy.math.Complex#epsilon
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     */
+    public BooleanToken isCloseTo(Token token) throws IllegalActionException{
+        return isCloseTo(token, ptolemy.math.Complex.epsilon);
+    }
+
+    /** Test that the value of this Token is close to the argument
+     *  Token.  The value of the ptolemy.math.Complex epsilon field is
+     *  used to determine whether the two Tokens are close.
+     *
+     *  <p> Two tokens are considered close only if the specified token
+     *  is also a matrix token with the same dimension, and all the
+     *  corresponding elements of the matrices are close, and lossless
+     *  conversion is possible from either this token to the specified
+     *  one, or vice versa.
+     *
+     *  <p>If A and B are the values of elements of the tokens, and if
+     *  the following is true:
+     *  <pre>
+     *  abs(A-B) < epsilon 
+     *  </pre>
+     *  then A and B are considered close.
+     * 
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     */
+    public BooleanToken isCloseTo(Token token,
+				  double epsilon)
+	throws IllegalActionException {
+        int compare = TypeLattice.compare(this, token);
+        if ( !(token instanceof MatrixToken) || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException("Cannot check equality " +
+                    "between " + this.getClass().getName() + " and " +
+                    token.getClass().getName());
+        }
+
+        if (((MatrixToken)token).getRowCount() != _rowCount ||
+                ((MatrixToken)token).getColumnCount() != _columnCount) {
+            return new BooleanToken(false);
+        }
+
+        if (compare == CPO.LOWER) {
+            return token.isCloseTo(this, epsilon);
+        } else {
+            // type of specified token <= DoubleMatrixToken
+            DoubleMatrixToken tem = (DoubleMatrixToken)convert(token);
+
+            return new BooleanToken(DoubleMatrixMath.within(_value,
+                    tem._getInternalDoubleMatrix(), epsilon));
+        }
+    }
+
     /** Test if the content of this token is equal to that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a matrix token with the same dimension, and all the

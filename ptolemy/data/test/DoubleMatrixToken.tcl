@@ -132,12 +132,12 @@ test DoubleMatrixToken-2.6 {Test multiplicative identity} {
 # Test addition of doubles to Token types below it in the lossless 
 # type hierarchy, and with other doubles.
 test DoubleMatrixToken-3.0 {Test adding doubles.} {
-    set b [java::new {double[][]} {2 2} {{2 1} {3 1}}]
+    set b [java::new {double[][]} {2 2} {{2 1} {3 0}}]
     set q [java::new {ptolemy.data.DoubleMatrixToken double[][]} $b]
     set res1 [$p add $q]
 
     list [$res1 toString] 
-} {{[7.0, 5.0; 6.0, 3.0]}}
+} {{[7.0, 5.0; 6.0, 2.0]}}
 
 ######################################################################
 ####
@@ -158,9 +158,32 @@ test DoubleMatrixToken-5.0 {Test equality between doubles.} {
     set q2 [java::new {ptolemy.data.DoubleMatrixToken double[][]} $b]
     set res1 [$q isEqualTo $q2]
     set res2 [$q isEqualTo $p]
+    set res3 [$q isCloseTo $q2]
+    set res4 [$q isCloseTo $p]
 
-    list [$res1 toString] [$res2 toString]
-} {true false}
+    list [$res1 toString] [$res2 toString] \
+	    [$res3 toString] [$res4 toString]
+} {true false true false}
+
+test DoubleMatrixToken-5.5 {Test isCloseTo between doubles.} {
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
+    java::field ptolemy.math.Complex epsilon $epsilon
+
+    set bClose [java::new {double[][]} {2 2} \
+	    [list [list [expr {2.0 + (0.5 * $epsilon) } ] 1] \
+	    [list  3 [expr {0.0 - (0.5 * $epsilon) } ] ] ] ]
+
+    set q2Close [java::new {ptolemy.data.DoubleMatrixToken double[][]} \
+	    $bClose]
+    set res1 [$q2 isCloseTo $q2Close]
+    set res2 [$q2Close isCloseTo $q]
+    set res3 [$q2Close isCloseTo $p]
+
+    java::field ptolemy.math.Complex epsilon $oldEpsilon
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {true true false}
 
 ######################################################################
 ####
@@ -182,7 +205,7 @@ test DoubleMatrixToken-7.0 {Test multiply operator between doubles.} {
     catch {$q3 multiply $p} res3
 
     list [$res1 toString] [$res2 toString] $res3
-} {{[22.0, 9.0; 12.0, 5.0]} {[22.0, 9.0, 39.0; 12.0, 5.0, 21.0]} {ptolemy.kernel.util.IllegalActionException: Cannot multiply matrix with 3 columns by a matrix with 2 rows.}}
+} {{[22.0, 5.0; 12.0, 3.0]} {[22.0, 9.0, 39.0; 12.0, 5.0, 21.0]} {ptolemy.kernel.util.IllegalActionException: Cannot multiply matrix with 3 columns by a matrix with 2 rows.}}
 
 ######################################################################
 ####

@@ -210,8 +210,44 @@ test RecordToken-5.0 {Test isEqualTo} {
 
     set r3 [java::new {ptolemy.data.RecordToken} $l3 $v3]
 
-    list [[$r1 isEqualTo $r2] toString] [[$r2 isEqualTo $r3] toString]
-} {false true}
+    list [[$r1 isEqualTo $r2] toString] \
+	    [[$r2 isEqualTo $r3] toString] \
+	    [[$r1 isCloseTo $r2] toString] \
+	    [[$r2 isCloseTo $r3] toString] \
+
+} {false true false true}
+
+######################################################################
+####
+# 
+test RecordToken-5.5 {Test isCloseTo} {
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
+    java::field ptolemy.math.Complex epsilon $epsilon
+
+    # Use r2 from above
+
+    # 4th record is the close to the 2nd: {name="foo", value=5.0}
+    set l4 [java::new {String[]} {2} {{name} {value}}]
+
+    set nt4 [java::new {ptolemy.data.StringToken String} foo]
+    # Look! It is a double instead of a int!
+    set vt4 [java::new {ptolemy.data.DoubleToken double} \
+	    [expr {5.0 + (0.1 * $epsilon) } ] ]
+    set v4 [java::new {ptolemy.data.Token[]} 2 [list $nt4 $vt4]]
+
+    set r4 [java::new {ptolemy.data.RecordToken} $l4 $v4]
+
+    set res1 [[$r3 isEqualTo $r4] toString]
+    set res2 [[$r4 isEqualTo $r4] toString]
+    # Since the vt3 field of r3 is an Int, this will return false
+    # because the IntToken.isCloseTo defaults to isEqualTo
+    set res3 [[$r3 isCloseTo $r4] toString]
+    set res4 [[$r4 isCloseTo $r3] toString]
+
+    java::field ptolemy.math.Complex epsilon $oldEpsilon
+    list $res1 $res2 $res3 $res4
+} {false true false true}
 
 ######################################################################
 ####

@@ -176,6 +176,81 @@ public class RecordToken extends Token {
         return new RecordType(labels, types);
     }
 
+    /** Test that the value of this Token is close to the argument
+     *  Token.  The value of the ptolemy.math.Complex epsilon field is
+     *  used to determine whether the two Tokens are close.
+     *
+     *  <p>If A and B are the values of elements of the tokens, and if
+     *  the following is true:
+     *  <pre>
+     *  abs(A-B) < epsilon 
+     *  </pre>
+     *  then A and B are considered close.
+     * 
+     *  @see ptolemy.math.Complex#epsilon
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     */
+    public BooleanToken isCloseTo(Token token) throws IllegalActionException{
+        return isCloseTo(token, ptolemy.math.Complex.epsilon);
+    }
+
+    /** Test that the value of this Token is close to the argument
+     *  Token.  The value of the ptolemy.math.Complex epsilon field is
+     *  used to determine whether the two Tokens are close.
+     *
+     *  <p>If A and B are the values of elements of the tokens, and if
+     *  the following is true:
+     *  <pre>
+     *  abs(A-B) < epsilon 
+     *  </pre>
+     *  then A and B are considered close.
+     * 
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     */
+    public BooleanToken isCloseTo(Token token,
+				  double epsilon)
+	throws IllegalActionException {
+        if ( !(token instanceof RecordToken)) {
+            throw new IllegalActionException("RecordToken.isEqualTo: The " +
+                    "argument is not a RecordToken.");
+        }
+
+        RecordToken recordToken = (RecordToken)token;
+
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        if ( !myLabelSet.equals(argLabelSet)) {
+            return new BooleanToken(false);
+        }
+
+        Iterator iterator = myLabelSet.iterator();
+        while(iterator.hasNext()) {
+            String label = (String)iterator.next();
+            Token token1 = this.get(label);
+            Token token2 = recordToken.get(label);
+            BooleanToken result = token1.isCloseTo(token2, epsilon);
+            if (result.booleanValue() == false) {
+                return new BooleanToken(false);
+            }
+        }
+
+        return new BooleanToken(true);
+    }
+
     /** Test for equality of the values of this Token and the argument.
      *  @param token The token with which to test equality.
      *  @return A new BooleanToken which contains the result of the test.

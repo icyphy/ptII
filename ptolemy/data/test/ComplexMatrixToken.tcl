@@ -177,9 +177,55 @@ test ComplexMatrixToken-5.0 {Test equality between Complexs.} {
     set q2 [java::new {ptolemy.data.ComplexMatrixToken ptolemy.math.Complex[][]} $a]
     set res1 [$q isEqualTo $q2]
     set res2 [$q isEqualTo $p]
+    set res3 [$q isCloseTo $q2]
+    set res4 [$q isCloseTo $p]
+    list [$res1 toString] [$res2 toString] \
+	    [$res3 toString] [$res4 toString]
+} {true false true false}
 
-    list [$res1 toString] [$res2 toString]
-} {true false}
+test ComplexMatrixToken-5.5 {Test closeness between Complexes} {
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
+    java::field ptolemy.math.Complex epsilon $epsilon
+
+    set c1Close [java::new {ptolemy.math.Complex double double} \
+	    [expr {2.0 + (0.5 * $epsilon)} ] 0.0]
+    set c2Close [java::new {ptolemy.math.Complex double double} \
+	    1.0 0.0]
+    set c3Close [java::new {ptolemy.math.Complex double double} \
+	    3.0 [expr {0.0 - (0.5 * $epsilon)} ] ]
+    set c4Close [java::new {ptolemy.math.Complex double double} \
+	    1.0 0.0]
+    set aClose [java::new {ptolemy.math.Complex[][]} {2 2}]
+    $aClose set {0 0} $c1Close
+    $aClose set {0 1} $c2Close
+    $aClose set {1 0} $c3Close
+    $aClose set {1 1} $c4Close
+    set qClose [java::new {ptolemy.data.ComplexMatrixToken ptolemy.math.Complex[][]} $aClose]
+    set res1 [$qClose isCloseTo $qClose]
+    set res2 [$qClose isCloseTo $q]
+    set res3 [$q isCloseTo $qClose]
+
+    # Ok, try something not Close
+    set c1NotClose [java::new {ptolemy.math.Complex double double} \
+	    [expr {2.0 + (10.0 * $epsilon)} ] 0.0]
+    set aNotClose [java::new {ptolemy.math.Complex[][]} {2 2}]
+    $aNotClose set {0 0} $c1NotClose
+    # The rest are the same
+    $aNotClose set {0 1} $c2Close
+    $aNotClose set {1 0} $c3Close
+    $aNotClose set {1 1} $c4Close
+    set qNotClose [java::new {ptolemy.data.ComplexMatrixToken ptolemy.math.Complex[][]} $aNotClose]
+
+    set res4 [$qNotClose isCloseTo $qClose]
+    set res5 [$qClose isCloseTo $qNotClose]
+
+    java::field ptolemy.math.Complex epsilon $oldEpsilon
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] \
+	    [$res4 toString] [$res5 toString] \
+
+} {true true true false false}
 
 ######################################################################
 ####
