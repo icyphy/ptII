@@ -82,24 +82,24 @@ public class Scope {
         _declList.add(decl);
     }
 
-    /** Return an ScopeIteratorator that will iterate over all the Decls
+    /** Return an ScopeIteratoratorator that will iterate over all the Decls
      *  in this Scope.
      */
-    public ScopeIteratorator allDecls() {
+    public ScopeIteratoratorator allDecls() {
         return lookupFirst(Decl.ANY_NAME, Decl.CG_ANY, false);
     }
 
-    /** Return an ScopeIteratorator that will iterate over all the Decls
+    /** Return an ScopeIteratoratorator that will iterate over all the Decls
      *  that have any of the categories bits set in mask.
      */
-    public ScopeIteratorator allDecls(int mask) {
+    public ScopeIteratoratorator allDecls(int mask) {
         return lookupFirst(Decl.ANY_NAME, mask, false);
     }
 
-    /** Return an ScopeIteratorator that will iterate over all the Decls
+    /** Return an ScopeIteratoratorator that will iterate over all the Decls
      *  that have the same name.
      */
-    public ScopeIteratorator allDecls(String name) {
+    public ScopeIteratoratorator allDecls(String name) {
         return lookupFirst(name, Decl.CG_ANY, false);
     }
 
@@ -113,14 +113,14 @@ public class Scope {
     /** Return an ListIterator that will iterate over all the proper Decls
      *  in this Scope and in any parent Scopes that have a matching mask.
      */
-    public ScopeIteratorator allProperDecls(int mask) {
+    public ScopeIteratoratorator allProperDecls(int mask) {
         return lookupFirst(Decl.ANY_NAME, mask, true);
     }
 
-    /** Return an ScopeIteratorator that will iterate over all the proper Decls
+    /** Return an ScopeIteratoratorator that will iterate over all the proper Decls
      *  in this Scope and in any parent Scopes that have the same name.
      */
-    public ScopeIteratorator allProperDecls(String name) {
+    public ScopeIteratoratorator allProperDecls(String name) {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
 
@@ -207,7 +207,7 @@ public class Scope {
      *  is false, then do not look in the parent environment.
      */
     public Decl lookup(String name, int mask, boolean[] more, boolean proper) {
-        ScopeIteratorator itr = lookupFirst(name, mask, proper);
+        ScopeIteratoratorator itr = lookupFirst(name, mask, proper);
 
         if (itr.hasNext()) {
             Decl retval = (Decl) itr.next();
@@ -219,26 +219,26 @@ public class Scope {
     }
 
     /** Lookup a decl by name in the current Scope. */
-    public ScopeIteratorator lookupFirst(String name) {
+    public ScopeIteratoratorator lookupFirst(String name) {
         return lookupFirst(name, Decl.CG_ANY, false);
     }
 
     /** Lookup a decl by name and mask in the current Scope. */
-    public ScopeIteratorator lookupFirst(String name, int mask) {
+    public ScopeIteratoratorator lookupFirst(String name, int mask) {
         return lookupFirst(name, mask, false);
     }
 
     /** Lookup a decl by name in the current Scope or the
      *  parent Scopes
      */
-    public ScopeIteratorator lookupFirstProper(String name) {
+    public ScopeIteratoratorator lookupFirstProper(String name) {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
 
     /** Lookup a decl by name and mask in the current Scope or the
      *  parent Scopes
      */
-    public ScopeIteratorator lookupFirstProper(String name, int mask) {
+    public ScopeIteratoratorator lookupFirstProper(String name, int mask) {
         return lookupFirst(name, mask, true);
     }
 
@@ -247,10 +247,10 @@ public class Scope {
      *  in the parent Scopes, if the proper argument is false, the
      *  do not look in the parent Scopes.
      */
-    public ScopeIteratorator lookupFirst(String name, int mask, boolean proper) {
+    public ScopeIteratoratorator lookupFirst(String name, int mask, boolean proper) {
         Scope parent = proper ? null : _parent;
 
-        return new ScopeIteratorator(parent, _declList.listIterator(), name, mask);
+        return new ScopeIteratoratorator(parent, _declList.listIterator(), name, mask);
     }
 
     /** Return true if there is more than one matching Decl only

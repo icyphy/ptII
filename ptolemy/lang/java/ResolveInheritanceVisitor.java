@@ -199,7 +199,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
         Iterator declItr = from.getScope().allProperDecls();
 
-        Scope toEnviron = to.getEnviron();
+        Scope toScope = to.getEnviron();
 
         while (declItr.hasNext()) {
             JavaDecl member = (JavaDecl) declItr.next();
@@ -217,7 +217,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     // Return true if there is at least one abstract method in the class
     // environment.
     private static boolean _hasAbstractMethod(UserTypeDeclNode node) {
-        Scope classEnv = JavaDecl.getDecl((NamedNode) node).getEnviron();
+        Scope classEnv = JavaDecl.getDecl((NamedNode) node).getScope();
 
         Iterator memberItr = classEnv.allProperDecls();
 
@@ -235,7 +235,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     // Return true iff MEMBER would be hidden or overridden by a
     // declaration in TO. 
     private boolean _overriddenIn(JavaDecl member, ClassDecl to) {
-        Scope env = to.getEnviron();
+        Scope env = to.getScope();
         String memberName = member.getName();
 
         if (member.category == CG_FIELD) {

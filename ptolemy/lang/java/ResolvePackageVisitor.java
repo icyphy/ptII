@@ -69,7 +69,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        Scope environ = (Environ) node.getDefinedProperty(ENVIRON_KEY);
+        Scope environ = (Scope) node.getDefinedProperty(ENVIRON_KEY);
 
         _pkgEnv  = (Scope) environ.parent();
 
@@ -99,14 +99,14 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     public Object visitBlockNode(BlockNode node, LinkedList args) {
         // make a new environment for inner class declarations
 
-        Scope env = _makeEnviron(node, args);
+        Scope env = _makeScope(node, args);
 
         _visitList(node.getStmts(), env);
         return null;
     }
 
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
-        Scope env = _makeEnviron(node, args);
+        Scope env = _makeScope(node, args);
 
         ClassDecl decl = new ClassDecl("<anon>", null);
         decl.setSource(node);
@@ -137,7 +137,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
     protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
             LinkedList args, boolean isClass) {
-        Scope encEnv = (Environ) args.get(0);
+        Scope encEnv = (Scope) args.get(0);
 
         // inner class change
         boolean isInner = ((Boolean) args.get(1)).booleanValue();
@@ -219,7 +219,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
             ocl = cl;
         }
 
-        Scope env = new Environ(encEnv);
+        Scope env = new Scope(encEnv);
         node.setProperty(ENVIRON_KEY, env);
 
         // JUST TRY THIS
@@ -237,10 +237,10 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         return null;
     }
 
-    protected static Scope _makeEnviron(TreeNode node, LinkedList args) {
-        Scope encEnv = (Environ) args.get(0);
+    protected static Scope _makeScope(TreeNode node, LinkedList args) {
+        Scope encEnv = (Scope) args.get(0);
 
-        Scope env = new Environ(encEnv);
+        Scope env = new Scope(encEnv);
         node.setProperty(ENVIRON_KEY, env);
 
         return env;

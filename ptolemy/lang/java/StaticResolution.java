@@ -144,7 +144,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 PackageDecl pkgDecl =
                     (PackageDecl) unitNode.getDefinedProperty(PACKAGE_KEY);
 
-                Scope pkgEnv = pkgDecl.getEnviron();
+                Scope pkgEnv = pkgDecl.getScope();
 
                 //String className = StringManip.baseFilename(noExtensionFilename);
 		// FIXME: we should change the name of noExtensionFilename
@@ -212,7 +212,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             return name;
         }
 
-        ScopeIterator possibles = _findPossibles(name, env, currentClass,
+        ScopeIteratorator possibles = _findPossibles(name, env, currentClass,
                 currentPackage, categories);
 
         if (((categories & CG_METHOD) == 0) && possibles.moreThanOne()) {
@@ -354,14 +354,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static JavaDecl findDecl(CompileUnitNode compileUnit,
             String qualifiedName, int category) {
-        Scope env = (Environ) compileUnit.getDefinedProperty(ENVIRON_KEY);
+        Scope env = (Scope) compileUnit.getDefinedProperty(ENVIRON_KEY);
         NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
 
         // is this really necessary?
         PackageDecl pkgDecl =
             (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
 
-        ScopeIterator environIter = _findPossibles(nameNode, env, null,
+        ScopeIteratorator environIter = _findPossibles(nameNode, env, null,
                 pkgDecl, category);
 
         // no check for multiple matches (this should be handled by
@@ -388,14 +388,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static MemberDecl findInvokableDecl(CompileUnitNode compileUnit,
             String qualifiedName, int category, List methodArgs,
             TypeVisitor typeVisitor) {
-        Scope env = (Environ) compileUnit.getDefinedProperty(ENVIRON_KEY);
+        Scope env = (Scope) compileUnit.getDefinedProperty(ENVIRON_KEY);
         NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
 
         // is this really necessary?
         PackageDecl pkgDecl =
             (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
 
-        ScopeIterator environIter = _findPossibles(nameNode, env, null,
+        ScopeIteratorator environIter = _findPossibles(nameNode, env, null,
                 pkgDecl, category);
 
         ResolveFieldVisitor resolveFieldVisitor =
@@ -547,7 +547,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         //      "UNNAMED_PACKAGE: " + UNNAMED_PACKAGE.getScope().toString());
 
         // dummy environment
-        Scope env = new Environ();
+        Scope env = new Scope();
 
         System.out.println("StaticResolution<static>: --- loading java.lang package ---" + (System.currentTimeMillis() - startTime));
 
@@ -628,7 +628,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
-        Scope packageEnv = decl.getEnviron();
+        Scope packageEnv = decl.getScope();
 
         Iterator declItr = packageEnv.allProperDecls();
 
@@ -649,13 +649,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private static ScopeIterator _findPossibles(NameNode name, Environ env,
+    private static ScopeIteratorator _findPossibles(NameNode name, Scope env,
 					    TypeNameNode currentClass,
 					    JavaDecl currentPackage,
 					    int categories) {
 
 	//System.out.println("StaticResolution._findPossibles():" +  name.getIdent() + " " + currentPackage);
-        ScopeIterator possibles = new ScopeIterator();
+        ScopeIteratorator possibles = new ScopeIterator();
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
             if ((categories &
@@ -664,7 +664,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 possibles = env.lookupFirst(name.getIdent(), categories);
             } else {
                 //System.out.println("StaticResolution._findPossibles(): looking up package " + name.getIdent());
-                possibles = ((Scope) SYSTEM_PACKAGE.getEnviron())
+                possibles = ((Scope) SYSTEM_PACKAGE.getScope())
                     .lookupFirst(name.getIdent(), categories);
             }
         } else {
@@ -718,7 +718,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 			    categories & (CG_FIELD | CG_METHOD));
                 } else {
                     // what is this for ???
-                    Scope e = JavaDecl.getDecl(type).getEnviron();
+                    Scope e = JavaDecl.getDecl(type).getScope();
                     possibles = e.lookupFirstProper(name.getIdent(),
                             categories & (CG_FIELD | CG_METHOD | CG_USERTYPE));
                 }

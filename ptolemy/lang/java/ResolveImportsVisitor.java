@@ -74,7 +74,7 @@ public class ResolveImportsVisitor extends JavaVisitor
         NameNode name = node.getName();
 
         StaticResolution.resolveAName(name,
-                (Scope) StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
+                (Scope) StaticResolution.SYSTEM_PACKAGE.getScope(), null, null,
                 CG_USERTYPE);
 
         JavaDecl old = (JavaDecl) _fileEnv.lookupProper(name.getIdent());
@@ -126,7 +126,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         _importedPackages.add(importedPackage);
 
-        Scope pkgEnv = importedPackage.getEnviron();
+        Scope pkgEnv = importedPackage.getScope();
 
         Iterator envItr = pkgEnv.allProperDecls();
 

@@ -128,7 +128,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
 
-        Scope newEnv1 = new Environ(ctx.environ);
+        Scope newEnv1 = new Scope(ctx.environ);
         subCtx.environ = newEnv1;
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
@@ -153,7 +153,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
 
-        Scope newEnv1 = new Environ(ctx.environ);
+        Scope newEnv1 = new Scope(ctx.environ);
         subCtx.environ = newEnv1;
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
@@ -217,7 +217,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         Decl other = ctx.environ.lookup(labelString, CG_STMTLABEL);
 
-        Scope newEnv = new Environ(ctx.environ);
+        Scope newEnv = new Scope(ctx.environ);
 
         if (other != null) {
             throw new RuntimeException("duplicate " + labelString);

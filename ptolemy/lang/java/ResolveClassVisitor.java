@@ -207,7 +207,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // Leftover from Titanium. Why??
         // dtype()->resolveClass(package, cclass, fileEnv);
 
-        Scope encEnviron = (Environ) args.get(1);
+        Scope encScope = (Environ) args.get(1);
 
         Decl d = encScope.lookupProper(nameString, CG_FIELD);
 
@@ -302,7 +302,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         // Check that this constructor is legal
 
-        Scope classEnv = (Environ) args.get(1);
+        Scope classEnv = (Scope) args.get(1);
 
         NameNode name = node.getName();
         String constructorName = name.getIdent();
@@ -405,7 +405,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         // Check that this method is legal
 
-        Scope classEnv = (Environ) args.get(1);
+        Scope classEnv = (Scope) args.get(1);
 
         NameNode name = node.getName();
         String methodName = name.getIdent();
@@ -479,7 +479,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
             me.setInterfaces(TNLManip.addFirst(implIFace));
         }
 
-        Scope myEnviron = me.getEnviron();
+        Scope myScope = me.getEnviron();
 
         // have members add themselves to this class's environment
         LinkedList childArgs = new LinkedList();
@@ -507,11 +507,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         return null;
     }
 
-    protected void _addUserTypeToEnclosingClassScope(Object encClassEnvironObject,
+    protected void _addUserTypeToEnclosingClassScope(Object encClassScopeObject,
             Decl decl) {
         if (encClassScopeObject != NullValue.instance) {
             // this is an inner class, add to outer class's environment
-            Scope encClassEnviron = (Environ) encClassEnvironObject;
+            Scope encClassScope = (Environ) encClassEnvironObject;
             encClassScope.add(decl);
         }
     }

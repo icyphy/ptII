@@ -55,7 +55,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
     /** Resolve the name of the type. */
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
-        Scope env = (Environ) args.get(0);
+        Scope env = (Scope) args.get(0);
 
         NameNode name = node.getName();
 
