@@ -38,73 +38,74 @@ import ptolemy.kernel.util.Debuggable;
 import java.util.LinkedList;
 import java.util.Iterator;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// CalendarQueue
 /**
-This class implements a fast priority queue. Entries are sorted with the
-help of a comparator provided to the constructor.
-A dequeue operation will remove the smallest entry according to this sort.
+
+This class implements a fast priority queue. Entries are sorted with
+the help of a comparator provided to the constructor.  A dequeue
+operation will remove the smallest entry according to this sort.
 Entries can be any instance of Object that are acceptable to the
 specified comparator.
-<p>
-Entries are enqueued using the put() method, and dequeued using the take()
-method. The get() method returns the smallest entry in the queue, but
-without removing it from the queue.
-The toArray() methods can be used to examine the contents of the queue.
-<p>
-This class operates like a 'bag' or multiset collection.
-This simply means that an
-entry can be added into the queue even if it already exists in the queue.
-If a 'set' behavior is desired, one can subclass CalendarQueue and
-override the put() method.
-<p>
-The queue works as follows.  Entries are conceptually stored in
-an infinite set of virtual bins (or buckets). The instance of CQComparator
-is consulted to determine which virtual bin should be used for an entry
-(by calling its getVirtualBinNumber() method).  Each virtual bin has a width,
-which can be altered by calling the setBinWidth() method of the CQComparator.
-Within each virtual bin, entries are sorted.
-<p>
-Having an infinite number of bins, however, is not practical.
-Thus, the virtual bins are mapped into physical bins (or buckets)
-by a modulo operation.  If there are <i>n</i> physical bins,
-then virtual bin <i>i</i> maps into physical bin <i>i</i> mod <i>n</i>.
-<p>
-This is analogous to a calendar showing 12 months.  Here, <i>n</i> = 12.
-An event that happens in January of any year is placed in the first
-month (bin) of this calendar.  Its virtual bin number might be
-<i>year</i>*12 + <i>month</i>.  Its physical bin number is just <i>month</i>.
-<p>
-The performance of a calendar queue is very sensitive to the number
-of bins, the width of the bins, and the relationship of these quantities
-to the entries that are observed.  Thus, this implementation may frequently
-change the number of bins.  When it does change the number of bins,
-it changes them by a specifiable <i>bin count factor</i>.
+
+Entries are enqueued using the put() method, and dequeued using the
+take() method. The get() method returns the smallest entry in the
+queue, but without removing it from the queue.  The toArray() methods
+can be used to examine the contents of the queue.
+
+This class operates like a 'bag' or multiset collection.  This simply
+means that an entry can be added into the queue even if it already
+exists in the queue.  If a 'set' behavior is desired, one can subclass
+CalendarQueue and override the put() method.
+
+The queue works as follows.  Entries are conceptually stored in an
+infinite set of virtual bins (or buckets). The instance of
+CQComparator is consulted to determine which virtual bin should be
+used for an entry (by calling its getVirtualBinNumber() method).  Each
+virtual bin has a width, which can be altered by calling the
+setBinWidth() method of the CQComparator.  Within each virtual bin,
+entries are sorted.
+
+Having an infinite number of bins, however, is not practical.  Thus,
+the virtual bins are mapped into physical bins (or buckets) by a
+modulo operation.  If there are <i>n</i> physical bins, then virtual
+bin <i>i</i> maps into physical bin <i>i</i> mod <i>n</i>.
+
+This is analogous to a calendar showing 12 months.  Here, <i>n</i> =
+12.  An event that happens in January of any year is placed in the
+first month (bin) of this calendar.  Its virtual bin number might be
+<i>year</i>*12 + <i>month</i>.  Its physical bin number is just
+<i>month</i>.
+
+The performance of a calendar queue is very sensitive to the number of
+bins, the width of the bins, and the relationship of these quantities
+to the entries that are observed.  Thus, this implementation may
+frequently change the number of bins.  When it does change the number
+of bins, it changes them by a specifiable <i>bin count factor</i>.
 This defaults to 2, but can be specified as a constructor argument.
-Suppose the bin count factor is <i>binCountFactor</i> and the current number of
-buckets is <i>n</i> (by default, this starts at 2, but can be specified by
-a constructor argument, <i>minNumBuckets</i>).
-The number of bins will be multiplied by <i>binCountFactor</i> if the
-queue size exceeds <i>n * binCountFactor</i>.
-The number of bins will be divided by <i>binCountFactor</i> if the
-queue size falls below <i>n/binCountFactor</i>.  Thus, the queue attempts to
-keep the number of bins close to the size of the queue.
-Each time it changes the number of bins, it uses recently dequeued entries
-to calculate a reasonable bin width (actually, it defers
-to the associated CQComparator for this calculation).
-<p>
-Changing the number of bins is a relatively expensive operation,
-so it may be worthwhile to increase <i>binCountFactor</i>
-to reduce the frequency
-of change operations. Working counter to this, however, is that the
-queue is most efficient when there is on average one event per bin.
-Thus, the queue becomes less efficient if change operations are less
-frequent.  Change operations can be entirely disabled by calling
-setAdaptive() with argument <i>false</i>.
-<p>
+Suppose the bin count factor is <i>binCountFactor</i> and the current
+number of buckets is <i>n</i> (by default, this starts at 2, but can
+be specified by a constructor argument, <i>minNumBuckets</i>).  The
+number of bins will be multiplied by <i>binCountFactor</i> if the
+queue size exceeds <i>n * binCountFactor</i>.  The number of bins will
+be divided by <i>binCountFactor</i> if the queue size falls below
+<i>n/binCountFactor</i>.  Thus, the queue attempts to keep the number
+of bins close to the size of the queue.  Each time it changes the
+number of bins, it uses recently dequeued entries to calculate a
+reasonable bin width (actually, it defers to the associated
+CQComparator for this calculation).
+
+Changing the number of bins is a relatively expensive operation, so it
+may be worthwhile to increase <i>binCountFactor</i> to reduce the
+frequency of change operations. Working counter to this, however, is
+that the queue is most efficient when there is on average one event
+per bin.  Thus, the queue becomes less efficient if change operations
+are less frequent.  Change operations can be entirely disabled by
+calling setAdaptive() with argument <i>false</i>.
+
 This implementation is not synchronized, so if multiple threads
 depend on it, the caller must be.
-<p>
+
 This implementation is based on:
 <ul>
 <li>Randy Brown, <i>CalendarQueues:A Fast Priority Queue Implementation for
@@ -113,6 +114,7 @@ Volume 31, Number 10.
 <li>A. Banerjea and E. W. Knightly, <i>Ptolemy 0 implementation of
 CalendarQueue class.</i>
 </ul>
+
 @author Lukito Muliadi and Edward A. Lee
 @version $Id$
 @see ptolemy.actor.util.CQComparator
@@ -120,20 +122,20 @@ CalendarQueue class.</i>
 public class CalendarQueue implements Debuggable {
     /** Construct an empty queue with a given comparator, which
      *  is used to sort the entries.  The bin count factor and the
-                           *  initial and minimum number of bins are set to 2.
-                           *  @param comparator The comparator used to sort entries.
-                           */
-                          public CalendarQueue(CQComparator comparator) {
-                              _cqComparator = comparator;
-                          }
+     *  initial and minimum number of bins are set to 2.
+     *  @param comparator The comparator used to sort entries.
+     */
+    public CalendarQueue(CQComparator comparator) {
+        _cqComparator = comparator;
+    }
 
-                          /** Construct an empty queue with the specified comparator,
-                           *  which is used to sort the entries, the specified
-                           *  minimum number of buckets, and the specified bin count factor.
-                           *  The bin count factor multiplies or divides the number of bins
-                           *  when the number of bins is changed.
-                           *  The specified minimum number of buckets is also the initial
-                           *  number of buckets.
+    /** Construct an empty queue with the specified comparator,
+     *  which is used to sort the entries, the specified
+     *  minimum number of buckets, and the specified bin count factor.
+     *  The bin count factor multiplies or divides the number of bins
+     *  when the number of bins is changed.
+     *  The specified minimum number of buckets is also the initial
+     *  number of buckets.
                            *  @param comparator The comparator used to sort entries.
                            *  @param minNumBuckets The minimum number of buckets.
                            *  @param binCountFactor The bin count factor.
