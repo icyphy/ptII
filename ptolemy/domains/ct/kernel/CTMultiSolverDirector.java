@@ -1193,10 +1193,13 @@ public class CTMultiSolverDirector extends CTDirector {
                 currentTimeIsABreakpoint = true;
                 Time time = (Time) breakPoints.removeFirst();
                 if (time.compareTo(now) < 0) {
-                    // This should never happen, because it is a bug
-                    // to have breakpoints earlier than the current time...
-                    throw new IllegalActionException("The first break point " +
-                            "is in the past.");
+                    // This should not happen for CTMultisolverDirector,
+                    // but it is possible for CTEmbeddedDirector. 
+                    // When a CT refinement is made inactive for a long time
+                    // and reentered, the previously stored breakpoints may
+                    // be in the past... The same thing happens in the
+                    // prefire() method of DE director.
+                    breakPoints.removeAllLessThan(now);
                 }
                 if (_debugging) {
                     _debug("Remove " + now + " from the break-point list.");
