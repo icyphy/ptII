@@ -111,7 +111,8 @@ PTII_TOPDIR=	.cshrc \
 		vergilDSP.jnlp.in \
 		vergilHyVisual.jnlp.in \
 		vergilPtiny.jnlp.in \
-		vergilPtinySandbox.jnlp.in
+		vergilPtinySandbox.jnlp.in \
+		vergilVisualSense.jnlp.in
 
 # Location of the CVS Repository
 CVS_REPOSITORY = :ext:gigasource.eecs.berkeley.edu:/home/cvs
