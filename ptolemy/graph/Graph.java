@@ -1581,6 +1581,8 @@ public class Graph implements Cloneable {
     }
 
     /** Return an empty graph that has the same run-time type as this graph.
+     *  This class should be overridden in derived classes that do not
+     *  have zero-argument constructors.
      *  @return An empty graph.
      */
     protected Graph _emptyGraph() {
