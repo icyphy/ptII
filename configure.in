@@ -523,8 +523,12 @@ fi
 # $PTII/ptolemy/codegen/makefile if jmf was found
 PTJMF_DIR=
 
+# Under Windows, installing JMF will adjust the CLASSPATH.
+# Ideally, we would check this.
+JMFHOME="c:/Program Files/JMF2.1.1"
+
 # Directory that contains the jmf jar files
-JMF_JAR='${PTII}/vendors/jmf/JMF_0_3_4.jar'
+JMF_JAR='${JMFHOME}/lib/jmf.jar'
 
 # We only need to look for jmf if $PTII/ptolemy/apps/jmf exists
 if test ! -d "$PTII/ptolemy/apps/jmf"; then
@@ -543,20 +547,8 @@ else
 	# Set to jmf and used in
 	# $PTII/ptolemy/apps/makefile if jmf was found
 	PTJMF_DIR=jmf
-    else
-	JMF_JAR=$PTII/vendors/jmf/JMF_0_3_4_1.jar
-	if test -f "$JMF_JAR"; then
-	    AC_MSG_RESULT([$JMF_JAR])
-	    # Set to jmf and used in
-	    # $PTII/ptolemy/apps/makefile if jmf was found
-	    PTJMF_DIR=jmf
-	fi    
     fi	
 
-    if test "$JMFHOME" = ""; then
-        AC_MSG_WARN(['\$JMFHOME is not set, perhaps you
-    did not reboot after installing JMF?']) 		
-    fi	
     if test "$PTJMF_DIR" = ""; then
         AC_MSG_WARN(['Failed to find \$JMFHOME/lib/jmf.jar
     perhaps Jmf is not installed?
@@ -640,10 +632,10 @@ else
 
     if test "`uname -s`" = "CYGWIN_NT-4.0" -o \
 		"`uname -s`" = "CYGWIN_NT-5.0" ; then
-	JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
-	JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
+	JJTREE='"$(JAVA)" COM.sun.labs.jjtree.Main'
+	JAVACC='"$(JAVA)" COM.sun.labs.javacc.Main'
 	AC_MSG_WARN([
-Be sure that your CLASSPATH includes JavaCC.zip]);
+Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
     else
 	if test ! -d "$JAVACC_DIR"; then
 	    AC_MSG_WARN([Could not find directory
@@ -681,10 +673,17 @@ Be sure that your CLASSPATH includes JavaCC.zip]);
 
     if test ! -d "$JAVACC_DIR"; then
         AC_MSG_WARN([Failed to find javacc, perhaps JavaCC is not installed?
-    You need not download JavaCC unless you plan on modifying certain files
+    You need not download JavaCC unless you plan on modifying .jjt files
     in ptolemy/data/expr.
-    JavaCC used to be available from
-    http://www.sun.com/forte/ffj/resources/contributedcontent.html'])
+    JavaCC is available from	
+    http://www.webgain.com/download/javacc/details.html
+
+    Note that the zip file that gets downloaded is actually an installer
+    that must be run to install the JavaCC.zip file that contains the classes.
+
+    Configure looks for JavaCC in $PTII/vendors/sun/JavaCC, so either
+    install JavaCC in that location or use the --with-javacc= flag
+    and then rerun configure'])
 	JJTREE=touch
 	JAVACC=touch
     fi
