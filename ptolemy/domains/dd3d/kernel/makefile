@@ -1,4 +1,4 @@
-# Makefile for the DT domain kernel
+# Makefile for the 3D domain kernel
 #
 # @Authors: Christopher Hylands
 #
