@@ -65,13 +65,15 @@ import ptolemy.kernel.util.Workspace;
    For instance, deepEntityList() returns the opaque entities
    directly or indirectly contained by this entity.
    <p>
-   To add an entity or relation to this composite, call its setContainer() method
-   with this composite as an argument.  To remove it, call its setContainer()
-   method with a null argument (or another container). The entity must be
-   an instance of ComponentEntity and the relation of ComponentRelation or
-   an exception is thrown.  Derived classes may further constrain these
-   to subclasses.  To do that, they should override the protected methods
-   _addEntity() and _addRelation() and the public member newRelation().
+   To add an entity or relation to this composite, call its
+   setContainer() method with this composite as an argument.  To
+   remove it, call its setContainer() method with a null argument (or
+   another container). The entity must be an instance of
+   ComponentEntity and the relation of ComponentRelation or an
+   exception is thrown.  Derived classes may further constrain these
+   to subclasses.  To do that, they should override the protected
+   methods _addEntity() and _addRelation() and the public member
+   newRelation().
    <p>
    A CompositeEntity may be contained by another CompositeEntity.
    To set that up, call the setContainer() method of the inside entity.
@@ -625,8 +627,8 @@ public class CompositeEntity extends ComponentEntity {
                 }
                 // Apply filter.
                 if (filter == null || (filter.contains(relation)
-                            && (filter.contains(port)
-                                    ||  filter.contains(port.getContainer())))) {
+                        && (filter.contains(port)
+                                ||  filter.contains(port.getContainer())))) {
 
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
