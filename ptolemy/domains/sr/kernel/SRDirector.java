@@ -1,4 +1,4 @@
-/* Director for the Synchronous-Reactive model of computation.
+/* Director for the Synchronous Reactive model of computation.
 
  Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
@@ -59,7 +59,7 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// SRDirector
 /**
-A director for the Synchronous-Reactive (SR) model of computation.  In SR,
+A director for the Synchronous Reactive (SR) model of computation.  In SR,
 both computation and communication are considered to happen instantaneously.
 In models with cycles, this introduces interesting issues involving 
 instantaneous feedback.

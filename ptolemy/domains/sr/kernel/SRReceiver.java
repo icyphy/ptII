@@ -42,13 +42,13 @@ import ptolemy.kernel.util.InvalidStateException;
 //////////////////////////////////////////////////////////////////////////
 //// SRReceiver
 /**
-The receiver for the synchronous reactive domain.  This receiver is a mailbox
-with capacity one.  The status of this receiver can be known (either known to
-contain a token or known not to contain a token) or unknown.  The isKnown() 
-method returns true if the receiver has known status.  If the receiver has 
-known status, the hasToken() method returns whether the receiver has a token.
-If the receiver has unknown status, the hasToken() method always returns
-false.
+The receiver for the Synchronous Reactive (SR) domain.  This receiver is a 
+mailbox with capacity one.  The status of this receiver can be known (either 
+known to contain a token or known not to contain a token) or unknown.  The 
+isKnown() method returns true if the receiver has known status.  If the 
+receiver has known status, the hasToken() method returns whether the receiver 
+has a token.  If the receiver has unknown status, the hasToken() method 
+always returns false.
 <p>
 In the course of an iteration in SR, receivers can change from unknown status 
 to known status, but never the other way around.  The status is automatically 

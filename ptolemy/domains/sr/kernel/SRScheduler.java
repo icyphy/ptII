@@ -1,4 +1,4 @@
-/* The scheduler for the SR domain.
+/* A scheduler for the SR domain.
 
  Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
@@ -50,13 +50,12 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// SRScheduler
 /**
-This class generates schedules for the actors in a CompositeActor
-optimized for SR semantics.  The schedule is simply an ordering of all
-the actors.  The director should cycle through this schedule repeatedly, 
-deciding which actors to fire, until it determines that the given iteration
-has converged.  The ordering of the schedule has no effect on the results
-of an iteration.  This scheduler exists only to reduce the computation time
-required for a given iteration to converge.
+A scheduler the Synchronous Reactive (SR) domain.  The schedule is simply 
+an ordering of all the actors.  The director should cycle through this 
+schedule repeatedly, deciding which actors to fire, until it determines 
+that the given iteration has converged.  The ordering of the schedule has 
+no effect on the results of an iteration.  This scheduler exists only to 
+reduce the computation time required for a given iteration to converge.
 
 @author Paul Whitaker
 @version $Id$
