@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.actor;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -206,13 +207,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         // Create listeners that creates new relations.
         _relationCreator = new RelationCreator();
-        if (VergilUtilities.macOSLookAndFeel()) {
-            // On the Mac, do not override Control-Click, which is
-            // used to bring up the context menu
-            _relationCreator.setMouseFilter(_metaFilter);
-        } else {
-            _relationCreator.setMouseFilter(_controlFilter);
-        }
+        _relationCreator.setMouseFilter(_shortcutFilter);
 
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
         // Note that shift-click is already bound to the dragSelection
@@ -220,13 +215,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
-        if (VergilUtilities.macOSLookAndFeel()) {
-            // On the Mac, do not override Control-Click, which is
-            // used to bring up the context menu
-            _linkCreator.setMouseFilter(_metaFilter);
-        } else {
-            _linkCreator.setMouseFilter(_controlFilter);
-        }
+        _linkCreator.setMouseFilter(_shortcutFilter);
+        
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
@@ -239,7 +229,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         LinkCreator linkCreator2 = new LinkCreator();
         linkCreator2.setMouseFilter(
-                new MouseFilter(InputEvent.BUTTON1_MASK,0));
+                new MouseFilter(InputEvent.BUTTON1_MASK, 0));
         ((CompositeInteractor)_entityPortController.getNodeInteractor())
             .addInteractor(linkCreator2);
     }
@@ -266,27 +256,12 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The filter for control-click operations. */
-    private MouseFilter _controlFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK,
-            InputEvent.CTRL_MASK);
-
     /** The interactors that interactively creates edges. */
     private LinkCreator _linkCreator;  // For control-click
     //   private LinkCreator _linkCreator2;  // For shift-click
 
     /** Factory for listen to actor menu item. */
     private ListenToActorFactory _listenToActorFactory;
-
-    /** The filter for meta-click operations.  Under Mac OS X,
-     *  the command key is the meta key, or keycode 0x2318
-     *  For details, see the Apple java archive
-     *  http://lists.apple.com/archives/java-dev
-     *  User: archives, passwd: archives
-     */
-    private MouseFilter _metaFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK,
-            InputEvent.META_MASK);
 
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
@@ -334,6 +309,18 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     private MouseFilter _shiftFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
             InputEvent.SHIFT_MASK);
+
+    /** The filter for shortcut operations.  This is used for creation
+     *  of relations and creation of links from relations. Under PC,
+     *  this is a control-1 click.  Under Mac OS X, the control key is
+     *  used for context menus and this corresponds to the command-1
+     *  click.  For details, see the Apple java archive
+     *  http://lists.apple.com/archives/java-dev User: archives,
+     *  passwd: archives
+     */
+    private MouseFilter _shortcutFilter = new MouseFilter(
+            InputEvent.BUTTON1_MASK,
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

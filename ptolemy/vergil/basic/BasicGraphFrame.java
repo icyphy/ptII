@@ -200,9 +200,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _dropTarget = new EditorDropTarget(_jgraph);
 
         ActionListener deletionListener = new ActionListener() {
-                /** Delete any nodes or edges from the graph that are currently
-                 *  selected.  In addition, delete any edges that are connected to
-                 *  any deleted nodes.
+                /** Delete any nodes or edges from the graph that are
+                 *  currently selected.  In addition, delete any edges
+                 *  that are connected to any deleted nodes.
                  */
                 public void actionPerformed(ActionEvent e) {
                     delete();
@@ -212,6 +212,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _jgraph.registerKeyboardAction(deletionListener, "Delete",
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
+        _jgraph.registerKeyboardAction(deletionListener, "BackSpace",
+                KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+
         _jgraph.setRequestFocusEnabled(true);
         _jgraph.addMouseListener(new FocusMouseListener());
         _jgraph.setAlignmentX(1);
