@@ -406,7 +406,9 @@ public class JavaParser
         "LSHIFTL_ASG","ASHIFTR_ASG","LSHIFTR_ASG","AND_ASG","XOR_ASG","OR_ASG",
         "PLUSPLUS","MINUSMINUS",
     };
-    final static String yyrule[] = read_string_table("yyrule.tbl", NRULES - 2);
+    final static String YYRULE_FILENAME = "yyrule.tbl";
+    final static String yyrule[] = read_string_table(YYRULE_FILENAME,
+            NRULES - 2);
     //#line 1495 "jparser.y"
 
     public void init(String filename) throws IOException {
@@ -615,7 +617,11 @@ public class JavaParser
                         continue;      //skip action
                     yym = yylen[yyn];          //get count of terminals on rhs
                     if (yydebug)
-                        debug("state "+yystate+", reducing "+yym+" by rule "+yyn+" ("+yyrule[yyn]+")");
+                        if (yyrule == null) {
+                            debug("state "+yystate+", reducing "+yym+" by rule "+yyn+" yyrule[] is null, perhaps " + YYRULE_FILENAME + " does not exist");
+                        } else {
+                            debug("state "+yystate+", reducing "+yym+" by rule "+yyn+" ("+yyrule[yyn]+")");
+                        }
                     if (yym>0) { //if count of rhs not 'nil'
                         try {
                             yyval = (JavaParserval) val_peek(yym-1).clone(); //get current semantic value
