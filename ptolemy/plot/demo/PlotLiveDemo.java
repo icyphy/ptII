@@ -48,7 +48,7 @@ public class PlotLiveDemo extends PlotLive {
      * <code>run()</code> method while live plotting is enabled.
      */
     public synchronized void addPoints() {
-        if (_debug >8 ) System.out.println("PlotLiveDemo: addPoints");
+        if (_debug >18 ) System.out.println("PlotLiveDemo: addPoints");
 
         // You could plot multiple points at a time here
         // for faster response, but in our case, we really need
