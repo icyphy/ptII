@@ -361,6 +361,8 @@ public abstract class BasicGraphController
             
         // Note that the menuCreator cannot be an interactor, because
         // it accepts all events.
+        // NOTE: The above is a very strange comment, since
+        // it is an interactor.  EAL 2/5/05.
         pane.getBackgroundEventLayer().addInteractor(_menuCreator);
         pane.getBackgroundEventLayer().setConsuming(false);
         if (_configuration != null) {
@@ -539,8 +541,15 @@ public abstract class BasicGraphController
         }
 
         protected NamedObj _getObjectFromFigure(Figure source) {
-            return (NamedObj) getController().getGraphModel().getRoot();
+            // NOTE: Between Ptolemy 3.0 and 5.0, this would ignore
+            // the source argument, even if it was non-null.  Why?
+            // EAL 2/5/05.
+        	if (source != null) {
+                Object object = source.getUserObject();
+                return (NamedObj)getController().getGraphModel().getSemanticObject(object);      
+            } else {
+                return (NamedObj) getController().getGraphModel().getRoot();
+            }
         }
-
     }
 }
