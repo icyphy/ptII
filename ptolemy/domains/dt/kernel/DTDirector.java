@@ -253,7 +253,10 @@ public class DTDirector extends SDFDirector {
             return;
         }
 
-
+        // FIXME: this portion of code is currently commented out 
+        // because super.fire() is called. However, there are problems
+        // with prefire return false in SDFDirector:fire()
+        /*
         _debugViewSchedule();
 
         debug.println("DTDirector fire  " + presentTime);
@@ -270,7 +273,6 @@ public class DTDirector extends SDFDirector {
             while (allactors.hasMoreElements()) {
 
                 Actor actor = (Actor)allactors.nextElement();
-                _currentActiveActor = actor;
 
                 boolean isFiringNonDTCompositeActor = false;
 
@@ -307,10 +309,10 @@ public class DTDirector extends SDFDirector {
 		            _pseudoTimeEnabled = false;
 		        }
 
-		        _currentActiveActor = null;
-
             }
-        }
+        }*/
+        
+        super.fire();
         if ((outsideDirector != null) && _shouldDoInternalTransferOutputs) {
             _issueTransferOutputs();
         }
@@ -427,7 +429,7 @@ public class DTDirector extends SDFDirector {
             Actor actor = (Actor) currentPort.getContainer();
             String name = ((Nameable)actor).getFullName();
 
-            _DTActor dtActor = (_DTActor) _allActorsTable.get(actor);
+            DTActor dtActor = (DTActor) _allActorsTable.get(actor);
             debug.println(dtActor);
             if (dtActor == null) {
                 throw new IllegalActionException(
@@ -461,7 +463,7 @@ public class DTDirector extends SDFDirector {
 
             String name = ((Nameable)fromActor).getFullName();
 
-            _DTActor dtFromActor = (_DTActor) _allActorsTable.get(fromActor);
+            DTActor dtFromActor = (DTActor) _allActorsTable.get(fromActor);
 
             if (dtFromActor != null) {
                 if (dtFromActor._shouldGenerateInitialTokens) {
@@ -565,7 +567,7 @@ public class DTDirector extends SDFDirector {
      *  @param actor The actor to be assigned a new local time
      */
     public void setActorLocalTime(double newTime, Actor actor) {
-        _DTActor dtActor = (_DTActor) _allActorsTable.get(actor);
+        DTActor dtActor = (DTActor) _allActorsTable.get(actor);
         dtActor._localTime = newTime;
     }
 
@@ -683,7 +685,7 @@ public class DTDirector extends SDFDirector {
 
         foundRepeatValue:
         while(actorIterator.hasNext()) {
-            _DTActor currentActor = (_DTActor) actorIterator.next();
+            DTActor currentActor = (DTActor) actorIterator.next();
             if (actor.equals(currentActor._actor)) {
                 repeats = currentActor._repeats;
                 break foundRepeatValue;
@@ -708,32 +710,31 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException If the scheduler is null
      */
     private void _buildActorTable() throws IllegalActionException {
-        Scheduler currentScheduler = getScheduler();
-        if (currentScheduler== null)
-            throw new IllegalActionException("Attempted to fire " +
-                    "DT system with no scheduler");
-        Enumeration allActorsScheduled = currentScheduler.schedule();
-
-
-        int actorsInSchedule = 0;
-        while (allActorsScheduled.hasMoreElements()) {
-            Actor actor = (Actor) allActorsScheduled.nextElement();
-            String name = ((Nameable)actor).getFullName();
-            _DTActor dtActor = (_DTActor) _allActorsTable.get(actor);
-            if (dtActor==null) {
-              _allActorsTable.put(actor, new _DTActor(actor));
-              dtActor = (_DTActor) _allActorsTable.get(actor);
-              _actorTable.add(dtActor);
+        SDFScheduler currentScheduler = (SDFScheduler) getScheduler();
+        
+        CompositeActor container = (CompositeActor) getContainer();
+        if (container != null) {
+            Iterator allActors = container.deepEntityList().iterator();
+            while(allActors.hasNext()) {
+                Actor actor = (Actor) allActors.next();
+                String name = ((Nameable) actor).getFullName();
+                DTActor dtActor = (DTActor) _allActorsTable.get(actor);
+                if (dtActor == null) {
+                    _allActorsTable.put(actor, new DTActor(actor));
+                    dtActor = (DTActor) _allActorsTable.get(actor);
+                    _actorTable.add(dtActor);
+                }
+                dtActor._repeats = 
+                    currentScheduler.getFiringCount((Entity)dtActor._actor);
+                
             }
-            dtActor._repeats++;
-            actorsInSchedule++;
         }
 
         // include the container as an actor.  This is needed for TypedCompositeActors
         String name = getContainer().getFullName();
         Actor actor = (Actor) getContainer();
-        _allActorsTable.put(actor, new _DTActor((Actor)getContainer()));
-        _DTActor dtActor = (_DTActor) _allActorsTable.get(actor);
+        _allActorsTable.put(actor, new DTActor((Actor)getContainer()));
+        DTActor dtActor = (DTActor) _allActorsTable.get(actor);
         dtActor._repeats = 1;
         _actorTable.add(dtActor);
 
@@ -818,7 +819,7 @@ public class DTDirector extends SDFDirector {
         while(outports.hasNext()) {
             IOPort port = (IOPort)outports.next();
 
-            _outputPortTable.add(new _DTIOPort(port));
+            _outputPortTable.add(new DTIOPort(port));
         }
 
     }
@@ -892,7 +893,7 @@ public class DTDirector extends SDFDirector {
             _isFiringAllowed = false;
             while(outputPorts.hasNext()) {
                 Receiver[][] insideReceivers;
-                _DTIOPort dtport = (_DTIOPort) outputPorts.next();
+                DTIOPort dtport = (DTIOPort) outputPorts.next();
 
                 insideReceivers = dtport._port.getInsideReceivers();
                 double deltaTime = ((DTReceiver)insideReceivers[0][0]).getDeltaTime();
@@ -951,7 +952,7 @@ public class DTDirector extends SDFDirector {
          debug.println("\nACTOR TABLE with "+_actorTable.size()+" unique actors");
          ListIterator actorIterator = _actorTable.listIterator();
          while(actorIterator.hasNext()) {
-            _DTActor currentActor = (_DTActor) actorIterator.next();
+            DTActor currentActor = (DTActor) actorIterator.next();
             String actorName = ((Nameable) currentActor._actor).getName();
 
             debug.print(actorName+" repeats:"+currentActor._repeats);
@@ -1079,11 +1080,11 @@ public class DTDirector extends SDFDirector {
         if (scheduler == null)
             throw new InternalErrorException("Attempted to use " +
                     "DT system with no scheduler");
-        Enumeration allactors = scheduler.schedule();
+        Schedule schedule = scheduler.getSchedule();
         debug.println("--------SCHEDULE for "+getName()+"-----------------");
-        while (allactors.hasMoreElements()) {
-
-            Actor actor = (Actor)allactors.nextElement();
+        Iterator actors = schedule.actorIterator();
+        while(actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
             debug.println(" --> "+((Nameable)actor).getName());
         }
     }
@@ -1167,7 +1168,7 @@ public class DTDirector extends SDFDirector {
 
         Iterator outputPorts = _outputPortTable.iterator();
         while(outputPorts.hasNext()) {
-            _DTIOPort dtport = (_DTIOPort) outputPorts.next();
+            DTIOPort dtport = (DTIOPort) outputPorts.next();
 
             if (dtport._shouldTransferOutputs) {
                 outsideDirector.transferOutputs(dtport._port);
@@ -1257,7 +1258,6 @@ public class DTDirector extends SDFDirector {
         _actorTable = new ArrayList();
         _receiverTable = new ArrayList();
         _outputPortTable = new ArrayList();
-        _currentActiveActor = null;
         _allActorsTable = new Hashtable();
         _currentTime = 0.0;
         _formerTimeFired = 0.0;
@@ -1281,9 +1281,6 @@ public class DTDirector extends SDFDirector {
 
     // Hashtable for keeping track of actor information
     private Hashtable _allActorsTable;
-
-    // The current active actor during a firing
-    private Actor _currentActiveActor;
 
     // The time when the previous valid prefire() was called
     private double _formerValidTimeFired;
@@ -1324,7 +1321,7 @@ public class DTDirector extends SDFDirector {
     ////                         inner classes                     ////
 
     // Inner class to cache important variables for contained actors
-    private class _DTActor {
+    private class DTActor {
     	private Actor    _actor;
     	private double   _localTime;
     	private int      _repeats;
@@ -1333,7 +1330,7 @@ public class DTDirector extends SDFDirector {
     	/* Construct the information on the contained Actor
     	 * @param a The actor
     	 */
-    	public _DTActor(Actor actor) {
+    	public DTActor(Actor actor) {
     		_actor = actor;
     		_repeats = 0;
     		_localTime = 0.0;
@@ -1342,14 +1339,14 @@ public class DTDirector extends SDFDirector {
     }
 
     // Inner class to cache important variables for container output ports
-    private class _DTIOPort {
+    private class DTIOPort {
         private IOPort _port;
         private boolean _shouldTransferOutputs;
 
         /*  Construct the information on the output port
          *  @param p The port
          */
-        public _DTIOPort(IOPort port) {
+        public DTIOPort(IOPort port) {
             _port = port;
             _shouldTransferOutputs = false;
         }
