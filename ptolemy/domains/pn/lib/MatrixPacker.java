@@ -67,8 +67,8 @@ public class MatrixPacker extends AtomicActor {
      */
     public void fire() throws IllegalActionException {
         //Get Matrix dimensions
-        int rows = ((IntToken)_input.get(0)).intValue();
-        int columns = ((IntToken)_input.get(0)).intValue();
+        int rows = ((IntToken)_dimen.get(0)).intValue();
+        int columns = ((IntToken)_dimen.get(0)).intValue();
         
         int[][] image = new int[rows][columns];
         for (int i=0; i<rows; i++) {
