@@ -75,7 +75,8 @@ JSRCS = \
 	ViewScreen.java
 
 OTHER_FILES_TO_BE_JARED = \
-	grentities.xml
+	grentities.xml \
+	java3d-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
