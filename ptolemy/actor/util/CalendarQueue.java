@@ -820,7 +820,7 @@ public class CalendarQueue implements Debuggable {
 
         // Search the list for the specified element (using equals() to
         // identify a match).  Note that this does a linear search
-        // starting at the begining of the list.
+        // starting at the beginning of the list.
         // @param element Element to look for.
         // @return The cell containing the element, or null if there is none.
         public final CQCell find(Object element) {
