@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -92,7 +92,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         return _iterEndTime;
     }
 
-    /** can only be a embeded director, so check it here.
+    /** can only be an embedded director, so check it here.
      */
     public void initialize() throws IllegalActionException {
         _debug(this.getFullName() + " initialize.");

@@ -66,10 +66,10 @@ one memory, which is its state.
 To help resolving the new state, a set of variables are used:<BR>
 state: This is the new state at a time point, which has beed confirmed
 by all the step size control actors.
-tetative state: This is the resolved state which has not been confirmed.
+tentative state: This is the resolved state which has not been confirmed.
 It is a starting point for other actor to control the successfulness 
 of this integration step.
-history: The previous stats, which may be used by some integration method. 
+history: The previous states, which may be used by some integration method. 
 <P>
 For different ODE solving methods, the functionality
 of a integrator could be different. This class provide a basic
@@ -84,7 +84,7 @@ An integrator can possibly have several auxiliary variables--
 <code>_auxVariables</code>. The number of <code>_auxVariabless</code> is get
 from the ODE solver. 
 <P>
-The integrator remembers the histoty states and 
+The integrator remembers the history states and 
 their derivatives for the past several steps. The history is used for
 multistep methods.
 
@@ -282,8 +282,8 @@ public class CTBaseIntegrator extends CTActor
     }
 
     /** Return true if last integration step is successful.
-     *  It in turn calls the integratorIsSuccess() method of the current
-     *  ODE solver.
+     *  This method delegates to the integratorIsSuccessful() method of
+     *  the current ODE solver.
      *  @return True if last integration step is successful.
      */
     public boolean isThisStepSuccessful() {
@@ -306,7 +306,7 @@ public class CTBaseIntegrator extends CTActor
         return true;
     }
 
-    /** Return the predicted next step size. This method delegate to
+    /** Return the predicted next step size. This method delegates to
      *  the integratorPredictedStepSize() method of the current ODESolver.
      *  @return The predicteded next step size.
      */
@@ -344,7 +344,7 @@ public class CTBaseIntegrator extends CTActor
     }
 
     /** Return the predicted next step size. This method delegate to
-     *  the integratorPredictedStepSize() method of the current ODESolver.
+     *  the integratorRefinedStepSize() method of the current ODESolver.
      *  @return The predicteded next step size.
      */
     public double refinedStepSize() {
@@ -356,7 +356,7 @@ public class CTBaseIntegrator extends CTActor
         }
     }
 
-    /** Restore the saved state to current state. This method may be used
+    /** Go to the marked state. This method may be used
      *  for rollback the simulation from a previous time point.
      */
     public void goToMarkedState() {
@@ -364,8 +364,8 @@ public class CTBaseIntegrator extends CTActor
         setTentativeState(_storedState);
     }
 
-    /** Remember the current state. This remembered state can be
-     *  retrieved by the restoreState() method. The remembered state
+    /** Mark the current state. This remembered state can be
+     *  retrieved by the goToMarkedState() method. The marked state
      *  may be used for back up simulation from past.
      */
     public void markState() {
@@ -392,7 +392,7 @@ public class CTBaseIntegrator extends CTActor
         }
     }
 
-    /** Set history capacity. This will typically be set by the ODE sovlers
+    /** Set history capacity. This will typically be set by the ODE solvers
      *  that uses the history. If the argument is less than 0,
      *  the capacity is set to 0.
      *  @param cap The capacity.
@@ -438,7 +438,7 @@ public class CTBaseIntegrator extends CTActor
      *  will be lost. The contents of the history storage can be
      *  retrieved by getHistory() method.
      */
-    /*  FIXME: In this implementaion, the history storage has
+    /*  FIXME: In this implementation, the history storage has
      *        capacity 1.
      */
     protected void _pushHistory(double state, double derivative) {
@@ -476,9 +476,9 @@ public class CTBaseIntegrator extends CTActor
     // The history states and its derivative.
     // This variable is needed by Linear Multistep (LMS) methods,
     // like Tropezoidal rule.
-    // FIXME: In the current implememtaion, the highest LMS method is of
+    // FIXME: In the current implememtation, the highest LMS method is of
     // order 2. So only the information of the last step is needed. But
-    // the interface is provided to have multiple histories and retrive
+    // the interface is provided to have multiple histories and retrieve
     // them by index.
     private double[] _history = new double[2];
 }

@@ -38,13 +38,13 @@ import ptolemy.actor.Actor;
 Interface for actors that controls integration step sizes. Typically, 
 the step size of an integration algorithm is determined by the initial
 step size parameter, the local truncation error at the integrators, 
-the discontinuiyy of actor bahaviours, etc. All actors that want to 
+the discontinuity of actor behaviors, etc. All actors that want to 
 effect the integration step size should implement this interface.
 <P>
-Three methods are defined in this interface, isThisStepAcceptable(),
+Three methods are defined in this interface, isThisStepSuccessful(),
 refinedStepSize(), and predictedStepSize(). At the end of each integration
 step, the CTStepSizeControlActors will be asked whether this step is
-acceptable. If one of the actor is not satisfied, then it will be asked
+successful. If one of the actor is not satisfied, then it will be asked
 for a refined step size. The integration step will be restarted with 
 this refined step size. If all the step-size-control actors are satisfied,
 they will be asked for the (predicted) next step size.
@@ -57,7 +57,7 @@ public interface CTStepSizeControlActor extends Actor{
     ////                         public methods                    ////
     
     /** Return true if the current integration step is successful. 
-     *  Actors that implement this interface will interprete "successful"
+     *  Actors that implement this interface will interpret "successful"
      *  themselves. For example, for integrators, "successful" could 
      *  mean that the local truncation error is small enough; for 
      *  event detectors, "successful" could mean that there is not event
@@ -77,11 +77,11 @@ public interface CTStepSizeControlActor extends Actor{
     
     /** Return the refined step size for restarting current step. If the 
      *  current integration step size is not successful, the actor will
-     *  be asked for a refined step size. The current integation step 
+     *  be asked for a refined step size. The current integration step 
      *  will be restarted with the minimum of all returned values.
      *  If the actor does not want to restart the current integration 
      *  step, this method should return the current step size.
-     *  @return The refined current step size.
+     *  @return The refined step size.
      */
     public double refinedStepSize();
 }

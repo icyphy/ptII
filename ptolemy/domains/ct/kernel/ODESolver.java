@@ -36,11 +36,11 @@ import ptolemy.actor.*;
 //// ODESolver
 /**
 Abstract base class for ODE solvers. The key method for the class is 
-proceedOneStep(), which executes the integration method for one
+resolveState(), which executes the integration method for one
 step. This method does not consider any breakpoint affect. In general,
 resolveState() will resolve the integrators' new states. 
 Step size control (including error control) is performed by the 
-director. But solvers may provide support for it.
+director, but solvers may provide support for it.
 How the states are resolved and how the errors are controlled are
 solver dependent.  Derived classes
 may implement these methods according to individual ODE
@@ -48,9 +48,9 @@ solving algorithm.
 <P>
 The behavior of the integrators also changes
 when changing ODE solver, so this class provides the some methods
-for the integrators too, including the fire() method, and the error
-control related methods. Even for one integration method, the integrator's
-fire() method may depends on the round of fires. 
+for the integrators too, including the fire() method, and the step size
+control related methods. CTBaseIntegrator delegated its corresponding 
+methods to this class.
 <P>
 An integer called "round" is used to indicate the number of firing rounds
 within one iteration. For some integration method, (the so called explicit
@@ -134,7 +134,7 @@ public abstract class ODESolver extends NamedObj {
      */
     public abstract int getIntegratorAuxVariableCount();
 
-    /** The fire method of the integrator is delogated to this method.
+    /** The fire method of the integrator is delegated to this method.
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException Not thrown in this base
@@ -143,7 +143,7 @@ public abstract class ODESolver extends NamedObj {
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
 
-    /** The isSuccessful() method of the integrator is delegated to 
+    /** The isThisStepSuccessful() method of the integrator is delegated to 
      *  this method.
      *  @param integrator The integrator of that calls this method.
      *  @return True if the intergrator report a success on the last step.
@@ -151,7 +151,7 @@ public abstract class ODESolver extends NamedObj {
     public abstract boolean integratorIsSuccessful(CTBaseIntegrator
             integrator);
 
-    /** The predictStepSize() method of the integrator is delegated
+    /** The predictedStepSize() method of the integrator is delegated
      *  to this method.
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.

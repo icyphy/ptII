@@ -68,25 +68,29 @@ is at the top level. Default value is 0.0.</LI><BR>
 <LI> stop time (<code>StopTime</code>): The stop time of the simulation.
  The parameter should only be affective if the director
 is at the top level. Default value is 1.0.</LI><BR>
-<LI> initial step size (<code>InitialStepSize</code>): The suggested
+<LI> initial step size (<code>InitStepSize</code>): The suggested
 step size from the user. This will be the step size for fixed step
-size ODE sovlers. However, it is just a guide for variable step size
+size ODE solvers. However, it is just a guide for variable step size
 ODE solvers. Default value is 0.1</LI><Br>
-<LI> minimum step size (<code>MinimumStepSize</code>): The minimum step
+<LI> minimum step size (<code>MinStepSize</code>): The minimum step
 size the user wants to use in the simulation. Default value is 1e-5.
 </LI><Br>
-<LI> maximum iteration per step (<code>MaximumIterationPerStep</code>):
+<LI> maximum step size (<code>MaxStepSize</code>): The maximum step
+size the user wants to use in the simulation. Usually used to control
+the simulation speed. Default value is 1.0.
+</LI><Br>
+<LI> maximum iteration per step (<code>MaxIterations</code>):
 Used only in implicit ODE solvers. This is the maximum number of
 iterations for finding the fixed point at one time point. 
 Default value is 20. </LI><Br>
-<LI> local trancation error tolerance (<code>LocalTruncationError
-Tolerance</code>): This used for controlling the local truncation error 
-in variable step size ODE sovlers. If the local truncation error
+<LI> local truncation error tolerance (<code>ErrorTolerance</code>):
+This used for controlling the local truncation error 
+in variable step size ODE solvers. If the local truncation error
 at some error control actors are greater than this tolerance, then the 
 integration step is considered failed, and should be restarted with 
 a reduced step size. Default value 1e-4. </LI><Br>
-<LI> value resolution for convergence (<code>ConvergeValueResolution</code>)
-: This is used to control the convergence of fixed point iteration.
+<LI> value resolution for convergence (<code>ValueResolution</code>):
+ This is used to control the convergence of fixed point iteration.
 If in two successive iterations the differences of the state variables
 is less than this resolution, then the fixed point is considered found.
 Default value is 1e-6.<LI><Br>
@@ -109,7 +113,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     *  All the parameters takes their default values.The scheduler
+     *  All the parameters takes their default values. The scheduler
      *  is created.
      */
     public CTDirector() {
@@ -127,7 +131,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  All the parameters takes their default values.The scheduler
+     *  All the parameters takes their default values. The scheduler
      *  is created.
      *  @param workspace The workspace of this object.
      */
@@ -148,7 +152,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  All the parameters takes their default values.The scheduler
+     *  All the parameters takes their default values. The scheduler
      *  is created.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
@@ -196,8 +200,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in an attribute. If the changed atrribute matches
-     *  a parameter of the director, then the coresponding private copy of the
+    /** React to a change in an attribute. If the changed attribute 
+     *  matches a parameter of the director, then the corresponding 
+     *  private copy of the
      *  parameter value will be updated.
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
@@ -266,12 +271,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _currentTime;
     }
 
-    /** Return the fire begin time, which is the value set by 
-     *  setFireBeginTime().
-     *  @return Fire begin time.
+    /** Return the begin time of the current iteration.
+     *  @return the begin time of the current iteration.
      */
-    public double getFireBeginTime() {
-        return _fireBeginTime;
+    public double getIterationBeginTime() {
+        return _iterationBeginTime;
     }
 
     /** Return the initial step size.
@@ -281,10 +285,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _initStepSize;
     }
 
-    /** Return the local trancation error tolerance, used by
+    /** Return the local truncation error tolerance, used by
      *  variable step size solvers.
-     *  @return The local trancation error tolerance.
-     *  FIXME: change to getErrorTolerance
+     *  @return The local truncation error tolerance.
      */
     public final double getErrorTolerance() {
         return _lteTolerance;
@@ -319,7 +322,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @return The current time plus the current step size.
      */
     public final double getNextIterationTime() {
-        return getFireBeginTime() + getCurrentStepSize();
+        return getIterationBeginTime() + getCurrentStepSize();
     }
 
     /** Return the start time.
@@ -354,7 +357,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _timeResolution;
     }
 
-    /** Return the value resolution, used for testing if sn implicit method
+    /** Return the value resolution, used for testing if an implicit method
      *  has reached the fixed point. Two values differ less than
      *  this accuracy is considered identical in the fixed point
      *  calculation.
@@ -415,7 +418,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Set the current simulation time. All the actors directed by this
      *  director will share this global time. This is a very important
-     *  value for a correct simulation. The method should be cafully used.
+     *  value for a correct simulation. The method should be carefully used.
      *  @param tnow The current time.
      */
     public void setCurrentTime(double tnow){
@@ -502,7 +505,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Instantiate ODESolver from its classname. Given the solver's full 
-     *  class name, this method will try to inistantiate it by looking
+     *  class name, this method will try to instantiate it by looking
      *  for the java class.
      *  @param solverclass The solver's full class name.
      *  @exception IllegalActionException If the solver is unable to be 
@@ -534,7 +537,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  exception should be thrown.
      *  @param solver The solver to be set.
      *  @exception  IllegalActionException Never thrown in this base class.
-     *     It may be thrown by the direved classes if the solver is not
+     *     It may be thrown by the derived classes if the solver is not
      *     appropriate.
      */
     protected void _setCurrentODESolver(ODESolver solver)
@@ -561,11 +564,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
-    /** Set the fire begin time.
-     *  @param fbt Fire begin time.
+    /** Set the iteration begin time.
+     *  @param begintime The iteration begin time.
      */
-    protected void _setFireBeginTime(double fbt) {
-        _fireBeginTime = fbt;
+    protected void _setIterationBeginTime(double begintime) {
+        _iterationBeginTime = begintime;
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -586,7 +589,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public Parameter TimeResolution;
 
 
-    //values
+    // local copy of the parameters.
     private double _startTime;
     private double _stopTime;
     private double _initStepSize;
@@ -608,7 +611,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     //A table for wave form break points.
     private TotallyOrderedSet _breakPoints;
 
-    // the start time of a iteration. This value is remembered so that
+    // the begin time of a iteration. This value is remembered so that
     // we don't need to resolve it from the end time and step size.
-    private double _fireBeginTime;
+    private double _iterationBeginTime;
 }

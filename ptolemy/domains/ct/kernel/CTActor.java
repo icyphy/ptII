@@ -110,7 +110,7 @@ public class CTActor extends TypedAtomicActor {
         _attChanged = true;
     }
 
-    /** Update the paramters if they have been changed in the last
+    /** Update the parameters if they have been changed in the last
      *  iteration. 
      *  @return True always.
      *  @exception IllegalActionException Not thrown in this base class.

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -41,7 +41,7 @@ Composite actor in the CT domain. This class is derived from CompositeActor
 and implements the CTStepSizeControlActor interface. If the director of
 this composite actor is an instance of CTEmbeddedDirector, then the 
 CTStepSizeControlActor calls will be delegated to its local director.
-Otherwise, it returns defaullt values. 
+Otherwise, it returns default values. 
 <P>
 Note: This class is still under development.
 @author  Jie Liu

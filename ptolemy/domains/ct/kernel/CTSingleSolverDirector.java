@@ -111,8 +111,8 @@ public class CTSingleSolverDirector extends CTDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in an attribute. If the changed atrribute matches
-     *  a parameter of the director, then the coresponding private copy of the
+    /** React to a change in an attribute. If the changed attribute matches
+     *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the default solver that is
@@ -160,7 +160,7 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         //event phase:
         _eventPhaseExecution();
-        _setFireBeginTime(getCurrentTime());
+        _setIterationBeginTime(getCurrentTime());
         //Refine step size
         setCurrentStepSize(getSuggestedNextStepSize());
         _processBreakpoints();
@@ -214,7 +214,7 @@ public class CTSingleSolverDirector extends CTDirector {
         fireAt(null, getStopTime());
     }
 
-    /** Return false if simulation stop time is reached.
+    /** Return false if the simulation stop time is reached.
      *  Test if the current time is 
      *  the stop time. If so, return false ( for stop further simulation).
      *  Otherwise, returns true.
@@ -249,7 +249,6 @@ public class CTSingleSolverDirector extends CTDirector {
         if(STAT) {
             NSTEP++;
         }
-        //(Thread.currentThread()).yield();
         if(!isScheduleValid()) {
             // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();
@@ -280,7 +279,6 @@ public class CTSingleSolverDirector extends CTDirector {
                     ((Nameable)dyn).getName());
             dyn.emitTentativeOutputs();
         }
-        // outputSchdule.fire()
         Enumeration outputactors = scheduler.outputSchedule();
         while(outputactors.hasMoreElements()) {
             Actor nextoutputactor = (Actor)outputactors.nextElement();
@@ -408,7 +406,7 @@ public class CTSingleSolverDirector extends CTDirector {
                     _debug("state resolved.");
                     // ask if this step is acceptable
                     if (!_isStateAcceptable()) {
-                        setCurrentTime(getFireBeginTime());
+                        setCurrentTime(getIterationBeginTime());
                         setCurrentStepSize(_refinedStepWRTState());
                         _debug("execute the system from "+
                                     getCurrentTime() +" step size" + 
@@ -426,14 +424,14 @@ public class CTSingleSolverDirector extends CTDirector {
                                 "the minimum step size, at time "+
                                 getCurrentTime());
                     }
-                    setCurrentTime(getFireBeginTime());
+                    setCurrentTime(getIterationBeginTime());
                     setCurrentStepSize(0.5*getCurrentStepSize());
                 }
             }
             produceOutput();
             if (!_isOutputAcceptable()) {
                 //_debug("Output not satisfied.");
-                setCurrentTime(getFireBeginTime());
+                setCurrentTime(getIterationBeginTime());
                 setCurrentStepSize(_refinedStepWRTOutput());
                 if(STAT) {
                     NFAIL++;
@@ -461,8 +459,8 @@ public class CTSingleSolverDirector extends CTDirector {
             _defaultSolver = _instantiateODESolver(_solverclass);
             //}
         // set time
-        //_debug(this.getFullName() + 
-        //        "_init get State Time " + getStartTime());
+        _debug(this.getFullName() + 
+                "_init get State Time " + getStartTime());
 
         setCurrentTime(getStartTime());
         setSuggestedNextStepSize(getInitialStepSize());
@@ -601,6 +599,7 @@ public class CTSingleSolverDirector extends CTDirector {
 
     // parameter of ODE solver
     public Parameter ODESolver;
+
     // The classname of the ODE solver
     private String _solverclass;
 

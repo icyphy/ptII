@@ -44,7 +44,7 @@ CT subsystem in an event based system.
 The interface defines two methods, markState() and goToMarkedState().
 If the markState() method is called, the current state of the actor, 
 for example values of the local variables, should be remembered. When the 
-goToMarkedState() method is called after that, the markedd states 
+goToMarkedState() method is called after that, the marked states 
 should be restored. 
 @author  Jie Liu
 @version $Id$

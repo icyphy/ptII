@@ -71,7 +71,7 @@ public class CTReceiver extends Mailbox{
      */
     public void put(Token token) throws NoRoomException{
         if(hasToken()) {
-            super.get();
+            get();
         }
         super.put(token);
     }

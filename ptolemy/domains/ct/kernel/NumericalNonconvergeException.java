@@ -34,9 +34,9 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// NumericalNonconvergeException
 /**
-This exception is used to indicate a numerical calculation failiar,
+This exception is used to indicate a numerical calculation failure,
 typically in the process of finding the fixed point solution of an
-algebriac equation. This is a RuntimeException.
+algebraic equation. This is a RuntimeException.
 @author  Jie Liu
 @version $Id$
 */

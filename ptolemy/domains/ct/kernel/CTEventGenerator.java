@@ -49,7 +49,7 @@ public interface CTEventGenerator extends Actor{
     ////                         public methods                    ////
 
     /** Emit the discrete event that happens at the current time. If there
-     *  is nosuch events, do nothing.
+     *  is no such events, do nothing.
      */
     public void emitCurrentEvents() throws IllegalActionException;
 

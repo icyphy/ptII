@@ -35,9 +35,9 @@ package ptolemy.domains.ct.kernel;
 Interface for CT embedded directors. It defines three methods to support the
 outside CTDirector. The methods are about step size control. After the internal
 CT subsystem finishes one integration step, its step size control information
-should be accessable from the outside CT director.
+should be accessible from the outside CT director.
 <P>
-Note: This calss is under significant redesign, please do not use it if
+Note: This class is under significant redesign, please do not use it if
 possible.
 @author  Jie Liu
 @version $Id$

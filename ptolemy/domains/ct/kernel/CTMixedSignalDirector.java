@@ -68,7 +68,6 @@ the executive director time, then the directed system will rollback to a
 "known good" state.
 <LI> The "known good" state is the state of the system at the time when
 local time is equal to the current time of the executive director.
-It is saved by during the fire stage of the execution.
 <LI> At the fire stage, the director will stop at the first of the two times,
 the fire end time and the first detected event time.
 </UL>
@@ -116,8 +115,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in an attribute. If the changed atrribute matches
-     *  a parameter of the director, then the coresponding private copy of the
+    /** React to a change in an attribute. If the changed attribute matches
+     *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the superclass throws it.
@@ -136,8 +135,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      *  
      *  @return The fire end time.
      */
-    public final double getFireEndTime() {
-        return _fireEndTime;
+    public final double getIterationEndTime() {
+        return _iterationEndTime;
     }
 
     /** Return the time of the outside domain. If this is the top level
@@ -192,8 +191,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             if(isBPIteration()) { 
                 _markStates();
             }
-            _setFireBeginTime(getCurrentTime());
-            fireAt(null, getFireEndTime());
+            _setIterationBeginTime(getCurrentTime());
+            fireAt(null, getIterationEndTime());
             //Refine step size
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
@@ -201,14 +200,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                                    " One itertion from " + getCurrentTime());
             _fireOneIteration();
             if (_stopByEvent()) {
-                //_debug( this.getFullName() + 
-                //        " stop by event.");
+                _debug( this.getFullName() + " stop by event.");
                 exe.fireAt(ca, getCurrentTime());
                 _isFireSuccessful = false;
                 _refinedStep = getCurrentTime() - getOutsideTime();
                 _setEventPhase(true);
                 return;
-            } else if (getCurrentTime()>=getFireEndTime()) {
+            } else if (getCurrentTime()>=getIterationEndTime()) {
                 exe.fireAt(ca, getCurrentTime());
                 _isFireSuccessful = true;
                 _setEventPhase(false);
@@ -301,28 +299,30 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      *  for one iteration. The schedule is recomputed if there are mutations
      *  occurred after last iteration. Note that mutations can only 
      *  occur between iterations in the CT domain.
-     *  The parameters are updated.
      *  <P>
      *  If this is not a top-level director, some additional work is done
      *  to synchronize time with the executive director. In particular,
      *  it will compare its local time, say t, with the current time 
      *  of the executive director, say t0.
-     *  If t==t0, does nothing. If t > t0, then rollback to the "know good"
-     *  state. If t < t0, then throw an exception because the CT subsystem
-     *  should always run ahead of time.
+     *  If t==t0, does nothing. <BR>
+     *  If t > t0, then rollback to the "known good" time, which should be
+     *  less than the outside time. And catch up
+     *  to the outside time. <BR>
+     *  If t < t0, then throw an exception because the CT subsystem
+     *  should always run ahead of time. <BR>
      *  <P> 
-     *  The fire end time is computed. If this is a 
-     *  top-level director, the fire end time is the (local) current
+     *  The iteration end time is computed. If this is a 
+     *  top-level director, the iteration end time is the (local) current
      *  time plus the (local) current step size.
      *  If this director is not a top-level director, the time is 
      *  resolved from the current time of the outside domains, say t1,
      *  the next iteration time of the outside domain, say t2, 
      *  the RunAheadLength parameter of this director, say t3.
-     *  The fire end time is set 
-     *  to be <code>t1 + min(t2, t3)</code>. The fire end time may be
+     *  The iteration end time is set 
+     *  to be <code>t1 + min(t2, t3)</code>. The iteration end time may be
      *  further refined by the fire() method due to event detection.
      *  In particular, when the first event is detected, say at t4,
-     *  then the fire end time is set to t4.
+     *  then the iteration end time is set to t4.
      *  @return true Always
      *  @exception IllegalActionException If the local time is
      *       less than the current time of the executive director,
@@ -346,12 +346,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                         + " current time " + _outsideTime
                         + " next iteration time " + nextIterTime);
             }
-            //_debug( "Current Time " + getCurrentTime() 
-            //        + "Outside domain current time " + _outsideTime
-            //        + " next iteration time " + nextIterTime
-            //        + "run length "+ runlength);
+            _debug( "Current Time " + getCurrentTime() 
+                    + "Outside domain current time " + _outsideTime
+                    + " next iteration time " + nextIterTime
+                    + "run length "+ runlength);
             
-            // synchronization, handle round up error.
+            // Synchronization, handle round up error.
             if(runlength < timeAcc) {
                 exe.fireAt(ca, nextIterTime);
                 _debug("Next iteration is too near" +
@@ -362,13 +362,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                 _debug("Round up current time " +
                         getCurrentTime() + " to outside time " +_outsideTime);
                 setCurrentTime(_outsideTime);
-                // remove 
             }
             if (_outsideTime > getCurrentTime()) {
                 throw new IllegalActionException(this, exe,
                         " time collapse.");
             } 
-            // check for roll back.
+            // Check for roll back.
             if (_outsideTime < getCurrentTime()) {
                 _debug(getName() + " rollback from: " +
                         getCurrentTime() + " to: " +_knownGoodTime +
@@ -383,14 +382,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             //runlength = Math.min(runlength, _runAheadLength);
             
             if(runlength < _runAheadLength) {
-                _setFireEndTime(nextIterTime);
+                _setIterationEndTime(nextIterTime);
             } else {
-                _setFireEndTime(_outsideTime + _runAheadLength );
+                _setIterationEndTime(_outsideTime + _runAheadLength );
             }
             // fireAt(null, _outsideTime);
-            // fireAt(null, getFireEndTime());
+            // fireAt(null, getIterationEndTime());
             // Now it's guranteed that the current time is the outside time.
-            _debug("Fire end time="+getFireEndTime());
+            _debug("Iteration end time="+getIterationEndTime());
         }
         return true;
     }
@@ -441,7 +440,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      *  states are called to restore their saved states. The 
      *  current time of the director is set to the time of the "known
      *  good" state.
-     *  @exception IllegalActionException If thrown by the restoreStates()
+     *  @exception IllegalActionException If thrown by the goToMarkedState()
      *       method of an actor.
      */
     protected void _rollback() throws IllegalActionException{
@@ -456,7 +455,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         setCurrentTime(_knownGoodTime);
     }
 
-    /** Catch up the simulation from a knowGood point to the outside
+    /** Catch up the simulation from a known good state to the outside
      *  current time. There's should be no breakpoints of any kind
      *  in this process. If the current time is greater than or equal
      *  to the outside time, then do nothing.
@@ -466,11 +465,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             return;
         }
         // Don't need to consider breakpoint.
-        _setFireBeginTime(getCurrentTime());
+        _setIterationBeginTime(getCurrentTime());
         while(getCurrentTime() < (getOutsideTime()-getTimeResolution())) {
             _fireOneIteration();
         }
-        //_debug("###Catch up time"+getCurrentTime());
+        _debug(getFullName() + " Catch up time"+getCurrentTime());
     }
 
     /** Initialize parameters in addition to the parameters inherited
@@ -516,13 +515,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      *  release the control to the executive director.
      *  @param The fire end time.
      */
-    protected void _setFireEndTime(double time ) {
+    protected void _setIterationEndTime(double time ) {
         if(time < getCurrentTime()) {
             throw new InvalidStateException(this,
                 " Fire end time" + time + " is less than" +
                 " the current time." + getCurrentTime());
         }
-        _fireEndTime = time;
+        _iterationEndTime = time;
     }
 
     /** Return true if the current fire phase need to stop due to
@@ -541,7 +540,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                     // break point in the past or at now.
                     breakPoints.removeFirst();
                 } else if(Math.abs(bp-tnow) < getTimeResolution() && 
-                          bp < getFireEndTime()){
+                          bp < getIterationEndTime()){
                     // break point now!
                     return true;
                 } else {
@@ -593,7 +592,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     private double _runAheadLength;
 
     // the end time of a fire.
-    private double _fireEndTime;
+    private double _iterationEndTime;
 
     // whether in the emit event phase;
     private boolean _eventPhase = false;
