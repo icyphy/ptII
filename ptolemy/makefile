@@ -35,8 +35,8 @@ ME =		ptolemy
 # so that when we compile in a directory we should have already compiled
 # any classes in other directories that we depend on.
 
-DIRS = kernel plot graph data actor automata gui math media \
-	domains schematic filter
+DIRS = kernel plot graph data actor gui math media \
+	domains
 
 # Root of Ptolemy II directory
 ROOT =		..
