@@ -29,7 +29,7 @@
 
 package ptolemy.domains.ct.kernel.util;
 
-import collections.Comparator;
+import java.util.Comparator;
 
 //////////////////////////////////////////////////////////////////////////
 //// FuzzyDoubleComparator

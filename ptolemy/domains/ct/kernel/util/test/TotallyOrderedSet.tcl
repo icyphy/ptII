@@ -192,7 +192,7 @@ test TotallyOrderedSet-6.2 { remove the second element } {
 ####  Take
 #
 test TotallyOrderedSet-6.3 { take the first element } {
-    set f [$toset take]
+    set f [$toset removeFirst]
     list [$toset size] $f [$toset at 0] \
             [$toset at 1]
 } {2 0.2 3.0 999.3}

@@ -30,7 +30,11 @@
 
 package ptolemy.domains.ct.kernel.util;
 
-import collections.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,7 +62,7 @@ public class TotallyOrderedSet {
      *  a NoSuchElementException will be thrown.
      */
     public Object at(int index) {
-        return _set.at(index);
+        return _set.get(index);
     }
 
     /** Clear the set. Remove all the elements.
@@ -79,9 +83,9 @@ public class TotallyOrderedSet {
      */
     public boolean contains(Object obj) {
         boolean result = false;
-        Enumeration elements = _set.elements();
-        while(elements.hasMoreElements()) {
-            Object next = elements.nextElement();
+        Iterator elements = _set.iterator();
+        while(elements.hasNext()) {
+            Object next = elements.next();
             int com = _comparator.compare(obj, next);
             if(com == 0) {
                 result = true;
@@ -94,13 +98,21 @@ public class TotallyOrderedSet {
         return result;
     }
 
-    /** Return an Enumeration of all the elements.
-     *  @return The enumeration of all the elements.
+    /** Return a list of all the elements.
+     *  @return The list of all the elements.
      */
-    public Enumeration elements() {
-        return _set.elements();
+    public List elementList() {
+        return  _set;
     }
 
+    /** Return an Enumeration of all the elements.
+     *  @return The enumeration of all the elements.
+     *  @deprecated Use elementList() instead.
+     */
+    public Enumeration elements() {
+        return  Collections.enumeration(_set);
+    }
+    
     /** Return the first element, ie. the <i>"smallest"</i> element.
      *  If the set is empty, then return null.
      *  @return The smallest element.
@@ -109,7 +121,7 @@ public class TotallyOrderedSet {
         if(isEmpty()) {
             return null;
         }
-        return _set.first();
+        return _set.getFirst();
     }
 
     /** Return the comparator.
@@ -123,7 +135,7 @@ public class TotallyOrderedSet {
      *  is not in the set.
      */
     public int indexOf(Object obj) {
-        return _set.firstIndexOf(obj);
+        return _set.indexOf(obj);
     }
 
     /** Insert the given element, keeping the set sorted. If the set
@@ -135,23 +147,23 @@ public class TotallyOrderedSet {
      */
     public void insert(Object obj) {
         int count = 0;
-        Enumeration elements = _set.elements();
-        while(elements.hasMoreElements()) {
-            Object next = elements.nextElement();
+        Iterator elements = _set.iterator();
+        while(elements.hasNext()) {
+            Object next = elements.next();
             int com = _comparator.compare(obj, next);
             if(com == 0) {
                 return;
             }
             if(com < 0) {
-                _set.insertAt(count, obj);
+                _set.add(count, obj);
                 return;
             }
             count ++;
         }
-        _set.insertLast(obj);
+        _set.addLast(obj);
     }
 
-    /** return true if the set is empty
+    /** Return true if the set is empty
      *  @return True if the set is empty.
      */
     public boolean isEmpty() {
@@ -174,25 +186,25 @@ public class TotallyOrderedSet {
             if(com <= 0) {
                 return;
             } else {
-                removeFirst();
+                take();
             }
         }
     }
 
-    /** Remove the index-th element.
+    /** Remove and return the index-th element.
      *  @param index The index of the element.
      *  @exception NoSuchElementException If the specified index is
      *        out of range.
      */
-    public void removeAt(int index) {
-        _set.removeAt(index);
+    public Object removeAt(int index) {
+        return _set.remove(index);
     }
 
-    /** Remove the first element.
+    /** Remove and return the first element.
      *  @exception NoSuchElementException If the set is empty.
      */
-    public void removeFirst() {
-        _set.removeFirst();
+    public Object removeFirst() {
+        return _set.removeFirst();
     }
 
     /** Return the size of the set.
@@ -205,11 +217,10 @@ public class TotallyOrderedSet {
     /** Return the first element, ie. the <i>"smallest"</i> element and
      *  remove it from the set.
      *  @return The smallest element.
+     *  @deprecated Use removeFirst() instead.
      */
     public Object take() {
-        Object temp = _set.first();
-        _set.removeFirst();
-        return temp;
+        return _set.removeFirst();
     }
 
     /** Return a String that consists of the contents of the elements
@@ -219,9 +230,9 @@ public class TotallyOrderedSet {
      */
     public String toString() {
         String result = new String();
-        Enumeration eles = elements();
-        while(eles.hasMoreElements()) {
-            result = result + (eles.nextElement()).toString() + " ";
+        Iterator eles = elementList().iterator();
+        while(eles.hasNext()) {
+            result = result + (eles.next()).toString() + " ";
         }
         return result;
     }
