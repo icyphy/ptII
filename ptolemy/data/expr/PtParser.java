@@ -1649,7 +1649,7 @@ String tidied, x;
   }
 
   public PtParserTokenManager token_source;
-  SimpleCharStream jj_input_stream;
+  ASCII_CharStream jj_input_stream;
   public Token token, jj_nt;
   private int jj_ntk;
   private Token jj_scanpos, jj_lastpos;
@@ -1665,7 +1665,7 @@ String tidied, x;
   private int jj_gc = 0;
 
   public PtParser(java.io.InputStream stream) {
-    jj_input_stream = new SimpleCharStream(stream, 1, 1);
+    jj_input_stream = new ASCII_CharStream(stream, 1, 1);
     token_source = new PtParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -1686,7 +1686,7 @@ String tidied, x;
   }
 
   public PtParser(java.io.Reader stream) {
-    jj_input_stream = new SimpleCharStream(stream, 1, 1);
+    jj_input_stream = new ASCII_CharStream(stream, 1, 1);
     token_source = new PtParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
