@@ -68,7 +68,6 @@ public interface PtParserConstants {
   int ID = 36;
   int LETTER = 37;
   int STRING = 38;
-  int QUOTE = 39;
 
   int DEFAULT = 0;
   int IN_SINGLE_LINE_COMMENT = 1;
@@ -115,7 +114,6 @@ public interface PtParserConstants {
     "<ID>",
     "<LETTER>",
     "<STRING>",
-    "\"\\\"\"",
     "\"?\"",
     "\":\"",
     "\".\"",

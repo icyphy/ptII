@@ -1,0 +1,117 @@
+/* Input file to JJTree and JavaCC to generate Matrix Parser */
+
+options {
+    LOOKAHEAD=1;
+    STATIC = true;
+    NODE_USES_PARSER = true;
+}
+
+
+PARSER_BEGIN(MatrixParser)
+
+package ptolemy.data.expr;
+
+import java.util.Vector;
+import java.io.ByteArrayInputStream;
+import java.io.FileReader;
+
+public class MatrixParser {
+
+    /** Read a Matrix from File. */
+    public Vector readMatrix() {
+	Vector m = null;
+        System.out.println(" --- In Matrix Parser -- ");
+	try {
+	    m = matrix();
+            System.out.println(" --- got Matrix -- ");
+	} catch (Exception e) {
+	    System.out.println("Oops.");
+	    System.out.println(e.getMessage());
+	    e.printStackTrace();
+	} 
+	return m;
+    }	
+}
+
+PARSER_END(MatrixParser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+}
+
+
+<DEFAULT> TOKEN : /* numeric constants */
+{
+	< CONSTANT: <FLOAT>
+	    | <FLOAT> ( ["e","E"] ([ "-","+"])? <INTEGER> )?
+    	>
+  | 	< #FLOAT: <INTEGER> 
+	    | <INTEGER> ( "." <INTEGER> )?
+	    | "." <INTEGER>
+    	>
+  | 	< #INTEGER: ( <DIGIT> )+ >
+  | 	< #DIGIT: ["0" - "9"] >
+}
+
+<DEFAULT> TOKEN :
+{
+    < NAME     : ( ["a"-"z" , "A"-"Z" , "_"] )+ ( ["a"-"z" , "A"-"Z" , "_" , "'", "0"-"9"] )* >
+ |  < NATURAL  : ( ["0"-"9"] )+ ( ["0"-"9"] )* >
+ |  < SIGN     : ["-","+"] > 
+}
+
+
+SPECIAL_TOKEN :
+{
+  < COMMENT : "#" (~["\n","\r"])* ["\n","\r"] >
+}
+
+
+Vector matrix() :
+{
+    Vector m = new Vector();;
+    Vector row = null;
+    //Matrix m;
+    //Matrix row = null;
+}
+{  (
+      "[" [row=row()]  {m.add(row);}
+      (";"  row=row()  {m.add(row);} )* "]"
+   )
+	   
+   {  
+       return m;
+   }
+}
+
+Vector row() :
+{
+  Vector row = new Vector();
+  double element;
+}
+{  (   element=element()       {row.add(new Double(element));}
+       ( "," element=element() {row.add(new Double(element));} )*
+   )
+   {	
+       return row;
+   }
+}
+
+
+double element() :
+{
+  Token i;
+  Token s;
+  int sign = 1;
+  double value;
+}
+{   (	[s=<SIGN> {if ( (s.image).equals("-") ) sign=-1*sign; }]
+    	i=<CONSTANT> {value = sign*(new Double(i.image)).doubleValue();}
+    )
+    { return value; }
+}
+ 

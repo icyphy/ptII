@@ -32,6 +32,13 @@ package ptolemy.data.expr;
 import ptolemy.data.StringToken;
 import java.io.*;
 
+import java.util.*;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.Token;
+import ptolemy.data.MatrixToken;
+import ptolemy.data.DoubleMatrixToken;
+
 //////////////////////////////////////////////////////////////////////////
 //// UtilityFunctions
 /**
@@ -41,7 +48,7 @@ Currently this class only contains two methods, env() and readFile(),
 and even for these there are only trivial implementations.
 <p>
 FIXME: finish this class.
-@author  Neil Smyth
+@author  Neil Smyth, Christopher Hyland, Bart Kienhuis
 @version $Id$
 @see PtParser
 */
@@ -75,37 +82,132 @@ public class UtilityFunctions {
      * @param filename The file we want to read the text from.
      * @return StringToken containing the text contained in
      *   the specified file.
+     * @exception IllegalActionException If for the given filename
+     *   a file cannot be opened.
      * */
-    public static StringToken readFile(String filename) {
-        // temporary hack, need to work out way to obtain the path.
-        String curDir = System.getProperty("user.dir");
-        //System.out.println("Directory is " + curDir);
-        File fileT = new File(curDir, filename);
-        //System.out.println("Trying to open file: " + fileT.toString());
-        BufferedReader fin = null;
-        String line;
-        String result = "";
-        String newline = System.getProperty("line.separator");
-        try {
-            if (fileT.exists()) {
-                fin = new BufferedReader(new FileReader(fileT));
-                while (true) {
-                    try {
-                        line = fin.readLine();
-                    } catch (IOException e) {
-                        break;
+    public static StringToken readFile(String filename)             
+            throws IllegalActionException {
+
+                // temporary hack, need to work out way to obtain the path.
+                String curDir = System.getProperty("user.dir");
+
+                //System.out.println("Directory is " + curDir);
+                File fileT = new File(curDir, filename);
+                //System.out.println("Trying to open file: " + fileT.toString());
+                BufferedReader fin = null;
+                String line;
+                String result = "";
+                String newline = System.getProperty("line.separator");
+                try {
+                    if (fileT.exists()) {
+                        fin = new BufferedReader(new FileReader(fileT));
+                        while (true) {
+                            try {
+                                line = fin.readLine();
+                            } catch (IOException e) {
+                                break;
+                            }
+
+                            if (line == null) break;
+                            result += line + newline;
+                            //System.out.println("read in line: \"" +
+                            //   line + newline + "\"");
+                        }
+                    }
+                } catch (FileNotFoundException e) {
+                    // what should we do here?
+                    throw new IllegalActionException("File not found:\n" + 
+                            e.toString() );
+                }
+                //System.out.println("Contents of file are: " + result);
+                return new StringToken(result);
+    }
+
+    /** Read a file that contains a Matrix in Matlab notation. The
+     *  file matrix is return by the Matrix parser as a vector of
+     *  vectors. On the basis of these vectors, a new double array
+     *  element is created and filled with the entries of the
+     *  Matrix. The matrix is returned as a DoubleMatrixToken.
+     * @param filename The filename.
+     * @return A Token contained the matrix as a DoubleMatrixToken.
+     * @exception IllegalActionException If for the given filename
+     *   a file cannot be opened.
+     */
+    public static MatrixToken readMatrix(String filename) 
+            throws IllegalActionException 
+        {
+
+            File fileT = new File(filename);
+            System.out.println("Trying to open file: " + fileT.toString());
+
+            FileReader fin = null;
+
+            // Vector containing the matrix
+            Vector k = null;
+
+            // Parameters for the Matrix
+            int row = -1;
+            int column = -1;
+            
+            // Matlab Matrices always start at 1 instead of 0.
+            int posRow = 1;
+            int posColumn = 1;
+            double[][] mtr = null;
+
+            try {
+            
+                if (fileT.exists()) {
+                
+                    // Open the matrix file
+                    fin = new FileReader(fileT);
+                    // Read the file and convert it into a matrix
+                    mp.ReInit( fin );
+                    k = mp.readMatrix( );
+
+                    if ( column == -1 ) {
+                        // The column size of the matrix
+                        column = k.size();
                     }
 
-                    if (line == null) break;
-                    result += line + newline;
-                    //System.out.println("read in line: \"" +
-                    //   line + newline + "\"");
+                    Iterator i = k.iterator();
+                    while( i.hasNext() ) {
+                        Vector l = (Vector) i.next();                    
+                        if ( row == -1 ) { 
+                                // the row size.
+                            row = l.size();                        
+                                // create a new matrix definition
+                            mtr = new double[column+1][row+1];
+                        } else {
+                            if ( row != l.size() ) {
+                                throw new  IllegalActionException(" The Row" +
+                                        " size needs to be the same for all" +
+                                        " rows");
+                            }
+                        }                    
+                        Iterator j = l.iterator();
+                        while( j.hasNext() ) {
+                            Double s = (Double) j.next();
+                            mtr[posColumn][posRow++] = s.doubleValue();
+                        }
+                        posRow=1;
+                        posColumn++;
+                    }
+
+                    // Vectors have now become obsolete, data is stored
+                    // in double[][].
+                    k.removeAll(k);
+
                 }
+            } catch (FileNotFoundException e) {
+                throw new IllegalActionException("File not found:\n" + 
+                        e.toString() );
             }
-        } catch (FileNotFoundException e) {
-            // what should we do here?
+        
+            DoubleMatrixToken returnMatrix =  new DoubleMatrixToken(mtr);
+            return returnMatrix;      
         }
-        //System.out.println("Contents of file are: " + result);
-        return new StringToken(result);
-    }
+
+    /** The Matrix Parser. The Matrix parser is recreated for the standard
+        in. However, we use ReInit for the specific matrix files. */
+    static MatrixParser mp = new MatrixParser( System.in );
 }

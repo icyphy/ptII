@@ -472,8 +472,8 @@ TOKEN : /* Function names */
 
 TOKEN : /* literal strings */
 {
-        < STRING: <QUOTE> ( "\\\"" | ~["\""])* <QUOTE> >
-  |     < #QUOTE: "\"" >
+        < STRING: ( "'" ( "\\\"" | ~["\""])* "'" 
+                | "\"" ( "\\\"" | ~["\""])* "\"")>
 }
 
 ASTPtRootNode start() #PtRootNode :

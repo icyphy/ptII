@@ -73,7 +73,7 @@ JSRCS = \
 	ValueListener.java \
 	Variable.java
 
-EXTRA_SRCS =	PtParser.jjt $(JSRCS)
+EXTRA_SRCS =	PtParser.jjt MatrixParser.jjt $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -89,6 +89,9 @@ OPTIONAL_JSRCS = \
 	PtParserConstants.java \
 	PtParserTokenManager.java \
 	PtParserTreeConstants.java \
+	JJTMatrixParserState.java \
+	MatrixParserTokenManager.java \
+	MatrixParserConstants.java \
 	SimpleNode.java \
 	Token.java \
 	TokenMgrError.java
@@ -96,7 +99,7 @@ OPTIONAL_JSRCS = \
 # OPTIONAL_JSRCS depends on PtParser.java, but we want javadoc
 # to generate docs for PtParser, so we modify the javadoc
 # rule to also operate on DERIVED_JSRCS
-DERIVED_JSRCS = PtParser.java
+DERIVED_JSRCS = PtParser.java MatrixParser.java
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -109,11 +112,15 @@ OPTIONAL_FILES =  \
 	PtParser.jj \
 	'PtParser$$JJCalls.class' \
 	'Variable$$1.class' \
-	'Variable$$TypeTerm.class'
+	'Variable$$TypeTerm.class' \
+	JJMatrixParserState.class \
+	MatrixParser.jj \
+	MatrixParser.java
 
 JCLASS =  \
 	$(JSRCS:%.java=%.class) \
 	PtParser.class \
+	MatrixParser.class \
 	$(OPTIONAL_JSRCS:%.java=%.class)
 
 
@@ -124,7 +131,7 @@ install: $(PTCLASSJAR)
 depend:
 	@echo "no dependencies in this directory"
 
-$(OPTIONAL_JSRCS): PtParser.java
+$(OPTIONAL_JSRCS): PtParser.java MatrixParser.java
 
 # Uncomment this to work on the parser.
 PtParser.java: PtParser.jj
@@ -147,11 +154,31 @@ PtParser.jj: PtParser.jjt
 	@echo "   touch PtParser.jj PtParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
 
+MatrixParser.java: MatrixParser.jj
+	@echo "This command runs JavaCC, which can be downloaded from"
+	@echo "http://www.sun.com/suntest"
+	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
+	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"
+	@echo "derived from MatrixParser.jjt"
+	@echo "If you don't have JavaCC, you can workaround this with"
+	@echo "   touch MatrixParser.jj MatrixParser.java"
+	CLASSPATH="$(CLASSPATH)" $(JAVACC) MatrixParser.jj
+ 
+MatrixParser.jj: MatrixParser.jjt
+	@echo "This command runs JJTree, which is part of JavaCC"
+	@echo "JavaCC can be downloaded from http://www.sun.com/suntest"
+	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
+	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"
+	@echo "derived from MatrixParser.jjt"
+	@echo "If you don't have JavaCC, you can workaround this with"
+	@echo "   touch MatrixParser.jj MatrixParser.java"
+	CLASSPATH="$(CLASSPATH)" $(JJTREE) MatrixParser.jjt
+
 # This rule is useful for cvs committing the derived files
 # For example:
-# cvs commit -m "Updated PtParser." `make echo_OPTIONAL_JSRCS`
+# cvs commit -m "Updated MatrixParser." `make echo_OPTIONAL_JSRCS`
 echo_OPTIONAL_JSRCS:
-	@echo $(OPTIONAL_JSRCS) PtParser.java PtParser.jj
+	@echo $(OPTIONAL_JSRCS) PtParser.java PtParser.jj MatrixParser.java MatrixParser.jj
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
