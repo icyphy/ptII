@@ -59,7 +59,6 @@ JSRCS = \
 	SDFRamp.java \
 	SDFPrint.java \
 	SDFDelay.java \
-	SDF2Delay.java \
 	SDFSplit.java \
 	SDFJoin.java \
 	testlistener.java

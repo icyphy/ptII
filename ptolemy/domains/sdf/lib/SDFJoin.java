@@ -23,6 +23,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
+
+@ProposedRating Red
+@AcceptedRating Red
 */
 package ptolemy.domains.sdf.lib;
 
@@ -36,28 +39,26 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// SDFJoin
 /**
-@author Stephen Neuendorffer
-@version $Id$
+ * A deterministic merge of two token streams.
+ * @author Stephen Neuendorffer
+ * @version $Id$
 */
 
 public class SDFJoin extends SDFAtomicActor {
-    public IOPort inputport1;
-    public IOPort inputport2;
-    public IOPort outputport;
 
     public SDFJoin(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+        super(container, name);
         try{
-            inputport1=(IOPort)newPort("input1");
+            IOPort inputport1 = (IOPort)newPort("input1");
             inputport1.setInput(true);
-            setTokenConsumptionRate(inputport1,1);
-            inputport2=(IOPort)newPort("input2");
+            setTokenConsumptionRate(inputport1, 1);
+            IOPort inputport2 = (IOPort)newPort("input2");
             inputport2.setInput(true);
-            setTokenConsumptionRate(inputport2,1);
-            outputport=(IOPort)newPort("output");
+            setTokenConsumptionRate(inputport2, 1);
+            IOPort outputport = (IOPort)newPort("output");
             outputport.setOutput(true);
-            setTokenProductionRate(outputport,2);
+            setTokenProductionRate(outputport, 2);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFJoin: constructor error");
@@ -67,16 +68,19 @@ public class SDFJoin extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         IntToken message;
 
+        IOPort inputport1 = (IOPort) getPort("input1");
+        IOPort inputport2 = (IOPort) getPort("input2");
+        IOPort outputport = (IOPort) getPort("output");
 
-        message=(IntToken)inputport1.get(0);
+        message = (IntToken)inputport1.get(0);
         System.out.print("Join1 - ");
         System.out.println(message.intValue());
-        outputport.send(0,message);
-        message=(IntToken)inputport2.get(0);
+        outputport.send(0, message);
+        message = (IntToken)inputport2.get(0);
 
         System.out.print("Join2 - ");
         System.out.println(message.intValue());
-        outputport.send(0,message);
+        outputport.send(0, message);
 
     }
 }

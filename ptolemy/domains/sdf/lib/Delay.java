@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
+@ProposedRating Red
+@AcceptedRating Red
 */
 package ptolemy.domains.sdf.lib;
 
@@ -33,24 +35,24 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
-
 /**
- This class serves as a delay for Dataflow Domains which allows schedulers
- like SDF to break a cycle within the topology
+ * This class serves as a delay for Dataflow Domains which allows schedulers
+ * like SDF to break a cycle within the topology.  It uses SDFAtomicActor's
+ * setTokenInitProduction method to specify that it will create a token
+ * on its output port during initialization.
+ *
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class Delay extends SDFAtomicActor {
-    public IOPort inputport;
-    public IOPort outputport;
-
     public Delay(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+        super(container, name);
         try{
-            inputport=(IOPort)newPort("input");
+            IOPort inputport = (IOPort)newPort("input");
             inputport.setInput(true);
             setTokenConsumptionRate(inputport, 1);
-            outputport=(IOPort)newPort("output");
+            IOPort outputport = (IOPort)newPort("output");
             outputport.setOutput(true);
             setTokenProductionRate(outputport, 1);
             setTokenInitProduction(outputport, 1);
@@ -63,18 +65,19 @@ public class Delay extends SDFAtomicActor {
 
     public void initialize() throws IllegalActionException {
         IntToken token = new IntToken();
-
-        System.out.println("Delay, initial token" + token.toString());
-        outputport.send(0,token);
+        IOPort outputport = (IOPort)getPort("output");
+        outputport.send(0, token);
     }
 
     public void fire() throws IllegalActionException {
         IntToken message;
+        IOPort inputport = (IOPort)getPort("input");
+        IOPort outputport = (IOPort)getPort("output");
 
-        message=(IntToken)inputport.get(0);
+        message = (IntToken)inputport.get(0);
         System.out.print("Delay - ");
         System.out.println(message.intValue());
-        outputport.send(0,message);
+        outputport.send(0, message);
     }
 }
 

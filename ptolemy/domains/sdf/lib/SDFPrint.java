@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
+@ProposedRating Red
+@AcceptedRating Red
 */
 package ptolemy.domains.sdf.lib;
 
@@ -33,21 +35,20 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
-
-
 /**
+ * Print Integer tokens.
  * @version $Id$
+ * @author Steve Neuendorffer
  */
 public class SDFPrint extends SDFAtomicActor {
-    public IOPort inputport;
 
     public SDFPrint(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+        super(container, name);
         try{
-            inputport=(IOPort)newPort("input");
+            IOPort inputport = (IOPort)newPort("input");
             inputport.setInput(true);
-            setTokenConsumptionRate(inputport,1);
+            setTokenConsumptionRate(inputport, 1);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFPrint: Constructor error");
@@ -57,8 +58,9 @@ public class SDFPrint extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         IntToken message;
 
+        IOPort inputport = (IOPort)getPort("input");
 
-        message=(IntToken)inputport.get(0);
+        message = (IntToken)inputport.get(0);
         System.out.println(message.intValue());
 
 

@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
+@ProposedRating Red
+@AcceptedRating Red
 */
 package ptolemy.domains.sdf.lib;
 
@@ -34,26 +36,25 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 /**
+ * This actor deterministically splits its input token stream into two
+ * streams.
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class SDFSplit extends SDFAtomicActor {
-    public IOPort inputport;
-    public IOPort outputport1;
-    public IOPort outputport2;
-
     public SDFSplit(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+        super(container, name);
         try{
-            inputport=(IOPort)newPort("input");
+            IOPort inputport = (IOPort)newPort("input");
             inputport.setInput(true);
-            setTokenConsumptionRate(inputport,2);
-            outputport1=(IOPort)newPort("output1");
+            setTokenConsumptionRate(inputport, 2);
+            IOPort outputport1 = (IOPort)newPort("output1");
             outputport1.setOutput(true);
-            setTokenProductionRate(outputport1,1);
-            outputport2=(IOPort)newPort("output2");
+            setTokenProductionRate(outputport1, 1);
+            IOPort outputport2 = (IOPort)newPort("output2");
             outputport2.setOutput(true);
-            setTokenProductionRate(outputport2,1);
+            setTokenProductionRate(outputport2, 1);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFSplit: constructor error");
@@ -62,16 +63,18 @@ public class SDFSplit extends SDFAtomicActor {
 
     public void fire() throws IllegalActionException {
         IntToken message;
+        IOPort inputport = (IOPort)getPort("input");
+        IOPort outputport1 = (IOPort)getPort("output1");
+        IOPort outputport2 = (IOPort)getPort("output2");
 
-
-        message=(IntToken)inputport.get(0);
+        message = (IntToken)inputport.get(0);
         System.out.print("Split1 - ");
         System.out.println(message.intValue());
-        outputport1.send(0,message);
-        message=(IntToken)inputport.get(0);
+        outputport1.send(0, message);
+        message = (IntToken)inputport.get(0);
         System.out.print("Split2 - ");
         System.out.println(message.intValue());
-        outputport2.send(0,message);
+        outputport2.send(0, message);
     }
 }
 

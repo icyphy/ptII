@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
+@PropsedRating Red
+@AcceptedRating Red
 */
 package ptolemy.domains.sdf.lib;
 
@@ -35,45 +37,51 @@ import ptolemy.domains.sdf.kernel.*;
 
 
 /**
+ * Create an increasing sequence of integer tokens,
+ * starting with value zero, and incrementing by one.
+ * This actor is aware of the rate that is set on its port and
+ * will create the proper number of tokens with every firing.
+ *
  * @version $Id$
+ * @author Steve Neuendorffer
  */
 public class SDFRamp extends SDFAtomicActor {
-    private int value;
-    public IOPort outputport;
-
     public SDFRamp(CompositeActor container, String name)
             throws IllegalActionException,
             NameDuplicationException {
-        super(container,name);
+        super(container, name);
         try{
-            outputport=(IOPort) newPort("output");
+            IOPort outputport = (IOPort) newPort("output");
             outputport.setOutput(true);
-            setTokenProductionRate(outputport,1);
+            setTokenProductionRate(outputport, 1);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFRamp: constuctor error");
         }
-        value=0;
+        value = 0;
 
     }
 
+    public void fire() throws IllegalActionException {
+        int i;
+        IOPort outputport = (IOPort) getPort("output");
+        int tokens = getTokenProductionRate(outputport);
+        for(i = 0; i < tokens; i++) {
+            Token message = new IntToken(value);
+            value = value + 1;
+            outputport.send(0, message);
+        }
+    }
+
     public void initialize() {
-            value=0;
+        value = 0;
     }
 
     public boolean prefire() throws IllegalActionException {
         return true;
     }
 
+    private int value;
 
-    public void fire() throws IllegalActionException {
-        int i;
-        int tokens = getTokenProductionRate(outputport);
-        for(i=0;i<tokens;i++) {
-            Token message=new IntToken(value);
-            value=value+1;
-            outputport.send(0,message);
-        }
-    }
 }
 
