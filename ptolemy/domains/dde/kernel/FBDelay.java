@@ -114,7 +114,7 @@ public class FBDelay extends DDEActor {
     ////                         public  variables                 ////
 
     public TypedIOPort input = null;
-    public DDEIOPort output = null;
+    public TypedIOPort output = null;
     
     /** The boolean parameter that indicates whether a delay value 
      *  will be added to the time stamp of null tokens that are 
@@ -158,17 +158,18 @@ public class FBDelay extends DDEActor {
                 ((BooleanToken)realDelay.getToken()).booleanValue();
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
+            DDEThread ddeThread = (DDEThread)thread;
             if( token instanceof NullToken ) {
                 if( delayNullVal ) {
-	            output.send( 0, token, getCurrentTime() + getDelay() );
+                    _sendOutToken( token, getCurrentTime() + getDelay() );
                 } else {
-	            output.send( 0, token, getCurrentTime() );
+                    _sendOutToken( token, getCurrentTime() );
                 }
             } else {
                 if( delayRealVal ) {
-	            output.send( 0, token, getCurrentTime() + getDelay() );
+                    _sendOutToken( token, getCurrentTime() + getDelay() );
                 } else {
-	            output.send( 0, token, getCurrentTime() );
+                    _sendOutToken( token, getCurrentTime() );
                 }
             }
 	}
@@ -183,9 +184,17 @@ public class FBDelay extends DDEActor {
      */
     public void initialize() throws IllegalActionException {
 	super.initialize();
-	output.send( 0, new Token(), TimedQueueReceiver.IGNORE );
+        
+        Receiver[][] rcvrs = output.getRemoteReceivers();
+	for( int i = 0; i < rcvrs.length; i++ ) {
+	    for( int j = 0; j < rcvrs[i].length; j++ ) {
+            	DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+                rcvr.put( new Token(), TimedQueueReceiver.IGNORE );
+            }
+        }
+        
 
-	Receiver[][] rcvrs = input.getReceivers();
+	rcvrs = input.getReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
 	    for( int j = 0; j < rcvrs[i].length; j++ ) {
 		DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
@@ -219,17 +228,33 @@ public class FBDelay extends DDEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Syntactic sugar for sending out tokens without
+     *  depending on IOPort.send().
+     */
+    private void _sendOutToken(Token token, double time) {
+        Receiver[][] rcvrs = 
+        	(Receiver[][])output.getRemoteReceivers();
+	for( int i = 0; i < rcvrs.length; i++ ) {
+	    for( int j = 0; j < rcvrs[i].length; j++ ) {
+            	DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+                rcvr.put( token, time );
+            }
+        }
+    }
+    
+    /** Syntactic sugarg for initializing parameters.
+     */
     private void _setVariables() throws IllegalActionException, 
     	    NameDuplicationException {
 	input = new TypedIOPort(this, "input", true, false);
-	output = new DDEIOPort(this, "output", false, true);
+	output = new TypedIOPort(this, "output", false, true);
 	input.setTypeEquals(Token.class);
 	output.setTypeEquals(Token.class);
         
-        nullDelay = 
-                new Parameter(this, "nullDelay", new BooleanToken(true));
-        realDelay = 
-                new Parameter(this, "realDelay", new BooleanToken(false));
+        nullDelay = new 
+        	Parameter(this, "nullDelay", new BooleanToken(true));
+        realDelay = new 
+        	Parameter(this, "realDelay", new BooleanToken(false));
     }
 
 }
