@@ -82,7 +82,8 @@ public class RunTableau extends Tableau {
         NamedObj model = container.getModel();
         if (!(model instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-                    "Cannot run a model that is not a CompositeActor.");
+                    "Cannot run a model that is not a CompositeActor."
+                    + " It is: " + model);
         }
 	CompositeActor actor = (CompositeActor)model;
 
@@ -219,7 +220,7 @@ public class RunTableau extends Tableau {
 
 	/** If the specified effigy already contains a tableau named
          *  "runTableau", then return that tableau; otherwise, create
-         *  a new instance of RunTableau in the specified effigy, and
+         *  a new instance of RunTableau for the effigy, and
          *  name it "runTableau".  If the specified effigy is not an
          *  instance of PtolemyEffigy, then do not create a tableau
          *  and return null. It is the responsibility of callers of
@@ -246,6 +247,50 @@ public class RunTableau extends Tableau {
 	    } else {
 		return null;
 	    }
+	}
+    }
+
+    /** A factory that creates run control panel tableaux for the model
+     *  associated with a top-level effigy (one that has a file
+     *  representation).
+     */
+    public static class TopFactory extends Factory {
+
+	/** Create a factory with the given name and container.
+	 *  @param container The container.
+	 *  @param name The name.
+	 *  @exception IllegalActionException If the container is incompatible
+	 *   with this attribute.
+	 *  @exception NameDuplicationException If the name coincides with
+	 *   an attribute already in the container.
+	 */
+	public TopFactory(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+	    super(container, name);
+	}
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+	/** Create a tableau to run the model associated with the specified
+         *  effigy.  The top-level effigy, as returned by
+         *  {@link Effigy.topEffigy()}, is the one that is run.
+         *  If that effigy already contains a tableau named
+         *  "runTableau", then return that tableau; otherwise, create
+         *  a new instance of RunTableau for the top effigy, and
+         *  name it "runTableau".  If the specified effigy is not an
+         *  instance of PtolemyEffigy, then do not create a tableau
+         *  and return null. It is the responsibility of callers of
+         *  this method to check the return value and call show().
+         *
+	 *  @param effigy The model effigy.
+	 *  @return A new run tableau if the effigy is a PtolemyEffigy,
+	 *    or null otherwise.
+         *  @exception Exception If the factory should be able to create a
+         *   tableau for the effigy, but something goes wrong.
+	 */
+	public Tableau createTableau(Effigy effigy) throws Exception {
+            return super.createTableau(effigy.topEffigy());
 	}
     }
 }
