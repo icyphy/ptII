@@ -1,6 +1,6 @@
 /* Interface for objects that can be configured by reading a file.
 
- Copyright (c) 1997-2001 The Regents of the University of California.
+ Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,8 +53,17 @@ This interface can also be used for actors which load configuration
 information from non-XML formats, such as GIF images or binary lookup tables.
 The <i>source</i> argument of the configure() method simply points
 to such a file.
+<p>
+This interface is designed to be reversible, so that an object can also 
+provide enough information to reconstruct its current configuration.  
+This mechanism is used when writing MoML from instantiated objects, although
+it could also be used to write a description of the object in other forms.
+In order for this to work properly calling the configure method on 
+any object of the same type, given the data returned by the getSource and 
+getText methods should result in an object that resemble the
+first as closely as possible.  
 
-@author Edward A. Lee
+@author Edward A. Lee, Steve Neuendorffer
 @version $Id$
 @see ptolemy.actor.CompositeActor
 @see ptolemy.actor.AtomicActor
@@ -65,7 +74,12 @@ public interface Configurable {
     ////                         public methods                    ////
 
     /** Configure the object with data from the specified input source
-     *  (a URL) and/or textual data.
+     *  (a URL) and/or textual data.  The object should interpret the 
+     *  source first, if it is specified, followed by the literal text,
+     *  if that is specified.  The new configuration should usually 
+     *  override any old configuration wherever possible, in order to 
+     *  ensure that the current state can be successfully retrieved.
+     *  <p>
      *  This method is defined to throw a very general exception to allow
      *  classes that implement the interface to use whatever exceptions
      *  are appropriate.
@@ -79,4 +93,22 @@ public interface Configurable {
      */
     public void configure(URL base, String source, String text)
             throws Exception;
+
+    /** Return the input source that was specified the last time the configure
+     *  method was called.
+     *  @return The string representation of the input URL, or null if the
+     *  no source has been used to configure this object, or null if no
+     *  external source need be used to configure this object.
+     */
+    public String getSource();
+
+    /** Return the text string that represents the current configuration of
+     *  this object.  Note that any configuration that was previously
+     *  specified using the source attribute need not be represented here
+     *  as well.
+     *  @return A configuration string, or null if no configuration 
+     *  has been used to configure this object, or null if no
+     *  configuration string need be used to configure this object.
+     */
+    public String getText();   
 }
