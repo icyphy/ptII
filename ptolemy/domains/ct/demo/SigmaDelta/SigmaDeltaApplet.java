@@ -220,7 +220,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
             // CTActorParameters
 
-            sine.frequency.setToken(new DoubleToken(0.5));
+            sine.radianFreq.setToken(new DoubleToken(0.5));
 
             gain0.gain.setToken(new DoubleToken(50.0));
             gain1.gain.setToken(new DoubleToken(-2.50));
