@@ -160,10 +160,13 @@ public class Key extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == algorithm) {
+            _updateSecretKeyNeeded = true;
             _algorithm = ((StringToken)algorithm.getToken()).stringValue();
         } else if (attribute == provider) {
+            _updateSecretKeyNeeded = true;
             _provider = ((StringToken)provider.getToken()).stringValue();
         } else if (attribute == keySize) {
+            _updateSecretKeyNeeded = true;
             _keySize = ((IntToken)keySize.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
@@ -176,38 +179,48 @@ public class Key extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        // FIXME: Should we generate a different key each time we fire?
-        // FIXME: What if the parameters change?
+        _updateSecretKey();
         output.send(0, _secretKeyObjectToken);
     }
 
-    /** Initialize the key by using the cached values of the
-     *  <i>algorithm</i>, <i>keySize<i> and <i>provider</i> parameters.
+    /** Initialize the key by using the cached values of the parameters
+     *
      *  @exception IllegalActionException If thrown by base class or
      *  if the algorithm is not found, or if the padding scheme is illegal,
      *  or if the specified provider does not exist.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _algorithm = ((StringToken)algorithm.getToken()).stringValue();
-        _provider = ((StringToken)provider.getToken()).stringValue();
-        _keySize = ((IntToken)keySize.getToken()).intValue();
-        try {
-            KeyGenerator keyGen;
-            if (_provider.equalsIgnoreCase("SystemDefault")) {
-                keyGen = KeyGenerator.getInstance(_algorithm);
-            } else {
-                keyGen = KeyGenerator.getInstance(_algorithm, _provider);
-            }
-            keyGen.init(_keySize, new SecureRandom());
-            _secretKey = keyGen.generateKey();
-            _secretKeyObjectToken = new ObjectToken(_secretKey);
-
-        } catch (Exception ex) {
-            throw new IllegalActionException (this, ex,
-                    "Failed to initialize Key.");
-        }
+        _updateSecretKey();
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Update the secret key by calling KeyGenerator.getInstance()
+     *  with an argument that is created from the values of _algorithm,
+     *  _provider and _keySize.
+     */   
+    private void _updateSecretKey() throws IllegalActionException {
+        if (_updateSecretKeyNeeded) {
+            try {
+                KeyGenerator keyGen;
+                if (_provider.equalsIgnoreCase("SystemDefault")) {
+                    keyGen = KeyGenerator.getInstance(_algorithm);
+                } else {
+                    keyGen = KeyGenerator.getInstance(_algorithm, _provider);
+                }
+                keyGen.init(_keySize, new SecureRandom());
+                _secretKey = keyGen.generateKey();
+                _secretKeyObjectToken = new ObjectToken(_secretKey);
+            } catch (Exception ex) {
+                throw new IllegalActionException (this, ex,
+                        "Failed to initialize Key.");
+            }
+            _updateSecretKeyNeeded = false;
+        }
+    }        
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -225,4 +238,7 @@ public class Key extends Source {
     private SecretKey _secretKey = null;
 
     private ObjectToken _secretKeyObjectToken;
+
+    // Set to true of we need to call _updateSecretKey.
+    private boolean _updateSecretKeyNeeded = true;
 }
