@@ -7,119 +7,128 @@
 </head>
 <body>
 <h1>Ptolemy II Network Embedded Systems C (NC) Domain</h1>
-The Ptolemy II Network Embedded Systems C (NC) domain  
-uses NesC, from
-<a href="http://nesc.sourceforge.net#in_browser">http://nesc.sourceforge.net</a>
-
-<h2>How to install nc2momllib </h2>
-<ol>
-<li> The nesC (NC) domain requires tinyOS and nesC.  The configure
-script looks in <code>$PTII/vendors/ptinyos/tinyOS-1.x</code> for the tinyOS
-.nc files.
-
-<pre>
-mkdir -p $PTII/vendors/ptinyos
-</pre>
-
-<li> Get the TinyOS CVS tree:
-<a href="http://sourceforge.net/cvs/?group_id=28656"><CODE>http://sourceforge.net/cvs/?group_id=28656</CODE></a>
+<p>The Ptolemy II Network Embedded Systems C (NC) domain supports the construction 
+  of programs in nesC, from <a href="http://nescc.sourceforge.net#in_browser">http://nescc.sourceforge.net</a>. 
+  That web page describes nesC as &quot;an extension to the C programming language 
+  designed to embody the structuring concepts and execution model of TinyOS. TinyOS 
+  is an event-driven operating system designed for sensor network nodes that have 
+  very limited resources (e.g., 8K bytes of program memory, 512 bytes of RAM).&quot; 
+  TinyOS, described at <a href="http://webs.cs.berkeley.edu/tos/">http://webs.cs.berkeley.edu/tos/</a>, 
+  is used, for example, on the Berkeley MICA &quot;motes,&quot; which are small 
+  wireless sensor nodes.</p>
+<p>The domain leverages existing nesC libraries, using a tool called nc2momllib 
+  to create the Ptolemy II libraries of components that are used to assemble models. 
+  Models are converted into nesC code by the NCCodeGenerator component. TinyOS 
+  provides a rich library of nesC components. If you install TinyOS in $PTII/vendors/ptinyos 
+  (FIXME: <code>/tinyos-1.x</code>?), then the Ptolemy II configure script will 
+  find it and automatically make the TinyOS libraries available.</p>
+<p>FIXME: Explain how to install TinyOS and use the included nesC compiler to 
+  compile generated code. Provide a built-in small library so that this can be 
+  used right away.</p>
+<p>In order to leverage another existing library of nesC components, you have 
+  to run nc2momllib on that library.</p>
+<p>FIXME: Instructions here for just obtaining the binary, which since it's GPL'd, 
+  presumably has to include source code, but doesn't require building, and hence 
+  doesn't require the following nightmare.</p>
+<p>Below are the detailed instructions for:</p>
+<ul>
+  <li>Running simple code generation demos using built-in demo nesC libraries.</li>
+  <li>Installing TinyOS and making its nesC libraries visible in Ptolemy II.</li>
+  <li>Installing nc2momllib source code and compiling that source code.</li>
+</ul>
+<h2>Running simple code generation demos</h2>
+<p>FIXME</p>
+<h2>Installing TinyOS and making its nesC libraries visible in Ptolemy II</h2>
+<p>FIXME</p>
+<p>FIXME: Here, assuming we have the nc2momllib binary, we can install the TinyOS 
+  snapshot. It is not necessary to use the CVS tree. This may cause a conflict 
+  with the instructions below, which require the CVS tree.</p>
+<p>Getting the arguments to nc2momllib right for a large library can be difficult. 
+  We have put into the TinyOS makefiles a rule that you can run to create all 
+  the TinyOS libraries in one step. To use this, as of this writing, you need 
+  to get TinyOS from the CVS repository rather than getting the packaged install 
+  version. To do this, type:</p>
 <pre>
 cd $PTII/vendors/ptinyos
 cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos login
 <i>Hit Enter when prompted for a password</i>
 cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos co tinyos-1.x
-</pre>
 
-<li> Set TOSROOT to the location of the TinyOS source tree
-Under bash:
-<pre>
+For details, see <a href="http://sourceforge.net/cvs/?group_id=28656"><code>http://sourceforge.net/cvs/?group_id=28656</code></a>. This will create a directory tinyos-1.x.</pre>
+<h2>How to install nc2momllib and build from source</h2>
+<p>You can also download the nc2momllib source code and build it. It is based 
+  on the nesC compiler, which requires an impressive suite of tools. Under Linux 
+  or Cygwin, you need the following programs:</p>
+<menu> 
+  <li> autoconf 2.50 or later 
+  <li> bison 
+  <li> emacs 
+  <li> emacs-el 
+  <li> gperf 
+  <li> perl 
+  <li> rpm 
+</menu>
+<p>For help with how to install these in Cygwin, see the <a href="../../../doc/install.htm#cygwin">Ptolemy 
+  II Cygwin Instructions</a>. Note that most installations will not have gperf 
+  on them, at least, so you will likely need to install at least that. These instructions 
+  assume you have installed TinyOS as described above.</p>
+<ol>
+  <li>Make a directory into which to store the source code, for example:<br>
+    <br>
+    mkdir -p $PTII/vendors/ptinyos <br>
+    <br>
+  <li> Set TOSROOT to the location of the TinyOS source tree Under bash: 
+    <pre>
 export TOSROOT=$PTII/vendors/ptinyos/tinyos-1.x
 export TOSDIR=$TOSROOT/tos
 </pre>
-Under Windows with Cygwin, you can permanently set environment variables from
-the System control panel.  For details, see 
-<a href="../../../doc/install.htm#settingptII">Set the value of the PTII environment variable</a>.  While you are setting environment variables in Windows, you
-may want to set <a href="#NC2MOMLLIB_NESC">NC2MOMLLIB_NESC</a>.
-
-<p>Under csh or tcsh:
-<pre>
+    Under Windows with Cygwin, you can permanently set environment variables from 
+    the System control panel. For details, see <a href="../../../doc/install.htm#settingptII">Set 
+    the value of the PTII environment variable</a>. While you are setting environment 
+    variables in Windows, you may want to set <a href="#NC2MOMLLIB_NESC">NC2MOMLLIB_NESC</a>. 
+    <p>Under csh or tcsh: 
+    <pre>
 setenv TOSROOT $PTII/vendors/ptinyos/tinyos-1.x
 setenv TOSDIR $TOSROOT/tos
 </pre>
-
-
-<li> Get the nesC CVS Tree, see
-<a href="http://sourceforge.net/cvs/?group_id=56288"><CODE>http://sourceforge.net/cvs/?group_id=56288</CODE></a>
-<pre>
+  <li> Get the nesC CVS Tree, see <a href="http://sourceforge.net/cvs/?group_id=56288"><CODE>http://sourceforge.net/cvs/?group_id=56288</CODE></a> 
+    <pre>
 cd $PTII/vendors/ptinyos
 cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/nescc login
 <i>Hit Enter when prompted for a password</i>
 cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/nescc co -r nc2momllib nesc
 </pre>
-
-
-<li> Make and install the nesC CVS tree
- <br>nesC requires automake, autoconf 2.50 or later, emacs, and gperf.
-  You will probably not have gperf on your system.  Please install it first.
- <br>If you are using Cygwin, you can run the Cygwin setup.exe file
-and update your installation.
- <br>For details, see the <a href="../../../doc/install.htm#cygwin">Ptolemy II Cygwin Instructions</a>.  
- <br>Note: If you rerun Cygwin <CODE>setup.exe</CODE>, you may
-want to exit any running bash shells
- <br>You will need the following packages
-<menu>
-<li> autoconf
-<li> autoconf-stable
-<li> bison
-<li> emacs
-<li> emacs-el
-<li> gperf
-<li> perl
-</menu>
-
-
-<li> Boostrap nesC
-<pre>
+  <li> Make and install the nesC CVS tree 
+  <li> Boostrap nesC 
+    <pre>
 cd $PTII/vendors/ptinyos/nesc
 ./Bootstrap
 </pre>
-
-<li> Run configure for nesc
-<pre>
+  <li> Run configure for nesc 
+    <pre>
 ./configure --prefix=$PTII/vendors/ptinyos
 </pre>
-
-
-<li> Install nesc 
-<pre>
+  <li> Install nesc 
+    <pre>
 make 
 make install
 </pre>
-
-<li> <a name="NC2MOMLLIB_NESC">Set another variable</a>
-that points to the nesc installation. 
-<br>Under csh or tcsh
-<pre>
+  <li> <a name="NC2MOMLLIB_NESC">Set another variable</a> that points to the nesc 
+    installation. <br>
+    Under csh or tcsh 
+    <pre>
 setenv NC2MOMLLIB_NESC $PTII/vendors/ptinyos
 </pre>
-
-
-<li> Run the example
-<pre>
+  <li> Run the example 
+    <pre>
 cd $TOSROOT/contrib/momllib
 make momllib mica
 </pre>
-
-
-<li> See if the examples worked:
-<menu>
-<li> You should see some valid MoML code in
-<CODE>$TOSROOT/contrib/momllib/build/momllib/Counters.xml</CODE>
-
-<li> It should correspond to the contents of <CODE>$TOSDIR/lib/Counters</CODE>
-
-</menu>
-
+  <li> See if the examples worked: 
+    <menu> 
+      <li> You should see some valid MoML code in <CODE>$TOSROOT/contrib/momllib/build/momllib/Counters.xml</CODE> 
+      <li> It should correspond to the contents of <CODE>$TOSDIR/lib/Counters</CODE> 
+    </menu>
 </ol>
 
 
