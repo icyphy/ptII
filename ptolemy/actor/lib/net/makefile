@@ -64,7 +64,7 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	demo \
         doc \
-	'DatagramReceiver$$ListenerThread.class'
+	'DatagramReader$$ListenerThread.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -61,18 +61,20 @@ This actor sends its input as a Datagram over the network using the
 UDP protocol.  Before being sent, the data is optionally encoded as a
 text string representing the value being sent.  When this option is
 selected, any Ptolemy data type may be represented.
-See the <i>encoding</i> parameter.<p>
+See the <i>encoding</i> parameter.
 
-The address and socket number towards which the datagram is sent are
+<p>The address and socket number towards which the datagram is sent are
 given by optional inputs <i>remoteAddress</i> and <i>remoteSocketNumber</i>.
 Each optional input has an associated parameter giving its default value.
 The default values are used unless/until replaced by a token arriving at
-that optional input. <p>
+that optional input.  Note that some IP addresses are special broadcast
+addresses.  An address such as 128.32.239.255 broadcasts to any IP
+addresses on the 128.23.239.xxx subnet.  This only works on your own subnet.
 
-Each instance of this actor needs to allocate a local socket from
+<p>Each instance of this actor needs to allocate a local socket from
 which to transmit datagrams.  Initially, the local socket number is
 set to 4003, just to pick a number.  The socket is not allocated
-until the model is run.<p>
+until the model is run.
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on TiltSensor actor written by
@@ -98,7 +100,9 @@ public class DatagramWriter extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
+
         // Ports
+
         remoteAddress = new TypedIOPort(this, "remoteAddress");
         remoteAddress.setInput(true);
         remoteAddress.setMultiport(true);
@@ -113,17 +117,26 @@ public class DatagramWriter extends TypedAtomicActor {
         data.setInput(true);
         data.setTypeEquals(BaseType.GENERAL);
 
+
         // Parameters that are default values for ports
-        defaultRemoteAddress =
-                new StringAttribute(this, "defaultRemoteAddress");
-        defaultRemoteAddress.setExpression("localhost");
+
+        //defaultRemoteAddress =
+        //        new StringAttribute(this, "defaultRemoteAddress");
+        //defaultRemoteAddress.setExpression("localhost");
+	// Above way was set w/o quotes vs constant which is set with them.
+	// This has been confusing, so I've switched to the approach below.
+        defaultRemoteAddress = new Parameter(this, "defaultRemoteAddress");
+        defaultRemoteAddress.setTypeEquals(BaseType.STRING);
+        defaultRemoteAddress.setToken(new StringToken("localhost"));
 
         defaultRemoteSocketNumber =
                 new Parameter(this, "defaultRemoteSocketNumber");
         defaultRemoteSocketNumber.setTypeEquals(BaseType.INT);
         defaultRemoteSocketNumber.setExpression("4004"); //setExpression works
 
+
         // Pure parameters
+
         localSocketNumber = new Parameter(this, "localSocketNumber");
         localSocketNumber.setTypeEquals(BaseType.INT);
         localSocketNumber.setToken(new IntToken(4003)); //setToken works too
@@ -182,10 +195,8 @@ public class DatagramWriter extends TypedAtomicActor {
     /** The default remote address to which to send datagrams.
      *  This is a string.  It will get looked up to find the IP address.
      *  (Legal forms of this string include "128.32.239.10" and "localhost".)
-     *  NOTE: This is a parameter, but it is of type String and is a
-     *  special kind of parameter called a <i>StringAttribute</i>.
      */
-    public StringAttribute defaultRemoteAddress;
+    public Parameter defaultRemoteAddress;
 
     /** The remote address towards which to launch the packet.
      */
@@ -243,7 +254,9 @@ public class DatagramWriter extends TypedAtomicActor {
 
 	} else if (attribute == defaultRemoteAddress) {
 	    String address =
-                    defaultRemoteAddress.getExpression();
+                    ((StringToken)defaultRemoteAddress.getToken())
+                    .stringValue();
+	    //System.out.println("address = " + address + address + " phew!");
 	    try {
 		_address = InetAddress.getByName(address);
 	    } catch (UnknownHostException ex) {
@@ -407,8 +420,8 @@ public class DatagramWriter extends TypedAtomicActor {
                     + "the specified local socket number: " + ex.getMessage());
         }
 
-        String address =
-                defaultRemoteAddress.getExpression();
+	String address =
+                ((StringToken)defaultRemoteAddress.getToken()).stringValue();
         try {
             _address = InetAddress.getByName(address);
         }

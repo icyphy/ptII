@@ -1,0 +1,152 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DemoDatagramDE" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    </property>
+    <property name="DE" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693134862316E308">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="70.0, 40.0">
+        </property>
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="386.5, 278.5">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+        <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
+        </property>
+        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
+        </property>
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4095">
+        </property>
+        <property name="encodeForPtolemyParser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="225.0, 113.5">
+        </property>
+        <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="remoteSocketNumber" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="60.0, 123.5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="60.0, 214.5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
+        </property>
+        <property name="bufferLength" class="ptolemy.data.expr.Parameter" value="440">
+        </property>
+        <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="blockAwaitingDatagram" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
+                </property>
+                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
+                </property>
+                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="230.0, 220.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="135.0, 130.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display.input" relation="relation4"/>
+    <link port="DatagramSender.data" relation="relation2"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation3"/>
+    <link port="Clock.output" relation="relation3"/>
+    <link port="DatagramReceiver.output" relation="relation4"/>
+</entity>
