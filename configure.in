@@ -167,7 +167,7 @@ fi
 
 
 #--------------------------------------------------------------------
-#	Figure out whether to use javac -depend or javac -Xdepend
+#	Figure out whether to use javac -Xdepend or javac -depend
 #--------------------------------------------------------------------
 AC_MSG_CHECKING([the Java compiler with a simple compile])
 # We need to run javac in the config directory so that javac from jdk1.1.6
@@ -182,20 +182,20 @@ if $JAVAC confTest.java ; then
     JVERSION=`CLASSPATH=$PTII/config $JAVA confTest`	
     AC_MSG_RESULT($JVERSION)
 
-    JDEPENDFLAG="-depend"
+    JDEPENDFLAG="-Xdepend"
     AC_MSG_CHECKING([javac $JDEPENDFLAG])
     if $JAVAC -d $startdir $JDEPENDFLAG confTest.java ; then
 	AC_MSG_RESULT(yes)
     else
 	AC_MSG_RESULT(no)
-	JDEPENDFLAG="-Xdepend"
+	JDEPENDFLAG="-depend"
 	AC_MSG_CHECKING([javac $JDEPENDFLAG])
 	if $JAVAC -d $startdir $JDEPENDFLAG confTest.java ; then
 	    AC_MSG_RESULT(yes)
 	else
 	    AC_MSG_RESULT(no)
-	    AC_MSG_WARN(['$JAVAC -d $startdir -depend confTest.java' and
-'$JAVAC -d $startdir -Xdepend confTest.java' both failed, so we don't
+	    AC_MSG_WARN(['$JAVAC -d $startdir -Xdepend confTest.java' and
+'$JAVAC -d $startdir -depend confTest.java' both failed, so we don't
 know how to build with dependencies taken into account.  This could
 cause problems later if you modify .java files that other .java
 files depend on])
@@ -205,7 +205,7 @@ files depend on])
 else
     JDEPENDFLAG="-depend"
    AC_MSG_WARN(['$JAVAC confTest.java' failed,
-so we can't figure out whether to use -depend or -Xdepend.
+so we can't figure out whether to use -Xdepend or -depend.
 Defaulting to $JDEPENDFLAG]);
 fi
 cd $startdir
@@ -284,6 +284,8 @@ so we search for the jjtree command.])
 You need not download JavaCC unless you plan on modifying certain files 
 in ptolemy/data/expr. 
 JavaCC can be downloaded from http://www.sun.com/suntest'])
+	JJTREE=touch
+	JAVACC=touch
     fi
 fi
 
