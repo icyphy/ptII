@@ -99,10 +99,43 @@ public class TestProcessDirector extends ProcessDirector {
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
         synchronized (this) {
-            while( !_isInputControllerBlocked() ) {
+            String name = ((Nameable)this).getName();
+            // System.out.println(name+": calling fire()");
+            if( _debugging ) _debug( name+": calling fire()");
+            while( !_areActorsDeadlocked() && !_areActorsStopped() ) {
+                if( _debugging ) _debug( name+": actors waiting for deadlock or stop");
 		workspace.wait(this);
             }
-            _notDone = false;
+            if( _debugging ) _debug( name+": actors deadlocked or stopped");
+            
+            stopInputBranchController();
+            
+            if( _debugging ) _debug( name+": attempt to stop input branch controller");
+            
+            if( _isOutputControllerBlocked() ) {
+                _debug( name+": output branch controller blocked before wait loop");
+            }
+            if( _isInputControllerBlocked() ) {
+                _debug( name+": input branch controller blocked before wait loop");
+            }
+            
+            while( !_isInputControllerBlocked() && !_isOutputControllerBlocked() ) {
+                workspace.wait(this);
+            }
+            
+            if( _debugging ) _debug( name+": input and output controller blocked");
+            
+            if( _areActorsDeadlocked() || _areActorsStopped() ) {
+                if( _isInputControllerBlocked() ) {
+                    registerBlockedBranchReceivers();
+                }
+                _debug( name+": _notDone = false");
+                _notDone = false;
+            } else {
+                _debug( name+": _notDone = true");
+                _notDone = true;
+            }
+            
         }
     }
 
@@ -124,8 +157,8 @@ public class TestProcessDirector extends ProcessDirector {
         while( rcvrs.hasNext() ) {
             rcvr = (ProcessReceiver)rcvrs.next();
             _blockedRcvrList.addFirst( rcvr ) ;
-            _actorsBlocked++;
     	}
+        _actorsBlocked++;
         notifyAll();
     }
 
@@ -135,9 +168,9 @@ public class TestProcessDirector extends ProcessDirector {
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
         while( _blockedRcvrList.contains(rcvr) ) {
     	    _blockedRcvrList.remove(rcvr);
-            if( _actorsBlocked > 0 ) {
-                _actorsBlocked--;
-            }
+        }
+        if( _actorsBlocked > 0 ) {
+            _actorsBlocked--;
         }
         notifyAll();
     }
@@ -151,10 +184,10 @@ public class TestProcessDirector extends ProcessDirector {
         while( rcvrs.hasNext() ) {
             while( _blockedRcvrList.contains(rcvr) ) {
     		_blockedRcvrList.remove(rcvr);
-                if( _actorsBlocked > 0 ) {
-                    _actorsBlocked--;
-                }
             }
+        }
+        if( _actorsBlocked > 0 ) {
+            _actorsBlocked--;
         }
         notifyAll();
     }
