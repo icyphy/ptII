@@ -231,7 +231,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         if (functionName.compareTo("matlab") == 0) {
-            // We can't infer the type of eval expressions...
+            // We can't infer the type of matlab expressions...
             _setType(node, BaseType.GENERAL);
             return;
         }

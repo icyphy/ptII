@@ -436,8 +436,8 @@ test ParseTreeEvaluator-13.2 {Test record construction.} {
 ####
 # Test evaluate
 test ParseTreeEvaluator-14.0 {Test eval().} {
-    list [evaluate "eval(\"1+1\")" ] \
-         [evaluate {eval("[1.0, 2.0; 3.0, 4.0]")}]
+    list [evaluate "cast(int,eval(\"1+1\"))" ] \
+	[evaluate {cast([double],eval("[1.0, 2.0; 3.0, 4.0]"))}]
  } {2 {[1.0, 2.0; 3.0, 4.0]}}
 
 ######################################################################

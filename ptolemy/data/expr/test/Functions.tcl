@@ -1099,7 +1099,8 @@ test Function-transpose {Test transpose} {
 # eval
 
 test Function-eval {Test eval} {
-    list [evaluate {eval("1+2")}] \
+    # Note that eval requires the cast!
+    list [evaluate {cast(int,eval("1+2"))}] \
      } {3}
 
 ####################################################################
