@@ -233,6 +233,12 @@ public class CSPReceiver implements ProcessReceiver {
     public synchronized void setFinish() {
         _simulationFinished = true;
         _simulationPaused = false; // needed?
+        // Need to reset the state of the receiver.
+        _setConditionalReceive(false, null);
+        _setConditionalSend(false, null);
+        _setPutWaiting(false);
+        _setGetWaiting(false);
+        _setRendezvousComplete(false);
     }
 
     ////////////////////////////////////////////////////////////////////////
