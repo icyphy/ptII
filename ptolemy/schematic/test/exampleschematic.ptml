@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE ptolemyschematic SYSTEM "ptolemyicon.dtd">
+<!DOCTYPE schematic SYSTEM "ptolemyicon.dtd">
 
 <schematic name="SDF" version="1.0">
 <description>Icons for use within SDF</description>
@@ -10,7 +10,7 @@
 <port name="image" output="true" type="doubleArray"/>
 </entity>
 
-<entity name="Save BMP file" icon="examplelibrary.SaveImage">
+<entity name="Save BMP File" icon="examplelibrary.SaveImage">
 <parameter name="filename" type="string"/>
 <port name="image" input="true" type="doubleArray"/>
 </entity>
