@@ -130,17 +130,21 @@ public class UtilityFunctions {
 	}
     }
 
-    /** Find a file. Uses the supplied name and if it does not exist as is,
-     *  searches the user directory followed by the current system
-     *  java.class.path list and returns the first match or name unchanged.
-     *  @param name Relative pathname of file/directory to find.
-     *  @return Canonical absolute path if file/directory was found, otherwise
-     *   returns unchanged name.
+    /** Find a file or directory. If the file does not exist as is, then
+     *  search the current working directory, the user's home directory,
+     *  and finally, the classpath.
+     *  @param name Path of a file or directory to find.
+     *  @return Canonical absolute path if the file or directory is found,
+     *   otherwise the argument is returned unchanged.
      */
     public static String findFile(String name) {
         File file = new File(name);
         if (!file.exists()) {
             String curDir = StringUtilities.getProperty("user.dir");
+            file = new File(curDir, name);
+        }
+        if (!file.exists()) {
+            String curDir = StringUtilities.getProperty("user.home");
             file = new File(curDir, name);
         }
         if (!file.exists()) {
@@ -240,68 +244,46 @@ public class UtilityFunctions {
         return new StringToken(StringUtilities.getProperty(propertyName));
     }
 
-    /** Get the string text contained in the specified file. For
-     *  now this just looks in the directory where the parser
-     *  is located, but will eventually (hopefully!) be able
-     *  to use environment variables, user names etc. in
-     *  creating a file path. An empty string
-     *  is returned if the specified file could not be located.
-     *  If the contents of the file consists of more than one line,
-     *  then \n characters are converted to spaces, and \r characters
-     *  are removed.  For example, if a file contains
-     *  <pre>
-     *  "
-     *  foo
-     *  "
-     *  </pre>
-     *  Then <code>eval(readfile("foo.txt"))</code> will return
-     *  <code>" foo "</code>.  FIXME: this is a bug, we need to be smarter
-     *  here.
-     *  <br>Use readFile({@link #findFile}) to specify files relative to the
-     *  current user directory or classpath.<p>
-     *  A StringToken can be converted to any valid Token it represents
-     *  with the Ptolemy II expression language eval() function.
-     *  eval() is implemented in ptolemy.data.expr.ASTPtFunctionNode.java.
-     *  For example: <code>eval(readFile("taps"))</code><p>
+    /** Get the string text contained in the specified file. The argument
+     *  is first interpreted using findFile(), so file names relative to
+     *  the current working directory, the user's home directory, or the
+     *  classpath are understood. If the file contains text that is a
+     *  valid expression in the expression language, then that text can
+     *  interpreted using the eval() function in
+     *  ptolemy.data.expr.ASTPtFunctionNode.
+     *  For example: <code>eval(readFile("<i>filename</i>"))</code><p>
      *
-     *  @param filename The file we want to read the text from.
-     *  @return StringToken containing the text contained in
-     *  the specified file.
-     *  @exception IllegalActionException If for the given filename
-     *  a file cannot be opened.
+     *  @param filename The name of the file to read from.
+     *  @return A StringToken containing the text contained in
+     *   the specified file.
+     *  @exception IllegalActionException If the file cannot be opened.
      *  @see ptolemy.data.expr.ASTPtFunctionNode
+     *  @see readResource()
      */
     public static StringToken readFile(String filename)
             throws IllegalActionException {
 
-        File file = new File(filename);
+        File file = new File(findFile(filename));
         //System.out.println("Trying to open file: " + file.toString());
         BufferedReader fin = null;
         String line;
-        String result = "";
+        StringBuffer result = new StringBuffer("");
         String newline = System.getProperty("line.separator");
         try {
-            if (file.exists()) {
-                fin = new BufferedReader(new FileReader(file));
-                while (true) {
-                    try {
-                        line = fin.readLine();
-                    } catch (IOException e) {
-                        break;
-                    }
-
-                    if (line == null) break;
-                    result += line + newline;
-                    //System.out.println("read in line: \"" +
-                    //   line + newline + "\"");
+            fin = new BufferedReader(new FileReader(file));
+            while (true) {
+                try {
+                    line = fin.readLine();
+                } catch (IOException e) {
+                    break;
                 }
+                if (line == null) break;
+                result.append(line + newline);
             }
         } catch (FileNotFoundException ex) {
-           // what should we do here?
             throw new IllegalActionException(null, ex, "File not found");
         }
-        //System.out.println("Contents of file are: " + result);
-        return new StringToken(result);
+        return new StringToken(result.toString());
     }
 
     /** Read a file that contains a matrix of reals in Matlab notation.
@@ -309,6 +291,7 @@ public class UtilityFunctions {
      *  @param filename The filename.
      *  @return The matrix defined in the file.
      *  @exception IllegalActionException If the file cannot be opened.
+     *  @deprecated Use eval(readFile()) instead.
      */
     public static DoubleMatrixToken readMatrix(String filename)
             throws IllegalActionException {
@@ -388,35 +371,26 @@ public class UtilityFunctions {
         return returnMatrix;
     }
 
-    /** Get the string text contained in the specified resource.
-     *  Resource strings look like filenames without a leading slash
-     *  and are always loaded relative to the Java class path.
-     *  An empty string is returned if the specified file could
-     *  not be located.  If the contents of the file consists of more
-     *  than one line, then \n characters are converted to spaces, and
-     *  \r characters are removed.  For example, if a file contains
-     *  <pre> " foo " </pre> Then
-     *  <code>eval(readfile("foo.txt"))</code> will return <code>" foo
-     *  "</code>.  FIXME: this is a bug, we need to be smarter here.
-     *  <br>Use readFile({@link #findFile}) to specify files relative
-     *  to the current user directory or classpath.<p> A StringToken
-     *  can be converted to any valid Token it represents with the
-     *  Ptolemy II expression language eval() function.  eval() is
-     *  implemented in ptolemy.data.expr.ASTPtFunctionNode.java.  For
-     *  example: <code>eval(readFile("taps"))</code><p>
+    /** Get the string text contained in the specified resource, which
+     *  is a file that is specified relative to the Java classpath.
+     *  Resource strings look like filenames without a leading slash.
+     *  If the file contains text that is a
+     *  valid expression in the expression language, then that text can
+     *  interpreted using the eval() function in
+     *  ptolemy.data.expr.ASTPtFunctionNode.
+     *  For example: <code>eval(readFile("<i>filename</i>"))</code><p>
      *
-     *  @param name The file we want to read the text from.
-     *  @return StringToken containing the text contained in
-     *  the specified file.
-     *  @exception IllegalActionException If for the given filename
-     *  a file cannot be opened.
+     *  @param name The name of the resource to read from.
+     *  @return A StringToken containing the text contained in
+     *   the specified resource.
+     *  @exception IllegalActionException If the resource cannot be opened.
      *  @see ptolemy.data.expr.ASTPtFunctionNode
+     *  @see readFile()
      */
     public static StringToken readResource(String name)
             throws IllegalActionException {
         URL url = ClassLoader.getSystemResource(name);
-        System.out.println("Trying to open url: " + url.toString());
-        String result = "";
+        StringBuffer result = new StringBuffer("");
         try {
             InputStream stream = url.openStream();
             String line;
@@ -431,16 +405,12 @@ public class UtilityFunctions {
                 }
 
                 if (line == null) break;
-                result += line + newline;
-                //System.out.println("read in line: \"" +
-                //   line + newline + "\"");
+                result.append(line + newline);
             }
         } catch (IOException ex) {
-           // what should we do here?
             throw new IllegalActionException(null, ex, "File not found");
         }
-        //System.out.println("Contents of file are: " + result);
-        return new StringToken(result);
+        return new StringToken(result.toString());
     }
 
     /** Create an array that contains the specified element
@@ -485,7 +455,7 @@ public class UtilityFunctions {
 	return new LongToken(Runtime.getRuntime().totalMemory());
     }
 
-    /** Return the zero matrix with the given number of rows and columns.
+    /** Return a double zero matrix with the given number of rows and columns.
      *  @return The zero matrix with the given number of rows and columns.
      */
     public static DoubleMatrixToken zeroMatrix(int rows, int columns) {
