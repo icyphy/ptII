@@ -120,7 +120,8 @@ public class HSInit extends NamedObj implements TransitionAction {
         Director exec = nref.getExecutiveDirector();
         Director dir = nref.getDirector();
 
-        CTBaseIntegrator intgr = (CTBaseIntegrator)nref.getEntity(_integratorName);
+        CTBaseIntegrator intgr =
+            (CTBaseIntegrator)nref.getEntity(_integratorName);
 
 
 
@@ -136,7 +137,8 @@ public class HSInit extends NamedObj implements TransitionAction {
         // FSMState src = _container.sourceState();
         // CompositeActor cref = (CompositeActor)src.getRefinement();
         FSMController ctrl = (FSMController)dest.getContainer();
-        VariableList vl = (VariableList)ctrl.getAttribute(FSMController.INPUT_VALUE_VAR_LIST);
+        VariableList vl = (VariableList)ctrl.getAttribute(
+                FSMController.INPUT_VALUE_VAR_LIST);
         Enumeration invars = vl.getVariables();
         while (invars.hasMoreElements()) {
             Variable invar = (Variable)invars.nextElement();

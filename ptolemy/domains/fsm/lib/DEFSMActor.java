@@ -84,7 +84,8 @@ public class DEFSMActor extends FSMController implements TypedActor {
 	return dir.getStopTime();
         }
 
-        public void refireAfterDelay(double delay) throws IllegalActionException {
+        public void refireAfterDelay(double delay)
+        throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
 	// FIXME: the depth is equal to zero ???
         // If this actor has input ports, then the depth is set to be
@@ -131,7 +132,8 @@ public class DEFSMActor extends FSMController implements TypedActor {
 		    	if (isUndeclared && inport != outport) {
 			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
-                                    inport.getTypeTerm(), outport.getTypeTerm());
+                                    inport.getTypeTerm(),
+                                    outport.getTypeTerm());
 			    result.add(ineq);
 			}
 		    }
