@@ -391,11 +391,20 @@ codeDocPtiny/tree.html:
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 
 
-codeDocHybridSystems/tree.html:
+# Note that we change into the codeDocHybridSystems directory
+# so that the jar file is created with a subset of the full set of docs
+# so that we can use this smaller jar file instead of the full codeDoc.jar
+codeDocHybridSystems.jar: codeDocHybridSystems/doc/codeDoc/tree.html
+	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocHybridSystems doc/codeDoc
+
+# We do something crafty here and create a tree of html files
+# that we can substitute in for the usual doc/codeDoc tree in the
+# Hybrid Systems webstart
+codeDocHybridSystems/doc/codeDoc/tree.html:
 	if [ ! -d codeDocHybridSystems ]; then mkdir -p codeDocHybridSystems; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHybridSystems $(HYBRIDSYSTEMSPACKAGES) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHybridSystems/doc/codeDoc $(HYBRIDSYSTEMSPACKAGES) )
 
 
 # We don't include common.mk since we don't use the compiler here
