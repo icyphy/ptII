@@ -4,4 +4,4 @@
 
 <!-- Blank composite actor. -->
 <entity name="model reference"
-        class="ptolemy.actor.hoc.ModelReference"/>
+        class="ptolemy.actor.lib.hoc.ModelReference"/>
