@@ -75,8 +75,8 @@ public class ParameterPort extends TypedIOPort {
         super(container, name);
         setInput(true);
         setMultiport(false);
-        // Notify SDF scheduler that this port consumes one token,
-        // despite not being connected on the inside.
+        // Declare to the SDF scheduler that this port consumes one
+        // token, despite not being connected on the inside.
         Parameter tokenConsumptionRate =
             new Parameter(this, "tokenConsumptionRate", new IntToken(1));
         tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
