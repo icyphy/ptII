@@ -68,6 +68,9 @@ public class BranchThread extends PtolemyThread {
 	    while( !_branch.isIterationOver() ) {
 		_branch.transferTokens();
 	    }
+            if( _branch.isIterationOver() && !_branch.isActive() ) {
+                _branch.newIteration();
+            }
 	}
     } 
 
