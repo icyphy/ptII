@@ -50,14 +50,15 @@ JSRCS = \
 	DDEGetNToken.java \
 	DDEGetToken.java \
 	DDEPut.java \
-	DDEPutToken.java
+	DDEPutToken.java \
+	FlowThru.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	DDEIOPort.tcl \
 	DDEReceiver.tcl \
 	TimedQueueReceiver.tcl \
-	TimeKeeper.tcl
+	TimeKeeper.tcl 
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
