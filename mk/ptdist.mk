@@ -82,7 +82,8 @@ RELATIVE_ME = ../..
 PTTMPDIST =	$(PTMPDIR)/$(PTDIST)
 
 # Files to ship in the top level directory
-TOPFILES = config/confTest.java configure configure.in copyright.txt\
+TOPFILES = config/confTest.java config/install-sh \
+	configure configure.in copyright.txt\
 	mk/ptII.mk.in mk/ptcommon.mk mk/ptdir.mk mk/ptno-compile.mk \
 	mk/ptdist.mk
 
