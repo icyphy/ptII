@@ -95,13 +95,13 @@ public class PlotLiveDemo extends PlotLive {
         makeButtons();
 
         super.init();
-
-        
-
     }
 
    /**
-    * Run as an application.
+    * Run as an application for testing.  Run with:
+    * <pre>
+java -classpath ../..:/opt/jdk1.1.4/lib/classes.zip ptplot.demo.PlotLiveDemo
+    * </pre>
     */
     public static void main(String args[]) {
          PlotLiveDemo pld;
