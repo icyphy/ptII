@@ -119,7 +119,7 @@ public class GUIStringUtilities {
      *  to be a single token and are returned as a single array element.
      *
      *  @param inputString  The String to tokenize
-     *  @returns An array of substrings.
+     *  @return An array of substrings.
      *  @exception IOException Thrown if StreamTokenizer.nextToken() throws it.
      */
     public static String [] tokenizeForExec(String inputString)
