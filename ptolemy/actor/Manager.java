@@ -229,11 +229,7 @@ public final class Manager extends NamedObj implements Runnable {
                 }
             }
             completedSuccessfully = true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new IllegalActionException("Exception!!."+ ex.getMessage());
-            
-        }
+        } 
         finally {
             wrapup();
             if (completedSuccessfully) {
