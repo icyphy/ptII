@@ -52,6 +52,7 @@ import ptolemy.data.expr.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.attributes.*;
 import ptolemy.kernel.util.*;
+import ptolemy.util.StringAttribute;
 
 import soot.*;
 import soot.util.Chain;

@@ -36,6 +36,7 @@ import ptolemy.gui.CloseListener;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.StringAttribute;
 
 // Java imports.
 import java.awt.Component;
