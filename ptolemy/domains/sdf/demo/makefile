@@ -41,8 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 TCL_SRCS = \
-	RampSystem.tcl \
-	RampSystem2.tcl
+
 
 JSRCS = \
 	ComSystem.java \
