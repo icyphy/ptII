@@ -81,7 +81,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         
         importList.add(new ImportOnDemandNode((NameNode)
          StaticResolution.makeNameNode("ptolemy.math")));
-            
+                     
         return _defaultVisit(node, args);
     }
 
@@ -1119,40 +1119,52 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
        
     protected Object _makeDefaultPreinitializeMethod() {
         return new MethodDeclNode(PUBLIC_MOD, 
-         new NameNode(AbsentTreeNode.instance, "preinitialize"), new LinkedList(), 
-         new LinkedList(), new BlockNode(new LinkedList()), VoidTypeNode.instance);    
+         new NameNode(AbsentTreeNode.instance, "preinitialize"), new LinkedList(),          
+         TNLManip.cons(new TypeNameNode(
+          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),         
+         new BlockNode(new LinkedList()), VoidTypeNode.instance);    
     }    
 
     protected Object _makeDefaultInitializeMethod() {
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "initialize"), new LinkedList(), 
-         new LinkedList(), new BlockNode(new LinkedList()), VoidTypeNode.instance);    
+         TNLManip.cons(new TypeNameNode(
+         new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),
+         new BlockNode(new LinkedList()), VoidTypeNode.instance);    
     }    
     
     protected Object _makeDefaultPrefireMethod() {
         List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));        
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "prefire"), new LinkedList(), 
-         new LinkedList(), new BlockNode(blockList), BoolTypeNode.instance);    
+         TNLManip.cons(new TypeNameNode(
+          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),         
+         new BlockNode(blockList), BoolTypeNode.instance);    
     }    
 
     protected Object _makeDefaultFireMethod() {
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "fire"), new LinkedList(), 
-         new LinkedList(), new BlockNode(new LinkedList()), VoidTypeNode.instance);    
+         TNLManip.cons(new TypeNameNode(
+          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),         
+         new BlockNode(new LinkedList()), VoidTypeNode.instance);    
     }    
 
     protected Object _makeDefaultPostfireMethod() {
         List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));        
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "postfire"), new LinkedList(), 
-         new LinkedList(), new BlockNode(blockList), BoolTypeNode.instance);    
+         TNLManip.cons(new TypeNameNode(
+          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),                  
+         new BlockNode(blockList), BoolTypeNode.instance);    
     }    
 
     protected Object _makeDefaultWrapupMethod() {
         return new MethodDeclNode(PUBLIC_MOD, 
          new NameNode(AbsentTreeNode.instance, "wrapup"),
-         new LinkedList(), new LinkedList(),
+         new LinkedList(), 
+         TNLManip.cons(new TypeNameNode(
+          new NameNode(AbsentTreeNode.instance, "IllegalActionException"))),
          new BlockNode(new LinkedList()), VoidTypeNode.instance);
     }    
 
@@ -1189,7 +1201,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            } else if (obj != NullValue.instance) {
               // don't add statements that have NullValue.instance as the result
               // of visitation
-              newStmtList.addLast(_makeStmt(obj));
+              obj = _makeStmt(obj);
+              
+              // eliminate empty statements
+              if (!(obj instanceof EmptyStmtNode)) {
+                 newStmtList.addLast(_makeStmt(obj));
+              }
            }                                                                  
         }            
         

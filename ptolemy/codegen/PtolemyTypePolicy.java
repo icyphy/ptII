@@ -77,6 +77,82 @@ public class PtolemyTypePolicy extends TypePolicy {
            decl = decl.getSuperClass();
         }
     }    
+
+    /** Return the kind of the token that is more general (the other kind should
+     *  be convertible to the returned kind). The kinds must both be those of concrete 
+     *  Token subclasses. 
+     */
+    public int moreGeneralTokenKind(int kind1, int kind2) {
+        // handle only half the symmetric cases
+        if (kind2 < kind1) return moreGeneralTokenKind(kind2, kind1);
+        
+        if (kind1 == kind2) return kind1;
+        
+        // kind1 < kind2
+        switch (kind1) {
+                              
+          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:          
+          if ((kind2 != PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN) && 
+              (kind2 != PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN) &&
+              (kind2 != PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN)) {
+             ApplicationUtility.error("moreSpecificTokenKind() : kind1 = IntToken, kind2 = " + 
+              kind2);          
+          }
+          return kind2;
+              
+          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:          
+          if (kind2 != PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN) {
+             ApplicationUtility.error("moreSpecificTokenKind() : kind1 = DoubleToken, kind2 = " + 
+              kind2);          
+          }
+          return PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN;
+          
+          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:          
+          if ((kind2 != PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN) && 
+              (kind2 != PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN) &&
+              (kind2 != PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN)) {
+             ApplicationUtility.error("moreSpecificTokenKind() : kind1 = IntMatrixToken, kind2 = " + 
+              kind2);          
+          }
+          return kind2;
+              
+          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:          
+          if (kind2 != PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN) {
+             ApplicationUtility.error("moreGeneralTokenKind() : kind1 = DoubleMatrixToken, kind2 = " + 
+              kind2);          
+          }
+          return PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN;
+
+          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN: 
+          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:                    
+          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN: 
+          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:                              
+          if (kind2 != PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN) {
+             ApplicationUtility.error("moreGeneralTokenKind() : kind1 = " + kind1 + 
+              " kind2 = " + kind2);                                                                                          
+          }
+          return PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN;
+          
+          // abstract types
+          case PtolemyTypeIdentifier.TYPE_KIND_TOKEN: 
+          case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
+          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
+
+          // types that are already as general as possible
+          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:                    
+          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN: // change this when we change the type lattice                                                   
+          ApplicationUtility.error("moreGeneralTokenKind() : kind1 = " + kind1 + 
+           " kind2 = " + kind2);                                                                                          
+           
+          default:
+          ApplicationUtility.error("moreGeneralTokenKind() : kind unknown :  " + kind1);
+        }            
+        return TypeIdentifier.TYPE_KIND_UNKNOWN;
+    }
     
     protected final PtolemyTypeIdentifier _ptTypeID;              
 }

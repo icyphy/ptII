@@ -165,75 +165,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         ClassDecl classDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) type);
         return kindOfClassDecl(classDecl); 
     }
-
-    /** Return the kind of the token that is more general (the other kind should
-     *  be convertible to the returned kind). The kinds must both be those of concrete 
-     *  Token subclasses. 
-     */
-    public int moreGeneralTokenKind(int kind1, int kind2) {
-        // handle only half the symmetric cases
-        if (kind2 < kind1) return moreGeneralTokenKind(kind2, kind1);
         
-        if (kind1 == kind2) return kind1;
-        
-        // kind1 < kind2
-        switch (kind1) {
-                              
-          case TYPE_KIND_INT_TOKEN:          
-          if ((kind2 != TYPE_KIND_DOUBLE_TOKEN) && (kind2 != TYPE_KIND_LONG_TOKEN) &&
-              (kind2 != TYPE_KIND_COMPLEX_TOKEN)) {
-             ApplicationUtility.error("moreSpecificTokenKind() : kind1 = IntToken, kind2 = " + 
-              kind2);          
-          }
-          return kind2;
-              
-          case TYPE_KIND_DOUBLE_TOKEN:          
-          if (kind2 != TYPE_KIND_COMPLEX_TOKEN) {
-             ApplicationUtility.error("moreSpecificTokenKind() : kind1 = DoubleToken, kind2 = " + 
-              kind2);          
-          }
-          return TYPE_KIND_COMPLEX_TOKEN;
-          
-          case TYPE_KIND_INT_MATRIX_TOKEN:          
-          if ((kind2 != TYPE_KIND_DOUBLE_MATRIX_TOKEN) && (kind2 != TYPE_KIND_LONG_TOKEN) &&
-              (kind2 != TYPE_KIND_COMPLEX_TOKEN)) {
-             ApplicationUtility.error("moreSpecificTokenKind() : kind1 = IntMatrixToken, kind2 = " + 
-              kind2);          
-          }
-          return kind2;
-              
-          case TYPE_KIND_DOUBLE_MATRIX_TOKEN:          
-          if (kind2 != TYPE_KIND_COMPLEX_MATRIX_TOKEN) {
-             ApplicationUtility.error("moreGeneralTokenKind() : kind1 = DoubleMatrixToken, kind2 = " + 
-              kind2);          
-          }
-          return TYPE_KIND_COMPLEX_MATRIX_TOKEN;
-
-          // abstract types
-          case TYPE_KIND_TOKEN: 
-          case TYPE_KIND_SCALAR_TOKEN:
-          case TYPE_KIND_MATRIX_TOKEN:
-
-          // types that are already as general as possible
-          case TYPE_KIND_BOOLEAN_TOKEN: 
-          case TYPE_KIND_LONG_TOKEN:          
-          case TYPE_KIND_COMPLEX_TOKEN:          
-          case TYPE_KIND_FIX_TOKEN:                    
-          case TYPE_KIND_BOOLEAN_MATRIX_TOKEN: 
-          case TYPE_KIND_LONG_MATRIX_TOKEN:          
-          case TYPE_KIND_COMPLEX_MATRIX_TOKEN:          
-          case TYPE_KIND_FIX_MATRIX_TOKEN:                              
-          case TYPE_KIND_OBJECT_TOKEN:                    
-          case TYPE_KIND_STRING_TOKEN: // change this when we change the type lattice                                                   
-          ApplicationUtility.error("moreGeneralTokenKind() : kind1 = " + kind1 + 
-           " kind2 = " + kind2);                                                                                          
-           
-          default:
-          ApplicationUtility.error("moreGeneralTokenKind() : kind unknown :  " + kind1);
-        }            
-        return TYPE_KIND_UNKNOWN;
-    }
-    
     /** Return a new TypeNameNode corresponding to a token type in Ptolemy. 
      *  If the argument type is BaseType.NAT, return a clone of 
      *  DUMMY_LOWER_BOUND_TYPE. The argument should not be null. 

@@ -613,9 +613,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
 	    _cpo.addEdge(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);	    
 	    _cpo.addEdge(PtolemyTypeIdentifier.STRING_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);	    
-	    _cpo.addEdge(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeIdentifier.MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);	    
+	    
+	    _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);		        
+	    _cpo.addEdge(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);	    
 	    	    	    		        	                    
 	    _cpo.addEdge(PtolemyTypeIdentifier.LONG_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
 	    _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);	    

@@ -62,6 +62,8 @@ public class PtolemyTypeVisitor extends TypeVisitor
         super(typePolicy);
         _actorInfo = actorInfo;    
         
+        _ptolemyTypePolicy = typePolicy;
+        
         _ptolemyTypeID = 
          (PtolemyTypeIdentifier) typePolicy.typeIdentifier();
     }
@@ -107,7 +109,7 @@ public class PtolemyTypeVisitor extends TypeVisitor
                      methodName.equals("divide") || methodName.equals("divideReverse") ||
                      methodName.equals("modulo") || methodName.equals("moduloReverse"))  {
                     TypeNode retval = _ptolemyTypeID.typeNodeForKind(
-                     _ptolemyTypeID.moreGeneralTokenKind(accessedObjKind, firstArgKind));
+                     _ptolemyTypePolicy.moreGeneralTokenKind(accessedObjKind, firstArgKind));
                     return _setType(node, retval);
                  }                                 
               }
@@ -146,5 +148,6 @@ public class PtolemyTypeVisitor extends TypeVisitor
 
     protected ActorCodeGeneratorInfo _actorInfo;
     
+    protected PtolemyTypePolicy _ptolemyTypePolicy;       
     protected PtolemyTypeIdentifier _ptolemyTypeID;   
 }
