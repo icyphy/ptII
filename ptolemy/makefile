@@ -35,7 +35,6 @@
 #
 # doc directory should be last so we get files from version control before
 # updating the docs
-#DIRS = kernel actors domains pitcl doc graph data
 # filter is not yet ready 
 DIRS = kernel plot graph data actor automata gui math domains schematic #filter
 
@@ -54,7 +53,7 @@ include $(CONFIG)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = PtolemyII.ptml $(DIRS) filter media
+MISC_FILES = PtolemyII.ptml $(DIRS) filter media system
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
