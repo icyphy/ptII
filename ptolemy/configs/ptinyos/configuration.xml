@@ -85,7 +85,6 @@
         <?moml
           <group>
             <input source="ptolemy/domains/nc/lib/lib.xml"/>
-            <input source="TOSIndex.xml"/>
           </group>
         ?>
       </configure>
