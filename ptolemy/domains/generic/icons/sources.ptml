@@ -8,6 +8,29 @@
     <description>Generic source icons</description>
 </header>
 
+<icon name="Const">
+    <entitytype name="Const" ports="1"/>
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+	    -coords {100 50}
+            -direction e
+            -style arrowout
+            -tags output
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" color="lightgreen">
+    <tclscript>
+        polygon 30 30 30 80 80 80 80 30 -fill orange -outline ""
+        line 10 80 80 80 -width 1 -fill black
+        line 30 80 30 30 -width 1 -fill black
+        line 30 30 80 30 -width 1 -fill black
+    </tclscript>
+    </graphic>
+</icon>
+
 <icon name="Clock">
     <entitytype name="Clock" ports="1"/>
 
