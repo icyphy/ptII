@@ -86,7 +86,7 @@ public class ImpulseView extends PlotView {
           _viewPanel.setForeground(Color.white); 
 
           if (_opMode == Manager.FRAMEMODE){ // frame mode
-              _frame = new Frame(((FilterObj)filter).getName());
+              _frame  = _createViewFrame(((FilterObj) filter).getName());
               _frame.add("Center", _viewPanel);
               _frame.setSize(300,350);
               _frame.setLocation(300,10);

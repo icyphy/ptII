@@ -117,7 +117,7 @@ public class FreqView extends PlotView {
 
           // create the frame if in frame mode 
           if (_opMode == Manager.FRAMEMODE){ // frame mode
-              _frame  = new Frame(((FilterObj) filter).getName());
+              _frame  = _createViewFrame(((FilterObj) filter).getName());
               _frame.add("Center",_viewPanel);
               _frame.setSize(360, 480);
               _frame.setLocation(500, 10);

@@ -30,6 +30,7 @@ package ptolemy.filter.view;
 import java.util.*;
 import java.awt.*;
 
+//FIXME: add limit to where the interact component will be draw to.
 //////////////////////////////////////////////////////////////////////////
 //// InteractComponent 
 /**
@@ -85,7 +86,7 @@ public class InteractComponent {
      * @param newyv new y-axis value
      */ 
     public void changeValue(double newxv, double newyv){
-        // check degree of freedom 
+        // check degree of freedom
         if (getDegFreedom() == InteractComponent.XAXISDEGFREE){
             _xv = newxv;
         } else if (getDegFreedom() == InteractComponent.YAXISDEGFREE){
@@ -478,6 +479,12 @@ public class InteractComponent {
     ////                         private variable                          ////
 
     private double _xv, _yv;    // holds value this interactcomponent represent
+
+    private double _leftXLimit = Double.NEGATIVE_INFINITY;
+    private double _rightXLimit = Double.POSITIVE_INFINITY;
+    private double _upYLimit = Double.POSITIVE_INFINITY;
+    private double _lowYLimit = Double.NEGATIVE_INFINITY;
+
     private int _x, _y;  // holds the location of this interact component.
     private int _dataset;  // tells which group of data this component belongs
     private int _dataindex;

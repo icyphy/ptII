@@ -78,6 +78,9 @@ public class PoleZeroView extends PlotView implements ActionListener {
           plot.setYRange(-1.2, 1.2);
           plot.setNumSets(3);
           plot.setMergeInteractComp(true); 
+          if (filter.getType() == ptolemy.math.filter.Filter.IIR){
+              plot.setEditPermission(false);
+          }
           // set the view reference
           plot.setView(this);
           _plots = new Plot[1];
@@ -107,7 +110,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
          
           // place view panel in frame 
           if (_opMode == Manager.FRAMEMODE){ // frame mode
-              _frame = new Frame(((FilterObj) filter).getName());
+              _frame  = _createViewFrame(((FilterObj) filter).getName());
               _frame.add("Center", _viewPanel);
               _frame.setSize(300, 390);
               _frame.setLocation(10, 10);

@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.filter.view;
 
 import ptolemy.filter.filtermodel.FilterObj;
-
+import java.awt.event.*;
 import java.util.*;
 import java.awt.*;
 import java.applet.*;
@@ -109,6 +109,10 @@ public abstract class FilterView implements Observer {
          if (_viewPanel != null) _viewPanel.setVisible(show);
     }
 
+    public void setViewController(ViewController viewcon){
+         _viewcontrol = viewcon;
+    }
+ 
     /**
      * Get the panel that the view is deplayed on.
      * @return view's panel.
@@ -117,6 +121,19 @@ public abstract class FilterView implements Observer {
          return _viewPanel;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+    protected Frame _createViewFrame(String title){
+        ViewFrame frame = new ViewFrame(title); 
+        return frame;
+    }
+
+    protected void _notifyViewController(){
+         if (_viewcontrol != null){
+             _viewcontrol.setViewVisible(_name, false);
+         }
+    }
+ 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
@@ -129,9 +146,36 @@ public abstract class FilterView implements Observer {
     /** Mode for operation, see Operation Mode in Manager */
     protected int _opMode;  
 
+    /** View controller.  Controller that handles show/hide of all
+      views */
+    protected ViewController _viewcontrol;
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                       ////
 
     // name of the view
     private String _name; 
+    
+    //////////////////////////////////////////////////////////////////////////
+    ////                         inner class                        ////
+  
+    class ViewFrame extends Frame {
+
+        public ViewFrame(String title){
+            super(title);
+            addWindowListener(new ViewWinAdapter());
+        }
+
+        public void windowClosing(){
+            FilterView.this._notifyViewController();
+        }
+
+        class ViewWinAdapter extends WindowAdapter {
+            public void windowClosing(WindowEvent e){
+                System.out.println("Window closing event"); 
+                ViewFrame.this.setVisible(false);
+                ViewFrame.this.windowClosing();
+            }
+        }
+    }
 }

@@ -66,7 +66,7 @@ public class IIRFiltSetView extends FilterView {
           _observed = filter;
           _opMode = mode;
           if (_opMode == 0){ // frame mode
-              _frame = new Frame(((FilterObj) filter).getName());
+              _frame  = _createViewFrame(((FilterObj) filter).getName());
               _frame.add("Center", _viewPanel);
               _frame.pack();
               _frame.setLocation(10, 350);

@@ -70,10 +70,28 @@ public class InteractPlot extends Plot {
         DragObjectListener draglistener = new DragObjectListener();
         this.addMouseMotionListener(draglistener);
     }
-    
+   
+    /**
+     * Set the merge flag.  When merge flag set to true, then
+     * the interactcomponents that are close to each other
+     * are replaced by a single component, plus a multiplicity
+     * number.  This is useful for pole-zero-plot.
+     * @param mergeflag merge flag.
+     */ 
     public void setMergeInteractComp(boolean mergeflag){
         _mergeflag = mergeflag;
-    }  
+    } 
+
+    /** 
+     * Set the editing permission of this interact plot.  
+     * Sometimes the view decide to turn off the interact function
+     * in interactplot.
+     * @param edit edit permission
+     */
+    public void setEditPermission(boolean edit){
+        _editpermission = edit;
+    }
+ 
     /**
      * set the "view" of the plot, that handles the changes made by plot back
      * to the subject, and vise versa. <p>
@@ -662,7 +680,9 @@ public class InteractPlot extends Plot {
     public class SelectObjectListener implements MouseListener {
         public void mouseClicked (MouseEvent event) {
             if (event.isControlDown()){
-                selectInteractcompAndShowValueWin(event.getX(), event.getY()); 
+                if (_editpermission){
+                    selectInteractcompAndShowValueWin(event.getX(), event.getY()); 
+                }
             }
         }
 
@@ -674,12 +694,16 @@ public class InteractPlot extends Plot {
 
         public void mousePressed(MouseEvent event) {
             if (event.isMetaDown()){
-                InteractPlot.this.selectInteractcomp(event.getX(), event.getY());
+                if (_editpermission){
+                   InteractPlot.this.selectInteractcomp(event.getX(), event.getY());
+                }
             }
         }
         public void mouseReleased(MouseEvent event) {
             if (event.isMetaDown()){
-                InteractPlot.this.finishDragInteractcomp(event.getX(), event.getY());
+                if (_editpermission){
+                   InteractPlot.this.finishDragInteractcomp(event.getX(), event.getY());
+                }
             }
         }
 
@@ -692,8 +716,10 @@ public class InteractPlot extends Plot {
     public class DragObjectListener implements MouseMotionListener {
         public void mouseDragged (MouseEvent event) {
             if (event.isMetaDown()){
-                // drag the selected the interact object
-                dragInteractcomp(event.getX(), event.getY());
+                if (_editpermission){
+                   // drag the selected the interact object
+                   dragInteractcomp(event.getX(), event.getY());
+                }
             }
         }
         public void mouseMoved(MouseEvent event) {

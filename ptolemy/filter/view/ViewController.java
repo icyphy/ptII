@@ -114,7 +114,26 @@ public class ViewController extends Frame implements ActionListener {
          }
     }
 
+    public void setViewVisible(String name, boolean visible){
 
+         for (int i=0;i<_views.length;i++){
+System.out.println("view name: "+name +"  stored name "+ _viewsname[i]);
+              if (_viewsname[i].equals(name)){
+System.out.println("found same name");
+                  if (visible){
+                      _hideshow[i][0].setState(true);
+                      _hideshow[i][1].setState(false);
+                  } else {
+                      _hideshow[i][0].setState(false);
+                      _hideshow[i][1].setState(true);
+                  }
+              }
+         }
+         repaint();           
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private variables                        ////
     private Manager _manager; 
     private Checkbox [][] _hideshow;
     private CheckboxGroup [] _views;
