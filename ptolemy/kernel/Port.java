@@ -66,7 +66,7 @@ public class Port extends NamedObj {
      *  port to a relation to which it's already connected.
      */	
     public void connectToRelation(Relation relation)
-    throws NullReferenceException {
+    	    throws NullReferenceException {
         if( relation == null ) {
 	    throw new NullReferenceException( 
 	            "Null Relation passed to Port.connectToRelation()" );
