@@ -177,3 +177,28 @@ test TotallyOrderedSet-6.2 { remove the second element } {
             [$toset at 1] \
             [$toset at 2] 
 } {3 0.2 3.0 999.3}
+
+######################################################################
+####  Take
+#
+test TotallyOrderedSet-6.3 { take the first element } {
+    set f [$toset take]
+    list [$toset size] $f [$toset at 0] \
+            [$toset at 1]
+} {2 0.2 3.0 999.3}
+
+######################################################################
+#### Clear the set.
+#
+test TotallyOrderedSet-7.1 { clear the set } {
+    $toset clear
+    list [$toset size]
+} {0}
+
+######################################################################
+#### get first from an empty set
+#
+test TotallyOrderedSet-7.2 { get first from an empty set } {
+    set f [$toset first]
+    list [expr {$f == [java::null]}]
+} {1}
