@@ -6,6 +6,7 @@
     <?moml
       <group>
 <doc>Heterochonous dataflow actors</doc>
+<entity name="ConstVariableRate" class="ptolemy.domains.hdf.lib.ConstVariableRate"/>
 <entity name="HDFActor" class="ptolemy.domains.hdf.lib.HDFActor"/>
 <entity name="HDFDownSample" class="ptolemy.domains.hdf.lib.HDFDownSample"/>
      </group>

@@ -461,17 +461,14 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
+            <entity name="ConstVariableRate" class="ptolemy.domains.hdf.lib.ConstVariableRate">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
+                <property name="rate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 180.0">
+                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 170.0">
                 </property>
                 <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
                     <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -479,6 +476,8 @@ to another. Then delete this annotation.</text>
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -492,7 +491,7 @@ to another. Then delete this annotation.</text>
                 </property>
             </relation>
             <link port="output" relation="relation"/>
-            <link port="Const.output" relation="relation"/>
+            <link port="ConstVariableRate.output" relation="relation"/>
         </entity>
         <entity name="state3" class="ptolemy.vergil.fsm.modal.Refinement">
             <property name="IODependence" class="ptolemy.actor.IODependence">
