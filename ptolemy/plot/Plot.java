@@ -140,6 +140,20 @@ import java.applet.Applet;
  * arbitrary numbers as supported by the Double parser in Java.
  * The numbers can be separated by commas, spaces or tabs. 
  *
+ * This plotter has some limitations:
+ * <ul>
+ * <li> Marks, impulses, and bars are assumed to apply to the entire
+ *      plot, i.e. to all data sets.  Although it is possible to change
+ *      these styles for different data sets, the graph will not be
+ *      correctly redrawn when it gets redrawn due to zooming in or out
+ *      or due to a window exposure event.
+ * <li> If you zoom in far enough, the plot becomes unreliable.
+ *      In particular, if the total extent of the plot is more than
+ *      2<sup>32</sup> times extent of the visible area, quantization
+ *      errors can result in displaying points or lines.
+ *      Note that 2<sup>32</sup> is over 4 billion.
+ * </ul>
+ *
  * @author: Edward A. Lee, Christopher Hylands
  * @version: $Id$
  */
