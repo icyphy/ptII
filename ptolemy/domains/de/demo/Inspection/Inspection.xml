@@ -20,7 +20,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="66.0, 31.0">
         </property>
     </property>
-    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="500.0">
+    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100.0">
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="448.0, 119.0">
@@ -93,7 +93,9 @@ same.</text>
         </port>
     </entity>
     <entity name="plot" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="passenger, wait time, bus (Poisson), bus (regular)">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -103,18 +105,20 @@ same.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Arrival Times and Waiting Times</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="500.0"/>
-<yRange min="0.0" max="6.001424301333927"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="0.0" max="3.1918228960490396"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                        </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="histplot" class="ptolemy.actor.lib.gui.HistogramPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -122,25 +126,29 @@ same.</text>
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, regular">
+        </property>
         <property name="_location" class="ptolemy.moml.Location" value="442.00001525878906, 271.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Waiting Time Histogram</title>
 <xLabel>waiting times</xLabel>
 <yLabel>passengers</yLabel>
-<xRange min="0.1" max="6.0"/>
-<yRange min="0.0" max="104.0"/>
+<xRange min="0.1" max="3.2"/>
+<yRange min="0.0" max="23.0"/>
 <noGrid/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>
-                        </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Clock1" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -397,9 +405,9 @@ same.</text>
         <link port="Const7.trigger" relation="relation9"/>
     </entity>
     <entity name="Display17" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="34">
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="25">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="476.0000305175781, 369.0">
         </property>

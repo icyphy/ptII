@@ -16,32 +16,32 @@ applet is displayed on a XGA screen-->
      section is for IE, the second is for Netscape
  -->
 <OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
- width=500 height=500
- name="InspectionApplet"
+ width=750 height=500
+ name="Inspection"
  codebase="http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0">
-<PARAM NAME=CODE VALUE=ptolemy.domains.de.demo.Inspection.InspectionApplet.class>
+<PARAM NAME=CODE VALUE=ptolemy.actor.gui.MoMLApplet>
 <PARAM NAME=CODEBASE VALUE=../../../../..>
 <PARAM NAME=ARCHIVE VALUE="
 	ptolemy/ptsupport.jar,
 	ptolemy/domains/de/de.jar">
 <PARAM NAME="type" VALUE="application/x-java-applet;version=1.2.2">
-<PARAM NAME="name" VALUE="InspectionApplet">
+<PARAM NAME="name" VALUE="Inspection">
 <PARAM NAME="background" VALUE="#faf0e6">
-<PARAM NAME="defaultStopTime" VALUE="100">
+<PARAM NAME = "model" VALUE = "Inspection.xml">
 <COMMENT>
 <EMBED type="application/x-java-applet;version=1.2.2"
- code=ptolemy.domains.de.demo.Inspection.InspectionApplet
+ code="ptolemy.actor.gui.MoMLApplet"
  codebase=../../../../..
  archive="
 	ptolemy/ptsupport.jar,
 	ptolemy/domains/de/de.jar"
- name="InspectionApplet"
- width=500 height=500
+ name="Inspection"
+ width=750 height=500
  background="#faf0e6"
- defaultStopTime="100"
+ model="Inspection.xml"
  pluginspage="http://java.sun.com/products/plugin/1.2.2/plugin-install.html">
 <NOEMBED></COMMENT>
-<I>If you were able to run applets, you would have a demo here.</I>
+<a href="Inspection.xml">MoML specification for this model.</a>
 </NOEMBED></EMBED>
 </OBJECT>
 </center>
@@ -51,10 +51,9 @@ to illustrate the inspection paradox.
 The inspection paradox concerns Poisson arrivals of events.
 The metaphor used in this applet is that of busses and passengers.
 Passengers arrive according to a Poisson process.
-Busses arrive either at regular intervals or according to a Poisson
-process.  The user selects from these two options by clicking the
-appropriate on-screen control.  The user can also control the mean
-interarrival time of both busses and passengers.
+Busses arrive at regular intervals and according to a Poisson
+process, and the model collects statistics on waiting time for both
+cases.
 <p>
 The inspection paradox concerns the average time that a passenger
 waits for a bus (more precisely, the expected value).  If the busses
@@ -64,22 +63,17 @@ intuitive.  Counterintuitively, however, if the busses arrive
 according to a Poisson process with mean interarrival time equal
 <i>T</i>, the expected waiting time is <i>T</i>, not <i>T</i>/2.
 These expected waiting times are approximated in this applet by
-the average waiting time.  The applet also shows that actual
+the average waiting time.  The applet also plots actual
 arrival times for both passengers and busses, and the waiting
-time of each passenger.
+time of each passenger for Poisson arrival of busses.
 <p>
-The top plot shows the passengers and buses arrival times. The bus
-and passenger arrivals are shown with red and blue impulses. All passengers
-arriving before and at the time bus <I>i</I> arrives and after the time
-bus <I>i-1</I> arrives will get on bus <I>i</I>. On each bus arrival, all
-passengers getting on that bus report their waiting times. The waiting times
-are plotted on the same plot using cyan impulses.
+The top plot shows the passengers' and busses' arrival times, and
+the waiting times for the case of Poisson bus arrivals (the waiting
+times for regular arrivals are not shown).
 The bottom plot shows the distribution histogram of all wait times.
 The bin width used is equal to 0.2.
-<P>
-You can interact with the applet by choosing one of the two bus arrival
-time distributions, the stop time of the simulation, and the mean inter-arrival
-time of the busses or passengers.
+The display at the bottom shows the average waiting time for the two
+cases.
 <p>
 The intuition that resolves the paradox is as follows.
 If the busses are arriving according to a Poisson process,
@@ -92,46 +86,8 @@ arrival times are irregular.
 This paradox is called the <i>inspection paradox</i> because the
 passengers are viewed as inspecting the Poisson process of
 bus arrivals.
-
 <P>
-This applet is implemented by
-<TT><A HREF="InspectionApplet.java">InspectionApplet.java</A></TT>.
-<P>The model consists of the following domain-polymorphic actors:
-<ul>
-<li> <A HREF="../../../../actor/lib/Clock.java">Clock</A>
-<li> <A HREF="../../../../actor/lib/Poisson.java">Poisson</A>
-<li> <A HREF="../../../../actor/lib/Average.java">Average</A>
-<li> <A HREF="../../../../actor/lib/gui/HistogramPlotter.java">HistogramPlotter</A>
-<li> <A HREF="../../../../actor/lib/gui/TimedPlotter.java">TimedPlotter</A>
-<li> <A HREF="../../../../actor/lib/Recorder.java">Recorder</A>
-</ul>
-<P>and the following DE actors:
-<ul>
-<li> <A HREF="../../lib/WaitingTime.java">WaitingTime</A>
-</ul>
-
-<BR>
-<!-- FIXME: The following info is wrong
-<MAP Name="ActorsMap">
-<AREA Shape="rect" Coords="19,17,80,32"
-	Href="../../../../actor/lib/Clock.java">
-<AREA Shape="rect" Coords="20,43,81,59"
-	Href="../../lib/DEPoisson.java">
-<AREA Shape="rect" Coords="9,184,94,239"
-	Href="../../lib/DEPoisson.java">
-<AREA Shape="rect" Coords="159,94,244,149"
-	Href="../../lib/DEWaitingTime.java">
-<AREA Shape="rect" Coords="299,44,384,99"
-	Href="../../lib/DEStatistics.java">
-<AREA Shape="rect" Coords="299,144,384,199"
-	Href="../../../../actor/lib/HistogramPlotter.java">
-<AREA Shape="rect" Coords="469,9,554,64"
-	Href="../../../../actor/lib/TimedPlotter.java">
-</MAP>
-<CENTER>
-<IMG SRC="../img/Histogram.gif" HEIGHT=251 WIDTH=566
-Alt="Imagemap" Usemap="#ActorsMap" Ismap>
-</CENTER>
- -->
+This applet is implemented in MoML by
+<TT><A HREF="Inspection.xml">Inspection.xml</A></TT>.
 </BODY>
 </HTML>
