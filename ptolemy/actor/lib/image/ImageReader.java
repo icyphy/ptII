@@ -35,8 +35,8 @@ import ptolemy.actor.lib.Source;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
+import ptolemy.data.AWTImageToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
@@ -144,7 +144,7 @@ public class ImageReader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.broadcast(new ObjectToken(_image));
+        output.broadcast(new AWTImageToken(_image));
     }
 
     /** Open the file at the URL, and set the width of the output.
