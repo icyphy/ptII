@@ -227,7 +227,7 @@ public class GraphPalette extends JGraph {
 	    return _flavors;
 	}
 
-	public boolean isDataFlavorSupported( DataFlavor flavor ) {
+	public boolean isDataFlavorSupported(DataFlavor flavor) {
 	    int i;
 	    for(i = 0; i < _flavors.length; i++)
 		if(_flavors[i].equals(flavor)) return true;
