@@ -48,6 +48,7 @@ import java.awt.Graphics;
 import java.io.*;
 import java.util.*;
 import java.net.*;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plot
@@ -310,9 +311,9 @@ public class Plot extends PlotBox {
         _sawfirstdataset = false;
         _xyInvalid = false;
         _filename = null;
-        _showing = false;
 
         if (format) {
+            _showing = false;
             // Reset format controls
             _formats = new Vector();
             _marks = 0;
@@ -1607,7 +1608,24 @@ public class Plot extends PlotBox {
         }
         // Draw the point on the screen only if the plot is showing.
         if (_showing) {
-            _drawPlotPoint(getGraphics(), dataset, pts.size() - 1);
+            // In swing, updates to showing graphics must be done in the
+            // event thread, not here.  Thus, we have to queue the request.
+            int[] pendingPointsData = new int[2];
+            pendingPointsData[0] = dataset;
+            pendingPointsData[1] = pts.size() - 1;
+            _pendingPointsData.add(pendingPointsData);
+            _pendingPointsGraphics.add(getGraphics());
+            Runnable doPlotPoint = new Runnable() {
+                public void run() {
+                    Graphics graphics =
+                            (Graphics)_pendingPointsGraphics.remove(0);
+                    int[] pendingPointsData = 
+                            (int[])_pendingPointsData.remove(0);
+                    _drawPlotPoint(graphics, pendingPointsData[0],
+                            pendingPointsData[1]);
+                }
+            };
+            SwingUtilities.invokeLater(doPlotPoint);
         }
 
         if(_wrap && _xRangeGiven && x == _xhighgiven) {
@@ -1826,6 +1844,12 @@ public class Plot extends PlotBox {
 
     /** @serial Format information on a per data set basis. */
     private Vector _formats = new Vector();
+
+    /** @serial Data on points to be drawn in the event loop. */
+    private List _pendingPointsData = new LinkedList();
+
+    /** @serial Graphics object for points to be drawn in the event loop. */
+    private List _pendingPointsGraphics = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
