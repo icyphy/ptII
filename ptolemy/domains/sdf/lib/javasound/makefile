@@ -43,10 +43,10 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	AudioSource.java \
-	AudioSink.java \
 	SDFPitchDetector.java \
-	SilentAudioSink.java
+	SilentAudioSink.java \
+	AudioSource.java \
+	AudioSink.java
 
 EXTRA_SRCS =	$(JSRCS) \
 
