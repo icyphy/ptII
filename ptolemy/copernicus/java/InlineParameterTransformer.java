@@ -300,15 +300,32 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // Create a new two-argument contructor.
                                     box.setValue(Jimple.v().newSpecialInvokeExpr(
                                             (Local)r.getBase(), constructorWithoutToken,
-                                            r.getArg(0), r.getArg(1)));
-                                      
-                                    // Call setToken.
+                                            r.getArg(0), r.getArg(1)));                                      
+
+                                    // Call setToken with the actual value of the parameter
+           
+                                    Token token;
+                                    // First create a token with the given
+                                    // expression and then set the
+                                    // token to that value.
+                                    try {
+                                        token = ((Variable)attribute).getToken();
+                                    } catch (Exception ex) {
+                                        throw new RuntimeException("Illegal parameter value = " 
+                                                + argValues[0]);
+                                    }
+                             
+                                    String localName = "_CGTokenLocal";
+                                    Local tokenLocal = 
+                                        PtolemyUtilities.buildConstantTokenLocal(
+                                                body, stmt, token, localName);
+                                                                                         
                                     body.getUnits().insertAfter(
                                             Jimple.v().newInvokeStmt(
                                                     Jimple.v().newVirtualInvokeExpr(
                                                             (Local)r.getBase(),
                                                             PtolemyUtilities.variableSetTokenMethod,
-                                                            r.getArg(2))),
+                                                            tokenLocal)),
                                             stmt);
                                     doneSomething = true;
 
@@ -371,14 +388,6 @@ public class InlineParameterTransformer extends SceneTransformer {
                                     // expression and then set the
                                     // token to that value.
                                     try {
-                                        /*
-                                          // FIXME: This is rather tricky..
-                                          // is there a better way to do it?
-                                          Variable temp = new Variable();
-                                          temp.setTypeEquals(((Variable)attribute).getType());
-                                          temp.setExpression(((StringConstant)argValues[0]).value);
-                                          token = temp.getToken();
-                                        */
                                         token = ((Variable)attribute).getToken();
                                     } catch (Exception ex) {
                                         throw new RuntimeException("Illegal parameter value = " 
