@@ -89,7 +89,7 @@ public class InspectionParadox extends DEApplet {
             _eventplot.setYLabel("Wait time");
             _eventplot.plot.setXRange(0.0, _getStopTime());
             _eventplot.plot.setYRange(0.0, 2.0);
-            _eventplot.plot.setSize(450,150);
+            _eventplot.plot.setSize(450, 150);
             _eventplot.plot.setConnected(false);
             _eventplot.plot.setImpulses(true);
             _eventplot.plot.setMarksStyle("dots");
