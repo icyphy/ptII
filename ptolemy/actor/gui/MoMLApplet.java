@@ -97,17 +97,26 @@ public class MoMLApplet extends PtolemyApplet {
      *  @return A string giving information about the applet.
      */
     public String getAppletInfo() {
+	// Include the release and build number to aid in user support.
+	String version = new String("Ptolemy II "
+				    + PtolemyApplication.RELEASE_VERSION);
+	String build = new String("\n(Build: $Id$)");
         if (_toplevel != null) {
             String tip = Documentation.consolidate(_toplevel);
             if (tip != null) {
-                return "Ptolemy II model given in MoML:\n" + tip;
+                return version 
+		    + " model given in MoML:\n" + tip
+		    + build;
             } else {
-                return "Ptolemy II model given in MoML.";
+                return version
+		    + " model given in MoML."
+		    + build;
             }
         }
-        return "MoML applet for Ptolemy II.\n" +
-            "Ptolemy II comes from UC Berkeley, Department of EECS.\n" +
-            "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
+        return "MoML applet for " + version
+            + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
+            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
+	    + build;
     }
 
     /** Describe the applet parameters.
