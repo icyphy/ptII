@@ -104,8 +104,10 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
     }
 
     /** Configure the histogram with data from the specified input stream,
-     *  which is assumed to be in PlotML format.  This should be called
-     *  after place(), if place() is going to be called at all.
+     *  which is assumed to be in PlotML format.  If this is called before
+     *  the plotter has been created (by calling place() or initialize()),
+     *  then reading of the input stream is deferred until the plotter is
+     *  created.
      *  @param base The base relative to which references within the input
      *   stream are found, or null if this is not known.
      *  @param in InputStream
@@ -113,15 +115,22 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      *   is incorrect.
      */
     public void configure(URL base, InputStream in) throws Exception {
-        if (histogram == null) {
-            place(_container);
+        if (histogram != null) {
+            HistogramMLParser parser = new HistogramMLParser(histogram);
+            parser.parse(base, in);
+            _configureBase = null;
+            _configureIn = null;
+        } else {
+            // Defer until histogram has been placed.
+            _configureBase = base;
+            _configureIn = in;
         }
-        HistogramMLParser parser = new HistogramMLParser(histogram);
-        parser.parse(base, in);
     }
 
     /** If the histogram has not already been created, create it using
      *  place().
+     *  If configuration specified by a call to configure() has not yet
+     *  been processed, process it.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -144,6 +153,11 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      *  specified but it is not an instance of Histogram, then create a new
      *  instance of Histogram and place it in that container
      *  using its add() method.
+     *  <p>
+     *  If configure() has been called (prior to the plot getting created),
+     *  then the configuration that it specified has been deferred. That
+     *  configuration is performed at this time.
+     *
      *  @param container The container into which to place the histogram.
      */
     public void place(Container container) {
@@ -160,6 +174,14 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
                 _container.add(histogram);
                 histogram.setButtons(true);
                 histogram.setBackground(_container.getBackground());
+            }
+        }
+        // If configure() has been deferred, implement it now.
+        if (_configureIn != null) {
+            try {
+                configure(_configureBase, _configureIn);
+            } catch (Exception ex) {
+                getManager().notifyListenersOfException(ex);
             }
         }
     }
@@ -198,4 +220,8 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
 
     /** Container into which this histogram should be placed */
     private transient Container _container;
+
+    // The base and input stream given to the configure() method.
+    private URL _configureBase = null;
+    private InputStream _configureIn = null;
 }
