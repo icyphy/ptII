@@ -31,8 +31,7 @@
 ME =		ptolemy/matlab/demo
 
 # Keep these alphabetical please.
-DIRS = 		MatlabCT \
-		MatlabExpression
+DIRS = 		MatlabCT MatlabExpression
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -47,6 +46,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	MatlabCT/MatlabCT.jar \
 	MatlabExpression/MatlabExpression.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
