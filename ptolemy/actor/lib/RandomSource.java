@@ -47,7 +47,7 @@ A base class for sources of random numbers.
 It uses the class java.util.Random.
 This base class manages the seed.
 
-@author Edward A. Lee
+@author Edward A. Lee, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.3
 */
@@ -83,9 +83,27 @@ public abstract class RandomSource extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        RandomSource newObject = (RandomSource)(super.clone(workspace));
+
+        // Get an independant random number generator.
+        newObject._random = new Random();
+        return newObject;
+    }
+
     /** Initialize the random number generator with the seed, if it
      *  has been given.  A seed of zero is interpreted to mean that no
-     *  seed is specified.
+     *  seed is specified.  In such cases, a seed based on the current
+     *  time and this instance of a RandomSource is used to be fairly
+     *  sure that two identical sequences will not be returned.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -93,6 +111,8 @@ public abstract class RandomSource extends Source {
         long sd = ((LongToken)(seed.getToken())).longValue();
         if (sd != (long)0) {
             _random.setSeed(sd);
+        } else {
+            _random.setSeed(System.currentTimeMillis() + hashCode());
         }
     }
 
