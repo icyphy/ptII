@@ -72,6 +72,7 @@ MISC_FILES =	 doc test #demo
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'DECQDirector$$CQValue.class'
+	'DECQDirector$$DEEvent.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
