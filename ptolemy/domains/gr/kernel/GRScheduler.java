@@ -210,8 +210,8 @@ public class GRScheduler extends Scheduler {
         Object[] sorted = dag.topologicalSort();
         for (int counter = 0; counter < actorCount ;counter++) {
             Firing firing = new Firing();
-            schedule.add(firing);
             firing.setActor((Actor) sorted[counter]);
+            schedule.add(firing);
         }
 
         if (_debugging) {

@@ -32,7 +32,7 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-
+import ptolemy.domains.gr.lib.ViewScreen;
 import javax.media.j3d.Node;
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,6 +93,7 @@ abstract public class GRActor extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _isSceneGraphInitialized = false;
         /*if (!(getDirector() instanceof GRDirector)) {
           throw new IllegalActionException(this,
           "GR Actors can only be used under a GR Director");
@@ -138,6 +139,10 @@ abstract public class GRActor extends TypedAtomicActor {
     abstract protected void _makeSceneGraphConnection()
             throws IllegalActionException;
 
+    protected void _setViewScreen(ViewScreen viewScreen) {
+        _viewScreen = viewScreen;
+    }
+
     /** Start the Java3D renderer. This method will be overridden by some
      *  derived GR Actors.
      */
@@ -156,7 +161,7 @@ abstract public class GRActor extends TypedAtomicActor {
     ////                         protected variables               ////
 
     // The root of the scene graph DAG, if there is one
-    protected static GRActor _root;
+    protected ViewScreen _viewScreen;
 
     // Boolean variable to determine whether the scene graph is initialized
     protected boolean _isSceneGraphInitialized;

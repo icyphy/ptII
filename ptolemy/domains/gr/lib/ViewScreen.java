@@ -142,7 +142,6 @@ public class ViewScreen extends GRActor implements Placeable {
         backgroundColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         _lastTransform = new Transform3D();
-        _root = this;
     }
 
 
@@ -211,7 +210,7 @@ public class ViewScreen extends GRActor implements Placeable {
     /** Add the node argument as a child to the encapsulated Java3D node
      *  in this actor.
      */
-    protected void addChild(Node node) {
+    public void addChild(Node node) {
         _addChild(node);
     }
 

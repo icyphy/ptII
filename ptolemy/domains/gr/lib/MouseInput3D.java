@@ -30,7 +30,7 @@
 package ptolemy.domains.gr.lib;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -59,7 +59,7 @@ import java.util.Enumeration;
 */
 public class MouseInput3D extends GRActor {
 
-    public MouseInput3D(TypedCompositeActor container, String name)
+    public MouseInput3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
@@ -110,13 +110,14 @@ public class MouseInput3D extends GRActor {
     }
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
-        if (_root == null) {
+        if (_viewScreen == null) {
             throw new IllegalActionException(
                     "GR error: no ViewScreen actor");
         } else {
-            ViewScreen viewScreen = (ViewScreen) _root;
-            viewScreen.addChild(_getNodeObject());
-        }
+            _viewScreen.addChild(_getNodeObject());
+        }      
+        // It would be nice if we did this..
+        //sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }
 
     private class React extends Behavior {
