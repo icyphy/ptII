@@ -173,7 +173,7 @@ public class ByteToken extends ScalarToken {
      *  @return A Complex.
      */
     public Complex complexValue() {
-        return new Complex((double)_value);
+        return new Complex((double)unsignedConvert(_value));
     }
 
     /** Convert the specified token into an instance of ByteToken.
@@ -212,14 +212,15 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token.
-     *  Type resolution also occurs here, with the returned token type
-     *  chosen to achieve a lossless conversion. If two bytes are divided,
-     *  the result will be a byte which is the quotient.
+     *  divided by the value of the argument token.  Type resolution
+     *  also occurs here, with the returned token type chosen to
+     *  achieve a lossless conversion.  If two bytes are divided, then
+     *  the result will be a byte containing the quotient.  For
+     *  example, 255 divided by 10 returns 25.
      *  @param divisor The token to divide this token by
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token is
-     *  of a type that cannot divide this token.
+     *  of a type that cannot divide this token.  
      */
     public Token divide(Token divisor) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, divisor);
@@ -273,7 +274,7 @@ public class ByteToken extends ScalarToken {
      *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
-        return (double)_value;
+        return (double)unsignedConvert(_value);
     }
 
     /** Return the type of this token.
@@ -284,15 +285,16 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Test the value and units of this token and the argument token
-     *  for equality.
-     *  Type resolution also occurs here, with the returned token type
-     *  chosen to achieve a lossless conversion.
+     *  for equality.  Units need not match, this merely causes the
+     *  test to return false.  Type resolution also occurs here, and
+     *  lossless conversion is performend prior to comparison.  The
+     *  returned type is boolean, regardless of the types compared.
      *  @param token The token with which to test equality.
-     *  @return a boolean token that contains the value true if the
-     *   value and units of this token are equal to those of the argument
-     *   token.
+     *  @return a boolean token that contains the value true if both
+     *   the value and the units of this token are equal to those of
+     *   the argument token.
      *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
+     *   not of a type that can be compared with this token.  
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, token);
@@ -324,7 +326,7 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Check if the value of this token is strictly less than that of the
-     *  argument token.
+     *  argument token.  Units must match or an exception is thrown.
      *  @param token A ScalarToken.
      *  @return A BooleanToken with value true if this token is strictly
      *   less than the argument.
@@ -354,11 +356,13 @@ public class ByteToken extends ScalarToken {
                 return new BooleanToken(false);
             }
         } else if (typeInfo == CPO.LOWER) {
+
             if (token.isEqualTo(this).booleanValue()) {
                 return new BooleanToken(false);
             } else {
                 return token.isLessThan(this).not();
             }
+
         } else {
             throw new IllegalActionException("ByteToken.isLessThan: "
                     + "Cannot check whether "
@@ -375,22 +379,31 @@ public class ByteToken extends ScalarToken {
         return _value;
     }
 
+    //FIXME - Seems this caused some problem so I took it out.
+    // Now that it is back in it may cause trouble again.
+    /** Return the value in the token as an int.
+     *  @return The byte  value contained in this token as a int.
+     */
+    public int intValue() {
+        return unsignedConvert(_value);
+    }
+
     /** Return the value in the token as a long.
      *  @return The byte  value contained in this token as a long.
      */
     public long longValue() {
-        return (long)_value;
+        return (long) unsignedConvert(_value);
     }
 
     /** Return a new token whose value is the value of this token
-     *  modulo the value of the argument token.
-     *  Type resolution also occurs here, with the returned token type
-     *  chosen to achieve a lossless conversion.
+     *  modulo the value of the argument token.  Type resolution also
+     *  occurs here, with the returned token type chosen to achieve a
+     *  lossless conversion.
      *  @param rightArgument The token to modulo this token by.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be  used with modulo, or the units of
-     *   this token and the argument token are not the same.
+     *   this token and the argument token are not the same.  
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
@@ -424,17 +437,17 @@ public class ByteToken extends ScalarToken {
         }
     }
 
-    /** Return a new token whose value is the value of the argument token
-     *  modulo the value of this token.
-     *  Type resolution also occurs here, with the returned token
-     *  type chosen to achieve a lossless conversion.
+    /** Return a new token whose value is the value of the argument
+     *  token modulo the value of this token.  Type resolution also
+     *  occurs here, with the returned token type chosen to achieve a
+     *  lossless conversion.
      *  @param leftArgument The token to apply modulo to by the value of
      *   this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token
      *   is not of a type that can apply modulo by this token, or
      *   if the units of this token are not the same as those of the
-     *   argument.
+     *   argument.  
      */
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
@@ -455,13 +468,13 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument token.
-     *  Type resolution also occurs here, with the returned token type
+     *  multiplied by the value of the argument token.  Type
+     *  resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
      *  @param rightFactor The token to multiply this token by.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token is
-     *  not of a type that can be multiplied to this token.
+     *  not of a type that can be multiplied to this token. 
      */
     public Token multiply(Token rightFactor) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightFactor);
@@ -490,15 +503,15 @@ public class ByteToken extends ScalarToken {
         }
     }
 
-    /** Return a new token whose value is the value of the argument token
-     *  multiplied by the value of this token.
-     *  Type resolution also occurs here, with the returned token
-     *  type chosen to achieve a lossless conversion.
+    /** Return a new token whose value is the value of the argument
+     *  token multiplied by the value of this token.  Type resolution
+     *  also occurs here, with the returned token type chosen to
+     *  achieve a lossless conversion.
      *  @param leftFactor The token to be multiplied by the value of
      *   this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token
-     *   is not of a type that can be multiplied by this token.
+     *   is not of a type that can be multiplied by this token.  
      */
     public Token multiplyReverse(Token leftFactor)
             throws IllegalActionException {
@@ -512,15 +525,15 @@ public class ByteToken extends ScalarToken {
         return new ByteToken(1);
     }
 
-    /** Return a new token whose value is the value of the argument token
-     *  subtracted from the value of this token.
-     *  Type resolution also occurs here, with the returned token type
+    /** Return a new token whose value is the value of the argument
+     *  token subtracted from the value of this token.  Type
+     *  resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
      *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be subtracted from this token, or the units
-     *   of this token and the argument token are not the same.
+     *   of this token and the argument token are not the same.  
      */
     public Token subtract(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
