@@ -1,0 +1,34 @@
+#!/bin/sh
+# $Id$
+# Given a package name, create the corresponding package.html file
+# Usage: mkpackagehtml package1 [package2 ...]
+# Where each package name is a dot separated package name
+#
+
+args=$@
+for package $packages
+do 
+	echo $package
+	directory=`echo $package | sed 's@\.@/@g'`
+	if [ ! -d $directory ]; then
+		echo "$0: $directory does not exist, skipping"
+	else
+		packagefile=$directory/package.html
+		if [ -f $packagefile ]; then
+			echo "$0: $packagefile exists, skipping"
+		else 
+cat << EoF
+<!-- \$Id\$ -->
+<html>
+<head>
+<title>$package</title>
+</head>
+<body>
+<h1>$package</h1>
+</body>
+</html>
+EoF
+			echo "created $packagefile"
+		fi 
+	fi
+done
