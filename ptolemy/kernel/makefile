@@ -44,7 +44,7 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 # Order matters here, go into util first, since mutation depends on it
-DIRS = 		util mutation event test doc demo
+DIRS = 		util mutation event doc demo
 
 CLASSPATH = ../..
 
@@ -70,7 +70,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
