@@ -217,6 +217,7 @@ public class Location extends SingletonAttribute
      */
     public void setLocation(double[] location)
             throws IllegalActionException {
+        _expressionSet = false;
         // If the location is unchanged, just return.
         if (_location != null
                 && location != null
@@ -231,7 +232,6 @@ public class Location extends SingletonAttribute
             if (match) return;
         }
         _location = location;
-        _expressionSet = false;
 
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
