@@ -95,7 +95,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
 
     /** If the argument is the string "regular", then set the
      *  variable that controls whether bus arrivals will be regular
-     *  or Poisson.  If the argument is anything else, update the
+     *  or Poisson. If the argument is anything else, update the
      *  parameters of the model from the values in the query boxes.
      *  @param name The name of the entry that changed.
      */
@@ -110,10 +110,15 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             } else {
                 _poissonBus.meanTime.setToken
                     (new DoubleToken(_query.doubleValue("busmean")));
-                _passenger1.meanTime.setToken
-                    (new DoubleToken(_query.doubleValue("passmean")));
             }
-            _go();
+            _passenger1.meanTime.setToken
+                (new DoubleToken(_query.doubleValue("passmean")));
+            // NOTE: Avoid calling _go() if the update is to "average"
+            // because that update is done in the _go() method, and
+            // we will get an infinite loop.
+            if (!name.equals("average")) {
+                _go();
+            }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
         }
