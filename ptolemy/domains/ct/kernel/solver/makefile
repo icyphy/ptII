@@ -51,8 +51,11 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	BackwardEulerSolver.java \
 	FixedStepSolver.java \
-	ForwardEulerSolver.java
+	ForwardEulerSolver.java \
+	ImplicitMethodSolver.java 
+	
 
 EXTRA_SRCS =	$(JSRCS)
 
