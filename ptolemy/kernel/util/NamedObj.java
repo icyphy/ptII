@@ -855,6 +855,15 @@ public class NamedObj implements
     public Enumeration getAttributes() {
         return Collections.enumeration(attributeList());
     }
+    
+    /** Return a list of weak references to change listeners,
+     *  or null if there is none.
+     *  @return A list of weak references to change listeners,
+     *   or null if there is none.
+     */
+    public List getChangeListeners() {
+        return _changeListeners;
+    }
 
     /** Return the MoML class name.  This is either the
      *  class of which this object is an instance, or if this
