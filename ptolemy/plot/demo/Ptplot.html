@@ -1,0 +1,162 @@
+<!--$Id$-->
+<html>
+<head>
+<Title>JavaScript Interface to Ptplot</Title>
+<script src="Ptplot.js">
+
+<!-- Begin to hide script contents from old browsers.
+// End the hiding here. -->
+document.write("Included JS file not found");
+</script>
+</head>
+<body bgcolor="#faf0e6">
+<H1>JavaScript Interface to Ptplot</H1>
+<NOSCRIPT>
+This page uses JavaScript.  If you are reading this, then
+perhaps your browser does not have JavaScript turned on.
+</NOSCRIPT>
+
+This is a sample interface to Ptplot that allows the user
+to adjust various Ptplot parameters.  
+<H2>Limitations</H2>
+<MENU>
+<LI> Since this is an applet, you can only plot data from the
+server.
+
+<LI> Some of the datasets are binary datasets, so you must
+check the <CODE>binary</CODE> checkbox.
+
+<LI> Since the PlotApplet class does not inherit from
+the Plot class, we have to update the <CODE>pxgraphargs</CODE>
+parameter with the data from the form.  If we had more direct access 
+to the public methods of the Plot class, then we could have a
+Plot on this page and modify the format on the fly.
+</MENU>
+
+
+<FORM NAME="plotter" METHOD=post >
+<BR>
+<A HREF="PtplotHelp.html#Width">Width</A>
+<INPUT TYPE="text" NAME="width" SIZE="3" VALUE=450>
+<A HREF="PtplotHelp.html#Height">Height</A>
+<INPUT TYPE="text" NAME="height" SIZE="3" VALUE=450>
+<BR>
+<A HREF="PtplotHelp.html#Background Color">Background Color</A>
+(Hex number #000000 - #111111)
+<INPUT TYPE="text" NAME="background" SIZE="7" VALUE="faf0e6">
+<BR>
+<A HREF="PtplotHelp.html#Foreground Color">Foreground Color</A>
+(Hex number #000000 - #111111)
+<INPUT TYPE="text" NAME="foreground" SIZE="7" VALUE="000000">
+<BR>
+<A HREF="PtplotHelp.html#URL Base">URL Base</A>
+<INPUT TYPE="text" NAME="urlbase" SIZE="80" VALUE="http://ptolemy.eecs.berkeley.edu/java/ptplot/demo/">
+<BR>
+<A HREF="PtplotHelp.html#File to plot">File to plot</A>
+<BR>
+ <SELECT NAME="fileSelection" SIZE=6>
+ <OPTION SELECTED> bargraph.plt
+ <OPTION> data.plt
+ <OPTION> data/bin.plt
+ <OPTION> data/integrator1.plt data/integrator1.plt
+ <OPTION> data/butterfly.plt
+ <OPTION> (NONE)
+ </SELECT>
+<BR>
+<A HREF="PtplotHelp.html#Pxgraph Args">Pxgraph Args</A>
+<INPUT TYPE="text" NAME="pxgraphargs" SIZE="80">
+<BR>
+<A HREF="PtplotHelp.html#Title Text">Title Text</A>
+<INPUT TYPE="text" NAME="title" VALUE="Plot">
+<BR>
+<A HREF="PtplotHelp.html#Title Font">Title Font</A>
+ <SELECT NAME="titleFontFamily" SIZE=5>
+ <OPTION> Courier
+ <OPTION> Dialog
+ <OPTION> DialogInput
+ <OPTION SELECTED> Helvetica
+ <OPTION> TimesRoman
+ <OPTION> ZapfDingbats
+ </SELECT>
+
+<SELECT NAME="titleFontStyle" SIZE=3>
+ <OPTION> PLAIN
+ <OPTION> ITALIC
+ <OPTION SELECTED> BOLD
+</SELECT>
+
+<SELECT NAME="titleFontSize" SIZE=3>
+ <OPTION> 10
+ <OPTION> 12
+ <OPTION SELECTED> 14
+ <OPTION> 16
+</SELECT>
+
+<A HREF="PtplotHelp.html#Label Font">Label Font</A>
+ <SELECT NAME="labelFontFamily" SIZE=5>
+ <OPTION> Courier
+ <OPTION> Dialog
+ <OPTION> DialogInput
+ <OPTION SELECTED> Helvetica
+ <OPTION> TimesRoman
+ <OPTION> ZapfDingbats
+ </SELECT>
+
+<SELECT NAME="labelFontStyle" SIZE=3>
+ <OPTION SELECTED> PLAIN
+ <OPTION> ITALIC
+ <OPTION> BOLD
+</SELECT>
+
+<SELECT NAME="labelFontSize" SIZE=3>
+ <OPTION> 10
+ <OPTION SELECTED> 12
+ <OPTION> 14
+ <OPTION> 16
+</SELECT>
+
+<BR>
+<A HREF="PtplotHelp.html#X Axis Label">X Axis Label</A>
+<INPUT TYPE="text" NAME="xaxis" VALUE="X">
+<A HREF="PtplotHelp.html#Y Axis Label">Y Axis Label</A>
+<INPUT TYPE="text" NAME="yaxis" VALUE="Y">
+<BR>
+<INPUT TYPE="checkbox" NAME="bar">
+<A HREF="PtplotHelp.html#Bars">Bars</A>
+<BR>
+<INPUT TYPE="checkbox" NAME="binary">
+<A HREF="PtplotHelp.html#Binary">Binary</A>
+<BR>
+<INPUT TYPE="checkbox" NAME="nolines">
+<A HREF="PtplotHelp.html#No Lines">No Lines</A>
+<BR>
+<INPUT TYPE="checkbox" NAME="ticks">
+<A HREF="PtplotHelp.html#Ticks">Ticks</A>
+<BR>
+<INPUT TYPE="checkbox" NAME="smallpoints">
+<A HREF="PtplotHelp.html#Small Points">Small Points</A>
+<BR>
+<INPUT TYPE="checkbox" NAME="largepoints">
+<A HREF="PtplotHelp.html#Large Points">Large Points</A>
+<BR>
+<INPUT TYPE="checkbox" NAME="reversevideo">
+<A HREF="PtplotHelp.html#ReverseVideo">ReverseVideo</A>
+<BR>
+<INPUT TYPE="checkbox" NAME="displayargs">
+<A HREF="PtplotHelp.html#Display args">Display args</A>
+<BR>
+<INPUT TYPE="button" VALUE="Plot"
+	ONCLICK="ptplot(this.form)">
+ </FORM>
+<p>
+<HR>
+<A HREF="index.html">Up</A> to the Example index -
+<A HREF="audio/PlayingWave.html">Back</A> to a plot of real time audio data
+<HR>
+Copyright &#169 1997, The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$
+comments to: <A HREF="mailto:ptplot@ptolemy.eecs.berkeley.edu"><author>ptplot@eecs.berkeley.edu</author></A>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!--$Id$-->
+<html>
+<head>
+<Title>Help for the Ptplot Page</Title>
+</head>
+<body bgcolor="#faf0e6">
+<H1>Help for the Ptplot Page</H1>
+Below is a summary of the fields in the
+<A HREF="Ptplot.html">JavaScript Interface to Ptplot</A>.
+<DL>
+<DT> <A NAME="Width"><CODE>Width</CODE></A>
+<DD> The width in pixels of the applet.
+
+<DT> <A NAME="Height"><CODE>Height</CODE></A>
+<DD> The width in pixels of the applet.
+
+<DT> <A NAME="Background Color"><CODE>Background Color</CODE></A>
+<DD> <dd>Background color of the <code>pxgraph</code> window.
+This argument takes hexadecimal color values 
+(<code>fffff</code>), not color names.
+
+<DT> <A NAME="Foreground Color"><CODE>Foreground Color</CODE></A>
+<DD>Foreground color. This color is used to draw all text
+and the normal grid lines in the window.
+This argument takes hexadecimal color values 
+(<code>fffff</code>), not color names.
+
+<DT> <A NAME="URL Base"><CODE>URL Base</CODE></A>
+<DD> <CODE>URL Base</CODE> is not actually a Ptplot option, rather it is used
+by the form to improve readability.  <CODE>URL Base</CODE> is the URL that
+is prepended on to the <CODE>File to plot</CODE> value
+If <CODE>(NONE)</CODE> is selected in <CODE>File to plot</CODE>, then
+<CODE>URL Base</CODE> is ignored.
+
+<DT> <A NAME="File to plot"><CODE>File to plot</CODE></A>
+<DD> A listbox consisting of the file to plot.  Since this is
+an applet, we can only plot files from the server.  In a future version,
+it might be possible to submit files to the server to be plotted
+if <CODE>(NONE)</CODE> is selected, then <CODE>File to plot</CODE>
+and <CODE>URL Base</CODE> are ignored.
+
+<DT> <A NAME="Pxgraph args"><CODE>Pxgraph args</CODE></A>
+<DD> This field can consist of any
+<A HREF="../doc/codeDoc/ptplot.Pxgraph.html">Pxgraph</A> style arguments.
+
+<DT> <A NAME="Title Text"><CODE>Title Text</CODE></A>
+<DD>Title of the plot. This string is centered at the top
+of the graph.
+
+<DT> <A NAME="Title Font"><CODE>Title Font</CODE></A>
+<DD> This is the name of the font to use for
+the graph title. 
+
+<DT> <A NAME="Label Font"><CODE>Label Font</CODE></A>
+<DD> All axis labels and grid labels are drawn
+using this font.
+
+<DT> <A NAME="X Axis Label"><CODE>X Axis Label</CODE></A>
+<DD> This is the unit name for the X axis.
+
+<DT> <A NAME="Y Axis Label"><CODE>Y Axis Label</CODE></A>
+<DD> This is the unit name for the Y axis.
+
+<DT> <A NAME="Bars"><CODE>Bars</CODE></A>
+<DD> Specifies that vertical bars should be drawn from the
+data points to the zero line.
+Usually, the <code>No Lines</code> flag is used with this option.
+The point itself is located at the center of the bar.
+
+<DT> <A NAME="Binary"><CODE>Binary</CODE></A>
+<DD> Data files are in binary format.  See the
+<A HREF="../doc/codeDoc/ptplot.Pxgraph.html">Pxgraph</A> documentation
+for details abouty the format
+
+<DT> <A NAME="No Lines"><CODE>No Lines</CODE></A>
+<DD> Turn off drawing lines.
+
+<DT> <A NAME="Ticks"><CODE>Ticks</CODE></A>
+<DD> Draw tick marks instead of full grid lines.
+
+<DT> <A NAME="">Small Points<CODE>Small Points</CODE></A>
+<DD> Marks each data point with a small marker.
+
+<DT> <A NAME="">Large Points<CODE>Large Points</CODE></A>
+<DD> Marks each data point with a large marker.
+
+<DT> <A NAME="Reverse Video"><CODE>Reverse Video</CODE></A>
+<DD> Reverse video. On black and white displays, this will
+invert the foreground and background colors. The
+behaviour on color displays is undefined.
+
+<DT> <A NAME="">Display Args<CODE>Display Args</CODE></A>
+<DD> Display Args prints a table of some of the arguments at the bottom.   
+
+</DL>
+
+<HR>
+Copyright &#169 1997, The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$
+comments to: <A HREF="mailto:ptplot@ptolemy.eecs.berkeley.edu"><author>ptplot@eecs.berkeley.edu</author></A>
+</body>
+</html>
