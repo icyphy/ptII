@@ -65,7 +65,8 @@ representing the model.  The resulting class includes code to properly
 initialize the instance classes for the actors and fire them in the
 order of the SDF schedule.
 
-@author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
+@author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher
+Hylands, Vishal Khandelwal
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -821,113 +822,23 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     insertPoint);
          
             // Execute the schedule
+            // Get the Schedule from the Scheduler             
             SDFDirector director = (SDFDirector)model.getDirector();
-            Iterator schedule = null;
+            Schedule ptLoopSchedule = null;
             try {
-                schedule =
-                    director.getScheduler().getSchedule().firingIterator();
-            } catch (Exception ex) {
+            ptLoopSchedule = director.getScheduler().getSchedule();
+            }
+            catch (Exception ex) {
                 throw new KernelRuntimeException(ex,
                         "Failed to get schedule");
             }
-            while (schedule.hasNext()) {
-                Firing firing = (Firing)schedule.next();
 
-                Entity entity = (Entity)firing.getActor();
-                int firingCount = firing.getIterationCount();
-                String fieldName = ModelTransformer.getFieldNameForEntity(
-                        entity, model);
-                SootField field = modelClass.getFieldByName(fieldName);
-                String className =
-                    ActorTransformer.getInstanceClassName(entity, options);
-                SootClass theClass = Scene.v().loadClassAndSupport(className);
-                SootMethod actorPrefireMethod =
-                    SootUtilities.searchForMethodByName(
-                            theClass, "prefire");
-                SootMethod actorFireMethod =
-                    SootUtilities.searchForMethodByName(
-                            theClass, "fire");
-                SootMethod actorPostfireMethod =
-                    SootUtilities.searchForMethodByName(
-                            theClass, "postfire");
-                 
-                // Set the field.
-                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
-                        insertPoint);
-                
-                // The threshold at which it is better to generate loops,
-                // than to inline code.  A threshold of 2 means that loops will
-                // always be used.
-                // FIXME: This should be a command line option.
-                int threshold = 2;
-                
-                if(firingCount < threshold) {
-                    for(int i = 0; i < firingCount; i++) {
-                        units.insertBefore(Jimple.v().newInvokeStmt(
-                                          Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                  actorPrefireMethod)),
-                                insertPoint);
-                        units.insertBefore(Jimple.v().newInvokeStmt(
-                                          Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                  actorFireMethod)),
-                                insertPoint);
-                        units.insertBefore(Jimple.v().newAssignStmt(
-                                          localPostfireReturnsLocal,
-                                          Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                  actorPostfireMethod)),
-                                insertPoint);
-                        units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                          Jimple.v().newAndExpr(postfireReturnsLocal,
-                                                  localPostfireReturnsLocal)),
-                                insertPoint);
-              
-             
-                    }
-                } else {
-                    // The list of initializer instructions.
-                    List initializerList = new LinkedList();
-                    initializerList.add(
-                            Jimple.v().newAssignStmt(
-                                    indexLocal,
-                                    IntConstant.v(0)));
-
-                    // The list of body instructions.
-                    List bodyList = new LinkedList();
-                    bodyList.add(Jimple.v().newInvokeStmt(
-                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                 actorPrefireMethod)));
-                    bodyList.add(Jimple.v().newInvokeStmt(
-                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                 actorFireMethod)));
-                    bodyList.add(Jimple.v().newAssignStmt(
-                                         localPostfireReturnsLocal,
-                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                 actorPostfireMethod)));
-                    bodyList.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                         Jimple.v().newAndExpr(postfireReturnsLocal,
-                                                 localPostfireReturnsLocal)));
-                    // Increment the index.
-                    bodyList.add(
-                            Jimple.v().newAssignStmt(
-                                    indexLocal,
-                                    Jimple.v().newAddExpr(
-                                            indexLocal,
-                                            IntConstant.v(1))));
-                    
-                        
-                    Expr conditionalExpr =
-                        Jimple.v().newLtExpr(
-                                indexLocal,
-                                IntConstant.v(firingCount));
-                    
-                    SootUtilities.createForLoopBefore(body,
-                            insertPoint,
-                            initializerList,
-                            bodyList,
-                            conditionalExpr);
-                }
-            }
+            //Calling the loophandler function to execute the schedule
+            
+            _nestedLoopHandler(ptLoopSchedule, body, body, model, modelClass,
+                    phaseName, options, actorLocal, postfireReturnsLocal,
+                    indexLocal, localPostfireReturnsLocal, thisLocal,
+                    insertPoint);
 
             // Transfer outputs from output ports
             for(Iterator ports = model.outputPortList().iterator();
@@ -1088,7 +999,227 @@ public class InlineDirectorTransformer extends SceneTransformer {
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setActiveFastHierarchy(new FastHierarchy());
     }
+    /* Returns the sootbody of the fire method after executing the entire
+     * schedule for the SDF model. 
+     * The SDF Model may now have any schedule (flat or looped) which is
+     * passed to this method for execution. The schedule can now be viewed
+     * as a tree where each node can be either a schedule instance or a
+     * firing instance. By falling through the schedule tree recursively,
+     * we create local JimpleBody at each schedule level and in a bottom-up
+     * fashion we add this body to the local body of the upper schedule
+     * level in the tree. This way once we execute the full schedule tree
+     * we have the localbody at the root being the body of the fire method
+     * of the model with the schedule executed with the appropriate
+     * looping.
+     */
+    private JimpleBody _nestedLoopHandler(Schedule ptSchedule, JimpleBody body,
+            JimpleBody mainBody, CompositeActor model,
+            SootClass modelClass, String phaseName, Map options,
+            Local actorLocal, Local postfireReturnsLocal,
+            Local indexLocal, Local localPostfireReturnsLocal,
+            Local thisLocal, Stmt insertPoint) {
+
+            Iterator schedule = null;
+            int count = ptSchedule.getIterationCount();
+            //set up a local body for every level of the nested schedule
+            JimpleBody localBody = Jimple.v().newBody();
+            //Keep a track of the current level in the schedule tree
+            scheduleLevel = scheduleLevel + 1;
+
+            try {
+                schedule =  ptSchedule.iterator();
+            } catch (Exception ex) {
+                throw new KernelRuntimeException(ex,
+                        "Failed to get schedule");
+            }
+            while (schedule.hasNext()) {
+                ScheduleElement ptScheduleElement = (ScheduleElement)schedule
+                        .next();
+                // recursive call to _nestedLoopHandler() if we have
+                // schedelement being a schedule itself
+                if (ptScheduleElement instanceof Schedule) {
+                    localBody = _nestedLoopHandler((Schedule)ptScheduleElement,
+                            body, localBody, model, modelClass,
+                            phaseName, options, actorLocal,
+                            postfireReturnsLocal, indexLocal,
+                            localPostfireReturnsLocal,
+                            thisLocal, insertPoint);
+                    scheduleLevel = scheduleLevel - 1;
+                } else {
+                 // Incase schedelement is a firing instance
+                    Chain units = localBody.getUnits();
+                    Firing firing = (Firing)ptScheduleElement;
+                    Entity entity = (Entity)firing.getActor();
+
+                    int firingCount = firing.getIterationCount();
+                    System.out.println("firingcount"+firingCount);
+                    String fieldName = ModelTransformer
+                            .getFieldNameForEntity(entity, model);
+                    SootField field = modelClass.getFieldByName(fieldName);
+                    String className = ActorTransformer
+                            .getInstanceClassName(entity, options);
+                    SootClass theClass = Scene.v()
+                            .loadClassAndSupport(className);
+                    SootMethod actorPrefireMethod =
+                            SootUtilities.searchForMethodByName(
+                                    theClass, "prefire");
+                    SootMethod actorFireMethod =
+                            SootUtilities.searchForMethodByName(
+                                    theClass, "fire");
+                    SootMethod actorPostfireMethod =
+                            SootUtilities.searchForMethodByName(
+                                    theClass, "postfire");
+
+                     // Set the field.
+                    units.add(Jimple.v().newAssignStmt(actorLocal,
+                            Jimple.v().newInstanceFieldRef(thisLocal, field)));
+                    System.out.println("fieldvalue assign:");
+                    System.out.println(Jimple.v().newAssignStmt(actorLocal,
+                            Jimple.v().newInstanceFieldRef(thisLocal, field)));
+
+                    // The threshold at which it is better to generate loops,
+                    // than to inline code.  A threshold of 2 means that loops
+                    // willalways be used.
+                    // FIXME: This should be a command line option.
+                    int threshold = 2;
+
+                    if(firingCount < threshold) {
+                        for(int i = 0; i < firingCount; i++) {
+                            units.add(Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                            actorPrefireMethod)));
+                            units.add(Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                            actorFireMethod)));
+                            units.add(Jimple.v().newAssignStmt(
+                                    localPostfireReturnsLocal,
+                                    Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                            actorPostfireMethod)));
+                            units.add(Jimple.v().newAssignStmt(
+                                    postfireReturnsLocal,
+                                    Jimple.v().newAndExpr(postfireReturnsLocal,
+                                            localPostfireReturnsLocal)));
+                        }
+                    } else {
+                        // The list of initializer instructions.
+                        List initializerList = new LinkedList();
+
+                        initializerList.add(
+                                Jimple.v().newAssignStmt(
+                                        indexLocal,
+                                        IntConstant.v(0)));
+
+                        // The list of body instructions.
+                        List bodyList = new LinkedList();
+                        bodyList.add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                        actorPrefireMethod)));
+                        bodyList.add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                        actorFireMethod)));
+                        bodyList.add(Jimple.v().newAssignStmt(
+                                localPostfireReturnsLocal,
+                                Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                        actorPostfireMethod)));
+                        bodyList.add(Jimple.v().newAssignStmt(
+                                postfireReturnsLocal,
+                                Jimple.v().newAndExpr(postfireReturnsLocal,
+                                        localPostfireReturnsLocal)));
+                        // Increment the index.
+                        bodyList.add(Jimple.v().newAssignStmt(
+                                indexLocal, Jimple.v().newAddExpr(
+                                        indexLocal, IntConstant.v(1))));
+
+                        Expr conditionalExpr = Jimple.v().newLtExpr(
+                                indexLocal, IntConstant.v(firingCount));
+
+                        Stmt stmt = Jimple.v().newNopStmt();
+                        units.add(stmt);
+                        SootUtilities.createForLoopBefore(localBody,
+                                stmt, initializerList,
+                                bodyList, conditionalExpr);
+                    }
+                }
+            }
+            //Add the localBody to the mainBody once a level of the
+            //schedule tree has been completed
+            if (count > 1) {
+                //in this case a loop needs to be added at this level of
+                //the schedule tree
+                Stmt stmtNop = Jimple.v().newNopStmt();
+                Chain mainUnits = mainBody.getUnits();
+                mainUnits.add(stmtNop);
+                // Create a new index using indexCount
+                indexCount = indexCount + 1;
+                String newIndex = "index" + Integer.toString(indexCount);
+                Local indexCountLocal =
+                            Jimple.v().newLocal(newIndex, IntType.v());
+                body.getLocals().add(indexCountLocal);
+                //Create a List representation of the localBody for this level
+                List localBodyList = new LinkedList(
+                        localBody.getUnits());
+                // The list of initializer instructions.
+                List newInitializerList = new LinkedList();
+                newInitializerList.add(
+                        Jimple.v().newAssignStmt(
+                                indexCountLocal,
+                                IntConstant.v(0)));
+                // Increment the index.
+                localBodyList.add(Jimple.v().newAssignStmt(
+                        indexCountLocal,
+                        Jimple.v().newAddExpr(
+                                indexCountLocal,
+                                IntConstant.v(1))));
+
+                Expr newConditionalExpr =
+                        Jimple.v().newLtExpr(
+                                indexCountLocal,
+                                IntConstant.v(count));
+
+                //Create the for loop using the newconditional Expr, stmtnop,
+                //newInitializerList, localBodyList
+                Stmt bodyStart = (Stmt)localBodyList.get(0);
+
+                Stmt conditionalStmt = Jimple.v().newIfStmt(
+                        newConditionalExpr, bodyStart);
+
+                mainBody.getUnits().insertAfter(
+                        conditionalStmt, stmtNop);
+
+                mainBody.getUnits().insertAfter(
+                        localBodyList, stmtNop);
+
+                mainBody.getUnits().insertAfter(
+                        Jimple.v().newGotoStmt(conditionalStmt),
+                                stmtNop);
+
+                mainBody.getUnits().insertAfter(
+                        newInitializerList, stmtNop);
+                
+            } else if (scheduleLevel > 1) {
+                // We are not yet at the root of the schedule tree 
+                Stmt stmtNop = Jimple.v().newNopStmt();
+                Chain mainUnits = mainBody.getUnits();
+                mainUnits.add(stmtNop);
+                List localBodyList = new LinkedList(localBody.getUnits());
+                mainUnits.insertAfter(localBodyList, stmtNop);
+            } else {
+                // We are now at the root of the schedule tree and this is
+                // the final merging of the localbody of the level to the 
+                // body of the fire method of the SDF model. The entire
+                // schedule has now been executed
+                Chain mainUnits = mainBody.getUnits();
+                Stmt stmentNop = Jimple.v().newNopStmt();
+                mainUnits.insertBefore(stmentNop, insertPoint);
+                List localBodyList = new LinkedList(localBody.getUnits());
+                mainUnits.insertAfter(localBodyList, stmentNop);
+            }
+            return mainBody;
+    }
+
     private CompositeActor _model;
+    private static int indexCount = 0;
+    private int scheduleLevel = 0;
 }
 
 
