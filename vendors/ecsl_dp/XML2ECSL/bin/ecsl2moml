@@ -154,7 +154,7 @@ awk 'BEGIN {
     map["Constant"] = "ptolemy.actor.lib.Const"
     map["Demux"] = "ptolemy.actor.lib.Select"
     # FIXME
-    map["DiscreteFilter"] = "ptolemy.actor.lib.EventFilter"
+    map["DiscreteFilter"] = "ptolemy.domains.de.lib.EventFilter"
     map["DiscretePulseGenerator"] = "ptolemy.actor.lib.Pulse"
     map["Display"] = "ptolemy.actor.lib.gui.Display"
     # FIXME
@@ -172,7 +172,8 @@ awk 'BEGIN {
     map["MultiPortSwitch"] = "ptolemy.actor.lib.Switch"
     map["Mux"] = "ptolemy.actor.lib.Multiplexor"
     map["Product"] = "ptolemy.actor.lib.MultiplyDivide"
-    map["RelationalOperator"] = "ptolemy.actor.lib.RelationalOperator"
+    # FIXME
+    map["RelationalOperator"] = "ptolemy.actor.lib.logic.Comparator"
     map["S-Function"] = "ptolemy.matlab.Expression"
     # FIXME
     map["Saturate"] = "ptolemy.actor.lib.Quantizer"
@@ -245,11 +246,7 @@ $1 ~ /<entity/ {
                break;
            }
        }
-       indent = substr($0, 0, index($0,"<") - 1)  
-       print indent "<port name=\"" name "\" class=\"ptolemy.actor.TypedIOPort\">"
-       print indent "</port>"
 
- 
        if ($1 ~ /<OutputPort/) {
            # Get the value of the dstLine field
            relation=""
@@ -271,6 +268,17 @@ $1 ~ /<entity/ {
                }
             }
        }
+
+       indent = substr($0, 0, index($0,"<") - 1)  
+
+       print indent "<port name=\"" name "\" class=\"ptolemy.actor.TypedIOPort\">"
+       if (index(relation, " ") != 0) {
+           # The relation name has spaces in it, so this is a multiport
+           print indent "    <property name=\"multiport\"/>"
+       }
+       print indent "</port>"
+
+ 
        containerName = container "." name
        links[containerName] = relation
     } else {
