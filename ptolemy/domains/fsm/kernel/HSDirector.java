@@ -376,14 +376,16 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return getModelNextIterationTime().getDoubleValue();
     }
 
-    /** Return the ODE solver.
-     *  @return The default ODE solver associated with this director.
+    /** Return the ODE solver of the enclosing CT general director 
+     *  for normal integration.
+     *  @return The ODE solver of the enclosing CT general director 
+     *  for normal integration.
      */
-    public ODESolver getODESolver() {
+    public ODESolver getNormalODESolver() {
         CTGeneralDirector executiveDirector =
             getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().getODESolver();
+            return getEnclosingCTGeneralDirector().getNormalODESolver();
         } else {
             // This should never happen because a modal model with
             // an HSDirector must be used inside a CT model.
