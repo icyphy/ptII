@@ -61,7 +61,6 @@ JSRCS = \
 	ModelPane.java \
 	MoMLApplet.java \
 	MoMLApplication.java \
-	ParameterEditor.java \
 	Placeable.java \
 	Plotter.java \
 	Print.java \

@@ -1,4 +1,4 @@
-/* An interface for graphical widgets that can configure named objects.
+/* An attribute that manages configuring its container.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -30,24 +30,123 @@
 
 package ptolemy.actor.gui;
 
+// Ptolemy imports.
 import ptolemy.kernel.util.*;
+import ptolemy.data.expr.Parameter;
+
+// Java imports.
+import java.awt.Component;
+import java.util.Iterator;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// Configurer
-/** This is an interface for graphical widgets which can configure other
- *  objects.   
- *  @author Steve Neuendorffer 
- *  @version $Id$
- */
+/**
+This is an attribute that manages configuring its container.
+It serves as a factory producing widgets for interactively editing
+the configuration of the container (these are called "configuration
+widgets").
 
-public interface Configurer {
-    /** Initialize the configurer to the current state of its target.
-     *  @exception IllegalActionException If the state of the target is not
-     *  valid.
-     */
-    public void refresh() throws IllegalActionException;   
+In this base class, the createEditPane() method creates an
+instance of PtolemyQuery with one entry for each parameter in
+the container of this configurer.  This is the default mechanism
+for editing parameters.  Derived classes may override this
+method to present radically different interfaces to the user.
+For example, a digital filter actor could present a filter
+design interface.  A plotter actor could present a panel for
+configuring a plot.  A file reader actor could present a file
+browser.
 
-    /** Return the object that this configurer is configuring. 
+A GUI for Ptolemy II should use the convenience method consolidate(),
+which obeys the following policy.
+To edit the parameters of any instance of NamedObj, it
+first checks to see whether that NamedObj contains an instance
+of Configurer (using the attributesList(filter: Class) method).
+If it contains no configurer, then it creates an
+instance of this base class configurer.  It then returns
+a panel containing the configuration widgets specified by
+each contained configurer, stacked vertically if there is more
+than one.  A GUI should typically insert this panel into a
+a dialog box and present it to the user.
+
+@author Steve Neuendorffer and Edward A. Lee
+@version $Id$
+*/
+
+public class Configurer extends Attribute {
+
+    /** Construct a configurer with the specified container and name.
+     *  @param container The container.
+     *  @param name The name of the configurer.
+     *  @exception IllegalActionException If the configurer is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */	
+    public Configurer(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
+
+    /** Create configuration widgets specified by all the instances
+     *  of Configurer in the specified object.  These are consolidated
+     *  into a single panel, stacked vertically.
+     *  @return A panel containing configuration widgets.
+     *  @exception IllegalActionException If a configurer is not of an
+     *   acceptable attribute for the container.
      */
-    public NamedObj getTarget();
+    public static JPanel createEditor(NamedObj object)
+            throws IllegalActionException {
+        JPanel result = new JPanel();
+        result.setLayout(new BoxLayout(result, BoxLayout.Y_AXIS));
+
+        boolean foundOne = false;
+        Iterator configurers
+                = object.attributeList(Configurer.class).iterator();
+        while (configurers.hasNext()) {
+            foundOne = true;
+            Configurer configurer = (Configurer)configurers.next();
+            result.add(configurer.createEditPane());
+        }
+        if (!foundOne) {
+            try {
+                Configurer configurer = new Configurer(object,
+                        object.uniqueName("configurer"));
+                result.add(configurer.createEditPane());
+            } catch (NameDuplicationException ex) {
+                throw new InternalErrorException(ex.toString());
+            }
+        }
+        return result;
+    }
+
+    /** Return a new widget for configuring the container.
+     *  @return A new widget for configuring the container.
+     */
+    public Component createEditPane() {
+        PtolemyQuery query = new PtolemyQuery();
+        // FIXME: The following doesn't work... why?
+        query.setTextWidth(20);
+        NamedObj container = (NamedObj)getContainer();
+        Iterator params
+               = container.attributeList(Parameter.class).iterator();
+        boolean foundOne = false;
+        while (params.hasNext()) {
+            foundOne = true;
+            Parameter param = (Parameter)params.next();
+            // FIXME: Check for ParameterConfigurer.
+            query.addLine(param.getName(),
+                   param.getName(),
+                   param.stringRepresentation());
+            query.attachParameter(param, param.getName());
+        }
+        if (!foundOne) {
+            return new JLabel(container.getName() + " has no parameters.");
+        }
+        // FIXME: should this build in a mechanism for adding
+        // parameters?  Perhaps that should be in CompositeActor...
+        return query;
+    }
 }
