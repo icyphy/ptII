@@ -40,15 +40,13 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SROptimizedScheduler
@@ -158,13 +156,13 @@ public class SROptimizedScheduler extends Scheduler {
             if (outputList.isEmpty()) {
                 // The actor must still fire even though it has no output
                 // ports, so we add the actor itself to the dependency graph.
-                dependencyGraph.add(actor);
+                dependencyGraph.addNodeWeight(actor);
             } else {
                 Iterator outputIterator = outputList.iterator();
                 while (outputIterator.hasNext()) {
                     IOPort outputPort = (IOPort) outputIterator.next();
                     outputPortToActor.put(outputPort, actor);
-                    dependencyGraph.add(outputPort);
+                    dependencyGraph.addNodeWeight(outputPort);
                 }
             }
             List inputList = actor.inputPortList();
@@ -250,20 +248,20 @@ public class SROptimizedScheduler extends Scheduler {
      */
     private Object[] _headOf(DirectedGraph dependencyGraph) {
 
-        Object[] nodes = dependencyGraph.getNodes();
-        Object bestNode = nodes[0];
+        Object[] nodes = dependencyGraph.nodes().toArray();
+        Node bestNode = (Node)(nodes[0]);
         int smallestSuccessorSet = 0;
 
         for (int i = 0; i < nodes.length; i++) {
-            Object node = nodes[i];
-            int numberOfSuccessors = dependencyGraph.successorSet(node).length;
+            Node node = (Node)(nodes[i]);
+            int numberOfSuccessors = dependencyGraph.successors(node).size();
             if (numberOfSuccessors < smallestSuccessorSet) {
                 smallestSuccessorSet = numberOfSuccessors;
                 bestNode = node;
             }
         }
 
-        return dependencyGraph.successorSet(bestNode);
+        return Graph.weightArray(dependencyGraph.successors(bestNode));
     }
 
     /** Return a list corresponding to the schedule of the dependency graph.
@@ -280,13 +278,13 @@ public class SROptimizedScheduler extends Scheduler {
 
             DirectedGraph scc = sccs[i];
 
-            if (scc.getNodeCount() == 1) {
-                Object[] nodes = scc.getNodes();
+            if (scc.nodeCount() == 1) {
+                Object[] nodes = Graph.weightArray(scc.nodes());
                 scheduleList.add(nodes[0]);
             } else {
                 Object[] head = _headOf(scc);
-                Object[] allNodes = scc.getNodes();
-                int sizeOfGraph = scc.getNodeCount();
+                Object[] allNodes = Graph.weightArray(scc.nodes());
+                int sizeOfGraph = scc.nodeCount();
                 int sizeOfHead = head.length;
                 int sizeOfTail = sizeOfGraph - sizeOfHead;
                 Object[] tail = new Object[sizeOfTail];
@@ -303,8 +301,10 @@ public class SROptimizedScheduler extends Scheduler {
                         counter++;
                     }
                 }
-                DirectedGraph headGraph = scc.subgraph(head);
-                DirectedGraph tailGraph = scc.subgraph(tail);
+                DirectedGraph headGraph = (DirectedGraph)
+                        (scc.subgraph(Arrays.asList(head)));
+                DirectedGraph tailGraph = (DirectedGraph)
+                        (scc.subgraph(Arrays.asList(tail)));
                 List headScheduleList = _scheduleDependencyGraph(headGraph);
                 List tailScheduleList = _scheduleDependencyGraph(tailGraph);
                 for (int j = 0; j < sizeOfHead; j++) {
