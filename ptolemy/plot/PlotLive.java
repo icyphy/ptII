@@ -32,7 +32,6 @@ package ptolemy.plot;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.JButton;
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLive
@@ -120,33 +119,9 @@ public abstract class PlotLive extends Plot implements Runnable {
     public void run() {
         while (_plotting || _paused) {
             if (_plotting) {
-                // In swing, updates to showing graphics must be done in the
-                // event thread.  To ensure that everything gets done in the
-                // right order (drawing and erasing points), we do all
-                // the work in the event thread.  This also ensures that
-                // this thread does not get ahead of the event thread,
-                // something that can result in a very large of events
-                // accumulating until we run out of memory.
-                Runnable doPlotPoint = new Runnable() {
-                    public void run() {
-                        addPoints();
-                    }
-                };
-                try {
-                    // NOTE: We must use invokeAndWait here or this thread
-                    // gets far ahead of the event thread and overflows the
-                    // stack.  Note however, that it won't do to perform
-                    // this entire loop inside the event thread because then
-                    // the UI will not be responsive.
-                    SwingUtilities.invokeAndWait(doPlotPoint);
-                } catch (Exception ex) {
-                    // Ignore InterruptedException.
-                    // Other exceptions should not occur.
-                }
-
+                addPoints();
                 // Give the event thread a chance.
-                // NOTE: no longer needed.
-                // Thread.yield();
+                Thread.yield();
             } else if (_paused) {
                 // NOTE: Cannot synchronize this entire method because then
                 // the Thread.yield() call above does not yield to any

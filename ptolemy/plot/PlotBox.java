@@ -232,7 +232,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param dataset The dataset index.
      *  @param legend The label for the dataset.
      */
-    public void addLegend(int dataset, String legend) {
+    public synchronized void addLegend(int dataset, String legend) {
         if (legend == null || legend.equals("")) return;
         _legendStrings.addElement(legend);
         _legendDatasets.addElement(new Integer(dataset));
@@ -246,7 +246,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param label The label for the tick mark.
      *  @param position The position on the X axis.
      */
-    public void addXTick(String label, double position) {
+    public synchronized void addXTick(String label, double position) {
         if (_xticks == null) {
             _xticks = new Vector();
             _xticklabels = new Vector();
@@ -263,7 +263,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param label The label for the tick mark.
      *  @param position The position on the Y axis.
      */
-    public void addYTick(String label, double position) {
+    public synchronized void addYTick(String label, double position) {
         if (_yticks == null) {
             _yticks = new Vector();
             _yticklabels = new Vector();
@@ -334,7 +334,7 @@ public class PlotBox extends JPanel implements Printable {
      *  This method calls repaint(), which eventually causes the display
      *  to be updated.
      */
-    public void fillPlot() {
+    public synchronized void fillPlot() {
         _setXRange(_xBottom, _xTop);
         _setYRange(_yBottom, _yTop);
         repaint();
@@ -409,7 +409,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param dataset The dataset index.
      *  @return The legend label, or null if there is none.
      */
-    public String getLegend(int dataset) {
+    public synchronized String getLegend(int dataset) {
         int idx = _legendDatasets.indexOf(new Integer(dataset), 0);
         if (idx != -1) {
             return (String)_legendStrings.elementAt(idx);
@@ -424,7 +424,7 @@ public class PlotBox extends JPanel implements Printable {
      *  Currently (JDK 1.3), only BoxLayout pays any attention to this.
      *  @return The maximum desired size.
      */
-    public Dimension getMaximumSize() {
+    public synchronized Dimension getMaximumSize() {
         if (_sizeHasBeenSet) {
             return new Dimension(_preferredWidth, _preferredHeight);
         } else {
@@ -438,7 +438,7 @@ public class PlotBox extends JPanel implements Printable {
      *  class returns, which is undocumented.
      *  @return The minimum size.
      */
-    public Dimension getMinimumSize() {
+    public synchronized Dimension getMinimumSize() {
         if (_sizeHasBeenSet) {
             return new Dimension(_preferredWidth, _preferredHeight);
         } else {
@@ -452,14 +452,14 @@ public class PlotBox extends JPanel implements Printable {
      *  otherwise (500 by 300).
      *  @return The preferred size.
      */
-    public Dimension getPreferredSize() {
+    public synchronized Dimension getPreferredSize() {
         return new Dimension(_preferredWidth, _preferredHeight);
     }
 
     /** Get the title of the graph, or an empty string if there is none.
      *  @return The title.
      */
-    public String getTitle() {
+    public synchronized String getTitle() {
         if (_title == null) return "";
         return _title;
     }
@@ -468,7 +468,7 @@ public class PlotBox extends JPanel implements Printable {
      *  been set.
      *  @return The X label.
      */
-    public String getXLabel() {
+    public synchronized String getXLabel() {
         return _xlabel;
     }
 
@@ -483,7 +483,7 @@ public class PlotBox extends JPanel implements Printable {
      *  element is the minimum and the second element is the maximum.
      *  return The current X range.
      */
-    public double[] getXRange() {
+    public synchronized double[] getXRange() {
         double[] result = new double[2];
         if (_xRangeGiven) {
             result[0] = _xlowgiven;
@@ -502,7 +502,7 @@ public class PlotBox extends JPanel implements Printable {
      *  and the second of which specifies the corresponding labels.
      *  @return The X ticks.
      */
-    public Vector[] getXTicks() {
+    public synchronized Vector[] getXTicks() {
         if (_xticks == null) return null;
         Vector[] result = new Vector[2];
         result[0] = _xticks;
@@ -529,7 +529,7 @@ public class PlotBox extends JPanel implements Printable {
      *  element is the minimum and the second element is the maximum.
      *  return The current Y range.
      */
-    public double[] getYRange() {
+    public synchronized double[] getYRange() {
         double[] result = new double[2];
         if (_yRangeGiven) {
             result[0] = _ylowgiven;
@@ -548,7 +548,7 @@ public class PlotBox extends JPanel implements Printable {
      *  and the second of which specifies the corresponding labels.
      *  @return The Y ticks.
      */
-    public Vector[] getYTicks() {
+    public synchronized Vector[] getYTicks() {
         if (_yticks == null) return null;
         Vector[] result = new Vector[2];
         result[0] = _yticks;
@@ -593,7 +593,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Open up the input file, which could be stdin, a URL, or a file.
      *  @deprecated This method is deprecated.  Use read() instead.
      */
-    public void parseFile(String filespec, URL documentBase) {
+    public synchronized void parseFile(String filespec, URL documentBase) {
         DataInputStream in = null;
         if (filespec == null || filespec.length() == 0) {
             // Open up stdin
@@ -677,6 +677,7 @@ public class PlotBox extends JPanel implements Printable {
      */
     public synchronized int print(Graphics graphics, PageFormat format,
             int index) throws PrinterException {
+        if (graphics == null) return Printable.NO_SUCH_PAGE;
         // We only print on one page.
         if (index >= 1) {
             return Printable.NO_SUCH_PAGE;
@@ -717,7 +718,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
-    public void read(InputStream in) throws IOException {
+    public synchronized void read(InputStream in) throws IOException {
         try {
             // NOTE: I tried to use exclusively the jdk 1.1 Reader classes,
             // but they provide no support like DataInputStream, nor
@@ -748,7 +749,7 @@ public class PlotBox extends JPanel implements Printable {
      *  The commands can be any of those in the ASCII file format.
      *  @param command A command.
      */
-    public void read(String command) {
+    public synchronized void read(String command) {
         _parseLine(command);
     }
 
@@ -776,7 +777,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param width The new width of this component.
      *  @param height The new height of this component.
      */
-    public void setBounds(int x, int y, int width, int height) {
+    public synchronized void setBounds(int x, int y, int width, int height) {
         _width = width;
         _height = height;
         super.setBounds(x, y, _width, _height);
@@ -789,8 +790,10 @@ public class PlotBox extends JPanel implements Printable {
      *  a menu with the fill command.  This way, when printing the plot,
      *  the printed plot will not have a spurious button.  Thus, this method
      *  should be used only by applets, which normally do not have menus.
+     *  This method should only be called from within the event dispatch
+     *  thread, since it interacts with swing.
      */
-    public void setButtons(boolean visible) {
+    public synchronized void setButtons(boolean visible) {
         if (_fillButton == null) {
             _fillButton = new JButton("fill");
             _fillButton.addActionListener(new FillButtonListener());
@@ -917,7 +920,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param min The left extent of the range.
      *  @param max The right extent of the range.
      */
-    public void setXRange(double min, double max) {
+    public synchronized void setXRange(double min, double max) {
         _xRangeGiven = true;
         _xlowgiven = min;
         _xhighgiven = max;
@@ -945,7 +948,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param min The bottom extent of the range.
      *  @param max The top extent of the range.
      */
-    public void setYRange(double min, double max) {
+    public synchronized void setYRange(double min, double max) {
         _yRangeGiven = true;
         _ylowgiven = min;
         _yhighgiven = max;
@@ -981,7 +984,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param dtd The reference (URL) for the DTD, or null to use the
      *   PUBLIC DTD.
      */
-    public void write(OutputStream out, String dtd) {
+    public synchronized void write(OutputStream out, String dtd) {
         // Auto-flush is disabled.
         PrintWriter output = new PrintWriter(new BufferedOutputStream(out),
                 false);
@@ -1014,7 +1017,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param out An output stream.
      *  @deprecated
      */
-    public void writeOldSyntax(OutputStream out) {
+    public synchronized void writeOldSyntax(OutputStream out) {
         // Auto-flush is disabled.
         PrintWriter output = new PrintWriter(new BufferedOutputStream(out),
                 false);
@@ -1054,19 +1057,17 @@ public class PlotBox extends JPanel implements Printable {
      *  you would normally call repaint(), which eventually causes
      *  paintComponent() to be called.
      *  <p>
-     *  Note that this method is not synchronized, which is consistent
-     *  with swing's policy of unsynchronized writing to the screen.
-     *  Thus, this method should always be called from the event thread
-     *  when being used to write to the screen.
+     *  Note that this is synchronized so that points are not added
+     *  by other threads while the drawing is occurring.  This method
+     *  should be called only from the event dispatch thread, consistent
+     *  with swing policy.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
-    protected void _drawPlot(Graphics graphics,
+    protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst) {
-        if (graphics == null) {
-            throw new RuntimeException("PlotBox._drawPlot: Attempt to draw " +
-                    "axes without a Graphics object.");
-        }
+        // Ignore if there is no graphics object to draw on.
+        if (graphics == null) return;
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = getBounds();
         graphics.setPaintMode();
@@ -1613,6 +1614,11 @@ public class PlotBox extends JPanel implements Printable {
      *  <i>clip</i> argument, if <code>true</code>, states
      *  that the point should not be drawn if
      *  it is out of range.
+     * 
+     *  Note that this method is not synchronized, so the caller should be.
+     *  Moreover this method should always be called from the event thread
+     *  when being used to write to the screen.
+     *
      *  @param graphics The graphics context.
      *  @param dataset The index of the data set.
      *  @param xpos The X position.
@@ -1621,6 +1627,8 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected void _drawPoint(Graphics graphics,
             int dataset, long xpos, long ypos, boolean clip) {
+        // Ignore if there is no graphics object to draw on.
+        if (graphics == null) return;
         boolean pointinside = ypos <= _lry && ypos >= _uly &&
             xpos <= _lrx && xpos >= _ulx;
         if (!pointinside && clip) {return;}
@@ -1652,6 +1660,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Parse a line that gives plotting information.  In this base
      *  class, only lines pertaining to the title and labels are processed.
      *  Everything else is ignored. Return true if the line is recognized.
+     *  It is not synchronized, so its caller should be.
      *  @param line A line of text.
      */
     protected boolean _parseLine(String line) {
@@ -1765,6 +1774,7 @@ public class PlotBox extends JPanel implements Printable {
      *  Derived classes should override this method to first call
      *  the parent class method, then add whatever additional information
      *  they wish to add to the stream.
+     *  It is not synchronized, so its caller should be.
      *  @param output A buffered print writer.
      */
     protected void _write(PrintWriter output) {
@@ -1814,6 +1824,7 @@ public class PlotBox extends JPanel implements Printable {
      *  Derived classes should override this method to first call
      *  the parent class method, then add whatever additional information
      *  they wish to add to the stream.
+     *  It is not synchronized, so its caller should be.
      *  @param output A buffered print writer.
      *  @deprecated
      */
@@ -1980,6 +1991,9 @@ public class PlotBox extends JPanel implements Printable {
      * of the region where the legend should be placed.
      */
     private int _drawLegend(Graphics graphics, int urx, int ury) {
+        // Ignore if there is no graphics object to draw on.
+        if (graphics == null) return 0;
+
         // FIXME: consolidate all these for efficiency
         graphics.setFont(_labelFont);
         int spacing = _labelFontMetrics.getHeight();
@@ -2480,6 +2494,8 @@ public class PlotBox extends JPanel implements Printable {
         _zooming = false;
 
         Graphics graphics = getGraphics();
+        // Ignore if there is no graphics object to draw on.
+        if (graphics == null) return;
 
         boolean handled = false;
         if ((_zoomin == true) && (_drawn == true)){
@@ -2559,6 +2575,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param y The y position.
      */
      void _zoomBox(int x, int y) {
+
         // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
 
@@ -2568,6 +2585,8 @@ public class PlotBox extends JPanel implements Printable {
         if (!_zooming) return;
 
         Graphics graphics = getGraphics();
+        // Ignore if there is no graphics object to draw on.
+        if (graphics == null) return;
 
         // Bound the rectangle so it doesn't go outside the box.
         if (y > _lry) y = _lry;

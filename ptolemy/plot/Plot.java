@@ -35,10 +35,10 @@ package ptolemy.plot;
 //
 // NOTE: The XOR drawing mode is needed in order to be able to erase
 // plotted points and restore the grid line, tick marks, and boundary
-// rectangle.  Another alternative would be to put the tick marks
-// outside the rectangle, disallow grid marks, and adjust drawing so
-// it never overlaps the boundary rectangle.  Then erasing could be
-// done by redrawing in white. This would be better.
+// rectangle.  This introduces a number of artifacts, particularly
+// where lines cross.  A better alternative in the long run would be
+// use Java 2-D, which treats each notation on the screen as an object,
+// and supports redrawing only damaged regions of the screen.
 
 // NOTE: There are quite a few subjective spacing parameters, all
 // given, unfortunately, in pixels.  This means that as resolutions
@@ -52,7 +52,6 @@ import java.util.*;
 import java.net.*;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import javax.swing.RepaintManager;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plot
@@ -186,44 +185,6 @@ import javax.swing.RepaintManager;
  *      the <code>_gridInit()</code> method in the PlotBox class.
  * </ul>
  * <p>
- * NOTE: Because of the way that swing works, it is recommended that
- * if a large amount of data is going to be plotted (e.g. in a live
- * plot that runs forever), that the
- * data be added (or erased) in the event thread.  This will occur
- * automatically if data is added via a GUI.  It can be done from an
- * arbitrary thread as follows:
- *
- *    Runnable doPlotPoint = new Runnable() {
- *        public void run() {
- *            ... add points with calls to addPoint()...
- *        }
- *    };
- *    try {
- *        SwingUtilities.invokeAndWait(doPlotPoint);
- *    } catch (Exception ex) {
- *        // Ignore InterruptedException.
- *        // Other exceptions should not occur.
- *    }
- *
- * You need to use invokeAndWait(), not invokeLater().
- * The reason for this is that the plotter defers to the event thread
- * to render the points on the screen (as all swing components are required
- * to do), and it is possible call addPoint() many times before Java
- * will get around to processing the requested events.  These events
- * can accumulate indefinitely, and you may run out of memory.
- * This is, in our opinion, a bug in Java, since the thread scheduler
- * doing a better job would prevent an infinite buildup of pending events.
- * But we must live with it for now.
- *
- * Unfortunately, this creates a risk of deadlock.  If your code holds
- * any resource (any synchronization lock or a Ptolemy workspace),
- * then that resource will continue to be held until after the event thread
- * completes the request.  However, the event thread might be stalled
- * attempting to process some other request that requires the resource
- * that you hold.  In this case, it will not be able to continue.
- * The workaround is that when you call invokeAndWait(), you must
- * not hold any resource that might be needed by any code that runs
- * in the event thread.
  *
  * @author Edward A. Lee, Christopher Hylands
  * @version $Id$
@@ -239,7 +200,7 @@ public class Plot extends PlotBox {
      *  @param dataset The dataset index.
      *  @param legend The label for the dataset.
      */
-    public void addLegend(int dataset, String legend) {
+    public synchronized void addLegend(int dataset, String legend) {
         _checkDatasetIndex(dataset);
         super.addLegend(dataset, legend);
     }
@@ -251,18 +212,29 @@ public class Plot extends PlotBox {
      *  point.  Regardless of the value of this argument, a line will not
      *  drawn if either there has been no previous point for this dataset
      *  or setConnected() has been called with a false argument.
-     *  The new point will be made visible if the plot is visible
-     *  on the screen.  Otherwise, it will be drawn the next time the plot
-     *  is drawn on the screen.
+     *  <p>
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the point will
+     *  not be added immediately (unless you call this method from within
+     *  the event dispatch thread). All the methods that do this deferring
+     *  coordinate so that they are executed in the order that you
+     *  called them.
+     *
      *  @param dataset The data set index.
      *  @param x The X position of the new point.
      *  @param y The Y position of the new point.
      *  @param connected If true, a line is drawn to connect to the previous
      *   point.
      */
-    public synchronized void addPoint(int dataset, double x, double y,
-            boolean connected) {
-        _addPoint(dataset, x, y, 0, 0, connected, false);
+    public synchronized void addPoint(final int dataset, final double x,
+            final double y, final boolean connected) {
+        Runnable doAddPoint = new Runnable() {
+            public void run() {
+                _addPoint(dataset, x, y, 0, 0, connected, false);               
+            }
+        };
+        _deferIfNecessary(doAddPoint);
     }
 
     /** In the specified data set, add the specified x, y point to the
@@ -276,6 +248,14 @@ public class Plot extends PlotBox {
      *  is drawn on the screen.
      *  This method is based on a suggestion by
      *  Michael Altmann <michael@email.labmed.umn.edu>.
+     *  <p>
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the point will
+     *  not be added immediately (unless you call this method from within
+     *  the event dispatch thread).  All the methods that do this deferring
+     *  coordinate so that they are executed in the order that you
+     *  called them.
      *
      *  @param dataset The data set index.
      *  @param x The X position of the new point.
@@ -285,11 +265,15 @@ public class Plot extends PlotBox {
      *  @param connected If true, a line is drawn to connect to the previous
      *   point.
      */
-    public synchronized void addPointWithErrorBars(int dataset,
-            double x, double y, double yLowEB, double yHighEB,
-            boolean connected) {
-        _addPoint(dataset, x, y,
-                yLowEB, yHighEB, connected, true);
+    public synchronized void addPointWithErrorBars(final int dataset,
+            final double x, final double y, final double yLowEB,
+            final double yHighEB, final boolean connected) {
+        Runnable doAddPoint = new Runnable() {
+            public void run() {
+                _addPoint(dataset, x, y, yLowEB, yHighEB, connected, true);
+            }
+        };
+        _deferIfNecessary(doAddPoint);
     }
 
     /** Clear the plot of all data points.  If the argument is true, then
@@ -297,49 +281,44 @@ public class Plot extends PlotBox {
      *  the persistence, plotting format, and axes formats.
      *  For the change to take effect, you must call repaint().
      *  @param format If true, clear the format controls as well.
+     *  <p>
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the clear will
+     *  not be executed immediately (unless you call this method from within
+     *  the event dispatch thread).  All the methods that do this deferring
+     *  coordinate so that they are executed in the order that you
+     *  called them.
      */
-    public synchronized void clear(boolean format) {
-        super.clear(format);
-        _currentdataset = -1;
-        int size = _points.size();
-        _points = new Vector();
-        _prevx = new Vector();
-        _prevy = new Vector();
-        _maxdataset = -1;
-        _firstinset = true;
-        _sawfirstdataset = false;
-        _xyInvalid = true;
-        _filename = null;
-
-        if (format) {
-            _showing = false;
-            // Reset format controls
-            _formats = new Vector();
-            _marks = 0;
-            _pointsPersistence = 0;
-            _xPersistence = 0;
-            _bars = false;
-            _barwidth = 0.5;
-            _baroffset = 0.05;
-            _connected = true;
-            _impulses = false;
-            _reusedatasets = false;
-        }
-    }
+    public synchronized void clear(final boolean format) {
+        Runnable doClear = new Runnable() {
+            public void run() {
+                _clear(format);
+            }
+        };
+        _deferIfNecessary(doClear); 
+   }
 
     /** Clear the plot of data points in the specified dataset.
      *  This calls repaint() to request an update of the display.
+     *  <p>
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the point will
+     *  not be added immediately (unless you call this method from within
+     *  the event dispatch thread).  If you call this method, the addPoint()
+     *  method, and the erasePoint() method in any order, they are assured
+     *  of being processed in the order that you called them.
+     *
      *  @param dataset The dataset to clear.
      */
-    public synchronized void clear(int dataset) {
-        _checkDatasetIndex(dataset);
-        _xyInvalid = true;
-        Vector points = (Vector)_points.elementAt(dataset);
-        // Vector.clear() is new in JDK1.2, so we use just
-        // create a new Vector here so that we can compile
-        // this with JDK1.1 for use in JDK1.1 browsers
-        _points.setElementAt(new Vector(), dataset);
-        repaint();
+    public synchronized void clear(final int dataset) {
+        Runnable doClear = new Runnable() {
+            public void run() {
+                _clear(dataset);
+            }
+        };
+        _deferIfNecessary(doClear); 
     }
 
     /** Erase the point at the given index in the given dataset.  If
@@ -347,64 +326,25 @@ public class Plot extends PlotBox {
      *  (note: not to the previous point).  The point is not checked to
      *  see whether it is in range, so care must be taken by the caller
      *  to ensure that it is.
-     *  The change will be made visible if the plot is visible
-     *  on the screen.  Otherwise, it will take effect the next time the plot
-     *  is drawn on the screen.
+     *  <p>
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the point will
+     *  not be erased immediately (unless you call this method from within
+     *  the event dispatch thread).  All the methods that do this deferring
+     *  coordinate so that they are executed in the order that you
+     *  called them.
      *
      *  @param dataset The data set index.
      *  @param index The index of the point to erase.
      */
-    public synchronized void erasePoint(int dataset, int index) {
-        _checkDatasetIndex(dataset);
-        if (_showing) {
-            // In swing, updates to showing graphics must be done in the
-            // event thread.  If we are in the event thread, then proceed.
-            // Otherwise, queue a request.
-            if(EventQueue.isDispatchThread()) {
-                _erasePoint(getGraphics(), dataset, index);
-            } else {
-                final int pendingDataset = dataset;
-                final int pendingIndex = index;
-                final Graphics graphics = getGraphics();
-
-                Runnable doPlotPoint = new Runnable() {
-                    public void run() {
-                        _erasePoint(graphics, pendingDataset, pendingIndex);
-                    }
-                };
-                try {
-                    // NOTE: Using invokeAndWait() here rather than
-                    // invokeLater() seems to help LivePlot somewhat
-                    // to leave less cruft on the screen, for reasons
-                    // that are not clear.  However, this causes a
-                    // deadlock...  If the fill button has been
-                    // pushed, then the event thread is stalled, and won't
-                    // deal with this request.  Thus, this call never returns.
-                    // SwingUtilities.invokeAndWait(doPlotPoint);
-                    SwingUtilities.invokeLater(doPlotPoint);
-                } catch (Exception ex) {
-                    // Ignore InterruptedException.
-                    // Other exceptions should not occur.
-                }
+    public synchronized void erasePoint(final int dataset, final int index) {
+        Runnable doErasePoint = new Runnable() {
+            public void run() {
+                _erasePoint(dataset, index);
             }
-        }
-
-        // Remove the point from the model.
-        Vector points = (Vector)_points.elementAt(dataset);
-        if (points != null) {
-            // If this point is at the maximum or minimum x or y boundary,
-            // then flag that boundary needs to be recalculated next time
-            // fillPlot() is called.
-            PlotPoint pt = (PlotPoint)points.elementAt(index);
-            if (pt != null) {
-                if (pt.x == _xBottom || pt.x == _xTop ||
-                        pt.y == _yBottom || pt.y == _yTop) {
-                    _xyInvalid = true;
-                }
-
-                points.removeElementAt(index);
-            }
-        }
+        };
+        _deferIfNecessary(doErasePoint);
     }
 
     /** Rescale so that the data that is currently plotted just fits.
@@ -412,32 +352,22 @@ public class Plot extends PlotBox {
      *  variables _xBottom, _xTop, _yBottom, and _yTop are valid.
      *  This method calls repaint(), which eventually causes the display
      *  to be updated.
+     *  <p>
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the fill will
+     *  not occur immediately (unless you call this method from within
+     *  the event dispatch thread).  All the methods that do this deferring
+     *  coordinate so that they are executed in the order that you
+     *  called them.
      */
     public synchronized void fillPlot() {
-        if (_xyInvalid) {
-            // Recalculate the boundaries based on currently visible data
-            _xBottom = Double.MAX_VALUE;
-            _xTop = - Double.MIN_VALUE;
-            _yBottom = Double.MAX_VALUE;
-            _yTop = - Double.MIN_VALUE;
-            for (int dataset = 0; dataset < _points.size(); dataset++) {
-                Vector points = (Vector)_points.elementAt(dataset);
-                for (int index = 0; index < points.size(); index++) {
-                    PlotPoint pt = (PlotPoint)points.elementAt(index);
-                    if (pt.x < _xBottom) _xBottom = pt.x;
-                    if (pt.x > _xTop) _xTop = pt.x;
-                    if (pt.y < _yBottom) _yBottom = pt.y;
-                    if (pt.y > _yTop) _yTop = pt.y;
-                }
+        Runnable doFill = new Runnable() {
+            public void run() {
+                _fillPlot();
             }
-        }
-        _xyInvalid = false;
-        // If this is a bar graph, then make sure the Y range includes 0
-        if (_bars) {
-            if (_yBottom > 0.0) _yBottom = 0.0;
-            if (_yTop < 0.0) _yTop = 0.0;
-        }
-        super.fillPlot();
+        };
+        _deferIfNecessary(doFill);
     }
 
     /** Return whether the default is to connect
@@ -464,7 +394,7 @@ public class Plot extends PlotBox {
      *  "none", "points", "dots", or "various".
      *  @return A string specifying the style for points.
      */
-    public String getMarksStyle() {
+    public synchronized String getMarksStyle() {
         // NOTE: If the number of marks increases, we will need to do
         // something better here...
         if (_marks == 0) {
@@ -491,7 +421,7 @@ public class Plot extends PlotBox {
     /** Return the actual number of data sets.
      *  @return The number of data sets that have been created.
      */
-    public int getNumDataSets() {
+    public synchronized int getNumDataSets() {
         return _points.size();
     }
 
@@ -513,7 +443,7 @@ public class Plot extends PlotBox {
      *  @param inputstream The input stream.
      *  @exception IOException If the stream cannot be read.
      */
-    public void read(InputStream in) throws IOException {
+    public synchronized void read(InputStream in) throws IOException {
         super.read(in);
         _firstinset = true;
         _sawfirstdataset = false;
@@ -521,7 +451,7 @@ public class Plot extends PlotBox {
 
     /** Create a sample plot.
      */
-    public void samplePlot() {
+    public synchronized void samplePlot() {
         // Create a sample plot.
         clear(true);
 
@@ -589,7 +519,7 @@ public class Plot extends PlotBox {
      *  @param width The width of the bars.
      *  @param offset The offset per data set.
      */
-    public void setBars(double width, double offset) {
+    public synchronized void setBars(double width, double offset) {
         _barwidth = width;
         _baroffset = offset;
         _bars = true;
@@ -614,7 +544,7 @@ public class Plot extends PlotBox {
      *  @param on If true, draw lines between points.
      *  @param dataset The dataset to which this should apply.
      */
-    public void setConnected(boolean on, int dataset) {
+    public synchronized void setConnected(boolean on, int dataset) {
         _checkDatasetIndex(dataset);
         Format fmt = (Format)_formats.elementAt(dataset);
         fmt.connected = on;
@@ -637,7 +567,7 @@ public class Plot extends PlotBox {
      *  @param on If true, draw a stem plot.
      *  @param dataset The dataset to which this should apply.
      */
-    public void setImpulses(boolean on, int dataset) {
+    public synchronized void setImpulses(boolean on, int dataset) {
         _checkDatasetIndex(dataset);
         Format fmt = (Format)_formats.elementAt(dataset);
         fmt.impulses = on;
@@ -649,7 +579,7 @@ public class Plot extends PlotBox {
      *  sets, then recycled.
      *  @param style A string specifying the style for points.
      */
-    public void setMarksStyle(String style) {
+    public synchronized void setMarksStyle(String style) {
         if (style.equalsIgnoreCase("none")) {
             _marks = 0;
         } else if (style.equalsIgnoreCase("points")) {
@@ -670,7 +600,7 @@ public class Plot extends PlotBox {
      *  @param style A string specifying the style for points.
      *  @param dataset The dataset to which this should apply.
      */
-    public void setMarksStyle(String style, int dataset) {
+    public synchronized void setMarksStyle(String style, int dataset) {
         _checkDatasetIndex(dataset);
         Format fmt = (Format)_formats.elementAt(dataset);
         if (style.equalsIgnoreCase("none")) {
@@ -776,7 +706,7 @@ public class Plot extends PlotBox {
      *  similarly filled out.
      *  @param dataset The data set index.
      */
-    protected void _checkDatasetIndex(int dataset) {
+    protected synchronized void _checkDatasetIndex(int dataset) {
         if (dataset < 0) {
             throw new IllegalArgumentException("Plot._checkDatasetIndex: Cannot"
                     + " give a negative number for the data set index.");
@@ -795,6 +725,8 @@ public class Plot extends PlotBox {
      *  then do not draw above the y range.
      *  Note that paintComponent() should be called before
      *  calling this method so that _xscale and _yscale are properly set.
+     *  This method should be called only from the event dispatch thread.
+     *  It is not synchronized, so its caller should be.
      *  @param graphics The graphics context.
      *  @param dataset The index of the dataset.
      *  @param xpos The x position.
@@ -839,6 +771,8 @@ public class Plot extends PlotBox {
      *  If the specified point is below the y axis or outside the
      *  x range, do nothing.  If the <i>clip</i> argument is true,
      *  then do not draw above the y range.
+     *  This method should be called only from the event dispatch thread.
+     *  It is not synchronized, so its caller should be.
      *  @param graphics The graphics context.
      *  @param dataset The index of the dataset.
      *  @param xpos The x position.
@@ -860,6 +794,8 @@ public class Plot extends PlotBox {
      *  If the specified point is below the y axis or outside the
      *  x range, do nothing.  If the <i>clip</i> argument is true,
      *  then do not draw above the y range.
+     *  This method should be called only from the event dispatch thread.
+     *  It is not synchronized, so its caller should be.
      *  @param graphics The graphics context.
      *  @param xpos The x position.
      *  @param ypos The y position.
@@ -888,6 +824,8 @@ public class Plot extends PlotBox {
      *  ending point.  The current color is used.  If the <i>clip</i> argument
      *  is true, then draw only that portion of the line that lies within the
      *  plotting rectangle.
+     *  This method should be called only from the event dispatch thread.
+     *  It is not synchronized, so its caller should be.
      *  @param graphics The graphics context.
      *  @param dataset The index of the dataset.
      *  @param startx The starting x position.
@@ -982,14 +920,14 @@ public class Plot extends PlotBox {
      *  To cause it to be called you would normally call repaint(),
      *  which eventually causes paintComponent() to be called.
      *  <p>
-     *  Note that this method is not synchronized, which is consistent
-     *  with swing's policy of unsynchronized writing to the screen.
-     *  Thus, this method should always be called from the event thread
-     *  when being used to write to the screen.
+     *  Note that this is synchronized so that points are not added
+     *  by other threads while the drawing is occurring.  This method
+     *  should be called only from the event dispatch thread, consistent
+     *  with swing policy.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
-    protected void _drawPlot(Graphics graphics,
+    protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst) {
 
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
@@ -1013,6 +951,8 @@ public class Plot extends PlotBox {
      *  variable and the dataset argument. If the fourth argument is
      *  true, then check the range and plot only points that
      *  are in range.
+     *  This method should be called only from the event dispatch thread.
+     *  It is not synchronized, so its caller should be.
      *  @param graphics The graphics context.
      *  @param dataset The index of the dataset.
      *  @param xpos The x position.
@@ -1160,6 +1100,7 @@ public class Plot extends PlotBox {
 
     /** Parse a line that gives plotting information. Return true if
      *  the line is recognized.  Lines with syntax errors are ignored.
+     *  It is not synchronized, so its caller should be.
      *  @param line A command line.
      *  @return True if the line is recognized.
      */
@@ -1384,6 +1325,7 @@ public class Plot extends PlotBox {
      *  Derived classes should override this method to first call
      *  the parent class method, then add whatever additional information
      *  they wish to add to the stream.
+     *  It is not synchronized, so its caller should be.
      *  @param output A buffered print writer.
      */
     protected void _write(PrintWriter output) {
@@ -1488,6 +1430,7 @@ public class Plot extends PlotBox {
      *  Derived classes should override this method to first call
      *  the parent class method, then add whatever additional information
      *  they wish to add to the stream.
+     *  It is not synchronized, so its caller should be.
      *  @param output A buffered print writer.
      *  @deprecated
      */
@@ -1611,8 +1554,12 @@ public class Plot extends PlotBox {
      * if the point is the first in the specified dataset.
      * The point is drawn on the screen only if is visible.
      * Otherwise, it is drawn the next time paintComponent() is called.
+     *
+     * This is not synchronized, so the caller should be.  Moreover, this
+     * should only be called in the event dispatch thread. It should only
+     * be called by _executeDeferredActions().
      */
-    private synchronized void _addPoint(
+    private void _addPoint(
             int dataset, double x, double y, double yLowEB, double yHighEB,
             boolean connected, boolean errorBar) {
         _checkDatasetIndex(dataset);
@@ -1647,12 +1594,11 @@ public class Plot extends PlotBox {
         }
 
         Vector pts = (Vector)_points.elementAt(dataset);
-        int size = pts.size();
 
         // If X persistence has been set, then delete any old points.
         if (_xPersistence > 0.0) {
             int numToDelete = 0;
-            while(numToDelete < size) {
+            while(numToDelete < pts.size()) {
                 PlotPoint old = (PlotPoint)(pts.elementAt(numToDelete));
                 if (x - old.originalx <= _xPersistence) break;
                 numToDelete++;
@@ -1661,6 +1607,9 @@ public class Plot extends PlotBox {
                 erasePoint(dataset, 0);
             }
         }
+
+        // Get the new size after deletions.
+        int size = pts.size();
 
         PlotPoint pt = new PlotPoint();
         // Original value of x before wrapping.
@@ -1712,7 +1661,10 @@ public class Plot extends PlotBox {
             if (size > _pointsPersistence) erasePoint(dataset, 0);
         }
         // Draw the point on the screen only if the plot is showing.
-        if (_showing) {
+        Graphics graphics = getGraphics();
+        // Need to check that graphics is not null because plot may have
+        // been dismissed.
+        if (_showing && graphics != null) {
 
             if ((_pointsPersistence > 0 || _xPersistence > 0.0)
                     && isDoubleBuffered()) {
@@ -1751,72 +1703,127 @@ public class Plot extends PlotBox {
                 //     4204551.html
                 //     4295712.htm
                 // </pre>
-                Runnable disableDblBuffering = new Runnable() {
-                    public void run() {
-                        setDoubleBuffered(false);
-                        Component parent = getParent();
-                        while (parent != null) {
-                            if (parent instanceof JComponent) {
-                                ((JComponent)parent).setDoubleBuffered(false);
-                            }
-                            parent = parent.getParent();
-                        }
+                //
+                // Since we are assured of being in the event dispatch thread,
+                // we can simply execute this.
+                setDoubleBuffered(false);
+                Component parent = getParent();
+                while (parent != null) {
+                    if (parent instanceof JComponent) {
+                        ((JComponent)parent).setDoubleBuffered(false);
                     }
-                };
-                // In swing, updates to showing graphics must be done in the
-                // event thread.  If we are in the event thread, then proceed.
-                // Otherwise, queue a request.
-                if(EventQueue.isDispatchThread()) {
-                    disableDblBuffering.run();
-                } else {
-                    try {
-                        // NOTE: Using invokeAndWait() here rather than
-                        // invokeLater() causes a deadlock...
-                        // If the fill button has been
-                        // pushed, then the event thread is stalled, and won't
-                        // deal with this request.
-                        // Thus, this call never returns.
-                        SwingUtilities.invokeLater(disableDblBuffering);
-                    } catch (Exception ex) {
-                        // Ignore InterruptedException.
-                        // Other exceptions should not occur.
-                    }
+                    parent = parent.getParent();
                 }
             }
 
-            // In swing, updates to showing graphics must be done in the
-            // event thread.  If we are in the event thread, then proceed.
-            // Otherwise, queue a request.
-            if(EventQueue.isDispatchThread()) {
-                _drawPlotPoint(getGraphics(), dataset, pts.size() - 1);
-            } else {
-                final int pendingDataset = dataset;
-                final int pendingPoint = pts.size() - 1;
-                final Graphics graphics = getGraphics();
-
-                Runnable doPlotPoint = new Runnable() {
-                    public void run() {
-                        _drawPlotPoint(graphics, pendingDataset,
-                                pendingPoint);
-                    }
-                };
-                try {
-                    // NOTE: Using invokeAndWait() here rather than
-                    // invokeLater() causes a deadlock...
-                    // If the fill button has been
-                    // pushed, then the event thread is stalled, and won't
-                    // deal with this request.  Thus, this call never returns.
-                    SwingUtilities.invokeLater(doPlotPoint);
-                } catch (Exception ex) {
-                    // Ignore InterruptedException.
-                    // Other exceptions should not occur.
-                }
-            }
+            // Again, we are in the event thread, so this is safe...
+            _drawPlotPoint(graphics, dataset, pts.size() - 1);
         }
 
         if(_wrap && _xRangeGiven && x == _xhighgiven) {
             // Plot a second point at the low end of the range.
             _addPoint(dataset, _xlowgiven, y, yLowEB, yHighEB, false, errorBar);
+        }
+    }
+
+    /* Clear the plot of all data points.  If the argument is true, then
+     * reset all parameters to their initial conditions, including
+     * the persistence, plotting format, and axes formats.
+     * For the change to take effect, you must call repaint().
+     * 
+     * This is not synchronized, so the caller should be.  Moreover, this
+     * should only be called in the event dispatch thread. It should only
+     * be called by _executeDeferredActions().
+     */
+    private void _clear(boolean format) {
+        super.clear(format);
+        _currentdataset = -1;
+        int size = _points.size();
+        _points = new Vector();
+        _prevx = new Vector();
+        _prevy = new Vector();
+        _maxdataset = -1;
+        _firstinset = true;
+        _sawfirstdataset = false;
+        _xyInvalid = true;
+        _filename = null;
+
+        if (format) {
+            _showing = false;
+            // Reset format controls
+            _formats = new Vector();
+            _marks = 0;
+            _pointsPersistence = 0;
+            _xPersistence = 0;
+            _bars = false;
+            _barwidth = 0.5;
+            _baroffset = 0.05;
+            _connected = true;
+            _impulses = false;
+            _reusedatasets = false;
+        }
+    }
+
+    /** Clear the plot of data points in the specified dataset.
+     *  This calls repaint() to request an update of the display.
+     * 
+     * This is not synchronized, so the caller should be.  Moreover, this
+     * should only be called in the event dispatch thread. It should only
+     * be called by _executeDeferredActions().
+     */
+    private void _clear(int dataset) {
+        _checkDatasetIndex(dataset);
+        _xyInvalid = true;
+        Vector points = (Vector)_points.elementAt(dataset);
+        // Vector.clear() is new in JDK1.2, so we use just
+        // create a new Vector here so that we can compile
+        // this with JDK1.1 for use in JDK1.1 browsers
+        _points.setElementAt(new Vector(), dataset);
+        repaint();
+    }
+
+    /* If this method is called in the event thread, then simply
+     * execute the specified action.  Otherwise,
+     * if there are already deferred actions, then add the specified
+     * one to the list.  Otherwise, create a list of deferred actions,
+     * if necessary, and request that the list be processed in the
+     * event dispatch thread.
+     *
+     * Note that it does not work nearly as well to simply schedule
+     * the action yourself on the event thread because if there are a
+     * large number of actions, then the event thread will not be able
+     * to keep up.  By grouping these actions, we avoid this problem.
+     *
+     * This method is not synchronized, so the caller should be.
+     */
+    private void _deferIfNecessary(Runnable action) {
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, queue a request or add to a pending request.
+        if(EventQueue.isDispatchThread()) {
+            action.run();
+        } else {
+            if (!_actionsDeferred) {
+                if (_deferredActions == null) {
+                    _deferredActions = new LinkedList();
+                }
+                Runnable doActions = new Runnable() {
+                    public void run() {
+                        _executeDeferredActions();
+                    }
+                };
+                try {
+                    // NOTE: Using invokeAndWait() here risks causing
+                    // deadlock.  Don't do it!
+                    SwingUtilities.invokeLater(doActions);
+                } catch (Exception ex) {
+                    // Ignore InterruptedException.
+                    // Other exceptions should not occur.
+                }
+            }
+            // Add the specified action to the list of actions to perform.
+            _deferredActions.add(action);
+            _actionsDeferred = true;
         }
     }
 
@@ -1826,10 +1833,9 @@ public class Plot extends PlotBox {
      * _xscale and _yscale. Note that this does not check the dataset
      * index.  It is up to the caller to do that.
      * 
-     *  Note that this method is not synchronized, which is consistent
-     *  with swing's policy of unsynchronized writing to the screen.
-     *  Thus, this method should always be called from the event thread
-     *  when being used to write to the screen.
+     * Note that this method is not synchronized, so the caller should be.
+     * Moreover this method should always be called from the event thread
+     * when being used to write to the screen.
      */
     private void _drawPlotPoint(Graphics graphics,
             int dataset, int index) {
@@ -1895,71 +1901,147 @@ public class Plot extends PlotBox {
     /* Erase the point at the given index in the given dataset.  If
      * lines are being drawn, also erase the line to the next points
      * (note: not to the previous point).
-     * Note that paintComponent() should be called before
-     * calling this method so that it calls _drawPlot(), which sets
-     * _xscale and _yscale.  It should be adequate to check isShowing()
-     * before calling this.
-     * 
-     *  Note that this method is not synchronized, which is consistent
-     *  with swing's policy of unsynchronized writing to the screen.
-     *  Thus, this method should always be called from the event thread
-     *  when being used to write to the screen.
+     *
+     * This is not synchronized, so the caller should be.  Moreover, this
+     * should only be called in the event dispatch thread. It should only
+     * be called by _executeDeferredActions().
      */
-    private void _erasePoint(Graphics graphics,
-            int dataset, int index) {
-        // Set the color
-        if (_pointsPersistence > 0 || _xPersistence > 0.0) {
-            // To allow erasing to work by just redrawing the points.
-            graphics.setXORMode(_background);
-        }
-        if (_usecolor) {
-            int color = dataset % _colors.length;
-            graphics.setColor(_colors[color]);
-        } else {
-            graphics.setColor(_foreground);
-        }
+    private void _erasePoint(int dataset, int index) {
+        _checkDatasetIndex(dataset);
+        // Plot has probably been dismissed.  Return.
+        Graphics graphics = getGraphics();
+        // Need to check that graphics is not null because plot may have
+        // been dismissed.
+        if (_showing && graphics != null) {
+            // Set the color
+            if (_pointsPersistence > 0 || _xPersistence > 0.0) {
+                // To allow erasing to work by just redrawing the points.
+                graphics.setXORMode(_background);
+            }
+            if (_usecolor) {
+                int color = dataset % _colors.length;
+                graphics.setColor(_colors[color]);
+            } else {
+                graphics.setColor(_foreground);
+            }
 
-        Vector pts = (Vector)_points.elementAt(dataset);
-        PlotPoint pt = (PlotPoint)pts.elementAt(index);
-        long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
-        long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
-
-        // Erase line to the next point, if appropriate.
-        if (index < pts.size() - 1) {
-            PlotPoint nextp = (PlotPoint)pts.elementAt(index+1);
-            int nextx = _ulx + (int) ((nextp.x - _xMin) * _xscale);
-            int nexty = _lry - (int) ((nextp.y - _yMin) * _yscale);
-            // NOTE: I have no idea why I have to give this point backwards.
-            if (nextp.connected) _drawLine(graphics, dataset,
-                    nextx, nexty,  xpos, ypos, true);
-            nextp.connected = false;
-        }
-
-        // Draw decorations that may be specified on a per-dataset basis
-        Format fmt = (Format)_formats.elementAt(dataset);
-        if (fmt.impulsesUseDefault) {
-            if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
-        } else {
-            if (fmt.impulses) _drawImpulse(graphics, xpos, ypos, true);
-        }
-
-        // Check to see whether the dataset has a marks directive
-        int marks = _marks;
-        if (!fmt.marksUseDefault) marks = fmt.marks;
-        if (marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
-
-        if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
-        if (pt.errorBar)
+            Vector pts = (Vector)_points.elementAt(dataset);
+            PlotPoint pt = (PlotPoint)pts.elementAt(index);
+            long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
+            long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
+            
+            // Erase line to the next point, if appropriate.
+            if (index < pts.size() - 1) {
+                PlotPoint nextp = (PlotPoint)pts.elementAt(index+1);
+                int nextx = _ulx + (int) ((nextp.x - _xMin) * _xscale);
+                int nexty = _lry - (int) ((nextp.y - _yMin) * _yscale);
+                // NOTE: I have no idea why I have to give this point backwards.
+                if (nextp.connected) _drawLine(graphics, dataset,
+                nextx, nexty,  xpos, ypos, true);
+                nextp.connected = false;
+            }
+            
+            // Draw decorations that may be specified on a per-dataset basis
+            Format fmt = (Format)_formats.elementAt(dataset);
+            if (fmt.impulsesUseDefault) {
+                if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
+            } else {
+                if (fmt.impulses) _drawImpulse(graphics, xpos, ypos, true);
+            }
+            
+            // Check to see whether the dataset has a marks directive
+            int marks = _marks;
+            if (!fmt.marksUseDefault) marks = fmt.marks;
+            if (marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
+            
+            if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
+            if (pt.errorBar)
             _drawErrorBar(graphics, dataset, xpos,
-                    _lry - (long)((pt.yLowEB - _yMin) * _yscale),
-                    _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
-
-        // Restore the color, in case the box gets redrawn.
-        graphics.setColor(_foreground);
-        if (_pointsPersistence > 0 || _xPersistence > 0.0) {
-            // Restore paint mode in case axes get redrawn.
-            graphics.setPaintMode();
+            _lry - (long)((pt.yLowEB - _yMin) * _yscale),
+            _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
+            
+            // Restore the color, in case the box gets redrawn.
+            graphics.setColor(_foreground);
+            if (_pointsPersistence > 0 || _xPersistence > 0.0) {
+                // Restore paint mode in case axes get redrawn.
+                graphics.setPaintMode();
+            }
         }
+
+        // The following is executed whether the plot is showing or not.
+        // Remove the point from the model.
+        Vector points = (Vector)_points.elementAt(dataset);
+        if (points != null) {
+            // If this point is at the maximum or minimum x or y boundary,
+            // then flag that boundary needs to be recalculated next time
+            // fillPlot() is called.
+            PlotPoint pt = (PlotPoint)points.elementAt(index);
+            if (pt != null) {
+                if (pt.x == _xBottom || pt.x == _xTop ||
+                        pt.y == _yBottom || pt.y == _yTop) {
+                    _xyInvalid = true;
+                }
+
+                points.removeElementAt(index);
+            }
+        }
+    }
+
+    // Execute all actions pending on the deferred action list.
+    // The list is cleared and the _actionsDeferred variable is set
+    // to false, even if one of the deferred actions fails.
+    // This method should only be invoked in the event dispatch thread.
+    // It is synchronized, so the integrity of the deferred actions list
+    // is ensured, since modifications to that list occur only in other
+    // synchronized methods.
+    private synchronized void _executeDeferredActions() {
+        try {
+            Iterator actions = _deferredActions.iterator();
+            while (actions.hasNext()) {
+                Runnable action = (Runnable)actions.next();
+                action.run();
+            }
+        } finally {
+            _actionsDeferred = false;
+            _deferredActions.clear();
+        }
+    }
+
+    /* Rescale so that the data that is currently plotted just fits.
+     * This overrides the base class method to ensure that the protected
+     * variables _xBottom, _xTop, _yBottom, and _yTop are valid.
+     * This method calls repaint(), which causes the display
+     * to be updated.
+     *
+     * This is not synchronized, so the caller should be.  Moreover, this
+     * should only be called in the event dispatch thread. It should only
+     * be called by _executeDeferredActions().
+     */
+    private void _fillPlot() {
+        if (_xyInvalid) {
+            // Recalculate the boundaries based on currently visible data
+            _xBottom = Double.MAX_VALUE;
+            _xTop = - Double.MIN_VALUE;
+            _yBottom = Double.MAX_VALUE;
+            _yTop = - Double.MIN_VALUE;
+            for (int dataset = 0; dataset < _points.size(); dataset++) {
+                Vector points = (Vector)_points.elementAt(dataset);
+                for (int index = 0; index < points.size(); index++) {
+                    PlotPoint pt = (PlotPoint)points.elementAt(index);
+                    if (pt.x < _xBottom) _xBottom = pt.x;
+                    if (pt.x > _xTop) _xTop = pt.x;
+                    if (pt.y < _yBottom) _yBottom = pt.y;
+                    if (pt.y > _yTop) _yTop = pt.y;
+                }
+            }
+        }
+        _xyInvalid = false;
+        // If this is a bar graph, then make sure the Y range includes 0
+        if (_bars) {
+            if (_yBottom > 0.0) _yBottom = 0.0;
+            if (_yTop < 0.0) _yTop = 0.0;
+        }
+        super.fillPlot();
     }
 
     // Return true if the specified dataset is connected by default.
@@ -1976,6 +2058,12 @@ public class Plot extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** @serial Indicator of whether actions are deferred. */
+    private boolean _actionsDeferred = false;
+
+    /** @serial List of deferred actions. */
+    private List _deferredActions;
 
     /** @serial Number of points to persist for. */
     private int _pointsPersistence = 0;
