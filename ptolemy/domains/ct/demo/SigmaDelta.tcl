@@ -2,7 +2,7 @@
 #
 # @Author: Jie Liu
 #
-# @Version: %W%  %G%
+# @Version: %Id$
 #
 # @Copyright (c) 1997 The Regents of the University of California.
 # All rights reserved.
@@ -29,6 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
+
+package require java
 
 #######################################################################
 #
