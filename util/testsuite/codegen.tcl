@@ -176,7 +176,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 	set director [$compositeActor getDirector]
 	if ![java::instanceof \
 		$director ptolemy.domains.sdf.kernel.SDFDirector] {
-	    return "$modelPath:  Deep codegen only works on SDF.\n\
+	    puts "$modelPath:  Deep codegen only works on SDF.\n\
 		    The director is not a SDFDirector, it is a $director"
 	}
     
@@ -185,7 +185,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 	    set containedActor [$deepEntityList get $i]
 	    if [java::instanceof $containedActor \
 		    ptolemy.actor.TypedCompositeActor] {
-		return "$modelPath:  Deep codegen only works on flat models"
+		puts "$modelPath:  Deep codegen only works on flat models"
 	    }
 
 	}
