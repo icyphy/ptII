@@ -155,7 +155,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 
 	divapanel = new JPanel(new BorderLayout(15, 15));
 	divapanel.setSize(850, 700);
-	divapanel.setBackGround(Color.white);
+	divapanel.setBackground(Color.white);
 	add(divapanel, BorderLayout.CENTER);
 	
         // Construct the graph representing the PN topology
