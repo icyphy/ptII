@@ -64,7 +64,7 @@ object to their values when this object was created.  This can be used
 in a modal dialog to implement a cancel button, which restores
 the styles to those before the dialog was opened.
 
-@see Configurer
+@see ptolemy.actor.gui.Configurer
 @see ParameterEditorStyle
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$

@@ -48,7 +48,7 @@ of this base class as a strategy pattern for creating entries in
 an interactive parameter editor.  This class expects that the container
 will implement the Settable interface.
 
-@see EditorPaneFactory
+@see ptolemy.actor.gui.EditorPaneFactory
 @see Settable
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$

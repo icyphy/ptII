@@ -49,7 +49,7 @@ This style is only valid for boolean valued attributes, so this class
 expects that the container will be an instance of Parameter that contains
 a boolean token.
 
-@see EditorPaneFactory
+@see ptolemy.actor.gui.EditorPaneFactory
 @see ParameterEditorStyle
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$

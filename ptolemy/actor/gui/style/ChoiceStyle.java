@@ -53,9 +53,9 @@ are given by a set of attributes implementing the Settable interface,
 such as StringAttribute, contained by this style.
 
 @see EditableChoiceStyle
-@see EditorPaneFactory
+@see ptolemy.actor.gui.EditorPaneFactory
 @see ParameterEditorStyle
-@see StringAttribute
+@see ptolemy.kernel.util.StringAttribute
 @author Steve Neuendorffer
 @version $Id$
 */

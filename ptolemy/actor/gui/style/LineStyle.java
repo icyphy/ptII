@@ -44,7 +44,7 @@ This attribute annotates user settable attributes to specify
 an arbitrary type-in line style for configuring the containing attribute.
 This style can be used with any Settable attribute.
 
-@see EditorPaneFactory
+@see ptolemy.actor.gui.EditorPaneFactory
 @see ParameterEditorStyle
 @author Steve Neuendorffer
 @version $Id$

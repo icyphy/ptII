@@ -56,9 +56,9 @@ This class extends ChoiceStyle only for the purpose of eliminating code
 duplication.
 
 @see ChoiceStyle
-@see EditorPaneFactory
+@see ptolemy.actor.gui.EditorPaneFactory
 @see ParameterEditorStyle
-@see StringAttribute
+@see ptolemy.kernel.util.StringAttribute
 @author Steve Neuendorffer
 @version $Id$
 */
