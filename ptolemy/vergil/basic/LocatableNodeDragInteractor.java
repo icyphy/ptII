@@ -40,12 +40,14 @@ import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
+import diva.graph.GraphEvent;
 import diva.graph.NodeDragInteractor;
 
 //////////////////////////////////////////////////////////////////////////
@@ -161,7 +163,6 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         }
 
         // Generate the MoML to carry out undo.
-        // has actually changed.
         StringBuffer moml = new StringBuffer();
         moml.append("<group>\n");
         Iterator elements = namedObjSet.iterator();
@@ -200,7 +201,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         }
         moml.append("</group>\n");
 
-        // Finally create and register the undo entry;
+        // Next create and register the undo entry;
         NamedObj toplevel = (NamedObj)graphModel.getRoot();
         MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel, moml.toString());
         UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(toplevel);
@@ -211,6 +212,12 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             // setModified() so that the panner is also updated.
             frame.changeExecuted(null);
         }
+        
+        // Finally to notify to get other views to update.
+        // FIXME: Hack: Surely there is a better way to do this
+        // than to create an empty change request!
+        toplevel.requestChange(new MoMLChangeRequest(
+                this, toplevel, "<group/>"));
     }
 
     /** Drag all selected nodes and move any attached edges.

@@ -198,7 +198,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
         _jgraph = new JGraph(pane);
 
-        new EditorDropTarget(_jgraph);
+        _dropTarget = new EditorDropTarget(_jgraph);
 
         ActionListener deletionListener = new ActionListener() {
                 /** Delete any nodes or edges from the graph that are currently
@@ -1501,6 +1501,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The instance of EditorDropTarget associated with this object. */
+    protected EditorDropTarget _dropTarget;
+    
     /** The library. */
     protected CompositeEntity _topLibrary;
 

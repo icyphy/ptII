@@ -80,6 +80,11 @@ the object is deposited inside the model associated with the
 target graph. In either case, if the target container implements
 the DropListener interface, then it is informed of the drop by
 calling its dropped() method.
+<p>
+Sometimes, you will want to disable the feature that a drop
+onto a NamedObj results in the dropped object being placed inside
+that NamedObj.  To disable this feature, call setDropIntoEnabled()
+with a false argument.
 
 @author Steve Neuendorffer and Edward A. Lee, Contributor: Michael Shilman
 @version $Id$
@@ -96,6 +101,33 @@ public class EditorDropTarget extends DropTarget {
             addDropTargetListener(new DTListener());
         } catch(java.util.TooManyListenersException wow) {}
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+  
+    /** Return true if the feature is enabled that a
+     *  a drop onto an instance of NamedObj results in that NamedObj
+     *  containing the dropped object. Otherwise, return false.
+     */
+    public boolean isDropIntoEnabled() {
+        return _dropIntoEnabled;
+    }
+  
+    /** If the argument is false, then disable the feature that a
+     *  a drop onto an instance of NamedObj results in that NamedObj
+     *  containing the dropped object.  If the argument is true, then
+     *  reenable the feature.  The feature is enabled by default.
+     *  @param enable False to disable the drop into feature.
+     */
+    public void setDropIntoEnabled(boolean enabled) {
+        _dropIntoEnabled = enabled;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Flag indicating whether drop into is enabled.
+    private boolean _dropIntoEnabled = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -155,7 +187,7 @@ public class EditorDropTarget extends DropTarget {
                     _highlighted = null;
                     _highlightedFigure = null;
                 }
-                if (over != null) {
+                if (over != null && _dropIntoEnabled) {
                     if (_highlighter == null) {
                         _highlighter = new AnimationRenderer(Color.white);
                     }
@@ -197,7 +229,7 @@ public class EditorDropTarget extends DropTarget {
             
             GraphPane pane = ((JGraph)getComponent()).getGraphPane();
 
-            if (container == null) {
+            if (container == null  || !_dropIntoEnabled) {
                 // Find the default container for the dropped object
                 GraphController controller = pane.getGraphController();
                 GraphModel model = controller.getGraphModel();

@@ -30,16 +30,15 @@
 
 package ptolemy.vergil.basic;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.graph.BasicNodeController;
 import diva.graph.GraphController;
 import diva.graph.NodeInteractor;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeController
