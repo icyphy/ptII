@@ -124,7 +124,8 @@ public class CTThresholdMonitor extends CTActor
     public boolean isThisStepSuccessful() {
         if (!_first) {
             if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound)) ||
-                    ((_lastInput <= _lowerBound) && (_thisInput >= _upperBound))) {
+                    ((_lastInput <= _lowerBound) &&
+                            (_thisInput >= _upperBound))) {
                 _debug(getFullName() + "one step crosses the threshold" +
                         "cutting the step size in half.");
                 _success = false;
