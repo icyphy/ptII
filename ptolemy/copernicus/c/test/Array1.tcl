@@ -128,7 +128,9 @@ test Array1-1.1 {Generate all required files for Array1.java} {
     cd $outputDir
 
     # The nightly build does not have . in the path, so we use ./ here.
-    set output [exec ./$exeFile]
+    # The nightly build does not have . in the path, so we use ./ here.
+    set exeFile ".[java::call System getProperty file.separator]$exeFile"
+    set output [exec $exeFile]
     
     # Turn newlines into spaces.
     regsub -all "\n" $output " " output
