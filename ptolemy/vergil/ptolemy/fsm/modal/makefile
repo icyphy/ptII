@@ -1,6 +1,6 @@
-# Makefile for modal model package.
+# Makefile for fsm modal model package.
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,8 +29,6 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This directory contains polymorphic actors.
-
 ME =		ptolemy/vergil/ptolemy/fsm/modal
 
 DIRS =		test
@@ -47,12 +45,7 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	modal
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 # Except: NOTE: HTMLEffigy has to come before Configuration
@@ -69,11 +62,7 @@ JSRCS = \
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED =
 
-# Note that PtolemyIISmallIcon.gif is also in doc/img.
-# We place a duplicate copy here to make it easy to ship
-# jar files that contain all the appropriate images.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
