@@ -1832,7 +1832,12 @@ public class SDFScheduler extends Scheduler {
                         // the list when the
                         // actor is actually scheduled.
                         if ((inputCount < 1) && (firingsRemaining > 0)) {
-                            readyToScheduleActorList.addLast(connectedActor);
+                            // Ned Stoffel suggested changing this from
+                            // addLast() to addFirst() so as to minimize
+                            // the number of tokens in transit.  "This leads
+                            // to a markedly more serial schedule, as can
+                            // be demonstrated by animating the simulations"
+                            readyToScheduleActorList.addFirst(connectedActor);
                         }
                     }
                 }
