@@ -268,7 +268,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     ": ConditionalReceive interrupted: " + ex.getMessage());
             getParent()._branchFailed(getID());
         } catch (TerminateProcessException ex) {
-            System.out.println("ConditionalRecieve terminated by exception.");
+            System.out.println("ConditionalReceive terminated by exception.");
             getParent()._branchFailed(getID());
         } finally {
             getReceiver()._setConditionalReceive(false, null);
