@@ -476,6 +476,9 @@ public class GiottoDirector extends StaticSchedulingDirector
                 _readyToFire = false;
             } else if (outsideCurrentTime
                     .compareTo(_expectedNextIterationTime) > 0) {
+                // FIXME: the outside time should be equal to the expected 
+                // next iteration time...
+                // FIXME: the following catch up is too early!
                 // catch up with the outside time.
                 setModelTime(outsideCurrentTime);
                 if (_debugging) {
