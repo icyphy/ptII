@@ -125,7 +125,7 @@ public class CalendarQueue {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Empty this calendar queue.
      */
     public synchronized void clear() {
