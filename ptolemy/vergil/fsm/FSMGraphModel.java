@@ -279,7 +279,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         while (relations.hasNext()) {
             _updateLinks((ComponentRelation)relations.next());
         }
-        return true;
+        return super._update();
     }
 
     ///////////////////////////////////////////////////////////////////
