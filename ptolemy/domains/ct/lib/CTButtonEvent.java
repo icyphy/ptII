@@ -82,7 +82,7 @@ public class CTButtonEvent extends CTActor {
     /** Always return true, and reset button clicked to false.
      *  @return True
      */
-    public boolean postfire(){
+    public boolean postfire() {
         _buttonClicked = false;
         return true;
     }
