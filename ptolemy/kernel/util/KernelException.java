@@ -39,6 +39,9 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// KernelException
 /**
+Base class for Ptolemy exceptions.  This class extends the basic
+JavaException with a constructor that can take a Nameable as
+an argument.
 
 (Note however, that it is better to use a class derived from
 KernelException than it is to throw a KernelException directly.)
