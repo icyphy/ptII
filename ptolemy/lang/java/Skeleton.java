@@ -51,6 +51,7 @@ public class Skeleton {
               
         if (files < 1) {
            System.out.println("usage : ptolemy.lang.java.Skeleton [-d] f1.java [f2.java ...]");
+           return;
         }
 
         _parseArgs(args);

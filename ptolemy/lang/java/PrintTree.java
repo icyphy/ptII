@@ -77,8 +77,6 @@ public class PrintTree {
           System.err.println(e.toString());
         }
 
-        //p.yydebug = debug;
-
         p.yyparse();
 
         CompileUnitNode ast = p.getAST();
