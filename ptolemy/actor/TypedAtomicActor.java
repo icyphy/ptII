@@ -163,10 +163,10 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
     /** Return the type constraints of this actor.
      *  The constraints have the form of a list of inequalities.
-     *  In this base class, the implementation of type constraints
-     *  is that the type of any input port that does not have its type
-     *  declared must be less than or equal to the type of any output port
-     *  that does not have its type declared.
+     *  In this base class, if an input port and an output port do not have
+     *  their types declared, and they do not have any constraints stored in
+     *  them, a constraint is set up that requires the type of the input
+     *  to be less than or equal to the type of the output.
      *  In addition, this method also collects type constraints from the
      *  contained Typeables (ports, variables, and parameters).
      *  This method is read-synchronized on the workspace.

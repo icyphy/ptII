@@ -195,6 +195,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  this to create domain-specific subclasses of TypedIORelation.
      *  This method is write-synchronized on the workspace.
      *
+     *  @param name The name for the new TypedIORelation.
      *  @return A new TypedIORelation.
      *  @exception NameDuplicationException If name collides with a name
      *   already on the container's contents list.
@@ -426,8 +427,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
-                    "TypedCompositeActor can only contain instances of " +
-		    "TypedIOPort.");
+                    "TypedCompositeActor can only contain instances of "
+                    + "TypedIOPort.");
         }
         super._addPort(port);
     }
