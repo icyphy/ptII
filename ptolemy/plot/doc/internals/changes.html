@@ -29,6 +29,15 @@ a start.
 
 <LI> URLS with <CODE>&amp;</CODE> characters in them were being parsed
 incorrectly.
+
+<li> A new jar file called <CODE>ptplotapplet.jar</CODE> is now
+created.  This jar file is similar to <CODE>ptplot.jar</CODE>,
+except it does not include the classes used by the Pxgraph class.
+As a result, <CODE>ptplotapplet.jar</CODE> is smaller than
+<CODE>ptplot.jar</CODE>.  The Pxgraph and Message classes are not
+used in applets, so there is no need to download them for
+applet only usage.
+
  <br>
 This bug was reported by Marion Schroeder &lt;schroeder@hmi.de&gt;.
 </MENU>
