@@ -681,7 +681,7 @@ public class ComponentPort extends Port {
         Iterator nearRelations = linkedRelationList().iterator();
         LinkedList result = new LinkedList();
 
-        while( nearRelations.hasNext() ) {
+        while(nearRelations.hasNext()) {
             ComponentRelation relation =
                 (ComponentRelation)nearRelations.next();
 
@@ -765,53 +765,47 @@ public class ComponentPort extends Port {
             // Cache is valid.  Use it.
             return _deepLinkedInPorts;
         }
-        boolean firstLevel;
         if(path == null) {
             path = new LinkedList();
-            firstLevel = true;
         } else {
-            firstLevel = false;
             if (path.indexOf(this) >= 0) {
                 throw new InvalidStateException(path, "loop in topology!");
             }
         }
         path.add(0, this);
         LinkedList result = new LinkedList();
-        // Note that at the first level of the hierarchy, the
-        // port may be opaque, but we are still interested in its
-        // inside connections.
-        if (isOpaque() && !firstLevel) {
-            // Port is opaque.
-            result.add(this);
-        } else {
-            // Port is transparent.
-            Iterator relations = insideRelationList().iterator();
-            while (relations.hasNext()) {
-                Relation relation = (Relation)relations.next();
-                // A null link might yield a null relation here.
-                if(relation != null) {
-                    Iterator insidePorts = 
-                        relation.linkedPortList(this).iterator();
-                    while (insidePorts.hasNext()) {
-                        ComponentPort downPort =
-                            (ComponentPort)insidePorts.next();
-                        // The inside port may not be actually inside,
-                        // in which case we want to look through it
-                        // from the inside (this supports transparent
-                        // entities).
-                        if (downPort._isInsideLinkable(relation.getContainer())) {
-                            // The inside port is not truly inside.
-                            // Check to see whether it is transparent.
-                            if (downPort.isOpaque()) {
-                                result.add(downPort);
-                            } else {
-                                result.addAll(
-                                        downPort._deepConnectedPortList(path));
-                            }
+        // Port is transparent.
+        Iterator relations = insideRelationList().iterator();
+        while (relations.hasNext()) {
+            Relation relation = (Relation)relations.next();
+            // A null link might yield a null relation here.
+            if(relation != null) {
+                Iterator insidePorts = 
+                    relation.linkedPortList(this).iterator();
+                while (insidePorts.hasNext()) {
+                    ComponentPort port =
+                        (ComponentPort)insidePorts.next();
+                    // The inside port may not be actually inside,
+                    // in which case we want to look through it
+                    // from the inside (this supports transparent
+                    // entities).
+                    if (port._isInsideLinkable(relation.getContainer())) {
+                        // The inside port is not truly inside.
+                        // Check to see whether it is transparent.
+                        if (port.isOpaque()) {
+                            result.add(port);
                         } else {
-                            // The inside port is truly inside.
                             result.addAll(
-                                    downPort._deepInsidePortList(path));
+                                    port._deepConnectedPortList(path));
+                        }
+                    } else {
+                        // We are coming at the port from the outside.
+                        if (port.isOpaque()) {
+                            // The inside port is truly inside.
+                            result.add(port);
+                        } else {
+                            result.addAll(
+                                    port._deepInsidePortList(path));
                         }
                     }
                 }
