@@ -56,13 +56,14 @@ if {[info procs sootCodeGeneration] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+
 # Generate code for all the xml files in a directory.
 proc autoDeepCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
 	puts "---- testing $file"
 	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
-	    set elapsedTime [time {sootCodeGeneration $file "Deep"}]
+	    set elapsedTime [time {sootCodeGeneration $file "Deep" 1000}]
 	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
 	    list {}
 	} {{}}
@@ -79,7 +80,7 @@ proc autoDeepCG {autoDirectory} {
 test Deep-1.1 {Compile and run the SDF IIR test} {
     set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
-		 IIR.xml] "Deep"]
+		 IIR.xml] "Deep" 1000]
     list {}
 } {{}}
 
@@ -87,7 +88,7 @@ test Deep-1.1 {Compile and run the SDF IIR test} {
 test Deep-1.2 {Compile and run the SDF OrthogonalCom test} {
     set result [sootCodeGeneration \
   	    [file join $relativePathToPTII ptolemy domains sdf demo OrthogonalCom \
-		 OrthogonalCom.xml] "Deep"]
+		 OrthogonalCom.xml] "Deep" 1000]
     list {}
 } {{}}
 
