@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"><HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<META NAME="GENERATOR" CONTENT="Adobe FrameMaker 5.5/HTML Export Filter">
+<LINK REL="STYLESHEET" HREF="index.css" CHARSET="ISO-8859-1" TYPE="text/css">
+<TITLE>
+ Author:		Steve Neuendorffer
+</TITLE>
+
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h1>Using Vergil</h1>
+<DIV>
+<H3 CLASS="Author">
+<A NAME="pgfId-162678"></A>Authors:		Steve Neuendorffer</H3>
+</DIV>
+<DIV>
+<H2 CLASS="FM2Heading">
+<A NAME="pgfId-164801"></A><A NAME="42160"></A>Introduction</H2>
+<P CLASS="Body">
+<A NAME="pgfId-164802"></A>Vergil is the Graphical User Interface for Ptolemy II. This chapter will guide you though using Vergil to create and manipulate Ptolemy models. Figure <A HREF="usingVergil.htm#74460" CLASS="XRef">See Example of a Vergil window.</A> shows a simple Ptolemy II model in Vergil, showing the graph editor, one of several editors available in Vergil.</P>
+<DIV>
+<MAP NAME="index-1">
+</MAP>
+<IMG SRC="index-1.gif" USEMAP="#index-1">
+</DIV>
+</DIV>
+<DIV>
+<H2 CLASS="FM2Heading">
+<A NAME="pgfId-165833"></A>Quick Start</H2>
+<P CLASS="Body">
+<A NAME="pgfId-165834"></A>The traditional first programming example is Hello World. Why break tradition?</P>
+<P CLASS="Body">
+<A NAME="pgfId-165846"></A>First start Vergil. From the command line, enter &quot;vergil&quot;, or select Vergil from the Start menu. You should see a welcome screen that looks like the one in figure <A HREF="usingVergil.htm#66708" CLASS="XRef">See Welcome window.</A>. Feel free to explore the links in this window. Most useful is probably the &quot;Quick tour&quot; link.</P>
+<DIV>
+<MAP NAME="index-2">
+</MAP>
+<IMG SRC="index-2.gif" USEMAP="#index-2">
+</DIV>
+<P CLASS="Body">
+<A NAME="pgfId-166445"></A>Create a new graph editor from the <A NAME="marker-166625"></A>File-&gt;New menu in the <A NAME="marker-166626"></A>welcome window. You should see something like the window shown in Figure <A HREF="usingVergil.htm#30804" CLASS="XRef">See An empty Vergil Graph Editor.</A>. Ignoring the menus and toolbar for a moment, on the left is a palette of objects that can be dragged onto the page on the right. To begin with, the page on the right is blank. Open the <A NAME="marker-166627"></A>actor library in the palette, and go into the <A NAME="marker-166628"></A>sources library. Find the <A NAME="marker-166672"></A>Const actor and drag an instance over onto the blank page. Then go into the <A NAME="marker-166629"></A>sinks library and drag a <A NAME="marker-166673"></A>Display actor onto the page. Each of these actors can be dragged around on the page. However, we would like to connect one to the other. To do this, drag a connection from the output port on the right of the Const actor to the input port of the Display actor. Lastly, open the <A NAME="marker-166630"></A>director library and drag an SDFDirector onto the page. The Director gives an execution meaning to the graph, but for now we don't have to be concerned about exactly what that is.</P>
+<DIV>
+<MAP NAME="index-3">
+</MAP>
+<IMG SRC="index-3.gif" USEMAP="#index-3">
+</DIV>
+<P CLASS="Body">
+<A NAME="pgfId-165895"></A>Now you should have something that looks like Figure <A HREF="usingVergil.htm#56559" CLASS="XRef">See The Hello World example.</A>. The Const actor is going to create our string, and the Display actor is going to print it out for us. We need to take care of one small detail before we run our example: we need to tell the Const actor that we want the string &quot;Hello World&quot;. To do this we need to edit one of the parameters of the Const. To do this, right click on the Const actor and select &quot;Edit Parameters&quot;. You should see the dialog box in figure <A HREF="usingVergil.htm#76275" CLASS="XRef">See The Const parameter editor.</A>. Enter the string &quot;Hello World&quot; for the value parameter and click the Commit button. Be sure to include the double quotes, so that the expression is interpreted as a string.</P>
+<DIV>
+<MAP NAME="index-4">
+</MAP>
+<IMG SRC="index-4.gif" USEMAP="#index-4">
+</DIV>
+<DIV>
+<MAP NAME="index-5">
+</MAP>
+<IMG SRC="index-5.gif" USEMAP="#index-5">
+</DIV>
+<P CLASS="Body">
+<A NAME="pgfId-166518"></A>To run the example, go to the <A NAME="marker-166624"></A>View menu and select the <A NAME="marker-166623"></A>Run Window. If you click the &quot;Go&quot; button, you will see a large number of strings in the Display at the right. To stop the execution, click the &quot;Stop button. To see only one string, change the <A NAME="marker-166631"></A>iterations parameter of the director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the Const actor before. The run window is shown in Figure <A HREF="usingVergil.htm#15942" CLASS="XRef">See Execution of the Hello World example.</A>.</P>
+<DIV>
+<MAP NAME="index-6">
+</MAP>
+<IMG SRC="index-6.gif" USEMAP="#index-6">
+</DIV>
+</DIV>
+<DIV>
+<H2 CLASS="FM2Heading">
+<A NAME="pgfId-165974"></A>Data Types and the Type System</H2>
+<P CLASS="Body">
+<A NAME="pgfId-165955"></A>So what is really going on here? The Const actor is creating values on its output port. The Display actor is consuming data values from its input port and displaying them in the run window. The value that is created by the Const actor can be any type of object. For example, try giving the value 1 (the integer with value one), or 1.0 (the floating point number with value one), or {1.0} (An array containing a one), or {value=1, name=&quot;one&quot;} (A record of two elements: an integer named value and a string named name), or even [1,1;1,1] (a two by two matrix). They all seem pretty much the same in the Display, but Ptolemy knows the difference between them! To see the difference, try creating the model in Figure <A HREF="usingVergil.htm#61713" CLASS="XRef">See Another example</A>. The Ramp actor is listed under sources and the AddSubtract actor is listed under math. Set the value parameter of the constant to be 0 and the iterations parameter of the director to 5. Running the model should result in 5 numbers between 0 and 4. These are the values produced by the Ramp, which are having the value of the Const actor subtracted from them. Experiment with changing the value of the Const actor and see how it changes the 5 numbers at the output. Now for the real test: Change the value of the Const actor back to &quot;Hello World&quot;. When you execute the model, you should see an error window popup. Not to worry, this window is just telling you that you have tried to subtract a string value from an integer value, which doesn't make much sense at all.</P>
+<DIV>
+<MAP NAME="index-7">
+</MAP>
+<IMG SRC="index-7.gif" USEMAP="#index-7">
+</DIV>
+<P CLASS="Body">
+<A NAME="pgfId-166634"></A>Let's try a small change to the model to get something that is executable. Disconnect the Const from the lower port of the <A NAME="marker-166671"></A>AddSubtract actor and connect it instead to the upper port. You can do this by selecting the connection and deleting it (using the delete key), then adding a new connection or by selecting it and dragging one of its endpoints to the new location<A HREF="#pgfId-166637" CLASS="footnote">1</A>. Notice that the upper port is hollow; this indicates that it is a <A NAME="marker-166644"></A>multiport, meaning that you can make more than one connection to it. Now when you run the model you should see strings like &quot;0HelloWorld&quot;.</P>
+<P CLASS="Body">
+<A NAME="pgfId-166645"></A>There are actually two things going on here. The first is that all the connections to the same port must have the same type. Ptolemy automatically converts the integers from the Ramp to strings. The second is that the strings are added together as strings usually are in Java, which means concatenating them.</P>
+</DIV>
+<DIV>
+<H2 CLASS="FM2Heading">
+<A NAME="pgfId-166138"></A>Hierarchy</H2>
+<P CLASS="Body">
+<A NAME="pgfId-166565"></A>Let's look at a slightly more interesting problem. In this case, a small signal processing problem, where we are interested in recovering a signal based only on noisy measurements of it. First open a new document and drag in a <A NAME="marker-166647"></A>Typed <A NAME="marker-166648"></A>Composite Actor from the <A NAME="marker-166646"></A>utilities library. This actor is going to add the noise to our measurements. First, using the <A NAME="marker-166649"></A>context menu (<A NAME="marker-166650"></A>right click over the composite actor), select &quot;Rename&quot; and give the composite a good name, like &quot;Channel&quot;. Then, using the context menu again, select &quot;look inside&quot; on the actor. You should get a blank graph editor. The original graph editor is still open. To see it, move the new one using its title bar.</P>
+<P CLASS="Body">
+<A NAME="pgfId-166651"></A>First we have to add some external ports. There are several ways to do this, but clicking on the port toolbar button is probably the easiest. The <A NAME="marker-166652"></A>port <A NAME="marker-166653"></A>toolbar button is the small black triangle at the upper left. Create two ports and rename them input and output. Using the context menu on the background, select <A NAME="marker-166657"></A>Configure ports and set input to be an input port and output to be an output port. Then using these ports, create the diagram shown in Figure <A HREF="usingVergil.htm#23515" CLASS="XRef">See An example of a hierarchical model.</A><A HREF="#pgfId-166915" CLASS="footnote">2</A>. </P>
+<DIV>
+<MAP NAME="index-8">
+</MAP>
+<IMG SRC="index-8.gif" USEMAP="#index-8">
+</DIV>
+<P CLASS="Body">
+<A NAME="pgfId-166658"></A>The <A NAME="marker-166664"></A>Gaussian actor creates values from a Gaussian distributed random variable, and is found in the sources library. Now if you close this editor and return to the previous one, you should be able to easily create the model shown in figure <A HREF="usingVergil.htm#71815" CLASS="XRef">See A simple signal processing example.</A>. The <A NAME="marker-166668"></A>Sinewave actor is listed under <A NAME="marker-166669"></A>signal processing, and the <A NAME="marker-166670"></A>SequencePlotter actor is found in sinks. Notice that the Sinewave actor is also a hierarchical model, as suggested by its red outline. If you execute this model (you will probably want to set the iterations to something reasonable, like 200), you should see something like Figure <A HREF="usingVergil.htm#72225" CLASS="XRef">See The output of the simple signal processing example above.</A>.</P>
+<DIV>
+<MAP NAME="index-9">
+</MAP>
+<IMG SRC="index-9.gif" USEMAP="#index-9">
+</DIV>
+<DIV>
+<MAP NAME="index-10">
+</MAP>
+<IMG SRC="index-10.gif" USEMAP="#index-10">
+</DIV>
+</DIV>
+<DIV>
+<H2 CLASS="FM2Heading">
+<A NAME="pgfId-166285"></A>Broadcast Relations</H2>
+<P CLASS="FirstBody">
+<A NAME="pgfId-166289"></A>In the previous section we showed only one noisy measurement of the original signal. Now let's try to remove some of the noise. First, make three copies of the channel by selecting the one we created before, copying and pasting. We want to feed the original signal through all four channels and average the outputs of the channel. To broadcast the output of the Sinewave to more than one place, first create a <A NAME="marker-166679"></A>relation (represented by a <A NAME="marker-166680"></A>diamond), and then connect each of the ports to the relation. The relation can be created using the <A NAME="marker-166681"></A>toolbar, or by <A NAME="marker-166682"></A>control-clicking on the background. This should allow you to create the model shown in Figure <A HREF="usingVergil.htm#72088" CLASS="XRef">See An example of a broadcast relation.</A>. The parameter of the Const actor is 4, and the <A NAME="marker-166683"></A>MultiplyDivide actor is found in the math library.</P>
+<DIV>
+<MAP NAME="index-11">
+</MAP>
+<IMG SRC="index-11.gif" USEMAP="#index-11">
+</DIV>
+</DIV>
+<DIV>
+<H2 CLASS="FM2Heading">
+<A NAME="pgfId-166337"></A>SDF and Multirate Systems</H2>
+<P CLASS="Body">
+<A NAME="pgfId-166341"></A>So far we have been dealing with relatively simple systems. They are simple in the sense that each actor produces and consumes one token from each port at a time. In this case, the SDF director simply ensures that an actor fires after the actors whose value it depends on. The number of output values that is created is determined by the number of iterations.</P>
+<P CLASS="Body">
+<A NAME="pgfId-166684"></A>It turns out that the <A NAME="marker-166687"></A>SDF scheduler is actually much more sophisticated. It is capable of scheduling the execution of actors with arbitrary prespecified data rates. Not all actors produce and consume just a single sample each time they are invoked (<A NAME="marker-166692"></A>fired). Some require several input samples (<A NAME="marker-166693"></A>tokens) before they can be fired, and produce several tokens when they are fired.</P>
+<P CLASS="Body">
+<A NAME="pgfId-166688"></A>One such actor is a spectral estimation actor. Figure <A HREF="usingVergil.htm#46190" CLASS="XRef">See A multirate SDF model.</A> shows a system that computes the <A NAME="marker-166700"></A>spectrum of a sine wave. The spectrum actor has a single parameter, which gives the order of the <A NAME="marker-166701"></A>FFT used to calculate the spectrum. Figure <A HREF="usingVergil.htm#25033" CLASS="XRef">See Execution of the multirate SDF model.</A> shows the output of the model with order set to 8 and the number of iterations set to 1. Note that there are 256 output samples. This is because the Spectrum actor requires 2<sup>8</sup>, or 256 input samples to fire, and produces 2<sup>8</sup>, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples.</P>
+<DIV>
+<MAP NAME="index-12">
+</MAP>
+<IMG SRC="index-12.gif" USEMAP="#index-12">
+</DIV>
+<DIV>
+<MAP NAME="index-13">
+</MAP>
+<IMG SRC="index-13.gif" USEMAP="#index-13">
+</DIV>
+</DIV>
+<DIV>
+<H2 CLASS="FM2Heading">
+<A NAME="pgfId-166726"></A>Using the <A NAME="marker-166766"></A>Plotter</H2>
+<P CLASS="FirstBody">
+<A NAME="pgfId-166744"></A>The plot shown in figure <A HREF="usingVergil.htm#25033" CLASS="XRef">See Execution of the multirate SDF model.</A> is not particularly satisfying. It has no title, the axes are not labeled, and the horizontal axis ranges from 0 to 255<A HREF="#pgfId-166823" CLASS="footnote">3</A>, because in one iteration, the Spectrum actor produces 256 output tokens. These outputs represent frequency bins that range between <IMG SRC="index-14.gif" ALIGN="BASELINE">
+ and <IMG SRC="index-15.gif" ALIGN="BASELINE">
+ radians per second.</P>
+<P CLASS="Body">
+<A NAME="pgfId-166784"></A>The <A NAME="marker-166767"></A>SequencePlotter actor has some pertinent parameters, shown in figure <A HREF="usingVergil.htm#15407" CLASS="XRef">See Parameters of the SequencePlotter actor.</A>. The xInit parameter specifies the value to use on the horizontal axis for the first token. The xUnit parameter specifies the value to increment this by for each subsequent token. Setting these to &quot;-PI&quot; and &quot;PI/128&quot; respectively results in the plot shown in figure <A HREF="usingVergil.htm#21802" CLASS="XRef">See Better labeled plot, where the horizontal axis now properly represents the frequency values.</A>.</P>
+<DIV>
+<MAP NAME="index-16">
+</MAP>
+<IMG SRC="index-16.gif" USEMAP="#index-16">
+</DIV>
+<DIV>
+<MAP NAME="index-17">
+</MAP>
+<IMG SRC="index-17.gif" USEMAP="#index-17">
+</DIV>
+<P CLASS="Body">
+<A NAME="pgfId-166828"></A>This plot is better, but still missing useful information. To control more precisely the visual appearance of the plot, click on the second button from the right in the row of buttons at the top right of the plot. This button brings up a format control window. It is shown in figure <A HREF="usingVergil.htm#28511" CLASS="XRef">See Format control window for a plot.</A>, filled in with values that result in the plot shown in figure <A HREF="usingVergil.htm#56406" CLASS="XRef">See Still better labeled plot.</A>. Most of these are self-explanatory, but the following pointers may be useful:</P>
+<DIV>
+<MAP NAME="index-18">
+</MAP>
+<IMG SRC="index-18.gif" USEMAP="#index-18">
+</DIV>
+<DIV>
+<MAP NAME="index-19">
+</MAP>
+<IMG SRC="index-19.gif" USEMAP="#index-19">
+</DIV>
+<UL>
+<LI CLASS="Bulleted">
+<A NAME="pgfId-166883"></A>The grid is turned off to reduce clutter.</LI>
+<LI CLASS="Bulleted">
+<A NAME="pgfId-166887"></A>Titles and axis labels have been added.</LI>
+<LI CLASS="Bulleted">
+<A NAME="pgfId-166888"></A>The X range and Y range are determined by the fill button at the upper right of the plot.</LI>
+<LI CLASS="Bulleted">
+<A NAME="pgfId-166889"></A>Stem plots can be had by clicking on &quot;Stems&quot;</LI>
+<LI CLASS="Bulleted">
+<A NAME="pgfId-166890"></A>Individual tokens can be shown by clicking on &quot;dots&quot;</LI>
+<LI CLASS="Bulleted">
+<A NAME="pgfId-166891"></A>Connecting lines can be eliminated by deselecting &quot;connect&quot;</LI>
+<LI CLASS="Bulleted">
+<A NAME="pgfId-166892"></A>The X axis label has been changed to symbolically indicate multiples of PI/2. This is done by entering the following in the X Ticks field:</LI>
+</UL>
+<P CLASS="Indented">
+<A NAME="pgfId-166870"></A>-PI -3.14159, -PI/2 -1.570795, 0 0.0, PI/2 1.570795, PI 3.14159</P>
+<P CLASS="Indented">
+<A NAME="pgfId-166896"></A>The syntax in general is:</P>
+<P CLASS="Indented">
+<A NAME="pgfId-166897"></A>label value, label value, ...</P>
+<P CLASS="Indented">
+<A NAME="pgfId-166898"></A>where the label is any string (enclosed in quotation marks if it includes spaces), and the value is a number.</P>
+</DIV>
+<HR>
+<DIV CLASS="footnotes">
+<DIV CLASS="footnote">
+<P CLASS="Footnote">
+<SPAN CLASS="footnoteNumber">
+1.</SPAN>
+<A NAME="pgfId-166637"></A>Hint: The connection can sometimes be difficult to select by clicking on it, since you have to precisely on it. To select it more easily, drag out a small box that overlaps it.</P>
+</DIV>
+<DIV CLASS="footnote">
+<P CLASS="Footnote">
+<SPAN CLASS="footnoteNumber">
+2.</SPAN>
+<A NAME="pgfId-166915"></A>Hint: to create a <A NAME="marker-166918"></A><A NAME="marker-166919"></A>connection starting on one of the external ports, hold down the <A NAME="marker-166921"></A>control key when dragging.</P>
+</DIV>
+<DIV CLASS="footnote">
+<P CLASS="Footnote">
+<SPAN CLASS="footnoteNumber">
+3.</SPAN>
+<A NAME="pgfId-166823"></A>Hint: Notice the &quot;x102 &quot; at the bottom right, which indicates that the label &quot;2.5&quot; stands for &quot;250&quot;.</P>
+</DIV>
+</DIV>
+</BODY>
+</HTML>
