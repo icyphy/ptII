@@ -36,6 +36,41 @@
 # 
 
 ######################################################################
+#### arrayToNames
+# Return a list of the names of the objects in the argument, which is an array.
+# These objects are assumed to implement the Nameable interface.  If any
+# object in the list does not do this, then its name is reported as
+# NOT_NAMEABLE.
+#
+proc arrayToNames {objarray} {
+    set results {}
+    for {set i 0} {$i < [$objarray length]} {incr i} {
+	set obj [$objarray get $i]
+        if [ java::instanceof $obj ptolemy.kernel.util.Nameable] {
+            lappend results [[java::cast ptolemy.kernel.util.Nameable \
+                    $obj] getName]
+        } else {
+            lappend results NOT_NAMEABLE.
+        }
+    }
+    return $results
+}
+
+######################################################################
+#### arrayToStrings
+# Return a list of the objects in the argument, which is an array.
+# The toString() method is used on each object.
+#
+proc arrayToStrings {objarray} {
+    set results {}
+    for {set i 0} {$i < [$objarray length]} {incr i} {
+	set obj [$objarray get $i]
+        lappend results $obj
+    }
+    return $results
+}
+
+######################################################################
 #### enumMethodToNames
 # Invoke the first argument (the name of a method that takes no arguments)
 # for each of the objects given by remaining arguments.  The result is
