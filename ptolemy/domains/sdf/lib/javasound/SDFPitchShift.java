@@ -1,4 +1,4 @@
-/* An actor that performs pitch detection on an audio signal.
+/* An actor that performs pitch shifting on an audio signal.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -51,7 +51,7 @@ import javax.media.sound.sampled.*;
 import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// SDFPitchDetector
+//// SDFPitchShift
 /**
 
 
@@ -59,7 +59,7 @@ import ptolemy.domains.sdf.kernel.*;
 @version
 */
 
-public class SDFPitchDetector extends SDFAtomicActor {
+public class SDFPitchShift extends SDFAtomicActor {
 
     /** 
      *  @param container The container.
@@ -69,7 +69,7 @@ public class SDFPitchDetector extends SDFAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SDFPitchDetector(TypedCompositeActor container, String name)
+    public SDFPitchShift(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 	consumptionProductionRate = new Parameter(this,
@@ -87,23 +87,32 @@ public class SDFPitchDetector extends SDFAtomicActor {
 	input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(DoubleToken.class);
 	input.setTokenConsumptionRate(consumptionRate);
+
+	pitchIn = new SDFIOPort(this, "pitchIn", true, false);
+        pitchIn.setTypeEquals(DoubleToken.class);
+	pitchIn.setTokenConsumptionRate(consumptionRate);
 		
 	sampleRate = new Parameter(this, "sampleRate",
 				     new DoubleToken(22050));
         sampleRate.setTypeEquals(DoubleToken.class);
+	
+	
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-     /** The input port. */
+    /** The input port. */
     public SDFIOPort input;
+
+    /** The pitch value input port. */
+    public SDFIOPort pitchIn;
 
     /** The output port. */
     public SDFIOPort output;
 
-    /** The sampling rate to use, in Hz. The default vaule is
-     * 22050.
+     /** The sampling rate to use, in Hz. The default vaule is
+      * 22050.
      */
     public Parameter sampleRate;
 
@@ -139,9 +148,10 @@ public class SDFPitchDetector extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
 	 try {
-	     SDFPitchDetector newobj = (SDFPitchDetector)super.clone(ws);
+	     SDFPitchShift newobj = (SDFPitchShift)super.clone(ws);
 	     newobj.output = (SDFIOPort)newobj.getPort("output");
 	     newobj.input = (SDFIOPort)newobj.getPort("input");
+	     newobj.pitchIn = (SDFIOPort)newobj.getPort("pitchIn");
 	     newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
 	     newobj.consumptionProductionRate = (Parameter)newobj.getAttribute("consumptionProductionRate");
 	     // set the type constraints.
@@ -158,23 +168,29 @@ public class SDFPitchDetector extends SDFAtomicActor {
      */
     public void fire() throws IllegalActionException {
         
-	
+
         input.getArray(0, audioTokenArray);
-	// Convert to double[].
-        
+	pitchIn.getArray(0, pitchTokenArray);
+	
         int i;
         for (i = 0; i < consumptionRate; i++) {
             audioInDoubleArray[i] = audioTokenArray[i].doubleValue();
         }
-	
-	double[] currPitchArray = pd.performPitchDetect(audioInDoubleArray);
+	for (i = 0; i < consumptionRate; i++) {
+	    //System.out.println("pitchTokenArray.length = " + pitchTokenArray.length);        
+            pitchInDoubleArray[i] = pitchTokenArray[i].doubleValue();
+        }
+	// Default pitch scale factor(s). FIXME: should get this
+	// from an input port.
+	double pitchScaleIn = 1.0;
 
 	
+	audioOutDoubleArray = ps.performPitchShift(audioInDoubleArray,
+				      pitchInDoubleArray, pitchScaleIn);
+
 	// Convert to DoubleToken[].
-	// FIXME: I don't think this is very efficient. Currently
-	// creating a new token for each sample!
 	for (i = 0; i < productionRate; i++) {
-	    audioTokenArray[i] = new DoubleToken(currPitchArray[i]);
+	    audioTokenArray[i] = new DoubleToken(audioOutDoubleArray[i]);
 	}
 	output.sendArray(0, audioTokenArray);
     }
@@ -188,11 +204,13 @@ public class SDFPitchDetector extends SDFAtomicActor {
 
 	sampRate = ((DoubleToken)sampleRate.getToken()).doubleValue();
 	
-	pd = new PitchDetector(productionRate,
-			       (int)sampRate);
+	ps = new PitchShift((float)sampRate);
 	    
 	audioTokenArray = new DoubleToken[consumptionRate];
+	pitchTokenArray = new DoubleToken[consumptionRate];
 	audioInDoubleArray = new double[consumptionRate];
+	pitchInDoubleArray = new double[consumptionRate];
+	audioOutDoubleArray = new double[consumptionRate];
     }
 
 
@@ -204,12 +222,16 @@ public class SDFPitchDetector extends SDFAtomicActor {
     
     private double sampRate;
 
-    private PitchDetector pd;
+    private PitchShift ps;
 
     private int productionRate;
     private int consumptionRate;
 
     private DoubleToken[] audioTokenArray;
+    private DoubleToken[] pitchTokenArray;
 
     private double[] audioInDoubleArray;
+    private double[] pitchInDoubleArray;
+
+    private double[] audioOutDoubleArray;
 }

@@ -92,6 +92,7 @@ public class AudioSource extends SDFAtomicActor {
 	// FIXME: Allow this to be set as parameter.
 	productionRate = 512;
 	output.setTokenProductionRate(productionRate);
+	output.setMultiport(true); // ???
 	pathName = new Parameter(this, "pathName",
 		     new StringToken("http://localhost/soundFile.au"));
 	isURL = new Parameter(this, "isURL", new BooleanToken(true));
@@ -199,6 +200,8 @@ public class AudioSource extends SDFAtomicActor {
 
 	    
             output.sendArray(0, audioTokenArray);
+	    	    output.sendArray(1, audioTokenArray);
+
 
 
         } catch (IllegalActionException ex) {
