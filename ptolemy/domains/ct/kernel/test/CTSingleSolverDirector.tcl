@@ -178,125 +178,34 @@ test CTSingleSolverDirector-2.5 {suggested next step less than max step} {
 ######################################################################
 ####  Test Breakpoints
 #  
-#test CTSingleSolverDirector-3.1 {register a breakpoint} {     
-#    #Note: Use above set up.
-#    $dir fireAt [java:null] 0.1
-    
-
-
-######################################################################
-####  Test Director by execute a demo system
-#  
-# Note: Not depends on above set up. Can be moved to anywhere.
-test CTSingleSolverDirector-4.1 {Ramp with ForwardEulerSolver} {
+test CTSingleSolverDirector-3.1 {register a breakpoint} {     
+    #Note: new set up.
     set sys [java::new ptolemy.actor.TypedCompositeActor]
     $sys setName System
-    set man [java::new ptolemy.actor.Manager]
-    $sys setManager $man
     set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector DIR]
     $sys setDirector $dir
-    #$dir setVERBOSE 1
-    #$dir setDEBUG 1
-    set const [java::new ptolemy.domains.ct.lib.CTConst $sys Const]
-    set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $sys Integ]
-    set print [java::new ptolemy.domains.ct.kernel.test.CTTestValueSink\
-	    $sys Sink]
-    #set sink [java::new ptolemy.domains.ct.lib.CTPrintln $sys pl]
-    set constout [$const getPort output]
-    set intglin [$integral getPort input]
-    set intglout [$integral getPort output]
-    set printin [$print getPort input]
-    #set sinkin [$sink getPort input]
+    $dir initialize
+    $dir fireAt $sys 0.1
+    $dir fireAt $sys 0.4
+    $dir fireAt $sys 0.2
+    set bptable [$dir getBreakPoints]
+    set starttime [$bptable first]
+    $bptable removeFirst
+    set first [$bptable first]
+    set firstAgain [$bptable first]
+    $bptable removeFirst
+    set second [$bptable first]
+    set secondAgain [$bptable first]
+    $bptable removeFirst
+    set third [$bptable first]
+    $bptable removeFirst
+    set stoptime [$bptable first]
+    list $starttime $first $firstAgain $second $secondAgain $third $stoptime
+} {0.0 0.1 0.1 0.2 0.2 0.4 1.0}
 
-    set r1 [$sys connect $constout $intglin R1]
-    set r2 [$sys connect $intglout $printin R2]
-    #$sinkin link $r2
-    
-    set initstate [$integral getAttribute InitialState]
-    $initstate setExpression 0.0
-    $initstate parameterChanged [java::null]
-
-    set starttime [$dir getAttribute StartTime]
-    $starttime setExpression 0.0
-    $starttime parameterChanged [java::null]
-    
-    set stoptime [$dir getAttribute StopTime]
-    $stoptime setExpression 1.0
-    $stoptime parameterChanged [java::null]
-    
-    set initstep [$dir getAttribute InitialStepSize]
-    $initstep setExpression 0.1
-    $initstep parameterChanged [java::null]
-    
-    set constval [$const getAttribute Value]
-    $constval setExpression 1.0
-    $constval parameterChanged [java::null]
-    
-    $man run
-    list [$print isSuccessful]
-} {1}
-
-test CTSingleSolverDirector-4.2 {Ramp with BackwardEulerSolver} {
-    #Note: use above setup. reset parameters.
-    set solver [$dir getAttribute ODESolver]
-    set token [java::new ptolemy.data.StringToken\
-	    ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
-    $solver setToken $token
-    $solver parameterChanged [java::null]
-
-    set initstate [$integral getAttribute InitialState]
-    $initstate setExpression 0.0
-    $initstate parameterChanged [java::null]
-
-    set starttime [$dir getAttribute StartTime]
-    $starttime setExpression 0.0
-    $starttime parameterChanged [java::null]
-    
-    set stoptime [$dir getAttribute StopTime]
-    $stoptime setExpression 1.0
-    $stoptime parameterChanged [java::null]
-    
-    set initstep [$dir getAttribute InitialStepSize]
-    $initstep setExpression 0.1
-    $initstep parameterChanged [java::null]
-    
-    set constval [$const getAttribute Value]
-    $constval setExpression 1.0
-    $constval parameterChanged [java::null]
-    
-    $man run
-    list [$print isSuccessful]
-} {1}
-
-test CTSingleSolverDirector-4.3 {Ramp with ExplicitRK23Solver} {
-    #Note: use above setup. reset parameters.
-    set solver [$dir getAttribute ODESolver]
-    set token [java::new ptolemy.data.StringToken\
-	    ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
-    $solver setToken $token
-    $solver parameterChanged [java::null]
-
-    set initstate [$integral getAttribute InitialState]
-    $initstate setExpression 0.0
-    $initstate parameterChanged [java::null]
-
-    set starttime [$dir getAttribute StartTime]
-    $starttime setExpression 0.0
-    $starttime parameterChanged [java::null]
-    
-    set stoptime [$dir getAttribute StopTime]
-    $stoptime setExpression 1.0
-    $stoptime parameterChanged [java::null]
-    
-    set initstep [$dir getAttribute InitialStepSize]
-    $initstep setExpression 0.1
-    $initstep parameterChanged [java::null]
-    
-    set constval [$const getAttribute Value]
-    $constval setExpression 1.0
-    $constval parameterChanged [java::null]
-    
-    $man run
-    list [$print isSuccessful] 
-} {1}
-
+test CTSingleSolverDirector-3.1 {access empty breakpoint table} {     
+    #Note: use above set up.
+    $bptable removeFirst
+    set nextone [$bptable first]
+    list $nextone
+} { }

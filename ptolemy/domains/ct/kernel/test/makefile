@@ -52,8 +52,7 @@ JSRCS = \
 	CTDummySSControlActor.java \
 	CTDummySink.java \
 	CTDummySource.java \
-	CTDummyStatefulActor.java \
-	CTTestValueSink.java
+	CTDummyStatefulActor.java 
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
