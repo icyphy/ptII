@@ -34,7 +34,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PlotEffigy;
+import ptolemy.actor.gui.PlotTableau;
+import ptolemy.actor.gui.PlotTableauFrame;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.*;
@@ -203,33 +206,19 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                 plot.setTitle("TM Schedule");
                 plot.setButtons(true);
 
-                // FIXME: I can't get the PlotEffigy to work, so
-                // I've folded in the code from TMDirector.
-                JFrame scheduleDisplay = new JFrame("TM Schedule");
-
-                JPanel pane = new JPanel();
-                pane.add(plot);
-                scheduleDisplay.getContentPane().
-                    add(pane, BorderLayout.CENTER);
-                scheduleDisplay.pack();
-                scheduleDisplay.setVisible(true);
-
+                // We put the plotter as a sub-effigy of the toplevel effigy,
+                // so that it closes when the model is closed.
+                Effigy effigy = Configuration.findEffigy(toplevel());
                 PlotEffigy schedulePlotterEffigy =
-                    new PlotEffigy(configuration.getDirectory(),
+                    new PlotEffigy(effigy, 
                             container.uniqueName("schedulePlotterEffigy"));
+                schedulePlotterEffigy.setPlot(plot);
+                schedulePlotterEffigy.identifier.setExpression("TM Schedule");
 
-
-                //schedulePlotterEffigy.setPlot(plot);
-                //schedulePlotterEffigy.identifier.setExpression("TM Schedule");
-                //configuration.createPrimaryTableau(schedulePlotterEffigy);
-
+                configuration.createPrimaryTableau(schedulePlotterEffigy);
+               
                 plot.setVisible(true);
 
-                // FIXME: This code is an example from GiottoCodeGenerator
-                // TextEffigy codeEffigy = TextEffigy.newTextEffigy(
-                //    configuration.getDirectory(), "This is a test");
-                // codeEffigy.setModified(true);
-                //    configuration.createPrimaryTableau(codeEffigy);
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
                         "Cannot create Schedule Plotter");
