@@ -1,4 +1,4 @@
-/* 
+/* Interface of the class declaration handlers called by TypeAnalyzer.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -36,19 +36,35 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 //////////////////////////////////////////////////////////////////////////
 //// ClassHandler
 /**
+   Interface of the class declaration handlers called by {@link TypeAnalyzer}.
+   Users may register class declaration handlers (and other kinds of supported
+   handlers) to the {@link TypeAnalyzer} used to analyze Java source code.
+   When the analyzer detects a class declaration, it calls back those
+   handlers after the classes are completely traversed.
+   <p>
+   Class declaration handlers are allowed to modify the classes.
  
- 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public interface ClassHandler {
 
+    /** Handle an anonymous class declaration.
+     * 
+     *  @param node The anonymous class declaration to be handled.
+     *  @param state The current state of the analyzer.
+     */
     public void handle(AnonymousClassDeclaration node, 
             TypeAnalyzerState state);
     
+    /** Handle a class declaration.
+     * 
+     *  @param node The class declaration to be handled.
+     *  @param state The current state of the analyzer.
+     */
     public void handle(TypeDeclaration node, TypeAnalyzerState state);
     
 }
