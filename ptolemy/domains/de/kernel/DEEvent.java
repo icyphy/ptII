@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -51,7 +51,10 @@ import java.lang.Comparable;
  *  The tag consists of a time stamp, a microstep, and a depth.
  *  The depth is the index of the destination actor in a topological
  *  sort.  A larger value of depth represents a lower priority when
- *  processing events.
+ *  processing events.  The microstep represents the phase of execution
+ *  when processing simultaneous events in directed loops, or when an
+ *  actor schedules itself for firing later at the current time
+ *  (using fireAt()).
  *  <p>
  *  This class implements the Comparable interface.  The time stamp,
  *  microstep, and depth are compared in that order by the compareTo()
@@ -64,7 +67,7 @@ import java.lang.Comparable;
  *  @see DEDirector
  */
 
-public class DEEvent implements Comparable {
+public final class DEEvent implements Comparable {
 
     /** Construct an event with the specified destination receiver,
      *  token, time stamp, microstep, and depth. The destination actor is
@@ -112,7 +115,7 @@ public class DEEvent implements Comparable {
     }
 
     /** Compare the tag of this event with the specified event for order.
-     *  Return a negative integer, zero, or a positive integer if this
+     *  Return -1, zero, or +1 if this
      *  event is less than, equal to, or greater than the specified event.
      *  The time stamp is checked first.  If the two time stamps are
      *  identical, then the microstep is checked.  If those are identical,
@@ -172,19 +175,12 @@ public class DEEvent implements Comparable {
      *  if they are equal and false otherwise.  This is provided along
      *  with compareTo() because it is slightly faster when all you need
      *  to know is whether the events are simultaneous.
-     *  The argument has to be an instance of DEEvent or a
-     *  ClassCastException will be thrown.
-     *
      *  @param event The event to compare against.
-     *  @exception ClassCastException If the argument is not an instance
-     *   of DEEvent.
      */
-     public final boolean isSimultaneousWith(Object event) {
-
-         DEEvent castEvent = (DEEvent) event;
-         return ( _timeStamp == castEvent._timeStamp) &&
-                ( _microstep == castEvent._microstep) &&
-                ( _receiverDepth == castEvent._receiverDepth);
+     public final boolean isSimultaneousWith(DEEvent event) {
+         return ( _timeStamp == event._timeStamp) &&
+                ( _microstep == event._microstep) &&
+                ( _receiverDepth == event._receiverDepth);
      }
 
     /** Return the time stamp.

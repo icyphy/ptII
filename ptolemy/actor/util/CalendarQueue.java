@@ -61,7 +61,7 @@ override the put() method.
 The queue works as follows.  Entries are conceptually stored in
 an infinite set of virtual bins (or buckets). The instance of CQComparator
 is consulted to determine which virtual bin should be used for an entry
-(by calling its getVirtualIndex() method).  Each virtual bin has a width,
+(by calling its getVirtualBinNumber() method).  Each virtual bin has a width,
 which can be altered by calling the setBinWidth() method of the CQComparator.
 Within each virtual bin, entries are sorted.
 <p>
@@ -81,20 +81,21 @@ to the entries that are observed.  Thus, this implementation may frequently
 change the number of bins.  When it does change the number of bins,
 it changes them by a specifiable <i>bin count factor</i>.
 This defaults to 2, but can be specified as a constructor argument.
-Suppose the bin count factor is <i>f</i> and the current number of
-buckets is <i>n</i> (this defaults to 2, but can be specified by
-a constructor argument).
-The number of bins will be multiplied by <i>f</i> if the 
-queue size exceeds <i>nf</i>.
-The number of bins will be divided by <i>f</i> if the 
-queue size falls below <i>n/f</i>.  Thus, the queue attempts to
+Suppose the bin count factor is <i>binCountFactor</i> and the current number of
+buckets is <i>n</i> (by default, this starts at 2, but can be specified by
+a constructor argument, <i>minNumBuckets</i>).
+The number of bins will be multiplied by <i>binCountFactor</i> if the 
+queue size exceeds <i>n * binCountFactor</i>.
+The number of bins will be divided by <i>binCountFactor</i> if the 
+queue size falls below <i>n/binCountFactor</i>.  Thus, the queue attempts to
 keep the number of bins close to the size of the queue.
 Each time it changes the number of bins, it uses recently dequeued entries
 to calculate a reasonable bin width (actually, it defers
 to the associated CQComparator for this calculation).
 <p>
 Changing the number of bins is a relatively expensive operation,
-so it may be worthwhile to increase <i>f</i> to reduce the frequency
+so it may be worthwhile to increase <i>binCountFactor</i>
+to reduce the frequency
 of change operations. Working counter to this, however, is that the
 queue is most efficient when there is on average one event per bin.
 Thus, the queue becomes less efficient if change operations are less
@@ -117,10 +118,11 @@ CalendarQueue class.</i>
 @see CQComparator
 */
 
-public class CalendarQueue implements Debuggable{
+public class CalendarQueue implements Debuggable {
 
     /** Construct an empty queue with a given comparator, which
-     *  is used to sort the entries.
+     *  is used to sort the entries.  The bin count factor and the
+     *  initial and minimum number of bins are set to 2.
      *  @param comparator The comparator used to sort entries.
      */
     public CalendarQueue(CQComparator comparator) {
@@ -131,10 +133,9 @@ public class CalendarQueue implements Debuggable{
      *  which is used to sort the entries, the specified
      *  minimum number of buckets, and the specified bin count factor.
      *  The bin count factor multiplies or divides the number of bins
-     *  when the number of bins is changed.  It defaults to 2 if the
-     *  other constructor is used.
-     *  The minimum number of buckets is also the initial number
-     *  of buckets.  It too defaults to 2 if the other constructor is used.
+     *  when the number of bins is changed.
+     *  The specified minimum number of buckets is also the initial
+     *  number of buckets.
      *  @param comparator The comparator used to sort entries.
      *  @param minNumBuckets The minimum number of buckets.
      *  @param binCountFactor The bin count factor.
@@ -169,6 +170,7 @@ public class CalendarQueue implements Debuggable{
     /** Empty the queue, discarding all current information.
      *  On the next put(), the queue will be reinitialized, including
      *  setting the bin width and zero reference of the comparator.
+     *  @see CQComparator.setZeroReference
      */
     public void clear() {
         _initialized = false;
@@ -208,20 +210,27 @@ public class CalendarQueue implements Debuggable{
         return (_qSize == 0);
     }
 
-    /** Add an entry to the queue.  This method always returns true.
-     *  A derived class, however, may return false if the entry is
-     *  already on the queue
-     *  and is not added again.  In this class, the entry is always added,
-     *  even if an identical entry already exists on the queue.
-     *  <p>
+    /** Add an entry to the queue.
      *  The first time this is called after queue creation or after
      *  calling clear() results in the comparator having its zero reference
      *  set to the argument and its bin width set to the default.
-     *  Also, the number of buckets is set to the minimum (which have
+     *  Also, the number of buckets is set to the minimum (which has
      *  been given to the constructor).
+     *
+     *  If the specified entry cannot be compared by the comparator
+     *  associated with this queue, then a ClassCastException will
+     *  be thrown.
+     *
+     *  This method always returns true, but the return value may be
+     *  used in derived classes to indicate that the entry is
+     *  already on the queue
+     *  and is not added again.  In this class, the entry is always added,
+     *  even if an identical entry already exists on the queue.
      *
      *  @param entry The entry to be added to the queue.
      *  @return True.
+     *  @exception ClassCastException If the specified entry cannot
+     *   be compared by the associated comparator.
      */
     public boolean put(Object entry) {
         if (_debugging) _debug("+ putting in queue: " + entry);
@@ -247,7 +256,7 @@ public class CalendarQueue implements Debuggable{
         if (_minimumEntry == null || _qSize == 0 ||
                 _cqComparator.compare(entry, _minimumEntry) < 0) {
             _minimumEntry = entry;
-            _minVirtualBucket = _cqComparator.getVirtualIndex(entry);
+            _minVirtualBucket = _cqComparator.getVirtualBinNumber(entry);
             _minBucket = _getBinIndex(entry);
         }
 
@@ -310,10 +319,10 @@ public class CalendarQueue implements Debuggable{
      *  If however the queue size becomes much larger or much smaller
      *  than the number of bins, the queue will become much less
      *  efficient.
-     *  @param boole If false, disable changing the number of bins.
+     *  @param flag If false, disable changing the number of bins.
      */
-    public void setAdaptive(boolean boole) {
-        _resizeEnabled = boole;
+    public void setAdaptive(boolean flag) {
+        _resizeEnabled = flag;
     }
 
     /** Return the queue size, which is the number of entries currently
@@ -356,7 +365,7 @@ public class CalendarQueue implements Debuggable{
             if (!_bucket[i].isEmpty()) {
                 // The bucket is not empty.
                 Object minimumInBucket = _bucket[i].head.contents;
-                if (_cqComparator.getVirtualIndex(minimumInBucket)
+                if (_cqComparator.getVirtualBinNumber(minimumInBucket)
                         == _minVirtualBucket + j) {
                     // The entry is in the current year. Return it.
                     result = _takeFromBucket(i);
@@ -445,7 +454,7 @@ public class CalendarQueue implements Debuggable{
             if (bucketHead[currentBucket] != null) {
                 // There are more entries in the bucket.
                 Object nextInBucket = bucketHead[currentBucket].contents;
-                while (_cqComparator.getVirtualIndex(nextInBucket)
+                while (_cqComparator.getVirtualBinNumber(nextInBucket)
                         == virtualBucket) {
                     // The entry is in the current year. Return it.
                     result[index] = nextInBucket;
@@ -456,7 +465,7 @@ public class CalendarQueue implements Debuggable{
                     nextInBucket = bucketHead[currentBucket].contents;
                 }
                 long nextVirtualBucket =
-                        _cqComparator.getVirtualIndex(nextInBucket);
+                        _cqComparator.getVirtualBinNumber(nextInBucket);
 
                 if (nextVirtualBucket < minimumNextVirtualBucket) {
                     minimumNextVirtualBucket = nextVirtualBucket;
@@ -518,7 +527,7 @@ public class CalendarQueue implements Debuggable{
     // Get the virtual bin index of the entry, and map it into
     // a physical bin index.
     private int _getBinIndex(Object entry) {
-        long i = _cqComparator.getVirtualIndex(entry);
+        long i = _cqComparator.getVirtualBinNumber(entry);
         i = i % _nBuckets;
         if (i < 0) i += _nBuckets;
         return (int)i;
@@ -542,7 +551,7 @@ public class CalendarQueue implements Debuggable{
 
         // Set the initial position in queue.
         _minimumEntry = firstEntry;
-        _minVirtualBucket = _cqComparator.getVirtualIndex(firstEntry);
+        _minVirtualBucket = _cqComparator.getVirtualBinNumber(firstEntry);
         _minBucket = _getBinIndex(firstEntry);
 
         // Set the queue size change thresholds.
@@ -641,7 +650,7 @@ public class CalendarQueue implements Debuggable{
         // Update the position on the calendar.
         _minBucket = index;
         _minimumEntry = minEntry;
-        _minVirtualBucket = _cqComparator.getVirtualIndex(minEntry);
+        _minVirtualBucket = _cqComparator.getVirtualBinNumber(minEntry);
         --_qSize;
 
         // Reduce the calendar size if needed.
@@ -735,7 +744,7 @@ public class CalendarQueue implements Debuggable{
             } while (currCell != null);
         }
 
-        // Remove the specified element from the queue, where equal() is used
+        // Remove the specified element from the queue, where equals() is used
         // to determine a match.  Only the first matching element that is found
         // is removed. Return true if a matching element is found and removed,
         // and false otherwise.
@@ -800,22 +809,20 @@ public class CalendarQueue implements Debuggable{
     // functionality stripped out.
     private class CQCell {
 
-        /** Construct a cell with the specified contents, pointing to the
-         *  specified next cell.
-         *  @param contents The contents.
-         *  @param next The next cell, or null if this is the end of the list.
-         */
+        // Construct a cell with the specified contents, pointing to the
+        // specified next cell.
+        // @param contents The contents.
+        // @param next The next cell, or null if this is the end of the list.
         public CQCell(Object contents, CQCell next) {
             this.contents = contents;
             this.next = next;
         }
 
-        /** Search the list for the specified element (using equals() to
-         *  identify a match).  Note that this does a linear search
-         *  starting at the begining of the list.
-         *  @param element Element to look for.
-         *  @return The cell containing the element, or null if there is none.
-         **/
+        // Search the list for the specified element (using equals() to
+        // identify a match).  Note that this does a linear search
+        // starting at the begining of the list.
+        // @param element Element to look for.
+        // @return The cell containing the element, or null if there is none.
          public final CQCell find(Object element) {
              for (CQCell p = this; p != null; p = p.next) {
                  if (p.contents.equals(element)) return p;
@@ -823,10 +830,10 @@ public class CalendarQueue implements Debuggable{
              return null;
          }
 
-        /** The contents of the cell. */
+        // The contents of the cell.
         public Object contents;
 
-        /** The next cell in the list, or null if there is none. */
+        // The next cell in the list, or null if there is none.
         public CQCell next;
     }
 

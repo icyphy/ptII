@@ -37,11 +37,13 @@ package ptolemy.actor.util;
 This class implements the CQComparator interface. It compares instances
 of Double. Therefore, all arguments passed to its methods have to be of
 type Double (or Double[] for the getBinWidth() method). If this is violated,
-a ClassCastException will be thrown.
+a ClassCastException will be thrown. This class is used to test the
+CalendarQueue.
 
 @author Lukito Muliadi
 @version $Id$
 @see CQComparator
+@see CalendarQueue
 */
 
 public class DoubleCQComparator implements CQComparator {
@@ -92,7 +94,7 @@ public class DoubleCQComparator implements CQComparator {
      *  @exception ClassCastException If the arguments are not instances of
      *   Double.
      */
-    public long getVirtualIndex(Object entry) {
+    public long getVirtualBinNumber(Object entry) {
         return (long)((((Double)entry).doubleValue()
                 - _zeroReference.doubleValue())/
                 _binWidth.doubleValue());

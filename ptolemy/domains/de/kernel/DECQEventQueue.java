@@ -182,7 +182,7 @@ public class DECQEventQueue implements DEEventQueue {
 	 *  @exception ClassCastException If the argument is not
          *   an instance of DEEvent.
 	 */
-	public final long getVirtualIndex(Object event) {
+	public final long getVirtualBinNumber(Object event) {
 	    return (long)((((DEEvent) event).timeStamp()
                     - _zeroReference.timeStamp())/_binWidth.timeStamp());
 	}

@@ -72,7 +72,7 @@ public interface CQComparator extends Comparator {
      * @param entry An object that can be inserted in a calendar queue.
      * @return The index of the bin.
      */
-    public long getVirtualIndex(Object entry);
+    public long getVirtualBinNumber(Object entry);
 
     /** Given an array of entries, set an appropriate bin width for a
      *  calendar queue to hold these entries.  This method assumes that the
@@ -86,6 +86,7 @@ public interface CQComparator extends Comparator {
 
     /** Set the zero reference, to be used in calculating the virtual
      *  bin number.
+     *  @param zeroReference The starting point for bins.
      */
     public void setZeroReference(Object zeroReference);
 }

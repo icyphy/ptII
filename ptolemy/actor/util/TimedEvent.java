@@ -79,14 +79,15 @@ public class TimedEvent {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-        /** Compare the two argument. Return a negative integer,
-         *  zero, or a positive integer as the first argument is less than,
+        /** Compare the two arguments. Return a negative integer,
+         *  zero, or a positive integer depending on whether
+         *  the first argument is less than,
          *  equal to, or greater than the second.
          *  Both arguments have to be instances of TimedEvent, otherwise a
          *  ClassCastException will be thrown.
          *  @param object1 The first event.
          *  @param object2 The second event.
-         *  @return A negative integer, zero, or a positive integer if the first
+         *  @return -1, 0, or +1 depending on whether the first
          *   argument is less than, equal to, or greater than the second.
          *  @exception ClassCastException If either argument is not an instance
          *   of TimedEvent.
@@ -105,34 +106,36 @@ public class TimedEvent {
             }
         }
         
-        /** Given an entry, a zero reference, and a bin width, return a
-         *  virtual bin number for the entry.  The virtual bin number is a
-         *  quantized double.  The calculation performed is:
+        /** Given an entry, return a virtual bin number for the entry.
+         *  The calculation performed is:
          *  <p>
-         *  <i>(entry - zeroReference) / binWidth</i>,
+         *  <i>(entry.timeStamp - zeroReference) / binWidth</i>,
          *  </p>
          *  with the result cast to long.
          *  If the arguments are not instances of TimedEvent, then a
          *  ClassCastException will be thrown.
          *  @param entry The entry.
-         *  @param zeroReference The zero reference.
-         *  @param binWidth The width of the bin.
          *  @return The virtual bin number for the entry, according to the
-         *   zero reference and the bin width.
+         *   current zero reference and the bin width.
          *  @exception ClassCastException If the arguments are not instances of
          *   TimedEvent.
          */
-        public long getVirtualIndex(Object entry) {
+        public long getVirtualBinNumber(Object entry) {
             return (long)((((TimedEvent)entry).timeStamp
             - _zeroReference.timeStamp)/
             _binWidth.timeStamp);
         }
         
         /** Given an array of TimedEvent objects, find the appropriate bin
-         *  width. By 'appropriate', the bin width is chosen such that on
-         *  average the number of entry in all non-empty bins is equal to one.
-         *  If the argument is null, return the default bin width, which is 1.0
-         *  for this implementation.
+         *  width. By 'appropriate', we mean that
+         *  the bin width is chosen such that on average
+         *  the number of entries in all non-empty bins is equal to one.
+         *  If the argument is null, return the default bin width,
+         *  which is 1.0 for this implementation.  If the argument
+         *  is a length one array, then the single element in the array
+         *  (an instance of TimedEvent) is made the bin width.
+         *  Otherwise, the statistics of the elements of the array
+         *  are analyzed to determine a reasonable bin width.
          *
          *  @param entryArray An array of TimedEvent objects.
          *  @return The bin width.
@@ -143,6 +146,10 @@ public class TimedEvent {
             if ( entryArray == null ) {
                 // Reset to default.
                 _binWidth = new TimedEvent(1.0, null);
+                return;
+            }
+            if ( entryArray.length == 1) {
+                _binWidth = (TimedEvent)entryArray[0];
                 return;
             }
             
