@@ -673,13 +673,13 @@ public class IOPort extends ComponentPort {
      */
     public double getCurrentTime(int channelIndex) 
                                      throws IllegalActionException {
-        AbstractReceiver[][] localReceivers;
+        Receiver[][] localReceivers;
         try {
             try {
                 _workspace.getReadAccess();
                 // Note that the getReceivers() method might throw an
                 // IllegalActionException if there's no director.
-                localReceivers = (AbstractReceiver[][]) getReceivers();
+                localReceivers = getReceivers();
                 if (localReceivers[channelIndex] == null) {
                     throw new IllegalActionException(this,
                             "no receiver at index: "
@@ -688,7 +688,9 @@ public class IOPort extends ComponentPort {
             } finally {
                 _workspace.doneReading();
             }
-            return localReceivers[channelIndex][0].getCurrentTime();
+            AbstractReceiver receiver = (AbstractReceiver) 
+                                       localReceivers[channelIndex][0];
+            return receiver.getCurrentTime();
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may be thrown if the port is not an input port.
             throw new IllegalActionException(this,
