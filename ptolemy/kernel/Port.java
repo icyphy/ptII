@@ -37,16 +37,16 @@ import collections.LinkedList;
 //// Port
 /** 
 A Port is the interface of an Entity to any number of Relations.
-Normally, a Port is associated with (owned by) an Entity, although a 
-port may exist with no associated entity.  The role of a port is to 
-aggregate some set of links to relations.  Thus, for example, to represent
+Normally, a Port is contained (owned) by an Entity, although a port
+may exist with no container.  The role of a port is to aggregate
+some set of links to relations.  Thus, for example, to represent
 a directed graph, entities can be created with two ports, one for
 incoming arcs and one for outgoing arcs.  More generally, the arcs
 to an entity may be divided into any number of subsets, with one port
 representing each subset.
 
 @author Mudit Goel, Edward A. Lee
-@version $Id$
+$Id$
 @see Entity
 @see Relation
 */
@@ -82,29 +82,29 @@ public class Port extends NamedObj {
     }
 
     /** Construct a port with the given name contained by the specified
-     *  entity. The associated entity argument must not be null, or a
+     *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This port will use the
-     *  workspace of the entity for synchronization and version counts.
+     *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
      *  The object is not added to the list of objects in the workspace,
-     *  unless the associated entity is null.
+     *  unless the container is null.
      *  Increment the version of the workspace.
-     *  @param associatedEntity The owner entity.
+     *  @param container The parent entity.
      *  @param name The name of the Port.
      *  @exception NameDuplicationException Name coincides with
-     *   an element already on the port list of the associated entity.
+     *   an element already on the port list of the container.
      */	
-    public Port(Entity associatedEntity, String name) 
+    public Port(Entity container, String name) 
              throws NameDuplicationException {
-        super(associatedEntity.workspace(), name);
+        super(container.workspace(), name);
         try {
-            associatedEntity._addPort(this);
+            container._addPort(this);
         } catch (IllegalActionException ex) {
             // Ignore -- always has a name.
         }
         // "super" call above puts this on the workspace list.
         workspace().remove(this);
-        _setAssocEntity(associatedEntity);
+        _setContainer(container);
         // Ignore exception because "this" cannot be null.
         try {
             _relationsList = new CrossRefList(this);
@@ -130,52 +130,13 @@ public class Port extends NamedObj {
         }
     }
 
-    /** Get the entity associated with this Port.
+    /** Get the container entity.
      *  This method is synchronized on the workspace.
      *  @return An instance of Entity.
      */
-    public Nameable getAssocEntity() {
+    public Nameable getContainer() {
         synchronized(workspace()) {
-            return _associatedEntity;
-        }
-    }
-
-    /** Return a string of the form "workspace.name1.name2...nameN" where
-     *  "nameN" is the name of this object, "workspace" is the name of the
-     *  workspace, and the intervening names are the names of the associated
-     *  entity and its containers, if there are containers.
-     *  A recursive structure, where this object is directly or indirectly
-     *  contained by itself, results in an exception.  Note that it is not
-     *  possible to construct a recursive structure using this class alone,
-     *  since there is no container.
-     *  But derived classes might erroneously permit recursive structures,
-     *  so this error is caught here.
-     *  This method is synchronized on the workspace.
-     *  @return The full name of the object.
-     *  @exception InvalidStateException Container contains itself.
-     */
-    public String getFullName()
-            throws InvalidStateException {
-        synchronized (workspace()) {
-            String fullname = new String(getName());
-            // Use a linked list to keep track of what we've seen already.
-            LinkedList visited = new LinkedList();
-            visited.insertFirst(this);
-            Nameable parent = getAssocEntity();
-
-            while (parent != null) {
-                if (visited.firstIndexOf(parent) >= 0) {
-                    // Cannot use this pointer or we'll get stuck infinitely
-                    // calling this method, since it's used to report
-                    // exceptions.
-                    throw new InvalidStateException(
-                            "Container contains itself.");
-                }
-                fullname = parent.getName() + "." + fullname;
-                visited.insertFirst(parent);
-                parent = parent.getContainer();
-            }
-            return workspace().getName() + "." + fullname;
+            return _container;
         }
     }
 
@@ -193,7 +154,7 @@ public class Port extends NamedObj {
      *  If the argument is null, do nothing.
      *  The relation and the entity that contains this
      *  port are required to be at the same level of the hierarchy.
-     *  I.e., if the associated entity of this port has a container,
+     *  I.e., if the container of this port has a container,
      *  then that container is required to also contain the relation.
      *  In derived classes, the relation may be required to be an
      *  instance of a particular subclass of Relation.
@@ -201,8 +162,8 @@ public class Port extends NamedObj {
      *  its version number.
      *  @param relation
      *  @exception IllegalActionException Link crosses levels of
-     *   the hierarchy, or link with an incompatible relation, or
-     *   the port has no associated entity, or the port is not in the
+     *   the hierarchy, or link with an incompatible relation,
+     *   or the port has no container, or the port is not in the
      *   same workspace as the relation.
      */	
     public void link(Relation relation) 
@@ -213,10 +174,9 @@ public class Port extends NamedObj {
                     "Cannot link because workspaces are different.");
         }
         synchronized(workspace()) {
-            Nameable associatedEntity = getAssocEntity();
-            if (associatedEntity != null) {
-                if (associatedEntity.getContainer() 
-			!= relation.getContainer()) {
+            Nameable container = getContainer();
+            if (container != null) {
+                if (container.getContainer() != relation.getContainer()) {
                     throw new IllegalActionException(this, relation,
                             "Link crosses levels of the hierarchy");
                 }
@@ -235,43 +195,42 @@ public class Port extends NamedObj {
         }
     }
 
-    /** Specify the associated entity, adding the port to the list of ports
-     *  in the container.  If the associated entity already contains
+    /** Specify the container entity, adding the port to the list of ports
+     *  in the container.  If the container already contains
      *  a port with the same name, then throw an exception and do not make
-     *  any changes.  Similarly, if the entity is not in the same
+     *  any changes.  Similarly, if the container is not in the same
      *  workspace as this port, throw an exception.
-     *  If the port already has an associated entity , remove
+     *  If the port already has a container, remove
      *  this port from its port list first.  Otherwise, remove it from
      *  the list of objects in the workspace. If the argument is null, then
      *  unlink the port from any relations, remove it from its container,
      *  and add it to the list of objects in the workspace.
-     *  If the port is already associated with the entity, do nothing.
+     *  If the port is already contained by the entity, do nothing.
      *  This method is synchronized on the
      *  workspace and increments its version number.
      *  @exception IllegalActionException Port is not of the expected class
-     *   for the container, or it has no name, or the port and associated
-     *   entity are not in the same workspace.
+     *   for the container, or it has no name, or the port and container are
+     *   not in the same workspace.
      *  @exception NameDuplicationException Duplicate name in the container.
      */
-    public void setAssocEntity(Entity associatedEntity)
+    public void setContainer(Entity entity)
             throws IllegalActionException, NameDuplicationException {
-        if (associatedEntity != null && 
-		workspace() != associatedEntity.workspace()) {
-            throw new IllegalActionException(this, associatedEntity,
+        if (entity != null && workspace() != entity.workspace()) {
+            throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
         }
         synchronized(workspace()) {
-            Entity prevAssocEntity = (Entity)getAssocEntity();
-            if (prevAssocEntity == associatedEntity) return;
+            Entity prevcontainer = (Entity)getContainer();
+            if (prevcontainer == entity) return;
             // Do this first, because it may throw an exception.
-            if (associatedEntity != null) {
-                associatedEntity._addPort(this);
-                if (prevAssocEntity == null) {
+            if (entity != null) {
+                entity._addPort(this);
+                if (prevcontainer == null) {
                     workspace().remove(this);
                 }
             }
-            _setAssocEntity(associatedEntity);
-            if (associatedEntity == null) {
+            _setContainer(entity);
+            if (entity == null) {
                 // Ignore exceptions, which mean the object is already
                 // on the workspace list.
                 try {
@@ -279,10 +238,10 @@ public class Port extends NamedObj {
                 } catch (IllegalActionException ex) {}
             }
 
-            if (prevAssocEntity != null) {
-                prevAssocEntity._removePort(this);
+            if (prevcontainer != null) {
+                prevcontainer._removePort(this);
             }
-            if (associatedEntity == null) {
+            if (entity == null) {
                 unlinkAll();
             }
         }
@@ -327,7 +286,7 @@ public class Port extends NamedObj {
 
     /** Link this port with a relation.
      *  If the argument is null, do nothing.
-     *  If this port has no associated entity, throw an exception.
+     *  If this port has no container, throw an exception.
      *  Invoke _checkRelation, which may also throw an exception,
      *  but do no further checking.  I.e., level-crossing links are allowed.
      *  This method is synchronized on the
@@ -342,7 +301,7 @@ public class Port extends NamedObj {
         synchronized(workspace()) {
             if (relation != null) {
                 _checkRelation(relation);
-                if (getAssocEntity() == null) {
+                if (getContainer() == null) {
                     throw new IllegalActionException(this, relation,
                             "Port must have a container to establish a link.");
                 }
@@ -352,24 +311,24 @@ public class Port extends NamedObj {
         }
     }
 
-    /** Set the associated entity without any effort to maintain consistency
+    /** Set the container without any effort to maintain consistency
      *  (i.e. nothing is done to ensure that the container includes the
      *  port in its list of ports, nor that the port is removed from
      *  the port list of the previous container.
-     *  If the previous associated entity is null and the
+     *  If the previous container is null and the
      *  new one non-null, remove the port from the list of objects in the
-     *  workspace.  If the new associated entity is null, then add the port 
-     *  to the list of objects in the workspace.
+     *  workspace.  If the new container is null, then add the port to
+     *  the list of objects in the workspace.
      *  This method is synchronized on the
      *  workspace, and increments its version number.
-     *  It assumes the workspace of the associated entity is the same as that
+     *  It assumes the workspace of the container is the same as that
      *  of this port, but this is not checked.  The caller should check.
      *  Use the public version to to ensure consistency.
      *  @param container The new container.
      */	
-    protected void _setAssocEntity(Entity associatedEntity) {
+    protected void _setContainer(Entity container) {
         synchronized(workspace()) {
-            _associatedEntity = associatedEntity;
+            _container = container;
             workspace().incrVersion();
         }
     }
@@ -381,6 +340,6 @@ public class Port extends NamedObj {
     // This member is protected to allow access from derived classes only.
     private CrossRefList _relationsList;
 
-    // The entity that owns this port.
-    private Entity _associatedEntity;
+    // The entity that contains this port.
+    private Entity _container;
 }
