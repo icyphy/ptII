@@ -62,6 +62,7 @@ JSRCS = \
 	CTDynamicActor.java \
 	CTEmbeddedDirector.java \
 	CTEventGenerator.java \
+	CTGeneralDirector.java \
 	CTMixedSignalDirector.java \
 	CTMultiSolverDirector.java \
 	CTReceiver.java \
