@@ -172,13 +172,44 @@ public class UtilityFunctions {
 							
 	    if (namedObjURL != null) {
 		String namedObjFileName = namedObjURL.getFile().toString();
+		// FIXME: How do we get from a URL to a pathname?
+		if (namedObjFileName.startsWith("file:")) {
+		    // We get rid of either file:/ or file:\
+		    namedObjFileName = namedObjFileName.substring(6);
+		}
 		String abnormalHome = namedObjFileName.substring(0,
 						  namedObjFileName.length()
 						  - namedObjPath.length());
+
 		// abnormalHome will have values like: "/C:/ptII/"
 		// which cause no end of trouble, so we construct a File
 		// and call toString().
+
 		home = (new File(abnormalHome)).toString();
+
+		// If we are running under Web Start, then strip off
+		// the trailing "!"
+		if (home.endsWith("!")) {
+		    home =
+			home.substring(0, home.length() - 1);
+		}
+
+		// Web Start
+		String ptsupportJarName = File.separator + "DMptolemy"
+		    + File.separator + "RMptsupport.jar";
+		if (home.endsWith(ptsupportJarName)) {
+		    home =
+			home.substring(0, home.length()
+				       - ptsupportJarName.length());
+		}
+
+		ptsupportJarName = File.separator + "ptolemy" 
+		    + File.separator + "ptsupport.jar";
+		if (home.endsWith(ptsupportJarName)) {
+		    home =
+			home.substring(0, home.length()
+				       - ptsupportJarName.length());
+		}
 	    }
 
 	    if (home == null) {
