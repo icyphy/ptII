@@ -1,7 +1,6 @@
-/*
-An iterator for declarations from an environment. Instead of looking up
+/* An iterator for declarations from an environment. Instead of looking up
 all matches of a declaration at once, declarations are found on an
-as-needed basis. Inspired by EnvironIter in Titanium.
+as-needed basis.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -40,6 +39,17 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+/**  An iterator for declarations from an environment. Instead of looking up
+all matches of a declaration at once, declarations are found on an
+as-needed basis.
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
+ */
 public class EnvironIter implements Iterator {
 
     // no elements

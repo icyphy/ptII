@@ -1,6 +1,5 @@
-/*
-An environment for declarations, which may be contained in another
-environment. Code converted from Environ in Titanium.
+/* An environment for declarations, which may be contained in another
+environment.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -42,8 +41,14 @@ import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// Environ
 /** An environment for declarations, which may be contained in another
- *  environment. Code converted from Environ in Titanium.
- *  @author Jeff Tsay
+environment.
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class Environ {
 

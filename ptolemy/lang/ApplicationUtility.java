@@ -36,8 +36,8 @@ package ptolemy.lang;
 //////////////////////////////////////////////////////////////////////////
 //// ApplicationUtility
 /** Miscelleneous utilities for command-line applications.
- *
- *  @author Jeff Tsay
+@author Jeff Tsay
+@version $Id$
  */
 public class ApplicationUtility {
 

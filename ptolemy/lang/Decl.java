@@ -1,5 +1,4 @@
-/*
-A declaration of some entity. Code converted from Decl in Titanium.
+/* A declaration of some entity.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -35,39 +34,36 @@ package ptolemy.lang;
 //////////////////////////////////////////////////////////////////////////
 //// Decl
 /**
- *  A Decl encapsulates information about a declaration of some entity.
- *  There is a unique Decl for each Decl in the compilation.
- *  </p>
- *  <p>
- *  The class Decl and its subclasses declare attributes, most of which make
- *  sense only for certain types of Decl.  Attempts to access nonsensical
- *  attributes will cause runtime errors.
- *  </p>
- *  <p>
- *  By convention, a Decl member named "getFoo" will return the "foo"
- *  attribute when called with no parameters, and a member "setFoo" will
- *  set the "foo" attribute when called with one parameter.
- *  Also, if member "foo" is not valid for all Decls, there is a member
- *  "hasFoo()" that returns true or false depending on whether object
- *  on which it is called has a class for which "foo" may be called.
- *  </p>
- *  <p>
- *  Objects of type Decl should not be allocated; the class is intended
- *  as a base class for others.
- *  </p>
- *  <p>
- *   ATTRIBUTE name
- *     All Decls have a name, of type String.  These are
- *     the unique representative strings assigned by lexical analysis.
- *     The names of two Decls are considered the same iff they are the
- *     same pointer, ignoring contents: names that are different pointers
- *     to strings containing the same characters are considered distinct.
- *  </p>
- *  <p>
- *  This class and comments were converted from Decl in the Titanium project.
- *  </p>
- *
- *  @author ctsay@eecs.berkeley.edu
+A Decl encapsulates information about a declaration of some entity.
+There is a unique Decl for each Decl in the compilation.
+<p>
+The class Decl and its subclasses declare attributes, most of which make
+sense only for certain types of Decl.  Attempts to access nonsensical
+attributes will cause runtime errors.
+<p>
+By convention, a Decl member named "getFoo" will return the "foo"
+attribute when called with no parameters, and a member "setFoo" will
+set the "foo" attribute when called with one parameter.
+Also, if member "foo" is not valid for all Decls, there is a member
+"hasFoo()" that returns true or false depending on whether object
+on which it is called has a class for which "foo" may be called.
+<p>
+Objects of type Decl should not be allocated; the class is intended
+as a base class for others.
+<p>
+ ATTRIBUTE name
+   All Decls have a name, of type String.  These are
+   the unique representative strings assigned by lexical analysis.
+   The names of two Decls are considered the same iff they are the
+   same pointer, ignoring contents: names that are different pointers
+   to strings containing the same characters are considered distinct.
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class Decl extends TrackedPropertyMap {
 
