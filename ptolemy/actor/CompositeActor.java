@@ -198,7 +198,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             workspace().getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot fire a non-opaque actor.");
+                        "Cannot fire a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
@@ -264,7 +264,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             workspace().getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot initialize a non-opaque actor.");
+                        "Cannot initialize a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
@@ -321,7 +321,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public Receiver newInsideReceiver() throws IllegalActionException {
         if (_director == null) {
             throw new IllegalActionException(this,
-            "Cannot create a receiver without an executive director.");
+                    "Cannot create a receiver without an executive director.");
         }
         return _director.newReceiver();
     }
@@ -345,7 +345,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-            "CompositeActor.newPort: Internal error: " + ex.getMessage());
+                    "CompositeActor.newPort: Internal error: " + ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
@@ -363,7 +363,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         Director dir = getExecutiveDirector();
         if (dir == null) {
             throw new IllegalActionException(this,
-            "Cannot create a receiver without an executive director.");
+                    "Cannot create a receiver without an executive director.");
         }
         return dir.newReceiver();
     }
@@ -435,7 +435,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             workspace().getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot invoke postfire a non-opaque actor.");
+                        "Cannot invoke postfire a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
@@ -481,7 +481,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             workspace().getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot invoke prefire a non-opaque actor.");
+                        "Cannot invoke prefire a non-opaque actor.");
             }
             // Use the local director to transfer outputs.
             Enumeration ports = inputPorts();
@@ -563,8 +563,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
             workspace().getWriteAccess();
             if (getContainer() != null && execdir != null) {
                 throw new IllegalActionException(this, execdir,
-                "Cannot set the executive director of an actor "
-                + "with a container.");
+                        "Cannot set the executive director of an actor "
+                        + "with a container.");
             }
             // If there was a previous exec director, we need to reset it.
             if (_execdirector != null) _execdirector._makeExecDirectorOf(null);
@@ -590,7 +590,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             workspace().getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                "Cannot fire a non-opaque actor.");
+                        "Cannot fire a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
@@ -629,8 +629,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
             throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof Actor)) {
             throw new IllegalActionException(this, entity,
-            "CompositeActor can only contain entities that implement the "
-            + "Actor interface.");
+                    "CompositeActor can only contain entities that implement the "
+                    + "Actor interface.");
         }
         super._addEntity(entity);
     }
@@ -655,7 +655,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
-            "CompositeActor can only contain instances of IOPort.");
+                    "CompositeActor can only contain instances of IOPort.");
         }
         super._addPort(port);
     }
@@ -676,7 +676,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof IORelation)) {
             throw new IllegalActionException(this, relation,
-            "CompositeActor can only contain instances of IORelation.");
+                    "CompositeActor can only contain instances of IORelation.");
         }
         super._addRelation(relation);
     }

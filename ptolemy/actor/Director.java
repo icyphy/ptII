@@ -513,7 +513,7 @@ public class Director extends NamedObj implements Executable {
             throws CloneNotSupportedException, IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-            "transferInputs: port argument is not an opaque input port.");
+                    "transferInputs: port argument is not an opaque input port.");
         }
         Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i=0; i < port.getWidth(); i++) {
@@ -533,8 +533,8 @@ public class Director extends NamedObj implements Executable {
                     }
                 } catch (NoSuchItemException ex) {
                     throw new InternalErrorException(
-                    "Director.transferInputs: Internal error: " +
-                    ex.getMessage());
+                            "Director.transferInputs: Internal error: " +
+                            ex.getMessage());
                 }
             }
         }
@@ -554,7 +554,7 @@ public class Director extends NamedObj implements Executable {
             throws CloneNotSupportedException, IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-            "transferOutputs: port argument is not an opaque output port.");
+                    "transferOutputs: port argument is not an opaque output port.");
         }
         Receiver[][] insiderecs = port.getInsideReceivers();
         if (insiderecs != null) {
@@ -567,9 +567,9 @@ public class Director extends NamedObj implements Executable {
                                 port.send(i,t);
                             } catch (NoSuchItemException ex) {
                                 throw new InternalErrorException(
-                                    "Director.transferOutputs: " +
-                                    "Internal error: " +
-                                    ex.getMessage());
+                                        "Director.transferOutputs: " +
+                                        "Internal error: " +
+                                        ex.getMessage());
                             }
                         }
                     }
