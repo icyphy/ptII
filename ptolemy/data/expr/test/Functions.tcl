@@ -1167,8 +1167,9 @@ test Function-iterate {Test iterate} {
 # map
 
 test Function-map {Test map} {
-    list [evaluate {map(function(x:int) x*0.5, {0, 1, 2, 3})}] \
-        } {{{0.0, 0.5, 1.0, 1.5}}}
+    list [evaluate {map(function(x:int, y:int) x*y, {{0,1}, {1,2}, {2,3}, {3,4}})}] \
+	 [evaluate {map(function(x:double) x*0.5, {0, 1, 2, 3})}]
+         } {{{0, 2, 6, 12}} {{0.0, 0.5, 1.0, 1.5}}}
 
 ####################################################################
 ####################################################################
