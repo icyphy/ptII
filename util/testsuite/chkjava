@@ -41,6 +41,7 @@
 # 9) Check the rating
 # 10) Check for bogus spaces around declarations
 # 11) Check for %W% %G%, which are from SCCS
+# 12) Check for // System.out.println 
 
 for file in $@
 do
@@ -229,5 +230,11 @@ do
 	    echo "$results"
 	fi
 
+        # 12) Check for // System.out.println 
+	results=`egrep '//' $file | grep System.out.println`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: has commented out println statements"
+	    echo "$results"
+	fi
 done
 
