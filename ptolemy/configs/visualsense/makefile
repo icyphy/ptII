@@ -59,7 +59,7 @@ OTHER_FILES_TO_BE_JARED = \
 	authors.htm \
 	configuration.xml \
 	copyright.htm \
-	directors.htm \
+	directors.xml \
 	docs.htm \
 	help.htm \
 	intro.htm \
