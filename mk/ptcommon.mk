@@ -170,8 +170,8 @@ fast:
 		done ; \
 	fi
 	@if [ "x$(JSRCS)" != "x" ]; then \
-		echo "fast build with 'CLASSPATH=\"$(CLASSPATH)$(AUXCLASSPATH)\" $(JAVAC) $(JFLAGS) *.java' in `pwd`"; \
-		CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVAC) $(JFLAGS) *.java; \
+		echo "fast build with 'CLASSPATH=\"$(CLASSPATH)$(AUXCLASSPATH)\" "$(JAVAC)" $(JFLAGS) *.java' in `pwd`"; \
+		CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVAC)" $(JFLAGS) *.java; \
 	fi
 
 # "make sources" will do SCCS get on anything where SCCS file is newer.
@@ -238,7 +238,7 @@ makefiles: makefile
 .SUFFIXES: .class .java
 .java.class:
 	rm -f `basename $< .java`.class
-	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVAC) $(JFLAGS) $<
+	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVAC)" $(JFLAGS) $<
 
 # Build all the Java class files.
 # Run in the subdirs first in case the subpackages need to be compiled first.
@@ -285,7 +285,7 @@ doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
 	if [ ! -d doc/codeDoc ]; then mkdir -p doc/codeDoc; fi; \
 	rm -f doc/codeDoc/*.html; \
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(AUXCLASSPATH)" \
-	   $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc \
+	   "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
 		$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS); \
 	for x in doc/codeDoc/*.html; do \
 		echo "Fixing paths in $(ME)/$$x"; \
@@ -335,7 +335,7 @@ htest-netscape: $(JTESTHTML) $(JCLASS)
 jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR)
 $(PTCLASSJAR): $(JSRCS) $(JCLASS)
 	(cd $(ROOT); rm -f $(ME)/$@; \
-		$(JAR) cf $(ME)/$@ \
+		"$(JAR)" cf $(ME)/$@ \
 			$(OTHER_FILES_TO_BE_JARED) \
 			$(ME)/*.class)
 subjars:
@@ -367,11 +367,11 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
 	-cp *.class $(PTJAR_TMPDIR)/$(ME)
 	for jar in $(PTCLASSALLJARS) ; do \
 		echo "Unjarring $$jar"; \
-		(cd $(PTJAR_TMPDIR); $(JAR) -xf ../$$jar); \
+		(cd $(PTJAR_TMPDIR); "$(JAR)" -xf ../$$jar); \
 	done
 	rm -rf $(PTJAR_TMPDIR)/META-INF
 	@echo "Creating $@"
-	(cd $(PTJAR_TMPDIR); $(JAR) -cvf tmp.jar .)
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
