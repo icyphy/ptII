@@ -31,6 +31,7 @@ brass
 collections
 com/microstar/xml/driver
 config/*.class
+config/*.jar
 config.cache
 config.log
 config.status
