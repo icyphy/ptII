@@ -43,6 +43,11 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 
 import javax.swing.JComponent;
+import javax.swing.event.ChangeListener;
+import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.BoundedRangeModel;
+
+import java.util.Vector;
 
 import diva.canvas.event.LayerEvent;
 
@@ -67,7 +72,7 @@ import diva.canvas.event.LayerEvent;
  * @Pt.AcceptedRating Yellow
  */
 public class JCanvas extends JComponent implements Printable {
-
+    
     /** The off-screen image.
      * @serial
      */
@@ -77,7 +82,17 @@ public class JCanvas extends JComponent implements Printable {
      * @serial
      */
     private CanvasPane _canvasPane = null;
+    
+    /** range model to control the horizontal movement of the model
+     */
+    private DefaultBoundedRangeModel _horizontalRangeModel = 
+      new DefaultBoundedRangeModel(); 
 
+      /** range model to control the vertical movement of the model
+     */
+    private DefaultBoundedRangeModel _verticalRangeModel = 
+      new DefaultBoundedRangeModel();
+      
     /** A flag to tell us whether to work around the
      * clearRect bug in beta4
      */
@@ -329,6 +344,22 @@ public class JCanvas extends JComponent implements Printable {
             _canvasPane.setSize(s);
         }
     }
+    
+    /**
+     * return the horizontal range model for this canvas
+     */
+    public BoundedRangeModel getHorizontalRangeModel()
+    {
+      return _horizontalRangeModel;
+    }
+    
+    /**
+     * return the vertical range model for this canvas
+     */
+    public BoundedRangeModel getVerticalRangeModel()
+    {
+      return _verticalRangeModel;
+    }
 
     ///////////////////////////////////////////////////////////////////////
     //// protected methods
@@ -391,6 +422,7 @@ public class JCanvas extends JComponent implements Printable {
     private boolean _checkForClearRectBug() {
         return System.getProperty("java.version").equals("1.2beta4");
     }
+    
 }
 
 

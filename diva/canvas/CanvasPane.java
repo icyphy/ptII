@@ -34,7 +34,9 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.NoninvertibleTransformException;
 import java.util.Iterator;
+import javax.swing.DefaultBoundedRangeModel;
 
 import diva.canvas.event.EventAcceptor;
 import diva.canvas.event.LayerEvent;
@@ -77,6 +79,14 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** The transform context of this pane
      */
     private TransformContext _transformContext = new TransformContext(this);
+    
+    /** The range model for horizontal movement of the canvas
+     */     
+    private DefaultBoundedRangeModel _horizRangeModel;
+    
+    /** The range model for vertical movement of the canvas
+     */
+    private DefaultBoundedRangeModel _vertRangeModel;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -325,6 +335,10 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
                     "Cannot set the parent canvas to " + canvas);
         }
         this._canvas = canvas;
+        _horizRangeModel = 
+          (DefaultBoundedRangeModel)_canvas.getHorizontalRangeModel();
+        _vertRangeModel = 
+          (DefaultBoundedRangeModel)_canvas.getVerticalRangeModel();
     }
 
     /** Set the enabled flag of this pane. If the flag is false,
@@ -356,7 +370,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * will return the size set here.
      */
     public void setSize (double width, double height) {
-        _paneSize = new Point2D.Double(width, height);
+        setSize(new Point2D.Double(width, height));
     }
 
     /** Set the size of this pane, in logical coordinates. If the
@@ -364,8 +378,9 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * the getSize() and getPreferredSize() methods of the JCanvas
      * will return the size set here.
      */
-    public void setSize (Point2D size) {
+    public void setSize(Point2D size) {
         _paneSize = size;
+        setRangeModel();
     }
 
     /** Set the transform that maps logical coordinates into the
@@ -374,12 +389,31 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * the transform is null. Note that the transform will
      * be remembered by this pane, so any further changes to the
      * transform will affect the pane.
+     * This version has a flag that can be used to avoid calling
+     * the 'setRangeModel' method
      */
-    public final void setTransform (AffineTransform at) {
+    public final void setTransform (AffineTransform at, boolean setRangeFlag) {
         _transformContext.setTransform(at);
         repaint();
+        if (setRangeFlag) {
+            setRangeModel();
+        }
     }
 
+    /** Set the transform that maps logical coordinates into the
+     * parent's coordinates. If there is no parent, the "parent" is
+     * taken to be the screen. An exception will be thrown if
+     * the transform is null. Note that the transform will
+     * be remembered by this pane, so any further changes to the
+     * transform will affect the pane.
+     * Always calls 'setRangeModel'
+     */
+    public final void setTransform (AffineTransform at) {
+        setTransform( at, true);
+    }
+
+    
+    
     /** Translate this pane the given distance. The translation is
      * done such that it works "correctly" in the presence of scaling.
      */
@@ -406,7 +440,6 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
         // Preconcatenate the pane's transform with it and refresh
         _transformContext.getTransform().preConcatenate(at);
         _transformContext.invalidateCache();
-
         repaint();
     }
 
@@ -441,6 +474,88 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
                     this);
         }
         l._containingPane = null;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                   ////
+    
+    /**
+     * set the model params for the range models.  This sets the min, max
+     * value and extent which can be used by a panner or scrollbars
+     */
+    private void setRangeModel()
+    {
+      Rectangle2D viewsize = getViewSize();
+      Rectangle2D vissize = getVisibleSize();
+      
+      int visWidth = (int)vissize.getWidth();
+      int visHeight = (int)vissize.getHeight();
+      int visX = (int)vissize.getX();
+      int visY = (int)vissize.getY();
+      int viewWidth = (int)viewsize.getWidth();
+      int viewHeight = (int)viewsize.getHeight();
+      int viewX = (int)viewsize.getX();
+      int viewY = (int)viewsize.getY();
+      
+      _vertRangeModel.setMinimum(-viewHeight);
+      _horizRangeModel.setMinimum(-viewWidth);
+            
+      _vertRangeModel.setMaximum(viewY+2*viewHeight);
+      _horizRangeModel.setMaximum(viewX+2*viewWidth);
+     
+      _vertRangeModel.setExtent(visHeight);
+      _horizRangeModel.setExtent(visWidth);
+
+      _vertRangeModel.setValue(visY);
+      _horizRangeModel.setValue(visX);
+    }
+    
+    /** 
+     * Return the total size of everything in the canvas, in canvas
+     *  coordinates.
+     */
+    private Rectangle2D getViewSize() {
+        Rectangle2D viewRect = null;
+        for (Iterator layers = _canvas.getCanvasPane().layers();
+             layers.hasNext();) {
+            CanvasLayer layer = (CanvasLayer)layers.next();
+            Rectangle2D rect = layer.getLayerBounds();
+            if (!rect.isEmpty()) {
+                if (viewRect == null) {
+                    viewRect = rect;
+                } else {
+                    viewRect.add(rect);
+                }
+            }
+        }
+        if (viewRect == null) {
+            // We can't actually return an empty rectangle, because then
+            // we get a bad transform.
+            return getVisibleSize();
+        } else {
+            return viewRect;
+        }
+    }
+
+    /** 
+     * Return the size of the visible part of the canvas, in canvas
+     *  coordinates.
+     */
+    private Rectangle2D getVisibleSize() {
+        AffineTransform current =
+            _canvas.getCanvasPane().getTransformContext().getTransform();
+        AffineTransform inverse;
+        try {
+            inverse = current.createInverse();
+        }
+        catch (NoninvertibleTransformException e) {
+            throw new RuntimeException(e.toString());
+        }
+        Dimension size = _canvas.getSize();
+        Rectangle2D visibleRect = new Rectangle2D.Double(0, 0,
+                size.getWidth(), size.getHeight());
+        return ShapeUtilities.transformBounds(visibleRect,
+                inverse);
     }
 }
 
