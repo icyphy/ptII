@@ -2,7 +2,7 @@
 #
 # @Author: Mudit Goel
 #
-# @Version: $Id$
+# @Version: @(#)PNPort.tcl	1.1 06/03/98
 #
 # @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
