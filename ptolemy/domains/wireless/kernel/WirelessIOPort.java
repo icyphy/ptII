@@ -102,7 +102,7 @@ public class WirelessIOPort
      *  @exception NameDuplicationException If creating the parameters
      *  of this port throws it.
      */
-    public WirelessIOPort(Workspace workspace) 
+    public WirelessIOPort(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         outsideChannel = new StringParameter(this, "outsideChannel");

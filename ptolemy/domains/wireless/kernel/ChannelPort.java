@@ -116,7 +116,7 @@ public class ChannelPort extends WirelessIOPort {
             "instance of WirelessChannel.");
         }
     }
-            
+
     /** Return a list of the ports that can potentially accept data from
      *  the containing channel.  This includes all input ports that use that
      *  channel on the outside and all output ports that use the channel
@@ -162,7 +162,7 @@ public class ChannelPort extends WirelessIOPort {
             throw new InternalErrorException(e);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

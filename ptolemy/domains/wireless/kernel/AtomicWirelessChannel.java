@@ -107,9 +107,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         // the type in attributeChanged().
         // defaultProperties.setTypeAtMost(
         //      new RecordType(new String[0], new Type[0]));
-        
+
         _channelPort = new ChannelPort(this, "_channelPort");
-        
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" " +
                 "style=\"fill:red\"/>\n" +
@@ -150,7 +150,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Return a channel port that can be used to set type constraints
      *  between senders and receivers.
      */
@@ -164,7 +164,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         super.initialize();
         _portPropertyTransformer = new HashMap();
     }
-    
+
     /** Return a list of input ports that can potentially receive data
      *  from this channel.  This includes input ports contained by
      *  entities contained by the container of this channel that
@@ -261,10 +261,10 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     public void removeDependencies() {
         removeDependency(_channelPort, _channelPort);
     }
-    
+
     /** Register a PropertyTransformer for a wirelessIOPort.
      */
-    public void registerPropertyTransformer(WirelessIOPort port, 
+    public void registerPropertyTransformer(WirelessIOPort port,
             PropertyTransformer transformer) {
         _portPropertyTransformer.put(port, transformer);
     }
@@ -623,17 +623,17 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                 _debug(" * no transmit properties.\"");
             }
         }
-        
+
         WirelessIOPort destination = (WirelessIOPort)receiver.getContainer();
-        
+
         if(_portPropertyTransformer.get(sender) != null) {
-            PropertyTransformer propertyTransformer = (PropertyTransformer) 
+            PropertyTransformer propertyTransformer = (PropertyTransformer)
                     _portPropertyTransformer.get(sender);
             result = propertyTransformer.
                     getProperty(result, sender, destination);
         }
         if(_portPropertyTransformer.get(destination) != null) {
-            PropertyTransformer propertyTransformer = (PropertyTransformer) 
+            PropertyTransformer propertyTransformer = (PropertyTransformer)
                     _portPropertyTransformer.get(destination);
             result = propertyTransformer.
                     getProperty(result, sender, destination);
@@ -697,7 +697,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     protected HashMap _portPropertyTransformer;
 
     //protected boolean _portPropertyTransformerInitialized = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -709,7 +709,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
     private HashMap _receiversInRangeCache;
     private HashMap _receiversInRangeCacheVersion;
-    
+
     private List _sendingInputPorts;
     private long _sendingInputPortsVersion = -1L;
     private List _sendingOutputPorts;
@@ -717,7 +717,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
     // Name of the location attribute.
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
-    
+
     /** Dummy port used to reduce the type constraints to 2N
      *  rather than N^2.  This port is returned by instances of
      *  WirelessIOPort when asked for sink ports.  Do not send

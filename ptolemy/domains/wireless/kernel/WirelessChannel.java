@@ -56,7 +56,7 @@ public interface WirelessChannel extends Nameable {
      *  between senders and receivers.
      */
     public ChannelPort getChannelPort();
-    
+
     /** Return a list of input ports that can potentially receive data
      *  from this channel.  This must include input ports contained by
      *  entities contained by the container of this channel that
@@ -83,7 +83,7 @@ public interface WirelessChannel extends Nameable {
 
     /** Register a PropertyTransformer for a wirelessIOPort.
      */
-    public void registerPropertyTransformer(WirelessIOPort port, 
+    public void registerPropertyTransformer(WirelessIOPort port,
             PropertyTransformer transformer);
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This must include input ports contained by

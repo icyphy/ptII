@@ -47,15 +47,15 @@ public interface PropertyTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the interested properties. The returned value is a 
+    /** Return the interested properties. The returned value is a
      *  RecordToken with the specified propertiesa as labels.
      * @param properties The transform properties.
      * @param sender The sending port.
      * @param destination The receiving port.
      * @return The modified transform properties.
-     * @exception IllegalActionException If failed to execute the model. 
+     * @exception IllegalActionException If failed to execute the model.
      */
-    public RecordToken getProperty(RecordToken properties, 
-            WirelessIOPort sender, WirelessIOPort receiver) 
+    public RecordToken getProperty(RecordToken properties,
+            WirelessIOPort sender, WirelessIOPort receiver)
             throws IllegalActionException;
 }
