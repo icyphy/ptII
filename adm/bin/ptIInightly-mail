@@ -75,14 +75,14 @@ AWK=awk
 if [ -f /usr/local/bin/gawk ]; then
     AWK=/usr/local/bin/gawk
 fi
-# Find all the lines that contain *** but not compileDemo or runDemo
+# Find the first 100 lines that contain *** but not compileDemo or runDemo
 # Print out the Entering directory line that precedes the *** line as well
 $AWK ' $0 ~ /Entering directory/ { indir=$0 }
       $0 ~ /\*\*\*/ { 	if ( $0 !~ /runTreeShakeWithoutCodegen/ && $0 !~ /treeShakeAndRunSnapshots/ && $0 !~ /runTreeShakeCodegen/ && $0 !~ /compileDemo/) {
 			    print indir
 			    print $0
 			}
-		      }' $ptbuildlog >> $mailmsg
+		      }' $ptbuildlog | head -100 >> $mailmsg
 
 echo "javadoc had the following `grep 'javadoc: warning' $ptbuildlog | wc -l` warnings" >> $mailmsg
 
