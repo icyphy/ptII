@@ -37,30 +37,21 @@ package ptolemy.actor.gui;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
-import ptolemy.gui.StatusBar;
+import ptolemy.actor.Director;
+import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 
 // Java imports
-import javax.swing.KeyStroke;
-import javax.swing.JPanel;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Event;
-import java.awt.Graphics;
-import java.awt.PrintJob;
 import java.awt.event.*;
-import java.awt.print.PrinterJob;
 import java.io.*;
 import java.net.URL;
-import java.util.StringTokenizer;
 import java.util.Vector;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelFrame
@@ -84,7 +75,7 @@ all windows have been closed. This is done with code something like:
 @author Edward A. Lee
 @version $Id$
 */
-public class ModelFrame extends JFrame implements ExecutionListener {
+public class ModelFrame extends Top implements ExecutionListener {
 
     /** Construct a frame to control the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -104,68 +95,27 @@ public class ModelFrame extends JFrame implements ExecutionListener {
         _pane = new ModelPane(null);
         setModel(model);
 
-        getContentPane().setLayout(new BorderLayout());
         getContentPane().add(_pane, BorderLayout.CENTER);
 
         // Make the go button the default.
         _pane.setDefaultButton();
 
-        // Set up the menus.
-        _fileMenu.setMnemonic(KeyEvent.VK_F);
-        _helpMenu.setMnemonic(KeyEvent.VK_H);
-
-        // File menu
-        JMenuItem[] fileMenuItems = {
-            new JMenuItem("Open", KeyEvent.VK_O),
-            new JMenuItem("Save", KeyEvent.VK_S),
-            new JMenuItem("SaveAs", KeyEvent.VK_A),
-            new JMenuItem("Print", KeyEvent.VK_P),
-            new JMenuItem("Close", KeyEvent.VK_C),
+        // Debug menu
+        JMenuItem[] debugMenuItems = {
+            new JMenuItem("Listen to Manager", KeyEvent.VK_M),
+            new JMenuItem("Listen to Director", KeyEvent.VK_D),
         };
-        // Open button = ctrl-o.
-        fileMenuItems[0].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
-
-        // Save button = ctrl-s.
-        fileMenuItems[1].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
-
-        // Print button = ctrl-p.
-        fileMenuItems[3].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
-
-        // Close button = ctrl-w.
-        fileMenuItems[4].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
-
-        FileMenuListener fml = new FileMenuListener();
+        _debugMenu.setMnemonic(KeyEvent.VK_D);
+        DebugMenuListener sml = new DebugMenuListener();
         // Set the action command and listener for each menu item.
-        for(int i = 0; i < fileMenuItems.length; i++) {
-            fileMenuItems[i].setActionCommand(fileMenuItems[i].getText());
-            fileMenuItems[i].addActionListener(fml);
-            _fileMenu.add(fileMenuItems[i]);
+        for(int i = 0; i < debugMenuItems.length; i++) {
+            debugMenuItems[i].setActionCommand(
+                    debugMenuItems[i].getText());
+            debugMenuItems[i].addActionListener(sml);
+            _debugMenu.add(debugMenuItems[i]);
         }
-        _menubar.add(_fileMenu);
+        _menubar.add(_debugMenu);
 
-        // Help menu
-        JMenuItem[] helpMenuItems = {
-            new JMenuItem("About", KeyEvent.VK_A),
-            new JMenuItem("Help", KeyEvent.VK_H),
-        };
-        HelpMenuListener sml = new HelpMenuListener();
-        // Set the action command and listener for each menu item.
-        for(int i = 0; i < helpMenuItems.length; i++) {
-            helpMenuItems[i].setActionCommand(
-                    helpMenuItems[i].getText());
-            helpMenuItems[i].addActionListener(sml);
-            _helpMenu.add(helpMenuItems[i]);
-        }
-        _menubar.add(_helpMenu);
-
-        setJMenuBar(_menubar);
-
-        // Add a status bar.
-        getContentPane().add(_statusBar, BorderLayout.SOUTH);
         // FIXME: Need to do something with the progress bar in the status bar.
     }
 
@@ -214,39 +164,6 @@ public class ModelFrame extends JFrame implements ExecutionListener {
         return _pane;
     }
 
-    /** Report an exception.  This displays a message in a dialog and
-     *  prints the stack trace to the standard error stream.
-     *  @param ex The exception to report.
-     */
-    public void report(Exception ex) {
-	report("", ex);
-    }
-
-    /** Report a message to the user by displaying it in a status bar.
-     *  @param message The message to report.
-     */
-    public void report(String message) {
-	_statusBar.setMessage(message);
-    }
-
-    /** Report an exception.  This displays a message in a dialog and
-     *  prints the stack trace to the standard error stream.
-     *  @param message The message.
-     *  @param ex The exception to report.
-     */
-    public void report(String message, Exception ex) {
-	_statusBar.setMessage("Exception. " + message);
-        if (message != null) {
-            System.err.println(message);
-        } else {
-            System.err.println("Exception thrown.");
-        }
-        System.err.println(ex.getMessage());
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(this, message + "\n" + ex.toString(),
-                "Ptolemy II error", JOptionPane.ERROR_MESSAGE);
-    }
-
     /** Set background color.  This overrides the base class to set the
      *  background of contained ModelPane.
      *  @param background The background color.
@@ -254,9 +171,8 @@ public class ModelFrame extends JFrame implements ExecutionListener {
     public void setBackground(Color background) {
         super.setBackground(background);
         // This seems to be called in a base class constructor, before
-        // this variables has been set.
+        // this variable has been set. Hence the test against null.
         if (_pane != null) _pane.setBackground(background);
-        if (_statusBar != null) _statusBar.setBackground(background);
     }
 
     /** Set the associated model.
@@ -275,24 +191,6 @@ public class ModelFrame extends JFrame implements ExecutionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** @serial Menubar for this frame. */
-    protected JMenuBar _menubar = new JMenuBar();
-
-    /** @serial File menu for this frame. */
-    protected JMenu _fileMenu = new JMenu("File");
-
-    /** @serial Help menu for this frame. */
-    protected JMenu _helpMenu = new JMenu("Help");
-
-    /** @serial Directory that contains the input file. */
-    protected File _directory = null;
-
-    /** @serial The input file. */
-    protected File _file = null;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Open a dialog with basic information about this window.
@@ -309,10 +207,19 @@ public class ModelFrame extends JFrame implements ExecutionListener {
                 "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /** Close the window.
+    /** Clear the current contents.  First, check to see whether
+     *  the contents have been modified, and if so, then prompt the user
+     *  to save them.  A return value of false
+     *  indicates that the user has canceled the action.
+     *  @return False if the user cancels the clear.
      */
-    protected void _close() {
-        dispose();
+    protected boolean _clear() {
+        if (super._clear()) {
+            setModel(new CompositeActor());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /** Display more detailed information than given by _about().
@@ -329,115 +236,39 @@ public class ModelFrame extends JFrame implements ExecutionListener {
                 "About " + getTitle(), JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /** Open a new file.
+    /** Read the specified URL.
+     *  @param url The URL to read.
+     *  @exception IOException If the URL cannot be read.
      */
-    protected void _open() {
-        JFileChooser fileDialog = new JFileChooser();
-        fileDialog.setDialogTitle("Select a model file");
-
-        // Filter file names.
-        // NOTE: This filter is not built in yet... add this when it is.
-        // It is not worth the trouble to design our own filter.
-        // ExtensionFileFilter filter = new ExtensionFileFilter();
-        // filter.addExtension("xml");
-        // filter.setDescription("Ptolemy files");
-        // fileDialog.addChoosableFileFilter(filter);
-
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            // The default on Windows is to open at user.home, which is
-            // typically an absurd directory inside the O/S installation.
-            // So we use the current directory instead.
-            String cwd = System.getProperty("user.dir");
-            if (cwd != null) {
-                fileDialog.setCurrentDirectory(new File(cwd));
-            }
-        }
-        int returnVal = fileDialog.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            _file = fileDialog.getSelectedFile();
-            setTitle(_file.getName());
-            _directory = fileDialog.getCurrentDirectory();
-            try {
-                _application._read(new URL("file", null,
-                        _directory.getAbsolutePath()),
-                        new FileInputStream(_file));
-            } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "File not found:\n" + ex.toString(),
-                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Error reading input:\n" + ex.toString(),
-                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
-            }
-        }
+    protected void _read(URL url) throws IOException {
+        // NOTE: Used to use for the first argument the following, but
+        // it seems to not work for relative file references:
+        // new URL("file", null, _directory.getAbsolutePath()
+        _application._read(url, url.openStream());
     }
 
     /** Print the contents.
      */
     protected void _print() {
-        PrinterJob job = PrinterJob.getPrinterJob();
-        // FIXME: What classes implement Printable? This one doesn't...
-        // job.setPrintable(_pane);
-        if (job.printDialog()) {
-            try {
-                job.print();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Printing failed:\n" + ex.toString(),
-                        "Print Error", JOptionPane.WARNING_MESSAGE);
-            }
-        }
+        // FIXME: What should we print?  Plots?  How?
+        super._print();
     }
 
-    /** Save the model to the current file, determined by the
-     *  and _file protected variable.
+    /** Write the model to the specified file.
+     *  @param file The file to write to.
+     *  @exception IOException If the write fails.
      */
-    protected void _save() {
-        if (_file != null) {
-            try {
-                java.io.FileWriter fout = new java.io.FileWriter(_file);
-                _model.exportMoML(fout);
-                fout.close();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Error writing file:\n" + ex.toString(),
-                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
-            }
-        } else {
-            _saveAs();
-        }
+    protected void _writeFile(File file) throws IOException {
+        java.io.FileWriter fout = new java.io.FileWriter(file);
+        _model.exportMoML(fout);
+        fout.close();
     }
 
-    /** Query the user for a filename and save the model to that file.
-     */
-    protected void _saveAs() {
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-        JFileChooser fileDialog = new JFileChooser();
-        fileDialog.setDialogTitle("Save model as...");
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            // The default on Windows is to open at user.home, which is
-            // typically an absurd directory inside the O/S installation.
-            // So we use the current directory instead.
-            String cwd = System.getProperty("user.dir");
-            if (cwd != null) {
-                fileDialog.setCurrentDirectory(new File(cwd));
-            }
-        }
-        // FIXME: Can't seem to suggest a file name:
-        // fileDialog.setCurrentFile("model.xml");
-        int returnVal = fileDialog.showSaveDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            _file = fileDialog.getSelectedFile();
-            setTitle(_file.getName());
-            _directory = fileDialog.getCurrentDirectory();
-            _save();
-        }
-    }
+    /** @serial Debug menu for this frame. */
+    protected JMenu _debugMenu = new JMenu("Debug");
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -456,43 +287,38 @@ public class ModelFrame extends JFrame implements ExecutionListener {
     // changed.
     private Manager.State _previousState;
 
-    // The status bar.
-    private StatusBar _statusBar = new StatusBar();
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    class FileMenuListener implements ActionListener {
+    /** Listener for debug menu commands. */
+    class DebugMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-            if (actionCommand.equals("Open")) _open();
-            else if (actionCommand.equals("Save")) _save();
-            else if (actionCommand.equals("SaveAs")) _saveAs();
-            else if (actionCommand.equals("Print")) _print();
-            else if (actionCommand.equals("Close")) _close();
-
-            // NOTE: The following should not be needed, but there jdk1.3beta
-            // appears to have a bug in swing where repainting doesn't
-            // properly occur.
-            repaint();
-        }
-    }
-
-    class HelpMenuListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem)e.getSource();
-            String actionCommand = target.getActionCommand();
-            if (actionCommand.equals("About")) {
-                _about();
-            } else if (actionCommand.equals("Help")) {
-                _help();
+            final TopDebugListener listener = new TopDebugListener();
+            if (actionCommand.equals("Listen to Manager")) {
+                final Manager manager = _model.getManager();
+                if (manager != null) {
+                    manager.addDebugListener(listener);
+                    // Listen for window closing events to unregister.
+                    listener.addWindowListener(new WindowAdapter() {
+                        public void windowClosing(WindowEvent e) {
+                            manager.removeDebugListener(listener);
+                        }
+                    });
+                }
+            } else if (actionCommand.equals("Listen to Director")) {
+                final Director director = _model.getDirector();
+                if (director != null) {
+                    director.addDebugListener(listener);
+                    // Listen for window closing events to unregister.
+                    listener.addWindowListener(new WindowAdapter() {
+                        public void windowClosing(WindowEvent e) {
+                            director.removeDebugListener(listener);
+                        }
+                    });
+                }
             }
-
-            // NOTE: The following should not be needed, but there jdk1.3beta
-            // appears to have a bug in swing where repainting doesn't
-            // properly occur.
-            repaint();
         }
     }
 }

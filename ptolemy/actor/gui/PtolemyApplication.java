@@ -52,6 +52,7 @@ import javax.swing.UIManager;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -160,8 +161,8 @@ public class PtolemyApplication extends MoMLApplication {
         try {
             PtolemyApplication plot = new PtolemyApplication(args);
         } catch (Exception ex) {
-            System.err.println(ex.toString());
-            ex.printStackTrace();
+            MessageHandler.error("Command failed", ex);
+            System.exit(0);
         }
 
         // If the -test arg was set, then exit after 2 seconds.

@@ -101,13 +101,8 @@ public class BasicJApplet extends JApplet {
      *  only the error message associated with the exception.
      */
     public void report(Exception ex) {
-        String msg = "Exception thrown by applet.";
-        System.err.println(msg);
-        ex.printStackTrace();
+        MessageHandler.error("Exception thrown by applet.", ex);
         showStatus("exception occurred.");
-
-        JOptionPane.showMessageDialog(this, ex.getMessage(),
-                "Ptolemy II Error Message", JOptionPane.ERROR_MESSAGE);
     }
 
     /** Report a message to the user.
@@ -124,14 +119,8 @@ public class BasicJApplet extends JApplet {
      *  exception.
      */
     public void report(String message, Exception ex) {
-        String msg = "Exception thrown by applet.\n" + message;
-        System.err.println(msg);
-        ex.printStackTrace();
+        MessageHandler.error(message, ex);
         showStatus("exception occurred.");
-        JOptionPane.showMessageDialog(this,
-               message + "\n" + ex.getMessage(),
-               "Ptolemy II Error Message",
-               JOptionPane.ERROR_MESSAGE);
     }
 
     ///////////////////////////////////////////////////////////////////
