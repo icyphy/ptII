@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AnimationRenderer.java \
+	DebugRenderer.java \
 	Link.java \
 	RenameDialogFactory.java \
 	PortDialogFactory.java \

@@ -166,13 +166,17 @@ public class AnimationRenderer implements SelectionRenderer {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The prototype decorator
+     */
+    protected FigureDecorator _prototypeDecorator;
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Mapping from figures to decorators
      */
     private Hashtable _decorators = new Hashtable();
 
-    /** The prototype decorator
-     */
-    private FigureDecorator _prototypeDecorator;
 }

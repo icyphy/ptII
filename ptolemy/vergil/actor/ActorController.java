@@ -44,6 +44,9 @@ import diva.graph.layout.IncrementalLayout;
 import diva.graph.layout.IncrementalLayoutListener;
 import diva.graph.layout.LayoutTarget;
 import diva.util.Filter;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
@@ -60,6 +63,7 @@ import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
+import ptolemy.vergil.ptdb.DebugController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -91,7 +95,7 @@ In addition, a layout algorithm is applied so that
 the figures for ports are automatically placed on the sides of the
 figure for the entity.
 
-@author Steve Neuendorffer and Edward A. Lee
+@author Steve Neuendorffer and Edward A. Lee, Elaine Cheong
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -387,6 +391,13 @@ public class ActorController extends AttributeController {
                     new DebugListenerTableau(textEffigy,
                             textEffigy.uniqueName("debugListener"));
                 debugTableau.setDebuggable(object);
+
+                // ptdb stuff
+                DebugController debugController = new DebugController(object, controller);
+                Director director = ((Actor)frame.getModel()).getDirector();
+                if (director != null) {
+                    director.addDebugListener(debugController);
+                }
             }
             catch (KernelException ex) {
                 try {

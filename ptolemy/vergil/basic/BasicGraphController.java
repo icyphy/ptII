@@ -113,7 +113,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     }
 
     /** React to an event.  This base class does nothing.
-     *  @param state The debug event.
+     *  @param event The debug event.
      */
     public void event(DebugEvent event) {
     }
