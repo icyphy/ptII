@@ -818,6 +818,10 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/util \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/xmlparser \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/ast \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de \
