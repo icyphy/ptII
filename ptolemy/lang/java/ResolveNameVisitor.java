@@ -197,7 +197,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         return node;
     }
 
-    public Object visitBlockNode(BlockNode node, LinkedList args) {
+    public Object visitBlockNode(BlockNode node, LinkedList args) {    
         NameContext ctx = (NameContext) args.get(0);
     
         NameContext subctx = new NameContext(ctx);

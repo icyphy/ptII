@@ -1,5 +1,6 @@
 /*
 A JavaVisitor that resolves class or interface type declarations.
+Based on st-package.cc in the Titanium project.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -37,6 +38,11 @@ import java.util.LinkedList;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+/** A JavaVisitor that resolves class or interface type declarations.
+ *  Based on st-package.cc in the Titanium project.
+ *
+ *  @author Jeff Tsay
+ */
 public class ResolveTypesVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants {
 
@@ -117,6 +123,9 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         
         TNLManip.traverseList(this, node, childArgs, node.children());
 
+        // remove the ENVIRON_KEY property which is no longer needed
+        node.removeProperty(ENVIRON_KEY);
+
         return null;
     }
 
@@ -127,6 +136,9 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         
         TNLManip.traverseList(this, node, childArgs, node.getInterfaces());
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
+
+        // remove the ENVIRON_KEY property which is no longer needed
+        node.removeProperty(ENVIRON_KEY);
 
         return null;
     }

@@ -234,15 +234,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
         return env;
     }
-
-    protected void _visitNode(TreeNode node, Environ env) {
-        LinkedList nodeArgs = new LinkedList();
-        nodeArgs.addLast(env);                  // last environment
-        nodeArgs.addLast(Boolean.TRUE);         // inner class = true
-        nodeArgs.addLast(NullValue.instance);   // no enclosing decl
-        node.accept(this, nodeArgs);
-    }
-
+ 
     protected void _visitList(List nodeList, Environ env) {
         LinkedList listArgs = new LinkedList();
         listArgs.addLast(env);                  // last environment

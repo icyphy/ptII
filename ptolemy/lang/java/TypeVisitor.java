@@ -556,7 +556,7 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
           return accessedObjectType((SuperFieldAccessNode) node);        
         } 
         
-        ApplicationUtility.error("accessObjectType() not supported for node " + node);        
+        ApplicationUtility.error("accessdObjectType() not supported for node " + node);        
         return null;              
     }
 
@@ -610,13 +610,13 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
         // t1 and t2 must now both be TypeNameNodes if they are to be equal
         TypeNameNode tn1 = null;
         TypeNameNode tn2 = null;
-        if (t1 instanceof TypeNameNode) {
+        if (t1.classID() == TYPENAMENODE_ID) {
            tn1 = (TypeNameNode) t1;
         } else {
            return false;
         }
 
-        if (t2 instanceof TypeNameNode) {
+        if (t2.classID() == TYPENAMENODE_ID) {
            tn2 = (TypeNameNode) t2;
         } else {
            return false;

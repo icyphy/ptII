@@ -32,6 +32,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
@@ -46,6 +48,31 @@ import ptolemy.lang.java.nodetypes.*;
 public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemanticConstants {
     public JavaCodeGenerator() {
         super(TM_CHILDREN_FIRST);
+    }
+
+    public static void writeCompileUnitNodeList(List unitList, List filenameList) {    
+        Iterator unitItr = unitList.iterator();                
+        Iterator filenameItr = filenameList.iterator();
+        
+        JavaCodeGenerator jcg = new JavaCodeGenerator();
+                
+        while (unitItr.hasNext()) {
+           CompileUnitNode unitNode = (CompileUnitNode) unitItr.next();
+
+           String outCode = (String) unitNode.accept(jcg, null);
+           
+           String outFileName = (String) filenameItr.next();
+            
+           try {
+             FileOutputStream outFile = new FileOutputStream(outFileName);
+             outFile.write(outCode.getBytes());
+             outFile.close();
+           } catch (IOException e) {
+             System.err.println("error opening/writing/closing output file "
+              + outFileName);
+             System.err.println(e.toString());
+           }
+        }                                                        
     }
 
     public Object visitNameNode(NameNode node, LinkedList args) {
