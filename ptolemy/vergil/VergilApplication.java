@@ -275,8 +275,24 @@ public class VergilApplication extends MoMLApplication {
      */
     protected Configuration _createDefaultConfiguration()
             throws Exception {
-        if (_configurationURL == null) {
-            _configurationURL = specToURL(_basePath + "/full/configuration.xml");
+        try {
+            if (_configurationURL == null) {
+                _configurationURL = specToURL(_basePath + "/full/configuration.xml");
+            } 
+        } catch (IOException ex) {
+            try {
+                // If we ship HyVisual without a full installation, then 
+                // we try the hyvisual configuration.
+                // vergil -help needs this.
+                // FIXME: we could do better than this and either
+                // search for configurations or go through a list
+                // of them.
+                _configurationURL =
+                    specToURL(_basePath + "/hyvisual/configuration.xml");
+            } catch (IOException ex2) {
+                // Throw the original exception.
+                throw ex;
+            }
         }
 
         Configuration configuration = null;
