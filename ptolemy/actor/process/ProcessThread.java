@@ -124,9 +124,6 @@ public class ProcessThread extends PtolemyThread {
 			iterate =  _actor.postfire();
 		    }
 		    if( _threadStopRequested && iterate) {
- 		        if( !((ComponentEntity)getActor()).isAtomic() ) {
- 			    ((CompositeActor)getActor()).stopFire();
- 		        }
  		        _director.registerStoppedThread();
 			while( _threadStopRequested ) {
 			    synchronized(this) {
