@@ -37,6 +37,7 @@ import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 import ptolemy.copernicus.kernel.JimpleWriter;
 import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
+import ptolemy.copernicus.kernel.WatchDogTimer;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -97,6 +98,12 @@ public class Main extends KernelMain {
      */
     public void addTransforms() {
 	super.addTransforms();
+       
+        // Set up a watch dog timer to exit after a certain amount of time.
+        // For example, to time out after 5 minutes, or 300000 ms:
+	// -p wjtp.watchDog time:30000
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
+                WatchDogTimer.v()));
         
         // Create a class for the composite actor of the model
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
@@ -109,6 +116,9 @@ public class Main extends KernelMain {
         // this instead of using soot's -O flag so that we can
         // have access to the result.
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
+    
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDogCancel",
+                WatchDogTimer.v(), "cancel:true"));
     }
 
     /** Add transforms corresponding to the standard soot optimizations

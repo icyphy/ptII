@@ -42,7 +42,9 @@ import java.util.TimerTask;
 
 /** 
 A transformer that calls System.exit() after a certain amount of time.
-This transformer is useful for killing tests that are in tight loops
+This transformer is useful for killing tests that are in tight loops.
+We use a transformer instead of building this directly into the KernelMain
+class to get parameter handling for free.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
@@ -55,8 +57,12 @@ public class WatchDogTimer extends SceneTransformer {
         return instance; 
     }
 
+    public String getDefaultOptions() {
+        return super.getDefaultOptions() + " cancel:false";
+    }
+
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " debug time"; 
+        return super.getDeclaredOptions() + " debug time cancel"; 
     }
     
     /** Start up a watch dog timer that will call System.exit().
@@ -77,13 +83,19 @@ public class WatchDogTimer extends SceneTransformer {
         System.out.println("WatchDogTimer.internalTransform("
                 + phaseName + ", " + options + ")");
 
+        boolean isCancelling = Options.getBoolean(options, "cancel");
+        if(isCancelling) {
+            _timer.cancel();
+            return;
+        }
+
         String timeToDieString = Options.getString(options, "time");
         if (timeToDieString == null 
                 || timeToDieString.length() == 0) {
             return;
         }
 
-        final long timeToDie = (new Long(timeToDieString)).longValue();
+       final long timeToDie = (new Long(timeToDieString)).longValue();
 
         // Timers are new in JDK1.3
         // For information about Timers, see
@@ -92,7 +104,6 @@ public class WatchDogTimer extends SceneTransformer {
         if (timeToDie <= 0) {
             return;
         }
-        Timer timer = new Timer();
         TimerTask doTimeToDie = new TimerTask() {
             public void run() {
                 try {
@@ -128,7 +139,9 @@ public class WatchDogTimer extends SceneTransformer {
                 }
             }
         };
-        timer.schedule(doTimeToDie, timeToDie);
+        _timer.schedule(doTimeToDie, timeToDie);
     }
+
+    private Timer _timer = new Timer();
 }
 

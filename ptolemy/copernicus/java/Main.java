@@ -38,6 +38,7 @@ import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 import ptolemy.copernicus.kernel.JimpleWriter;
 import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
+import ptolemy.copernicus.kernel.WatchDogTimer;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -97,7 +98,13 @@ public class Main extends KernelMain {
      */
     public void addTransforms() {
 	super.addTransforms();
-        
+ 
+        // Set up a watch dog timer to exit after a certain amount of time.
+        // For example, to time out after 5 minutes, or 300000 ms:
+	// -p wjtp.watchDog time:30000
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
+                WatchDogTimer.v()));
+       
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
         // so that we can 
@@ -206,8 +213,8 @@ public class Main extends KernelMain {
         // Remove tests of object equality that can be statically
         // determined.  The generated code ends up with alot of
         // these that are really just dead code.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.iee",
-                InstanceEqualityEliminator.v()));
+        //  Scene.v().getPack("wjtp").add(new Transform("wjtp.iee",
+        //        InstanceEqualityEliminator.v()));
 
         // Remove casts and instanceof Checks.
         //  Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
@@ -252,8 +259,10 @@ public class Main extends KernelMain {
         // Removes references to instancefields that come from 'this'.
         // Scene.v().getPack("jop").add(new Transform("jop.dae",
         //        ImprovedDeadAssignmentEliminator.v()));
-        
-    }
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDogCancel",
+                WatchDogTimer.v(), "cancel:true"));
+     }
 
     /** Add transforms corresponding to the standard soot optimizations
      *  to the given pack.

@@ -38,6 +38,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -178,7 +179,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 	_portLocalMap = new HashMap();
 
         // Now instantiate all the stuff inside the model.
-        _composite(body, thisLocal, _model, thisLocal, _model, modelClass, options);
+        _composite(body, thisLocal, _model, thisLocal, _model, modelClass, new HashSet());
 
         units.add(Jimple.v().newReturnVoidStmt());
         
@@ -236,13 +237,13 @@ public class ShallowModelTransformer extends SceneTransformer {
     private void _composite(JimpleBody body, Local containerLocal,
             CompositeEntity container, Local thisLocal, 
             CompositeEntity composite, EntitySootClass modelClass,
-            Map options) {
+            HashSet createdSet) {
 
         // create fields for attributes.
         createFieldsForAttributes(body, container, containerLocal,
-                composite, thisLocal, modelClass);
-        _ports(body, containerLocal, container, thisLocal, composite, modelClass);
-        _entities(body, containerLocal, container, thisLocal, composite, modelClass, options);
+                composite, thisLocal, modelClass, createdSet);
+        _ports(body, containerLocal, container, thisLocal, composite, modelClass, createdSet);
+        _entities(body, containerLocal, container, thisLocal, composite, modelClass, createdSet);
       
         // handle the communication
         _relations(body, thisLocal, composite);
@@ -254,7 +255,7 @@ public class ShallowModelTransformer extends SceneTransformer {
     public static void createFieldsForAttributes(JimpleBody body, 
             NamedObj context,
             Local contextLocal, NamedObj namedObj, Local namedObjLocal, 
-            SootClass theClass) {
+            SootClass theClass, HashSet createdSet) {
         // A local that we will use to set the value of our
         // settable attributes.
         Local attributeLocal = Jimple.v().newLocal("attribute",
@@ -264,18 +265,24 @@ public class ShallowModelTransformer extends SceneTransformer {
                 PtolemyUtilities.settableType);
 	body.getLocals().add(settableLocal);
 
-        NamedObj classObject = _findDeferredInstance(namedObj);
-
         for(Iterator attributes = namedObj.attributeList().iterator();
 	    attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
+
+            // FIXME: This is horrible...  I guess we need an attribute for
+            // persistance? 
+            if(attribute instanceof Variable &&
+                    !(attribute instanceof Parameter)) {
+                continue;
+            }
+             
             String className = attribute.getClass().getName();
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
             String fieldName = getFieldNameForAttribute(attribute, context);
            
             Local local;
-            if(classObject.getAttribute(attribute.getName()) != null) {
+            if(createdSet.contains(attribute.getFullName())) {
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
                 local = attributeLocal;
@@ -289,6 +296,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                 local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         namedObjLocal, attribute.getName());
+                _updateCreatedSet(attribute, createdSet);
             }
 
             // Create a new field for the attribute, and initialize
@@ -321,7 +329,7 @@ public class ShallowModelTransformer extends SceneTransformer {
             // FIXME: configurable??
             // recurse so that we get all parameters deeply.
             createFieldsForAttributes(body, context, contextLocal, 
-                    attribute, local, theClass);
+                    attribute, local, theClass, createdSet);
 	}
     }
 
@@ -329,9 +337,7 @@ public class ShallowModelTransformer extends SceneTransformer {
     private void _entities(JimpleBody body, Local containerLocal,
             CompositeEntity container, Local thisLocal, 
             CompositeEntity composite, EntitySootClass modelClass,
-            Map options) {
-        CompositeEntity classObject = (CompositeEntity)
-            _findDeferredInstance(composite);
+            HashSet createdSet) {
         // A local that we will use to get existing entities
         Local entityLocal = Jimple.v().newLocal("entity",
                 RefType.v(PtolemyUtilities.entityClass));
@@ -342,7 +348,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 	    Entity entity = (Entity)entities.next();
 	    System.out.println("ShallowModelTransformer: entity: " + entity);
             Local local;
-            if(classObject.getEntity(entity.getName()) != null) {
+            if(createdSet.contains(entity.getFullName())) {
                 // Get a reference to the previously created entity.
                 local = entityLocal;
                 body.getUnits().add(Jimple.v().newAssignStmt(entityLocal,
@@ -360,30 +366,32 @@ public class ShallowModelTransformer extends SceneTransformer {
                 // this might not be a valid Java identifier.)
                 local = PtolemyUtilities.createNamedObjAndLocal(body, className,
                         thisLocal, entity.getName());
-                if(!className.equals(entity.getMoMLInfo().className)) {
+                _updateCreatedSet(entity, createdSet);
+
+                /*        if(!className.equals(entity.getMoMLInfo().className)) {
                     // If the entity is a moml class.... then we need to create
                     // the stuff inside the moml class before we keep going...
                     // FIXME: what about not composite classes?
                     CompositeEntity classEntity = (CompositeEntity)
                         _findDeferredInstance(entity);
-                    _composite(body, containerLocal, container, local, classEntity, modelClass, options);
+                    _composite(body, containerLocal, container, local, classEntity, modelClass, createdSet);
                     
-                }
+                    }*/
             }
             
 	    _entityLocalMap.put(entity, local);
 
             if(entity instanceof CompositeEntity) {
-                _composite(body, containerLocal, container, local, (CompositeEntity)entity,
-                        modelClass, options);
+                _composite(body, containerLocal, container, local, 
+                        (CompositeEntity)entity, modelClass, createdSet);
             } else {
-                _ports(body, thisLocal, composite, local, entity, modelClass);
+                _ports(body, thisLocal, composite, local, 
+                        entity, modelClass, createdSet);
                 // If we are doing shallow code generation, then
                 // include code to initialize the parameters of this
                 // entity.
-                // FIXME: flag to not create fields?
                 createFieldsForAttributes(body, composite, thisLocal, 
-                        entity, local, modelClass);
+                        entity, local, modelClass, createdSet);
             }
 	}
     }
@@ -391,9 +399,7 @@ public class ShallowModelTransformer extends SceneTransformer {
     // Create and set external ports.
     private void _ports(JimpleBody body, Local containerLocal,
             CompositeEntity container, Local entityLocal,
-            Entity entity, EntitySootClass modelClass) {
-        Entity classObject = (Entity)_findDeferredInstance(entity);
-
+            Entity entity, EntitySootClass modelClass, HashSet createdSet) {
         // This local is used to store the return from the getPort
         // method, before it is stored in a type-specific local variable.
         Local tempPortLocal = Jimple.v().newLocal("tempPort",
@@ -411,7 +417,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                     PtolemyUtilities.portType);
             body.getLocals().add(portLocal);
 
-            if(classObject.getPort(port.getName()) != null) {
+            if(createdSet.contains(port.getFullName())) {
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
 
@@ -430,6 +436,8 @@ public class ShallowModelTransformer extends SceneTransformer {
                 Local local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         entityLocal, port.getName());
+
+                _updateCreatedSet(port, createdSet);
                 if(port instanceof TypedIOPort) {
                     TypedIOPort ioport = (TypedIOPort)port;
                     if(ioport.isInput()) {
@@ -715,6 +723,42 @@ public class ShallowModelTransformer extends SceneTransformer {
         return deferredObject;
     }
 
+    // Add the full names of all named objects contained in the given object
+    // to the given set.
+    private static void _updateCreatedSet(NamedObj object, HashSet set) {
+        System.out.println("creating " + object);
+        if(object instanceof CompositeEntity) {
+            CompositeEntity composite = (CompositeEntity) object;
+            for(Iterator entities = composite.entityList().iterator();
+                entities.hasNext();) {
+                Entity entity = (Entity)entities.next();
+                set.add(entity.getFullName());
+                _updateCreatedSet(entity, set);
+            }
+            for(Iterator relations = composite.relationList().iterator();
+                relations.hasNext();) {
+                Relation relation = (Relation) relations.next();
+                set.add(relation.getFullName());
+                _updateCreatedSet(relation, set);
+            }
+        }
+        if(object instanceof Entity) {
+            Entity entity= (Entity) object;
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port)ports.next();
+                set.add(port.getFullName());
+                _updateCreatedSet(port, set);
+            }
+        }
+        for(Iterator attributes = object.attributeList().iterator();
+            attributes.hasNext();) {
+            Attribute attribute = (Attribute)attributes.next();
+            set.add(attribute.getFullName());
+            _updateCreatedSet(attribute, set);
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

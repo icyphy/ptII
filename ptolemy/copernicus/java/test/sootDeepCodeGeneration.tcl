@@ -117,7 +117,7 @@ proc sootDeepCodeGeneration {model} {
 
     # Find the new classes in the new Scene.
     # Soot tries to be smart and refresh the scene in between compilations, so so must we.
-    java::call ptolemy.copernicus.java.PtolemyUtilities loadSootReferences
+    java::call ptolemy.copernicus.kernel.PtolemyUtilities loadSootReferences
 
 #    exec java -Xmx132m -classpath $classpath \
 #	    ptolemy.copernicus.java.Main 
