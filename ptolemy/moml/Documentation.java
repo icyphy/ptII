@@ -99,7 +99,7 @@ public class Documentation extends Attribute {
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @throws IOException If an I/O error occurs.
-     *  @see _exportMoMLContents
+     *  @see NamedObj#_exportMoMLContents
      */
     public void exportMoML(Writer output, int depth) throws IOException {
         output.write(_getIndentPrefix(depth)

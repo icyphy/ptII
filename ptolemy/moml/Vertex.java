@@ -37,6 +37,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj; // for javadoc
 import ptolemy.kernel.util.NameDuplicationException;
 import java.io.*;
 
@@ -157,8 +158,7 @@ public class Vertex extends Attribute implements Locatable {
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @throws IOException If an I/O error occurs.
-     *  @see exportMoMLContents
-     *  @see _exportMoMLContents
+     *  @see NamedObj#_exportMoMLContents
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
