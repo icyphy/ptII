@@ -91,7 +91,7 @@ public class HashedMap extends    UpdatableMapImpl
 /**
  * Implements collections.HashTableParams.buckets.
  * Time complexity: O(1).
- * @see collections.HashTableParams#buckets.
+ * @see collections.HashTableParams#buckets
 **/
 
   public synchronized int buckets() {
@@ -101,7 +101,7 @@ public class HashedMap extends    UpdatableMapImpl
 /**
  * Implements collections.HashTableParams.buckets.
  * Time complexity: O(n).
- * @see collections.HashTableParams#buckets.
+ * @see collections.HashTableParams#buckets
 **/
 
   public synchronized void buckets(int newCap)
