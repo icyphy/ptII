@@ -4,7 +4,7 @@
 <title>Troubleshooting Ptplot</title>
 </head>
 <body bgcolor="#faf0e6">
-<h1><a name="ptplot troubleshooting ">Troubleshooting Ptplotn</a></h1>
+<h1><a name="ptplot troubleshooting ">Troubleshooting Ptplot</a></h1>
 <p>
 Other sources of information:
 <MENU>
@@ -39,7 +39,7 @@ The problem here is that the java interpreter is not finding
 and change <CODE>JAVADEFAULT</CODE> variable to point to the location
 of your JDK.
 HOME <P>Another fix is to set the <CODE>JAVAHOME</CODE> variable
-to point to your JDSK and rerun pxgraph:
+to point to your JDK and rerun pxgraph:
 <PRE>
 cxh@carson 41% setenv JAVAHOME /opt/jdk1.1.4
 cxh@carson 42% pxgraph -help
@@ -52,7 +52,7 @@ something like:
 sh -x pxgraph -help
 </PRE>
 <H3>I can't access the Plot class from a java interpreter</H3>
-If you try to run the Pxgraph class from the java interpreter command line, you might see:
+If you try to run the Pxgraph class by passing the Pxgraph classname as a command line argument to the java interpreter, you might see:
 <PRE>
 ptplot> java Pxgraph
 java.lang.NoClassDefFoundError: ptplot/Plot
@@ -84,7 +84,16 @@ Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
 </PRE>
 Note that you can also set the classpath to include the ptplot.zip
 file, rather than including the directory that the <CODE>ptplot</CODE>
-directory resides in
+directory resides in:
+<PRE>
+cxh@carson 36% unsetenv CLASSPATH
+cxh@carson 57% java -classpath ptplot.zip:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help
+Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]
+ options that take values as second args:
+ -bd <color> (Unsupported)
+
+</PRE>
+
 <p>
 <a href="index.html">Ptplot Infrastructure</a><br>
 <p>
