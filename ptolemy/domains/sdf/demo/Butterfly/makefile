@@ -46,6 +46,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Butterfly.java \
+	Butterfly.xml \
 	ButterflyApplet.java \
 	ButterflyApplication.java
 
