@@ -1710,7 +1710,7 @@ fi
 	echo "$ac_t""$TOOLS_JAR" 1>&6
 	PTDOCLETS_DIR=doclets
 	# Use curly brackets so PTII gets expanded in the makefile
-	JDOCTAGLET='-tagletpath ${PTII} -taglet doc.doclets.RatingTaglet'
+	JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
     else	
 	echo "configure: warning: Could not find tools.jar.
     PTJAVA_HOME = $PTJAVA_HOME
