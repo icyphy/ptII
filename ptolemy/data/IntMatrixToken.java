@@ -54,6 +54,19 @@ public class IntMatrixToken extends MatrixToken {
         this(new int[1][1], DO_NOT_COPY);
     }
 
+    /** Construct a IntMatrixToken with the specified 1-D array.
+     *  Make a copy of the array and store the copy,
+     *  so that changes on the specified array after this token is
+     *  constructed will not affect the content of this token.
+     *  @exception NullPointerException If the specified array
+     *   is null.
+     */
+    public IntMatrixToken(final int[] value, int rows, int columns) {
+        _rowCount = rows;
+        _columnCount = columns;
+        _value = IntegerMatrixMath.toMatrixFromArray(value, rows, columns);
+    }
+
     /** Construct a IntMatrixToken with the specified 2-D array.
      *  Make a copy of the array and store the copy,
      *  so that changes on the specified array after this token is
