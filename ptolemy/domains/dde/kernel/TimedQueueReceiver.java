@@ -202,7 +202,7 @@ public class TimedQueueReceiver {
      * @exception NoRoomException If the queue is full.
      */
     public void put(Token token, double time) throws NoRoomException {
-	if( time < _lastTime && time != INACTIVE ) {
+	if( time < _lastTime && time != INACTIVE && time != IGNORE ) {
 	    System.out.println("Time in the past: " + time + 
 			       "\t_lastTime:" + _lastTime);
 	    IOPort port = (IOPort)getContainer(); 
@@ -270,7 +270,11 @@ public class TimedQueueReceiver {
     ////                         private variables                 ////
 
     // This time value indicates that the receiver is no longer active.
-    protected static double INACTIVE = -1.0;
+    public static final double INACTIVE = -2.0;
+
+    // This time value indicates that the receiver contents should
+    // be ignored.
+    public static final double IGNORE = -1.0;
 
     // This time value indicates that the receiver is no longer active.
     protected static double NOTSTARTED = -5.0;
