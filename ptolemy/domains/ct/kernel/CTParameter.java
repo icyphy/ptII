@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -51,22 +51,22 @@ public class CTParameter extends Parameter{
      *  as its name.
      *  The parameter is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     */
+     
     public CTParameter() {
         super();
     }
-
+*/
     /** Construct a CTParameter in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
      *  The object is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the parameter.
-     */
+     
     public CTParameter(Workspace workspace) {
         super(workspace);
     }
-
+*/
     /** Construct a CTParameter with the given name contained by the specified
      *  CTActor. The container argument must not be null, or a
      *  NullPointerException will be thrown.  The container must be an
