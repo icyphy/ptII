@@ -173,10 +173,5 @@ public class CommandListener extends Receiver {
         } else {
             detected.send(0, BooleanToken.FALSE);
         }
-        
-        // Check the command queue for more commands to send.
-        if(_commandReady()){
-            getDirector().fireAtCurrentTime(CommandListener.this); 
-        }
 	}	
 }

@@ -560,7 +560,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Middle Spotlight" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
                 </property>
                 <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
                 </property>
@@ -595,7 +595,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Side Lights" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
                 </property>
                 <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
                 </property>
@@ -715,7 +715,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Middle Spotlight" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
                 </property>
                 <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
                 </property>
@@ -750,7 +750,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Side Lights" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
                 </property>
                 <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
                 </property>
@@ -871,7 +871,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Middle Spotlight" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
                 </property>
                 <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
                 </property>
@@ -906,7 +906,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Side Lights" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
                 </property>
                 <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
                 </property>
@@ -987,7 +987,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
     <entity name="Listener2" class="ptolemy.actor.lib.x10.Listener">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
         </property>
-        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
         <doc>Serial-port command listener for x10 devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 115.0">

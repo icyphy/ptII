@@ -155,11 +155,6 @@ public class LevelListener extends Receiver {
         } else {
             level.send(0, _NO_COMMAND_TOKEN);
         }
-        
-        // Check the command queue for more commands to send.
-        if(_commandReady()){
-            getDirector().fireAtCurrentTime(LevelListener.this); 
-        }
     }
     
     ///////////////////////////////////////////////////////////////////

@@ -60,7 +60,18 @@ import x10.Controller;
  * For instructions concerning the physical setup of these devices, refer to 
  * their respective manuals.
  * <p>
- * If the <i>x10Interface</i> or <i>portName</i> parameters are changed
+ * This actor requires that the Java comm API be installed.
+ * The comm API comes from http://java.sun.com/products/javacomm/
+ * To install the comm API on a Windows machine:
+ * <ul>
+ * <li> place the win32com.dll in $JDK\jre\bin directory. 
+ * <li> make sure the win32com.dll is executable.
+ * <li> Place the comm.jar in $JDK\jre\lib\ext. 
+ * <li> Place the javax.comm.properties in $JDK\jre\lib . 
+ * </ul>
+ * where $JDK is the location of your Java development kit.
+ * <p>
+ * If the <i>x10Interface</i> or <i>serialPortName</i> parameters are changed
  * after preinitialize() is called, the changes will not take effect until
  * the next execution of the model.
  * <p>
@@ -88,6 +99,9 @@ import x10.Controller;
  * @version $Id$
  */
 public class X10Interface extends TypedAtomicActor {
+    
+    // NOTE: This class has a bit of duplication with actor.lib.io.SerialComm.
+    // These should probably be consolidated.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -104,7 +118,7 @@ public class X10Interface extends TypedAtomicActor {
 
         // Create input ports and port parameters.    
         x10Interface = new StringParameter(this, "x10Interface");
-        serialPort = new StringParameter(this, "serialPort");
+        serialPortName = new StringParameter(this, "serialPortName");
         
         // The x10 interface is selectable, e.g. CM11A or CM17A. The x10 
         // parameter allows the user to choose an interface.
@@ -118,17 +132,24 @@ public class X10Interface extends TypedAtomicActor {
         while (ports.hasMoreElements()) {
             CommPortIdentifier identifier =
                     (CommPortIdentifier) ports.nextElement();
-            String value = identifier.getName();
-            serialPort.addChoice(value);
-            if (defaultChoice == null) {
-                defaultChoice = value;
+            if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                String value = identifier.getName();
+                serialPortName.addChoice(value);
+                if (defaultChoice == null) {
+                    defaultChoice = value;
+                }
             }
         }
         if (defaultChoice == null) {
             defaultChoice = "no ports available";
-            serialPort.addChoice(defaultChoice);
+            serialPortName.addChoice(defaultChoice);
         }
-        serialPort.setExpression(defaultChoice);
+        serialPortName.setExpression(defaultChoice);
+        
+        // FIXME: Make sure fireAtCurrentTime() is not called multiple times.
+        // FIXME: set up a blocking parameter.
+        // FIXME: set up a parameter to produce only the most recent command.
+        // FIXME: override stop() and stopFire().
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -150,7 +171,7 @@ public class X10Interface extends TypedAtomicActor {
      *  is not installed properly), then the value of the string will
      *  be "no ports available".
      */
-    public StringParameter serialPort;
+    public StringParameter serialPortName;
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -168,7 +189,7 @@ public class X10Interface extends TypedAtomicActor {
         // values are changed while the model is running, the same port
         // and controller are taken down in wrapup() as are opened here.
         _controllerName = ((StringToken)x10Interface.getToken()).stringValue();
-        _portName = ((StringToken)serialPort.getToken()).stringValue();
+        _portName = ((StringToken)serialPortName.getToken()).stringValue();
         // The interface should only be opened ONCE during initialization.
         try {
             _interface = _openInterface(_portName, _controllerName);

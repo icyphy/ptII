@@ -93,16 +93,6 @@ public class Listener extends Receiver {
         } else {
             receivedCommand.send(0, _EMPTY_STRING);
         }
-        
-        // Check the command queue for more commands to send.
-        if(_commandReady()){
-            try {
-                getDirector().fireAtCurrentTime(Listener.this);
-            } catch (IllegalActionException ex) {
-                throw new RuntimeException("fireAtCurrentTime() "
-                        + "threw an exception", ex);
-            } 
-        }
     }
     
     ///////////////////////////////////////////////////////////////////

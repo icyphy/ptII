@@ -70,7 +70,7 @@ on and off every 5 seconds.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 360.0">
         </property>
     </property>
-    <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM2">
+    <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -145,7 +145,7 @@ on and off every 5 seconds.</text></svg></configure>
     <entity name="ApplianceController" class="ptolemy.actor.lib.x10.ApplianceController">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
         </property>
-        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="$serialPort">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
         </property>
         <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
         </property>
@@ -186,7 +186,7 @@ on and off every 5 seconds.</text></svg></configure>
     <entity name="Listener" class="ptolemy.actor.lib.x10.Listener">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
         </property>
-        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="$serialPort">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
         </property>
         <doc>Serial-port command listener for x10 devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 275.0">

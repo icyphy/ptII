@@ -29,7 +29,7 @@
     <entity name="CommandListener" class="ptolemy.actor.lib.x10.CommandListener">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
         <property name="command" class="ptolemy.data.expr.StringParameter" value="ON">
         </property>
@@ -63,7 +63,7 @@
     <entity name="Listener" class="ptolemy.actor.lib.x10.Listener">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
         <doc>Serial-port command listener for x10 devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 270.0">
@@ -125,7 +125,7 @@
     <entity name="LevelListener" class="ptolemy.actor.lib.x10.LevelListener">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
         <property name="command" class="ptolemy.data.expr.StringParameter" value="DIM">
         </property>
@@ -191,7 +191,7 @@
     <entity name="LampController2" class="ptolemy.actor.lib.x10.LampController">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
         <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="A">
         </property>

@@ -33,8 +33,12 @@ package ptolemy.actor.lib.x10;
 import java.util.LinkedList;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import x10.Command;
 import x10.UnitEvent;
@@ -45,10 +49,10 @@ import x10.UnitListener;
 /** 
  * Listen for X10 commands propagating through an X10 network. When a
  * command is detected, this actor requests a firing by calling
- * fireAtCurrentTime() on its director. On the next firing, it produces
- * a string description of the command. Alternatively, it can be
+ * fireAtCurrentTime() on its director. Alternatively, it can be
  * triggered via the trigger port, or fired by the scheduler when
  * it chooses.
+ * 
  * @author Colin Cochran and Edward A. Lee
  * @version $Id$
  */
@@ -69,11 +73,31 @@ public class Receiver extends X10Interface {
         
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(true);
+        
+        blocking = new Parameter(this, "blocking");
+        blocking.setTypeEquals(BaseType.BOOLEAN);
+        blocking.setToken(BooleanToken.FALSE);
+
+        discardOldData = new Parameter(this, "discardOldData");
+        discardOldData.setTypeEquals(BaseType.BOOLEAN);
+        discardOldData.setToken(BooleanToken.FALSE);
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** Indicator of whether fire method is blocking.  If true, fire()
+     *  waits until <i>minimumOutputSize</i> bytes have arrived.
+     *  The type is boolean with default false.
+     */
+    public Parameter blocking;
+
+    /** Indicator of whether to discard old data. If this is true,
+     *  then the fire() method will read all available data, but use
+     *  only the most recent X10 command, discarding the rest.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter discardOldData;
 
     /** The trigger port.  The type of this port is undeclared, meaning
      *  that it will resolve to any data type.
@@ -84,23 +108,47 @@ public class Receiver extends X10Interface {
     ////                         public methods                    ////
 
     /** Read at most one input token from each channel of the trigger
-     *  input and discard it.  If the trigger input is not connected,
-     *  then this method does nothing.  Derived classes should be
-     *  sure to call super.fire(), or to consume the trigger input
-     *  tokens themselves, so that they aren't left unconsumed.
+     *  input and discard it. If <i>blocking</i> is true, then block
+     *  until input data is available.  If <i>discardOldData</i> is true,
+     *  then discard all x10 commands on the queue except the last one.
+     *  Derived classes should be sure to call super.fire().
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        _fireAtCurrentTimeCalled = false;
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
                 trigger.get(i);
             }
         }
+        boolean blockingValue = ((BooleanToken)blocking.getToken()).booleanValue();
+        if (blockingValue) {
+            synchronized(this) {
+                try {
+                    while (!_commandReady() && !_stopRequested && !_stopFireRequested) {
+                        wait();
+                    }
+                } catch (InterruptedException ex) {
+                    throw new IllegalActionException(this, ex,
+                    "Thread interrupted while waiting for X10 data.");
+                }
+            }
+        }
+        boolean discardOldDataValue
+                = ((BooleanToken)discardOldData.getToken()).booleanValue();
+        if (discardOldDataValue) {
+            while (_commandQueue.size() > 1) {
+                _getCommand();
+            }
+        } else {
+            if (_commandQueue.size() > 1) {
+                // Request another firing, as there will be data left over.
+                _fireAtCurrentTimeCalled = true;
+                getDirector().fireAtCurrentTime(this);
+            }
+        }
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
 	/** Begin listening for X10 commands.
      *  @exception IllegalActionException If the super class throws it. 
@@ -108,8 +156,24 @@ public class Receiver extends X10Interface {
 	public void initialize() throws IllegalActionException {
 		super.initialize();
         _interface.addUnitListener(_listener);
+        _stopFireRequested = false;
+        _fireAtCurrentTimeCalled = false;
 	}
     
+    /** Override the base class to stop waiting for input data.
+     */
+    public synchronized void stop() {
+        super.stop();
+        notifyAll();
+    }
+
+    /** Override the base class to stop waiting for input data.
+     */
+    public synchronized void stopFire() {
+        super.stopFire();
+        _stopFireRequested = true;
+        notifyAll();
+    }
     /** Remove the <i>UnitListener</i> from the x10 interface.
      *  @exception IllegalActionException If the super class throws it. 
      */
@@ -186,10 +250,18 @@ public class Receiver extends X10Interface {
 	 */
     private LinkedList _commandQueue = new LinkedList();
     
+    /** Indicator that fireAtCurrentTime() has been called and not yet
+     *  serviced.
+     */
+    private boolean _fireAtCurrentTimeCalled = false;
+    
 	/** This is the </i>UnitListener<i> that will be listening for commands 
      *  from the x10 network
 	 */
     private CommandListener _listener = new CommandListener();
+    
+    // Indicator that stopFire() has been called.
+    private boolean _stopFireRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                        private inner class                ////
@@ -240,12 +312,14 @@ public class Receiver extends X10Interface {
             synchronized (_commandQueue){
                 _commandQueue.addLast(event.getCommand());
             }
-            try {
-                // FIXME: Should offer alternative semantics, like blocking.
-                getDirector().fireAtCurrentTime(Receiver.this);
-            } catch (IllegalActionException ex) {
-                throw new RuntimeException("fireAtCurrentTime() "
-                        + "threw an exception", ex);
+            if (!_fireAtCurrentTimeCalled) {
+                try {
+                    _fireAtCurrentTimeCalled = true;
+                    getDirector().fireAtCurrentTime(Receiver.this);
+                } catch (IllegalActionException ex) {
+                    throw new KernelRuntimeException(Receiver.this, null, ex,
+                    "fireAtCurrentTime() failed.");
+                }
             }       
         }    
     }
