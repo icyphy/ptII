@@ -58,6 +58,7 @@ JSIMPLE_TESTS = \
 	Commutator.tcl \
 	Const.tcl \
 	CurrentTime.tcl \
+	DiscreteRandomSource.tcl \
 	Distributor.tcl \
 	DB.tcl \
 	Expression.tcl \
