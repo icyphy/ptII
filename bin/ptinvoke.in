@@ -42,6 +42,20 @@ PTII_DEFAULT=@PTII_DEFAULT@
 # Default JDK Home
 PTJAVA_DIR=@PTJAVA_DIR@
 
+# Jini directory
+JINI_DIR=@JINI_DIR@ 
+
+# Jini lib directory
+JINI_LIB=$JINI_DIR/lib
+
+# Java CLASSPATH separator
+# For Unix, this would be : 
+# For Cygwin, this would be ;
+CLASSPATHSEPARATOR=@CLASSPATHSEPARATOR@
+
+# Jini Jar files
+JINI_JARS=${JINI_LIB}/jini-core.jar${CLASSPATHSEPARATOR}${JINI_LIB}/jini-jspaces.jar${CLASSPATHSEPARATOR}
+
 # Location of ptjacl.jar
 PTJACL_JAR=@PTJACL_JAR@
 
@@ -94,6 +108,13 @@ case "`basename $0`" in
 	javasourcedir=
 	jarfile=$PTJACL_JAR
 	javaflag="$PTJACL_FLAG $javaflag"
+	;;
+    ptjini)
+	# Ptolemy II Application that uses Jini
+	javastartupclass=ptolemy.actor.gui.PtolemyApplication
+	javasourcedir=ptolemy/actor/gui
+	jarfile=$JINI_JARS
+	javaflag="-Djava.security.policy=./policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=file:${PTII}"
 	;;
     ptolemy)
 	# Ptolemy II Application
