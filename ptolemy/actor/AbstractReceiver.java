@@ -76,7 +76,8 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public void clear() throws IllegalActionException {
         throw new IllegalActionException(getContainer(),
-                "Receiver does not support clear().");
+                "Receiver class " + getClass().getName() + 
+                " does not support clear().");
     }
 
     /** Get a token from this receiver.
