@@ -20,23 +20,29 @@
     </property>
     <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
     </property>
-    <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="160.0, 165.0">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The Expression block calculates a mathematical expression.
-Right click and select "Edit Parameters" to see the expression.</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
-        </property>
-    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[89, 152]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:black">The Expression block calculates a mathematical expression, as shown.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 140.0">
+        </property>
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
