@@ -156,7 +156,7 @@ compileDemo: $(JCLASS)
 		-jvmSize         '"$(JVMSIZE)"' \
 		-modelPath       '"$(MODELPATH)"' \
 		-run		 false \
-		-root            '"$(PTII)"' \
+		-ptIIUserDirectory   '"$(PTII)"' \
 		-targetPackage   '"$(TARGETPACKAGE)"' \
 		-targetPath      '"$(TARGETPATH)"' \
 		-watchDogTimeout '"$(WATCHDOGTIMEOUT)"' \
