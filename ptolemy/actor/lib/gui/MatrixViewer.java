@@ -172,7 +172,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *  An instance of JTable will be added to that container. The
      *  table is configured such that a user cannot reorder the
      *  columns of the table. Also, the table maintains a fixed
-     *  preferred size, and will emply scrollbars if the table is
+     *  preferred size, and will employ scrollbars if the table is
      *  larger than the preferred size. This method needs to be called
      *  before the first call to initialize(). Otherwise, an instance
      *  of JTable will be placed in its own frame. The table is also
