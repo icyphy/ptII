@@ -37,6 +37,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -48,7 +49,9 @@ import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.BoundedRangeModel;
 
 import java.util.Vector;
+import java.util.Iterator;
 
+import diva.util.java2d.ShapeUtilities;
 import diva.canvas.event.LayerEvent;
 
 
@@ -360,6 +363,55 @@ public class JCanvas extends JComponent implements Printable {
     {
       return _verticalRangeModel;
     }
+    
+    /** 
+     * Return the total size of everything in the canvas, in canvas
+     *  coordinates.
+     */
+    public Rectangle2D getViewSize() {
+        Rectangle2D viewRect = null;
+        for (Iterator layers = getCanvasPane().layers();
+             layers.hasNext();) {
+            CanvasLayer layer = (CanvasLayer)layers.next();
+            Rectangle2D rect = layer.getLayerBounds();
+            if (!rect.isEmpty()) {
+                if (viewRect == null) {
+                    viewRect = rect;
+                } else {
+                    viewRect.add(rect);
+                }
+            }
+        }
+        if (viewRect == null) {
+            // We can't actually return an empty rectangle, because then
+            // we get a bad transform.
+            return getVisibleSize();
+        } else {
+            return viewRect;
+        }
+    }
+
+    /** 
+     * Return the size of the visible part of the canvas, in canvas
+     *  coordinates.
+     */
+    public Rectangle2D getVisibleSize() {
+        AffineTransform current =
+            getCanvasPane().getTransformContext().getTransform();
+        AffineTransform inverse;
+        try {
+            inverse = current.createInverse();
+        }
+        catch (NoninvertibleTransformException e) {
+            throw new RuntimeException(e.toString());
+        }
+        Dimension size = getSize();
+        Rectangle2D visibleRect = new Rectangle2D.Double(0, 0,
+                size.getWidth(), size.getHeight());
+        return ShapeUtilities.transformBounds(visibleRect,
+                inverse);
+    }
+
 
     ///////////////////////////////////////////////////////////////////////
     //// protected methods

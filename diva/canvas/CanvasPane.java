@@ -79,14 +79,6 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** The transform context of this pane
      */
     private TransformContext _transformContext = new TransformContext(this);
-    
-    /** The range model for horizontal movement of the canvas
-     */     
-    private DefaultBoundedRangeModel _horizRangeModel;
-    
-    /** The range model for vertical movement of the canvas
-     */
-    private DefaultBoundedRangeModel _vertRangeModel;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -335,10 +327,6 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
                     "Cannot set the parent canvas to " + canvas);
         }
         this._canvas = canvas;
-        _horizRangeModel = 
-          (DefaultBoundedRangeModel)_canvas.getHorizontalRangeModel();
-        _vertRangeModel = 
-          (DefaultBoundedRangeModel)_canvas.getVerticalRangeModel();
     }
 
     /** Set the enabled flag of this pane. If the flag is false,
@@ -380,7 +368,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      */
     public void setSize(Point2D size) {
         _paneSize = size;
-        setRangeModel();
+        updateRangeModel();
     }
 
     /** Set the transform that maps logical coordinates into the
@@ -390,29 +378,13 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * be remembered by this pane, so any further changes to the
      * transform will affect the pane.
      * This version has a flag that can be used to avoid calling
-     * the 'setRangeModel' method
-     */
-    public final void setTransform (AffineTransform at, boolean setRangeFlag) {
-        _transformContext.setTransform(at);
-        repaint();
-        if (setRangeFlag) {
-            setRangeModel();
-        }
-    }
-
-    /** Set the transform that maps logical coordinates into the
-     * parent's coordinates. If there is no parent, the "parent" is
-     * taken to be the screen. An exception will be thrown if
-     * the transform is null. Note that the transform will
-     * be remembered by this pane, so any further changes to the
-     * transform will affect the pane.
-     * Always calls 'setRangeModel'
+     * the 'updateRangeModel' method
      */
     public final void setTransform (AffineTransform at) {
-        setTransform( at, true);
+        _transformContext.setTransform(at);
+        repaint();
+        updateRangeModel();
     }
-
-    
     
     /** Translate this pane the given distance. The translation is
      * done such that it works "correctly" in the presence of scaling.
@@ -483,81 +455,37 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * set the model params for the range models.  This sets the min, max
      * value and extent which can be used by a panner or scrollbars
      */
-    private void setRangeModel()
+    private void updateRangeModel()
     {
-      Rectangle2D viewsize = getViewSize();
-      Rectangle2D vissize = getVisibleSize();
-      
-      int visWidth = (int)vissize.getWidth();
-      int visHeight = (int)vissize.getHeight();
-      int visX = (int)vissize.getX();
-      int visY = (int)vissize.getY();
-      int viewWidth = (int)viewsize.getWidth();
-      int viewHeight = (int)viewsize.getHeight();
-      int viewX = (int)viewsize.getX();
-      int viewY = (int)viewsize.getY();
-      
-      _vertRangeModel.setMinimum(-viewHeight);
-      _horizRangeModel.setMinimum(-viewWidth);
-            
-      _vertRangeModel.setMaximum(viewY+2*viewHeight);
-      _horizRangeModel.setMaximum(viewX+2*viewWidth);
-     
-      _vertRangeModel.setExtent(visHeight);
-      _horizRangeModel.setExtent(visWidth);
-
-      _vertRangeModel.setValue(visY);
-      _horizRangeModel.setValue(visX);
-    }
-    
-    /** 
-     * Return the total size of everything in the canvas, in canvas
-     *  coordinates.
-     */
-    private Rectangle2D getViewSize() {
-        Rectangle2D viewRect = null;
-        for (Iterator layers = _canvas.getCanvasPane().layers();
-             layers.hasNext();) {
-            CanvasLayer layer = (CanvasLayer)layers.next();
-            Rectangle2D rect = layer.getLayerBounds();
-            if (!rect.isEmpty()) {
-                if (viewRect == null) {
-                    viewRect = rect;
-                } else {
-                    viewRect.add(rect);
-                }
-            }
-        }
-        if (viewRect == null) {
-            // We can't actually return an empty rectangle, because then
-            // we get a bad transform.
-            return getVisibleSize();
-        } else {
-            return viewRect;
-        }
-    }
-
-    /** 
-     * Return the size of the visible part of the canvas, in canvas
-     *  coordinates.
-     */
-    private Rectangle2D getVisibleSize() {
-        AffineTransform current =
-            _canvas.getCanvasPane().getTransformContext().getTransform();
-        AffineTransform inverse;
-        try {
-            inverse = current.createInverse();
-        }
-        catch (NoninvertibleTransformException e) {
-            throw new RuntimeException(e.toString());
-        }
-        Dimension size = _canvas.getSize();
-        Rectangle2D visibleRect = new Rectangle2D.Double(0, 0,
-                size.getWidth(), size.getHeight());
-        return ShapeUtilities.transformBounds(visibleRect,
-                inverse);
+      if(_canvas.getCanvasPane() == this)
+      { //make sure this pane is the top one.
+        DefaultBoundedRangeModel _horizontalRangeModel = 
+            (DefaultBoundedRangeModel)_canvas.getHorizontalRangeModel();
+        DefaultBoundedRangeModel _verticalRangeModel = 
+            (DefaultBoundedRangeModel)_canvas.getVerticalRangeModel();
+        Rectangle2D viewsize = _canvas.getViewSize();
+        Rectangle2D vissize = _canvas.getVisibleSize();
+        
+        int visWidth = (int)vissize.getWidth();
+        int visHeight = (int)vissize.getHeight();
+        int visX = (int)vissize.getX();
+        int visY = (int)vissize.getY();
+        int viewWidth = (int)viewsize.getWidth();
+        int viewHeight = (int)viewsize.getHeight();
+        int viewX = (int)viewsize.getX();
+        int viewY = (int)viewsize.getY();
+        
+        _verticalRangeModel.setMinimum(-viewHeight);
+        _horizontalRangeModel.setMinimum(-viewWidth);
+              
+        _verticalRangeModel.setMaximum(viewY+2*viewHeight);
+        _horizontalRangeModel.setMaximum(viewX+2*viewWidth);
+       
+        _verticalRangeModel.setExtent(visHeight);
+        _horizontalRangeModel.setExtent(visWidth);
+  
+        _verticalRangeModel.setValue(visY);
+        _horizontalRangeModel.setValue(visX);
+      }
     }
 }
-
-
-
