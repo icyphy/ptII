@@ -30,10 +30,9 @@ The core of Ptolemy II 0.3 is 100% Java, so it should work on any
 platform that has JDK1.2.
 
  <p>We developed Ptolemy II 0.3 under Solaris 2.5.1 and NT4.0sp3 
-with JDK1.1.6.
+with JDK1.2.1
 
- <p>Ptolemy II can be built under JDK1.2, though we have not thoroughly
-tested Ptolemy II under JDK1.2.
+<p> Ptolemy II 0.3 will not compile under JDK1.1.x.
 
  <p>See the <a href="install.htm#Jacl">Jacl</a> section of
 the installation page for information about the Ptolemy II test suite 
@@ -43,8 +42,14 @@ the installation page for information about the Ptolemy II test suite
 
 <li> Ptolemy II version 0.3 does not include a GUI.
 
-<li> The <CODE>ptolemy.kernel.event</CODE> package is likely to
-change substantially.
+<li> <a name="fsm">This</a> release does not include the source code
+to the Finite State Machine (FSM) domain.  At the time of the release,
+the author of the FSM domain felt that it was not ready for publication.
+
+Note that we include a jar
+file of the fsm domain in the <code>$PTII/lib</code> directory for use
+by a few of the Continuous Time demonstrations.
+
 </menu>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
