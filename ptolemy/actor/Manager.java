@@ -638,7 +638,6 @@ public final class Manager extends NamedObj implements Runnable {
 
         // Wrapup completed successfully
         _setState(IDLE);
-        workspace().doneReading();
     }
 
     ///////////////////////////////////////////////////////////////////
