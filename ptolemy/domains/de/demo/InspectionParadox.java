@@ -47,7 +47,7 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// InspectionParadox
 /**
-An applet that uses Ptolemy II DE domain to illustrate the inspection
+An applet that uses Ptolemy II DE domain to illustrate the inpection
 paradox.  The inspection paradox deals with Poisson arrivals of events.
 
 @author Edward A. Lee and Lukito Muliadi
@@ -82,14 +82,14 @@ public class InspectionParadox extends DEApplet {
             _eventplot.setPanel(this);
             _eventplot.plot.setGrid(false);
             _eventplot.plot.setTitle("Transmit Pulse Shapes");
-            _eventplot.addLegend(0, "Bus");
-            _eventplot.addLegend(1, "Passenger");
-            _eventplot.addLegend(2, "Wait Time");
-            _eventplot.setXLabel("Time");
-            _eventplot.setYLabel("Wait time");
+            _eventplot.plot.addLegend(0, "Bus");
+            _eventplot.plot.addLegend(1, "Passenger");
+            _eventplot.plot.addLegend(2, "Wait Time");
+            _eventplot.plot.setXLabel("Time");
+            _eventplot.plot.setYLabel("Wait time");
             _eventplot.plot.setXRange(0.0, _getStopTime());
             _eventplot.plot.setYRange(0.0, 2.0);
-            _eventplot.plot.setSize(450, 150);
+            _eventplot.plot.setSize(450,150);
             _eventplot.plot.setConnected(false);
             _eventplot.plot.setImpulses(true);
             _eventplot.plot.setMarksStyle("dots");
