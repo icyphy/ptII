@@ -7,22 +7,34 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-Ptplot 5.1p2 requires Swing, which is shipped as part of JDK1.3.
-(In theory, it is possible to install Swing with JDK1.1, but we have not
-tried it).  To run Ptplot 5.1p2 applets, you must install the version 1.3
-or later of the
-<a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>.
-In theory, it should be possible to run Ptplot using the JDK1.2 plugin,
-but we recommend upgrading to the JDK1.3 plugin.
+Ptplot 5.1p2 requires Java 1.2 or later.
+Java 1.3 is preferred.
+The Ptplot 5.1p2 Windows installers require Java 1.3.
+To run Ptplot, the Java runtime environment (JRE) is sufficient.
+To run the applets in a browser, the Java plug-in is required.
+The JRE is bundled with the plug-in, so downloading the plug-in
+is sufficient.  To extend Ptplot with your own
+Java code, the Java development kit (JDK)
+or an equivalent Java development environment is required.
+The JDK includes a Java compiler.
 
-<p>If you do not want to require your users to install the JDK1.3 plugin,
+<p>To run Ptplot 5.1p2 applets, you must install the version 1.3
+or later of the
+<a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plug-in</a>.
+In theory, it should be possible to run Ptplot using the JDK1.2 plugin,
+but we recommend upgrading to the JDK 1.3  plugin.
+
+<p> If you will be extending the Ptplot classes, then you
+should install the Java 1.3 Java Development Kit: 
+<a href="http://java.sun.com/j2se/1.3/" target="_top"><CODE>http://java.sun.com/j2se/1.3/</CODE></a>
+
+<p>If you do not want to require your users to install the JDK 1.3  plugin,
 then you should stick with Ptplot3.1, which does not use Swing.
 
 <p>Ptplot is distributed in several formats.
 <menu>
- <li>The usual <a href="#tarorzip">tar file and zip file format.</a>
- <li>An experimental format using the
-<a href="#installshield">Installshield JShield installer.</a>
+ <li><a href="#tarorzip">Instructions for the usual tar file and zip file format.</a>
+ <li><a href="#installshield">Instructions for the Installshield Multiplatform installer.</a>
  <li>As part of the Ptolemy II distribution - This page covers the
  above two cases, for information about installing Ptolemy II
 see <code>$PTII/doc/index.htm</code>
@@ -37,12 +49,13 @@ recompile.  However, if you are using the standalone scripts such as
 <CODE>ptplot</CODE>, then you may want to go through the installation
 procedure so that the standalone scripts are properly localized.
 
-
  <p> If you are using Windows and you want to rebuild Ptplot or
 localize the standalone scripts, then you will need to install the
 Cygwin toolkit from
 <a href="http://sources.redhat.com/cygwin/"><CODE>http://sources.redhat.com/cygwin/</CODE></a>
-so that you can run <CODE>/bin/sh</CODE> and <CODE>make</CODE>.
+<p> We have packaged up the necessary Cygwin tools and made them available at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII1.0/cygwin.htm"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII1.0/cygwin.htm</code></a>.
+
 If you are running Windows and do not want to install the Cygwin toolkit,
 then see
 <a href="#windowswithoutcygwin">Using Ptplot under Windows without Cygwin</a>
@@ -51,7 +64,7 @@ then see
 with Cygwin.
 <ol>
 
-<li> Be sure that JDK1.3 is installed, and that <CODE>javac</CODE>
+<li> Be sure that JDK 1.3  is installed, and that <CODE>javac</CODE>
 is in your path.
 
 <li> Untar or unzip the Ptplot distribution.
@@ -86,48 +99,12 @@ make
 
 <h2><a name="installshield">Installshield Installer</a></h2>
 Ptplot is also available in several self-extracting formats
-that were created with the Installshield JShield tool.
-
- <p>Our use of this tool is still experimental.  If you have problems,
-please try the tar or zip files.
+that were created with the Installshield Professional Multiplatform
+Edition
 
  <p>Note that when you run the installer under Windows, Ptplot is
 added to your Start menu under Ptolemy -&gt; Ptplot.
 
-<h3>Installshield limitations</h3>
-
-<menu>
-
-<li> When the Installer Applet is run under Windows, the
-Installer Window is not listed in the Windows Start Bar.
-
-<li> Installing Ptplot in a directory whose pathname has a  space  in it
-seem to cause problems with the start up scripts.
-
-
-<li> If you choose the Microsoft jvm, which sometimes found at
-<CODE>c:\winnt\jview</CODE>, then the format window will not come up.
-This is probably because the format window uses Swing facilities that
-are not in <CODE>jview</CODE>
-
-<li> Ideally, Ptplot should be installed on machines with JDK1.3.
-It is best if you install Java before installing Ptplot.  However
-The Installshield applet installer can download and install a JRE for you.
-Usually the JRE that can be downloaded via the Installshield applet installer
-is JDK1.1.7B.  We were able to substitute in the JRE 1.2.2 .exe file
-so that under Windows, JRE1.2.2 is properly installed.  However, we
-were not able to get this to work under Solaris, it appears that
-the JRE1.2.2 installation hangs part way through the installation.
-As a result, JRE1.1.7B is the JRE that is optionally downloaded for Sparcs.
-
-
-<li> The InstallShield installer places the <CODE>ptplot</CODE>,
-<CODE>histogram</CODE> and <CODE>pxgraph</CODE> startup scripts
-in the toplevel <CODE>ptplot5.1p2</CODE> directory rather than placing
-them in <CODE>ptplot5.1p2/bin</CODE>
-
-
-</menu>
 
 <h2>Notes about building and installing</h2>
 <h3>How does configure work?</h3>
@@ -173,7 +150,7 @@ PTJAVA_DIR=/opt/jdk1.3
 <h3><a name="windowswithoutcygwin">Using Ptplot under Windows without Cygwin</a></h3>
 Below are the instructions for using Ptplot
 if you are under Windows and you do not have the Cygwin and have
-downloaded the tar or zip files.
+downloaded the tar or zip files.  
 
 <ol>
 <li> Set the <CODE>PTII</CODE> variable to the top-level
