@@ -77,7 +77,7 @@
 <plot>
 <title>TimedPlotter</title>
 <xRange min="0.0" max="500.0"/>
-<yRange min="0.0" max="11485.84496429589"/>
+<yRange min="0.0" max="11485.844825535913"/>
 </plot>?>
         </configure>
     </entity>
@@ -276,7 +276,7 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 60.0">
                 </property>
             </property>
-            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="function(x:double) double">
+            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="(function(rpm:double) (1/(1+((rpm-(300*6))/100)^2)))">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -521,7 +521,7 @@ to another. Then delete this annotation.</text>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="500.0"/>
-<yRange min="0.0" max="28.591719932998036"/>
+<yRange min="0.0" max="28.591719932934524"/>
 </plot>?>
         </configure>
     </entity>
