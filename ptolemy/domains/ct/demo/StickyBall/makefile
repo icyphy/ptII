@@ -48,8 +48,11 @@ JSRCS = \
 	StickyBallApplet.java
 
 EXTRA_SRCS = \
+	$(JSRCS) \
 	StickyBall.htm \
-	$(JSRCS)
+	SBdiagram.gif \
+	SBphysics.gif \
+	SBresult.gif
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

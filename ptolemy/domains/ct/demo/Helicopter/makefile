@@ -54,7 +54,8 @@ JSRCS = \
 	HoverLinearizer.java \
 	XZHigherDerivatives.java 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	Helicopter.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -64,7 +65,10 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'HelicopterApplet$$ActionButtonListener.class' \
+	'HelicopterApplet$$CurrentTimeThread.class' \
+	'HelicopterApplet$$ProgressBar.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -68,7 +68,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'BusContentionApplication$$1.class' \
+	'BusContentionApplication$$2.class' \
+	'BusContentionApplication$$LocalEdgeRenderer.class' \
+	'BusContentionApplication$$StateListener.class' \
+	'BusContentionApplication$$ThreadRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

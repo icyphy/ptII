@@ -57,7 +57,10 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'PNApplet$$PauseListener.class' \
+	'PNApplet$$QueueSizeBoxListener.class' \
+	'PNApplet$$ResumeListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

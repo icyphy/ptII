@@ -72,7 +72,11 @@ MISC_FILES =	$(DIRS) test #demo
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'DDEDirector$$CapacityComparator.class' \
+	'DDEDirector$$RcvrCapacityComparator.class' \
+	'TimeKeeper$$RcvrTimeTriple.class' \
+	'TimedQueueReceiver$$Event.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

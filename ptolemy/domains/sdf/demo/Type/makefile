@@ -39,24 +39,21 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
-#CLASSPATH =	c:/java$(CLASSPATHSEPARATOR)$(ROOT)
-
-
-TCL_SRCS = \
-
 
 JSRCS = \
 	Type.java
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
+EXTRA_SRCS =	$(JSRCS) \
+	Type.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	# doc
+MISC_FILES =	$(DIRS) 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 

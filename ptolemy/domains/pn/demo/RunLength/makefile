@@ -56,7 +56,11 @@ JSRCS = ImageDisplay.java \
 	RLEncoder.java \
 	ThreadDemo.java 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	RLEDiva.htm \
+	RLEncoding.gif \
+	ptII.gif \
+	ptII.pbm
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
@@ -65,7 +69,24 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'ImageDisplay$$_PictureFrame.class' \
+	'ImageDisplay$$_PictureFrameListener.class' \
+	'RLEDiva$$1.class' \
+	'RLEDiva$$2.class' \
+	'RLEDiva$$3.class' \
+	'RLEDiva$$4.class' \
+	'RLEDiva$$5.class' \
+	'RLEDiva$$6.class' \
+	'RLEDiva$$7.class' \
+	'RLEDiva$$LayoutListener.class' \
+	'RLEDiva$$StateListener.class' \
+	'RLEDiva$$ThreadRenderer.class' \
+	'ThreadDemo$$1.class' \
+	'ThreadDemo$$2.class' \
+	'ThreadDemo$$3.class' \
+	'ThreadDemo$$StateListener.class' \
+	'ThreadDemo$$ThreadRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

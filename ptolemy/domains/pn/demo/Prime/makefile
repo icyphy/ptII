@@ -66,7 +66,9 @@ MISC_FILES =	$(DIRS) #test
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'PNGalaxySieve$$1.class' \
+	'PNSieve$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

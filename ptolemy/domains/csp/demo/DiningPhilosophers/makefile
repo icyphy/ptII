@@ -53,7 +53,8 @@ JSRCS = \
 	PhilosopherListener.java \
 	TablePanel.java
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
+	DiningPhilosophers.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -63,6 +64,13 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'DiningApplet$$CurrentTimeThread.class' \
+	'DiningApplet$$EatingRateListener.class' \
+	'DiningApplet$$GoButtonListener.class' \
+	'DiningApplet$$StopButtonListener.class' \
+	'DiningApplet$$ThinkingRateListener.class' \
+	'TablePanel$$ChopstickCoords.class' \
+	'TablePanel$$PhilosopherCoords.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -68,7 +68,13 @@ MISC_FILES =	$(DIRS) img
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'ABPApplet$$CurrentTimeThread.class' \
+	'ABPApplet$$FinishButtonListener.class' \
+	'ABPApplet$$GoButtonListener.class' \
+	'ABPApplet$$MyExecutionListener.class' \
+	'ABPApplet$$PauseButtonListener.class' \
+	'ABPApplet$$TerminateButtonListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

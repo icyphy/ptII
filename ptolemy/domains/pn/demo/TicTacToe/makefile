@@ -52,7 +52,8 @@ JSRCS = \
 	TTTApplet.java \
 	TTTPlayer.java 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	TicTacToe.htm
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
@@ -62,7 +63,10 @@ MISC_FILES =	$(DIRS) #test
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'TicTacToeDisplay$$TTTListener.class' \
+	'TicTacToeDisplay$$_PictureFrame.class' \
+	'TicTacToeDisplay$$_PictureFrameListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/pn/lib
 
-DIRS =
+DIRS =		test
 
 # Root of the Java directory
 ROOT =		../../../..
