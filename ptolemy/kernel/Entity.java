@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.kernel.Port
    @see ptolemy.kernel.Relation
 */
-public class Entity extends Prototype {
+public class Entity extends InstantiableNamedObj {
 
     /** Construct an entity in the default workspace with an empty string
      *  as its name.
@@ -144,6 +144,8 @@ public class Entity extends Prototype {
      *  yourself if you want it there).
      *  The result is a new entity with clones of the ports of the original
      *  entity.  The ports are set to the ports of the new entity.
+     *  This method gets read access on the workspace associated with
+     *  this object.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur), or
@@ -152,40 +154,46 @@ public class Entity extends Prototype {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Entity newEntity = (Entity)super.clone(workspace);
-        newEntity._portList = new NamedList(newEntity);
-        // Clone the ports.
-        Iterator ports = portList().iterator();
-        while (ports.hasNext()) {
-            Port port = (Port)ports.next();
-            Port newPort = (Port)port.clone(workspace);
-            // Assume that since we are dealing with clones,
-            // exceptions won't occur normally (the original was successfully
-            // incorporated, so this one should be too).  If they do, throw an
-            // InvalidStateException.
-            try {
-                newPort.setContainer(newEntity);
-            } catch (KernelException ex) {
-                workspace.remove(newEntity);
-                throw new InvalidStateException(this,
-                        "Failed to clone an Entity: " + ex.getMessage());
-            }
-        }
-        Class myClass = getClass();
-        Field fields[] = myClass.getFields();
-        for (int i = 0; i < fields.length; i++) {
-            try {
-                if (fields[i].get(newEntity) instanceof Port) {
-                    fields[i].set(newEntity,
-                            newEntity.getPort(fields[i].getName()));
+        try {
+            workspace().getReadAccess();
+            
+            Entity newEntity = (Entity)super.clone(workspace);
+            newEntity._portList = new NamedList(newEntity);
+            // Clone the ports.
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                Port newPort = (Port)port.clone(workspace);
+                // Assume that since we are dealing with clones,
+                // exceptions won't occur normally (the original was successfully
+                // incorporated, so this one should be too).  If they do, throw an
+                // InvalidStateException.
+                try {
+                    newPort.setContainer(newEntity);
+                } catch (KernelException ex) {
+                    workspace.remove(newEntity);
+                    throw new InvalidStateException(this,
+                            "Failed to clone an Entity: " + ex.getMessage());
                 }
-            } catch (IllegalAccessException e) {
-                throw new CloneNotSupportedException(e.getMessage() +
-                        ": " + fields[i].getName());
             }
+            Class myClass = getClass();
+            Field fields[] = myClass.getFields();
+            for (int i = 0; i < fields.length; i++) {
+                try {
+                    if (fields[i].get(newEntity) instanceof Port) {
+                        fields[i].set(newEntity,
+                                newEntity.getPort(fields[i].getName()));
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new CloneNotSupportedException(e.getMessage() +
+                            ": " + fields[i].getName());
+                }
+            }
+            _cloneFixAttributeFields(newEntity);
+            return newEntity;
+        } finally {
+            workspace().doneReading();
         }
-        _cloneFixAttributeFields(newEntity);
-        return newEntity;
     }
 
     /** Return a list of the ports that are connected to contained ports.
@@ -247,7 +255,11 @@ public class Entity extends Prototype {
     /** Return an iterator over contained objects. In this class, this
      *  is simply an iterator over attributes and ports.  In derived
      *  classes, the iterator will also traverse classes, entities,
-     *  and relations.
+     *  and relations. The caller of this method should have read
+     *  access on the workspace and hold it for the duration of the
+     *  use of the iterator. Moreover, it should not modify the port
+     *  or attribute list while using the iterator or it will get a
+     *  ConcurrentModificationException.
      *  @return An iterator over instances of NamedObj contained by this
      *   object.
      */
@@ -573,35 +585,6 @@ public class Entity extends Prototype {
         }
     }
 
-    /** Return the depth of the deferral that defines the specified object.
-     *  This overrides the base class so that if this object defers to
-     *  another that defines the defined object, and the exported
-     *  MoML of the defined object is identical to the exported MoML
-     *  of the deferred to object, then it returns 0.  Otherwise,
-     *  it defers to the base class. In particular, this class
-     *  handled definedObject of type Port.
-     *  Otherwise, it defers to the base class.
-     *  @param definedObject The object whose definition we seek.
-     *  @return The depth of the deferral.
-     */
-    protected int _getDeferralDepth(NamedObj definedObject) {
-        Prototype deferTo = (Prototype)getParent();
-        if (deferTo != null && deepContains(definedObject)) {
-            String relativeName = definedObject.getName(this);
-            // Regrettably, we have to look at the type
-            // of definedObject to figure out how to look it up.
-            if (definedObject instanceof Port) {
-                Port definition = ((Entity)deferTo).getPort(relativeName);
-                if (definition != null
-                        && definedObject.exportMoML()
-                        .equals(definition.exportMoML())) {
-                    return 0;
-                }
-            }
-        }
-        return super._getDeferralDepth(definedObject);
-    }
-
     /** Remove the specified port. This method should not be used
      *  directly.  Call the setContainer() method of the port instead
      *  with a null argument. The port is assumed to be contained
@@ -636,6 +619,11 @@ public class Entity extends Prototype {
      *  (all instances of NamedObj). In this class, the contained
      *  objects are attributes first, then ports. In derived classes,
      *  they include relations, and entities as well.
+     *  The user of this class should have read
+     *  access on the workspace and hold it for the duration of the
+     *  use of the iterator. Moreover, it should not modify the port
+     *  or attribute list while using the iterator or it will get a
+     *  ConcurrentModificationException.
      */
     protected class ContainedObjectsIterator
         extends NamedObj.ContainedObjectsIterator {

@@ -53,6 +53,12 @@ import ptolemy.moml.MoMLParser;
 
 public class RemoveGraphicalClasses implements MoMLFilter {
 
+    /** Clear the map of graphical classes to be removed.
+     */
+    public void clear() {
+        _graphicalClasses = new HashMap();
+    }
+
     /** If the attributeValue is "ptolemy.vergil.icon.ValueIcon",
      *  or "ptolemy.vergil.basic.NodeControllerFactory"
      *  then return "ptolemy.kernel.util.Attribute"; if the attributeValue
@@ -230,6 +236,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon",
                 null);
         _graphicalClasses.put("ptolemy.vergil.icon.CopyCatIcon",
+                null);
+        _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon",
                 null);
         _graphicalClasses.put("ptolemy.vergil.icon.XMLIcon",
                 null);

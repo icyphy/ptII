@@ -34,12 +34,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JFileChooser;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.IDAttribute;
-import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.ChangeRequest;
@@ -239,11 +241,15 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-        if (_model == null || _model.getName().length() == 0) {
-            _initialSaveAsFileName = "model.xml";
+        if (_model != null) {
+            // Use the name of the top level by default.
+            _initialSaveAsFileName = _model.toplevel().getName() + ".xml";
+            if (_initialSaveAsFileName.length() == 4) {
+                // Useless model name (empty string).
+                _initialSaveAsFileName = "model.xml";
+            }
         } else {
-            // We are not sanitizing the name here . . .
-            _initialSaveAsFileName = _model.getName() + ".xml";
+            _initialSaveAsFileName = "model.xml";
         }
 
         // If the model is not idle or paused, then pause it while saving
@@ -266,6 +272,22 @@ public abstract class PtolemyFrame extends TableauFrame {
             }
         }
         return super._saveAs();
+    }
+
+    /** Create and return a file dialog for the "Save As" command.
+     *  This overrides the base class to add options to the dialog.
+     *  @return A file dialog for save as.
+     */
+    protected JFileChooser _saveAsFileDialog() {
+        JFileChooser fileDialog = super._saveAsFileDialog();
+        
+        if (_model != null && _model.getContainer() != null) {
+            _query = new Query();
+            _query.addCheckBox("submodel", "Save submodel only", false);
+            fileDialog.setAccessory(_query);
+        }
+        
+        return fileDialog;
     }
 
     /** Write the model to the specified file.  This method delegates
@@ -299,22 +321,13 @@ public abstract class PtolemyFrame extends TableauFrame {
 
                 // Ensure that if we do ever try to call this method,
                 // that it is the top effigy that is written.
-                Effigy topEffigy = effigy.topEffigy();
-                topEffigy.writeFile(file);
-                if (topEffigy instanceof PtolemyEffigy) {
-                    NamedObj model = ((PtolemyEffigy)topEffigy).getModel();
-                    // NOTE: Fairly brute force here... There might
-                    // already be a URIAttribute, but we simply overwrite it.
-                    // Perhaps should check to see whether the one that is
-                    // there matches.  EAL
-                    try {
-                        URIAttribute uri = new URIAttribute(model, "_uri");
-                        uri.setURI(file.toURI());
-                    } catch (KernelException ex) {
-                        throw new InternalErrorException(
-                                "Failed to create URIAttribute for new location!");
-                    }
+                if (_query == null
+                        || _model == null
+                        || (_model.getContainer() != null
+                        && !_query.getBooleanValue("submodel"))) {
+                    effigy = effigy.topEffigy();
                 }
+                effigy.writeFile(file);
                 return;
             }
         }
@@ -326,4 +339,7 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     // The model that this window controls, if any.
     private NamedObj _model;
+    
+    // The query used to specify save as options.
+    private Query _query;
 }

@@ -84,7 +84,9 @@ public class Parameter extends Variable {
     public Parameter() {
         super();
         setVisibility(Settable.FULL);
-        setPersistent(true);
+        // Override the base class setting persistence to false,
+        // making it once again unspecified.
+        _isPersistent = null;
     }
 
     /** Construct a parameter in the specified workspace with an empty
@@ -97,7 +99,9 @@ public class Parameter extends Variable {
     public Parameter(Workspace workspace) {
         super(workspace);
         setVisibility(Settable.FULL);
-        setPersistent(true);
+        // Override the base class setting persistence to false,
+        // making it once again unspecified.
+        _isPersistent = null;
     }
 
     /** Construct a parameter with the given name contained by the specified
@@ -119,7 +123,9 @@ public class Parameter extends Variable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.FULL);
-        setPersistent(true);
+        // Override the base class setting persistence to false,
+        // making it once again unspecified.
+        _isPersistent = null;
     }
 
     /** Construct a Parameter with the given container, name, and Token.
@@ -144,7 +150,9 @@ public class Parameter extends Variable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
         setVisibility(Settable.FULL);
-        setPersistent(true);
+        // Override the base class setting persistence to false,
+        // making it once again unspecified.
+        _isPersistent = null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -181,7 +189,7 @@ public class Parameter extends Variable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         String value = getExpression();

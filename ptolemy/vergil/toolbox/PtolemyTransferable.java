@@ -40,17 +40,19 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.UIManager;
 
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.kernel.VergilUtilities;
 
+//////////////////////////////////////////////////////////////////////////
+//// PtolemyTransferable
 /**
    A transferable object that contains a local JVM reference to a
-   number of named objects.  To get a reference to an iterator on the objects,
-   request data with the data flavor given in the static namedObjFlavor variable.
-   This class will also return a MoML representation of the objects, if
-   data is requested with the DataFlavor.stringFlavor or
-   DataFlavor.plainTextFlavor.
+   number of named objects.  To get a reference to an iterator on the
+   objects, request data with the data flavor given in the static
+   namedObjFlavor variable.  This class will also return a MoML
+   representation of the objects, if data is requested with the
+   DataFlavor.stringFlavor or DataFlavor.plainTextFlavor.
 
    @author Steve Neuendorffer
    @version $Id$
@@ -153,7 +155,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
         // http://lists.apple.com/archives/java-dev/2003/Apr/16/classcastexceptionindrag.txt
         // FIXME: This change happened just before the release of 3.0.2,
         // so we only make the change under Mac OS.
-        if (UIManager.getLookAndFeel().getName().startsWith("MacOS")) {
+        if (VergilUtilities.macOSLookAndFeel()) {
             namedObjFlavor =
                 new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
                         ";class=ptolemy.kernel.util.NamedObj", "Named Object");

@@ -362,7 +362,7 @@ public class PortConfigurerDialog
             Object portInfo[] = (Object[]) (_ports.elementAt(row));
             Port port = (Port) (portInfo[COL_ACTUAL_PORT]);
             if (port != null
-                && port.isDerived()
+                && port.getDerivedLevel() < Integer.MAX_VALUE
                 && (col == COL_NAME
                     || col == COL_INPUT
                     || col == COL_OUTPUT

@@ -216,7 +216,8 @@ public class Query extends JPanel {
             String[] values,
             String defaultChoice,
             boolean editable) {
-        addChoice(name, label, values, defaultChoice, editable, Color.white);
+        addChoice(name, label, values, defaultChoice, editable,
+                Color.white, Color.black);
     }
 
     /** Create a choice menu.
@@ -227,6 +228,7 @@ public class Query extends JPanel {
      *  @param editable True if an arbitrary choice can be entered, in addition
      *   to the choices in values.
      *  @param background The background color for the editable part.
+     *  @param foreground The foreground color for the editable part.
      */
     public void addChoice(
             String name,
@@ -234,7 +236,8 @@ public class Query extends JPanel {
             String[] values,
             String defaultChoice,
             boolean editable,
-            final Color background) {
+            final Color background,
+            final Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JComboBox combobox = new JComboBox(values);
@@ -247,6 +250,7 @@ public class Query extends JPanel {
                 public Component getEditorComponent() {
                     Component result = super.getEditorComponent();
                     result.setBackground(background);
+                    result.setForeground(foreground);
                     return result;
                 }
             });
@@ -312,7 +316,8 @@ public class Query extends JPanel {
                 defaultName,
                 base,
                 startingDirectory,
-                Color.white);
+                Color.white,
+                Color.black);
     }
 
     /** Create a FileChooser
@@ -323,6 +328,7 @@ public class Query extends JPanel {
      *   relative file names, or null to give absolute file name.
      *  @param startingDirectory The directory to open the file chooser in.
      *  @param background The background color for the text entry box.
+     *  @param foreground The foreground color for the text entry box.
      */
     public void addFileChooser(
             String name,
@@ -330,7 +336,8 @@ public class Query extends JPanel {
             String defaultName,
             URI base,
             File startingDirectory,
-            Color background) {
+            Color background,
+            Color foreground) {
 
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
@@ -340,7 +347,8 @@ public class Query extends JPanel {
                     defaultName,
                     base,
                     startingDirectory,
-                    background);
+                    background,
+                    foreground);
         _addPair(name, lbl, fileChooser, fileChooser);
     }
 
@@ -353,7 +361,7 @@ public class Query extends JPanel {
      *  @param defaultValue Default value to appear in the entry box.
      */
     public void addLine(String name, String label, String defaultValue) {
-        addLine(name, label, defaultValue, Color.white);
+        addLine(name, label, defaultValue, Color.white, Color.black);
     }
 
     /** Create a single-line entry box with the specified name, label,
@@ -364,16 +372,19 @@ public class Query extends JPanel {
      *  @param label The label to attach to the entry.
      *  @param defaultValue Default value to appear in the entry box.
      *  @param background The background color.
+     *  @param foreground The foreground color.
      */
     public void addLine(
             String name,
             String label,
             String defaultValue,
-            Color background) {
+            Color background,
+            Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JTextField entryBox = new JTextField(defaultValue, _width);
         entryBox.setBackground(background);
+        entryBox.setForeground(foreground);
         _addPair(name, lbl, entryBox, entryBox);
 
         // Add the listener last so that there is no notification
@@ -404,7 +415,7 @@ public class Query extends JPanel {
      *  @since Ptolemy II 3.1
      */
     public void addPassword(String name, String label, String defaultValue) {
-        addPassword(name, label, defaultValue, Color.white);
+        addPassword(name, label, defaultValue, Color.white, Color.black);
     }
 
     /** Create a single-line password box with the specified name,
@@ -424,18 +435,21 @@ public class Query extends JPanel {
      *  @param label The label to attach to the entry.
      *  @param defaultValue Default value to appear in the entry box.
      *  @param background The background color.
+     *  @param foreground The foreground color.
      *  @since Ptolemy II 3.1
      */
     public void addPassword(
             String name,
             String label,
             String defaultValue,
-            Color background) {
+            Color background,
+            Color foreground) {
 
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JPasswordField entryBox = new JPasswordField(defaultValue, _width);
         entryBox.setBackground(background);
+        entryBox.setForeground(foreground);
         _addPair(name, lbl, entryBox, entryBox);
 
         // Add the listener last so that there is no notification
@@ -462,7 +476,8 @@ public class Query extends JPanel {
      *  @param theValues The value of this text area
      */
     public void addTextArea(String name, String label, String theValue) {
-        addTextArea(name, label, theValue, Color.white, _height, _width);
+        addTextArea(name, label, theValue, Color.white, Color.black,
+                _height, _width);
     }
 
     /*  Create a text area.
@@ -470,13 +485,15 @@ public class Query extends JPanel {
      *  @param label The label to attach to the entry.
      *  @param theValues The value of this text area.
      *  @param background The background color.
+     *  @param foreground The foreground color.
      */
     public void addTextArea(
             String name,
             String label,
             String theValue,
-            Color background) {
-        addTextArea(name, label, theValue, background, _height, _width);
+            Color background,
+            Color foreground) {
+        addTextArea(name, label, theValue, background, foreground, _height, _width);
     }
 
     /*  Create a text area with the specified height and width (in characters).
@@ -484,12 +501,16 @@ public class Query extends JPanel {
      *  @param label The label to attach to the entry.
      *  @param theValues The value of this text area.
      *  @param background The background color.
+     *  @param foreground The foreground color.
+     *  @param height The height.
+     *  @param width The width.
      */
     public void addTextArea(
             String name,
             String label,
             String theValue,
             Color background,
+            Color foreground,
             int height,
             int width) {
         JLabel lbl = new JLabel(label + ": ");
@@ -497,6 +518,7 @@ public class Query extends JPanel {
         JTextArea textArea = new JTextArea(theValue, height, width);
         textArea.setEditable(true);
         textArea.setBackground(background);
+        textArea.setForeground(foreground);
         QueryScrollPane textPane = new QueryScrollPane(textArea);
         _addPair(name, lbl, textPane, textPane);
         textArea.addFocusListener(new QueryFocusListener(name));
@@ -1644,19 +1666,22 @@ public class Query extends JPanel {
                 String defaultName,
                 URI base,
                 File startingDirectory) {
-            this(name, defaultName, base, startingDirectory, Color.white);
+            this(name, defaultName, base, startingDirectory,
+                    Color.white, Color.black);
         }
         public QueryFileChooser(
                 String name,
                 String defaultName,
                 URI base,
                 File startingDirectory,
-                Color background) {
+                Color background,
+                Color foreground) {
             super(BoxLayout.X_AXIS);
             _base = base;
             _startingDirectory = startingDirectory;
             _entryBox = new JTextField(defaultName, _width);
             _entryBox.setBackground(background);
+            _entryBox.setForeground(foreground);
             JButton button = new JButton("Browse");
             button.addActionListener(this);
             add(_entryBox);
@@ -1680,6 +1705,7 @@ public class Query extends JPanel {
 
             _name = name;
         }
+        
         public void actionPerformed(ActionEvent e) {
             // NOTE: If the last argument is null, then choose a default dir.
             JFileChooser fileChooser = new JFileChooser(_startingDirectory);

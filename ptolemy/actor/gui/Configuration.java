@@ -37,7 +37,7 @@ import java.util.List;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Prototype;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -437,14 +437,20 @@ public class Configuration extends CompositeEntity {
             throws IllegalActionException, NameDuplicationException {
 
         // If the entity defers its MoML definition to another,
-        // then open that other, unless this is a class extending another.
-        Prototype deferredTo = null;
+        // then open that other, unless this is a class extending another,
+        // and also unless this is an object that contains a TableauFactory.
+        // I.e., by default, when you open an instance of a class, what
+        // is opened is the class definition, not the instance, unless
+        // the instance contains a TableauFactory, in which case, we defer
+        // to that TableauFactory.
+        InstantiableNamedObj deferredTo = null;
         boolean isClass = false;
-        if (entity instanceof Prototype) {
-            deferredTo = (Prototype)((Prototype)entity).getParent();
-            isClass = ((Prototype)entity).isClassDefinition();
+        if (entity instanceof InstantiableNamedObj) {
+            deferredTo = (InstantiableNamedObj)((InstantiableNamedObj)entity).getParent();
+            isClass = ((InstantiableNamedObj)entity).isClassDefinition();
         }
         String elementName = entity.getElementName();
+        List factoryList = entity.attributeList(TableauFactory.class);
         if (deferredTo != null && !isClass) {
             entity = deferredTo;
         }
@@ -458,7 +464,7 @@ public class Configuration extends CompositeEntity {
      *  @param container The proposed container.
      *  @exception IllegalActionException If the argument is not null.
      */
-    public void setContainer(Prototype container)
+    public void setContainer(InstantiableNamedObj container)
             throws IllegalActionException {
         if (container != null) {
             throw new IllegalActionException(

@@ -81,6 +81,11 @@ public class ExpressionFunction implements Function {
             String name = (String)_argumentNames.get(i);
             ptolemy.data.Token argument = arguments[i];
             map.put(name, argument);
+            // Below is technically correct, but it prevents well typed
+            // recursive function definitions.  I'm sure there's a well
+            // known solution to this, but I don't have the time to figure it
+            // out at the moment.
+            //      map.put(name, _argumentTypes[i].convert(argument));
         }
         NamedConstantsScope argumentsScope = new NamedConstantsScope(map);
         return parseTreeEvaluator.evaluateParseTree(

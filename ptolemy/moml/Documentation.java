@@ -33,6 +33,7 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -118,7 +119,7 @@ public class Documentation extends StringAttribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         if (name.equals("_doc")) {
@@ -144,13 +145,37 @@ public class Documentation extends StringAttribute {
     public String getValue() {
         return getExpression();
     }
+    
+    /** Override the base class to remove this instance from
+     *  its container if the argument is an empty string.
+     *  The removal is done in a change request, so it may
+     *  not take effect immediately.
+     *  @param expression The value of the string attribute.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to the container.
+     */
+    public void setExpression(String expression)
+            throws IllegalActionException {
+        if (expression.equals("")) {
+            ChangeRequest request = new ChangeRequest(
+                    this, "Delete empty doc tag.") {
+                protected void _execute() throws Exception {
+                    setContainer(null);
+                }
+            };
+            requestChange(request);
+        } else {
+            super.setExpression(expression);
+        }
+    }
+
 
     /** Set the documentation string.
      *  @param value The documentation.
      */
     public void setValue(String value) {
         try {
-            super.setExpression(value);
+            setExpression(value);
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

@@ -29,19 +29,18 @@
 
 package ptolemy.domains.fsm.kernel;
 
-import java.util.Iterator;
-
 import ptolemy.actor.Actor;
-import ptolemy.actor.FunctionDependency;
-import ptolemy.graph.DirectedGraph;
+import ptolemy.actor.util.FunctionDependency;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfFSMActor
 /** An instance of FunctionDependencyOfFSMActor describes the function
-    dependence relation of an FSM actor. It contains a ports graph
-    including the container ports only.
+    dependency relation between the externally visible ports of an FSM 
+    actor. 
     <p>
-    For an FSM actor, all the input ports and output ports are independent.
+    This class makes a conservative approximation of the dependency 
+    relation by assuming that all the output ports depend on all the 
+    input ports.
 
     @see FunctionDependency
     @author Haiyang Zheng
@@ -52,34 +51,10 @@ import ptolemy.graph.DirectedGraph;
 */
 public class FunctionDependencyOfFSMActor extends FunctionDependency {
 
-    /** Construct a FunctionDependencyOfFSMActor in the given container.
-     *  @param container The container has this FunctionDependency object.
+    /** Construct a FunctionDependencyOfFSMActor in the given actor.
+     *  @param actor The associated actor.
      */
-    public FunctionDependencyOfFSMActor(Actor container) {
-        super(container);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Construct a directed graph with the nodes representing input and
-     *  output ports, and directed edges representing dependencies.
-     */
-    protected void _constructDirectedGraph() {
-
-        // get a new directed graph
-        _directedGraph = new DirectedGraph();
-
-        // First, include all the ports as nodes in the graph.
-
-        // get all the inputs and outputs of the container
-        Iterator inputs = _container.inputPortList().listIterator();
-        while (inputs.hasNext()) {
-            _directedGraph.addNodeWeight(inputs.next());
-        }
-        Iterator outputs = _container.outputPortList().listIterator();
-        while (outputs.hasNext()) {
-            _directedGraph.addNodeWeight(outputs.next());
-        }
+    public FunctionDependencyOfFSMActor(Actor actor) {
+        super(actor);
     }
 }

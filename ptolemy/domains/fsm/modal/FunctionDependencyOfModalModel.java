@@ -1,5 +1,5 @@
 /* An instance of FunctionDependencyOfModalModel describes the function
-   dependence information of a modal model.
+   dependency information of a modal model.
 
    Copyright (c) 2004 The Regents of the University of California.
    All rights reserved.
@@ -33,43 +33,44 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.FunctionDependencyOfCompositeActor;
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfModalModel
 /** An instance of FunctionDependencyOfModalModel describes the function
-    dependence information of a modal model.
+    dependency information of a modal model.
 
-    @see ptolemy.actor.FunctionDependencyOfCompositeActor
+    @see ptolemy.actor.util.FunctionDependencyOfCompositeActor
     @author Haiyang Zheng
-    @version $Id $
+    @version $Id$
     @since Ptolemy II 4.0
     @Pt.ProposedRating Red (hyzheng)
     @Pt.AcceptedRating Red (hyzheng)
 */
-public class FunctionDependencyOfModalModel extends FunctionDependencyOfCompositeActor {
+public class FunctionDependencyOfModalModel 
+    extends FunctionDependencyOfCompositeActor {
 
-    /** Construct a FunctionDependency in the given container.
-     *  @param container The container has this FunctionDependency object.
+    /** Construct a FunctionDependency in the given actor.
+     *  @param actor The associated actor.
      */
-    public FunctionDependencyOfModalModel(Actor container) {
-        super(container);
+    public FunctionDependencyOfModalModel(Actor actor) {
+        super(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                      protected methods                    ////
 
     /** Get a list of refinements of the current state for function
      *  dependency calculation.
-     *  @return a list of refinements of the current state.
+     *  @return A list of refinements associated with the current state.
      */
     protected List _getEntities() {
         LinkedList entities = new LinkedList();
         try {
             Actor[] actors =
-                ((ModalModel)_container).getController().
+                ((ModalModel)getActor()).getController().
                 currentState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {

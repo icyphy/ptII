@@ -51,6 +51,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractSettableAttribute.java \
 	Attribute.java \
 	BasicModelErrorHandler.java \
 	Changeable.java \
@@ -63,7 +64,6 @@ JSRCS = \
 	Debuggable.java \
 	DebugListener.java \
 	Derivable.java \
-	Exportable.java \
 	IllegalActionException.java \
 	Instantiable.java \
 	InternalErrorException.java \
@@ -73,6 +73,7 @@ JSRCS = \
 	Locatable.java \
 	Location.java \
 	ModelErrorHandler.java \
+	MoMLExportable.java \
 	Nameable.java \
 	NamedList.java \
 	NamedObj.java \

@@ -30,6 +30,7 @@ package ptolemy.actor;
 
 import java.util.List;
 
+import ptolemy.actor.util.HasFunctionDependencies;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////

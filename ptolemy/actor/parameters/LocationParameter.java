@@ -92,7 +92,8 @@ public class LocationParameter extends Parameter implements Locatable {
     }
 
     /** Set the location in some Cartesian coordinate system, and notify
-     *  the container and any value listeners of the new location.
+     *  the container and any value listeners of the new location. This
+     *  also propagates the value to derived objects.
      *  @param location The location.
      *  @exception IllegalActionException If the location is rejected.
      */
@@ -101,5 +102,6 @@ public class LocationParameter extends Parameter implements Locatable {
         value[0][0] = location[0];
         value[0][1] = location[1];
         setToken(new DoubleMatrixToken(value, DoubleMatrixToken.DO_NOT_COPY));
+        propagateValue();
     }
 }

@@ -70,8 +70,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
             int row, boolean hasFocus) {
 
         DefaultTreeCellRenderer component = (DefaultTreeCellRenderer)
-            super.getTreeCellRendererComponent(tree, value,
-                    selected, expanded, leaf, row, hasFocus);
+                super.getTreeCellRendererComponent(tree, value,
+                selected, expanded, leaf, row, hasFocus);
         if (value instanceof NamedObj) {
             NamedObj object = (NamedObj) value;
             // Fix the background colors because transparent
@@ -105,16 +105,15 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                         || object.getAttribute("_iconDescription") != null
                         || object.getAttribute("_smallIconDescription")
                         != null) {
-                    // NOTE: this code is similar to that in IconController,
-                    // except that only the first EditorIcon encountered is
-                    // used.
+                    // NOTE: this code is similar to that in IconController.
                     EditorIcon icon = null;
                     try {
                         if (iconList.size() == 0) {
                             icon = new XMLIcon(object, "_icon");
                             icon.setPersistent(false);
                         } else {
-                            icon = (EditorIcon)iconList.iterator().next();
+                            icon = (EditorIcon)iconList.get(
+                                    iconList.size() - 1);
                         }
                     } catch (KernelException ex) {
                         throw new InternalErrorException(
@@ -125,20 +124,25 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                     component.setIcon(icon.createIcon());
                 }
 
+                // FIXME: The following is not called on EntityLibrary,
+                // which means no tooltip for those. Does calling it
+                // force expansion of the library?
                 Attribute tooltipAttribute = object.getAttribute("tooltip");
                 if (tooltipAttribute != null
                         && tooltipAttribute instanceof Documentation) {
-                    component.setToolTipText(
+                    // FIXME: This doesn't work with calling this
+                    // on either this or component.
+                    this.setToolTipText(
                             ((Documentation)tooltipAttribute).getValue());
                 } else {
                     String tip = Documentation.consolidate(object);
                     if (tip != null) {
-                        component.setToolTipText(tip);
+                        // FIXME: This doesn't work with calling this
+                        // on either this or component.
+                        this.setToolTipText(tip);
                     }
                 }
             }
-
-            // FIXME: Create a special icon for libraries?
         }
         return component;
     }

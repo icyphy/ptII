@@ -142,7 +142,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             workspace().getReadAccess();
             
             InstantiableNamedObj newObject
-                    = (InstantiableNamedObj)super.clone(workspace);
+                = (InstantiableNamedObj)super.clone(workspace);
             // The new object does not have any other objects deferring
             // their MoML definitions to it, so we have to reset this.
             newObject._children = null;
@@ -414,7 +414,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             if (!isClass && _isClassDefinition
                     && getChildren() != null && getChildren().size() > 0) {
                 throw new IllegalActionException(this,
-                "Cannot change from a class to an instance because" +
+                        "Cannot change from a class to an instance because" +
                 " there are subclasses and/or instances.");
             }
             _isClassDefinition = isClass;

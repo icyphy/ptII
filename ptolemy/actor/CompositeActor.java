@@ -42,6 +42,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.util.FunctionDependency;
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
+import ptolemy.actor.util.HasFunctionDependencies;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -434,6 +437,12 @@ public class CompositeActor extends CompositeEntity
                     if (port.isInput()) {
                         // Clear all receivers.
                         Receiver[][] receivers = port.getReceivers();
+                        if (receivers == null) {
+                            throw new InternalErrorException(this, null,
+                                    "port.getReceivers() returned null! "
+                                    + "This should never happen. "
+                                    + "port was '" + port + "'");
+                        }
                         for (int i = 0; i < receivers.length; i++) {
                             Receiver[] receivers2 = receivers[i];
                             for (int j = 0; j < receivers2.length; j++) {

@@ -28,8 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.actor;
 
-import java.awt.Event;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
@@ -147,6 +147,12 @@ public abstract class ActorController extends AttributeController {
         // will report an error.
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new SaveInLibraryAction()));
+        /* The following proves not so useful since atomic actors
+         * do not typically have suitable constructors (that take
+         * only a Workspace argument) to be usable at the top level.
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new SaveInFileAction()));
+         */
 
         _listenToActorAction = new ListenToActorAction(
                 (BasicGraphController)getController());
@@ -483,7 +489,7 @@ public abstract class ActorController extends AttributeController {
             _target = target;
             _controller = controller;
         }
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler.error(
                         "Cannot listen to actor without a configuration.");
@@ -492,7 +498,7 @@ public abstract class ActorController extends AttributeController {
 
             // Determine which entity was selected for the listen to
             // actor action.
-            super.actionPerformed(e);
+            super.actionPerformed(event);
             NamedObj object = _target;
             if (object == null) {
                 object = getTarget();
@@ -546,10 +552,11 @@ public abstract class ActorController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, 
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler.error(
                         "Cannot look inside without a configuration.");
@@ -557,7 +564,7 @@ public abstract class ActorController extends AttributeController {
             }
 
             // Determine which entity was selected for the look inside action.
-            super.actionPerformed(e);
+            super.actionPerformed(event);
             NamedObj object = getTarget();
 
             // NOTE: Used to open source code here if the object
@@ -573,6 +580,42 @@ public abstract class ActorController extends AttributeController {
             }
         }
     }
+    
+    /////////////////////////////////////////////////////////////////////
+    //// SaveInFileAction
+
+    /** An action to save this actor in a file.
+     */
+    private class SaveInFileAction extends FigureAction {
+
+        /** Create a new action to save a model in a file.
+         */
+        public SaveInFileAction() {
+            super("Save Actor In File");
+            putValue("tooltip", "Save actor in a file");
+        }
+
+        /** Save the target object in a file.
+         *  @param event The action event.
+         */
+        public void actionPerformed(ActionEvent event) {
+            // Find the target.
+            super.actionPerformed(event);
+            NamedObj object = getTarget();
+            if (object instanceof Entity) {
+                Entity entity = (Entity)object;
+                
+                BasicGraphController controller = (BasicGraphController)getController();
+                BasicGraphFrame frame = controller.getFrame();
+
+                try {
+                    frame.saveComponentInFile(entity);
+                } catch (Exception e) {
+                    MessageHandler.error("Save failed.", e);
+                }
+            }
+        }
+    }
 
     /////////////////////////////////////////////////////////////////////
     //// SaveInLibraryAction
@@ -581,23 +624,21 @@ public abstract class ActorController extends AttributeController {
      */
     private class SaveInLibraryAction extends FigureAction {
 
-        /**
-         *  Create a new action to save a model in a library.
+        /** Create a new action to save an actor in a library.
          */
         public SaveInLibraryAction() {
             super("Save Actor In Library");
-            putValue("tooltip", "Save Actor as a Component in Library");
+            putValue("tooltip",
+                    "Save the actor as a component in the user library");
         }
 
-        /**
-         *  Create a new instance of the current model in the actor library of
+        /** Create a new instance of the current model in the actor library of
          *  the configuration.
-         *
-         * @param  e  Description of Parameter
+         *  @param event The action event.
          */
-        public void actionPerformed(ActionEvent e) {
-            // Figure out what entity.
-            super.actionPerformed(e);
+        public void actionPerformed(ActionEvent event) {
+            // Find the target.
+            super.actionPerformed(event);
             NamedObj object = getTarget();
             if (object instanceof Entity) {
                 Entity entity = (Entity)object;

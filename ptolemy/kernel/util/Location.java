@@ -57,9 +57,9 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Green (cxh)
 */
 public class Location extends SingletonAttribute
-    implements Locatable {
+        implements Locatable {
 
-    // FIXME: Note hat this class does not extend from StringAttribute
+    // FIXME: Note that this class does not extend from StringAttribute
     // because it is a singleton.  Thus, there is a bunch of code
     // duplication here.  The fix would be to modify StringAttribute
     // so that we could have a singleton.
@@ -151,7 +151,7 @@ public class Location extends SingletonAttribute
             throws IOException {
         // If the object is not persistent, and we are not
         // at level 0, do nothing.
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         String value = getExpression();
@@ -175,6 +175,29 @@ public class Location extends SingletonAttribute
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
                 + _elementName + ">\n");
+    }
+
+    /** Return the default value of this Settable,
+     *  if there is one.  If this is a derived object, then the default
+     *  is the value of the object from which this is derived (the
+     *  "prototype").  If this is not a derived object, then the default
+     *  is the first value set using setExpression(), or null if
+     *  setExpression() has not been called.
+     *  @return The default value of this attribute, or null
+     *   if there is none.
+     *  @see #setExpression(String)
+     */
+    public String getDefaultExpression() {
+        try {
+            List prototypeList = getPrototypeList();
+            if (prototypeList.size() > 0) {
+                return ((Settable)prototypeList.get(0)).getExpression();
+            }
+        } catch (IllegalActionException e) {
+            // This should not occur.
+            throw new InternalErrorException(e);
+        }
+        return _default;
     }
 
     /** Get the value that has been set by setExpression() or by
@@ -252,17 +275,18 @@ public class Location extends SingletonAttribute
      *  @see #getExpression()
      */
     public void setExpression(String expression) {
+        if (_default == null) {
+            _default = expression;
+        }
         _expression = expression;
         _expressionSet = true;
-        // Make sure the new value is exported in MoML.  EAL 12/03.
-        setOverrideDepth(0);
     }
 
     /** Set the location in some cartesian coordinate system, and notify
      *  the container and any value listeners of the new location. Setting
      *  the location involves maintaining a local copy of the passed
      *  parameter. No notification is done if the location is the same
-     *  as before.
+     *  as before. This method propagates the value to any derived objects.
      *  @param location The location.
      *  @exception IllegalActionException If throw when attributeChanged()
      *  is called.
@@ -273,11 +297,10 @@ public class Location extends SingletonAttribute
         _expressionSet = false;
         if (_setLocation(location)) {
             // If the location was modified in _setLocation(),
-            // we mark this object as being modified.
-
-            // Make sure the new value is exported in MoML.  EAL 12/03.
-            setOverrideDepth(0);
+            // then make sure the new value is exported in MoML.
+            setPersistent(true);
         }
+        propagateValue();
     }
 
     /** Set the visibility of this attribute.  The argument should be one
@@ -338,6 +361,25 @@ public class Location extends SingletonAttribute
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        // NOTE: Cannot use the _location value because the
+        // expression may not have yet been evaluated.
+        ((Location)destination).setExpression(getExpression());
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
 
     /** Set the location without altering the modified status.
@@ -393,6 +435,9 @@ public class Location extends SingletonAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The default value.
+    private String _default = null;
+        
     // The expression given in setExpression().
     private String _expression;
 

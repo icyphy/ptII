@@ -38,14 +38,11 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ImageIcon;
-import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageAttribute
@@ -93,7 +90,9 @@ public class ImageAttribute extends Attribute {
         scale.setExpression("100.0");
 
         // Create a custom controller.
-        new ResizableAttributeControllerFactory(this, "_controllerFactory");
+        // NOTE: This doesn't actually work with the scale parameter.
+        // It gets overridden by the scale parameter.
+        // new ResizableAttributeControllerFactory(this, "_controllerFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,13 +143,8 @@ public class ImageAttribute extends Attribute {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         ImageAttribute newObject
-            = (ImageAttribute)super.clone(workspace);
-        try {
-            newObject._icon = new ImageIcon(this, "_icon");
-            newObject._icon.setPersistent(false);
-        } catch (KernelException e) {
-            throw new InternalErrorException(e);
-        }
+                = (ImageAttribute)super.clone(workspace);
+        newObject._icon = (ImageIcon)newObject.getAttribute("_icon");
 
         return newObject;
     }

@@ -132,5 +132,9 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljsimpletests.tcl
 test_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
+
+install:
+	@echo "Nothing to install in this directory"
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -163,9 +163,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         }
     }
 
-    /** Write the model associated with the top effigy (returned by
-     *  topEffigy()) to the specified file in MoML format.
-     *  Change the name to match the file name, up to its first period.
+    /** Write the model associated with this effigy
+     *  to the specified file in MoML format.
+     *  Change the name of the model to match the
+     *  file name, up to its first period.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
@@ -181,11 +182,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             name = filename;
         }
 
-        // NOTE: The following cast is safe because of the check
-        // in _checkContainer().
-        ((PtolemyEffigy)topEffigy()).getModel().exportMoML(fileWriter,
-                0, name);
-        fileWriter.close();
+        try {
+            getModel().exportMoML(fileWriter, 0, name);
+        } finally {
+            fileWriter.close();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-FIXME: Need to review instantiate().
-FIXME: Need to review _getDeferralDepth().
 */
 
 package ptolemy.kernel;
@@ -42,7 +40,6 @@ import java.util.List;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -93,12 +90,29 @@ import ptolemy.kernel.util.Workspace;
    a port of the appropriate subclass, and the protected method _addPort()
    to throw an exception if its argument is a port that is not of the
    appropriate subclass.
+   <p>
+   Since contained entities implement the
+   {@link ptolemy.kernel.util.Instantiable} interface,
+   some may be class definitions.  If an entity is a class definition,
+   then it is not included in the lists returned by
+   {@link #entityList()}, {@link #entityList(Class)},
+   {@link #deepEntityList()}, and {@link #allAtomicEntityList()}.
+   Correspondingly, if it is not a class definition, then it is not
+   included in the list returned by {@link #classDefinitionList()}.
+   Contained class defintions are nonetheless required to have names
+   distinct from contained entities that are not class definitions,
+   and the method {@link #getEntity(String)} will return either
+   a class definition or an entity that is not a class definition,
+   as long as the name matches.  Note that contained entities that
+   are class definitions cannot be connected to other entities.
+   Moreover, they cannot be deleted as long as there are either
+   subclasses or instances present.
 
    @author John S. Davis II, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (bart)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class CompositeEntity extends ComponentEntity {
 
@@ -146,10 +160,10 @@ public class CompositeEntity extends ComponentEntity {
     ////                         public methods                    ////
 
     /** Return a list that consists of all the atomic entities in a model.
-     *  This method differs from CompositeEntity.deepEntityList() in that
+     *  This method differs from {@link #deepEntityList()} in that
      *  this method looks inside opaque entities, whereas deepEntityList()
-     *  does not.
-     *
+     *  does not. The returned list does not include any entities that
+     *  are class definitions.
      *  @return a List of all atomic entities in the model.
      */
     public List allAtomicEntityList() {
@@ -201,7 +215,7 @@ public class CompositeEntity extends ComponentEntity {
      *  that it is not affected by any subsequent additions or removals
      *  of class definitions.
      *  This method is read-synchronized on the workspace.
-     *  @return A new list of ComponentEntity objects.
+     *  @return A list of ComponentEntity objects.
      *  @see #entityList()
      */
     public List classDefinitionList() {
@@ -239,6 +253,8 @@ public class CompositeEntity extends ComponentEntity {
      *  The ports of the returned entity are not connected to anything.
      *  The connections of the relations are duplicated in the new entity,
      *  unless they cross levels, in which case an exception is thrown.
+     *  This method gets read access on the workspace associated with
+     *  this object.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If the entity contains
      *   level crossing transitions so that its connections cannot be cloned,
@@ -247,121 +263,127 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        CompositeEntity newEntity = (CompositeEntity)super.clone(workspace);
-
-        newEntity._containedEntities = new NamedList(newEntity);
-        newEntity._containedRelations = new NamedList(newEntity);
-
-        // Clone the contained relations.
-        Iterator relations = relationList().iterator();
-        while (relations.hasNext()) {
-            ComponentRelation relation =
-                (ComponentRelation)relations.next();
-            ComponentRelation newRelation =
-                (ComponentRelation)relation.clone(workspace);
-            // Assume that since we are dealing with clones,
-            // exceptions won't occur normally.  If they do, throw a
-            // CloneNotSupportedException.
-            try {
-                newRelation.setContainer(newEntity);
-            } catch (KernelException ex) {
-                throw new CloneNotSupportedException(
-                        "Failed to clone a CompositeEntity: " +
-                        ex.getMessage());
-            }
-        }
-
-        // Clone the contained classes.
-        Iterator classes = classDefinitionList().iterator();
-        while (classes.hasNext()) {
-            ComponentEntity classDefinition
-                = (ComponentEntity)classes.next();
-            ComponentEntity newSubentity = (ComponentEntity)classDefinition
-                .clone(workspace);
-            // Assume that since we are dealing with clones,
-            // exceptions won't occur normally.  If they do, throw a
-            // CloneNotSupportedException.
-            try {
-                newSubentity.setContainer(newEntity);
-            } catch (KernelException ex) {
-                throw new CloneNotSupportedException(
-                        "Failed to clone a CompositeEntity: " +
-                        KernelException.stackTraceToString(ex));
-            }
-        }
-
-        // Clone the contained entities.
-        Iterator entities = entityList().iterator();
-        while (entities.hasNext()) {
-            ComponentEntity entity
-                = (ComponentEntity)entities.next();
-            ComponentEntity newSubentity = (ComponentEntity)entity
-                .clone(workspace);
-            // Assume that since we are dealing with clones,
-            // exceptions won't occur normally.  If they do, throw a
-            // CloneNotSupportedException.
-            try {
-                newSubentity.setContainer(newEntity);
-            } catch (KernelException ex) {
-                throw new CloneNotSupportedException(
-                        "Failed to clone a CompositeEntity: " +
-                        KernelException.stackTraceToString(ex));
-            }
-
-            // Clone the links of the ports of the cloned entities.
-            Iterator ports = entity.portList().iterator();
-            while (ports.hasNext()) {
-                ComponentPort port = (ComponentPort)ports.next();
-                Enumeration linkedRelations = port.linkedRelations();
-                while (linkedRelations.hasMoreElements()) {
-                    ComponentRelation rel =
-                        (ComponentRelation)linkedRelations.nextElement();
-                    // A null link (supported since indexed links) might
-                    // yield a null relation here. EAL 7/19/00.
-                    if (rel != null) {
-                        if (rel.getContainer() != this) {
-                            throw new CloneNotSupportedException(
-                                    "Cannot clone a CompositeEntity with " +
-                                    "level crossing transitions.");
-                        }
-                        ComponentRelation newRelation =
-                            newEntity.getRelation(rel.getName());
-                        Port newPort =
-                            newSubentity.getPort(port.getName());
-                        try {
-                            newPort.link(newRelation);
-                        } catch (IllegalActionException ex) {
-                            throw new CloneNotSupportedException(
-                                    "Failed to clone a CompositeEntity: " +
-                                    ex.getMessage());
-                        }
-                    }
-                }
-            }
-        }
-
-        // Clone the inside links from the ports of this entity.
-        Iterator ports = portList().iterator();
-        while (ports.hasNext()) {
-            ComponentPort port = (ComponentPort)ports.next();
-            relations = port.insideRelationList().iterator();
+        try {
+            workspace().getReadAccess();
+            
+            CompositeEntity newEntity = (CompositeEntity)super.clone(workspace);
+    
+            newEntity._containedEntities = new NamedList(newEntity);
+            newEntity._containedRelations = new NamedList(newEntity);
+    
+            // Clone the contained relations.
+            Iterator relations = relationList().iterator();
             while (relations.hasNext()) {
-                Relation relation = (Relation)relations.next();
+                ComponentRelation relation =
+                    (ComponentRelation)relations.next();
                 ComponentRelation newRelation =
-                    newEntity.getRelation(relation.getName());
-                Port newPort =
-                    newEntity.getPort(port.getName());
+                    (ComponentRelation)relation.clone(workspace);
+                // Assume that since we are dealing with clones,
+                // exceptions won't occur normally.  If they do, throw a
+                // CloneNotSupportedException.
                 try {
-                    newPort.link(newRelation);
-                } catch (IllegalActionException ex) {
+                    newRelation.setContainer(newEntity);
+                } catch (KernelException ex) {
                     throw new CloneNotSupportedException(
                             "Failed to clone a CompositeEntity: " +
                             ex.getMessage());
                 }
             }
+    
+            // Clone the contained classes.
+            Iterator classes = classDefinitionList().iterator();
+            while (classes.hasNext()) {
+                ComponentEntity classDefinition
+                    = (ComponentEntity)classes.next();
+                ComponentEntity newSubentity = (ComponentEntity)classDefinition
+                    .clone(workspace);
+                // Assume that since we are dealing with clones,
+                // exceptions won't occur normally.  If they do, throw a
+                // CloneNotSupportedException.
+                try {
+                    newSubentity.setContainer(newEntity);
+                } catch (KernelException ex) {
+                    throw new CloneNotSupportedException(
+                            "Failed to clone a CompositeEntity: " +
+                            KernelException.stackTraceToString(ex));
+                }
+            }
+    
+            // Clone the contained entities.
+            Iterator entities = entityList().iterator();
+            while (entities.hasNext()) {
+                ComponentEntity entity
+                    = (ComponentEntity)entities.next();
+                ComponentEntity newSubentity = (ComponentEntity)entity
+                    .clone(workspace);
+                // Assume that since we are dealing with clones,
+                // exceptions won't occur normally.  If they do, throw a
+                // CloneNotSupportedException.
+                try {
+                    newSubentity.setContainer(newEntity);
+                } catch (KernelException ex) {
+                    throw new CloneNotSupportedException(
+                            "Failed to clone a CompositeEntity: " +
+                            KernelException.stackTraceToString(ex));
+                }
+    
+                // Clone the links of the ports of the cloned entities.
+                Iterator ports = entity.portList().iterator();
+                while (ports.hasNext()) {
+                    ComponentPort port = (ComponentPort)ports.next();
+                    Enumeration linkedRelations = port.linkedRelations();
+                    while (linkedRelations.hasMoreElements()) {
+                        ComponentRelation rel =
+                            (ComponentRelation)linkedRelations.nextElement();
+                        // A null link (supported since indexed links) might
+                        // yield a null relation here. EAL 7/19/00.
+                        if (rel != null) {
+                            if (rel.getContainer() != this) {
+                                throw new CloneNotSupportedException(
+                                        "Cannot clone a CompositeEntity with " +
+                                        "level crossing transitions.");
+                            }
+                            ComponentRelation newRelation =
+                                newEntity.getRelation(rel.getName());
+                            Port newPort =
+                                newSubentity.getPort(port.getName());
+                            try {
+                                newPort.link(newRelation);
+                            } catch (IllegalActionException ex) {
+                                throw new CloneNotSupportedException(
+                                        "Failed to clone a CompositeEntity: " +
+                                        ex.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
+    
+            // Clone the inside links from the ports of this entity.
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                ComponentPort port = (ComponentPort)ports.next();
+                relations = port.insideRelationList().iterator();
+                while (relations.hasNext()) {
+                    Relation relation = (Relation)relations.next();
+                    ComponentRelation newRelation =
+                        newEntity.getRelation(relation.getName());
+                    Port newPort =
+                        newEntity.getPort(port.getName());
+                    try {
+                        newPort.link(newRelation);
+                    } catch (IllegalActionException ex) {
+                        throw new CloneNotSupportedException(
+                                "Failed to clone a CompositeEntity: " +
+                                ex.getMessage());
+                    }
+                }
+            }
+    
+            return newEntity;
+        } finally {
+            workspace().doneReading();
         }
-
-        return newEntity;
     }
 
     /** Create a new relation and use it to connect two ports.
@@ -498,7 +520,8 @@ public class CompositeEntity extends ComponentEntity {
 
     /** Enumerate the opaque entities that are directly or indirectly
      *  contained by this entity.  The enumeration will be empty if there
-     *  are no such contained entities.
+     *  are no such contained entities. The enumeration does not include
+     *  any entities that are class definitions.
      *  This method is read-synchronized on the workspace.
      *  @deprecated Use deepEntityList() instead.
      *  @return An enumeration of opaque ComponentEntity objects.
@@ -514,7 +537,7 @@ public class CompositeEntity extends ComponentEntity {
      *  that it is not affected by any subsequent additions or removals
      *  of entities.
      *  This method is read-synchronized on the workspace.
-     *  @return A new list of ComponentEntity objects.
+     *  @return A list of ComponentEntity objects.
      *  @see #classDefinitionList()
      */
     public List entityList() {
@@ -544,7 +567,7 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Return a list of the component entities contained by this object that
-     *  are instances of the specified class.  If there are no such
+     *  are instances of the specified Java class.  If there are no such
      *  instances, then return an empty list. The returned list does not
      *  include class definitions.
      *  This method is read-synchronized on the workspace.
@@ -596,12 +619,12 @@ public class CompositeEntity extends ComponentEntity {
      *  will export that link.  For this purpose, a port of a contained
      *  entity is deemed to be an inherited object if it is itself a class
      *  element <i>and</i> its container is an inherited object.
-     *  @param indentation The depth at which the output should be indented.
+     *  @param depth The depth below the MoML export in the hierarchy.
      *  @param filter A collection of ports, parameters, and entities, or
      *   null to apply no filtering.
      *  @exception IOException If an I/O error occurs.
      */
-    public String exportLinks(int indentation, Collection filter)
+    public String exportLinks(int depth, Collection filter)
             throws IOException {
         // To get the ordering right,
         // we read the links from the ports, not from the relations.
@@ -629,8 +652,11 @@ public class CompositeEntity extends ComponentEntity {
                     continue;
                 }
                 // If both ends of the link are inherited objects, then
-                // suppress the export.
-                if (relation.isDerived() && port.isDerived()) {
+                // suppress the export. This depends on the level of export
+                // because if both ends of the link are implied, then the
+                // link is implied.
+                if (relation.getDerivedLevel() <= depth
+                        && port.getDerivedLevel() <= depth) {
                     continue;
                 }
                 // Apply filter.
@@ -648,7 +674,7 @@ public class CompositeEntity extends ComponentEntity {
                     }
                     if (useIndex) {
                         useIndex = false;
-                        result.append(_getIndentPrefix(indentation)
+                        result.append(_getIndentPrefix(depth)
                                 + "<link port=\""
                                 + port.getName()
                                 + "\" insertAt=\""
@@ -657,7 +683,7 @@ public class CompositeEntity extends ComponentEntity {
                                 + relationName
                                 + "\"/>\n");
                     } else {
-                        result.append(_getIndentPrefix(indentation)
+                        result.append(_getIndentPrefix(depth)
                                 + "<link port=\""
                                 + port.getName()
                                 + "\" relation=\""
@@ -692,19 +718,20 @@ public class CompositeEntity extends ComponentEntity {
                         continue;
                     }
                     // If both ends of the link are inherited objects, then
-                    // suppress the export.
-                    if (relation.isDerived()
-                            && port.isDerived()
+                    // suppress the export.  This depends on the level of export
+                    // because if both ends of the link are implied, then the
+                    // link is implied.
+                    if (relation.getDerivedLevel() <= depth
+                            && port.getDerivedLevel() <= depth + 1
                             && ((NamedObj)port.getContainer())
-                            .isDerived()) {
+                            .getDerivedLevel() <= depth) {
                         continue;
                     }
                     // Apply filter.
                     if (filter == null
                             || (filter.contains(relation)
-                                    && (filter.contains(port)
-                                            ||  filter
-                                            .contains(port.getContainer())))) {
+                            && (filter.contains(port)
+                            ||  filter.contains(port.getContainer())))) {
 
                         // In order to support level-crossing links,
                         // consider the possibility that the relation
@@ -717,7 +744,7 @@ public class CompositeEntity extends ComponentEntity {
                         }
                         if (useIndex) {
                             useIndex = false;
-                            result.append(_getIndentPrefix(indentation)
+                            result.append(_getIndentPrefix(depth)
                                     + "<link port=\""
                                     + entity.getName()
                                     + "."
@@ -728,7 +755,7 @@ public class CompositeEntity extends ComponentEntity {
                                     + relationName
                                     + "\"/>\n");
                         } else {
-                            result.append(_getIndentPrefix(indentation)
+                            result.append(_getIndentPrefix(depth)
                                     + "<link port=\""
                                     + entity.getName()
                                     + "."
@@ -900,38 +927,6 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Enumeration getRelations() {
         return Collections.enumeration(relationList());
-    }
-
-    /** Create an instance by cloning this prototype and then adjust
-     *  the deferral relationship between the the clone and its parent,
-     *  and also any deferral relationships that are entirely contained
-     *  within the clone. That is, for any deferral relationship that
-     *  is entirely contained within the parent, a corresponding
-     *  deferral relationship is created within the clone.
-     *  <p>
-     *  The instantiated object is not a class definition (it is by default an
-     *  "instance" rather than a "class").  To make it a class definition
-     *  (a "subclass"), call setClassDefinition(true).
-     *  @see #setClassDefinition(boolean)
-     *  @param container The container for the instance.
-     *  @param name The name for the clone.
-     *  @return A new instance that is a clone of this prototype
-     *   with adjusted deferral relationships.
-     *  @exception CloneNotSupportedException If this prototype
-     *   cannot be cloned.
-     *  @exception IllegalActionException If this object is not a
-     *   class definition.
-     *   or the proposed container is not acceptable.
-     *  @exception NameDuplicationException If the name collides with
-     *   an object already in the container.
-     */
-    public Instantiable instantiate(NamedObj container, String name)
-            throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException {
-        CompositeEntity clone =
-            (CompositeEntity)super.instantiate(container, name);
-        clone._adjustDeferrals(this, clone);
-        return clone;
     }
 
     /** Return false since CompositeEntities are not atomic.
@@ -1128,9 +1123,21 @@ public class CompositeEntity extends ComponentEntity {
         }
         prefix = _stripNumericSuffix(prefix);
         String candidate = prefix;
-        int depth = maximumParentDepth();
-        if (depth > 0) {
-            prefix = prefix + "_" + depth + "_";
+        // NOTE: The list returned by getPrototypeList() has
+        // length equal to the number of containers of this object
+        // that return non-null to getParent(). That number is
+        // assured to be at least one greater than the corresponding
+        // number for any of the parents returned by getParent().
+        // Hence, we can use that number to minimize the likelyhood
+        // of inadvertent capture.
+        try {
+            int depth = getPrototypeList().size();
+            if (depth > 0) {
+                prefix = prefix + "_" + depth + "_";
+            }
+        } catch (IllegalActionException e) {
+            // Derivation invariant is not satisified.
+            throw new InternalErrorException(e);
         }
         int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null
@@ -1235,39 +1242,34 @@ public class CompositeEntity extends ComponentEntity {
         _containedRelations.append(relation);
     }
 
-    /** Adjust the deferral relationships in the specified clone.
-     *  Specifically, if this object defers to something that is
-     *  deeply contained by the specified prototype, then find
-     *  the corresponding object in the specified clone and defer
-     *  to it instead. This method also calls the same method
-     *  on all contained class definitions and
-     *  ordinary entities.
-     *  @param prototype The object that was cloned.
-     *  @param clone The clone.
-     *  @exception IllegalActionException If the clone does not contain
-     *   a corresponding object to defer to.
+    /** Adjust the deferrals in this object.
+     *  Specifically, if this object has a class name that refers
+     *  to a class in scope, then replace the current parent with
+     *  that object. Override the base class to also call the same method
+     *  on all contained class definitions and ordinary entities.
+     *  @exception IllegalActionException If the class found in scope
+     *   cannot be set.
      */
-    protected void _adjustDeferrals(
-            CompositeEntity prototype, CompositeEntity clone) {
-        super._adjustDeferrals(prototype, clone);
+    protected void _adjustDeferrals() throws IllegalActionException {
+        super._adjustDeferrals();
 
-        // Adjust the contained class definitions.
-        Iterator classes = classDefinitionList().iterator();
-        while (classes.hasNext()) {
-            ComponentEntity classDefinition
-                = (ComponentEntity)classes.next();
-            classDefinition._adjustDeferrals(prototype, clone);
+        Iterator containedClasses = classDefinitionList().iterator();
+        while (containedClasses.hasNext()) {
+            NamedObj containedObject = (NamedObj)containedClasses.next();
+            if (containedObject instanceof ComponentEntity) {
+                ((ComponentEntity)containedObject)._adjustDeferrals();
+            }
         }
 
-        // Clone the contained entities.
-        Iterator entities = entityList().iterator();
-        while (entities.hasNext()) {
-            ComponentEntity entity
-                = (ComponentEntity)entities.next();
-            entity._adjustDeferrals(prototype, clone);
+        Iterator containedEntities = entityList().iterator();
+        while (containedEntities.hasNext()) {
+            NamedObj containedObject = (NamedObj)containedEntities.next();
+            if (containedObject instanceof ComponentEntity) {
+                ((ComponentEntity)containedObject)._adjustDeferrals();
+            }
         }
     }
-
+    
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the NamedObj class.  Lines are indented according to
@@ -1398,44 +1400,6 @@ public class CompositeEntity extends ComponentEntity {
      *  @param entity The contained entity.
      */
     protected void _finishedAddEntity(ComponentEntity entity) {
-    }
-
-    /** Return the depth of the deferral that defines the specified object.
-     *  This overrides the base class so that if this object defers to
-     *  another that defines the defined object, and the exported
-     *  MoML of the defined object is identical to the exported MoML
-     *  of the deferred to object, then it returns 0.  Otherwise,
-     *  it defers to the base class. In particular, this class
-     *  handled definedObject of type ComponentEntity and ComponentRelation.
-     *  Otherwise, it defers to the base class.
-     *  @param definedObject The object whose definition we seek.
-     *  @return The depth of the deferral.
-     */
-    protected int _getDeferralDepth(NamedObj definedObject) {
-        Prototype deferTo = (Prototype)getParent();
-        if (deferTo != null && deepContains(definedObject)) {
-            String relativeName = definedObject.getName(this);
-            // Regrettably, we have to look at the type
-            // of definedObject to figure out how to look it up.
-            if (definedObject instanceof ComponentEntity) {
-                ComponentEntity definition
-                    = ((CompositeEntity)deferTo).getEntity(relativeName);
-                if (definition != null
-                        && definedObject.exportMoML()
-                        .equals(definition.exportMoML())) {
-                    return 0;
-                }
-            } else if (definedObject instanceof ComponentRelation) {
-                ComponentRelation definition
-                    = ((CompositeEntity)deferTo).getRelation(relativeName);
-                if (definition != null
-                        && definedObject.exportMoML()
-                        .equals(definition.exportMoML())) {
-                    return 0;
-                }
-            }
-        }
-        return super._getDeferralDepth(definedObject);
     }
 
     /** Remove the specified entity. This method should not be used

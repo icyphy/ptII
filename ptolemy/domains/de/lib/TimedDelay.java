@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
    microstep. Thus, it is sometimes useful to think of this zero-valued
    delay as an infinitesimal delay.
 
-   @see ptolemy.actor.FunctionDependency
+   @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
    @see ptolemy.domains.de.lib.VariableDelay
    @see ptolemy.domains.de.lib.Server
    @see ptolemy.domains.sdf.lib.SampleDelay

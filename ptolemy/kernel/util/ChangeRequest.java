@@ -194,6 +194,18 @@ public abstract class ChangeRequest {
         return _description;
     }
 
+    /** If a change is localized to a particular object and objects
+     *  that it contains, then that object should be returned by
+     *  this method. In this base class, this method returns null
+     *  to indicate that the change is not localized (or at least,
+     *  is not known to be localized).  Derived classes that make
+     *  changes that they know to be local should return non-null.
+     *  @return Null to indicate that the change is not localized.
+     */
+    public NamedObj getLocality() {
+        return null;
+    }
+
     /** Get the source that was specified in the constructor.
      *  @return The source of the change.
      */

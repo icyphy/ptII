@@ -41,7 +41,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
-import ptolemy.actor.FunctionDependency;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Manager;
@@ -49,6 +48,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
+import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -341,12 +341,6 @@ public class FSMActor extends CompositeEntity
             try {
                 TypedActor[] refinements = _currentState.getRefinement();
                 if (refinements == null || refinements.length < 1) {
-                    //FIXME: what to do if no refinement?
-                    //As long as there is a finite number of transition enabled
-                    //at the same time (iteration), the output and input are
-                    //not dependent. Otherwise, it is a Zeno behavior, which
-                    //is beyond the problem-solving ability of FunctionDependency
-                    //analysis.
                     _functionDependency =
                         new FunctionDependencyOfFSMActor(this);
                 } else {

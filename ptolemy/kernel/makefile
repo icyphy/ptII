@@ -65,8 +65,8 @@ JSRCS = \
 	ComponentRelation.java \
 	CompositeEntity.java \
 	Entity.java \
+	InstantiableNamedObj.java \
 	Port.java \
-	Prototype.java \
 	Relation.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -32,7 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -53,7 +53,8 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Red (rowland)
    @Pt.AcceptedRating Red (rowland)
 */
-public class UnitAttribute extends Attribute implements Settable {
+public class UnitAttribute extends AbstractSettableAttribute {
+    
     /** Construct a UnitsAttribute with no specific name, or container.
      *  @exception IllegalActionException If the attribute is not of an
      *  acceptable class for the container, or if the name contains a period.
@@ -80,6 +81,7 @@ public class UnitAttribute extends Attribute implements Settable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
     /** Add a listener to be notified when the value of this attribute changes.
      *  If the listener is already on the list of listeners, then do nothing.
      *  @param listener The listener to add.
@@ -188,6 +190,7 @@ public class UnitAttribute extends Attribute implements Settable {
      */
     public void setExpression(String expression)
             throws IllegalActionException {
+        super.setExpression(expression);
         try {
             if (getName().equals("_unitConstraints")) {
                 Vector uEquations =
@@ -245,7 +248,25 @@ public class UnitAttribute extends Attribute implements Settable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        ((Settable)destination).setExpression(getExpression());
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     Visibility _visibility = Settable.NONE;
     // Listeners for changes in value.
     private List _valueListeners;

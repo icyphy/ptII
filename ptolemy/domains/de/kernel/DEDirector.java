@@ -41,9 +41,10 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
-import ptolemy.actor.FunctionDependency;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.util.FunctionDependency;
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -734,6 +735,8 @@ public class DEDirector extends Director {
      *  sort to be redone next time prefire() is called.
      */
     public void invalidateSchedule() {
+        // FIXME: is this method necessary?
+        // How about workspace version checking?
         _sortValid = -1;
     }
 
@@ -1173,6 +1176,11 @@ public class DEDirector extends Director {
                             "put trigger event to",
                             receiver.getContainer().getFullName());
                     receiver._triggerEvent(currentEvent.token());
+                } else {
+                    // a pure event is detected, handle this event.
+                    // a pure event can not be handled with other 
+                    // trigger events together.
+                    break;
                 }
             } else {
                 // Already seen an event.
@@ -1428,21 +1436,25 @@ public class DEDirector extends Director {
         if (!(container instanceof CompositeActor)) return dag;
         CompositeActor castContainer = (CompositeActor)container;
 
-        // Get the FunctionDependency attribute of the container of this
-        // director. If there is no such attribute, construct one.
-        FunctionDependency functionDependency = castContainer.getFunctionDependencies();
+        // Get the FunctionDependency attribute of the container. 
+        FunctionDependency functionDependency = 
+            castContainer.getFunctionDependencies();
 
         // The FunctionDependency attribute is used to construct
         // the schedule. If the schedule needs recalculation,
-        // the FunctionDependency also needs recalculation.
-        functionDependency.invalidate();
+        // FIXME: see _getDepth method. Since the schedule calculation
+        // is also based on the workspace checking, the following
+        // statement may not be necessary. 
+        // functionDependency.invalidate();
 
         // FIXME: The following may be a very costly test.
         // -- from the comments of former implementation.
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = functionDependency.getCycleNodes();
+        Object[] cycleNodes = 
+            ((FunctionDependencyOfCompositeActor)functionDependency)
+                .getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
@@ -1469,9 +1481,9 @@ public class DEDirector extends Director {
             Actor actor = (Actor)actors.next();
             // Get the FunctionDependency attribute of current actor.
             functionDependency = actor.getFunctionDependencies();
-            // The following check may not be necessary since the FunctionDependency
-            // attribute is constructed before. However, we check
-            // it anyway.
+            // FIXME:
+            // The following check may not be necessary since the 
+            // FunctionDependency attribute is constructed before. 
             if (functionDependency == null) {
                 throw new IllegalActionException(this, "doesn't " +
                         "contain a valid FunctionDependency attribute.");
@@ -1482,16 +1494,17 @@ public class DEDirector extends Director {
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort)inputPorts.next();
 
-                Set notDirectlyDependentPorts =
-                    functionDependency.getIndependentOutputPorts(inputPort);
+                Set directlyDependentOutputPorts =
+                    functionDependency.getDependentOutputPorts(inputPort);
 
                 // get all the output ports of the current actor.
                 Iterator outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
-                    if (notDirectlyDependentPorts != null &&
-                            notDirectlyDependentPorts.contains(outputPort)) {
+                    if (directlyDependentOutputPorts != null &&
+                            !directlyDependentOutputPorts.contains(
+                                outputPort)) {
                         // Skip the port without direct dependence.
                         continue;
                     }

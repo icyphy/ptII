@@ -30,7 +30,7 @@ package ptolemy.moml;
 import java.net.URL;
 import java.util.List;
 
-import ptolemy.kernel.Prototype;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
@@ -168,10 +168,10 @@ public class MoMLChangeRequest extends ChangeRequest {
     public static NamedObj getDeferredToParent(NamedObj object) {
         if (object == null) {
             return null;
-        } else if (!(object instanceof Prototype)) {
+        } else if (!(object instanceof InstantiableNamedObj)) {
             return getDeferredToParent((NamedObj)object.getContainer());
         } else {
-            List deferList = ((Prototype)object).getChildren();
+            List deferList = ((InstantiableNamedObj)object).getChildren();
             if (deferList != null && deferList.size() > 0) {
                 return object;
             } else {
@@ -194,16 +194,6 @@ public class MoMLChangeRequest extends ChangeRequest {
      */
     public void setMergeWithPreviousUndo(boolean mergeWithPrevious) {
         _mergeWithPreviousUndo = mergeWithPrevious;
-    }
-
-    /** Set a flag indicating that we are propagating (if the argument
-     *  is true). This disables checks for disallowed actions on
-     *  derived objects. Note that this should be used very carefully.
-     *  A better approach is to use kernel calls to perform the
-     *  propagation rather than MoML change requests.
-     */
-    public void setPropagating(boolean propagating) {
-        _propagating = propagating;
     }
 
     /** Specify whether or not to report errors via the handler that
@@ -268,10 +258,8 @@ public class MoMLChangeRequest extends ChangeRequest {
             MoMLParser.setErrorHandler(null);
         }
         try {
-            _parser._setPropagating(_propagating);
             _parser.parse(_base, getDescription());
         } finally {
-            _parser._setPropagating(false);
             if (!_reportToHandler) {
                 MoMLParser.setErrorHandler(handler);
             }
@@ -287,32 +275,27 @@ public class MoMLChangeRequest extends ChangeRequest {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The context in which to execute the request.
-    private NamedObj _context;
-
     // The URL relative to which external references should be resolved.
     private URL _base;
+
+    // The context in which to execute the request.
+    private NamedObj _context;
 
     // Flag to print out information about what's being done.
     private static boolean _DEBUG = false;
 
+    // Indicates that the undo MoML from this change request should be merged
+    // in with the undo MoML from the previos undoable change request if they
+    // both have the same context.
+    private boolean _mergeWithPreviousUndo = false;
+    
     // The parser given in the constructor.
     private MoMLParser _parser;
 
     // Flag indicating whether to report to the handler registered
     // with the parser.
     private boolean _reportToHandler = false;
-    
-    // Flag indicating that this change is part of a propagation
-    // and therefore the parser should not disallow it because
-    // the objects are derived.
-    private boolean _propagating = false;
-
+   
     // Flag indicating if this change is undoable or not
     private boolean _undoable = false;
-
-    // Indicates that the undo MoML from this change request should be merged
-    // in with the undo MoML from the previos undoable change request if they
-    // both have the same context.
-    private boolean _mergeWithPreviousUndo = false;
 }

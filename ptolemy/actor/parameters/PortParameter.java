@@ -169,6 +169,7 @@ public class PortParameter extends Parameter {
                 } else {
                     try {
                         portLocation = new Location(_port, "_location");
+                        ((NamedObj)portLocation).propagateExistence();
                     } catch (KernelException ex) {
                         throw new InternalErrorException(ex);
                     }

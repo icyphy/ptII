@@ -77,10 +77,40 @@ public class PTreeMenuCreator extends MouseAdapter {
 
     /** Create an instance of the menu associated with this factory.
      *  @param e The mouse event.  If the mouse event is
-     *  the third button, then menu is created and shown.
+     *  a popup event, then menu is created and shown.
      */
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() != MouseEvent.BUTTON3) {
+        _doEvent(e);
+    }
+    
+    /** Create an instance of the menu associated with this factory.
+     *  @param e The mouse event.  If the mouse event is
+     *  a popup event, then menu is created and shown.
+     */
+    public void mouseReleased(MouseEvent e) {
+        _doEvent(e);
+    }
+    
+    /** Return the list of menu item factories.
+     * @return An unmodifiable list.
+     */
+    public List menuItemFactoryList() {
+        return Collections.unmodifiableList(_factoryList);
+    }
+
+    /** Remove the given menu item factory from the factory list.
+     */
+    public void removeMenuItemFactory(MenuItemFactory factory) {
+        _factoryList.remove(factory);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+
+    /** Process a mousePressed or mouseReleased event.
+     */
+    private void _doEvent(MouseEvent e) {
+        if (!e.isPopupTrigger()) {
             return;
         }
         PTree tree = (PTree) e.getComponent();
@@ -98,19 +128,6 @@ public class PTreeMenuCreator extends MouseAdapter {
             menu.show(tree, e.getX(), e.getY());
             e.consume();
         }
-    }
-
-    /** Return the list of menu item factories.
-     * @return An unmodifiable list.
-     */
-    public List menuItemFactoryList() {
-        return Collections.unmodifiableList(_factoryList);
-    }
-
-    /** Remove the given menu item factory from the factory list.
-     */
-    public void removeMenuItemFactory(MenuItemFactory factory) {
-        _factoryList.remove(factory);
     }
 
     ///////////////////////////////////////////////////////////////////

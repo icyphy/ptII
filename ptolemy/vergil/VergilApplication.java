@@ -75,7 +75,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
    to be read.  For example,
    <pre>
    $PTII/bin/vergil -conf ptolemy/configs/ptiny/configuration.xml
-   <pre>
+   </pre>
    and
    <pre>
    $PTII/bin/vergil -ptiny

@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -42,6 +43,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,6 +60,9 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
@@ -286,9 +291,27 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // model so that the vergil applet has the layout info.
             File newModelFile = new File(newModelFileName);
 
-            if (FileUtilities.binaryCopyURLToFile(
-                        new URL(_modelPath), newModelFile)) {
-                System.out.println("AppletWriter: wrote '"
+            URL modelPathURL = new URL(_modelPath);
+            if (!modelPathURL.sameFile(
+                        newModelFile.getCanonicalFile().toURL())) {
+
+                // Here, _modelPath probably has the GeneratorAttribute
+                // in it, which is not what we want because when we load
+                // the applet, the copernicus class files will not be present.
+                // So, we strip out GeneratorAttribute
+                try {
+                    _copyModelRemoveGeneratorTableau(modelPathURL,
+                            newModelFile);
+                } catch (Exception ex) {
+                    IOException io = new IOException(
+                        "Problem reading '" + _modelPath + "' or "
+                        + "writing '" + newModelFileName + "'");
+                    io.initCause(ex);
+                    throw io;
+                }
+                System.out.println("AppletWriter: removed GeneratorAttribute "
+                        + "while copying '" 
+                        + modelPathURL + "' to '"
                         + newModelFile + "'");
             } else {
                 System.out.println("AppletWriter: No need to copy the .xml "
@@ -389,7 +412,45 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
 
+    // copy the model and remove the GeneratorTableau
+    private static void _copyModelRemoveGeneratorTableau(URL modelPathURL,
+            File newModelFile) throws Exception {
 
+        // Create a parser.
+        MoMLParser parser = new MoMLParser();
+
+        // Get the old filters, save them, add our own
+        // filters, use them, remove our filters,
+        // and then readd the old filters in the finally clause.
+        List oldFilters = parser.getMoMLFilters();
+        parser.setMoMLFilters(null);
+
+        // Parse the model and get the name of the model.
+        try {
+            // Handle Backward Compatibility.
+            parser.addMoMLFilters(BackwardCompatibility.allFilters());
+
+            // This is a bit of a misnomer, we remove only
+            // GeneratorTableauAttribute here so that the Vergil applet has
+            // the graphical classes
+            RemoveGraphicalClasses removeGraphicalClasses =
+                new RemoveGraphicalClasses();
+            removeGraphicalClasses.clear();
+            removeGraphicalClasses
+                .put("ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
+            parser.addMoMLFilter(removeGraphicalClasses);
+
+            // Parse the model.
+            CompositeActor toplevel = null;
+            toplevel =
+                (CompositeActor)parser.parse(modelPathURL, modelPathURL);
+            FileWriter writer = new FileWriter(newModelFile);
+            toplevel.exportMoML(writer);
+            writer.close();
+        } finally {
+            parser.setMoMLFilters(oldFilters);
+        }
+    }
 
     // If jarFile exists, optionally copy it and return true.
     // If jarFile does not exist, return false.
@@ -746,5 +807,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // Initial default for _templateDirectory;
     private final String TEMPLATE_DIRECTORY_DEFAULT =
     "ptolemy/copernicus/applet/";
+
 }
 

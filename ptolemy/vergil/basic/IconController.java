@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 package ptolemy.vergil.basic;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +41,6 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AnimationRenderer;
-import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.GraphController;
@@ -77,6 +75,14 @@ public class IconController extends ParameterizedNodeController {
         super(controller);
         setNodeRenderer(new IconRenderer());
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Map used to keep track of icons that have been created
+     *  but not yet assigned to a container.
+     */
+    private static Map _iconsPendingContainer = new HashMap();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -160,17 +166,11 @@ public class IconController extends ParameterizedNodeController {
                         };
                     request.setPersistent(false);
                     object.requestChange(request);
-                } else if (iconList.size() == 1) {
-                    EditorIcon icon = (EditorIcon) iconList.iterator().next();
+                } else if (iconList.size() >= 1) {
+                    // Use only the last icon in the list.
+                    EditorIcon icon = (EditorIcon)
+                            iconList.get(iconList.size() - 1);
                     result = icon.createFigure();
-                } else {
-                    // There are multiple figures.
-                    Iterator icons = iconList.iterator();
-                    result = new CompositeFigure();
-                    while (icons.hasNext()) {
-                        EditorIcon icon = (EditorIcon) icons.next();
-                        ((CompositeFigure) result).add(icon.createFigure());
-                    }
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException(
@@ -205,8 +205,4 @@ public class IconController extends ParameterizedNodeController {
             return result;
         }
     }
-
-    // Map used to keep track of icons that have been created
-    // but not yet assigned to a container.
-    private static Map _iconsPendingContainer = new HashMap();
 }

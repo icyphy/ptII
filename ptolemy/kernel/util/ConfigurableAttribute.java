@@ -113,6 +113,23 @@ public class ConfigurableAttribute
         }
     }
 
+    /** Clone the attribute.  This creates a new attribute with the same value.
+     *  @param workspace The workspace in which to place the cloned variable.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @see java.lang.Object#clone()
+     *  @return The cloned attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ConfigurableAttribute newObject = 
+            (ConfigurableAttribute)super.clone(workspace);
+        
+        // The clone has new value listeners.
+        newObject._valueListeners = null;
+
+        return newObject;
+    }
+
     /** Configure the object with data from the specified input source
      *  (a URL) and/or textual data.  The input source, if any, is assumed
      *  to contain textual data as well.  Note that the URL is not read
@@ -126,13 +143,16 @@ public class ConfigurableAttribute
      */
     public void configure(URL base, String source, String text)
             throws Exception {
+        if (_defaultText == null) {
+            _defaultText = _configureText;
+        }
+
         _base = base;
         _configureSource = source;
         _configureText = text;
-        // FIXME: Do we really want to call this right away?
+
+        // NOTE: Do we really want to call this right away?
         validate();
-        // Make sure the new value is exported in MoML.  EAL 12/03.
-        setOverrideDepth(0);
     }
 
     /** Return the base specified in the most recent call to the
@@ -159,6 +179,29 @@ public class ConfigurableAttribute
      */
     public String getConfigureText() {
         return _configureText;
+    }
+    
+    /** Return the default value of this Settable,
+     *  if there is one.  If this is a derived object, then the default
+     *  is the value of the object from which this is derived (the
+     *  "prototype").  If this is not a derived object, then the default
+     *  is the first value set using setExpression(), or null if
+     *  setExpression() has not been called.
+     *  @return The default value of this attribute, or null
+     *   if there is none.
+     *  @see #setExpression(String)
+     */
+    public String getDefaultExpression() {
+        try {
+            List prototypeList = getPrototypeList();
+            if (prototypeList.size() > 0) {
+                return ((Settable)prototypeList.get(0)).getExpression();
+            }
+        } catch (IllegalActionException e) {
+            // This should not occur.
+            throw new InternalErrorException(e);
+        }
+        return _defaultText;
     }
 
     /** Return the the result of calling value().
@@ -309,6 +352,26 @@ public class ConfigurableAttribute
         }
     }
 
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        try {
+            ((Configurable)destination).configure(
+                    _base, _configureSource, _configureText);
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Propagation failed.");
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
@@ -320,6 +383,9 @@ public class ConfigurableAttribute
 
     // The text in the body of the configure.
     private String _configureText;
+
+    // The default text in the body of the configure.
+    private String _defaultText;
 
     // Listeners for changes in value.
     private List _valueListeners;

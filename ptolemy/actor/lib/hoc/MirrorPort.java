@@ -227,9 +227,9 @@ public class MirrorPort extends TypedIOPort {
             // has matching status.
             MoMLChangeRequest request = new MoMLChangeRequest(
                     this,
-                    _associatedPort.getContainer(),
+                    _associatedPort,
                     "<rename name=\"" + name + "\"/>");
-            _associatedPort.getContainer().requestChange(request);
+            _associatedPort.requestChange(request);
         }
     }
 

@@ -67,6 +67,7 @@ JSRCS = \
 	NamedObjNodeModel.java \
 	NodeControllerFactory.java \
 	ParameterizedNodeController.java \
+	PopupMouseFilter.java \
 	RunnableGraphController.java \
 	WithIconGraphController.java
 

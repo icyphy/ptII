@@ -22,12 +22,12 @@
           class="ptolemy.actor.lib.conversions.CartesianToPolar">
   </entity>
 
-  <entity name="ComplexToPolar"
-          class="ptolemy.actor.lib.conversions.ComplexToPolar">
-  </entity>
-
   <entity name="ComplexToCartesian"
           class="ptolemy.actor.lib.conversions.ComplexToCartesian">
+  </entity>
+
+  <entity name="ComplexToPolar"
+          class="ptolemy.actor.lib.conversions.ComplexToPolar">
   </entity>
 
   <entity name="DoubleToFix"
@@ -87,12 +87,12 @@
           class="ptolemy.actor.lib.conversions.LongToDouble">
   </entity>
 
-  <entity name="PolarToComplex"
-          class="ptolemy.actor.lib.conversions.PolarToComplex">
-  </entity>
-
   <entity name="PolarToCartesian"
           class="ptolemy.actor.lib.conversions.PolarToCartesian">
+  </entity>
+
+  <entity name="PolarToComplex"
+          class="ptolemy.actor.lib.conversions.PolarToComplex">
   </entity>
 
   <entity name="Round" class="ptolemy.actor.lib.conversions.Round">

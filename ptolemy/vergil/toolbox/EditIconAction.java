@@ -30,6 +30,7 @@ package ptolemy.vergil.toolbox;
 
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.ChangeRequest;
@@ -76,8 +77,12 @@ public class EditIconAction extends FigureAction {
         // Do this as a change request since it may add a new icon.
         ChangeRequest request = new ChangeRequest(this, "Edit Custom Icon") {
                 protected void _execute() throws Exception {
-                    EditorIcon icon = (EditorIcon)object
-                        .getAttribute("_icon", EditorIcon.class);
+                    EditorIcon icon = null;
+                    List iconList = object.attributeList(EditorIcon.class);
+                    if (iconList.size() > 0) {
+                        // Get the last icon.
+                        icon = (EditorIcon)iconList.get(iconList.size() - 1);
+                    }
                     if (icon == null) {
                         icon = new EditorIcon(object, "_icon");
                     } else if (icon instanceof XMLIcon) {
@@ -89,23 +94,33 @@ public class EditIconAction extends FigureAction {
                         
                         // Propagate this to derived objects, being
                         // careful to not trash their custom icons
-                        // if they have them.
+                        // if they have them.  However, there is a trickiness.
+                        // They may not have a custom icon, but rather have
+                        // an instance of XMLIcon.  We have to remove that
+                        // first.
                         Iterator derivedObjects
                                 = object.getDerivedList().iterator();
                         while (derivedObjects.hasNext()) {
                             NamedObj derived = (NamedObj)derivedObjects.next();
-                            EditorIcon derivedIcon = (EditorIcon)derived
-                                .getAttribute("_icon", EditorIcon.class);
-                            if (derivedIcon == null) {
-                                new EditorIcon(derived, "_icon");
-                            } else if (derivedIcon instanceof XMLIcon) {
+                            
+                            // See whether it has an icon.
+                            EditorIcon derivedIcon = null;
+                            List derivedIconList
+                                    = derived.attributeList(EditorIcon.class);
+                            if (derivedIconList.size() > 0) {
+                                // Get the last icon.
+                                derivedIcon = (EditorIcon)derivedIconList.get(
+                                        derivedIconList.size() - 1);
+                            }
+                            if (derivedIcon instanceof XMLIcon) {
                                 // There is an icon currently that is not custom.
                                 // Without trashing the _iconDescription, we can remove
                                 // this icon and replace it.
                                 derivedIcon.setContainer(null);
-                                new EditorIcon(derived, "_icon");
                             }
                         }
+                        // Now it is safe to propagate.
+                        icon.propagateExistence();
                     }
                     _configuration.openModel(icon);
                 }

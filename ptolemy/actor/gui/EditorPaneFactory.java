@@ -105,7 +105,7 @@ public class EditorPaneFactory extends Attribute {
      */
     public static Component createEditorPane(NamedObj object) {
         PtolemyQuery query = new PtolemyQuery(object);
-        query.setTextWidth(25);
+        query.setTextWidth(40);
 
         Iterator parameters = object.attributeList(Settable.class).iterator();
         boolean foundOne = false;

@@ -43,8 +43,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ScopeExtendingAttribute;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
@@ -389,6 +391,13 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         MultiInstanceComposite newObject =
             (MultiInstanceComposite)super.clone(workspace);
         newObject._isMasterCopy = false;
+        try {
+            new Attribute(newObject, "_hide");
+        } catch (KernelException e) {
+            // This should not occur.  Ignore if it does
+            // since the only downside is that the actor is
+            // rendered.
+        }
         return newObject;
     }
 
@@ -405,16 +414,28 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         }
         _isMasterCopy = true;
         _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"-20\" y=\"-10\" width=\"60\" " +
+                "height=\"40\" style=\"fill:red\"/>\n" +
+                "<rect x=\"-18\" y=\"-8\" width=\"56\" " +
+                "height=\"36\" style=\"fill:lightgrey\"/>\n" +
+                "<rect x=\"-25\" y=\"-15\" width=\"60\" " +
+                "height=\"40\" style=\"fill:red\"/>\n" +
+                "<rect x=\"-23\" y=\"-13\" width=\"56\" " +
+                "height=\"36\" style=\"fill:lightgrey\"/>\n" +
                 "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
                 "height=\"40\" style=\"fill:red\"/>\n" +
                 "<rect x=\"-28\" y=\"-18\" width=\"56\" " +
                 "height=\"36\" style=\"fill:lightgrey\"/>\n" +
-                "<rect x=\"-18\" y=\"-14\" width=\"40\" " +
-                "height=\"24\" style=\"fill:white\"/>\n" +
-                "<rect x=\"-20\" y=\"-12\" width=\"40\" " +
-                "height=\"24\" style=\"fill:white\"/>\n" +
-                "<rect x=\"-22\" y=\"-10\" width=\"40\" " +
-                "height=\"24\" style=\"fill:white\"/>\n" +
+                "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" " +
+                "style=\"fill:white\"/>\n" +
+                "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" " +
+                "style=\"fill:white\"/>\n" +
+                "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" " +
+                "style=\"fill:white\"/>\n" +
+                "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>" +
+                "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>" +
+                "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>" +
+                "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" +
                 "</svg>\n");
     }
 

@@ -59,8 +59,8 @@ JSIMPLE_TESTS = \
 	ComponentRelation.tcl \
 	CompositeEntity.tcl \
 	Entity.tcl \
+	InstantiableNamedObj.tcl \
 	Port.tcl \
-	Prototype.tcl \
 	Relation.tcl
 
 # Graphical Java tests that use Tcl.

@@ -49,6 +49,7 @@ import ptolemy.data.type.Typeable;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -174,8 +175,7 @@ import ptolemy.kernel.util.Workspace;
    language).  Thus, a variable contained by a named object is not
    persistent, in that if the object is exported to a MoML file, the
    variable will not be represented.  If you prefer that the variable
-   be represented, then you should use the derived class Parameter instead
-   or call setPersistent(true).
+   be represented, then you should use the derived class Parameter instead.
    <p>
    A variable is also normally not settable by casual users from the user
    interface.  This is because, by default, getVisibility() returns EXPERT.
@@ -215,8 +215,8 @@ import ptolemy.kernel.util.Workspace;
    @see #setPersistent(boolean)
 */
 
-public class Variable extends Attribute
-    implements Typeable, Settable, ValueListener {
+public class Variable extends AbstractSettableAttribute
+    implements Typeable, ValueListener {
 
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
@@ -326,6 +326,9 @@ public class Variable extends Attribute
         // SmoothedPeriodogram actors, which are composite actors
         // in the library), because these are cloned when copied.
         newObject._variablesDependentOn = null;
+        
+        // The clone has new value listeners.
+        newObject._valueListeners = null;
 
         // set _declaredType and _varType
         if (_declaredType instanceof StructuredType &&
@@ -727,6 +730,11 @@ public class Variable extends Attribute
      *  @param expr The expression for this variable.
      */
     public void setExpression(String expr) {
+        try {
+            super.setExpression(expr);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         if (_debugging) {
             _debug("setExpression: " + expr);
         }
@@ -746,11 +754,6 @@ public class Variable extends Attribute
         _currentExpression = expr;
         _parseTree = null;
         _parseTreeValid = false;
-
-        // Make sure the new value is exported in MoML.  EAL 12/03.
-        if (changed) {
-            setOverrideDepth(0);
-        }
 
         _notifyValueListeners();
     }
@@ -846,9 +849,6 @@ public class Variable extends Attribute
         // Override any expression that may have been previously given.
         if (_currentExpression != null) {
             _currentExpression = null;
-
-            // Make sure the new value is exported in MoML.
-            setOverrideDepth(0);
 
             _parseTree = null;
             _parseTreeValid = false;
@@ -1446,6 +1446,20 @@ public class Variable extends Attribute
             }
         }
         return result;
+    }
+
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        ((Settable)destination).setExpression(getExpression());
     }
 
     /** Set the token value and type of the variable.

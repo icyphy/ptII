@@ -91,7 +91,7 @@ public class Configurer extends JPanel implements CloseListener {
         Iterator parameters = _object.attributeList(Settable.class).iterator();
         while (parameters.hasNext()) {
             Settable parameter = (Settable)parameters.next();
-            if (isVisible()) {
+            if (isVisible(_object, parameter)) {
                 _originalValues.put(parameter, parameter.getExpression());
             }
         }
@@ -130,7 +130,6 @@ public class Configurer extends JPanel implements CloseListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Return true if the given settable should be visible in a
      *  configurer panel for the specified target. Any settable with
@@ -179,8 +178,8 @@ public class Configurer extends JPanel implements CloseListener {
                     boolean hasChanges = false;
                     StringBuffer buffer = new StringBuffer("<group>\n");
                     while (parameters.hasNext()) {
-                        if (isVisible()) {
-                            Settable parameter = (Settable)parameters.next();
+                        Settable parameter = (Settable)parameters.next();
+                        if (isVisible(_object, parameter)) {
                             String newValue = parameter.getExpression();
                             String oldValue = (String)_originalValues.get(parameter);
                             if (!newValue.equals(oldValue)) {
@@ -195,7 +194,7 @@ public class Configurer extends JPanel implements CloseListener {
                     }
                     buffer.append("</group>\n");
 
-                    // If there a changes, then issue a change request.
+                    // If there are changes, then issue a change request.
                     // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
                     // of a previous change.
                     if (hasChanges) {
@@ -204,6 +203,71 @@ public class Configurer extends JPanel implements CloseListener {
                                 _object,           // context
                                 buffer.toString(), // MoML code
                                 null);             // base
+                        _object.requestChange(request);
+                    }
+                }
+            });
+    }
+
+    /** Restore parameter values to their defaults.
+     */
+    public void restoreToDefaults() {
+        // This is done in the UI thread in order to
+        // ensure that all pending UI events have been
+        // processed.  In particular, some of these events
+        // may trigger notification of new attribute values,
+        // which must not be allowed to occur after this
+        // restore is done.  In particular, the default
+        // attribute editor has lines where notification
+        // of updates occurs when the line loses focus.
+        // That notification occurs some time after the
+        // window is destroyed.
+        SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    Iterator parameters = _object.attributeList(Settable.class).iterator();
+                    StringBuffer buffer = new StringBuffer("<group>\n");
+                    final List parametersReset = new LinkedList();
+                    while (parameters.hasNext()) {
+                        Settable parameter = (Settable)parameters.next();
+                        if (isVisible(_object, parameter)) {
+                            String newValue = parameter.getExpression();
+                            String defaultValue = parameter.getDefaultExpression();
+                            if (defaultValue != null && !newValue.equals(defaultValue)) {
+                                buffer.append("<property name=\"");
+                                buffer.append(((NamedObj)parameter).getName(_object));
+                                buffer.append("\" value=\"");
+                                buffer.append(StringUtilities.escapeForXML(defaultValue));
+                                buffer.append("\"/>\n");
+                                parametersReset.add(parameter);
+                            }
+                        }
+                    }
+                    buffer.append("</group>\n");
+
+                    // If there are changes, then issue a change request.
+                    // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
+                    // of a previous change.
+                    if (parametersReset.size() > 0) {
+                        MoMLChangeRequest request = new MoMLChangeRequest(
+                                this,              // originator
+                                _object,           // context
+                                buffer.toString(), // MoML code
+                                null) {            // base
+                            protected void _execute() throws Exception {
+                                super._execute();
+                                // Reset the derived level, which has the side
+                                // effect of marking the object not overridden.
+                                Iterator parameters = parametersReset.iterator();
+                                while (parameters.hasNext()) {
+                                    Settable parameter = (Settable)parameters.next();
+                                    if (isVisible(_object, parameter)) {
+                                        int derivedLevel
+                                                = ((NamedObj)parameter).getDerivedLevel();
+                                        ((NamedObj)parameter).setDerivedLevel(derivedLevel);
+                                    }
+                                }
+                            }
+                        };
                         _object.requestChange(request);
                     }
                 }

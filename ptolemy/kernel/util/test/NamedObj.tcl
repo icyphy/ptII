@@ -413,7 +413,7 @@ test NamedObj-11.1.1 {Test exportMoML(String)} {
 </entity>
 }
 
-# Prototype class makes these tests obsolete.
+# InstantiableNamedObj class makes these tests obsolete.
 # test NamedObj-11.2 {Test deferMoMLDefinitionTo} {
 #     # The following causes clones of $a to defer their MoML definition to $a.
 #     # NOTE: This is basically what the MoML parser has to do to deal with

@@ -55,7 +55,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	psdf.xml \
-	synthesis-copyright.htm
+	mapss-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

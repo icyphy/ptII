@@ -310,13 +310,15 @@ public class Relation extends NamedObj {
      *  @param relativeName The name relative to the container.
      *  @param container The container expected to contain the object, which
      *   must be an instance of CompositeEntity.
-     *  @return An object of the same class as this object.
-     *  @exception InternalErrorException If the object does not exist
-     *   or has the wrong class, or if the specified container is not
+     *  @return An object of the same class as this object, or null if
+     *   there is none.
+     *  @exception IllegalActionException If the object exists
+     *   and has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
-    protected NamedObj _getContainedObject(String relativeName,
-            NamedObj container) throws InternalErrorException {
+    protected NamedObj _getContainedObject(
+            NamedObj container, String relativeName)
+            throws IllegalActionException {
         if (!(container instanceof CompositeEntity)) {
             throw new InternalErrorException(
                     "Expected "
@@ -326,14 +328,14 @@ public class Relation extends NamedObj {
         }
         Relation candidate =
             ((CompositeEntity)container).getRelation(relativeName);
-        if (!getClass().isInstance(candidate)) {
-            throw new InternalErrorException(
+        if (candidate != null && !getClass().isInstance(candidate)) {
+            throw new IllegalActionException(this,
                     "Expected "
-                    + container.getFullName()
-                    + " to contain a port with name "
-                    + relativeName
-                    + " and class "
-                    + getClass().getName());
+                    + candidate.getFullName()
+                    + " to be an instance of "
+                    + getClass().getName()
+                    + ", but it is "
+                    + candidate.getClass().getName());
         }
         return candidate;
     }

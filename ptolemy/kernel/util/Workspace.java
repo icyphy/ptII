@@ -24,16 +24,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-
-Changed wait(Object) to throw InterruptedException. This method is used
-in:
-ProcessThread, ProcessDirector, MailboxBoundaryReceiver,
-CompositeProcessDirector, DDEReceiver, PBOThreadDirector,
-PNQueueReceiver
-Need to make sure that the exception is handled reasonably.
-
-Removed support for setReadOnly().
--- liuxj
+Made _writer, _lastReader, _lastReaderRecord, and _readerRecords
+transient so that object would be serializable. However, serialization
+is probably not right if there are outstanding read or write permissions.
+-- eal
 
 */
 
@@ -61,10 +55,14 @@ import java.util.List;
    to the directory by calling add().
    The names of the items in the directory are not required to be unique.
    <p>
+   The synchronization model of the workspace is a multiple-reader,
+   single-writer model. Any number of threads can simultaneously read the
+   workspace. Only one thread at a time can have write access to the workspace,
+   and while the write access is held, no other thread can get read access.
+   <p>
    When reading the state of objects in the workspace, a thread must
    ensure that no other thread is simultaneously modifying the objects in the
-   workspace.  To read-synchronize on its workspace, it uses the following
-   code in a method:
+   workspace. To read-synchronize on a workspace, use the following code:
    <pre>
    try {
    _workspace.getReadAccess();
@@ -74,17 +72,16 @@ import java.util.List;
    }
    </pre>
    We assume that the _workspace variable references the workspace, as for example
-   in the NamedObj class. The getReadAccess() method suspends the thread if
-   another thread is currently modifying the workspace, and otherwise
+   in the NamedObj class. The getReadAccess() method suspends the current thread
+   if another thread is currently modifying the workspace, and otherwise
    returns immediately. Note that multiple readers can simultaneously have
    read access. The finally clause is executed even if
    an exception occurs.  This is essential because without the call
    to doneReading(), the workspace will never again allow any thread
-   to modify it.  It believes there is still a thread reading it.
-   Any number of threads can simultaneously read the workspace.
+   to modify it.
    <p>
-   To make changes in the workspace, a thread must write-synchronize
-   using the following code:
+   To make safe changes to the objects in a workspace, a thread must
+   write-synchronize using the following code:
    <pre>
    try {
    _workspace.getWriteAccess();
@@ -93,8 +90,6 @@ import java.util.List;
    _workspace.doneWriting();
    }
    </pre>
-   Only one thread can be writing to the workspace at a time, and
-   while the write permission is held, no thread can read the workspace.
    Again, the call to doneWriting() is essential, or the workspace
    will remain permanently locked to either reading or writing.
    <p>
@@ -106,8 +101,8 @@ import java.util.List;
    @author Edward A. Lee, Mudit Goel, Lukito Muliadi, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuxj)
-   @Pt.AcceptedRating Red (liuxj)
+   @Pt.ProposedRating Green (liuxj)
+   @Pt.AcceptedRating Green (liuxj)
 */
 
 public final class Workspace implements Nameable, Serializable {
@@ -214,11 +209,11 @@ public final class Workspace implements Nameable, Serializable {
 
     /** Indicate that the calling thread is finished reading.
      *  If this thread is completely done reading (it has no other
-     *  active read or write permissions), then wake up any threads that are
-     *  suspended on access to this
-     *  workspace so that they may contend for permissions.
+     *  read access to the workspace), then notify all threads that are
+     *  waiting to get read/write access to this
+     *  workspace so that they may contend for access.
      *  @exception InvalidStateException If this method is called
-     *   before a corresponding call to getReadAccess().
+     *   before a corresponding call to getReadAccess() by the same thread.
      */
     public final synchronized void doneReading() {
 
@@ -258,11 +253,13 @@ public final class Workspace implements Nameable, Serializable {
     }
 
     /** Indicate that the calling thread is finished writing.
-     *  This wakes up any threads that are suspended on access to this
-     *  workspace so that they may contend for permissions.
-     *  It also increments the version number of the workspace.
-     *  @exception InvalidStateException If this method is called without
-     *   a matching call to getWriteAccess().
+     *  If this thread is completely done writing (it has no other
+     *  write access to the workspace), then notify all threads
+     *  that are waiting to get read/write access to this workspace 
+     *  so that they may contend for access.
+     *  It also increments the version number of the workspace. 
+     *  @exception InvalidStateException If this method is called before
+     *   a corresponding call to getWriteAccess() by the same thread.
      */
     public final synchronized void doneWriting() {
 
@@ -274,6 +271,8 @@ public final class Workspace implements Nameable, Serializable {
             record = _getAccessRecord(current, false);
         }
 
+        incrVersion();
+        
         if (current != _writer) {
             if (record != null && record.failedWriteAttempts > 0) {
                 record.failedWriteAttempts--;
@@ -287,7 +286,6 @@ public final class Workspace implements Nameable, Serializable {
                 _writeDepth--;
                 if (_writeDepth == 0) {
                     _writer = null;
-                    incrVersion();
                     notifyAll();
                 }
             } else {
@@ -330,24 +328,32 @@ public final class Workspace implements Nameable, Serializable {
         return _name;
     }
 
-
     /** Obtain permission to read objects in the workspace.
-     *  This method suspends the calling thread until such permission
-     *  has been obtained.  Permission is granted unless either another
-     *  thread has write permission, or there are threads that
-     *  have requested write permission and not gotten it yet. If this thread
-     *  already has a read permission, then another permission is granted
-     *  irrespective of other write requests.
+     *  This method suspends the calling thread until read access
+     *  has been obtained. Read access is granted unless either another
+     *  thread has write access, or there are threads that
+     *  have requested write access and not gotten it yet. If this thread
+     *  already has read access, then access is granted irrespective of 
+     *  other write requests.
      *  If the calling thread is interrupted while waiting to get read
-     *  permission, an InternalErrorException is thrown, and the thread does
-     *  not have read permission to the workspace.
+     *  access, an InternalErrorException is thrown, and the thread does
+     *  not have read permission to the workspace. 
      *  It is essential that a call to this method is matched by a call to
      *  doneReading(), regardless of whether this method returns normally or
      *  an exception is thrown. This is to ensure that the workspace is in a
-     *  consistent state, otherwise write permission may never again be
+     *  consistent state, otherwise write access may never again be
      *  granted in this workspace.
+     *  @exception InternalErrorException If the calling thread is interrupted
+     *   while waiting to get read access.
+     *  @see #doneReading()
      */
     public final synchronized void getReadAccess() {
+
+        // This method should throw an InterruptedException when the
+        // calling thread is interrupted. InterruptedException is a
+        // checked exception, so changing this will lead to changes
+        // everywhere this method is called, which is a huge amount
+        // of work.
 
         Thread current = Thread.currentThread();
         AccessRecord record = null;
@@ -372,16 +378,16 @@ public final class Workspace implements Nameable, Serializable {
             return;
         }
 
-        // need to wait for read access
-        // first increment this to make the record not empty, so as to
+        // Possibly need to wait for read access.
+        // First increment this to make the record not empty, so as to
         // prevent the record from being deleted from the _readerRecords
-        // table by other threads
+        // table by other threads.
         record.failedReadAttempts++;
 
         // Go into a loop, and at each iteration check whether the current
         // thread can get read access. If not then do a wait() on the
         // workspace. Otherwise, exit the loop.
-        while (_writeReq != 0 || _writer != null) {
+        while (_waitingWriteRequests != 0 || _writer != null) {
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -392,7 +398,7 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         record.failedReadAttempts--;
-        // now there is no writer, and no thread waiting to get write access
+        // Now there is no writer, and no thread waiting to get write access.
         record.readDepth++;
         // This is a new reader, so we increment the number
         // of readers.
@@ -403,7 +409,7 @@ public final class Workspace implements Nameable, Serializable {
 
     /** Get the version number.  The version number is incremented on
      *  each call to doneWriting() and also on calls to incrVersion().
-     *  It is meant to track changes in the topologies within the workspace.
+     *  It is meant to track changes to the objects in the workspace.
      *  @return A non-negative long integer.
      */
     public synchronized final long getVersion() {
@@ -411,26 +417,35 @@ public final class Workspace implements Nameable, Serializable {
     }
 
     /** Obtain permission to write to objects in the workspace.
-     *  Permission is granted if there are no other threads that currently
-     *  have read or write permission.  In particular, it <i>is</i> granted
-     *  if this thread already has write permission, or if it is the only
-     *  thread with read permission.
-     *  This method suspends the calling thread until such permission
+     *  Write access is granted if there are no other threads that currently
+     *  have read or write access.  In particular, it <i>is</i> granted
+     *  if this thread already has write access, or if it is the only
+     *  thread with read access.
+     *  This method suspends the calling thread until such access
      *  has been obtained.
      *  If the calling thread is interrupted while waiting to get write
-     *  permission, an InternalErrorException is thrown, and the thread does
+     *  access, an InternalErrorException is thrown, and the thread does
      *  not have write permission to the workspace.
      *  It is essential that a call to this method is matched by a call to
      *  doneWriting(), regardless of whether this method returns normally or
      *  an exception is thrown. This is to ensure that the workspace is in a
-     *  consistent state, otherwise read or write permission may never again
+     *  consistent state, otherwise read or write access may never again
      *  be granted in this workspace.
+     *  @exception InternalErrorException If the calling thread is interrupted
+     *   while waiting to get write access.
+     *  @see #doneWriting()
      */
     public final synchronized void getWriteAccess() {
+        
+        // This method should throw an InterruptedException when the
+        // calling thread is interrupted. InterruptedException is a
+        // checked exception, so changing this will lead to changes
+        // everywhere this method is called, which is a huge amount
+        // of work.
 
         Thread current = Thread.currentThread();
         if (current == _writer) {
-            // already have write permission
+            // Already have write permission.
             _writeDepth++;
             return;
         }
@@ -442,12 +457,12 @@ public final class Workspace implements Nameable, Serializable {
             record = _getAccessRecord(current, true);
         }
 
-        _writeReq++;
+        _waitingWriteRequests++;
 
-        // probably need to wait for write access
-        // first increment this to make the record not empty, so as to
+        // Probably need to wait for write access.
+        // First increment this to make the record not empty, so as to
         // prevent the record from being deleted from the _readerRecords
-        // table by other threads
+        // table by other threads.
         record.failedWriteAttempts++;
 
         // Go into an infinite 'while (true)' loop and check if this thread
@@ -457,7 +472,7 @@ public final class Workspace implements Nameable, Serializable {
         try {
             while (true) {
                 if (_writer == null) {
-                    // there are no writers. Are there any readers?
+                    // There are no writers. Are there any readers?
                     if (_numReaders == 0
                             || _numReaders == 1 && record.readDepth > 0) {
                         // No readers
@@ -468,19 +483,17 @@ public final class Workspace implements Nameable, Serializable {
                         return;
                     }
                 }
-
-                try {
-                    wait();
-                } catch (InterruptedException ex) {
-                    throw new InternalErrorException(current.getName()
-                            + " - thread interrupted while waiting to get "
-                            + "write access: " + ex.getMessage());
-                }
+                
+                wait(); 
             }
+        } catch (InterruptedException ex) {
+            throw new InternalErrorException(current.getName()
+                    + " - thread interrupted while waiting to get "
+                    + "write access: " + ex.getMessage());
         } finally {
-            _writeReq--;
-            if (_writeReq == 0 && _writer == null) {
-                // notify waiting readers
+            _waitingWriteRequests--;
+            if (_waitingWriteRequests == 0 && _writer == null) {
+                // Notify waiting readers.
                 notifyAll();
             }
         }
@@ -550,17 +563,22 @@ public final class Workspace implements Nameable, Serializable {
         return getClass().getName() + " {" + getFullName()+ "}";
     }
 
-    /** Release all the read accesses held by the current thread and call
-     *  wait() on the specified object. When wait() returns, re-acquire
-     *  all the read accesses held earlier by the thread and return.
-     *  An InternalErrorException is thrown if the re-acquisition fails,
-     *  in which case the thread no longer has read access to the workspace.
+    /** Release all the read accesses held by the current thread and suspend
+     *  the thread by calling Object.wait() on the specified object. When the
+     *  call returns, re-acquire all the read accesses held earlier by the
+     *  thread and return.
+     *  If the calling thread is interrupted while waiting to re-acquire read
+     *  accesses, an InternalErrorException is thrown, and the thread no longer
+     *  has read access to the workspace.
      *  This method helps prevent deadlocks caused when a thread that
-     *  waiting for another thread to do something prevents it from doing
+     *  waits for another thread to do something prevents it from doing
      *  that something by holding read access on the workspace.
      *  @param obj The object that the thread wants to wait on.
      *  @exception InterruptedException If the calling thread is interrupted
-     *   while waiting on the specified object.
+     *   while waiting on the specified object and all the read accesses held
+     *   earlier by the thread are re-acquired.
+     *  @exception InternalErrorException If re-acquring the read accesses
+     *   held earlier by the thread fails.
      */
     public void wait(Object obj) throws InterruptedException {
         int depth = 0;
@@ -632,11 +650,18 @@ public final class Workspace implements Nameable, Serializable {
     // Return the AccessRecord object for the current thread.
     // If the flag createNew is true and the current thread does not
     // have an access record, then create a new one and return it.
+    // Set _lastReaderRecord to be the record returned.
     private final AccessRecord _getAccessRecord(Thread current,
             boolean createNew) {
 
         //System.out.println("-- look up access record for "
         //   + current.getName());
+        
+        // If this object has been serialized and deserialized, then
+        // _readerRecords could be null.
+        if (_readerRecords == null) {
+            _readerRecords = new HashMap();
+        }
 
         AccessRecord record = (AccessRecord)_readerRecords.get(current);
 
@@ -674,16 +699,17 @@ public final class Workspace implements Nameable, Serializable {
 
     }
 
-    /** Obtain permissions to read objects in the workspace. This obtains
-     *  many permissions on the read access and should be called in
-     *  conjunction with _releaseAllReadPermissions.
-     *  This method suspends the calling thread until such permission
-     *  has been obtained.  Permission is granted unless either another
-     *  thread has write permission, or there are threads that
-     *  have requested write permission and not gotten it yet.
-     *  @param count This is the number of read permissions desired on the
-     *  workspace.
-     */
+    // Obtain permissions to read objects in the workspace. This obtains
+    // many permissions on the read access and should be called in
+    // conjunction with _releaseAllReadPermissions.
+    // This method suspends the calling thread until such permission
+    // has been obtained.  Permission is granted unless either another
+    // thread has write permission, or there are threads that
+    // have requested write permission and not gotten it yet.
+    // @param count This is the number of read permissions desired on the
+    //  workspace.
+    // @exception InternalErrorException If the calling thread is interrupted
+    //  while waiting to re-acquire read permissions.
     private synchronized void _reacquireReadPermissions(int count) {
 
         // If the count argument is equal to zero, which means we would like
@@ -715,7 +741,7 @@ public final class Workspace implements Nameable, Serializable {
             // If the current thread has write permission, or if there
             // are no pending write requests, then grant read permission.
             if (current == _writer
-                    || (_writeReq == 0 && _writer == null)) {
+                    || (_waitingWriteRequests == 0 && _writer == null)) {
                 _numReaders++;
                 record.failedReadAttempts -= count;
                 record.readDepth = count;
@@ -778,12 +804,11 @@ public final class Workspace implements Nameable, Serializable {
     private long _version = 0;
 
     /** @serial The currently writing thread (if any). */
-    private Thread _writer;
+    private transient Thread _writer;
 
-    /** @serial The number of pending write requests plus active write
-     *  permissions.
+    /** @serial The number of pending write requests.
      */
-    private int _writeReq = 0;
+    private int _waitingWriteRequests = 0;
 
     /** @serial The number of active write permissions
      *  (all to the same thread).
@@ -792,9 +817,9 @@ public final class Workspace implements Nameable, Serializable {
 
     /** @serial The last thread that acquires/releases read permission.
      */
-    private Thread _lastReader = null;
-    private AccessRecord _lastReaderRecord = null;
-    private HashMap _readerRecords = new HashMap();
+    private transient Thread _lastReader = null;
+    private transient AccessRecord _lastReaderRecord = null;
+    private transient HashMap _readerRecords = new HashMap();
 
     /** @serial The number of readers.
      *  The use of this field is to increment it every time we have a new

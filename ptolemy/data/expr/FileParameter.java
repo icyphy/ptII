@@ -228,6 +228,7 @@ public class FileParameter extends StringParameter {
         FileParameter newObject = (FileParameter)super.clone(workspace);
         newObject._baseDirectory = null;
         newObject._reader = null;
+        newObject._writer = null;
         return newObject;
     }
 

@@ -41,7 +41,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Histogram;
@@ -83,7 +82,7 @@ import ptolemy.plot.plotml.HistogramMLParser;
    @Pt.AcceptedRating Green (cxh)
 */
 public class HistogramPlotter extends PlotterBase
-    implements Configurable, Placeable {
+        implements Placeable {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -199,6 +198,9 @@ public class HistogramPlotter extends PlotterBase
     public void configure(URL base, String source, String text)
             throws Exception {
         if (plot instanceof Histogram) {
+            _base = base;
+            _source = source;
+            _text = text;
             HistogramMLParser parser = new HistogramMLParser((Histogram)plot);
             if (source != null && !source.trim().equals("")) {
                 URL xmlFile = new URL(base, source);

@@ -44,7 +44,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.UnitSolverDialog;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Prototype;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.Locatable;
@@ -356,6 +356,10 @@ public abstract class BasicGraphController
         GraphPane pane = getGraphPane();
         _menuFactory = new SchematicContextMenuFactory(this);
         _menuCreator = new MenuCreator(_menuFactory);
+        _menuCreator.setMouseFilter(new PopupMouseFilter());
+            
+        // Note that the menuCreator cannot be an interactor, because
+        // it accepts all events.
         pane.getBackgroundEventLayer().addInteractor(_menuCreator);
         pane.getBackgroundEventLayer().setConsuming(false);
         if (_configuration != null) {
@@ -450,9 +454,9 @@ public abstract class BasicGraphController
                 return;
 
             try {
-                if (target instanceof Prototype) {
-                    Prototype deferTo =
-                        (Prototype) ((Prototype) target).getParent();
+                if (target instanceof InstantiableNamedObj) {
+                    InstantiableNamedObj deferTo =
+                        (InstantiableNamedObj) ((InstantiableNamedObj) target).getParent();
                     if (deferTo != null) {
                         _configuration.openModel(deferTo);
                         return;

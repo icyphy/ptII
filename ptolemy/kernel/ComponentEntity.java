@@ -120,7 +120,7 @@ public class ComponentEntity extends Entity {
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
-     *  @return A new Prototype.
+     *  @return A new instance of ComponentEntity.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
@@ -137,15 +137,22 @@ public class ComponentEntity extends Entity {
         return _container;
     }
 
-    /** Create an instance by cloning this prototype and then adjust
-     *  the deferral relationship between the the clone and its parent.
-     *  Specifically, the
-     *  clone defers its definition to this prototype, which is its
-     *  "parent." It inherits all the objects contained by this prototype.
+    /** Create an instance by cloning this object and then adjusting
+     *  the parent-child relationships between the clone and its parent.
+     *  Specifically, the clone defers its definition to this object,
+     *  which becomes its "parent." It inherits all the objects contained
+     *  by this object. If this object is a composite, then this method
+     *  adjusts any deferral relationships that are entirely contained
+     *  within the clone. That is, for any parent-child relationship that
+     *  is entirely contained within this object (i.e., both the parent
+     *  and the child are deeply contained by this object), a corresponding
+     *  parent-child relationship is created within the clone such that
+     *  both the parent and the child are entirely contained within
+     *  the clone.
      *  <p>
-     *  The new object is not a class definition (it is by default an "instance"
-     *  rather than a "class").  To make it a class definition (a "subclass"),
-     *  call setClassDefinition(true).
+     *  The new object is not a class definition (it is by default an
+     *  "instance" rather than a "class").  To make it a class
+     *  definition (a "subclass"), call setClassDefinition(true).
      *  <p>
      *  This method overrides the base class to use setContainer() to
      *  specify the container.
@@ -153,9 +160,9 @@ public class ComponentEntity extends Entity {
      *  @param container The container for the instance, or null
      *   to instantiate it at the top level.
      *  @param name The name for the clone.
-     *  @return A new instance that is a clone of this prototype
+     *  @return A new instance that is a clone of this object
      *   with adjusted deferral relationships.
-     *  @exception CloneNotSupportedException If this prototype
+     *  @exception CloneNotSupportedException If this object
      *   cannot be cloned.
      *  @exception IllegalActionException If this object is not a
      *   class definition
@@ -173,8 +180,19 @@ public class ComponentEntity extends Entity {
                     + container.getFullName());
         }
         ComponentEntity clone = (ComponentEntity)
-            super.instantiate(container, name);
+                super.instantiate(container, name);
         clone.setContainer((CompositeEntity)container);
+        
+        clone._adjustDeferrals();
+        
+        // Now that there is a new parent-child relationship,
+        // we need to propagate values from the parent to the child.
+        // Note that this isn't needed to get the
+        // right values, since the child has been cloned
+        // from the parent. However, this will set the override
+        // levels appropriately in the child.
+        propagateValues();
+
         return clone;
     }
 
@@ -226,6 +244,32 @@ public class ComponentEntity extends Entity {
         }
     }
 
+    /** Propagate the existence of this object.
+     *  If this object has a container, then ensure that all
+     *  objects derived from the container contain an object
+     *  with the same class and name as this one. Create that
+     *  object when needed. Return the list of objects that are created.
+     *  This overrides the base class to adjust deferrals within
+     *  the objects that are created by cloning this one.
+     *  @return A list of derived objects of the same class
+     *   as this object that are created.
+     *  @exception IllegalActionException If the object does
+     *   not exists and cannot be created.
+     */
+    public List propagateExistence() throws IllegalActionException {
+        // Otherwise, _override probably doesn't get set in the
+        // derived object that is created.
+        List result = super.propagateExistence();
+
+        // Adjust deferrals in all the newly created objects.
+        Iterator clones = result.iterator();
+        while (clones.hasNext()) {
+            ComponentEntity clone = (ComponentEntity)clones.next();
+            clone._adjustDeferrals();
+        }
+       return result;
+    }
+
     /** Specify the container, adding the entity to the list
      *  of entities in the container.  If the container already contains
      *  an entity with the same name, then throw an exception and do not make
@@ -257,7 +301,6 @@ public class ComponentEntity extends Entity {
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
      *  @see #getContainer()
-     *  @see #_checkContainer(Prototype)
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
@@ -298,15 +341,11 @@ public class ComponentEntity extends Entity {
                 }
                 // Since the new container is null, this object is being
                 // deleted. Break deferral references that it may have.
-                setParent(null);
+                _setParent(null);
             } else {
                 // checkContainer() above ensures that this cast is valid.
                 ((CompositeEntity)container)._finishedAddEntity(this);
 
-                // We have successfully set a new container for this
-                // object. Mark it modified to ensure MoML export.
-                setOverrideDepth(0);
-                
                 // Transfer any queued change requests to the
                 // new container.  There could be queued change
                 // requests if this component is deferring change
@@ -382,6 +421,46 @@ public class ComponentEntity extends Entity {
         super._addPort(port);
     }
 
+    /** Adjust the deferrals in this object.
+     *  Specifically, if this object has a class name that refers
+     *  to a class in scope, then replace the current parent with
+     *  that object.
+     *  @exception IllegalActionException If the class found in scope
+     *   cannot be set.
+     */
+    protected void _adjustDeferrals() throws IllegalActionException {
+        // Use the class name.
+        String className = getClassName();
+
+        // Search upwards in the hierarchy.
+        NamedObj context = this;
+        ComponentEntity candidate = null;        
+        // Make sure we get a real candidate, which is a
+        // class definition. The second term in the if will
+        // cause the search to continue up the hierarchy.
+        // NOTE: There is still an oddness, in that
+        // the class scoping results in a subtle (and
+        // maybe incomprehensible) identification of
+        // the base class, particularly when pasting
+        // an instance or subclass into a new context.
+        while ((candidate == null || !candidate.isClassDefinition())
+                && context != null) {
+            context = (NamedObj)context.getContainer();
+            if (context instanceof CompositeEntity) {
+                candidate = ((CompositeEntity)context).getEntity(className);
+            }
+        }
+        if (candidate != null) {
+            _setParent(candidate);
+            _markContentsDerived(0);
+            // For every object contained by the new parent,
+            // we need to make sure its value is propagated
+            // to this new child and that the override field
+            // gets set to reflect that.
+            candidate.propagateValues();
+        }
+    }
+
     /** Check the specified container.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the container is not an
@@ -389,7 +468,7 @@ public class ComponentEntity extends Entity {
      *   null and there are other objects that defer their definitions
      *   to this one.
      */
-    protected void _checkContainer(Prototype container)
+    protected void _checkContainer(InstantiableNamedObj container)
             throws IllegalActionException {
         if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
@@ -436,16 +515,17 @@ public class ComponentEntity extends Entity {
      *  @param relativeName The name relative to the container.
      *  @param container The container expected to contain the object, which
      *   must be an instance of CompositeEntity.
-     *  @return An object of the same class as this object.
-     *  @exception InternalErrorException If the object does not exist
-     *   or has the wrong class, or if the specified container is not
+     *  @return An object of the same class as this object, or null if there
+     *   is none.
+     *  @exception IllegalActionException If the object exists
+     *   and has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
-    protected NamedObj _getContainedObject(String relativeName,
-            NamedObj container)
-            throws InternalErrorException {
+    protected NamedObj _getContainedObject(
+            NamedObj container, String relativeName)
+            throws IllegalActionException {
         if (!(container instanceof CompositeEntity)) {
-            throw new InternalErrorException(
+            throw new IllegalActionException(this,
                     "Expected "
                     + container.getFullName()
                     + " to be an instance of ptolemy.kernel.CompositeEntity,"
@@ -454,16 +534,37 @@ public class ComponentEntity extends Entity {
         }
         ComponentEntity candidate
             = ((CompositeEntity)container).getEntity(relativeName);
-        if (!getClass().isInstance(candidate)) {
-            throw new InternalErrorException(
+        if (candidate != null && !getClass().isInstance(candidate)) {
+            throw new IllegalActionException(this,
                     "Expected "
-                    + container.getFullName()
-                    + " to contain a port with name "
-                    + relativeName
-                    + " and class "
-                    + getClass().getName());
+                    + candidate.getFullName()
+                    + " to be an instance of "
+                    + getClass().getName()
+                    + ", but it is "
+                    + candidate.getClass().getName());
         }
         return candidate;
+    }
+    
+    /** Propagate existence of this object to the
+     *  specified object. This overrides the base class
+     *  to set the container.
+     *  @param container Object to contain the new object.
+     *  @exception IllegalActionException If the object
+     *   cannot be cloned.
+     *  @return A new object of the same class and name
+     *   as this one.
+     */
+    protected NamedObj _propagateExistence(NamedObj container)
+            throws IllegalActionException {
+        try {
+            ComponentEntity newObject = (ComponentEntity)super
+                    ._propagateExistence(container);
+            newObject.setContainer((CompositeEntity)container);
+            return newObject;
+        } catch (NameDuplicationException e) {
+            throw new InternalErrorException(e);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

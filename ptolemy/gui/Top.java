@@ -608,9 +608,9 @@ public abstract class Top extends JFrame {
             // This will throw a security exception in an applet.
             // FIXME: we should support users under applets opening files
             // on the server.
-            String cwd = StringUtilities.getProperty("user.dir");
-            if (cwd != null) {
-                fileDialog.setCurrentDirectory(new File(cwd));
+            String currentWorkingDirectory = StringUtilities.getProperty("user.dir");
+            if (currentWorkingDirectory != null) {
+                fileDialog.setCurrentDirectory(new File(currentWorkingDirectory));
             }
         }
         if (fileDialog.showOpenDialog(this)
@@ -759,26 +759,13 @@ public abstract class Top extends JFrame {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-        JFileChooser fileDialog = new JFileChooser();
-        if (_fileFilter != null) {
-            fileDialog.addChoosableFileFilter(_fileFilter);
-        }
-        fileDialog.setDialogTitle("Save as...");
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            // The default on Windows is to open at user.home, which is
-            // typically an absurd directory inside the O/S installation.
-            // So we use the current directory instead.
-            // This will fail with a security exception in applets.
-            // FIXME: we should support users under applets opening files
-            // on the server.
-            String cwd = StringUtilities.getProperty("user.dir");
-            if (cwd != null) {
-                fileDialog.setCurrentDirectory(new File(cwd));
-            }
-        }
+        // Use the strategy pattern here to create the actual
+        // dialog so that subclasses can customize this dialog.
+        JFileChooser fileDialog = _saveAsFileDialog();
+        
+        // Show the dialog.
         int returnVal = fileDialog.showSaveDialog(this);
+        
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _file = fileDialog.getSelectedFile();
             if (_file.exists()) {
@@ -807,6 +794,32 @@ public abstract class Top extends JFrame {
         }
         // Action was canceled.
         return false;
+    }
+
+    /** Create and return a file dialog for the "Save As" command.
+     *  @return A file dialog for save as.
+     */
+    protected JFileChooser _saveAsFileDialog() {
+        JFileChooser fileDialog = new JFileChooser();
+        if (_fileFilter != null) {
+            fileDialog.addChoosableFileFilter(_fileFilter);
+        }
+        fileDialog.setDialogTitle("Save as...");
+        if (_directory != null) {
+            fileDialog.setCurrentDirectory(_directory);
+        } else {
+            // The default on Windows is to open at user.home, which is
+            // typically not what we want.
+            // So we use the current directory instead.
+            // This will fail with a security exception in applets.
+            String currentWorkingDirectory
+                    = StringUtilities.getProperty("user.dir");
+            if (currentWorkingDirectory != null) {
+                fileDialog.setCurrentDirectory(
+                        new File(currentWorkingDirectory));
+            }
+        }
+        return fileDialog;
     }
 
     /** Write the model to the specified file.

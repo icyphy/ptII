@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-
 */
 
 package ptolemy.kernel.util;
@@ -41,7 +39,7 @@ package ptolemy.kernel.util;
    <p>
    A change request is typically made by instantiating a subclass of
    ChangeRequest (possibly using an anonymous inner class) and then passing
-   to the requestChange() method of an object implementing this interface.
+   it to the requestChange() method of an object implementing this interface.
    That object may delegate the request (for example, it might consolidate
    all such requests at the top level of the hierarchy by passing the
    request to its container).  If it does delegate, then it is expected
@@ -50,7 +48,7 @@ package ptolemy.kernel.util;
    When a change request is made, if it is safe to do so, then an
    implementor of this interface is free to immediately execute
    the request, unless setDeferringChangeRequests(true) has been called.
-   It is never safe to execute a change request of the implementor
+   It is never safe to execute a change request if the implementor
    is already in the middle of executing a change request (that
    execution may have triggered the request).
 
@@ -58,7 +56,7 @@ package ptolemy.kernel.util;
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Red (johnr)
+   @Pt.AcceptedRating Green (neuendor)
    @see ChangeRequest
 */
 
@@ -73,7 +71,10 @@ public interface Changeable {
      *  Implementors are free to delegate both the request and the
      *  listener to other objects (e.g. the container), so the listener
      *  may be notified of more changes than those requested through
-     *  the requestChange() method of this object.
+     *  the requestChange() method of this object. Implementors are
+     *  required to not add a listener that is already on the list
+     *  of listeners (i.e., objects should not appear more than once
+     *  on the list).
      *  @param listener The listener to add.
      *  @see #removeChangeListener(ChangeListener)
      *  @see #requestChange(ChangeRequest)
@@ -92,23 +93,24 @@ public interface Changeable {
      */
     public void executeChangeRequests();
 
-    /** Return true if setDeferringChangeRequests() has been called
+    /** Return true if setDeferringChangeRequests(true) has been called
      *  to specify that change requests should be deferred.
      *  @return True if change requests are being deferred.
      *  @see #setDeferringChangeRequests(boolean)
      */
     public boolean isDeferringChangeRequests();
 
-    /** Remove a change listener, if it is present.
+    /** Remove a change listener, if it is present, and otherwise
+     *  do nothing.
      *  @param listener The listener to remove.
      *  @see #addChangeListener(ChangeListener)
      */
     public void removeChangeListener(ChangeListener listener);
 
-    /** Request that given change be executed. An implementor is free
+    /** Request that the given change be executed. An implementor is free
      *  to delegate this request to another object (e.g. the container).
      *  It may also execute the request immediately,
-     *  unless setDeferChangeRequests() has been called. If
+     *  unless this object is deferring change requests. If
      *  setDeferChangeRequests() has been called with a true argument,
      *  then an implementor is expected to queue the request until
      *  either setDeferChangeRequests() is called with a false

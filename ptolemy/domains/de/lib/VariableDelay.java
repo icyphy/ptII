@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
    except that the amount of time delayed is specified by an incoming
    token through the delay port parameter.
 
-   @see ptolemy.actor.FunctionDependency
+   @see ptolemy.actor.util.FunctionDependency
    @see ptolemy.domains.de.lib.TimedDelay
    @see ptolemy.domains.de.lib.Server
    @see ptolemy.domains.sdf.lib.SampleDelay

@@ -158,7 +158,6 @@ public class CompositeProcessDirector extends ProcessDirector {
     public CompositeProcessDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _name = name;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -465,7 +464,8 @@ public class CompositeProcessDirector extends ProcessDirector {
         if (_debugging) {
             _debug("Checking for deadlock:");
             _debug("There are " + _getBlockedActorsCount()
-                    + " Blocked actors and " + _getActiveActorsCount()
+                    + " Blocked actors, " + _getStoppedActorsCount() 
+                    + " Stopped actors, and " + _getActiveActorsCount()
                     + " active actors.");
         }
         if ( _getBlockedActorsCount() >= _getActiveActorsCount() ) {
@@ -745,6 +745,4 @@ public class CompositeProcessDirector extends ProcessDirector {
     private LinkedList _blockedReceivers = new LinkedList();
 
     private Object _branchControllerLock = new Object();
-
-    private String _name = null;
 }

@@ -52,20 +52,17 @@ if [ -f $ISPELL ]; then
 else
     # Determine if we are on windows
     windows=no
-    case "${OSTYPE-no}" in
-	# Cygwin Bash
-	cygwin*)
+    case "`uname -s`" in
+	CYGWIN*) 
 	    windows=yes;;
-	# Tcsh
-	Windows*)
+        # Tcsh
+        Windows*)
 	    windows=yes;;
     esac
 
     if [ "$windows" = "yes" ]; then
 	echo "$0: Could not find"
 	echo "  '$ISPELL'."
-	echo "  A Windows ispell tar file for Cygwin can be found at:"
-	echo "  http://ptolemy.eecs.berkeley.edu/tycho/tychoTools.htm"
     fi
 
 

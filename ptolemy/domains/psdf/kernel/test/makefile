@@ -35,7 +35,7 @@ ME =		ptolemy/domains/psdf/kernel/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PSDF_DIR)/synthesis.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PSDF_DIR)/mapss.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

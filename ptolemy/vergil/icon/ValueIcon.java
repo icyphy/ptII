@@ -30,8 +30,6 @@ package ptolemy.vergil.icon;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.List;
 
 import javax.swing.SwingConstants;
@@ -106,46 +104,6 @@ public class ValueIcon extends XMLIcon {
             background.add(label);
             return background;
         }
-    }
-
-    /** Write a MoML description of this object, unless the object is
-     *  non-persistent.
-     *  MoML is an XML modeling markup language.
-     *  In this class, the object is identified by the "property"
-     *  element, with "name" and "class" (XML) attributes.
-     *  The body of the element, between the "&lt;property&gt;"
-     *  and "&lt;/property&gt;", is written using
-     *  the _exportMoMLContents() protected method, so that derived classes
-     *  can override that method alone to alter only how the contents
-     *  of this object are described.
-     *  The text that is written is indented according to the specified
-     *  depth, with each line (including the last one)
-     *  terminated with a newline.  Since the value of this attribute
-     *  simply mirrors that of the container, the value field is not
-     *  exported.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @param name The name to use instead of the current name.
-     *  @exception IOException If an I/O error occurs.
-     *  @see #isPersistent()
-     */
-    public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
-
-        if (!isPersistent()) {
-            return;
-        }
-        output.write(_getIndentPrefix(depth)
-                + "<"
-                + _elementName
-                + " name=\""
-                + name
-                + "\" class=\""
-                + getClassName()
-                + "\">\n");
-        _exportMoMLContents(output, depth + 1);
-        output.write(_getIndentPrefix(depth) + "</"
-                + _elementName + ">\n");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -66,7 +66,7 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (cxh)
 */
-public class StringAttribute extends Attribute implements Settable {
+public class StringAttribute extends AbstractSettableAttribute {
 
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
@@ -146,7 +146,7 @@ public class StringAttribute extends Attribute implements Settable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         String value = getExpression();
@@ -207,11 +207,7 @@ public class StringAttribute extends Attribute implements Settable {
      */
     public void setExpression(String expression)
             throws IllegalActionException {
-        if (expression != null && !expression.equals(_value)) {
-            // Make sure the new value is exported in MoML.  EAL 12/03.
-            setOverrideDepth(0);
-        }
-
+        super.setExpression(expression);
         _value = expression;
 
         // Notify the container and any value listeners immediately,
@@ -250,6 +246,23 @@ public class StringAttribute extends Attribute implements Settable {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        ((Settable)destination).setExpression(getExpression());
     }
 
     ///////////////////////////////////////////////////////////////////

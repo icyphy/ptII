@@ -2120,6 +2120,8 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
 </entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
+    # Distributor uses ptolemy.vergil.icon.EditorIcon, so we need to remove it
+    removeGraphicalClasses $parser
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
             [$parser parse $incMomlBase]]
     $parser parse {

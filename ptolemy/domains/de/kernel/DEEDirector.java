@@ -36,11 +36,13 @@ package ptolemy.domains.de.kernel;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.FunctionDependency;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.util.FunctionDependency;
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.Token;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.CompositeEntity;
@@ -501,7 +503,9 @@ public class DEEDirector extends DEDirector {
 
         // Get the functionDependency attribute of the container of this
         // director. If there is no such attribute, construct one.
-        FunctionDependency functionDependency = castContainer.getFunctionDependencies();
+        FunctionDependencyOfCompositeActor functionDependency = 
+            (FunctionDependencyOfCompositeActor) 
+            castContainer.getFunctionDependencies();
 
         //        Since the functionDependency is synchronized to workspace,
         //        there is no need to invalidate functionDependency here.
@@ -529,7 +533,7 @@ public class DEEDirector extends DEDirector {
                     "Found zero delay loop including: " + names.toString());
         }
 
-        portsGraph = functionDependency.getDetailedPortsGraph().
+        portsGraph = functionDependency.getDetailedDependencyGraph().
             toDirectedAcyclicGraph();
 
         return portsGraph;
@@ -587,11 +591,12 @@ public class DEEDirector extends DEDirector {
             FunctionDependency functionDependency =
                 ((Actor)portContainer).getFunctionDependencies();
 
-            Iterator inputsIterator =
-                functionDependency.getDependentInputPorts(ioPort).iterator();
+            Set inputPorts = functionDependency.getInputPortsDependentOn(ioPort);
+            Iterator inputsIterator = inputPorts.iterator();
             int maximumPortDepth = -1;
             while (inputsIterator.hasNext()) {
-                IOPort input = (IOPort)inputsIterator.next();
+                Object object = inputsIterator.next();
+                IOPort input = (IOPort)object;
                 int inputPortDepth = ports.indexOf(input);
                 if (maximumPortDepth < inputPortDepth) {
                     maximumPortDepth = inputPortDepth;
@@ -599,7 +604,7 @@ public class DEEDirector extends DEDirector {
             }
 
             inputsIterator =
-                functionDependency.getDependentInputPorts(ioPort).iterator();
+                functionDependency.getInputPortsDependentOn(ioPort).iterator();
             while (inputsIterator.hasNext()) {
                 IOPort input = (IOPort)inputsIterator.next();
                 if (_debugging) _debug(((Nameable)input).getFullName(),

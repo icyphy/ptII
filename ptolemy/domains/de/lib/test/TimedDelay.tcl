@@ -130,7 +130,7 @@ test TimedDelay-5.1 {test a more complex loop with the zero TimedDelay} {
 } {{ptolemy.kernel.util.IllegalActionException: Found zero delay loop including: .top.add, .top.add, .top.gain, .top.gain
   in .top}}
 
-test TimedDelay-5.2 {fix the zero TimedDelay with a non-zero TimedDelay} {
+test TimedDelay-5.2 {fix the zero feedback loop with a non-zero TimedDelay} {
     set timedDelay [java::new ptolemy.domains.de.lib.TimedDelay $e0 TimedDelay]
     [java::field $add plus] unlink $r
     [java::field [java::cast ptolemy.domains.de.lib.DETransformer $timedDelay] \

@@ -31,8 +31,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
-import ptolemy.actor.FunctionDependency;
 import ptolemy.actor.gui.style.ChoiceStyle;
+import ptolemy.actor.util.FunctionDependency;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;

@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
+2
 */
 
 package ptolemy.vergil.basic;
@@ -35,6 +35,7 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
@@ -63,6 +64,7 @@ import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -110,6 +112,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
@@ -121,6 +124,8 @@ import diva.canvas.JCanvas;
 import diva.canvas.Site;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
+import diva.canvas.event.LayerAdapter;
+import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.GraphController;
 import diva.graph.GraphEvent;
@@ -132,7 +137,7 @@ import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
 import diva.gui.GUIUtilities;
-import diva.gui.toolbox.FocusMouseListener;
+
 import diva.gui.toolbox.JCanvasPanner;
 import diva.gui.toolbox.JContextMenu;
 import diva.util.java2d.ShapeUtilities;
@@ -200,9 +205,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _dropTarget = new EditorDropTarget(_jgraph);
 
         ActionListener deletionListener = new ActionListener() {
-                /** Delete any nodes or edges from the graph that are currently
-                 *  selected.  In addition, delete any edges that are connected to
-                 *  any deleted nodes.
+                /** Delete any nodes or edges from the graph that are
+                 *  currently selected.  In addition, delete any edges
+                 *  that are connected to any deleted nodes.
                  */
                 public void actionPerformed(ActionEvent e) {
                     delete();
@@ -212,8 +217,30 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _jgraph.registerKeyboardAction(deletionListener, "Delete",
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
+        _jgraph.registerKeyboardAction(deletionListener, "BackSpace",
+                KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+
         _jgraph.setRequestFocusEnabled(true);
-        _jgraph.addMouseListener(new FocusMouseListener());
+        pane.getForegroundEventLayer().setConsuming(false);
+        pane.getForegroundEventLayer().setEnabled(true);
+        pane.getForegroundEventLayer().addLayerListener(
+                new LayerAdapter() {
+                    /** Invoked when the mouse is pressed on a layer
+                     * or figure.
+                     */
+                    public void mousePressed (LayerEvent event) {
+                        Component component = event.getComponent();
+                        if (!component.hasFocus()) {
+                            component.requestFocus();
+                        }
+                    }
+                });
+        
+        // We used to do this, but it would result in context menus
+        // getting lost on the mac.
+        
+        // _jgraph.addMouseListener(new FocusMouseListener());
         _jgraph.setAlignmentX(1);
         _jgraph.setAlignmentY(1);
         _jgraph.setBackground(BACKGROUND_COLOR);
@@ -349,7 +376,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _splitPane.setRightComponent(_jgraph);
         getContentPane().add(_splitPane, BorderLayout.CENTER);
 
-        // FIXME: hotkeys, shortcuts and move to a base class.
         _toolbar = new JToolBar();
         getContentPane().add(_toolbar, BorderLayout.NORTH);
 
@@ -469,7 +495,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 NamedObj element = (NamedObj)elements.next();
                 // first level to avoid obnoxiousness with
                 // toplevel translations.
-                // FIXME: Does it work to use 0 here?
                 element.exportMoML(buffer, 0);
             }
             NamedObj container = (NamedObj)graphModel.getRoot();
@@ -525,7 +550,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 throw new InternalErrorException(
                         "Cannot create hierarchy if the container is not a CompositeEntity.");
             }
-            final String name = container.uniqueName("typed composite actor");
+            final String name = container.uniqueName("CompositeActor");
             final TypedCompositeActor compositeActor = new TypedCompositeActor(
                     (CompositeEntity)container, name);
 
@@ -912,7 +937,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         return new Point2D.Double(rect.getCenterX(), rect.getCenterY());
     }
 
-    /** Return the jgraph instance that this view uses to represent the
+    /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
      */
     public JGraph getJGraph() {
@@ -1083,9 +1108,76 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             MessageHandler.error("Redo failed", ex);
         }
     }
+    
+    /** Open a file browser and save the given entity in the file specified
+     *  by the user.
+     *  @param entity The entity to save.
+     *  @exception If something goes wrong.
+     *  @since Ptolemy 4.0
+     */
+    public void saveComponentInFile(Entity entity) throws Exception {
+        // NOTE: This mirrors similar code in Top and TableauFrame, but
+        // I can't find any way to re-use that code, since the details
+        // are slightly different at each step here.
+        JFileChooser fileDialog = new JFileChooser();
+        fileDialog.setDialogTitle("Save actor as...");
+        if (_directory != null) {
+            fileDialog.setCurrentDirectory(_directory);
+        } else {
+            // The default on Windows is to open at user.home, which is
+            // typically not what we want.
+            // So we use the current directory instead.
+            // This will fail with a security exception in applets.
+            String currentWorkingDirectory
+                    = StringUtilities.getProperty("user.dir");
+            if (currentWorkingDirectory != null) {
+                fileDialog.setCurrentDirectory(
+                        new File(currentWorkingDirectory));
+            }
+        }
+        fileDialog.setSelectedFile(
+                new File(fileDialog.getCurrentDirectory(),
+                entity.getName() + ".xml"));
+
+        // Show the dialog.
+        int returnVal = fileDialog.showSaveDialog(this);
+        
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fileDialog.getSelectedFile();
+            if (!_confirmFile(entity, file)) {
+                return;
+            }
+            // Record the selected directory.
+            _directory = fileDialog.getCurrentDirectory();
+            
+            java.io.FileWriter fileWriter = new java.io.FileWriter(file);
+            
+            // Make sure the entity name saved matches the file name.
+            String name = entity.getName();
+            String filename = file.getName();
+            int period = filename.indexOf(".");
+            if (period > 0) {
+                name = filename.substring(0, period);
+            } else {
+                name = filename;
+            }
+            try {
+                fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE " + entity.getElementName() + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
+
+                entity.exportMoML(fileWriter, 0, name);
+            } finally {
+                fileWriter.close();
+            }
+        }
+    }
 
     /** Save the given entity in the user library in the given
      *  configuration.
+     *  @param configuration The configuration.
      *  @param entity The entity to save.
      *  @since Ptolemy 2.1
      */
@@ -1106,7 +1198,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
             StringWriter buffer = new StringWriter();
 
-            // Check if there is already something existing in the
+            // Check whether there is already something existing in the
             // user library with this name.
             if (library.getEntity(entity.getName()) != null) {
                 MessageHandler.error(
@@ -1120,11 +1212,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             ChangeRequest request =
                 new MoMLChangeRequest(entity, library, buffer.toString());
             library.requestChange(request);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             // Ignore.
-        }
-        catch (KernelException ex) {
+        } catch (KernelException ex) {
             // Ignore.
         }
     }
@@ -1342,22 +1432,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         return _directory;
     }
 
-    /** Query the user for a filename and save the model to that file.
-     *  This overrides the base class so that if we are in
-     *  an inside composite actor, then only that composite actor is
-     *  saved.  In addition, since the superclass clones the model,
-     *  we need to clear and reconstruct the model.
-     *  @return True if the save succeeds.
-     */
-    protected boolean _saveAs() {
-        try {
-            _saveAsFlag = true;
-            return super._saveAs();
-        } finally {
-            _saveAsFlag = false;
-        }
-    }
-
     /** Set the directory that was last accessed by this window.
      *  @see #_getDirectory
      *  @param directory The directory last accessed.
@@ -1444,20 +1518,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             // Ignore problems here.  Errors simply result in a default
             // size and location.
         }
-        // NOTE: This used to override the base class so that saveAs
-        // on a submodel would save only the submodel.  But this was
-        // strange, to have behavior different from save, and also it
-        // broke save for top-level modal models.  So now we just do
-        // the same thing in saveAs as in save.
-        /*
-          if (_saveAsFlag && getModel().getContainer() != null) {
-          java.io.FileWriter fout = new java.io.FileWriter(file);
-          getModel().exportMoML(fout);
-          fout.close();
-          } else {
-          super._writeFile(file);
-          }
-        */
 
         super._writeFile(file);
     }
@@ -1465,33 +1525,53 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** Default background color is a light grey. */
+    protected static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+
+    /** The cut action. */
+    protected Action _cutAction;
+    
+    /** The copy action. */
+    protected Action _copyAction;
+
     /** The instance of EditorDropTarget associated with this object. */
     protected EditorDropTarget _dropTarget;
 
-    /** The library. */
-    protected CompositeEntity _topLibrary;
+    /** The edit menu. */
+    protected JMenu _editMenu;
 
-    // FIXME: Comments are needed on all these.
-    // FIXME: Need to be in alphabetical order.
-
-    // NOTE: should be somewhere else?
-    // Default background color is a light grey.
-    protected static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
-
-    protected JGraph _jgraph;
+    /** The panner. */
     protected JCanvasPanner _graphPanner;
+
+    /** The instance of JGraph for this editor. */
+    protected JGraph _jgraph;
+
+    /** The library display widget. */
     protected JTree _library;
+
+    /** The library context menu creator. */
     protected PTreeMenuCreator _libraryContextMenuCreator;
+
+    /** The library model. */
     protected EntityTreeModel _libraryModel;
+
+    /** The library scroll pane. */
     protected JScrollPane _libraryScrollPane;
+
+    /** The library display panel. */
     protected JPanel _palettePane;
+    
+    /** The paste action. */
+    protected Action _pasteAction;
+
+    /** The split pane for library and editor. */
     protected JSplitPane _splitPane;
 
+    /** The toolbar. */
     protected JToolBar _toolbar;
-    protected JMenu _editMenu;
-    protected Action _cutAction;
-    protected Action _copyAction;
-    protected Action _pasteAction;
+
+    /** The library. */
+    protected CompositeEntity _topLibrary;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1499,8 +1579,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     /** Delete the currently selected objects from this document without
      *  undo
      */
-    public void _deleteWithoutUndo() {
-        //FIXME: This is the old delete() method, before undo was added
+    private void _deleteWithoutUndo() {
+        // FIXME: This is the old delete() method, before undo was added.
         // createHierarch() calls this method.
         GraphPane graphPane = _jgraph.getGraphPane();
         GraphController controller =
@@ -1551,9 +1631,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
 
-    /** Flag indicating "save as" action rather than "save". */
-    private boolean _saveAsFlag = false;
-
     /** Action to undo the last MoML change. */
     private Action _undoAction = new UndoAction();
 
@@ -1585,7 +1662,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Copy the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_C,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_C));
         }
@@ -1609,7 +1686,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Cut the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_X,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_T));
         }
@@ -1619,44 +1696,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             cut();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    //// EditIconAction
-
-    // 'Edit Icon' pop up menu not shipped with PtII1.0.
-    // See also ptolemy.vergil.basic/kernel/ActorGraphFrame.java
-    //     public class EditIconAction extends FigureAction {
-    //         public EditIconAction() {
-    //             super("Edit Icon");
-    //         }
-
-    //         public void actionPerformed(ActionEvent e) {
-    //             // Figure out what entity.
-    //             super.actionPerformed(e);
-    //             NamedObj object = getTarget();
-    //             if (!(object instanceof Entity)) return;
-    //             Entity entity = (Entity) object;
-    //             XMLIcon icon = null;
-    //             List iconList = entity.attributeList(XMLIcon.class);
-    //             if (iconList.size() == 0) {
-    //                 try {
-    //                     icon = new XMLIcon(entity, entity.uniqueName("icon"));
-    //                 } catch (Exception ex) {
-    //                     throw new InternalErrorException(
-    //                             "duplicated name, but there were no other icons.");
-    //                 }
-    //             } else if (iconList.size() == 1) {
-    //                 icon = (XMLIcon)iconList.get(0);
-    //             } else {
-    //                 throw new InternalErrorException("entity " + entity +
-    //                         " contains more than one icon");
-    //             }
-    //             // FIXME make a tableau.
-    //             ApplicationContext appContext = new ApplicationContext();
-    //             appContext.setTitle("Icon editor");
-    //             new IconEditor(appContext, icon);
-    //         }
-    //     }
 
     ///////////////////////////////////////////////////////////////////
     //// ExecuteSystemAction
@@ -1670,7 +1709,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip", "Execute The Model");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_G,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_G));
         }
@@ -1702,7 +1741,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Paste the contents of the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_V,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_P));
         }
@@ -1921,7 +1960,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         try {
                             getConfiguration().openModel(object);
                         } catch(KernelException ex) {
-                            // FIXME
+                            MessageHandler.error("Open failed.", ex);
                         }
                     }
                 };
@@ -1951,8 +1990,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Redo the last change undone.");
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_Y,
-                            (java.awt.Event.CTRL_MASK)));
-            // FIXME: Why is this R?
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_R));
         }
@@ -1985,8 +2023,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Undo the last change.");
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-                            java.awt.Event.CTRL_MASK));
-            // FIXME: Why is this U?
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_U));
         }
@@ -2025,7 +2062,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             // work, so we have to do it this way.
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                            Event.CTRL_MASK
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
                             | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_Z));
@@ -2057,7 +2094,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip", description + " (Ctrl+=)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_M));
         }
@@ -2088,7 +2125,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip", description + " (Ctrl+Shift+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
-                            Event.CTRL_MASK
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
                             | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_F));
@@ -2120,7 +2157,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip", description + " (Ctrl+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
-                            Event.CTRL_MASK));
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_U));
         }

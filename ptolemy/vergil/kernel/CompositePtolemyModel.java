@@ -138,16 +138,11 @@ public class CompositePtolemyModel implements CompositeModel {
                 // to this one (e.g. subclasses) also have locations.
                 // This is necessary so that if the location later moves,
                 // then the move can be duplicated in the deferrers.
-                Locatable location = new Location(object, "_location");
+                Location location = new Location(object, "_location");
 
                 // Since this isn't delegated to the MoML parser,
                 // we have to handle propagation here.
-                List heritageList = object.getDerivedList();
-                Iterator heritage = heritageList.iterator();
-                while (heritage.hasNext()) {
-                    NamedObj inherited = (NamedObj)heritage.next();
-                    new Location(inherited, "_location");
-                }
+                location.propagateExistence();
 
                 return location;
             } catch (Exception e) {
@@ -237,13 +232,7 @@ public class CompositePtolemyModel implements CompositeModel {
                             // FIXME: Could get name collision here!
                             // (Unlikely though since auto naming will take
                             // into account subclasses).
-                            List heritageList = relation.getDerivedList();
-                            Iterator heritage = heritageList.iterator();
-                            while (heritage.hasNext()) {
-                                ComponentRelation inherited
-                                    = (ComponentRelation)heritage.next();
-                                new Vertex(inherited, name);
-                            }
+                            vertex.propagateExistence();
 
                         } catch (Exception e) {
                             throw new InternalErrorException(

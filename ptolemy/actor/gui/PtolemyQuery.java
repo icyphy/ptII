@@ -211,19 +211,19 @@ public class PtolemyQuery extends Query
                         base = directory.toURI();
                     }
                     // FIXME: Should remember previous browse location?
-                    // Last argument is the starting directory.
+                    // Next to last argument is the starting directory.
                     addFileChooser(name,
                             name,
                             attribute.getExpression(),
                             base,
                             directory,
-                            preferredBackgroundColor(attribute));
+                            preferredBackgroundColor(attribute),
+                            preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof Parameter
                         && ((Parameter)attribute).getChoices() != null) {
                     Parameter castAttribute = (Parameter)attribute;
-                    Color background = preferredBackgroundColor(attribute);
                     // NOTE: Make this always editable since Parameter
                     // supports a form of expressions for value propagation.
                     addChoice(name,
@@ -231,7 +231,8 @@ public class PtolemyQuery extends Query
                             castAttribute.getChoices(),
                             castAttribute.getExpression(),
                             true,
-                            background);
+                            preferredBackgroundColor(attribute),
+                            preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof Variable) {
@@ -261,11 +262,11 @@ public class PtolemyQuery extends Query
         String defaultValue = attribute.getExpression();
         if (defaultValue == null) defaultValue = "";
         if (!(foundStyle)) {
-            Color background = preferredBackgroundColor(attribute);
             addLine(attribute.getName(),
                     attribute.getName(),
                     defaultValue,
-                    background);
+                    preferredBackgroundColor(attribute),
+                    preferredForegroundColor(attribute));
             // The style itself does this, so we don't need to do it again.
             attachParameter(attribute, attribute.getName());
         }
@@ -576,8 +577,8 @@ public class PtolemyQuery extends Query
             // NOTE: This appears to be unnecessary, since we register
             // as a change listener on the handler.  This results in
             // two notifications.  EAL 9/15/02.
+            request.addChangeListener(this);
             if (_handler == null) {
-                request.addChangeListener(this);
                 request.execute();
             } else {
                 if (request instanceof MoMLChangeRequest) {
@@ -609,6 +610,25 @@ public class PtolemyQuery extends Query
             }
         }
         return background;
+    }
+
+    /** Return the preferred foreground color for editing the specified
+     *  object.  This returns Color.black, but in the future this might
+     *  be changed to use color for some informative purpose.
+     *  @param object The object to be edited.
+     */
+    public static Color preferredForegroundColor(Object object) {
+        Color foreground = Color.black;
+        /* NOTE: This doesn't work very well because when you
+         * start typing on a red entry, it remains red rather
+         * than switching to black to indicate an override.
+        if (object instanceof NamedObj) {
+            if (!((NamedObj)object).isOverridden()) {
+                foreground = _NOT_OVERRIDDEN_FOREGROUND_COLOR;
+            }
+        }
+        */
+        return foreground;
     }
 
     /** Notify this query that the value of the specified attribute has
@@ -705,6 +725,10 @@ public class PtolemyQuery extends Query
 
     // Maps an entry name to the attribute that is attached to it.
     private Map _attributes = new HashMap();
+    
+    // Background color for string mode edit boxes.
+    private static Color _NOT_OVERRIDDEN_FOREGROUND_COLOR
+            = new Color(200, 10, 10, 255);
 
     // A query box for dealing with an erroneous entry.
     private PtolemyQuery _query = null;
@@ -717,7 +741,7 @@ public class PtolemyQuery extends Query
 
     // Background color for string mode edit boxes.
     private static Color _STRING_MODE_BACKGROUND_COLOR
-    = new Color(230, 255, 255, 255);
+            = new Color(230, 255, 255, 255);
 
     // Maps an attribute name to a list of entry names that the
     // attribute is attached to.

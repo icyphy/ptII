@@ -94,6 +94,14 @@ public interface Settable extends Nameable {
      *  @param listener The listener to add.
      */
     public void addValueListener(ValueListener listener);
+    
+    /** Return the default value of this attribute, if there is
+     *  one, or null if there is none.
+     *  @return The default value of this attribute, or null
+     *   if there is none.
+     */
+    public String getDefaultExpression();
+
 
     /** Get the value of the attribute that has been set by setExpression(),
      *  or null if there is none.
@@ -116,7 +124,7 @@ public interface Settable extends Nameable {
      *  @param listener The listener to remove.
      */
     public void removeValueListener(ValueListener listener);
-
+    
     /** Set the value of the attribute by giving some expression.
      *  In some implementations, the listeners and the container will
      *  be notified immediately.  However, some implementations may

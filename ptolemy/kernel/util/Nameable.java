@@ -47,7 +47,7 @@ package ptolemy.kernel.util;
    @Pt.AcceptedRating Green (johnr)
 */
 
-public interface Nameable extends ModelErrorHandler {
+public interface Nameable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

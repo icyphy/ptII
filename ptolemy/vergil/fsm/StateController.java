@@ -28,15 +28,19 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.fsm;
 
-import java.awt.Event;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
@@ -49,6 +53,7 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.canvas.Figure;
 import diva.graph.GraphController;
+import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 
@@ -84,7 +89,8 @@ public class StateController extends AttributeController {
      */
     public StateController(GraphController controller, Access access) {
         super(controller, access);
-        setNodeRenderer(new StateRenderer());
+
+        setNodeRenderer(new StateRenderer(controller.getGraphModel()));
 
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
@@ -119,6 +125,14 @@ public class StateController extends AttributeController {
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Map used to keep track of icons that have been created
+     *  but not yet assigned to a container.
+     */
+    private static Map _iconsPendingContainer = new HashMap();
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** An action to look inside a state at its refinement, if it has one.
@@ -131,7 +145,8 @@ public class StateController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, 
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
         public void actionPerformed(ActionEvent e) {
 
@@ -164,17 +179,81 @@ public class StateController extends AttributeController {
     /** Render the state as a circle.
      */
     public static class StateRenderer implements NodeRenderer {
+        public StateRenderer(GraphModel model) {
+            super();
+            _model = model;
+        }
         public Figure render(Object n) {
             Locatable location = (Locatable)n;
-            NamedObj object = (NamedObj) location.getContainer();
+            final NamedObj object = (NamedObj) location.getContainer();
             EditorIcon icon;
             try {
-                icon = (EditorIcon)object.getAttribute("_icon");
-                if (icon == null) {
-                    // FIXME: This should not be done in this thread!
-                    // Need to queue a change request.
-                    icon = new XMLIcon(object, "_icon");
+                // In theory, there shouldn't be more than one
+                // icon, but if there are, use the last one.
+                List icons = object.attributeList(EditorIcon.class);
+                // Check to see whether there is an icon that has been created,
+                // but not inserted.
+                if (icons.size() == 0) {
+                    XMLIcon alreadyCreated =
+                        (XMLIcon) _iconsPendingContainer.get(object);
+                    if (alreadyCreated != null) {
+                        icons.add(alreadyCreated);
+                    }
+                }
+                if (icons.size() > 0) {
+                    icon = (EditorIcon)icons.get(icons.size() - 1);
+                } else {
+                    // NOTE: This code is the same as in
+                    // IconController.IconRenderer.
+                    
+                    // NOTE: This used to directly create an XMLIcon within
+                    // the container "object". However, this is not cosher,
+                    // since we may not be able to get write access on the
+                    // workspace. We instead use a hack supported by XMLIcon
+                    // to create an XMLIcon with no container (this does not
+                    // require write access to the workspace), and specify
+                    // to it what the container will eventually be. Then
+                    // we queue a change request to make that the container.
+                    // Further, we have to make a record of the figure, indexed
+                    // by the object, in case some other change request is
+                    // executed before this gets around to setting the
+                    // container.  Otherwise, that second change request
+                    // will result in the creation of a second figure.
+                    icon = new XMLIcon(object.workspace(), "_icon");
+                    icon.setContainerToBe(object);
                     icon.setPersistent(false);
+
+                    // NOTE: Make sure this is done before the change request
+                    // below is executed, which may be as early as when it is
+                    // requested.
+                    _iconsPendingContainer.put(object, icon);
+
+                    // NOTE: Make sure the source of this change request is
+                    // the graph model. Otherwise, this change request will
+                    // trigger a redraw of the entire graph, which will result
+                    // in another call to this very same method, which will
+                    // result in creation of yet another figure before this
+                    // method even returns!
+                    final EditorIcon finalIcon = icon;
+                    ChangeRequest request =
+                        new ChangeRequest(
+                                _model,
+                                "Set the container of a new XMLIcon.") {
+                            // NOTE: The KernelException should not be thrown,
+                            // but if it is, it will be handled properly.
+                            protected void _execute() throws KernelException {
+                                _iconsPendingContainer.remove(object);
+                                // If the icon already has a container, do nothing.
+                                if (finalIcon.getContainer() != null)
+                                    return;
+                                // If the container already has an icon, do nothing.
+                                if (object.getAttribute("_icon") != null)
+                                    return;
+                                finalIcon.setContainer(object);
+                            }
+                        };
+                    request.setPersistent(false);
+                    object.requestChange(request);
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException("could not create icon " +
@@ -186,5 +265,6 @@ public class StateController extends AttributeController {
             figure.setToolTipText(object.getName());
             return figure;
         }
+        private GraphModel _model;
     }
 }

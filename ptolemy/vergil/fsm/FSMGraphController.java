@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.fsm;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -57,6 +58,7 @@ import ptolemy.vergil.fsm.modal.ModalTransitionController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.toolbox.FigureAction;
+
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.Site;
@@ -181,16 +183,13 @@ public class FSMGraphController extends FSMViewerGraphController {
 
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
-        _linkCreator.setMouseFilter(_controlFilter);
-        _linkCreator2 = new LinkCreator();
-        _linkCreator2.setMouseFilter(_shiftFilter);
+        _linkCreator.setMouseFilter(_shortcutFilter);
+ 
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor)_stateController.getNodeInteractor())
             .addInteractor(_linkCreator);
-        ((CompositeInteractor)_stateController.getNodeInteractor())
-            .addInteractor(_linkCreator2);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -214,20 +213,21 @@ public class FSMGraphController extends FSMViewerGraphController {
 
     /** The interactor that interactively creates edges. */
     private LinkCreator _linkCreator;  // For control-click
-    private LinkCreator _linkCreator2;  // For shift-click
 
     /** The action for creating states. */
     private NewStateAction _newStateAction = new NewStateAction();
 
-    /** The filter for control operations. */
-    private MouseFilter _controlFilter = new MouseFilter(
+    /** The filter for shortcut operations.  This is used for creation
+     *  of relations and creation of links from relations. Under PC,
+     *  this is a control-1 click.  Under Mac OS X, the control key is
+     *  used for context menus and this corresponds to the command-1
+     *  click.  For details, see the Apple java archive
+     *  http://lists.apple.com/archives/java-dev User: archives,
+     *  passwd: archives
+     */
+    private MouseFilter _shortcutFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
-            InputEvent.CTRL_MASK);
-
-    /** The filter for shift operations. */
-    private MouseFilter _shiftFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK,
-            InputEvent.SHIFT_MASK);
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
@@ -355,7 +355,8 @@ public class FSMGraphController extends FSMViewerGraphController {
         public NewStateAction() {
             super("New State");
             putValue("tooltip", "New State");
-            NodeRenderer renderer = new StateController.StateRenderer();
+            NodeRenderer renderer
+                    = new StateController.StateRenderer(getGraphModel());
             Figure figure = renderer.render(_prototypeState);
             // Standard toolbar icons are 25x25 pixels.
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
