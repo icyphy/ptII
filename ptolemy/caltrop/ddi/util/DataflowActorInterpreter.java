@@ -263,7 +263,7 @@ public class DataflowActorInterpreter {
 
                 for (int j = 0; j < lists.length; j++) {
                     lists[j] =
-                        context.listValue(eval.evaluate(expressions[j]));
+                        context.getList(eval.evaluate(expressions[j]));
                 }
 
                 for (int j = 0; j < repeatValue; j++) {

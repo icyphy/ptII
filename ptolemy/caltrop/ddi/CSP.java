@@ -238,7 +238,7 @@ public class CSP extends AbstractDDI implements DDI {
                 int repeatVal = _context.intValue(eval.evaluate(repeatExpr));
                 List [] values = new List[exprs.length];
                 for (int j = 0; j < values.length; j++) {
-                    values[j] = _context.listValue(eval.evaluate(exprs[j]));
+                    values[j] = _context.getList(eval.evaluate(exprs[j]));
                 }
                 for (int j = 0; j < repeatVal; j++) {
                     for (int k = 0; k < exprs.length; k++) {

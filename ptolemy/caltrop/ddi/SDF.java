@@ -440,7 +440,7 @@ public class SDF extends AbstractDDI implements DDI {
                 _clearInputChannels();
             }
         } catch (Exception e) {
-            throw new IllegalActionException("Could not fire CAL actor '" + _actor.getName() + "': " + e.getMessage());
+            throw new IllegalActionException(_ptActor, e, "Could not fire CAL actor '" + _actor.getName() + "': " + e.getMessage());
         }
     }
 

@@ -79,6 +79,16 @@ public class PtCalFunction implements FunctionToken.Function {
         return false;
     }
 
+    /**
+     * Return Function object wrapped by this object.
+     *
+     * @return The Funtion object.
+     * @see Function
+     */
+    public Function  getFunction() {
+        return _function;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
