@@ -98,13 +98,7 @@ OPTIONAL_FILES = \
 JCLASS= $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run all the demos, run 'make demo'"
-
 install: jclass $(PTCLASSJAR)
-
-demo:
-	vergil route.xml
-
 depend:
 	@echo "no dependencies in this directory"
 
