@@ -121,7 +121,7 @@
   <entity name="Commutator" class="ptolemy.actor.lib.Commutator"/>
   <entity name="Distributor" class="ptolemy.actor.lib.Distributor"/>
   <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor"/>
-  <entity name="RealTimeDelay" class="ptolemy.actor.lib.RealTimeDelay"/>
+  <entity name="Sleep" class="ptolemy.actor.lib.Sleep"/>
   <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler"/>
   <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler"/>
   <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat"/>
