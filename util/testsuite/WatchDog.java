@@ -45,7 +45,7 @@ a certain amount of time.
  @since Ptolemy II 2.2
  */
 public class WatchDog {
-    /** Create a timer that will go off at timeToDie 
+    /** Create a timer that will go off after timeToDie milliseconds.
      */
     public WatchDog(final long timeToDie) {
 
@@ -56,13 +56,13 @@ public class WatchDog {
         if (timeToDie <= 0) {
             return;
         }
-        // Make a record of the time when the WatchDogTimer was set
+        // Make a record of the time when the WatchDog was set
         final long startTime = (new Date()).getTime();
 
         TimerTask doTimeToDie = new TimerTask() {
                 public void run() {
                     try {
-                        System.err.println("util.test.WatchDogTimer went "
+                        System.err.println("util.test.WatchDog went "
                                 + "off after " + timeToDie + "ms.");
 
                         // Get the root ThreadGroup
