@@ -33,6 +33,7 @@ package ptolemy.domains.od.kernel;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
+import ptolemy.actor.process.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ODDirector 
