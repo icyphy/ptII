@@ -451,8 +451,7 @@ public class PrioritizedTimedQueue {
     private IOPort _container;
     
     // The queue in which this receiver stores tokens.
-    // FIXME
-    public FIFOQueue _queue = new FIFOQueue();
+    private FIFOQueue _queue = new FIFOQueue();
 
     // The time stamp of the earliest token that is still in the queue.
     private double _rcvrTime = 0.0;

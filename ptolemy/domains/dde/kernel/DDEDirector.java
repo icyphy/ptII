@@ -368,7 +368,8 @@ public class DDEDirector extends ProcessDirector {
      *  ports it is connected to on the inside. The port argument must
      *  be an opaque input port. If any channel of the input port
      *  has no data, then that channel is ignored.
-     *  JFIXME
+     *  <P>
+     *  NOTE: This method is preliminary and will likely change.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
@@ -409,7 +410,8 @@ public class DDEDirector extends ProcessDirector {
      *  ports it is connected to on the outside.  The port argument must
      *  be an opaque output port. If any channel of the output port
      *  has no data, then that channel is ignored.
-     *  JFIXME
+     *  <P>
+     *  NOTE: This method is preliminary and will likely change.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
@@ -684,14 +686,6 @@ public class DDEDirector extends ProcessDirector {
     }
     
     /** Mutate the model that this director controls.
-     *  FIXME
-     protected void _processTopologyRequests() throws
-     TopologyChangeFailedException {
-     }
-    */
-
-    /** Mutate the model that this director controls.
-     *  FIXME
      */
     protected void _performMutations() {
         ;
@@ -700,20 +694,13 @@ public class DDEDirector extends ProcessDirector {
     /** Return true indicating that this actor is allowed to continue
      *  execution. Note that transferInputs() modifies its behavior 
      *  based on the existence of an external read deadlock. 
-     *  FIXME: finish comments
+     *  <P>
+     *  NOTE: This method is preliminary and will likely change.
      *  @return True.
      */
     protected boolean _resolveExternalReadDeadlock() throws
     	    IllegalActionException {
         if( _pendingMutations ) {
-	    /* FIXME
-               try {
-               _processTopologyRequests();
-               } catch( TopologyChangeFailedException e ) {
-               throw new IllegalActionException("TopologyChangeFailed: "
-               + e.getMessage());
-               }
-	    */
         }
         return true;
     }
@@ -729,34 +716,19 @@ public class DDEDirector extends ProcessDirector {
         _incrementLowestCapacityPort();
         
         if( _pendingMutations ) {
-	    /* FIXME
-               try {
-               _processTopologyRequests();
-               } catch( TopologyChangeFailedException e ) {
-               throw new IllegalActionException("TopologyChangeFailed: "
-               + e.getMessage());
-               }
-	    */
         }
         return true;
     }
 
     /** Return false indicating that this director can not resolve
      *  internal read deadlocks. 
-     *  FIXME: Mutations
+     *  <P>
+     *  NOTE: This method is preliminary and will likely change.
      * @return False.
      */
     protected boolean _resolveInternalReadDeadlock() throws
     	    IllegalActionException {
         if( _pendingMutations ) {
-	    /* FIXME
-               try {
-               _processTopologyRequests();
-               } catch( TopologyChangeFailedException e ) {
-               throw new IllegalActionException("TopologyChangeFailed: "
-               + e.getMessage());
-               }
-	    */
         }
         return false;
     }
@@ -772,14 +744,6 @@ public class DDEDirector extends ProcessDirector {
         _incrementLowestCapacityPort();
 
         if( _pendingMutations ) {
-	    /* FIXME
-               try {
-               _processTopologyRequests();
-               } catch( TopologyChangeFailedException e ) {
-               throw new IllegalActionException("TopologyChangeFailed: "
-               + e.getMessage());
-               }
-	    */
         }
         return true;
     }
