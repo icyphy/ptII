@@ -341,8 +341,8 @@ public class ODFThread extends ProcessThread {
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
                     double time = getCurrentTime();
-                    if( time > ( (ODFReceiver)rcvrs[i][j]
-                            ).getRcvrTime() ) {
+                    if( time > 
+			    ((ODFReceiver)rcvrs[i][j]).getRcvrTime() ) {
                         ((ODFReceiver)rcvrs[i][j]).put( 
                                 new NullToken(), time );
                     }
