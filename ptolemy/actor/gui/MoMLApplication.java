@@ -58,7 +58,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.FilterBackwardCompatibility;
 import ptolemy.moml.MoMLParser;
+
+import java.util.Date;			// For timing measurements
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplication
@@ -101,7 +104,7 @@ No configuration will be created and no models will be opened.
 Derived classes can specify a configuration that opens some
 welcome window, or a blank editor.
 
-@author Edward A. Lee and Steve Neuendorffer
+@author Edward A. Lee and Steve Neuendorffer, Contributor: Christopher Hylands
 @version $Id$
 @since Ptolemy II 0.4
 @see Configuration
@@ -129,6 +132,9 @@ public class MoMLApplication {
 
         // Create a parser to use.
         _parser = new MoMLParser();
+
+	// Handle Backward Compatibility.
+	_parser.addMoMLFilter(new FilterBackwardCompatibility());
 
         _parseArgs(args);
 
@@ -234,7 +240,7 @@ public class MoMLApplication {
 		    // This works in Web Start, see
 		    // http://java.sun.com/products/javawebstart/faq.html#54
 		    URL inURL = Thread.currentThread()
-			.getContextClassLoader().getResource(spec);  
+			.getContextClassLoader().getResource(spec);
 
                     if (inURL == null) {
 			throw new Exception();
@@ -398,8 +404,14 @@ public class MoMLApplication {
 
                         String key = inURL.toExternalForm();
 
+			//long startTime = (new Date()).getTime();
+
                         // Now defer to the model reader.
                         _config.openModel(base, inURL, key);
+
+			//System.out.println("Model open done: " +
+			//		   Manager.timeAndMemory(startTime));
+
                     } else {
                         // No configuration has been encountered.
                         // Assume this is a MoML file, and open it.
