@@ -113,39 +113,39 @@ test CTMultiSolverDirector-2.2 {set Parameters} {
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute InitialStepSize]]
+	    [$dir getAttribute initStepSize]]
     $param setExpression 0.5
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute ErrorTolerance]]
+	    [$dir getAttribute errorTolerance]]
     $param setExpression 0.4
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute MaximumIterationsPerStep]]
+	    [$dir getAttribute maxIterations]]
     $param setExpression 10
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute MaximumStepSize]]
+	    [$dir getAttribute maxStepSize]]
     $param setExpression 0.3
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute MinimumStepSize]]
+	    [$dir getAttribute minStepSize]]
     $param setExpression 0.2
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StartTime]]
+	    [$dir getAttribute startTime]]
     $param setExpression 10.0
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StopTime]]
+	    [$dir getAttribute stopTime]]
     $param setExpression 100.0
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute TimeResolution]]
+	    [$dir getAttribute timeResolution]]
     $param setExpression 1e-11
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute ConvergeValueResolution]]
+	    [$dir getAttribute valueResolution]]
     $param setExpression 0.1
 
     $dir prefire
@@ -179,47 +179,47 @@ test CTMultiSolverDirector-2.2a {set Parameters} {
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute InitialStepSize]]
+	    [$dir getAttribute initStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.5]
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute ErrorTolerance]]
+	    [$dir getAttribute errorTolerance]]
     set token [java::new ptolemy.data.DoubleToken 0.4]
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute MaximumIterationsPerStep]]
+	    [$dir getAttribute maxIterations]]
     set token [java::new ptolemy.data.IntToken 10]
     $param setToken $token 
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute MaximumStepSize]]
+	    [$dir getAttribute maxStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.3]
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute MinimumStepSize]]
+	    [$dir getAttribute minStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.2]
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StartTime]]
+	    [$dir getAttribute startTime]]
     set token [java::new ptolemy.data.DoubleToken 10.0]
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StopTime]]
+	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 100.0]
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute TimeResolution]]
+	    [$dir getAttribute timeResolution]]
     set token [java::new ptolemy.data.DoubleToken 1e-11]
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute ConvergeValueResolution]]
+	    [$dir getAttribute valueResolution]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $param setToken $token
 
@@ -282,7 +282,7 @@ test CTMultiSolverDirector-3.1 {register a breakpoint} {
     $sys setName System
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
     set stoptime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StopTime]]
+	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
     $dir preinitialize

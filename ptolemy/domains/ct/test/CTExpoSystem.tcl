@@ -95,17 +95,17 @@ test CTExpoSystem-4.1 {Expo with ForwardEulerSolver} {
     $solver setToken $token
 
     set starttime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StartTime]]
+	    [$dir getAttribute startTime]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
 
     set initstep [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute InitialStepSize]]
+	    [$dir getAttribute initStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $initstep setToken $token
 
     set stoptime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StopTime]]
+	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
 
@@ -153,17 +153,17 @@ test CTExpoSystem-4.3 {Expo System with MultiSolver DR RK23} {
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
     $sys setDirector $dir
     set starttime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StartTime]]
+	    [$dir getAttribute startTime]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
 
     set initstep [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute InitialStepSize]]
+	    [$dir getAttribute initStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $initstep setToken $token
 
     set stoptime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StopTime]]
+	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
 
@@ -189,7 +189,7 @@ test CTExpoSystem-4.3 {Expo System with MultiSolver DR RK23} {
 test CTExpoSystem-4.4 {Expo system with accuracy 1e-6} {
     #Note: Use the above set up.
     set accu [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute ErrorTolerance]]
+	    [$dir getAttribute errorTolerance]]
     $accu setToken [java::new ptolemy.data.DoubleToken 1e-6]
 
     set testvalue [java::cast ptolemy.data.expr.Parameter \
@@ -203,12 +203,12 @@ test CTExpoSystem-4.4 {Expo system with accuracy 1e-6} {
 test CTExpoSystem-4.6 {Expo System with Multi-Solver ImpulseBE RK23} {
     #Note: Use above setup.
     set bps [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute BreakpointODESolver]]
+	    [$dir getAttribute breakpointODESolver]]
     $bps setToken [java::new ptolemy.data.StringToken \
 	    "ptolemy.domains.ct.kernel.solver.ImpulseBESolver"]
 
     set accu [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute ErrorTolerance]]
+	    [$dir getAttribute errorTolerance]]
     $accu setToken [java::new ptolemy.data.DoubleToken 1e-5]
 
 
@@ -228,7 +228,7 @@ test CTExpoSystem-4.7 {Expo System with CTMixsignalSolver as toplevel} {
 	    #	    [$testV getAttribute "Print"]]
     #$printflag setToken [java::new ptolemy.data.BooleanToken true]
     set stoptime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StopTime]]
+	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
 

@@ -123,11 +123,11 @@ public class SquareWaveResponse extends CTApplet {
                 _toplevel.connect(gain3.output, add1.plus, "R7");
             responsePlot.input.link(r1);
 
-            _dir.StartTime.setToken(new DoubleToken(0.0));
+            _dir.startTime.setToken(new DoubleToken(0.0));
 
-            _dir.InitStepSize.setToken(new DoubleToken(0.000001));
+            _dir.initStepSize.setToken(new DoubleToken(0.000001));
 
-            _dir.MinStepSize.setToken(new DoubleToken(1e-6));
+            _dir.minStepSize.setToken(new DoubleToken(1e-6));
 
             sqwv.period.setToken(new DoubleToken(4));
             double offsets[][] = {{0.0, 2.0}};
@@ -159,9 +159,9 @@ public class SquareWaveResponse extends CTApplet {
      */
     protected void _go() throws IllegalActionException {
         try {
-            _dir.StopTime.setToken(new DoubleToken(
+            _dir.stopTime.setToken(new DoubleToken(
                     _query.doubleValue("stopT")));
-            _dir.BreakpointODESolver.setToken(new StringToken(
+            _dir.breakpointODESolver.setToken(new StringToken(
                     _query.stringValue("bpsolver")));
             _dir.ODESolver.setToken(new StringToken(
                     _query.stringValue("solver")));

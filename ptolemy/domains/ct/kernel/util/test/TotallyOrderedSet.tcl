@@ -234,8 +234,13 @@ test TotallyOrderedSet-6.5 { remove all (strictly) less than } {
             [$toset at 1]
 } {3 1002.1 1002.2}
 
-
-
+######################################################################
+#### elements()
+#
+test TotallyOrderedSet-7.2 { Call elements() event though it is deprecated, so that we get 100 % code coverage } {
+    set enum [$toset elements]
+    enumToObjects $enum
+} {1002.1 1002.2 1002.3}
 
 ######################################################################
 #### Clear the set.
@@ -252,3 +257,4 @@ test TotallyOrderedSet-7.2 { get first from an empty set } {
     set f [$toset first]
     list [expr {$f == [java::null]}]
 } {1}
+
