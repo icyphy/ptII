@@ -47,8 +47,13 @@ JDOCFLAGS = 	-author -version -public
 
 # Used to build jar files
 PTPACKAGE = 	media
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	javasound/javasound.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Audio.java \
