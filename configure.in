@@ -285,7 +285,8 @@ if test -f "$PTJAVA_DIR/bin/java" -o -f "$PTJAVA_DIR/bin/java.exe"; then
     AC_PATH_PROG(JAVA, java)
     if test "$PTJAVA_DIR/bin/java" = "$JAVA"; then
 	AC_MSG_RESULT([  You have the right java in your path,
-    $PTJAVA_DIR/bin/java = "$JAVA"])
+    "$PTJAVA_DIR/bin/java"
+      = "$JAVA"])
     else
 	AC_MSG_WARN(['$PTJAVA_DIR/bin/java' is not
     the same as '$JAVA'.
@@ -320,7 +321,8 @@ if test -f "$PTJAVA_DIR/bin/javac"; then
     fi
     if test "$PTJAVA_DIR/bin/javac" = "$JAVAC"; then
         AC_MSG_RESULT([  You have the right javac in your path,
-	 "$PTJAVA_DIR/bin/javac" = "$JAVAC"])
+    "$PTJAVA_DIR/bin/javac"
+     = "$JAVAC"])
     else
         AC_MSG_WARN(['$PTJAVA_DIR/bin/javac' is not
 	 the same as '$JAVAC'.
@@ -401,6 +403,7 @@ case "$JVERSION" in
 		# If we call the jdk1.4 javadoc without -breakiterator,
 		# then we get lots of warnings
 		JDOCBREAKITERATOR=-breakiterator
+		AC_MSG_RESULT([ok, you are running 1.4 or later])
         ;;
 	*) AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;
