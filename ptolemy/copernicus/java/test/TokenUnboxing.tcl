@@ -41,9 +41,6 @@ if {[info procs jdkClassPathSeparator] == "" } then {
     source [file join $PTII util testsuite jdktools.tcl]
 }
 
-# Uncomment this to get a full report, or set in your Tcl shell window.
-#set VERBOSE 1
-
 if {[info procs sootCodeGeneration] == "" } then { 
     source [file join $PTII util testsuite codegen.tcl]
 }
