@@ -54,6 +54,9 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+        <property name="attributeName" value="function"/>
+    </property>
 </entity>
 
 <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
