@@ -43,8 +43,8 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ASTReflect.
 /** Create an AST for a class by using reflection.
-@Version: $Id$
-@Author: Christopher Hylands
+@version $Id$
+@author Christopher Hylands
  */
 public class ASTReflect {
 
@@ -179,7 +179,7 @@ public class ASTReflect {
     }
 
     /** Return a list that contains an AST for the constructors. */
-    public static List constructorsASTList(Class myClass){
+    public static List constructorsASTList(Class myClass) {
 	List constructorList = new LinkedList();
         if (_debug) {
 	    System.out.println(_indent + "// Constructors");
@@ -322,8 +322,8 @@ public class ASTReflect {
     public static void main(String[] args) {
 	try {
 	    System.out.println("ast: " +
-                    ASTCompileUnitNode(Class.forName("ptolemy.lang.java.test.ReflectTest")));
-	    //System.out.println(ASTCompileUnitNode(Class.forName("ptolemy.lang.java.Skeleton")));
+                    ASTCompileUnitNode(Class.forName(
+                            "ptolemy.lang.java.test.ReflectTest")));
 	} catch (Exception e) {
 	    System.err.println("Error: " + e);
 	    e.printStackTrace();
