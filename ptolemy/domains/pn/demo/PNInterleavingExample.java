@@ -28,6 +28,8 @@
 package pt.domains.pn.demo;
 import pt.domains.pn.kernel.*;
 import pt.domains.pn.stars.*;
+import pt.actors.*;
+import pt.data.*;
 import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,6 +54,8 @@ class PNInterleavingExample {
         _redirect0.setInitState(0);
         PNRedirect _redirect1 = new PNRedirect(myUniverse, "redirect1");
         _redirect1.setInitState(1);
+        //        PNPlot _plot = new PNPlot(myUniverse, "plot");
+        //_plot.initialize();
 
         //FIXME: Find a neat way of specifying the queue length of input port!
         //FIXME: Need a nice way of doing the following.
@@ -61,6 +65,10 @@ class PNInterleavingExample {
         IORelation queue = (IORelation)myUniverse.connect(portin, portout, "QX");
         //portin.getQueue().setCapacity(1);
 
+        //portout = (PNOutPort)_interleave.getPort("output");
+        //((PNInPort)_plot.getPort("input")).link(queue);
+        
+        //queue = (IORelation)myUniverse.connect(portin, portout, "QPlot");
  
         portout = (PNOutPort)_redirect0.getPort("output");
         portin = (PNInPort)_interleave.getPort("input0");
