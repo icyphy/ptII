@@ -1,6 +1,6 @@
 # Test file for Tycho/Java Plotter
 # @Version: $Id$
-# Copyright (c) 1998-1999 The Regents of the University of California.
+# Copyright (c) 1998-2000 The Regents of the University of California.
 # All rights reserved.
 # See the file $TYCHO/copyright for copyright notice,
 # limitation of liability, and disclaimer of warranty provisions.
