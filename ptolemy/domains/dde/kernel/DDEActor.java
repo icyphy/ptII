@@ -104,7 +104,6 @@ public class DDEActor extends TypedAtomicActor {
      *  is not an instance of DDEThread, then return the cached
      *  current time value.
      * @return The current time of this DDEActor.
-     */
     public double getCurrentTime() {
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
@@ -114,6 +113,7 @@ public class DDEActor extends TypedAtomicActor {
 
 	return _currentTime;
     }
+     */
 
     /** Return the last port through which a token was consumed by
      *  this actor. If no tokens have ever been consumed through any
