@@ -44,17 +44,18 @@ import javax.vecmath.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Torus3D
-/** This actor contains the geometry and appearance specifications for a GR
-torus.  The output port is used to connect this actor to the
-Java3D scene graph. This actor will only have meaning in the GR domain.
 
-    The parameter <i>hullRadius</i> determines the radius of torus ring. The
-parameter <i>crossSectionRadius</i> determines the radius of the torus cross-section.
-The parameter <i>slices</i> determines the number of polygonal slices used in the
-creating the torus.
-
+/** This actor contains the geometry and appearance specifications for
+a GR torus.  The output port is used to connect this actor to the
+Java3D scene graph. This actor will only have meaning in the GR
+domain.  The parameter <i>hullRadius</i> determines the radius of
+torus ring. The parameter <i>crossSectionRadius</i> determines the
+radius of the torus cross-section.  The parameter <i>slices</i>
+determines the number of polygonal slices used in the creating the
+torus.
 
 @author C. Fong
+@version $Id$
 */
 public class Torus3D extends GRShadedShape {
     /** Construct an actor with the given container and name.
@@ -69,14 +70,13 @@ public class Torus3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-
-
-        angleSpan = new Parameter(this, "angleSpan", new DoubleToken(2*Math.PI));
+        angleSpan =
+            new Parameter(this, "angleSpan", new DoubleToken(2*Math.PI));
         slices = new Parameter(this, "slices", new IntToken(28));
-        crossSectionRadius
-            = new Parameter(this,"crossSectionRadius", new DoubleToken(0.15));
-        hullRadius
-            = new Parameter(this,"hullRadius",new DoubleToken(0.75));
+        crossSectionRadius =
+            new Parameter(this, "crossSectionRadius", new DoubleToken(0.15));
+        hullRadius =
+            new Parameter(this, "hullRadius", new DoubleToken(0.75));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,14 +103,11 @@ public class Torus3D extends GRShadedShape {
     public Parameter slices;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Create the shape and appearance of the encapsulated torus
      *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+     *  be obtained.
      */
     protected void _createModel() throws IllegalActionException {
 
@@ -127,13 +124,13 @@ public class Torus3D extends GRShadedShape {
 
         int[] stripCount = new int[numberOfQuads];
 
-        int i,j,k,l,m;
-        for(i=0; i < numberOfQuads; i++) {
+        int i, j, k, l, m;
+        for(i = 0; i < numberOfQuads; i++) {
             stripCount[i] = 4;
         }
 
-        j=0;
-        for(i=0; i < numberOfSlices ; i++) {
+        j = 0;
+        for(i = 0; i < numberOfSlices ; i++) {
             double theta = Math.PI - 2 * Math.PI * i / (numberOfSlices - 1);
             data[j++] = outerRadius +
                 innerRadius * (float) Math.cos(theta);
@@ -142,8 +139,8 @@ public class Torus3D extends GRShadedShape {
 
 
         k = l = m = 0;
-        for(i=0; i < numberOfSweepVertices - 1;i++) {
-            for(j=0; j<numberOfSlices; j++) {
+        for(i = 0; i < numberOfSweepVertices - 1;i++) {
+            for(j = 0; j<numberOfSlices; j++) {
                 float cosFactor1 = (float) Math.cos(span*j/numberOfSlices);
                 float sinFactor1 = (float) Math.sin(span*j/numberOfSlices);
                 float cosFactor2 = (float) Math.cos(span*(j+1)/numberOfSlices);
@@ -211,7 +208,8 @@ public class Torus3D extends GRShadedShape {
      *   be obtained
      */
     private float _getCrossSectionRadius() throws IllegalActionException {
-        return (float) ((DoubleToken) crossSectionRadius.getToken()).doubleValue();
+        return (float) ((DoubleToken) crossSectionRadius.getToken())
+            .doubleValue();
     }
 
     /** Return the radius of the outer hull

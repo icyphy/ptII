@@ -75,7 +75,7 @@ abstract public class GRShadedShape extends GRActor {
         rgbColor = new Parameter(this,"RGB color",
                    new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
 
-        shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
+        shininess = new Parameter(this,"shininess", new DoubleToken(0.0));
         _color = new Color3f(1.0f, 1.0f, 1.0f);
     }
 
@@ -141,7 +141,7 @@ abstract public class GRShadedShape extends GRActor {
 
         _material.setDiffuseColor(_color);
         if (_shine > 1.0) {
-            _material.setSpecularColor(whiteColor);
+            _material.setSpecularColor(_whiteColor);
             _material.setShininess(_shine);
         } else {
             _material.setSpecularColor(_color);
@@ -166,7 +166,7 @@ abstract public class GRShadedShape extends GRActor {
     }
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
-        sceneGraphOut.send(0,new ObjectToken(_getNodeObject()));
+        sceneGraphOut.send(0, new ObjectToken(_getNodeObject()));
     }
 
 
@@ -180,6 +180,6 @@ abstract public class GRShadedShape extends GRActor {
     protected float _shine;
 
 
-    protected static final Color3f whiteColor = new Color3f(1.0f, 1.0f, 1.0f);
-    protected static final Color3f blueColor = new Color3f(0.0f, 0.0f, 1.0f);
+    protected static final Color3f _whiteColor = new Color3f(1.0f, 1.0f, 1.0f);
+    protected static final Color3f _blueColor = new Color3f(0.0f, 0.0f, 1.0f);
 }

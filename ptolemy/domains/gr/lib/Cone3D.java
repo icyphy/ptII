@@ -48,8 +48,8 @@ import javax.vecmath.*;
 cone.  The output port is used to connect this actor to the Java3D scene
 graph. This actor will only have meaning in the GR domain.
 
-
 @author C. Fong
+@version $Id$
 */
 public class Cone3D extends GRShadedShape {
 
@@ -105,8 +105,8 @@ public class Cone3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        _containedNode = new Cone((float)_getRadius(),(float) _getHeight(),
-                Cone.GENERATE_NORMALS,_appearance);
+        _containedNode = new Cone((float)_getRadius(), (float) _getHeight(),
+                Cone.GENERATE_NORMALS, _appearance);
     }
 
     /**  Return the value of the radius parameter

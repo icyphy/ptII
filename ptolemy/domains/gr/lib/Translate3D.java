@@ -65,11 +65,11 @@ public class Translate3D extends GRTransform {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        xTranslate = new TypedIOPort(this, "xTranslate",true,false);
+        xTranslate = new TypedIOPort(this, "xTranslate", true, false);
         xTranslate.setTypeEquals(BaseType.DOUBLE);
-        yTranslate = new TypedIOPort(this, "yTranslate",true,false);
+        yTranslate = new TypedIOPort(this, "yTranslate", true, false);
         yTranslate.setTypeEquals(BaseType.DOUBLE);
-        zTranslate = new TypedIOPort(this, "zTranslate",true,false);
+        zTranslate = new TypedIOPort(this, "zTranslate", true, false);
         zTranslate.setTypeEquals(BaseType.DOUBLE);
 
 
@@ -175,7 +175,7 @@ public class Translate3D extends GRTransform {
 
         if (applyTransform) {
             Transform3D transform = new Transform3D();
-    	    transform.setTranslation(new Vector3d(xOffset,yOffset,zOffset));
+    	    transform.setTranslation(new Vector3d(xOffset, yOffset, zOffset));
     	    transformNode.setTransform(transform);
         }
 

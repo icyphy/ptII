@@ -129,7 +129,7 @@ public class PolyCylinder3D extends GRShadedShape {
 
         j = numberOfVertices*3 - 3;
         k = numberOfVertices*3 + 3;
-        for(i=1; i<numberOfVertices;i++) {
+        for(i = 1; i < numberOfVertices; i++) {
             data[k] = data[j];
             data[k+1] = data[j+1];
             data[k+2] = data[j+2] - thickness;
@@ -139,7 +139,7 @@ public class PolyCylinder3D extends GRShadedShape {
 
         j = 0;
         k = 2 * 3 * numberOfVertices;
-        for(i=0; i<numberOfVertices;i++) {
+        for(i = 0; i < numberOfVertices; i++) {
             data[k]   = data[j];
             data[k+1] = data[j+1];
             data[k+2] = data[j+2];
@@ -212,10 +212,10 @@ public class PolyCylinder3D extends GRShadedShape {
 
         int numberOfElements = matrixToken.getColumnCount()/2;
         float[] data = new float[numberOfElements*18];
-        int i=0;
-        int j=0;
+        int i = 0;
+        int j = 0;
 
-        for(i=0 ;i < numberOfElements * 2; i = i + 2) {
+        for(i = 0; i < numberOfElements * 2; i = i + 2) {
             data[j++] = (float) matrixToken.getElementAt(0,i);
             data[j++] = (float) matrixToken.getElementAt(0,i+1);
             data[j++] = 0.0f;

@@ -92,7 +92,7 @@ public class Sphere3D extends GRShadedShape {
         if (attribute == radius) {
             if (scaleTransform != null) {
                 double scale = _getRadius();
-                scaleTransform.setScale(new Vector3d(scale,scale,scale));
+                scaleTransform.setScale(new Vector3d(scale, scale, scale));
                 _scaler.setTransform(scaleTransform);
             }
         }
@@ -111,13 +111,13 @@ public class Sphere3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         _containedNode = new Sphere(1.0f,
-                             Sphere.GENERATE_NORMALS,_appearance);
+                             Sphere.GENERATE_NORMALS, _appearance);
         //Shape3D sphereShape = _containedNode.getShape();
         _scaler = new TransformGroup();
         _scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         scaleTransform = new Transform3D();
         double scale = _getRadius();
-        scaleTransform.setScale(new Vector3d(scale,scale,scale));
+        scaleTransform.setScale(new Vector3d(scale, scale, scale));
         _scaler.setTransform(scaleTransform);
         _scaler.addChild(_containedNode);
     }

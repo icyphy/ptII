@@ -154,7 +154,7 @@ public class Rotate3D extends GRTransform {
                     quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
                                              _accumulatedAngle));
                 } else {
-                    quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,
+                    quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
                                              in + originalAngle));
                 }
                 _rotation.set(quat);

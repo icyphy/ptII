@@ -66,13 +66,18 @@ import javax.vecmath.*;
 import java.io.*;
 import com.sun.j3d.utils.behaviors.mouse.*;
 
+/**
+@author C. Fong
+@version $Id$
+*/
 public class Loader3D extends GRShadedShape {
 
     public Loader3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        filename = new Parameter(this, "filename", new StringToken("chopper.obj"));
+        filename = new Parameter(this, "filename",
+                new StringToken("chopper.obj"));
     }
 
     public Parameter filename;
@@ -83,15 +88,18 @@ public class Loader3D extends GRShadedShape {
     }
 
     protected void _createModel() throws IllegalActionException {
-        String fileName = (String) ((StringToken) filename.getToken()).stringValue();
+        String fileName =
+            (String) ((StringToken) filename.getToken()).stringValue();
 
         //Appearance ap = new Appearance();
-        //ap.setColoringAttributes(new ColoringAttributes(_color.x,_color.y,_color.z,ColoringAttributes.SHADE_GOURAUD));
+        //ap.setColoringAttributes(new ColoringAttributes(_color.x,
+        // _color.y, _color.z, ColoringAttributes.SHADE_GOURAUD));
 
     	int flags = ObjectFile.RESIZE;
     	//if (!noTriangulate) flags |= ObjectFile.TRIANGULATE;
         //if (!noStripify) flags |= ObjectFile.STRIPIFY;
-    	ObjectFile f = new ObjectFile(flags,(float)(creaseAngle * Math.PI / 180.0));
+    	ObjectFile f = new ObjectFile(flags,
+                (float)(creaseAngle * Math.PI / 180.0));
     	Scene s = null;
     	try {
             s = f.load(fileName);

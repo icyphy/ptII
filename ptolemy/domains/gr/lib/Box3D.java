@@ -51,6 +51,7 @@ graph. This actor will only have meaning in the GR domain.
 the dimensions of box.
 
 @author C. Fong
+@version $Id$
 */
 public class Box3D extends GRShadedShape {
 
@@ -103,7 +104,7 @@ public class Box3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         _containedNode = new Box((float)_getLength(), (float) _getHeight(),
-                (float) _getWidth(), Box.GENERATE_NORMALS,_appearance);
+                (float) _getWidth(), Box.GENERATE_NORMALS, _appearance);
     }
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated

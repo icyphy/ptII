@@ -47,6 +47,11 @@ import javax.media.j3d.*;
 import javax.vecmath.*;
 
 
+/**  An actor that listens for mouse clicks on the viewscreen
+
+@author C. Fong
+@version $Id$
+*/
 public class MouseInput3D extends GRActor {
 
     public MouseInput3D(TypedCompositeActor container, String name)

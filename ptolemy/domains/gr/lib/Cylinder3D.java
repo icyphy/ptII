@@ -48,8 +48,8 @@ import javax.vecmath.*;
 cylinder.  The output port is used to connect this actor to the Java3D scene
 graph. This actor will only have meaning in the GR domain.
 
-
 @author C. Fong
+@version $Id$
 */
 public class Cylinder3D extends GRShadedShape {
 
@@ -86,11 +86,6 @@ public class Cylinder3D extends GRShadedShape {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Create the shape and appearance of the encapsulated cylinder
@@ -99,8 +94,9 @@ public class Cylinder3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        _containedNode = new Cylinder((float) _getRadius(),(float) _getHeight(),
-                Cylinder.GENERATE_NORMALS,30,10,_appearance);
+        _containedNode = new Cylinder((float) _getRadius(),
+                (float) _getHeight(),
+                Cylinder.GENERATE_NORMALS, 30, 10, _appearance);
     }
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated

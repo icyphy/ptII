@@ -76,7 +76,8 @@ abstract public class GRTransform extends GRActor {
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(BaseType.OBJECT);
 
-        accumulate = new Parameter(this, "accumulate", new BooleanToken(false));
+        accumulate = new Parameter(this,
+                "accumulate", new BooleanToken(false));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +112,7 @@ abstract public class GRTransform extends GRActor {
     ////                         protected methods                 ////
 
     /**  Return the value of the <i>accumulate</i> parameter
-     *  @return the accumlation mode
+     *  @return the accumulation mode
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */

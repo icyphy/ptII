@@ -168,30 +168,41 @@ public class ViewScreen extends GRActor implements Placeable {
             // FIXME handle this
         }
 
-        if (_canvas ==null) _canvas = new Canvas3D(config);
-        if (container==null) {
+        if (_canvas == null) {
+            _canvas = new Canvas3D(config);
+        }
+        if (container == null) {
             _frame = new JFrame("ViewScreen");
-            _frame.getContentPane().add(_canvas,BorderLayout.CENTER);
-            _canvas.setSize(new Dimension(horizontalDimension,verticalDimension));
+            _frame.getContentPane().add(_canvas, BorderLayout.CENTER);
+            _canvas.setSize(new Dimension(horizontalDimension,
+                    verticalDimension));
             _frame.setSize(horizontalDimension+50,verticalDimension);
-            if (simpleUniverse == null) simpleUniverse = new SimpleUniverse(_canvas);
+            if (simpleUniverse == null) {
+                simpleUniverse = new SimpleUniverse(_canvas);
+            }
             simpleUniverse.getViewingPlatform().setNominalViewingTransform();
             _frame.setVisible(true);
         } else {
             container.add("Center",_canvas);
-            _canvas.setSize(new Dimension(horizontalDimension,verticalDimension));
-            if (simpleUniverse == null) simpleUniverse = new SimpleUniverse(_canvas);
+            _canvas.setSize(new Dimension(horizontalDimension,
+                    verticalDimension));
+            if (simpleUniverse == null) {
+                simpleUniverse = new SimpleUniverse(_canvas);
+            }
             simpleUniverse.getViewingPlatform().setNominalViewingTransform();
 
-            /* FIXME: experimental code for changing views
+            /* FIXME: experimental code for changing views.
             TransformGroup VPTG = new TransformGroup();
-            VPTG = simpleUniverse.getViewingPlatform().getMultiTransformGroup().getTransformGroup(0);
+            VPTG = simpleUniverse.getViewingPlatform()
+                   .getMultiTransformGroup().getTransformGroup(0);
             Transform3D VPT3D = new Transform3D();
-            //VPT3D.lookAt(new Point3d(0.0,0.0,10.0), new Point3d(0.0,0.0,0.0), new Vector3d(0.0,1.0,0.0));
-            //VPT3D.setTranslation(new Vector3f(0.0f,0.0f,10.0f));
+            //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
+            //      new Point3d(0.0, 0.0, 0.0),
+            //      new Vector3d(0.0, 1.0, 0.0));
+            //VPT3D.setTranslation(new Vector3f(0.0f, 0.0f, 10.0f));
             //VPT3D.rotX(Math.PI/2.0);
             VPT3D.rotX(Math.PI/2);
-            VPT3D.setTranslation(new Vector3f(0.0f,-10.0f,0.0f));
+            VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
 
             VPTG.setTransform(VPT3D);
             */
@@ -228,7 +239,9 @@ public class ViewScreen extends GRActor implements Placeable {
         if (_frame != null) {
             _frame.setVisible(true);
         }
-        if (simpleUniverse == null) simpleUniverse = new SimpleUniverse(_canvas);
+        if (simpleUniverse == null) {
+            simpleUniverse = new SimpleUniverse(_canvas);
+        }
         Enumeration branches = simpleUniverse.getLocale().getAllBranchGraphs();
 
         while (branches.hasMoreElements()) {
@@ -243,11 +256,12 @@ public class ViewScreen extends GRActor implements Placeable {
 
 
         _userTransformation = new TransformGroup(_lastTransform);
-        _userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        _userTransformation.setCapability(
+                TransformGroup.ALLOW_TRANSFORM_WRITE);
         _userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
         branchRoot.addChild(_userTransformation);
 
-        bounds = new BoundingSphere(new Point3d(0.0,0.0,0.0), 100.0);
+        bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
 
         if (_isRotatable()) {
             mouseRotate = new MouseRotateView(this);
@@ -272,7 +286,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
         // FIXME: should implement this so that user can dynamically
         // modify this value during design-time and run-time
-        // right now this is only user-changable during initialization
+        // right now this is only user-changeable during initialization
         if (_isIterationSynchronized()) {
             _iterationSynchronized = true;
         } else {
@@ -282,22 +296,22 @@ public class ViewScreen extends GRActor implements Placeable {
         if (_shouldShowAxes()) {
             Sphere origin = new Sphere((float) 0.05);
             _userTransformation.addChild(origin);
-            Cylinder yAxis = new Cylinder((float)0.01,(float) 6.0);
+            Cylinder yAxis = new Cylinder((float)0.01, (float) 6.0);
             _userTransformation.addChild(yAxis);
 
-            Cylinder xAxis = new Cylinder((float)0.01,(float) 6.0);
+            Cylinder xAxis = new Cylinder((float)0.01, (float) 6.0);
             Transform3D rotation = new Transform3D();
             Quat4d quat = new Quat4d();
-            quat.set(new AxisAngle4d(0.0,0.0,1.0,Math.PI/2.0));
+            quat.set(new AxisAngle4d(0.0, 0.0, 1.0, Math.PI/2.0));
             rotation.set(quat);
             TransformGroup xAxisGroup = new TransformGroup(rotation);
             xAxisGroup.addChild(xAxis);
             _userTransformation.addChild(xAxisGroup);
 
-            Cylinder zAxis = new Cylinder((float)0.01,(float) 6.0);
+            Cylinder zAxis = new Cylinder((float)0.01, (float) 6.0);
             Transform3D rotation2 = new Transform3D();
             Quat4d quat2 = new Quat4d();
-            quat2.set(new AxisAngle4d(1.0,0.0,0.0,Math.PI/2.0));
+            quat2.set(new AxisAngle4d(1.0, 0.0, 0.0, Math.PI/2.0));
             rotation2.set(quat2);
             TransformGroup zAxisGroup = new TransformGroup(rotation2);
             zAxisGroup.addChild(zAxis);
@@ -305,10 +319,10 @@ public class ViewScreen extends GRActor implements Placeable {
         }
 
 
-        // setup the lights
+        // Setup the lights.
         BranchGroup lightRoot = new BranchGroup();
 
-        AmbientLight lightA = new AmbientLight(new Color3f(0.8f,0.8f,0.8f));
+        AmbientLight lightA = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
         lightA.setInfluencingBounds(bounds);
         lightRoot.addChild(lightA);
 
@@ -369,7 +383,7 @@ public class ViewScreen extends GRActor implements Placeable {
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
-        for(int i=0;i<width;i++) {
+        for(int i = 0 ; i < width; i++) {
             ObjectToken objectToken = (ObjectToken) sceneGraphIn.get(i);
             Node node = (Node) objectToken.getValue();
             _addChild(node);
@@ -423,8 +437,6 @@ public class ViewScreen extends GRActor implements Placeable {
                  iterationSynchronized.getToken()).booleanValue();
     }
 
-
-
     private boolean _shouldShowAxes() throws IllegalActionException {
         return ((BooleanToken) showAxes.getToken()).booleanValue();
     }
@@ -436,24 +448,24 @@ public class ViewScreen extends GRActor implements Placeable {
         }
 
         public void processStimulus(java.util.Enumeration criteria) {
-            if (stopped !=true) {
+            if (stopped != true) {
                 _viewContainer.startRenderer();
 
             }
             /* FIXME: experimental code for changing xforms
             double[] db = new double[16];
 
-            db[0]=1.0;db[1]=db[2]=db[3]=0.0;
-            db[4]=0.0;db[5]=1.0;db[6]=db[7]=0.0;
-            db[8]=db[9]=0.0;db[10]=1.0;db[11]=0.0;
-            db[12]=db[13]=db[14]=0.0;db[15]=1.0;
+            db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
+            db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
+            db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
+            db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
             currXform.set(db);
             */
 
             super.processStimulus(criteria);
 
 
-            if (stopped !=true ) {
+            if (stopped != true ) {
                 _viewContainer.stopRenderer();
             }
         }
@@ -467,18 +479,19 @@ public class ViewScreen extends GRActor implements Placeable {
             double[] db = new double[16];
 
             transform.get(db);
-            for(int i=0;i<16;i++) {
-                if (i%4 ==0) {
+            for(int i = 0; i < 16; i++) {
+                if (i%4 == 0) {
                     System.out.println(" ");
                 }
                 System.out.print(" "+db[i]);
             }
             System.out.println(" ");
-            System.out.println("---------------------------------------------------------------");
-            db[0]=1.0;db[1]=db[2]=db[3]=0.0;
-            db[4]=0.0;db[5]=1.0;db[6]=db[7]=0.0;
-            db[8]=db[9]=0.0;db[10]=1.0;db[11]=0.0;
-            db[12]=db[13]=db[14]=0.0;db[15]=1.0;
+            System.out.println("------------------------------"
+              + "---------------------------------");
+            db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
+            db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
+            db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
+            db[12] = db[13] = db[14] = 0.0; db[15] = 1.0;
             Transform3D td = new Transform3D();
             td.set(db);
             //currXform.set(db);
