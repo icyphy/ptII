@@ -151,9 +151,9 @@ if [ -z "$JAVAHOME" ]; then
 	export JAVAHOME
     else
 	if [ "$windows" = "yes" ]; then
-	    searchfile=javac.exe
+	    searchfile=java.exe
 	else
-	    searchfile=javac
+	    searchfile=java
 	fi
 	oldifs="$IFS"; IFS=":"
 	for i in $PATH
