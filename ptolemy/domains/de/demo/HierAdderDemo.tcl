@@ -2,7 +2,7 @@
 #
 # @Author: Yuhong Xiong
 #
-# $ID$
+# $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
