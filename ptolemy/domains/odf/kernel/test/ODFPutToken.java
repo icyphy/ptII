@@ -73,7 +73,11 @@ public class ODFPutToken extends ODFPut {
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
-		    rcvr.put( _tokens[cnt], _times[cnt] );
+                    if( _oneArg ) {
+                        rcvr.put( _tokens[cnt] );
+                    } else {
+		        rcvr.put( _tokens[cnt], _times[cnt] );
+                    }
 		}
 	    }
 	    cnt++;
@@ -84,6 +88,12 @@ public class ODFPutToken extends ODFPut {
      */
     public boolean postfire() {
 	return false;
+    }
+
+    /**
+     */
+    public void setOneArgPut(boolean oneArg) {
+	_oneArg = oneArg;
     }
 
     /**
@@ -100,4 +110,5 @@ public class ODFPutToken extends ODFPut {
     private int _pauseCnt = -1;
     private Token[] _tokens = null;
     private double[] _times = null;
+    private boolean _oneArg = false;
 }
