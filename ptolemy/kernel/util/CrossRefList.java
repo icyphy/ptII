@@ -32,6 +32,7 @@ package pt.kernel;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
+import collections.CorruptedEnumerationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CrossRefList
@@ -53,6 +54,7 @@ public final class CrossRefList {
      */	
     public CrossRefList(Object owner) {
         _nearObj = owner; // This would've been initializing a blank final.
+        _listVersion = 0;
         _dimen = 0;
         _headNode = null;
         _lastNode = null;
@@ -78,6 +80,7 @@ public final class CrossRefList {
      */
     public synchronized void associate(CrossRefList farList) {
         synchronized(farList) {
+            ++_listVersion;
             CrossRef localCrossRef = new CrossRef();
             // FIXME: put below line in initializer and
             // make _far a "blank final"
@@ -89,6 +92,7 @@ public final class CrossRefList {
      * Time complexity: O(n).
      */
     public synchronized void dissociate() {
+        ++_listVersion;
         if(isEmpty()) return; // List is already empty.
 
         CrossRef deadHead = _headNode; // _deadHead is marked for deletion.
@@ -111,6 +115,7 @@ public final class CrossRefList {
      * Time complexity: O(n).
      */
     public synchronized void dissociate(Object element) {
+        ++_listVersion;
         if (element == null || _dimen == 0) return;
         Object v;
         CrossRef p = _headNode;
@@ -181,6 +186,8 @@ public final class CrossRefList {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
+    private int _listVersion;
+
     private int _dimen;
 
     private CrossRef _headNode;
@@ -237,6 +244,7 @@ public final class CrossRefList {
         }
 
         private synchronized void _unlink() {
+            ++_listVersion;
             // Removes *this from enclosing CrossRefList.
             if(_next != null) _next._previous = _previous; // Modify next.
             else _lastNode = _previous;
@@ -256,12 +264,16 @@ public final class CrossRefList {
     private class CrossRefEnumeration implements Enumeration {
     
         public CrossRefEnumeration() {
+            _enumeratorVersion = _listVersion;
             _startAtHead = true;
             _ref = null;
         }
 
         /** Check if there are remaining elements to enumerate. */
         public boolean hasMoreElements() {
+            if(_enumeratorVersion != _listVersion) {
+                throw new CorruptedEnumerationException();
+            }
             CrossRef tmp1 = _ref; // Callee-save.
             boolean tmp2 = _startAtHead; // Callee-save.
             Object tmpObj;
@@ -277,6 +289,9 @@ public final class CrossRefList {
 
         /** Return the next element in the enumeration. */
         public Object nextElement() throws NoSuchElementException {
+            if(_enumeratorVersion != _listVersion) {
+                throw new CorruptedEnumerationException();
+            }
             if(_startAtHead) { // If starting at beginning of list.
                 _startAtHead = false;
                 if(_headNode != null) { // List not empty.
@@ -301,6 +316,8 @@ public final class CrossRefList {
                 }
             }
         }
+
+        private int _enumeratorVersion;
     
         private CrossRef _ref;
     
