@@ -37,6 +37,8 @@ A client can be either an applet or an application, implemented
 in NonlinearClient.java and NonlinearClientApplication.java,
 respectively.
 
+You need JDK1.3 to run the demo.
+
 To execute the model in the applet, please follow these steps:
 
 0. If there are generated files in the ./util directory, do:
