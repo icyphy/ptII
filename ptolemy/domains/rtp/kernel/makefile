@@ -1,4 +1,4 @@
-# Makefile for the Giotto domain kernel
+# Makefile for PtolemyII real-time processes model of computation kernel
 #
 # @Authors: Christopher Hylands
 #
