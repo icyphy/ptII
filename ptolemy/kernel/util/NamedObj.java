@@ -1464,7 +1464,7 @@ public class NamedObj implements
      *  which indicates that the object is not implied. When this
      *  is called multiple times, the level will be the minimum of
      *  all the levels specified. Thus, a value of 1 indicates that the
-     *  container of the object is a child, and that the this object is
+     *  container of the object is a child, and that this object is
      *  implied by a like object in the parent of the container, for example.
      *  If an object is implied, then normally has no persistent
      *  representation when it is exported to MoML (unless it
@@ -1476,9 +1476,7 @@ public class NamedObj implements
      *  Calling this method also has the side effect of resetting the
      *  flag used to determine whether the value of this object overrides
      *  some inherited value. So this method should only be called when
-     *  object is first being constructed.  It also cancels any
-     *  previous calls to setPersistent() where a true argument was
-     *  given.
+     *  object is first being constructed.
      *  <p>
      *  NOTE: This method is tricky to use correctly. It is public because
      *  the MoML parser needs access to it. It should not be considered part
@@ -1498,19 +1496,6 @@ public class NamedObj implements
         // Setting override to null indicates that no override has
         // occurred.
         _override = null;
-        
-        // If this object has previously had
-        // persistence set to true (e.g., it was
-        // cloned from an object that had persistence
-        // set to true), then override that and
-        // reset to where persistence is unspecified.
-        // But do this only if the derived level
-        // is greater than 0.
-        if (level > 0
-                && _isPersistent != null
-                && _isPersistent.booleanValue()) {
-            _isPersistent = null;
-        }
     }
 
     /** Set the model error handler.
@@ -2109,7 +2094,9 @@ public class NamedObj implements
      *  Specifically, the derivation depth of the immediately contained
      *  objects is set to one greater than the <i>depth</i> argument,
      *  and then this method is called on that object with an argument
-     *  one greater than the <i>depth</i> argument.
+     *  one greater than the <i>depth</i> argument. For the contained
+     *  objects, this will also cancel any previous call to
+     *  setPersistent(true), since it's a derived object.
      *  @param depth The derivation depth for this object, which
      *   should be 0 except on recursive calls.
      *  @see #setDerivedLevel(int)
@@ -2121,6 +2108,16 @@ public class NamedObj implements
             NamedObj containedObject = (NamedObj)objects.next();
             containedObject.setDerivedLevel(depth);
             containedObject._markContentsDerived(depth);
+            
+            // If this object has previously had
+            // persistence set to true (e.g., it was
+            // cloned from an object that had persistence
+            // set to true), then override that and
+            // reset to where persistence is unspecified.
+            if (containedObject._isPersistent != null
+                    && containedObject._isPersistent.booleanValue()) {
+                containedObject._isPersistent = null;
+            }
         }
     }
 
