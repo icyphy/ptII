@@ -180,7 +180,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
                     _getColor( p );
                     Figure background = figure.getBackgroundFigure();
                     Rectangle2D backBounds = background.getBounds();
-                    LabelFigure label = new LabelFigure("erhart: " + s);
+                    LabelFigure label = new LabelFigure("ehrhart: " + s);
                     label.setFont(new Font("SansSerif", Font.PLAIN, 12));
                     label.setPadding(1);
                     // Attach the label at the upper left corner.
