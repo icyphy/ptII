@@ -6,13 +6,13 @@
     <?moml
       <group>
       <doc>Higher-Order Computation Infrastructure.</doc>
-      <!-- entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction"-->
-        <!-- <doc>The function is applied to its input data.</doc> -->
-      <!-- /entity-->
+      <entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction">
+        <doc>The function is applied to its input data.</doc>
+      </entity>
 
-      <!-- entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence"-->
-        <!-- <doc>The function is applied to its input data.</doc> -->
-      <!-- /entity-->
+      <entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
+        <doc>The function is applied to its input data.</doc>
+      </entity>
 
       <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
