@@ -96,22 +96,66 @@ set moml_2_1 "$header
 test MoMLParser-1.2.1 {parse simple model with HTML markup in processing instruction} {
     $parser reset
     set toplevel [$parser parse $moml_2_1]
+    # The input and output used to be the same, but now we escape characters
+    # in the doc tag
     $toplevel exportMoML
-} $moml_2_1
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <doc>&lt;?html &lt;H1&gt;HTML Markup&lt;/H1&gt;&lt;I&gt;italics&lt;/I&gt;.?&gt;</doc>
+</entity>
+}
+
 
 ######################################################################
 ####
 #
-set moml_2_1 "$header
+set moml_2_1a [$toplevel exportMoML]
+
+test MoMLParser-1.2.1a {reparse doc tag that has been escaped} {
+    $parser reset
+    set toplevel [$parser parse $moml_2_1a]
+    $toplevel exportMoML
+} $moml_2_1a
+
+
+######################################################################
+####
+#
+set moml_2_2 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <doc><H1>HTML Markup</H1><I>italics</I>.</doc>
 </entity>
 "
+
 test MoMLParser-1.2.2 {parse simple model with HTML markup} {
     $parser reset
     set toplevel [$parser parse $moml_2_1]
     $toplevel exportMoML
-} $moml_2_1
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <doc>&lt;?html &lt;H1&gt;HTML Markup&lt;/H1&gt;&lt;I&gt;italics&lt;/I&gt;.?&gt;</doc>
+</entity>
+}
+
+
+######################################################################
+####
+#
+set moml_2_2a [$toplevel exportMoML]
+
+test MoMLParser-1.2.2a {reparse doc tag that has been escaped} {
+    $parser reset
+    set toplevel [$parser parse $moml_2_2a]
+    $toplevel exportMoML
+} $moml_2_2a
 
 ######################################################################
 ####
@@ -127,8 +171,26 @@ test MoMLParser-1.2.3 {parse simple model with nested doc tag} {
     $parser reset
     set toplevel [$parser parse $moml_2_1]
     $toplevel exportMoML
-} $moml_2_1
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <doc>&lt;H1&gt;HTML &lt;doc name=&quot;foo&quot;&gt;Markup&lt;/doc&gt;&lt;/H1&gt;&lt;I&gt;italics&lt;/I&gt;.</doc>
+</entity>
+}
 
+######################################################################
+####
+#
+set moml_2_3a [$toplevel exportMoML]
+
+test MoMLParser-1.2.3a {reparse doc tag that has been escaped} {
+    $parser reset
+    set toplevel [$parser parse $moml_2_3a]
+    $toplevel exportMoML
+} $moml_2_3a
 
 ######################################################################
 ####
