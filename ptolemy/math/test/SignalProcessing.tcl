@@ -238,7 +238,7 @@ test SignalProcessing-5.4 {FFTComplexOut, order 1} {
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.5 {fft Complex, order 2} {
+test SignalProcessing-5.5 {FFTComplexOut, order 2} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array
@@ -250,24 +250,24 @@ test SignalProcessing-5.5 {fft Complex, order 2} {
 
 
 ####################################################################
-test SignalProcessing-5.6 {fft Complex, order 1, w/ larger array} {
+test SignalProcessing-5.6 {FFTComplexOut, order 1, w/ larger array} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array of size 3, or a order 1 fft, the size should be 2
     set ca1 [java::new {ptolemy.math.Complex[]} 3 [list $c1 $c0 $c0]]
     set result [java::call ptolemy.math.SignalProcessing \
-	    {fft ptolemy.math.Complex[] int } $ca1 1]
+	    {FFTComplexOut ptolemy.math.Complex[] int } $ca1 1]
     javaPrintArray $result
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.7 {fft Complex, order 2, smaller array} {
+test SignalProcessing-5.7 {FFTComplexOut, order 2, smaller array} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array of size 2, hopefully fft will pad
     set ca1 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c0]]
     set result [java::call ptolemy.math.SignalProcessing \
-	    {fft ptolemy.math.Complex[] int } $ca1 2]
+	    {FFTComplexOut ptolemy.math.Complex[] int } $ca1 2]
     javaPrintArray $result
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
@@ -287,7 +287,7 @@ test SignalProcessing-6.2 {fft Complex: null array} {
 } {{java.lang.IllegalArgumentException: SignalProcessing.fft: empty array argument.}}
 
 ####################################################################
-test SignalProcessing-6.3 {FFT double} {
+test SignalProcessing-6.3 {FFTComplexOut double} {
     # Real array
     set impulse [java::new {double[]} 5 [list 1.0 0.0 0.0 0.0 0.0]]
     set result [java::call ptolemy.math.SignalProcessing \
@@ -319,19 +319,19 @@ test SignalProcessing-7.3 {fft double, order 0} {
 } {{java.lang.IllegalArgumentException: SignalProcessing.fft: order argument must be positive.}}
 
 ####################################################################
-test SignalProcessing-7.4 {fft double, order 1} {
+test SignalProcessing-7.4 {FFTComplexOut double, order 1} {
     # NOTE: uses setup from 6.3 above
     set result [java::call ptolemy.math.SignalProcessing \
-	    {fft double[] int} $impulse 1 ]
+	    {FFTComplexOut double[] int} $impulse 1 ]
     javaPrintArray $result
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-7.5 {fft double, order 3} {
+test SignalProcessing-7.5 {FFTComplexOut double, order 3} {
     # NOTE: uses setup from 6.3 above
     # The input array is length 5.
     set result [java::call ptolemy.math.SignalProcessing \
-	    {fft double[] int} $impulse 3 ]
+	    {FFTComplexOut double[] int} $impulse 3 ]
     javaPrintArray $result
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
