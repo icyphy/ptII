@@ -154,10 +154,8 @@ public class BreakpointConfigurer extends Query implements QueryListener {
                         new TransientSingletonConfigurableAttribute(_object,
                                 new String("BEFORE_" + item.toUpperCase()));
                 } else {
-                    String attributeName = new String("BEFORE_"
-                            + item.toUpperCase());
-                    Attribute oldAttribute =
-                        _object.getAttribute(attributeName);
+                    Attribute oldAttribute = _object.getAttribute(
+                            new String("BEFORE_" + item.toUpperCase()));
                     if (oldAttribute != null) {
                         // remove the attribute
                         oldAttribute.setContainer(null);
@@ -169,18 +167,19 @@ public class BreakpointConfigurer extends Query implements QueryListener {
                         new TransientSingletonConfigurableAttribute(_object,
                                 new String("AFTER_" + item.toUpperCase()));
                 } else {
-                    String attributeName = new String("AFTER_"
-                            + item.toUpperCase());
-                    Attribute oldAttribute =
-                        _object.getAttribute(attributeName);
+                    Attribute oldAttribute = _object.getAttribute(
+                            new String("AFTER_" + item.toUpperCase()));
                     if (oldAttribute != null) {
                         // remove the attribute
                         oldAttribute.setContainer(null);
                     }
                 }
             }
+            
+            // Check if there is already a DebugListener for this _object.
             DebugListener listener = (DebugListener) _object.getAttribute("DebugController");
             if (listener == null) {
+                // Register a new DebugListener with the director.
                 BasicGraphFrame frame = _graphController.getFrame();
                 DebugController debugController =
                     new DebugController(_object, _graphController);
@@ -190,7 +189,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
                     director.addDebugListener(debugController);
                 }
             } else {
-                // remove debug listener if there are no longer any
+                // Remove debug listener if there are no longer any
                 // breakpoints for this _object
                 if (noneSelected) {
                     BasicGraphFrame frame = _graphController.getFrame();
