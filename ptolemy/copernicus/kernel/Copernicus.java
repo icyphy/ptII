@@ -35,6 +35,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.gui.GUIStringUtilities;
 import ptolemy.gui.MessageHandler;
 
 import java.io.BufferedReader;
@@ -48,8 +49,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.StreamTokenizer;
-import java.io.StringReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -231,20 +230,8 @@ public class Copernicus {
 
     /** Execute a command in a subshell, and print out the results
      *  in standard error and standard out.  Lines that begin with 
-     *  an octothorpe '#' are ignored/
-     *
-     *  <p>The java.lang.Runtime.exec(String command) call uses
-     *  java.util.StringTokenizer() to parse the command string.
-     *  Unfortunately, this means that double quotes are not handled
-     *  in the same way that the shell handles them in that 'ls "foo
-     *  bar"' will interpreted as three tokens 'ls', '"foo' and
-     *  'bar"'.  In the shell, the string would be two tokens 'ls' and
-     *  '"foo bar"'.  What is worse is that the exec() behaviour is
-     *  slightly different under Windows and Unix.  To solve this
-     *  problem, we preprocess the command argument using
-     *  java.io.StreamTokenizer, which converts quoted substrings into
-     *  single tokens.  We then call java.lang.Runtime.exec(String []
-     *  commands);
+     *  an octothorpe '#' are ignored.  Substrings that start and end with
+     *  a double quote are considered to be a single argument.
      *
      *  @param commmand The command to execute.
      *  @return the exit status of the process, which is usually
@@ -252,76 +239,9 @@ public class Copernicus {
      */
     public static int executeCommand(String command) throws Exception {
 
-	// Parse the command into tokens
-	List commandList = new LinkedList();
+	String [] commands = GUIStringUtilities.tokenizeForExec(command);
 
-
-	StreamTokenizer streamTokenizer =
-	    new StreamTokenizer(new StringReader(command));
-
-	streamTokenizer.wordChars(33, 127);
-
-	streamTokenizer.commentChar('#');
-
-	// We can't use quoteChar here because it does backslash
-	// substitution, so "c:\ptII" ends up as "c:ptII"
-	// Substituting forward slashes for backward slashes seems like
-	// overkill.
-	// streamTokenizer.quoteChar('"');
-	streamTokenizer.ordinaryChar('"');
-
-	// Current token
-	String token = "";
-
-	// Single character token, usually a -
-	String singleToken = "";
-
-	// Set to true if we are inside a double quoted String
-	boolean inDoubleQuotedString = false; 
-
-	while (streamTokenizer.nextToken()
-	       != StreamTokenizer.TT_EOF) {
-	    switch (streamTokenizer.ttype) {
-	    case StreamTokenizer.TT_WORD:
-		if (inDoubleQuotedString) {
-		    if( token.length() > 0 ) {
-			token += " ";
-		    }
-		    token += singleToken + streamTokenizer.sval;
-		} else {
-		    token = singleToken + streamTokenizer.sval;
-		    commandList.add(token);
-		}
-		singleToken = "";
-		break;
-	    case StreamTokenizer.TT_NUMBER:
-		token = Double.toString(streamTokenizer.nval);
-		commandList.add(token);
-		break;
-	    case StreamTokenizer.TT_EOL:
-		break;
-	    case StreamTokenizer.TT_EOF:
-		break;
-	    default:
-		singleToken =
-		    (new Character((char)streamTokenizer.ttype)).toString();
-		if (singleToken.equals("\"")) {
-		    if (inDoubleQuotedString) {
-			commandList.add(token);
-		    }
-		    inDoubleQuotedString = ! inDoubleQuotedString;
-		    singleToken = "";
-		    token = "";
-		}
-		break;
-	    }
-
-	}
-
-	String [] commands =
-	    (String [])commandList.toArray(new String[commandList.size()]);
-
-        System.out.println("About to execute:\n");
+        System.out.println("About to execute:\n ");
 	for (int i = 0; i < commands.length; i++) {
 	    System.out.println("	" + commands[i]);
 	}
@@ -464,8 +384,10 @@ public class Copernicus {
 						     .openStream()));
 	String inputLine;
 	StringBuffer output = new StringBuffer();
+        String lineSeparator = System.getProperty("line.separator");
 	while ( (inputLine = inputReader.readLine()) != null) {
-	    output.append(substitute(inputLine, substituteMap));
+            output.append(substitute(inputLine + lineSeparator,
+                    substituteMap));
  	}
 	inputReader.close();
 	return output.toString();
