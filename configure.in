@@ -484,10 +484,10 @@ else
     fi
 
     if test "$COMMAPI_PRESENT" = "no"; then
-        AC_MSG_WARN(['Perhaps commapi is not installed?
+        AC_MSG_WARN([Perhaps commapi is not installed?
     You need not download commapi unless you plan the actors in actor.lib.comm.
     The commapi can be downloaded from http://java.sun.com/products/javacomm/
-    and placed  in \$PTII/vendors/sun/commapi'])
+    and placed  in \$PTII/vendors/sun/commapi])
     fi
 fi
 
@@ -571,10 +571,10 @@ else
     fi	
 
     if test "$PTJHDL_DIR" = ""; then
-        AC_MSG_WARN(['Failed to find PTII/vendors/jhdl/ptjhdllib/JHDL.jar
+        AC_MSG_WARN([Failed to find PTII/vendors/jhdl/ptjhdllib/JHDL.jar
     perhaps JHDL is not installed?
     You need not download JHDL unless you plan on using code generation
-    The JHDL SDK can be downloaded from http://www.jhdl.org'])
+    The JHDL SDK can be downloaded from http://www.jhdl.org])
 	# Note that we don't substitute in the ${PTII} here
 	JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
     fi
@@ -651,12 +651,12 @@ else
     fi	
 
     if test "$PTJOYSTICK_DIR" = ""; then
-        AC_MSG_WARN(['Failed to find $JOYSTICK_JAR
+        AC_MSG_WARN([Failed to find $JOYSTICK_JAR
     perhaps the Joystick is not installed?
     You need not download the Joystick interface unless you
     plan on using a Joystick with Ptolemy II. 
     The Joystick interface can be downloaded from
-    http://sourceforge.net/projects/javajoystick/'])
+    http://sourceforge.net/projects/javajoystick/])
 	# Note that we don't substitute in the ${PTII} here
 	JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
     fi
@@ -700,11 +700,11 @@ else
     fi	
 
     if test "$PTJXTA_DIR" = ""; then
-        AC_MSG_WARN(['Failed to find PTII/vendors/sun/jxta/jxta.jar
+        AC_MSG_WARN([Failed to find PTII/vendors/sun/jxta/jxta.jar
     perhaps JXTA is not installed?
     You need not download JXTA unless you plan on using the peer to peer
     actors in ptolemy/actor/lib/jxta
-    The JXTA SDK can be downloaded from http://www.jxta.org'])
+    The JXTA SDK can be downloaded from http://www.jxta.org])
 	# Note that we don't substitute in the ${PTII} here
 	JXTA_DIR='${PTII}/vendors/sun/jxta'
     fi
@@ -732,7 +732,7 @@ if test ! -d "$LEJOS_USER_DIR"; then
     LEJOS_DIR='${PTII}/vendors/lejos/lejosBeta3'
 else
     if test "$COMMAPI_PRESENT" = "no"; then
-        AC_MSG_WARN(['Lejos requires commapi, which was not found'])
+        AC_MSG_WARN([Lejos requires commapi, which was not found.])
     else 
 	AC_MSG_CHECKING([for lejos directory])
 	AC_ARG_WITH(LEJOS, [  --with-lejos=DIR       use Java lejos from DIR,
@@ -746,16 +746,16 @@ else
 	    PTLEJOS_DIR=lejos
 	    LEJOS_PRESENT=yes
 	else
-	    AC_MSG_WARN(['Failed to find $LEJOS_DIR/classes/josx/'])
+	    AC_MSG_WARN([Failed to find $LEJOS_DIR/classes/josx/])
 	    LEJOS_DIR='${PTII}/vendors/lejos'
 	fi
     fi	
     if test "$LEJOS_PRESENT" = "no"; then
-	AC_MSG_WARN(['Perhaps Lejos is not installed?
+	AC_MSG_WARN([Perhaps Lejos is not installed?
 	You need not download Lejos unless you plan on use the Lego Mindstorm
 	demos in \$PTII/ptolemy/apps/lejos. Lejos can be downloaded from
 	http://lejos.sourceforge.net
-	and placed  in \$PTII/vendors/lejos/lejosBeta3'])
+	and placed  in \$PTII/vendors/lejos/lejosBeta3])
     fi
 fi
 
@@ -962,11 +962,11 @@ else
 	JINI_DIR='$PTII'/vendors/sun/jini/$JINI_VERSION
     fi
     if test "$JINI_PRESENT" = "no"; then
-        AC_MSG_WARN(['Failed to find $JINI_DIR/lib/jini-core.jar
+        AC_MSG_WARN([Failed to find $JINI_DIR/lib/jini-core.jar
     Perhaps Jini is not installed?
     You need not download Jini unless you plan on use Jini and JavaSpaces
-    Jini can be downloaded from http://java.sun.com/jini' and placed
-    in \$PTII/vendors/sun/jini/$JINI_VERSION'])
+    Jini can be downloaded from http://java.sun.com/jini and placed
+    in \$PTII/vendors/sun/jini/$JINI_VERSION])
     fi
 
 fi
@@ -1004,7 +1004,7 @@ else
     fi
 
     AC_MSG_CHECKING([for the proper JNI architecture])
-    PTJNI_ARCHITECTURE=win32;;
+    PTJNI_ARCHITECTURE=win32;
     case "`uname -s`" in
 	 Linux)	 PTJNI_ARCHITECTURE=linux;;
 	 SunOS)	 PTJNI_ARCHITECTURE=solaris;;
@@ -1014,15 +1014,15 @@ else
     AC_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
 
     AC_MSG_CHECKING([for the proper JNI architecture include directory])
-    if test ! -d "$PTJAVADIR/include/$PTJNI_ARCHITECTURE"; then 
-	AC_MSG_WARN(["$PTJAVADIR/include/$PTJNI_ARCHITECTURE" was not found.
+    if test ! -d "$PTJAVA_DIR/include/$PTJNI_ARCHITECTURE"; then 
+	AC_MSG_WARN(["$PTJAVA_DIR/include/$PTJNI_ARCHITECTURE" was not found.
     As a result, compilation of JNI actors will fail.])
     else 
-	AC_MSG_RESULTS(["$PTJAVADIR/include/$PTJNI_ARCHITECTURE"])
+	AC_MSG_RESULT([$PTJAVA_DIR/include/$PTJNI_ARCHITECTURE])
     fi
 
     AC_MSG_CHECKING([for the proper shared library suffix])
-    PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+    PTJNI_SHAREDLIBRARY_SUFFIX=dll;
     case "`uname -s`" in
 	 SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=.so;;
 	 *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
@@ -1073,11 +1073,11 @@ else
     fi
     	
     if test "$JODE_CLASSES" = "no"; then
-        AC_MSG_WARN(['Failed to find jode/jode.jar
+        AC_MSG_WARN([Failed to find jode/jode.jar
     perhaps Jode is not installed?
     Jode is used to disassemble Java .class files and is only necessary
     if you plan on debugging the byte code based code generator.
-    Jode can be downloaded from http://jode.sourceforge.net/download.php'])
+    Jode can be downloaded from http://jode.sourceforge.net/download.php])
 	# Note that we don't substitute in the ${PTII} or $(JODE_DIR) here
 	JODE_DIR='${PTII}/vendors/jode/1.1.1'
    	JODE_CLASSES='${JODE_DIR}/jode.jar'
@@ -1144,11 +1144,11 @@ else
 
     fi
     if test "$KVM_CLASSES" = "no"; then
-        AC_MSG_WARN(['Failed to find j2me_cldc/bin/api/classes,
+        AC_MSG_WARN([Failed to find j2me_cldc/bin/api/classes,
     perhaps Kvm is not installed?
     You need not download Kvm unless you plan on building applications
     for the Palm Pilot or Handspring Visor.
-    Kvm can be downloaded from http://java.sun.com/products/cldc'])
+    Kvm can be downloaded from http://java.sun.com/products/cldc])
 	# Note that we don't substitute in the ${PTII} or $(KVM_DIR) here
 	KVM_DIR='${PTII}/vendors/sun/kvm'
    	KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
@@ -1205,11 +1205,11 @@ else
 		    MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
 		    AC_MSG_RESULT('$MATLAB_DIR')
 		else	
-		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB" failed.
+		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB"' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
 		fi
 	    else
-		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC SystemJar.java failed.
+		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC SystemJar.java' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
 	    fi
 	    cd "$startdir"
