@@ -6,18 +6,49 @@
 <body bgcolor="#faf0e6">
 <h1>Plotting Binary Data</h1>
 <hr>
-The plot below is from data in binary format.
+The plot below obtains its data from two binary files. 
+The plot commands are encoded as single characters, and the numeric data 
+is a 4 byte float.  
+ <P>The commands are encoded as follows:
+<DL>
+<DT> <CODE>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></CODE>
+<DD> Draw a X,Y point
+<DT> <CODE>e</CODE>
+<DD> End of dataset
+<DT> <CODE>n <I>&lt;dataset name&gt;</I>&#92n</CODE>
+<DD> New dataset name, ends in <CODE>&#92n</CODE>
+<DT> <CODE>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></CODE>
+<DD> Move to a X,Y point.
+</DL>
+ <P>To view a binary plot file under unix, we can use the 
+<CODE>od</CODE> command.  Note that the first character is a <CODE>d</CODE>
+followed by eight bytes of data consisting of two floats of four bytes.
+<PRE>
+cxh@carson 324% od -c data/integrator1.plt
+0000000   d  \0  \0  \0  \0  \0  \0  \0  \0   d   ? 200  \0  \0   ? 200
+0000020  \0  \0   d   @  \0  \0  \0   @   , 314 315   d   @   @  \0  \0
+
+</PRE>
+
+This binary format is used in <CODE>pxgraph</CODE>, the X11 plotting
+tool that is part of the
+<A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A>.
+
 <p>
-<applet name="Marks" code="plot.Plot" width=500 height=400
+<applet name="Binary" code="plot.Plot" width=500 height=400
     codebase="../.."	
     archive="plot/plot.zip"
     alt="If you had a java-enabled browser, you would see an applet here."
 >
-<param name="pxgraphargs" value="-binary -debug 20 -P -x n =800x400+0+0 -1 control -0 final integrator1.plt integrator2.plt">
+<param name="pxgraphargs" value="-binary -t Integrator_Demo -P -x n =800x400+0+0 -1 control -0 final data/integrator1.plt data/integrator2.plt">
    <hr>If your browser recognized the applet tag,
     you would see an applet here.<hr>
 </applet>
 <p>
+<HR>
+<A HREF="index.html">Up</A> to the Example index -
+<A HREF="Live.html">Back</A> to a Live, animated plot -
+<A HREF="Butterfly.html">Forward</A> to a Plot of 10,000 binary points
 <HR>
 Copyright &#169 1997, The Regents of the University of California.
 All rights reserved.
