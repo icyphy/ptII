@@ -485,7 +485,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             if (bracket == 1 || bracket == 2) result += "{";
             if((detail & CLASSNAME) != 0) {
                 result += getClass().getName();
-                if((detail & CLASSNAME) != 0) {
+                if((detail & FULLNAME) != 0) {
                     result += " ";
                 }
             }
