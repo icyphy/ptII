@@ -90,7 +90,8 @@ import ptolemy.kernel.util.Workspace;
    director is embedded in) and specifying the number of times this actor 
    must be fired in a single iteration. If the value of the parameter 
    runUntilDeadlock is a BooleanToken with value true, one single iteration 
-   consists of repeating the basic iteration until deadlock. 
+   consists of repeating the basic iteration until deadlock. Note this 
+   option is available only when this director is not on the top level. 
    <p>
    The algorithm implementing one basic iteration goes like this:
    <pre>
@@ -497,10 +498,11 @@ public class DDFDirector extends Director {
         _isTypeResolutionDisabled = flag;
     }
 
-    /** Override the base class method to transfer enough tokens to
-     *  complete an internal iteration.  If there are not enough tokens,
-     *  then throw an exception. It then updates enabling status for all
-     *  inside opaque actors that receive data from this port.
+    /** Override the base class method to transfer enough tokens manually 
+     *  specified in the tokenConsumptionRate parameter of the port (the 
+     *  default is 1) to complete an internal iteration.  If there are not 
+     *  enough tokens, then throw an exception. It then updates enabling 
+     *  status for all inside opaque actors that receive data from this port.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port, or if there are not enough input tokens available.
      *  @param port The port to transfer tokens from.
@@ -789,8 +791,9 @@ public class DDFDirector extends Director {
         return deferrable;
     }
 
-    /** The actor is enabled if the tokenConsumptionRate on each input port
-     *  is satisfied by all receivers contained by this port.
+    /** Check to see if the actor is enabled. It is enabled if the 
+     *  tokenConsumptionRate on each input port is satisfied by all 
+     *  receivers contained by this port.
      *  @param actor The actor to be checked.
      *  @return true if the actor is enabled, false if not.
      *  @exception IllegalActionException If any called method throws
