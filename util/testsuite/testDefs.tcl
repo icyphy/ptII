@@ -429,14 +429,22 @@ if {"[info command java::cast]" == ""} {
 #### jdkPrintArray
 # Print a java array.  Used by ptolemy/math/test/ArrayMath.tcl and
 # other places
-proc jdkPrintArray {javaArrayObj} {
+proc jdkPrintArray {javaArrayObj {separator {} } } {
     set result {}
     for {set i 0} {$i < [$javaArrayObj length]} {incr i} {
 	set element [$javaArrayObj get $i]
 	if [ catch {java::info class $element} ] {
-	    lappend result $element
+	    if {$separator == {} } {
+		lappend result $element
+	    } else {
+		lappend result "$element$separator"
+	    }
 	} else {
-	    lappend result [$element toString]
+	    if {$separator == {} } {
+		lappend result [$element toString]
+	    } else {
+		lappend result "[$element toString]$separator"
+	    }
 	}
     }
     return $result
