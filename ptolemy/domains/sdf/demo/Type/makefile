@@ -41,7 +41,7 @@ include $(CONFIG)
 CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 
 # Used to build jar files
-PTPACKAGE = 	Type.jar
+PTPACKAGE = 	Type
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
