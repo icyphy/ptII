@@ -25,7 +25,10 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
+
+7/22/00: Downgraded from yellow (neuendor) to red by EAL.
+         Changed the signature of the configure() method.
 */
 
 package ptolemy.actor;
@@ -36,9 +39,11 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// Configurable
 /**
-Objects that can be configured by reading a file, typically an
-XML file, should implement this interface.  This enables a
-user interface to recognize that such file-based configuration is possible.
+Objects that can be configured by reading a file or configuration information
+given as text, typically in XML format, should implement this interface.
+This enables a user interface to recognize that such file-based
+configuration is possible, and permits configuration to be specified
+via the MoML configure element.
 For example, a plotter actor implements this interface to
 allow the visual appearance of the plot to be set using PlotML.
 An icon for an actor implements this interface to allow
@@ -60,14 +65,19 @@ public interface Configurable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Configure the object with data from the specified input stream.
+    /** Configure the object with data from the specified input source
+     *  (a URL) and/or textual data.
      *  This method is defined to throw a very general exception to allow
      *  classes that implement the interface to use whatever exceptions
      *  are appropriate.
      *  @param base The base relative to which references within the input
-     *   stream are found, or null if this is not known, or there is none.
-     *  @param in The input stream.
+     *   are found, or null if this is not known, or there is none.
+     *  @param source The input source, which specifies a URL, or null
+     *   if none.
+     *  @param text Configuration information given as text, or null if
+     *   none.
      *  @exception Exception If something goes wrong.
      */
-    public void configure(URL base, InputStream in) throws Exception;
+    public void configure(URL base, String source, String text)
+            throws Exception;
 }
