@@ -1,0 +1,33 @@
+#!/bin/sh
+# Remove the asd() definition and call which causes problems in 
+# JEditorPane.  What happens is that the HTMLViewer ends up displaying
+# lines like 
+#    function asd() {parent.document.title="NamedObj";}
+# For details, see
+# http://developer.java.sun.com/developer/bugParade/bugs/4761273.html
+#
+#
+
+filenames=/tmp/removeasd.filenames
+find $1 -name "*.html" -print > $filenames
+for file in `cat $filenames`
+do
+  egrep -q 'function asd\(\)' $file
+  status=$?
+  if [ $status -eq 0 ]; then
+      echo $file
+      awk '{
+          if ($0 ~ /function asd()/) {
+             sawasd = 1
+          }
+          if (sawasd == 0) {
+             print $0
+          } else {
+             if ($1 = /^}/) {
+                 sawasd = 0;
+             }
+          }
+      }' < $file | sed 's/onload="asd();"//' > /tmp/removeasd.tmp
+      cp $file /tmp/removeasd.tmp
+  fi
+done

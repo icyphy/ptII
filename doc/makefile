@@ -85,6 +85,7 @@ EXTRA_SRCS = \
 	mainheader.htm \
 	ptII$(PTVERSION).release.htm \
 	ptIIfaq.htm \
+	removeasd \
 	toc.css \
 	toc.htm \
 	troubleshooting.htm \
@@ -377,6 +378,9 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
+	@echo "Removing the asd lines so that they are not displayed by"
+	@echo " view documentation"
+	./removeasd codeDoc
 
 
 codeDocPtiny/tree.html:
@@ -384,6 +388,9 @@ codeDocPtiny/tree.html:
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
+	@echo "Removing the asd lines so that they are not displayed by"
+	@echo " view documentation"
+	./removeasd codeDocPtiny
 
 
 # Note that we change into the codeDocHyVisual directory
@@ -401,6 +408,9 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
+	@echo "Removing the asd lines so that they are not displayed by"
+	@echo " view documentation"
+	./removeasd codeDocHyVisual
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
