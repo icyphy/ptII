@@ -273,7 +273,7 @@ public class QueueApplet extends Applet {
                 _isSimulationRunning = true;
                 ctt.start();
                 
-                _manager.go();
+                _manager.startRun();
                                 
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());

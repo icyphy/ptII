@@ -107,6 +107,7 @@ import java.util.Enumeration;
  *  @version $Id$
  *  @see DEReceiver
  *  @see CalendarQueue
+ *  @see DEDirector
  */
 // FIXME:
 // The topological depth of the receivers are static and computed once
@@ -238,7 +239,9 @@ public class DECQDirector extends DEDirector {
      */
     public void fire() throws IllegalActionException {
         
-        
+        if (!_prepareActorToFire()) {
+            return;
+        }
 
         if (_actorToFire == getContainer()) {
             // The actor to be fired is it's container.. so it must be that
@@ -411,31 +414,31 @@ public class DECQDirector extends DEDirector {
 
     }
 
-    /** Invoke the base class prefire() method, and if it returns true,
-     *  dequeue the next event from the event queue, advance time to its
-     *  time stamp, and mark its destination actor for firing.
-     *  If there are multiple events on the queue with the same time
-     *  stamp that are destined for the same actor, dequeue all of them,
-     *  making them available in the input ports of the destination actor.
-     *  The firing actor may be fired repeatedly until all its
-     *  receivers are empty.
-     *  If the time stamp is greater than the stop time, or there are no
-     *  events on the event queue, then return false,
-     *  which will have the effect of stopping the simulation.
-     *
-     *  @return True if there is an actor to fire.
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public boolean prefire() throws IllegalActionException {
-
-
-	// During prefire, new actor will be chosen to fire
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+    // Invoke the base class prefire() method, and if it returns true,
+    // dequeue the next event from the event queue, advance time to its
+    // time stamp, and mark its destination actor for firing.
+    //   If there are multiple events on the queue with the same time
+    //   stamp that are destined for the same actor, dequeue all of them,
+    //   making them available in the input ports of the destination actor.
+    //   The firing actor may be fired repeatedly until all its
+    //   receivers are empty.
+    //   If the time stamp is greater than the stop time, or there are no
+    //   events on the event queue, then return false,
+    //   which will have the effect of stopping the simulation.
+     
+    //  @return True if there is an actor to fire.
+    //  @exception IllegalActionException If the base class throws it.
+    private boolean _prepareActorToFire() {
+        // During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field to null.
                
         _actorToFire = null;
 	// Initialize the _filledReceivers field.
 	_filledReceivers.clear();
-	if (super.prefire()) {
+        // FIXME: This is just temporary, to see if it works.
+	if (true) {
 
             DEEvent currentEvent = null;
             // Keep taking events out until there are no more simultaneous
@@ -564,9 +567,8 @@ public class DECQDirector extends DEDirector {
         }
         return _actorToFire != null;
     }
+    
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
 
     // Construct a directed graph with the nodes representing input ports and
     // directed edges representing zero delay path.  The directed graph

@@ -259,7 +259,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
 
                 // Start the simulation.
-                _executiveDirector.blockingGo();
+                _executiveDirector.run();
                 
                 double average = _stat.getAverage();
                 _averageWaitTimeLabel.setText("Mean wait time = "+average);

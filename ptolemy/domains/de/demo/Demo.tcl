@@ -221,4 +221,4 @@ set r13 [$sys connect $fifo2OutData $server2In R13]
 $dir setStopTime 30.0
 
 # Run it
-$exec go
+$exec startRun

@@ -115,6 +115,7 @@ CLOCK_CLASSFILES = \
 	collections/CollectionEnumeration.class \
 	collections/Comparator.class \
 	collections/CorruptedEnumerationException.class \
+	collections/HashedMap.class \
 	collections/IllegalElementException.class \
 	collections/ImplementationCheckable.class \
 	collections/LLCell.class \
@@ -125,6 +126,8 @@ CLOCK_CLASSFILES = \
 	collections/SortableCollection.class \
 	collections/UpdatableCollection.class \
 	collections/UpdatableImpl.class \
+	collections/UpdatableMap.class \
+	collections/UpdatableMapImpl.class \
 	collections/UpdatableSeq.class \
 	collections/UpdatableSeqImpl.class \
 	ptolemy/actor/Actor.class \
@@ -136,18 +139,37 @@ CLOCK_CLASSFILES = \
 	ptolemy/actor/IOPort.class \
 	ptolemy/actor/IORelation.class \
 	ptolemy/actor/Manager.class \
+	ptolemy/actor/NoRoomException.class \
 	ptolemy/actor/NoTokenException.class \
 	ptolemy/actor/Receiver.class \
+	ptolemy/actor/TypedActor.class \
+	ptolemy/actor/TypedAtomicActor.class \
+	ptolemy/actor/TypedCompositeActor.class \
 	ptolemy/actor/TypeConflictException.class \
+	ptolemy/actor/TypedIOPort.class \
+	ptolemy/actor/TypedIORelation.class \
 	ptolemy/actor/util/CQComparator.class \
 	'ptolemy/actor/util/CalendarQueue$$CQEntry.class' \
 	'ptolemy/actor/util/CalendarQueue$$CQLinkedList.class' \
 	ptolemy/actor/util/CalendarQueue.class \
 	ptolemy/actor/util/FIFOQueue.class \
+	ptolemy/data/BooleanMatrixToken.class \
+	ptolemy/data/BooleanToken.class \
+	ptolemy/data/ComplexToken.class \
+	ptolemy/data/ComplexMatrixToken.class \
 	ptolemy/data/DoubleToken.class \
+	ptolemy/data/DoubleMatrixToken.class \
+	ptolemy/data/IntMatrixToken.class \
 	ptolemy/data/IntToken.class \
+	ptolemy/data/LongMatrixToken.class \
+	ptolemy/data/LongToken.class \
+	ptolemy/data/MatrixToken.class \
+	ptolemy/data/Numerical.class \
+	ptolemy/data/ObjectToken.class \
 	ptolemy/data/ScalarToken.class \
+	ptolemy/data/StringToken.class \
 	ptolemy/data/Token.class \
+	ptolemy/data/TypeLattice.class \
 	ptolemy/data/expr/Parameter.class \
 	ptolemy/data/expr/ParameterListener.class \
 	'ptolemy/domains/de/demo/ClockApplet$$GoButtonListener.class' \
@@ -176,6 +198,7 @@ CLOCK_CLASSFILES = \
 	ptolemy/graph/Graph.class \
 	ptolemy/graph/InequalitySolver.class \
 	ptolemy/graph/InequalitySolver$$Info.class \
+	ptolemy/graph/InequalityTerm.class \
 	ptolemy/kernel/ComponentEntity.class \
 	ptolemy/kernel/ComponentPort.class \
 	ptolemy/kernel/ComponentRelation.class \
@@ -198,10 +221,13 @@ CLOCK_CLASSFILES = \
 	ptolemy/kernel/util/NamedList.class \
 	ptolemy/kernel/util/NamedObj.class \
 	ptolemy/kernel/util/NoSuchItemException.class \
+	ptolemy/kernel/util/PtolemyThread.class \
 	'ptolemy/kernel/util/Workspace$$ReadDepth.class' \
 	ptolemy/kernel/util/Workspace.class \
+	ptolemy/math/Complex.class \
 	ptolemy/plot/CmdLineArgException.class \
 	ptolemy/plot/Plot.class \
+	'ptolemy/plot/Plot$$Format.class' \
 	'ptolemy/plot/PlotBox$$DragListener.class' \
 	'ptolemy/plot/PlotBox$$FillButtonListener.class' \
 	'ptolemy/plot/PlotBox$$ZoomListener.class' \
