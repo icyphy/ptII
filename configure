@@ -17,6 +17,9 @@ ac_help="$ac_help
                            defaults to the value of the
                            PTJAVA_DIR environment variable"
 ac_help="$ac_help
+  --with-commapi=DIR       use Java commapi from DIR,
+                          defaults to \$PTII/vendors/sun/commapi"
+ac_help="$ac_help
   --with-javacc=DIR       use JavaCC.zip from DIR,
                            defaults to \$PTII/vendors/sun/JavaCC"
 ac_help="$ac_help
@@ -597,7 +600,7 @@ so we search for the java compiler." 1>&2
     # Extract the first word of "javac", so it can be a program name with args.
 set dummy javac; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:601: checking for $ac_word" >&5
+echo "configure:604: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JAVAC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -666,15 +669,15 @@ fi
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
 echo $ac_n "checking for the java runtime in $PTJAVA_DIR/bin""... $ac_c" 1>&6
-echo "configure:670: checking for the java runtime in $PTJAVA_DIR/bin" >&5
+echo "configure:673: checking for the java runtime in $PTJAVA_DIR/bin" >&5
 if test -f $PTJAVA_DIR/bin/java; then
     echo "$ac_t""$PTJAVA_DIR/bin/java" 1>&6
     echo $ac_n "checking that you have the right java in your path.""... $ac_c" 1>&6
-echo "configure:674: checking that you have the right java in your path." >&5
+echo "configure:677: checking that you have the right java in your path." >&5
     # Extract the first word of "java", so it can be a program name with args.
 set dummy java; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:678: checking for $ac_word" >&5
+echo "configure:681: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JAVA'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -720,15 +723,15 @@ fi
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
 echo $ac_n "checking for the java compiler in $PTJAVA_DIR/bin""... $ac_c" 1>&6
-echo "configure:724: checking for the java compiler in $PTJAVA_DIR/bin" >&5
+echo "configure:727: checking for the java compiler in $PTJAVA_DIR/bin" >&5
 if test -f $PTJAVA_DIR/bin/javac; then
     echo "$ac_t""$PTJAVA_DIR/bin/javac" 1>&6
     echo $ac_n "checking that you have the right javac in your path.""... $ac_c" 1>&6
-echo "configure:728: checking that you have the right javac in your path." >&5
+echo "configure:731: checking that you have the right javac in your path." >&5
     # Extract the first word of "javac", so it can be a program name with args.
 set dummy javac; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:732: checking for $ac_word" >&5
+echo "configure:735: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JAVAC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -774,7 +777,7 @@ fi
 #	Test the Java Compiler (javac)
 #--------------------------------------------------------------------
 echo $ac_n "checking the Java compiler with a simple compile""... $ac_c" 1>&6
-echo "configure:778: checking the Java compiler with a simple compile" >&5
+echo "configure:781: checking the Java compiler with a simple compile" >&5
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
@@ -784,7 +787,7 @@ if $JAVAC confTest.java ; then
     echo "$ac_t""ok" 1>&6
 
     echo $ac_n "checking the value of the java.version Property ""... $ac_c" 1>&6
-echo "configure:788: checking the value of the java.version Property " >&5
+echo "configure:791: checking the value of the java.version Property " >&5
     # Strip out the JDK1.3beta messages under Solaris2.5.1
     JVERSION=`CLASSPATH=$PTII/config $JAVA confTest | 
 	grep -v "Warning! The libthread.so on your system is an older version than" |
@@ -805,13 +808,67 @@ cd $startdir
 #       CYGWIN_NT-5.0 respectively)
 #--------------------------------------------------------------------
 echo $ac_n "checking for the proper CLASSPATH separator""... $ac_c" 1>&6
-echo "configure:809: checking for the proper CLASSPATH separator" >&5
+echo "configure:812: checking for the proper CLASSPATH separator" >&5
 
 case "`uname -s`" in
     CYGWIN_NT-*) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
 esac
 echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
+
+#####################################################################
+#####################################################################
+#       Below here we look for various packages.
+#       Not all Ptolemy software products need all packages, so
+#       we usually look for a directory that uses the package first
+#
+#       Please try to keep the packages vaguely alphabetical
+#####################################################################
+#####################################################################
+
+#--------------------------------------------------------------------
+#       commapi is the Java serial interface, see
+#	http://java.sun.com/products/javacomm/
+#	See if there was a command-line option for commapi is
+#       If not, check to see if $PTII/vendors/sun/commapi
+#--------------------------------------------------------------------
+
+# We only need to look for kvm if $PTII/ptolemy/apps/lego
+COMMAPI_USER_DIR="$PTII/ptolemy/apps/lego"
+COMMAPI_PRESENT=no
+if test ! -d "$COMMAPI_USER_DIR"; then
+    echo "$ac_t""$COMMAPI_USER_DIR is not present, so we need not
+find commapi" 1>&6
+    COMMAPI_DIR='$(PTII)/vendors/sun/commapi'
+else
+    echo $ac_n "checking for commapi directory""... $ac_c" 1>&6
+echo "configure:846: checking for commapi directory" >&5
+    # Check whether --with-COMMAPI or --without-COMMAPI was given.
+if test "${with_COMMAPI+set}" = set; then
+  withval="$with_COMMAPI"
+  COMMAPI_DIR=$withval
+else
+  COMMAPI_DIR=$PTII/vendors/sun/commapi
+fi
+
+
+    if test -f "$COMMAPI_DIR/comm.jar"; then
+	echo "$ac_t""$COMMAPI_DIR" 1>&6
+	COMMAPI_PRESENT=yes
+    else    
+        echo "configure: warning: 'Failed to find $COMMAPI_DIR/comm.jar'" 1>&2
+	COMMAPI_DIR='$(PTII)/vendors/sun/commapi'
+    fi    
+
+    if test "$COMMAPI_PRESENT" = "no"; then
+        echo "configure: warning: 'Perhaps commapi is not installed?
+  You need not download commapi unless you plan on use the Lego Mindstorm
+  demos in \$PTII/ptolemy\apps. commapi can be downloaded from
+  http://java.sun.com/products/javacomm/
+  and placed  in \$PTII/vendors/sun/commapi'" 1>&2
+    fi	
+fi
+
 
 #--------------------------------------------------------------------
 #	See if there was a command-line option for where javacc is;  if
@@ -828,7 +885,7 @@ find JavaCC" 1>&6
     JJTREE=jjtree
 else
     echo $ac_n "checking for JavaCC""... $ac_c" 1>&6
-echo "configure:832: checking for JavaCC" >&5
+echo "configure:889: checking for JavaCC" >&5
     # Check whether --with-javacc or --without-javacc was given.
 if test "${with_javacc+set}" = set; then
   withval="$with_javacc"
@@ -850,7 +907,7 @@ so we search for the jjtree command." 1>&2
 	    # Extract the first word of "jjtree", so it can be a program name with args.
 set dummy jjtree; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:854: checking for $ac_word" >&5
+echo "configure:911: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JJTREE'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -889,7 +946,7 @@ fi
 	if test -d "$JAVACC_DIR"; then
 	    echo "$ac_t""$JAVACC_DIR" 1>&6
 	    echo $ac_n "checking for jjtree""... $ac_c" 1>&6
-echo "configure:893: checking for jjtree" >&5
+echo "configure:950: checking for jjtree" >&5
 	    if test -x "$JAVACC_DIR/bin/jjtree"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JJTREE='$(JAVACC_DIR)/bin/jjtree'
@@ -898,7 +955,7 @@ echo "configure:893: checking for jjtree" >&5
 		echo "configure: warning: Failed to find jjtree in '$JAVACC_DIR/bin'" 1>&2;
 	    fi    
 	    echo $ac_n "checking for javacc""... $ac_c" 1>&6
-echo "configure:902: checking for javacc" >&5
+echo "configure:959: checking for javacc" >&5
 	    if test -x "$JAVACC_DIR/bin/javacc"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JAVACC='$(JAVACC_DIR)/bin/javacc'
@@ -937,7 +994,7 @@ if test ! -d "$PTII/util/testsuite"; then
 find Jacl" 1>&6
 else
     echo $ac_n "checking for ptjacl.jar""... $ac_c" 1>&6
-echo "configure:941: checking for ptjacl.jar" >&5
+echo "configure:998: checking for ptjacl.jar" >&5
     # Check whether --with-ptjacl_jar or --without-ptjacl_jar was given.
 if test "${with_ptjacl_jar+set}" = set; then
   withval="$with_ptjacl_jar"
@@ -950,7 +1007,7 @@ fi
     if test -f "$PTJACL_JAR"; then
 	echo "$ac_t""$PTJACL_JAR" 1>&6
 	echo $ac_n "checking for how to run jacl""... $ac_c" 1>&6
-echo "configure:954: checking for how to run jacl" >&5
+echo "configure:1011: checking for how to run jacl" >&5
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell; then
 		echo "$ac_t""CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell" 1>&6
@@ -970,9 +1027,8 @@ fi
 
 #--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
-#	See if there was a command-line option for where
-#       kvm/tools/classes.zip is;  if not,
-#       check to see if $PTII/vendors/sun/kvm exists
+#       See if there was a command-line option for where Jini is
+#       If not, look in $PTII/vendors/sun/jini/jini1_0_1
 #--------------------------------------------------------------------
 
 # We only need to look for kvm if $PTII/ptolemy/kvm exists
@@ -987,7 +1043,7 @@ find Jini" 1>&6
     JINI_DIR='$(PTII)/vendors/sun/jini/jini1_0_1'
 else
     echo $ac_n "checking for jini directory""... $ac_c" 1>&6
-echo "configure:991: checking for jini directory" >&5
+echo "configure:1047: checking for jini directory" >&5
     # Check whether --with-jini or --without-jini was given.
 if test "${with_jini+set}" = set; then
   withval="$with_jini"
@@ -1008,8 +1064,9 @@ fi
   Perhaps Jini is not installed?
   You need not download Jini unless you plan on use Jini and JavaSpaces
   Jini can be downloaded from http://java.sun.com/jini' and placed
-  in \$PTII/vendors/sun/jini/$JINI_VERSION" 1>&2
+  in \$PTII/vendors/sun/jini/$JINI_VERSION'" 1>&2
     fi	
+
 fi
 
 
@@ -1029,7 +1086,7 @@ find the PalmOS kvm" 1>&6
     KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
 else
     echo $ac_n "checking for kvm directory""... $ac_c" 1>&6
-echo "configure:1033: checking for kvm directory" >&5
+echo "configure:1090: checking for kvm directory" >&5
     # Check whether --with-kvm or --without-kvm was given.
 if test "${with_kvm+set}" = set; then
   withval="$with_kvm"
@@ -1042,7 +1099,7 @@ fi
     if test -d "$KVM_DIR"; then
 	echo "$ac_t""$KVM_DIR" 1>&6
         echo $ac_n "checking for \$KVM_DIR/tools/classes.zip""... $ac_c" 1>&6
-echo "configure:1046: checking for \$KVM_DIR/tools/classes.zip" >&5
+echo "configure:1103: checking for \$KVM_DIR/tools/classes.zip" >&5
 	if test -f "$KVM_DIR/tools/classes.zip"; then
 	    KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
 	    echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1067,6 +1124,12 @@ fi
 # Keep these substitutions alphabetical, with a description
 
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
+
+
+# Directory that contains the Java Serial Comm API
+
+
+# If Commapi is present, then set to yes, otherwise set to no
 
 
 # javacc binary
@@ -1255,6 +1318,8 @@ s%@JAVAC@%$JAVAC%g
 s%@JAVA@%$JAVA%g
 s%@JJTREE@%$JJTREE%g
 s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
+s%@COMMAPI_DIR@%$COMMAPI_DIR%g
+s%@COMMAPI_PRESENT@%$COMMAPI_PRESENT%g
 s%@JAVACC@%$JAVACC%g
 s%@JAVACC_DIR@%$JAVACC_DIR%g
 s%@JINI_DIR@%$JINI_DIR%g
