@@ -40,8 +40,8 @@ import ptolemy.kernel.util.Workspace;
 //// VariableDelay
 /**
    This actor extends from the TimedDelay actor.
-   It works in a similar way as the TimedDelay actor except that the 
-   amount of time delayed is specified by an incoming token through 
+   It works in a similar way as the TimedDelay actor except that the
+   amount of time delayed is specified by an incoming token through
    the delay port (a parameter port).
 
    @see ptolemy.domains.de.lib.TimedDelay
@@ -89,10 +89,10 @@ public class VariableDelay extends TimedDelay {
         return newObject;
     }
 
-    /** Update the delay parameter from the delay port and ensure the delay 
+    /** Update the delay parameter from the delay port and ensure the delay
      *  is not negative. Call super.fire method to consume inputs and generate
-     *  outputs. 
-     *  @exception IllegalActionException If there is no director, 
+     *  outputs.
+     *  @exception IllegalActionException If there is no director,
      *  or a negative delay is received.
      */
     public void fire() throws IllegalActionException {
@@ -103,9 +103,9 @@ public class VariableDelay extends TimedDelay {
                     "negative delay. Check whether overflow happens.");
         }
         // NOTE: the newDelay may be 0.0, which may change
-        // the causality property of the model. 
+        // the causality property of the model.
         // We leave the model designers to decide whether the
-        // zero delay is really what they want. 
+        // zero delay is really what they want.
         super.fire();
     }
 
@@ -121,10 +121,10 @@ public class VariableDelay extends TimedDelay {
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
 
-    /** Override the method of the super class to initialize the 
+    /** Override the method of the super class to initialize the
      *  parameter values.
      */
-    protected void _init() 
+    protected void _init()
         throws NameDuplicationException, IllegalActionException  {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");

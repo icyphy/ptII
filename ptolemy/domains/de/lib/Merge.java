@@ -40,24 +40,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Merge
 /**
    This is a timed merge actor, which merges a set of input signals into
-   a single output signal based on the order of the tags associated with 
+   a single output signal based on the order of the tags associated with
    the events of signals. A tag is a tuple of a time (as double) and an index
-   (as non-negative integer). The tags have a lexicographic order. 
-   
-   <p> This actor has an input port (a multiport) and an output port (a single 
+   (as non-negative integer). The tags have a lexicographic order.
+
+   <p> This actor has an input port (a multiport) and an output port (a single
    port). The types of the ports are undeclared and will be resolved by the type
    resolution mechanism, with the constraint that the output type must be
-   greater than or equal to the input type. 
-   
-   <p> There is a boolean parameter <i>discardEvents</i> associated with 
-   this actor, which decides how to handle simultaneously available inputs. 
-   Each time this actor fires, it reads the first available 
-   token from the input channels and sends it to the output port. If the 
-   <i>discardEvents</i> parameter is configured to true, then this actor 
-   discards all the remaining inputs in other channels. Otherwise, this actor 
+   greater than or equal to the input type.
+
+   <p> There is a boolean parameter <i>discardEvents</i> associated with
+   this actor, which decides how to handle simultaneously available inputs.
+   Each time this actor fires, it reads the first available
+   token from the input channels and sends it to the output port. If the
+   <i>discardEvents</i> parameter is configured to true, then this actor
+   discards all the remaining inputs in other channels. Otherwise, this actor
    requests refirings at the current time till no more events are left in the
-   channels. By this way, we construct an output signal that no two events share 
-   the same tag. By default, the discardEvents parameter is false.  
+   channels. By this way, we construct an output signal that no two events share
+   the same tag. By default, the discardEvents parameter is false.
 
    @author Edward A. Lee, Haiyang Zheng
    @version $Id$
@@ -81,7 +81,7 @@ public class Merge extends DETransformer  {
         super(container, name);
         input.setMultiport(true);
 
-        discardEvents = new Parameter(this, "discardEvents", 
+        discardEvents = new Parameter(this, "discardEvents",
                 new BooleanToken(false));
         discardEvents.setTypeEquals(BaseType.BOOLEAN);
 
@@ -94,7 +94,7 @@ public class Merge extends DETransformer  {
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
 
-    /** The flag to indicate whether the input events can be discarded. 
+    /** The flag to indicate whether the input events can be discarded.
      */
     public Parameter discardEvents;
 
@@ -109,14 +109,14 @@ public class Merge extends DETransformer  {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        boolean discard = 
+        boolean discard =
             ((BooleanToken)discardEvents.getToken()).booleanValue();
         Token firstAvailableToken = null;
         Token currentToken = null;
         // If tokens can be discarded, this actor sends
         // out the first available event only but discards all the
         // other events. Otherwise, handle one event for each firing
-        // and request refiring at the current time to handle the 
+        // and request refiring at the current time to handle the
         // the remaining events.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {

@@ -109,7 +109,7 @@ public class Previous extends DETransformer {
 
     /** Initialize so that the initial token will be produced.
      *  @exception IllegalActionException If the super class throws it
-     *  or can not get a valid token from the initializeValue parameter. 
+     *  or can not get a valid token from the initializeValue parameter.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -127,7 +127,7 @@ public class Previous extends DETransformer {
         _tempPrevious = null;
         return super.postfire();
     }
-    
+
     /** Override the method in the base class so that the type
      *  constraint for the <i>initialValue</i> parameter will be set
      *  if it contains a value.
@@ -164,13 +164,13 @@ public class Previous extends DETransformer {
         _tempPrevious = null;
         _previous = null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Previous input.
     private Token _previous;
-    
+
     // Temporary previous input.
     private Token _tempPrevious;
 }

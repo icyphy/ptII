@@ -46,20 +46,20 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Timer
 /**
-   A timer actor extends the DETransformer actor and produces an event with 
-   a time delay specified by its input. 
+   A timer actor extends the DETransformer actor and produces an event with
+   a time delay specified by its input.
    <p>
-   When a timer actor receives an input, if the input value is bigger than 
-   0.0, the timer schedules itself to fire again some time later to produce 
-   an output specified by the value parameter. The amount of delay is 
-   specified by the input value. If the input value is 0.0, an output is 
+   When a timer actor receives an input, if the input value is bigger than
+   0.0, the timer schedules itself to fire again some time later to produce
+   an output specified by the value parameter. The amount of delay is
+   specified by the input value. If the input value is 0.0, an output is
    produced immediately. If there is no input token, then no output is produced.
    <p>
-   This actor is different from the {@link 
-   ptolemy.domains.de.lib.NonInterruptibleTimer} actor. If the 
+   This actor is different from the {@link
+   ptolemy.domains.de.lib.NonInterruptibleTimer} actor. If the
    NonInterruptibleTimer actor has not finished processing the previous input,
-   a new input has to be delayed for processing. The Timer actor begins 
-   processing inputs upon their arrival. 
+   a new input has to be delayed for processing. The Timer actor begins
+   processing inputs upon their arrival.
 
    @author Jie Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
@@ -115,14 +115,14 @@ public class Timer extends DETransformer {
     }
 
     /** Read one token from the input. If the value of the input is bigger than
-     *  0.0, save the input to be processed in the postfire method. Otherwise, 
-     *  check whether there is any output scheduled to be produced at the 
-     *  current time. If there is one, send out that output and save the 
-     *  current input for future processing in the postfire method. If there 
-     *  is no output to produce and the input value is 0.0, send an output 
-     *  immediately and reset the current input to null, indicating no further 
+     *  0.0, save the input to be processed in the postfire method. Otherwise,
+     *  check whether there is any output scheduled to be produced at the
+     *  current time. If there is one, send out that output and save the
+     *  current input for future processing in the postfire method. If there
+     *  is no output to produce and the input value is 0.0, send an output
+     *  immediately and reset the current input to null, indicating no further
      *  processing of the current input is necessary.
-     *  
+     *
      *  @exception IllegalActionException If there is no director, or can not
      *  send or get tokens from ports.
      */
@@ -170,11 +170,11 @@ public class Timer extends DETransformer {
                 new TimedEvent.TimeComparator(this.getDirector()));
     }
 
-    /** Update the internal states of this actor. If the current input 
+    /** Update the internal states of this actor. If the current input
      *  is not processed in the fire method, schedule a refiring of this
-     *  actor to produce an output in a future time, 
-     * (the current model time + delay specified by the input value).  
-     * 
+     *  actor to produce an output in a future time,
+     * (the current model time + delay specified by the input value).
+     *
      *  @exception IllegalActionException If scheduling to refire cannot
      *  be performed or the superclass throws it.
      */
@@ -182,14 +182,14 @@ public class Timer extends DETransformer {
        Time currentTime = getDirector().getModelTime();
        Time delayToTime = currentTime.add(_delay);
        // Remove the token that is already sent at the current time.
-       if (_delayedOutputTokens.size() > 0) { 
+       if (_delayedOutputTokens.size() > 0) {
            if (_currentOutput != null) {
                _delayedOutputTokens.take();
-           } 
+           }
        }
        // handle the refiring of the multiple tokens
        // that are scheduled to produce at the same time.
-       if (_delayedOutputTokens.size() > 0) { 
+       if (_delayedOutputTokens.size() > 0) {
            TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
            Time eventTime = earliestEvent.timeStamp;
            if (eventTime.equals(currentTime)) {
@@ -204,7 +204,7 @@ public class Timer extends DETransformer {
            getDirector().fireAt(this, delayToTime);
        }
        return super.postfire();
-    }    
+    }
 
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
@@ -218,7 +218,7 @@ public class Timer extends DETransformer {
     ////                       protected variables                 ////
 
     /** The amount of delay.
-     */ 
+     */
     protected double _delay;
 
     /** A local queue to store the delayed tokens.
@@ -228,7 +228,7 @@ public class Timer extends DETransformer {
     /** Current input.
      */
     protected Token _currentInput;
-    
+
     /** Current output.
      */
     protected Token _currentOutput;

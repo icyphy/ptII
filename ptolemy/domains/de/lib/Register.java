@@ -36,9 +36,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Register
 /**
-   A register is a stateful actor with a trigger port that accepts 
+   A register is a stateful actor with a trigger port that accepts
    read requests.
-   
+
    <p>In the fire() method, if there is an event on the <i>trigger</i>
    input port, this actor will produce an output event. The value
    of the output event will be the previously recorded event
@@ -51,13 +51,13 @@ import ptolemy.kernel.util.NameDuplicationException;
    The inputs can be of any token type, but the <i>output</i> port
    is constrained to be of a type at least that of the <i>input</i>
    port and the <i>initialValue</i> parameter.
-   
-   <p> This class extends Sampler. Unlike its base class, this actor 
+
+   <p> This class extends Sampler. Unlike its base class, this actor
    can be used to break dependencies in a feedback loop in that
-   the input tokens are consumed from the input ports after the outputs 
-   are genrated. Another difference is that the Register actor can be 
+   the input tokens are consumed from the input ports after the outputs
+   are genrated. Another difference is that the Register actor can be
    fired when either the trigger port or the input port has a token, while
-   the Sampler can only be fired when the trigger port receives a token. 
+   the Sampler can only be fired when the trigger port receives a token.
 
    <p> Both the <i>input</i> port and the <i>output</i> port are multiports.
    Generally, their widths should match. Otherwise, if the width of the
@@ -70,7 +70,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    <p> Note: If the width of the input changes during execution, then the
    most recent inputs are forgotten, as if the execution of the model
    were starting over.
-   
+
    @author Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
@@ -99,7 +99,7 @@ public class Register extends Sampler {
                 + "style=\"fill:white\"/>\n"
                 + "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -122,8 +122,8 @@ public class Register extends Sampler {
             _lastInputs = new Token[inputWidth];
         }
 
-        // If there is a token in the trigger port that indicates 
-        // a read request, the register output the latest inputs. 
+        // If there is a token in the trigger port that indicates
+        // a read request, the register output the latest inputs.
         if (trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
@@ -134,10 +134,10 @@ public class Register extends Sampler {
             }
         }
 
-        // If there is a token in the input port that indicates 
+        // If there is a token in the input port that indicates
         // a write request, the register consumes and stores the
-        // inputs. Note that if multiple inputs are available, 
-        // only the last inputs are stored. 
+        // inputs. Note that if multiple inputs are available,
+        // only the last inputs are stored.
         // Consume the inputs we save.
         for (int i = 0; i < commonWidth; i++) {
             while (input.hasToken(i)) {
@@ -153,7 +153,7 @@ public class Register extends Sampler {
     }
 
     /** Return true if there is any token in the input or the trigger
-     *  port. 
+     *  port.
      *  @exception IllegalActionException Thrown in super class.
      */
     public boolean prefire() throws IllegalActionException {

@@ -53,7 +53,7 @@ import ptolemy.kernel.util.StringAttribute;
    Output a Token in response to a click of a button. This class is closely
    related to the ButtonTime class in SR domain by Paul Whitaker.
 
-   @author  Winthrop Williams 
+   @author  Winthrop Williams
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Red (winthrop)

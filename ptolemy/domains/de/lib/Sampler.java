@@ -70,9 +70,9 @@ import ptolemy.kernel.util.Workspace;
    stream of events based on the presence or absence of events from
    another input.  This actor reacts to the presence of the other event,
    whereas Inhibit reacts to the absence of it.
-   
-   <p> This actor is different from the Register actor in that the input 
-   tokens are consumed from the input ports before the outputs are genrated. 
+
+   <p> This actor is different from the Register actor in that the input
+   tokens are consumed from the input ports before the outputs are genrated.
 
    @author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
    @version $Id$
@@ -112,7 +112,7 @@ public class Sampler extends DETransformer {
                 + "<polyline points=\"-30,-0 -10,0 10,-7\"/>\n"
                 + "<polyline points=\"10,0 30,0\"/>\n"
                 + "</svg>\n");
-                
+
         StringAttribute cardinality = new StringAttribute(trigger, "_cardinal");
         cardinality.setExpression("SOUTH");
     }
@@ -154,7 +154,7 @@ public class Sampler extends DETransformer {
         return newObject;
     }
 
-    /** Comsume all the tokens in the input ports and record them. 
+    /** Comsume all the tokens in the input ports and record them.
      *  If there is a token in the <i>trigger</i> port, emit the most
      *  recent token from the <i>input</i> port. If there has been no
      *  input token, but the <i>initialValue</i> parameter has been
@@ -164,7 +164,7 @@ public class Sampler extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         int inputWidth = input.getWidth();
         int outputWidth = output.getWidth();
         int commonWidth = Math.min(inputWidth, outputWidth);

@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
 //// Inhibit
 /**
    Output a received input token, unless the <i>inhibit</i> port receives a
-   token at the same time.  If no token has been received on the <i>input</i> 
+   token at the same time.  If no token has been received on the <i>input</i>
    port when a token is received on the <i>inhibit</i> port, then no output is
    produced.  The inputs can be of any token type, and the output
    is constrained to be of a type at least that of the input.

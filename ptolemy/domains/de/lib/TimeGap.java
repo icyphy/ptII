@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// TimeGap
 /**
-   This actor measures the time interval between arrivals of successive 
+   This actor measures the time interval between arrivals of successive
    input tokens.
    Beginning with the second input arrival, the measurement is produced
    at the output.  The output is always a DoubleToken.
@@ -70,8 +70,8 @@ public class TimeGap extends DETransformer {
     ////                         public methods                    ////
 
     /** Beginning with the second input, produce an output that is
-     *  the elapsed time since the previous input is received.  When the 
-     *  first input is received, nothing is produced.  This method 
+     *  the elapsed time since the previous input is received.  When the
+     *  first input is received, nothing is produced.  This method
      *  consumes at most one token from the input each time it is fired.
      *  @exception IllegalActionException If get() or send() throws it.
      */
@@ -89,7 +89,7 @@ public class TimeGap extends DETransformer {
         }
     }
 
-    /** Record the time when the current input arrives. 
+    /** Record the time when the current input arrives.
      *  @return True to continue firing.
      *  @exception IllegalActionException If there is no director or thrown
      *  in the super class.

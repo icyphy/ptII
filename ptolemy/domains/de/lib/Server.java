@@ -47,7 +47,7 @@ import ptolemy.kernel.util.StringAttribute;
    A server is either busy (serving a customer) or not busy at any given time.
    If an input arrives when it is not busy, then the input token is produced
    on the output with a delay given by the <i>newServiceTime</i> parameter.
-   If the delay is 0.0, the current input is sent out immediately. 
+   If the delay is 0.0, the current input is sent out immediately.
    If an input arrives while the server is busy, then that input is
    queued until the server becomes free, at which point it is produced
    on the output with a delay given by the <i>newServiceTime</i> parameter.
@@ -66,10 +66,10 @@ import ptolemy.kernel.util.StringAttribute;
    assigning priorities to firings.
    <p>
    Like the TimedDelay actor, the output is produced with a future time
-   stamp (larger than current time by <i>newServiceTime</i>). 
+   stamp (larger than current time by <i>newServiceTime</i>).
    If the service time is always zero and several event arrrive at the same,
    the server will output the first available input and queue the other inputs
-   to process in the future microsteps. A service time of zero can be 
+   to process in the future microsteps. A service time of zero can be
    usefully viewed as an infinitesimal service time.
 
    @see ptolemy.domains.de.lib.TimedDelay
@@ -99,12 +99,12 @@ public class Server extends VariableDelay {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the available input token. If the server is not busy, 
+    /** Read the available input token. If the server is not busy,
      *  begin servicing it. If the delay is 0, output is immediately availabe.
-     *  Otherwise, the output available time is delayed by the amount of the 
+     *  Otherwise, the output available time is delayed by the amount of the
      *  <i>newServiceTime></i> parameter. If the server is busy, check
      *  whether the current service finishes. If so, generate output. Otherwise,
-     *  do nothing. 
+     *  do nothing.
      *  @exception IllegalActionException If can not update the serviceTime
      *  parameter, read inputs, or send outputs.
      */
@@ -112,11 +112,11 @@ public class Server extends VariableDelay {
         // update delay value
         delay.update();
         _delay = ((DoubleToken)delay.getToken()).doubleValue();
-        
+
         Time currentTime = getDirector().getModelTime();
         // consume input and put it into the _delayedInputTokensList
-        // NOTE: this list is different from the _delayedTokens defined in the 
-        // TimedDelay class. 
+        // NOTE: this list is different from the _delayedTokens defined in the
+        // TimedDelay class.
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
             _delayedInputTokensList.addLast(_currentInput);
@@ -127,7 +127,7 @@ public class Server extends VariableDelay {
         _currentOutput = null;
         if (_delayedOutputTokens.size() > 0) {
             if (currentTime.compareTo(_nextTimeFree) == 0) {
-                TimedEvent earliestEvent 
+                TimedEvent earliestEvent
                     = (TimedEvent)_delayedOutputTokens.get();
                 Time eventTime = earliestEvent.timeStamp;
                 if (!eventTime.equals(currentTime)) {
@@ -156,7 +156,7 @@ public class Server extends VariableDelay {
     }
 
     /** If there are delayed input events that are not processed and the
-     *  server is ready, begin process the earliest input event and schedule 
+     *  server is ready, begin process the earliest input event and schedule
      *  future firings to produce them.
      *  @exception IllegalActionException If there is no director or can not
      *  schedule future firings to handle delayed input events.
@@ -168,18 +168,18 @@ public class Server extends VariableDelay {
         // Remove the curent output token from _delayedTokens.
         // NOTE: In this server class, the _delayedTokens can have
         // at most one token inside (like a processer can execute
-        // at most one process at any time.) 
+        // at most one process at any time.)
         if (_currentOutput != null) {
             _delayedOutputTokens.take();
         }
         // If the delayedInputTokensList is not empty, and the delayedTokens
         // is empty (ready for a new service), get the first token
-        // and put it into service. Schedule a refiring to wave up 
+        // and put it into service. Schedule a refiring to wave up
         // after the service finishes.
-        if (_delayedInputTokensList.size() != 0 
+        if (_delayedInputTokensList.size() != 0
                 && _delayedOutputTokens.isEmpty()) {
             _nextTimeFree = currentTime.add(_delay);
-            _delayedOutputTokens.put(new TimedEvent(_nextTimeFree, 
+            _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
                     _delayedInputTokensList.removeFirst()));
             getDirector().fireAt(this, _nextTimeFree);
         }
@@ -188,10 +188,10 @@ public class Server extends VariableDelay {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
-    
+
     /** Override the method of the super class to initialize parameters.
      */
-    protected void _init() 
+    protected void _init()
         throws NameDuplicationException, IllegalActionException  {
         super._init();
         delay.getPort().setName("newServiceTime");
@@ -200,14 +200,14 @@ public class Server extends VariableDelay {
                 = new StringAttribute(delay.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Next time the server becomes free.
      */
     private Time _nextTimeFree;
-    
+
     /** List of delayed input tokens, whose finishing times can not be decided.
      */
     private LinkedList _delayedInputTokensList;

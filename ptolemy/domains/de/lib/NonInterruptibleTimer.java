@@ -1,4 +1,4 @@
-/* A non-interruptible timer that produces an event with a time delay 
+/* A non-interruptible timer that produces an event with a time delay
 specified by the input.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
@@ -43,15 +43,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// NonInterruptibleTimer
 /**
-   A NonInterruptibleTimer actor works similar to the {@link Timer} actor, 
-   except that if a NonInterruptibleTimer actor has not finished processing 
-   the previous input, a new input has to be delayed for processing.  
-   In other words, it can not be interrupted to respond new inputs. Instead, 
-   the new inputs will be queued and processed in a first come first serve 
+   A NonInterruptibleTimer actor works similar to the {@link Timer} actor,
+   except that if a NonInterruptibleTimer actor has not finished processing
+   the previous input, a new input has to be delayed for processing.
+   In other words, it can not be interrupted to respond new inputs. Instead,
+   the new inputs will be queued and processed in a first come first serve
    (FCFS) fashion.
    <p>
-   This actor extends the {@link Timer} actor. 
-      
+   This actor extends the {@link Timer} actor.
+
    @see Timer
    @author Haiyang Zheng
    @version $Id$
@@ -78,15 +78,15 @@ public class NonInterruptibleTimer extends Timer {
     ////                         public methods                    ////
 
     /** Read one token from the input. If the value of the input is bigger than
-     *  0.0, save the input to be processed in the postfire method. Otherwise, 
-     *  check whether there is any output scheduled to be produced at the 
-     *  current time. If there is one, send out that output and save the 
-     *  current input for future processing in the postfire method. If there 
+     *  0.0, save the input to be processed in the postfire method. Otherwise,
+     *  check whether there is any output scheduled to be produced at the
+     *  current time. If there is one, send out that output and save the
+     *  current input for future processing in the postfire method. If there
      *  is no output to produce, the timer is not processing other inputs,
-     *  and the input value is 0.0, send an output immediately and reset the 
-     *  current input to null, indicating no further processing of the current 
+     *  and the input value is 0.0, send an output immediately and reset the
+     *  current input to null, indicating no further processing of the current
      *  input is necessary.
-     * 
+     *
      *  @exception IllegalActionException If there is no director, or can not
      *  send or get tokens from ports.
      */
@@ -109,7 +109,7 @@ public class NonInterruptibleTimer extends Timer {
         _currentOutput = null;
         if (_delayedOutputTokens.size() > 0) {
             if (currentTime.compareTo(_nextTimeFree) == 0) {
-                TimedEvent earliestEvent 
+                TimedEvent earliestEvent
                     = (TimedEvent)_delayedOutputTokens.get();
                 Time eventTime = earliestEvent.timeStamp;
                 if (!eventTime.equals(currentTime)) {
@@ -139,8 +139,8 @@ public class NonInterruptibleTimer extends Timer {
         _delayedInputTokensList = new LinkedList();
     }
 
-    /** If there are delayed inputs that are not processed and the timer 
-     *  is not busy. Begin processing the earliest input and schedule 
+    /** If there are delayed inputs that are not processed and the timer
+     *  is not busy. Begin processing the earliest input and schedule
      *  a future firing to produce it.
      *  @exception IllegalActionException If there is no director or can not
      *  schedule future firings to handle delayed input events.
@@ -154,14 +154,14 @@ public class NonInterruptibleTimer extends Timer {
         }
         // If the delayedInputTokensList is not empty, and the delayedTokens
         // is empty (ready to process a new input), get the first input in the
-        // delayedInputTokensList, put it into the delayedTokens, and begin 
+        // delayedInputTokensList, put it into the delayedTokens, and begin
         // processing it. Schedule a refiring to produce the corresponding
-        // output at the time: current time + delay specified by the input 
+        // output at the time: current time + delay specified by the input
         // being processed.
-        if (_delayedInputTokensList.size() != 0 
+        if (_delayedInputTokensList.size() != 0
                 && _delayedOutputTokens.isEmpty()) {
             // NOTE: the input has a fixed data type as double.
-            DoubleToken delayToken 
+            DoubleToken delayToken
                 = (DoubleToken)_delayedInputTokensList.removeFirst();
             double delay = delayToken.doubleValue();
             _nextTimeFree = currentTime.add(delay);
@@ -177,7 +177,7 @@ public class NonInterruptibleTimer extends Timer {
 
     // Next time the server becomes free.
     private Time _nextTimeFree;
-    
+
     // List of delayed input tokens, whose finishing times can not be decided.
     private LinkedList _delayedInputTokensList;
 }

@@ -44,34 +44,34 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// TimedDelay
 /**
-   This actor delays the input by a specified amount of time. The amount 
+   This actor delays the input by a specified amount of time. The amount
    of the time is required to be non-negative and has a default value 1.0.
-   The input and output types are unconstrained, except that the output type 
+   The input and output types are unconstrained, except that the output type
    must be the same as that of the input.
    <p>
    The behavior of this actor on each firing is to read a token from the input,
-   if there is one, and schedule itself to fire again to produce that token 
-   on the corresponding output channel after the appropriate time delay. 
-   Note that if the value of delay is 0.0, and there is no output scheduled 
-   to produce at the same time the input arrives, the output is procduced 
+   if there is one, and schedule itself to fire again to produce that token
+   on the corresponding output channel after the appropriate time delay.
+   Note that if the value of delay is 0.0, and there is no output scheduled
+   to produce at the same time the input arrives, the output is procduced
    immediately. Otherwise, the input is produced in the immediately next firing
-   at the same model time. If there is no input token, then no output token is 
-   produced. 
+   at the same model time. If there is no input token, then no output token is
+   produced.
    <p>
    Occasionally, this actor is used inside a feedback loop just for scheduling
    perpose, where the delay parameter is set to zero. This implies that no
    output token is produced earlier than the time its trigger input arrives.
-   Therefore the actor declares that there is a delay between the input 
-   and the output, and the DE director will leverage this when 
-   determining the precedences of the actors. It is sometimes useful to think 
+   Therefore the actor declares that there is a delay between the input
+   and the output, and the DE director will leverage this when
+   determining the precedences of the actors. It is sometimes useful to think
    of this zero-valued delay as an infinitesimal delay.
-   <p> 
+   <p>
    The output may have the same microstep with the input, if there is
-   no queued output scheduled to produce at the same time the input arrives. 
+   no queued output scheduled to produce at the same time the input arrives.
    Otherwise, the output is produced one microstep later. This guarantees that
-   a DE signal is functional in the sense that there for any tag, there is 
-   at most one value. 
-   
+   a DE signal is functional in the sense that there for any tag, there is
+   at most one value.
+
    @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
    @see ptolemy.domains.de.lib.VariableDelay
    @see ptolemy.domains.de.lib.Server
@@ -85,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
 public class TimedDelay extends DETransformer {
 
     /** Construct an actor with the specified container and name.
-     *  Constrain that the output type to be the same as the input type. 
+     *  Constrain that the output type to be the same as the input type.
      *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -114,9 +114,9 @@ public class TimedDelay extends DETransformer {
 
     /** If the attribute is <i>delay</i>, then ensure that the value
      *  is non-negative.
-     *  NOTE: the newDelay may be 0.0, which may change the causality 
-     *  property of the model. We leave the model designers to decide 
-     *  whether the zero delay is really what they want. 
+     *  NOTE: the newDelay may be 0.0, which may change the causality
+     *  property of the model. We leave the model designers to decide
+     *  whether the zero delay is really what they want.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the delay is negative.
      */
@@ -152,7 +152,7 @@ public class TimedDelay extends DETransformer {
     }
 
     /** Read one token from the input and send one output
-     *  that is scheduled to produce at the current time. 
+     *  that is scheduled to produce at the current time.
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
@@ -164,7 +164,7 @@ public class TimedDelay extends DETransformer {
             _currentInput = null;
         }
         // produce output
-        // NOTE: the delay may be zero. However, if there is already some output  
+        // NOTE: the delay may be zero. However, if there is already some output
         // scheduled to produce at the current time before the current input
         // arrives, the current input is delayed to the next firing to produce.
         Time currentTime = getDirector().getModelTime();
@@ -205,16 +205,16 @@ public class TimedDelay extends DETransformer {
     public boolean postfire() throws IllegalActionException {
        Time currentTime = getDirector().getModelTime();
        Time delayToTime = currentTime.add(_delay);
-       // Remove the token that is already sent 
+       // Remove the token that is already sent
        // at the current time.
-       if (_delayedOutputTokens.size() > 0) { 
+       if (_delayedOutputTokens.size() > 0) {
            if (_currentOutput != null) {
                _delayedOutputTokens.take();
-           } 
+           }
        }
        // handle the refiring of the multiple tokens
        // that are scheduled to produce at the same time.
-       if (_delayedOutputTokens.size() > 0) { 
+       if (_delayedOutputTokens.size() > 0) {
            TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
            Time eventTime = earliestEvent.timeStamp;
            if (eventTime.equals(currentTime)) {
@@ -243,9 +243,9 @@ public class TimedDelay extends DETransformer {
     /** Initialize the delay parameter.
      *  @exception IllegalActionException If delay parameter cannot be set.
      *  @exception NameDuplicationException If there already is a parameter
-     *  named "delay".   
+     *  named "delay".
      */
-    protected void _init() 
+    protected void _init()
         throws IllegalActionException, NameDuplicationException  {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
@@ -256,7 +256,7 @@ public class TimedDelay extends DETransformer {
     ////                       protected variables                 ////
 
     /** The amount of delay.
-     */ 
+     */
     protected double _delay;
 
     /** A local event queue to store the delayed output tokens.
@@ -266,8 +266,8 @@ public class TimedDelay extends DETransformer {
     /** Current input.
      */
     protected Token _currentInput;
-    
+
     /** Current output.
      */
-    protected Token _currentOutput;    
+    protected Token _currentOutput;
 }
