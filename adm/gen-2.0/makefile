@@ -453,14 +453,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
-	$(REMOTE1PTIIDIST)/ptolemy/lang \
-	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/saveasjava \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
@@ -482,7 +477,8 @@ JSALLDIRS = \
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/java
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/java \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/shallow
 
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
