@@ -5,10 +5,10 @@
   <configure>
     <?moml
       <group>
-        <doc>RTPactors</doc>
+        <doc>RTP Actors</doc>
 
 	<entity name="PeriodicTrigger"
-	        class="ptolemy.domains.rtp.lib.PeriodicTrigger">
+	        class="ptolemy.domains.rtp.lib.PeriodicTrigger"/>
       </group>
     ?>
   </configure>
