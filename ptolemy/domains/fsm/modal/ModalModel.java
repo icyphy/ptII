@@ -114,6 +114,10 @@ public class ModalModel extends CTCompositeActor {
      *  the name with setName(). If the workspace argument is null, then
      *  use the default workspace.
      *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public ModalModel(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -224,6 +228,7 @@ public class ModalModel extends CTCompositeActor {
     }
 
     /** Get the FSM controller.
+     *  @return The FSM controller.
      */
     public FSMActor getController() {
         return _controller;
