@@ -47,7 +47,8 @@ PTPACKAGE = 	kernel
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DDFDirector.java 
+	DDFDirector.java \
+	ActorEnablingStatus.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
