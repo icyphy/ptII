@@ -100,9 +100,9 @@ JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
 all: sources jclass suball $(TYZIP) $(JARFILE) pt.plotapplet.jar
-	chmod a+x pxgraph testpxgraph
+	-chmod a+x pxgraph testpxgraph
 install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) pt.plotapplet.jar
-	chmod a+x pxgraph testpxgraph
+	-chmod a+x pxgraph testpxgraph
 
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
