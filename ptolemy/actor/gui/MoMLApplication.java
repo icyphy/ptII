@@ -67,7 +67,7 @@ If one of these files is an XML file that defines a Configuration, or one
 of the classes is an instance of Configuration, then
 all subsequent files will be read by delegating to the Configuration,
 invoking its openModel() method.  A command-line file is assumed to be
-a MoML file or a file that can be openened by the specified configuration.
+a MoML file or a file that can be opened by the specified configuration.
 <p>
 If a Ptolemy model is instantiated on the command line, either
 by giving a MoML file or a -class argument, then parameters of that
@@ -165,7 +165,7 @@ public class MoMLApplication {
                     // Try one last thing, using the classpath.
                     // Need a class context, and this is a static method, so...
                     // NOTE: There doesn't seem to be any way to convert
-                    // this a cononical name, so if a model is opened this
+                    // this a canonical name, so if a model is opened this
                     // way, and then later opened as a file, the model
                     // directory will think it has two different files.
                     Class refClass = Class.forName(
@@ -225,7 +225,7 @@ public class MoMLApplication {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version 1.0, Build $Id$");
-            // NOTE: This means the test suites cannot test -help
+            // NOTE: This means the test suites cannot test -version
             System.exit(0);
         } else if (arg.equals("")) {
             // Ignore blank argument.
