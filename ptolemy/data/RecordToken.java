@@ -137,7 +137,10 @@ public class RecordToken extends Token {
         return new RecordToken(labels, values);
     }
 
-    /** Throw an exception. Use the convert method in RecordType.
+    /** Convert the argument token into an instance of RecordToken. Since
+     *  this method is static, there is not an instance of RecordToken from
+     *  which the resulting type can be obtained. So this method always
+     *  throws an exception.  Use the convert method in RecordType instead.
      *  @exception IllegalActionException Always thrown.
      */
     public static Token convert(Token token) throws IllegalActionException {

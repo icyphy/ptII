@@ -111,7 +111,10 @@ public class ArrayToken extends Token {
 	return result;
     }
 
-    /** Throw an exception. Use the convert method in ArrayType.
+    /** Convert the argument token into an instance of ArrayToken. Since
+     *  this method is static, there is not an instance of ArrayToken from
+     *  which the resulting type can be obtained. So this method always
+     *  throws an exception.  Use the convert method in ArrayType instead.
      *  @exception IllegalActionException Always thrown.
      */
     public static Token convert(Token token)
