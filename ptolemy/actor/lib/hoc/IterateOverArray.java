@@ -303,6 +303,12 @@ public class IterateOverArray extends TypedCompositeActor
         ChangeRequest request = new ChangeRequest(
                 this,       // originator
                 "Adjust contained entities, ports and parameters") {
+            // Override this to indicate that the change is localized.
+            // This keeps the EntityTreeModel from closing open libraries
+            // when notified of this change.
+            public NamedObj getLocality() {
+                return IterateOverArray.this;
+            }
             protected void _execute() throws Exception {
                 // NOTE: We defer to a change request
                 // because only at this point can we be sure that the
@@ -421,6 +427,12 @@ public class IterateOverArray extends TypedCompositeActor
         ChangeRequest request = new ChangeRequest(
                 this,
                 "Add a port on the inside") {
+            // Override this to indicate that the change is localized.
+            // This keeps the EntityTreeModel from closing open libraries
+            // when notified of this change.
+            public NamedObj getLocality() {
+                return IterateOverArray.this;
+            }
             protected void _execute() throws Exception {
                 // NOTE: We defer the construction of the MoML change request
                 // to here because only at this point can we be sure that the
@@ -826,6 +838,12 @@ public class IterateOverArray extends TypedCompositeActor
             ChangeRequest request = new ChangeRequest(
                     this,
                     "Add mirror port to the container.") {
+                // Override this to indicate that the change is localized.
+                // This keeps the EntityTreeModel from closing open libraries
+                // when notified of this change.
+                public NamedObj getLocality() {
+                    return getContainer();
+                }
                 protected void _execute() throws Exception {
                     try {
                         workspace().getWriteAccess();
