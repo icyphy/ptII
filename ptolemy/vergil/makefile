@@ -31,12 +31,12 @@
 
 ME =		ptolemy/vergil
 
-DIRS = 		graph toolbox ptolemy debugger
+DIRS = 		toolbox graph ptolemy debugger
 
 # Root of the Java directory
 ROOT =		../../
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)/boot
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ClassLoadingService.java \
 	JModelViewer.java \
 	MoMLViewerApplet.java \
 	Module.java \

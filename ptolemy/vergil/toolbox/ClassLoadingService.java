@@ -28,12 +28,13 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil;
+package ptolemy.vergil.toolbox;
 
 import BootstrapClassLoader;
 import java.lang.ClassLoader;
 import java.net.URLClassLoader;
 import java.net.URL;
+import ptolemy.vergil.*;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////

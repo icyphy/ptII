@@ -36,7 +36,8 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# Classloadingservice needs /boot to find the BootstrapClassLoader
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)/boot
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -48,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ClassLoadingService.java \
 	EditorIcon.java \
 	EditParametersFactory.java \
 	EditParameterStylesFactory.java \
