@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NamedObj;
    FIXME: Should associated with a static scheduling code generator.
 
    @author Ye Zhou
-   @version $Id: SDFDirector.java
+   @version $Id$
    @since Ptolemy II 5.0
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (eal)
@@ -115,10 +115,10 @@ public class SDFDirector extends Director {
                     helperObject.generateFireCode(code);
                     // FIXME: Each time fire an actor, increase the offset of
                     // each of its port by the port rate.
-                    Set inputAndOutputPortsList = new HashSet();
-                    inputAndOutputPortsList.addAll(actor.inputPortList());
-                    inputAndOutputPortsList.addAll(actor.outputPortList());
-                    Iterator inputAndOutputPorts = inputAndOutputPortsList.iterator();
+                    Set inputAndOutputPortsSet = new HashSet();
+                    inputAndOutputPortsSet.addAll(actor.inputPortList());
+                    inputAndOutputPortsSet.addAll(actor.outputPortList());
+                    Iterator inputAndOutputPorts = inputAndOutputPortsSet.iterator();
                     while (inputAndOutputPorts.hasNext()) {
                         IOPort port = (IOPort) inputAndOutputPorts.next();
                         int offset = ((CodeGeneratorHelper) helperObject)

@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
@@ -480,15 +481,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  default value of 0.
      */
     public void resetOffsets() {
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            setOffset(inputPort, 0);
-        }
-        Iterator outputPorts = ((Actor) _component).outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            IOPort outputPort = (IOPort) outputPorts.next();
-            setOffset(outputPort, 0);
+        Set inputAndOutputPortsSet = new HashSet();
+        inputAndOutputPortsSet.addAll(((Actor) _component).inputPortList());
+        inputAndOutputPortsSet.addAll(((Actor) _component).outputPortList());
+        Iterator inputAndOutputPorts = inputAndOutputPortsSet.iterator();
+        while (inputAndOutputPorts.hasNext()) {
+            IOPort port = (IOPort) inputAndOutputPorts.next();
+            setOffset(port, 0);
         }
     }
     

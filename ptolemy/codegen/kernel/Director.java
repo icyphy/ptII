@@ -47,8 +47,8 @@ import ptolemy.kernel.util.NamedObj;
    
    @see CodeGenerator
    @author Ye Zhou
-   @version $Id: Director.java
-   @since Ptolemy II 5.0
+   @version $Id$
+   @since Ptolemy II 5.0, 
    @Pt.ProsedRating Red (zhouye)
    @Pt.AcceptedRating Red (zhouye)
    
@@ -106,10 +106,10 @@ public class Director implements ActorCodeGenerator {
             Actor actor = (Actor) actors.next();
             ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
             // Set the buffer sizes and offsets of each port of the actor.
-            Set inputAndOutputPortsList = new HashSet();
-            inputAndOutputPortsList.addAll(actor.inputPortList());
-            inputAndOutputPortsList.addAll(actor.outputPortList());
-            Iterator inputAndOutputPorts = inputAndOutputPortsList.iterator();
+            Set inputAndOutputPortsSet = new HashSet();
+            inputAndOutputPortsSet.addAll(actor.inputPortList());
+            inputAndOutputPortsSet.addAll(actor.outputPortList());
+            Iterator inputAndOutputPorts = inputAndOutputPortsSet.iterator();
             while (inputAndOutputPorts.hasNext()) {
                 IOPort port = (IOPort) inputAndOutputPorts.next();
                 int bufferSize = getBufferSize(port);
