@@ -1840,8 +1840,11 @@ public class MoMLParser extends HandlerBase {
             // NOTE: This should perhaps be handled by the
             // class loader, but it seems rather complicated to
             // do that.
-            altClassAsFile = className.replace('.','/') + ".xml";
-            classAsFile = className.replace('.','/') + ".moml";
+            // Search for the .xml file before searching for the .moml
+            // file.  .moml files are obsolete, and we should probably
+            // not bother searching for them at all.
+            classAsFile = className.replace('.','/') + ".xml";
+            altClassAsFile = className.replace('.','/') + ".moml";
         } else {
             // Source is given.
             classAsFile = source;
