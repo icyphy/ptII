@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
@@ -116,7 +117,7 @@ public class ComputeHistogram extends TypedAtomicActor {
                 new IntToken(10));
         numberOfBins.setTypeEquals(BaseType.INT);
         
-        inputCount = new Parameter(this, "inputCount",
+        inputCount = new PortParameter(this, "inputCount",
                 new IntToken(10));
         inputCount.setTypeEquals(BaseType.INT);
 
@@ -145,7 +146,7 @@ public class ComputeHistogram extends TypedAtomicActor {
 
     /** The number of tokens to compute the histogram for.
      */
-    public Parameter inputCount;
+    public PortParameter inputCount;
 
     /** The parameter that determines the consumption rate of the input.
      */
@@ -194,6 +195,8 @@ public class ComputeHistogram extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         _bins = new int[_numberOfBins];
       
+        inputCount.update();
+
         int count = ((IntToken)inputCount.getToken()).intValue();
         for (int i = 0; i < count; i++) {
             if (input.hasToken(0)) {
