@@ -38,9 +38,9 @@ jmp_buf env;
 int epc;
 _EXCEPTION_INSTANCE exception_id;
 
-/**
+/** FIXME: Remove this.
  *  PCCG implementation of the instanceof operator.
- */
+
 boolean PCCG_instanceof(PCCG_CLASS_INSTANCE *operand,
         PCCG_CLASS *checkType) {
     PCCG_CLASS *p = operand->class;
@@ -53,3 +53,4 @@ boolean PCCG_instanceof(PCCG_CLASS_INSTANCE *operand,
     } while (p != null);
     return false;
 }
+*/

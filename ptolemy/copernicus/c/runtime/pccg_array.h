@@ -61,17 +61,20 @@ Run-time C code generation functionality for translation of arrays.
  */
 typedef struct
 {
-    //FIXME: Do we need these two pointers?
     
     /* Placeholder for pointer to superclass structure */
     void *superclass;
 
     /* Pointer to array class */
     Ci1063877011_Object array_class;
+    /* Interface lookup function. */
+    void* (*lookup)(long int);
+
+    /* Function for handling the "instanceof" operator. */
+    short (*instanceOf)(PCCG_CLASS_PTR, long int);
 
     struct 
     {
-        //FIXME: Override clone()
         /* Inherited/Overridden methods from java.lang.Object */
         i0530663260_Class (*m02100232897_getClass)(i1063877011_Object);
         int (*m1164761901_hashCode)(i1063877011_Object);
@@ -105,7 +108,8 @@ typedef struct
 #endif
 
 
-//FIXME: make this structure typedef
+/* FIXME: make this structure typedef
+ */
 typedef char  PCCG_ARRAY_char_elem;
 typedef short PCCG_ARRAY_short_elem;
 typedef long  PCCG_ARRAY_long_elem;

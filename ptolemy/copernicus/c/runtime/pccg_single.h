@@ -61,7 +61,7 @@ Header file for SingleClass Mode.
 /*
 typedef struct
 {
-    int dummy; // To suppress warnings.
+    int dummy; To suppress warnings.
 
 } PCCG_ARRAY_CLASS;
 */

@@ -33,6 +33,9 @@ Run-time C code generation functionality for translation of arrays.
 #include <stdarg.h>
 #include <stdlib.h>
 #include "pccg_array.h"
+#include "GC.h"
+
+#define malloc(x) GC_malloc(x)
 
 PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
 
@@ -72,9 +75,10 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
    
     first_dimension_size = va_arg(next_argument, int);
     
-    // If the elements of this array are normal Objects/items and not
-    // arrays, then they are allocated directly, else pointers to them are
-    // allocated.
+    /* If the elements of this array are normal Objects/items and not
+       arrays, then they are allocated directly, else pointers to them are
+       allocated.
+    */
     if (dimensions == 1) {
         first_element_size = element_size;
     }
@@ -82,16 +86,17 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
         first_element_size = sizeof(void *);
     }
 
-    // Allocate memory for the outermost array.
+    /* Allocate memory for the outermost array. */
 #ifdef sun
     new_array = memalign(8, first_dimension_size* first_element_size);
 #else
-    new_array = calloc(first_dimension_size, first_element_size);
+    new_array = malloc(first_dimension_size * first_element_size);
 #endif
 
-    // If this is an array of arrays, its elements must be pointers to the
-    // sub-arrays. It is not sufficient to merely allocate memory. The
-    // pointers must also be set correctly.
+    /* If this is an array of arrays, its elements must be pointers to the
+       sub-arrays. It is not sufficient to merely allocate memory. The
+       pointers must also be set correctly.
+    */
     if (dimensions_to_fill > 1) {
         for (i = 0; i <= first_dimension_size; i++) {
             *((void**)new_array + i) =
@@ -111,8 +116,3 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
     result->array_length = first_dimension_size;
     return result;
 }
-    
-    
-
-
-

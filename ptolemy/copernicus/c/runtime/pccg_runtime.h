@@ -45,7 +45,9 @@ extern jmp_buf env;
 extern int epc;
 extern _EXCEPTION_INSTANCE exception_id;
 
-extern boolean PCCG_instanceof(PCCG_CLASS_INSTANCE *operand,
-        PCCG_CLASS *checkType);
+/* Macro to simplify "instanceof" calls. */
+#define PCCG_instanceof(operand, checkIndex) \
+    ((PCCG_CLASS_PTR)operand->class)->instanceOf\
+    ((PCCG_CLASS_PTR)operand->class, checkIndex)
 
 #endif

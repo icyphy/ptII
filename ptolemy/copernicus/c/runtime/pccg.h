@@ -49,7 +49,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 typedef struct _pccg_class {
 
-    struct _pccg_class *superclass;
+    /* Pointer to superclass structure */
+    void* superclass;
+
+    /* Pointer to array class */
+    void* array_class;
+
+    /* Interface lookup function. */
+    void* (*lookup)(long int);
+
+    /* Function for handling the "instanceof" operator. */
+    short (*instanceOf)(void*, long int);
+
 
     /* other class-specific information follows */
 
