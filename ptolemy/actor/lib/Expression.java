@@ -253,7 +253,7 @@ public class Expression extends TypedAtomicActor {
         if (there == null) {
             // FIXME: Have to initialize with a token or type
             // resolution fails.
-            new Variable(this, portName, new IntToken(1));
+            new Variable(this, portName, new DoubleToken(1.0));
         } else if ((there instanceof Parameter)
                 || !(there instanceof Variable)) {
             throw new IllegalActionException(this, "Port name collides with"
