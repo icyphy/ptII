@@ -42,6 +42,7 @@ include $(CONFIG)
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
+	CheckSize.java \
 	PrintThreads.java \
 	WatchDog.java
 
@@ -66,6 +67,7 @@ SCRIPTS = \
 	chkeol \
 	chkextra \
 	chkjava \
+	chksize \
 	cvs2cl.pl \
 	deprecated \
 	gcstats \
