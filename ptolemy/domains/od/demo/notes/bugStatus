@@ -1,0 +1,29 @@
+Bug Status
+Date:		January 12, 1999
+
+
+
+*****
+Bug 1: Premature Completion of ODStringDemo
+
+If ODActor.getCurrent() consists of:
+
+    public double getCurrentTime() {
+        if( _rcvrTimeTable.size() == 0 ) {
+            return _currentTime;
+        }
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
+        _currentTime = triple.getTime();
+        return _currentTime;
+    }
+
+Then ODStringDemo reaches 
+	a	13.5
+	i	14.0
+	n	5000.0
+	;	5000.0
+This assumes completionTime = 5001
+
+
+
+
