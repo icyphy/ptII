@@ -26,14 +26,21 @@ The first of these sets static properties of the plot (title, labels, etc.)
 while the second defines the body of a thread that generates points forever (if it is
 allowed to).
 <p>
-There are still some problems with <code>PlotLive</code>.
-The most annoying is that this class uses the "exclusive or" drawing mode to allow
-it to easily erase old points as it adds new ones.  This mode, however, introduces
-a number of annoying artifacts in the graph.  In particular, if marks are
-made at the plotted points, and lines are drawn between points, the lines
-effectively erase the marks where they intersect.
-Moreover, if lines or points overlap, they erase each other.
-Surely there must be a better way to achieve easy erasure of drawn graphics.
+
+There are still some problems with <code>PlotLive</code>.  The most
+annoying is that this class uses the "exclusive or" drawing mode to
+allow it to easily erase old points as it adds new ones.  This mode,
+however, introduces a number of annoying artifacts in the graph.  In
+particular, if marks are made at the plotted points, and lines are
+drawn between points, the lines effectively erase the marks where they
+intersect.  Moreover, if lines or points overlap, they erase each
+other.  Surely there must be a better way to achieve easy erasure of
+drawn graphics.
+<HR>
+<A HREF="index.html">Up</A> to the Example index -
+<A HREF="BarGraph.html">Back</A> to a bar graph -
+<A HREF="Binary.html">Forward</A> to a plot of binary data
+
 <HR>
 Copyright &#169 1997, The Regents of the University of California.
 All rights reserved.
