@@ -227,5 +227,6 @@ test DDEReceiver-2.5 {Check hasToken() cache.} {
     catch {$rcvr get} msg
 
     list $msg
-} {{ptolemy.actor.NoTokenException: .toplevel.actor.port: Attempt to get token that does not have have the earliest time stamp.}};
+} {{ptolemy.actor.NoTokenException: .toplevel.actor.port:
+Attempt to get token that does not have have the earliest time stamp.}};
 
