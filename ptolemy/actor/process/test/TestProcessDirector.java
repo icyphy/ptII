@@ -103,7 +103,10 @@ public class TestProcessDirector extends ProcessDirector {
         synchronized(this) {
             while( continueFireMethod ) {
                 continueFireMethod = false;
-		if( _debugging ) _debug(_name+": beginning fire() cycle");
+		if( _debugging ) _debug(_name+": beginning fire() cycle;"
+                +"there are "+_actorsBlocked+" actors blocked, " 
+                +_getStoppedProcessesCount()+" actors stopped and "
+                +_getActiveActorsCount()+" actors active.");
                 while( !_areActorsDeadlocked() && !_areActorsStopped() ) {
                     workspace.wait(this);
                 }
@@ -125,7 +128,17 @@ public class TestProcessDirector extends ProcessDirector {
 		    if( _debugging ) _debug(_name+": actors deadlocked; waiting for input to block");
 		    workspace.wait(this);
 		}
-		if( _debugging ) _debug(_name+": deadlocked or input controller stopped");
+                if( _areActorsDeadlocked() ) {
+		    if( _debugging ) _debug(_name+": actors deadlocked");
+                } else if( !_areActorsDeadlocked() ) {
+		    if( _debugging ) _debug(_name+": actors no longer deadlocked");
+                }
+                if( _isInputControllerBlocked() ) {
+		    if( _debugging ) _debug(_name+": input controller stopped");
+                } else if( !_isInputControllerBlocked() ) {
+		    if( _debugging ) _debug(_name+": input controller is not stopped");
+                }
+		// if( _debugging ) _debug(_name+": deadlocked or input controller stopped");
 
 		while( _areActorsDeadlocked() && _isInputControllerBlocked() ) {
 		    // Reaching this point means that both the
@@ -136,14 +149,20 @@ public class TestProcessDirector extends ProcessDirector {
 		    if( _debugging ) _debug(_name+": actors deadlocked and input controller stopped");
 		    CompositeActor container = (CompositeActor)getContainer();
 		    if( container.getContainer() != null ) {
-			Director execDir = ((Actor)container).getDirector();
-			if( execDir instanceof ProcessDirector ) {
+                        if( registerBlockedBranchReceiversWithExecutive() ) {
+		            if( _debugging ) _debug(_name+": just registered blocked branches to executive director; there are "+_actorsBlocked+" actors blocked; now waiting");
+			    workspace.wait(this);
+                        
+                        /*
+			Director execDir = ((Actor)container.getContainer()).getDirector();
+			if( execDir instanceof TestProcessDirector ) {
 			    // Since the higher level actor is a process
 			    // let's register a block and wait.
 		            if( _debugging ) _debug(_name+": registering blocked branches to executive director");
-			    ((ProcessDirector)execDir).registerBlockedBranchReceivers();
-		            if( _debugging ) _debug(_name+": just registered blockeed branches to executive director; now waiting");
+			    ((TestProcessDirector)execDir).registerBlockedBranchReceiversWithExecutive();
+		            if( _debugging ) _debug(_name+": just registered blocked branches to executive director; there are "+_actorsBlocked+" actors blocked; now waiting");
 			    workspace.wait(this);
+                        */
 			} else {
 			    // Since the higher level actor is not a 
 			    // process, let's end this iteration and
