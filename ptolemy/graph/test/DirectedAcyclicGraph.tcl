@@ -61,7 +61,7 @@ test DirectedAcyclicGraph-2.1 {Create an empty instance} {
 test DirectedAcyclicGraph-2.2 {test methods on the above empty instance} {
     catch {$p leastUpperBound null null} msg
     list [$p bottom] [$p top] $msg
-} {java0x0 java0x0 {java.lang.IllegalArgumentException: Graph._getNodeId: the specified Object is not a node in this graph.}}
+} {java0x0 java0x0 {java.lang.IllegalArgumentException: Graph._getNodeId: the object "null" is not a node in this graph.}}
 
 ######################################################################
 ####
