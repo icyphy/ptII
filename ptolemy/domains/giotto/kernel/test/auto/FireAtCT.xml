@@ -4,7 +4,7 @@
 <entity name="FireAtCT" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 891]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 564]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
     </property>
@@ -53,7 +53,7 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -73,11 +73,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-75.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="77.7890625, 117.40625">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={169, 17, 865, 673}}">
+    </property>
     <entity name="1:giotto" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 200.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -190,7 +192,7 @@
             </property>
             <property name="init" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 115.0">
@@ -203,6 +205,9 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
             </port>
         </entity>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -231,6 +236,9 @@
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4,6,8,10}">
@@ -245,11 +253,14 @@
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="105.0, 260.0">
+            <vertex name="vertex1" value="105.0, 260.0">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -266,7 +277,7 @@
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -291,7 +302,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-115.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="52.7890625, 237.40625">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -302,7 +313,7 @@
         </port>
     </entity>
     <entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 285.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -318,23 +329,29 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false,false,true,false,true,false,true,false,true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false,false,false,false,true,false,false,false,true,false,false,false,true,false,false,false,true,false,false,false,true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 285.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -342,12 +359,10 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="230.0, 200.0">
+        <vertex name="vertex1" value="385.0, 200.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="375.0, 285.0">
-        </vertex>
     </relation>
     <link port="1:giotto.in" relation="relation2"/>
     <link port="1:giotto.out" relation="relation3"/>
