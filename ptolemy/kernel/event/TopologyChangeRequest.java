@@ -1,5 +1,4 @@
-/* A TopologyChangeRequest carries a queue of pending topology
-   change events.
+/* A TopologyChangeRequest is an an aggregation of topology change events.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -45,30 +44,32 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// TopologyChangeRequest
 /**
-A TopologyChangeRequest contains a sequence of pending mutation events
-and support methods for constructing them.  Generally, objects that
-need to change topology will create an anonymous subclass and override
-the method constructEventQueue().  In this method, the code will
+A TopologyChangeRequest contains a sequence of mutation events represented
+by instances of TopologyEvent.  Generally, objects that
+need to change the topology (<b>clients</b> or <b>sources</b>)
+will create an anonymous inner class that extends this class and override
+the method constructEventQueue().  In that method, the code will
 create entities, relations, and so on, and call methods such as
 queueEntityAddedEvent() to create and queue events.
-
-<p> In specific classes of models of computation, there are certain
-points where mutations of a graph can be safely performed. The
-class or classes responsible for initiating the mutation are
-expected to create an object that implements TopologyChangeRequest and
-pass it to the execution control object so the mutation can
-be performed at the appropriate time.
+<p>
+A <b>server</b> is an object that can safely perform the mutations.
+In specific classes of models of computation, there are certain
+points where mutations of a graph can be safely performed. Thus, the
+server would be an instance of Director.
+The server performs the mutations by calling performRequest() on this
+object.  It then calls notifyListeners() for any listeners that have
+registered with the server to be notified of topology changes.
 
 @author John Reekie
 @version $Id$
 @see TopologyListener, TopologyEvent */
 public abstract class TopologyChangeRequest {
 
-    /** Construct a new mutation request with the given source. The
-     * source should be the object that is creating this object.
+    /** Construct a new mutation request with the given client. The
+     * client should be the object that is creating this object.
      */
-    public TopologyChangeRequest (Object source) {
-        this._source = source;
+    public TopologyChangeRequest (Object client) {
+        this._client = client;
     }
   
     ///////////////////////////////////////////////////////////////////
@@ -88,44 +89,15 @@ public abstract class TopologyChangeRequest {
      *
      * @param listener The mutation listener to pass the
      * sequence of events to
+     * @exception IllegalActionException If any topology change in
+     *  sequence of mutation events has not yet been implemented.
      */
-    public void notifyListeners (TopologyListener listener) {
+    public void notifyListeners (TopologyListener listener)
+            throws IllegalActionException {
         Enumeration elts = _events.elements();
         while (elts.hasMoreElements()) {
             TopologyEvent event = (TopologyEvent) elts.nextElement();
-            switch (event.getID()) {
-            case TopologyEvent.ENTITY_ADDED:
-                listener.entityAdded(event);
-                break;
-                
-            case TopologyEvent.ENTITY_REMOVED:
-                listener.entityRemoved(event);
-                break;
-
-            case TopologyEvent.PORT_ADDED:
-                listener.portAdded(event);
-                break;
-
-            case TopologyEvent.PORT_REMOVED:
-                listener.portRemoved(event);
-                break;
-
-            case TopologyEvent.PORT_LINKED:
-                listener.portLinked(event);
-                break;
-
-            case TopologyEvent.PORT_UNLINKED:
-                listener.portUnlinked(event);
-                break;
-
-            case TopologyEvent.RELATION_ADDED:
-                listener.relationAdded(event);
-                break;
-
-            case TopologyEvent.RELATION_REMOVED:
-                listener.relationRemoved(event);
-                break;
-            }
+            event.notifyListeners(listener);
         }
     }
  
@@ -139,8 +111,11 @@ public abstract class TopologyChangeRequest {
      * thrown on undo.
      *
      * @throws TopologyChangeFailedException if the mutation failed
+     * @exception IllegalActionException If the change has already
+     *   been implemented.
      */
-    public void performRequest () throws TopologyChangeFailedException {
+    public void performRequest () throws TopologyChangeFailedException,
+           IllegalActionException {
         Enumeration elts = _events.elements();
         LinkedList doneEvents = new LinkedList();
         TopologyChangeFailedException exception;
@@ -184,7 +159,7 @@ public abstract class TopologyChangeRequest {
         }
     }
 
-    /** Return an enumartion over the queued events.
+    /** Return an enumartion of the queued events.
      *
      * @returns An enumeration of the events in this request.
      */
@@ -204,7 +179,7 @@ public abstract class TopologyChangeRequest {
             ComponentEntity componentEntity) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.ENTITY_ADDED,
-                _source,
+                _client,
                 compositeEntity,
                 componentEntity));
     }
@@ -221,7 +196,7 @@ public abstract class TopologyChangeRequest {
             ComponentEntity componentEntity) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.ENTITY_REMOVED,
-                _source,
+                _client,
                 compositeEntity,
                 componentEntity));
     }
@@ -236,7 +211,7 @@ public abstract class TopologyChangeRequest {
     public final void queuePortAddedEvent (Entity entity, Port port) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.PORT_ADDED,
-                _source,
+                _client,
                 entity,
                 port));
     }
@@ -251,7 +226,7 @@ public abstract class TopologyChangeRequest {
     public final void queuePortLinkedEvent (Relation relation, Port port) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.PORT_LINKED,
-                _source,
+                _client,
                 relation,
                 port));
     }
@@ -266,7 +241,7 @@ public abstract class TopologyChangeRequest {
     public final void queuePortRemovedEvent (Entity entity, Port port) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.PORT_REMOVED,
-                _source,
+                _client,
                 entity,
                 port));
     }
@@ -281,7 +256,7 @@ public abstract class TopologyChangeRequest {
     public final void queuePortUnlinkedEvent (Relation relation, Port port) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.PORT_UNLINKED,
-                _source,
+                _client,
                 relation,
                 port));
     }
@@ -298,7 +273,7 @@ public abstract class TopologyChangeRequest {
             ComponentRelation componentRelation) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.RELATION_ADDED,
-                _source,
+                _client,
                 compositeEntity,
                 componentRelation));
     }
@@ -315,7 +290,7 @@ public abstract class TopologyChangeRequest {
             ComponentRelation componentRelation) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.RELATION_REMOVED,
-                _source,
+                _client,
                 compositeEntity,
                 componentRelation));
     }
@@ -327,5 +302,5 @@ public abstract class TopologyChangeRequest {
     private LinkedList _events = new LinkedList();
 
     // The object that created this request
-    private Object _source;
+    private Object _client;
 }
