@@ -72,7 +72,9 @@ MISC_FILES =	alljtests.tcl \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	compat \
-	compatDemo
+	compatDemo \
+	compat2 \
+	compatDemo2
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
