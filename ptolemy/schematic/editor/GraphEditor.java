@@ -96,6 +96,9 @@ public class GraphEditor extends MDIApplication {
      */
     private GlobalLayout _globalLayout;
 
+    private RelativeBundle _guiResources = 
+    new RelativeBundle("ptolemy.schematic.editor.GUI", getClass(), null);;
+
     /** Construct a new graph editing application. The application
      * will not have any open graph documents, until they are opened
      * by getting the "Open" action an invoking its actionPerformed()
@@ -137,7 +140,7 @@ public class GraphEditor extends MDIApplication {
         initializeMenuBar(frame.getJMenuBar());
         initializeToolBar(frame.getJToolBar());
         initializePalette();     
-	
+      
         Icon icon = getResources().getImageIcon("GraphIconImage");
         Image iconImage = getResources().getImage("GraphIconImage");
 	
@@ -241,6 +244,10 @@ public class GraphEditor extends MDIApplication {
             }
         }	
 	//palette.triggerLayout();
+    }
+
+    public RelativeBundle getGUIResources() {
+        return _guiResources;
     }
 
     /** Initialize the given menubar. Currently, all strings are
@@ -442,14 +449,8 @@ public class GraphEditor extends MDIApplication {
         // Get the path to the icon library. Read the PTII root from
         // the system properties
         try {
-            URL urlbase = new URL("file:" + System.getProperty("PTII"));
-            iconlibURL = new URL(urlbase, 
-		"ptII/ptolemy/actor/lib/genericicons.ptml");
-				 
-            //            entitylibURL = new URL(urlbase, 
-            //		"ptII/ptolemy/schematic/lib/rootEntityLibrary.ptml");
-            entitylibURL = new URL(urlbase, 
-		"ptII/ptolemy/actor/lib/genericentities.xml");
+            iconlibURL = getGUIResources().getResource("rootIconLibrary"); 
+            entitylibURL = getGUIResources().getResource("rootEntityLibrary"); 
 				   	    
             _iconLibrary = new IconLibrary();
 	    _iconLibrary.setName("root");
@@ -460,11 +461,6 @@ public class GraphEditor extends MDIApplication {
             _entityLibrary =
                 (CompositeEntity) parser.parse(entitylibURL,
 					       entitylibURL.openStream());
-
-            //            _entityLibrary = 
-            //   PTMLObjectFactory.parseEntityLibrary(entitylibURL, 
-            //          _iconLibrary);
-            System.out.println("Parsed:\n" + _entityLibrary);
         }
         catch (Exception e) {
             System.out.println(e);

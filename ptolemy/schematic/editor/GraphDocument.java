@@ -98,26 +98,15 @@ public class GraphDocument extends AbstractDocument {
                     "GraphDocument " + getTitle() + " has no current file");
         }
         String filename = getFile().getCanonicalPath();
-	URL urlbase = new URL("file:");// + System.getProperty("PTII"));
+	URL urlbase = new URL("file:");
 	URL schematicURL = new URL(urlbase,  filename);
 	    
         System.out.println("Parsing " + schematicURL);
 	MoMLParser parser = new MoMLParser();
 	CompositeEntity toplevel =
 	    (CompositeEntity) parser.parse(schematicURL,
-					   schematicURL.openStream());
-	
-        //        Schematic schematic = 
-	//    PTMLObjectFactory.parseSchematic(schematicURL,
-	//	((GraphEditor)getApplication()).getIconLibrary(),
-        //	((GraphEditor)getApplication()).getEntityLibrary());
-
-	// CompositeEntity toplevel = new CompositeEntity();
-        // FIXME populate
-
-        //Page s = new BasicPage(this, "main", toplevel);
-        //addPage(s);
-	setGraph(toplevel);
+					   schematicURL.openStream());	
+        setGraph(toplevel);
     }
 
     /** Save the document to the current file.

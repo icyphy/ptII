@@ -146,6 +146,7 @@ public class LinkController extends EdgeController {
          */
         public Connector render(Edge edge, Site tailSite, Site headSite) {
             StraightConnector c = new StraightConnector(tailSite, headSite);
+            c.setLineWidth((float)2.0);
             c.setUserObject(edge);
             //            Arrowhead arrow = new Arrowhead(
             //        headSite.getX(), headSite.getY(), headSite.getNormal());
