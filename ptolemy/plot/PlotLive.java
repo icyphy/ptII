@@ -74,10 +74,10 @@ public abstract class PlotLive extends Plot implements Runnable {
      */
     public boolean action (Event evt, Object arg) {
         if (evt.target == _startButton) {
-            enable();
+            _running = true;
             return true;
         } else if (evt.target == _stopButton) {
-            disable();
+            _running = false;
             return true;
         } else {
             return super.action (evt, arg);
@@ -92,43 +92,6 @@ public abstract class PlotLive extends Plot implements Runnable {
      * inputs such as zooming, filling, or stopping.
      */
     public abstract void addPoints();
-
-    /**
-     * Stop the thread when the applet goes away.
-     */
-    public synchronized void destroy() {
-        if (_plotThread != null && _plotThread.isAlive()) {
-            // destroying the thread while it is in wait leaves a
-            // waiting thread on the queue, apparently.  Notify the
-            // thread to die.
-            _die = true;
-            notifyAll();
-            // wait for a response.
-            try {
-                wait();
-            } catch (InterruptedException e) {}
-            _plotThread.stop();
-            _plotThread = null;
-        }
-    }
-
-    /** 
-     * Disable plotting.  While plotting is disabled, no calls are
-     * made to <code>addPoints()</code>.  The applet just sits idly
-     * waiting for plotting to be enabled.
-     */
-    public void disable() {
-        _running = false;
-    }
-
-    /**
-     * Enable plotting. While plotting is enabled, calls are made to
-     * <code>addPoints()</code>.
-     */
-    public synchronized void enable() {
-        _running = true;
-        notifyAll();
-    }
 
     /**
      * Return a string describing this applet.
@@ -167,21 +130,17 @@ public abstract class PlotLive extends Plot implements Runnable {
      * plotting more points at once may also decrease the
      * responsiveness of the user interface.
      */
-    public synchronized void run() {
-        while (true) {
-            if (_die) {
-                notifyAll();
-                return;
-            }
+    public void run() {
+        while (isActive()) {
             if (_running) {
                 addPoints();
                 Thread.yield();
             } else {
                 try {
-                    wait();
-                } catch (InterruptedException e) {
-                    return;
-                }
+                    // NOTE: Using wait here with notifyAll in the action method
+                    // leads to inexplicable deadlocks.  So we just sleep.
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {}
             }
         }
     }
@@ -198,14 +157,6 @@ public abstract class PlotLive extends Plot implements Runnable {
         }
     }
 
-    /**
-     * Stop the applet.  This destroys the thread created by
-     * <code>start()</code>.
-     */
-    public void stop() {
-        destroy();
-    }
-
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
     
@@ -214,5 +165,4 @@ public abstract class PlotLive extends Plot implements Runnable {
     private Button _startButton, _stopButton;
     
     private boolean _running = false;
-    private boolean _die = false;
 }
