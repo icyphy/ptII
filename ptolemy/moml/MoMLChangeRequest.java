@@ -34,9 +34,9 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UndoStackAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLChangeRequest
