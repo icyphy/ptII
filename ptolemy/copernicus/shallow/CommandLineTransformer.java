@@ -29,6 +29,13 @@
 
 package ptolemy.copernicus.shallow;
 
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.actor.*;
+import ptolemy.moml.*;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+
 import soot.*;
 import soot.jimple.*;
 import soot.jimple.toolkits.invoke.SiteInliner;
@@ -46,11 +53,7 @@ import soot.util.*;
 import java.io.*;
 import java.util.*;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
+
 
 /**
 A transformer that adds the command-line interface.
@@ -94,7 +97,7 @@ public class CommandLineTransformer extends SceneTransformer {
      
         SootClass modelClass = Scene.v().getMainClass();
 
-        SootClass mainClass = ClassFolder.copyClass(applicationClass,
+        SootClass mainClass = SootUtilities.copyClass(applicationClass,
                 Options.getString(options, "targetPackage") + ".Main");
         mainClass.setApplicationClass();
         /*
