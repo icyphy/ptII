@@ -635,6 +635,22 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
+    /** Given a legend string, return the corresponding dataset or -1 if no
+     *  legend was added with that legend string
+     *  The legend would have been set by addLegend().
+     *  @param legend The String naming the legend
+     *  @return The legend dataset, or -1 if not found.
+     *  @since Ptplot 5.2p1
+     */
+    public synchronized int getLegendDataset(String legend) {
+        int index = _legendStrings.indexOf(legend);
+        if (index == -1) {
+            return -1;
+        }
+        return ((Integer)_legendDatasets.get(index)).intValue();
+    }
+
+
     /** If the size of the plot has been set by setSize(),
      *  then return that size.  Otherwise, return what the superclass
      *  returns (which is undocumented, but apparently imposes no maximum size).
