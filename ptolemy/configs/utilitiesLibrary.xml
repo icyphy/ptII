@@ -11,6 +11,7 @@
         <input source="ptolemy/configs/utilityModalModel.xml"/>
         <input source="ptolemy/configs/utilityRunCompositeActor.xml"/>
         <input source="ptolemy/configs/utilityModelReference.xml"/>
+        <input source="ptolemy/configs/utilityVisualModelReference.xml"/>
         <input source="ptolemy/configs/basicUtilities.xml"/>
         <input source="ptolemy/data/unit/unitSystems.xml"/>
       </group>
