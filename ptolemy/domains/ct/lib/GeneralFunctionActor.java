@@ -31,7 +31,7 @@
 package ptolemy.domains.ct.lib;
 
 import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.VariableList;
+import ptolemy.domains.fsm.kernel.util.VariableList;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
