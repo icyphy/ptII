@@ -91,6 +91,12 @@ public class DEReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this receiver of any contained tokens.
+     */
+    public void clear() {
+        _tokens.clear();
+    }
+
     /** Get a token from the receiver.  The token returned is one that
      *  was put in the receiver with a time stamp equal to or earlier than
      *  the current time.  Note that there might be multiple such
