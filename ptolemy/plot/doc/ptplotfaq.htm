@@ -53,6 +53,7 @@ infrastructure.
 	<LI> <A HREF="#simpleapplet"><B>3.8 Why is the HTML so complex for the applets?</B></A>
 	<LI> <A HREF="#simpleapplet"><B>3.9 How do I create a simple standalone Plot applet?</B></A>
 	<LI> <A HREF="#logaxesranges"><B>3.10 How do I set the ranges for a plot that is using log axes?</B></A>
+      	<LI> <A HREF="#3dplot"><B>3.11 Does Ptplot support 3-D plots?</B></A>
 	</MENU>
 
 </MENU>
@@ -510,7 +511,7 @@ and change
 If you have problems, then be sure to enable the Java plug-in
 console and look for messages there.
 
-<dt> <A NAMR"logaxesranges"><B>3.10 How do I set the ranges for a plot that is using log axes?</B></A>
+<dt> <A NAME="logaxesranges"><B>3.10 How do I set the ranges for a plot that is using log axes?</B></A>
 <dd> The implementation of Log Axes is complex and some what difficult
 to use.  
 
@@ -523,6 +524,27 @@ should appear before any data.  Also, the value of the XTicks, YTicks
 or XRange or YRange directives should be in log units.  So,
 <pre>XTicks: 1K 3</pre> will display the string <pre>1K</pre> at the
 1000 mark.
+
+<LI> <A NAME="3dplot"><B>3.11 Does Ptplot support 3-D plots?</B></A>
+Ptplot does not support 3D charts.  Extending Ptplot to do 3D plots
+would be tricky, and we have no plans to include 3D plots at this time.
+
+ <p>You could write code that would do a projection of 3D data onto a 2D
+space, but Ptplot has no z axis, so that would not be that useful.
+
+ <p>You could also modify Ptplot so that it would do a waterfall style
+plot, where each successive z value was offsite slightly
+
+Figure 5.4 at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyclassic/almagest/docs/user/html/sdf.doc2.html#5.2.2 Sink stars"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyclassic/almagest/docs/user/html/sdf.doc2.html#5.2.2 Sink stars</CODE></a>
+has an icon of a waterfall plot, which is described as:
+
+<BLOCKQUOTE>
+  Waterfall Plot   a series of traces in the style of a waterfall
+  plot. This is a type of three-dimensional plot used to show the
+  evolution of signals or spectra. Optionally, each plot can be made
+  opaque, so that lines that would appear behind the plot are eliminated.
+</BLOCKQUOTE>
 
 </DL>
 
