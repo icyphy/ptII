@@ -521,11 +521,11 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         //         ERROR!
 
         // list of incomparable elements.
-        LinkedList incompList = new LinkedList();
+        LinkedList incomparables = new LinkedList();
         int candidate = -1;
 
         for (int i = 0; i < ids.length; i++) {
-            boolean listEmpty = incompList.size() == 0;
+            boolean listEmpty = incomparables.size() == 0;
             if (candidate == -1 && listEmpty) {
 		// case (1)
                 candidate = ids[i];
@@ -536,8 +536,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                     candidate = ids[i];
                 } else if (result == INCOMPARABLE) {
 
-                    incompList.addLast(new Integer(candidate));
-                    incompList.addLast(new Integer(ids[i]));
+                    incomparables.addLast(new Integer(candidate));
+                    incomparables.addLast(new Integer(ids[i]));
 
                     candidate = -1;
                 }
@@ -546,12 +546,12 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 		// flag indicating if the current element should be discarded
                 boolean discard = false;
 
-                for (ListIterator iter = incompList.listIterator(0);
-                     iter.hasNext() ;) {
-                    int listValue = ((Integer)iter.next()).intValue();
+                for (ListIterator iterator = incomparables.listIterator(0);
+                     iterator.hasNext() ;) {
+                    int listValue = ((Integer)iterator.next()).intValue();
                     int result = _compareNodeId(ids[i], listValue);
                     if (result == LOWER) {
-                        iter.remove();
+                        iterator.remove();
                     } else if (result == HIGHER || result == SAME) {
                         discard = true;
                         break;
@@ -559,11 +559,11 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                 }
 
 
-                if (incompList.size() == 0) {
+                if (incomparables.size() == 0) {
                     candidate = ids[i];
                 } else if ( !discard) {
 
-                    incompList.addLast(new Integer(ids[i]));
+                    incomparables.addLast(new Integer(ids[i]));
 
                 }
             } else {

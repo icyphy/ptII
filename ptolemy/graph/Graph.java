@@ -722,7 +722,7 @@ public class Graph {
      *
      *  @param weight The node weight.
      *  @return The node label.
-     *  @exception IllegalArgumentException If the specified weight wis not
+     *  @exception IllegalArgumentException If the specified weight was not
      *  not a node weight in this graph.
      *  @see #nodeLabel(Node).
      */

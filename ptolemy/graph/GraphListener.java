@@ -38,7 +38,7 @@ graph) can have a graph listener associated with it. If the
 <code>registerComputation()</code> method is invoked each time the
 computation is performed, and results of the computation are cached,
 then the <code>obsolete()</code> method can be used to determine
-whether any changes to the graph have occured since the time
+whether any changes to the graph have occurred since the time
 the cached value was computed.
 
 @author Shuvra S. Bhattacharyya
@@ -67,17 +67,17 @@ public class GraphListener {
     }
 
     /** Test whether or not the graph has changed since the last
-     *  time the assciated computation was performed (i.e., since
+     *  time the associated computation was performed (i.e., since
      *  the most recent invocation of <code>registerComputation</code>).
      *  @return True if the graph has changed since the last time
-     *  the compuation associated with this listener was performed.
+     *  the computation associated with this listener was performed.
      */
     public boolean obsolete() {
         return _lastComputation < _graph.changeCount();
     }
 
     /** Notify the listener that the associated computation has been
-     *  peformed. This method should be called immediately after
+     *  performed. This method should be called immediately after
      *  any invocation of the computation.
      */
     public void registerComputation() {

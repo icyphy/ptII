@@ -452,7 +452,7 @@ public class DirectedGraph extends Graph {
 
     /** Find all the nodes that can be reached from the specified collection
      *  of nodes (weights version). The reachable nodes do not include a
-     *  specified one unlessthere is a loop from the specified node back to
+     *  specified one unless there is a loop from the specified node back to
      *  itself.
      *  @param An array of node weights; each element is an {@link Object}.
      *  @return The array of nodes that are reachable from

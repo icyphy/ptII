@@ -390,20 +390,20 @@ public class LabeledList implements List {
      *  according to the order of their labels. The element strings
      *  are separated by the specified delimiter, and are optionally
      *  preceded by the associated labels.
-     *  @param delimeter The delimeter that separates elements in the
+     *  @param delimiter The delimiter that separates elements in the
      *  generated string.
      *  @param includeLabels If this is <code>/true<code>, then precede each
      *  element with its label (followed by a colon and space) in the
      *  generated string; otherwise, omit the labels.
      *  @return A string representation of this list.
      */
-    public String toString(String delimeter, boolean includeLabels) {
+    public String toString(String delimiter, boolean includeLabels) {
         Iterator elements = iterator();
         StringBuffer result = new StringBuffer();
         while (elements.hasNext()) {
             Object element = elements.next();
             result.append(((includeLabels) ? label(element) + ": " : "") +
-                    element + (elements.hasNext() ? delimeter : ""));
+                    element + (elements.hasNext() ? delimiter : ""));
         }
         return result.toString();
     }
