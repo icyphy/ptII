@@ -106,7 +106,6 @@ public class CTPeriodicSampler extends CTActor
      *  token.
      */
     public void emitCurrentEvents() {
-        CTDirector dir = (CTDirector)getDirector();
         if(_hasCurrentEvent) {
             try {
                 if(input.hasToken(0)) {
@@ -140,13 +139,18 @@ public class CTPeriodicSampler extends CTActor
     /** Request the first sampling time as a director refire.
      *  @exception IllegalActionException If thrown by the supper class.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        // clear receivers
+        if(input.hasToken(0)) {
+            input.get(0);
+        }
+        _hasCurrentEvent = false;
         updateParameters();
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
         dir.fireAt(this, _nextSamplingTime);
-        _debug(getFullName() + ": next sampling time = "
+        if(_debugging) _debug(getFullName() + ": next sampling time = "
                 + _nextSamplingTime);
     }
 
