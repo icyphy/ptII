@@ -736,6 +736,7 @@ public class NamedObj implements Nameable, Debuggable,
     /** Get the attribute with the given name. The name may be compound,
      *  with fields separated by periods, in which case the attribute
      *  returned is contained by a (deeply) contained attribute.
+     *  If the given name is null, then an InternalErrorException is thrown.
      *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired attribute.
      *  @return The requested attribute if it is found, null otherwise.
@@ -747,6 +748,16 @@ public class NamedObj implements Nameable, Debuggable,
                 // No attribute has been added to this NamedObj yet.
                 return null;
             } else {
+                if (name == null) {
+                    // If MoMLParser has problems, we may end up here,
+                    // so rather than having _splitName() throw a
+                    // NullPointerException, we do the check here and
+                    // include 'this' so that we know where the problem
+                    // is occurring.
+                    throw new InternalErrorException(this, null, 
+                            "This should not be happening: getAttribute() "
+                            + "was called with a null name");
+                }
                 String[] subnames = _splitName(name);
                 if (subnames[1] == null) {
                     return (Attribute) _attributes.get(name);
