@@ -23,8 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
 
+@ProposedRating Red (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (cx@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.demo;
@@ -92,7 +93,8 @@ public class WaveBERK23 {
              initstep.setExpression("0.000001");
              initstep.parameterChanged(null);
 
-             Parameter minstep = (Parameter)dir.getAttribute( "MinimumStepSize");
+             Parameter minstep =
+                 (Parameter)dir.getAttribute("MinimumStepSize");
              minstep.setExpression("1e-6");
              minstep.parameterChanged(null);
 
