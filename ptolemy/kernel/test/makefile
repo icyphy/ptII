@@ -47,7 +47,6 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	EntityTest.java \
 	ParamTest.java \
 	RelationTest.java 
 
