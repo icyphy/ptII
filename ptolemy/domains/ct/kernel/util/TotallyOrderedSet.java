@@ -101,7 +101,7 @@ public class TotallyOrderedSet {
         return _set.elements();
     }
 
-    /** Return the first element, ie. the <i>"smallest"</i> element.
+    /** Return the firstelement, ie. the <i>"smallest"</i> element.
      *  @return The smallest element.
      */
     public Object first() {
@@ -169,6 +169,17 @@ public class TotallyOrderedSet {
     public int size() {
         return _set.size();
     }
+
+    
+    /** Return the firstelement, ie. the <i>"smallest"</i> element and 
+     *  remove it from the set.
+     *  @return The smallest element.
+     */
+    public Object take() {
+        Object temp = _set.first();
+        _set.removeFirst();
+        return temp;
+    }        
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
