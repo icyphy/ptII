@@ -1,79 +1,67 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Configuration to use for DSP-only applications. -->
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
 
-  <doc>Configuration to edit and run Ptolemy II models</doc>
-
   <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
   </entity>
 
-  <!-- Factories for effigies. -->
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <!-- Use a custom graph editor with an SDF director already in it. -->
     <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-          <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="SDF Director" 
+                  class="ptolemy.domains.sdf.kernel.SDFDirector">
+          <property name="iterations"
+                    class="ptolemy.data.expr.Parameter" value="1">
           </property>
-          <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+          <property name="_location"
+                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
           </property>
         </property>
       </entity>
     </entity>
-    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
-    <!-- Web Browser should be after HTML Viewer, or it will intercept
-         HTML pages. -->
-    <entity name="Web Browser" class="ptolemy.actor.gui.BrowserEffigy$Factory"/>
-    <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
+    <!-- Import HTML viewer, text editor, etc. -->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
 
-  <!-- Factories for tableaux. -->
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <!-- Factories for tableaux that offer views of Ptolemy II fsms. -->
-    <property name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
-      <!-- These will appear in the View menu of an fsm tableau. -->
-      <property name="FSM Editor" class="ptolemy.vergil.fsm.FSMGraphTableau$Factory"/>
-      <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
-      <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
-    </property>
-    <!-- Factories for tableaux that offer views of Ptolemy II entities. -->
-    <property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
-      <!-- These will appear in the View menu of an entity tableau. -->
-      <property name="Graph Editor" class="ptolemy.vergil.actor.ActorGraphTableau$Factory"/>
-      <property name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory"/>
-      <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
-      <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
-      <!-- No code gen -->
-
-      <property name="JVM Properties" class="ptolemy.actor.gui.JVMTableau$Factory"/>
-    </property>
-    <property name="HTML Viewer" class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
-      <!-- This will appear in the View menu of an entity tableau. -->
-      <property name="Source" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
-    </property>
-    <property name="Web Browser" class="ptolemy.actor.gui.BrowserTableau$Factory"/>
-    <property name="Plotter" class="ptolemy.actor.gui.PlotTableau$Factory">
-      <property name="PlotML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
-    </property>
-    <property name="Matrix viewer" class="ptolemy.actor.gui.MatrixTokenTableau$Factory"/>
-    <property name="Token viewer" class="ptolemy.actor.gui.TokenTableau$Factory"/>
-    <property name="Text Editor" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
 
   <!-- Main default library -->
   <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
 
     <!-- Marker so that tree view expands the library. -->
-    <property name="_libraryMarker" class="ptolemy.kernel.util.SingletonAttribute"/>
+    <property name="_libraryMarker"
+              class="ptolemy.kernel.util.SingletonAttribute"/>
 
     <!-- Default utilities library. -->
     <class name="utilities" extends="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
-    <!-- Blank composite actor. -->
-    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/>
+            <input source="ptolemy/configs/annotation.xml"/>
+            <!-- Blank composite actor. -->
+            <entity name="typed composite actor"
+                    class="ptolemy.actor.TypedCompositeActor"/>
           </group>
         ?>
       </configure>
@@ -89,17 +77,12 @@
 <entity name="sources" class="ptolemy.moml.EntityLibrary">
   <configure>
       <group>
-<entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli"/>
 <entity name="Const" class="ptolemy.actor.lib.Const"/>
-<entity name="DiscreteRandomSource"
-        class="ptolemy.actor.lib.DiscreteRandomSource"/>
-<entity name="Gaussian" class="ptolemy.actor.lib.Gaussian"/>
 <entity name="Interpolator" class="ptolemy.actor.lib.Interpolator"/>
 <entity name="Pulse" class="ptolemy.actor.lib.Pulse"/>
 <entity name="Ramp" class="ptolemy.actor.lib.Ramp"/>
 <entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource"/>
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
-<entity name="Uniform" class="ptolemy.actor.lib.Uniform"/>
       </group>
   </configure>
 </entity>
@@ -122,31 +105,15 @@
 </entity>
 <!-- END sinks -->
 
+            <input source="ptolemy/actor/lib/io/io.xml"/>
             <input source="ptolemy/actor/lib/math.xml"/>
-
-<!-- BEGIN flow control -->
-<entity name="flow control" class="ptolemy.moml.EntityLibrary">
-  <configure>
-      <group>
-  <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop"/>
-  <entity name="Commutator" class="ptolemy.actor.lib.Commutator"/>
-  <entity name="Distributor" class="ptolemy.actor.lib.Distributor"/>
-  <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor"/>
-  <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler"/>
-  <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler"/>
-  <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat"/>
-  <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay"/>
-  <entity name="Select" class="ptolemy.actor.lib.Select"/>
-  <entity name="Sequencer" class="ptolemy.actor.lib.Sequencer"/>
-  <entity name="Sleep" class="ptolemy.actor.lib.Sleep"/>
-  <entity name="Switch" class="ptolemy.actor.lib.Switch"/>
-      </group>
-  </configure>
-</entity>
-<!-- END flow control -->
+            <input source="ptolemy/actor/lib/random.xml"/>
+            <input source="ptolemy/actor/lib/flowcontrol.xml"/>
+            <input source="ptolemy/actor/lib/realtime.xml"/>
             <input source="ptolemy/actor/lib/logic/logic.xml"/>
             <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
             <input source="ptolemy/actor/lib/array.xml"/>
+            <input source="ptolemy/actor/lib/busses.xml"/>
             <input source="ptolemy/actor/lib/signalprocessing.xml"/>
 
           </group>

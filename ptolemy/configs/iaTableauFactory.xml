@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- This file contains a single factory, for editing          -->
+<!-- interface automata.                                       -->
+<property name="factoryIA" class="ptolemy.actor.gui.PtolemyTableauFactory">
+  <property name="Interface Automaton Editor"
+    class="ptolemy.vergil.fsm.ia.InterfaceAutomatonGraphTableau$Factory"/>
+  <property name="Tree View"
+    class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+  <property name="XML view"
+    class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+</property>
