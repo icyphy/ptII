@@ -7,7 +7,7 @@
       <group>
   <doc>Actors that route tokens or otherwise affect the flow of control.</doc>
 
-  <entity name="Case" class="ptolemy.actor.hoc.Case"/>
+  <entity name="Case" class="ptolemy.actor.lib.hoc.Case"/>
   <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop"/>
   <entity name="Commutator" class="ptolemy.actor.lib.Commutator"/>
   <entity name="Distributor" class="ptolemy.actor.lib.Distributor"/>
