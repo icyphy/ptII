@@ -40,6 +40,7 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.domains.sdf.codegen.SDFCodeGenerator;
+import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -120,9 +121,6 @@ public class GeneratorTableau extends Tableau {
 
     // Default background color is a light grey.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
-
-    // List of execution wrappers that are currently active.
-    private List _execs = new LinkedList();
 
     // The .java file should be created in this package.
     private static String _packageName = new String("");
@@ -228,22 +226,16 @@ public class GeneratorTableau extends Tableau {
             // Add space under the control panel.
             component.add(Box.createVerticalStrut(10));
 
-	    // JTextArea for compiler and run output.
-	    final JTextArea text = new JTextArea("", 20, 100);
-	    text.setEditable(false);
-	    JScrollPane scrollPane = new JScrollPane(text);
-	    component.add(scrollPane);
+	    // Create a JTextAreaExec without Start and Cancel buttons.
+	    final JTextAreaExec exec =
+		new JTextAreaExec("Code Generator Commands", false);
+	    component.add(exec);
 
             getContentPane().add(component, BorderLayout.CENTER);
 
             stopButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        Iterator execs = _execs.iterator();
-                        while(execs.hasNext()) {
-                            _Exec exec = (_Exec)execs.next();
-                            exec.destroy();
-                            text.append("Cancelled.\n");
-                        }
+			exec.cancel();
                     }
                 });
 
@@ -271,7 +263,14 @@ public class GeneratorTableau extends Tableau {
                             }
                             // Write the generated code.
 
-                            report("Starting code generation.");
+			    // FIXME: Note that we use the statusBar of the
+			    // JTextAreaExec JPanel instead of report()
+			    // so that we can print messages as we 
+			    // are compiling.  Ideally, we would have
+			    // some sort of call back from JTextAreaExec
+			    // that would update the standard PtolemyFrame
+			    // status area.
+                            exec.updateStatusBar("Starting code generation.");
 			    File destination = new File(directoryName,
 						   model.getName() + ".java");
 
@@ -280,8 +279,7 @@ public class GeneratorTableau extends Tableau {
 			    outPrinter.print((new SaveAsJava())
 					     .generate(model));
 			    outFile.close();
-
-                            report("Code generation complete.");
+                            exec.updateStatusBar("Code generation complete.");
 
                             // Handle the show checkbox.
                             boolean show =
@@ -306,7 +304,6 @@ public class GeneratorTableau extends Tableau {
 
                             List execCommands = new LinkedList();
 
-                            int index = 0;
                             if (compile) {
                                 String compileOptions = options
                                     .compileOptions.getExpression();
@@ -339,11 +336,8 @@ public class GeneratorTableau extends Tableau {
                                         + className);
                             }
                             if(execCommands.size() > 0) {
-                                text.setText("");
-                                _Exec exec = new _Exec(text, execCommands);
-                                _execs.add(exec);
-
-                                new Thread(exec).start();
+				exec.setCommands(execCommands);
+				exec.start();
                             }
                         } catch (Exception ex) {
                             MessageHandler.error("Code generation failed.",
@@ -408,123 +402,6 @@ public class GeneratorTableau extends Tableau {
 		return null;
 	    }
 	}
-    }
-
-    // Wrapper for exec() that runs the process in a separate thread.
-    // Sample Use:
-    // <pre>
-    //  String[] commands = new String[2]
-    //  commands[0] = "ls";
-    //  commands[1] = "date";
-    //  _Exec exec = new _Exec(text, commands);
-    //  new Thread(exec).start();
-    // </pre>
-    private class _Exec implements Runnable {
-
-	// Construct an _Exec object to run a command.
-	// @param text The JTextArea to update with the command and the
-	// results
-	// @param commands A List of Strings that contain commands to
-	// be run sequentially.
-	public _Exec(JTextArea text, String command) {
-	    _text = text;
-            _commands = new LinkedList();
-	    _commands.add(command);
-	}
-
-	// Construct an _Exec object to run a sequence of commands.
-	public _Exec(JTextArea text, List commands) {
-	    _text = text;
-	    _commands = commands;
-	}
-
-        // Destroy the currently executing process, if there is one.
-        public synchronized void destroy() {
-            if (_process != null) _process.destroy();
-        }
-
-        // Execute the specified commands and report errors to the
-	// JTextArea.  This will terminate the process if it has previously
-        // been started.
-        public void run() {
-            Runtime runtime = Runtime.getRuntime();
-	    try {
-                if (_process != null) _process.destroy();
-                Iterator commands = _commands.iterator();
-                while(commands.hasNext()) {
-                    final String command = (String)commands.next();
-                    SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                _text.append("Executing: " + command + "\n");
-                            }
-                        });
-
-                    _process = runtime.exec(command);
-
-                    SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                try {
-                                    InputStream errorStream =
-                                        _process.getErrorStream();
-                                    BufferedReader reader =
-                                        new
-                                            BufferedReader(new
-                                                InputStreamReader(errorStream));
-                                    String line;
-                                    while((line = reader.readLine()) != null) {
-                                        _text.append(line + '\n');
-                                    }
-                                    reader.close();
-
-                                    errorStream = _process.getInputStream();
-                                    reader =
-                                        new
-                                            BufferedReader(new
-                                                InputStreamReader(errorStream));
-                                    while((line = reader.readLine()) != null) {
-                                        _text.append(line);
-                                    }
-                                    reader.close();
-                                } catch (IOException io) {
-                                    _text.append("IOException: " + io + '\n' );
-                                }
-                            }
-                        });
-
-                    try {
-                        int processReturnCode = _process.waitFor();
-                        synchronized(this) {
-                            _process = null;
-                            _execs.remove(this);
-                        }
-                        if (processReturnCode != 0) break;
-                    } catch (InterruptedException interrupted) {
-                        // FIXME: this should probably be inside invokeLater.
-                        // but it can't be because interrupted would
-                        // need to be final
-                        _text.append("InterruptedException: "
-                                + interrupted + '\n' );
-                    }
-                }
-	    } catch (final IOException io) {
-                SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            _text.append("IOException: " + io + '\n' );
-                        }
-                    });
-            }
-        }
-
-	// The command to be executed
-	private List _commands;
-
-        // The process that we are running.
-        private Process _process;
-
-	// JTextArea to write the command and the output of the command.
-	// _text is protected so we can get at it from within the
-	// Runnables
-	protected JTextArea _text;
     }
 }
 
