@@ -49,7 +49,8 @@ import java.util.Vector;
 /**
 A collection of utilities for generating Java Native Interface classes
 
-http://cygwin.com/cygwin-ug-net/dll.html
+For information about how to create shared libraries under Windows using
+Cygwin, see <a href="http://cygwin.com/cygwin-ug-net/dll.html"><code>http://cygwin.com/cygwin-ug-net/dll.html</code></a>
 
 @author Vincent Arnould (vincent.arnould@thalesgroup.com), contributor Christopher Hylands
 @version $Id$

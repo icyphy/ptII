@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (vincent.arnould@thalesgroup.com)
+@ProposedRating Red (vincent.arnould@thalesgroup.com)
 @AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
@@ -60,7 +60,6 @@ import javax.swing.BoxLayout;
    class are listed, since more primitive Argument cannot be configured
    in this way.
 
-   @see Configurer
    @author Steve Neuendorffer, Edward A. Lee, V. Arnould (Thales)
    @version $Id$
  */
@@ -75,30 +74,33 @@ public class ArgumentConfigurer extends Query implements QueryListener {
         setTextWidth(15);
         setColumns(1);
         _object = object;
-        Iterator args = _object.argList().iterator();
-        while (args.hasNext()) {
-            Object candidate = args.next();
+        Iterator arguments = _object.argumentsList().iterator();
+        while (arguments.hasNext()) {
+            Object candidate = arguments.next();
             if (candidate instanceof Argument) {
-                Argument arg = (Argument) candidate;
+                Argument argument = (Argument) candidate;
                 setColumns(1);
                 addLine(
-                        arg.getName() + "Name",
-                        arg.getName() + "Name",
-                        arg.getName());
+                        argument.getName() + "Name",
+                        argument.getName() + "Name",
+                        argument.getName());
                 addLine(
-                        arg.getName() + "CType",
-                        arg.getName() + "C or C++ Type",
-                        arg.getCType());
+                        argument.getName() + "CType",
+                        argument.getName() + "C or C++ Type",
+                        argument.getCType());
                 Set optionsDefault = new HashSet();
-                if (arg.isInput())
+                if (argument.isInput()) {
                     optionsDefault.add("input");
-                if (arg.isOutput())
+		}
+                if (argument.isOutput()) {
                     optionsDefault.add("output");
-                if (arg.isReturn())
+		}
+                if (argument.isReturn()) {
                     optionsDefault.add("return");
+		}
                 addSelectButtons(
-                        arg.getName() + "Kind",
-                        arg.getName() + "Kind:",
+                        argument.getName() + "Kind",
+                        argument.getName() + "Kind:",
                         _optionsArray,
                         optionsDefault);
             }
@@ -110,22 +112,22 @@ public class ArgumentConfigurer extends Query implements QueryListener {
      */
     public void apply() {
         boolean foundOne = false;
-        Iterator args = _object.argList().iterator();
+        Iterator arguments = _object.argumentsList().iterator();
         NamedObj parent = null;
-        while (args.hasNext()) {
-            Object candidate = args.next();
+        while (arguments.hasNext()) {
+            Object candidate = arguments.next();
             if (candidate instanceof Argument) {
-                Argument arg = (Argument) candidate;
-                String type = arg.getName() + "CType";
-                String name = arg.getName() + "Name";
-                String kind = arg.getName() + "Kind";
-                if (!type.equals(arg.getCType())&&
-                        !name.equals(arg.getName())&&
-                        !kind.equals(arg.getKind())) {
+                Argument argument = (Argument) candidate;
+                String type = argument.getName() + "CType";
+                String name = argument.getName() + "Name";
+                String kind = argument.getName() + "Kind";
+                if (!type.equals(argument.getCType())&&
+                        !name.equals(argument.getName())&&
+                        !kind.equals(argument.getKind())) {
 
                     String newName = getStringValue(name);
                     try {
-                        arg.setName(newName);
+                        argument.setName(newName);
                     } catch (Exception e) {
                         MessageHandler.error(
                                 "This name is already used ! : ",
@@ -133,22 +135,22 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                         continue;
                     }
                     String newCType = getStringValue(type);
-                    arg.setCType(newCType);
+                    argument.setCType(newCType);
                     String newKind = getStringValue(kind);
-                    arg.setKind(newKind);
-                    arg._checkType();
+                    argument.setKind(newKind);
+                    argument._checkType();
                     foundOne = true;
                 }
                 if (foundOne) {
-                    arg.setExpression();
+                    argument.setExpression();
 
                     _object = (GenericJNIActor) MoMLChangeRequest
-                        .getDeferredToParent(arg);
+                        .getDeferredToParent(argument);
                     if (_object == null) {
-                        _object = (GenericJNIActor) arg.getContainer();
+                        _object = (GenericJNIActor) argument.getContainer();
                     }
                     try {
-                        arg.validate();
+                        argument.validate();
                     } catch (IllegalActionException e) {
                         MessageHandler.error(
                                 "TRT :No way to update MoML! : ",
@@ -171,10 +173,12 @@ public class ArgumentConfigurer extends Query implements QueryListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The set of names of args that have changed.
+    // The set of names of arguments that have changed.
     private Set _changed = new HashSet();
+
     // The object that this configurer configures.
     private GenericJNIActor _object;
+
     // The possible configurations for a argument.
     private String[] _optionsArray = { "input", "output", "return" };
 }

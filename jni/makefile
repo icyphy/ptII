@@ -82,5 +82,6 @@ install: all jars
 fast_tests:
 	$(MAKE) PTCOPERNICUS_DIR= tests 
 
+
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk

@@ -107,19 +107,19 @@ public class ArgumentConfigurerDialog
             // ArgumentConfigurerDialog.
             // First, create a string array with the names of all the
             // ports.
-            List argList = ((GenericJNIActor) _target).argList();
-            String[] argNames = new String[argList.size()];
-            Iterator args = argList.iterator();
+            List argumentsList = ((GenericJNIActor) _target).argumentsList();
+            String[] argumentNames = new String[argumentsList.size()];
+            Iterator arguments = argumentsList.iterator();
             int index = 0;
-            while (args.hasNext()) {
-                Argument arg = (Argument) args.next();
-                argNames[index++] = arg.getName();
+            while (arguments.hasNext()) {
+                Argument argument = (Argument) arguments.next();
+                argumentNames[index++] = argument.getName();
             }
             Query query = new Query();
             query.addChoice(
                     "delete",
                     "Argument to delete",
-                    argNames,
+                    argumentNames,
                     null,
                     false);
 
@@ -134,32 +134,33 @@ public class ArgumentConfigurerDialog
             // to delete the argument.
             if (dialog.buttonPressed().equals("OK")) {
 
-                String argName = query.getStringValue("delete");
-                if (argName != null) {
-                    Argument arg =
-                        ((GenericJNIActor) _target).getArgument(argName);
+                String argumentName = query.getStringValue("delete");
+                if (argumentName != null) {
+                    Argument argument =
+                        ((GenericJNIActor) _target).getArgument(argumentName);
 
-                    if (arg != null) {
+                    if (argument != null) {
                         try {
-                            ((GenericJNIActor) _target)._removeArgument(arg);
+                            ((GenericJNIActor) _target).
+				_removeArgument(argument);
                         } catch (Exception e) {
                             MessageHandler.error(
-                                    "Unable to remove argument " + arg + ".",
-                                    e);
+                                    "Unable to remove argument '" +
+				    argument + "'.", e);
                         }
                         // The context for the MoML should be the first
                         // container above this port in the hierarchy
                         // that defers its MoML definition, or the
                         // immediate parent if there is none.
                         NamedObj container =
-                            MoMLChangeRequest.getDeferredToParent(arg);
+                            MoMLChangeRequest.getDeferredToParent(argument);
                         if (container == null) {
-                            container = (NamedObj) arg.getContainer();
+                            container = (NamedObj) argument.getContainer();
                         }
 
                         String moml =
                             "<deleteProperty name=\""
-                            + arg.getName(container)
+                            + argument.getName(container)
                             + "\"/>\n";
 
                         ChangeRequest request =
@@ -290,20 +291,21 @@ public class ArgumentConfigurerDialog
                 && !newName.equals("")
                 && !newCType.equals("")&& !newKind.equals("")) {
             //set name
-            Argument arg = _target.getArgument(newName);
-            if (arg == null) {
-                arg = new Argument(_target, newName);
-                arg.setName(newName);
-            } else
+            Argument argument = _target.getArgument(newName);
+            if (argument == null) {
+                argument = new Argument(_target, newName);
+                argument.setName(newName);
+            } else {
                 MessageHandler.error("This name is already used !");
-            arg.setKind(newKind.trim());
-            arg.setCType(newCType.trim());
-            arg.setExpression();
+	    }
+            argument.setKind(newKind.trim());
+            argument.setCType(newCType.trim());
+            argument.setExpression();
             String moml =
                 "<property name=\""
-                + arg.getName()
+                + argument.getName()
                 + "\" value=\""
-                + arg.getExpression()
+                + argument.getExpression()
                 + "\""
                 + " class=\""
                 + "jni.Argument"
