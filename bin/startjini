@@ -39,10 +39,13 @@
 # Sometimes we seem to need to have d: in the PTII variable?
 #PTII=d:/users/cxh/ptII
 
+
+JINI_DIR_EXT=vendors/sun/jini/jini1_0_1
+
 if [ $# -eq 1 ]; then
     JINI_DIR=$1
 else
-    JINI_DIR=$PTII/vendors/sun/jini/jini1_0_1	
+    JINI_DIR=$PTII/$JINI_DIR_EXT
 fi
 
 if [ ! -d $JINI_DIR ]; then
@@ -85,7 +88,8 @@ fi
 
 echo "Starting httpd"
 # You can add -verbose to the line below
-java -jar $JINI_DIR/lib/tools.jar -port $PORT -dir $JINI_DIR/lib -trees &
+# Deleted "-trees" to allow all subdirectories
+java -jar $JINI_DIR/lib/tools.jar -port $PORT -dir $PTII -verbose &
 
 sleep 2
 
@@ -97,28 +101,23 @@ sleep 2
 
 echo "Starting reggie"
 rm -rf ${TMP_DIR}reggie_log
-java -jar $JINI_DIR/lib/reggie.jar http://`hostname`:$PORT/reggie-dl.jar  $POLICY ${TMP_DIR}/reggie_log public &
+java -jar $JINI_DIR/lib/reggie.jar http://`hostname`:$PORT/$JINI_DIR_EXT/lib/reggie-dl.jar  $POLICY ${TMP_DIR}/reggie_log public &
 
 sleep 2
 
 echo "Starting txn"
 rm -rf ${TMP_DIR}txn_log
-java -jar -Djava.security.policy=$POLICY  -Dcom.sun.jini.mahalo.managerName=TransactionManager  $JINI_DIR/lib/mahalo.jar http://`hostname`:$PORT/mahalo-dl.jar   $POLICY ${TMP_DIR}txn_log public &
+java -jar -Djava.security.policy=$POLICY  -Dcom.sun.jini.mahalo.managerName=TransactionManager  $JINI_DIR/lib/mahalo.jar http://`hostname`:$PORT/$JINI_DIR_EXT/lib/mahalo-dl.jar   $POLICY ${TMP_DIR}txn_log public &
 
 sleep 2
 
 echo "Starting outrigger"
 java -jar -Djava.security.policy=$PTII/bin/policy.all \
-     -Djava.rmi.server.codebase=http://`hostname`:$PORT/outrigger-dl.jar \
+     -Djava.rmi.server.codebase=http://`hostname`:$PORT/$JINI_DIR_EXT/lib/outrigger-dl.jar \
      -Dcom.sun.jini.outrigger.spaceName=JavaSpaces \
      $JINI_DIR/lib/transient-outrigger.jar public &
 
 # Just so that the output start to appear before we actually exit
 sleep 5
-
-echo "Starting httpd for ptII tree"
-# You can add -verbose to the line below
-java -jar $JINI_DIR/lib/tools.jar -port 8123 -dir $PTII -trees &
-
 
 echo "Ok, done"
