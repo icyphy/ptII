@@ -31,7 +31,7 @@
 
 ME =		ptolemy/caltrop/util
 
-DIRS =
+DIRS =		test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
