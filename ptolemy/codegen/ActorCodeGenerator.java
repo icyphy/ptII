@@ -425,7 +425,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
 	//classNameList.addFirst(className);
 	// Use the complete class name, including the package name
-	classNameList.addFirst(ASTReflect.getPackageName(unitNode));
+	classNameList.addFirst(ASTReflect.getFullyQualifiedName(unitNode));
 
         //System.out.println("_makeUnitList() : className = " + className);
 
@@ -478,7 +478,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                 className = superDecl.getName();
                 //classNameList.addFirst(className);
 		// Use the complete class name, including the package name
-		classNameList.addFirst(ASTReflect.getPackageName(unitNode));
+		classNameList.addFirst(ASTReflect.getFullyQualifiedName(unitNode));
             }
         } while (true);
     }
