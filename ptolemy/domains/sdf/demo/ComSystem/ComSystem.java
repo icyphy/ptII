@@ -109,6 +109,8 @@ public class ComSystem extends SDFApplet {
             plotter.xUnit.setToken(new DoubleToken(1.0/16.0));
             plotter.width.setToken(new IntToken(32));
             plotter.persistence.setToken(new IntToken(512));
+            // Default marks style is consistent with scope style.
+            plotter.plot.setMarksStyle("pixels");
             plotter.plot.setBackground(getBackground());
             plotter.plot.setTitle("Eye Diagram");
             plotter.plot.setYRange(-1.3, 1.3);
