@@ -155,4 +155,22 @@ test ComponentEntity-8.2 {Test for NameDuplicationException on setName} {
     catch {$b2 setName B1} msg
     list $msg
 } {{ptolemy.kernel.util.NameDuplicationException: .A: already contains an entity with the name B1.}}
+########################################################################
+####
+#
+test ComponentEntity-9.1 {remove a port} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set b [java::new ptolemy.kernel.ComponentEntity $a B]
+    set p1 [java::new ptolemy.kernel.ComponentPort $b P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $b P2]
+    $p1 setContainer [java::null]
+    list [$b description] 
+} {{ptolemy.kernel.ComponentEntity {.A.B} attributes {
+} ports {
+    {ptolemy.kernel.ComponentPort {.A.B.P2} attributes {
+    } links {
+    } insidelinks {
+    }}
+}}}
 
