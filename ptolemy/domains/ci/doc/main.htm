@@ -8,21 +8,31 @@
 <body>
 <h1>Component Interaction</h1>
 <P>
-The component interaction (CI) domain models systems that contain both event-driven and
-demand-driven styles of computation. As an example, the interaction between a web server and a
-browser is mostly demand-driven. When the user clicks on a link in the browser, it pulls the corresponding
-page from the web server. A stock-quote service can use the event-driven style of computation.
-The server generates events when stock prices change. The events drive the clients to update their
-displayed information. Such push/pull interaction between data producer and consumer is common in
-distributed systems, and has been included in middleware services, most notably the CORBA event
-service. These services motivated the design of this domain to study the interaction models in distributed
-systems, such as stock-quote services, traffic or weather information systems. Other applications
-include database systems, file systems, and the Click modular router.
+
+The component interaction (CI) domain models systems that blend
+data-driven and demand-driven styles of computation. As an example,
+the interaction between a web server and a browser is mostly
+demand-driven. When the user clicks on a link in the browser, it pulls
+the corresponding page from the web server. A stock-quote service can
+use a data-driven style of computation. The server generates events
+when stock prices change. The data drive the clients to update their
+displayed information. Such push/pull interaction between a data producer
+and consumer is common in distributed systems, and has been included in
+middleware services, most notably in the CORBA event service. These
+services motivated the design of this domain to study the interaction
+models in distributed systems, such as stock-quote services, traffic or
+weather information systems. Other applications include database
+systems, file systems, and the Click modular router.
+
 <p>
-An actor in a CI model can be active, which means it possesses its own thread of execution. For example,
-an interrupt source of an embedded system can be modeled as an active source actor. Such a source
-generates events asynchronously with respect to the software execution on the embedded processor. CI
-models can be used to simulate and study how the embedded software handles the asynchronous
-events, such as external interrupts and asynchronous I/O.
+
+An actor in a CI model can be active, which means it possesses its own
+thread of execution. For example, an interrupt source of an embedded
+system can be modeled as an active source actor. Such a source
+generates events asynchronously with respect to the software execution
+on the embedded processor. CI models can be used to simulate and study
+how the embedded software handles the asynchronous events, such as
+external interrupts and asynchronous I/O.
+
 </body>
 </html>
