@@ -52,11 +52,14 @@ public class PTMLObjectFactory {
     /** 
      * Create the root EntityLibrary from an XMLElement that was parsed from 
      * the root EntityLibrary.  
-     * @exception If the XML element does not have a type of "entitylibrary"
+     * @exception IllegalActionException If the XML element does 
+     * not have a type of "entitylibrary".
+     * @exception NameDuplicationException If the XML element contains two
+     * named objects with the same name.
      */
     public static EntityLibrary createEntityLibrary(XMLElement e, 
             IconLibrary iconroot) 
-            throws IllegalActionException {
+            throws IllegalActionException, NameDuplicationException {
 
         _checkElement(e, "entitylibrary");
 
@@ -112,10 +115,13 @@ public class PTMLObjectFactory {
     /** 
      * Create the root IconLibrary from an XMLElement that was parsed from 
      * the root IconLibrary.  
-     * @exception If the XML element does not have a type of "iconlibrary"
+     * @exception IllegalActionException If the XML element does not 
+     * have a type of "iconlibrary"
+     * @exception NameDuplicationException If the XML element contains two
+     * named objects with the same name.
      */
     public static IconLibrary createIconLibrary(XMLElement e) 
-            throws IllegalActionException {
+            throws IllegalActionException, NameDuplicationException {
 
         PTMLParser parser = null;
         _checkElement(e, "iconlibrary");
