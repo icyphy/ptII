@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
 @AcceptedRating Yellow (vogel@eecs.berkeley.edu)
 */
@@ -107,7 +107,7 @@ public class Display extends Sink implements Placeable {
         _windowProperties = new WindowPropertiesAttribute(
                 this, "_windowProperties");
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-15\" "
                 + "width=\"40\" height=\"30\" "
                 + "style=\"fill:lightGrey\"/>\n"
@@ -265,7 +265,7 @@ public class Display extends Sink implements Placeable {
      *  @return The background color of the text area.
      */
     public Color getBackground() {
-	return textArea.getBackground();
+        return textArea.getBackground();
     }
 
     /** Specify the container in which the data should be displayed.

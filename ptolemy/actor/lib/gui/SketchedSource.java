@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
@@ -88,7 +88,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-    	output = new TypedIOPort(this, "output", false, true);
+            output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
         // Create the parameters.
@@ -131,11 +131,11 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         // Set the initial token production parameter of the
         // output port so that this can be used in SDF in feedback
         // loops.
-	Parameter tokenInitProduction = new Parameter(
+        Parameter tokenInitProduction = new Parameter(
                 output, "tokenInitProduction");
 
         // Use an expression here so change propagate.
-	tokenInitProduction.setExpression("length");
+        tokenInitProduction.setExpression("length");
     }
 
     ///////////////////////////////////////////////////////////////////

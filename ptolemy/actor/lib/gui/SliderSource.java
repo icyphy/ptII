@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (liuxj@eecs.berkeley.edu)
 @AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
@@ -83,9 +83,9 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         output.setTypeEquals(BaseType.INT);
 
         minimum = new Parameter(this, "minimum", new IntToken(-10));
-	minimum.setTypeEquals(BaseType.INT);
+        minimum.setTypeEquals(BaseType.INT);
         maximum = new Parameter(this, "maximum", new IntToken(10));
-	maximum.setTypeEquals(BaseType.INT);
+        maximum.setTypeEquals(BaseType.INT);
 
         title = new StringAttribute(this, "title");
         title.setExpression("");
@@ -122,21 +122,21 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if (attribute == minimum || attribute == maximum) {
-	    int min = ((IntToken)minimum.getToken()).intValue();
-	    int max = ((IntToken)maximum.getToken()).intValue();
-	    if (min > max && slider != null) {
-		throw new IllegalActionException(this, "The minimum value "
-			+ "of the slider cannot be larger than the maximum "
-		        + "value.");
-	    }
-	    if (slider != null) {
-		slider.setMaximum(max);
-		slider.setMinimum(min);
-	    }
-	} else {
-	    super.attributeChanged(attribute);
-	}
+        if (attribute == minimum || attribute == maximum) {
+            int min = ((IntToken)minimum.getToken()).intValue();
+            int max = ((IntToken)maximum.getToken()).intValue();
+            if (min > max && slider != null) {
+                throw new IllegalActionException(this, "The minimum value "
+                        + "of the slider cannot be larger than the maximum "
+                        + "value.");
+            }
+            if (slider != null) {
+                slider.setMaximum(max);
+                slider.setMinimum(min);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -150,13 +150,13 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             throws CloneNotSupportedException {
         SliderSource newObject = (SliderSource)super.clone(workspace);
         newObject.slider = null;
-	newObject._frame = null;
+        newObject._frame = null;
         return newObject;
     }
 
     /** Return the background. */
     public Color getBackground() {
-	return _panel.getBackground();
+        return _panel.getBackground();
     }
 
     /** Create a slider on the screen, if necessary. If a graphical container
@@ -177,8 +177,8 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
     /** Output the value of the slider recorded when prefire() is last called.
      */
     public void fire() throws IllegalActionException {
-	super.fire();
-	output.send(0, _outputVal);
+        super.fire();
+        output.send(0, _outputVal);
     }
 
     /** Specify the container in which the slider should be displayed.
@@ -202,10 +202,10 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         }
 
         _container = container;
-	slider = new JSlider(JSlider.HORIZONTAL, min, max, (min+max)/2);
-	slider.addChangeListener(this);
-	_panel = new JPanel();
-	_panel.add(slider);
+        slider = new JSlider(JSlider.HORIZONTAL, min, max, (min+max)/2);
+        slider.addChangeListener(this);
+        _panel = new JPanel();
+        _panel.add(slider);
 
         if (_container == null) {
             // place the slider in its own frame.
@@ -229,25 +229,25 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
             _panel.setBorder(BorderFactory.createTitledBorder(titleSpec));
         }
 
-	// try some slider configuration
-	slider.setBackground(null);
-	slider.setMajorTickSpacing(10);
-	slider.setMinorTickSpacing(1);
-	slider.setPaintTicks(true);
-	slider.setPaintLabels(true);
+        // try some slider configuration
+        slider.setBackground(null);
+        slider.setMajorTickSpacing(10);
+        slider.setMinorTickSpacing(1);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
     }
 
     /** Record the current value of the slider. This value is output in the
      *  subsequent firings of this actor.
      */
     public boolean prefire() throws IllegalActionException {
-	_outputVal = new IntToken(slider.getValue());
+        _outputVal = new IntToken(slider.getValue());
         return super.prefire();
     }
 
     /** Set the background color. */
     public void setBackground(Color background) {
-	_panel.setBackground(background);
+        _panel.setBackground(background);
     }
 
     /** Override the base class to remove the display from its graphical
@@ -266,7 +266,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
 
     /** The value of the slider changed, record the new value. */
     public void stateChanged(ChangeEvent e) {
-	_val = slider.getValue();
+        _val = slider.getValue();
     }
 
     ///////////////////////////////////////////////////////////////////

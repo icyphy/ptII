@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
@@ -95,7 +95,7 @@ public class HistogramPlotter extends PlotterBase
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-    	input = new TypedIOPort(this, "input", true, false);
+            input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
 
@@ -107,7 +107,7 @@ public class HistogramPlotter extends PlotterBase
                 new DoubleToken(0.5));
         binOffset.setTypeEquals(BaseType.DOUBLE);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"40\" "
                 + "style=\"fill:lightGrey\"/>\n"
