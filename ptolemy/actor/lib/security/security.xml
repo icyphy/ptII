@@ -11,10 +11,6 @@
 	   </doc>
 	</entity>  	  
 
-	<entity name="Password" class="ptolemy.actor.lib.security.Password">
-	  <doc>Produce passwords</doc>
-        </entity>
-
 	<entity name="PublicKeyReader"
 	        class="ptolemy.actor.lib.security.PublicKeyReader">
 	  <doc>Read a public key from a key store and output it.</doc>
