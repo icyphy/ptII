@@ -155,7 +155,7 @@ public class NPNQueueReceiver extends PNQueueReceiver
                 }
             }
         }
-        synchronized(getContainer()) {
+        synchronized(getContainer().getContainer()) {
             notifyAll();
         }
     }
