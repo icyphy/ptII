@@ -171,14 +171,29 @@ public class Branch implements Runnable {
         try {
             setActive(true);
             while( isActive() ) {
+                transferToken();
+                /*
             	Token token = _prodRcvr.get(this); 
                 _consRcvr.put(token, this);
+                */
             }
         } catch( TerminateBranchException e ) {
             return;
         } catch( TerminateProcessException e ) {
             return;
         }
+    }
+    
+    /**
+     */
+    public void transferToken() {
+        if( _prodRcvr == null ) {
+            return;
+        } else if ( _consRcvr == null ) {
+            return;
+        }
+        Token token = _prodRcvr.get(this); 
+        _consRcvr.put(token, this);
     }
     
     //////////////////////////////////////////////////////////////////
