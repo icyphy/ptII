@@ -75,7 +75,6 @@ JSIMPLE_TESTS = \
 	SingletonAttribute.tcl \
 	SingletonConfigurableAttribute.tcl \
 	StringAttribute.tcl \
-	StringUtilities.tcl \
 	TransientSingletonConfigurableAttribute.tcl \
 	Workspace.tcl
 
