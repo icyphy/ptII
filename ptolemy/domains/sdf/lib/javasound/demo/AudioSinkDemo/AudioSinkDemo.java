@@ -46,7 +46,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.domains.sdf.gui.*;
-import ptolemy.domains.sdf.demo.*;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.plot.*;
@@ -80,12 +79,12 @@ public class AudioSinkDemo extends SDFApplet {
 	  Sine sine = new Sine(_toplevel, "sine");
 
 	    AudioSink audioSink = new AudioSink(_toplevel, "audioSink");
-	  audioSink.fileName.setToken(new StringToken("soundFile.au"));  // FIXME: Does nothing.
+	  audioSink.fileName.setToken(new StringToken("outputFile.au"));  // FIXME: Does nothing.
 	  
           // Set the synthesis freq.
 	  double synthFreq = 440;
           // Set the sampling rate to use.
-          sampleRate = 22050;
+          sampleRate = 8000;
 	  audioSink.sampRate.setToken(new IntToken(sampleRate));
 	  double omegaVal = (double)(2*Math.PI*synthFreq/sampleRate);
 	  sine.omega.setToken(new DoubleToken(omegaVal));
