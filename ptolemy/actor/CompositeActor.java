@@ -31,7 +31,7 @@ package pt.actors;
 import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// Actor
+//// CompositeActor
 /** 
 A CompositeActor is a computational unit which contains Actors and
 operates on and/or produces data. The Ports of a CompositeActor are
@@ -43,39 +43,62 @@ constrained to be IOPorts.
 @see full-classname
 */
 public abstract class CompositeActor extends CompositeEntity {
-    /** Constructor
-     */	
+    /** Construct an actor in the default workspace with an empty string
+     *  as its name.
+     *  Increment the version number of the workspace.
+     */
     public CompositeActor() {
 	super();
     }
 
+    /** Construct an actor in the specified workspace with an empty
+     *  string as a name (you can then change the name with setName()).
+     *  If the workspace argument is null, then use the default workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     */
     public CompositeActor(Workspace workspace) {
         super(workspace);
+    }
+
+    /** Create an object with a name and a container. 
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This entity will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The parent actor.
+     *  @param name The name of the actor.
+     *  @exception IllegalActionException Name argument is null.
+     *  @exception NameDuplicationException Name coincides with
+     *   an actor already in the container.
+     */
+    public CompositeActor(CompositeActor container, String name) 
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+    /** Sets the director for execution of this CompositeActor
+     * @param director is the Director responsible for the execution of this
+     *  CompositeActor
+     */
     public void setDirector(Director director) {
 	_director = director;
         return;
     }
 
+    /** Returns the director responsible for execution
+     * @return the director
+     */
     public Director getDirector() {
 	return _director;
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
-
-    ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    Director _director;
+    private Director _director;
 }
