@@ -203,6 +203,8 @@ $(PTAUXJAR): $(JSRCS) $(JCLASS)
 	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
 		$(ME)/CmdLineArgException.class \
 		$(ME)/EPSGraphics.class \
+		$(ME)/Histogram.class \
+		$(ME)/HistogramApplet.class \
 		$(ME)/Message.class \
 		$(ME)/Plot.class \
 		$(ME)/PlotApplet.class \

@@ -32,7 +32,6 @@ package ptolemy.plot;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
-import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// Histogram
@@ -147,16 +146,16 @@ public class Histogram extends PlotBox {
         Integer binobj = new Integer(bin);
 
         // Add to the appropriate bin
-        HashedMap bins = (HashedMap)_histogram.elementAt(dataset);
+        Hashtable bins = (Hashtable)_histogram.elementAt(dataset);
         int count;
-        if (bins.includesKey(binobj)) {
+        if (bins.containsKey(binobj)) {
             // increase the count
-            count = 1 + ((Integer)bins.at(binobj)).intValue();
-            bins.putAt(binobj, new Integer(count));
+            count = 1 + ((Integer)bins.get(binobj)).intValue();
+            bins.put(binobj, new Integer(count));
         } else {
             // start a new entry.
             count = 1;
-            bins.putAt(binobj, new Integer(count));
+            bins.put(binobj, new Integer(count));
         }
 
         // For auto-ranging, keep track of min and max.
@@ -272,7 +271,7 @@ public class Histogram extends PlotBox {
         }
         while (dataset >= _points.size()) {
             _points.addElement(new Vector());
-            _histogram.addElement(new HashedMap());
+            _histogram.addElement(new Hashtable());
         }
     }
 
@@ -345,11 +344,11 @@ public class Histogram extends PlotBox {
         // Plot the histograms in reverse order so that the first colors
         // appear on top.
         for (int dataset = _points.size() - 1; dataset >= 0 ; dataset--) {
-            HashedMap data = (HashedMap)_histogram.elementAt(dataset);
+            Hashtable data = (Hashtable)_histogram.elementAt(dataset);
             Enumeration keys = data.keys();
             while (keys.hasMoreElements()) {
                 Integer bin = (Integer)keys.nextElement();
-                Integer count = (Integer)data.at(bin);
+                Integer count = (Integer)data.get(bin);
                 _drawPlotPoint(graphics, dataset,
                         bin.intValue(), count.intValue());
             }

@@ -1412,6 +1412,10 @@ public class PlotBox extends Panel {
         } else if (lcLine.startsWith("titletext:")) {
             setTitle((line.substring(10)).trim());
             return true;
+        } else if (lcLine.startsWith("title:")) {
+            // Tolerate alternative tag.
+            setTitle((line.substring(10)).trim());
+            return true;
         } else if (lcLine.startsWith("xlabel:")) {
             setXLabel((line.substring(7)).trim());
             return true;
@@ -1968,6 +1972,8 @@ public class PlotBox extends Panel {
                     if (xtick) addXTick(label, idx);
                     else addYTick(label, idx);
                 } catch (NumberFormatException e) {
+                    System.err.println("Warning from PlotBox: " + 
+                    "Unable to parse ticks: " + e.getMessage());
                     // ignore if format is bogus.
                 }
             }
