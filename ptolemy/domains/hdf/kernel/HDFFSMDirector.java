@@ -606,11 +606,10 @@ public class HDFFSMDirector extends FSMDirector {
         // The receivers of the current refinement that receive data
         // from "port."
         Receiver[][] insideReceivers = _currentLocalReceivers(port);
-        //System.out.println("port = " + port.getFullName() +
-          //  " insideReceivers " + insideReceivers.toString());
-        // For each channel.
+        
+        int rate = DFUtilities.getTokenConsumptionRate(port);
         for (int i = 0; i < port.getWidth(); i++) {
-            int rate = DFUtilities.getTokenConsumptionRate(port);
+            // For each channel
             try {
                 if (insideReceivers != null
                         && insideReceivers[i] != null) {
@@ -620,20 +619,16 @@ public class HDFFSMDirector extends FSMDirector {
                             insideReceivers[i][j].get();
                         }
                     }
-                }
-                for (int k = 0; k < rate; k++) {
-                    if (port.hasToken(i)) {
-                        ptolemy.data.Token t = port.get(i);
-                        if (insideReceivers != null
-                            && insideReceivers[i] != null) {
-                            for (int j = 0;
-                                j < insideReceivers[i].length; j++) {
+                    for (int k = 0; k < rate; k++) {
+                        if (port.hasToken(i)) {
+                            ptolemy.data.Token t = port.get(i);
+                            for (int j = 0; j < insideReceivers[i].length; j++) {
                                 insideReceivers[i][j].put(t);
-                            }  
-                        // Successfully transferred data, so return true.
-                        transferred = true;
-                       }
+                            } 
+                        }
                     }
+                    // Successfully transferred data, so return true.
+                    transferred = true;
                 }
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
@@ -644,15 +639,14 @@ public class HDFFSMDirector extends FSMDirector {
         return transferred;
     }
 
-    /** Transfer data from an output port of the current
-     *  refinement actor to the ports it is connected to on
-     *  the outside. This method differs from the base class
-     *  method in that this method will transfer all available
-     *  tokens in the receivers, while the base class method will
-     *  transfer at most one token. This behavior is required to
-     *  handle the case of non-homogeneous actors. The port
-     *  argument must be an opaque output port.  If any channel
-     *  of the output port has no data, then that channel is ignored.
+    /** Transfer data from an output port of the current refinement actor
+     *  to the ports it is connected to on the outside. This method differs
+     *  from the base class method in that this method will transfer <i>k</i> 
+     *  tokens in the receivers, where <i>k</i> is the port rate if it is
+     *  declared by the port. If the port rate is not declared, this method
+     *  behaves like the base class method and will transfer at most one token.
+     *  This behavior is required to handle the case of multi-rate actors.
+     *  The port argument must be an opaque output port.
      *  @exception IllegalActionException If the port is not an opaque
      *  output port.
      *  @param port The port to transfer tokens from.
@@ -667,31 +661,31 @@ public class HDFFSMDirector extends FSMDirector {
                     "HDFFSMDirector: transferOutputs():" +
                     "  port argument is not an opaque output port.");
         }
-        boolean trans = false;
+        boolean transferred = false;
+        int rate = DFUtilities.getRate(port);
         Receiver[][] insideReceivers = port.getInsideReceivers();
-        if (insideReceivers != null) {
-            for (int i = 0; i < insideReceivers.length; i++) {
-                // "i" is port index.
-                // "j" is that port's channel index.
-                if (insideReceivers[i] != null) {
-                    for (int j = 0; j < insideReceivers[i].length; j++) {
-                        while (insideReceivers[i][j].hasToken()) {
-                            try {
-                                ptolemy.data.Token t =
-                                    insideReceivers[i][j].get();
-                                port.send(i, t);
-                                trans = true;
-                            } catch (NoTokenException ex) {
-                                throw new InternalErrorException(
-                                        "Director.transferOutputs: " +
-                                        "Internal error: " + ex);
-                            }
+        for (int i = 0; i < port.getWidth(); i ++) {
+            if (insideReceivers != null && insideReceivers[i] != null) {
+                for (int j = 0; j < insideReceivers[i].length; j++) {
+                    for (int k = 0; k < rate; k ++) {
+                        // Only transfer number of tokens declared 
+                        // by the port rate.
+                        try {
+                            ptolemy.data.Token t =
+                                insideReceivers[i][j].get();
+                            port.send(i, t);
+                        } catch (NoTokenException ex) {
+                            throw new InternalErrorException(
+                                    "Director.transferOutputs: " +
+                                    "Not enough tokens for port " 
+                                    + port.getName() + " " + ex);
                         }
                     }
                 }
             }
+            transferred = true;
         }
-        return trans;
+        return transferred;
     }
     
     /** Get the current state. If it does not have any refinement,
