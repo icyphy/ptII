@@ -29,7 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.backtrack.ast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -77,15 +76,13 @@ public class ASTBuilder {
      *
      *  @param fileName The Java source file name.
      *  @return The root of the AST.
-     *  @exception FileNotFoundException If the source file cannot be
-     *   found.
      *  @exception IOException If IO exception occurs.
      *  @exception ASTMalformedException If the Java source file
      *   does not conform to the supported Java grammar.
      *  @see #parse(char[])
      */
     public static CompilationUnit parse(String fileName)
-            throws FileNotFoundException, IOException, ASTMalformedException {
+            throws IOException, ASTMalformedException {
         File file = new File(fileName);
         char source[] = new char[(int) file.length()];
         FileReader fileReader = new FileReader(file);
