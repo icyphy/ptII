@@ -464,13 +464,14 @@ public class MoMLWriter extends Writer {
             // System.out.println("Writing = " + object.getFullName());
             synchronized(lock) {
                 boolean wroteAnything = false;
-                // Alot of things aren't presistent and are just skipped.
+                // A lot of things aren't persistent and are just skipped.
                 if (object instanceof NotPersistent && !_isForcePersistence)
                     return false;
 
                 // FIXME: This is horrible...  I guess we need an attribute for
                 // persistence?
-                if (object instanceof Variable && !(object instanceof Parameter))
+                if (object instanceof Variable
+                        && !(object instanceof Parameter))
                     return false;
 
                 // Documentation uses a special tag with no class.
