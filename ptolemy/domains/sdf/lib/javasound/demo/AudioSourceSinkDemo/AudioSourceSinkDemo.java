@@ -37,7 +37,7 @@ import java.awt.event.*;
 
 
 import ptolemy.domains.sdf.lib.*;
-import ptolemy.domains.sdf.lib.javasound.*;
+import ptolemy.actor.lib.javasound.*;
 import ptolemy.domains.sdf.lib.javasound.demo.AudioSourceSinkDemo.*;
 
 
@@ -111,58 +111,53 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
             _sdfDirector.setScheduleValid(false);
 
 	    // ********** FOR DEBUF ONLY ************
-	    //_sdfDirector.iterations.setToken(new IntToken(1000));
+	    //_sdfDirector.iterations.setToken(new IntToken(10000));
+
+	    // This is Experimental!
+	    _sdfDirector.vectorizationFactor.setToken(new IntToken(64));
 
 	    // Set the sampling rate to use.
-	    int sampleRate = 44100;
+	    int sampleRate = 8000;
 
-	    int channels = 2;
-	    // Set the token consumption rate and production rate to use.
-	    // Larger values may speed up execution.
-	    int cPRate = 256;
+	    int channels = 1;
 
 	    // Size of internal Java Sound buffer (in samples) to use 
 	    //for real-time capture/playback.
 	    int buffSize = 4096;
 
-	    AudioSource soundSource = new AudioSource(this, "soundSource");
+	    Ramp ramp = new Ramp(this, "ramp");
 	    // Set the production rate(a performance optimization).
-	    soundSource.tokenProductionRate.setToken(new IntToken(cPRate));
+	    ramp.step.setToken(new DoubleToken(0.000125));
 
-           
+	    Sine sine1 = new Sine(this, "sine1");
 	    
+	    sine1.omega.setToken(new DoubleToken(2500));
+	    sine1.amplitude.setToken(new DoubleToken(0.5));
 	   
 
-	    // Read audio data from a URL.
-	    //soundSource.source.setToken(new StringToken("URL"));
-	    //soundSource.pathName.setToken(new StringToken("http://some-web-site/1-welcome.wav"));	
-	     // *** OR ***
-	    //soundSource.pathName.setToken(new StringToken("file:///D:/home/vogel/ptII/ptolemy/domains/sdf/lib/javasound/demo/AudioSourceSinkDemo/22-new.aif"));
-	   
-	    // *** OR ***
+	     AudioSink soundSink = new AudioSink(this, "soundSink");
+	    //Recorder soundSink = new Recorder(this, "soundSink");
 
-	    // Read audio form microphone (real-time capture).
-	    soundSource.source.setToken(new StringToken("mic"));
-	    soundSource.sampleRate.setToken(new IntToken(sampleRate));
-	    soundSource.channels.setToken(new IntToken(channels));
-	    soundSource.bufferSize.setToken(new IntToken(buffSize));
+	    //soundSink.pathName.setToken(new StringToken("outputFile.wav"));
+	    soundSink.sink.setToken(new StringToken("live"));
+	    soundSink.sampleRate.setToken(new IntToken(sampleRate));
+	    //soundSink.sampleSizeInBits.setToken(new IntToken(16));
+	    //soundSink.channels.setToken(new IntToken(channels));
+	    //soundSink.bufferSize.setToken(new IntToken(buffSize));
 
-            AudioSink soundSink = new AudioSink(this, "soundSink");
-	  soundSink.pathName.setToken(new StringToken("outputFile.wav"));
-	  soundSink.sink.setToken(new StringToken("speaker"));
-	  //soundSink.sink.setToken(new StringToken("file"));
-	  soundSink.sampleRate.setToken(new IntToken(sampleRate));
-	  soundSink.sampleSizeInBits.setToken(new IntToken(16));
-	  soundSink.tokenConsumptionRate.setToken(new IntToken(cPRate));
-	  soundSink.channels.setToken(new IntToken(channels));
-	  soundSink.bufferSize.setToken(new IntToken(buffSize));
+	    this.connect(ramp.output, sine1.input);
+	    //TypedIORelation rel1 =
+	    //(TypedIORelation)this.newRelation("rel1");
+	    //rel1.setWidth(2);
+	    //ramp.output.link(rel1);
+	    //sine1.input.link(rel1);
 
-	  //this.connect(soundSource.output, soundSink.input);
-	  TypedIORelation rel1 =
-	    (TypedIORelation)this.newRelation("relation1");
-	  rel1.setWidth(2);
-	  soundSource.output.link(rel1);
-	  soundSink.input.link(rel1);
+	    this.connect(sine1.output, soundSink.input);
+	  //TypedIORelation rel2 =
+	  //(TypedIORelation)this.newRelation("rel2");
+	  //rel2.setWidth(2);
+	  //sine1.output.link(rel2);
+	  //soundSink.input.link(rel2);
 
         } catch (Exception ex) {
             System.err.println("Setup failed:" + ex);
