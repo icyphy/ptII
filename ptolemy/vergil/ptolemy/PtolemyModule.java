@@ -123,20 +123,7 @@ public class PtolemyModule implements Module {
 	Action action;
 	// First add the the generic actions.
 
-	action = new FigureAction("Look Inside") {
-	    public void actionPerformed(ActionEvent e) {
-		// Figure out what entity.
-		super.actionPerformed(e);		
-		NamedObj object = getTarget();
-		if(!(object instanceof CompositeEntity)) return;
-		CompositeEntity entity = (CompositeEntity)object;
-		Application app = getApplication();
-		PtolemyDocument doc = new PtolemyDocument(app);
-		doc.setModel(entity);
-		app.addDocument(doc);
-		app.displayDocument(doc);
-		app.setCurrentDocument(doc);}
-	};
+	action = new lookInsideAction();
 	_application.addAction(action);
 
         // Create the Devel menu
@@ -157,94 +144,11 @@ public class PtolemyModule implements Module {
 	GUIUtilities.addMenuItem(menuDevel, action, 'I',
 				 "Print current document info");
 
-        action = new AbstractAction("Execute System") {
-            public void actionPerformed(ActionEvent e) {
-                PtolemyDocument d =
-		(PtolemyDocument) _application.getCurrentDocument();
-                if (d == null) {
-                    return;
-                }
-                try {
-		    CompositeActor toplevel =
-                        (CompositeActor) d.getModel();
-
-                    // FIXME there is alot of code in here that is similar
-                    // to code in MoMLApplet and MoMLApplication.  I think
-                    // this should all be in ModelPane.
-                    
-                    // Create a manager.
-		    // Attaching these listeners is a nasty business...
-		    // All Managers are not created equal, since some have
-		    // listeners attached.
-                    Manager manager = toplevel.getManager();
-                    if(manager == null) {
-                        manager =
-                            new Manager(toplevel.workspace(), "Manager");
-                        toplevel.setManager(manager);
-			manager.addExecutionListener(
-			    new VergilExecutionListener(_application));
-                    }
-                    
-                    // We can't reuse the execution frame, since some 
-                    // window systems don't properly dispose the frame when
-                    // it is closed.
-                    if(_executionFrame != null) {
-			_executionFrame.setVisible(false);
-                    }
-                    _executionFrame = new JFrame();
-                    
-                    ModelPane modelPane = new ModelPane(toplevel);
-                    _executionFrame.getContentPane().add(modelPane,
-                            BorderLayout.NORTH);
-                    // Create a panel to place placeable objects.
-                    JPanel displayPanel = new JPanel();
-                    displayPanel.setLayout(new BoxLayout(displayPanel,
-                            BoxLayout.Y_AXIS));
-                    modelPane.setDisplayPane(displayPanel);
-
-                    // Put placeable objects in a reasonable place
-                    for(Iterator i = toplevel.deepEntityList().iterator();
-                        i.hasNext();) {
-                        Object o = i.next();
-                        if(o instanceof Placeable) {
-                            ((Placeable) o).place(
-                                    displayPanel);
-                        }
-                    }
-
-                    if(_executionFrame != null) {
-                        _executionFrame.setVisible(true);
-                    }
-
-		    final JFrame packframe = _executionFrame;
-		    Action packer = new AbstractAction() {
-			public void actionPerformed(ActionEvent event) {
-			    packframe.getContentPane().doLayout();
-			    packframe.repaint();
-			    packframe.pack();
-			}
-		    };
-		    javax.swing.Timer timer =
-                        new javax.swing.Timer(200, packer);
-		    timer.setRepeats(false);
-		    timer.start();
-                } catch (Exception ex) {
-                    getApplication().showError("Execution Failed", ex);
-                }
-
-            }
-        };
+        action = new executeSystemAction();
 	_application.addAction(action);
 	GUIUtilities.addMenuItem(menuDevel, action, 'E', "Execute System");
 
-	action = new AbstractAction("Automatic Layout") {
-            public void actionPerformed(ActionEvent e) {
-		PtolemyDocument d = (PtolemyDocument)
-		    _application.getCurrentDocument();
-		JGraph jg = (JGraph) _application.getView(d);
-		_redoLayout(jg);
-	    }
-        };
+	action = new layoutAction();
         GUIUtilities.addMenuItem(menuDevel, action, 'L', 
 				 "Automatically layout the model");
 	
@@ -356,7 +260,8 @@ public class PtolemyModule implements Module {
 		    return;
 		}
 		Director foundDirector = null;
-		for(int i = 0; foundDirector == null && i < _directorModel.getSize(); i++) {
+		for(int i = 0; foundDirector == null && 
+			i < _directorModel.getSize(); i++) {
 		    if(director.getClass().isInstance(_directorModel.getElementAt(i))) {
 		    	foundDirector = 
 		    	(Director)_directorModel.getElementAt(i);
@@ -470,6 +375,120 @@ public class PtolemyModule implements Module {
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
+    private class executeSystemAction extends AbstractAction {
+	public executeSystemAction() {
+	    super("Execute System");
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	    PtolemyDocument d =
+		(PtolemyDocument) _application.getCurrentDocument();
+	    if (d == null) {
+		return;
+	    }
+	    try {
+		CompositeActor toplevel =
+		    (CompositeActor) d.getModel();
+		
+		// FIXME there is alot of code in here that is similar
+		// to code in MoMLApplet and MoMLApplication.  I think
+		// this should all be in ModelPane.
+		
+		// Create a manager.
+		// Attaching these listeners is a nasty business...
+		// All Managers are not created equal, since some have
+		// listeners attached.
+		Manager manager = toplevel.getManager();
+		if(manager == null) {
+		    manager =
+			new Manager(toplevel.workspace(), "Manager");
+		    toplevel.setManager(manager);
+		    manager.addExecutionListener(
+		       new VergilExecutionListener(_application));
+		}
+		
+		// We can't reuse the execution frame, since some 
+		// window systems don't properly dispose the frame when
+		// it is closed.
+		if(_executionFrame != null) {
+		    _executionFrame.setVisible(false);
+		}
+		_executionFrame = new JFrame();
+		
+		ModelPane modelPane = new ModelPane(toplevel);
+		_executionFrame.getContentPane().add(modelPane,
+						     BorderLayout.NORTH);
+		// Create a panel to place placeable objects.
+		JPanel displayPanel = new JPanel();
+		displayPanel.setLayout(new BoxLayout(displayPanel,
+						     BoxLayout.Y_AXIS));
+		modelPane.setDisplayPane(displayPanel);
+		
+		// Put placeable objects in a reasonable place
+		for(Iterator i = toplevel.deepEntityList().iterator();
+		    i.hasNext();) {
+		    Object o = i.next();
+		    if(o instanceof Placeable) {
+			((Placeable) o).place(
+					      displayPanel);
+		    }
+		}
+		
+		if(_executionFrame != null) {
+		    _executionFrame.setVisible(true);
+		}
+		
+		final JFrame packframe = _executionFrame;
+		Action packer = new AbstractAction() {
+		    public void actionPerformed(ActionEvent event) {
+			packframe.getContentPane().doLayout();
+			packframe.repaint();
+			packframe.pack();
+		    }
+		};
+		javax.swing.Timer timer =
+		    new javax.swing.Timer(200, packer);
+		timer.setRepeats(false);
+		timer.start();
+	    } catch (Exception ex) {
+		getApplication().showError("Execution Failed", ex);
+	    }
+	    
+	}
+    }
+    
+    private class layoutAction extends AbstractAction {
+	public layoutAction() {
+	    super("Automatic Layout");
+	}
+	public void actionPerformed(ActionEvent e) {
+	    PtolemyDocument d = (PtolemyDocument)
+		_application.getCurrentDocument();
+	    JGraph jg = d.getView();
+	    _redoLayout(jg);
+	}
+    }
+
+    // An action to look inside a composite.
+    private class lookInsideAction extends FigureAction {
+	public lookInsideAction() {
+	    super("Look Inside");
+	}
+	public void actionPerformed(ActionEvent e) {
+	    // Figure out what entity.
+	    super.actionPerformed(e);		
+	    NamedObj object = getTarget();
+	    if(!(object instanceof CompositeEntity)) return;
+	    CompositeEntity entity = (CompositeEntity)object;
+	    Application app = getApplication();
+	    PtolemyDocument doc = new PtolemyDocument(app);
+	    doc.setModel(entity);
+	    app.addDocument(doc);
+	    app.displayDocument(doc);
+	    app.setCurrentDocument(doc);
+	}
+    }
+
     // An action to create a new port.
     private class newPortAction extends AbstractAction {
 	public newPortAction() {
@@ -477,11 +496,11 @@ public class PtolemyModule implements Module {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-	    VergilApplication app = (VergilApplication)getApplication();
-	    Document doc = app.getCurrentDocument();
+	    Document doc = getApplication().getCurrentDocument();
 	    // Only create ports for ptolemy documents.
 	    if(!(doc instanceof PtolemyDocument)) return;
-	    JGraph jgraph = (JGraph)app.getView(doc);
+	    PtolemyDocument ptolemyDocument = (PtolemyDocument)doc;
+	    JGraph jgraph = ptolemyDocument.getView();
 	    GraphPane pane = jgraph.getGraphPane();
 	    Point2D point = pane.getSize();
 	    double x = point.getX()/2;
@@ -499,8 +518,7 @@ public class PtolemyModule implements Module {
 		    port = toplevel.newPort(toplevel.uniqueName("port"));
 		}
 		catch (Exception ex) {
-		    VergilApplication.getInstance().showError(
-			 "Create port failed:", ex);
+		    getApplication().showError("Create port failed:", ex);
 		    return;
 		}
 	    }
@@ -516,11 +534,11 @@ public class PtolemyModule implements Module {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-	    VergilApplication app = (VergilApplication)getApplication();
-	    Document doc = app.getCurrentDocument();
+	    Document doc = getApplication().getCurrentDocument();
 	    // Only create ports for ptolemy documents.
 	    if(!(doc instanceof PtolemyDocument)) return;
-	    JGraph jgraph = (JGraph)app.getView(doc);
+	    PtolemyDocument ptolemyDocument = (PtolemyDocument)doc;
+	    JGraph jgraph = ptolemyDocument.getView();
 	    GraphPane pane = jgraph.getGraphPane();
 	    Point2D point = pane.getSize();
 	    double x = point.getX()/2;
@@ -542,8 +560,7 @@ public class PtolemyModule implements Module {
                         relation.uniqueName("vertex"));
 		}
 		catch (Exception ex) {
-		    VergilApplication.getInstance().showError(
-			 "Create relation failed:", ex);
+		    getApplication().showError("Create relation failed:", ex);
 		    return;
 		}
 	    }
@@ -563,7 +580,7 @@ public class PtolemyModule implements Module {
 	 */
 	public void run() {
 	    DesktopFrame frame = 
-		((DesktopFrame) _application.getApplicationFrame());
+		((DesktopFrame) getApplication().getApplicationFrame());
 	    JPanel pane = (JPanel)frame.getPalettePane();
 	    
 	    _parseLibraries();
