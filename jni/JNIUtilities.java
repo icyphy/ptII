@@ -127,24 +127,26 @@ the parameters
 <li> Select Commit to close the Edit Parameters window
 <li> Select JNI from the menu and
 then select Generate C Interface
-<li> Copy the dlls into a directory that is in the path
+<li> FIXME: Copy the dlls into a directory that is in the path
 <pre>
 cp meaningOfLife.dll $PTII/bin
 cp jni/jnimeaningOfLife/JnijnimeaningOfLife.dll $PTII/bin
 </pre>
 <li> Save the model.
-<br>Because of an apparent bug, it is necessary
+<br>FIXME: Because of an apparent bug, it is necessary
 to save the model for the port we just created to appear
 <li> Add a Display actor from the Sink folder in the 
 Actor Library and connect the input of the Display actor
 to the output of the meaningOfLife Actor
-<li> Because of a bug in the Ptolemy interface to the JNI
+<li> FIXME: Because of a bug in the Ptolemy interface to the JNI
 actor, you must specify the type of the output of the meaningOfLife
 actor by right clicking on the actor and selecting
 Configure Ports and then entering double for
 output type
 <li> Drag in a SDF director and set the number of iterations to 1.
 <li> Select Run
+<li> The answer to "the meaning of life, the universe, and everything"
+should appear in the Display actor.
 </ol>
 If you get an error like:
 <pre>
