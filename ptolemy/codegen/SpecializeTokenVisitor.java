@@ -51,6 +51,11 @@ import ptolemy.lang.java.nodetypes.*;
  *  @author Jeff Tsay
  */
 public class SpecializeTokenVisitor extends ResolveVisitorBase {
+
+    public SpecializeTokenVisitor(ActorCodeGeneratorInfo actorInfo, 
+                                  PtolemyTypeVisitor typeVisitor) {    
+        this(actorInfo, typeVisitor, new InequalitySolver(_cpo), new HashMap());
+    }
       
     public SpecializeTokenVisitor(ActorCodeGeneratorInfo actorInfo,
                                   PtolemyTypeVisitor typeVisitor,
@@ -58,14 +63,12 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                                   Map declToTermMap) {    
         super(TM_CUSTOM);        
         _actorInfo = actorInfo;
-        _typeVisitor = typeVisitor;                                        
+
+        _typeID = (PtolemyTypeIdentifier) typeVisitor.typePolicy().typeIdentifier();                                        
+        _typeVisitor = typeVisitor;
+        
         _solver = solver;
         _declToTermMap = declToTermMap;
-    }
-
-    public SpecializeTokenVisitor(ActorCodeGeneratorInfo actorInfo, 
-                                  PtolemyTypeVisitor typeVisitor) {    
-        this(actorInfo, typeVisitor, new InequalitySolver(_cpo), new HashMap());
     }
 
     /** Use the CompileUnitNodes (which presumably contain classes in a hierarchy),
@@ -121,18 +124,18 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
            
            TypedDecl typedDecl = (TypedDecl) term.getAssociatedObject();
            
-           if (value != PtolemyTypeVisitor.DUMMY_LOWER_BOUND) {
+           if (value != PtolemyTypeIdentifier.DUMMY_LOWER_BOUND) {
            
               TypeNameNode typeNode = (TypeNameNode) value.getDefType().clone();
                       
               declToTokenTypeMap.put(typedDecl, typeNode);        
            } else {
               ApplicationUtility.warn("could not solve for specific token type for " +
-              "declaration " + typedDecl + " in " + actorInfo.actor.getName());
+              "declaration " + typedDecl.getName() + " in " + actorInfo.actor.getName());
              
               // replace the declaration type with "IntToken" as a fix
               declToTokenTypeMap.put(typedDecl, 
-               PtolemyTypeVisitor.INT_TOKEN_TYPE.clone());   
+               PtolemyTypeIdentifier.INT_TOKEN_TYPE.clone());   
            }
         }
         
@@ -257,9 +260,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         
         String methodName = methodDecl.getName();
         
-        int accessedObjKind = _typeVisitor.kind(_typeVisitor.type(accessedObj));
+        int accessedObjKind = _typeID.kind(_typeVisitor.type(accessedObj));
                 
-        if (_typeVisitor.isSupportedTokenKind(accessedObjKind)) {
+        if (_typeID.isSupportedTokenKind(accessedObjKind)) {
            if (numArgs == 1) {
               if (methodName.equals("add") || methodName.equals("addReverse") ||
                   methodName.equals("subtract") || methodName.equals("subtractReverse") ||
@@ -309,7 +312,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
               }
            } // numArgs == 1
                                  
-        } else if (_typeVisitor.isSupportedPortKind(accessedObjKind)) {                      
+        } else if (_typeID.isSupportedPortKind(accessedObjKind)) {                      
           // use the resolved type of ports to do type inference
           
           if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
@@ -318,7 +321,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 
              TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);                 
              TypeNameNode portTypeNode = 
-              _typeVisitor.typeNodeForTokenType(port.getType()); 
+              _typeID.typeNodeForTokenType(port.getType()); 
                 
              if (methodName.equals("get")) {                                                   
                 return _makeConstantTerm(portTypeNode, null);
@@ -333,7 +336,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                // support getArray ...                                                                
              }                        
           }                                                   
-        } else if (accessedObjKind == PtolemyTypeVisitor.TYPE_KIND_PARAMETER) {
+        } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
           // use the tokens returned by parameters to do type inference
           
           if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
@@ -344,7 +347,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 Token token = (Token) _actorInfo.parameterNameToTokenMap.get(varName);
                   
                 TypeNameNode tokenTypeNode = 
-                 _typeVisitor.typeNodeForTokenType(token.getType());
+                 _typeID.typeNodeForTokenType(token.getType());
                                  
                 return _makeConstantTerm(tokenTypeNode, null); 
              }
@@ -522,17 +525,17 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return null;
     }
     
-    /** Return an inequality term corresponding to the given type, with
-     *  the associated decl, which may be null. If type is not a supported
-     *  token type, return null.
-     */
+    /** Return a variable inequality term corresponding to the given type, 
+     *  with the associated decl, which may be null. If type is not a 
+     *  supported token type, return null.
+     */         
     protected VariableTerm _makeVariableTerm(TypeNode type, TypedDecl decl) {
-        int kind = _typeVisitor.kind(type);
-        if (!_typeVisitor.isSupportedTokenKind(kind)) {
+        int kind = _typeID.kind(type);
+        if (!_typeID.isSupportedTokenKind(kind)) {
            return null;
         } 
         /*
-        if (_typeVisitor.isConcreteTokenType(kind)) {
+        if (_typeID.isConcreteTokenType(kind)) {
            // concrete token
            return new ConstantTerm((TypeNameNode) type, decl);                            
         } 
@@ -541,10 +544,14 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         
         return new VariableTerm((ClassDecl) JavaDecl.getDecl((NamedNode) type), decl);       
     }
-    
+
+    /** Return a constant inequality term corresponding to the given type, 
+     *  with the associated decl, which may be null. If type is not a 
+     *  supported token type, return null.
+     */    
     protected ConstantTerm _makeConstantTerm(TypeNode type, TypedDecl decl) {
-        int kind = _typeVisitor.kind(type);
-        if (!_typeVisitor.isSupportedTokenKind(kind)) {
+        int kind = _typeID.kind(type);
+        if (!_typeID.isSupportedTokenKind(kind)) {
            return null;
         } 
         
@@ -552,7 +559,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
         
     protected ActorCodeGeneratorInfo _actorInfo;
-    protected PtolemyTypeVisitor _typeVisitor;
+    
+    protected PtolemyTypeIdentifier _typeID;
+    
+    protected PtolemyTypeVisitor _typeVisitor;        
         
     /** A Map from TypeDecls to InequalityTerms. */
     protected Map _declToTermMap;
@@ -648,73 +658,73 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         // construct the type lattice
         _cpo = new DirectedAcyclicGraph(18);
            
-        _cpo.add(PtolemyTypeVisitor.DUMMY_LOWER_BOUND); 
+        _cpo.add(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND); 
      
-	    _cpo.add(PtolemyTypeVisitor.BOOLEAN_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.BOOLEAN_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.COMPLEX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.COMPLEX_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.DOUBLE_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.DOUBLE_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.FIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.FIX_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.INT_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.INT_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.LONG_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.LONG_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.OBJECT_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.SCALAR_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.STRING_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeVisitor.TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.FIX_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.INT_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.LONG_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+	    _cpo.add(PtolemyTypeIdentifier.TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeVisitor.OBJECT_TOKEN_DECL, PtolemyTypeVisitor.TOKEN_DECL);	    
-	    _cpo.addEdge(PtolemyTypeVisitor.STRING_TOKEN_DECL, PtolemyTypeVisitor.TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeVisitor.BOOLEAN_TOKEN_DECL, PtolemyTypeVisitor.TOKEN_DECL);	    
-	    _cpo.addEdge(PtolemyTypeVisitor.SCALAR_TOKEN_DECL, PtolemyTypeVisitor.TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeVisitor.MATRIX_TOKEN_DECL, PtolemyTypeVisitor.TOKEN_DECL);	    
+	    _cpo.addEdge(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);	    
+	    _cpo.addEdge(PtolemyTypeIdentifier.STRING_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
+	    _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);	    
+	    _cpo.addEdge(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);	    
 	    	    	    		        	                    
-	    _cpo.addEdge(PtolemyTypeVisitor.LONG_TOKEN_DECL, PtolemyTypeVisitor.SCALAR_TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeVisitor.COMPLEX_TOKEN_DECL, PtolemyTypeVisitor.SCALAR_TOKEN_DECL);	    
-        _cpo.addEdge(PtolemyTypeVisitor.FIX_TOKEN_DECL, PtolemyTypeVisitor.SCALAR_TOKEN_DECL);	    
+	    _cpo.addEdge(PtolemyTypeIdentifier.LONG_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
+	    _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);	    
+        _cpo.addEdge(PtolemyTypeIdentifier.FIX_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);	    
 	    
-	    _cpo.addEdge(PtolemyTypeVisitor.DOUBLE_TOKEN_DECL, PtolemyTypeVisitor.COMPLEX_TOKEN_DECL);						                        	    
+	    _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);						                        	    
 	    
-	    _cpo.addEdge(PtolemyTypeVisitor.INT_TOKEN_DECL, PtolemyTypeVisitor.LONG_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeVisitor.INT_TOKEN_DECL, PtolemyTypeVisitor.DOUBLE_TOKEN_DECL);	    
+	    _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL, PtolemyTypeIdentifier.LONG_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL, PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL);	    
 
-	    _cpo.addEdge(PtolemyTypeVisitor.BOOLEAN_MATRIX_TOKEN_DECL, PtolemyTypeVisitor.MATRIX_TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeVisitor.LONG_MATRIX_TOKEN_DECL, PtolemyTypeVisitor.MATRIX_TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeVisitor.COMPLEX_MATRIX_TOKEN_DECL, PtolemyTypeVisitor.MATRIX_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeVisitor.FIX_MATRIX_TOKEN_DECL, PtolemyTypeVisitor.MATRIX_TOKEN_DECL);
+	    _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+	    _cpo.addEdge(PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+	    _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
 	    
-	    _cpo.addEdge(PtolemyTypeVisitor.DOUBLE_MATRIX_TOKEN_DECL, PtolemyTypeVisitor.COMPLEX_MATRIX_TOKEN_DECL);
+	    _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
 	    	    	    
-	    _cpo.addEdge(PtolemyTypeVisitor.INT_MATRIX_TOKEN_DECL, PtolemyTypeVisitor.DOUBLE_MATRIX_TOKEN_DECL);
+	    _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
 	    
-	    _cpo.addEdge(PtolemyTypeVisitor.INT_MATRIX_TOKEN_DECL, PtolemyTypeVisitor.LONG_MATRIX_TOKEN_DECL);
+	    _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL);
 	    	    	  	    
-        _cpo.addEdge(PtolemyTypeVisitor.DUMMY_LOWER_BOUND, PtolemyTypeVisitor.OBJECT_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeVisitor.DUMMY_LOWER_BOUND, PtolemyTypeVisitor.STRING_TOKEN_DECL);        
-        _cpo.addEdge(PtolemyTypeVisitor.DUMMY_LOWER_BOUND, PtolemyTypeVisitor.BOOLEAN_TOKEN_DECL);                
-        _cpo.addEdge(PtolemyTypeVisitor.DUMMY_LOWER_BOUND, PtolemyTypeVisitor.INT_TOKEN_DECL);
-        _cpo.addEdge(PtolemyTypeVisitor.DUMMY_LOWER_BOUND, PtolemyTypeVisitor.FIX_TOKEN_DECL);        
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.OBJECT_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.STRING_TOKEN_DECL);        
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);                
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.INT_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.FIX_TOKEN_DECL);        
         
-        _cpo.addEdge(PtolemyTypeVisitor.DUMMY_LOWER_BOUND, PtolemyTypeVisitor.BOOLEAN_MATRIX_TOKEN_DECL);                
-        _cpo.addEdge(PtolemyTypeVisitor.DUMMY_LOWER_BOUND, PtolemyTypeVisitor.INT_MATRIX_TOKEN_DECL);        
-        _cpo.addEdge(PtolemyTypeVisitor.DUMMY_LOWER_BOUND, PtolemyTypeVisitor.FIX_MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);                
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);        
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
         
         /*                        
         TypeNameNode[] nodes = new TypeNameNode[] 
-        { PtolemyTypeVisitor.BOOLEAN_TOKEN_DECL, PtolemyTypeVisitor.BOOLEAN_MATRIX_TOKEN_DECL,
-	      PtolemyTypeVisitor.COMPLEX_TOKEN_DECL, PtolemyTypeVisitor.COMPLEX_MATRIX_TOKEN_DECL,
-	      PtolemyTypeVisitor.DOUBLE_TOKEN_DECL, PtolemyTypeVisitor.DOUBLE_MATRIX_TOKEN_DECL,	      
-	      PtolemyTypeVisitor.FIX_TOKEN_DECL, PtolemyTypeVisitor.FIX_MATRIX_TOKEN_DECL,
-	      PtolemyTypeVisitor.INT_TOKEN_DECL, PtolemyTypeVisitor.INT_MATRIX_TOKEN_DECL,
-	      PtolemyTypeVisitor.LONG_TOKEN_DECL, PtolemyTypeVisitor.LONG_MATRIX_TOKEN_DECL, 
-   	      PtolemyTypeVisitor.MATRIX_TOKEN_DECL, PtolemyTypeVisitor.OBJECT_TOKEN_DECL,
-   	      PtolemyTypeVisitor.SCALAR_TOKEN_DECL, PtolemyTypeVisitor.STRING_TOKEN_DECL,
-	      PtolemyTypeVisitor.TOKEN_DECL };
+        { PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL, PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL,
+	      PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL,
+	      PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL, PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL,	      
+	      PtolemyTypeIdentifier.FIX_TOKEN_DECL, PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL,
+	      PtolemyTypeIdentifier.INT_TOKEN_DECL, PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL,
+	      PtolemyTypeIdentifier.LONG_TOKEN_DECL, PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL, 
+   	      PtolemyTypeIdentifier.MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.OBJECT_TOKEN_DECL,
+   	      PtolemyTypeIdentifier.SCALAR_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL,
+	      PtolemyTypeIdentifier.TOKEN_DECL };
 	    
 	    
 	    for (int i = 0; i < nodes.length; i++) {

@@ -45,7 +45,9 @@ import ptolemy.actor.gui.CompositeActorApplication;
 import ptolemy.codegen.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.lang.ApplicationUtility;
+import ptolemy.lang.*;
+import ptolemy.lang.java.*;
+import ptolemy.lang.java.nodetypes.*;
 
 import ptolemy.domains.sdf.kernel.*;
 
@@ -55,7 +57,8 @@ import ptolemy.domains.sdf.kernel.*;
  *
  *  @author Jeff Tsay
  */
-public class SDFCodeGenerator extends CompositeActorApplication {
+public class SDFCodeGenerator extends CompositeActorApplication 
+     implements JavaStaticSemanticConstants {
 
     public SDFCodeGenerator(String[] args) throws Exception {
         super(args, false);                         
@@ -119,8 +122,8 @@ public class SDFCodeGenerator extends CompositeActorApplication {
         
         Iterator actorItr = _actorSet.iterator();
         
-        ActorCodeGenerator actorCodeGen = new ActorCodeGenerator(
-         SDFCodeGeneratorClassFactory.getInstance());        
+        ActorCodeGenerator actorCodeGen = 
+         new ActorCodeGenerator(_codeGenClassFactory);
          
         LinkedList renamedSourceList = new LinkedList();
         
@@ -147,8 +150,61 @@ public class SDFCodeGenerator extends CompositeActorApplication {
                                                    
              actorCodeGen.pass2(renamedSource, actorInfo);
         }                
+        
+        _generateMain();
     }
 
+    /** Generate the main class. */
+    protected void _generateMain() {
+    
+        LinkedList memberList = new LinkedList();
+        
+        Iterator bufferItr = _bufferInfoMap.values().iterator();
+        PtolemyTypeIdentifier typeID = 
+         _codeGenClassFactory.createPtolemyTypeIdentifier();
+                           
+        while (bufferItr.hasNext()) {        
+           BufferInfo bufInfo = (BufferInfo) bufferItr.next();
+           
+           TypeNode dataTypeNode = 
+            typeID.encapsulatedDataType(bufInfo.type);
+            
+           int buffDimension = (bufInfo.width <= 1) ? 1 : 2;
+           
+           TypeNode typeNode = TypeUtility.makeArrayType(dataTypeNode,
+            buffDimension);
+            
+           FieldDeclNode fieldDeclNode = new FieldDeclNode(
+            PUBLIC_MOD | STATIC_MOD, typeNode,
+            new NameNode(AbsentTreeNode.instance, bufInfo.codeGenName),
+            AbsentTreeNode.instance);    
+           
+           memberList.add(fieldDeclNode);           
+        }        
+    
+        ClassDeclNode classDeclNode = new ClassDeclNode(PUBLIC_MOD,
+         new NameNode(AbsentTreeNode.instance, "CG_Main"),
+         new LinkedList(), memberList, 
+         (TypeNameNode) StaticResolution.OBJECT_TYPE.clone());
+         
+        // bring in imports for Complex and FixPoint (remove unnecessary ones later)
+        LinkedList importList = new LinkedList();
+        
+        importList.add(new ImportNode((NameNode)
+         StaticResolution.makeNameNode("ptolemy.math.Complex")));
+        importList.add(new ImportNode((NameNode)
+         StaticResolution.makeNameNode("ptolemy.math.FixPoint")));
+                          
+        CompileUnitNode unitNode = new CompileUnitNode(
+         new NameNode(AbsentTreeNode.instance, "codegen"),
+         importList, TNLManip.cons(classDeclNode));
+                    
+        String outFileName = "c:\\users\\ctsay\\ptII\\codegen\\" +  "CG_Main.java";
+        
+        JavaCodeGenerator.writeCompileUnitNodeList(TNLManip.cons(unitNode),
+         TNLManip.cons(outFileName));                             
+    }
+    
     /** Figure out which buffers are connected to each input port of a given 
      *  TypedAtomicActor, and add the information to the instance of 
      *  SDFActorCodeGeneratorInfo argument.
@@ -340,6 +396,9 @@ public class SDFCodeGenerator extends CompositeActorApplication {
      *  ports in the CompositeActor.
      */
     protected HashMap _bufferInfoMap = new HashMap();
+    
+    protected CodeGeneratorClassFactory _codeGenClassFactory = 
+     SDFCodeGeneratorClassFactory.getInstance();
     
     /** A non-decreasing number used for globally unique labeling. */
     protected int labelNum = 0;    

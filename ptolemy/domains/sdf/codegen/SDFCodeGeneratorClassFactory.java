@@ -31,6 +31,7 @@
 package ptolemy.domains.sdf.codegen;
 
 import ptolemy.codegen.*;
+import ptolemy.lang.java.*;
 
 /** A factory for making instances of classes for code generation in SDF. 
  *
@@ -50,9 +51,14 @@ public class SDFCodeGeneratorClassFactory extends CodeGeneratorClassFactory {
         createPtolemyTypeVisitor(actorInfo));    
     }
 
+    public PtolemyTypeIdentifier createPtolemyTypeIdentifier() {
+       return new SDFTypeIdentifier();
+    }
+
     public PtolemyTypeVisitor createPtolemyTypeVisitor(
      ActorCodeGeneratorInfo actorInfo) {
-       return new SDFTypeVisitor(actorInfo);
+       return new PtolemyTypeVisitor(actorInfo, 
+        new TypePolicy(createPtolemyTypeIdentifier()));
     }
     
     public static CodeGeneratorClassFactory getInstance() {

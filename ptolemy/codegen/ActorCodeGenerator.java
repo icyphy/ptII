@@ -31,7 +31,6 @@
 package ptolemy.codegen;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -83,11 +82,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         ApplicationUtility.trace("acg : parsing " + filename);        
         
         PtolemyTypeVisitor typeVisitor = _factory.createPtolemyTypeVisitor(actorInfo);
+        PtolemyTypeIdentifier typeID = 
+         (PtolemyTypeIdentifier) typeVisitor.typePolicy().typeIdentifier();
                 
         // make a list of the compile unit node and compile unit nodes that 
         // contain superclasses
         List[] listArray = _makeUnitList(filename, 
-         StringManip.unqualifiedPart(actorClass.getName()), typeVisitor);
+         StringManip.unqualifiedPart(actorClass.getName()), typeID);
          
         List unitList = listArray[0];
         List classNameList = listArray[1]; 
@@ -128,9 +129,11 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
          ", filename = " + filename);
                         
         PtolemyTypeVisitor typeVisitor = _factory.createPtolemyTypeVisitor(actorInfo);                        
+        PtolemyTypeIdentifier typeID = 
+         (PtolemyTypeIdentifier) typeVisitor.typePolicy().typeIdentifier();
                         
         List[] listArray = 
-         _makeUnitList(filename, StringManip.unqualifiedPart(sourceName), typeVisitor);
+         _makeUnitList(filename, StringManip.unqualifiedPart(sourceName), typeID);
        
         List unitList = listArray[0];
         
@@ -158,18 +161,15 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            // maybe it's ok not to redo field resolution, just invalidate types
            unitNode.accept(new RemovePropertyVisitor(), TNLManip.cons(TYPE_KEY));
                                         
-           System.out.println("acg : transforming code " + filename);        
+           ApplicationUtility.trace("acg : transforming code " + filename);        
         
            unitNode = (CompileUnitNode) unitNode.accept(
-            _factory.createActorTransformerVisitor(actorInfo), null);
-                  
-           // regenerate the code          
-                  
-           String modifiedSourceCode = (String) unitNode.accept(
-            new JavaCodeGenerator(), null);
-         
-           System.out.println(modifiedSourceCode);  
-        }        
+            _factory.createActorTransformerVisitor(actorInfo), null);                                        
+        }  
+        
+        // assume the references to the compile unit nodes are still valid
+        // rewrite the transformed source code
+        _rewriteSources(listArray[0], listArray[1]);      
     }
     
     protected static void _makePortNameToPortMap(ActorCodeGeneratorInfo actorInfo) {
@@ -202,7 +202,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            }        
         }
     }
-            
+         
+    /*   
     protected CompileUnitNode parse(String filename) {
         JavaParser p = new JavaParser();
 
@@ -217,7 +218,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         p.parse();
     
         return p.getAST();    
-    }
+    } */
     
     /** Make a list of CompileUnitNodes that contain the superclasses of
      *  the given className, while is found in the given fileName.
@@ -227,7 +228,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
      *  returned by StaticResolution so that they may be modified.
      */     
     protected List[] _makeUnitList(String fileName, String className, 
-                                   PtolemyTypeVisitor typeVisitor) {
+                                   PtolemyTypeIdentifier typeID) {
         LinkedList retval = new LinkedList();
                     
         CompileUnitNode unitNode = 
@@ -239,9 +240,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         classNameList.addLast(className);       
         
         ApplicationUtility.trace("_makeUnitList() : className = " + className);
-        
-        boolean moreSuperClasses = true;                
-                
+                        
         do {
         
            ClassDecl superDecl = (ClassDecl)
@@ -257,9 +256,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                             
            } else {
 
-              int superKind = typeVisitor.kindOfClassDecl(superDecl);
+              int superKind = typeID.kindOfClassDecl(superDecl);
               
-              if (typeVisitor.isSupportedActorKind(superKind)) {
+              if (typeID.isSupportedActorKind(superKind)) {
                  ApplicationUtility.trace("_makeUnitList() : super class = " + superDecl +
                   " stopping.");
                                                 
@@ -267,7 +266,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
               }
               
               ApplicationUtility.trace("_makeUnitList() : super class = " + superDecl +
-               " continuing.");           
+               ", continuing. Kind = " + superKind);           
            
               fileName = superDecl.fullName(File.separatorChar);
               
@@ -338,31 +337,20 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
     
     protected static void _rewriteSources(List unitList, List classNameList) {
         ApplicationUtility.trace("classNameList = " + classNameList);
-    
-        Iterator unitItr = unitList.iterator();
-        Iterator classNameItr = classNameList.iterator();
-        JavaCodeGenerator jcg = new JavaCodeGenerator();
         
-        while (unitItr.hasNext()) {
-           CompileUnitNode unitNode = (CompileUnitNode) unitItr.next();
-
-           String outCode = (String) unitNode.accept(jcg, null);
-           
-           String outFileName = "c:\\users\\ctsay\\ptII\\codegen\\" +  
+        LinkedList filenameList = new LinkedList();
+                            
+        Iterator classNameItr = classNameList.iterator();
+        while (classNameItr.hasNext()) {
+           String filename = "c:\\users\\ctsay\\ptII\\codegen\\" +  
             (String) classNameItr.next() + ".java";
             
-           try {
-             FileOutputStream outFile = new FileOutputStream(outFileName);
-             outFile.write(outCode.getBytes());
-             outFile.close();
-           } catch (IOException e) {
-             System.err.println("error opening/writing/closing output file "
-              + outFileName);
-             System.err.println(e.toString());
-           }
-        }                                                        
+           filenameList.add(filename); 
+        } 
+        
+        JavaCodeGenerator.writeCompileUnitNodeList(unitList, filenameList);                
     }
-    
+        
     /** A JavaVisitor that finds the declaration of the superclass of a
      *  given type. The AST must have already gone through pass 1
      *  static resolution.

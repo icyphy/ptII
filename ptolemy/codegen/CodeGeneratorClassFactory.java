@@ -31,6 +31,8 @@
 
 package ptolemy.codegen;
 
+import ptolemy.lang.java.*;
+
 /** A factory for making instances of classes for code generation in a 
  *  given domain.
  *
@@ -48,6 +50,10 @@ public class CodeGeneratorClassFactory {
      ActorCodeGeneratorInfo actorInfo) {
        return new ActorTransformerVisitor(actorInfo,
         createPtolemyTypeVisitor(actorInfo));    
+    }
+
+    public PtolemyTypeIdentifier createPtolemyTypeIdentifier() {
+       return new PtolemyTypeIdentifier();
     }
 
     public PtolemyTypeVisitor createPtolemyTypeVisitor(ActorCodeGeneratorInfo actorInfo) {

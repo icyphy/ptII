@@ -32,18 +32,12 @@
 
 package ptolemy.domains.sdf.codegen;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.*;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.lang.*;
 import ptolemy.lang.java.*;
 import ptolemy.lang.java.nodetypes.*;
-import ptolemy.math.Complex;
-import ptolemy.math.FixPoint;
 
 /** A class containing declarations created by the compiler of
  *  of known fields and methods in the ptolemy.actor and ptolemy.data
@@ -51,10 +45,10 @@ import ptolemy.math.FixPoint;
  *
  *  @author Jeff Tsay
  */
-public class SDFTypeVisitor extends PtolemyTypeVisitor {
+public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
 
-    public SDFTypeVisitor(ActorCodeGeneratorInfo actorInfo) {
-        super(actorInfo);
+    public SDFTypeIdentifier() {
+        super();
     }
     
     public boolean isSupportedActorKind(int kind) {
@@ -114,7 +108,7 @@ public class SDFTypeVisitor extends PtolemyTypeVisitor {
           "ptolemy.domains.sdf.kernel.SDFAtomicActor", true), 1);
 
         SDF_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
-         sdfAtomicActorUnit, "SDFAtomicActor", CG_CLASS, null, null);
+         sdfAtomicActorUnit, "SDFAtomicActor", CG_CLASS);
          
         SDF_ATOMIC_ACTOR_TYPE = SDF_ATOMIC_ACTOR_DECL.getDefType();         
                                                                               
@@ -122,7 +116,7 @@ public class SDFTypeVisitor extends PtolemyTypeVisitor {
          SearchPath.NAMED_PATH.openSource("ptolemy.domains.sdf.kernel.SDFIOPort", true), 1);
          
         SDF_IO_PORT_DECL = (ClassDecl) StaticResolution.findDecl(
-         sdfIOPortUnit,  "SDFIOPort", CG_CLASS, null, null);          
+         sdfIOPortUnit,  "SDFIOPort", CG_CLASS);          
          
         SDF_IO_PORT_TYPE = SDF_IO_PORT_DECL.getDefType();                                                
     }    
