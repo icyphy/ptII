@@ -32,6 +32,7 @@ preinitialize: validate attributes of this composite and
     the attributes of its ports.
 setDirector invalidatesSchedule of executiveDirector.
 moved invalidation code from _addEntity to _finishedAddEntity
+initialize now clears receivers.. This helps SampleDelay inside a modal models with reset transition work better.
 */
 
 package ptolemy.actor;
@@ -387,6 +388,31 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot initialize a non-opaque actor.");
+            }
+
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                IOPort port = (IOPort)ports.next();
+                if(port.isInput()) {
+                    // Clear all receivers.
+                    Receiver[][] receivers = port.getReceivers();
+                    for(int i = 0; i < receivers.length; i++) {
+                        Receiver[] receivers2 = receivers[i];
+                        for(int j = 0; j < receivers2.length; j++) {
+                            receivers2[j].clear();
+                        }
+                    } 
+                }
+                if(port.isOutput()) {
+                    // Clear all insideReceivers.
+                    Receiver[][] receivers = port.getInsideReceivers();
+                    for(int i = 0; i < receivers.length; i++) {
+                        Receiver[] receivers2 = receivers[i];
+                        for(int j = 0; j < receivers2.length; j++) {
+                            receivers2[j].clear();
+                        }
+                    } 
+                }
             }
 
             // Note that this is assured of firing the local director,
