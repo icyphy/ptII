@@ -1,6 +1,6 @@
 /* An actor that outputs strings read from a text file or URL.
 
-@Copyright (c) 1998-2003 The Regents of the University of California.
+@Copyright (c) 2002-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -84,6 +84,7 @@ with a transition where reset is enabled.
 @see FileAttribute
 @author  Edward A. Lee, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 2.2
 */
 public class LineReader extends Source {
 

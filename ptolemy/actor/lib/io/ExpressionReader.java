@@ -1,6 +1,6 @@
 /* An actor that reads expressions from a text file and outputs them as tokens.
 
-@Copyright (c) 1998-2003 The Regents of the University of California.
+@Copyright (c) 2002-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -53,6 +53,7 @@ postfire() will both return false.
 @see ptolemy.kernel.attributes.FileAttribute
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.2
 */
 public class ExpressionReader extends LineReader {
 

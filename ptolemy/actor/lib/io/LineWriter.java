@@ -1,6 +1,6 @@
 /* An actor that writes the value of string tokens to a file, one per line.
 
-@Copyright (c) 1998-2003 The Regents of the University of California.
+@Copyright (c) 2002-2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -70,6 +70,7 @@ exists, then this actor will ask for confirmation before overwriting.
 @see ExpressionWriter
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.2
 */
 public class LineWriter extends Sink {
 
