@@ -48,8 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	RijndaelEncryption.xml
-	sbox.txt \
+	RijndaelEncryption.xml \
+	sbox.txt
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
