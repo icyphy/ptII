@@ -52,15 +52,14 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public interface CTTransparentDirector extends CTGeneralDirector {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Implementations of this method should emit the tentative outputs.
      *  @exception IllegalActionException If the data transfer is not
      *  completed.
      */
     public void emitTentativeOutputs()  throws IllegalActionException;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** Implementations of this method should go to the marked state.
      *  If there's no marked state, throws an exception.
@@ -106,6 +105,14 @@ public interface CTTransparentDirector extends CTGeneralDirector {
      */
     public double predictedStepSize();
 
+    /** Implementations of this method should prefire
+     *  the dynamic actors under the control of this director.
+     *  @return True if all dynamic actors are prefired.
+     *  @exception IllegalActionException If scheduler throws it, or dynamic
+     *  actors throw it in their prefire method, or they can not be prefired.
+     */
+    public boolean prefireDynamicActors() throws IllegalActionException;
+    
     /** Implementations of this method should return
      *  the refined step size if this step is not accurate.
      *  @return The refined step size.

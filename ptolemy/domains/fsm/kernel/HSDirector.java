@@ -232,9 +232,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // phase execution where the accuracy of the current step size 
             // is checked.
             if ((getExecutionPhase() ==
-                CTExecutionPhase.GENERATING_EVENTS_PHASE) ||
-                (getExecutionPhase() ==
-                CTExecutionPhase.ITERATING_PURELY_DISCRETE_PHASE)) {
+                CTExecutionPhase.GENERATING_EVENTS_PHASE) 
+//                ||
+//                (getExecutionPhase() ==
+//                CTExecutionPhase.ITERATING_PURELY_DISCRETE_PHASE)
+                ) {
                 // Note that the output actions associated with the transition
                 // are executed.
                 tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
@@ -785,7 +787,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             _debug(getName(), " find FSMActor " + _ctrl.getName()
                     + " and the current state is " + _st.getName());
         }
-
+    
         Actor[] actors = _st.getRefinement();
         _enabledRefinements = new LinkedList();
         if (actors != null) {
@@ -798,6 +800,28 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _preemptiveTransitionAccurate = true;
         _nonpreemptiveTransitionAccurate = true;
         return super.prefire();
+    }
+
+    /** Return true if all the dynamic actors contained by the enabled 
+     *  refinements return true from their prefire() method.
+     *  @return True if all dynamic actors of enabled refinements can be 
+     *  prefired.
+     *  @exception IllegalActionException If the local directors of refinements
+     *  throw it.
+     */
+    public boolean prefireDynamicActors() throws IllegalActionException {
+        boolean result = true;
+        if (_enabledRefinements != null) {
+            Iterator refinements = _enabledRefinements.iterator();
+            while (refinements.hasNext()) {
+                Actor refinement = (Actor)refinements.next();
+                if (refinement instanceof CTCompositeActor) {
+                    result = result && 
+                        ((CTCompositeActor)refinement).prefireDynamicActors();
+                }
+            }
+        }
+        return result;
     }
 
     /** Return the step size refined by all the enabled refinements,

@@ -218,6 +218,22 @@ public class CTCompositeActor extends TypedCompositeActor
         return java.lang.Double.MAX_VALUE;
     }
 
+    /** Call the prefireDynamicActors method of the local director if the local
+     *  director is an instance of CTTransparentDirector. Return true if all
+     *  dynamic actors are prefired, otherwise, return false. If the local
+     *  director is not an instance of CTTransparentDirector, return true 
+     *  always.
+     *  @return True if all dynamic actors are prefired.
+     *  @exception IllegalActionException If the local director throws it.
+     */
+    public boolean prefireDynamicActors() throws IllegalActionException {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).prefireDynamicActors();
+        }
+        return true;
+    }
+    
     /** Call the refinedStepSize method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, return
      *  the current step size of the executive director.
