@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	CTButtonEvent.java \
 	CTPeriodicSampler.java \
 	CTTriggeredSampler.java \
 	Integrator.java \
