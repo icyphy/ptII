@@ -319,89 +319,89 @@ public class Type extends SDFApplet implements ChangeListener {
 	Graph graph = impl.createGraph(null);
 	
         // nodes, with user object set to the actor
-        Node n1 = impl.createNode(BaseType.NAT);
-        Node n2 = impl.createNode(BaseType.INT);
-        Node n3 = impl.createNode(BaseType.DOUBLE);
-        Node n4 = impl.createNode(BaseType.COMPLEX);
-        Node n5 = impl.createNode(BaseType.STRING);
-        Node n6 = impl.createNode(BaseType.GENERAL);
-        Node n7 = impl.createNode(BaseType.BOOLEAN);
-        Node n8 = impl.createNode(BaseType.OBJECT);
-        Node n9 = impl.createNode(BaseType.SCALAR);
-        Node n10 = impl.createNode(BaseType.LONG);
+        Node nNaT = impl.createNode(BaseType.NAT);
+        Node nInt = impl.createNode(BaseType.INT);
+        Node nDouble = impl.createNode(BaseType.DOUBLE);
+        Node nComplex = impl.createNode(BaseType.COMPLEX);
+        Node nString = impl.createNode(BaseType.STRING);
+        Node nGeneral = impl.createNode(BaseType.GENERAL);
+        Node nBoolean = impl.createNode(BaseType.BOOLEAN);
+        Node nObject = impl.createNode(BaseType.OBJECT);
+        Node nScalar = impl.createNode(BaseType.SCALAR);
+        Node nLong = impl.createNode(BaseType.LONG);
 
-        impl.addNode(n1, graph);
-        impl.addNode(n2, graph);
-        impl.addNode(n3, graph);
-        impl.addNode(n4, graph);
-        impl.addNode(n5, graph);
-        impl.addNode(n6, graph);
-        impl.addNode(n7, graph);
-        impl.addNode(n8, graph);
-        impl.addNode(n9, graph);
-        impl.addNode(n10, graph);
+        impl.addNode(nNaT, graph);
+        impl.addNode(nInt, graph);
+        impl.addNode(nDouble, graph);
+        impl.addNode(nComplex, graph);
+        impl.addNode(nString, graph);
+        impl.addNode(nGeneral, graph);
+        impl.addNode(nBoolean, graph);
+        impl.addNode(nObject, graph);
+        impl.addNode(nScalar, graph);
+        impl.addNode(nLong, graph);
 
         /*
-           nodeMap.put(a1, n1);
-           nodeMap.put(a2, n2);
-           nodeMap.put(a3, n3);
-           nodeMap.put(a4, n4);
-           nodeMap.put(a5, n5);
-           nodeMap.put(a6, n6);
-           nodeMap.put(a7, n7);
-           nodeMap.put(a8, n8);
+           nodeMap.put(a1, nNaT);
+           nodeMap.put(a2, nInt);
+           nodeMap.put(a3, nDouble);
+           nodeMap.put(a4, nComplex);
+           nodeMap.put(a5, nString);
+           nodeMap.put(a6, nGeneral);
+           nodeMap.put(a7, nBoolean);
+           nodeMap.put(a8, nObject);
         */
 
         // Edges
         Edge e;
 
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n8);
-	impl.setEdgeTail(e, n1);
+	impl.setEdgeHead(e, nObject);
+	impl.setEdgeTail(e, nNaT);
 	
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, n6);
-	impl.setEdgeTail(e, n8);
+	impl.setEdgeHead(e, nGeneral);
+	impl.setEdgeTail(e, nObject);
 	
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n6);
-	impl.setEdgeTail(e, n5);
+	impl.setEdgeHead(e, nGeneral);
+	impl.setEdgeTail(e, nString);
 
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n5);
-	impl.setEdgeTail(e, n7);
+	impl.setEdgeHead(e, nString);
+	impl.setEdgeTail(e, nBoolean);
 	
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n7);
-	impl.setEdgeTail(e, n1);
+	impl.setEdgeHead(e, nBoolean);
+	impl.setEdgeTail(e, nNaT);
 	    
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n5);
-	impl.setEdgeTail(e, n9);
+	impl.setEdgeHead(e, nString);
+	impl.setEdgeTail(e, nScalar);
 	
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, n9);
-	impl.setEdgeTail(e, n10);
+	impl.setEdgeHead(e, nScalar);
+	impl.setEdgeTail(e, nLong);
 
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, n10);
-	impl.setEdgeTail(e, n2);
+	impl.setEdgeHead(e, nLong);
+	impl.setEdgeTail(e, nInt);
 
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, n2);
-	impl.setEdgeTail(e, n1);
+	impl.setEdgeHead(e, nInt);
+	impl.setEdgeTail(e, nNaT);
 
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, n3);
-	impl.setEdgeTail(e, n2);
+	impl.setEdgeHead(e, nDouble);
+	impl.setEdgeTail(e, nInt);
 
         e = impl.createEdge(null);
-	impl.setEdgeHead(e, n4);
-	impl.setEdgeTail(e, n3);
+	impl.setEdgeHead(e, nComplex);
+	impl.setEdgeTail(e, nDouble);
 	
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n9);
-	impl.setEdgeTail(e, n4);
+	impl.setEdgeHead(e, nScalar);
+	impl.setEdgeTail(e, nComplex);
 	
         return graph;
     }
