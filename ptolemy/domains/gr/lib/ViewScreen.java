@@ -449,26 +449,26 @@ public class ViewScreen extends GRActor implements Placeable {
        
         _container.add("Center", _canvas);
         _canvas.setSize(new Dimension(horizontalDimension,
-                                verticalDimension));
+                verticalDimension));
         _simpleUniverse = new SimpleUniverse(_canvas);
         _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
       
 
-            /* FIXME: experimental code for changing views.
-               TransformGroup VPTG = new TransformGroup();
-               VPTG = _simpleUniverse.getViewingPlatform()
-               .getMultiTransformGroup().getTransformGroup(0);
-               Transform3D VPT3D = new Transform3D();
-               //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
-               //      new Point3d(0.0, 0.0, 0.0),
-               //      new Vector3d(0.0, 1.0, 0.0));
-               //VPT3D.setTranslation(new Vector3f(0.0f, 0.0f, 10.0f));
-               //VPT3D.rotX(Math.PI/2.0);
-               VPT3D.rotX(Math.PI/2);
-               VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
+        /* FIXME: experimental code for changing views.
+           TransformGroup VPTG = new TransformGroup();
+           VPTG = _simpleUniverse.getViewingPlatform()
+           .getMultiTransformGroup().getTransformGroup(0);
+           Transform3D VPT3D = new Transform3D();
+           //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
+           //      new Point3d(0.0, 0.0, 0.0),
+           //      new Vector3d(0.0, 1.0, 0.0));
+           //VPT3D.setTranslation(new Vector3f(0.0f, 0.0f, 10.0f));
+           //VPT3D.rotX(Math.PI/2.0);
+           VPT3D.rotX(Math.PI/2);
+           VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
 
-               VPTG.setTransform(VPT3D);
-            */
+           VPTG.setTransform(VPT3D);
+        */
     }
 
     /** The ViewScreen does not have an associated Java3D node
