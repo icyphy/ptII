@@ -105,7 +105,7 @@ public class Main extends KernelMain {
                    LibraryUsageReporter.v(),
                    "outFile:" + _outputDirectory + "/jimple1/jarClassList.txt");
        }
-       
+       /*       
        addTransform(pack, "wjtp.ib1", InvocationBinder.v());
        
        addTransform(pack, "wjtp.ls7",
