@@ -35,17 +35,12 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -53,31 +48,11 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.awt.print.Paper;
 import java.awt.RenderingHints;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import java.io.*;
+import java.net.*;
+import java.text.*;
+import java.util.*;
+import javax.swing.*;
 
 // TO DO:
 //   - Augment getColorByName to support a full complement of colors
@@ -101,12 +76,12 @@ be done, call repaint().
 A small set of key bindings are provided for convenience.
 They are:
 <ul>
-<li> Cntrl-c: Export the plot to the clipboard (in PlotML).
+<li> Cntr-c: Export the plot to the clipboard (in PlotML).
 <li> D: Dump the plot to standard output (in PlotML).
 <li> E: Export the plot to standard output in EPS format.
 <li> F: Fill the plot.
 <li> H or ?: Display a simple help message.
-<li> Cntrl-D or Q: quit
+<li> Cntr-D or Q: quit
 </ul>
 These commands are provided in a menu by the PlotFrame class.
 Note that exporting to the clipboard is not allowed in applets
@@ -183,14 +158,7 @@ YLog: on
 </pre>
 The grid labels represent powers of 10.  Note that if a logarithmic
 scale is used, then the values must be positive.  Non-positive values
-will be silently dropped.  Note further that when using logarithmic
-axes that the log of input data is taken as the data is added to the plot.
-This means that <pre>XLog: on</pre> or <pre>YLog: on</pre> should
-appear before any data.  Also, the value of the XTicks or YTicks
-directives should be in log units.  So, <pre>XTicks: 1K 3</pre>
-will display the string <pre>1K</pre> at the 1000 mark.
-
-
+will be silently dropped.
 <p>
 By default, tick marks are connected by a light grey background grid.
 This grid can be turned off with the following command:
@@ -235,9 +203,10 @@ it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 
 @version $Id$
 @since Ptolemy II 0.2
-*/
+ */
 public class PlotBox extends JPanel implements Printable {
 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
@@ -360,56 +329,6 @@ public class PlotBox extends JPanel implements Printable {
         _legendDatasets = new Vector();
     }
 
-    /** If this method is called in the event thread, then simply
-     * execute the specified action.  Otherwise,
-     * if there are already deferred actions, then add the specified
-     * one to the list.  Otherwise, create a list of deferred actions,
-     * if necessary, and request that the list be processed in the
-     * event dispatch thread.
-     *
-     * Note that it does not work nearly as well to simply schedule
-     * the action yourself on the event thread because if there are a
-     * large number of actions, then the event thread will not be able
-     * to keep up.  By grouping these actions, we avoid this problem.
-     *
-     * This method is not synchronized, so the caller should be.
-     * @param action The Runnable object to execute.
-     */
-    public void deferIfNecessary(Runnable action) {
-        // In swing, updates to showing graphics must be done in the
-        // event thread.  If we are in the event thread, then proceed.
-        // Otherwise, queue a request or add to a pending request.
-        if (EventQueue.isDispatchThread()) {
-            action.run();
-        } else {
-
-            if (_deferredActions == null) {
-                _deferredActions = new LinkedList();
-            }
-            // Add the specified action to the list of actions to perform.
-            _deferredActions.add(action);
-
-            // If it hasn't already been requested, request that actions
-            // be performed in the event dispatch thread.
-            if (!_actionsDeferred) {
-                Runnable doActions = new Runnable() {
-                    public void run() {
-                        _executeDeferredActions();
-                    }
-                };
-                try {
-                    // NOTE: Using invokeAndWait() here risks causing
-                    // deadlock.  Don't do it!
-                    SwingUtilities.invokeLater(doActions);
-                } catch (Exception ex) {
-                    // Ignore InterruptedException.
-                    // Other exceptions should not occur.
-                }
-                _actionsDeferred = true;
-            }
-        }
-    }
-
     /** Export a description of the plot.
      *  Currently, only EPS is supported.  But in the future, this
      *  may cause a dialog box to open to allow the user to select
@@ -447,7 +366,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Create a BufferedImage and draw this plot to it.
      *  The size of the returned image matches the current size of the plot.
      *  This method can be used, for
-     *  example, by a servlet to produce an image, rather than
+     *  example, by a servelet to produce an image, rather than
      *  requiring an applet to instantiate a PlotBox.
      *  @return An image filled by the plot.
      */
@@ -467,7 +386,7 @@ public class PlotBox extends JPanel implements Printable {
      *  this plot to it at the position specified by the rectangle.
      *  The plot is rendered using anti-aliasing.
      *  @param rectangle The size of the plot. This method can be used, for
-     *  example, by a servlet to produce an image, rather than
+     *  example, by a servelet to produce an image, rather than
      *  requiring an applet to instantiate a PlotBox.
      *  @return An image containing the plot.
      */
@@ -487,7 +406,7 @@ public class PlotBox extends JPanel implements Printable {
      *  The plot is rendered using anti-aliasing.
      *  This can be used to paint a number of different
      *  plots onto a single buffered image.  This method can be used, for
-     *  example, by a servlet to produce an image, rather than
+     *  example, by a servelet to produce an image, rather than
      *  requiring an applet to instantiate a PlotBox.
      *  @param bufferedImage Image onto which the plot is drawn.
      *  @param rectangle The size and position of the plot in the image.
@@ -580,7 +499,7 @@ public class PlotBox extends JPanel implements Printable {
             {"black", "00000"}, {"white", "ffffff"},
             {"red", "ff0000"}, {"green", "00ff00"}, {"blue", "0000ff"}
         };
-        for (int i = 0; i < names.length; i++) {
+        for (int i = 0;i< names.length; i++) {
             if (name.equals(names[i][0])) {
                 try {
                     Color col = new Color(Integer.parseInt(names[i][1], 16));
@@ -784,11 +703,21 @@ public class PlotBox extends JPanel implements Printable {
      *  @param graphics The graphics context.
      */
     public void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
-        _drawPlot(graphics, true);
-        // Acquire the focus so that key bindings work.
-        // NOTE: no longer needed?
-        // requestFocus();
+        //System.out.println("paintComponent called");
+
+        if (offScreenBuffer==null ||
+            (! (offScreenBuffer.getWidth(this) == this.getWidth()
+                 && offScreenBuffer.getHeight(this) == this.getHeight()))) {
+            offScreenBuffer = this.createImage(getWidth(), getHeight());
+        }
+
+        // Render the component and our items to the offscreen graphic
+        Graphics gr = offScreenBuffer.getGraphics();
+        super.paintComponent(gr);
+        _drawPlot(gr, true);
+        _zoomDraw(gr);
+        // Blit to screen        
+        graphics.drawImage(offScreenBuffer, 0, 0, this);
     }
 
     /** Syntactic sugar for parseFile(filespec, documentBase).
@@ -1064,7 +993,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 	    // FIXME: If we failed to get an image, then the letter "P"
 	    // Is not likely to fit into a 20x20 button.
-            _printButton.setPreferredSize(new Dimension(20, 20));
+            _printButton.setPreferredSize(new Dimension(20,20));
             _printButton.setToolTipText("Print the plot.");
             _printButton.addActionListener(new ButtonListener());
             add(_printButton);
@@ -1089,7 +1018,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 	    // FIXME: If we failed to get an image, then the letter "R"
 	    // Is not likely to fit into a 20x20 button.
-            _resetButton.setPreferredSize(new Dimension(20, 20));
+            _resetButton.setPreferredSize(new Dimension(20,20));
             _resetButton.setToolTipText(
                     "Reset X and Y ranges to their original values");
             _resetButton.addActionListener(new ButtonListener());
@@ -1115,7 +1044,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 	    // FIXME: If we failed to get an image, then the letter "S"
 	    // Is not likely to fit into a 20x20 button.
-            _formatButton.setPreferredSize(new Dimension(20, 20));
+            _formatButton.setPreferredSize(new Dimension(20,20));
             _formatButton.setToolTipText(
                     "Set the plot format");
             _formatButton.addActionListener(new ButtonListener());
@@ -1141,7 +1070,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 	    // FIXME: If we failed to get an image, then the letter "F"
 	    // Is not likely to fit into a 20x20 button.
-            _fillButton.setPreferredSize(new Dimension(20, 20));
+            _fillButton.setPreferredSize(new Dimension(20,20));
             _fillButton.setToolTipText(
                     "Rescale the plot to fit the data");
             _fillButton.addActionListener(new ButtonListener());
@@ -1269,9 +1198,6 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the X axis is drawn with a logarithmic scale.
-     *  If you would like to have the X axis drawn with a 
-     *  logarithmic axis, then setXLog(true) should be called before
-     *  adding any data points.
      *  @param xlog If true, logarithmic axis is used.
      */
     public void setXLog(boolean xlog) {
@@ -1305,9 +1231,6 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the Y axis is drawn with a logarithmic scale.
-     *  If you would like to have the Y axis drawn with a 
-     *  logarithmic axis, then setYLog(true) should be called before
-     *  adding any data points.
      *  @param ylog If true, logarithmic axis is used.
      */
     public void setYLog(boolean ylog) {
@@ -1331,6 +1254,30 @@ public class PlotBox extends JPanel implements Printable {
             _originalYRangeGiven = true;
         }
         _setYRange(min, max);
+    }
+
+    /** Standard overload of Swing update(). Provides double buffered 
+     *  rendering of the component and out items.
+     *  @param graphics The graphics context.
+     */
+    public void update(Graphics g) {
+        //System.err.println("update called");
+        Graphics gr; 
+
+        // Make sure we keep our offscreen buffer the same size as the graphics // context 
+        if (offScreenBuffer==null ||
+            (! (offScreenBuffer.getWidth(this) == this.getWidth()
+                 && offScreenBuffer.getHeight(this) == this.getHeight()))) {
+            offScreenBuffer = this.createImage(getWidth(), getHeight());
+        }
+    
+        // Render the component and our items to the offscreen graphic
+        gr = offScreenBuffer.getGraphics();
+        paint(gr); 
+        _drawPlot(gr, true);
+        _zoomDraw(gr);
+        // Blit to screen        
+        g.drawImage(offScreenBuffer, 0, 0, this);
     }
 
     /** Write the current data and plot configuration to the
@@ -1491,15 +1438,17 @@ public class PlotBox extends JPanel implements Printable {
      */
     public synchronized void zoom(double lowx, double lowy,
             double highx, double highy) {
-        _setXRange(lowx, highx);
-        _setYRange(lowy, highy);
+        //_setXRange(lowx, highx);
+        //_setYRange(lowy, highy);
+        setXRange(lowx, highx);
+        setYRange(lowy, highy);
         repaint();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public static final String PTPLOT_RELEASE = "5.2p1";
+    public static final String PTPLOT_RELEASE = "5.2";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1561,7 +1510,7 @@ public class PlotBox extends JPanel implements Printable {
             int fheight = _labelFontMetrics.getHeight() + 2;
             int msgy = fheight;
             graphics.setColor(Color.black);
-            for (int i = 0; i < _errorMsg.length; i++) {
+            for (int i = 0; i < _errorMsg.length;i++) {
                 graphics.drawString(_errorMsg[i], 10, msgy);
                 msgy += fheight;
                 System.err.println(_errorMsg[i]);
@@ -2135,12 +2084,12 @@ public class PlotBox extends JPanel implements Printable {
             "Version " + PTPLOT_RELEASE +
             ", Build: $Id$\n\n" +
             "Key bindings:\n" +
-            "   Cntrl-c:  copy plot to clipboard (EPS format), if permitted\n" +
+            "   Cntr-c:  copy plot to clipboard (EPS format), if permitted\n" +
             "   D: dump plot data to standard out\n" +
             "   E: export plot to standard out (EPS format)\n" +
             "   F: fill plot\n" +
             "   H or ?: print help message (this message)\n" +
-            "   Cntrl-D or Q: quit\n" +
+            "   Cntr-D or Q: quit\n" +
             "For more information, see\n" +
             "http://ptolemy.eecs.berkeley.edu/java/ptplot\n";
         JOptionPane.showMessageDialog(this, message,
@@ -2504,26 +2453,6 @@ public class PlotBox extends JPanel implements Printable {
         }
         graphics.setFont(previousFont);
         return 22 + maxwidth;  // NOTE: subjective spacing parameter.
-    }
-
-    // Execute all actions pending on the deferred action list.
-    // The list is cleared and the _actionsDeferred variable is set
-    // to false, even if one of the deferred actions fails.
-    // This method should only be invoked in the event dispatch thread.
-    // It is synchronized, so the integrity of the deferred actions list
-    // is ensured, since modifications to that list occur only in other
-    // synchronized methods.
-    private synchronized void _executeDeferredActions() {
-        try {
-            Iterator actions = _deferredActions.iterator();
-            while (actions.hasNext()) {
-                Runnable action = (Runnable)actions.next();
-                action.run();
-            }
-        } finally {
-            _actionsDeferred = false;
-            _deferredActions.clear();
-        }
     }
 
     /*
@@ -3003,6 +2932,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param y The final y position.
      */
     void _zoom(int x, int y) {
+        //System.out.println("Zoom: _zoomx=" + _zoomx + ", _zoomy=" + _zoomy + "_zoomxn=" + _zoomxn + ", _zoomyn=" + _zoomyn);
         // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
 
@@ -3012,21 +2942,8 @@ public class PlotBox extends JPanel implements Printable {
         // in _zoomBox, since calling this method is properly masked.
         _zooming = false;
 
-        Graphics graphics = getGraphics();
-        // Ignore if there is no graphics object to draw on.
-        if (graphics == null) return;
-
-        boolean handled = false;
-        if ((_zoomin == true) && (_drawn == true)){
-            if (_zoomxn != -1 || _zoomyn != -1) {
-                // erase previous rectangle.
-                int minx = Math.min(_zoomx, _zoomxn);
-                int maxx = Math.max(_zoomx, _zoomxn);
-                int miny = Math.min(_zoomy, _zoomyn);
-                int maxy = Math.max(_zoomy, _zoomyn);
-                graphics.setXORMode(_boxColor);
-                graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
-                graphics.setPaintMode();
+        if (_zoomxn != -1 && _zoomyn != -1) {
+            if (_zoomin) {
                 // constrain to be in range
                 if (y > _lry) y = _lry;
                 if (y < _uly) y = _uly;
@@ -3050,133 +2967,94 @@ public class PlotBox extends JPanel implements Printable {
                     else setYRange(b, a);
                 }
                 repaint();
-                handled = true;
+            } else if (_zoomout) {
+                // Calculate zoom factor.
+                double a = (double)(Math.abs(_zoomx - x)) / 30.0;
+                double b = (double)(Math.abs(_zoomy - y)) / 30.0;
+                double newx1 = _xMax + (_xMax - _xMin) * a;
+                double newx2 = _xMin - (_xMax - _xMin) * a;
+                // NOTE: To limit zooming out to the fill area, uncomment this...
+                // if (newx1 > _xTop) newx1 = _xTop;
+                // if (newx2 < _xBottom) newx2 = _xBottom;
+                double newy1 = _yMax + (_yMax - _yMin) * b;
+                double newy2 = _yMin - (_yMax - _yMin) * b;
+                // NOTE: To limit zooming out to the fill area, uncomment this...
+                // if (newy1 > _yTop) newy1 = _yTop;
+                // if (newy2 < _yBottom) newy2 = _yBottom;
+                zoom(newx2, newy2, newx1, newy1);
             }
-        } else if ((_zoomout == true) && (_drawn == true)){
-            // Erase previous rectangle.
-            graphics.setXORMode(_boxColor);
-            int x_diff = Math.abs(_zoomx-_zoomxn);
-            int y_diff = Math.abs(_zoomy-_zoomyn);
-            graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
-                    30+x_diff*2, 30+y_diff*2);
-            graphics.setPaintMode();
-
-            // Calculate zoom factor.
-            double a = (double)(Math.abs(_zoomx - x)) / 30.0;
-            double b = (double)(Math.abs(_zoomy - y)) / 30.0;
-            double newx1 = _xMax + (_xMax - _xMin) * a;
-            double newx2 = _xMin - (_xMax - _xMin) * a;
-            // NOTE: To limit zooming out to the fill area, uncomment this...
-            // if (newx1 > _xTop) newx1 = _xTop;
-            // if (newx2 < _xBottom) newx2 = _xBottom;
-            double newy1 = _yMax + (_yMax - _yMin) * b;
-            double newy2 = _yMin - (_yMax - _yMin) * b;
-            // NOTE: To limit zooming out to the fill area, uncomment this...
-            // if (newy1 > _yTop) newy1 = _yTop;
-            // if (newy2 < _yBottom) newy2 = _yBottom;
-            zoom(newx2, newy2, newx1, newy1);
-            handled = true;
-        } else if (_drawn == false){
-            repaint();
-            handled = true;
         }
-        _drawn = false;
-        _zoomin = _zoomout = false;
-        _zoomxn = _zoomyn = _zoomx = _zoomy = -1;
     }
 
     /*
-     *  Draw a box for an interactive zoom box.  The starting point (the
-     *  upper left corner of the box) is taken
-     *  to be that specified by the startZoom() method.  The argument gives
-     *  the lower right corner of the box.  If a previous box
-     *  has been drawn, erase it first.
+     *  Draw any required zoom box(es).
+     *  corner).
      *  This method is not synchronized because it is called within
      *  the UI thread, and making it synchronized causes a deadlock.
-     *  @param x The x position.
-     *  @param y The y position.
+     *  @param x The current x drag position.
+     *  @param y The current y drag position.
      */
-    void _zoomBox(int x, int y) {
+    void _zoomDraw(Graphics graphics) {
+        //System.out.println("Zoom draw: _zoomx=" + _zoomx + ", _zoomy=" + _zoomy + "_zoomxn=" + _zoomxn + ", _zoomyn=" + _zoomyn);
+        if (_zooming) {
+            if (_zoomxn != -1 && _zoomyn != -1) {
+                graphics.setColor(_boxColor);
+                if (_zoomout) {
+                    // Draw reference box.
+                    graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
+                    // Draw zoom box
+                    int x_diff = Math.abs(_zoomx-_zoomxn);
+                    int y_diff = Math.abs(_zoomy-_zoomyn);
+                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+                            30+x_diff*2, 30+y_diff*2);
+                } else {
+                    int minx = Math.min(_zoomx, _zoomxn);
+                    int maxx = Math.max(_zoomx, _zoomxn);
+                    int miny = Math.min(_zoomy, _zoomyn);
+                    int maxy = Math.max(_zoomy, _zoomyn);
+                    graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
+                }
+            }
+        }
+    }
 
-        // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
-        // it is private!
-
-        // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
-        // not work on mouse drags, thus we have to use this variable
-        // to determine whether we are actually zooming.
-        if (!_zooming) return;
-
-        Graphics graphics = getGraphics();
-        // Ignore if there is no graphics object to draw on.
-        if (graphics == null) return;
-
-        // Bound the rectangle so it doesn't go outside the box.
+    /*
+     *  Drag the zoom point for an interactive zoom box (the upper left
+     *  corner).
+     *  This method is not synchronized because it is called within
+     *  the UI thread, and making it synchronized causes a deadlock.
+     *  @param x The current x drag position.
+     *  @param y The current y drag position.
+     */
+    void _zoomDrag(int x, int y) {
+        //System.out.println("Zoom drag: _zoomx=" + _zoomx + ", _zoomy=" + _zoomy + "_zoomxn=" + _zoomxn + ", _zoomyn=" + _zoomyn);
+        // constrain to be in range
         if (y > _lry) y = _lry;
         if (y < _uly) y = _uly;
         if (x > _lrx) x = _lrx;
         if (x < _ulx) x = _ulx;
-        // erase previous rectangle, if there was one.
-        if ((_zoomx != -1 || _zoomy != -1)) {
-            // Ability to zoom out added by William Wu.
-            // If we are not already zooming, figure out whether we
-            // are zooming in or out.
-            if (_zoomin == false && _zoomout == false){
-                if (y < _zoomy) {
-                    _zoomout = true;
-                    // Draw reference box.
-                    graphics.setXORMode(_boxColor);
-                    graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
-                } else if (y > _zoomy) {
-                    _zoomin = true;
-                }
-            }
-
-            if (_zoomin == true){
-                // Erase the previous box if necessary.
-                if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
-                    int minx = Math.min(_zoomx, _zoomxn);
-                    int maxx = Math.max(_zoomx, _zoomxn);
-                    int miny = Math.min(_zoomy, _zoomyn);
-                    int maxy = Math.max(_zoomy, _zoomyn);
-                    graphics.setXORMode(_boxColor);
-                    graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
-                }
-                // Draw a new box if necessary.
-                if (y > _zoomy) {
-                    _zoomxn = x;
-                    _zoomyn = y;
-                    int minx = Math.min(_zoomx, _zoomxn);
-                    int maxx = Math.max(_zoomx, _zoomxn);
-                    int miny = Math.min(_zoomy, _zoomyn);
-                    int maxy = Math.max(_zoomy, _zoomyn);
-                    graphics.setXORMode(_boxColor);
-                    graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
-                    _drawn = true;
-                    return;
-                } else _drawn = false;
-            } else if (_zoomout == true){
-                // Erase previous box if necessary.
-                if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
-                    int x_diff = Math.abs(_zoomx-_zoomxn);
-                    int y_diff = Math.abs(_zoomy-_zoomyn);
-                    graphics.setXORMode(_boxColor);
-                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
-                            30+x_diff*2, 30+y_diff*2);
-                }
-                if (y < _zoomy){
-                    _zoomxn = x;
-                    _zoomyn = y;
-                    int x_diff = Math.abs(_zoomx-_zoomxn);
-                    int y_diff = Math.abs(_zoomy-_zoomyn);
-                    graphics.setXORMode(_boxColor);
-                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
-                            30+x_diff*2, 30+y_diff*2);
-                    _drawn = true;
-                    return;
-                } else _drawn = false;
+        
+        if (_zoomin == false && _zoomout == false){
+            if (y < _zoomy) {
+                _zoomout = true;
+            } else if (y > _zoomy) {
+                _zoomin = true;
             }
         }
-        graphics.setPaintMode();
+        
+        if (_zoomin) {
+            if (y > _zoomy) {
+                _zoomxn = x;
+                _zoomyn = y;
+            }
+        } else if (_zoomout) {
+            if (y < _zoomy) {
+                _zoomxn = x;
+                _zoomyn = y;
+            }
+        }
+
+        repaint();
     }
 
     /*
@@ -3188,6 +3066,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param y The y position.
      */
     void _zoomStart(int x, int y) {
+        //System.out.println("Zoom start: _zoomx=" + _zoomx + ", _zoomy=" + _zoomy + "_zoomxn=" + _zoomxn + ", _zoomyn=" + _zoomyn);
         // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
 
@@ -3196,19 +3075,18 @@ public class PlotBox extends JPanel implements Printable {
         if (y < _uly) y = _uly;
         if (x > _lrx) x = _lrx;
         if (x < _ulx) x = _ulx;
+
         _zoomx = x;
         _zoomy = y;
+        
+        _zoomin = _zoomout = false;
+        _zoomxn = _zoomyn = -1;
+        
         _zooming = true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** @serial Indicator of whether actions are deferred. */
-    private boolean _actionsDeferred = false;
-
-    /** @serial List of deferred actions. */
-    private List _deferredActions;
 
     /** @serial The file to be opened. */
     private String _filespec = null;
@@ -3217,7 +3095,8 @@ public class PlotBox extends JPanel implements Printable {
     // _background does not work in an application,
     // and _foreground does not work in an applet.
     // NOTE: For some reason, this comes out blue, which is fine...
-    private static final Color _boxColor = Color.orange;
+    //private static final Color _boxColor = Color.orange;
+    private static final Color _boxColor = Color.blue;
 
     /** @serial The range of the plot as labeled
      * (multiply by 10^exp for actual range.
@@ -3243,6 +3122,9 @@ public class PlotBox extends JPanel implements Printable {
     // Number format cache used by _formatNum.
     // See the comment in _formatNum for more information.
     // private transient NumberFormat _numberFormat = null;
+
+    // Used for double buffering of image before painting to graphics context
+    private transient Image offScreenBuffer = null;
 
     // Used for log axes. Index into vector of axis labels.
     private transient int _gridCurJuke = 0;
@@ -3293,7 +3175,6 @@ public class PlotBox extends JPanel implements Printable {
     // Control whether we are zooming in or out.
     private transient boolean _zoomin = false;
     private transient boolean _zoomout = false;
-    private transient boolean _drawn = false;
     private transient boolean _zooming = false;
 
     // NOTE: It is unfortunate to have to include the DTD here, but there
@@ -3431,7 +3312,7 @@ public class PlotBox extends JPanel implements Printable {
             // methods, so those methods set a variable _zooming that
             // is used by _zoomBox to determine whether to draw a box.
             // if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
-            PlotBox.this._zoomBox(event.getX(), event.getY());
+            PlotBox.this._zoomDrag(event.getX(), event.getY());
             // }
         }
         public void mouseMoved(MouseEvent event) {

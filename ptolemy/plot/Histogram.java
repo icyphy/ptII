@@ -31,11 +31,8 @@ package ptolemy.plot;
 
 import java.awt.Graphics;
 import java.awt.EventQueue;
-import java.io.PrintWriter;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Random;
-import java.util.Vector;
+import java.io.*;
+import java.util.*;
 import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -117,7 +114,7 @@ data is used to calculate the histogram.
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.3
-*/
+ */
 public class Histogram extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
@@ -153,12 +150,7 @@ public class Histogram extends PlotBox {
      *  @param value The new value.
      */
     public synchronized void addPoint(final int dataset, final double value) {
-        Runnable doAddPoint = new Runnable() {
-            public void run() {
-                _addPoint(dataset, value);
-            }
-        };
-        deferIfNecessary(doAddPoint);
+        _addPoint(dataset, value);
     }
 
     /** In the specified data set, add the specified y value to the
@@ -191,12 +183,7 @@ public class Histogram extends PlotBox {
      *  @param format If true, clear the format controls as well.
      */
     public synchronized void clear(final boolean format) {
-        Runnable doClear = new Runnable() {
-            public void run() {
-                _clear(format);
-            }
-        };
-        deferIfNecessary(doClear);
+        _clear(format);
     }
 
     /** Rescale so that the data that is currently plotted just fits.
@@ -211,12 +198,7 @@ public class Histogram extends PlotBox {
      *  called them.
      */
     public synchronized void fillPlot() {
-        Runnable doFill = new Runnable() {
-            public void run() {
-                _fillPlot();
-            }
-        };
-        deferIfNecessary(doFill);
+        _fillPlot();
     }
 
     /** Create a sample plot.
@@ -551,9 +533,7 @@ public class Histogram extends PlotBox {
      *  on the screen.  Otherwise, it will be drawn the next time the histogram
      *  is drawn on the screen.
      *
-     *  This is not synchronized, so the caller should be.  Moreover, this
-     *  should only be called in the event dispatch thread. It should only
-     *  be called by _executeDeferredActions().
+     *  This is not synchronized, so the caller should be.  
      *
      *  @param dataset The data set index.
      *  @param value The new value.
@@ -588,19 +568,7 @@ public class Histogram extends PlotBox {
         Vector pts = (Vector)_points.elementAt(dataset);
         pts.addElement(new Double(value));
 
-        // Draw the point on the screen only if the plot is showing.
-        // Need to check that graphics is not null because plot may have
-        // been dismissed.
-        Graphics graphics = getGraphics();
-        if (_showing  && graphics != null) {
-            // In swing, updates to showing graphics must be done in the
-            // event thread, not here.  Thus, we have to queue the request.
-            final int pendingDataset = dataset;
-            final int pendingBin = bin;
-            final int pendingCount = count;
-            // We are in the event thread, so this is safe...
-            _drawPlotPoint(graphics, pendingDataset, pendingBin, pendingCount);
-        }
+        repaint();
     }
 
     /*  Clear the plot of all data points.  If the argument is true, then
@@ -625,6 +593,7 @@ public class Histogram extends PlotBox {
             _binWidth = 1.0;
             _binOffset = 0.5;
         }
+        repaint();
     }
 
     /* Draw the specified histogram bar.

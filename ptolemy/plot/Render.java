@@ -1,4 +1,4 @@
-/* 
+/* FIXME
 
 @Copyright (c) 1997-2002 The Regents of the University of California.
 All rights reserved.
@@ -41,7 +41,7 @@ import java.util.ListIterator;
 @author Neil Turner
 @version $Id$
 @since Ptolemy II 2.0
-*/
+ */
 public class Render extends PlotBox {
 
     /** Construct an instance.
@@ -149,60 +149,50 @@ public class Render extends PlotBox {
     /** Create a sample image.
      */
     public synchronized void samplePlot() {
-        // This needs to be done in the event thread.
-        Runnable sample = new Runnable() {
-                public void run() {
-                    synchronized (Render.this) {
+        // Create a sample plot.
+        clear(true);
+        setGrid(false);
 
-                        // Create a sample plot.
-                        clear(true);
-                        setGrid(false);
+        setTitle("Sample image");
+        setYLabel("hertz");
+        setXLabel("time");
+        setXIncrement(0.05);
+        setXOffset(0.0);
+        setYIncrement(40.0);
+        setYOffset(0.0);
 
-                        setTitle("Sample image");
-                        setYLabel("hertz");
-                        setXLabel("time");
-                        setXIncrement(0.05);
-                        setXOffset(0.0);
-                        setYIncrement(40.0);
-                        setYOffset(0.0);
+        // Create the stripes in data form (arrays).
+        int[] stripe1 = new int[100];
+        int colorValue = _HIGHCOLOR;
+        for (int i = 0; i < stripe1.length; i++) {
+            stripe1[i] = colorValue;
+            if (colorValue == _LOWCOLOR) {
+                colorValue = _HIGHCOLOR;
+            } else {
+                colorValue = _LOWCOLOR;
+            }
+        }
 
-                        // Create the stripes in data form (arrays).
-                        int[] stripe1 = new int[100];
-                        int colorValue = _HIGHCOLOR;
-                        for (int i = 0; i < stripe1.length; i++) {
-                            stripe1[i] = colorValue;
-                            if (colorValue == _LOWCOLOR) {
-                                colorValue = _HIGHCOLOR;
-                            } else {
-                                colorValue = _LOWCOLOR;
-                            }
-                        }
+        int[] stripe2 = new int[100];
+        System.arraycopy(stripe1, 0, stripe2, 1,
+                stripe2.length - 1);
+        stripe2[0] = _LOWCOLOR;
 
-                        int[] stripe2 = new int[100];
-                        System.arraycopy(stripe1, 0, stripe2, 1,
-                                stripe2.length - 1);
-                        stripe2[0] = _LOWCOLOR;
+        // Reset the data structure.
+        clearData();
 
-                        // Reset the data structure.
-                        clearData();
-
-                        // Add the stripes to the data structure.
-                        for (int i = 1; i <= 50; i++) {
-                            addStripe(stripe1);
-                            addStripe(stripe2);
-                        }
-                    }
-                }
-            };
-        deferIfNecessary(sample);
-        repaint();
+        // Add the stripes to the data structure.
+        for (int i = 1; i <= 50; i++) {
+            addStripe(stripe1);
+            addStripe(stripe2);
+        }
     }
 
     /** Set the colormap.
      *  The user needs to give a 3-by-256 integer array as a colormap.
      *  @param colormap The colormap used to render images.
      */
-    public synchronized void setColormap(int[][] colormap) {
+    public synchronized void setColormap(int[][] colormap){
         _colormap = colormap;
     }
 
