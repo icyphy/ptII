@@ -1203,7 +1203,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         if (prefix == null) {
             prefix = "null";
         }
-        prefix = _stipNumericSuffix(prefix);
+        prefix = _stripNumericSuffix(prefix);
         String candidate = prefix;
         int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null) {
@@ -1580,7 +1580,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @param string The string to strip of its numeric suffix.
      *  @return A string with no numeric suffix.
      */
-    protected static String _stipNumericSuffix(String string) {
+    protected static String _stripNumericSuffix(String string) {
         // NOTE: Perhaps it would be more efficient here to create
         // a HashSet for these numbers and test the last character for
         // membership.

@@ -414,7 +414,7 @@ public class Entity extends NamedObj {
         if (prefix == null) {
             prefix = "null";
         }
-        prefix = _stipNumericSuffix(prefix);
+        prefix = _stripNumericSuffix(prefix);
         String candidate = prefix;
         int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null
