@@ -374,6 +374,8 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/actor/lib/x10 \
 		ptolemy/actor/lib/xslt \
 		ptolemy/caltrop \
+		ptolemy/codegen \
+		ptolemy/component \
 		ptolemy/configs/dsp \
 		ptolemy/configs/full \
 		ptolemy/configs/jni \
@@ -405,6 +407,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/domains/sr \
 		ptolemy/domains/tm \
 		ptolemy/domains/wireless \
+		ptolemy/demo \
 		thales; \
 	   touch configure; \
 	   chmod a+rx configure; \
