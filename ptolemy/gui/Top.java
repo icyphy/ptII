@@ -132,6 +132,9 @@ public abstract class Top extends JFrame {
 	});
 
         getContentPane().setLayout(new BorderLayout());
+
+        // Make this the default context for modal messages.
+        GraphicalMessageHandler.setContext(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -145,6 +148,8 @@ public abstract class Top extends JFrame {
         Toolkit tk = Toolkit.getDefaultToolkit();
         setLocation((tk.getScreenSize().width - getSize().width)/2,
                 (tk.getScreenSize().height - getSize().height)/2);
+        // Make this the default context for modal messages.
+        GraphicalMessageHandler.setContext(this);
     }
 
     /** Return true if the data associated with this window has been
@@ -655,6 +660,9 @@ public abstract class Top extends JFrame {
     /** Listener for file menu commands. */
     class FileMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            // Make this the default context for modal messages.
+            GraphicalMessageHandler.setContext(Top.this);
+
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
 	    try {
@@ -689,6 +697,9 @@ public abstract class Top extends JFrame {
     /** Listener for help menu commands. */
     class HelpMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            // Make this the default context for modal messages.
+            GraphicalMessageHandler.setContext(Top.this);
+
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
 	    try {

@@ -31,6 +31,7 @@ package ptolemy.actor.gui;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.gui.CancelException;
+import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
@@ -652,6 +653,9 @@ public abstract class TableauFrame extends Top {
     /** Listener for view menu commands. */
     class ViewMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            // Make this the default context for modal messages.
+            GraphicalMessageHandler.setContext(TableauFrame.this);
+
             if (_factoryContainer != null) {
                 JMenuItem target = (JMenuItem)e.getSource();
                 String actionCommand = target.getActionCommand();
