@@ -56,17 +56,17 @@ test PolarToRectangular-1.1 {test 1} {
     $value2 setToken [java::new {ptolemy.data.DoubleToken double} 4.0]
 
     $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $const1] output]             [java::field $conver magnitudeInput]
+            [java::field [java::cast ptolemy.actor.lib.Source $const1] output]             [java::field $conver magnitude]
 
     $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $const2] output]             [java::field $conver angleInput]
+            [java::field [java::cast ptolemy.actor.lib.Source $const2] output]             [java::field $conver angle]
 
     $e0 connect \
-            [java::field $conver xOutput] \
+            [java::field $conver x] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]
 
     $e0 connect \
-            [java::field $conver yOutput] \
+            [java::field $conver y] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
 
     [$e0 getManager] execute

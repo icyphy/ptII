@@ -56,11 +56,11 @@ test RealToComplex-1.1 {test 1} {
 
     $e0 connect \
           [java::field [java::cast ptolemy.actor.lib.Source $const1] output] \
-            [java::field $conver realInput]
+            [java::field $conver real]
 
     $e0 connect \
           [java::field [java::cast ptolemy.actor.lib.Source $const2] output] \
-            [java::field $conver imagInput]
+            [java::field $conver imag]
 
     $e0 connect \
             [java::field $conver output] \

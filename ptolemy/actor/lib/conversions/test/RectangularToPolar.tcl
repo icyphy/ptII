@@ -58,14 +58,14 @@ test RectangularToPolar-1.1 {test 1} {
 # Since all of my ports are public, so I don't need to cast them.
 
     $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $const1] output]             [java::field $conver xInput]
+            [java::field [java::cast ptolemy.actor.lib.Source $const1] output]             [java::field $conver x]
     $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $const2] output]             [java::field $conver yInput]
+            [java::field [java::cast ptolemy.actor.lib.Source $const2] output]             [java::field $conver y]
     $e0 connect \
-            [java::field $conver magnitudeOutput] \
+            [java::field $conver magnitude] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]
     $e0 connect \
-            [java::field $conver angleOutput] \
+            [java::field $conver angle] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
 
     [$e0 getManager] execute
@@ -98,20 +98,20 @@ test RectangularToPolar-1.2 {test 2: testing both PolarToRec and RecToPolar} {
 
 
     $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $const1] output]             [java::field $conver1 xInput]
+            [java::field [java::cast ptolemy.actor.lib.Source $const1] output]             [java::field $conver1 x]
     $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $const2] output]             [java::field $conver1 yInput]
+            [java::field [java::cast ptolemy.actor.lib.Source $const2] output]             [java::field $conver1 y]
     $e0 connect \
-            [java::field $conver1 magnitudeOutput] \
-	    [java::field $conver2 magnitudeInput]
+            [java::field $conver1 magnitude] \
+	    [java::field $conver2 magnitude]
     $e0 connect \
-            [java::field $conver1 angleOutput] \
-	    [java::field $conver2 angleInput]
+            [java::field $conver1 angle] \
+	    [java::field $conver2 angle]
     $e0 connect \
-            [java::field $conver2 xOutput] \
+            [java::field $conver2 x] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]
     $e0 connect \
-            [java::field $conver2 yOutput] \
+            [java::field $conver2 y] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
 
     [$e0 getManager] execute
