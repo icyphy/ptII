@@ -1091,10 +1091,18 @@ public class CompositeEntity extends ComponentEntity {
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" width=\"60\" " +
                 "height=\"40\" style=\"fill:red\"/>\n" +
-                "<rect x=\"3\" y=\"3\" width=\"54\" " +
-                "height=\"34\" style=\"fill:white\"/>\n" +
-                "<polygon points=\"10,10 50,20 10,30\" " +
-                "style=\"fill:blue\"/>\n" +
+                "<rect x=\"2\" y=\"2\" width=\"56\" " +
+                "height=\"36\" style=\"fill:lightgrey\"/>\n" +
+                "<rect x=\"15\" y=\"10\" width=\"10\" height=\"8\" " +
+                "style=\"fill:white\"/>\n" +
+                "<rect x=\"15\" y=\"22\" width=\"10\" height=\"8\" " +
+                "style=\"fill:white\"/>\n" +
+                "<rect x=\"35\" y=\"16\" width=\"10\" height=\"8\" " +
+                "style=\"fill:white\"/>\n" +
+                "<line x1=\"25\" y1=\"14\" x2=\"30\" y2=\"14\"/>" +
+                "<line x1=\"25\" y1=\"26\" x2=\"30\" y2=\"26\"/>" +
+                "<line x1=\"30\" y1=\"14\" x2=\"30\" y2=\"26\"/>" +
+                "<line x1=\"30\" y1=\"20\" x2=\"35\" y2=\"20\"/>" +
                 "</svg>\n");
     }
 
