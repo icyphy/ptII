@@ -715,7 +715,6 @@ public class DEDirector extends Director implements TimedDirector {
 //        fireAt(container, getModelTime());
 //        fireAt(container, getModelStopTime());
         
-        _actorToDepth = null;
         _disabledActors = null;
         _exceedStopTime = false;
         _microstep = 0;
@@ -917,7 +916,7 @@ public class DEDirector extends Director implements TimedDirector {
                 ((IntToken)minBinCount.getToken()).intValue(),
                 ((IntToken)binCountFactor.getToken()).intValue(),
                 ((BooleanToken)isCQAdaptive.getToken()).booleanValue());
-
+        _actorToDepth = null;
         // Add debug listeners.
         if (_debugListeners != null) {
             Iterator listeners = _debugListeners.iterator();
