@@ -190,9 +190,9 @@ public class DDFBooleanSelect extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _isControlRead = false;
-        trueInput_tokenConsumptionRate.setToken(new IntToken(0));
-        falseInput_tokenConsumptionRate.setToken(new IntToken(0));
-        control_tokenConsumptionRate.setToken(new IntToken(1));
+        trueInput_tokenConsumptionRate.setToken(_zero);
+        falseInput_tokenConsumptionRate.setToken(_zero);
+        control_tokenConsumptionRate.setToken(_one);
     }
 
     /** Update rate parameters for the next iteration.
@@ -203,18 +203,18 @@ public class DDFBooleanSelect extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         if (_isControlRead) {
             if (_control) {
-                trueInput_tokenConsumptionRate.setToken(new IntToken(1));
-                falseInput_tokenConsumptionRate.setToken(new IntToken(0));
-                control_tokenConsumptionRate.setToken(new IntToken(0));
+                trueInput_tokenConsumptionRate.setToken(_one);
+                falseInput_tokenConsumptionRate.setToken(_zero);
+                control_tokenConsumptionRate.setToken(_zero);
             } else {
-                trueInput_tokenConsumptionRate.setToken(new IntToken(0));
-                falseInput_tokenConsumptionRate.setToken(new IntToken(1));
-                control_tokenConsumptionRate.setToken(new IntToken(0));
+                trueInput_tokenConsumptionRate.setToken(_zero);
+                falseInput_tokenConsumptionRate.setToken(_one);
+                control_tokenConsumptionRate.setToken(_zero);
             }
         } else {
-            trueInput_tokenConsumptionRate.setToken(new IntToken(0));
-            falseInput_tokenConsumptionRate.setToken(new IntToken(0));
-            control_tokenConsumptionRate.setToken(new IntToken(1));
+            trueInput_tokenConsumptionRate.setToken(_zero);
+            falseInput_tokenConsumptionRate.setToken(_zero);
+            control_tokenConsumptionRate.setToken(_one);
         }
 
         return super.postfire();
@@ -254,4 +254,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
 
     // The boolean to determine to read control or true/false input.
     private boolean _isControlRead;
+    
+    private IntToken _zero = new IntToken(0);
+    private IntToken _one = new IntToken(1);
 }

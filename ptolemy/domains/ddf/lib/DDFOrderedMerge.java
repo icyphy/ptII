@@ -112,8 +112,9 @@ public class DDFOrderedMerge extends OrderedMerge {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        inputA_tokenConsumptionRate.setToken(new IntToken(1));
-        inputB_tokenConsumptionRate.setToken(new IntToken(0));
+
+        inputA_tokenConsumptionRate.setToken(_one);
+        inputB_tokenConsumptionRate.setToken(_zero);
     }
 
     /** Update rate parameters indicating the next input port.
@@ -127,13 +128,19 @@ public class DDFOrderedMerge extends OrderedMerge {
         TypedIOPort nextPort = _getNextPort();
 
         if (nextPort == inputA) {
-            inputA_tokenConsumptionRate.setToken(new IntToken(1));
-            inputB_tokenConsumptionRate.setToken(new IntToken(0));
+            inputA_tokenConsumptionRate.setToken(_one);
+            inputB_tokenConsumptionRate.setToken(_zero);
         } else {
-            inputA_tokenConsumptionRate.setToken(new IntToken(0));
-            inputB_tokenConsumptionRate.setToken(new IntToken(1));
+            inputA_tokenConsumptionRate.setToken(_zero);
+            inputB_tokenConsumptionRate.setToken(_one);
         }
 
         return postfireReturn;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////   
+    
+    private IntToken _zero = new IntToken(0);
+    private IntToken _one = new IntToken(1);
 }

@@ -36,7 +36,9 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
@@ -138,6 +140,33 @@ public class DDFSelect extends TypedAtomicActor {
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
+    
+    /** Override the base class to pre-calculate the rates to be 
+     *  set in the parameter of the input port.
+     *  @param port The port that has connection changes.
+     */
+    public void connectionsChanged(Port port) {
+        super.connectionsChanged(port);
+
+        if (port == input) {
+            _rateArray = new ArrayToken[input.getWidth()];
+            Token[] rate = new IntToken[input.getWidth()];
+            for (int i = 0; i < input.getWidth(); i++) {
+                rate[i] = _zero;                   
+            }
+            try {
+                _rateZero = new ArrayToken(rate);
+                for (int i = 0; i < input.getWidth(); i++) {
+                    rate[i] = _one;
+                    _rateArray[i] = new ArrayToken(rate);
+                    rate[i] = _zero;
+                }    
+            } catch (IllegalActionException ex) {
+                // shouldn't happen
+                throw new InternalErrorException(ex);
+            }        
+        }    
+    }
 
     /** Read a new token from the <i>control</i> port and note its value
      *  if it hasn't done so. This concludes the current firing. Otherwise
@@ -172,17 +201,12 @@ public class DDFSelect extends TypedAtomicActor {
      *  @exception IllegalActionException If setToken() throws it.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
+        super.initialize();        
+        
         _isControlRead = false;
 
-        Token[] rates = new IntToken[input.getWidth()];
-
-        for (int i = 0; i < input.getWidth(); i++) {
-            rates[i] = new IntToken(0);
-        }
-
-        input_tokenConsumptionRate.setToken(new ArrayToken(rates));
-        control_tokenConsumptionRate.setToken(new IntToken(1));
+        input_tokenConsumptionRate.setToken(_rateZero);
+        control_tokenConsumptionRate.setToken(_one);
     }
 
     /** Update rate parameters for the next iteration.
@@ -192,24 +216,14 @@ public class DDFSelect extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         if (_isControlRead) {
-            Token[] rates = new IntToken[input.getWidth()];
 
-            for (int i = 0; i < input.getWidth(); i++) {
-                rates[i] = new IntToken(0);
-            }
-
-            rates[_control] = new IntToken(1);
-            input_tokenConsumptionRate.setToken(new ArrayToken(rates));
-            control_tokenConsumptionRate.setToken(new IntToken(0));
+            input_tokenConsumptionRate.setToken(_rateArray[_control]);
+            control_tokenConsumptionRate.setToken(_zero);
+            
         } else {
-            Token[] rates = new IntToken[input.getWidth()];
-
-            for (int i = 0; i < input.getWidth(); i++) {
-                rates[i] = new IntToken(0);
-            }
-
-            input_tokenConsumptionRate.setToken(new ArrayToken(rates));
-            control_tokenConsumptionRate.setToken(new IntToken(1));
+ 
+            input_tokenConsumptionRate.setToken(_rateZero);
+            control_tokenConsumptionRate.setToken(_one);
         }
 
         return super.postfire();
@@ -238,10 +252,19 @@ public class DDFSelect extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     // The most recently read control token.
     private int _control;
 
     // The boolean to determine whether to read from control port
     // or from input port.
     private boolean _isControlRead;
+    
+    private IntToken _one = new IntToken(1);
+    private IntToken _zero = new IntToken(0);
+    
+    // The arrayTokens to be used to set tokenConsumptionRate of the 
+    // input port.
+    private ArrayToken[] _rateArray;
+    private ArrayToken _rateZero;
 }

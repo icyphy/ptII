@@ -35,7 +35,9 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sr.lib.SingleTokenCommutator;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
@@ -89,6 +91,32 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to pre-calculate the rates to be 
+     *  set in the parameter of the input port.
+     *  @param port The port that has connection changes.
+     */
+    public void connectionsChanged(Port port) {
+        super.connectionsChanged(port);
+
+        if (port == input) {
+            _rateArray = new ArrayToken[input.getWidth()];
+            Token[] rate = new IntToken[input.getWidth()];
+            for (int i = 0; i < input.getWidth(); i++) {
+                rate[i] = _zero;                   
+            }
+            try {
+                for (int i = 0; i < input.getWidth(); i++) {
+                    rate[i] = _one;
+                    _rateArray[i] = new ArrayToken(rate);
+                    rate[i] = _zero;
+                }    
+            } catch (IllegalActionException ex) {
+                // shouldn't happen
+                throw new InternalErrorException(ex);
+            }        
+        }    
+    }
+    
     /** Begin execution by setting rate parameter indicating it will
      *  read the zeroth input channel.
      *  @exception IllegalActionException If there is no director.
@@ -96,14 +124,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        Token[] rates = new IntToken[input.getWidth()];
-        rates[0] = new IntToken(1);
-
-        for (int i = 1; i < input.getWidth(); i++) {
-            rates[i] = new IntToken(0);
-        }
-
-        input_tokenConsumptionRate.setToken(new ArrayToken(rates));
+        input_tokenConsumptionRate.setToken(_rateArray[0]);
     }
 
     /** Update rate parameter indicating the next input channel.
@@ -115,18 +136,20 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
         // Call postfire first so that current input position is updated.
         boolean postfireReturn = super.postfire();
 
-        Token[] rates = new IntToken[input.getWidth()];
         int currentInputPosition = _getCurrentInputPosition();
-        rates[currentInputPosition] = new IntToken(1);
-
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (i != currentInputPosition) {
-                rates[i] = new IntToken(0);
-            }
-        }
-
-        input_tokenConsumptionRate.setToken(new ArrayToken(rates));
+        input_tokenConsumptionRate
+                .setToken(_rateArray[currentInputPosition]);
 
         return postfireReturn;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    private IntToken _one = new IntToken(1);
+    private IntToken _zero = new IntToken(0);
+    
+    // The arrayTokens to be used to set tokenConsumptionRate of the 
+    // input port.
+    private ArrayToken[] _rateArray;
 }

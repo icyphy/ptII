@@ -886,6 +886,10 @@ public class DDFDirector extends Director {
         // this is different from DE where the director tries to fire an actor
         // whenever there is an event destined to the actor at the current time,
         // and calls its prefire() method to check if it is ready.
+        // On the other hand, it should not throw exception when the actor is
+        // not ready due to mutation during execution. For example, a connection
+        // change request could result in creating new receivers and losing all 
+        // tokens contained in the old receivers.  
         //} else if (returnValue == NOT_READY) {
             // Should not reach here if the scheduler and actors are 
             // correctly designed. Only enabled actors are fired. 
@@ -1086,15 +1090,10 @@ public class DDFDirector extends Director {
                 if (token instanceof ArrayToken) {
                     Token[] tokens = ((ArrayToken) token).arrayValue();
 
-                    if (tokens.length < port.getWidth()) {
-                        throw new IllegalActionException(this,
-                                "The length of "
-                                + "tokenConsumptionRate array is less than "
-                                + "port width.");
-                    }
-
                     for (int i = 0; i < port.getWidth(); i++) {
-                        rate[i] = ((IntToken) tokens[i]).intValue();
+                        if (i < tokens.length) {
+                            rate[i] = ((IntToken) tokens[i]).intValue();
+                        }    
                     }
                 } else { // All the channels in the port have same
                          // tokenConsumptionRate.
@@ -1229,7 +1228,9 @@ public class DDFDirector extends Director {
                     }
 
                     for (int i = 0; i < port.getWidthInside(); i++) {
-                        rate[i] = ((IntToken) tokens[i]).intValue();
+                        if (i < tokens.length) {
+                            rate[i] = ((IntToken) tokens[i]).intValue();
+                        }    
                     }
                 } else { // All the channels in the port has same
                          // tokenProductionRate.
