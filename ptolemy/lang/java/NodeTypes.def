@@ -1,3 +1,9 @@
+// This file provides the input to GenerateVisitor, which generates
+// the JavaVisitor class and all the node classed in lang/java/nodetypes.
+// The leading comment is included in all the generated files.
+//
+// Author: Jeff Tsay
+
 <cheader>
 /*
 This file was generated automatically by GenerateVisitor.

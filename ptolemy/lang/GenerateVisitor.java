@@ -162,8 +162,17 @@ public class GenerateVisitor {
   }
 
   protected String _readBlock(String marker) throws IOException {
-    while ((_lastLine != null) && _lastLine.equals("")) {
+    if (_lastLine != null) {
+       _lastLine = _lastLine.trim();
+    }
+  
+    while ((_lastLine != null) && 
+           (_lastLine.equals("") || _lastLine.startsWith("//"))) {
       _lastLine = _ifs.readLine();
+      
+      if (_lastLine != null) {
+         _lastLine = _lastLine.trim();
+      }      
     }
 
     String beginTag = "<" + marker + ">";
