@@ -113,10 +113,10 @@
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation"/>
     <link port="NonStrictTest2.input" relation="relation3"/>
     <link port="WirelessToWired2.properties" relation="relation3"/>
-    <link port="WirelessToWired2.data" relation="relation2"/>
+    <link port="WirelessToWired2.payload" relation="relation"/>
 </entity>
