@@ -120,7 +120,7 @@ public class BranchController implements Runnable {
      */
     public boolean canBranchEngage(Branch branch) {
         synchronized(this) {
-	    if( !_engagementsAllowed ) {
+	    if( !_engagementsAllowed || !isActive() ) {
 		return false;
 	    }
             if( _maxEngagements < 0 && _maxEngagers < 0 ) {
@@ -276,6 +276,10 @@ public class BranchController implements Runnable {
      */
     public void engagementSucceeded(Branch branch) {
         synchronized(this) {
+            if( !_engagementsAllowed || !isActive() ) {
+                // FIXME: Should we throw an exception?
+                return;
+            }
             if( _maxEngagements < 0 && _maxEngagers < 0 ) {
                 return;
             }
@@ -329,6 +333,9 @@ public class BranchController implements Runnable {
     /** 
      */
     public synchronized void reset() {
+        if( !isActive() ) {
+            return;
+        }
 	_engagementsAllowed = false;
 	_engagements.clear();
 
@@ -374,7 +381,7 @@ public class BranchController implements Runnable {
     /**
      */
     public synchronized boolean areEngagementsComplete() {
-        if( !_engagementsAllowed ) {
+        if( !_engagementsAllowed || !isActive() ) {
             return true;
         }
 	if( _engagements.size() == _maxEngagers ) {

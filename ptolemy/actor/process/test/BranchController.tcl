@@ -148,15 +148,23 @@ test BranchController-3.1 {Check pre-activation state} {
 ######################################################################
 ####
 #
-test BranchController-4.1 {Activate with no branches, infinite iteration} {
+test BranchController-4.1 {activateBranches() with no branches, infinite iteration} {
    
     set top [java::new ptolemy.actor.process.MultiBranchActor]
     set cntlr [java::new ptolemy.actor.process.BranchController $top]
     set branch [java::new ptolemy.actor.process.Branch $cntlr]
     
+    set val 1
+    
+    if { [$cntlr isActive] == 1  } {
+    	$val 0
+    }
+    
     $cntlr activateBranches
     
-    set val 1
+    if { [$cntlr isActive] != 1  } {
+    	$val 0
+    }
     if { [$cntlr canBranchEngage $branch] != 1  } {
     	$val 0
     }

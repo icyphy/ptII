@@ -69,6 +69,7 @@ reference should be set to null.
 public class Branch {
 
     /** Construct a Branch object.
+     *  This constructor is intended for testing purposes only.
      */
     public Branch(BranchController cntlr) throws 
     	    IllegalActionException {
@@ -81,16 +82,13 @@ public class Branch {
 	    BranchController cntlr) throws IllegalActionException {
         _controller = cntlr;
         
-        Receiver[][] receivers;
-        BoundaryReceiver receiver;
-        
         if( !prodRcvr.isProducerReceiver() ) {
             throw new IllegalActionException("Not producer "
             	    + "receiver");
         }
 	_prodRcvr = prodRcvr;
         
-        if( !_consRcvr.isConsumerReceiver() ) {
+        if( !consRcvr.isConsumerReceiver() ) {
             throw new IllegalActionException("Not consumer "
             	    + "receiver");
         }
@@ -192,12 +190,12 @@ public class Branch {
 
     /**
      */
-    protected void reset() {
+    public void reset() {
 	_active = true;
 	_rcvrBlocked = false;
 	_completedEngagements = 0;
 	_currentlyEngaged = false;
-	endIteration(true);
+	endIteration();
     }
 
     /**
@@ -211,8 +209,8 @@ public class Branch {
 
     /**
      */
-    public synchronized void endIteration(boolean endIteration) {
-	_isIterationOver = endIteration;
+    public synchronized void endIteration() {
+	_isIterationOver = true;
 	// FIXME: Here I wake up the branch; What about the receiver?
         BoundaryReceiver rcvr = null;
         rcvr = getProdReceiver();
@@ -250,15 +248,9 @@ public class Branch {
     /** Set a flag indicating this branch should fail.
      *  @param value Boolean indicating whether this branch is still alive.
      */
-    protected void setActive(boolean value) {
+    public void setActive(boolean value) {
         _active = value;
     }
-
-    /** 
-    protected void setStopped(boolean value) {
-        _stopped = value;
-    }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
@@ -270,7 +262,7 @@ public class Branch {
     // is set to false. Otherwise, this branch still can potentially
     // rendezvous. _active remains true until it is no longer possible
     // for this branch to successfully rendezvous.
-    private boolean _active = true;
+    private boolean _active = false;
 
     // The controller of this thread is trying to perform a conditional
     // rendezvous for.
