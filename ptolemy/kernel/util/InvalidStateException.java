@@ -52,24 +52,11 @@ public class InvalidStateException extends RuntimeException {
     // be no way to avoid this.  Should there be an interface defined
     // for the commonality?
 
-    /** Constructs an Exception with no names or message. */
-    public InvalidStateException() {
-        this(null, null, "Serious internal error!");
-    }
-
     /** Constructs an Exception with only a detail message.
      *  @param detail The message.
      */
     public InvalidStateException(String detail) {
         this(null, null, detail);
-    }
-
-    /** Constructs an Exception with a message that is only the
-     *  name of the first argument.
-     *  @param obj The object.
-     */
-    public InvalidStateException(Nameable obj) {
-        this(obj, null, "Serious internal error!");
     }
 
     /** Constructs an Exception with a detail message that includes the
@@ -79,15 +66,6 @@ public class InvalidStateException extends RuntimeException {
      */
     public InvalidStateException(Nameable obj, String detail) {
         this(obj, null, detail);
-    }
-
-    /** Constructs an Exception with a detail message that consists of
-     *  only the names of the two arguments.
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
-     */
-    public InvalidStateException(Nameable obj1, Nameable obj2)  {
-        this(obj1, obj2, "Serious internal error!");
     }
 
     /** Constructs an Exception with a detail message that includes the

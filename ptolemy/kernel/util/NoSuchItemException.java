@@ -36,7 +36,7 @@ package pt.kernel.util;
 Thrown on access (by name) to an item that doesn't exist.
 E.g., attempt to remove a port by name and no such port exists.
 
-@author Edward A. Lee
+@author Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class NoSuchItemException extends KernelException {
@@ -44,7 +44,7 @@ public class NoSuchItemException extends KernelException {
      *  @param detail A message.
      */
     public NoSuchItemException(String detail) {
-        super(detail);
+        super(null, null, detail);
     }
 
     /** Constructs an Exception with a detail message that includes the
@@ -53,6 +53,6 @@ public class NoSuchItemException extends KernelException {
      *  @param detail A message.
      */
     public NoSuchItemException(Nameable obj, String detail) {
-        super(obj, detail);
+        super(obj, null, detail);
     }
 }

@@ -36,66 +36,40 @@ package pt.kernel.util;
 Base class for exceptions that report the names of Nameable objects.
 This exception should not be thrown directly, since it provides very
 little information about the cause of the exception.
-Constructors are provided that take 0, 1, or 2 Nameable references
-plus an arbitrary String.  The constructors are robust in that null
-references are ignored.
+This exception is not abstract so that we can easily test it.
+If any or all of the arguments to the constructor are null, then the
+detail message is adjusted accordingly.
+Derived classes can provide multiple constructors that take 0, 1 or 2
+Nameable references plus a detail String.
 
-@author John S. Davis, II, Christopher Hylands
+@author John S. Davis, II, Christopher Hylands, Edward A. Lee
 @version $Id$
 */
 public class KernelException extends Exception {
 
-    /** Constructs an Exception with no names or message. */
+    /** Constructs an Exception with a no specific detail message */
     public KernelException() {
+        // Note: this nullary exception is required.  If it is
+        // not present, then the subclasses of this class will not
+        // compile.
         this(null, null, null);
-    }
-
-    /** Constructs an Exception with only a detail message.
-     *  @param detail The message.
-     */
-    public KernelException(String detail) {
-        this(null, null, detail);
-    }
-
-    /** Constructs an Exception with a message that is only the
-     *  name of the argument.
-     *  @param obj The object.
-     */
-    public KernelException(Nameable obj) {
-        this(obj, null, null);
-    }
-
-    /** Constructs an Exception with a detail message that includes the
-     *  name of the first argument and the second argument string.
-     *  @param obj The object.
-     *  @param detail The message.
-     */
-    public KernelException(Nameable obj, String detail) {
-        this(obj, null, detail);
-    }
-
-    /** Constructs an Exception with a detail message that consists of
-     *  only the names of the two arguments.
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
-     */
-    public KernelException(Nameable obj1, Nameable obj2)  {
-        this(obj1, obj2, null);
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  names of the first two arguments plus the third argument string.
+     *  If one or more of the parameters are null, then the detail
+     *  message is adjusted accordingly.  
      *  @param obj1 The first object.
      *  @param obj2 The second object.
      *  @param detail The message.
-     */
+     */ 
     public KernelException(Nameable obj1, Nameable obj2,
             String detail) {
         String obj1string = _getFullName(obj1);
         String obj2string = _getFullName(obj2);
         String prefix;
-        if (obj1string != "") {
-            if (obj2string != "") {
+        if (!obj1string.equals("")) {
+            if (!obj2string.equals("")) {
                 prefix = new String(obj1string + " and " + obj2string);
             } else {
                 prefix = obj1string;
@@ -170,7 +144,11 @@ public class KernelException extends Exception {
      *  @param msg The message.
      */
     protected void _setMessage(String msg) {
-        _message = msg;
+        if (msg == null) {
+            _message = "";
+        } else { 
+            _message = msg;
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////

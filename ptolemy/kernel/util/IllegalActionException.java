@@ -41,20 +41,16 @@ complete. E.g., attempt to remove a port from an entity when the
 port does not belong to the entity. Another example would be an
 attempt to add an item with no name to a named list.
 
-@author Edward A. Lee
+@author Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class IllegalActionException extends KernelException {
-    /** Constructs an Exception with no detail message. */
-    public IllegalActionException() {
-        super();
-    }
 
     /** Constructs an Exception with a detail message.
      *  @param detail The message.
      */
     public IllegalActionException(String detail) {
-        super(detail);
+        this(null, null, detail);
     }
 
     /** Constructs an Exception with a detail message that is only the
@@ -62,7 +58,7 @@ public class IllegalActionException extends KernelException {
      *  @param obj The object.
      */
     public IllegalActionException(Nameable obj) {
-        super(obj);
+        this(null, obj, null);
     }
 
     /** Constructs an Exception with a detail message that includes the
@@ -71,7 +67,7 @@ public class IllegalActionException extends KernelException {
      *  @param detail The message.
      */
     public IllegalActionException(Nameable obj, String detail) {
-        super(obj, detail);
+        this(obj, null, detail);
     }
 
     /** Constructs an Exception with a detail message that consists of
@@ -80,7 +76,7 @@ public class IllegalActionException extends KernelException {
      *  @param obj2 The second object.
      */
     public IllegalActionException(Nameable obj1, Nameable obj2)  {
-        super(obj1, obj2);
+        this(obj1, obj2, null);
     }
 
     /** Constructs an Exception with a detail message that includes the
