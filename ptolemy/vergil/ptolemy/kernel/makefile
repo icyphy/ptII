@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AttributeController.java \
 	EditorGraphController.java \
 	EntityController.java \
 	EntityPortController.java \

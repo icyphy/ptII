@@ -178,6 +178,8 @@ public class KernelGraphFrame extends GraphFrame {
 	_editIconAction = new EditIconAction();
 	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
+	_controller.getAttributeController().setMenuFactory(
+                 new AttributeContextMenuFactory(_controller));
 	_controller.getEntityController().setMenuFactory(
                  new EntityContextMenuFactory(_controller));
  	_controller.getEntityPortController().setMenuFactory(
@@ -193,6 +195,19 @@ public class KernelGraphFrame extends GraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
+
+    /**
+     * The factory for creating context menus on visible attributes
+     */
+    private class AttributeContextMenuFactory extends PtolemyMenuFactory {
+	public AttributeContextMenuFactory(GraphController controller) {
+	    super(controller);
+	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new EditParameterStylesFactory());
+	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
+	    addMenuItemFactory(new MenuActionFactory(_editIconAction));
+	}
+    }
 
     /**
      * The factory for creating context menus on entities.

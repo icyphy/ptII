@@ -84,6 +84,7 @@ public class ViewerGraphController extends GraphController {
      * terminal and edge interactors.
      */
     public ViewerGraphController() {
+	_attributeController = new AttributeController(this);
 	_entityPortController = new EntityPortController(this);
 	_entityController = new EntityController(this);
 	_portController = new PortController(this);
@@ -98,6 +99,13 @@ public class ViewerGraphController extends GraphController {
      */
     public EntityController getEntityController() {
 	return _entityController;
+    }
+
+    /**
+     * Return the controller for visible attributes
+     */
+    public AttributeController getAttributeController() {
+	return _attributeController;
     }
 
     /**
@@ -162,10 +170,16 @@ public class ViewerGraphController extends GraphController {
     public NodeController getNodeController(Object object) {
         if(object instanceof Vertex) {
             return _relationController;
-        } else if(object instanceof ptolemy.moml.Icon) {
+        } else if(object instanceof ptolemy.moml.Icon &&
+		  getGraphModel().getSemanticObject(object) 
+		  instanceof Entity) {
             return _entityController;
+	} else if(object instanceof ptolemy.moml.Icon &&
+		  getGraphModel().getSemanticObject(object) 
+		  instanceof Attribute) {
+            return _attributeController;
 	} else if(object instanceof Location && 
-		  ((Location)object).getContainer() instanceof Port) {
+		  getGraphModel().getSemanticObject(object) instanceof Port) {
 	    return _portController;
 	} else if(object instanceof Port) {
 		return _entityPortController;
@@ -229,6 +243,7 @@ public class ViewerGraphController extends GraphController {
 
     // The controllers
     private EntityController _entityController;
+    private AttributeController _attributeController;
     private EntityPortController _entityPortController;
     private PortController _portController;
     private RelationController _relationController;

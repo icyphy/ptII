@@ -986,16 +986,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * vertexes contained in relations contained in the composite.
 	 */
 	public int getNodeCount(Object composite) {
-	    // FIXME count is wrong if vertexes need ot be manufactured.
-	    CompositeEntity entity = (CompositeEntity)composite;
-	    int count = entity.entityList().size() + entity.portList().size();
-	    Iterator relations = entity.relationList().iterator();
-	    while(relations.hasNext()) {
-		ComponentRelation relation = 
-                    (ComponentRelation)relations.next();
-		count += relation.attributeList(Vertex.class).size();
-	    }
-	    return count;
+	    return _nodeList(composite).size();
 	}
 	
 	/**
@@ -1008,9 +999,16 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * @return An iterator containing ports, vertexes, and icons.
 	 */
 	public Iterator nodes(Object composite) {
-	    // FIXME change request.
-	    Set nodes = new HashSet();
+	    return _nodeList(composite).iterator();
+	}
+
+	/**
+	 * Return a list of all the nodes.
+	 */
+	protected List _nodeList(Object composite) {
+	    List nodes = new LinkedList();
             CompositeEntity toplevel = getToplevel();
+	    // Add an icon for every entity.
 	    Iterator entities = toplevel.entityList().iterator();
 	    while(entities.hasNext()) {
 		ComponentEntity entity = (ComponentEntity)entities.next();
@@ -1020,6 +1018,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		} else {
 		    // Create a default icon.
 		    try {
+			// FIXME change request.
 			Icon icon = new EditorIcon(entity, "_icon");
 			nodes.add(icon);
 		    } catch (Exception e) {
@@ -1030,12 +1029,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		}
 	    }
 	    
+	    // Add a location for every external port.
 	    Iterator ports = toplevel.portList().iterator();
 	    while(ports.hasNext()) {
 		ComponentPort port = (ComponentPort)ports.next();
 		nodes.add(_getLocation(port));
 	    }
 	    
+	    // Add a vertex for every relation that has a vertex and 
+	    // doesn't connect exactly two ports.
 	    Iterator relations = toplevel.relationList().iterator();
 	    while(relations.hasNext()) {
 		ComponentRelation relation = 
@@ -1069,14 +1071,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		}
 	    }
 
-            // Add any visible attributes.
+            // Add an icon for every director.
 	    Iterator attributes = toplevel.attributeList().iterator();
 	    while(attributes.hasNext()) {
 		Attribute attribute = (Attribute)attributes.next();
 
-                // FIXME: How do we tell whether an attribute is visible?
-                // For now, only an instance of Director is visible.
-                if (attribute instanceof Director) {
+		if (attribute instanceof Director) {
                     List icons = attribute.attributeList(Icon.class);
                     if(icons.size() > 0) {
                         nodes.add(icons.get(0));
@@ -1091,11 +1091,18 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                                     e.getMessage());
                         }
 		    }
-                }
+                } else {
+		    // The icon is not a director, so only add an icon
+		    // if one exists already.
+		    List icons = attribute.attributeList(Icon.class);
+                    if(icons.size() > 0) {
+                        nodes.add(icons.get(0));
+                    }
+		}
             }
 
             // Return the final result.
-	    return nodes.iterator();
+	    return nodes;
 	}
     }
 
