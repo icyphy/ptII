@@ -148,6 +148,7 @@ clean:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
+	rm -rf $(PTII_SRC_JAR) src_jar
 	rm -rf $(PTIIDIST) src installshield/*
 
 # First we create a directory containing the distribution,
