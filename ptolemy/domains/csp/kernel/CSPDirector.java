@@ -171,15 +171,6 @@ public class CSPDirector extends ProcessDirector {
         return newobj;
     }
 
-    /** Returns the current model time.
-     *  Note: this method may disappear if time is implemented in
-     *  super classes.
-     *  @return The current model time.
-     */
-    public double getCurrentTime() {
-        return _currentTime;
-    }
-
     /** Reset flags to initialize values.
      * @exception IllegalActionException if the super class throws it.
      */
@@ -245,7 +236,7 @@ public class CSPDirector extends ProcessDirector {
             throw new IllegalActionException("CSPDirector.setCurrentTime()"
 		    + " can only be called when no processes are delayed.");
         }
-        _currentTime = newTime;
+        super.setCurrentTime(newTime);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -579,9 +570,6 @@ public class CSPDirector extends ProcessDirector {
     // Count of the number of processes delayed until time
     // sufficiently advances.
     private int _actorsDelayed = 0;
-
-    // The current model time.
-    private double _currentTime = 0.0;
 
     // A sorted list of the times of delayed actors. The time the model
     // will next be advanced to is the time at the top of the list.

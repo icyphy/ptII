@@ -288,13 +288,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _currentStepSize;
     }
 
-    /** Return the currentTime.
-     *  @return the currentTime.
-     */
-    public final double getCurrentTime() {
-        return _currentTime;
-    }
-
     /** Return the begin time of the current iteration.
      *  @return the begin time of the current iteration.
      */
@@ -436,15 +429,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void setCurrentStepSize(double curstepsize) {
         _currentStepSize = curstepsize;
-    }
-
-    /** Set the current simulation time. All the actors directed by this
-     *  director will share this global time. This is a very important
-     *  value for a correct simulation. The method should be carefully used.
-     *  @param tnow The current time.
-     */
-    public void setCurrentTime(double tnow) {
-        _currentTime = tnow;
     }
 
     /** Set the start time for the simulation. The start time is not
@@ -614,7 +598,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     private boolean _bpIteration = false;
 
     // Simulation progress variables.
-    private double _currentTime;
     private double _currentStepSize;
     private double _suggestedNextStepSize;
 
