@@ -9,10 +9,10 @@
 Other sources of information:
 <MENU>
 <LI> <A HREF="ptplotfaq.html">Ptplot Frequently Asked Questions (FAQ)</A>
+<LI> <A HREF="../codeDoc/ptplot/Pxgraph.html#Installation Instructions">Pxgraph Installation Instructions</A>
 </MENU>
 
-
-Below is a list of common problems that people have with Ptplot
+Below is a list of common Ptplot problems.
 
 <H2><A NAME="Problems Starting Ptplot">Problems Starting Ptplot</A></H2>
 
@@ -111,7 +111,14 @@ should exist, but it does not:
 carson [12] ls -l /users/cxh/ptbuild/tycho/java/ptplot/ptplot.zip
 /users/cxh/ptbuild/tycho/java/ptplot/ptplot.zip not found
 </PRE>
-  
+In this case the problem was that the user did not have Ptplot installed
+in the location that the <CODE>pxgraph</CODE> script was guessing.
+The fix was to install it.
+ <P>Another common fix is to edit the <CODE>pxgraph</CODE> script
+and change the variables at the top to point to the proper location.
+See the Pxgraph 
+<A HREF="../codeDoc/ptplot/Pxgraph.html#Installation Instructions">Installation Instructions</A> for details.
+
 
 <H3>I can't access the Plot class from a java interpreter</H3>
 If you try to run the Pxgraph class by passing the Pxgraph classname as a command line argument to the java interpreter, you might see:
