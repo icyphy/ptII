@@ -57,6 +57,10 @@ public class CSPMemory extends CSPActor {
          
          _input = new IOPort(this, "input", true, false);
          _output = new IOPort(this, "output", false, true);
+         
+         _input.setMultiport(true);
+         _output.setMultiport(true);
+         
          _strValue = "initialValue";
     }
          
