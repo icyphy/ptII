@@ -19,7 +19,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII\makefile">
+        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII/makefile">
         </property>
         <doc>Read one line at a time from a text file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 140.0">
