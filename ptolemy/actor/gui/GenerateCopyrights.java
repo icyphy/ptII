@@ -135,7 +135,7 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.domains.psdf.kernel.PSDFScheduler",
-                "ptolemy/domains/psdf/synthesis-copyright.htm");
+                "ptolemy/domains/psdf/mapss-copyright.htm");
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.matlab.Expression",
