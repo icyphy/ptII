@@ -46,14 +46,14 @@ attempt to add an item with no name to a named list.
 */
 public class IllegalActionException extends KernelException {
 
-    /** Constructs an Exception with a detail message.
+    /** Construct an exception with a detail message.
      *  @param detail The message.
      */
     public IllegalActionException(String detail) {
         this(null, null, null, detail);
     }
 
-    /** Constructs an Exception with a detail message that is only the
+    /** Construct an exception with a detail message that is only the
      *  name of the argument.
      *  @param object The object.
      */
@@ -61,7 +61,7 @@ public class IllegalActionException extends KernelException {
         this(null, object, null, null);
     }
 
-    /** Constructs an Exception with a detail message that includes the
+    /** Construct an exception with a detail message that includes the
      *  name of the first argument.
      *  @param object The object.
      *  @param detail The message.
@@ -70,7 +70,7 @@ public class IllegalActionException extends KernelException {
         this(object, null, null, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes the
+    /** Construct an exception with a detail message that includes the
      *  name of the first argument.
      *  @param object The object.
      *  @param cause The cause of this exception, or null if the cause
@@ -82,7 +82,7 @@ public class IllegalActionException extends KernelException {
         this(object, null, cause, detail);
     }
 
-    /** Constructs an Exception with a detail message that consists of
+    /** Construct an exception with a detail message that consists of
      *  only the names of the object1 and object2 arguments.
      *  @param object1 The first object.
      *  @param object2 The second object.
@@ -91,8 +91,8 @@ public class IllegalActionException extends KernelException {
         this(object1, object2, null, null);
     }
 
-    /** Constructs an Exception with a detail message that includes the
-     * names of the object1 and object2 arguments.
+    /** Construct an exception with a detail message that includes the
+     *  names of the object1 and object2 arguments.
      *  @param object1 The first object.
      *  @param object2 The second object.
      *  @param detail The message.
@@ -102,7 +102,7 @@ public class IllegalActionException extends KernelException {
         this(object1, object2, null, detail);
     }
 
-    /** Constructs an Exception with a cause and a detail message that
+    /** Construct an exception with a cause and a detail message that
      *  includes the names of the object1 and object2 arguments.
      *
      *  @param object1 The first object.

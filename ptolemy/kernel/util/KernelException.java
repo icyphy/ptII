@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) complete restructuring
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -48,13 +48,13 @@ Derived classes can provide multiple constructors that take 0, 1 or 2
 Nameable references, a Throwable cause and a detail String.
 
 <p>The cause argument to the constructor is a Throwable that
-caused the exception.  The cause argument is used when code throws
+caused the exception.  The cause argument is used when code catches
 an exception and we want to rethrow the exception but print
 the stacktrace where the first exception occurred.  This is called
 exception chaining.
 
 <p>JDK1.4 supports exception chaining.  We are implementing a version of
-exception chaining here ourselves here so that we can use JVMs earlier
+exception chaining here ourselves so that we can use JVMs earlier
 than JDK1.4.
 
 <p>In this implementation, we have the following differences from
@@ -62,10 +62,9 @@ the JDK1.4 exception chaining implementation:
 <menu>
 <li>In this implementation, the detail message includes the detail
 message from the cause argument.
-<li>The printStackTrace() methods print the stack of the cause
-exception, which should include frames from the primary exception.
-In JDK1.4, the stack trace for the primary exception is printed, then
-the stack trace for the cause exception.
+<li>In this implementation, we implement a protected _setCause()
+method, but not the public initCause() method that JDK1.4
+implements. 
 </menu>
 
 @see KernelRuntimeException
@@ -74,7 +73,7 @@ the stack trace for the cause exception.
 */
 public class KernelException extends Exception {
 
-    /** Constructs an Exception with a no specific detail message */
+    /** Construct an exception with a no specific detail message. */
     public KernelException() {
         // Note: this nullary exception is required.  If it is
         // not present, then the subclasses of this class will not
@@ -82,10 +81,11 @@ public class KernelException extends Exception {
         this(null, null, null, null);
     }
 
-    /** Constructs an Exception with a detail message that includes the
-     *  names of the first two arguments plus the third argument string.
-     *  If one or more of the parameters are null, then the detail
-     *  message is adjusted accordingly.
+    /** Construct an exception with a detail message that includes the
+     *  names of the first two arguments plus the third argument
+     *  string.  If one or more of the parameters are null, then the
+     *  message of the exception is adjusted accordingly.
+     *
      *  @param object1 The first object.
      *  @param object2 The second object.
      *  @param detail The message.
@@ -95,14 +95,15 @@ public class KernelException extends Exception {
         this(object1, object2, null, detail);
     }
 
-    /** Constructs an Exception with a detail message that includes
-     *  the names of the first two arguments plus the third argument
-     *  string.  If the cause argument is non-null, then the detail
-     *  message of this argument will include the detail message of
-     *  the cause argument.  The stack trace of the cause argument is
-     *  used when we print the stack trace of this exception.  If one
-     *  or more of the parameters are null, then the detail message is
+    /** Construct an exception with a detail message that includes the
+     *  names of the first two arguments plus the third argument
+     *  string.  If the cause argument is non-null, then the message
+     *  of this exception will include the message of the cause
+     *  argument.  The stack trace of the cause argument is used when
+     *  we print the stack trace of this exception.  If one or more of
+     *  the parameters are null, then the message of the exception is
      *  adjusted accordingly.
+     *
      *  @param object1 The first object.
      *  @param object2 The second object.
      *  @param cause The cause of this exception.
@@ -125,14 +126,19 @@ public class KernelException extends Exception {
         return _cause;
     }
 
-    /** Get the detail message.
+    /** Get the message of this exception.  The message may have been
+     *  adjusted if one of the constructor arguments was null, so the
+     *  value returned by this method may not necessarily equal the
+     *  value of the detail argument of of the constructor.
+     *
      *  @return The error message.
      */
     public String getMessage() {
         return _message;
     }
 
-    /** Print this exception, its stack trace and if the cause
+    /** Print the following to stderr:
+     *  this exception, its stack trace and if the cause
      *  exception is known, print the cause exception and the
      *  cause stacktrace.
      */
@@ -141,7 +147,7 @@ public class KernelException extends Exception {
         // We are implement them ourselves here so that we can
         // use JVMs earlier than JDK1.4.  The JDK1.4 Throwable.getCause()
         // documentation states that it is not necessary to overwrite
-        // printStream, but this is only the case when we have a JDK1.4
+        // printStackTrace, but this is only the case when we have a JDK1.4
         // JVM.
         super.printStackTrace();
         if (_cause != null) {
@@ -151,8 +157,8 @@ public class KernelException extends Exception {
     }
 
     /** Print this exception, its stack trace and if the cause
-     *  exception is known, print the cause exception and the
-     *  cause stacktrace.
+     *  exception is known, print the cause exception and the cause
+     *  stacktrace.
      *  @param printStream The PrintStream to write to.
      */
     public void printStackTrace(PrintStream printStream) {
@@ -178,7 +184,8 @@ public class KernelException extends Exception {
 
     /** Return the stack trace of the given argument as a String.
      *  This method is useful if we are catching and rethrowing
-     *  a throwable.  This method should be used instead of
+     *  a throwable that does not take a throwable cause argument.
+     *  This method should be used instead of
      *  Throwable.printStackTrace(), which prints the stack trace
      *  to stderr, which is likely to be hidden if we are running
      *  a Ptolemy application from anything but a shell console.
@@ -195,22 +202,25 @@ public class KernelException extends Exception {
     ///////////////////////////////////////////////////////////////////
     ////                         package friendly methods          ////
 
-    /** Generate a properly formatted detail message.
-     *  If one or more of the parameters are null, then the detail message is
-     *  adjusted accordingly.
+    /** Generate a properly formatted exception message.
+     *  If one or more of the parameters are null, then the message
+     *  of the exception is adjusted accordingly.  In particular, if
+     *  the first two arguments are non-null, then the exception
+     *  message may include the full names of the first two arguments.
      *
-     *  <p>This method is package friendly so that both KernelException
-     *  and KernelRuntimeException and any classes derived from those
-     *  classes can use it.  KernelRuntimeException must extend
-     *  RuntimeException so that the java compiler will allow methods
-     *  that throw KernelRuntimeException to not declare that they
-     *  throw it, and KernelException cannot extend RuntimeException
-     *  for the same reason.
+     *  <p>This method is package friendly so that both
+     *  KernelException and KernelRuntimeException and any classes
+     *  derived from those classes in this package can use it.
+     *  KernelRuntimeException must extend RuntimeException so that
+     *  the java compiler will allow methods that throw
+     *  KernelRuntimeException to not declare that they throw it, and
+     *  KernelException cannot extend RuntimeException for the same
+     *  reason.
      *
      *  @param object1 The first object.
      *  @param object2 The second object.
      *  @param cause The cause of this exception.
-     *  @param detail The message.
+     *  @param detail The detail message.
      *  @return A properly formatted message
      */
     static String _generateMessage(Nameable object1, Nameable object2,
@@ -231,16 +241,17 @@ public class KernelException extends Exception {
     }
 
     /** Generate a properly formatted detail message.
-     *  If one or more of the parameters are null, then the detail message is
-     *  adjusted accordingly.
+     *  If one or more of the parameters are null, then the message
+     *  of this exception is adjusted accordingly.
      *
-     *  <p>This method is package friendly so that both KernelException
-     *  and KernelRuntimeException and any classes derived from those
-     *  classes can use it.  KernelRuntimeException must extend
-     *  RuntimeException so that the java compiler will allow methods
-     *  that throw KernelRuntimeException to not declare that they
-     *  throw it, and KernelException cannot extend RuntimeException
-     *  for the same reason.
+     *  <p>This method is package friendly so that both
+     *  KernelException and KernelRuntimeException and any classes
+     *  derived from those classes in this package can use it.
+     *  KernelRuntimeException must extend RuntimeException so that
+     *  the java compiler will allow methods that throw
+     *  KernelRuntimeException to not declare that they throw it, and
+     *  KernelException cannot extend RuntimeException for the same
+     *  reason.
      *
      *  @param prefix The prefix string at the start of the message
      *  that usually contains the names of the objects involved.
@@ -284,14 +295,16 @@ public class KernelException extends Exception {
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
+     *  If the name is the empty string, then we return "<Unamed Object>".
      *
-     *  <p>This method is package friendly so that both KernelException
-     *  and KernelRuntimeException and any classes derived from those
-     *  classes can use it.  KernelRuntimeException must extend
-     *  RuntimeException so that the java compiler will allow methods
-     *  that throw KernelRuntimeException to not declare that they
-     *  throw it, and KernelException cannot extend RuntimeException
-     *  for the same reason.
+     *  <p>This method is package friendly so that both
+     *  KernelException and KernelRuntimeException and any classes
+     *  derived from those classes in this package can use it.
+     *  KernelRuntimeException must extend RuntimeException so that
+     *  the java compiler will allow methods that throw
+     *  KernelRuntimeException to not declare that they throw it, and
+     *  KernelException cannot extend RuntimeException for the same
+     *  reason.
      *
      *  @param object An object with a name.
      *  @return The name of the argument.
@@ -312,14 +325,17 @@ public class KernelException extends Exception {
     /** Get the name of a Nameable object.  This method attempts to use
      *  getFullName(), if it is defined, and resorts to getName() if it is
      *  not.  If the argument is a null reference, return an empty string.
+     *  If the name of the argument is the empty string, then we return
+     *  "<Unamed Object>".
      *
-     *  <p>This method is package friendly so that both KernelException
-     *  and KernelRuntimeException and any classes derived from those
-     *  classes can use it.  KernelRuntimeException must extend
-     *  RuntimeException so that the java compiler will allow methods
-     *  that throw KernelRuntimeException to not declare that they
-     *  throw it, and KernelException cannot extend RuntimeException
-     *  for the same reason.
+     *  <p>This method is package friendly so that both
+     *  KernelException and KernelRuntimeException and any classes
+     *  derived from those classes in this package can use it.
+     *  KernelRuntimeException must extend RuntimeException so that
+     *  the java compiler will allow methods that throw
+     *  KernelRuntimeException to not declare that they throw it, and
+     *  KernelException cannot extend RuntimeException for the same
+     *  reason.
      *
      *  @param object An object with a full name.
      *  @return The full name of the argument.
@@ -332,7 +348,7 @@ public class KernelException extends Exception {
             try {
                 name = object.getFullName();
             } catch (InvalidStateException ex) {
-                name = object.getName();
+                name = _getName(object);
             }
             return name;
         }
@@ -341,7 +357,16 @@ public class KernelException extends Exception {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Set the cause to the specified throwable.
+     *  @param cause The cause of this exception
+     */
+    protected void _setCause(Throwable cause) {
+        _cause = cause;
+    }
+
     /** Sets the error message to the specified string.
+     *  If the message argument is null, then the error
+     *  message is sent to the empty string.
      *  @param message The message.
      */
     protected void _setMessage(String message) {
@@ -353,11 +378,11 @@ public class KernelException extends Exception {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private   variables               ////
 
     // The detail message
-    protected String _message ;
+    private String _message;
 
     // The cause of this exception.
-    protected Throwable _cause;
+    private Throwable _cause;
 }

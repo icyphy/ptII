@@ -54,8 +54,9 @@ an exception and we want to rethrow the exception but print
 the stacktrace where the first exception occurred.  This is called
 exception chaining.
 
-<p>JDK1.4 supports exception chaining.  We are implement them
-ourselves here so that we can use JVMs earlier than JDK1.4.
+<p>JDK1.4 supports exception chaining.  We are implementing a version of
+exception chaining here ourselves so that we can use JVMs earlier
+than JDK1.4.
 See the {@link KernelException KernelException} documentation
 for differences between our exception chaining implementation and
 the JDK1.4 implementation.
@@ -64,13 +65,13 @@ the JDK1.4 implementation.
 @version $Id$ */
 public class KernelRuntimeException extends RuntimeException {
 
-    // NOTE: This class has much duplicated code with KernelException,
-    // but because it needs to extend java.lang.RuntimeException,
-    // so that methods that throw this exception not need to declare
-    // that they throw this exception.  As a workaround,
-    // we use package friendly methods defined in KernelException.
+    // NOTE: This class uses package friendly methods defined in
+    // KernelException because this class needs to extend
+    // java.lang.RuntimeException, so that methods that throw this
+    // exception and any derived exceptions need not declare that
+    // they throw this exception.
 
-    /** Constructs an Exception with a no specific detail message */
+    /** Constructs an Exception with a no specific detail message. */
     public KernelRuntimeException() {
         // Note: this nullary exception is required.  If it is
         // not present, then the subclasses of this class will not
@@ -95,21 +96,21 @@ public class KernelRuntimeException extends RuntimeException {
 
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument and the second argument string.
-     *  @param obj The object.
+     *  @param object The object.
      *  @param detail The message.
      */
-    public KernelRuntimeException(Nameable obj, String detail) {
-        this(obj, null, null, detail);
+    public KernelRuntimeException(Nameable object, String detail) {
+        this(object, null, null, detail);
     }
 
     /** Constructs an Exception with a detail message that includes
      *  the names of the first two arguments plus the fourth argument
-     *  string.  If the cause argument is non-null, then the detail
-     *  message of this argument will include the detail message of
-     *  the cause argument.  The stack trace of the cause argument is
-     *  used when we print the stack trace of this exception.  If one
-     *  or more of the parameters are null, then the detail message is
-     *  adjusted accordingly.
+     *  string.  If the cause argument is non-null, then the message
+     *  of this exception will include the message of the cause
+     *  argument.  The stack trace of the cause argument is used when
+     *  we print the stack trace of this exception.  If one or more of
+     *  the parameters are null, then the detail message is adjusted
+     *  accordingly.
      *
      *  @param object1 The first object.
      *  @param object2 The second object.
@@ -118,9 +119,9 @@ public class KernelRuntimeException extends RuntimeException {
      */
     public KernelRuntimeException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
+        super(KernelException._generateMessage(object1, object2,
+                cause, detail));
         _cause = cause;
-        _setMessage(KernelException._generateMessage(object1, object2,
-                _cause, detail));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,14 +135,19 @@ public class KernelRuntimeException extends RuntimeException {
         return _cause;
     }
 
-    /** Get the detail message.
+    /** Get the message of this exception.  The message may have been
+     *  adjusted if one of the constructor arguments was null, so the
+     *  value returned by this method may not necessarily equal the
+     *  value of the detail argument of of the constructor.
+     *
      *  @return The error message.
      */
-    public String getMessage() {
-        return _message;
-    }
+    //    public String getMessage() {
+    //        return _message;
+    //}
 
-    /** Print this exception, its stack trace and if the cause
+    /** Print the following to stderr:
+     *  this exception, its stack trace and if the cause
      *  exception is known, print the cause exception and the
      *  cause stacktrace.
      */
@@ -150,12 +156,12 @@ public class KernelRuntimeException extends RuntimeException {
         // We are implement them ourselves here so that we can
         // use JVMs earlier than JDK1.4.  The JDK1.4 Throwable.getCause()
         // documentation states that it is not necessary to overwrite
-        // printStream, but this is only the case when we have a JDK1.4
+        // printStackTrace, but this is only the case when we have a JDK1.4
         // JVM.
 
         // We could try to factor out the printStackTrace() methods
         // and call package friendly methods in KernelException,
-        // but these methods are so short, why bother.
+        // but these methods are so short, so why bother.
 
         super.printStackTrace();
         if (_cause != null) {
@@ -194,7 +200,16 @@ public class KernelRuntimeException extends RuntimeException {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Set the cause to the specified throwable.
+     *  @param cause The cause of this exception
+     */
+    protected void _setCause(Throwable cause) {
+        _cause = cause;
+    }
+
     /** Sets the error message to the specified string.
+     *  If the message argument is null, then the error
+     *  message is sent to the empty string.
      *  @param message The message.
      */
     protected void _setMessage(String message) {
@@ -206,11 +221,11 @@ public class KernelRuntimeException extends RuntimeException {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private variables                 ////
 
-    /** The detail message. */
-    protected String _message ;
+    // The detail message.
+    private String _message;
 
     // The cause of this exception.
-    protected Throwable _cause;
+    private Throwable _cause;
 }

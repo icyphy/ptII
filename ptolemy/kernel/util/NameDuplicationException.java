@@ -44,21 +44,27 @@ take two named objects (the container and the would-be containee),
 or two named objects and an arbitrary string (which can be used to
 provide additional information about the error).
 
-@author John S. Davis II, Edward A. Lee
+<p>This class has no constructors that take a Throwable cause because
+no such constructors have been needed, but in principle, such constructors
+could be added.
+
+@author John S. Davis II, Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class NameDuplicationException extends KernelException {
 
-    /** Given container and string for message.
+    /** Construct an exception with a detail message that 
+     *  includes the name of the first argument.    
      *  @param container The would be container.
-     *  @param moreInfo A message.
+     *  @param message The message.
      */
     public NameDuplicationException(Nameable container,
-            String moreInfo) {
-        super(container, null, moreInfo);
+            String message) {
+        super(container, null, message);
     }
 
-    /** Given container and containee.
+    /** Construct an exception with a message that includes the
+     *  name of the would be containee and the would be container.
      *  @param wouldBeContainee The would be containee.
      *  @param container The would be container.
      */
@@ -67,27 +73,35 @@ public class NameDuplicationException extends KernelException {
         this(container, wouldBeContainee, null);
     }
 
-    /** Given container, containee, and string.
+    /** Construct an exception with a detail message that includes the
+     *  name of the would be containee and the would be container plus
+     *  the third argument string.
      *  @param wouldBeContainee The would be containee.
      *  @param container The would be container.
-     *  @param moreInfo A message.
+     *  @param message A message.
      */
     public NameDuplicationException(Nameable container,
-            Nameable wouldBeContainee, String moreInfo) {
+            Nameable wouldBeContainee, String message) {
         if (_getFullName(container).equals("")) {
+
+            // Note that if wouldBeContainee is null, then we get
+            // the 'Attempt to insert object named into a container'.
+            // Note that if wouldBeContainee is the empty string, then we get
+            // the 'Attempt to insert object named <Unamed Object> into a'.
+            
             _setMessage("Attempt to insert object named \"" +
-                    KernelException._getName(wouldBeContainee) +
+                    _getName(wouldBeContainee) +
                     "\" into a container that already contains" +
                     " an object with that name." +
-                    (moreInfo == null ? "" : (" " + moreInfo))
+                    (message == null ? "" : (" " + message))
                     );
         } else {
             _setMessage("Attempt to insert object named \"" +
-                    KernelException._getName(wouldBeContainee) +
+                    _getName(wouldBeContainee) +
                     "\" into container named \"" +
                     _getFullName(container) +
                     "\", which already contains an object with that name." +
-                    (moreInfo == null ? "" : (" " + moreInfo))
+                    (message == null ? "" : (" " + message))
                         );
 
         }

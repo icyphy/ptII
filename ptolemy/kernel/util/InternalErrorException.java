@@ -60,7 +60,7 @@ public class InternalErrorException extends KernelRuntimeException {
      *  or more of the parameters are null, then the detail message is
      *  adjusted accordingly.
      *
-     *  @param object1 The first object.
+     *  @param object The object associated with this exception.
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
