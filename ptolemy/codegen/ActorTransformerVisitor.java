@@ -507,8 +507,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
               ExprNode secondArg = (ExprNode) methodArgs.get(1);
               return new ArrayAccessNode(
                new ArrayAccessNode(accessedObj, firstArg), secondArg);
-           } else if (methodName.equals("toString")) {
-
+           } else if (methodName.equals("stringValue") ||    
+                      methodName.equals("toString")) {                      
               switch (accessedObjKind) {
                 case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
                 return new StringLitNode("bad token");
@@ -530,48 +530,65 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                  accessedObj), new LinkedList());
 
                 case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
+                // FIXME : this is not the new toString() behavior of 
+                // StringToken
                 return accessedObj;
 
                 // for matrices, call the toString() method of
-                // the helper classes in ptolemy.math
-
+                // the helper classes in ptolemy.math using
+                // ArrayStringFormat.exprASFormat                
+                
                 case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
                 ApplicationUtility.warn("toString() on boolean matrix not " +
                  "supported yet");
                 break;
-
-                case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
-                return new MethodCallNode(new TypeFieldAccessNode(
-                 new NameNode(AbsentTreeNode.instance, "toString"),
-                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                  "IntMatrixMath"))),
-                 TNLManip.cons(accessedObj));
-
-                case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
-                return new MethodCallNode(new TypeFieldAccessNode(
-                 new NameNode(AbsentTreeNode.instance, "toString"),
-                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                  "DoubleMatrixMath"))),
-                 TNLManip.cons(accessedObj));
-
-                case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
-                return new MethodCallNode(new TypeFieldAccessNode(
-                 new NameNode(AbsentTreeNode.instance, "toString"),
-                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                  "LongMatrixMath"))),
-                 TNLManip.cons(accessedObj));
-
-                case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
-                return new MethodCallNode(new TypeFieldAccessNode(
-                 new NameNode(AbsentTreeNode.instance, "toString"),
-                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                  "ComplexMatrixMath"))),
-                 TNLManip.cons(accessedObj));
-
+                
                 case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
-                ApplicationUtility.warn("toString() on fix matrix not " +
+                ApplicationUtility.error("toString() on fix matrix not " +
                  "supported yet");
                 break;
+                
+                case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN: 
+                case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:                
+                case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:                
+                case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:                
+                {
+                  LinkedList toStringArgList = TNLManip.cons(accessedObj);
+                  toStringArgList.addLast(new TypeFieldAccessNode(
+                   new NameNode(AbsentTreeNode.instance, "exprASFormat"),
+                   new TypeNameNode(new NameNode(AbsentTreeNode.instance, 
+                    "ArrayStringFormat"))));
+                  
+                  String matrixMathClassName = null;
+                    
+                  switch (accessedObjKind) {
+                     case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN: 
+                     matrixMathClassName = "IntMatrixMath";
+                     break;
+
+                     case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN: 
+                     matrixMathClassName = "LongMatrixMath";
+                     break;
+                     
+                     case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN: 
+                     matrixMathClassName = "DoubleMatrixMath";
+                     break;
+                     
+                     case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN: 
+                     matrixMathClassName = "ComplexMatrixMath";
+                     break;
+                     
+                     default:
+                     ApplicationUtility.error("unknown kind to call " + 
+                      "toString() / stringValue()");                  
+                  }   
+                                                                            
+                  return new MethodCallNode(new TypeFieldAccessNode(
+                   new NameNode(AbsentTreeNode.instance, "toString"),
+                   new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                    matrixMathClassName))),
+                   toStringArgList);
+                }              
               }
            }
 
