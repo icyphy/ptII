@@ -63,7 +63,6 @@ JSRCS = \
 	FSMDirector.java \
 	FSMState.java \
 	FSMTransition.java \
-	NewFSMDirector.java \
 	State.java \
 	Transition.java \
 	TransitionAction.java
