@@ -1,4 +1,4 @@
-/* Execute a subprocess.
+/* Execute a command in a subprocess.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (bilung@eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -93,7 +93,8 @@ public class Exec extends TypedAtomicActor {
         blocking.setTypeEquals(BaseType.BOOLEAN);
         blocking.setToken(BooleanToken.TRUE);
 
-        command = new PortParameter(this, "command", new StringToken("echo 'Hello, world.'"));
+        command = new PortParameter(this, "command",
+                new StringToken("echo 'Hello, world.'"));
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
 
@@ -104,6 +105,8 @@ public class Exec extends TypedAtomicActor {
 
         environment = new Parameter(this, "environment");
         environment.setTypeEquals(new ArrayType(BaseType.STRING));
+        // Array with a size of one empty element means use the
+        // default environment of the calling process. 
         environment.setExpression("{\"\"}");
         // Hide the environment parameter.
         environment.setVisibility(Settable.EXPERT);
@@ -133,7 +136,6 @@ public class Exec extends TypedAtomicActor {
      * {@link ptolemy.util.StringUtilities#tokenizeForExec(String)}
      * into tokens and then executed as a  separate process.
      * The initial default is the string "echo 'Hello, world.'".   
-     * FIXME: Should this be an array of strings instead of a string?
      */  
     public PortParameter command;
 
@@ -143,8 +145,9 @@ public class Exec extends TypedAtomicActor {
      */
     public FileParameter directory;
 
+    // FIXME: need a test here
     /** The environment to execute the command in.  This parameter
-     *  is an array of strings of the format name=value.  If the
+     *  is an array of strings of the format { {"name=value"} }.  If the
      *  length of the array is zero (the default), then the environment
      *  from the current process is used in the new command.
      */
@@ -162,13 +165,13 @@ public class Exec extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
-
     /**
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+        // FIXME: what about the other parameters?
         if (attribute == blocking) {
             _blocking =
                 ((BooleanToken)blocking.getToken()).booleanValue();
@@ -237,12 +240,13 @@ public class Exec extends TypedAtomicActor {
         }
     }
 
-    /** Create the subprocess
+    /** Create the subprocess.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         // FIXME: What if the portParameter command changes?
+        // FIXME: Should this be called in fire() instead?
         _exec();
     }
 
@@ -255,7 +259,7 @@ public class Exec extends TypedAtomicActor {
         // What we do is call notifyAll on the outputGobbler process. 
         super.stop();
         if (_outputGobbler != null) {
-            _outputGobbler.myNotifyAll();
+            _outputGobbler.notifyStringBuffer();
 
         }
     }
@@ -263,10 +267,11 @@ public class Exec extends TypedAtomicActor {
     /** Override the base class to stop waiting for input data.
      */
     public /*synchronized*/ void stopFire() {
+        // See the comment in stop() for why this is _not_ synchronized
         super.stopFire();
         _stopFireRequested = true;
         if (_outputGobbler != null) {
-            _outputGobbler.myNotifyAll();
+            _outputGobbler.notifyStringBuffer();
 
         }
     }
@@ -311,8 +316,8 @@ public class Exec extends TypedAtomicActor {
         //}
     }
 
-    // Execute a command, set _process to point to the process
-    // and set up _errorGobbler and _outputGobbler
+    // Execute a command, set _process to point to the subprocess
+    // and set up _errorGobbler and _outputGobbler.
     private void _exec() throws IllegalActionException {
        try {
             _stopFireRequested = false;
@@ -407,8 +412,10 @@ public class Exec extends TypedAtomicActor {
             return _lockingStringBuffer.blockingGetAndReset();
         }
 
-        public void myNotifyAll() {
-            _lockingStringBuffer.myNotifyAll();
+        public void notifyStringBuffer() {
+            // Object.notifyAll() is final, so we call this method
+            // notifyStringBuffer instead.
+            _lockingStringBuffer.notifyStringBuffer();
         }
         /** Get the current value of the stringBuffer and empty
          *  the contents of the stringBuffer.
@@ -438,8 +445,9 @@ public class Exec extends TypedAtomicActor {
             }
         }
 
-
+        // StringBuffer that we read and write to in a locking fashion
         private LockingStringBuffer _lockingStringBuffer;
+
         // StringBuffer to update
         private StringBuffer _stringBuffer;
 
@@ -453,29 +461,40 @@ public class Exec extends TypedAtomicActor {
     // StringBuffer.  The documentation for StringBuffer says that
     // the underlying mechanism is synchronized, but we need slightly
     // finer control here.
+    // See
+    // http://java.sun.com/docs/books/tutorial/essential/threads/synchronization.html
     private class LockingStringBuffer {
 
         public LockingStringBuffer() {
             _stringBuffer = new StringBuffer();
         }
 
-        public synchronized void myNotifyAll() {
+        public synchronized void notifyStringBuffer() {
+            // Object.notifyAll() is final, so we call this method
+            // notifyStringBuffer instead.
             notifyAll();
         }
 
+        /** Always append the value to the internal StringBuffer. */
         public synchronized void append(String value) {
+            // If we have the lock, we always append.
             _stringBuffer.append(value);
             notifyAll();
         }
 
 
+        /** Block until there is data in the StringBuffer or
+         *  until stop() or stopFire() is called and then
+         * return the value of the internal StringBuffer.
+         * The StringBuffer is reset before returning.
+         */
         public synchronized String blockingGetAndReset()
                 throws IllegalActionException {
             while (_stringBuffer.length() == 0
                     && !_stopRequested
                     && !_stopFireRequested) {
                 try {
-                    wait(100);
+                    wait();
                 } catch (InterruptedException ex) {                
                     // FIXME: Pass in a Nameable for this exception
                     throw new IllegalActionException(null, ex, 
@@ -488,6 +507,9 @@ public class Exec extends TypedAtomicActor {
             return returnValue;
         }
 
+        /** Get what ever value is in the StringBuffer.
+         *  The StringBuffer is reset before returning.
+         */
         public synchronized String nonblockingGetAndReset() {
             String returnValue = _stringBuffer.toString();
             _stringBuffer = new StringBuffer();
@@ -495,6 +517,8 @@ public class Exec extends TypedAtomicActor {
             return returnValue;
         }
 
+        // The internal StringBuffer that we use to store
+        // the data.
         private StringBuffer _stringBuffer;
     }
 
@@ -509,6 +533,7 @@ public class Exec extends TypedAtomicActor {
 
     // StreamReader that we read stderr from the subprocess with.
     private _StreamReaderThread _errorGobbler;
+
     // StreamReader that we read stdout from the subprocess with.
     private _StreamReaderThread _outputGobbler;
 
