@@ -197,7 +197,7 @@ public class TypeLattice {
                     return ((StructuredType)t1)._compare((StructuredType)t2);
             } else if (_basicLattice.containsNodeWeight(t1Rep) &&
                     _basicLattice.containsNodeWeight(t2Rep)) {
-                // Both are not the same structured type, so their relation is 
+                // Both are not the same structured type, so their relation is
                 // defined by their relation in the basic lattice.
                 return _basicLattice.compare(t1Rep, t2Rep);
             } else {
@@ -216,7 +216,7 @@ public class TypeLattice {
                     return INCOMPARABLE;
                 }
             }
-            
+
             /*
             if (ct1 instanceof BaseType && ct2 instanceof BaseType) {
                 return _basicLattice.compare(ct1, ct2);
@@ -283,7 +283,7 @@ public class TypeLattice {
                         (StructuredType)t2);
             } else if (_basicLattice.containsNodeWeight(t1Rep) &&
                     _basicLattice.containsNodeWeight(t2Rep)) {
-                // Both are not the same structured type, so their relation is 
+                // Both are not the same structured type, so their relation is
                 // defined by their relation in the basic lattice.
                 int relation = _basicLattice.compare(t1Rep, t2Rep);
                 if (relation == SAME) {
@@ -453,7 +453,7 @@ public class TypeLattice {
                         (StructuredType)t2);
             } else if (_basicLattice.containsNodeWeight(t1Rep) &&
                     _basicLattice.containsNodeWeight(t2Rep)) {
-                // Both are not the same structured type, so their relation is 
+                // Both are not the same structured type, so their relation is
                 // defined by their relation in the basic lattice.
                 int relation = _basicLattice.compare(t1Rep, t2Rep);
                 if (relation == SAME) {

@@ -130,7 +130,7 @@ public abstract class UnsizedMatrixType extends StructuredType
         } else if (elementType == BaseType.FIX) {
             matrixType = BaseType.FIX_MATRIX;
         } else {
-            throw new IllegalActionException("Type " + 
+            throw new IllegalActionException("Type " +
                     elementType + " does have a corresponding matrix type.");
         }
         return matrixType;

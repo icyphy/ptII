@@ -116,7 +116,7 @@ public class ArrayType extends StructuredType {
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(null, ex,
                     Token.notSupportedConversionMessage(token, "int"));
-            
+
         }
 
         return new ArrayToken(resultArray);

@@ -409,9 +409,9 @@ public abstract class BaseType implements Type, Serializable {
             _classNameToType = new HashMap();
         }
         _nameToType.put(name, type);
-        _classNameToType.put(theClass.getName(), type);        
+        _classNameToType.put(theClass.getName(), type);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      private constructor                  ////
 

@@ -45,7 +45,7 @@ import ptolemy.data.*;
 //// FixType
 /**
 This class represents the type of fix point token objects.  Generally the
-type of a fix point token includes the precision of the token, along with 
+type of a fix point token includes the precision of the token, along with
 the rounding and quantization techniques that are being applied.
 
 @author Steve Neuendorffer
@@ -83,7 +83,7 @@ public class FixType extends StructuredType
         if(token instanceof FixToken) {
             return token;
         }
-        
+
         throw new IllegalActionException(
                 Token.notSupportedConversionMessage(token, toString()));
     }
@@ -190,9 +190,9 @@ public class FixType extends StructuredType
 
     ///////////////////////////////////////////////////////////////////
     ////                           public fields                   ////
-    
+
     public static final FixType BOTTOM = new FixType();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -257,7 +257,7 @@ public class FixType extends StructuredType
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
- 
+
     //  private Precision _precision;
     //  private Quantization _quantization;
     //  private Rounding _rounding;
