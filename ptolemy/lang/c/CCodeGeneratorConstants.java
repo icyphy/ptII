@@ -77,4 +77,8 @@ public interface CCodeGeneratorConstants extends JavaStaticSemanticConstants {
      */
     public static final int RESERVED_C_PROPERTIES = 
             C_NAME_KEY.intValue() + 1;
+    
+    /** The number of distinguishable characters in a C identifier. */
+    public static final int MAX_IDENTIFIER_CHARACTERS = 32;
+
 }
