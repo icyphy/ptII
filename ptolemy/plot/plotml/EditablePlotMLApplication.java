@@ -38,12 +38,15 @@ import ptolemy.gui.Query;
 import ptolemy.plot.EditablePlot;
 import ptolemy.plot.PlotBox;
 
-import java.awt.event.ActionEvent;
+import java.awt.Event;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlotMLApplication
@@ -101,7 +104,36 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         JMenuItem select = new JMenuItem("Edit Dataset", KeyEvent.VK_E);
         SelectListener selectListener = new SelectListener();
         select.addActionListener(selectListener);
+
+        // Note that under Windows, the setLookAndFeel() in
+        // PlotApplication causes problems here with this new
+        // JMenuItem: the font and background color may be wrong.
+
+        // Unfortunately, setting the background helps, but the
+        // result does not have the etch border
+        select.setBackground(_editMenu.getBackground());
+
+        // Under Java 1.3.1_06, at least the font is right, but not
+        // under 1.4.1_02
+        select.setFont(_editMenu.getFont());
+
+        // http://developer.java.sun.com/developer/bugParade/bugs/4736093.html
+        // suggests this, which does not seem to help
+        getRootPane().getInputMap
+            (JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 
+                            Event.ALT_MASK, false),
+                    "repaint");
+
+
+
         _editMenu.add(select);
+
+        // http://java.sun.com/docs/books/tutorial/uiswing/misc/plaf.html
+        // suggests calling updateComponentTreeUI(), but if we do,
+        // that forces the menu back to a white background.
+        //SwingUtilities.updateComponentTreeUI(select);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +143,8 @@ public class EditablePlotMLApplication extends PlotMLApplication {
      */
     public static void main(String args[]) {
         try {
-            new EditablePlotMLApplication(new EditablePlot(), args);
+            EditablePlotMLApplication plot =
+                new EditablePlotMLApplication(new EditablePlot(), args);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
