@@ -348,3 +348,20 @@ test NamedObj-10.1 {Test getAttribute} {
     set gotten [$a getAttribute "A1.A2"]
     $gotten getFullName
 } {N.A.A1.A2}
+
+######################################################################
+####
+#
+test NamedObj-11.1 {Test exportMoML} {
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.util.NamedObj">
+    <attribute name="A1" class="ptolemy.kernel.util.Attribute">
+        <attribute name="A2" class="ptolemy.kernel.util.Attribute">
+        </attribute>
+    </attribute>
+</entity>
+}

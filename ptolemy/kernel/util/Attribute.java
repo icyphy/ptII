@@ -30,7 +30,6 @@
 
 package ptolemy.kernel.util;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Attribute
 /**
@@ -51,6 +50,7 @@ public class Attribute extends NamedObj {
      */
     public Attribute() {
 	super();
+        setMoMLElementName("attribute");
     }
 
     /** Construct an attribute in the specified workspace with an empty
@@ -63,6 +63,7 @@ public class Attribute extends NamedObj {
      */
     public Attribute(Workspace workspace) {
 	super(workspace);
+        setMoMLElementName("attribute");
     }
 
     /** Construct an attribute with the given name contained by the specified
@@ -85,6 +86,7 @@ public class Attribute extends NamedObj {
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
+        setMoMLElementName("attribute");
     }
 
     ///////////////////////////////////////////////////////////////////
