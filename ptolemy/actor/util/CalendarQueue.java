@@ -206,16 +206,16 @@ public class CalendarQueue {
         return true;
     }
 
-     /** Remove the smallest entry from the queue and return the value
-      *  associated with that entry. If there are multiple smallest entries,
-      *  then FIFO behavior is implemented. Note that since values are 
-      *  permitted to be null, this method could return null.
-      *  <p>
-      *  If this method is called while the queue is empty, then an 
-      *  IllegalAccessException is thrown.
-      * @return The value associated with the smallest key.
-      * @exception IllegalAccessException If invoked when the queue is empty.
-      */
+    /** Remove the smallest entry from the queue and return the value
+     *  associated with that entry. If there are multiple smallest entries,
+     *  then FIFO behavior is implemented. Note that since values are 
+     *  permitted to be null, this method could return null.
+     *  <p>
+     *  If this method is called while the queue is empty, then an 
+     *  IllegalAccessException is thrown.
+     * @return The value associated with the smallest key.
+     * @exception IllegalAccessException If invoked when the queue is empty.
+     */
     public Object take() throws IllegalAccessException {
         // first check if the queue is empty, if it is, return null
         if (_qSize == 0) {
@@ -227,65 +227,65 @@ public class CalendarQueue {
         // Search buckets starting from index: _minBucket
         //   analogy: starting from the current page(month) of the calendar
         for (int i = _minBucket, j = 0; ; )
-        {
-            // Starting from the lastBucket, we go through each bucket in
-            // a cyclic fashion (i.e. modulo fashion) for one whole cycle.
-            // At each bucket, we first determine if the bucket is empty.
-            // If not, then we check if the content of the bucket is in the
-            // current year. (This latter check is done simply by
-            // comparing the virtual bucket number)
-            //
-            // A bucket that's found to satisfy both condition is where
-            // we're going to take our next item.
-            //
-            // If turns out, after a whole cycle, we still can't find such
-            // bucket, then we go to direct search. Using brute force, we
-            // compare the items with smallest key in each bucket and find
-            // the one with smallest key among those items. The bucket
-            // containing that 'smallest smallest' entry is then
-            // recorded as the lastBucket, and we resume by calling take()
-            // but now start searching from the new lastBucket.
+            {
+                // Starting from the lastBucket, we go through each bucket in
+                // a cyclic fashion (i.e. modulo fashion) for one whole cycle.
+                // At each bucket, we first determine if the bucket is empty.
+                // If not, then we check if the content of the bucket is in the
+                // current year. (This latter check is done simply by
+                // comparing the virtual bucket number)
+                //
+                // A bucket that's found to satisfy both condition is where
+                // we're going to take our next item.
+                //
+                // If turns out, after a whole cycle, we still can't find such
+                // bucket, then we go to direct search. Using brute force, we
+                // compare the items with smallest key in each bucket and find
+                // the one with smallest key among those items. The bucket
+                // containing that 'smallest smallest' entry is then
+                // recorded as the lastBucket, and we resume by calling take()
+                // but now start searching from the new lastBucket.
 
-            if (    !_bucket[i].isEmpty()
-                    &&
-                    _cqComparator.getBinIndex(_bucket[i].peekKey(), _zeroRef, _width)
-                    == _minVirtualBucket + j
-                   ) {
+                if (    !_bucket[i].isEmpty()
+                        &&
+                        _cqComparator.getBinIndex(_bucket[i].peekKey(), _zeroRef, _width)
+                        == _minVirtualBucket + j
+                        ) {
 
-                // Item to take has been found, remove that
-                // item from the list
-                CQEntry linkFound = (CQEntry)_bucket[i].take();
+                    // Item to take has been found, remove that
+                    // item from the list
+                    CQEntry linkFound = (CQEntry)_bucket[i].take();
 
-                // Update position on calendar
-                _minBucket = i;
-                _minKey = linkFound.key();
-                _minVirtualBucket = _cqComparator.getBinIndex(_minKey, _zeroRef, _width);
-                --_qSize;
+                    // Update position on calendar
+                    _minBucket = i;
+                    _minKey = linkFound.key();
+                    _minVirtualBucket = _cqComparator.getBinIndex(_minKey, _zeroRef, _width);
+                    --_qSize;
 
-                // Halve calendar size if needed.
-                if (_qSize < _botThreshold) {
-                    if (_nBuckets/_thresholdFactor > _minNumBucket) {
-                        _resize (_nBuckets/_thresholdFactor);
-                    } else {
-                        _resize (_minNumBucket);
+                    // Halve calendar size if needed.
+                    if (_qSize < _botThreshold) {
+                        if (_nBuckets/_thresholdFactor > _minNumBucket) {
+                            _resize (_nBuckets/_thresholdFactor);
+                        } else {
+                            _resize (_minNumBucket);
+                        }
+                    }
+                    // Return the item found.
+                    _takenKey = linkFound.key();
+                    return linkFound.value();
+                }
+                else {
+                    // Prepare to check next bucket or else go to a direct search.
+                    ++i; ++j;
+                    if (i == _nBuckets) i = 0;
+                    // If one round of search already elapsed,
+                    // then go to direct search
+                    if (i == _minBucket) {
+                        // Go to direct search
+                        break;
                     }
                 }
-                // Return the item found.
-                _takenKey = linkFound.key();
-                return linkFound.value();
             }
-            else {
-                // Prepare to check next bucket or else go to a direct search.
-                ++i; ++j;
-                if (i == _nBuckets) i = 0;
-                // If one round of search already elapsed,
-                // then go to direct search
-                if (i == _minBucket) {
-                    // Go to direct search
-                    break;
-                }
-            }
-        }
         // Directly search for minimum key entry.
         // Find smallest entry by examining first event of each bucket.
         // Note that the first entry of a bucket corresponds to the
@@ -370,50 +370,50 @@ public class CalendarQueue {
         // Search buckets starting from index: _minBucket
         //   analogy: starting from the current page(month) of the calendar
         for (int i = _minBucket, j = 0; ; )
-        {
-            // Starting from the lastBucket, we go through each bucket in
-            // a cyclic fashion (i.e. modulo fashion) for one whole cycle.
-            // At each bucket, we first determine if the bucket is empty.
-            // If not, then we check if the content of the bucket is in the
-            // current year. (This latter check is done simply by
-            // comparing the virtual bucket number)
-            //
-            // A bucket that's found to satisfy both condition is where
-            // we're going to take our next item.
-            //
-            // If turns out, after a whole cycle, we still can't find such
-            // bucket, then we go to direct search. Using brute force, we
-            // compare the items with smallest key of each bucket and find
-            // the one with smallest key among those entries. The bucket
-            // containing that 'smallest smallest' key item is then
-            // recorded as the lastBucket, and we resume by calling take()
-            // but now start searching from the new lastBucket.
+            {
+                // Starting from the lastBucket, we go through each bucket in
+                // a cyclic fashion (i.e. modulo fashion) for one whole cycle.
+                // At each bucket, we first determine if the bucket is empty.
+                // If not, then we check if the content of the bucket is in the
+                // current year. (This latter check is done simply by
+                // comparing the virtual bucket number)
+                //
+                // A bucket that's found to satisfy both condition is where
+                // we're going to take our next item.
+                //
+                // If turns out, after a whole cycle, we still can't find such
+                // bucket, then we go to direct search. Using brute force, we
+                // compare the items with smallest key of each bucket and find
+                // the one with smallest key among those entries. The bucket
+                // containing that 'smallest smallest' key item is then
+                // recorded as the lastBucket, and we resume by calling take()
+                // but now start searching from the new lastBucket.
 
-            if (    !_bucket[i].isEmpty()
-                    &&
-                    _cqComparator.getBinIndex(_bucket[i].peekKey(), _zeroRef, _width)
-                    == _minVirtualBucket + j
-                   ) {
+                if (    !_bucket[i].isEmpty()
+                        &&
+                        _cqComparator.getBinIndex(_bucket[i].peekKey(), _zeroRef, _width)
+                        == _minVirtualBucket + j
+                        ) {
 
-                // Item to take has been found, remove that
-                // item from the list
-                CQEntry linkFound = (CQEntry)_bucket[i].first();
+                    // Item to take has been found, remove that
+                    // item from the list
+                    CQEntry linkFound = (CQEntry)_bucket[i].first();
 
-                // Return the item found.
-                return linkFound.key();
-            }
-            else {
-                // Prepare to check next bucket or else go to a direct search.
-                ++i; ++j;
-                if (i == _nBuckets) i = 0;
-                // If one round of search already elapsed,
-                // then go to direct search
-                if (i == _minBucket) {
-                    // Go to direct search
-                    break;
+                    // Return the item found.
+                    return linkFound.key();
+                }
+                else {
+                    // Prepare to check next bucket or else go to a direct search.
+                    ++i; ++j;
+                    if (i == _nBuckets) i = 0;
+                    // If one round of search already elapsed,
+                    // then go to direct search
+                    if (i == _minBucket) {
+                        // Go to direct search
+                        break;
+                    }
                 }
             }
-        }
         // Directly search for minimum key event.
         // Find smallest key by examining first event of each bucket.
         // Note that the first event of a bucket corresponds to the
