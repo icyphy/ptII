@@ -70,8 +70,8 @@ public class SimpleHS {
             CTMultiSolverDirector dedir = new CTMultiSolverDirector("CTTopLevelDirector");
             sys.setDirector(dedir);
 
-            dedir.setVERBOSE(true);
-            dedir.setDEBUG(true);
+            //dedir.setVERBOSE(true);
+            //dedir.setDEBUG(true);
 
 
             // a DE clock
@@ -255,11 +255,11 @@ public class SimpleHS {
 //System.out.println("HSTR: " + hstr.numLinks() + " " + hstr.numInsideLinks());
 
             // try to run the system
-            dedir.setStopTime(15.0);
+            dedir.setStopTime(5.0);
            
             // CT director parameters
             Parameter initStep = (Parameter)ctIncDir.getAttribute("InitialStepSize");
-            initStep.setExpression("0.001");
+            initStep.setExpression("0.01");
             initStep.parameterChanged(null);
             Parameter minStep = (Parameter)ctIncDir.getAttribute("MinimumStepSize");
             minStep.setExpression("1e-3");
@@ -269,7 +269,7 @@ public class SimpleHS {
             bpsol.setToken(tok);
             bpsol.parameterChanged(null);
             Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
-            tok = new StringToken("ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+            tok = new StringToken("ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             dfsol.setToken(tok);
             dfsol.parameterChanged(null);
 
@@ -279,7 +279,7 @@ public class SimpleHS {
 
             // CT director parameters
             initStep = (Parameter)ctDecDir.getAttribute("InitialStepSize");
-            initStep.setExpression("0.001");
+            initStep.setExpression("0.01");
             initStep.parameterChanged(null);
             minStep = (Parameter)ctDecDir.getAttribute("MinimumStepSize");
             minStep.setExpression("1e-3");
@@ -302,13 +302,13 @@ public class SimpleHS {
 
             // CT director parameters
             initStep = (Parameter)dedir.getAttribute("InitialStepSize");
-            initStep.setExpression("0.001");
+            initStep.setExpression("0.01");
             initStep.parameterChanged(null);
             minStep = (Parameter)dedir.getAttribute("MinimumStepSize");
             minStep.setExpression("1e-3");
             minStep.parameterChanged(null);
             minStep = (Parameter)dedir.getAttribute("MaximumStepSize");
-            minStep.setExpression("0.07");
+            minStep.setExpression("0.05");
             minStep.parameterChanged(null);
             bpsol = (Parameter)dedir.getAttribute("BreakpointODESolver");
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
