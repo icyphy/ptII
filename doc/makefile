@@ -197,6 +197,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.domains.dde.lib \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.fsm.kernel \
+			ptolemy.domains.giotto.kernel \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.petrinet.kernel \
 			ptolemy.domains.sdf.kernel \
@@ -278,6 +279,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
 			../ptolemy/domains/fsm/kernel/*.java \
+			../ptolemy/domains/giotto/kernel/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/petrinet/kernel/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
