@@ -99,6 +99,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import java.lang.reflect.Method;
 
@@ -215,7 +216,8 @@ public class DataUtilities {
      *  identifier values when they are discovered in traversing the
      *  parse tree.
      */
-    public static class ActorCodeGenerationScope
+    public static class ActorCodeGenerationScope 
+        extends ptolemy.data.expr.ModelScope
         implements CodeGenerationScope {
         public ActorCodeGenerationScope(
                 Entity entity, SootClass entityClass, Map nameToField,
@@ -292,60 +294,57 @@ public class DataUtilities {
 
             // Look for parameter in actor.
             NamedObj container = _entity;
-            Variable result = null;
-            while (container != null) {
-                result = _searchIn(container, name);
-                if (result != null) {
-                    // Insert code to get a ref to the variable,
-                    // and to get the token of that variable.
-                    Local containerLocal = Jimple.v().newLocal("container",
-                            RefType.v(PtolemyUtilities.namedObjClass));
-                    _body.getLocals().add(containerLocal);
-                    Local attributeLocal = Jimple.v().newLocal("attribute",
-                            PtolemyUtilities.attributeType);
-                    _body.getLocals().add(attributeLocal);
-                    Local tokenLocal = Jimple.v().newLocal("token",
-                            PtolemyUtilities.tokenType);
-                    _body.getLocals().add(tokenLocal);
-
-                    NamedObj toplevel = _entity.toplevel();
-                    String deepName = result.getName(toplevel);
-
-
-                    _units.insertBefore(
-                            Jimple.v().newAssignStmt(containerLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
+            Variable result = getScopedVariable(
+                    null, _entity, name);
+            if (result != null) {
+                // Insert code to get a ref to the variable,
+                // and to get the token of that variable.
+                Local containerLocal = Jimple.v().newLocal("container",
+                        RefType.v(PtolemyUtilities.namedObjClass));
+                _body.getLocals().add(containerLocal);
+                Local attributeLocal = Jimple.v().newLocal("attribute",
+                        PtolemyUtilities.attributeType);
+                _body.getLocals().add(attributeLocal);
+                Local tokenLocal = Jimple.v().newLocal("token",
+                        PtolemyUtilities.tokenType);
+                _body.getLocals().add(tokenLocal);
+                
+                NamedObj toplevel = _entity.toplevel();
+                String deepName = result.getName(toplevel);
+                
+                
+                _units.insertBefore(
+                        Jimple.v().newAssignStmt(containerLocal,
+                                Jimple.v().newVirtualInvokeExpr(
                                             thisLocal,
                                             PtolemyUtilities.toplevelMethod)),
-                            _insertPoint);
-                    _units.insertBefore(
-                            Jimple.v().newAssignStmt(attributeLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            containerLocal,
-                                            PtolemyUtilities.getAttributeMethod,
-                                            StringConstant.v(deepName))),
-                            _insertPoint);
-                    _units.insertBefore(
-                            Jimple.v().newAssignStmt(attributeLocal,
-                                    Jimple.v().newCastExpr(attributeLocal,
-                                            RefType.v(
-                                                    PtolemyUtilities.variableClass))),
-                            _insertPoint);
-                    _units.insertBefore(
-                            Jimple.v().newAssignStmt(tokenLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
+                        _insertPoint);
+                _units.insertBefore(
+                        Jimple.v().newAssignStmt(attributeLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        containerLocal,
+                                        PtolemyUtilities.getAttributeMethod,
+                                        StringConstant.v(deepName))),
+                        _insertPoint);
+                _units.insertBefore(
+                        Jimple.v().newAssignStmt(attributeLocal,
+                                Jimple.v().newCastExpr(attributeLocal,
+                                        RefType.v(
+                                                PtolemyUtilities.variableClass))),
+                        _insertPoint);
+                _units.insertBefore(
+                        Jimple.v().newAssignStmt(tokenLocal,
+                                Jimple.v().newVirtualInvokeExpr(
                                             attributeLocal,
                                             PtolemyUtilities.variableGetTokenMethod)),
-                            _insertPoint);
+                        _insertPoint);
+                
+                return tokenLocal;
+            } else {
+                throw new IllegalActionException(
+                        "The ID " + name + " is undefined.");
 
-                    return tokenLocal;
-                } else {
-                    container = (NamedObj)container.getContainer();
-                }
             }
-
-            throw new IllegalActionException(
-                    "The ID " + name + " is undefined.");
         }
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
@@ -359,41 +358,19 @@ public class DataUtilities {
                 return (ptolemy.data.type.Type)_nameToType.get(name);
             }
 
-            NamedObj container = _entity;
-            while (container != null) {
-                Variable result = _searchIn(container, name);
-                if (result != null) {
-                    return result.getType();
-                } else {
-                    container = (NamedObj)container.getContainer();
-                }
+            Variable result = getScopedVariable(
+                    null, _entity, name);
+            if (result != null) {
+                return result.getType();
+            } else {
+                throw new IllegalActionException(
+                        "The ID " + name + " is undefined.");
             }
-
-            throw new IllegalActionException(
-                    "The ID " + name + " is undefined.");
         }
-        public NamedList variableList() {
-            return new NamedList();
+        public Set identifierSet() {
+            return getAllScopedVariableNames(null, _entity);
         }
-
-        // Search in the container for an attribute with the given name.
-        // Search recursively in any instance of ScopeExtender in the
-        // container.
-        private Variable _searchIn(NamedObj container, String name) {
-            Attribute result = container.getAttribute(name);
-            if (result != null && result instanceof Variable)
-                return (Variable)result;
-            Iterator extenders =
-                container.attributeList(ScopeExtender.class).iterator();
-            while (extenders.hasNext()) {
-                ScopeExtender extender = (ScopeExtender)extenders.next();
-                result = extender.getAttribute(name);
-                if (result != null && result instanceof Variable)
-                    return (Variable)result;
-            }
-            return null;
-        }
-
+        
         private Map _nameToField;
         private Map _nameToType;
         private JimpleBody _body;
