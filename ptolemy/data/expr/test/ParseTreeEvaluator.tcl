@@ -58,6 +58,15 @@ proc theTest {expression} {
     [evaluate $root] toString
 }
 
+# Call ptclose on the results.
+# Use this proc if the results are slightly different under Solaris 
+# and Windows
+proc theTestPtClose {expression results} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} $expression]
+    ptclose [[evaluate $root] toString] $results
+}
+
 ######################################################################
 ####
 # 
@@ -413,10 +422,13 @@ test ParseTreeEvaluator-19.1 {Test various function calls} {
 } {1.4142135623731 {{1.4142135623731, 1.4142135623731}} {[1.4142135623731, 1.4142135623731]}}
 
 test ParseTreeEvaluator-19.2 {Test various function calls} {
-    list [theTest {acos(1+i)}] \
-         [theTest {acos({1+i, 1-i})}] \
-         [theTest {acos([1+i, 1-i])}]
-} {{0.9045568943023814 - 1.0612750619050355i} {{0.9045568943023814 - 1.0612750619050355i, 0.9045568943023812 + 1.0612750619050355i}} {[0.9045568943023814 - 1.0612750619050355i, 0.9045568943023812 + 1.0612750619050355i]}}
+    list [theTestPtClose {acos(1+i)} \
+	{0.9045568943023814 - 1.0612750619050355i}] \
+         [theTestPtClose {acos({1+i, 1-i})} \
+	{{0.9045568943023814 - 1.0612750619050355i, 0.9045568943023812 + 1.0612750619050355i}}] \
+         [theTestPtClose {acos([1+i, 1-i])} \
+	{[0.9045568943023814 - 1.0612750619050355i, 0.9045568943023812 + 1.0612750619050355i]}]
+} {1 1 1}
 
  test ParseTreeEvaluator-19.3 {Test various function calls} {
     list [theTest {acosh(1+i)}] \
@@ -431,16 +443,22 @@ test ParseTreeEvaluator-19.2 {Test various function calls} {
  } {0.7853981633974 {{0.7853981633974, -0.7853981633974}} {[0.7853981633974, -0.7853981633974]}}
 
 test ParseTreeEvaluator-19.5 {Test various function calls} {
-    list [theTest {asin(1+i)}] \
-         [theTest {asin({1+i, 1-i})}] \
-         [theTest {asin([1+i, 1-i])}]
-} {{0.6662394324925155 + 1.0612750619050355i} {{0.6662394324925155 + 1.0612750619050355i, 0.6662394324925153 - 1.0612750619050355i}} {[0.6662394324925155 + 1.0612750619050355i, 0.6662394324925153 - 1.0612750619050355i]}}
+    list [theTestPtClose {asin(1+i)} \
+	{0.6662394324925155 + 1.0612750619050355i}] \
+         [theTestPtClose {asin({1+i, 1-i})} \
+	{{0.6662394324925155 + 1.0612750619050355i, 0.6662394324925153 - 1.0612750619050355i}}] \
+         [theTestPtClose {asin([1+i, 1-i])} \
+	{[0.6662394324925155 + 1.0612750619050355i, 0.6662394324925153 - 1.0612750619050355i]}]
+} {1 1 1}
 
 test ParseTreeEvaluator-19.6 {Test various function calls} {
-    list [theTest {asinh(1+i)}] \
-         [theTest {asinh({1+i, 1-i})}] \
-         [theTest {asinh([1+i, 1-i])}]
-} {{1.0612750619050355 + 0.6662394324925153i} {{1.0612750619050355 + 0.6662394324925153i, 1.0612750619050355 - 0.6662394324925153i}} {[1.0612750619050355 + 0.6662394324925153i, 1.0612750619050355 - 0.6662394324925153i]}}
+    list [theTestPtClose {asinh(1+i)} \
+	{1.0612750619050355 + 0.6662394324925153i}] \
+         [theTestPtClose {asinh({1+i, 1-i})} \
+	{{1.0612750619050355 + 0.6662394324925153i, 1.0612750619050355 - 0.6662394324925153i}}] \
+	[theTestPtClose {asinh([1+i, 1-i])} \
+	{[1.0612750619050357 + 0.6662394324925153i, 1.0612750619050357 - 0.6662394324925153i]}]
+} {1 1 1}
 
 test ParseTreeEvaluator-19.7 {Test various function calls} {
     list [theTest {atan(1+i)}] \
@@ -465,7 +483,7 @@ test ParseTreeEvaluator-19.9 {Test various function calls} {
 test ParseTreeEvaluator-20.1 {Test Addition between incomparable data types} {
     catch {list [theTest {1.0+1L}]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot convert token 1.0 to type scalar, because scalar is not a concrete type.}}
+} {{ptolemy.kernel.util.IllegalActionException: add method not supported between ptolemy.data.DoubleToken '1.0' and ptolemy.data.LongToken '1L' because the types are incomparable.}}
 
 ####################################################################
 
@@ -686,10 +704,13 @@ test ParseTreeEvaluator-23.16 {Test various function calls} {
  } {{0.6349639147847362 + 1.2984575814159776i} {{0.6349639147847362 + 1.2984575814159776i, 0.6349639147847362 - 1.2984575814159776i}} {[0.6349639147847362 + 1.2984575814159776i, 0.6349639147847362 - 1.2984575814159776i]}}
  
 test ParseTreeEvaluator-23.18 {Test various function calls} {
-    list [theTest {sqrt(1+i)}] \
-         [theTest {sqrt({1+i, 1-i})}] \
-         [theTest {sqrt([1+i, 1-i])}]
-} {{1.09868411346781 + 0.45508986056222733i} {{1.09868411346781 + 0.45508986056222733i, 1.09868411346781 - 0.45508986056222733i}} {[1.09868411346781 + 0.45508986056222733i, 1.09868411346781 - 0.45508986056222733i]}}
+    list [theTestPtClose {sqrt(1+i)} \
+	{1.09868411346781 + 0.45508986056222733i}] \
+	 [theTestPtClose {sqrt({1+i, 1-i})} \
+	{{1.09868411346781 + 0.45508986056222733i, 1.09868411346781 - 0.45508986056222733i}}] \
+         [theTestPtClose {sqrt([1+i, 1-i])} \
+	{[1.09868411346781 + 0.45508986056222733i, 1.09868411346781 - 0.45508986056222733i]}]
+} {1 1 1}
 
  test ParseTreeEvaluator-23.19 {Test various function calls} {
     list [theTest {tan(1+i)}] \
