@@ -39,6 +39,8 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
+import diva.gui.GUIUtilities;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.FiringEvent.FiringEventType;
@@ -48,11 +50,14 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
-import ptolemy.vergil.basic.BasicGraphController;
+import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.RelationController;
+
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorViewerGraphController
@@ -67,14 +72,16 @@ for each node.
 In addition, this controller provides graph-wide operations that allow
 nodes to be moved and context menus to be created.  It does
 not provide interaction for adding or removing nodes; those are provided
-by a derived class.  Right-clicking on the background will
+by a derived class.  If does provide toolbar buttons for executing
+the model (or if this is not the top level, delegating to the top
+level to exectue). Right-clicking on the background will
 create a context-sensitive menu for the graph.
 
 @author Steve Neuendorffer, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ActorViewerGraphController extends BasicGraphController {
+public class ActorViewerGraphController extends RunnableGraphController {
 
     /** Create a new basic controller with default
      *  terminal and edge interactors and default context menus.
@@ -85,6 +92,18 @@ public class ActorViewerGraphController extends BasicGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add hot key for look inside.
+     *  @param menu The menu to add to, which is ignored.
+     *  @param toolbar The toolbar to add to, which is also ignored.
+     */
+    public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
+        super.addToMenuAndToolbar(menu, toolbar);
+        if (_entityController instanceof ActorController) {
+            GUIUtilities.addHotKey(getFrame().getJGraph(),
+                    ((ActorController)_entityController)._lookInsideAction);
+        }
+    }
 
     /** React to an event by highlighting the actor being iterated.
      *  This effectively animates the execution.
