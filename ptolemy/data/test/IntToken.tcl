@@ -151,7 +151,7 @@ test IntToken-3.0 {Test adding ints.} {
 test IntToken-4.0 {Test dividing ints.} {
     set tok1 [java::new {ptolemy.data.IntToken int} 7]
     set tok2 [java::new {ptolemy.data.IntToken int} 14]
-    
+ 
     set res1 [$tok1 divide $tok1]
     set res2 [$tok1 divideReverse $tok1]
 
@@ -159,7 +159,7 @@ test IntToken-4.0 {Test dividing ints.} {
     set res4 [$tok1 divideReverse $tok2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
-} {ptolemy.data.IntToken(1) ptolemy.data.IntToken(1) ptolemy.data.DoubleToken(0.5) ptolemy.data.IntToken(2)}
+} {ptolemy.data.IntToken(1) ptolemy.data.IntToken(1) ptolemy.data.IntToken(0) ptolemy.data.IntToken(2)}
 
 ######################################################################
 ####
