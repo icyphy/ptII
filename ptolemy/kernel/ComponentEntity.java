@@ -236,14 +236,16 @@ public class ComponentEntity extends Entity {
     /** Set the name of the ComponentEntity. If there is already 
      *  a ComponentEntity of the container with the name, throw a 
      *  NameDuplicationException. 
-     *  @exception IllegalActionException If the name is used by
+     *  @exception NameDuplicationException If the name is used by
      *      another ComponentEntity in the same container.
      */
-    public void setName(String name) throws IllegalActionException {
-        if (name == null) name = new String("");
+    public void setName(String name) throws NameDuplicationException {
+        if (name == null) {
+            name = new String("");
+        }
         CompositeEntity container = (CompositeEntity) getContainer();
         if((container != null) && (container.getEntity(name) != null)) {
-            throw new IllegalActionException(container, 
+            throw new NameDuplicationException(container, 
                 "already contains an entity with the name "+name+".");
         }
         super.setName(name);

@@ -222,13 +222,16 @@ public class ComponentRelation extends Relation {
     /** Set the name of the ComponentRelation. If there is already 
      *  a ComponentRelation of the container with the name, throw a 
      *  NameDuplicationException. 
-     *  @exception IllegalActionException If the name is used by
+     *  @exception NameDuplicationException If the name is used by
      *      another ComponentRelation in the same container.
      */
-    public void setName(String name) throws IllegalActionException {
+    public void setName(String name) throws NameDuplicationException {
+        if (name == null) {
+            name = new String("");
+        }
         CompositeEntity container = (CompositeEntity) getContainer();
         if((container != null) && (container.getRelation(name) != null)) {
-            throw new IllegalActionException(container,
+            throw new NameDuplicationException(container,
                 "already contains a relation with the name "+name+".");
         }
         super.setName(name);

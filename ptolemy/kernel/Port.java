@@ -328,14 +328,16 @@ public class Port extends NamedObj {
     /** Set the name of the port. If there is already an port
      *  of the container entity with the name, then throw a 
      *  NameDuplicationException. 
-     *  @exception IllegalActionException If the name is used by
+     *  @exception NameDuplicationException If the name is used by
      *      another Port in the same container.
      */
-    public void setName(String name) throws IllegalActionException {
-        if (name == null) name = new String("");
+    public void setName(String name) throws NameDuplicationException {
+        if (name == null) {
+            name = new String("");
+        }
         Entity container = (Entity) getContainer();
         if((container != null) && (container.getPort(name) != null)) {
-            throw new IllegalActionException(container,
+            throw new NameDuplicationException(container,
                 "already contains a port with the name "+name+".");
         }
         super.setName(name);
