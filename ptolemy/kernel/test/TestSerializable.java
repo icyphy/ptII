@@ -57,7 +57,7 @@ public class TestSerializable {
      */
     public static void main(String args[])
             throws NameDuplicationException, IllegalActionException {
-        ExampleSystem exsys = new ExampleSystem();
+        ExampleSystem exampleSystem = new ExampleSystem();
         String filename = new String("TestSerializable.data");
 
         if (args.length > 0 && args[0].equals("write")) {
@@ -65,7 +65,7 @@ public class TestSerializable {
                 // Write the system out.
                 FileOutputStream f = new FileOutputStream(filename);
                 ObjectOutput s = new ObjectOutputStream(f);
-                s.writeObject(exsys);
+                s.writeObject(exampleSystem);
                 s.flush();
                 f.close();
             } catch (IOException e) {
@@ -77,19 +77,19 @@ public class TestSerializable {
                 // Read the system in
                 FileInputStream f = new FileInputStream(filename);
                 ObjectInputStream s = new ObjectInputStream(f);
-                ExampleSystem newexsys = (ExampleSystem)s.readObject();
+                ExampleSystem newExampleSystem = (ExampleSystem)s.readObject();
                 f.close();
-                String newdescription = newexsys.toString();
-                String olddescription = exsys.toString();
-                if (olddescription.equals(newdescription)) {
+                String newDescription = newExampleSystem.toString();
+                String oldDescription = exampleSystem.toString();
+                if (oldDescription.equals(newDescription)) {
                     System.out.println("OK: Description read in from " +
                             filename + " is the same as the original\n");
                 } else {
                     System.out.println("ERROR\nDescription read in from " +
                             filename + "\n"+
-                            newdescription + "\n" +
+                            newDescription + "\n" +
                             "is NOT the same as the original:\n"+
-                            olddescription);
+                            oldDescription);
                     System.exit(1);
                 }
             } catch (IOException e) {
@@ -98,9 +98,6 @@ public class TestSerializable {
                 System.err.println("ClassNotFoundException while reading: "
                         + e);
             }
-
         }
-
     }
-
 }
