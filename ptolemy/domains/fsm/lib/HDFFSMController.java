@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red
+@AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.lib;
@@ -49,8 +49,10 @@ import ptolemy.domains.fsm.kernel.util.VariableList;
 An HDFFSMController should be used instead of an FSMController when the
 FSM refines a heterochronous dataflow (HDF) graph. In this case,
 it is necessary that each of the states (instance of FSMState) refine
-to an SDF graph.
-
+to a SDF graph.
+FIXME: Each state of the FSM must refine to a homogenous SDF graph.
+FIXME: The FSM guards are evaluated after each call to fire() of its
+refining SDF graph.
 
 @version $Id$
 @author Brian K. Vogel
@@ -188,9 +190,9 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         }
     }
 
-    // When an FSMController fires, its behavior is the parallel composition of
-    // its own sequential control logic and its current refinement.
-    // Question: what to do to the refinement when a transition is taken?
+    /*
+     *
+     */
     public void fire() throws IllegalActionException {
 	System.out.println("FSMController: fire()");
         _takenTransition = null;
@@ -209,11 +211,10 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	    
 	    /** Set the value of the local input status variables to ABSENT.
 	     */
+
             //_currentState.resetLocalInputStatus();
 
             // Invoke refinement.
-            // Delegate to the executive director.
-            // FIXME!
             if (currentRefinement() != null) {
 		System.out.println("FSMController:  fire(): firing current refinment");
                 currentRefinement().fire();
