@@ -166,28 +166,8 @@ public class StringAttribute extends Attribute implements Settable {
      */
     public void setExpression(String expression) throws IllegalActionException {
         _value = expression;
-        // NOTE: Ideally, we wouldn't call this here, but the FSM
-        // code seems to depend on it.  Unlike Variable, there is no
-        // harm in doing this here, since this expression cannot depend
-        // on other attributes.
-        validate();
-    }
-
-    /** Set the visibility of this attribute.  The argument should be one
-     *  of the public static instances in Settable.
-     *  @param visibility The visibility of this attribute.
-     */
-    public void setVisibility(Settable.Visibility visibility) {
-        _visibility = visibility;
-    }
-
-    /** Notify the container of the value of this attribute
-     *  by calling attributeChanged(), and notify any listeners that have
-     *  been registered using addValueListener().
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to the container.
-     */
-    public void validate() throws IllegalActionException {
+        // Notify the container and any value listeners immediately,
+        // rather than deferring to validate().
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
             container.attributeChanged(this);
@@ -198,6 +178,29 @@ public class StringAttribute extends Attribute implements Settable {
                 ValueListener listener = (ValueListener)listeners.next();
                 listener.valueChanged(this);
             }
+        }
+    }
+
+    /** Set the visibility of this attribute.  The argument should be one
+     *  of the public static instances in Settable.
+     *  @param visibility The visibility of this attribute.
+     */
+    public void setVisibility(Settable.Visibility visibility) {
+        _visibility = visibility;
+    }
+
+    /** Validate any instances of Settable that this attribute may contain.
+     *  There is no need to notify the container or listeners of this
+     *  attribute because they have presumably already been notified
+     *  in setExpression().
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to the container.
+     */
+    public void validate() throws IllegalActionException {
+        Iterator attributes = attributeList(Settable.class).iterator();
+        while(attributes.hasNext()) {
+            Settable attribute = (Settable)attributes.next();
+            attribute.validate();
         }
     }
 
