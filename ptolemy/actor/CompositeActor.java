@@ -675,6 +675,11 @@ public class CompositeActor extends CompositeEntity
                 throw new IllegalActionException(this,
                         "Cannot preinitialize a non-opaque actor.");
             }
+            if (_director == null) {
+                throw new InternalErrorException(
+                        "Actor says it is opaque, but it has no director: "
+                        + getFullName());
+            }
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
