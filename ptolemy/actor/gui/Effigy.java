@@ -208,7 +208,7 @@ public class Effigy extends CompositeEntity {
      *  null if there is not.  This will return null if the file does
      *  not exist, or it exists and is not writable, or the <i>uri</i>
      *  parameter has not been set.
-     *  @returns A writable file, or null if one cannot be created.
+     *  @return A writable file, or null if one cannot be created.
      */
     public File getWritableFile() {
         File result = null;
@@ -239,14 +239,6 @@ public class Effigy extends CompositeEntity {
         else return _modifiableURI;
     }
 
-    /** Return whether this effigy is a system effigy.  System effigies
-     *  are not automatically removed when they have no tableaux.
-     *  @return True if the model is a system effigy.
-     */
-    public boolean isSystemEffigy() {
-        return _isSystemEffigy;
-    }
-
     /** Return the value set by setModified(), or false if setModified()
      *  has not been called on this effigy or any effigy contained by
      *  the same top effigy (returned by topEffigy()).
@@ -260,6 +252,14 @@ public class Effigy extends CompositeEntity {
      */
     public boolean isModified() {
         return topEffigy()._modified;
+    }
+
+    /** Return whether this effigy is a system effigy.  System effigies
+     *  are not automatically removed when they have no tableaux.
+     *  @return True if the model is a system effigy.
+     */
+    public boolean isSystemEffigy() {
+        return _isSystemEffigy;
     }
 
     /** Return the total number of open tableau for this effigy
