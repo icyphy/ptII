@@ -38,21 +38,53 @@ treeshakejar=$1
 javaCommand=$2
 shift; shift
 
+manifest=/tmp/treeshake_manifest$$.txt
+touch $manifest
+
+# Find the class that includes main()
+# This is a bit of a hack, we look for a command line argument that
+# starts with "ptolemy."
+for arg in $@
+do
+    echo "$arg" | egrep "^ptolemy\."
+    results=$?
+    if [ "$results" -eq 0 ]; then
+	echo "Main-class: $arg" > $manifest
+	break
+    fi
+done
+
 # Generate a list of ptolemy classes to include by running
 # the demo with under java -verbose
 
 ptolemyFiles=`$javaCommand -verbose ${1+"$@"} | \
     egrep '^\[Loaded ' | \
-    grep 'Loaded ptolemy' | \
+    egrep 'Loaded (ptolemy|com.microstar)' | \
     awk '{print substr($2, 1, length($2)-1)}' | \
     sed 's@\.@/@g' | awk '{print $1 ".class"}'`
+(cd $PTII; jar -cm $manifest $ptolemyFiles) > $treeshakejar
 
-(cd $PTII; jar -c $ptolemyFiles) > $treeshakejar
+# Throw away everything before -classpath xxx, where xxx is also tossed
+echo "$@" | egrep -e "-classpath"
+results=$?
+if [ "$results" -eq 0 ]; then
+    for arg in $@
+    do
+	if [ "$1" -eq "-classpath" ]; then
+	    # FIXME: Why is this necessary?????
+	    # If we don't shift this away, then we end up including the
+	    # classpath itself
+	    shift
+	    # consume -classpath
+	    shift
+	    # consume the classpath itself
+	    shift
+	    break
+	fi    
+	# Consume 
+	shift
+    done	
+fi
 
-# Find the last argument
-for arg in $@
-do
-    class=$1
-    shift
-done
-$javaCommand -classpath $treeshakejar $class
+set -x
+$javaCommand -classpath $treeshakejar $@
