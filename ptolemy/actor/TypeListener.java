@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -38,7 +38,7 @@ An interface implemented by objects that are interested in being kept
 informed about changes in the types of ports.
 The listeners register their interest in TypedIOPort through the
 addTypeListener() method, and are informed of the changes by receiving
-instances of the TypeEvent in the typeChanged() method.
+instances of TypeEvent in the typeChanged() method.
 
 @author Yuhong Xiong
 @version $Id$
@@ -52,7 +52,7 @@ public interface TypeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify that the type of a port is changed.
+    /** React to the fact that the type of a port is changed.
      *  @param event The type change event.
      */
     public void typeChanged(TypeEvent event);
