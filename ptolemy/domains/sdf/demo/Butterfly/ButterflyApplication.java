@@ -1,4 +1,4 @@
-/* Butterfly applet
+/* Butterfly application
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -49,28 +49,55 @@ import ptolemy.domains.sdf.lib.*;
 import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ButterflyApplet
+//// ButterflyApplication
 /**
+ Standalone Butterfly Application, useful for profiling
 
 @author Christopher Hylands
 @version : ptmkmodel,v 1.7 1999/07/16 01:17:49 cxh Exp ButterflyApplet.java.java,v 1.1 1999/05/06 20:14:28 cxh Exp $
 */
-public class ButterflyApplet extends SDFApplet {
+public class ButterflyApplication extends Frame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the applet.
+    /** Create a Butterfly Application
      */
-    public void init() {
-        super.init();
-        try {
-	    // Pass in the panel so that we can pass it to the plotter.
-	    Butterfly.init(_toplevel, this, getSize());
-        } catch (Exception ex) {
-            report("Error constructing model.", ex);
-        }
-	add(_createRunControls(2));
+    public ButterflyApplication()
+	throws IllegalActionException , NameDuplicationException {
+	super("Butterfly");
 
+        resize(400, 400);
+
+	Panel panel = new Panel();
+	add("Center", panel);
+
+	show();
+
+        Workspace w = new Workspace("w");
+        TypedCompositeActor toplevel = new TypedCompositeActor(w);
+        toplevel.setName("toplevel");
+        SDFDirector director = new SDFDirector(toplevel, "director");
+        Manager manager = new Manager(w, "manager");
+        toplevel.setManager(manager);
+
+        try {
+	    Butterfly.init(toplevel, panel, panel.getSize());
+
+	    // FIXME: Why does DE have setStopTime, but SDF has an
+	    // interations parameter?
+	    director.iterations.setToken(new IntToken(10000));
+	    manager.run();
+	    //manager.run();
+        } catch (Exception ex) {
+            System.err.println("Error constructing model." + ex);
+        }
+
+    }
+
+    public static void main(String arg[])
+	throws IllegalActionException , NameDuplicationException {
+
+        ButterflyApplication butterflyApplication = new ButterflyApplication();
     }
 }

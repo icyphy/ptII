@@ -45,7 +45,9 @@ PTPACKAGE = 	Butterfly
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ButterflyApplet.java
+	Butterfly.java \
+	ButterflyApplet.java \
+	ButterflyApplication.java
 
 EXTRA_SRCS = \
 	Butterfly.htm \
@@ -65,11 +67,17 @@ JCLASS = $(JSRCS:%.java=%.class)
 # to run 'make demos' to run the tests.
 all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
-
+	@echo "To run the applet only, run 'make demo_applet'"
+	@echo "To run the application only, run 'make demo_application'"
 install: all
 
-demo: $(PTCLASSJAR)
+demo: demo_applet demo_application
+
+demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer Butterfly.htm
+
+demo_application: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.Butterfly.ButterflyApplication
 
 depend:
 	@echo "no dependencies in this directory"
