@@ -45,9 +45,11 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
+	Chopstick.java \
 	Coordinate.java \
 	DiningApplet.java \
 	DiningPhilosophers.java \
+	Philosopher.java \
 	PhilosopherListener.java \
 	TablePanel.java
 
