@@ -1,5 +1,5 @@
 /*******************************************************************
-Native code for java.lang.Object.clone()
+Native code for java.lang.Object.hashCode()
 
 Copyright (c) 2001-2003 The University of Maryland.
 
@@ -24,14 +24,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 ********************************************************************/
 
 /*
-Native code for java.lang.Object.clone().
+Native code for java.lang.Object.hashCode().
 
 @author Ankush Varma 
 @version $Id$
 */
 
-_OBJECT_INSTANCE clone;
-long size = sizeof(instance->class->instance_size);
-clone = (_OBJECT_INSTANCE)malloc(size);
-memcpy(clone, instance, size);
-return clone;
+return (long)instance;
