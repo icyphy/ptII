@@ -64,7 +64,7 @@ public class PtExecuteApplication extends MoMLApplication
         implements ExecutionListener {
 
     public PtExecuteApplication() throws Exception {
-	super(null);
+	PtExecuteApplication(null);
     }
 
     /** Parse the specified command-line arguments, creating models
@@ -74,6 +74,10 @@ public class PtExecuteApplication extends MoMLApplication
      */
     public PtExecuteApplication(String args[]) throws Exception {
 	super(args);
+        // If _activeCount is initialized in the declaration,
+        // then we have problems because it is constantly being set to 0,
+        // so we set it in the constructor instead.
+        _activeCount = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -226,9 +230,5 @@ public class PtExecuteApplication extends MoMLApplication
     private Configuration _configuration;
 
     // The count of currently executing runs.
-    // Note that there is a bug here, if _activeCount is initialized
-    // in the declaration below, then we have problems because it
-    // is constantly being set to 0.  Another workaround is to
-    // make _activeCount be static.
     private int _activeCount;
 }
