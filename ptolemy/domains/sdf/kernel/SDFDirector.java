@@ -441,12 +441,10 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        String[] defaultSuggestions = new String[3];
-        defaultSuggestions[2] = "ptolemy.domains.hdf.kernel.HDFFSMDirector";
-        defaultSuggestions[1] = 
-            "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
-        return defaultSuggestions;
+        return new String [] {
+            "ptolemy.domains.fsm.kernel.FSMDirector",
+            "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+            "ptolemy.domains.hdf.kernel.HDFFSMDirector"};
     }
 
     /** Override the base class method to transfer enough tokens to
