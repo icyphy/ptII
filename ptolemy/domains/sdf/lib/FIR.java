@@ -282,10 +282,8 @@ public class FIR extends SDFTransformer {
                         _dataItem = _data[dataIndex];
                         _dataItem = _tapItem.multiply( _dataItem );
                         _outToken = _outToken.add( _dataItem );
-                    } else {
-                        _dataItem = _data[dataIndex];
-                        _outToken = _outToken.add( _dataItem );
-                    }
+                    } 
+                    // else assume tap is zero, so do nothing.
                 }
 
                 output.send(0, _outToken);
