@@ -163,19 +163,38 @@ public class CTSingleSolverDirector extends StaticSchedulingDirector
     public final double getTimeAccuracy() {
         return _timeAccuracy;
     }
-
+   
+    /** Return the local trancation error tolerant, used for
+     *  adjustable step size solvers.
+     *  @return The local trancation error tolerant.
+     */   
     public final double getLTETolerant() {
         return _lteTolerant;
     }
 
+    /** Return the value accuracy, used for test if implicit method 
+     *  has reached the fixed point. Two values differ less than 
+     *  this accuracy is considered identical in fixed point 
+     *  calculation.
+     *  
+     *  @return The local trancation error tolerant.
+     */ 
     public final double getValueAccuracy() {
         return _valueAccuracy;
     }
     
+    /** Return the minimum step size used in variable step size
+     *  ODE solvers.
+     */
     public final double getMinStepSize() {
         return _minStepSize;
     }
 
+    /** Return the maximum number of iterations in fixed point
+     *  calculation. If the iteration has exceed this number
+     *  and the fixed point is still not found, then the algorithm
+     *  is considered failed.
+     */
     public final int getMaxIterations() {
         return _maxIterations;
     }
