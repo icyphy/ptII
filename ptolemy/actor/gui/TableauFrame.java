@@ -29,13 +29,9 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.gui.CancelException;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
 
 import java.awt.event.ActionEvent;
@@ -43,19 +39,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 
 import java.net.URL;
 import java.awt.Image;
 import java.awt.Toolkit;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// TableauFrame
