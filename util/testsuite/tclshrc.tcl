@@ -63,10 +63,25 @@ if [info exists env(TYCHO)] {
     }
 }
 
-if [info exists env(TYCHO)] {
-    # Source the file that contains the Tcl Blend helper procs
-    if [file exists [file join $TYCHO java pt kernel test init.tcl]] {
-	source [file join $TYCHO java pt kernel test init.tcl]
-    } 
+
+if [info exists env(PTII)] {
+    set PTII $env(PTII)
+} else { 
+    if [file exists [file join $TYCHO java makefile]] {
+	set PTII [file join $TYCHO java]
+	set env(PTII) $PTII
+    }
 }
 
+# Source the file that contains the Tcl Blend helper procs
+if [file exists [file join $PTII util testsuite init.tcl]] {
+    source [file join $PTII util testsuite init.tcl]
+}
+
+puts "run ::jdk::init to load Tcl Blend. Current binary: $argv0"
+
+
+#set tclblend_verbose jni,class
+if [catch {::jdk::init} errmsg] {
+    puts "ERROR: $errmsg"
+}
