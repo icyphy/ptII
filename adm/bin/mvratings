@@ -3,6 +3,13 @@
 for file in $@
 do
     echo $file
+
+    grep "@since" $file >/dev/null
+    retval=$?
+    if [ $retval = 1 ]; then
+	echo "$file does not have @since, skipping"
+	continue
+    fi 
     awk '{ if ($0 ~ /@AcceptedRating/) {
              acceptedRating=$2
              for(i = 3; i<=NF; i++) {
@@ -16,10 +23,19 @@ do
          } else if ($0 ~ /@since/) {
              print $0
 	     start = index($0, "@since") -1
-	     blanks="         "
-	     indent=substr(blanks, 1, start)
-	     print indent "@Pt.ProposedRating", proposedRating
-             print indent "@Pt.AcceptedRating", acceptedRating
+	     indent=substr($0, 1, start)
+	     if (proposedRating == "") { 
+	         print indent "@Pt.ProposedRating Red (cxh@eecs.berkeley.edu)"
+	     }  else {
+	         print indent "@Pt.ProposedRating", proposedRating
+             }
+             proposedRating=""
+	     if (acceptedRating == "") { 
+                 print indent "@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>"
+             } else {
+                 print indent "@Pt.AcceptedRating", acceptedRating
+             }
+             acceptedRating=""		 
          } else {
 	    print $0
 	 }
