@@ -880,10 +880,15 @@ public class SDFScheduler extends Scheduler{
 
             // If there are any Actors left that we didn't get to, then
             // this is not a connected graph, and we throw an exception.
-            if(RemainingActors.elements().hasMoreElements())
-                throw new NotSchedulableException("The graph cannot " +
-                        "be scheduled using the SDF scheduler because " +
-                        "it is not connected");
+            if(RemainingActors.elements().hasMoreElements()) {
+                String msg = "SDF scheduler found disconnected actors: ";
+                Enumeration actors = RemainingActors.elements();
+                while (actors.hasMoreElements()) {
+                    NamedObj actor = (NamedObj)(actors.nextElement());
+                    msg += actor.getFullName() + " ";
+                }                    
+                throw new NotSchedulableException(msg);
+            }
         }
         return Firings;
     }
