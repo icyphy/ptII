@@ -49,6 +49,28 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 #set VERBOSE 1
 
+if {[info procs sootCodeGeneration] == "" } then { 
+    source [file join $PTII util testsuite codegen.tcl]
+}
+
+# Uncomment this to get a full report, or set in your Tcl shell window.
+# set VERBOSE 1
+
+# Generate code for all the xml files in a directory.
+proc autoDeepCG {autoDirectory} {
+    foreach file [glob $autoDirectory/*.xml] {
+	puts "---- testing $file"
+	#set time [java::new Long [java::call System currentTimeMillis]]
+	test "Auto" "Automatic test in file $file" {
+	    set elapsedTime [time {sootCodeGeneration $file "Deep"}]
+	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
+	    list {}
+	} {{}}
+	java::call System gc
+	#puts "[java::call ptolemy.actor.Manager timeAndMemory [$time longValue]]"
+    }
+}
+
 ######################################################################
 ####
 #

@@ -60,9 +60,12 @@ proc sootDeepCodeGeneration {model} {
     
     set targetPackage ptolemy.copernicus.java.test.cg
 
+    # time out after so many ms.
+    set watchDogTimeOut 600000
     set args [java::new {String[]} 47 \
 	    [list \
 	    $model "-d" $relativePathToPTII \
+	    "-p" "wjtp.watchDog" "time:$watchDogTimeOut" \
 	    "-p" "wjtp.at" "deep,targetPackage:$targetPackage" \
 	    "-p" "wjtp.mt" "deep,targetPackage:$targetPackage" \
 	    "-p" "wjtp.clt" "deep,targetPackage:$targetPackage" \
