@@ -41,6 +41,7 @@ import java.util.Enumeration;
 Stores an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
+@version $Id$
 */
 
 public class RLDecoder extends AtomicActor {
@@ -74,7 +75,7 @@ public class RLDecoder extends AtomicActor {
         while(true) {
             IntToken token = (IntToken)_input.get(0);
             byte inval = (byte)token.intValue();
-	    //System.out.println("BYte read is = "+inval);
+	    //System.out.println("Byte read is = "+inval);
 	    int value = 0;
 	    if (inval < 0) value = 1;
 	    //int value = (unsigned)((128 & inval)>>7);
