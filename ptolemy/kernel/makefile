@@ -45,6 +45,7 @@ CLASSPATH = ../..
 
 JSRCS = \
 	Entity.java \
+	FlowStar.java \
 	Galaxy.java \
 	GenericPort.java \
 	IntParam.java \
@@ -58,6 +59,7 @@ JSRCS = \
 	Relation.java \
 	Star.java \
 	StatusArray.java \
+	TransitionStar.java \
 	Universe.java
 
 EXTRA_SRCS =	$(JSRCS)
