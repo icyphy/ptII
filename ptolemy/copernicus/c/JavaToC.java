@@ -62,36 +62,31 @@ import soot.SootClass;
  */
 public class JavaToC {
 
-    // Private constructor to prevent instantiation of this class.
+    // Private constructor to prevent instantiation of the class.
     private JavaToC() {
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Entry point for the JavaToC application. See {@link JavaToC} for
-     *  instructions on usage.
-     *  @param args application arguments.
+    /** Given a class name, convert the specified class to C (.c and
+     *  .h files).
+     *  @param classPath the classpath to use during the conversion.
+     *  @param className the name of the class to translate.
+     *  @param generateSingleClass indicates whether (true) or not (false)
+     *  "single class mode" should be used during the conversion 
+     *  (see {@link Context#getSingleClassMode()} for details).
      */
-    public static void main(String[] args) throws Exception {
+    public static void convert(String classPath, String className, 
+            boolean generateSingleClass) throws IOException {
 
         // Initialize code generation
-        String usage = "Usage: java ptolemy.lang.copernicus.c.JavaToC classpath "
-               + " classname [-singleClass]";
-        if ((args.length < 2) || (args.length > 3)) {
-            throw new RuntimeException(usage);
-        }
-        Scene.v().setSootClassPath(args[0]);
-        String className = args[1]; 
+        Scene.v().setSootClassPath(classPath);
         HeaderFileGenerator hGenerator = new HeaderFileGenerator();
         CodeFileGenerator cGenerator = new CodeFileGenerator();
-        if (args.length == 3) {      
-            if (args[2].equals("-singleClass")) {
-                cGenerator.setSingleClassMode();
-                hGenerator.setSingleClassMode();
-            } else {
-                throw new RuntimeException(usage);
-            }
+        if (generateSingleClass) {
+            cGenerator.setSingleClassMode();
+            hGenerator.setSingleClassMode();
         }
         Scene.v().loadClassAndSupport(className);
         SootClass sootClass = Scene.v().getSootClass(className);
@@ -100,16 +95,47 @@ public class JavaToC {
         // Generate the .h file.
         String code = hGenerator.generate(sootClass);
         PrintWriter out;
-        if ((out = new PrintWriter(new FileOutputStream(className + ".h"))) == null) 
-            throw new IOException("Could not create .h file.");
+       
+        try { 
+            out = new PrintWriter(new FileOutputStream(className + ".h"));
+        } catch (Exception exception) {
+            throw new IOException("Could not create .h file.\n"
+                    + exception.getMessage());
+        }
         out.println(code.toString());
         out.close();
         
         // Generate the .c file.
         code = cGenerator.generate(sootClass);
         if ((out = new PrintWriter(new FileOutputStream(className + ".c"))) == null) 
-            throw new IOException("Could not create .h file.");
+            throw new IOException("Could not create .c file.");
         out.println(code.toString());
         out.close();
+    }
+
+    /** Entry point for the JavaToC application. See {@link JavaToC} for
+     *  instructions on usage.
+     *  @param args application arguments.
+     */
+    public static void main(String[] args) throws IOException {
+        String usage = 
+                "Usage: java ptolemy.lang.copernicus.c.JavaToC classpath "
+                + " classname [-singleClass]";
+        if ((args.length < 2) || (args.length > 3)) {
+            throw new RuntimeException(usage);
+        }
+     
+        // Determine whether or not single class mode translation should
+        // be used.
+        boolean generateSingleClass = false;
+        if (args.length == 3) {      
+            if (args[2].equals("-singleClass")) {
+                generateSingleClass = true;
+            } else {
+                throw new RuntimeException(usage);
+            }
+        }
+    
+        convert(args[0], args[1], generateSingleClass);
     }
 }
