@@ -37,7 +37,7 @@ package ptolemy.math;
 This class a provides a library for mathematical operations on arrays of
 complex numbers, in particular arrays of instances of class
 ptolemy.math.Complex.
-Unless explicity noted otherwise, all array arguments are assumed to be
+Unless explicitly noted otherwise, all array arguments are assumed to be
 non-null. If a null array is passed to a method, a NullPointerException
 will be thrown in the method or called methods.
 

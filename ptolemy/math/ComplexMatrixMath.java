@@ -587,24 +587,24 @@ public class ComplexMatrixMath {
     }
 
     /** Return a new matrix that is constructed by multiplying the matrix
-     *  by a real scalefactor.
+     *  by a real scaleFactor.
      */
     public static final Complex[][] multiply(final Complex[][] matrix,
-            final double scalefactor) {
+            final double scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         Complex[][] retval = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j].scale(scalefactor);
+                retval[i][j] = matrix[i][j].scale(scaleFactor);
             }
         }
         return retval;
     }
 
     /** Return a new matrix that is constructed by multiplying the matrix
-     *  by a complex scalefactor.
+     *  by a complex scaleFactor.
      */
     public static final Complex[][] multiply(final Complex[][] matrix,
             final Complex z) {

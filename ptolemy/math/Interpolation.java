@@ -164,7 +164,7 @@ public class Interpolation {
 
 	int largestIndex = _indexes[numRefPoints-1];
 	if (_period != 0 && _period <= largestIndex) {
-	    throw new IllegalStateException("Interpolation.interpolate(): " +
+	    throw new IllegalStateException("Interpolation.interpolate(): "
 					    + "The period is not 0 and not "
 					    + "greater than the "
 					    + "largest index.");

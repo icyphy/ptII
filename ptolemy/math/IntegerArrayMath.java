@@ -37,7 +37,7 @@ import java.lang.Integer;              /* Needed by javadoc */
 //// IntegerArrayMath
 /**
 This class provides a library for mathematical operations on int arrays.
-Unless explicity noted otherwise, all array arguments are assumed to be
+Unless explicitly noted otherwise, all array arguments are assumed to be
 non-null. If a null array is passed to a method, a NullPointerException
 will be thrown in the method or called methods.
 

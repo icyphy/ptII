@@ -1080,16 +1080,16 @@ public class FloatMatrixMath {
         float[][] dotProductMatrix = new float[rows][rows];
 
         for (int i = 0; i < rows; i++) {
-            // get a reference to the row vector
+            // Get a reference to the row vector.
             float[] refArray = rowArrays[i];
 
-            // initalize row vector
+            // Initialize row vector.
             float[] rowArray = refArray;
 
-            // subtract projections onto all previous vectors
+            // Subtract projections onto all previous vectors.
             for (int j = 0; j < i; j++) {
 
-                // save the dot product for future use for QR decomposition
+                // Save the dot product for future use for QR decomposition.
                 float dotProduct =
                     FloatArrayMath.dotProduct(refArray, orthogonalMatrix[j]);
 

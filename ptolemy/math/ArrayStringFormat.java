@@ -85,14 +85,14 @@ public interface ArrayStringFormat {
     /**
      */
     public static class ArrayStringFormatBase implements ArrayStringFormat {
-        public ArrayStringFormatBase(String elemDelim, String matrixBegin,
-                String matrixEnd, String vectorBegin, String vectorDelim,
+        public ArrayStringFormatBase(String elementDelimiter, String matrixBegin,
+                String matrixEnd, String vectorBegin, String vectorDelimiter,
                 String vectorEnd) {
-            _elemDelim = elemDelim;
+            _elementDelimiter = elementDelimiter;
             _matrixBegin = matrixBegin;
             _matrixEnd = matrixEnd;
             _vectorBegin = vectorBegin;
-            _vectorDelim = vectorDelim;
+            _vectorDelimiter = vectorDelimiter;
             _vectorEnd = vectorEnd;
         }
 
@@ -109,7 +109,7 @@ public interface ArrayStringFormat {
         }
 
         public String elementDelimiterString() {
-            return _elemDelim;
+            return _elementDelimiter;
         }
 
         public String floatString(float f) {
@@ -141,18 +141,18 @@ public interface ArrayStringFormat {
         }
 
         public String vectorDelimiterString() {
-            return _vectorDelim;
+            return _vectorDelimiter;
         }
 
         public String vectorEndString() {
             return _vectorEnd;
         }
 
-        protected final String _elemDelim;
+        protected final String _elementDelimiter;
         protected final String _matrixBegin;
         protected final String _matrixEnd;
         protected final String _vectorBegin;
-        protected final String _vectorDelim;
+        protected final String _vectorDelimiter;
         protected final String _vectorEnd;
     }
 

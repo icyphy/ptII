@@ -37,12 +37,12 @@ import java.lang.Long;              /* Needed by javadoc */
 //// LongArrayMath
 /**
 This class provides a library for mathematical operations on long arrays.
-Unless explicity noted otherwise, all array arguments are assumed to be
+Unless explicitly noted otherwise, all array arguments are assumed to be
 non-null. If a null array is passed to a method, a NullPointerException
 will be thrown in the method or called methods.
 
 @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
-@version
+@version $Id$
 */
 public class LongArrayMath {
 

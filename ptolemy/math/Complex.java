@@ -174,9 +174,9 @@ public class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      */
     public final Complex atan() {
-        double denom = real*real+(imag+1.0)*(imag+1.0);
-        Complex c1 = new Complex((-real*real-imag*imag+1.0)/denom,
-                2.0*real/denom);
+        double denominator = real*real+(imag+1.0)*(imag+1.0);
+        Complex c1 = new Complex((-real*real-imag*imag+1.0)/denominator,
+                2.0*real/denominator);
         Complex c2 = c1.log();
         return new Complex(c2.imag*0.5, -c2.real*0.5);
     }
@@ -189,9 +189,9 @@ public class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      */
     public final Complex atanh() {
-        double denom = (1.0-real)*(1.0-real)+imag*imag;
-        Complex c1 = new Complex((-real*real-imag*imag+1.0)/denom,
-                2.0*imag/denom);
+        double denominator = (1.0-real)*(1.0-real)+imag*imag;
+        Complex c1 = new Complex((-real*real-imag*imag+1.0)/denominator,
+                2.0*imag/denominator);
         Complex c2 = c1.log();
         return new Complex(c2.real*0.5, c2.imag*0.5);
     }
@@ -269,9 +269,9 @@ public class Complex implements Cloneable, Serializable {
      */
     public final Complex divide(Complex divisor) {
         // This algorithm results from writing a/b as (ab*)/magSquared(b).
-        double denom = divisor.magnitudeSquared();
-        return new Complex((real*divisor.real+imag*divisor.imag)/denom,
-                (imag*divisor.real-real*divisor.imag)/denom);
+        double denominator = divisor.magnitudeSquared();
+        return new Complex((real*divisor.real+imag*divisor.imag)/denominator,
+                (imag*divisor.real-real*divisor.imag)/denominator);
     }
 
     /** Return true if the real and imaginary parts of this complex number

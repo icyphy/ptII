@@ -41,7 +41,7 @@ import java.lang.Double;              /* Needed by javadoc */
 //// DoubleArrayMath
 /**
 This class provides a library for mathematical operations on double arrays.
-unless explicity noted otherwise, all array arguments are assumed to be
+unless explicitly noted otherwise, all array arguments are assumed to be
 non-null. If a null array is passed to a method, a NullPointerException
 will be thrown in the method or called methods.
 @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
@@ -408,13 +408,13 @@ public class DoubleArrayMath {
     }
 
     /** Return a new array of doubles produced by scaling the input
-     *  array elements by scalefactor.
+     *  array elements by scaleFactor.
      *  If the length of the array is 0, return a new array of length 0.
      */
-    public static final double[] scale(double[] array, double scalefactor) {
+    public static final double[] scale(double[] array, double scaleFactor) {
         double[] retval = new double[array.length];
         for (int i = 0; i < array.length; i++) {
-            retval[i] = scalefactor * array[i];
+            retval[i] = scaleFactor * array[i];
         }
         return retval;
     }

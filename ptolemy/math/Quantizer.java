@@ -116,7 +116,7 @@ public class Quantizer {
         }
 
         // determine the scale factor by calculating
-        // 2^fractionbitlength By multiply the given value 'x' with
+        // 2^fractionBitLength By multiply the given value 'x' with
         // this scale factor. An value is obtained of the fraction
         // part is dropped. The integer remaining after the scaling
         // will be represented by the BigInteger.
@@ -165,40 +165,40 @@ public class Quantizer {
      *  value to indicate that an overflow error occurred.
      *
      *  @param value The value to represent.
-     *  @param newprecision The precision of the representation.
+     *  @param newPrecision The precision of the representation.
      *  @param mode The overflow mode.
      *  @return A new fixed-point representation of the value.
      */
     public static FixPoint round(
             FixPoint value,
-            Precision newprecision,
+            Precision newPrecision,
             int mode) {
 
-        FixPoint newvalue = null;
+        FixPoint newValue = null;
 	BigDecimal x = value.bigDecimalValue();
-	BigDecimal maxValue = newprecision.findMaximum();
-	BigDecimal minValue = newprecision.findMinimum();
+	BigDecimal maxValue = newPrecision.findMaximum();
+	BigDecimal minValue = newPrecision.findMinimum();
 	// check if 'x' falls within the range of this FixPoint
 	// possible with the given precision
         if ( x.compareTo(maxValue) < 0 &&
                 x.compareTo(minValue) > 0 ) {
             // In range, thus leads at most to a quantization error
-            newvalue = FixPoint._scaleBits(value, newprecision, mode);
+            newValue = FixPoint._scaleBits(value, newPrecision, mode);
         } else {
             FixPoint result;
             //Not in range. Can lead to an overflow problem.
             switch(mode) {
             case SATURATE:
                 if ( x.signum() >= 0) {
-                    result = Quantizer.round( maxValue, newprecision );
+                    result = Quantizer.round( maxValue, newPrecision );
                 } else {
-                    result = Quantizer.round( minValue, newprecision );
+                    result = Quantizer.round( minValue, newPrecision );
                 }
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
                 break;
             case OVERFLOW_TO_ZERO:
-                result = new FixPoint(newprecision, BigInteger.ZERO);
+                result = new FixPoint(newPrecision, BigInteger.ZERO);
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
                 break;
@@ -206,9 +206,9 @@ public class Quantizer {
                 throw new IllegalArgumentException("Illegal Mode of " +
                         "overflow handling");
             }
-            newvalue = result;
+            newValue = result;
         }
-        return newvalue;
+        return newValue;
     }
 
     /** Return the fixed point number that is nearest to the specified
@@ -267,7 +267,7 @@ public class Quantizer {
             x = minValue;
         }
 
-        // determine the scale factor by calculating 2^fractionbitlength
+        // determine the scale factor by calculating 2^fractionBitLength
         // By multiply the given value 'x' with this scale factor, we get
         // a value of which we drop the fraction part. The integer remaining
         // will be represented by the BigInteger.
@@ -326,40 +326,40 @@ public class Quantizer {
      *  value to indicate that an overflow error occurred.
      *
      *  @param value The value to represent.
-     *  @param newprecision The precision of the representation.
+     *  @param newPrecision The precision of the representation.
      *  @param mode The overflow mode.
      *  @return A new fixed-point representation of the value.
      */
     public static FixPoint truncate(
             FixPoint value,
-            Precision newprecision,
+            Precision newPrecision,
             int mode) {
 
-        FixPoint newvalue = null;
+        FixPoint newValue = null;
 	BigDecimal x = value.bigDecimalValue();
-	BigDecimal maxValue = newprecision.findMaximum();
-	BigDecimal minValue = newprecision.findMinimum();
+	BigDecimal maxValue = newPrecision.findMaximum();
+	BigDecimal minValue = newPrecision.findMinimum();
 	// check if 'x' falls within the range of this FixPoint
 	// possible with the given precision
         if ( x.compareTo(maxValue) < 0 &&
                 x.compareTo(minValue) > 0 ) {
             // In range, thus leads at most to a quantization error
-            newvalue = FixPoint._scaleBits(value, newprecision, mode);
+            newValue = FixPoint._scaleBits(value, newPrecision, mode);
         } else {
             FixPoint result;
             //Not in range. Can lead to an overflow problem.
             switch(mode) {
             case SATURATE:
                 if ( x.signum() >= 0) {
-                    result = Quantizer.truncate( maxValue, newprecision );
+                    result = Quantizer.truncate( maxValue, newPrecision );
                 } else {
-                    result = Quantizer.truncate( minValue, newprecision );
+                    result = Quantizer.truncate( minValue, newPrecision );
                 }
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
                 break;
             case OVERFLOW_TO_ZERO:
-                result = new FixPoint(newprecision, BigInteger.ZERO);
+                result = new FixPoint(newPrecision, BigInteger.ZERO);
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
                 break;
@@ -367,9 +367,9 @@ public class Quantizer {
                 throw new IllegalArgumentException("Illegal Mode of " +
                         "overflow handling");
             }
-            newvalue = result;
+            newValue = result;
         }
-        return newvalue;
+        return newValue;
     }
 
     ///////////////////////////////////////////////////////////////////

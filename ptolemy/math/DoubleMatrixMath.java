@@ -506,17 +506,17 @@ public class DoubleMatrixMath {
 
 
     /** Return a new matrix that is constructed by multiplying the matrix
-     *  by a scalefactor.
+     *  by a scaleFactor.
      */
     public static final double[][] multiply(final double[][] matrix,
-            final double scalefactor) {
+            final double scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         double[][] retval = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j] * scalefactor;
+                retval[i][j] = matrix[i][j] * scaleFactor;
             }
         }
         return retval;
@@ -1112,16 +1112,16 @@ public class DoubleMatrixMath {
         double[][] dotProductMatrix = new double[rows][rows];
 
         for (int i = 0; i < rows; i++) {
-            // get a reference to the row vector
+            // Get a reference to the row vector.
             double[] refArray = rowArrays[i];
 
-            // initalize row vector
+            // Initialize row vector.
             double[] rowArray = refArray;
 
-            // subtract projections onto all previous vectors
+            // Subtract projections onto all previous vectors.
             for (int j = 0; j < i; j++) {
 
-                // save the dot product for future use for QR decomposition
+                // Save the dot product for future use for QR decomposition.
                 double dotProduct =
                     DoubleArrayMath.dotProduct(refArray, orthogonalMatrix[j]);
 

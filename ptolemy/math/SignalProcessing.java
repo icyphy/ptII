@@ -853,33 +853,33 @@ public class SignalProcessing {
      *  This is calculated by walking around the unit circle and forming
      *  the product of the distances to the zeros, dividing by the product
      *  of the distances to the poles, and multiplying by the gain.
-     *  The length of the returned array is <i>numsteps</i>.
+     *  The length of the returned array is <i>numSteps</i>.
      *
      *  @param poles An array of pole locations.
      *  @param zeros An array of zero locations.
      *  @param gain A complex gain.
-     *  @param numsteps The number of samples in the returned
+     *  @param numSteps The number of samples in the returned
      *  frequency response.
      */
     public static final Complex[] poleZeroToFreq(Complex[] poles,
-            Complex[] zeros, Complex gain, int numsteps){
-        double step = 2*Math.PI/numsteps;
-        Complex[] freq = new Complex[numsteps];
+            Complex[] zeros, Complex gain, int numSteps){
+        double step = 2*Math.PI/numSteps;
+        Complex[] freq = new Complex[numSteps];
 
         double angle = -Math.PI;
         for (int index = 0; index < freq.length; index++){
-            Complex polesContrib = Complex.ONE;
-            Complex zerosContrib = Complex.ONE;
+            Complex polesContribution = Complex.ONE;
+            Complex zerosContribution = Complex.ONE;
             Complex ejw = new Complex(Math.cos(angle), Math.sin(angle));
             if (poles.length > 0) {
                 Complex[] diffPoles = ComplexArrayMath.subtract(poles, ejw);
-                polesContrib = ComplexArrayMath.product(diffPoles);
+                polesContribution = ComplexArrayMath.product(diffPoles);
             }
             if (zeros.length > 0) {
                 Complex[] diffZeros = ComplexArrayMath.subtract(zeros, ejw);
-                zerosContrib = ComplexArrayMath.product(diffZeros);
+                zerosContribution = ComplexArrayMath.product(diffZeros);
             }
-            freq[index] = zerosContrib.divide(polesContrib);
+            freq[index] = zerosContribution.divide(polesContribution);
             freq[index] = freq[index].multiply(gain);
             angle += step;
         }
@@ -1075,7 +1075,7 @@ public class SignalProcessing {
      */
     public static final double epsilon = 1.0e-9;
 
-    // Scalefactor types for the DCT/IDCT
+    // Scale factor types for the DCT/IDCT
     // In the following formulas,
     //  e[0] = 1/sqrt(2)
     //  e[k] = 1 for k != 0

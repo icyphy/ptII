@@ -954,7 +954,7 @@ public class IntegerMatrixMath {
 		    + "() : one matrix "
                     + _dimensionString(matrix1)
                     + " is not the same size as another matrix "
-                    _dimensionString(matrix2) + ".");
+                    + _dimensionString(matrix2) + ".");
         }
     }
 

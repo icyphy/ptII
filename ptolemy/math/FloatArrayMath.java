@@ -37,7 +37,7 @@ import java.lang.Float;              /* Needed by javadoc */
 //// FloatArrayMath
 /**
 This class provides a library for mathematical operations on float arrays.
-Unless explicity noted otherwise, all array arguments are assumed to be
+Unless explicitly noted otherwise, all array arguments are assumed to be
 non-null. If a null array is passed to a method, a NullPointerException
 will be thrown in the method or called methods.
 
@@ -402,13 +402,13 @@ public class FloatArrayMath {
     }
 
     /** Return a new array of floats produced by scaling the input
-     *  array elements by scalefactor.
+     *  array elements by scaleFactor.
      *  If the length of the array is 0, return a new array of length 0.
      */
-    public static final float[] scale(float[] array, float scalefactor) {
+    public static final float[] scale(float[] array, float scaleFactor) {
         float[] retval = new float[array.length];
         for (int i = 0; i < array.length; i++) {
-            retval[i] = scalefactor * array[i];
+            retval[i] = scaleFactor * array[i];
         }
         return retval;
     }
