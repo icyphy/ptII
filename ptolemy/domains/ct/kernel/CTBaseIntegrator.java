@@ -81,7 +81,7 @@ initialization stage of the simulation, the state of the integrator is
 set to the initial state. The initialState will not impact the simulation
 after the simulation starts. The default value of the parameter is 0.
 An integrator can possibly have several auxiliary variables--
-<code>_auxVariables</code>. The number of <code>_auxVariabless</code> is get
+<code>_auxVariables</code>. The number of <code>_auxVariables</code> is get
 from the ODE solver. 
 <P>
 The integrator remembers the history states and 
@@ -204,7 +204,7 @@ public class CTBaseIntegrator extends CTActor
      *  _auxVariables stored in the integrator. Return null if the
      *  _auxVariables has never been created.
      *
-     *  @return The _auxVariabless in a double array.
+     *  @return The _auxVariables in a double array.
      */
     public double[] getAuxVariables() {
         return _auxVariables;
