@@ -1,6 +1,6 @@
 # Tests for the undoable feature of MoMLParser class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -226,6 +226,47 @@ test UndoDeleteEntity-1.2b {Test undoing an entity deletion: complex name} {
 </entity>
 }
 
+##
+
+test UndoDeleteEntity-1.2c {Call undo again, which should do nothing} {
+    # Create another undo
+    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $undochange
+
+
+    # Create another undo
+    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $undochange
+
+    # Should be back to the base model...
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="b" class="ptolemy.actor.TypedCompositeActor">
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="b.output" relation="r1"/>
+        <link port="a.input" relation="r1"/>
+    </entity>
+</entity>
+}
+
 
 
 ######################################################################
@@ -379,3 +420,39 @@ test UndoDeleteEntity-1.3a {Delete an entity in a composite actor: Now call undo
     </entity>
 </entity>
 }
+
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
+######################################################################
+####
+#
+test UndoDeleteEntity-1.4a {Call undo on a TypedCompositeActor that has not yet saved.  Note that this model does not have a name or a _parser attribute}  {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
+    $toplevel setManager $manager
+
+    # Now create the MoMLUndoChangeRequest which will undo the change
+    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+
+    # For some reason the stack trace is dumped to stderr for us,
+    # perhaps because of the cancel facility
+    jdkCaptureErr {
+	# NOTE: Request is filled immediately because the model is not running.
+	catch {$manager requestChange $undochange} errMsg
+    } message
+    list [string range $message 0 500 ]
+} {{Exception occurred executing change request:
+ptolemy.kernel.util.InternalErrorException: There was no _parser attribute found. FIXME: Undo request on a model with no associated parser.
+This might be caused by clicking undo many times until there is nothing left to undo.
+ UndoChange was:
+Request to undo/redo most recent MoML change
+ Source was:
+ptolemy.actor.TypedCompositeActor {.}
+ _context was:
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "ht}}
