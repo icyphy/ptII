@@ -76,14 +76,14 @@ EXTRA_SRCS =   PtParser.jjt $(JSRCS)
 MISC_FILES =	# doc test
 
 # OPTIONAL_JSRCS files are created by javacc.  
-# javadoc generates html for file in $(OPTIONAL_JSRCS)
-# PtParser.java must be at the top.
+# javadoc generates html for files in $(OPTIONAL_JSRCS)
 OPTIONAL_JSRCS = \
 	PtParser.java \
 	ASCII_CharStream.java \
 	JJTPtParserState.java \
 	Node.java \
 	ParseException.java \
+	PtParser.java \
 	PtParserConstants.java \
 	PtParserTokenManager.java \
 	PtParserTreeConstants.java \
@@ -102,20 +102,18 @@ JCLASS =  $(JSRCS:%.java=%.class) $(OPTIONAL_JSRCS:%.java=%.class)
 # Needed for compiling under Cygwin on NT
 LIB = dummylib
 
-all: PtParser.jjt $(JCLASS) 
-install: PtParser.jjt javadocs $(JARFILE)
+all:  $(JCLASS) 
+install: PtParser javadocs $(JARFILE)
 docs: javadocs
 
 depend:
 	@echo "no dependencies in this directory"
 
-PtParser.jjt : 
+PtParser : sources realclean
 	CLASSPATH=$(CLASSPATH) $(JJTREE) PtParser.jjt
 	CLASSPATH=$(CLASSPATH) $(JAVACC) PtParser.jj
-	CLASSPATH=$(CLASSPATH) $(JAVAC) PtParser.java
 	rm -f PtParser.jj
 	
-
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
 
