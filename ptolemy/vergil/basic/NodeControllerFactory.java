@@ -53,7 +53,7 @@ controller factory found as an attribute will be used.
 It is a singleton, so placing it any container will replace any
 previous controller factory with the same name.
 
-@author Edward A. Lee
+@author Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class NodeControllerFactory extends ClassFactoryAttribute /*SingletonAttribute*/ {
