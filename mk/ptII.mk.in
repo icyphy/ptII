@@ -78,11 +78,6 @@ JSRESTORE =	jsrestore
 # The pathname to the JavaScope.zip file
 JSCLASSPATH = 	/users/ptdesign/vendors/sun/JavaScope/JavaScope.zip
 
-# The variables below are for JavaSound, which is used by files in
-# ptolemy/media/javasound
-# The directory that contains sound.jar
-JAVASOUND_LIBDIR = @JAVASOUND_LIBDIR@
-
 # JAVASOUND_NEEDED_DIRS is used in ptolemy/media/makefile
 # to add the javasound directory to the list of directories
 # to run submakes in if we found sound.jar
