@@ -1,10 +1,9 @@
-# Makefile for the Java classes used to test the Ptolemy II data package
+# Makefile for Java classes that Tycho uses
 #
-# @Authors: Christopher Hylands, Neil Smyth; based on a file by Thomas M. Parks
+# @Version: @(#)makefile	1.15 06/17/98
+# @Author: Christopher Hylands
 #
-# @Version: $Id$
-#
-# @Copyright (c) 1998 The Regents of the University of California.
+# @Copyright (c) 1996-1998 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -28,80 +27,34 @@
 # 
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-# Root of the Java directory
-ROOT =		../../../..
+# Don't go down into collections, it does not have a makefile
+DIRS = pt doc gui #collections
 
-ME =		java/pt/data/test
+# Root of Ptolemy II directory
+ROOT =		.
+
+ME =
+# True source directory
+VPATH =		$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-CLASSPATH = ../../..
+# Include rules for directories that contain only subdirectories.
+include $(ROOT)/mk/tydir.mk
 
-TCL_SRCS = \
-	description.tcl \
-	init.tcl \
-	testDefs.tcl \
-	testEnums.tcl
-
-JSRCS = 
-
-# Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = \
-	IntToken.tcl \
-	ObjectToken.tcl \
-	StringToken.tcl
-
-# Graphical Java tests that use Tcl.
-# Since there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS) 
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-# Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
-
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
-
-test_java: jclass
-
-# Tycho-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/kernel/test/testDefs.tcl
-
-# These tests do not require a graphics terminal, but do use TclBlend and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
-
-# To profile the tests using jacl, run
-# make JACLPROFILE=-prof test_simple_jacl
-# then look in java.prof
-
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple_jacl: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) jacl $(JACLPROFILE) alljtests.tcl
-
-docs: javadocs
-
-depend:
-	@echo "no dependencies in this directory"
-
-# Get the rest of the rules
-include $(ROOT)/mk/tycommon.mk
-
-
-
+# Glimpse is a tool that prepares an index of a directory tree.
+# glimpse is not included with Tycho, see http://glimpse.cs.arizona.edu
+GLIMPSEINDEX =	/usr/sww/bin/glimpseindex
+glimpse: .glimpse_exclude
+	@echo "Saving .glimpse_exclude, removing the .glimpse* files"
+	rm -f glimpse_exclude
+	cp .glimpse_exclude glimpse_exclude
+	rm -f .glimpse*
+	cp  glimpse_exclude .glimpse_exclude
+	$(GLIMPSEINDEX) -H `pwd` `pwd`
+	chmod a+r .glimpse_*
+	rm -f glimpse_exclude

@@ -38,10 +38,10 @@
 #DIRS = kernel actors domains pitcl doc graph data
 DIRS = kernel plot graph data actor automata gui math  doc 
 
-# Root of Tycho directory
-ROOT =		../..
+# Root of Ptolemy II directory
+ROOT =		..
 
-ME = 		java/pt
+ME = 		pt
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 
