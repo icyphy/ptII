@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (chf@eecs.berkeley.edu)
-@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+@ProposedRating Green (chf@eecs.berkeley.edu)
+@AcceptedRating Green (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
