@@ -117,7 +117,7 @@ public class Sleep extends Transformer {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         Sleep newObject = (Sleep)super.clone(workspace);
-        newObject.output.setTypeAtLeast(input);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
     
