@@ -451,8 +451,8 @@ public class BlockControlFlowGraph extends DirectedGraph {
 	    DirectedGraph dg = copyGraph(bbgraph);
   	    ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile(methodname,dg);
 	    Collection sortedNodes = dg.attemptTopologicalSort(dg.nodes());
-	    DominatorHashMap dominators = new DominatorHashMap(dg);
-	    System.out.println(dominators);
+//  	    DominatorHashMap dominators = new DominatorHashMap(dg);
+//  	    System.out.println(dominators);
 	    Interval r = new Interval(dg);
 	    System.out.println(r);
   	    ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("interval",dg);
