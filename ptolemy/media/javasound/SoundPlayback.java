@@ -47,7 +47,7 @@ import javax.sound.sampled.*;
    to Java Sound, Java's audio API.
    <p>
    Depending on available
-   system resorces, it may be possible to run an instance of this
+   system resources, it may be possible to run an instance of this
    class and an instance of SoundCapture concurrently. This allows
    for the concurrent capture, processing, and playback of audio data.
    <p>
@@ -75,7 +75,7 @@ import javax.sound.sampled.*;
    audio from a file specified as a URL on the same machine as the
    one the applet was loaded from. Applet code is not allowed to
    read or write native files. The .java.policy file must be
-   modified to grant applets more privliiges.
+   modified to grant applets more privileges.
    <p>
    Note: Requires Java 2 v1.3.0 RC1 or later.
    @author Brian K. Vogel
@@ -99,7 +99,7 @@ public class SoundPlayback {
      *  @param bufferSize Requested size of the internal audio input
      *   buffer in samples. This controls the latency (delay from
      *   the time <i>putSamples()</i> is called until the audio is
-     *   acutally heard). A lower bound on the latency is given by
+     *   actually heard). A lower bound on the latency is given by
      *   (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
      *   Ideally, the
      *   smallest value that gives acceptable performance (no unerflow)
@@ -250,7 +250,7 @@ public class SoundPlayback {
      *  <p>
      *  If the "play audio to file" constructor was used,
      *  then append the audio data contained in <i>putSamplesArray</i>
-     *  to the soundfile specified in the constructor.
+     *  to the sound file specified in the constructor.
      *  @param putSamplesArray A two dimensional array containing
      *  the samples to play or write to a file. The first index
      *  represents the channel number (0 for first channel, 1 for
@@ -405,7 +405,7 @@ public class SoundPlayback {
 	    // Do error checking:
 	    if (st.countTokens() != 2) {
 		System.err.println("Error: Incorrect file name format. " +
-                        "Format: filname.extension");
+                        "Format: filename.extension");
 	    }
 
 	    st.nextToken(); // Advance to the file extension.
@@ -512,7 +512,7 @@ public class SoundPlayback {
     private float _sampleRate;
     private int _channels;
     private int _bufferSize;
-    // This is a stupid name, but it is consistant with
+    // This is a stupid name, but it is consistent with
     // the Java Sound API naming conventions. It is
     // really a "target."
     private SourceDataLine _sourceLine;
