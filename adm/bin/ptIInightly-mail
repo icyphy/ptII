@@ -49,6 +49,7 @@ echo "Errors during the build and test process in ptII:" >> $mailmsg
 echo "" >> $mailmsg
 echo "To see the complete build and test log, see:" >> $mailmsg
 echo "http://www.gigascale.org/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
+echo "" >> $mailmsg
 
 # print out 'Entering directory' lines
 awk ' $0 ~ /Entering directory/ { indir=$0 }
