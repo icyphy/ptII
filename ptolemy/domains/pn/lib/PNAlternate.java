@@ -28,6 +28,8 @@
 package pt.domains.pn.stars;
 import pt.domains.pn.kernel.*;
 import pt.kernel.*;
+import pt.data.*;
+import pt.actors.*;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -71,13 +73,19 @@ public class PNAlternate extends PNStar {
      *  it's output ports. Needs to read one token for every output
      *  port. 
      */
+    //FIXME: CUrrently this is a BIIIIIG hack and should be changed ASA 
+    // the new kernel strategy is implemented
     public void run() {
         IntToken data;
         try {
 	    int i;
 	    for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                data = (IntToken)readFrom(_input);
-                writeTo(_output0, data);
+                Enumeration outports = _input.deepConnectedOutputPorts();
+                while (outports.hasMoreElements()) {
+                    PNOutPort outport = (PNOutPort)outports.nextElement();
+                    data = (IntToken)readFrom(_input, outport);
+                    writeTo(_output0, data);
+                }
                 //try {
                 //System.out.println(this.getName()+" writes "+
                 //((IntToken)data).intValue()+" to "+
@@ -85,8 +93,12 @@ public class PNAlternate extends PNStar {
                 //} catch (InvalidStateException e) {
                 //System.err.println("Exception: " + e.toString());
                 //}
-                data = (IntToken)readFrom(_input);
-                writeTo(_output1, data);
+                outports = _input.deepConnectedOutputPorts();
+                while (outports.hasMoreElements()) {
+                    PNOutPort outport = (PNOutPort)outports.nextElement();
+                    data = (IntToken)readFrom(_input, outport);
+                    writeTo(_output1, data);
+                }
                 //try {
                 //System.out.println(this.getName()+" writes "+
                 //((IntToken)data).intValue()+" to "+
