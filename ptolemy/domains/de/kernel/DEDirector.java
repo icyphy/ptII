@@ -121,7 +121,7 @@ public abstract class DEDirector extends Director {
         // leave it out for now, and see if this will turn out to be an issue.
 
         // Check the special case, when the delay is equal to zero
-        if (delay == 0) {
+        if (delay == 0 && _isInitialized) {
             this._enqueueEvent(actor, getCurrentTime(), Long.MAX_VALUE);
             return;
         }
@@ -344,5 +344,7 @@ public abstract class DEDirector extends Director {
     // it.
     protected boolean _stopWhenQueueIsEmpty = true;
 
+    //
+    protected boolean _isInitialized = false;
 
 }

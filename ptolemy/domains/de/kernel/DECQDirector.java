@@ -299,7 +299,7 @@ public class DECQDirector extends DEDirector {
      */
     public void initialize() throws IllegalActionException {
 
-        // FIXME: Something weird going on here with respect to the
+         // FIXME: Something weird going on here with respect to the
         // order of method invocation.
 
 	// initialize the global event queue.
@@ -320,10 +320,16 @@ public class DECQDirector extends DEDirector {
 	    throw new IllegalActionException("Can't initialize a "+
 		    "cyclic graph in DECQDirector.initialize()");
 	}
+        
+        _isInitialized = false;
+
         // Call the parent initialize method to create the receivers.
         // Some events might be scheduled in the global event queue as
         // a result of this operation.
         super.initialize();
+
+        _isInitialized = true;
+
         // Set the depth field of the receivers.
         _computeDepth();
 
@@ -371,8 +377,7 @@ public class DECQDirector extends DEDirector {
     protected void _enqueueEvent(Actor actor, double time, long depth)
             throws IllegalActionException {
 
-        // FIXME: Should this check that the depth is not negative?
-        // This check is done only done after the start time is initialized.
+        // This check is only done after the start time is initialized.
         if (_startTimeInitialized) {
             if (time < _currentTime) {
                 throw new IllegalActionException(getContainer(),
@@ -385,9 +390,10 @@ public class DECQDirector extends DEDirector {
         if (DEBUG) {
             System.out.print(getFullName() + ":");
             System.out.println("Enqueue event for actor: " +
-                               ((Entity)actor).description(FULLNAME)+
-                               " at time " + time +
-                               " .");
+                    ((Entity)actor).description(FULLNAME)+
+                    " at time " + time + 
+                    " with depth = " + depth + 
+                    " .");
         }
 
 
@@ -428,6 +434,7 @@ public class DECQDirector extends DEDirector {
                     " on actor: " + 
                     ((Entity)event.actor).description(FULLNAME) +
                     " at time " + time +
+                    " with depth = " + depth +
                     " .");
         }
 
