@@ -96,6 +96,18 @@ if [ "$COMMAPI_PRESENT" ]; then
     COMMAPI_JAR="${CLASSPATHSEPARATOR}file:${COMMAPI_DIR}/comm.jar"
 fi
 
+#### Diva stuff
+# The diva jar file.
+DIVA_JAR=${PTII}/lib/diva.jar
+
+DIVA_JFLAG=
+
+#### All the jar files.  Useful for Vergil and ptolemy rules which must load
+# arbitrary files
+ALL_JAR=${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${CLASSPATHSEPARATOR}${PTJACL_JAR}${COMMAPI_JAR}
+
+ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${PTJACL_JFLAG}"
+
 # Optional jar file
 jarfile=
 
@@ -124,6 +136,8 @@ case "`basename $0`" in
 	# Invoke the class named by the first argument
 	javastartupclass=$1
 	javasourcedir=
+	jarfile=$ALL_JAR
+	javaflag=$ALL_JFLAG
 	shift
 	;;
     ptjacl)
@@ -160,14 +174,15 @@ case "`basename $0`" in
 	# Ptolemy II Application that uses Jini
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
-	jarfile=$JINI_JARS${CLASSPATHSEPARATOR}${PTII}/lib/diva.jar
-	javaflag=$JINI_JFLAG
+	jarfile=$ALL_JAR
+	javaflag=$ALL_JFLAG
 	;;
     ptolemy)
 	# Ptolemy II Application
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
-	jarfile=$PTII/lib/diva.jar
+	jarfile=$ALL_JAR
+	javaflag=$ALL_JFLAG
 	;;
     ptplot)
 	# Signal Plotter
@@ -183,8 +198,8 @@ case "`basename $0`" in
 	# Ptolemy II UI
 	javastartupclass=ptolemy.vergil.VergilApplication
 	javasourcedir=ptolemy/vergil
-	# Anything else that Vergil needs, it adds to the classpath itself.
-	jarfile=$PTII/lib/diva.jar
+	jarfile=$ALL_JAR
+	javaflag=$ALL_JFLAG
 	;;
 esac
 
@@ -261,7 +276,7 @@ else
     PTII_DIR=$PTII
 fi
 
-str="$JAVAHOME/bin/java $javaflag $JAVAFLAGS -classpath $PTII_DIR/boot -Dptolemy.PTII=$PTII_DIR -Dptolemy.class.path=$PTII_DIR$CLASSPATHSEPARATOR$jarfile$COMMAPI_JAR BootstrapClassLoader $javastartupclass ${1+"$@"}"
+str="$JAVAHOME/bin/java $javaflag $JAVAFLAGS -classpath $PTII_DIR$CLASSPATHSEPARATOR$jarfile $javastartupclass ${1+"$@"}"
 
 echo $str
 exec $str
