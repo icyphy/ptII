@@ -720,7 +720,7 @@ public class DEDirector extends Director {
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             if (_debugging) _debug("DE director requests refiring" +
-                " because of nonempty event queue.");
+                    " because of nonempty event queue.");
             _requestFiring();
         }
     }
@@ -1133,7 +1133,7 @@ public class DEDirector extends Director {
                     if (_disabledActors != null &&
                             _disabledActors.contains(actorToFire)) {
                         // This actor has requested that it not be fired again.
-                        if (_debugging) _debug("Skipping actor: ",
+if (_debugging) _debug("Skipping actor: ",
                                 ((Nameable)actorToFire).getFullName());
                         actorToFire = null;
                         continue;
