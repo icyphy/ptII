@@ -49,7 +49,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
 
     protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
         int num = jjtGetNumChildren();
-        if (num ==1) {
+        if (num == 1) {
             return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
@@ -59,7 +59,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         boolean values[] = new boolean[num];
         int i = 0;
         try {
-            for ( i=0; i<num; i++ ) {
+            for ( i = 0; i<num; i++ ) {
                 values[i] = ((ptolemy.data.BooleanToken)childTokens[i]).getValue();
             }
         } catch (Exception ex) {
@@ -67,7 +67,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
             throw new IllegalArgumentException(str + "to a Boolean");
         }
         boolean result = values[0];
-        for (i=0; i<_tokenList.size(); i++) {
+        for (i = 0; i<_tokenList.size(); i++) {
             Token x = (Token)_tokenList.take();
             // need to reinsert at end if want to reParse tree
             _tokenList.insertLast(x);

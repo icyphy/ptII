@@ -63,7 +63,8 @@ FIXME: need to define a basic set of functions, and inplement them.
 public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String funcName;
 
-    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
+    protected ptolemy.data.Token _resolveNode() 
+            throws IllegalArgumentException {
         int args = jjtGetNumChildren();
         Class[] argTypes = new Class[args];
         Object[] argValues = new Object[args];
@@ -106,8 +107,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             }
         } catch (Exception ex) {
             StringBuffer sb = new StringBuffer();
-            for (int i=0; i<args; i++) {
-                if (i==0) {
+            for (int i = 0; i<args; i++) {
+                if (i == 0) {
                     sb.append(argValues[i].toString());
                 } else {
                     sb.append(", " + argValues[i].toString());

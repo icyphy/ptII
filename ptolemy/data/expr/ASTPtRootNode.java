@@ -105,8 +105,9 @@ public class ASTPtRootNode implements Node {
             throw new IllegalArgumentException(str);
         } else {
             childTokens = new ptolemy.data.Token[numChildren];
-            for (int i=0; i<numChildren; i++) {
-                childTokens[i] =((ASTPtRootNode)jjtGetChild(i)).evaluateParseTree();
+            for (int i = 0; i<numChildren; i++) {
+                ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(i);
+                childTokens[i] = child.evaluateParseTree();
             }
             try {
                 _ptToken = _resolveNode();
@@ -127,7 +128,8 @@ public class ASTPtRootNode implements Node {
      *   the current node.
      *  @return The ptolemy.data.Token stored in this node.
      */
-    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
+    protected ptolemy.data.Token _resolveNode() 
+            throws IllegalArgumentException {
         int num = jjtGetNumChildren();
         if (num > 1) {
             String str = "Node has several children, this method ";

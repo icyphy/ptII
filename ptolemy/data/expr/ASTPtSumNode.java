@@ -1,4 +1,4 @@
-/* ASTPtSumNode represent sum(+,-) nodes in the parse tree
+/* ASTPtSumNode represent sum(+, -) nodes in the parse tree
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -36,7 +36,7 @@ package ptolemy.data.expr;
 //// ASTPtSumNode
 /**
 The parse tree created from the expression string consists of a
-hierarchy of node objects. This class represents sum(+,-) nodes in
+hierarchy of node objects. This class represents sum(+, -) nodes in
 the parse tree.
 
 @author Neil Smyth
@@ -49,7 +49,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
 
     protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
-        if (num ==1) {
+        if (num == 1) {
             return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
@@ -61,7 +61,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
         String op = "";
         int i = 1;
         try {
-            for (i=1; i<num; i++) {
+            for (i = 1; i<num; i++) {
                 // When start using 1.2 will change this
                 // take from the front, put back at the end
                 Token x = (Token)_tokenList.take();

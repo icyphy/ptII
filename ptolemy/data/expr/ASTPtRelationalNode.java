@@ -51,7 +51,8 @@ is a BooleanToken.
 */
 public class ASTPtRelationalNode extends ASTPtRootNode {
 
-    protected ptolemy.data.Token  _resolveNode() throws IllegalArgumentException {
+    protected ptolemy.data.Token  _resolveNode() 
+            throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if ( (num != 2) ||  (_tokenList.size() != 1) ) {
             String str = "A relational node needs two children and ";
@@ -70,17 +71,17 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
                 return ((ptolemy.data.BooleanToken)result).negate();
             } else  {
                 // relational operators only make sense on types below double
-                double a = ((ptolemy.data.ScalarToken)childTokens[0]).doubleValue();
-                double b = ((ptolemy.data.ScalarToken)childTokens[1]).doubleValue();
+                double a = ((ScalarToken)childTokens[0]).doubleValue();
+                double b = ((ScalarToken)childTokens[1]).doubleValue();
                 boolean res = false;
                 if (x.image.compareTo(">=") == 0) {
-                    if (a>=b) res = true;
+                    if (a >= b) res = true;
                 } else if  (x.image.compareTo(">") == 0) {
                     if (a>b) res = true;
                 } else if (x.image.compareTo("<=") == 0) {
-                    if (a<=b) res = true;
+                    if (a <= b) res = true;
                 } else if (x.image.compareTo("<") == 0) {
-                    if (a<b) res = true;
+                    if (a < b) res = true;
                 } else {
                     String str = "invalid operator " + x.image + " in ";
                     throw new IllegalArgumentException(str +"relational node");
