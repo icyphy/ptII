@@ -123,7 +123,11 @@ public class RequiredFileGenerator {
      *  @return The set of all required Classes.
      */
     public static Collection getRequiredClasses() {
-        return (Collection) _requiredClasses;
+        if (_requiredClasses == null) {
+            return new HashSet();
+        } else {
+            return (Collection) _requiredClasses;
+        }
     }
 
     /** Returns the set of classes that must be initialized by clinit
@@ -132,7 +136,11 @@ public class RequiredFileGenerator {
      *  @return The set of classes that must be initialized.
      */
     public static Collection getStrictlyRequiredClasses() {
-        return (Collection) _strictlyRequiredClasses;
+        if (_strictlyRequiredClasses == null) {
+            return new HashSet();
+        } else {
+            return (Collection) _strictlyRequiredClasses;
+        }
     }
 
     /** Initialize and compute the required classes and methods.

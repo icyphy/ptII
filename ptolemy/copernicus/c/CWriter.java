@@ -39,6 +39,7 @@ import soot.util.*;
 import soot.toolkits.graph.*;
 import java.util.*;
 import java.io.*;
+// import ptolemy.copernicus.kernel.MakeFileWriter;
 
 /** A transformer that writes C source code.
     @author Shuvra S. Bhattacharyya
@@ -129,6 +130,16 @@ public class CWriter extends SceneTransformer {
             InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
             CNames.setup();
 
+            // Figure out if this is the main class
+            System.out.println("Main file: " + mainFile);
+            System.out.println("Class name:" + sootClass.getName()); 
+            boolean isMainClass = false;
+            MainFileGenerator mGenerator = null;
+            if (mainFile.equals(sootClass.getName())) {
+                isMainClass = true;
+                mGenerator = new MainFileGenerator();
+            }
+
             //generate the .i.h, .h, and .c files
             System.out.println("Generating C code files for " + fileName);
             String code = null;
@@ -140,7 +151,17 @@ public class CWriter extends SceneTransformer {
             FileHandler.write(fileName + ".h", code);
             code = cGenerator.generate(sootClass);
             FileHandler.write(fileName + ".c", code);
+            // sourcesList = 
+
+            // Generate a main file, containing a C main function,
+            // if this is the main class.
+            if (isMainClass) {
+                code = mGenerator.generate(sootClass);
+                FileHandler.write(fileName + "_main.c", code);
+            }
+
             System.out.println("Done generating C code files for " + fileName);
+
         }
 
         _completedTransform = true;
