@@ -223,6 +223,33 @@ public class UtilityFunctions {
         return new ArrayToken(resultArray);
     }
 
+    /** Find all true-valued elements in an array of boolean values,
+     *  returning an array containing the indicies (in ascending order)
+     *  of all occurances of the value 'true'.
+     *  @param token An array of boolean tokens
+     *  @return An array of integers giving the indicies of 'true' elements
+     *    in the array given as an argument.
+     *  @since Ptolemy II 4.1
+     */
+    // FIXME: This function has not been reviewed.
+    // Also, maybe it should be 'arrayFind' or some other name.
+    public static ArrayToken find(ArrayToken token)
+            throws IllegalActionException {
+        if (!(token.getElementType() == BaseType.BOOLEAN)) {
+            throw new IllegalActionException(
+                "The argument must be an array of boolean tokens.");
+        }
+        List result = new LinkedList();
+        for (int i=0; i<token.length(); i++) {
+            if (token.getElement(i).equals(BooleanToken.TRUE)) {
+                result.add(new IntToken(i));
+            }
+        }
+        Token[] resultArray = new Token[result.size()];
+        resultArray = (Token[])(result.toArray(resultArray));
+        return new ArrayToken(resultArray);
+    }
+
     /** Find a file or directory. If the file does not exist as is, then
      *  search the current working directory, the user's home directory,
      *  and finally, the classpath.
