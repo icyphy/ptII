@@ -51,7 +51,7 @@ public interface Type
      *  represented by this object.
      *  @param t a token.
      *  @return a token.
-     *  @exception IllegalActionExceptin If lossless conversion
+     *  @exception IllegalActionException If lossless conversion
      *   cannot be done.
      */
     public Token convert(Token t) throws IllegalActionException;
