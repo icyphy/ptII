@@ -50,8 +50,8 @@ public class PNAlternate extends PNActor {
             throws NameDuplicationException {
         super(container, name);
         _input = newInPort(this, "input");
-        _output0 = newOutPort(this, "output0");
-        _output1 = newOutPort(this, "output1");
+        _output = newOutPort(this, "output");
+        _output.makeMultiplex(true);
     }
     
 
@@ -67,26 +67,32 @@ public class PNAlternate extends PNActor {
     public void run() {
         Token[] data;
         try {
+            int index = 0;
 	    int i;
 	    for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
+                int width = _output.getWidth();
                 Enumeration relations = _input.linkedRelations();
                 while (relations.hasMoreElements()) {
                     IORelation relation = (IORelation)relations.nextElement();
                     data = readFrom(_input, relation);
 		    for (int j =0; j<data.length; j++) {
-		      writeTo(_output0, data[j]);
+                        _output.send(index, data[j]);
+                        index = (index+1)%width;
 		    }
-                }
-                relations = _input.linkedRelations();
-                while (relations.hasMoreElements()) {
-                    IORelation relation = (IORelation)relations.nextElement();
-                    data = readFrom(_input, relation);
-                    writeTo(_output1, data[0]);
                 }
             }                
             ((PNDirector)getDirector()).processStopped();
         } catch (NoSuchItemException e) {
 	    System.out.println("Terminating "+ this.getName());
+            return;
+        } catch (InvalidStateException e) {
+	    System.out.println("InvalidStateException "+ e.toString());
+            return;
+        } catch (IllegalActionException e) {
+	    System.out.println("IllegalActionException "+ e.toString());
+            return;
+        } catch (CloneNotSupportedException e) {
+	    System.out.println("CloneNotSupportedException :"+ e.toString());
             return;
         }
     }
@@ -97,6 +103,5 @@ public class PNAlternate extends PNActor {
     // The input port 
     private PNInPort _input;
     // The output port 
-    private PNOutPort _output0;
-    private PNOutPort _output1;
+    private PNOutPort _output;
 }
