@@ -365,7 +365,7 @@ public class DoubleMatrixToken extends MatrixToken {
                 }
 
                 result = DoubleMatrixMath.multiply(
-                        tem._getInternalDoubleMatrix(), _value);
+                        _value, tem._getInternalDoubleMatrix());
             }
             return new DoubleMatrixToken(result, DO_NOT_COPY);
         }
@@ -397,6 +397,12 @@ public class DoubleMatrixToken extends MatrixToken {
         } else {
             // the specified token is not a scalar
             DoubleMatrixToken tem = (DoubleMatrixToken) this.convert(t);
+            if (tem.getColumnCount() != _rowCount) {
+                throw new IllegalActionException("Cannot multiply " +
+                        "matrix with " + tem.getColumnCount() +
+                        " columns by a matrix with " +
+                        _rowCount + " rows.");
+            }
             return new DoubleMatrixToken(DoubleMatrixMath.multiply(
                     tem._getInternalDoubleMatrix(), _value), DO_NOT_COPY);
         }
