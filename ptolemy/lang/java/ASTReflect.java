@@ -35,8 +35,10 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 import java.lang.reflect.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTReflect.
@@ -105,20 +107,36 @@ public class ASTReflect {
 
 	    // FIXME, we need to map java.lang.reflect.Modifier to 
 	    // ptolemy.java.lang.Modifier.
-	    int modifiers = Modifier.PUBLIC_MOD;
+	    int modifiers =
+		Modifier.convertModifiers(method.getModifiers());
 
 	    NameNode methodName =
 		new NameNode(AbsentTreeNode.instance, method.getName());
 
-	    // FIXME: call method.getParameterTypes and convert it to a list.
-	    LinkedList params = new LinkedList();
+	    List params = new LinkedList();
+	    // Unfortunately, we can't use Arrays.asList() here since
+	    // what getParameterTypes returns of type Class[], and
+	    // what we want is a list of ParameterNodes.
+	    final Class parameterClasses[] = method.getParameterTypes();
+	    for(int j = 0; j < parameterClasses.length; j++) {
+		params.add(new ParameterNode(
+					     Modifier.convertModifiers(parameterClasses[j].getModifiers()),
+					     new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+									   parameterClasses[j].getName())),
+					     (new NameNode(AbsentTreeNode.instance,
+					      ""))));
+
+
+								       
+					     
+	    }
 
 	    // FIXME: call method.getExceptionTypes and convert it to a list.
-	    LinkedList throwsList = new LinkedList();
+	    List throwsList = new LinkedList();
+	    //Arrays.asList((Object [])method.getExceptionTypes());
 
 	    TypeNameNode returnType =
-		new TypeNameNode(
-				 new NameNode(AbsentTreeNode.instance,
+		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
 					      method.getReturnType().getName()));
 
 	    MethodDeclNode methodDeclNode =
@@ -157,7 +175,8 @@ public class ASTReflect {
 
 	// FIXME, we need to map java.lang.reflect.Modifier to 
 	// ptolemy.java.lang.Modifier.
-	int modifiers = Modifier.PUBLIC_MOD;
+	int modifiers =
+	    Modifier.convertModifiers(myClass.getModifiers());
 
 	//NameNode className = 
 	//    (NameNode) makeNameNode(myClass.getName());
@@ -169,8 +188,7 @@ public class ASTReflect {
 			 fullClassName.substring(1 + 
 						 fullClassName.lastIndexOf('.')));
 
-	// FIXME: convert from getInterfaces to list
-	LinkedList interfaceList = new LinkedList();
+	List interfaceList = Arrays.asList((Object [])myClass.getInterfaces());
 
 	LinkedList memberList = new LinkedList();
 
@@ -209,13 +227,14 @@ public class ASTReflect {
 	    ASTClass(Class.forName("ptolemy.lang.java.Skeleton"));
 	} catch (Exception e) {
 	    System.err.println("Error: " + e);
+	    e.printStackTrace();
 	}
     }
 
     // String to indent printed output with.
     private final static String _indent = new String("    ");
 
-    private final static boolean _debug = true;
+    private final static boolean _debug = false;
 
     // FIXME: This is copied from StaticResolution.java
     public static final TreeNode makeNameNode(String qualifiedName) {
