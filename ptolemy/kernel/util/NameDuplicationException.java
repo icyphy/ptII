@@ -55,7 +55,7 @@ public class NameDuplicationException extends KernelException {
      */
     public NameDuplicationException(Nameable container,
             String moreInfo) {
-       super(container, null, moreInfo);
+        super(container, null, moreInfo);
     }
 
     /** Given container and containee.
