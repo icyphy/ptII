@@ -74,9 +74,9 @@ detail in the DTReceiver documentation.
 The DT director has a <i>period</i> parameter which specifies the amount
 of time per iteration. For hierarchical DT, this period parameter only makes
 sense on the top-level. The user cannot explicitly set the period parameter
-for a DT subsystem inside a another DT system. For heterogeneous hierarchies 
+for a DT subsystem inside another DT system. For heterogeneous hierarchies 
 (e.g. DT inside DE or DT inside CT), the period parameter specifies the 
-time interval between firings the DT subsystem. The DT subsystem will
+time interval between firings of the DT subsystem. The DT subsystem will
 not fire on times that are not integer multiples of the period parameter.
 <p>.
 <h1>DT Features</h1>
@@ -233,7 +233,7 @@ public class DTDirector extends SDFDirector {
      *  check whether the returned time is an integer multiple of the 
      *  <i>period</i> parameter. If it is not, then don't fire. 
      *  @exception IllegalActionException If an actor executed by this
-     *  director return false in its prefire().
+     *  director returns false in its prefire().
      */
     public void fire() throws IllegalActionException {
     //  -fire-
@@ -351,10 +351,11 @@ public class DTDirector extends SDFDirector {
 
 
     /** Return the time value of the next iteration.
-     *  < FIXME: hack to this>
+     *  
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
+        // FIXME: This is a currently a hack to get DT to work with CT
         return Double.MAX_VALUE;
     }
 
@@ -413,7 +414,7 @@ public class DTDirector extends SDFDirector {
     /** Initialize all the actors associated with this director by calling
      *  super.initialize(). Determine which actors need to generate
      *  initial tokens for causality. All actors with nonhomogeneous input
-     *  ports will need to generate initial tokens for all of there output
+     *  ports will need to generate initial tokens for all of their output
      *  ports. For example, if actor A has a nonhomogeneous input port and an
      *  output port with production rate 'm' then actor A needs to produce 'm'
      *  initial tokens on the output port.
@@ -480,8 +481,10 @@ public class DTDirector extends SDFDirector {
 
             if (dtFromActor != null) {
                 if (dtFromActor._shouldGenerateInitialTokens) {
-                    int numberInitialTokens = currentScheduler.getTokenInitProduction(currentPort);
-                    debug.prompt("initial port: "+fromType+" to "+currentPort.getType());
+                    int numberInitialTokens = 
+                                  currentScheduler.getTokenInitProduction(currentPort);
+                    debug.prompt("initial port: "+fromType+
+                                           " to "+currentPort.getType());
                     for(int j=0;j<outrate;j++) {
                         // FIXME:  should check what token basetype
                         // for the port and generate such.
@@ -511,14 +514,13 @@ public class DTDirector extends SDFDirector {
 
 
     /** Process the mutation that occurred.  Notify the parent class about
-     *  invalidated schedule.  This method is called when an entity
+     *  the invalidated schedule.  This method is called when an entity
      *  is instantiated under this director. This method is also
      *  called when a link is made between ports and/or relations.
      *  see also other mutation methods:
-     *    <p><UL>
-     *    <LI> @see ptolemy.kernel.util.NamedObj.#attributeChanged
-     *    <LI> @see ptolemy.kernel.util.NamedObj.#attributeTypeChanged
-     *    </UL></p>
+     *    
+     *  @see ptolemy.kernel.util.NamedObj.#attributeChanged
+     *  @see ptolemy.kernel.util.NamedObj.#attributeTypeChanged
      */
     public void invalidateSchedule() {
     //  -invalidateSchedule-
@@ -531,21 +533,6 @@ public class DTDirector extends SDFDirector {
      */
     public Receiver newReceiver() {
         return new DTReceiver();
-    }
-
-
-    /** Invoke the preinitialize() methods of all actors deeply contained
-     *  by the container by calling super.preinitialize(). This method is
-     *  invoked once per execution, before any iteration; i.e. every time
-     *  the GO button is pressed. This method is <i>not</i> synchronized
-     *  on the workspace, so the caller should be.
-     *
-     *  @exception IllegalActionException If the preinitialize() method
-     *   of the container or one of the deeply contained actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-    //  -preinitialize-
-        super.preinitialize();
     }
 
     /** Request the outside director to fire this director's container
@@ -603,6 +590,7 @@ public class DTDirector extends SDFDirector {
 
     /** Set the current time of the model under this director.
      *  Setting the time back to the past is allowed in DT.
+     *
      *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) {
@@ -611,12 +599,12 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** Override the base class method to make sure that enough tokens to
-     *  available to complete one iteration.
+    /** Override the base class method to make sure that enough tokens 
+     *  are available to complete one iteration.
      *  This behavior is required to handle the case of non-homogeneous
      *  opaque composite actors. The port argument must be an opaque
      *  input port. If any channel of the input port has no data, then
-     *  that channel is ignored.  <FIX doc of this and Base class dir>
+     *  that channel is ignored.  
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
@@ -633,16 +621,12 @@ public class DTDirector extends SDFDirector {
     }
 
 
-
-
-    /** <FIXME: look at Director documentation>
-     *  This is called by the outside director to get tokens
+    /** This is called by the outside director to get tokens
      *  from an opaque composite actor. Return true if data is
      *  transferred from an output port of the container to the
      *  ports it is connected to on the outside. This method differs
-     *  from the
-     *  base class method in that this method will transfer all
-     *  available tokens in the receivers, while the base class
+     *  from the base class method in that this method will transfer
+     *  all available tokens in the receivers, while the base class
      *  method will transfer at most one token. This behavior is
      *  required to handle the case of non-homogeneous opaque
      *  composite actors. The port argument must be an opaque
@@ -690,8 +674,8 @@ public class DTDirector extends SDFDirector {
 
 
 
-   /** <FIXME: what is uninitialized state.>
-    *  Reset this director to an uninitialized state.
+   
+   /**  Reset this director to an uninitialized state.
     *
     *  @exception IllegalActionException If the parent class
     *  throws it
@@ -730,8 +714,6 @@ public class DTDirector extends SDFDirector {
         }
     	return repeats;
     }
-
-
 
 
     ///////////////////////////////////////////////////////////////////
