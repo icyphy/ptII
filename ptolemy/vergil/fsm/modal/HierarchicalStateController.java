@@ -31,8 +31,10 @@
 package ptolemy.vergil.fsm.modal;
 
 import diva.graph.GraphController;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.gui.ComponentDialog;
@@ -44,6 +46,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.fsm.StateController;
+import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -121,7 +124,7 @@ public class HierarchicalStateController extends StateController {
                 return;
             }
             final CompositeEntity container
-                = (CompositeEntity)immediateContainer.getContainer();
+                    = (CompositeEntity)immediateContainer.getContainer();
             if (container == null) {
                 MessageHandler.error("State container has no container!");
                 return;
@@ -131,10 +134,37 @@ public class HierarchicalStateController extends StateController {
             Query query = new Query();
             String defaultName = container.uniqueName(state.getName());
             query.addLine("Name", "Name", defaultName);
-            String[] choices = {"ptolemy.vergil.fsm.modal.Refinement",
-                                "ptolemy.vergil.fsm.modal.ModalController"};
-            query.addChoice("Class", "Class", choices,
-                    "ptolemy.vergil.fsm.modal.Refinement", true);
+
+            // See whether the configuration offers state refinements.
+            Configuration configuration
+                    = ((FSMGraphController)getController()).getConfiguration();
+            Entity refinements
+                    = configuration.getEntity("_stateRefinements");
+
+            // Default choices.
+            String[] choiceClasses = {"ptolemy.vergil.fsm.modal.Refinement",
+                    "ptolemy.vergil.fsm.modal.ModalController"};
+            String[] choiceNames = {"Default Refinement",
+                    "State Machine Refinement"};
+
+            // Check the configuration to see whether the default is overridden.
+            if (refinements instanceof CompositeEntity) {
+                // There is a specification.
+                List refinementList
+                        = ((CompositeEntity)refinements).entityList();
+                choiceNames = new String[refinementList.size()];
+                choiceClasses = new String[refinementList.size()];
+                Iterator iterator = refinementList.iterator();
+                int count = 0;
+                while (iterator.hasNext()) {
+                    Entity entity = (Entity)iterator.next();
+                    choiceNames[count] = entity.getName();
+                    choiceClasses[count++] = entity.getClass().getName();
+                }
+            }
+            query.addChoice(
+                    "Class", "Class", choiceNames, choiceNames[0], true);
+
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
             // will be a good start.
@@ -150,26 +180,42 @@ public class HierarchicalStateController extends StateController {
                         + newName + ".");
                 return;
             }
+            int choiceIndex = query.getIntValue("Class");
+            String newClass = choiceClasses[choiceIndex];
 
-            String newClass = query.getStringValue("Class");
-
-            String currentRefinements
-                = state.refinementName.getExpression();
+            String currentRefinements = state.refinementName.getExpression();
             if (currentRefinements == null || currentRefinements.equals("")) {
                 currentRefinements = newName;
             } else {
                 currentRefinements = currentRefinements.trim() + ", " + newName;
             }
-            String moml = "<group><entity name=\""
-                + newName
-                + "\" class=\""
-                + newClass
-                + "\"/>"
-                + "<entity name=\""
-                + state.getName(container)
-                + "\"><property name=\"refinementName\" value=\""
-                + currentRefinements
-                + "\"/></entity></group>";
+            String moml;
+            // The MoML we create depends on whether the configuration
+            // specified a set of prototype refinements.
+            if (refinements instanceof CompositeEntity) {
+                String choiceName = choiceNames[choiceIndex];
+                Entity template = ((CompositeEntity)refinements)
+                         .getEntity(choiceName);
+                String templateDescription = template.exportMoML(newName);
+                moml = "<group>"
+                         + templateDescription
+                         + "<entity name=\""
+                         + state.getName(container)
+                         + "\"><property name=\"refinementName\" value=\""
+                         + currentRefinements
+                         + "\"/></entity></group>";
+            } else {
+                moml = "<group><entity name=\""
+                         + newName
+                         + "\" class=\""
+                         + newClass
+                         + "\"/>"
+                         + "<entity name=\""
+                         + state.getName(container)
+                         + "\"><property name=\"refinementName\" value=\""
+                         + currentRefinements
+                         + "\"/></entity></group>";
+            }
             MoMLChangeRequest change = new MoMLChangeRequest(
                     this, container, moml)  {
                     protected void _execute() throws Exception {

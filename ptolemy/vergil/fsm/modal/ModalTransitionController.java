@@ -34,8 +34,10 @@
 package ptolemy.vergil.fsm.modal;
 
 import diva.graph.GraphController;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.gui.ComponentDialog;
@@ -47,6 +49,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.fsm.TransitionController;
+import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -110,7 +113,7 @@ public class ModalTransitionController extends TransitionController {
                 return;
             }
             final CompositeEntity container
-                = (CompositeEntity)immediateContainer.getContainer();
+                     = (CompositeEntity)immediateContainer.getContainer();
             if (container == null) {
                 MessageHandler.error("Transition container has no container!");
                 return;
@@ -120,9 +123,36 @@ public class ModalTransitionController extends TransitionController {
             Query query = new Query();
             String defaultName = container.uniqueName(transition.getName());
             query.addLine("Name", "Name", defaultName);
-            String[] choices = {"ptolemy.vergil.fsm.modal.TransitionRefinement" };
-            query.addChoice("Class", "Class", choices,
-                    "ptolemy.vergil.fsm.modal.TransitionRefinement", true);
+
+            // See whether the configuration offers transition refinements.
+            Configuration configuration
+                    = ((FSMGraphController)getController()).getConfiguration();
+            Entity refinements
+                    = configuration.getEntity("_transitionRefinements");
+
+            // Default choices.
+            String[] choiceClasses
+                    = {"ptolemy.vergil.fsm.modal.TransitionRefinement" };
+            String[] choiceNames = {"Default Refinement"};
+
+            // Check the configuration to see whether the default is overridden.
+            if (refinements instanceof CompositeEntity) {
+                // There is a specification.
+                List refinementList
+                        = ((CompositeEntity)refinements).entityList();
+                choiceNames = new String[refinementList.size()];
+                choiceClasses = new String[refinementList.size()];
+                Iterator iterator = refinementList.iterator();
+                int count = 0;
+                while (iterator.hasNext()) {
+                    Entity entity = (Entity)iterator.next();
+                    choiceNames[count] = entity.getName();
+                    choiceClasses[count++] = entity.getClass().getName();
+                }
+            }
+            query.addChoice(
+                    "Class", "Class", choiceNames, choiceNames[0], true);
+
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
             // will be a good start.
@@ -138,26 +168,43 @@ public class ModalTransitionController extends TransitionController {
                         + newName + ".");
                 return;
             }
-
-            String newClass = query.getStringValue("Class");
+            int choiceIndex = query.getIntValue("Class");
+            String newClass = choiceClasses[choiceIndex];
 
             String currentRefinements
-                = transition.refinementName.getExpression();
+                   = transition.refinementName.getExpression();
             if (currentRefinements == null || currentRefinements.equals("")) {
                 currentRefinements = newName;
             } else {
                 currentRefinements = currentRefinements.trim() + ", " + newName;
             }
-            String moml = "<group><entity name=\""
-                + newName
-                + "\" class=\""
-                + newClass
-                + "\"/>"
-                + "<relation name=\""
-                + transition.getName(container)
-                + "\"><property name=\"refinementName\" value=\""
-                + currentRefinements
-                + "\"/></relation></group>";
+            String moml;
+            // The MoML we create depends on whether the configuration
+            // specified a set of prototype refinements.
+            if (refinements instanceof CompositeEntity) {
+                String choiceName = choiceNames[choiceIndex];
+                Entity template = ((CompositeEntity)refinements)
+                         .getEntity(choiceName);
+                String templateDescription = template.exportMoML(newName);
+                moml = "<group>"
+                         + templateDescription
+                         + "<relation name=\""
+                         + transition.getName(container)
+                         + "\"><property name=\"refinementName\" value=\""
+                         + currentRefinements
+                         + "\"/></relation></group>";
+            } else {
+                moml = "<group><entity name=\""
+                         + newName
+                         + "\" class=\""
+                         + newClass
+                         + "\"/>"
+                         + "<relation name=\""
+                         + transition.getName(container)
+                         + "\"><property name=\"refinementName\" value=\""
+                         + currentRefinements
+                         + "\"/></relation></group>";
+            }
             MoMLChangeRequest change = new MoMLChangeRequest(
                     this, container, moml)  {
                     protected void _execute() throws Exception {
