@@ -416,7 +416,6 @@ public class Plot extends PlotBox {
 		    sawnlarg = true;
 		    if (sawbararg) {
 			setBars(false); 
-			setMarksStyle("none");
 			setImpulses(true);
 		    }
 		    setConnected(false);
