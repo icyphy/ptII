@@ -94,6 +94,27 @@ public class Query extends Panel {
         }
 
     /** Get the current value in the entry with the given name
+     *  and return as a double value.  If the value of the entry is not
+     *  a double, then throw an exception.
+     *  @return The value currently in the entry as a double.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception NumberFormatException If the value of the entry cannot
+     *   be converted to a double.  This is a runtime exception, so it
+     *   need not be declared explicitly.
+     */
+    public double doubleValue(String name)
+            throws NoSuchElementException, NumberFormatException {
+        TextField result = (TextField)(_entries.get(name));
+        if(result == null) {
+            throw new NoSuchElementException("No item named \"" +
+                    name + " \" in the query box.");
+        }
+        return (new Double(result.getText())).doubleValue();
+    }
+
+    /** Get the current value in the entry with the given name
      *  and return as an integer.  If the value of the entry is not
      *  an integer, then throw an exception.
      *  @return The value currently in the entry as an integer.
@@ -105,15 +126,14 @@ public class Query extends Panel {
      *   need not be declared explicitly.
      */
     public int intValue(String name)
-            throws NoSuchElementException, NumberFormatException
-        {
-            TextField result = (TextField)(_entries.get(name));
-            if(result == null) {
-                throw new NoSuchElementException("No item named \"" +
-                        name + " \" in the query box.");
-            }
-            return (new Integer(result.getText())).intValue();
+            throws NoSuchElementException, NumberFormatException {
+        TextField result = (TextField)(_entries.get(name));
+        if(result == null) {
+            throw new NoSuchElementException("No item named \"" +
+                    name + " \" in the query box.");
         }
+        return (new Integer(result.getText())).intValue();
+    }
 
     /** Create a single-line entry box with the specified name, label, and
      *  default value.  The width will be the default width.
