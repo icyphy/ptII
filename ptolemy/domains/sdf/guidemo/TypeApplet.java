@@ -114,16 +114,16 @@ public class TypeApplet extends SDFApplet {
 
 	    _buildType2String();
 
-	    //setLayout(new GridLayout(3, 1));
-            setLayout(new BorderLayout());
+	    setLayout(new GridLayout(3, 1));
+//            setLayout(new BorderLayout());
             _ioPanel.setLayout(new GridLayout(1, 2));
-            //add(_ioPanel);
-	    //add(_schemPanel);
+            add(_ioPanel);
+	    add(_schemPanel);
 
-            add(BorderLayout.NORTH,_ioPanel);
-            _ioPanel.setSize(new Dimension(800,200));
-	    add(BorderLayout.CENTER,_schemPanel);
-            _schemPanel.setSize(new Dimension(800,250));
+//            add(BorderLayout.NORTH,_ioPanel);
+//            _ioPanel.setSize(new Dimension(800,200));
+//	    add(BorderLayout.CENTER,_schemPanel);
+//            _schemPanel.setSize(new Dimension(800,250));
 
             Panel controlPanel = new Panel();
 	    controlPanel.setLayout(new BorderLayout());
@@ -134,8 +134,8 @@ public class TypeApplet extends SDFApplet {
 
             JPanel visPanel = new JPanel();
             visPanel.setLayout(new BorderLayout());
-            //add(visPanel);
-            add(BorderLayout.SOUTH,visPanel);
+            add(visPanel);
+//            add(BorderLayout.SOUTH,visPanel);
 
             visPanel.add(jgraph, BorderLayout.WEST);
             jgraph.setPreferredSize(new Dimension(400, 300));
@@ -336,25 +336,30 @@ public class TypeApplet extends SDFApplet {
 	    _ramp1.init.setContainer(null);
 	    Parameter init1 = new Parameter(_ramp1, "init");
 	    _ramp1.init = init1;
-	    init1.setExpression(_ramp1InitQuery.stringValue("ramp1init"));
+//	    init1.setExpression(_ramp1InitQuery.stringValue("ramp1init"));
+	    init1.setExpression(_query.stringValue("ramp1init"));
 
 	    _ramp1.step.setContainer(null);
 	    Parameter step1 = new Parameter(_ramp1, "step");
 	    _ramp1.step = step1;
-	    step1.setExpression(_ramp1StepQuery.stringValue("ramp1step"));
+//	    step1.setExpression(_ramp1StepQuery.stringValue("ramp1step"));
+	    step1.setExpression(_query.stringValue("ramp1step"));
 
 	    _ramp2.init.setContainer(null);
 	    Parameter init2 = new Parameter(_ramp2, "init");
 	    _ramp2.init = init2;
-	    init2.setExpression(_ramp2InitQuery.stringValue("ramp2init"));
+//	    init2.setExpression(_ramp2InitQuery.stringValue("ramp2init"));
+	    init2.setExpression(_query.stringValue("ramp2init"));
 
 	    _ramp2.step.setContainer(null);
 	    Parameter step2 = new Parameter(_ramp2, "step");
 	    _ramp2.step = step2;
-	    step2.setExpression(_ramp2StepQuery.stringValue("ramp2step"));
+//	    step2.setExpression(_ramp2StepQuery.stringValue("ramp2step"));
+	    step2.setExpression(_query.stringValue("ramp2step"));
 
 	    _expr.expression.setToken(
-			new StringToken(_exprQuery.stringValue("expr")));
+//			new StringToken(_exprQuery.stringValue("expr")));
+			new StringToken(_query.stringValue("expr")));
             
             // Reinitialize the trace display
             tracePane.getTraceView().clear();
@@ -378,21 +383,27 @@ public class TypeApplet extends SDFApplet {
 	Panel runControlPanel = _createRunControls(1);
 	controlPanel.add("North", runControlPanel);
 
-	Panel paramPanel = new Panel();
-	paramPanel.setLayout(new GridLayout(6, 1));
-	controlPanel.add("Center", paramPanel);
+//	Panel paramPanel = new Panel();
+//	paramPanel.setLayout(new GridLayout(6, 1));
+//	controlPanel.add("Center", paramPanel);
+	controlPanel.add("Center", _query);
 
-	_ramp1InitQuery.line("ramp1init", "Ramp1 Initial Value", "0", 20);
-	_ramp1StepQuery.line("ramp1step", "Ramp1 Step Size", "1", 20);
-	_ramp2InitQuery.line("ramp2init", "Ramp2 Init Value", "0", 20);
-	_ramp2StepQuery.line("ramp2step", "Ramp2 Step Size", "1", 20);
-	_exprQuery.line("expr", "Expression", "input1 + input2", 20);
+//	_ramp1InitQuery.line("ramp1init", "Ramp1 Initial Value", "0", 20);
+//	_ramp1StepQuery.line("ramp1step", "Ramp1 Step Size", "1", 20);
+//	_ramp2InitQuery.line("ramp2init", "Ramp2 Init Value", "0", 20);
+//	_ramp2StepQuery.line("ramp2step", "Ramp2 Step Size", "1", 20);
+//	_exprQuery.line("expr", "Expression", "input1 + input2", 20);
+	_query.line("ramp1init", "Ramp1 Initial Value", "0");
+	_query.line("ramp1step", "Ramp1 Step Size", "1");
+	_query.line("ramp2init", "Ramp2 Init Value", "0");
+	_query.line("ramp2step", "Ramp2 Step Size", "1");
+	_query.line("expr", "Expression", "input1 + input2");
 
-	paramPanel.add(_ramp1InitQuery);
-	paramPanel.add(_ramp1StepQuery);
-	paramPanel.add(_ramp2InitQuery);
-	paramPanel.add(_ramp2StepQuery);
-	paramPanel.add(_exprQuery);
+//	paramPanel.add(_ramp1InitQuery);
+//	paramPanel.add(_ramp1StepQuery);
+//	paramPanel.add(_ramp2InitQuery);
+//	paramPanel.add(_ramp2StepQuery);
+//	paramPanel.add(_exprQuery);
 
 	Panel displayPanel = new Panel();
 	displayPanel.add(new Label("Display using"));
@@ -401,7 +412,8 @@ public class TypeApplet extends SDFApplet {
 	_printerBox = new Checkbox("Printer", displayGroup, false);
 	displayPanel.add(_plotterBox);
 	displayPanel.add(_printerBox);
-	paramPanel.add(displayPanel);
+//	paramPanel.add(displayPanel);
+	controlPanel.add("South", displayPanel);
     }
 
     private void _buildModel()
@@ -531,11 +543,12 @@ public class TypeApplet extends SDFApplet {
     private TimePlot _plotter;
     private Print _printer;
 
-    private Query _ramp1InitQuery = new Query();
-    private Query _ramp1StepQuery = new Query();
-    private Query _ramp2InitQuery = new Query();
-    private Query _ramp2StepQuery = new Query();
-    private Query _exprQuery = new Query();;
+//    private Query _ramp1InitQuery = new Query();
+//    private Query _ramp1StepQuery = new Query();
+//    private Query _ramp2InitQuery = new Query();
+//    private Query _ramp2StepQuery = new Query();
+//    private Query _exprQuery = new Query();;
+    private Query _query = new Query();
 
     private String _ramp1Type = "NaT";
     private String _ramp2Type = "NaT";
