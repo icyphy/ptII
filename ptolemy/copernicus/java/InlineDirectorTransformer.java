@@ -34,7 +34,7 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 
 import soot.Body;
 import soot.Hierarchy;
@@ -252,8 +252,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 schedule =
                     director.getScheduler().getSchedule().actorIterator();
             } catch (Exception ex) {
-                throw new RuntimeException(KernelException
-                        .stackTraceToString(ex));
+                throw new KernelRuntimeException(ex, 
+                        "Failed to get schedule");
             }
             while(schedule.hasNext()) {
                 Entity entity = (Entity)schedule.next();
