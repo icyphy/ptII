@@ -844,9 +844,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
         /** Append moml to the given buffer that disconnects a link with the
          *  given head, tail, and relation. Names in the returned moml will be
-         *  relative to the given container.
+         *  relative to the given container. If either linkHead or linkTail
+         *  is null, then nothing will be appended to the moml buffer.
+         *  @return True if any MoML is appended to the moml argument.
          */
-        private void _unlinkMoML(
+        private boolean _unlinkMoML(
                 NamedObj container,
                 StringBuffer moml,
                 NamedObj linkHead,
@@ -896,8 +898,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                             "Unlink failed: " +
                             "Head = " + head + ", Tail = " + tail);
                 }
+                return true;
             } else {
                 // No unlinking to do.
+                return false;
             }
         }
 
@@ -905,8 +909,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  given head, tail, and relation.  Names in the returned moml will be
          *  relative to the given container.  This may require adding an
          *  anonymous relation to the ptolemy model.
-         *  If no relation need be added, then
-         *  null is returned.
+         *  If no relation need be added, then return null.
          */
         private String _linkMoML(
                 NamedObj container,
@@ -1024,14 +1027,19 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             String relationName = "";
 
+            // Flag specifying whether we have actually created any MoML.
+            boolean appendedMoML = false;
             try {
                 // create moml to unlink any existing.
-                _unlinkMoML(container, moml, linkHead, linkTail, linkRelation);
+                appendedMoML = _unlinkMoML(
+                        container, moml, linkHead, linkTail, linkRelation);
 
                 // create moml to make the new links.
-                relationName =
-                    _linkMoML(container, moml, failmoml,
-                            (NamedObj)newLinkHead, linkTail);
+                relationName = _linkMoML(
+                        container, moml, failmoml,
+                        (NamedObj)newLinkHead, linkTail);
+                        
+                appendedMoML = appendedMoML || (relationName != null);
             } catch (Exception ex) {
                 // The link is bad... remove it.
                 _linkSet.remove(link);
@@ -1046,6 +1054,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             failmoml.append("</group>\n");
 
             final String relationNameToAdd = relationName;
+            final boolean nonEmptyMoML = appendedMoML;
 
             // Here the source IS the graph model, because we need to
             // handle the event dispatch specially:  An event is only
@@ -1058,7 +1067,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         container,
                         moml.toString()) {
                         protected void _execute() throws Exception {
-                            super._execute();
+                            // If nonEmptyMoML is false, then the MoML code is empty.
+                            // Do not execute it, as this will put spurious empty
+                            // junk on the undo stack.
+                            if (nonEmptyMoML) {
+                                super._execute();
+                            }
                             link.setHead(newLinkHead);
                             if (relationNameToAdd != null) {
                                 ComponentRelation relation =
@@ -1113,14 +1127,19 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             String relationName = "";
 
+            // Flag specifying whether we have actually created any MoML.
+            boolean appendedMoML = false;
             try {
                 // create moml to unlink any existing.
-                _unlinkMoML(container, moml, linkHead, linkTail, linkRelation);
+                appendedMoML = _unlinkMoML(
+                        container, moml, linkHead, linkTail, linkRelation);
 
                 // create moml to make the new links.
-                relationName =
-                    _linkMoML(container, moml, failmoml,
-                            linkHead, (NamedObj)newLinkTail);
+                relationName = _linkMoML(
+                        container, moml, failmoml,
+                        linkHead, (NamedObj)newLinkTail);
+
+                appendedMoML = appendedMoML || (relationName != null);
             } catch (Exception ex) {
                 // The link is bad... remove it.
                 _linkSet.remove(link);
@@ -1135,6 +1154,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             failmoml.append("</group>\n");
 
             final String relationNameToAdd = relationName;
+            final boolean nonEmptyMoML = appendedMoML;
 
             // Here the source IS the graph model, because we need to
             // handle the event dispatch specially:  An event is only
@@ -1147,7 +1167,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         container,
                         moml.toString()) {
                         protected void _execute() throws Exception {
-                            super._execute();
+                            // If nonEmptyMoML is false, then the MoML code is empty.
+                            // Do not execute it, as this will put spurious empty
+                            // junk on the undo stack.
+                            if (nonEmptyMoML) {
+                                super._execute();
+                            }
                             link.setTail(newLinkTail);
                             if (relationNameToAdd != null) {
                                 ComponentRelation relation =
@@ -1178,7 +1203,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** This change listener is responsible for dispatching graph events
          *  when an edge is moved.  It works the same for heads and tails.
          */
-        // Nested Inner Classes!  I love Java!
         public class LinkChangeListener implements ChangeListener {
             public LinkChangeListener(Link link, CompositeEntity container,
                     StringBuffer failMoML) {

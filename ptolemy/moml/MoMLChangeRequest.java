@@ -203,6 +203,17 @@ public class MoMLChangeRequest extends ChangeRequest {
      *   while evaluating the request.
      */
     protected void _execute() throws Exception {
+        // NOTE: To see what is being parsed, change _DEBUG to true.
+        if (_DEBUG) {
+            System.out.println("****** Executing MoML change:");
+            System.out.println(getDescription());
+            if (_context != null) {
+                    System.out.println(
+                    "------ in context "
+                    + _context.getFullName());
+            }
+        }
+
         // Check to see whether there is a parser...
         if (_context != null) {
             _parser = ParserAttribute.getParser(_context);
@@ -213,15 +224,6 @@ public class MoMLChangeRequest extends ChangeRequest {
             // happen if _context is null).
             _parser = new MoMLParser();
         }
-        // NOTE: To see what is being parsed, uncomment the following:
-        /*
-          System.out.println("****** Executing MoML change:");
-          System.out.println(getDescription());
-          if (_context != null) {
-              System.out.println("------ in context " + _context.getFullName());
-          }
-        */
-
         try {
             _parser._propagating = _propagating;
 
@@ -292,6 +294,9 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     // The URL relative to which external references should be resolved.
     private URL _base;
+    
+    // Flag to print out information about what's being done.
+    private static boolean _DEBUG = false;
 
     // The parser given in the constructor.
     private MoMLParser _parser;

@@ -428,12 +428,6 @@ public class MoMLParser extends HandlerBase {
      *   parse.
      */
     public void endDocument() throws Exception {
-        if (_toplevel != null) {
-            // Set the top level back to the default
-            // found in startDocument.
-            _toplevel.setDeferChangeRequests(_previousDeferStatus);
-            _toplevel.executeChangeRequests();
-        }
         if (_handler != null) {
             _handler.enableErrorSkipping(false);
         }
@@ -507,6 +501,14 @@ public class MoMLParser extends HandlerBase {
                 // No handler, or cancel button pushed.
                 throw ex;
             }
+        }
+        // Execute any change requests that might have been queued
+        // as a consequence of this change request.
+        if (_toplevel != null) {
+            // Set the top level back to the default
+            // found in startDocument.
+            _toplevel.setDeferChangeRequests(_previousDeferStatus);
+            _toplevel.executeChangeRequests();
         }
     }
 

@@ -29,6 +29,8 @@
 
 package ptolemy.moml;
 
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.UndoAction;
 
@@ -52,7 +54,7 @@ perform the undo.
 @version $Id$
 @since Ptolemy II 2.1
 */
-public class MoMLUndoEntry implements UndoAction {
+public class MoMLUndoEntry implements UndoAction, ChangeListener {
 
     /** Create an undo entry comprised of the specified MoML code.
      *  @param context The context in which to execute the undo.
@@ -66,6 +68,24 @@ public class MoMLUndoEntry implements UndoAction {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Do nothing. This method is called when a change is successfully
+     *  executed.
+     *  @param change The change that was successfully executed.
+     */
+    public void changeExecuted(ChangeRequest change) {
+        // In case this has been set before...
+        _exception = null;
+    }
+
+    /** Record the exception so that execute() can throw it.
+     *  @param change The change that failed.
+     *  @param exception The exception that occurred.
+     *  @see #execute()
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        _exception = exception;
+    }
+
     /** Parse the MoML specified in the constructor call in the context
      *  specified in the constructor call using the parser associated
      *  with the context (as determined by ParserAttribute.getParser()).
@@ -77,8 +97,21 @@ public class MoMLUndoEntry implements UndoAction {
         MoMLChangeRequest request = new MoMLChangeRequest(
                 this, _context, _undoMoML);
         // An undo entry is always undoable so that redo works.
+        request.addChangeListener(this);
         request.setUndoable(true);
         request.execute();
+        // The above call will result in a call to changeFailed()
+        // if the execution fails.
+        if (_exception != null) {
+            throw _exception;
+        }
+    }
+    
+    /** Return the MoML of the undo action.
+     *  @return MoML for the undo action.
+     */
+    public String toString() {
+        return _undoMoML + "\n...in context: " + _context.getFullName();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -86,6 +119,9 @@ public class MoMLUndoEntry implements UndoAction {
 
     // The context in which to execute the undo.
     private NamedObj _context;
+    
+    // Exception that occurs during a change.
+    private Exception _exception = null;
 
     // The MoML specification of the undo.
     private String _undoMoML;

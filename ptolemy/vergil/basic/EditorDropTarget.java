@@ -48,7 +48,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DropListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
@@ -242,7 +241,10 @@ public class EditorDropTarget extends DropTarget {
             }
 
             // Create the MoML change request to instantiate the new objects.
+            // Count MoML change requests so that they can be undone all together.
+            int count = 0;
             while (iterator.hasNext()) {
+                count++;
                 final NamedObj dropObj = (NamedObj) iterator.next();
                 final String name;
                 if (dropObj instanceof Singleton) {
@@ -414,10 +416,10 @@ public class EditorDropTarget extends DropTarget {
                 // happens.  Is this the right behavior?
                 if (request != null) {
                     request.setUndoable(true);
-                    container.requestChange(request);
-                    if (container instanceof DropListener) {
-                        ((DropListener)container).dropped();
+                    if (count > 1) {
+                        request.setMergeWithPreviousUndo(true);
                     }
+                    container.requestChange(request);
                 }
             }
             dtde.dropComplete(true); //success!

@@ -100,35 +100,38 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
 
     /** When the mouse is released after dragging, mark the frame modified
-     *  and update the panner.
+     *  and update the panner, and generate an undo entry for the move.
+     *  If no movement has occured, then do nothing.
      *  @param e The release event.
      */
     public void mouseReleased(LayerEvent e) {
-        // FIXME: This method needed to be hacked so that undo would work.
         // We should factor out the common code in this method and in
         // transform().
 
-        // Work out the transform the drag performed
+        // Work out the transform the drag performed.
         double[] dragEnd = _getConstrainedPoint(e);
         double[] transform = new double[2];
         transform[0] = _dragStart[0] - dragEnd[0];
         transform[1] = _dragStart[1] - dragEnd[1];
+        
+        if (transform[0] == 0.0 && transform[1] == 0.0) return;
 
         // Note that this now goes through the MoML parser so it is
-        // undoable
-        //PtolemyGraphController graphController
-        //         = (PtolemyGraphController)_controller.getController();
-        //GraphFrame frame = graphController.getFrame();
+        // undoable.
+        
         BasicGraphController graphController
-            = (BasicGraphController)_controller.getController();
-        BasicGraphFrame frame = graphController.getFrame();
+                = (BasicGraphController)_controller.getController();
+        BasicGraphFrame frame
+                = graphController.getFrame();
 
-        SelectionModel model = graphController.getSelectionModel();
-        //GraphModel graphModel = graphController.getGraphModel();
-        AbstractBasicGraphModel graphModel =
-            (AbstractBasicGraphModel)graphController.getGraphModel();
-        Object selection[] = model.getSelectionAsArray();
-        Object userObjects[] = new Object[selection.length];
+        SelectionModel model
+                = graphController.getSelectionModel();
+        AbstractBasicGraphModel graphModel
+                = (AbstractBasicGraphModel)graphController.getGraphModel();
+        Object selection[]
+                = model.getSelectionAsArray();
+        Object userObjects[]
+                = new Object[selection.length];
         // First get the user objects from the selection.
         for (int i = 0; i < selection.length; i++) {
             userObjects[i] = ((Figure)selection[i]).getUserObject();
@@ -142,20 +145,24 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 Object userObject = ((Figure)selection[i]).getUserObject();
                 if (graphModel.isEdge(userObject) ||
                         graphModel.isNode(userObject)) {
-                    NamedObj actual =
-                        (NamedObj)graphModel.getSemanticObject(userObject);
+                    NamedObj actual
+                            = (NamedObj)graphModel.getSemanticObject(userObject);
                     if (actual != null) {
                         namedObjSet.add(actual);
-                    }
-                    else {
+                    } else {
                         // Special case, may need to handle by not going to
-                        // MoML and which may not be undoable
-                        System.out.println("Object with no semantic object , class: " + userObject.getClass().getName());
+                        // MoML and which may not be undoable.
+                        // FIXME: This is no way to handle it...
+                        System.out.println(
+                                "Object with no semantic object , class: "
+                                + userObject.getClass().getName());
                     }
                 }
             }
         }
-        // Generate the MoML to carry out the deletion
+
+        // Generate the MoML to carry out undo.
+        // has actually changed.
         StringBuffer moml = new StringBuffer();
         moml.append("<group>\n");
         Iterator elements = namedObjSet.iterator();
@@ -193,19 +200,13 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             moml.append("</" + containingElementName + ">\n");
         }
         moml.append("</group>\n");
+
         // Finally create and register the undo entry;
-        // NOTE: this is a bit of a hack but the only easy way I could
-        // find to do this without making all the incremental moves
-        // also go through the parser
-        try {
-            CompositeEntity toplevel = (CompositeEntity)graphModel.getRoot();
-            MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel, moml.toString());
-            UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(toplevel);
-            undoInfo.push(newEntry);
-        }
-        catch (Exception ex) {
-            // Unable to queue undo
-        }
+        CompositeEntity toplevel = (CompositeEntity)graphModel.getRoot();
+        MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel, moml.toString());
+        UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(toplevel);
+        undoInfo.push(newEntry);
+        
         if (frame != null) {
             // NOTE: Use changeExecuted rather than directly calling
             // setModified() so that the panner is also updated.
