@@ -1,24 +1,34 @@
 #!/bin/sh
 # $Id$
 # Author: Christopher Hylands
+#
 # This script renames files.  It tries to fix the package and imports
-# as well.
+# as well.  This script does not check the files into CVS.
+#
 # Typically, this script is run with the following commands:
-#   find . -name "*java*" -exec rm {} \; ; cvs update
-#   ~/ptII/adm/bin/renamefiles
+#   cd $PTII/ptolemy/vergil
+#   find . \( -name "*java*" -o -name "makefile" \) -exec rm {} \; ; cvs update
+#   $PTII/adm/bin/renamefiles
 #   make clean fast
 
 
 # EDIT THE NEXT LINE - New directories to create.
 newdirs="ptolemy/vergil/actor ptolemy/vergil/basic ptolemy/vergil/fsm ptolemy/vergil/fsm/ia ptolemy/vergil/fsm/modal ptolemy/vergil/icon ptolemy/vergil/kernel"
 
+# maketemplate names the template makefile we use to create new makefiles.
+maketemplate=$PTII/adm/bin/renamefiles.mk.in
+
 # EDIT THE FILE NAMED by classesToMove
 # This file contains the classes to move in the format
-# foo.new.bar  foo.old.bif
-# where foo.new.bar is the new class and foo.old.bif is the old class
+# foo.new.Bar  foo.old.Bif
+# where foo.new.Bar is the new class and foo.old.Bif is the old class
 #
 classesToMove=$PTII/adm/bin/renamefiles.files
 
+
+# Hopefully, you need not edit below here.
+
+####################################################################
 # Create the new directories
 for dir in $newdirs
 do
@@ -28,7 +38,7 @@ do
 done
 
 ####################################################################
-echo "Fixing up makefiles"
+echo "### Fixing up makefiles"
 destinationClasses=`awk '{print $2}' $classesToMove`
 
 for destinationClass in $destinationClasses
@@ -48,10 +58,8 @@ done
 
 
 ####################################################################
-maketemplate=$PTII/adm/bin/renamefiles.mk.in
-
-echo "Create the new makefiles if necessary, "
-echo "   using $maketemplate"
+echo "### Create the new makefiles if necessary, "
+echo "###   using $maketemplate"
 
 for dir in $newdirs
 do
@@ -65,7 +73,7 @@ do
 done
 
 ####################################################################
-echo "Add the new classes to the makefile if necessary"
+echo "### Add the new classes to the makefile if necessary"
 sourceClasses=`awk '{print $1}' $classesToMove`
 
 for sourceClass in $sourceClasses
@@ -83,6 +91,7 @@ do
 	    echo "$sourceMakefile already contains $sourceShortFile"
 	else    
 	    # FIXME: these are not in alphabetical order
+	    
 	    awk '{if ( $0 ~ /^JSRCS/ ) {
 		    print $0
 		    print "	" sourceShortFile " \\"
@@ -107,7 +116,8 @@ sedScript=/tmp/renamefiles-sedScript
 
 # Rename a file and change the package
 # Usage: rename vergil.new.Foo vergil.old.Bar
-# This is a shell procedure that gets called later
+# This is a shell procedure that gets called later, once for each
+# rename operation.
 rename() {
     destinationClass=$1
     sourceClass=$2
@@ -190,21 +200,22 @@ rename() {
 # and over again below. 
 rm -f $sedScript
 
-# For testing
+# Uncomment the next two lines for testing purposes
 #rename ptolemy.vergil.actor.ActorGraphFrame ptolemy.vergil.ptolemy.kernel.KernelGraphFrame
 #exit
 
-# Read in the files to be converted and generate a script
+# Read in the files to be converted and generate a script.
 renameScript=/tmp/renamefiles-renameScript
 awk '{print "rename", $1, $2}' $classesToMove >  $renameScript
 
-echo "Generating new files"
+echo "### Generating new files"
 
 # The . runs the script in this context
 . $renameScript
 
 ####################################################################
-echo "Doing substitutions in $PTII/ptolemy/vergil"
+echo "### Doing substitutions in $PTII/ptolemy/vergil"
+
 javaFiles=`find $PTII/ptolemy/vergil -name "*.java" -print`
 for javaFile in $javaFiles
 do
@@ -216,10 +227,11 @@ done
 
     
 ####################################################################
-echo "Fixing up imports"
+echo "### Fixing up imports"
+
 # If a file contains one of the new classes and it does not
 # have an import and it is not in the same package where the 
-# new directory resides, then we add an import
+# new directory resides, then we add an import.
 
 # Generate a regular expression that contains all the new classnames.
 # We use this to speed up the search for possible classes that we 
@@ -233,8 +245,6 @@ classregex=`awk '{nf = split($1,f,".");
 		}' $classesToMove `
 
 echo "classregex=$classregex"
-
-
 
 newClasses=`awk '{print $1}' $classesToMove`
 for javaFile in $javaFiles
@@ -264,6 +274,9 @@ do
 		retval=$?
 		if [ $retval = 0 ]; then
 		    echo "$javaFile needs to import $newClass"
+		    # FIXME: the imports are not added in the proper
+		    # alphabetical order.  We should probably post process
+		    # these.
 		    awk '{  if ($0 ~ /^package/) {
 				print $0
 				sawPackage=1

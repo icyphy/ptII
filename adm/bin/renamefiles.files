@@ -31,11 +31,6 @@ ptolemy.vergil.fsm.modal.ModalModel	ptolemy.vergil.ptolemy.fsm.modal.ModalModel
 ptolemy.vergil.fsm.modal.ModalPort	ptolemy.vergil.ptolemy.fsm.modal.ModalPort
 ptolemy.vergil.fsm.modal.Refinement		ptolemy.vergil.ptolemy.fsm.modal.Refinement
 ptolemy.vergil.fsm.modal.RefinementPort		ptolemy.vergil.ptolemy.fsm.modal.RefinementPort
-ptolemy.vergil.fsm.modal		ptolemy.vergil.ptolemy.fsm.modal
-ptolemy.vergil.fsm.modal		ptolemy.vergil.ptolemy.fsm.modal
-ptolemy.vergil.fsm.modal		ptolemy.vergil.ptolemy.fsm.modal
-ptolemy.vergil.fsm.modal		ptolemy.vergil.ptolemy.fsm.modal
-ptolemy.vergil.fsm.modal		ptolemy.vergil.ptolemy.fsm.modal
 ptolemy.vergil.icon.EditorIcon			ptolemy.vergil.toolbox.EditorIcon
 ptolemy.vergil.icon.ValueIcon			ptolemy.vergil.toolbox.ValueIcon
 ptolemy.vergil.icon.XMLIcon			ptolemy.vergil.toolbox.XMLIcon
