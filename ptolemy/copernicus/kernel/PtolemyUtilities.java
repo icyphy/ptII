@@ -1132,6 +1132,9 @@ public class PtolemyUtilities {
     // ptolemy.kernel.util.NamedObj.getName
     public static SootMethod getNameMethod;
 
+    // ptolemy.kernel.attributes.URIAttribute.getModelURI(NamedObj) method.
+    public static SootMethod getModelURIMethod;
+
     // SootMethod representing
     // ptolemy.kernel.Entity.getPort
     public static SootMethod getPortMethod;
@@ -1255,7 +1258,10 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.kernel.util.Settable class.
     public static Type settableType;
 
-    //The soot class representing java.lang.system
+    // Soot class representing the ptolemy.kernel.util.StringAttribute class.
+    public static SootClass stringAttributeClass;
+
+    // The soot class representing java.lang.system
     public static SootClass stringClass;
 
     public static SootField stringTypeField;
@@ -1363,7 +1369,10 @@ public class PtolemyUtilities {
             namedObjClass.getMethod("ptolemy.kernel.util.NamedObj toplevel()");
         getContainerMethod =
             Scene.v().getMethod("<ptolemy.kernel.util.Nameable: ptolemy.kernel.util.Nameable getContainer()>");
-
+        getModelURIMethod =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.attributes.URIAttribute")
+            .getMethod("java.net.URI getModelURI(ptolemy.kernel.util.NamedObj)");
+     
 
         attributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
@@ -1378,6 +1387,9 @@ public class PtolemyUtilities {
             settableClass.getMethod("java.lang.String getExpression()");
         validateMethod =
             settableClass.getMethod("void validate()");
+
+        stringAttributeClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.StringAttribute");
 
         variableClass =
             Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");

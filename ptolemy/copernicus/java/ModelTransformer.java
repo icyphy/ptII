@@ -715,13 +715,37 @@ public class ModelTransformer extends SceneTransformer {
         }
     }
 
-    public static String getInstanceClassName(Entity entity, Map options) {
+    /**
+     *  Associate the given class, which has been created, with the
+     *  given attribute.  This allows references to the given class to
+     *  be resolved as references to the given attribute.
+     */
+    public static void addAttributeForClass(
+            SootClass theClass, Attribute attribute) {
+        _classToObjectMap.put(theClass, attribute);
+    }
+
+    /**
+     *  @exception RuntimeException If no field was created for the
+     *  given attribute.
+     */
+    public static Attribute getAttributeForClass(SootClass theClass) {
+        Attribute attribute = (Attribute) _classToObjectMap.get(theClass);
+        if (attribute != null) {
+            return attribute;
+        } else {
+            throw new RuntimeException(
+                    "Failed to find attribute for class " + theClass);
+        }
+    }
+
+    public static String getInstanceClassName(NamedObj object, Map options) {
         // Note that we use sanitizeName because entity names can have
         // spaces, and append leading characters because entity names
         // can start with numbers.
         return Options.getString(options, "targetPackage")
             + ".CG"
-            + StringUtilities.sanitizeName(entity.getName(entity.toplevel()));
+            + StringUtilities.sanitizeName(object.getName(object.toplevel()));
     }
 
     /** Return the model class created during the most recent
@@ -934,6 +958,12 @@ public class ModelTransformer extends SceneTransformer {
                     ex.getMessage());
         }
 
+        // Some indexes, to make it easier to resolve an actor object,
+        // given the objects class, and vice versa.
+        _entityToFieldMap = new HashMap();
+        _fieldToEntityMap = new HashMap();
+        _classToObjectMap = new HashMap();
+
         // Create a class for the model
         String modelClassName = getModelClassName(_model, options);
 
@@ -941,9 +971,6 @@ public class ModelTransformer extends SceneTransformer {
                 _model, modelClassName, options);
 
         // Create static instance fields for each actor.
-        _entityToFieldMap = new HashMap();
-        _fieldToEntityMap = new HashMap();
-        _classToObjectMap = new HashMap();
         _createEntityInstanceFields(_modelClass, _model, options);
     }
 

@@ -29,6 +29,7 @@
 
 package ptolemy.copernicus.java;
 
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -101,7 +102,7 @@ public class NamedObjEliminator extends SceneTransformer {
         int localCount = 0;
         System.out.println("NamedObjEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
-
+ 
         // First remove most method invocations that are not
         // specialInvokes.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
@@ -197,6 +198,30 @@ public class NamedObjEliminator extends SceneTransformer {
                                             unit);
                                 }
                                 body.getUnits().remove(unit);
+                            } else if (expr.getMethod().getSubSignature().equals(
+                                    PtolemyUtilities.getModelURIMethod.getSubSignature())) {
+                                if (unit instanceof AssignStmt) {
+                                    SootClass uriClass = Scene.v().loadClassAndSupport("java.net.URI");
+                                    RefType type = RefType.v(uriClass);
+                                    SootMethod initMethod =
+                                        uriClass.getMethod("void <init>(java.lang.String)");
+                                    Local local = (Local)((AssignStmt)unit).getLeftOp();
+                                    String uriString = URIAttribute.getModelURI(_model).toString();
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    local,
+                                                    Jimple.v().newNewExpr(
+                                                            type)),
+                                            unit);
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newInvokeStmt(
+                                                    Jimple.v().newSpecialInvokeExpr(
+                                                            local, 
+                                                            initMethod,
+                                                            StringConstant.v(uriString))),
+                                            unit);
+                                }
+                                body.getUnits().remove(unit);
                             }
                         }
                     }
@@ -215,7 +240,9 @@ public class NamedObjEliminator extends SceneTransformer {
             if (SootUtilities.derivesFrom(theClass,
                     PtolemyUtilities.actorClass) ||
                     SootUtilities.derivesFrom(theClass,
-                            PtolemyUtilities.compositeActorClass)) {
+                            PtolemyUtilities.compositeActorClass) ||
+                    SootUtilities.derivesFrom(theClass,
+                            PtolemyUtilities.attributeClass)) {
                 System.out.println("changing superclass for " + theClass);
                 theClass.setSuperclass(PtolemyUtilities.objectClass);
                 // Fix the constructor for the actor to take no

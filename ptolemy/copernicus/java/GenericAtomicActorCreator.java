@@ -36,6 +36,10 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.data.expr.Variable;
 
 import soot.FastHierarchy;
 import soot.Hierarchy;
@@ -84,7 +88,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         SootClass entityClass = Scene.v().loadClassAndSupport(className);
         entityClass.setLibraryClass();
 
-        // create a class for the entity instance.
+        // Create a class for the entity instance.
         EntitySootClass entityInstanceClass =
             new EntitySootClass(entityClass, newClassName,
                     Modifier.PUBLIC);
@@ -94,7 +98,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         // Record everything that the class creates.
         HashSet tempCreatedSet = new HashSet();
 
-        // populate the method to initialize this instance.
+        // Populate the method to initialize this instance.
         // We need to put something here before folding so that
         // the folder can deal with it.
         SootMethod initMethod = entityInstanceClass.getInitMethod();
@@ -161,6 +165,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         // special casing.
         ModelTransformer.implementExecutableInterface(entityInstanceClass);
 
+        _copyAttributesOtherThanVariable(entity, theClass, options);
+
         {
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
@@ -212,6 +218,45 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                 entityInstanceClass.getInitMethod());
 
         return entityInstanceClass;
+    }
+
+    private static void _copyAttributesOtherThanVariable(
+            Entity entity, SootClass entityClass, Map options) {
+        // Loop over all the attributes of the actor
+        for(Iterator attributes = entity.attributeList(StringAttribute.class).iterator();
+            attributes.hasNext();) {
+            Attribute attribute = (Attribute) attributes.next();
+            
+            if((attribute instanceof StringAttribute) && !(attribute instanceof Variable)) {
+                String className = attribute.getClass().getName();
+                
+                SootClass attributeClass = Scene.v().loadClassAndSupport(className);
+                attributeClass.setLibraryClass();
+                String newClassName = ModelTransformer.getInstanceClassName(attribute, options);
+                
+                // Create a new class for the attribute.
+                SootClass newClass = SootUtilities.copyClass(attributeClass, newClassName);
+                // Make sure that we generate code for the new class.
+                newClass.setApplicationClass();
+
+                // Associate the new class with the attribute.
+                ModelTransformer.addAttributeForClass(newClass, attribute);
+
+                // Loop over all the methods and replace construction of the old attribute
+                // with construction of the copied class.
+                SootUtilities.changeTypesOfFields(entityClass, attributeClass, newClass);
+                SootUtilities.changeTypesInMethods(entityClass, attributeClass, newClass);
+              
+                // Fold the copied class up to StringAttribute.
+                SootClass superClass = newClass.getSuperclass();
+                while (superClass != PtolemyUtilities.objectClass &&
+                        superClass != PtolemyUtilities.stringAttributeClass) {
+                    superClass.setLibraryClass();
+                    SootUtilities.foldClass(newClass);
+                    superClass = newClass.getSuperclass();
+                }
+            }
+        }
     }
 
     private static void _removeAttributeInitialization(SootClass theClass) {

@@ -117,6 +117,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.clt",
                         CommandLineTransformer.v(toplevel)));
 
+
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ta",
                         new TransformerAdapter(TypeAssigner.v())));
@@ -126,7 +127,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffet",
                         FieldsForEntitiesTransformer.v(toplevel)));
@@ -216,8 +217,7 @@ public class Main extends KernelMain {
                         new TransformerAdapter(CopyPropagator.v())));
 
         //       _addStandardOptimizations(Scene.v().getPack("wjtp"));
-
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot2", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
@@ -254,7 +254,7 @@ public class Main extends KernelMain {
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot3", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
@@ -313,14 +313,14 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ib",
                         InvocationBinder.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.noe",
                         NamedObjEliminator.v(toplevel)));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
-
+        
         // Some cleanup.
         // Remove object creations that are now dead (i.e. aren't used
         // and have no side effects).  This currently only deals with
@@ -349,16 +349,16 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-
+       
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", ClassWriter.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(toplevel)));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ufr",
                         UnusedFieldRemover.v()));
@@ -381,7 +381,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.smr",
                         SideEffectFreeInvocationRemover.v()));
-
+        /**/
 
         // This snapshot should be last...
         Scene.v().getPack("wjtp").add(

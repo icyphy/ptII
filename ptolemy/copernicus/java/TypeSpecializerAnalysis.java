@@ -599,8 +599,9 @@ public class TypeSpecializerAnalysis {
                     return baseTerm;
                 } else if (methodName.equals("getElement") ||
                         methodName.equals("arrayValue")) {
-                    // If we call getElement or arrayValue on an array token, then
-                    // the returned type is the element type of the array.
+                    // If we call getElement or arrayValue on an array
+                    // token, then the returned type is the element
+                    // type of the array.
                     ptolemy.data.type.ArrayType arrayType =
                         new ptolemy.data.type.ArrayType(
                                 ptolemy.data.type.BaseType.UNKNOWN);
@@ -609,6 +610,12 @@ public class TypeSpecializerAnalysis {
                     InequalityTerm returnTypeTerm = (InequalityTerm)
                         arrayType.getElementTypeTerm();
                     return returnTypeTerm;
+                } else if (methodName.equals("absolute")) {
+                    // Return the same as the input type, unless
+                    // complex, in which case, return double.  FIXME:
+                    // This is WRONG for complex.  need a monotonic
+                    // function.
+                    return baseTerm;
                 }
             } else if (SootUtilities.derivesFrom(baseClass,
                     PtolemyUtilities.componentPortClass)) {

@@ -66,6 +66,7 @@ import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.NewExpr;
+import soot.jimple.ThisRef;
 import soot.jimple.NullConstant;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.StaticFieldRef;
@@ -373,10 +374,10 @@ public class InlineParameterTransformer extends SceneTransformer {
                         // get/setExpression different from other
                         // settables
                         if (attribute instanceof Variable) {
-                                // Deal with tricky methods separately.
-
-                                // Match the subsignature so we catch
-                                // isomorphic subclasses as well...
+                            // Deal with tricky methods separately.
+                            
+                            // Match the subsignature so we catch
+                            // isomorphic subclasses as well...
                             if (r.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.variableConstructorWithToken.getSubSignature())) {
                                 SootClass variableClass =
@@ -576,7 +577,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                         tokenField), tokenLocal));
                                 doneSomething = true;
                             }
-                        } else {
+                        } else {// if(false) { //FIXME
                                 // It's just settable, so handle get/setExpression
                             if (r.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.getExpressionMethod.getSubSignature())) {
@@ -706,6 +707,11 @@ public class InlineParameterTransformer extends SceneTransformer {
                 // If we get to an assignment from null, then the
                 // attribute statically evaluates to null.
                 return null;
+            } else if (value instanceof ThisRef) {
+                // Resolve the thisRef for automatically generated
+                // attributes.
+                SootClass refClass = method.getDeclaringClass();
+                return ModelTransformer.getAttributeForClass(refClass);
             } else {
                 throw new RuntimeException(
                         "Unknown type of value: " + value + " in " + method);
@@ -721,8 +727,7 @@ public class InlineParameterTransformer extends SceneTransformer {
     }
 
     // Create a static field in the given class for each attribute in
-    // the given container that is a variable or settable.  If the
-    // attribute is a variable, then the field will have type Token,
+    // the given container that is a variable, with type Token.
     // and if only a settable, then the field will have type String.
     // In addition, add a tag to the field that contains the value of
     // the token or expression that that field contains.
@@ -784,17 +789,19 @@ public class InlineParameterTransformer extends SceneTransformer {
                         }
                         field.addTag(new TypeTag(type));
                     }
-                } else {
+                } else {// if(false) { //FIXME
                     field = new SootField(
                             fieldName + "_CGExpression",
                             stringType,
-                            Modifier.PRIVATE |
+                            Modifier.PUBLIC |
                             Modifier.STATIC |
                             Modifier.FINAL);
                     theClass.addField(field);
                     String expression = settable.getExpression();
                     field.addTag(new ValueTag(expression));
-                }
+                }//  else {
+//                     field = null;
+//                 }
                 attributeToValueFieldMap.put(attribute, field);
             }
             _createTokenAndExpressionFields(theClass, context, attribute,

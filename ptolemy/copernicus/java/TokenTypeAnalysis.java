@@ -277,9 +277,19 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                             out.put(leftOp,
                                     ((ArrayType)arrayType).getElementType());
                         }
+                    } else if (methodName.equals("absolute")) {
+                        // Return the same as the input type, unless complex,
+                        // in which case, return double.
+                        ptolemy.data.type.Type inType =
+                            (ptolemy.data.type.Type)in.get(r.getBase());
+                        if(inType.equals(BaseType.COMPLEX)) {
+                            out.put(leftOp, BaseType.DOUBLE);
+                        } else {
+                            out.put(leftOp, inType);
+                        }
                     }
                 } else if (SootUtilities.derivesFrom(baseClass,
-                        PtolemyUtilities.componentPortClass)) {
+                                   PtolemyUtilities.componentPortClass)) {
                     // If we are invoking a method on a port.
                     TypedIOPort port = (TypedIOPort)
                         InlinePortTransformer.getPortValue(
