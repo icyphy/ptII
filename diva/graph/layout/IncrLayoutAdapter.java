@@ -31,7 +31,7 @@ import diva.graph.GraphModel;
  * class just calls a global layout on every change
  * to the graph.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

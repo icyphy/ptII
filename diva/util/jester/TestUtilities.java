@@ -34,8 +34,8 @@ import java.awt.geom.PathIterator;
 /** Utility functions to make tests easier to write.
  *
  * @version $Id$
- * @author  John Reekie (johnr@eecs.berkeley.edu)
- * @author  Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author  John Reekie
+ * @author  Michael Shilman
 
 */
 public final class TestUtilities {

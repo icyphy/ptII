@@ -80,7 +80,7 @@ import diva.util.ArrayIterator;
  *   <li> Implement barycentric layout (currently commented out).
  * </ul>
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

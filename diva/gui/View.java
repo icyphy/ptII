@@ -37,7 +37,7 @@ import javax.swing.JComponent;
  * implementations of this interface for the types of documents it can
  * work with.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

@@ -50,7 +50,7 @@ import javax.swing.ImageIcon;
  * could add its own resources to override the defaults where appropriate.
  * </ul>
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class RelativeBundle extends ResourceBundle {

@@ -68,7 +68,7 @@ import diva.gui.BasicFrame;
  *   <li> Default => a grey circle
  * </ul>
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

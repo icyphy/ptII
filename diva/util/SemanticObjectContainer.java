@@ -30,7 +30,7 @@ package diva.util;
  * "semantic object" which is its semantic equivalent
  * in an application.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  */
 public interface SemanticObjectContainer {

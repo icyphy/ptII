@@ -49,7 +49,7 @@ import diva.util.ProxyIterator;
  * canvas, other layout target implementations can "port" the layout
  * algorithms to other display implementations.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

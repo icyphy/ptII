@@ -35,7 +35,7 @@ import diva.util.SemanticObjectContainer;
  * implementing the simple interfaces of Graph, Node, CompositeNode,
  * and Edge.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

@@ -32,7 +32,7 @@ import javax.swing.JPopupMenu;
 /**
  * An improved version of a popup menu that works well for context menus.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class JContextMenu extends JPopupMenu {

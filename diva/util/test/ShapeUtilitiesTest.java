@@ -44,7 +44,7 @@ import diva.util.jester.TestUtilities;
 /**
  * A test suite for ShapeUtilities.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class ShapeUtilitiesTest extends TestSuite {

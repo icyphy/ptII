@@ -36,7 +36,7 @@ import diva.util.ModelWriter;
  * which is used to write out the app-specific model on a single page.
  *
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
- * @author  Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author  Michael Shilman
  * @version $Id$
  * @rating  Red
  */

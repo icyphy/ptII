@@ -43,7 +43,7 @@ import diva.graph.NodeRenderer;
  * A factory which creates and returns a NodeFigure given a node input
  * to render.
  *
- * @author  Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author  Michael Shilman
  * @version $Id$
  * @rating  Red
  */

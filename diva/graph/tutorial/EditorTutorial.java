@@ -61,7 +61,7 @@ import diva.gui.BasicFrame;
  * Control-click to add nodes,
  * select a node and control-drag to create new edges.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

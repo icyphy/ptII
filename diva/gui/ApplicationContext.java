@@ -45,9 +45,9 @@ import javax.swing.UIManager;
  * In this class, the default exit action kills the JVM.
  * This class does not contain a menu bar or a toolbar by default.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
+ * @author Michael Shilman
+ * @author John Reekie
  * @version $Id$
  */
 public class ApplicationContext extends JFrame implements AppContext {

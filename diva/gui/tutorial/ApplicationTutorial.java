@@ -68,7 +68,7 @@ import diva.resource.RelativeBundle;
  * makes more sense.  See MDIApplicationTutorial for an instance of the
  * same application implemented in an MDI style.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class ApplicationTutorial extends AbstractApplication {

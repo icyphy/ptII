@@ -31,7 +31,7 @@ import javax.swing.JComponent;
  * A view event is generated when a view of a Document is
  * iconified, selected, closed, and so on.
  *
- * @author John Reekie  (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
  * @version $Id$
  * @rating Red

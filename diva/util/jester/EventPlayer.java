@@ -35,7 +35,7 @@ import java.awt.event.InputEvent;
  * <code>play()</code> method is called.
  *
  * @see EventRecorder
- * @author Michael Shilman      (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

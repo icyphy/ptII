@@ -38,7 +38,7 @@ import javax.swing.DefaultComboBoxModel;
  * requirements. We subclass DefaultComboBoxModel so we can modify it
  * if any of the behavior should not be quite right.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  * @rating Red
  */

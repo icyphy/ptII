@@ -41,7 +41,7 @@ import javax.swing.JRootPane;
  * adapter, except the default implementation of each method is to
  * call the identical method on the delegate context.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class AppContextDelegate implements AppContext {

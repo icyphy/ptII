@@ -41,8 +41,8 @@ import javax.swing.JMenuItem;
  * doesn't understand applications, and should therefore be used only
  * for the simplest examples and tutorials.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
- * @author Nick Zamora (nzamor@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Nick Zamora
  * @version $Id$
  */
 public class BasicFrame extends ApplicationContext {

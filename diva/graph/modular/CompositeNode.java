@@ -28,7 +28,7 @@ package diva.graph.modular;
 /**
  * A node that is also a graph, i.e. it can contain other nodes.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

@@ -48,8 +48,8 @@ import java.util.Iterator;
  * will become optimized so that repaints of this layer do not
  * require a repaint of backing layers.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author Michael Shilman
+ * @author John Reekie
  * @version $Id$
  * @rating Red
  */

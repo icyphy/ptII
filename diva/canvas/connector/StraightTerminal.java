@@ -47,7 +47,7 @@ import diva.canvas.Site;
  * decoration at the connection end of the terminal.
  *
  * @version $Id$
- * @author  John Reekie (johnr@eecs.berkeley.edu)
+ * @author  John Reekie
  */
 public class StraightTerminal extends AbstractFigure implements Terminal {
 

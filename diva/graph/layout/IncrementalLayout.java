@@ -31,7 +31,7 @@ package diva.graph.layout;
  * of graph listener that updates the layout with every change in
  * the graph.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

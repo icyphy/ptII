@@ -32,7 +32,7 @@ import java.util.Iterator;
  * to the model and are notified by SelectionEvents when
  * the model is modified.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  */
 public interface SelectionModel {

@@ -75,9 +75,9 @@ import diva.gui.toolbox.JStatusBar;
  * implements a toolbar pane that contains the basic toolbar, along with
  * any other toolbars in the application.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
+ * @author Michael Shilman
+ * @author John Reekie
  * @version $Id$
  */
 public class DesktopContext extends AppContextDelegate implements MDIContext {

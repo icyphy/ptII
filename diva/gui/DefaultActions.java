@@ -40,7 +40,7 @@ import javax.swing.Action;
  * A collection of static methods that
  * create useful default actions.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class DefaultActions {

@@ -29,7 +29,7 @@ package diva.gui;
  * A simple concrete implementation of the Page interface.
  *
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
- * @author John Reekie  (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  * @rating Red
  */

@@ -41,9 +41,9 @@ import diva.canvas.interactor.SelectionModel;
  * controller objects, each associated with particular kind of node.
  * Edges are similarly managed by an edge controller object.
  *
- * @author         John Reekie (johnr@eecs.berkeley.edu)
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @author         Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author         John Reekie
+ * @author         Michael Shilman
+ * @author         Steve Neuendorffer
  * @version        $Id$
  * @rating      Red
  */

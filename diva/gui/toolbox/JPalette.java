@@ -50,7 +50,7 @@ import javax.swing.JPanel;
  * associated with them, and this is what the drop target sees
  * when a drop is initiated by the user.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  */
 public class JPalette extends JPanel {

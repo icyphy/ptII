@@ -31,7 +31,7 @@ package diva.gui;
  * of the document's data.
  *
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
- * @author John Reekie  (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  * @rating Red
  */

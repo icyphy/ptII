@@ -34,7 +34,7 @@ import java.util.Iterator;
  * convert a given result from the top-level iterator into a
  * sub-iterator.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public abstract class IteratorIterator extends IteratorAdapter {

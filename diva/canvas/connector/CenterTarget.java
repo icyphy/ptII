@@ -34,8 +34,8 @@ import diva.canvas.Site;
 /** An implementation of connector targets that finds center sites.
  *
  * @version $Id$
- * @author John Reekie (johnr@eecs.berkeley.edu)
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  */
 public class CenterTarget extends AbstractConnectorTarget {
 

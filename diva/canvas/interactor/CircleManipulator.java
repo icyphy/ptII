@@ -39,7 +39,7 @@ import diva.canvas.event.LayerEvent;
  * of the child figure.  It renders the grab handle and gives it a
  * chance to intercept picks.
  *
- * @author Nick Zamora      (nzamor@eecs.berkeley.edu)
+ * @author Nick Zamora
  * @version $Id$
  */
 public class CircleManipulator extends Manipulator {

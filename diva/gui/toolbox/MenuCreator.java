@@ -40,7 +40,7 @@ import diva.canvas.interactor.AbstractInteractor;
  * commonly used to create context sensitive menus for figures in a canvas.
  *
  *
- * @author Stephen Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Stephen Neuendorffer
  * @version $Id$
  */
 public class MenuCreator extends AbstractInteractor {

@@ -29,7 +29,7 @@ package diva.util.jester;
  * An exception that is thrown when a test produces an
  * incorrect result.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class TestFailedException extends Exception {

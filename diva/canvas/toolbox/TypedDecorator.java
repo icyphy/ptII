@@ -40,8 +40,8 @@ import diva.canvas.FigureDecorator;
  * to methods that expect a decorator instance that is to be used
  * as a prototype for other instances.
  *
- * @author John Reekie  (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

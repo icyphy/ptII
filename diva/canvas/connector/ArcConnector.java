@@ -60,8 +60,8 @@ import diva.canvas.toolbox.LabelFigure;
  * stroke-related methods.
  *
  * @version $Id$
- * @author  Edward Lee (eal@eecs.berkeley.edu)
- * @author  John Reekie (johnr@eecs.berkeley.edu)
+ * @author  Edward Lee
+ * @author  John Reekie
  * @rating  Red
  */
 public class ArcConnector extends AbstractConnector {

@@ -33,7 +33,7 @@ import java.io.Writer;
  * A simple program that you can run to illustrate the operation
  * of the files in this package.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class XmlDemo {

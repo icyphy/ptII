@@ -31,7 +31,7 @@ import java.io.File;
  * It is nice if storage policies suggest good pathnames.  Usually the
  * file they last opened.  This abstract class provides such functionality.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public abstract class AbstractStoragePolicy implements StoragePolicy {

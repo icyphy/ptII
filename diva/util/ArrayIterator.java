@@ -30,7 +30,7 @@ import java.util.NoSuchElementException;
  * An iterator over a given array.  Treats "null" as an
  * empty array.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  */
 public class ArrayIterator extends IteratorAdapter {

@@ -69,7 +69,7 @@ import diva.resource.RelativeBundle;
  * example of one way of managing the view associated with a document, see
  * MDIApplication.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  * @rating Red
  */

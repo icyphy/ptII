@@ -30,7 +30,7 @@ import java.util.Iterator;
  * An iterator that takes another iterator, and applies a filter
  * to each element that it gets.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class FilteredIterator extends IteratorAdapter {

@@ -35,7 +35,7 @@ import diva.util.NullIterator;
  * model. The event contains all the information to mirror
  * the selection model.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  */
 public class SelectionEvent extends java.util.EventObject {

@@ -59,7 +59,7 @@ import diva.gui.DocumentFactory;
  * The document factory is used by an application to create documents of
  * this type.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class TextDocument extends AbstractDocument {

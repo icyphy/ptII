@@ -33,7 +33,7 @@ import diva.graph.NodeController;
 /**
  * A controller for bubble-and-arc graph editors.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  * @rating      Red
  */

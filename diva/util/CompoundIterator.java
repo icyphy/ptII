@@ -30,7 +30,7 @@ import java.util.Iterator;
 /**
  * An iterator over two iterators.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class CompoundIterator implements Iterator {

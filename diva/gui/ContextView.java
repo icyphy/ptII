@@ -30,7 +30,7 @@ package diva.gui;
  * This context allows the view to represent itself as a toplevel frame
  * complete with menu bars, tool bars, etc.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */

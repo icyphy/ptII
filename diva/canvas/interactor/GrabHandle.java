@@ -32,8 +32,8 @@ import diva.canvas.Site;
  * A grab handle for manipulating figures and so on. Grab-handles
  * are attached to Sites.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version        $Id$
  */
 public interface GrabHandle extends Figure {

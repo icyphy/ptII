@@ -30,7 +30,7 @@ package diva.graph.layout;
  * performs layout from scratch, ignoring the previous positions of the nodes
  * in the graphs.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

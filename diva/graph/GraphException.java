@@ -36,7 +36,7 @@ package diva.graph;
  * might want to disallow a node of the wrong type to be placed inside
  * it.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */

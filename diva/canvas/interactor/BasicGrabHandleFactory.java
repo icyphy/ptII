@@ -30,7 +30,7 @@ import diva.canvas.Site;
 /**
  * A factory that creates basic grab-handles.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version        $Id$
  */
 public class BasicGrabHandleFactory implements GrabHandleFactory {

@@ -31,7 +31,7 @@ import diva.canvas.JCanvas;
  * A "palette" of figures that can be dragged onto another
  * JComponent.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class JCanvasPalette extends JCanvas {

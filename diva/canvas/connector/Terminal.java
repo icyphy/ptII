@@ -43,7 +43,7 @@ import diva.canvas.Site;
  * that connectors can connect to.
  *
  * @version $Id$
- * @author  John Reekie (johnr@eecs.berkeley.edu)
+ * @author  John Reekie
  */
 public interface Terminal extends Figure {
 

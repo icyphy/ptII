@@ -66,7 +66,7 @@ import diva.resource.RelativeBundle;
  * hooks that the JEditorPane uses for keyboard input.  This is fixed in
  * jdk1.3.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class MDIApplicationTutorial extends MDIApplication {

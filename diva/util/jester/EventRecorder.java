@@ -40,7 +40,7 @@ import java.util.ArrayList;
  * can then be played back using an EventPlayer object.
  *
  * @see EventPlayer
- * @author Michael Shilman      (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

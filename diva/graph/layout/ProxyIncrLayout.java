@@ -33,7 +33,7 @@ package diva.graph.layout;
  * work to a more general layout for the cases that it doesn't know how
  * to deal with.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

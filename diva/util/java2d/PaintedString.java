@@ -46,9 +46,9 @@ import java.util.StringTokenizer;
  * many cases where fonts are needed for labels and so on in graphic
  * diagrams.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author John Reekie  (johnr@eecs.berkeley.edu)
- * @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
+ * @author Michael Shilman
+ * @author John Reekie
+ * @author Steve Neuendorffer
  * @version $Id$
  * @deprecated Will be removed in Diva 0.4. Use diva.compat.canvas if needed.
  */

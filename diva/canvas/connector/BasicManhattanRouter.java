@@ -39,7 +39,7 @@ import diva.util.java2d.Polyline2D;
  * A basic manhattan router.
  *
  * @version $Id$
- * @author  Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author  Steve Neuendorffer
  */
 public class BasicManhattanRouter implements ManhattanRouter {
     /** Reroute the given Shape, given that the head site moved.

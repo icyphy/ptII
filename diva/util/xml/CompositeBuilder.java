@@ -35,7 +35,7 @@ import java.util.Iterator;
  * builders to parse and generate XML files from arbitrary collections
  * of objects.  (FIXME - more documentation here)
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

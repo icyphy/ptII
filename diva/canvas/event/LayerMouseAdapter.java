@@ -33,7 +33,7 @@ import java.awt.event.MouseMotionListener;
  * sending it mouse events in the local coordinate
  * system.  XXX haven't translated it yet.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  */
 public class LayerMouseAdapter implements LayerListener, LayerMotionListener {

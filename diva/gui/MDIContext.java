@@ -32,7 +32,7 @@ import javax.swing.JComponent;
  * An app context that provides methods for multiple
  * documents and views.  [FIXME: more docs]
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public interface MDIContext extends AppContext {

@@ -29,8 +29,8 @@ package diva.canvas.connector;
  * An adapter for connector listeners. It contains empty methods,
  * to make it easier to implement ConnectorListener.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

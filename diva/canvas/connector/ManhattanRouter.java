@@ -34,8 +34,8 @@ import diva.util.java2d.Polyline2D;
  * with a couple of methods specific to Polylines.
  *
  * @version $Id$
- * @author  Michael Shilman (michaels@eecs.berkeley.edu)
- * @author  John Reekie (johnr@eecs.berkeley.edu)
+ * @author  Michael Shilman
+ * @author  John Reekie
  */
 public interface ManhattanRouter extends Router {
 

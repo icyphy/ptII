@@ -35,7 +35,7 @@ import diva.graph.GraphListener;
  * to this logger is stored in a log which can then be
  * printed out or otherwise analyzed.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

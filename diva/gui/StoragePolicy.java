@@ -48,7 +48,7 @@ import java.net.URL;
  * a storage policy has been reified into this interface and a
  * set of implementing classes.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public interface StoragePolicy {

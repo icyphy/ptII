@@ -46,7 +46,7 @@ import diva.util.ModelWriter;
  * class is used the same as AbstractDocument and provides the same abstract
  * methods.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public abstract class MultipageDocument extends AbstractDocument {

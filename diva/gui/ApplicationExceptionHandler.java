@@ -31,7 +31,7 @@ package diva.gui;
  * dispatcher to trap those exceptions and call the application's showError
  * method.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class ApplicationExceptionHandler {

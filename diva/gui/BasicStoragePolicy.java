@@ -35,7 +35,7 @@ import javax.swing.JFileChooser;
  * This is a simple policy that simply closes modified documents
  * and so on. It is recommended only for simple examples and tutorials.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class BasicStoragePolicy extends AbstractStoragePolicy {

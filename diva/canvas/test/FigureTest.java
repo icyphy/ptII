@@ -46,7 +46,7 @@ import diva.util.jester.TestUtilities;
  * has no main() method. It defines a factory interface that
  * concrete factories must implement.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class FigureTest extends TestSuite {

@@ -39,8 +39,8 @@ import diva.canvas.toolbox.BasicRectangle;
  * idea whether the thing works for anything other than the demo
  * I constructed. -- johnr
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version        $Id$
  */
 public class MoveHandle extends BasicRectangle implements GrabHandle {

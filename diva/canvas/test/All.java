@@ -31,7 +31,7 @@ import diva.util.jester.TestSuite;
 /**
  * All the tests in this directory.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class All extends TestSuite {

@@ -39,7 +39,7 @@ package diva.util.jester;
  * the addition of methods for setting up scenarios shared
  * by multiple tests, common result testing methods, and so on.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public abstract class TestCase {

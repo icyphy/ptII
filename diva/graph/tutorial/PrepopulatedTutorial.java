@@ -64,7 +64,7 @@ import diva.gui.BasicFrame;
  * or explicitly call a global layout once the window has been opened.
  * More comments below in the individual methods.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

@@ -30,7 +30,7 @@ import diva.graph.GraphPane;
 /**
  * A pane containing a bubble-and-arc editor.
  *
- * @author         John Reekie (johnr@eecs.berkeley.edu)
+ * @author         John Reekie
  * @version        $Id$
  * @rating Red
  */

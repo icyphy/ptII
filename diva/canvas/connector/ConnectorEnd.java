@@ -37,7 +37,7 @@ import java.awt.geom.Rectangle2D;
  * kinds of decoration at the end of connectors.
  *
  * @version $Id$
- * @author  John Reekie (johnr@eecs.berkeley.edu)
+ * @author  John Reekie
  */
 public interface ConnectorEnd {
 

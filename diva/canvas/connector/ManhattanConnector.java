@@ -42,8 +42,8 @@ import diva.util.java2d.Polyline2D;
  * angles at the corners, set the bend radius to zero.
  *
  * @version $Id$
- * @author  John Reekie (johnr@eecs.berkeley.edu)
- * @author  Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author  John Reekie
+ * @author  Michael Shilman
  */
 public class ManhattanConnector extends AbstractConnector {
 

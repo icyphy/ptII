@@ -42,8 +42,8 @@ import diva.canvas.event.MouseFilter;
  * it can be resized and manipulated. This is an abstract class. Concrete
  * subclasses implement particular kinds of manipulator.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version        $Id$
  */
 public abstract class Manipulator extends FigureDecorator {

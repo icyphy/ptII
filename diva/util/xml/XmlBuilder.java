@@ -37,7 +37,7 @@ package diva.util.xml;
  * of an XML element, it calls the Java2D builder to see if it can
  * get a low-level graphical object.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  * @rating Red
  */

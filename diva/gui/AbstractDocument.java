@@ -39,7 +39,7 @@ import javax.swing.undo.UndoableEditSupport;
  * abstraction, and takes care of listener notification for
  * properties.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public abstract class AbstractDocument implements Document {

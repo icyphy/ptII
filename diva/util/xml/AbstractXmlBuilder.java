@@ -30,7 +30,7 @@ package diva.util.xml;
  * and sets a delegate, leaves the build method abstract, and doesn't
  * support the generate method.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

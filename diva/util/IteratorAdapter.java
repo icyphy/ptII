@@ -31,8 +31,8 @@ import java.util.Iterator;
  * subclassing so that you don't have to provide the remove()
  * method all the time....
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version $Id$
  */
 public class IteratorAdapter implements Iterator {

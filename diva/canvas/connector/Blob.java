@@ -45,7 +45,7 @@ import diva.util.java2d.Polygon2D;
  * Figure.
  *
  * @version $Id$
- * @author  John Reekie (johnr@eecs.berkeley.edu)
+ * @author  John Reekie
  */
 public class Blob implements ConnectorEnd {
 

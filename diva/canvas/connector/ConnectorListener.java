@@ -47,8 +47,8 @@ package diva.canvas.connector;
  * <li> released
  * </ol>
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

@@ -45,9 +45,9 @@ import diva.canvas.interactor.SelectionModel;
  * and getEdgeController() methods, to return the correct
  * controller for a given node or edge.
  *
- * @author         John Reekie (johnr@eecs.berkeley.edu)
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @author         Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author         John Reekie
+ * @author         Michael Shilman
+ * @author         Steve Neuendorffer
  * @version        $Id$
  * @rating      Red
  */

@@ -32,7 +32,7 @@ import diva.canvas.GraphicsPane;
  * The display part of the JGraph user-level widget.
  *
  * @see JGraph
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  * @rating Red
  */

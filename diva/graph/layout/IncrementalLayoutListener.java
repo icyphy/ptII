@@ -33,7 +33,7 @@ import diva.util.Filter;
  * be used to limit the context into which the layout algorithm will be
  * applied.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */

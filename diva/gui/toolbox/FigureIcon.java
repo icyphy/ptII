@@ -50,7 +50,7 @@ import diva.canvas.toolbox.ImageFigure;
  * loading.  Where possible, instead of painting the figure into a
  * buffered image, this class simply uses the Image of an ImageFigure.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class FigureIcon extends ImageIcon {

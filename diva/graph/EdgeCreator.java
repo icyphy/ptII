@@ -39,7 +39,7 @@ import diva.canvas.interactor.GrabHandle;
 /** An interactor that interactively drags edges from one node
  * to another.
  *
- * @author         Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author         Steve Neuendorffer
  * @version        $Id$
  * @rating      Red
  */

@@ -40,8 +40,8 @@ import diva.canvas.CanvasLayer;
 /**
  * A figure that embeds swing components in canvas drawings.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author Michael Shilman
+ * @author John Reekie
  * @version $Id$
  */
 public class SwingWrapper extends AbstractFigure {

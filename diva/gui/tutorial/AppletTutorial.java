@@ -35,7 +35,7 @@ import diva.gui.AppletContext;
 /**
  * A graph editor that runs as an applet.
  *
- * @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */

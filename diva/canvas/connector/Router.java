@@ -35,8 +35,8 @@ import java.awt.Shape;
  * themselves.
  *
  * @version $Id$
- * @author  Michael Shilman (michaels@eecs.berkeley.edu)
- * @author  John Reekie (johnr@eecs.berkeley.edu)
+ * @author  Michael Shilman
+ * @author  John Reekie
  */
 public interface Router {
 

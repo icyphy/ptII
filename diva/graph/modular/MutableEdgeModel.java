@@ -34,7 +34,7 @@ package diva.graph.modular;
  * semantic equivalent in the application and may have a visual object
  * which is its syntactic representation in the user interface.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

@@ -35,7 +35,7 @@ import diva.graph.toolbox.GraphEventMulticaster;
  * An abstract implementation of the GraphModel interface that provides
  * the basic event notification system
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */

@@ -72,7 +72,7 @@ package diva.util.jester;
  * are examples of how to write unit tests, and serve as examples of
  * the expected formatting of the source.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public abstract class TestSuite {

@@ -59,7 +59,7 @@ import diva.util.jester.TestSuite;
  * for each available concrete figure class and runs the Figure tests
  * on figures it produces.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class ConcreteFigures extends TestSuite {

@@ -36,8 +36,8 @@ import javax.swing.RootPaneContainer;
  * A context for either an application or an applet
  * that wants to use the diva.gui infrastructure.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
+ * @author Michael Shilman
  * @version $Id$
  */
 public interface AppContext extends RootPaneContainer {

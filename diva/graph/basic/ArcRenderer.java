@@ -38,7 +38,7 @@ import diva.graph.EdgeRenderer;
  * An EdgeRenderer that draws arcs. To do so, it creates a new
  * instance of ArcConnector and initializes it.
  *
- * @author Edward A. Lee  (eal@eecs.berkeley.edu)
+ * @author Edward A. Lee
  * @version $Id$
  * @rating Red
  */

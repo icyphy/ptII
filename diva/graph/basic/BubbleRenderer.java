@@ -37,8 +37,8 @@ import diva.graph.toolbox.StateBubble;
  * A factory which creates and returns a bubble given a node input
  * to render.
  *
- * @author  Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author  John Reekie  (johnr@eecs.berkeley.edu)
+ * @author  Michael Shilman
+ * @author  John Reekie
  * @version $Id$
  * @rating  Red
  */

@@ -39,7 +39,7 @@ import javax.swing.event.ListDataListener;
  * and contains a set of Documents. All applications will need to
  * create an implementation of this interface.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  * @rating Red
  */

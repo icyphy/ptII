@@ -52,8 +52,8 @@ import diva.util.java2d.ShapeUtilities;
  * the edges or corners, so that when the font or text changes,
  * the label appears to stay in the right location.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author John Reekie  (johnr@eecs.berkeley.edu)
+ * @author Michael Shilman
+ * @author John Reekie
  * @version $Id$
  */
 public class LabelFigure extends AbstractFigure {

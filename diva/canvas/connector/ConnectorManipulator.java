@@ -42,8 +42,8 @@ import diva.canvas.toolbox.BasicHighlighter;
  * a connector. The interactor given to the grab-handles determines
  * the behaviour of the grab-handles.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version $Id$
  */
 public class ConnectorManipulator extends Manipulator {

@@ -41,7 +41,7 @@ import diva.canvas.Figure;
  * from the interactor and uses it to highlight the selected
  * figures.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  */
 public class BasicSelectionModel implements SelectionModel {

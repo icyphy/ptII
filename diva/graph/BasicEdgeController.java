@@ -54,7 +54,7 @@ import diva.canvas.interactor.SelectionModel;
  * A basic implementation of EdgeController, which works with
  * graphs that have edges connecting simple nodes.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  * @rating      Red
  */

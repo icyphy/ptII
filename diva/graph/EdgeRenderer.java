@@ -38,7 +38,7 @@ import diva.canvas.connector.Connector;
  * dashes, etc.).  The client will set up the endpoints
  * of the edge, and then tell the edge to route itself.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

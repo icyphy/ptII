@@ -32,7 +32,7 @@ import javax.swing.JComponent;
  * An abstract implementation of the View interface that consists of
  * mostly empty methods to be filled in by concrete subclasses.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

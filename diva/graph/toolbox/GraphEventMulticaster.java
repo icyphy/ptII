@@ -35,7 +35,7 @@ import diva.graph.GraphListener;
  * A list of GraphListeners which is smart enough to call the correct
  * methods on these listeners given a GraphEvent's ID.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Yellow
  */

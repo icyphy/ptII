@@ -35,8 +35,8 @@ import diva.canvas.TransformContext;
 /** A Connector that draws itself in a straight line.
  *
  * @version $Id$
- * @author  John Reekie (johnr@eecs.berkeley.edu)
- * @author  Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author  John Reekie
+ * @author  Michael Shilman
  * @rating  Red
  */
 public class StraightConnector extends AbstractConnector {

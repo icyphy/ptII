@@ -28,7 +28,7 @@ package diva.util;
 /**
  * An interface for objects that filter other objects
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public interface Filter {

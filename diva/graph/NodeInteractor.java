@@ -32,8 +32,8 @@ import diva.canvas.interactor.SelectionModel;
 /**
  * An interactor for nodes.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
- * @author         John Reekie (johnr@eecs.berkeley.edu)
+ * @author         Michael Shilman
+ * @author         John Reekie
  * @version        $Id$
  * @rating Red
  */

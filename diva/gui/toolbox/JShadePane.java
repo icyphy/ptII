@@ -65,7 +65,7 @@ import diva.gui.BasicFrame;
  * "shade" instead of "tab". <p>
  *
  * @see javax.swing.JTabbedPane
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  */
 public class JShadePane extends JPanel {

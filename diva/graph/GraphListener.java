@@ -32,8 +32,8 @@ package diva.graph;
  * from Nodes and Edges contained by that model's root graph
  * or any of its subgraphs.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author Michael Shilman
+ * @author John Reekie
  * @version $Id$
  * @rating Yellow
  */

@@ -31,7 +31,7 @@ import java.util.Iterator;
  * edges.  Edges are accessed through the nodes that
  * they connect.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

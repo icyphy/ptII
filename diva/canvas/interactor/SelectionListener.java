@@ -28,7 +28,7 @@ package diva.canvas.interactor;
 /**
  * A model for graph selections which can be listened to.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  */
 public interface SelectionListener extends java.util.EventListener {

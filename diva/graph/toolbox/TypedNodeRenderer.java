@@ -36,7 +36,7 @@ import diva.graph.NodeRenderer;
  * the type of the user object that is contained in the node that is
  * being rendered.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

@@ -64,7 +64,7 @@ import diva.util.java2d.ShapeUtilities;
  * the canvas at that point on the component, without zooming in or
  * out.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class JCanvasPanner extends JPanel {

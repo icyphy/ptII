@@ -29,7 +29,7 @@ package diva.gui;
  * An adapter for view listener, containing empty method
  * implementations.
  *
- * @author John Reekie  (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class ViewAdapter implements ViewListener {

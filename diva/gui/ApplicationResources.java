@@ -45,7 +45,7 @@ import javax.swing.ImageIcon;
  * its own resources to override the defaults where appropriate.
  *
  * @deprecated Use diva.resource.DefaultBundle instead.
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class ApplicationResources extends ResourceBundle {

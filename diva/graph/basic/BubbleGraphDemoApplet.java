@@ -29,7 +29,7 @@ import diva.gui.AppletContext;
 
 /**
  * A bubble graph demo that can run in an applet.
- * @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */

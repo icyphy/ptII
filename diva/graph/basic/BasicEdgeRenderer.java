@@ -38,7 +38,7 @@ import diva.graph.EdgeRenderer;
  * This renderer creates straight-line connectors with
  * an arrow at the head.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

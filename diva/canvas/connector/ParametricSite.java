@@ -39,7 +39,7 @@ import diva.canvas.Figure;
  * itself proportionally.
  *
  * @version        $Id$
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  */
 public class ParametricSite extends AbstractSite {
     /**

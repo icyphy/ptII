@@ -37,8 +37,8 @@ import javax.swing.JOptionPane;
  * policy is somewhat intelligent about preventing the user from doing
  * something stupid (like closing the document without saving).
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version $Id$
  */
 public class DefaultStoragePolicy extends AbstractStoragePolicy {

@@ -36,7 +36,7 @@ import diva.util.xml.XmlElement;
 /**
  * A test suite for XmlElement
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class XMLElementTest extends TestSuite {

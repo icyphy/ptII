@@ -31,7 +31,7 @@ import diva.gui.AppletContext;
  * An applet version of the graph demo.
  *
  * @see BasicGraphDemo
- * @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */

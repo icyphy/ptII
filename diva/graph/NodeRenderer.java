@@ -32,7 +32,7 @@ import diva.canvas.Figure;
  * positioning the figure, but is responsible for determining
  * the size of the figure.
  *
- * @author  Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author  Michael Shilman
  * @version $Id$
  * @rating  Red
  */

@@ -47,8 +47,8 @@ import diva.gui.BasicFrame;
  * Swing-style model-view-controller architecture of the graph
  * package.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
+ * @author Michael Shilman
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */

@@ -42,8 +42,8 @@ import diva.gui.BasicFrame;
  * the same graph model as the BasicGraphDemo.  Nodes are rendered as
  * round bubble and edges are rendered as curved arcs.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
+ * @author Michael Shilman
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */

@@ -38,7 +38,7 @@ import diva.util.java2d.Polygon2D;
  * This is a low-level utility class, not a self-contained Figure.
  *
  * @version $Id$
- * @author  John Reekie (johnr@eecs.berkeley.edu)
+ * @author  John Reekie
  */
 public class Arrowhead implements ConnectorEnd {
 

@@ -54,7 +54,7 @@ import diva.graph.GraphModel;
  * This class is implemented as a large template method, so it should
  * be relatively easy to extend or modify.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

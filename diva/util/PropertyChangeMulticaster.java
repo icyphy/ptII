@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * A list of PropertyChangeListeners.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  */
 public class PropertyChangeMulticaster implements PropertyChangeListener {

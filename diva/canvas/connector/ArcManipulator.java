@@ -36,8 +36,8 @@ import diva.canvas.interactor.GrabHandleFactory;
  * at the ends of the connector, it attaches a handle in the center
  * of the connector so that the connector can be reshaped.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Edward A. Lee    (eal@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Edward A. Lee
  * @version $Id$
  */
 public class ArcManipulator extends ConnectorManipulator {

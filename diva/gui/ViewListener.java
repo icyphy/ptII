@@ -37,7 +37,7 @@ package diva.gui;
  * interface.
  *
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
- * @author John Reekie  (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public interface ViewListener extends java.util.EventListener {

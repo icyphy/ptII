@@ -33,7 +33,7 @@ import diva.graph.GraphUtilities;
 /**
  * Miscellaneous utility routines used in layout.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  * @rating Red
  */

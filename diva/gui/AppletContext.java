@@ -42,8 +42,8 @@ import javax.swing.UIManager;
  * JFrame class.  The exit action will be fired when the applet's
  * destroy method is executed.  The default exit action does nothing.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
+ * @author Michael Shilman
  * @version $Id$
  */
 public class AppletContext extends JApplet implements AppContext {

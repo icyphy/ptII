@@ -45,7 +45,7 @@ import diva.util.SemanticObjectContainer;
  * application like a schematic editor will probably want to implement
  * things differently.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

@@ -46,8 +46,8 @@ import diva.canvas.VisibleComponent;
  * drawn at the vertex and the paint can be specified. Reasonable
  * default are also supplied.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author Michael Shilman
+ * @author John Reekie
  * @version        $Id$
  */
 public class GridLayer extends CanvasLayer implements VisibleComponent {

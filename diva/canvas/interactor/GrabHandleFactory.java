@@ -31,7 +31,7 @@ import diva.canvas.Site;
  * A factory so that a client can create grab handles without
  * knowing anything about their implementation.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version        $Id$
  */
 public interface GrabHandleFactory {

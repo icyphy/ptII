@@ -33,7 +33,7 @@ import java.util.Iterator;
  * if possible, but doesn't guarantee anything about the layout except
  * that it will fall into the required viewport.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

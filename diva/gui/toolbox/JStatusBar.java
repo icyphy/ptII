@@ -34,7 +34,7 @@ import javax.swing.border.Border;
 /**
  * A status bar for displaying at the bottom of typical applications.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class JStatusBar extends JPanel {

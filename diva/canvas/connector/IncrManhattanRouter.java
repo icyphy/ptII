@@ -35,8 +35,8 @@ import diva.util.java2d.Polyline2D;
  * implementation.
  *
  * @version $Id$
- * @author  Michael Shilman (michaels@eecs.berkeley.edu)
- * @author  John Reekie (johnr@eecs.berkeley.edu)
+ * @author  Michael Shilman
+ * @author  John Reekie
  * @rating  Red
  */
 public class IncrManhattanRouter implements ManhattanRouter {

@@ -71,7 +71,7 @@ import javax.swing.event.EventListenerList;
  * is not really necessary and so we decided against on on the grounds
  * of getting this done....)
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public abstract class JPseudoFrame extends JComponent {

@@ -31,7 +31,7 @@ import java.util.Iterator;
  * An object that can be annotated with arbitrary
  * objects whose keys are strings.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  */
 public interface PropertyContainer {

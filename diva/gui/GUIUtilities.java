@@ -49,8 +49,8 @@ import javax.swing.KeyStroke;
 /**
  * A collection of utilities for the GUI.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class GUIUtilities {

@@ -34,7 +34,7 @@ import java.awt.event.MouseListener;
  * mouse event it receives.  Yes, I Know this is simple, but I think it
  * is useful.  Attach it to a component and the component gets when pressed.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class FocusMouseListener implements MouseListener {

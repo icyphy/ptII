@@ -53,7 +53,7 @@ import diva.gui.ViewEvent;
  * If you have multiple views per document, you will need to
  * implement the view-document mapping yourself.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public abstract class MDIApplication extends AbstractApplication {

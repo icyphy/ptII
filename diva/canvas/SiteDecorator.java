@@ -36,7 +36,7 @@ import java.awt.geom.Point2D;
  * the functionality of an arbitrary site.
  *
  * @version $Id$
- * @author  Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author  Steve Neuendorffer
  * @rating  Red
  */
 public class SiteDecorator implements Site {

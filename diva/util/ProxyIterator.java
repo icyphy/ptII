@@ -32,7 +32,7 @@ import java.util.Iterator;
  * over it.  This meant to be extended by over-riding the
  * next() method.
  *
- * @author Michael Shilman     (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  */
 public class ProxyIterator extends IteratorAdapter {

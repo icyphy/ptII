@@ -37,8 +37,8 @@ import diva.canvas.event.LayerEvent;
  * of the child figure.  It renders the grab handles and gives them a
  * chance to intercept picks.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version $Id$
  */
 public class PathManipulator extends Manipulator {

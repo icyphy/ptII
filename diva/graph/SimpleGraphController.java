@@ -33,7 +33,7 @@ package diva.graph;
  * an edge controller.  For more complex visualizations that use multiple
  * kinds of nodes, use CompositeGraphController instead.
  *
- * @author         Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author         Steve Neuendorffer
  * @version        $Id$
  * @rating      Red
  */

@@ -38,7 +38,7 @@ import diva.util.jester.TestSuite;
  * A test suite for JCanvas. This is fairly basic, and is
  * really just a few simple confidence tests.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class JCanvasTest extends TestSuite {

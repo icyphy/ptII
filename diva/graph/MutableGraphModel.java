@@ -30,8 +30,8 @@ package diva.graph;
  * graph model, allowing users to actually create new nodes and
  * edges, and to modify the topology of the graph.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author Michael Shilman
+ * @author John Reekie
  * @version $Id$
  * @rating Yellow
  */

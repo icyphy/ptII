@@ -38,7 +38,7 @@ import diva.canvas.AbstractFigure;
 /**
  * A figure which draws a user-specified image.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  */
 public class ImageFigure extends AbstractFigure

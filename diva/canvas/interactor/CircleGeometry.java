@@ -44,7 +44,7 @@ import diva.canvas.Site;
  * directions, it makes sense to only use this Geometry type for figures
  * containing circular shapes or otherwise highly-symmetric shapes.
  *
- * @author Nick Zamora      (nzamor@eecs.berkeley.edu)
+ * @author Nick Zamora
  * @version $Id$
  */
 public class CircleGeometry implements Geometry {

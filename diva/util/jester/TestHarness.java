@@ -34,7 +34,7 @@ import java.io.PrintStream;
  * (Currently, the harness is very simple. It will be extended
  * in the future.)
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class TestHarness {

@@ -30,8 +30,8 @@ import java.util.Iterator;
 /**
  * A collection of utilities dealing with iterators.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author John Reekie
+ * @author Michael Shilman
  * @version $Id$
  */
 public class IteratorUtilities {

@@ -30,7 +30,7 @@ package diva.resource;
  * A class that bundles the default Diva resources contained
  * in the diva.resource package.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public class DefaultBundle extends RelativeBundle {

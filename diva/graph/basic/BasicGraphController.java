@@ -44,7 +44,7 @@ import diva.graph.SimpleGraphController;
  * simple graphs that have edges connecting simple nodes. It
  * sets up some simple interaction on its view's pane.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  * @rating      Red
  */

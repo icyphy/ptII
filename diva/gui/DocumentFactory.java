@@ -33,7 +33,7 @@ import java.net.URL;
  * objects. It is used by the Open action to create a new document in
  * response to user selection of a file or URL.
  *
- * @author John Reekie (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public interface DocumentFactory {

@@ -36,7 +36,7 @@ import diva.graph.GraphModel;
  * a viewport to layout in, and some manipulation routines including
  * pick, place, and route.
  *
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

@@ -35,7 +35,7 @@ import diva.util.FilteredIterator;
 /**
  * A set of utilities for traversing/manipulating/etc. graphs.
  *
- * @author Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author Michael Shilman
  * @version $Id$
  * @rating Red
  */

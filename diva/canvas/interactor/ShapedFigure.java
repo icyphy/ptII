@@ -34,7 +34,7 @@ import diva.canvas.Figure;
  * be implemented by any figure that can have a PathManipulator
  * wrapped around it.
  *
- * @author John Reekie      (johnr@eecs.berkeley.edu)
+ * @author John Reekie
  * @version $Id$
  */
 public interface ShapedFigure extends Figure {

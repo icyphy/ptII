@@ -40,7 +40,7 @@ import diva.canvas.interactor.Interactor;
  * of and interaction with graph edges. GraphControllers
  * contain one or more instances of EdgeController.
  *
- * @author         Michael Shilman (michaels@eecs.berkeley.edu)
+ * @author         Michael Shilman
  * @version        $Id$
  * @rating      Red
  */
