@@ -186,7 +186,7 @@ public class ModelTransformer extends SceneTransformer {
         }
     }
 
-    /** 
+    /**
      *  @exception RuntimeException If no field was created for the
      *  given entity.
      */
@@ -236,14 +236,14 @@ public class ModelTransformer extends SceneTransformer {
 
         _modelClass = ActorTransformer.createCompositeActor(
                 _model, modelClassName, options);
-        
+
         // Create static instance fields for each actor.
         _entityToFieldMap = new HashMap();
         _fieldToEntityMap = new HashMap();
         _classToObjectMap = new HashMap();
         _createEntityInstanceFields(_modelClass, _model, options);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -329,7 +329,7 @@ public class ModelTransformer extends SceneTransformer {
                 updateCreatedSet(
                         composite.getFullName() + "." + entity.getName(),
                         entity, entity, createdSet);
- 
+
                 SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
                         RefType.v(className), entityFieldName);

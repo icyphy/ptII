@@ -1834,7 +1834,7 @@ public class ActorTransformer extends SceneTransformer {
                                 settableLocal,
                                 local),
                         insertPoint);
-  
+
                 String expression = ((Settable)attribute).getExpression();
 
                 // call setExpression.
