@@ -185,3 +185,16 @@ test ChangeRequest-7.1 {isPersistent, setPersistent} {
     set r2 [$changeRequest isPersistent]
     list $r1 $r2
 } {1 0}
+
+test ChangeRequest-7.1 {setDescription} {
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+	    $printStream]
+
+    set r1 [$changeRequest getDescription]
+    set r2 [$changeRequest setDescription "A different description"]
+    set r3 [$changeRequest getDescription]
+    list $r1 $r2 $r3
+} {{Change request that always throws an Exception} {} {A different description}}
