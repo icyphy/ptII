@@ -258,7 +258,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         } catch (InterruptedException ex) {
             String str = "ConditionalReceive interrupted: ";
             System.out.println( str + ex.getMessage());
-        } catch (NoSuchItemException ex) {
+        } catch (NoTokenException ex) {
             System.out.println("get failed in CondRec., NoSuchItemException");
             getParent().branchFailed(getID());
         } catch (TerminateProcessException ex) {

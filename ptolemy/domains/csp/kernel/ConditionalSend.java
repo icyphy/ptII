@@ -265,6 +265,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             }
         } catch (InterruptedException ex) {
             System.out.println("ConditionalSend interrupted:"+ex.getMessage());
+        } catch (NoRoomException ex) {
+            System.out.println("get failed in CondRec., NoSuchItemException");
+            getParent().branchFailed(getID());
         } catch (TerminateProcessException ex) {
             getParent().branchFailed(getID());
         }

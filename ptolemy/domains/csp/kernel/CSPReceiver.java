@@ -77,34 +77,40 @@ public class CSPReceiver implements Receiver {
      *  yet been reached, the method delays until a put is reached.
      *  Currently, each receiver assumes it has at most one channels trying
      *  to receive from it and at most one channel send to it.
-     *  @exception NoSuchItemException Thrown if this receiver does
-     *   not have a container. It is not possible to get from a
-     *   floating(disconnected, legacy reference) receiver.
+     *  @exception NoTokenException If there is no token, or we are 
+     *   trying to to get from a floating(disconnected, legacy reference) 
+     *   receiver.
      *  @return The Token transferred by the rendezvous.
      */
-    public synchronized Token get() throws NoSuchItemException {
+    public synchronized Token get() throws NoTokenException {
         Token tmp = _token;
         try {
             if (isPutWaiting()) {
                 _setPutWaiting(false);  //needs to be done here
                 tmp = _token;
+                _setPutDone(false);
                 notifyAll(); //wake up the waiting put
-                _checkAndWait();
+                while (!isPutDone()) {
+                    _checkAndWait();
+                }
             } else { // get got there first, so have to wait for a put
                 //System.out.println(getContainer().getName() + ": get got here before put");
                 _setGetWaiting(true);
                 notifyAll();
                 _getDirector().actorBlocked();
-                while(isGetWaiting()) {
+                while (isGetWaiting()) {
                     _checkAndWait();
                 }
                 _getDirector().actorUnblocked();
                 tmp = _token;
+                _setGetDone(true);
                 notifyAll();
             }
         } catch (InterruptedException ex) {
             System.out.println("get interrupted: " + ex.getMessage());
             /* FIXME */
+        } catch (NoSuchItemException ex) {
+            System.out.println("aaarrrggghhh!");
         }
         return tmp;
     }
@@ -114,33 +120,39 @@ public class CSPReceiver implements Receiver {
      *  yet been reached, the method delays until a get is reached.
      *  Currently, each receiver assumes it has at most one channels trying
      *  to receive from it and at most one channel send to it.
+     *  @exception NoRoomException If the token cannot be put, mainly 
+     *   if this receiver does not have a container. FIXME: this 
+     *   comment is bogus.
      *  @param t The token being transferred in the rendezvous.
      */
-    /*  /@exception NoSuchItemException Thrown if this receiver does
-     *   not have a container. It is not possible to put to a
-     *   floating(disconnected, legacy reference) receiver.
-     */
-    public synchronized void put(Token t) {
+      public synchronized void put(Token t) {
+          //System.out.println("Thread calling put is: " + Thread.currentThread().getName());
         if (isPutWaiting()) {System.out.println("ERROR:put true");}
         try {
             _token = t; // perform transfer
             if (isGetWaiting()) {
                 _setGetWaiting(false);  //needs to be done here
-                notifyAll(); //wake up the waiting get
-                _checkAndWait();
+                _setGetDone(false);
+                notifyAll(); //wake up the waiting put
+                while (!isGetDone()) {
+                    _checkAndWait();
+                }
                 return;
-            } else { // put got there first, so have to wait for a get
+            } else { 
+                // put got there first, so have to wait for a get
                 //System.out.println(getContainer().getName() + ": put got here before get");
                 _setPutWaiting(true);
                 notifyAll();
                 _getDirector().actorBlocked();
                 while(isPutWaiting()) {
+                    //System.out.println("put waiting for get to arrive");
                     _checkAndWait();
                 }
                 _getDirector().actorUnblocked();
                 if (isGetWaiting()) {
                     System.out.println("Error:getWaiting is true!");
                 }
+                _setPutDone(true);
                 notifyAll();
                 return;
             }
@@ -153,10 +165,10 @@ public class CSPReceiver implements Receiver {
         }
     }
 
-    /** Return the container.
-     *  @return The container.
+    /** Return the IOPort containing this recciever.
+     *  @return The port to which this receiver is atteached.
      */
-    public Nameable getContainer() {
+    public IOPort getContainer() {
         return _container;
     }
 
@@ -200,6 +212,22 @@ public class CSPReceiver implements Receiver {
      */
     public boolean isConditionalSendWaiting() {
         return _conditionalSendWaiting;
+    }
+
+    /** Flag indicating whether or not a get, which reached the 
+     *  rendezvous point first, is done yet.
+     *  @return Flag indicating if first side of rendezvous is done yet.
+     */
+    public boolean isGetDone() {
+        return _getDone;
+    }
+
+    /** Flag indicating whether or not a put, which reached the 
+     *  rendezvous point first, is done yet.
+     *  @return Flag indicating if first side of rendezvous is done yet.
+     */
+    public boolean isPutDone() {
+        return _putDone;
     }
 
     /** Flag indicating whether or not a get is waiting to rendezvous
@@ -310,13 +338,13 @@ public class CSPReceiver implements Receiver {
      *   interrupted while waiting.
      */
     protected synchronized void _checkAndWait() throws
-      TerminateProcessException, InterruptedException {
-	if (_simulationTerminated) {
-            throw new TerminateProcessException(getContainer().getName() + ": simulation terminated");
+              TerminateProcessException, InterruptedException {
+        if (_simulationTerminated) {
+            throw new TerminateProcessException(getContainer().getName() + ": 1simulation terminated");
         }
         wait();
 	if (_simulationTerminated) {
-            throw new TerminateProcessException(getContainer().getName() + ": simulation terminated");
+            throw new TerminateProcessException(getContainer().getName() + ": 2simulation terminated");
         }
     }
 
@@ -346,6 +374,15 @@ public class CSPReceiver implements Receiver {
     }
 
     /* Called only by the get and put methods of this class to indicate
+     * that a get is completed after the corresponding
+     * put arrived.
+     * @param value boolean indicating whether a get is finished or not.
+     */
+    private void _setGetDone(boolean value) {
+        _getDone = value;
+    }
+
+    /* Called only by the get and put methods of this class to indicate
      * that a get is waiting(value is true) or that the corresponding
      * put has arrived(value is false).
      * @param value boolean indicating whether a get is waiting or not.
@@ -355,6 +392,15 @@ public class CSPReceiver implements Receiver {
     }
 
     /* Called only by the get and put methods of this class to indicate
+     * that a put is completed after the corresponding
+     * get arrived.
+     * @param value boolean indicating whether a put is finished or not.
+     */
+    private void _setPutDone(boolean value) {
+        _putDone = value;
+    }
+
+   /* Called only by the get and put methods of this class to indicate
      * that a put is waiting(value is true) or that the corresponding
      * get has arrived(value is false).
      * @param value boolean indicating whether a put is waiting or not.
@@ -375,6 +421,12 @@ public class CSPReceiver implements Receiver {
     private CSPDirector _director;
     private long _directorVersion = -1;
 
+    // Flag indicating whether get is done yet.
+    private boolean _getDone = true;
+
+    // Flag indicating whether put is done yet.
+    private boolean _putDone = true;
+  
     // Flag indicating whether or not a get is waiting at this receiver.
     private boolean _getWaiting = false;
 
