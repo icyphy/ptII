@@ -164,8 +164,8 @@ notation as a a factory
 @author  Steve Neuendorffer
 @version $Id$
 */
-public class GraphFrame extends PtolemyTop
-        implements Printable, ClipboardOwner {
+public abstract class GraphFrame extends PtolemyTop
+    implements Printable, ClipboardOwner {
    
     public GraphFrame(CompositeEntity entity) {
         this(entity, null);
@@ -176,14 +176,10 @@ public class GraphFrame extends PtolemyTop
 
 	_model = entity;
 
-	// Create the graph editor, using the visual notation.
-	// These two things control the view of a ptolemy model.
-	EditorGraphController controller = new EditorGraphController();
-	PtolemyGraphModel model = new PtolemyGraphModel(_model);
+	getContentPane().setLayout(new BorderLayout());
 	
-	GraphPane pane = new GraphPane(controller, model);
-	// FIXME	VisualNotation notation = _getVisualNotation(entity);
-	// FIXME        GraphPane pane = notation.createView();
+	GraphPane pane = _createGraphPane();
+
 	_jgraph = new JGraph(pane);
 	//	GraphController _controller =
 	//    _jgraph.getGraphPane().getGraphController();
@@ -289,27 +285,31 @@ public class GraphFrame extends PtolemyTop
 	_splitPane.setRightComponent(_graphScrollPane);
 	getContentPane().add(_splitPane, BorderLayout.CENTER);
 
-	_newPortAction = controller.getNewPortAction();
-	_newRelationAction = controller.getNewRelationAction();
-
 	// FIXME: hotkeys, shortcuts and move to a base class.
 	_toolbar = new JToolBar();
 	getContentPane().add(_toolbar, BorderLayout.NORTH);
 
-	_editIconAction = new EditIconAction();
-	_lookInsideAction = new LookInsideAction();
-	_getDocumentationAction = new GetDocumentationAction();
-	controller.getEntityController().setMenuFactory(
-                new EntityContextMenuFactory(controller));
- 	controller.getEntityPortController().setMenuFactory(
-                new PortContextMenuFactory(controller));
-  	controller.getPortController().setMenuFactory(
-                new PortContextMenuFactory(controller));
-  	controller.getRelationController().setMenuFactory(
-                new RelationContextMenuFactory(controller));
-  	controller.getLinkController().setMenuFactory(
-                new RelationContextMenuFactory(controller));
+	_cutAction = new CutAction();
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _cutAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _cutAction);
+
+	_copyAction = new CopyAction();
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _copyAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
+	
+	_pasteAction = new PasteAction();
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
+
+	_layoutAction = new LayoutAction();
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _layoutAction);
+	
+	_initializeActions();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get the currently selected objects from this document, if any,
      * and place them on the given clipboard. 
@@ -466,154 +466,18 @@ public class GraphFrame extends PtolemyTop
        	_editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
 	_menubar.add(_editMenu);
-
-	// Now add the actions.
-	_cutAction = new CutAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _cutAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _cutAction);
-
-	_copyAction = new CopyAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _copyAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
-	
-	_pasteAction = new PasteAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
-	
-	_layoutAction = new LayoutAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _layoutAction);
-	
-	// FIXME what about other notations?  publish a list of actions
-	// like EditorKit?
-	_editMenu.add(_newPortAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newPortAction);
-
-	_editMenu.add(_newRelationAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newRelationAction);
-	// FIXME make a service.
-	_directorModel = new DefaultComboBoxModel();
-	try {
-	    // FIXME MoMLize
-	    Director dir;
-	    dir = new ptolemy.domains.sdf.kernel.SDFDirector();
-	    dir.setName("SDF");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.dt.kernel.DTDirector();
-	    dir.setName("DT");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.pn.kernel.PNDirector();
-	    dir.setName("PN");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.de.kernel.DEDirector();
-	    dir.setName("DE");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.csp.kernel.CSPDirector();
-	    dir.setName("CSP");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.dde.kernel.DDEDirector();
-	    dir.setName("DDE");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.fsm.kernel.FSMDirector();
-	    dir.setName("FSM");
-	    _directorModel.addElement(dir);
-
-	    dir = new ptolemy.domains.ct.kernel.CTMixedSignalDirector();
-	    dir.setName("CT");
-	    Parameter solver;
-	    solver = (Parameter)dir.getAttribute("ODESolver");
-	    EditableChoiceStyle style;
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
-	    new Parameter(style, "choice1", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
-
-	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
-	    new Parameter(style, "choice1", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
-            _directorModel.addElement(dir);
-
-            dir = new ptolemy.domains.ct.kernel.CTEmbeddedDirector();	    
-	    dir.setName("CTEmbedded");
-	    //Parameter solver;
-	    solver = (Parameter)dir.getAttribute("ODESolver");
-	    //EditableChoiceStyle style;
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
-	    new Parameter(style, "choice1", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
-
-	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
-	    new Parameter(style, "choice1", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
-	    _directorModel.addElement(dir);
-
-	    dir = new ptolemy.domains.giotto.kernel.GiottoDirector();
-	    dir.setName("Giotto");
-	    _directorModel.addElement(dir);
-            dir = new ptolemy.domains.rtp.kernel.RTPDirector();
-	    dir.setName("RTP");
-	    _directorModel.addElement(dir);
-	} catch (Exception ex) {
-	    MessageHandler.error("Director combobox creation failed", ex);
-	}
-	// FIXME find these names somehow.
-	_directorComboBox = new JComboBox(_directorModel);
-	_directorComboBox.setRenderer(new PtolemyListCellRenderer());
-	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
-        _directorComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-		    // When a director is selected, update the 
-		    // director of the model in the current document.
-		    final Director director = (Director) e.getItem();
-		    PtolemyEffigy effigy = 
-			(PtolemyEffigy)getTableau().getContainer();
-		    if(effigy == null) return;
-		    CompositeEntity entity = 
-			(CompositeEntity)effigy.getModel();
-		    if(entity instanceof CompositeActor) {
-			final CompositeActor actor = (CompositeActor) entity;
-			final Director oldDirector = actor.getDirector();
-                        if((oldDirector == null) || (director.getClass()
-                                != oldDirector.getClass())) {
-                            actor.requestChange(new ChangeRequest(
-                                   this, "Set Director") {
-                                protected void _execute() throws Exception {
-                                    Director clone = (Director)
-                                            director.clone(actor.workspace());
-                                    actor.setDirector(clone);
-                                }
-                            });
-                        }					      
-		    }
-                }
-            }
-        });
-        _toolbar.add(_directorComboBox);
-
-	_executeSystemAction = new ExecuteSystemAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _executeSystemAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _executeSystemAction);
-
-        super._addMenus();
     }
+
+    /** Create a new graph pane.  Subclasses will override this to change
+     *  The pane that is created.
+     */
+    protected abstract GraphPane _createGraphPane();
+
+    /** Initialize the actions for this graph frame.  Subclasses will
+     *  Generally subclasses will override this to set their own actions.
+     */
+
+    protected abstract void _initializeActions();
 
     /** Open a new Ptolemy II model.
      */
@@ -731,81 +595,6 @@ public class GraphFrame extends PtolemyTop
 	    new IconEditor(appContext, icon);
 	}
     }
-
-    /**
-     * The factory for creating context menus on entities.
-     */
-    // FIXME this has to move into the visual notation.
-    public class EntityContextMenuFactory extends PtolemyMenuFactory {
-	public EntityContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	    addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
-	    addMenuItemFactory(new MenuActionFactory(_editIconAction));
-	}
-    }
-
-    /**
-     * The factory for creating context menus on ports.
-     */
-    // FIXME this has to move into the visual notation.
-    public class PortContextMenuFactory extends PtolemyMenuFactory {
-	public PortContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new PortDescriptionFactory());
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	}
-
-	public class PortDescriptionFactory extends MenuItemFactory {
-	    /**
-	     * Add an item to the given context menu that will configure the
-	     * parameters on the given target.
-	     */
-	    public JMenuItem create(JContextMenu menu, NamedObj target) {
-		target = _getItemTargetFromMenuTarget(target);
-		if(target instanceof IOPort) {
-		    IOPort port = (IOPort)target;
-		    String string = "";
-		    int count = 0;
-		    if(port.isInput()) {
-			string += "Input";
-			count++;
-		    }
-		    if(port.isOutput()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Output";
-			count++;
-		    }
-		    if(port.isMultiport()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Multiport";
-			count++;
-		    }
-		    if(count > 0) {
-			return menu.add(new JMenuItem("   " + string));
-		    }
-		}
-		return null;
-	    }
-	    
-	    /**
-	     * Get the name of the items that will be created. 
-	     * This is provided so
-	     * that factory can be overriden slightly with the name changed.
-	     */
-	    protected String _getName() {
-		return null;
-	    }     
-	}
-    }
     
     private class ExecuteSystemAction extends AbstractAction {
 	public ExecuteSystemAction() {
@@ -828,29 +617,6 @@ public class GraphFrame extends PtolemyTop
 	    }	    
 	}
     }
-    
-    public class GetDocumentationAction extends FigureAction {
-	public GetDocumentationAction() {
-	    super("Get Documentation");
-	}
-	public void actionPerformed(ActionEvent e) {	    
-	    // Create a dialog for configuring the object.
-	    // FIXME this should probably be one frame for each class.
-	    super.actionPerformed(e);		
-	    NamedObj target = getTarget();
-	    String className = target.getClass().getName();     
-	    try {
-		Effigy effigy = (Effigy)getTableau().getContainer();
-		DocumentationViewerTableau viewer = 
-		    new DocumentationViewerTableau(effigy, 
-					  effigy.uniqueName("tableau"));
-		viewer.dottedClass.setExpression(className);
-	    } catch (Exception ex) {
-		MessageHandler.error("Could not view Documentation for " + 
-				     className, ex);
-	    }
-	}
-    };
         
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
@@ -1028,71 +794,28 @@ public class GraphFrame extends PtolemyTop
 	}
     }
 
-    /**
-     * The factory for creating context menus on relations.
-     */
-    // FIXME this has to move into the visual notation.
-    public class RelationContextMenuFactory 
-	extends PtolemyMenuFactory {
-	public RelationContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	}
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Return a visual notation that can create a view on this document.
-    // In this class, we search the toplevel entity in the model for a
-    // Ptolemy notation attribute and return the first one found.
-    //
-    /*  private VisualNotation _getVisualNotation(CompositeEntity model) {
-	List notationList = model.attributeList(VisualNotation.class);
-	Iterator notations = notationList.iterator();
-	VisualNotation notation = null;
-        if(notations.hasNext()) {
-	    notation = (VisualNotation) notations.next();
-	} else {
-	    notation = new PtolemyNotation();
-	}
-	return notation;
-	}*/
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // FIXME: should be somewhere else?
     // Default background color is a light grey.
-    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+    protected static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
     // The model that this window controls, if any.
-    private CompositeEntity _model;
+    protected CompositeEntity _model;
 
-    private JGraph _jgraph;
-    private JScrollPane _graphScrollPane;
-    private JPanner _graphPanner;
-    private JTree _library;
-    private JScrollPane _libraryScrollPane;
-    private JPanel _palettePane;
-    private JSplitPane _splitPane;
+    protected JGraph _jgraph;
+    protected JScrollPane _graphScrollPane;
+    protected JPanner _graphPanner;
+    protected JTree _library;
+    protected JScrollPane _libraryScrollPane;
+    protected JPanel _palettePane;
+    protected JSplitPane _splitPane;
 	
-    private JMenu _editMenu;
-    private JToolBar _toolbar;
-
-    private Action _getDocumentationAction;
-    private Action _editIconAction;
-    private Action _lookInsideAction;
-    private Action _newPortAction;
-    private Action _newRelationAction;
-    private Action _executeSystemAction;
-    private Action _cutAction;
-    private Action _copyAction;
-    private Action _pasteAction;
-    private Action _layoutAction;
-
-    private JComboBox _directorComboBox;
-    private DefaultComboBoxModel _directorModel;
+    protected JToolBar _toolbar;
+    protected JMenu _editMenu;
+    protected Action _cutAction;
+    protected Action _copyAction;
+    protected Action _pasteAction;
+    protected Action _layoutAction;
 }

@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil/ptolemy
 
-DIRS =		fsm
+DIRS =		kernel fsm
 
 # Root of the Java directory
 ROOT =		../../../
@@ -60,11 +60,12 @@ JSRCS = \
 	DirectorService.java \
 	FrameAttribute.java \
 	GraphFrame.java \
-	GraphTableau.java \
 	PtolemyDocument.java \
 	PtolemyGraphView.java \
 	PtolemyNotation.java \
 	PtolemyModule.java
+
+#	GraphTableau.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
