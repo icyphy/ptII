@@ -2992,3 +2992,28 @@ test MoMLParser-17.1 {Call isModified and setModified} {
     set r3 [$parser isModified]
     list $r1 $r2 $r3
 } {0 1 0}
+
+
+######################################################################
+####
+#
+
+test MoMLParser-18.1 {parse testdir.moml and get the filename of the inner part } {
+    $parser reset
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    set toplevel [$parser parseFile "testdir.moml"]
+    set compositeEntity [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+    set testdir2 [$compositeEntity getEntity testdir2]
+    set uriAttribute [$testdir2 getAttribute _uri]
+    # This will crap out if testdir/testdir2 does not have a _uri attribute
+    set uri [[java::cast ptolemy.kernel.attributes.URIAttribute $uriAttribute] getURI]
+    set uriString [$uri -noconvert toString] 
+    $uriString endsWith "ptolemy/moml/test/testdir/testdir2.moml"
+} {1}
