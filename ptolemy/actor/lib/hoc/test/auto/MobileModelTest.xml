@@ -198,7 +198,7 @@ to this actor over the network. </text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="MobileModel" class="ptolemy.actor.hoc.MobileModel">
+    <entity name="MobileModel" class="ptolemy.actor.lib.hoc.MobileModel">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="connectPorts" class="ptolemy.data.expr.Parameter" value="true">

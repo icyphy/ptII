@@ -71,7 +71,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="IterateOverArray2" class="ptolemy.actor.hoc.IterateOverArray">
+    <entity name="IterateOverArray2" class="ptolemy.actor.lib.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
         </property>
@@ -79,14 +79,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 155.0">
         </property>
-        <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+        <port name="output" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
             <property name="output"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 120.0">
             </property>
         </port>
-        <port name="in" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+        <port name="in" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>

@@ -29,7 +29,7 @@
 
 */
 
-package ptolemy.actor.hoc;
+package ptolemy.actor.lib.hoc;
 
 import java.net.URL;
 import java.util.Iterator;

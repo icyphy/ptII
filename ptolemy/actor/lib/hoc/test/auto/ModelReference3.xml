@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <entity name="model reference" class="ptolemy.actor.hoc.ModelReference">
+    <entity name="model reference" class="ptolemy.actor.lib.hoc.ModelReference">
         <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="modelsForModelReference/simpleRamp.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="do nothing">
