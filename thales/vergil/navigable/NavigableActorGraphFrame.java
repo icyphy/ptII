@@ -349,7 +349,7 @@ public class NavigableActorGraphFrame extends ExtendedGraphFrame {
      *  @return True if the close completes, and false otherwise.
      */
     protected boolean _close() {
-        CompositeEntity ptModel = getModel();
+        NamedObj ptModel = getModel();
         if (ptModel instanceof CompositeActor
                 && ptModel.getContainer() == null) {
             CompositeActor ptActorModel = (CompositeActor) ptModel;
@@ -390,7 +390,10 @@ public class NavigableActorGraphFrame extends ExtendedGraphFrame {
         _controller = new ActorEditorGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
-        final ActorGraphModel graphModel = new ActorGraphModel(getModel());
+        // NOTE: The cast is safe because the constructor
+        // accepts only CompositeEntity.
+        final ActorGraphModel graphModel = new ActorGraphModel(
+                (CompositeEntity)getModel());
         return new GraphPane(_controller, graphModel);
     }
 
