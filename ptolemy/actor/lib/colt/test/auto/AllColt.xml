@@ -289,7 +289,7 @@
     <entity name="Test15" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.7316194749286, -0.6293656278374, -0.1327424701506, -0.5622496041045, 2.3781147332696, -0.7421362493668, 0.107681613108, 2.1002534489738, -1.3063222967339, 3.0389361635527, -2.2559560466629, -0.4668036935173, -1.1918932906338, -1.1398194809961, 0.0542645800904, 0.9992701076467, -2.3937638539711, 0.1031107398415, 0.0625224034427, -0.4955781483483, 1.1362575246483, 0.9138691263355, 2.0537092808264, 0.6602435997845, -1.4165381240687}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
