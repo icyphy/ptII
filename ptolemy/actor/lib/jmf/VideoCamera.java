@@ -176,7 +176,7 @@ public class VideoCamera extends Source implements ControllerListener {
         _bufferNew = CameraCodec.getFrame();
         if (_bufferNew != null) {
             //_bufferNew.setFormat(new YUVFormat());
-            output.send(0, new ObjectToken(_bufferNew));
+            output.send(0, new JMFImageToken(_bufferNew));
         }
     }
 

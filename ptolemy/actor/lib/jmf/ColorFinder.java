@@ -127,8 +127,8 @@ public class ColorFinder extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
-            ObjectToken objectToken = (ObjectToken) input.get(0);
-            Buffer in = (Buffer) objectToken.getValue();
+            JMFImageToken jmfImageToken = (JMFImageToken) input.get(0);
+            Buffer in = jmfImageToken.getValue();
             VideoFormat videoFormat = (VideoFormat)in.getFormat();
             YUVFormat yuvFormat = (YUVFormat) videoFormat;
             byte[] data = (byte[])in.getData();
