@@ -63,7 +63,8 @@ JSRCS = \
 	CalendarQueue.java \
 	CQComparator.java \
 	DoubleCQComparator.java \
-	FIFOQueue.java
+	FIFOQueue.java \
+	PtolemyApplet.java
 
 EXTRA_SRCS =	$(JSRCS)
 
