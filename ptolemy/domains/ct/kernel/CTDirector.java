@@ -32,12 +32,14 @@ package ptolemy.domains.ct.kernel;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -227,6 +229,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public Parameter stopTime;
 
+    /** Indicate whether the execution will synchronize to real time. The
+     *  default value is false.
+     */
+    public Parameter synchronizeToRealTime;
+
     /** The resolution in comparing time.
      *  The default value is 1e-10, of type DoubleToken.
      */
@@ -236,31 +243,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  The default value is 1e-6, of type DoubleToken.
      */
     public Parameter valueResolution;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** Public variable indicating whether the statistics
-     *  is to be collected. Statistics can be collected during the
-     *  execution if this variable is set to true. These information
-     *  can be used to choose ODE solvers and their parameters.
-     *  FIXME: Should use debug events.
-     */
-    public boolean STAT = false;
-
-    /** The number of integration steps so far.
-     */
-    public int NSTEP = 0;
-
-    /** The number of function evaluations, which is the same as the
-     *  total number of rounds when solving the ODEs.
-     */
-    public int NFUNC = 0;
-
-    /** The number of failed steps.
-     */
-    public int NFAIL = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -518,14 +500,18 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     "Requested fire time: " + time + " is earlier than" +
                     " the current time." + getCurrentTime() );
         }
-        if(Math.abs(time - getCurrentTime()) < getTimeResolution() &&
-           isDiscretePhase()) {
-            // This is specific for discrete actors.
-            // Fire it right away.
-            if (actor.prefire()) {
-                actor.fire();
-                actor.postfire();
+        // FIXME
+        if(Math.abs(time - getCurrentTime()) < getTimeResolution() 
+                && actor != null 
+                && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
+            if(_debugging) _debug(((Nameable)actor).getName(), 
+                    "requests refire at current time" + getCurrentTime());
+            // These actors will be fired in the discrete phase
+            // at the current time.
+            if (_refireActors == null) {
+                _refireActors = new LinkedList();
             }
+            _refireActors.add(actor);
         } else {
             // Otherwise, the fireAt request is in the future. So we
             // insert it to the breakpoint table.
@@ -537,6 +523,21 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             }
             _breakPoints.insert(new Double(time));
         }
+    }
+
+     
+    /** Initialization after type resolution.
+     *  In addition to calling the initialize() method of its super class,
+     *  this method record the current system time as the "real" starting 
+     *  time of the execution. This starting time is used when the 
+     *  execution is synchronized to real time.
+     *
+     *  @exception IllegalActionException If the super class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _timeBase = System.currentTimeMillis();
+        if(_debugging) _debug(getName(), "real starting time = " +  _timeBase);
     }
 
     /** Return true if this is the first iteration after a breakpoint.
@@ -603,11 +604,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             throw new IllegalActionException( this,
                     "has no scheduler.");
         }
-        if(STAT) {
-            NSTEP = 0;
-            NFUNC = 0;
-            NFAIL = 0;
-        }
         // invalidate schedule
         scheduler.setValid(false);
         if(_debugging) _debug(getFullName(),
@@ -621,7 +617,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
         super.preinitialize();
     }
-
+   
     /** Fire all the actors in the output schedule.
      *  @exception IllegalActionException If the actor in the output
      *      schedule throws it.
@@ -651,10 +647,36 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  For a correct CT simulation,
      *  the state of an actor can only change at this stage of an
      *  iteration.
+     *  FIXME: If the <i>synchronizeToRealTime</i> parameter is evaluated 
+     *  to true,
+     *  then this method will block until the real time catches the
+     *  current modeling time. 
      *  @exception IllegalActionException If any of the actors
      *      throws it.
      */
     public void updateContinuousStates() throws IllegalActionException {
+        if (((BooleanToken)synchronizeToRealTime.getToken()).booleanValue()) {
+            long realTime = System.currentTimeMillis()-_timeBase;
+            long simulationTime = (long)((getCurrentTime()-getStartTime())
+                    *1000);
+            if(_debugging) _debug("real time " + realTime, 
+                    "simulation time " + simulationTime);
+            long timeDifference = simulationTime-realTime;
+            if(timeDifference > 20) {
+                try {
+                    if(_debugging) _debug("Sleep for " + timeDifference 
+                            + "ms");
+                    Thread.sleep(timeDifference - 20);
+                }  catch (Exception e) {
+                    throw new IllegalActionException(this,
+                            "Sleep Interrupted" + e.getMessage());
+                }
+            } else {
+                if(_debugging) _debug("Warning: " + getFullName(),
+                        " cannot achieve real-time performance",
+                        " at simulation time " + getCurrentTime());
+            }
+        } 
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         Iterator actors = schedule.get(
                 CTSchedule.CONTINUOUS_ACTORS).actorIterator();
@@ -701,27 +723,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-
-    /** Show the statistics of the simulation if requested. The statistics
-     *  includes the number of steps simulated, the number of function
-     *  evaluations (firing all actors in the state transition schedule),
-     *  and the number of failed steps (due to error control).
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        if(STAT) {
-            if(_debugging) {
-                _debug(getName() + ": Total # of STEPS "+NSTEP);
-                _debug(getName() + ": Total # of Function Evaluation "
-                        + NFUNC);
-                _debug(getName() + ": Total # of Failed Steps "+NFAIL);
-            }
-        }
-    }
-
-
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -766,6 +767,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             timeResolution = new Parameter(this, "timeResolution",
                     new DoubleToken(_timeResolution));
             timeResolution.setTypeEquals(BaseType.DOUBLE);
+            synchronizeToRealTime = new Parameter(this, 
+                    "synchronizeToRealTime");
+            synchronizeToRealTime.setToken(new BooleanToken(false));
+            synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
+            
 
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
@@ -859,6 +865,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
+    // A list of actors that requested to refire at the current time.    
+    protected LinkedList _refireActors; 
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+
     // Current ODE solver.
     private ODESolver _currentSolver = null;
 
@@ -872,6 +884,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     private double _errorTolerance;
     private double _valueResolution;
     private double _timeResolution;
+
+    // The real starting time in term of system millisecond counts.
+    private long _timeBase;
 
     // Indicate whether this is a breakpoint iteration.
     private boolean _breakpointIteration = false;
