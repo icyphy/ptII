@@ -234,7 +234,7 @@ COLT_JARS=""
 if [ "$PTCOLT_DIR" = "colt" ]; then
     # Colt jar files.  We ship $PTII/lib/ptcolt.jar, which is a subset
     # of $PTII/vendors/misc/colt.jar
-    PTCOLT_JARS=@PTCOLT_JARS@
+    PTCOLT_JARS="@PTCOLT_JARS@"
     COLT_JARS="${CLASSPATHSEPARATOR}${PTCOLT_JARS}"
 fi
 
@@ -421,6 +421,15 @@ if [ ! -z "$TOSROOT" ]; then
     #TOS_PROPERTIES="-Dptolemy.ptII.tosroot=\"${TOSROOT_NO_CYGDRIVE}\""
 fi
 
+#### PTVR is the Volume Rendering interface
+# http://www.j3d.org/tutorials/quick_fix/volume.html
+# PTVR_DIR is set to vr if configure found $PTII/lib/ptvr.jar
+PTVR_DIR=@PTVR_DIR@
+PTVR_JARS=""
+if [ "$PTVR_DIR" = "vr" ]; then 
+    PTVR_JARS="${CLASSPATHSEPARATOR}@PTVR_JAR@"
+fi
+
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
 # PTX10_DIR is set to x10 if configure found x10
@@ -439,7 +448,7 @@ fi
 # a version of java cup
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
