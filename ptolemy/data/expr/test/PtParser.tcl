@@ -232,7 +232,7 @@ a TokenMgrError, which is _not_ a ParseException } {
 	        $errmsg "\n" output
     set lines [split $output "\n"]
     list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Lexical error at line 1, column 1.  Encountered: "\\" (92), after : ""}}
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "\\" at line 1, column 1.}
 
 ######################################################################
 ####
@@ -995,6 +995,19 @@ test PtParser-18.5 {Test expressions with backslashes.} {
     set res  [ $root evaluateParseTree ]
     list [$res toString]
 } {{" \" "}}
+
+test PtParser-18.6 {Test bad expression.} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    catch {[set root [ $p {generateParseTree String} "\0"]] toString} res
+    list $res
+} {ptolemy.kernel.util.IllegalActionException:\ Error\ parsing\ expression\ \" \":\nEncountered\ \"\"\ at\ line\ 1,\ column\ 1.\r\nWas\ expecting\ one\ of:\r\n\ \ \ \ \"-\"\ ...\r\n\ \ \ \ \"(\"\ ...\r\n\ \ \ \ \"\{\"\ ...\r\n\ \ \ \ \"\[\"\ ...\r\n\ \ \ \ \"!\"\ ...\r\n\ \ \ \ \"~\"\ ...\r\n\ \ \ \ <INTEGER>\ ...\r\n\ \ \ \ <DOUBLE>\ ...\r\n\ \ \ \ <COMPLEX>\ ...\r\n\ \ \ \ <BOOLEAN>\ ...\r\n\ \ \ \ <ID>\ ...\r\n\ \ \ \ <STRING>\ ...\r\n\ \ \ \ <SMID>\ ...\r\n\ \ \ \ <SMIDBRACE>\ ...\r\n\ \ \ \ <SMIDPAREN>\ ...\r\n\ \ \ \ \"function\"\ ...\r\n\ \ \ \}
+
+test PtParser-18.7 {Test expression with comment.} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    catch {[set root [ $p {generateParseTree String} "5 //comment!"]] toString} res
+    set res [[ $root evaluateParseTree ] toString]
+    list $res
+} {5}
 
 ######################################################################
 ####

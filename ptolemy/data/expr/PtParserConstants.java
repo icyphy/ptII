@@ -44,56 +44,66 @@ public interface PtParserConstants {
   int DIVIDE = 13;
   int MODULO = 14;
   int POWER = 15;
-  int GT = 16;
-  int LT = 17;
-  int GTE = 18;
-  int LTE = 19;
-  int NOTEQUALS = 20;
-  int EQUALS = 21;
-  int COND_AND = 22;
-  int COND_OR = 23;
-  int BOOL_NOT = 24;
-  int BITWISE_NOT = 25;
-  int AND = 26;
-  int OR = 27;
-  int XOR = 28;
-  int SHL = 29;
-  int SHR = 30;
-  int LSHR = 31;
-  int INTEGER = 32;
-  int INTEGER_FORMAT_SPEC = 33;
-  int DECIMAL_LITERAL = 34;
-  int HEX_LITERAL = 35;
-  int OCTAL_LITERAL = 36;
-  int EXPONENT = 37;
-  int DOUBLE = 38;
-  int COMPLEX = 39;
-  int BOOLEAN = 40;
-  int FUNCTION = 41;
-  int ID = 42;
-  int LETTER = 43;
-  int STRING = 44;
-  int SETEQUALS = 45;
-  int SEPARATOR = 46;
-  int SMSTRING = 47;
-  int SMDOLLAR = 48;
-  int SMDOLLARBRACE = 49;
-  int SMDOLLARPAREN = 50;
-  int SMID = 51;
-  int SMLETTER = 52;
-  int SMIDBRACE = 53;
-  int SMBRACE = 54;
-  int SMIDPAREN = 55;
-  int SMPAREN = 56;
+  int OPENPAREN = 16;
+  int CLOSEPAREN = 17;
+  int OPENBRACE = 18;
+  int CLOSEBRACE = 19;
+  int OPENBRACKET = 20;
+  int CLOSEBRACKET = 21;
+  int COMMA = 22;
+  int PERIOD = 23;
+  int COLON = 24;
+  int QUESTION = 25;
+  int GT = 26;
+  int LT = 27;
+  int GTE = 28;
+  int LTE = 29;
+  int NOTEQUALS = 30;
+  int EQUALS = 31;
+  int COND_AND = 32;
+  int COND_OR = 33;
+  int BOOL_NOT = 34;
+  int BITWISE_NOT = 35;
+  int AND = 36;
+  int OR = 37;
+  int XOR = 38;
+  int SHL = 39;
+  int SHR = 40;
+  int LSHR = 41;
+  int INTEGER = 42;
+  int INTEGER_FORMAT_SPEC = 43;
+  int DECIMAL_LITERAL = 44;
+  int HEX_LITERAL = 45;
+  int OCTAL_LITERAL = 46;
+  int EXPONENT = 47;
+  int DOUBLE = 48;
+  int COMPLEX = 49;
+  int BOOLEAN = 50;
+  int FUNCTION = 51;
+  int ID = 52;
+  int LETTER = 53;
+  int STRING = 54;
+  int SETEQUALS = 55;
+  int SEPARATOR = 56;
+  int SMSTRING = 57;
+  int SMDOLLAR = 58;
+  int SMDOLLARBRACE = 59;
+  int SMDOLLARPAREN = 60;
+  int SMID = 61;
+  int SMLETTER = 62;
+  int SMIDBRACE = 63;
+  int SMBRACE = 64;
+  int SMIDPAREN = 65;
+  int SMPAREN = 66;
+  int ERROR = 67;
 
   int DEFAULT = 0;
-  int IN_SINGLE_LINE_COMMENT = 1;
-  int IN_MULTI_LINE_COMMENT = 2;
-  int IN_FORMAL_COMMENT = 3;
-  int StringModeIDBrace = 4;
-  int StringModeIDParen = 5;
-  int StringMode = 6;
-  int StringModeIDNone = 7;
+  int SingleLineCommentMode = 1;
+  int MultiLineCommentMode = 2;
+  int StringModeIDBrace = 3;
+  int StringModeIDParen = 4;
+  int StringMode = 5;
+  int StringModeIDNone = 6;
 
   String[] tokenImage = {
     "<EOF>",
@@ -112,6 +122,16 @@ public interface PtParserConstants {
     "\"/\"",
     "\"%\"",
     "\"^\"",
+    "\"(\"",
+    "\")\"",
+    "\"{\"",
+    "\"}\"",
+    "\"[\"",
+    "\"]\"",
+    "\",\"",
+    "\".\"",
+    "\":\"",
+    "\"?\"",
     "\">\"",
     "\"<\"",
     "\">=\"",
@@ -150,19 +170,10 @@ public interface PtParserConstants {
     "<SMID>",
     "<SMLETTER>",
     "<SMIDBRACE>",
-    "\"}\"",
+    "<SMBRACE>",
     "<SMIDPAREN>",
-    "\")\"",
-    "\"(\"",
-    "\"?\"",
-    "\":\"",
-    "\".\"",
-    "\",\"",
-    "\")\"",
-    "\"[\"",
-    "\"{\"",
-    "\"]\"",
-    "\"}\"",
+    "<SMPAREN>",
+    "<ERROR>",
   };
 
 }

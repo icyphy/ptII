@@ -276,9 +276,12 @@ public class PtParser {
         try {
             // Parse the expression to obtain the parse tree.
             map = startAssignmentList();
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(null, throwable,
-                    "Error parsing expression \"" + stringIn + "\"");
+        } catch (ParseException x) {
+            throw new IllegalActionException("Error parsing expression \""
+                    + stringIn + "\":\n" + x.getMessage());
+        } catch (TokenMgrError x) {
+            throw new IllegalActionException("Error parsing expression \""
+                    + stringIn + "\":\n" + x.getMessage());
         }
         return map;
     }
@@ -416,31 +419,27 @@ PARSER_END(PtParser)
 
 /* COMMENTS */
 
-MORE :
+SKIP :
 {
-  "//" : IN_SINGLE_LINE_COMMENT
+  "//" : SingleLineCommentMode
 |
-  "/*" : IN_MULTI_LINE_COMMENT
+  "/*" : MultiLineCommentMode
 }
 
-<IN_SINGLE_LINE_COMMENT>
-SPECIAL_TOKEN :
+<SingleLineCommentMode> SKIP :
 {
-  <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n" > : DEFAULT
+    <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n"> : DEFAULT
 }
 
-<IN_MULTI_LINE_COMMENT>
-SPECIAL_TOKEN :
+<MultiLineCommentMode> SKIP :
 {
-  <MULTI_LINE_COMMENT: "*/" > : DEFAULT
+    <MULTI_LINE_COMMENT: "*/" > : DEFAULT
 }
 
-<IN_SINGLE_LINE_COMMENT,IN_FORMAL_COMMENT,IN_MULTI_LINE_COMMENT>
-MORE :
-{
-  < ~[] >
+<SingleLineCommentMode, MultiLineCommentMode> SKIP : 
+{ 
+    < ~[] > 
 }
-
 
 /* Now come to proper tokens */
 
@@ -465,6 +464,20 @@ TOKEN : /* Arithmetic operators */
   |	< DIVIDE: "/" >
   |     < MODULO: "%" >
   |     < POWER: "^" >
+}
+
+TOKEN : /* Assignment */
+{
+    < OPENPAREN: "(" > | 
+    < CLOSEPAREN: ")" > |                        
+    < OPENBRACE: "{" > | 
+    < CLOSEBRACE: "}" > |
+    < OPENBRACKET: "[" > | 
+    < CLOSEBRACKET: "]" > |
+    < COMMA: "," > | 
+    < PERIOD: "." > |
+    < COLON: ":" > | 
+    < QUESTION: "?" >
 }
 
 TOKEN : /* Relational operators */
@@ -577,13 +590,18 @@ TOKEN : /* Assignment */
 < StringModeIDBrace > TOKEN :
 {
     < SMIDBRACE: (<ID>) > 
-  | < SMBRACE : "}" > : StringMode
+  | < SMBRACE : <CLOSEBRACE> > : StringMode
 }
 
 < StringModeIDParen > TOKEN :
 {
     < SMIDPAREN: (<ID>) > 
-  | < SMPAREN : ")" > : StringMode
+  | < SMPAREN : <CLOSEPAREN> > : StringMode
+}
+
+TOKEN :
+{
+  < ERROR: ~[] >
 }
 
 
@@ -668,7 +686,7 @@ void expression() #void :
 {}
 {
     (
-     LOOKAHEAD(<FUNCTION> "(")
+     LOOKAHEAD(<FUNCTION> <OPENPAREN>)
          functionDefinition()
          |
          funcIf()
@@ -679,7 +697,7 @@ void funcIf() #void :
 {}
 {
    (
-           logicalOr() ( "?" logicalOr() ":" logicalOr() )?
+           logicalOr() ( <QUESTION> logicalOr() <COLON> logicalOr() )?
    ) #PtFunctionalIfNode(>1)
 }
 
@@ -856,8 +874,8 @@ void element() #void :
 { 
   // Note that omitting the parens is possible for a record...
   ( primaryElement()
-    [ "." <ID> {jjtThis._methodName = token.image; isMethodCall = true;}
-      ( "(" [ funcIf() ( "," funcIf() )* ] ")" )? ]
+    [ <PERIOD> <ID> {jjtThis._methodName = token.image; isMethodCall = true;}
+      ( <OPENPAREN> [ funcIf() ( <COMMA> funcIf() )* ] <CLOSEPAREN> )? ]
   ) #PtMethodCallNode(isMethodCall)
 }
 */
@@ -874,7 +892,7 @@ void element() #void :
         	primaryElement()
 
 			[
-				"." <ID>
+				<PERIOD> <ID>
 				{
 					name = token.image;
 					hasName = true;
@@ -882,7 +900,7 @@ void element() #void :
 			]
 
 			[
-				"(" [ expression() ( "," expression() )* ] ")"
+			        <OPENPAREN> [ expression() ( <COMMA> expression() )* ] <CLOSEPAREN>
 				{
 					hasCall = true;
 				}
@@ -1115,19 +1133,19 @@ String tidied, x;
       }
    ) #PtLeafNode   
 
-  |   LOOKAHEAD("(")
-      "(" expression() ")"
+  |   LOOKAHEAD(<OPENPAREN>)
+      <OPENPAREN> expression() <CLOSEPAREN>
 
-  |   LOOKAHEAD( "[" )
+  |   LOOKAHEAD(<OPENBRACKET>)
       matrixConstruct()
 
-  |   LOOKAHEAD( "{" <ID> "=" )
+  |   LOOKAHEAD( <OPENBRACE> <ID> <SETEQUALS> )
       recordConstruct()
   
-  |   LOOKAHEAD( "{" )
+  |   LOOKAHEAD( <OPENBRACE> )
       arrayConstruct()
 
-  |   LOOKAHEAD( <ID> "(" )
+  |   LOOKAHEAD( <ID> <OPENPAREN> )
       function()
     
   |   identifier()
@@ -1138,10 +1156,10 @@ void functionDefinition() #PtFunctionDefinitionNode :
 {}
 {
     <FUNCTION>
-         "(" [
+         <OPENPAREN> [
                  <ID> { jjtThis._argList.add(token.image); } optTypeSpecifier()
-                 ("," <ID> { jjtThis._argList.add(token.image); } optTypeSpecifier())*
-         ] ")" expression()
+                 (<COMMA> <ID> { jjtThis._argList.add(token.image); } optTypeSpecifier())*
+         ] <CLOSEPAREN> expression()
         {
             // A hack for type specification, since we don't have types in
             // the syntax.
@@ -1159,7 +1177,7 @@ void functionDefinition() #PtFunctionDefinitionNode :
 void optTypeSpecifier() #void :
 {}
 {    
-    (":" funcIf()) | {
+    (<COLON> funcIf()) | {
         ASTPtLeafNode node = new ASTPtLeafNode(JJTPTLEAFNODE);
         node._name = "general";
         node._ptToken = new GeneralToken();
@@ -1172,7 +1190,7 @@ void function() #PtFunctionApplicationNode :
 {}
 {    
 	identifier()
-    "(" [ expression() ( "," expression() )* ] ")"
+    <OPENPAREN> [ expression() ( <COMMA> expression() )* ] <CLOSEPAREN>
 }
 
 void assignmentIdentifier() #PtLeafNode :
@@ -1185,15 +1203,15 @@ void assignmentIdentifier() #PtLeafNode :
         // until the parse tree is evaluated.
         name = new StringBuffer(token.image);
     }
-    ("." <ID> {
+    (<PERIOD> <ID> {
         name.append(".");
         name.append(token.image);
     })*
-    ("(" <INTEGER> {
+    (<OPENPAREN> <INTEGER> {
         name.append("(");
         name.append(token.image);
         name.append(")");
-    } ")")? 
+    } <CLOSEPAREN>)? 
     { 
         jjtThis._name = name.toString();
     }
@@ -1222,12 +1240,12 @@ void matrixConstruct() #PtMatrixConstructNode :
   int i;
   int nRows = 0; }
 {
-  "[" { ++jjtThis._nColumns; ++nRows; } funcIf()  /* first term */
+  <OPENBRACKET> { ++jjtThis._nColumns; ++nRows; } funcIf()  /* first term */
   (
    (  
-    ( "," { ++jjtThis._nColumns; } funcIf() )*  /* first row */
-    ( ";" { ++nRows; i = 0; } funcIf() { ++i; } 
-    ( "," funcIf() { ++i; } )*  /* one more row */
+    ( <COMMA> { ++jjtThis._nColumns; } funcIf() )*  /* first row */
+    ( <SEPARATOR> { ++nRows; i = 0; } funcIf() { ++i; } 
+    ( <COMMA> funcIf() { ++i; } )*  /* one more row */
       { /* Assert that the following rows have the same number of terms as the
          first row. */
         if ( i != jjtThis._nColumns ) {
@@ -1237,13 +1255,13 @@ void matrixConstruct() #PtMatrixConstructNode :
                   + "terms as the first row.");
         }
       }
-    )* "]" { jjtThis._form = 1; jjtThis._nRows = nRows; }
+    )* <CLOSEBRACKET> { jjtThis._form = 1; jjtThis._nRows = nRows; }
    )
    | 
    (
-    ":" funcIf() ":" funcIf() 
-    ( ";" { ++nRows; } funcIf() ":" funcIf() ":" funcIf() )* 
-    "]" { jjtThis._form = 2; jjtThis._nRows = nRows; }
+    <COLON> funcIf() <COLON> funcIf() 
+    ( <SEPARATOR> { ++nRows; } funcIf() <COLON> funcIf() <COLON> funcIf() )* 
+    <CLOSEBRACKET> { jjtThis._form = 2; jjtThis._nRows = nRows; }
    )
   )
 }
@@ -1253,20 +1271,20 @@ void recordConstruct() #PtRecordConstructNode :
   Token x = null;
 }
 {
-    "{" x = <ID> {jjtThis._fieldNames.add(x.image);} "=" funcIf() 
-        ("," x = <ID> {jjtThis._fieldNames.add(x.image);} "=" funcIf())*
-    "}"
+    <OPENBRACE> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf() 
+        (<COMMA> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf())*
+    <CLOSEBRACE>
 }
 
 void arrayConstruct() #PtArrayConstructNode :
 {
 }
 {
-    "{"
+    <OPENBRACE>
     funcIf()
     (
-      ","
+      <COMMA>
       funcIf()
     )*
-    "}"
+    <CLOSEBRACE>
 }
