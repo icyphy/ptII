@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity SYSTEM "../../../moml/moml.dtd">
 
-<entity name="real time processes" class="ptolemy.moml.EntityLibrary">
+<entity name="RealTimeProcesses" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>

@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- Library of actors which realize continuous dynamics. -->
-<entity name="dynamics" class="ptolemy.moml.EntityLibrary">
+<entity name="Dynamics" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
