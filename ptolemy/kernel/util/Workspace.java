@@ -55,16 +55,17 @@ workspace.  To read-synchronize on its workspace, it uses the following
 code in a method:
 <pre>
     try {
-	workspace().read();
+	workspace().getReadAccess();
 	// ... code that reads
     } finally {
 	workspace().doneReading();
     }
 </pre>
 We assume that the workspace() method returns the workspace, as for example
-in the NamedObj class. The read() method suspends the thread if
+in the NamedObj class. The getReadAccess() method suspends the thread if
 another thread is currently modifying the workspace, and otherwise
-returns immediately. The finally clause is executed even if
+returns immediately. Note that multiple readers can simultaneously have
+read access. The finally clause is executed even if
 an exception occurs.  This is essential because without the call
 to doneReading(), the workspace will never again allow any thread
 to modify it.  It believes there is still a thread reading it.
@@ -74,7 +75,7 @@ To make changes in the workspace, a thread must write-synchronize
 using the following code:
 <pre>
     try {
-	workspace().write();
+	workspace().getWriteAccess();
 	// ... code that writes
     } finally {
 	workspace().doneWriting();
@@ -98,8 +99,8 @@ public class Workspace implements Nameable, Serializable {
     /** Create a workspace with an empty string as its name.
      */
     public Workspace() {
+        super();
         setName("");
-        _directory = new LinkedList();
     }
 
     /** Create a workspace with the specified name.  This name will form the
@@ -108,8 +109,8 @@ public class Workspace implements Nameable, Serializable {
      *  @param name Name of the workspace.
      */
     public Workspace(String name) {
+        super();
         setName(name);
-        _directory = new LinkedList();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -156,7 +157,7 @@ public class Workspace implements Nameable, Serializable {
         // synchronized, since _description is.  However, by making it
         // synchronized, the documentation shows this on the public
         // interface, not just the protected one.
-        return description(NamedObj.ALL);
+        return description(NamedObj.COMPLETE);
     }
 
     /** Return a description of the workspace. The level of detail depends
@@ -172,7 +173,7 @@ public class Workspace implements Nameable, Serializable {
         // synchronized, since _description is.  However, by making it
         // synchronized, the documentation shows this on the public
         // interface, not just the protected one.
-        return _description(detail, 0);
+        return _description(detail, 0, 0);
     }
 
     /** Enumerate the items in the directory, in the order in which
@@ -188,18 +189,19 @@ public class Workspace implements Nameable, Serializable {
      *  active read or write permissions), then wake up any threads that are
      *  suspended on access to this
      *  workspace so that they may contend for permissions.
-     *  @exception InvalidStateException
-     *   If this method is called before a corresponding call to read().
+     *  @exception InvalidStateException If this method is called
+     *   before a corresponding call to getReadAccess().
      */
     public synchronized void doneReading() {
         Thread current = Thread.currentThread();
-        ReadCount depth = (ReadCount)_readers.get(current);
+        ReadDepth depth = (ReadDepth)_readers.get(current);
         if (depth == null) {
             throw new InvalidStateException(this,
-                    "Workspace: doneReading() called before read()!");
+                    "Workspace: doneReading() called without a prior "
+                    + "matching call to getReadAccess()!");
         }
         depth.decr();
-        if (depth.zero()) {
+        if (depth.isZero()) {
             _readers.remove(current);
             if (_writer != current) {
                 notifyAll();
@@ -221,7 +223,8 @@ public class Workspace implements Nameable, Serializable {
             notifyAll();
         } else if (_writeDepth < 0) {
             throw new InvalidStateException(this,
-                    "Workspace: doneWriting called before write().");
+                    "Workspace: doneWriting called without a prior "
+                    + "matching call to getWriteAccess().");
         }
     }
 
@@ -246,38 +249,25 @@ public class Workspace implements Nameable, Serializable {
     public String getName() {
         return _name;
     }
-    /** Get a the version number
-     *  @return A non-negative long integer.
-     */
-    public synchronized long getVersion() {
-        return _version;
-    }
-
-    /** Increment the version number by one.
-     */
-    public synchronized void incrVersion() {
-        _version++;
-    }
-
     /** Obtain permission to read objects in the workspace.
      *  This method suspends the calling thread until such permission
      *  has been obtained.  Permission is granted unless either another
-     *  thread has write permission, or there are there are threads that
+     *  thread has write permission, or there are threads that
      *  have requested write permission and not gotten it yet.
      *  It is essential that doneReading() be called
      *  after this, or write permission may never again be granted in
      *  this workspace.
      */
-    public synchronized void read() {
+    public synchronized void getReadAccess() {
         while (true) {
             // If the current thread has write permission, or if there
             // are no pending write requests, then grant read permission.
             Thread current = Thread.currentThread();
             if (current == _writer || _writeReq == 0 ) {
                 // The thread may already have read permission.
-                ReadCount depth = (ReadCount)_readers.get(current);
+                ReadDepth depth = (ReadDepth)_readers.get(current);
                 if (depth == null) {
-                    depth = new ReadCount();
+                    depth = new ReadDepth();
                     _readers.put(current, depth);
                 }
                 depth.incr();
@@ -286,9 +276,70 @@ public class Workspace implements Nameable, Serializable {
             try {
                 wait();
             } catch(InterruptedException ex) {
-                // Ignore, since it's still not safe to return.
+                throw new InternalErrorException(
+                    "Thread interrupted while waiting for read access!"
+                    + ex.getMessage());
             }
         }
+    }
+
+    /** Get the version number.  The version number is incremented on
+     *  each call to doneWriting() and also on calls to incrVersion().
+     *  It is meant to track changes in the topologies within the workspace.
+     *  @return A non-negative long integer.
+     */
+    public synchronized long getVersion() {
+        return _version;
+    }
+
+    /** Obtain permission to write to objects in the workspace.
+     *  Permission is granted if there are no other threads that currently
+     *  have read or write permission.  In particular, it <i>is</i> granted
+     *  if this thread already has write permission, or if it is the only
+     *  thread with read permission.
+     *  This method suspends the calling thread until such permission
+     *  has been obtained.  It is essential that doneWriting() be called
+     *  after this, or read or write permission may never again be granted in
+     *  this workspace.
+     */
+    public synchronized void getWriteAccess() {
+        _writeReq++;
+        while (true) {
+            Thread current = Thread.currentThread();
+            if (current == _writer) {
+                // already have write permission
+                _writeDepth++;
+                return;
+            }
+            if ( _writer == null) {
+                // there are no writers.  Are there any readers?
+                if (_readers.isEmpty()) {
+                    // No readers
+                    _writer = Thread.currentThread();
+                    _writeDepth = 1;
+                    return;
+                }
+                if (_readers.size() == 1 && _readers.get(current) != null) {
+                    // Sole reader is this thread.
+                    _writer = Thread.currentThread();
+                    _writeDepth = 1;
+                    return;
+                }
+            }
+            try {
+                wait();
+            } catch(InterruptedException ex) {
+                throw new InternalErrorException(
+                    "Thread interrupted while waiting for write access!"
+                    + ex.getMessage());
+            }
+        }
+    }
+
+    /** Increment the version number by one.
+     */
+    public synchronized void incrVersion() {
+        _version++;
     }
 
     /** Remove the specified item from the directory.
@@ -329,49 +380,7 @@ public class Workspace implements Nameable, Serializable {
      *  @return The classname and name.
      */
     public String toString() {
-        return "pt.kernel.Workspace {" + getFullName()+ "}";
-    }
-
-    /** Obtain permission to write to objects in the workspace.
-     *  Permission is granted if there are no other threads that currently
-     *  have read or write permission.  In particular, it <i>is</i> granted
-     *  if this thread already has write permission, or if it is the only
-     *  thread with read permission.
-     *  This method suspends the calling thread until such permission
-     *  has been obtained.  It is essential that doneWriting() be called
-     *  after this, or read or write permission may never again be granted in
-     *  this workspace.
-     */
-    public synchronized void write() {
-        _writeReq++;
-        while (true) {
-            Thread current = Thread.currentThread();
-            if (current == _writer) {
-                // already have write permission
-                _writeDepth++;
-                return;
-            }
-            if ( _writer == null) {
-                // there are no writers.  Are there any readers?
-                if (_readers.isEmpty()) {
-                    // No readers
-                    _writer = Thread.currentThread();
-                    _writeDepth = 1;
-                    return;
-                }
-                if (_readers.size() == 1 && _readers.get(current) != null) {
-                    // Sole reader is this thread.
-                    _writer = Thread.currentThread();
-                    _writeDepth = 1;
-                    return;
-                }
-            }
-            try {
-                wait();
-            } catch(InterruptedException ex) {
-                // Ignore, since it's still not safe to return.
-            }
-        }
+        return getClass().getName() + " {" + getFullName()+ "}";
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -381,12 +390,20 @@ public class Workspace implements Nameable, Serializable {
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the NamedObj class.  If the contents are requested,
      *  then the items in the directory are also described.
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is speicified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
      *  @param detail The level of detail.
      *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the workspace.
      */
-    public synchronized String _description(int detail, int indent) {
-        String result = NamedObj._indent(indent);
+    protected synchronized String _description(int detail, int indent,
+            int bracket) {
+        String result = NamedObj._getIndentPrefix(indent);
+        if (bracket == 1 || bracket == 2) result += "{";
         if((detail & NamedObj.CLASSNAME) != 0) {
             result += getClass().getName();
             if((detail & NamedObj.FULLNAME) != 0) {
@@ -394,7 +411,7 @@ public class Workspace implements Nameable, Serializable {
             }
         }
         if((detail & NamedObj.FULLNAME) != 0) {
-            result = result + "{" + getFullName() + "}";
+            result += "{" + getFullName() + "}";
         }
         if ((detail & NamedObj.CONTENTS) != 0) {
             if ((detail & (NamedObj.CLASSNAME | NamedObj.FULLNAME)) != 0) {
@@ -404,15 +421,16 @@ public class Workspace implements Nameable, Serializable {
             CollectionEnumeration enum = directory();
             while (enum.hasMoreElements()) {
                 NamedObj obj = (NamedObj)enum.nextElement();
-                // If deep is not set, the zero-out the contents flag
+                // If deep is not set, then zero-out the contents flag
                 // for the next round.
                 if ((detail & NamedObj.DEEP) == 0) {
                     detail &= ~NamedObj.CONTENTS;
                 }
-                result = result + obj._description(detail, indent+1) + "\n";
+                result += obj._description(detail, indent+1, 2) + "\n";
             }
             result += "}";
         }
+        if (bracket == 2) result += "}";
         return result;
     }
 
@@ -420,13 +438,13 @@ public class Workspace implements Nameable, Serializable {
     ////                         private variables                        ////
 
     // List of contained objects.
-    private LinkedList _directory;
+    private LinkedList _directory = new LinkedList();
 
     // The name
     private String _name;
 
     // Version number.
-    private long _version;
+    private long _version = 0;
 
     // The currently writing thread (if any).
     private Thread _writer;
@@ -444,23 +462,21 @@ public class Workspace implements Nameable, Serializable {
     //////////////////////////////////////////////////////////////////////////
     ////                         inner classes                            ////
 
-    // Class ReadCount
+    // Class ReadDepth
     // Keeps track of the number of reader permissions that a thread has.
     // This is used instead of the Integer class because Integer has no
     // incr() or decr() methods.  These methods save creating new instances
     // every time a read permission is granted.
-    private class ReadCount implements Serializable {
-        private ReadCount() {
-        }
-        private void decr() {
+    private class ReadDepth implements Serializable {
+        public void decr() {
             _count--;
         }
-        private void incr() {
+        public void incr() {
             _count++;
         }
-        private boolean zero() {
-            return _count <= 0;
+        public boolean isZero() {
+            return _count == 0;
         }
-        private int _count = 0;
+        public int _count = 0;
     }
 }

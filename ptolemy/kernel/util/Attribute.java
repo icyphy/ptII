@@ -70,12 +70,12 @@ public class Attribute extends NamedObj {
      *  NullPointerException will be thrown.  This attribute will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  The object is not added to the directory of the workspace
-     *  unless the container is null.
+     *  The object is added to the directory of the workspace
+     *  if the container is null.
      *  Increment the version of the workspace.
      *  @param container The container.
 
-     *  @param name The name of the attribute.
+     *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container.
      *  @exception NameDuplicationException If the name coincides with
@@ -90,18 +90,18 @@ public class Attribute extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object into the specified workspace and add the clone
-     *  to the directory of that workspace.
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
      *  The result is an attribute with no container.
-     *  @param ws The workspace in which to list the cloned object.
+     *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
-     *  @return The cloned attribute.
+     *  @return The new Attribute.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        // NOTE: It is not actually necessary to override the base class
-        // method, but we do it anyway so that the exact behavior of this
-        // method is documented with the class.
-        return super.clone(ws);
+        Attribute newobj = (Attribute)super.clone(ws);
+        newobj._container = null;
+        return newobj;
     }
 
     /** Get the NamedObj that this Attribute is attached to.
@@ -119,7 +119,7 @@ public class Attribute extends NamedObj {
      *  If this attribute is already contained by the NamedObj, do nothing.
      *  If the attribute already has a container, remove
      *  this attribute from its attribute list first.  Otherwise, remove
-     *  it from the directory of the workspace, if it is present.
+     *  it from the directory of the workspace, if it is there.
      *  If the argument is null, then remove it from its container.
      *  It is not added to the workspace directory, so this could result in
      *  this object being garbage collected.
@@ -143,7 +143,7 @@ public class Attribute extends NamedObj {
                     "Cannot set container because workspaces are different.");
         }
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             if (deepContains(container)) {
                 throw new IllegalActionException(this, container,
                         "Attempt to construct recursive containment " +
@@ -168,20 +168,16 @@ public class Attribute extends NamedObj {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    /** Clear references that are not valid in a cloned object. The clone()
-     *  method makes a field-by-field copy, which results
-     *  in invalid references to objects.
-     *  In this class, this method reinitializes the private member, the
-     *  container, so that it is null.
-     *  @param ws The workspace that the cloned object is to be listed in.
+    /** Update the attribute value, resolving any dependencies on other
+     *  attributes.  In this base class, no such dependencies can occur,
+     *  but in derived classes, they do occur.  This method is called by
+     *  the container of the attribute after its entire attribute list has
+     *  been cloned using the clone() method.  Thus, all other attributes
+     *  of the container have been created, so interdependencies can be
+     *  resolved.  In this base class, the method does nothing.
      */
-    protected void _clearAndSetWorkspace(Workspace ws) {
-        super._clearAndSetWorkspace(ws);
-        _container = null;
-    }
+     public void update() {
+     }
 
     ///////////////////////////////////////////////////////////////////////
     ////                      private variables                        ////

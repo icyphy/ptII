@@ -166,34 +166,35 @@ test Relation-13.2 {Test description} {
     $p1 link $r2
     $r1 description 7
 } {pt.kernel.Relation {.R1} links {
-    pt.kernel.Port {.E1.P1}
+    {pt.kernel.Port {.E1.P1}}
 }}
 
 test Relation-13.3 {Test description} {
     # NOTE: Builds on previous example.
     $p1 description 6
 } {{.E1.P1} links {
-    {.R1}
-    {.R2}
+    {{.R1}}
+    {{.R2}}
 }}
 
-test Relation-13.3 {Test description on workspace} {
+test Relation-13.4 {Test description on workspace} {
     # NOTE: Builds on previous example.
     $w description 15
 } {pt.kernel.util.Workspace {} directory {
-    pt.kernel.Entity {.E1} ports {
-        pt.kernel.Port {.E1.P1} links {
-            pt.kernel.Relation {.R1}
-            pt.kernel.Relation {.R2}
-        }
-    }
-    pt.kernel.Relation {.R1} links {
-        pt.kernel.Port {.E1.P1}
-    }
-    pt.kernel.Relation {.R2} links {
-        pt.kernel.Port {.E1.P1}
-    }
+    {pt.kernel.Entity {.E1} ports {
+        {pt.kernel.Port {.E1.P1} links {
+            {pt.kernel.Relation {.R1}}
+            {pt.kernel.Relation {.R2}}
+        }}
+    }}
+    {pt.kernel.Relation {.R1} links {
+        {pt.kernel.Port {.E1.P1}}
+    }}
+    {pt.kernel.Relation {.R2} links {
+        {pt.kernel.Port {.E1.P1}}
+    }}
 }}
+
 ######################################################################
 ####
 #
@@ -206,7 +207,7 @@ test Relation-14.1 {Test clone} {
     set r2 [$r1 clone]
     list [$r1 description 7] [$r2 description 7]
 } {{pt.kernel.Relation {.R1} links {
-    pt.kernel.Port {.E1.P1}
+    {pt.kernel.Port {.E1.P1}}
 }} {pt.kernel.Relation {.R1} links {
 }}}
 
@@ -219,11 +220,11 @@ test Relation-15.1 {Test a Relation linked twice to the same port} {
     set p1 [java::new pt.kernel.Port $e1 "my port"]
     $p1 link $r1
     $p1 link $r1
-    $r1 description [java::field pt.kernel.util.NamedObj ALL]
+    $r1 description [java::field pt.kernel.util.NamedObj COMPLETE]
 } {pt.kernel.Relation {.my relation} attributes {
 } links {
-    pt.kernel.Port {.my entity.my port} attributes {
-    }
-    pt.kernel.Port {.my entity.my port} attributes {
-    }
+    {pt.kernel.Port {.my entity.my port} attributes {
+    }}
+    {pt.kernel.Port {.my entity.my port} attributes {
+    }}
 }}

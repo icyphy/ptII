@@ -68,25 +68,25 @@ public class NamedList implements Cloneable, Serializable {
     /** Construct an empty NamedList with no container.
      */
     public NamedList() {
-        _namedlist = new LinkedList();
+        super();
     }
 
     /** Construct an empty list with a Nameable container.
      *  @param container The container (for error reporting).
      */
     public NamedList(Nameable container) {
-        _namedlist = new LinkedList();
+        super();
         _container = container;
     }
 
     /** Copy constructor.  Create a copy of the specified list, but
      *  with no container. This is useful to permit enumerations over
      *  a list while the list continues to be modified.
-     *  @param model The list to copy.
+     *  @param original The list to copy.
      */
-    public NamedList(NamedList model) {
-        _namedlist = new LinkedList();
-        _namedlist.appendElements(model.getElements());
+    public NamedList(NamedList original) {
+        super();
+        _namedlist.appendElements(original.getElements());
         _container = null;
     }
 
@@ -316,7 +316,7 @@ public class NamedList implements Cloneable, Serializable {
     private Nameable _container;
 
     // A LinkedList containing the elements.
-    private LinkedList _namedlist;
+    private LinkedList _namedlist = new LinkedList();
 
     // Constant strings.
     private static final String _nullNameExceptionString =

@@ -285,9 +285,9 @@ test ComponentPort-5.2 {numInsideLinks} {
 test ComponentPort-5.3 {test description} {
     $p2 description 31
 } {pt.kernel.ComponentPort {.E0.E2.P2} links {
-    pt.kernel.ComponentRelation {.E0.R1}
+    {pt.kernel.ComponentRelation {.E0.R1}}
 } insidelinks {
-    pt.kernel.ComponentRelation {.E0.E2.R2}
+    {pt.kernel.ComponentRelation {.E0.E2.R2}}
 }}
 
 # NOTE: Uses topology built in 5.1

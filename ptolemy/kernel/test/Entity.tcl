@@ -158,8 +158,8 @@ test Entity-6.2 {remove port by reference} {
             [expr { [$a getContainer] == [java::null] }] \
             [[$b getContainer] getName]
 } {{pt.kernel.Entity {.Ramp} ports {
-    pt.kernel.Port {.Ramp.b} links {
-    }
+    {pt.kernel.Port {.Ramp.b} links {
+    }}
 }} 1 Ramp}
 
 ######################################################################
@@ -265,18 +265,18 @@ test Entity-9.0 {Test description} {
     $p2 link $r1
     $w description 31
 } {pt.kernel.util.Workspace {W} directory {
-    pt.kernel.Entity {W.E1} ports {
-        pt.kernel.Port {W.E1.P1} links {
-            pt.kernel.Relation {W.R1}
-        }
-        pt.kernel.Port {W.E1.P2} links {
-            pt.kernel.Relation {W.R1}
-        }
-    }
-    pt.kernel.Relation {W.R1} links {
-        pt.kernel.Port {W.E1.P1}
-        pt.kernel.Port {W.E1.P2}
-    }
+    {pt.kernel.Entity {W.E1} ports {
+        {pt.kernel.Port {W.E1.P1} links {
+            {pt.kernel.Relation {W.R1}}
+        }}
+        {pt.kernel.Port {W.E1.P2} links {
+            {pt.kernel.Relation {W.R1}}
+        }}
+    }}
+    {pt.kernel.Relation {W.R1} links {
+        {pt.kernel.Port {W.E1.P1}}
+        {pt.kernel.Port {W.E1.P2}}
+    }}
 }}
 
 test Entity-9.1 {Test cloning} {
@@ -284,8 +284,8 @@ test Entity-9.1 {Test cloning} {
     set e2 [$e1 clone]
     $e2 description 15
 } {pt.kernel.Entity {W.E1} ports {
-    pt.kernel.Port {W.E1.P1} links {
-    }
-    pt.kernel.Port {W.E1.P2} links {
-    }
+    {pt.kernel.Port {W.E1.P1} links {
+    }}
+    {pt.kernel.Port {W.E1.P2} links {
+    }}
 }}

@@ -127,7 +127,10 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         try {
             workspace.add(this);
         } catch (IllegalActionException ex) {
-            // Ignore
+            // This exception should not be thrown.
+            throw new InternalErrorException(
+                "Internal error in NamedObj constructor!"
+                + ex.getMessage());
         }
         setName(name);
     }
@@ -139,12 +142,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  workspace in which the original object resides.
      *  This overrides the protected clone() method of
      *  java.lang.Object, which makes a field-by-field copy, to
-     *  clone the attribute list and to call the protected method
-     *  _clearAndSetWorkspace(), which is defined in derived classes to remove
-     *  references that should not be in the clone.  The _clearAndSetWorkspace()
-     *  method serves the function of a constructor, which is not
-     *  called, making the state of the cloned object like
-     *  one that has just been constructed.
+     *  clone the attribute list.
      *  This method read-synchronizes on the workspace.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
@@ -154,18 +152,14 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         return clone(workspace());
     }
 
-    /** Clone the object into the specified workspace and add the clone
-     *  to the directory of that workspace. This uses the clone() method of
-     *  java.lang.Object, which makes a field-by-field copy, and then
-     *  calls the protected method _clearAndSetWorkspace(), which is
-     *  expected to remove references that should not be in the clone.
-     *  The _clearAndSetWorkspace()
-     *  method serves the function of a constructor, which is not
-     *  called, making the state of the cloned object like
-     *  one that has just been constructed.  It then clones the
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there). This uses the clone() method of
+     *  java.lang.Object, which makes a field-by-field copy.
+     *  It then adjusts the workspace reference and clones the
      *  attributes on the attribute list, if there is one.
      *  This method read-synchronizes on the workspace.
-     *  @param ws The workspace in which to list the new object.
+     *  @param ws The workspace for the new object.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
@@ -174,23 +168,19 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         // NOTE: It is safe to clone an object into a different
         // workspace. It is not safe to move an object to a new
         // workspace, by contrast. The reason this is safe is that
-        // after the _clearAndSetWorkspace() method has been run, there
+        // after the this method has been run, there
         // are no references in the clone to objects in the old
         // workspace. Moreover, no object in the old workspace can have
         // a reference to the cloned object because we have only just
         // created it and have not returned the reference.
         try {
-            workspace().read();
+            workspace().getReadAccess();
             NamedObj result = (NamedObj)super.clone();
             // NOTE: It is not necessary to write-synchronize on the other
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
-            result._clearAndSetWorkspace(ws);
-            try {
-                ws.add(result);
-            } catch (IllegalActionException ex) {
-                // Ignore.  Can't occur.
-            }
+            result._attributes = null;
+            result._workspace = ws;
             Enumeration params = getAttributes();
             while (params.hasMoreElements()) {
                 Attribute p = (Attribute)params.nextElement();
@@ -202,6 +192,12 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                             "Failed to clone an Attribute of " +
                             getFullName() + ": " + ex.getMessage());
                 }
+            }
+            // Repeat this loop to call the update() method.
+            params = getAttributes();
+            while (params.hasMoreElements()) {
+                Attribute p = (Attribute)params.nextElement();
+                p.update();
             }
             return result;
         } finally {
@@ -223,7 +219,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     public boolean deepContains(NamedObj inside) {
         if (workspace() != inside.workspace()) return false;
         try {
-            workspace().read();
+            workspace().getReadAccess();
             // Start with the inside and check its containers in sequence.
             if (inside != null) {
                 Nameable container = inside.getContainer();
@@ -246,7 +242,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  @return A description of the object.
      */
     public String description() {
-        return description(ALL);
+        return description(COMPLETE);
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -258,7 +254,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  @return A description of the object.
      */
     public String description(int detail) {
-        return _description(detail, 0);
+        return _description(detail, 0, 0);
     }
 
     /** Get the container.  Always return null in this base class.
@@ -286,7 +282,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public String getFullName() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             // NOTE: For improved performance, the full name could be cached.
             String fullname = getName();
             // Use a linked list to keep track of what we've seen already.
@@ -329,7 +325,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public Attribute getAttribute(String name) {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             return (Attribute) _attributes.get(name);
         } finally {
             workspace().doneReading();
@@ -342,7 +338,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public Enumeration getAttributes() {
         try {
-            workspace().read();
+            workspace().getReadAccess();
             if  (_attributes == null) {
                 return (new NamedList()).getElements();
             } else {
@@ -364,7 +360,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             name = new String("");
         }
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             _name = name;
         } finally {
             workspace().doneWriting();
@@ -391,7 +387,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
 
     /** Indicate that the description(int) method should include everything.
      */
-    public static final int ALL = ~0;
+    public static final int COMPLETE = ~0;
 
     /** Indicate that the description(int) method should include the class name.
      */
@@ -450,51 +446,43 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     protected void _addAttribute(Attribute p)
             throws NameDuplicationException, IllegalActionException {
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             try {
                 if (_attributes == null) {
                     _attributes = new NamedList();
                 }
                 _attributes.append(p);
             } catch (IllegalActionException ex) {
-                // a Attribute cannot be constructed without a name, so we can
-                // ignore the exception.
+                // This exception should not be thrown.
+                throw new InternalErrorException(
+                    "Internal error in NamedObj _addAttribute() method!"
+                    + ex.getMessage());
             }
         } finally {
             workspace().doneWriting();
         }
     }
 
-    /** Clear references that are not valid in a cloned object.  The clone()
-     *  method makes a field-by-field copy, which in derived classes results
-     *  in invalid references to objects.  For example, Port has a private
-     *  member _relationsList that refers to an instance of CrossRefList.
-     *  The clone() method copies this reference, leaving the cloned port
-     *  having a reference to exactly the same CrossRefList.   But the
-     *  CrossRefList has not back reference to the cloned object.  Thus,
-     *  the Port class should override this method to set that member to null.
-     *  In this base class, this method sets the private _attributes member,
-     *  which refers to a list of attributes, to null.
-     *  @param ws The workspace that the cloned object is to be placed in.
-     */
-    protected void _clearAndSetWorkspace(Workspace ws) {
-        _attributes = null;
-        _workspace = ws;
-    }
-
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in this class (NamedObj).  Lines are indented according to
-     *  to the level argument using the protected method _indent().
-     *  It is read-synchronized on the workspace.
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is speicified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
+     *  This method is read-synchronized on the workspace.
      *  @param detail The level of detail.
      *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int detail, int indent) {
+    protected String _description(int detail, int indent, int bracket) {
         try {
-            workspace().read();
-            String result = _indent(indent);
+            workspace().getReadAccess();
+            String result = _getIndentPrefix(indent);
+            if (bracket == 1 || bracket == 2) result += "{";
             if((detail & CLASSNAME) != 0) {
                 result += getClass().getName();
                 if((detail & CLASSNAME) != 0) {
@@ -502,7 +490,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 }
             }
             if((detail & FULLNAME) != 0) {
-                result = result + "{" + getFullName() + "}";
+                result += "{" + getFullName() + "}";
             }
             if((detail & ATTRIBUTES) != 0) {
                 if ((detail & (CLASSNAME | FULLNAME)) != 0) {
@@ -517,10 +505,11 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 Enumeration params = getAttributes();
                 while (params.hasMoreElements()) {
                     Attribute p = (Attribute)params.nextElement();
-                    result = result + p._description(detail, indent+1) + "\n";
+                    result += p._description(detail, indent+1, 2) + "\n";
                 }
-                result = result + _indent(indent) + "}";
+                result += _getIndentPrefix(indent) + "}";
             }
+            if (bracket == 2) result += "}";
             return result;
         } finally {
             workspace().doneReading();
@@ -532,7 +521,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  @param level The level of indenting represented by the spaces.
      *  @return A string with zero or more spaces.
      */
-    protected static String _indent(int level) {
+    protected static String _getIndentPrefix(int level) {
         String result = "";
         for (int i=0; i < level; i++) {
             result += "    ";
@@ -548,7 +537,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     protected void _removeAttribute(NamedObj param) {
         try {
-            workspace().write();
+            workspace().getWriteAccess();
             _attributes.remove((Nameable)param);
         } finally {
             workspace().doneWriting();

@@ -471,249 +471,249 @@ test CompositeEntity-11.5 {Test NAME and CLASS description} {
 ####
 # NOTE:  Uses the setup constructed in 11.1.
 test CompositeEntity-11.6 {Test full description} {
-    $e0 description [java::field pt.kernel.util.NamedObj ALL]
+    $e0 description [java::field pt.kernel.util.NamedObj COMPLETE]
 } {pt.kernel.CompositeEntity {.E0} attributes {
 } ports {
 } entities {
-    pt.kernel.CompositeEntity {.E0.E3} attributes {
+    {pt.kernel.CompositeEntity {.E0.E3} attributes {
     } ports {
-        pt.kernel.ComponentPort {.E0.E3.P7} attributes {
+        {pt.kernel.ComponentPort {.E0.E3.P7} attributes {
         } links {
-            pt.kernel.ComponentRelation {.E0.R7} attributes {
-            }
+            {pt.kernel.ComponentRelation {.E0.R7} attributes {
+            }}
         } insidelinks {
-            pt.kernel.ComponentRelation {.E0.E3.R4} attributes {
-            }
-        }
+            {pt.kernel.ComponentRelation {.E0.E3.R4} attributes {
+            }}
+        }}
     } entities {
-        pt.kernel.CompositeEntity {.E0.E3.E4} attributes {
+        {pt.kernel.CompositeEntity {.E0.E3.E4} attributes {
         } ports {
-            pt.kernel.ComponentPort {.E0.E3.E4.P0} attributes {
+            {pt.kernel.ComponentPort {.E0.E3.E4.P0} attributes {
             } links {
             } insidelinks {
-                pt.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
-                }
-            }
-            pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
+                {pt.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
+                }}
+            }}
+            {pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
             } links {
-                pt.kernel.ComponentRelation {.E0.E3.R4} attributes {
-                }
-                pt.kernel.ComponentRelation {.E0.E3.R5} attributes {
-                }
+                {pt.kernel.ComponentRelation {.E0.E3.R4} attributes {
+                }}
+                {pt.kernel.ComponentRelation {.E0.E3.R5} attributes {
+                }}
             } insidelinks {
-                pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
-                }
-            }
+                {pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+                }}
+            }}
         } entities {
-            pt.kernel.ComponentEntity {.E0.E3.E4.E1} attributes {
+            {pt.kernel.ComponentEntity {.E0.E3.E4.E1} attributes {
             } ports {
-                pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
+                {pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
                 } links {
-                    pt.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
-                    }
-                    pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
-                    }
-                    pt.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
-                    }
+                    {pt.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
+                    }}
+                    {pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+                    }}
+                    {pt.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
+                    }}
                 } insidelinks {
-                }
-            }
-            pt.kernel.ComponentEntity {.E0.E3.E4.E2} attributes {
+                }}
+            }}
+            {pt.kernel.ComponentEntity {.E0.E3.E4.E2} attributes {
             } ports {
-                pt.kernel.ComponentPort {.E0.E3.E4.E2.P2} attributes {
+                {pt.kernel.ComponentPort {.E0.E3.E4.E2.P2} attributes {
                 } links {
-                    pt.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
-                    }
+                    {pt.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
+                    }}
                 } insidelinks {
-                }
-                pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
+                }}
+                {pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
                 } links {
-                    pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
-                    }
-                    pt.kernel.ComponentRelation {.E0.E3.R6} attributes {
-                    }
+                    {pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+                    }}
+                    {pt.kernel.ComponentRelation {.E0.E3.R6} attributes {
+                    }}
                 } insidelinks {
-                }
-            }
+                }}
+            }}
         } relations {
-            pt.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
+            {pt.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
             } links {
-                pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
-                }
-                pt.kernel.ComponentPort {.E0.E3.E4.P0} attributes {
-                }
-            }
-            pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+                {pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
+                }}
+                {pt.kernel.ComponentPort {.E0.E3.E4.P0} attributes {
+                }}
+            }}
+            {pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
             } links {
-                pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
-                }
-                pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
-                }
-                pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
-                }
-            }
-            pt.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
+                {pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
+                }}
+                {pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
+                }}
+                {pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
+                }}
+            }}
+            {pt.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
             } links {
-                pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
-                }
-                pt.kernel.ComponentPort {.E0.E3.E4.E2.P2} attributes {
-                }
-            }
-        }
-        pt.kernel.ComponentEntity {.E0.E3.E5} attributes {
+                {pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
+                }}
+                {pt.kernel.ComponentPort {.E0.E3.E4.E2.P2} attributes {
+                }}
+            }}
+        }}
+        {pt.kernel.ComponentEntity {.E0.E3.E5} attributes {
         } ports {
-            pt.kernel.ComponentPort {.E0.E3.E5.P5} attributes {
+            {pt.kernel.ComponentPort {.E0.E3.E5.P5} attributes {
             } links {
-                pt.kernel.ComponentRelation {.E0.E3.R5} attributes {
-                }
+                {pt.kernel.ComponentRelation {.E0.E3.R5} attributes {
+                }}
             } insidelinks {
-            }
-        }
-        pt.kernel.ComponentEntity {.E0.E3.E6} attributes {
+            }}
+        }}
+        {pt.kernel.ComponentEntity {.E0.E3.E6} attributes {
         } ports {
-            pt.kernel.ComponentPort {.E0.E3.E6.P6} attributes {
+            {pt.kernel.ComponentPort {.E0.E3.E6.P6} attributes {
             } links {
-                pt.kernel.ComponentRelation {.E0.E3.R6} attributes {
-                }
+                {pt.kernel.ComponentRelation {.E0.E3.R6} attributes {
+                }}
             } insidelinks {
-            }
-        }
+            }}
+        }}
     } relations {
-        pt.kernel.ComponentRelation {.E0.E3.R4} attributes {
+        {pt.kernel.ComponentRelation {.E0.E3.R4} attributes {
         } links {
-            pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
-            }
-            pt.kernel.ComponentPort {.E0.E3.P7} attributes {
-            }
-        }
-        pt.kernel.ComponentRelation {.E0.E3.R5} attributes {
+            {pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
+            }}
+            {pt.kernel.ComponentPort {.E0.E3.P7} attributes {
+            }}
+        }}
+        {pt.kernel.ComponentRelation {.E0.E3.R5} attributes {
         } links {
-            pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
-            }
-            pt.kernel.ComponentPort {.E0.E3.E5.P5} attributes {
-            }
-        }
-        pt.kernel.ComponentRelation {.E0.E3.R6} attributes {
+            {pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
+            }}
+            {pt.kernel.ComponentPort {.E0.E3.E5.P5} attributes {
+            }}
+        }}
+        {pt.kernel.ComponentRelation {.E0.E3.R6} attributes {
         } links {
-            pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
-            }
-            pt.kernel.ComponentPort {.E0.E3.E6.P6} attributes {
-            }
-        }
-    }
-    pt.kernel.CompositeEntity {.E0.E7} attributes {
+            {pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
+            }}
+            {pt.kernel.ComponentPort {.E0.E3.E6.P6} attributes {
+            }}
+        }}
+    }}
+    {pt.kernel.CompositeEntity {.E0.E7} attributes {
     } ports {
-        pt.kernel.ComponentPort {.E0.E7.P8} attributes {
+        {pt.kernel.ComponentPort {.E0.E7.P8} attributes {
         } links {
-            pt.kernel.ComponentRelation {.E0.R10} attributes {
-            }
+            {pt.kernel.ComponentRelation {.E0.R10} attributes {
+            }}
         } insidelinks {
-            pt.kernel.ComponentRelation {.E0.E7.R8} attributes {
-            }
-        }
-        pt.kernel.ComponentPort {.E0.E7.P11} attributes {
+            {pt.kernel.ComponentRelation {.E0.E7.R8} attributes {
+            }}
+        }}
+        {pt.kernel.ComponentPort {.E0.E7.P11} attributes {
         } links {
-            pt.kernel.ComponentRelation {.E0.R7} attributes {
-            }
+            {pt.kernel.ComponentRelation {.E0.R7} attributes {
+            }}
         } insidelinks {
-            pt.kernel.ComponentRelation {.E0.E7.R9} attributes {
-            }
-        }
+            {pt.kernel.ComponentRelation {.E0.E7.R9} attributes {
+            }}
+        }}
     } entities {
-        pt.kernel.ComponentEntity {.E0.E7.E8} attributes {
+        {pt.kernel.ComponentEntity {.E0.E7.E8} attributes {
         } ports {
-            pt.kernel.ComponentPort {.E0.E7.E8.P9} attributes {
+            {pt.kernel.ComponentPort {.E0.E7.E8.P9} attributes {
             } links {
-                pt.kernel.ComponentRelation {.E0.E7.R8} attributes {
-                }
+                {pt.kernel.ComponentRelation {.E0.E7.R8} attributes {
+                }}
             } insidelinks {
-            }
-            pt.kernel.ComponentPort {.E0.E7.E8.P10} attributes {
+            }}
+            {pt.kernel.ComponentPort {.E0.E7.E8.P10} attributes {
             } links {
-                pt.kernel.ComponentRelation {.E0.E7.R9} attributes {
-                }
+                {pt.kernel.ComponentRelation {.E0.E7.R9} attributes {
+                }}
             } insidelinks {
-            }
-        }
+            }}
+        }}
     } relations {
-        pt.kernel.ComponentRelation {.E0.E7.R8} attributes {
+        {pt.kernel.ComponentRelation {.E0.E7.R8} attributes {
         } links {
-            pt.kernel.ComponentPort {.E0.E7.E8.P9} attributes {
-            }
-            pt.kernel.ComponentPort {.E0.E7.P8} attributes {
-            }
-        }
-        pt.kernel.ComponentRelation {.E0.E7.R9} attributes {
+            {pt.kernel.ComponentPort {.E0.E7.E8.P9} attributes {
+            }}
+            {pt.kernel.ComponentPort {.E0.E7.P8} attributes {
+            }}
+        }}
+        {pt.kernel.ComponentRelation {.E0.E7.R9} attributes {
         } links {
-            pt.kernel.ComponentPort {.E0.E7.E8.P10} attributes {
-            }
-            pt.kernel.ComponentPort {.E0.E7.P11} attributes {
-            }
-        }
-    }
-    pt.kernel.CompositeEntity {.E0.E10} attributes {
+            {pt.kernel.ComponentPort {.E0.E7.E8.P10} attributes {
+            }}
+            {pt.kernel.ComponentPort {.E0.E7.P11} attributes {
+            }}
+        }}
+    }}
+    {pt.kernel.CompositeEntity {.E0.E10} attributes {
     } ports {
-        pt.kernel.ComponentPort {.E0.E10.P12} attributes {
+        {pt.kernel.ComponentPort {.E0.E10.P12} attributes {
         } links {
-            pt.kernel.ComponentRelation {.E0.R10} attributes {
-            }
+            {pt.kernel.ComponentRelation {.E0.R10} attributes {
+            }}
         } insidelinks {
-            pt.kernel.ComponentRelation {.E0.E10.R11} attributes {
-            }
-        }
-        pt.kernel.ComponentPort {.E0.E10.P13} attributes {
+            {pt.kernel.ComponentRelation {.E0.E10.R11} attributes {
+            }}
+        }}
+        {pt.kernel.ComponentPort {.E0.E10.P13} attributes {
         } links {
-            pt.kernel.ComponentRelation {.E0.R7} attributes {
-            }
+            {pt.kernel.ComponentRelation {.E0.R7} attributes {
+            }}
         } insidelinks {
-            pt.kernel.ComponentRelation {.E0.E10.R11} attributes {
-            }
-            pt.kernel.ComponentRelation {.E0.E10.R12} attributes {
-            }
-        }
+            {pt.kernel.ComponentRelation {.E0.E10.R11} attributes {
+            }}
+            {pt.kernel.ComponentRelation {.E0.E10.R12} attributes {
+            }}
+        }}
     } entities {
-        pt.kernel.ComponentEntity {.E0.E10.E9} attributes {
+        {pt.kernel.ComponentEntity {.E0.E10.E9} attributes {
         } ports {
-            pt.kernel.ComponentPort {.E0.E10.E9.P14} attributes {
+            {pt.kernel.ComponentPort {.E0.E10.E9.P14} attributes {
             } links {
-                pt.kernel.ComponentRelation {.E0.E10.R12} attributes {
-                }
+                {pt.kernel.ComponentRelation {.E0.E10.R12} attributes {
+                }}
             } insidelinks {
-            }
-        }
+            }}
+        }}
     } relations {
-        pt.kernel.ComponentRelation {.E0.E10.R11} attributes {
+        {pt.kernel.ComponentRelation {.E0.E10.R11} attributes {
         } links {
-            pt.kernel.ComponentPort {.E0.E10.P12} attributes {
-            }
-            pt.kernel.ComponentPort {.E0.E10.P13} attributes {
-            }
-        }
-        pt.kernel.ComponentRelation {.E0.E10.R12} attributes {
+            {pt.kernel.ComponentPort {.E0.E10.P12} attributes {
+            }}
+            {pt.kernel.ComponentPort {.E0.E10.P13} attributes {
+            }}
+        }}
+        {pt.kernel.ComponentRelation {.E0.E10.R12} attributes {
         } links {
-            pt.kernel.ComponentPort {.E0.E10.E9.P14} attributes {
-            }
-            pt.kernel.ComponentPort {.E0.E10.P13} attributes {
-            }
-        }
-    }
+            {pt.kernel.ComponentPort {.E0.E10.E9.P14} attributes {
+            }}
+            {pt.kernel.ComponentPort {.E0.E10.P13} attributes {
+            }}
+        }}
+    }}
 } relations {
-    pt.kernel.ComponentRelation {.E0.R7} attributes {
+    {pt.kernel.ComponentRelation {.E0.R7} attributes {
     } links {
-        pt.kernel.ComponentPort {.E0.E3.P7} attributes {
-        }
-        pt.kernel.ComponentPort {.E0.E10.P13} attributes {
-        }
-        pt.kernel.ComponentPort {.E0.E7.P11} attributes {
-        }
-    }
-    pt.kernel.ComponentRelation {.E0.R10} attributes {
+        {pt.kernel.ComponentPort {.E0.E3.P7} attributes {
+        }}
+        {pt.kernel.ComponentPort {.E0.E10.P13} attributes {
+        }}
+        {pt.kernel.ComponentPort {.E0.E7.P11} attributes {
+        }}
+    }}
+    {pt.kernel.ComponentRelation {.E0.R10} attributes {
     } links {
-        pt.kernel.ComponentPort {.E0.E7.P8} attributes {
-        }
-        pt.kernel.ComponentPort {.E0.E10.P12} attributes {
-        }
-    }
+        {pt.kernel.ComponentPort {.E0.E7.P8} attributes {
+        }}
+        {pt.kernel.ComponentPort {.E0.E10.P12} attributes {
+        }}
+    }}
 }}
 
 ######################################################################
@@ -747,30 +747,30 @@ test CompositeEntity-11.9 {Test clone} {
     set ne7 [$e7 clone]
     $ne7 description 31
 } {pt.kernel.CompositeEntity {.E7} ports {
-    pt.kernel.ComponentPort {.E7.P8} links {
+    {pt.kernel.ComponentPort {.E7.P8} links {
     } insidelinks {
-    }
-    pt.kernel.ComponentPort {.E7.P11} links {
+    }}
+    {pt.kernel.ComponentPort {.E7.P11} links {
     } insidelinks {
-    }
+    }}
 } entities {
-    pt.kernel.ComponentEntity {.E7.E8} ports {
-        pt.kernel.ComponentPort {.E7.E8.P9} links {
-            pt.kernel.ComponentRelation {.E7.R8}
+    {pt.kernel.ComponentEntity {.E7.E8} ports {
+        {pt.kernel.ComponentPort {.E7.E8.P9} links {
+            {pt.kernel.ComponentRelation {.E7.R8}}
         } insidelinks {
-        }
-        pt.kernel.ComponentPort {.E7.E8.P10} links {
-            pt.kernel.ComponentRelation {.E7.R9}
+        }}
+        {pt.kernel.ComponentPort {.E7.E8.P10} links {
+            {pt.kernel.ComponentRelation {.E7.R9}}
         } insidelinks {
-        }
-    }
+        }}
+    }}
 } relations {
-    pt.kernel.ComponentRelation {.E7.R8} links {
-        pt.kernel.ComponentPort {.E7.E8.P9}
-    }
-    pt.kernel.ComponentRelation {.E7.R9} links {
-        pt.kernel.ComponentPort {.E7.E8.P10}
-    }
+    {pt.kernel.ComponentRelation {.E7.R8} links {
+        {pt.kernel.ComponentPort {.E7.E8.P9}}
+    }}
+    {pt.kernel.ComponentRelation {.E7.R9} links {
+        {pt.kernel.ComponentPort {.E7.E8.P10}}
+    }}
 }}
 
 ######################################################################

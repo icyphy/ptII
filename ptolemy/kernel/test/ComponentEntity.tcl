@@ -96,12 +96,12 @@ test ComponentEntity-5.2 {Test clone} {
     set e2 [$e1 clone]
     $e2 description 31
 } {pt.kernel.ComponentEntity {X.Y} ports {
-    pt.kernel.ComponentPort {X.Y.A} links {
+    {pt.kernel.ComponentPort {X.Y.A} links {
     } insidelinks {
-    }
-    pt.kernel.ComponentPort {X.Y.B} links {
+    }}
+    {pt.kernel.ComponentPort {X.Y.B} links {
     } insidelinks {
-    }
+    }}
 }}
 
 ######################################################################

@@ -62,6 +62,7 @@ JSRCS = \
 	CrossRefList.java \
 	KernelException.java \
 	IllegalActionException.java \
+	InternalErrorException.java \
 	InvalidStateException.java \
 	Nameable.java \
 	NamedList.java \

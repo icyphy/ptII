@@ -360,16 +360,16 @@ test Port-12.2 {Test description} {
     $p1 link $r2
     $p1 description 7
 } {pt.kernel.Port {.E1.P1} links {
-    pt.kernel.Relation {.R1}
-    pt.kernel.Relation {.R2}
+    {pt.kernel.Relation {.R1}}
+    {pt.kernel.Relation {.R2}}
 }}
 
 test Port-12.3 {Test description} {
     # NOTE: Builds on previous example.
     $p1 description 6
 } {{.E1.P1} links {
-    {.R1}
-    {.R2}
+    {{.R1}}
+    {{.R2}}
 }}
 
 test Port-12.4 {Test description on workspace} {
@@ -377,18 +377,18 @@ test Port-12.4 {Test description on workspace} {
     # Test that links show inside an entity.
     $w description 15
 } {pt.kernel.util.Workspace {} directory {
-    pt.kernel.Entity {.E1} ports {
-        pt.kernel.Port {.E1.P1} links {
-            pt.kernel.Relation {.R1}
-            pt.kernel.Relation {.R2}
-        }
-    }
-    pt.kernel.Relation {.R1} links {
-        pt.kernel.Port {.E1.P1}
-    }
-    pt.kernel.Relation {.R2} links {
-        pt.kernel.Port {.E1.P1}
-    }
+    {pt.kernel.Entity {.E1} ports {
+        {pt.kernel.Port {.E1.P1} links {
+            {pt.kernel.Relation {.R1}}
+            {pt.kernel.Relation {.R2}}
+        }}
+    }}
+    {pt.kernel.Relation {.R1} links {
+        {pt.kernel.Port {.E1.P1}}
+    }}
+    {pt.kernel.Relation {.R2} links {
+        {pt.kernel.Port {.E1.P1}}
+    }}
 }}
 
 ######################################################################
@@ -415,15 +415,15 @@ test Port-14.1 {Test double link with one port, one relations} {
     set r1 [java::new pt.kernel.Relation R1]
     $p1 link $r1
     $p1 link $r1
-    $e1 description [java::field pt.kernel.util.NamedObj ALL]
+    $e1 description [java::field pt.kernel.util.NamedObj COMPLETE]
 } {pt.kernel.Entity {.} attributes {
 } ports {
-    pt.kernel.Port {..} attributes {
+    {pt.kernel.Port {..} attributes {
     } links {
-        pt.kernel.Relation {.R1} attributes {
-        }
-        pt.kernel.Relation {.R1} attributes {
-        }
-    }
+        {pt.kernel.Relation {.R1} attributes {
+        }}
+        {pt.kernel.Relation {.R1} attributes {
+        }}
+    }}
 }}
 
