@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (mudit@eecs.berkeley.edu)
+@AcceptedRating Yellow
 
 */
 
@@ -38,12 +38,36 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// ProcessThread
 /**
-This thread is created to execute the actor iteration methods in a
-seperate thread.
-This calls the prefire(), fire() and postfire() method of the
-embedded actor. Before termination, the thread calls the wrapup() method
-of the actor.
-
+Thread class acting as a process for process oriented domains.
+<P>
+In process oriented domains, each actor acts as a separate process and 
+its execution is not centrally controlled by the director. Each process
+runs concurrently with other processes and is responsible for calling
+its execution methods.
+<P>
+This class provides the mechanism to implement the above. 
+An instance of this class can be created by passing an actor as an 
+argument to the constructor. This class runs as a separate thread on
+being started and calls the execution methods on the actor, repeatedly.
+In specific, it calls the prefire(), fire() and postfire() methods
+of the actor. Before termination, this calls the wrapup() method of 
+the actor.
+<P>
+If an actor returns false in its prefire() or postfire() methods, the
+actor is never fired again and the thread or process would terminate 
+after calling wrapup() on the actor.
+<P>
+The initialize() method of the actor is not called from this class. It 
+should be called before starting this thread. 
+<P>
+In process oriented domains, the director needs to keep a count of the 
+number of active processes in the system. This is used for detection of
+deadlocks, termination, and possibly some other reasons. For this two
+methods _increaseActiveCount() and _decreaseActiveCount() are defined 
+in the ProcessDirector. _increaseActiveCount() is called on the director
+from the constructor of this class and the _decreaseActiveCount() method
+is called at the end of the run() method, i.e. before the thread terminates.
+<P>
 
 @author Mudit Goel, Neil Smyth
 @version $Id$
@@ -51,7 +75,8 @@ of the actor.
 public class ProcessThread extends PtolemyThread {
 
     /** Construct a thread to be used for the execution of the
-     *  iteration methods of the actor.
+     *  iteration methods of the actor. This increases the count of active
+     *  actors in the director.
      *  @param actor The actor that needs to be executed.
      *  @param director The director responsible for the execution of this
      *  actor.
@@ -61,6 +86,14 @@ public class ProcessThread extends PtolemyThread {
 	_actor = actor;
         _director = director;
         _manager = ((CompositeActor)((NamedObj)actor).getContainer()).getManager();
+
+	//This method is called here and not in the run() method as the 
+	//count should be incremented before any thread is started 
+	//or made active. This is because the second started thread might
+	//block on a read or write to this process and increment the block
+	//count even before this thread has incremented the active count.
+	//This results in false deadlocks.
+	_director._increaseActiveCount();
     }
 
     /** Construct a thread to be used for the execution of the
@@ -69,13 +102,16 @@ public class ProcessThread extends PtolemyThread {
      *  @param director The director responsible for the execution of this
      *  actor.
      *  @param name The name of the thread.
+     *  @deprecated Please use the first constructor alone.
      */
     public ProcessThread(Actor actor, ProcessDirector director, String name) {
         super(name);
 	_actor = actor;
         _director = director;
         _manager = ((CompositeActor)((NamedObj)actor).getContainer()).getManager();
+        _director.increaseActiveCount();
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,28 +133,25 @@ public class ProcessThread extends PtolemyThread {
 	    while (iterate) {
                 iterate = false;
                 // container is checked for null to detect the
-                // termination of the actor
-                if (((Entity)_actor).getContainer() != null
-                        && _actor.prefire()){
-                    _actor.fire();
-                    iterate =  _actor.postfire();
-                }
+                // deletion of the actor from the topology.
+                if ( ((Entity)_actor).getContainer() != null ) {
+                    if (_actor.prefire()){
+			_actor.fire();
+			iterate =  _actor.postfire();
+		    }
+		}
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
         } catch (IllegalActionException e) {
-            //Nameable a = ((NamedObj)_actor).getContainer();
-            //((CompositeActor)a).getManager().fireExecutionError(e);
             _manager.fireExecutionError(e);
         } finally {
             try {
                 _actor.wrapup();
             } catch (IllegalActionException e) {
-                //Nameable a = ((NamedObj)_actor).getContainer();
-                //((CompositeActor)a).getManager().fireExecutionError(e);
                 _manager.fireExecutionError(e);
             }
-            _director.decreaseActiveCount();
+            _director._decreaseActiveCount();
         }
     }
 
