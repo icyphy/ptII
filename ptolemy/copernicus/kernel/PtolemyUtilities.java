@@ -392,6 +392,7 @@ public class PtolemyUtilities {
         } else if (type instanceof ptolemy.data.type.FixType) {
             Local typeLocal = Jimple.v().newLocal("type_fix",
                     RefType.v(fixTypeClass));
+            body.getLocals().add(typeLocal);
             units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                     Jimple.v().newStaticFieldRef(fixTypeField)),
                     insertPoint);
@@ -556,6 +557,10 @@ public class PtolemyUtilities {
             ptolemy.data.type.BaseType baseType =
                 (ptolemy.data.type.BaseType)type;
             return RefType.v(baseType.getTokenClass().getName());
+        } else if (type instanceof ptolemy.data.type.FixType) {
+            ptolemy.data.type.FixType fixType =
+                (ptolemy.data.type.FixType)type;
+            return RefType.v(fixType.getTokenClass().getName());
         } else if (type instanceof ptolemy.data.type.UnsizedMatrixType) {
             ptolemy.data.type.UnsizedMatrixType matrixType =
                 (ptolemy.data.type.UnsizedMatrixType)type;
@@ -592,6 +597,8 @@ public class PtolemyUtilities {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else if (className.equals("ptolemy.data.MatrixToken")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
+        } else if (className.equals("ptolemy.data.FixToken")) {
+            return ptolemy.data.type.BaseType.FIX;
         } else {
             ptolemy.data.type.Type tokenType =
                 ptolemy.data.type.BaseType.forClassName(className);
