@@ -151,6 +151,10 @@ JHDL_JAR =	@JHDL_JAR@
 # If Jini is present, the set to yes, otherwise, set to no
 JINI_PRESENT =  @JINI_PRESENT@
 
+# Jar file that contains the Java Media Framework, see
+# http://java.sun.com/products/java-media/jmf/index.html
+JMF_JAR =	@JMF_JAR@
+
 # Directory that contains the Java Serial Comm API, see
 # http://java.sun.com/products/javacomm/
 COMMAPI_DIR =   @COMMAPI_DIR@
@@ -233,6 +237,9 @@ JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR
 
 # PTJHDL_DIR is set to jhdl if the JHDL directory is found
 PTJHDL_DIR =    @PTJHDL_DIR@
+
+# PTJMF_DIR is set to jmf if the JMF directory is found
+PTJMF_DIR =    @PTJMF_DIR@
 
 # Set to lego and used in $PTII/ptolemy/apps/makefile if
 # the Java Communications API was found
