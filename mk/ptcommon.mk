@@ -235,7 +235,7 @@ makefiles: makefile
 ##############
 # Java rules
 
-.SUFFIXES: .class .java .jskel
+.SUFFIXES: .class .java
 .java.class:
 	rm -f `basename $< .java`.class
 	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVAC) $(JFLAGS) $<
