@@ -93,8 +93,8 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         return _scope;
     }
 
-    public final void setScope(Scope environ) {
-        _scope = environ;
+    public final void setScope(Scope scope) {
+        _scope = scope;
     }
 
     public final boolean hasModifiers() {

@@ -511,7 +511,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
             Decl decl) {
         if (encClassScopeObject != NullValue.instance) {
             // this is an inner class, add to outer class's scope
-            Scope encClassScope = (Scope) encClassEnvironObject;
+            Scope encClassScope = (Scope) encClassScopeObject;
             encClassScope.add(decl);
         }
     }

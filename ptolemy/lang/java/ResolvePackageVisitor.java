@@ -1,6 +1,6 @@
 /*
 A JavaVisitor that adds the names of the types defined in the CompileUnitNode
-to the file scope, creates the environments for all nodes,
+to the file scope, creates the scopes for all nodes,
 then resolves names of the imports with a ResolveImportsVisitor.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
@@ -45,7 +45,7 @@ import ptolemy.lang.java.nodetypes.*;
 //// ResolvePackageVisitor
 
 /** A JavaVisitor that adds the names of the types defined in the
-CompileUnitNode to the file scope, creates the environments for
+CompileUnitNode to the file scope, creates the scopes for
 all nodes, then resolves names of the imports with a
 ResolveImportsVisitor.
 
