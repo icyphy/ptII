@@ -321,3 +321,16 @@ test CTDirector-3.3 {BreakpointODESolver} {
 } {{ptolemy.kernel.util.IllegalActionException: ptolemy.domains.ct.kernel.solver.DerivativeResolver can only be used as a breakpoint ODE solver.
   in .System.DIR}}
 
+test CTDirector-3.4 {BreakpointODESolver} {
+    #Note: use above set up.
+    set integrator [java::new ptolemy.domains.ct.kernel.CTBaseIntegrator $sys integrator]
+    set param [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute breakpointODESolver]]
+    set token [java::new ptolemy.data.StringToken \
+	    ptolemy.domains.ct.kernel.solver.DerivativeResolver]
+	set solver [$dir getBreakpointSolver]    
+	set integratorIsAccurate [$solver integratorIsAccurate $integrator]
+	set integratorPredictedStepSize [$solver integratorPredictedStepSize $integrator]
+    list $integratorIsAccurate $integratorPredictedStepSize
+} {1 0.1}
+

@@ -149,7 +149,6 @@ public class DerivativeResolver extends ODESolver implements BreakpointODESolver
      *  @return The initial step size.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
-        // NOTE: this method is never called because the step size is always 0.0
         CTDirector director = (CTDirector) getContainer();
         return director.getInitialStepSize();
     }
