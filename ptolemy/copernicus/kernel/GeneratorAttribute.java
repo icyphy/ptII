@@ -33,6 +33,7 @@ package ptolemy.copernicus.kernel;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.JNLPUtilities;
+import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
