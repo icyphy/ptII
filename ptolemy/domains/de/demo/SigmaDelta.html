@@ -1,18 +1,29 @@
 <!-- $Id$-->
 <HTML>
 <HEAD>
-<TITLE>Discrete Event Simulation Demo</TITLE>
+<TITLE>Codesign</TITLE>
 </HEAD>
-<BODY BGCOLOR="#FAF0E6">
-
-<CENTER>
-<H1>
-Demo of DE simulation applet</H1></CENTER>
-
-<H3>
-DE Simulation:</H3>
+<BODY>
+<H1>Codesign</H1></CENTER>
 The following applet uses Ptolemy II DE domain and CT domain architectures to
 simulate a digital feedback system with interruptible processor model.
+<CENTER>
+<P><APPLET name="SigmaDeltaApplet"
+   bgcolor=#FAF0E6
+   archive="ptolemy/domains/de/demo/demo.jar,
+	ptolemy/domains/de/de.jar,
+	ptolemy/domains/ct/ct.jar,
+	ptolemy/ptsupport.jar"
+   archive="ptolemy/domains/de/demo/clockapplet.jar"
+   code=ptolemy.domains.de.demo.SigmaDeltaApplet.class
+   codebase=../../../..
+   width=600 height=420>
+<param name="background" value="#faf0e6">
+<BR><I>If you were able to run applets, you would have a waveform demo
+here.</I>
+<BR></APPLET></CENTER>
+
+
 This demo is an extension from 
 <A HREF="../../ct/demo/SigmaDelta.html">a CT domain demo</A> 
  by Jie Liu. The extension
@@ -43,24 +54,6 @@ is no interrupt. IST (Interrupt Service Time) is the amount of time needed
 to process an interrupt. Note that the interrupts preempts the inputs. Lambda
 represents the inter-arrival time of the Poisson process modeling the
 interrupt arrival. Lastly, stop time is just the time when simulation stops.
-<P>
-<BR>&nbsp;
-<BR>&nbsp;
-<CENTER>
-<P><APPLET name="SigmaDeltaApplet"
-   bgcolor=#FAF0E6
-   archive="ptolemy/domains/de/demo/demo.jar,
-	ptolemy/domains/de/de.jar,
-	ptolemy/domains/ct/ct.jar,
-	ptolemy/ptsupport.jar"
-   archive="ptolemy/domains/de/demo/clockapplet.jar"
-   code=ptolemy.domains.de.demo.SigmaDeltaApplet.class
-   codebase=../../../..
-   width=600 height=600>
-<param name="background" value="#faf0e6">
-<BR><I>If you were able to run applets, you would have a waveform demo
-here.</I>
-<BR></APPLET></CENTER>
 
 <P>This applet is implemented by
 <TT><A HREF="SigmaDeltaApplet.java">SigmaDeltaApplet.java</A></TT>.
@@ -76,9 +69,7 @@ Actor connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
 <CENTER>
 <IMG SRC="img/SigmaDelta.gif">
 </CENTER>
-<BR>
-<HR>Copyright &copy; 1998-1999 The Regents of the University of California.
-All rights reserved.
-<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </BODY>
 </HTML>
