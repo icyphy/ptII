@@ -155,13 +155,33 @@ public class MoMLApplet extends PtolemyApplet {
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
-    /** Read the model from the <i>modelURL</i> applet parameter.
+    /** Read the model from the <i>modelURL</i> applet parameter
+     *  and filter out any graphical classes that might require us
+     *  to have diva.jar in the classpath.
      *  @param workspace The workspace in which to create the model.
      *  @return A model.
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
             throws Exception {
+	// Filter out graphical classes.
+	return _createModel(workspace, true);
+    }
+
+    /** Read the model from the <i>modelURL</i> applet parameter.
+     *  @param workspace The workspace in which to create the model.
+     *  @param filterGraphicalClasses  If true, then filter out graphical
+     *  classes that might require diva.jar to be in the classpath
+     *  @return A model.
+     *  @exception Exception If something goes wrong.
+     */
+    protected NamedObj _createModel(Workspace workspace,
+				    boolean filterGraphicalClasses)
+            throws Exception {
+
+	// ptolemy.vergil.MoMLViewerApplet() calls this with
+	// filterGraphicalClasses set to false.
+
         String modelURL = getParameter("modelURL");
         if (modelURL == null) {
             // For backward compatibility, try name "model".
@@ -184,8 +204,10 @@ public class MoMLApplet extends PtolemyApplet {
         }
 
         MoMLParser parser = new MoMLParser();
-        // Filter out non-graphical classes.
-        parser.setMoMLFilter(new FilterGraphicalClasses()); 
+	if (filterGraphicalClasses) {
+	    // Filter out graphical classes so that we do not require diva.jar
+	    parser.setMoMLFilter(new FilterOutGraphicalClasses()); 
+	}
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);
         _manager = null;
@@ -218,13 +240,26 @@ public class MoMLApplet extends PtolemyApplet {
 
     /** A MoMLFilter that removes certain graphical classes.
      */
-    public static class FilterGraphicalClasses implements MoMLFilter {
+    public static class FilterOutGraphicalClasses implements MoMLFilter {
         
+	/** If the attributeValue is "ptolemy.vergil.icon.AttributeValueIcon",
+	 *  then return "ptolemy.kernel.util.Attribute", otherwise
+	 *  return the original value of the attributeValue.
+	 *  @param container  The container for this attribute, ignored
+	 *  in this method.
+	 *  @param attributeName The name of the attribute, ignored
+	 *  in this method.
+	 *  @param attributeValue The value of the attribute.
+	 *  @return the filtered attributeValue;
+	 */
         public String filterAttributeValue(NamedObj container,
                 String attributeName, String attributeValue) {
-            System.out.println("MoMLApplet.FilterGraphicalClasses" 
-                    + container + "\n\t" + attributeName
-                    + "\n\t" + attributeValue);
+	    if (attributeValue != null
+		&& attributeValue
+		.equals("ptolemy.vergil.icon.AttributeValueIcon")) {
+		return "ptolemy.kernel.util.Attribute";
+	    } 
+		
             return attributeValue;
         }
     }
