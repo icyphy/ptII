@@ -33,7 +33,6 @@ package ptolemy.actor;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.type.*;
-import ptolemy.data.type.Typeable; // For javadoc
 import collections.LinkedList;
 import java.util.Enumeration;
 
