@@ -31,6 +31,7 @@
 package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.NamedObj;
 
@@ -79,7 +80,16 @@ public final class DEEvent implements Comparable {
     public DEEvent(DEReceiver receiver, Token token, double timeStamp,
             int microstep, int depth) {
         _receiver = receiver;
-        _actor = (Actor)receiver.getContainer().getContainer();
+        // FIXME: should we check whether the receiver is null?
+        // When the receiver is null, it is actually a Pure Event.
+        // We should use another constructor.
+        if (receiver!= null) {
+            _ioPort = (IOPort) receiver.getContainer();
+            _actor = (Actor) _ioPort.getContainer();
+        } else {
+            _ioPort = null;
+            _actor = null;
+        }
         _token = token;
         _timeStamp = timeStamp;
         _microstep = microstep;
@@ -95,6 +105,7 @@ public final class DEEvent implements Comparable {
      */
     public DEEvent(Actor actor, double timeStamp, int microstep, int depth) {
         _actor = actor;
+        _ioPort = null;
         _timeStamp = timeStamp;
         _microstep = microstep;
         _receiverDepth = depth;
@@ -161,6 +172,13 @@ public final class DEEvent implements Comparable {
         return _receiverDepth;
     }
 
+    /** Return the ioPort of the destination actor for this event.
+     *  @return The destination ioPort.
+     */
+    public final IOPort ioPort() {
+        return _ioPort;
+    }
+
     /** Compare the tag of this event with the specified and return true
      *  if they are equal and false otherwise.  This is provided along
      *  with compareTo() because it is slightly faster when all you need
@@ -208,8 +226,13 @@ public final class DEEvent implements Comparable {
      *  @return The token as a string with the time stamp.
      */
     public String toString() {
-        return "DEEvent(token=" + _token + ", time=" + _timeStamp + ", dest="
-            + ((NamedObj)_actor).getFullName() + ")";
+        if (_ioPort != null) {
+            return "DEEvent(token=" + _token + ", time=" + _timeStamp + ", dest="
+                + ((NamedObj)_actor).getFullName() + "." + _ioPort.getName() + ")";
+        } else {
+            return "DEEvent(token=" + _token + ", time=" + _timeStamp + ", dest="
+                + ((NamedObj)_actor).getFullName() + ")" + " -- A PURE EVENT.";
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -217,6 +240,9 @@ public final class DEEvent implements Comparable {
 
     // The destination actor.
     private Actor _actor;
+    
+    // The ioPort of the destination actor.
+    private IOPort _ioPort;
 
     // The microstep.
     private int _microstep;

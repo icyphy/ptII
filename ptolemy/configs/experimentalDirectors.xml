@@ -8,6 +8,7 @@
       <doc>experimental director library</doc>
       <property name="CI Director" class="ptolemy.domains.ci.kernel.CIDirector"/>
       <property name="DT Director" class="ptolemy.domains.dt.kernel.DTDirector"/>
+      <property name="DEE Director" class="ptolemy.domains.de.kernel.DEEDirector"/>
       <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector"/>
       <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector"/>
       <property name="HDFFSM Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector"/>
