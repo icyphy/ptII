@@ -128,11 +128,9 @@ public class VergilApplication extends MDIApplication {
 	    JFileChooser chooser;
 	    chooser = storage.getOpenFileChooser();
 	    chooser.addChoosableFileFilter(filter);
-	    chooser.setFileFilter(filter);
-	    
+	   	    
 	    chooser = storage.getSaveFileChooser();
 	    chooser.addChoosableFileFilter(filter);
-	    chooser.setFileFilter(filter);
 	} catch (SecurityException ex) {
 	    // FIXME: create a new "NoStoragePolicy"
 	    System.out.println(ex.getMessage());
@@ -158,7 +156,7 @@ public class VergilApplication extends MDIApplication {
         new ptolemy.vergil.debugger.DebuggerModule(this);
 	
 	frame.setVisible(true);
-
+	
 	// Start with a new document.
 	// This is kindof
 	// bogus, but it is not easy to fire the action manually.
