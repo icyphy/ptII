@@ -181,7 +181,7 @@ test NamedObj-7.1 {Test clone} {
 ######################################################################
 ####
 #
-test NamedObj-8.1 {Test debug listener} {
+test NamedObj-8.1 {Test RecorderListener: call clone} {
     set n [java::new ptolemy.kernel.util.Workspace "N"]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
     set listener [java::new ptolemy.kernel.util.RecorderListener]
@@ -190,7 +190,7 @@ test NamedObj-8.1 {Test debug listener} {
     $listener getMessages
 } {Cloned N.A into workspace: N}
 
-test NamedObj-8.2 {Test debug listener} {
+test NamedObj-8.2 {Test RecorderListener: call setName} {
     set a [java::new ptolemy.kernel.util.NamedObj]
     set listener [java::new ptolemy.kernel.util.RecorderListener]
     $a addDebugListener $listener
@@ -198,7 +198,7 @@ test NamedObj-8.2 {Test debug listener} {
     $listener getMessages
 } {Changed name from . to .B}
 
-test NamedObj-8.3 {Test debug listener} {
+test NamedObj-8.3 {Test RecorderListener: call setName 2x} {
     set a [java::new ptolemy.kernel.util.NamedObj]
     set listener [java::new ptolemy.kernel.util.RecorderListener]
     $a addDebugListener $listener
@@ -208,7 +208,7 @@ test NamedObj-8.3 {Test debug listener} {
 } {Changed name from . to .B
 Changed name from .B to .C}
 
-test NamedObj-8.4 {Test debug listener} {
+test NamedObj-8.4 {Test Recorderlistener: setName, then reset, then setName} {
     set a [java::new ptolemy.kernel.util.NamedObj]
     set listener [java::new ptolemy.kernel.util.RecorderListener]
     $a addDebugListener $listener
@@ -218,17 +218,25 @@ test NamedObj-8.4 {Test debug listener} {
     $listener getMessages
 } {Changed name from .B to .C}
 
-test NamedObj-8.5 {Test debug listener} {
-    # This test is pretty lame, since the
-    # message going to std out is not checked.
-    set a [java::new ptolemy.kernel.util.NamedObj]
-    set listener [java::new ptolemy.kernel.util.StreamListener]
-    $a addDebugListener $listener
-    $a setName "B"
-    $a setName "C"
-} {}
 
-test NamedObj-8.6 {Test debug listener} {
+test NamedObj-8.5 {Test RecorderListener: reset, getMessages, setName} {
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    
+    # Check to make sure that calling reset on a empty buffer
+    # does not cause problems
+    $listener reset
+
+    set result1 [$listener getMessages]
+    set b [java::new ptolemy.kernel.util.Attribute $a "X"]
+    $b setContainer [java::null]
+    list $result1 [$listener getMessages]
+} {{} {Added attribute X to N.A
+Removed attribute X from N.A}}
+
+test NamedObj-8.6 {Test RecorderListener: set container to null} {
     set n [java::new ptolemy.kernel.util.Workspace "N"]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
     set listener [java::new ptolemy.kernel.util.RecorderListener]
@@ -238,3 +246,79 @@ test NamedObj-8.6 {Test debug listener} {
     $listener getMessages
 } {Added attribute X to N.A
 Removed attribute X from N.A}
+
+test NamedObj-8.7 {Test RecorderListener: add then remove a listenert} {
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    $a setName "B"
+    set result1 [$listener getMessages]
+
+    $a removeDebugListener $listener
+
+    # Call it twice, just to be sure we don't crash
+    $a removeDebugListener $listener
+
+    $a setName "C"
+    list $result1 [$listener getMessages]
+} {{Changed name from . to .B} {Changed name from . to .B}}
+
+
+test NamedObj-8.8 {Test RecorderListener: call message() directly} {
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    $listener message \
+	    "This is the first Message, no trailing newline."
+    $listener message \
+	    "This is the second Message, trailing newline.\n"
+    $listener message \
+	    "This is the third Message, no trailing newline."
+    $listener getMessages
+} {This is the first Message, no trailing newline.
+This is the second Message, trailing newline.
+
+This is the third Message, no trailing newline.}
+
+
+# Capture output to System.out
+proc jdkCapture {script varName} {
+    upvar $varName output
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set stdout [java::field System out]
+    java::call System setOut $printStream
+    set result [uplevel $script]
+    java::call System setOut $stdout
+    $printStream flush
+    set output [$stream toString]
+    return $result
+}
+
+test NamedObj-9.1 {Test StreamListener} {
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    jdkCapture {
+	set listener [java::new ptolemy.kernel.util.StreamListener]
+	$a addDebugListener $listener
+	$a setName "B"
+	$a setName "C"
+    } stdoutResults
+    list $stdoutResults
+} {{Changed name from . to .B
+Changed name from .B to .C
+}}
+
+test NamedObj-9.2 {Test StreamListener: ByteArrayOutputStream} {
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set byteArrayOutputStream [java::new java.io.ByteArrayOutputStream]
+    set listener [java::new ptolemy.kernel.util.StreamListener \
+	    $byteArrayOutputStream]
+    $a addDebugListener $listener
+    $a setName "B"
+    $a setName "C"
+    $byteArrayOutputStream toString
+} {Changed name from . to .B
+Changed name from .B to .C
+}
+
