@@ -386,7 +386,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
     }
 
     /**
-     * Disconnect an edge from its two enpoints and notify graph
+     * Disconnect an edge from its two endpoints and notify graph
      * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
      * event.
      */
@@ -986,13 +986,12 @@ public class PtolemyGraphModel extends AbstractGraphModel
                 " setting semantic objects.");
     }
 
-    // Perform the desired change request.  Queue the request with the
+    // Perform the specified change request.  Queue the request with the
     // root entity.  If the change fails, then throw a graph exception. 
-    public void _doChangeRequest(ChangeRequest request) {
+    private void _doChangeRequest(ChangeRequest request) {
 	try {
 	    _root.requestChange(request);
-	} 
-	catch (Exception ex) {
+	} catch (Exception ex) {
 	    ex.printStackTrace();
 	    throw new GraphException(ex);
 	}
