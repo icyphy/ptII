@@ -38,6 +38,7 @@ import ptolemy.domains.dde.kernel.*;
 import ptolemy.domains.dde.kernel.test.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.InternalErrorException;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -100,7 +101,7 @@ public class ListenGet extends DDEGetNToken {
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
-            throw new InternalErrorException( this, "Error with "
+            throw new InternalErrorException( "Error with "
             	    + "sleeping thread in prefire");
 	}
 	return super.prefire();
@@ -113,7 +114,7 @@ public class ListenGet extends DDEGetNToken {
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
-            throw new InternalErrorException( this, "Error with "
+            throw new InternalErrorException( "Error with "
             	    + "sleeping thread in postfire");
 	}
 	return super.postfire();

@@ -145,7 +145,7 @@ public class ListenClock extends Clock {
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
-            throw new InternalErrorException( this, "Error with "
+            throw new InternalErrorException( "Error with "
             	    + "sleeping thread in prefire");
 	}
 	return super.prefire();
@@ -158,7 +158,7 @@ public class ListenClock extends Clock {
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
-            throw new InternalErrorException( this, "Error with "
+            throw new InternalErrorException( "Error with "
             	    + "sleeping thread in postfire");
 	}
 	return super.postfire();
