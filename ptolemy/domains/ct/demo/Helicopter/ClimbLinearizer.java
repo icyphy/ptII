@@ -54,7 +54,7 @@ public class ClimbLinearizer extends TypedAtomicActor
     implements TimedActor{
     /** Constructor
      */
-    public ClimbLinearizer(TypedCompositeActor container, String name)
+    public ClimbLinearizer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         inputPx = new TypedIOPort(this, "inputPx");

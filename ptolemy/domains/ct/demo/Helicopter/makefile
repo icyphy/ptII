@@ -50,7 +50,7 @@ JSRCS = \
 	ControllerActor.java \
 	CruiseLinearizer.java \
 	HelicopterActor.java \
-	HelicopterApplet.java \
+	Helicopter.java \
 	HoverLinearizer.java \
 	XZHigherDerivatives.java
 
