@@ -80,7 +80,7 @@ not uniquely decodable.
 2. "k" should not be higher than the highest order of all polynomials,
 otherwise, some bits never get involved in computing parities.
 In the above two cases, the actor will throw an exception. However, they
-do not guarantee the codeword can be decoded sucessfully, and it is
+do not guarantee the codeword can be decoded successfully, and it is
 not always true that "the larger the polynomials are, the better."
 Users should check tables for convolutional code from professional
 references, which are achieved using computer search methods.
