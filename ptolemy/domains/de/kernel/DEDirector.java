@@ -1181,6 +1181,14 @@ public class DEDirector extends Director implements TimedDirector {
             _computeDepth();
             // the sort is now valid.
             _sortValid = workspace().getVersion();
+            // FIXME: There may be events in the event queue. The
+            // depth of these events may become invalid after this new
+            // topological sory. 
+            // There are at least two choices:
+            // 1. Discard all remaining events in the event queue. This 
+            // actually disables mutation.  
+            // 2. Update depths of the remaining events with the newly
+            // calculated ones.
         }
         Integer depth = (Integer)_actorToDepth.get(actor);
         if (depth != null) {
