@@ -46,8 +46,8 @@ import java.lang.reflect.*;
  * that suffix modifies the array argument rather than constructing a new
  * array.
  *
- * @author: Albert Chen, William Wu, Edward A. Lee
- * @version: $Id$
+ * @author Albert Chen, William Wu, Edward A. Lee
+ * @version $Id$
  */
 
 public final class ArrayMath {
