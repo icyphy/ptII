@@ -62,7 +62,16 @@ MISC_FILES =	$(DIRS) \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'GeneratorTableau$$1.class' \
+	'GeneratorTableau$$2.class' \
+	'GeneratorTableau$$3.class' \
+	'GeneratorTableau$$4.class' \
+	'GeneratorTableau$$5.class' \
+	'GeneratorTableau$$6.class' \
+	'GeneratorTableau$$Factory.class' \
+	'GeneratorTableau$$GeneratorFrame.class' \
+	'GeneratorTableau$$_Exec.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

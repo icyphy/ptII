@@ -68,6 +68,8 @@ MISC_FILES =	$(DIRS) \
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'ActorCodeGenerator$$FindSuperClassDecl.class' \
+	'SpecializeTokenVisitor$$_ConstantTerm.class' \
+	'SpecializeTokenVisitor$$_VariableTerm.class' \
 	'SpecializeTokenVisitor$$ConstantTerm.class' \
 	'SpecializeTokenVisitor$$VariableTerm.class'
 
