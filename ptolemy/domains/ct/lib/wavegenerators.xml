@@ -2,14 +2,16 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
-<entity name="waveform generators" class="ptolemy.moml.EntityLibrary">
+<!-- Library of actors which take discrete inputs -->
+<!-- and produce continuous outputs.              -->
+<entity name="to continuous" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
-      <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-      </entity>
-      <entity name="FirstOrderHold" class="ptolemy.domains.ct.lib.FirstOrderHold">
-      </entity>
+        <entity name="ZeroOrderHold"
+                class="ptolemy.domains.ct.lib.ZeroOrderHold"/>
+        <entity name="FirstOrderHold"
+                class="ptolemy.domains.ct.lib.FirstOrderHold"/>
       </group>
     ?>
   </configure>

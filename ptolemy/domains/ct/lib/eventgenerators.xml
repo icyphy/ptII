@@ -2,22 +2,24 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
-<entity name="event generators" class="ptolemy.moml.EntityLibrary">
+<!-- Library of actors which take continuous inputs -->
+<!-- and produce discrete outputs.                  -->
+<entity name="to discrete" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
-      <entity name="EventSource" class="ptolemy.domains.ct.lib.EventSource">
-      </entity>
-      <entity name="LevelCrossingDetector" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
-      </entity>
-      <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-      </entity>
-      <entity name="TriggeredSampler" class="ptolemy.domains.ct.lib.CTTriggeredSampler">
-      </entity>
-      <entity name="ThresholdMonitor" class="ptolemy.domains.ct.lib.ThresholdMonitor">
-      </entity>
-      <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
-      </entity>
+        <entity name="EventSource"
+                class="ptolemy.domains.ct.lib.EventSource"/>
+        <entity name="LevelCrossingDetector"
+                class="ptolemy.domains.ct.lib.LevelCrossingDetector"/>
+        <entity name="PeriodicSampler"
+                class="ptolemy.domains.ct.lib.CTPeriodicSampler"/>
+        <entity name="TriggeredSampler"
+                class="ptolemy.domains.ct.lib.CTTriggeredSampler"/>
+        <entity name="ThresholdMonitor"
+                class="ptolemy.domains.ct.lib.ThresholdMonitor"/>
+        <entity name="ZeroCrossingDetector"
+                class="ptolemy.domains.ct.lib.ZeroCrossingDetector"/>
       </group>
     ?>
   </configure>
