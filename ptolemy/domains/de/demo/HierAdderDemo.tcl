@@ -127,8 +127,8 @@ set add [java::new ptolemy.actor.lib.Add $sys Add]
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports
-set addIn [$add getPort Input]
-set addOut [$add getPort Output]
+set addIn [java::field $add input]
+set addOut [java::field $add output]
 set plotIn [java::field $plot input]
 
 # Connect the ports
