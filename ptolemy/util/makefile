@@ -48,7 +48,8 @@ PTPACKAGE = 	util
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	StringUtilities.java
+	StringUtilities.java \
+	XSLTUtilities.java
 
 EXTRA_SRCS =	$(JSRCS)
 
