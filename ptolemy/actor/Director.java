@@ -30,6 +30,7 @@ Review changeRequest / changeListener code.
 Review container relationship and new parent class.
 Win added methods fireAtCurrentTime(Actor) and
 fireAtRelativeTime(Actor, double)
+Semantics of initialize(Actor) have changed.
 */
 
 package ptolemy.actor;
@@ -271,17 +272,19 @@ public class Director extends Attribute implements Executable {
         return _currentTime;
     }
 
-    /** Set the current time to 0.0 or the time of the executive director,
-     *  and then invoke the initialize() method of each deeply contained actor.
-     *  If the container is not an instance of CompositeActor, do nothing.
-     *  This method should typically be invoked once per execution, after the
+    /** Initialize the model controlled by this director.  Set the
+     *  current time to 0.0 or the time of the executive director, and
+     *  then invoke the initialize() method of this director on each
+     *  actor that is controlled by this director.  If the container
+     *  is not an instance of CompositeActor, do nothing.  This method
+     *  should typically be invoked once per execution, after the
      *  preinitialization phase, but before any iteration.  It may be
-     *  invoked in the middle of an execution, if reinitialization is desired.
-     *  Since type resolution has been completed and the current time is set,
-     *  the initialize() method of a contained
-     *  actor may produce output or schedule events.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
+     *  invoked in the middle of an execution, if reinitialization is
+     *  desired.  Since type resolution has been completed and the
+     *  current time is set, the initialize() method of a contained
+     *  actor may produce output or schedule events.  This method is
+     *  <i>not</i> synchronized on the workspace, so the caller should
+     *  be.
      *
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
@@ -303,25 +306,28 @@ public class Director extends Attribute implements Executable {
                 Actor actor = (Actor)actors.next();
                 if (_debugging) _debug("Invoking initialize(): ",
                         ((NamedObj)actor).getFullName());
-                actor.initialize();
+                initialize(actor);
             }
         }
     }
 
-    /** Perform domain-specific initialization on the specified actor, if any.
-     *  In this base class, do nothing.
-     *  This is called by the initialize() method of the actor, during
-     *  initialization.  In particular,
-     *  in the event of mutations during an execution that introduce new
-     *  actors, this method will be called as part of initializing the
-     *  actor.  Typical actions a director might perform include starting
-     *  threads to execute the actor or checking to see whether the actor
-     *  can be managed by this director.  For example, a time-based domain
-     *  (such as CT) might reject sequence based actors.
-     *  @exception IllegalActionException If the actor is not acceptable
-     *   to the domain.  Not thrown in this base class.
+    /** Initialize the given actor.  This method is generally called
+     *  by the initialize() method of the director, and by the manager
+     *  whenever an actor is added to an executing model as a
+     *  mutation.  This method will generally perform domain-specific
+     *  initialization on the specified actor and call its
+     *  initialize() method.  In this base class, only the actor's
+     *  initialize() method of the actor is called and no
+     *  domain-specific initialization is performed.  Typical actions
+     *  a director might perform include starting threads to execute
+     *  the actor or checking to see whether the actor can be managed
+     *  by this director.  For example, a time-based domain (such as
+     *  CT) might reject sequence based actors.
+     *  @exception IllegalActionException If the actor is not
+     *  acceptable to the domain.  Not thrown in this base class.
      */
     public void initialize(Actor actor) throws IllegalActionException {
+        actor.initialize();
     }
 
     /** Indicate that resolved types in the model may no longer be valid.

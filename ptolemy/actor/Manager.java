@@ -425,7 +425,7 @@ public class Manager extends NamedObj implements Runnable {
             _workspace.getReadAccess();
             _processChangeRequests();
 
-            // Initialize actors that have been added.
+            // Pre-initialize actors that have been added.
             if (_actorsToInitialize.size() > 0) {
                 Iterator actors = _actorsToInitialize.iterator();
                 while (actors.hasNext()) {
@@ -441,11 +441,12 @@ public class Manager extends NamedObj implements Runnable {
             _iterationCount++;
             _setState(ITERATING);
 
+            // Perform domain-specific initialization on the actor. 
             if (_actorsToInitialize.size() > 0) {
                 Iterator actors = _actorsToInitialize.iterator();
                 while (actors.hasNext()) {
                     Actor actor = (Actor)actors.next();
-                    actor.initialize();
+                    actor.getExecutiveDirector().initialize(actor);
                 }
                 _actorsToInitialize.clear();
             }
