@@ -82,7 +82,7 @@ test Variable-2.0 {Check addition of variables to the scope} {
     $var2 setExpression "param+var1"
     set list [java::new ptolemy.kernel.util.NamedList]
     $list prepend $var1
-    $var2 addToScope $list
+    $var2 {addToScope ptolemy.kernel.util.NamedList} $list
     $var2 evaluate
     set tok [$var2 getToken]
     $tok stringValue

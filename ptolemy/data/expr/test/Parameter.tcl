@@ -109,7 +109,7 @@ test Parameter-3.2 {Check type constriants on contained Token type} {
     set value2 [[$param1 getToken] stringValue]
 
     list $name1 $value1 $errmsg
-} {.entity.id1 11 {java.lang.IllegalArgumentException: Cannot store a Token of type ptolemy.data.DoubleToken in a Parameter restricted to tokens of type ptolemy.data.IntToken or lower}}
+} {.entity.id1 11 {java.lang.IllegalArgumentException: Cannot store a token of type ptolemy.data.DoubleToken in .entity.id1 of class ptolemy.data.expr.Parameter with type ptolemy.data.IntToken}}
 #################################
 ####
 #
@@ -275,7 +275,7 @@ test Parameter-7.0 {Check that dependency cycles are flagged as an error} {
     catch {$param1 evaluate} errmsg
 
     list $value1 $value2 $value3 $errmsg
-} {1.1 9.9 11.0 {java.lang.IllegalArgumentException: Found dependency loop in .parent.id1: id3}}
+} {1.1 9.9 11.0 {ptolemy.data.expr.IllegalExpressionException: Found dependency loop when evaluating .parent.id1: id3}}
 #################################
 ####
 # 
