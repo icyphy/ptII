@@ -31,11 +31,13 @@
 
 package ptolemy.domains.csp.kernel;
 
-import ptolemy.data.Token;
-import ptolemy.actor.*;
+
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
+import ptolemy.actor.*;
+import ptolemy.actor.process.*;
+import ptolemy.data.Token;
 import collections.LinkedList;
 import java.util.Enumeration;
 

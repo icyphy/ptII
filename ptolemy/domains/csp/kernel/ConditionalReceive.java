@@ -31,9 +31,11 @@
 
 package ptolemy.domains.csp.kernel;
 
-import ptolemy.actor.*;
-import ptolemy.data.Token;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
+import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.data.Token;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalReceive
