@@ -1,4 +1,4 @@
-/* Compare two Double objects
+/* Compare two Double objects with a fuzzy threshold.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -29,19 +29,23 @@
 
 package ptolemy.domains.ct.kernel.util;
 
-import collections.*;
+import collections.Comparator;
 
 //////////////////////////////////////////////////////////////////////////
-//// DoubleComparator
+//// FuzzyDoubleComparator
 /**
-Compare two Double objects.
+Compare two Double objects with respect to a fuzzy threshold.
+The threshold is set by setThreshold(). If the difference of the 
+two double number is less than the threshold, then they are considered
+equal. The default value of the fuzzy threshold is 1e-10.
 @author Jie Liu
-@version $Id$
+@version $Id $
 */
-public class DoubleComparator implements Comparator{
-    /** Return 1 if the value of fst is greater than the value of snd;
-     *  return -1 if the value of fst is less than the value of snd;
-     *  return 0 if they are equal.
+public class FuzzyDoubleComparator implements Comparator{
+    /** Return -1 if fst < snd - threshold/2; <BR>
+     *  return 1 if fst > snd + threshold/2; <BR>
+     *  return 0 otherwise.<BR>
+     *
      *  If any of the argument is not a Double object, a ClassCastException
      *  will be thrown
      *  @param fst The first Double object.
@@ -50,13 +54,33 @@ public class DoubleComparator implements Comparator{
     public int compare(Object fst, Object snd) {
         double fstvalue = ((Double)fst).doubleValue();
         double sndvalue = ((Double)snd).doubleValue();
-        if(fstvalue < sndvalue) {
+        if(fstvalue < sndvalue - _threshold/2.0) {
             return -1;
-        } else if(fstvalue > sndvalue) {
+        } else if(fstvalue > sndvalue + _threshold/2.0) {
             return 1;
         } else {
             return 0;
         }
     }
 
+    /** Return the fuzziness threshold.
+     *  @return The fuzziness threshold.
+     */
+    public double getThreshold() {
+        return _threshold;
+    }
+
+    /** Set the fuzziness threshold. The threshold is always positive.
+     *  If the argument is negative, then its absolute value is taken.
+     *  @param thres The threshold.
+     */
+    public void setThreshold(double thres) {
+        _threshold = Math.abs(thres);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The threshold that controls the fuzziness. Default value 1e-10.
+    private double _threshold = 1e-10;
 }

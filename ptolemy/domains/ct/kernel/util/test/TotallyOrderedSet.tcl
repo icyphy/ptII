@@ -54,7 +54,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####  Generally used comparator.
 #
-set comparator [java::new ptolemy.domains.ct.kernel.util.DoubleComparator]
+set comparator [java::new ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator]
 
 ######################################################################
 ####
