@@ -105,11 +105,11 @@ public class SequencePlotter extends Plotter implements SequenceActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     /** Notification that an attribute has changed.
-        @exception IllegalActionException If the expression of the
-        attribute cannot be parsed or cannot be evaluated.
-    */
+     *  @exception IllegalActionException If the expression of the
+     *   attribute cannot be parsed or cannot be evaluated.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == xInit) {
