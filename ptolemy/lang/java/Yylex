@@ -223,6 +223,6 @@ CPlusPlusStyleComment=("//".*[\n\r])
 
 .	{
       throw new RuntimeException("Lexical error : Line " + (1 + yyline) +
-"Unmatched input : " + yytext());
+" Unmatched input: " + yytext());
 		}
 
