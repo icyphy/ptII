@@ -61,7 +61,7 @@ public class ThresholdMonitor extends CTActor
      *  @param name The actor's name
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException Name coincides with
+     *  @exception NameDuplicationException If name coincides with
      *   an entity already in the container.
      */
     public ThresholdMonitor(TypedCompositeActor container, String name)

@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.lib;
@@ -63,7 +66,7 @@ public class ZeroCrossingDetector extends CTActor
      *  @param name The actor's name
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException Name coincides with
+     *  @exception NameDuplicationException If name coincides with
      *   an entity already in the container.
      */
     public ZeroCrossingDetector(TypedCompositeActor container, String name)

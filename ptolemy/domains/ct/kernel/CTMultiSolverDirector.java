@@ -93,8 +93,8 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      *  All the parameters takes their default values.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in derived classes.
      */
     public CTMultiSolverDirector(CompositeActor container, String name)
             throws IllegalActionException {

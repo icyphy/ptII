@@ -156,8 +156,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  is created.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in a derived class
      */
     public CTDirector(CompositeActor container, String name)
             throws IllegalActionException {
@@ -474,8 +474,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
         // invalidate schedule
         sch.setValid(false);
-        if(_debugging) _debug(getFullName(), "initialize current time");
-        if(_debugging) _debug(getFullName(), "_init get State Time " +  getStartTime());
+        if(_debugging)
+            _debug(getFullName(), "initialize current time");
+        if(_debugging)
+            _debug(getFullName(), "_init get State Time " + getStartTime());
         CompositeActor containersContainer =
             (CompositeActor)ca.getContainer();
         if( containersContainer == null ) {
@@ -520,7 +522,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  in the director, since CT sometimes needs roll-back.
      *  This is a critical parameter in an execution, and the
      *  actors are not supposed to call it.
-     *  @exception IllegalActionException Never throw.
+     *  @exception IllegalActionException Not thrown in this base class.
      *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) throws IllegalActionException {
@@ -637,7 +639,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  can not be served as the current ODE solver then an
      *  exception should be thrown.
      *  @param solver The solver to be set.
-     *  @exception  IllegalActionException Never thrown in this base class.
+     *  @exception  IllegalActionException Not thrown in this base class.
      *     It may be thrown by the derived classes if the solver is not
      *     appropriate.
      */

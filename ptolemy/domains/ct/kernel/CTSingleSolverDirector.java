@@ -100,8 +100,8 @@ public abstract class CTSingleSolverDirector extends CTDirector {
      *  All the parameters takes their default values.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in derived classes.
      */
     public CTSingleSolverDirector(CompositeActor container, String name)
             throws IllegalActionException {
@@ -210,13 +210,16 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         if(_debugging) _debug(getFullName(), " set current step size to "
                 + getCurrentStepSize());
         setSuggestedNextStepSize(getInitialStepSize());
-        if(_debugging) _debug(getFullName(), " set suggested next step size to "
-                + getSuggestedNextStepSize());
-        if(_debugging) _debug(getFullName(), " set the current time as a break point: " +
-                getCurrentTime());
+        if(_debugging)
+            _debug(getFullName(), " set suggested next step size to "
+                    + getSuggestedNextStepSize());
+        if(_debugging)
+            _debug(getFullName(), " set the current time as a break point: " +
+                    getCurrentTime());
         fireAt(null, getCurrentTime());
-        if(_debugging) _debug(getFullName(), " set the stop time as a break point: " +
-                getStopTime());
+        if(_debugging)
+            _debug(getFullName(), " set the stop time as a break point: " +
+                    getStopTime());
         fireAt(null, getStopTime());
         //_first = true;
         if(_debugging) _debug(getFullName() + " initialize directed actors: ");
@@ -252,7 +255,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
      *  updated, since this is the safe place to change parameters.
      *
      *  @return True Always
-     *  @exception IllegalActionException Never thrown in this director.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
         if(_debugging) _debug(this.getFullName(), "prefire.");
@@ -284,7 +287,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         //        can use them. That is at least true for implicit methods.
         Iterator integrators = scheduler.scheduledDynamicActorList().iterator();
         while(integrators.hasNext()) {
-            CTDynamicActor dyn =(CTDynamicActor)integrators.next();
+            CTDynamicActor dyn = (CTDynamicActor)integrators.next();
             if(_debugging) _debug("Excite State..."+
                     ((Nameable)dyn).getName());
             dyn.emitTentativeOutputs();
@@ -318,7 +321,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
      *  evaluations (firing all actors in the state transition schedule),
      *  and the number of failed steps (due to error control).
      *
-     *  @exception IllegalActionException Never thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException{
         if(STAT) {
@@ -485,8 +488,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
 
     /** Clean old breakpoints in the breakpoint table, and adjust
      *  the the current step size according to the first breakpoint.
-     *  @exception IllegalActionException Not thrown in this class,
-     *      may be thrown by derived classes.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _processBreakpoints() throws IllegalActionException {
         double bp;
@@ -524,7 +526,8 @@ public abstract class CTSingleSolverDirector extends CTDirector {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.next();
             double pre = a.predictedStepSize();
-            if(_debugging) _debug(((NamedObj)a).getName(), "predict step " + pre);
+            if(_debugging)
+                _debug(((NamedObj)a).getName(), "predict step " + pre);
             predictedstep = Math.min(predictedstep, pre);
         }
         sscs = sched.outputSSCActorList().iterator();
@@ -532,7 +535,8 @@ public abstract class CTSingleSolverDirector extends CTDirector {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.next();
             double pre = a.predictedStepSize();
-            if(_debugging) _debug(((NamedObj)a).getName(), "predict step " + pre);
+            if(_debugging)
+                _debug(((NamedObj)a).getName(), "predict step " + pre);
             predictedstep = Math.min(predictedstep, pre);
         }
         return predictedstep;

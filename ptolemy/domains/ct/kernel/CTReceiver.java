@@ -67,7 +67,7 @@ public class CTReceiver extends Mailbox{
      *  token will be lost, and the receiver only contains the new
      *  token.
      *  @param token The token to be put into the CTReceiver.
-     *  @exception NoRoomException Never thrown.
+     *  @exception NoRoomException Not thrown in this base class.
      */
     public void put(Token token) throws NoRoomException{
         if(hasToken()) {

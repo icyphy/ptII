@@ -103,8 +103,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  All the parameters takes their default values.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in a derived class.
      */
     public CTMixedSignalDirector(CompositeActor container, String name)
             throws IllegalActionException {
@@ -279,7 +279,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  than the stop time, an InvalidStateException is thrown.
      *  @return True if this is not a top-level director, or the simulation
      *     is not finished.
-     *  @exception IllegalActionException Never thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         if(_isTopLevel()) {
@@ -430,7 +430,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _processBreakpoints();
             _fireOneIteration();
         }
-        if(_debugging) _debug(getFullName() + " Catch up time"+getCurrentTime());
+        if(_debugging)
+            _debug(getFullName() + " Catch up time" + getCurrentTime());
     }
 
     /** Initialize parameters in addition to the parameters inherited

@@ -151,8 +151,8 @@ public abstract class ODESolver extends NamedObj {
     /** The fire method of the integrator is delegated to this method.
      *
      *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  May be needed by the derived class.
      */
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
@@ -182,8 +182,8 @@ public abstract class ODESolver extends NamedObj {
     /** Return true if the state of the system is resolved successfully.
      *  Different solver may implement it differently.
      *
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+     * @exception IllegalActionException Not thrown in this base class.
+     * May be needed by the derived class.
      */
     public abstract boolean resolveStates() throws IllegalActionException;
 

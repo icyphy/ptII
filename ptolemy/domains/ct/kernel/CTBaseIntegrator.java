@@ -103,8 +103,8 @@ public class CTBaseIntegrator extends CTActor
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *
-     *  @exception NameDuplicationException Never thrown.
-     *  @exception IllegalActionException Never thrown.
+     *  @exception NameDuplicationException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public CTBaseIntegrator()
             throws NameDuplicationException, IllegalActionException {
@@ -131,8 +131,8 @@ public class CTBaseIntegrator extends CTActor
      *  Increment the version number of the workspace.
      *
      *  @param workspace The workspace that will list the entity.
-     *  @exception NameDuplicationException Never thrown.
-     *  @exception IllegalActionException Never thrown.
+     *  @exception NameDuplicationException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public CTBaseIntegrator(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {

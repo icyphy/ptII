@@ -716,7 +716,7 @@ public class CTScheduler extends Scheduler{
      *  Each schedule can also be accessed by individual getXXSchedule
      *  method.
      * @return an Enumeration of sub-schedules.
-     * @exception NotSchedulableException either the system construction
+     * @exception NotSchedulableException If either the system construction
      * is wrong or arithmetic loop exists.
      */
     protected Enumeration _schedule() throws NotSchedulableException {

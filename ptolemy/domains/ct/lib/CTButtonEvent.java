@@ -56,8 +56,9 @@ public class CTButtonEvent extends CTActor {
      *  The default output value is false.
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name.
-     * @exception NameDuplicationException Other star already had this name
-     * @exception IllegalActionException internal problem
+     * @exception NameDuplicationException If another star already had
+     * this name.
+     * @exception IllegalActionException If there was an internal problem.
      */
     public CTButtonEvent(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {

@@ -86,7 +86,7 @@ public class CTActor extends TypedAtomicActor {
      *  @param name The actor's name
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException Name coincides with
+     *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
     public CTActor(TypedCompositeActor container, String name)

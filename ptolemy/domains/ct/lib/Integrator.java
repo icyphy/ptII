@@ -47,8 +47,9 @@ public class Integrator extends CTBaseIntegrator {
      * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name.
-     * @exception NameDuplicationException Other star already had this name
-     * @exception IllegalActionException internal problem
+     * @exception NameDuplicationException If another star already had
+     * this name.
+     * @exception IllegalActionException If there was an internal problem.
      */
     public Integrator(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {

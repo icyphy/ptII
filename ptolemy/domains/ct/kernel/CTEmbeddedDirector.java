@@ -77,8 +77,8 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      *  All the parameters takes their default values.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in a derived class.
      */
     public CTEmbeddedDirector(CompositeActor container, String name)
             throws IllegalActionException {
@@ -196,7 +196,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      *  than the stop time, an InvalidStateException is thrown.
      *  @return True if this is not a top-level director, or the simulation
      *     is not finished.
-     *  @exception IllegalActionException Never thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         //super.postfire();
@@ -276,7 +276,8 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         if(breakPoints != null && !breakPoints.isEmpty()) {
             breakPoints.removeAllLessThan(tnow);
             if(breakPoints.contains(tnow)) {
-                if(_debugging) _debug(getName(), " Break point now at" + _outsideTime);
+                if(_debugging)
+                    _debug(getName(), " Break point now at" + _outsideTime);
                 // Breakpoints iterations are always successful
                 // so remove the breakpoints.
                 _setCurrentODESolver(getBreakpointSolver());
