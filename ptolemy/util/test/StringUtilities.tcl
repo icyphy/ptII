@@ -179,6 +179,19 @@ test StringUtilities-4.3 {split with null} {
 } {<Unnamed>}
 
 
+test StringUtilities-4.4 {substituteFilePrefix - simple substitution } {
+    java::call ptolemy.util.StringUtilities substituteFilePrefix \
+	    foo/bar foo/bar/baz {$FOO}
+} {$FOO/baz}
+
+test StringUtilities-4.5 {substituteFilePrefix - file based substitution} {
+    # In the testsuite, $PTII is likely to be a relative pathname
+    java::call ptolemy.util.StringUtilities substituteFilePrefix \
+	    $PTII $PTII/ptolemy/util/test/StringUtilities {$PTII}
+} {$PTII/ptolemy/util/test/StringUtilities}
+
+
+
 test StringUtilities-5.1 {tokenizeForExec} {
     set command {ls -l "a b" c 'd e' \"f g \" d:\\tmp\\ptII\ 2.0 c:\ptII}
     set results [java::call \
