@@ -104,7 +104,7 @@ awk ' {
        print indent "<entity name=\"" name "\" class=\"ptolemy.actor.TypedCompositeActor\"" lastNameField
        
        print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
-       print indent "     </property>"
+       print indent "    </property>"
 
        useCTDirector = 0
        if (sawFirstEntity == 0 && useCTDirector == 1) {
@@ -138,7 +138,7 @@ awk ' {
            print "    </property>"
         }  
 
-       useSDFDirector = 1
+       useSDFDirector = 0
        if (sawFirstEntity == 0 && useSDFDirector == 1) {
            sawFirstEntity = 1
            # Add the director
@@ -148,7 +148,17 @@ awk ' {
            print "        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{75.0, 40.0}\">"
            print "        </property>"
            print "    </property>"
-        }  
+       }  
+
+       useGiottoCodeGenerator = 1
+       if (sawFirstEntity == 0 && useGiottoCodeGenerator == 1) {
+           sawFirstEntity = 1
+           print indent "    <property name=\"CodeGenerator\" class=\"ptolemy.domains.giotto.kernel.GiottoCodeGenerator\">"
+           print indent "        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{400, 35}\">"
+           print indent "        </property>"
+           print indent "    </property>"
+        }
+
     } else if ($0 ~ /<\/System>/) {
        # FIXME: If we have <System ... />, then the indent might be wrong?
        print indent "</entity>"
@@ -461,7 +471,7 @@ $0 ~ /<entity/ {
        relationPortMap[dstLine] = name
 
        indent = substr($0, 0, index($0,"<") - 1)  
-       print indent "<!-- relationLocationMap " dstLine, "[" x "," y "] -->" 
+       #print indent "<!-- relationLocationMap " dstLine, "[" x "," y "] -->" 
 
 
 
@@ -476,7 +486,7 @@ $0 ~ /<entity/ {
                    print indent "    <property name=\"multiport\"/>"
                }
           }
-           print "<property name=\"output\"/>"
+           print indent "    <property name=\"output\"/>"
        } else if ($1 ~ /<InputPort/) {
            if (name == "input") {
                # If we have 2 or more input ports, then declare it a multiport
@@ -486,7 +496,7 @@ $0 ~ /<entity/ {
                    print indent "    <property name=\"multiport\"/>"
                }
            }
-           print "<property name=\"input\"/>"
+           print indent "    <property name=\"input\"/>"
        }  
 
        longName = containerStack[containerCount] "." name
