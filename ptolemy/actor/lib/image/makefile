@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ImageDisplay.java \
 	ImageReader.java \
 	ImageRotate.java \
 	ImageToString.java \

@@ -6,6 +6,8 @@
     <?moml
       <group>
   <doc>Image processing actors</doc>
+<entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+</entity>
 <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
 </entity>
 <entity name="ImageRotate" class="ptolemy.actor.lib.image.ImageRotate">
