@@ -56,7 +56,21 @@ import java.util.List;
 A histogram plotter.  This plotter contains an instance of the Histogram
 class from the Ptolemy plot package as a public member.  A histogram
 of data at the input port, which can consist of any number of channels,
-is plotted on this instance.
+is plotted on this instance. The input data type is double.
+<p>
+The output plot consists of a set of vertical bars, each representing
+a histogram bin.  The height of the bar is the count of the number
+of inputs that have been observed that fall within that bin.
+The <i>n</i>-th bin represents values in the range
+(<i>x</i> - <i>w</i>/2 + <i>o</i>, <i>x</i> + <i>w</i>/2 + <i>o</i>),
+where <i>w</i> is the value of the <i>binWidth</i> parameter,
+and <i>o</i> is the value of the <i>binOffset</i> parameter.
+So for example, if <i>o = w/2</i>,
+then each bin represents values from <i>nw</i> to
+(<i>n</i> + 1)<i>w</i>) for some integer <i>n</i>.
+The default offset is 0.5, half the default bin width, which is 1.0.
+
+@see ptolemy.plot.Histogram
 
 @author  Edward A. Lee
 @version $Id$
@@ -77,21 +91,61 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         input.setTypeEquals(BaseType.DOUBLE);
         fillOnWrapup = new Parameter(this, "fillOnWrapup",
                 new BooleanToken(true));
+        binWidth = new Parameter(this, "binWidth",
+                new DoubleToken(1.0));
+        binOffset = new Parameter(this, "binOffset",
+                new DoubleToken(0.5));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** If true, fill the histogram when wrapup is called.
-     *  This parameter has type BOOLEAN and default value true.
+     *  This parameter has type boolean and default value true.
      */
     public Parameter fillOnWrapup;
+
+    /** The width of the bin of the histogram.
+     *  This parameter has type double, with default value 1.0.
+     */
+    public Parameter binWidth;
+
+    /** The offset for bins of the histogram.
+     *  This parameter has type double, with default value 0.5.
+     */
+    public Parameter binOffset;
 
     /** The histogram object. */
     public transient Histogram histogram;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the parameter is <i>binWidth</i> or <i>binOffset</i>, then
+     *  configure the histogram with the specified bin width or offset.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the bin width is not positive.
+     */
+    public void attributeChanged(Attribute attribute)
+           throws IllegalActionException {
+       if (attribute == binWidth) {
+           double width = ((DoubleToken)binWidth.getToken()).doubleValue();
+           if (width <= 0.0) {
+               throw new IllegalActionException(this,
+                       "Invalid bin width (must be positive): " + width);
+           }
+           if (histogram != null) {
+               histogram.setBinWidth(width);
+           }
+       } else if (attribute == binOffset) {
+           double offset = ((DoubleToken)binOffset.getToken()).doubleValue();
+           if (histogram != null) {
+               histogram.setBinOffset(offset);
+           }
+       } else {
+           super.attributeChanged(attribute);
+       }
+   }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the public variables.
@@ -204,10 +258,16 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             if (_container instanceof Histogram) {
                 histogram = (Histogram)_container;
             } else {
-                histogram = new Histogram();
+                if (histogram == null) {
+                    histogram = new Histogram();
+                    histogram.setButtons(true);
+                }
                 _container.add(histogram);
-                histogram.setButtons(true);
-                histogram.setBackground(_container.getBackground());
+		// java.awt.Component.setBackground(color) says that
+		// if the color "parameter is null then this component
+		// will inherit the  background color of its parent."
+                //plot.setBackground(_container.getBackground());
+		histogram.setBackground(null);
             }
         }
         // If configurations have been deferred, implement them now.
@@ -228,6 +288,15 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             _configureSources = null;
             _configureTexts = null;
             _configureBases = null;
+        }
+        // Configure the new histogram with parameter values, possibly
+        // overriding those set in evaluating the deferred configure.
+        try {
+            attributeChanged(binWidth);
+            attributeChanged(binOffset);
+        } catch (IllegalActionException ex) {
+            // Safe to ignore because user would
+            // have already been alerted.
         }
     }
 
