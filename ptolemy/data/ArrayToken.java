@@ -65,7 +65,37 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  zero.
      */
     public ArrayToken(Token[] value) throws IllegalActionException {
-        _initialize(value);
+        // NOTE: This code is purposefully duplicated from
+        // _initialize() for the benefit of the code generator.
+        // Otherwise type inference has to propagate through the
+        // _initialize method correctly, which is hard.
+        if (value.length == 0) {
+            throw new IllegalActionException("The "
+                    + "length of the specified array is zero.");
+        }
+
+        Type elementType = value[0].getType();
+        int length = value.length;
+        // It would be nice to have this, but the Code generator cannot
+        // deal with the least upper bound.
+        //    for (int i = 0; i < length; i++) {
+        //             Type valueType = value[i].getType();
+        //             if (!elementType.equals(valueType)) {
+        //                 elementType = TypeLattice.leastUpperBound(
+        //                         elementType, valueType);
+        //             }
+        //         }
+        _value = new Token[length];
+        for (int i = 0; i < length; i++) {
+            if (elementType.equals(value[i].getType())) {
+                _value[i] = value[i];// elementType.convert(value[i]);
+            } else {
+                throw new IllegalActionException(
+                        "Elements of the array do not have the same type:"
+                        + "value[0]=" + value[0]
+                        + " value[" + i + "]=" + value[i]);
+            }
+        }
     }
 
     /** Construct an ArrayToken from the specified string.
