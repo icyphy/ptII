@@ -310,7 +310,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         _localTime = 0.0; 
         _periodDivider = 0; 
         _deltaT = 0.0;
-        debug = new DTDebug(true);
+        debug = new DTDebug(false);
     }
     
     ///////////////////////////////////////////////////////////////////
