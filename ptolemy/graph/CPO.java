@@ -38,10 +38,10 @@ Please see "Introduction to Lattices and Order" by Davey and Priestley
 for definition of operations.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 */
 
-public interface Cpo
+public interface CPO
 {
     /** Compares two elements in this CPO.
      *  @param e1 an object representing a CPO element.

@@ -38,7 +38,7 @@ Each node in the graph is associated with an Object specified
 by the user.
 
 @author Yuhong Xiong, Jie Liu
-$Id$
+@version $Id$
 */
 
 public class Graph {

@@ -39,8 +39,8 @@ import java.util.*;
 A mutable directed graph, and associated graph algorithms.
 This class is evolved from Jie's static graph classes.
 
-@author Yuhong, Jie Liu
-$Id$
+@author Yuhong Xiong, Jie Liu
+@version $Id$
 */
 
 public class DirectedGraph extends Graph {
