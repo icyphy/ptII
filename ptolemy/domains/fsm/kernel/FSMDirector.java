@@ -217,7 +217,7 @@ public class FSMDirector extends Director
             ctrl._chooseTransition(st.preemptiveTransitionList());
 
         _enabledTransition = tr;
-        
+
         if (tr != null) {
             Actor[] actors = tr.destinationState().getRefinement();
             if (actors != null) {
@@ -262,6 +262,7 @@ public class FSMDirector extends Director
         ctrl._readOutputsFromRefinement();
 
         tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
+        _enabledTransition = tr;
 
         if (tr != null) {
             actors = tr.getRefinement();
@@ -590,7 +591,7 @@ public class FSMDirector extends Director
         // we may cache the IODependeny and invalidate the schedule
         // only if the ioDependency (abstract one) changes.
         if (_enabledTransition != null) {
-            ((CompositeActor) getContainer()).getIODependencies().invalidate();
+            ((NamedObj) getContainer()).workspace().incrVersion();
         }
         return result && !_stopRequested;
     }
