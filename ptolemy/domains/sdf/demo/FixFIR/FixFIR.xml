@@ -295,40 +295,22 @@ centered at zero frequency.</text>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" class="ptolemy.moml.Vertex" value="101.85714721679688, 225.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
-        </property>
     </relation>
     <relation name="_R4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
-        </property>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
-        </property>
     </relation>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
     </relation>
     <link port="Impulse.output" relation="_R0"/>
     <link port="FIR Double Precision.input" relation="_R0"/>

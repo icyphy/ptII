@@ -273,12 +273,8 @@
             </configure>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <link port="Sinewave.output" relation="relation"/>
         <link port="Sinewave2.output" relation="relation3"/>

@@ -59,7 +59,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Sine Function" class="ptolemy.actor.lib.TrigFunction">
+    <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
         <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
@@ -76,7 +76,13 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="190.5, 109.5">
+        <property name="_icon" class="ptolemy.vergil.toolbox.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="191.5, 99.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -85,12 +91,12 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="output" relation="relation1"/>
-    <link port="Ramp.output" relation="relation2"/>
-    <link port="Sine Function.input" relation="relation2"/>
-    <link port="Sine Function.output" relation="relation1"/>
+    <link port="output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="TrigFunction.input" relation="relation"/>
+    <link port="TrigFunction.output" relation="relation2"/>
 </class>

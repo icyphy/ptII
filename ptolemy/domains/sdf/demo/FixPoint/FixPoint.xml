@@ -149,26 +149,16 @@ data against unquantized data.</text>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" class="ptolemy.moml.Vertex" value="97.0, 189.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="221.0, 148.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="Ramp.output" relation="_R0"/>
     <link port="DoubleToFix.input" relation="_R0"/>

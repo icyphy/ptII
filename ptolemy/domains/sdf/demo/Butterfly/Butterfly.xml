@@ -13,7 +13,7 @@
         </property>
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="248.5, 229.5">
+        <property name="_location" class="ptolemy.moml.Location" value="238.5, 259.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -52,7 +52,7 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="PI/100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="73.0, 167.0">
+        <property name="_location" class="ptolemy.moml.Location" value="60.0, 194.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -63,7 +63,7 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
         </port>
     </entity>
     <entity name="Polar to Cartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
-        <property name="_location" class="ptolemy.moml.Location" value="332.99998474121094, 176.0">
+        <property name="_location" class="ptolemy.moml.Location" value="327.5, 183.5">
         </property>
         <port name="magnitude" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -85,7 +85,7 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="452.99998474121094, 177.0">
+        <property name="_location" class="ptolemy.moml.Location" value="457.0, 189.5">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -95,8 +95,7 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
@@ -104,12 +103,17 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
 <yRange min="-3.6505369457601655" max="3.6505369457601127"/>
 <noGrid/>
 </plot>?>
-        </configure>
-    </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+                </configure>    </entity>
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="-2.0*cos(4.0*ramp) + exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="212.0, 141.0">
+        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="266.5, 104.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -121,28 +125,20 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
     <relation name="node9" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" class="ptolemy.moml.Vertex" value="146.0, 190.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="_R8" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="_R9" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="node9"/>
-    <link port="Polar to Cartesian.magnitude" relation="relation12"/>
+    <link port="Polar to Cartesian.magnitude" relation="relation"/>
     <link port="Polar to Cartesian.angle" relation="node9"/>
     <link port="Polar to Cartesian.x" relation="_R8"/>
     <link port="Polar to Cartesian.y" relation="_R9"/>
     <link port="XY Plotter.inputX" relation="_R8"/>
     <link port="XY Plotter.inputY" relation="_R9"/>
-    <link port="Expression.output" relation="relation12"/>
-    <link port="Expression.ramp" relation="node9"/>
+    <link port="Expression2.output" relation="relation"/>
+    <link port="Expression2.ramp" relation="node9"/>
 </entity>

@@ -52,20 +52,6 @@ signal and the other for the carrier.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="307.0, 364.5">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The Expression block calculates a mathematical expression.
-Right click and select "Edit Parameters" to see the expression.</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
-        </property>
-    </property>
     <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="403.0, 189.5">
         </property>
@@ -83,6 +69,26 @@ Try changing the parameters in the run window.</text>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:black">The Expression block calculates a mathematical expression, as shown.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="344.5, 361.0">
+        </property>
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -186,24 +192,6 @@ Try changing the parameters in the run window.</text>
         <property name="_location" class="ptolemy.moml.Location" value="66.0, 240.0">
         </property>
     </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="173.0, 304.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="signal" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="carrier" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="noise" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="Frequency Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -215,14 +203,13 @@ Try changing the parameters in the run window.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="468.0, 304.0">
+        <property name="_location" class="ptolemy.moml.Location" value="515.5, 305.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Spectrum</title>
@@ -232,8 +219,7 @@ Try changing the parameters in the run window.</text>
 <yRange min="-50.0" max="10"/>
 <noGrid/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -261,7 +247,7 @@ centered at zero frequency.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="309.0, 304.0">
+        <property name="_location" class="ptolemy.moml.Location" value="390.0, 304.5">
         </property>
     </entity>
     <entity name="Time Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -275,14 +261,13 @@ centered at zero frequency.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="339.0, 243.0">
+        <property name="_location" class="ptolemy.moml.Location" value="426.5, 244.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Time-Domain Plot</title>
@@ -292,39 +277,52 @@ centered at zero frequency.</text>
 <yRange min="-1.154037151526568" max="1.1568297032397656"/>
 <noGrid/>
 </plot>?>
-        </configure>
+                </configure>    </entity>
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="221.5, 304.5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="signal" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="carrier" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="noise" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="242.0, 310.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="321.0, 311.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="256">
-        </property>
     </relation>
-    <link port="Noise Source.output" relation="relation2"/>
-    <link port="Carrier Source.output" relation="relation3"/>
-    <link port="Signal Source.output" relation="relation4"/>
-    <link port="Expression.output" relation="relation7"/>
-    <link port="Expression.signal" relation="relation4"/>
-    <link port="Expression.carrier" relation="relation3"/>
-    <link port="Expression.noise" relation="relation2"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Noise Source.output" relation="relation9"/>
+    <link port="Carrier Source.output" relation="relation8"/>
+    <link port="Signal Source.output" relation="relation"/>
     <link port="Frequency Domain Display.input" relation="relation5"/>
     <link port="Spectrum.input" relation="relation7"/>
     <link port="Spectrum.output" relation="relation5"/>
     <link port="Time Domain Display.input" relation="relation7"/>
+    <link port="Expression2.output" relation="relation7"/>
+    <link port="Expression2.signal" relation="relation"/>
+    <link port="Expression2.carrier" relation="relation8"/>
+    <link port="Expression2.noise" relation="relation9"/>
 </entity>

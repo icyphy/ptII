@@ -816,38 +816,22 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
             </relation>
             <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" class="ptolemy.moml.Vertex" value="142.0, 176.0">
                 </vertex>
-                <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
             </relation>
             <link port="y" relation="relation24"/>
             <link port="u" relation="relation6"/>
@@ -1181,70 +1165,38 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="381.0, 365.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <link port="Th" relation="relation2"/>
                 <link port="dTh" relation="relation4"/>
@@ -1689,66 +1641,40 @@ The objective is to swing the pendulum up and then balance it.
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="88.0, 127.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="109.0, 143.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="239.0, 322.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="198.0, 309.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="257.0, 135.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation14" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="470.0, 411.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <link port="Th" relation="relation"/>
                 <link port="dTh" relation="relation2"/>
@@ -2045,70 +1971,38 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex" value="389.0, 372.0">
                     </vertex>
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </relation>
                 <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-                    <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </relation>
                 <link port="Th" relation="relation2"/>
                 <link port="dTh" relation="relation4"/>
@@ -2200,42 +2094,24 @@ The objective is to swing the pendulum up and then balance it.
             <link port="catchController.debug" relation="relation4"/>
         </entity>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <relation name="relation18" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" class="ptolemy.moml.Vertex" value="297.0, 108.0">
             </vertex>
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
         <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <link port="Th" relation="relation2"/>
         <link port="dTh" relation="relation"/>

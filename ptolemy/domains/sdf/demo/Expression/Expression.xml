@@ -28,10 +28,10 @@ include:
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="73.0, 25.0">
+        <property name="_location" class="ptolemy.moml.Location" value="68.0, 28.5">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 230]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[76, 152]">
     </property>
@@ -59,7 +59,7 @@ include:
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="PI/10.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="63.0, 200.0">
+        <property name="_location" class="ptolemy.moml.Location" value="65.0, 223.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -67,21 +67,6 @@ include:
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="cos(slow) + cos(fast)">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="202.0, 191.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="slow" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="fast" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
         </port>
     </entity>
     <entity name="Plot" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -95,7 +80,7 @@ include:
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="349.0, 192.0">
+        <property name="_location" class="ptolemy.moml.Location" value="371.5, 178.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -112,22 +97,37 @@ include:
 </plot>?>
         </configure>
     </entity>
-    <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="cos(slow) + cos(fast)">
         </property>
-    </relation>
-    <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_icon" class="ptolemy.vergil.toolbox.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
         </property>
-    </relation>
-    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_location" class="ptolemy.moml.Location" value="230.0, 189.5">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="slow" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="fast" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="slow.output" relation="_R0"/>
-    <link port="fast.output" relation="_R1"/>
-    <link port="Expression.output" relation="_R2"/>
-    <link port="Expression.slow" relation="_R0"/>
-    <link port="Expression.fast" relation="_R1"/>
-    <link port="Plot.input" relation="_R2"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="slow.output" relation="relation"/>
+    <link port="fast.output" relation="relation3"/>
+    <link port="Plot.input" relation="relation4"/>
+    <link port="Expression2.output" relation="relation4"/>
+    <link port="Expression2.slow" relation="relation"/>
+    <link port="Expression2.fast" relation="relation3"/>
 </entity>
