@@ -41,6 +41,7 @@ include $(CONFIG)
 CLASSPATH = ../../../..
 
 TCL_SRCS = \
+	testDefs.tcl
 
 JSRCS = 
 
@@ -76,7 +77,7 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 test_java: jclass
 
 # Tycho-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/kernel/test/testDefs.tcl
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
