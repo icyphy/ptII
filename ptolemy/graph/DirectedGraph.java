@@ -24,7 +24,6 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-ProposingCoderate: Red yuhong@eecs.berkeley.edu
 */
 
 package pt.graph;
