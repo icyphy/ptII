@@ -145,16 +145,15 @@ public class PNDirector extends BasePNDirector {
      *  The parameter "Initial_queue_capacity" has the
      *  same value as the director being cloned.
      *
-     *  @param workspace The workspace for the cloned object.
+     *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return The new PNDirector.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        PNDirector newObject = (PNDirector)super.clone(workspace);
-	newObject._mutationsRequested = false;
-        return newObject;
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        PNDirector newobj = (PNDirector)super.clone(ws);
+	// newobj._mutationsRequested = false;
+        return newobj;
     }
 
     /** Suspend the calling thread until a deadlock or request for topology
@@ -186,7 +185,6 @@ public class PNDirector extends BasePNDirector {
      *  called by the directing thread.
      *  @exception IllegalActionException If any of the called methods throw
      *  it.
-     */
     public void fire() throws IllegalActionException {
         Workspace worksp = workspace();
         synchronized (this) { //Reset this as mutations must be done by now
@@ -198,22 +196,16 @@ public class PNDirector extends BasePNDirector {
             //Loop until a deadlock other than an artificial deadlock is
             //detected.
             while( _readBlockCount != _getActiveActorsCount() ) { 
-            // !_areActorsStopped()) {
                 //Sleep until a deadlock is detected or mutations are requested
 		while( !_areActorsDeadlocked() ) {
-                // while (!_areActorsDeadlocked() && !_areActorsStopped()) {
 		    worksp.wait(this);
 		}
                 _notDone = _resolveDeadlock();
-                /*
-                if (!_areActorsStopped()) {
-                    _notDone = _resolveDeadlock();
-                }
-                */
 	    }
 	}
 	return;
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -233,5 +225,5 @@ public class PNDirector extends BasePNDirector {
     ////                         private variables                 ////
 
     // This flag is set to true when mutations are pending
-    private boolean _mutationsRequested = false;
+    // private boolean _mutationsRequested = false;
 }
