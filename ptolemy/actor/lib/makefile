@@ -90,7 +90,6 @@ JSRCS = \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
-	Latch.java \
 	Lattice.java \
 	LevinsonDurbin.java \
 	Limiter.java \

@@ -12,7 +12,6 @@
   <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop"/>
   <entity name="Commutator" class="ptolemy.actor.lib.Commutator"/>
   <entity name="Distributor" class="ptolemy.actor.lib.Distributor"/>
-  <entity name="Latch" class="ptolemy.actor.lib.Latch"/>
   <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor"/>
   <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler"/>
   <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler"/>
