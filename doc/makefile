@@ -62,18 +62,21 @@ ALLJSRCS = 		collections \
 			ptolemy.actor.util \
 			ptolemy.domains.csp.kernel \
 			ptolemy.domains.csp.lib \
+			ptolemy.domains.ct.gui \
 			ptolemy.domains.ct.kernel \
 			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.dde.kernel \
 			ptolemy.domains.dde.lib \
+			ptolemy.domains.de.gui \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.fsm.lib \
+			ptolemy.domains.pn.gui \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.pn.lib \
-			ptolemy.domains.sdf.demo \
+			ptolemy.domains.sdf.gui \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq \
@@ -98,18 +101,21 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/actor/util/*.java \
 			../ptolemy/domains/csp/lib/*.java \
 			../ptolemy/domains/csp/kernel/*.java \
-			../ptolemy/domains/ct/lib/*.java \
+			../ptolemy/domains/ct/gui/*.java \
 			../ptolemy/domains/ct/kernel/*.java \
 			../ptolemy/domains/ct/kernel/util/*.java \
+			../ptolemy/domains/ct/lib/*.java \
 			../ptolemy/domains/dde/kernel/*.java \
 			../ptolemy/domains/dde/lib/*.java \
+			../ptolemy/domains/de/gui/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
 			../ptolemy/domains/fsm/kernel/*.java \
 			../ptolemy/domains/fsm/lib/*.java \
+			../ptolemy/domains/pn/gui/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/pn/lib/*.java \
-			../ptolemy/domains/sdf/demo/*.java \
+			../ptolemy/domains/sdf/gui/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
