@@ -332,6 +332,125 @@ public class Port extends NamedObj {
         }
     }
 
+    /** Move this object down by one in the list of attributes of
+     *  its container. If this object has no container or is already
+     *  at last, do nothing.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveDown() {
+        Entity container = (Entity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._portList.moveDown(this);
+                if (result >= 0) {
+                    _workspace.incrVersion();
+                }
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+    
+    /** Move this object to the first position in the list
+     *  of attributes of the container. If there is no container or
+     *  this object is already first, do nothing.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveToFirst() {
+        Entity container = (Entity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._portList.moveToFirst(this);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
+    /** Move this object to the specified position in the list
+     *  of attributes of the container. If there is no container or
+     *  this object is already at the specified position, do
+     *  nothing. Increment the version of the workspace.
+     *  @param index The position to move this object to.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @throws IndexOutOfBoundsException If the index is out of bounds.
+     */
+    public int moveToIndex(int index) throws IndexOutOfBoundsException {
+        Entity container = (Entity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._portList.moveToIndex(this, index);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
+    /** Move this object to the last position in the list
+     *  of attributes of the container.  If there is no container or
+     *  this object is already last, do nothing.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveToLast() {
+        Entity container = (Entity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._portList.moveToLast(this);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
+    /** Move this object up by one in the list of
+     *  attributes of the container. If there is no container or
+     *  this object is already first, do
+     *  nothing. Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveUp() {
+        Entity container = (Entity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._portList.moveUp(this);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
     /** Return the number of links to relations.
      *  This method is read-synchronized on the workspace.
      *  @return The number of links, a non-negative integer.

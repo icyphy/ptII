@@ -1464,13 +1464,19 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         friendly variables                 ////
 
+    // The following are friendly to support the move* methods of
+    // Relation and ComponentEntity.
+    
     /** List of contained entities. */
-    private NamedList _containedEntities = new NamedList(this);
+    NamedList _containedEntities = new NamedList(this);
 
     /** @serial List of contained ports. */
-    private NamedList _containedRelations = new NamedList(this);
+    NamedList _containedRelations = new NamedList(this);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Cache of class definition list. */
     private transient List _classDefinitionListCache;

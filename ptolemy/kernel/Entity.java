@@ -599,10 +599,15 @@ public class Entity extends InstantiableNamedObj {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         friendly variables                ////
 
-    /** @serial A list of Ports owned by this Entity. */
-    private NamedList _portList;
+    // The following is package friendly so port can access it.
+    
+    /** A list of Ports owned by this Entity. */
+    NamedList _portList;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Cached list of connected ports.
     private transient LinkedList _connectedPorts;

@@ -177,10 +177,10 @@ public final class NamedList implements Cloneable, Serializable {
         return _namedList.contains(element);
     }
 
-    /** Insert a new element after an element with the specified name.
-     *  If there is no element with such name, then the new element is
-     *  appended to the end of the list.
-     *  @param name The name of the element after which to insert.
+    /** Insert a new element after the specified element.
+     *  If there is no such element, then append the new element
+     *  to the end of the list.
+     *  @param name The element after which to insert the new element.
      *  @param element The element to insert.
      *  @exception IllegalActionException If the element to insert has no name.
      *  @exception NameDuplicationException If the element to insert has a
@@ -198,10 +198,10 @@ public final class NamedList implements Cloneable, Serializable {
         }
     }
 
-    /** Insert a new element before an element with the specified name.
-     *  If there is no element with such name, then the new element is
-     *  added to the beginning of the list.
-     *  @param name The name of the element before which to insert.
+    /** Insert a new element before the specified element.
+     *  If there is no such element, then the insert the new element
+     *  at the beginning of the list.
+     *  @param name The element before which to insert the new element.
      *  @param element The element to insert.
      *  @exception IllegalActionException If the element to insert has no name.
      *  @exception NameDuplicationException If the element to insert has a
@@ -227,10 +227,132 @@ public final class NamedList implements Cloneable, Serializable {
         return (Nameable)_namedList.getLast();
     }
 
+    /** Move the specified element down by one in the list.
+     *  If the specified element is not in the list, then throw
+     *  an exception. If the element is
+     *  already at the end of the list, the leave it where it is.
+     *  @param element Element to move down in the list.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it was not moved (it is already last).
+     *  @exception IllegalActionException If the argument is not
+     *   on the list.
+     */
+    public int moveDown(Nameable element) throws IllegalActionException {
+        int index = _namedList.indexOf(element);
+        if (index < 0) {
+            // The element is not on the list.
+            throw new IllegalActionException(element, "Not on the list.");
+        } else if (index < _namedList.size() - 1) {
+            _namedList.remove(element);
+            _namedList.add(index + 1, element);
+            return index;
+        } else {
+            return -1;
+        }
+    }
+    
+    /** Move the specified element to the beginning of the list.
+     *  If the specified element is not in the list, then throw
+     *  an exception.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it was not moved (it is already first).
+     *  @param element Element to move to the top of the list.
+     *  @exception IllegalActionException If the argument is not
+     *   on the list.
+     */
+    public int moveToFirst(Nameable element) throws IllegalActionException {
+        int index = _namedList.indexOf(element);
+        if (index < 0) {
+            // The element is not on the list.
+            throw new IllegalActionException(element, "Not on the list.");
+        } else if (index > 0) {
+            _namedList.remove(element);
+            _namedList.add(0, element);
+            return index;
+        } else {
+            return -1;
+        }
+    }
+
+    /** Move the specified element to the specified position in the list.
+     *  If the specified element is not in the list, then throw
+     *  an exception.
+     *  @param element Element to move.
+     *  @param index The position to which to move it.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it was not moved (it is already at the specified
+     *   position).
+     *  @exception IllegalActionException If the argument is not
+     *   on the list, or if the specified position is out of range.
+     */
+    public int moveToIndex(Nameable element, int index) throws IllegalActionException {
+        int priorIndex = _namedList.indexOf(element);
+        if (priorIndex < 0) {
+            // The element is not on the list.
+            throw new IllegalActionException(element, "Not on the list.");
+        } else if (index < 0 || index >= _namedList.size()) {
+            throw new IllegalActionException(element, "Index out of range.");
+        } else if (priorIndex != index) {
+            _namedList.remove(element);
+            _namedList.add(index, element);
+            return index;
+        } else {
+            return -1;
+        }
+    }
+
+    /** Move the specified element to the end of the list.
+     *  If the specified element is not in the list, then throw
+     *  an exception.
+     *  @param element Element to move to the end of the list.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it was not moved (it is already last).
+     *  @exception IllegalActionException If the argument is not
+     *   on the list.
+     */
+    public int moveToLast(Nameable element) throws IllegalActionException {
+        int index = _namedList.indexOf(element);
+        if (index < 0) {
+            // The element is not on the list.
+            throw new IllegalActionException(element, "Not on the list.");
+        } else if (index < _namedList.size() - 1) {
+            _namedList.remove(element);
+            _namedList.add(element);
+            return index;
+        } else {
+            return -1;
+        }
+    }
+
+    /** Move the specified element up by one in the list.
+     *  If the specified element is not in the list, then
+     *  throw an exception.
+     *  @param element Element to move up in the list.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it was not moved (it is already first).
+     *  @exception IllegalActionException If the argument is not
+     *   on the list.
+     */
+    public int moveUp(Nameable element) throws IllegalActionException {
+        int index = _namedList.indexOf(element);
+        if (index < 0) {
+            // The element is not on the list.
+            throw new IllegalActionException(element, "Not on the list.");
+        } else if (index > 0) {
+            _namedList.remove(element);
+            _namedList.add(index - 1, element);
+            return index;
+        } else {
+            return -1;
+        }
+    }
+
     /** Add an element to the beginning of the list.
      *  The element is required to have a name that does not coincide with
      *  that of an element already on the list.
      *  @param element Element to be added to the list.
+     *  @exception IllegalActionException If the argument is not
+     *   on the list.
      *  @exception IllegalActionException If the argument has no name.
      *  @exception NameDuplicationException If the name coincides with
      *   an element already on the list.

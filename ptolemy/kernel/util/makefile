@@ -74,6 +74,7 @@ JSRCS = \
 	Location.java \
 	ModelErrorHandler.java \
 	MoMLExportable.java \
+	Moveable.java \
 	Nameable.java \
 	NamedList.java \
 	NamedObj.java \

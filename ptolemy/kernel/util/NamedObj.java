@@ -127,7 +127,7 @@ import ptolemy.util.StringUtilities;
 public class NamedObj implements
                           Changeable, Cloneable, Debuggable,
                           DebugListener, Derivable,
-                          ModelErrorHandler, Serializable {
+                          ModelErrorHandler, Moveable, Serializable {
 
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
@@ -1264,6 +1264,125 @@ public class NamedObj implements
         }
     }
     
+    /** Move this object down by one in the list of attributes of
+     *  its container. If this object has no container or is already
+     *  at last, do nothing.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveDown() {
+        NamedObj container = getContainer();
+        if (container != null) {
+            try {
+                int result = container._attributes.moveDown(this);
+                if (result >= 0) {
+                    _workspace.incrVersion();
+                }
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+    
+    /** Move this object to the first position in the list
+     *  of attributes of the container. If there is no container or
+     *  this object is already first, do nothing.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveToFirst() {
+        NamedObj container = getContainer();
+        if (container != null) {
+            try {
+                int result = container._attributes.moveToFirst(this);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
+    /** Move this object to the specified position in the list
+     *  of attributes of the container. If there is no container or
+     *  this object is already at the specified position, do
+     *  nothing. Increment the version of the workspace.
+     *  @param index The position to move this object to.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @throws IndexOutOfBoundsException If the index is out of bounds.
+     */
+    public int moveToIndex(int index) throws IndexOutOfBoundsException {
+        NamedObj container = getContainer();
+        if (container != null) {
+            try {
+                int result = container._attributes.moveToIndex(this, index);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
+    /** Move this object to the last position in the list
+     *  of attributes of the container.  If there is no container or
+     *  this object is already last, do nothing.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveToLast() {
+        NamedObj container = getContainer();
+        if (container != null) {
+            try {
+                int result = container._attributes.moveToLast(this);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
+    /** Move this object up by one in the list of
+     *  attributes of the container. If there is no container or
+     *  this object is already first, do
+     *  nothing. Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveUp() {
+        NamedObj container = getContainer();
+        if (container != null) {
+            try {
+                int result = container._attributes.moveUp(this);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
     /** Propagate the existence of this object.
      *  If this object has a container, then ensure that all
      *  objects derived from the container contain an object

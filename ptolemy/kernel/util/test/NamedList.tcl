@@ -356,3 +356,63 @@ test NamedList-9.1 {Test copy constructor} {
     set result3 [_testEnums elements $dir]
     list $result1 $result2 $result3
 } {{{n3 n2 n1}} {{n3 n2 n1}} {{n3 n1}}}
+
+######################################################################
+#### Test methods for moving elements in a list
+#
+test NamedList-10.1 {Construct a list, call get} {
+    set dir [java::new ptolemy.kernel.util.NamedList]
+    set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
+    set n3 [java::new ptolemy.kernel.util.NamedObj "n3"]
+    $dir append $n1
+    $dir append $n2
+    $dir append $n3
+    _testEnums elements $dir
+} {{n1 n2 n3}}
+
+test NamedList-10.2 {Move an element to the top} {
+    $dir moveToFirst $n3
+    _testEnums elements $dir
+} {{n3 n1 n2}}
+
+test NamedList-10.3 {Move an element to the end} {
+    $dir moveToLast $n1
+    _testEnums elements $dir
+} {{n3 n2 n1}}
+
+test NamedList-10.4 {Move the last element down} {
+    $dir moveDown $n1
+    _testEnums elements $dir
+} {{n3 n2 n1}}
+
+test NamedList-10.5 {Move an element down} {
+    $dir moveDown $n2
+    _testEnums elements $dir
+} {{n3 n1 n2}}
+
+test NamedList-10.6 {Move an element down} {
+    $dir moveDown $n3
+    _testEnums elements $dir
+} {{n1 n3 n2}}
+
+test NamedList-10.8 {Move the first element up} {
+    $dir moveUp $n1
+    _testEnums elements $dir
+} {{n1 n3 n2}}
+
+test NamedList-10.9 {Move an element up} {
+    $dir moveUp $n3
+    _testEnums elements $dir
+} {{n3 n1 n2}}
+
+test NamedList-10.10 {Move an element up} {
+    $dir moveUp $n2
+    _testEnums elements $dir
+} {{n3 n2 n1}}
+
+test NamedList-10.11 {Move to specified index} {
+    $dir moveToIndex $n2 0
+    _testEnums elements $dir
+} {{n2 n3 n1}}
+

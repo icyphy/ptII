@@ -221,6 +221,125 @@ public class ComponentEntity extends Entity {
         return true;
     }
 
+    /** Move this object down by one in the list of attributes of
+     *  its container. If this object has no container or is already
+     *  at last, do nothing.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveDown() {
+        CompositeEntity container = (CompositeEntity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._containedEntities.moveDown(this);
+                if (result >= 0) {
+                    _workspace.incrVersion();
+                }
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+    
+    /** Move this object to the first position in the list
+     *  of attributes of the container. If there is no container or
+     *  this object is already first, do nothing.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveToFirst() {
+        CompositeEntity container = (CompositeEntity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._containedEntities.moveToFirst(this);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
+    /** Move this object to the specified position in the list
+     *  of attributes of the container. If there is no container or
+     *  this object is already at the specified position, do
+     *  nothing. Increment the version of the workspace.
+     *  @param index The position to move this object to.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @throws IndexOutOfBoundsException If the index is out of bounds.
+     */
+    public int moveToIndex(int index) throws IndexOutOfBoundsException {
+        CompositeEntity container = (CompositeEntity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._containedEntities.moveToIndex(this, index);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
+    /** Move this object to the last position in the list
+     *  of attributes of the container.  If there is no container or
+     *  this object is already last, do nothing.
+     *  Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveToLast() {
+        CompositeEntity container = (CompositeEntity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._containedEntities.moveToLast(this);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
+    /** Move this object up by one in the list of
+     *  attributes of the container. If there is no container or
+     *  this object is already first, do
+     *  nothing. Increment the version of the workspace.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     */
+    public int moveUp() {
+        CompositeEntity container = (CompositeEntity)getContainer();
+        if (container != null) {
+            try {
+                int result = container._containedEntities.moveUp(this);
+                _workspace.incrVersion();
+                return result;
+            } catch (IllegalActionException e) {
+                // Thrown only if the object is not on the list,
+                // but we have already verified that it is, in theory.
+                throw new InternalErrorException(e);
+            }
+        }
+        return -1;
+    }
+
     /** Create a new port with the specified name.
      *  The container of the port is set to this entity.
      *  This overrides the base class to create an instance of ComponentPort.

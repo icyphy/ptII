@@ -114,7 +114,7 @@ public class Attribute extends NamedObj {
     public NamedObj getContainer() {
         return _container;
     }
-
+    
     /** Specify the container NamedObj, adding this attribute to the
      *  list of attributes in the container.  If the container already
      *  contains an attribute with the same name, then throw an exception
