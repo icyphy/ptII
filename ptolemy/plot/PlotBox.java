@@ -160,6 +160,7 @@ import java.util.*;
  * <li> E: Export the plot to standard output in EPS format.
  * <li> F: Fill the plot.
  * <li> H or ?: Display a simple help message.
+ * <li> Cntr-D or Q: quit
  * </ul>
  * At this time, the two export commands produce encapsulated postscript
  * tuned for black-and-white printers.  In the future, more formats may
@@ -1388,6 +1389,7 @@ public class PlotBox extends Panel {
                 "   E: export plot to standard out (EPS format)\n" +
                 "   F: fill plot\n" +
                 "   H or ?: print help message (this message)\n" +
+                "   Cntr-D or Q: quit\n" +
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
                 null, null, 13, 60, TextArea.SCROLLBARS_NONE);
@@ -2411,6 +2413,10 @@ public class PlotBox extends Panel {
                     null, null, 1, 40, TextArea.SCROLLBARS_NONE);
                     message.setTitle("Ptolemy Plot Message");
                 }
+                if (_control) {
+                    // xgraph and many other Unix apps use Control-D to exit
+                    System.exit(1);
+                }
                 break;
             case KeyEvent.VK_E:
                 if (!_control && _shift) {
@@ -2429,6 +2435,12 @@ public class PlotBox extends Panel {
             case KeyEvent.VK_H:
                 if (!_control && _shift) {
                     _help();
+                }
+                break;
+            case KeyEvent.VK_Q:
+                if (!_control) {
+                    // xv uses q to quit.
+                    System.exit(1);
                 }
                 break;
             case KeyEvent.VK_SLASH:
