@@ -65,13 +65,28 @@ test Query-1.2 {Lots of text} {
 
 
 test Query-1.3 {Lots of checkboxes} {
+    # Uses 1.2 from above
     set query [java::new ptolemy.gui.Query]
-    for {set i 0} {$i < 30} {incr i} {
+
+    $query setMessage [$stringBuffer toString] 
+    for {set i 0} {$i < 10} {incr i} {
 	set options [java::new {String[]} 4 \
 		[list "line $i" "soda" "juice" "none"]]
+	$query addCheckBox "cb $i" "cb $i" true
+	$query addChoice "choice $i" "choice $i" $options "choice $i"
+	$query addDisplay "display $i" "display $i" "$i"
+	$query addLine "line $i" "line $i" "$i"
 	$query addRadioButtons "radio" "Radio buttons" $options "line $i"
+
+	set initiallySelected [java::new java.util.HashSet]
+	$initiallySelected add "line $i"
+	$query addSelectButtons "select" "select buttons" $options \
+	    $initiallySelected
+	$query addSlider "slider $i" "slider $i"  $i 0 40 
     } 
     set dialog [java::new ptolemy.gui.ComponentDialog \
 	    [java::null] "Query-1.3: Press OK" $query]
     set results [$dialog buttonPressed]
 } {OK}
+
+
