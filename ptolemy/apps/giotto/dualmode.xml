@@ -1,7 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="dualmode" class="ptolemy.actor.TypedCompositeActor">
+<?xml version="1.0" encoding="UTF-8"?><entity name="dualmode" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
@@ -17,7 +14,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;dualModes.giotto&quot;">
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&#34;dualModes.giotto&#34;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 34.5">
         </property>
@@ -165,7 +162,7 @@
                 </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+                <property name="filename" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.giotto&#34;">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 44.5">
                 </property>
@@ -253,7 +250,7 @@
                 </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
+                <property name="filename" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.giotto&#34;">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
                 </property>
