@@ -69,7 +69,7 @@ public class GraphListener {
 
     /** Test whether or not the graph has changed since the last
      *  time the associated computation was performed (i.e., since
-     *  the most recent invocation of <code>registerComputation</code>).
+     *  the most recent invocation of {@link #registerComputation()}).
      *  @return True if the graph has changed since the last time
      *  the computation associated with this listener was performed.
      */

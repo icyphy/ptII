@@ -49,7 +49,7 @@ import ptolemy.kernel.util.InvalidStateException;
    called for the first time after the addition of nodes or edges. If the
    graph is cyclic, an InvalidStateException is thrown. The check for cycles
    is done by computing the transitive closure, so the first operation after
-   graph changes is slower.
+   a graph change is slower.
 
    This class implements the CPO interface since the Hasse diagram of a CPO
    can be viewed as a DAG.  Therefore, this class can be viewed as both a DAG
@@ -61,7 +61,7 @@ import ptolemy.kernel.util.InvalidStateException;
    NOTE: This class is a starting point for implementing graph algorithms,
    more methods will be added.
 
-   @author Yuhong Xiong
+   @author Yuhong Xiong, Shuvra S. Bhattacharyya 
    @version $Id$
    @since Ptolemy II 0.2
 */
@@ -74,8 +74,8 @@ import ptolemy.kernel.util.InvalidStateException;
 // greatestElement is converted to their dual operation by reversing
 // the order relation in this CPO.
 
-public class DirectedAcyclicGraph extends DirectedGraph implements CPO
-{
+public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
+
     /** Construct an empty DAG.
      */
     public DirectedAcyclicGraph() {
@@ -86,7 +86,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  for the specified number of elements.  Memory management is more
      *  efficient with this constructor if the number of elements is
      *  known.
-     *  @param nodeCount the number of elements.
+     *  @param nodeCount The number of elements.
      */
     public DirectedAcyclicGraph(int nodeCount) {
         super(nodeCount);
@@ -96,7 +96,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     ////                         public methods                    ////
 
     /** Return the bottom element of this CPO.
-     *  @return an Object representing the bottom element, or
+     *  @return An Object representing the bottom element, or
      *   <code>null</code> if the bottom does not exist.
      */
     public Object bottom() {
@@ -105,9 +105,9 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Compare two elements in this CPO.
-     *  @param e1 an Object representing a CPO element.
-     *  @param e2 an Object representing a CPO element.
-     *  @return one of <code>CPO.LOWER, CPO.SAME,
+     *  @param e1 An Object representing a CPO element.
+     *  @param e2 An Object representing a CPO element.
+     *  @return One of <code>CPO.LOWER, CPO.SAME,
      *   CPO.HIGHER, CPO.INCOMPARABLE</code>.
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
@@ -122,8 +122,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Compute the down-set of an element in this CPO.
-     *  @param e an Object representing an element in this CPO.
-     *  @return an array of of Objects representing the elements in the
+     *  @param e An Object representing an element in this CPO.
+     *  @return An array of of Objects representing the elements in the
      *   down-set of the specified element.
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this CPO.
@@ -134,9 +134,9 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Compute the greatest lower bound (GLB) of two elements.
-     *  @param e1 an Object representing an element in this CPO.
-     *  @param e2 an Object representing an element in this CPO.
-     *  @return an Object representing the GLB of the two specified
+     *  @param e1 An Object representing an element in this CPO.
+     *  @param e2 An Object representing an element in this CPO.
+     *  @return An Object representing the GLB of the two specified
      *   elements, or <code>null</code> if the GLB does not exist.
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
@@ -151,8 +151,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  the subset is considered empty, in which case the top element
      *  of this CPO is returned, if it exists. If the subset is empty
      *  and the top does not exist, <code>null</code> is returned.
-     *  @param subset an array of Objects representing the subset.
-     *  @return an Object representing the GLB of the subset, or
+     *  @param subset An array of Objects representing the subset.
+     *  @return An Object representing the GLB of the subset, or
      *   <code>null</code> if the GLB does not exist.
      *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
@@ -163,8 +163,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Compute the greatest element of a subset.
-     *  @param subset an array of Objects representing the subset.
-     *  @return an Object representing the greatest element of the subset,
+     *  @param subset An array of Objects representing the subset.
+     *  @return An Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
@@ -181,7 +181,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  existence of the bottom and top elements. The complexity is
      *  O(|N|*|N|) where N for elements, and an individual computation
      *  is the LUB of two elements.
-     *  @return <code>true</code> if this CPO is a lattice;
+     *  @return True if this CPO is a lattice;
      *   <code>false</code> otherwise.
      */
     public boolean isLattice() {
@@ -203,8 +203,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Compute the least element of a subset.
-     *  @param subset an array of Objects representing the subset.
-     *  @return an Object representing the least element of the subset,
+     *  @param subset An array of Objects representing the subset.
+     *  @return An Object representing the least element of the subset,
      *   or <code>null</code> if the least element does not exist.
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
@@ -215,9 +215,9 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Compute the least upper bound (LUB) of two elements.
-     *  @param e1 an Object representing an element in this CPO.
-     *  @param e2 an Object representing element in this CPO.
-     *  @return an Object representing the LUB of the two specified
+     *  @param e1 An Object representing an element in this CPO.
+     *  @param e2 An Object representing element in this CPO.
+     *  @return An Object representing the LUB of the two specified
      *   elements, or <code>null</code> if the LUB does not exist.
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
@@ -232,8 +232,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  the subset is considered empty, in which case the bottom element
      *  of this CPO is returned, if it exists. If the subset is empty
      *  and the bottom does not exist, <code>null</code> is returned.
-     *  @param subset an array of Objects representing the subset.
-     *  @return an Object representing the LUB of the subset, or
+     *  @param subset An array of Objects representing the subset.
+     *  @return An Object representing the LUB of the subset, or
      *   <code>null</code> if the LUB does not exist.
      *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
@@ -244,7 +244,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Return the top element of this CPO.
-     *  @return an Object representing the top element, or
+     *  @return An Object representing the top element, or
      *   <code>null</code> if the top does not exist.
      */
     public Object top() {
@@ -253,12 +253,12 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Topological sort the whole graph.
-     *  The implementation uses the method of A.B. Kahn: "Topological
-     *  Sorting of Large Networks", Communications of the ACM,
+     *  The implementation uses the method of A. B. Kahn: "Topological
+     *  Sorting of Large Networks," <i>Communications of the ACM</i>,
      *  Vol. 5, 558-562, 1962.
      *  It has complexity O(|N|+|E|), where N for nodes and E for edges,
      *
-     *  @return an array of Objects representing the nodes sorted
+     *  @return An array of Objects representing the nodes sorted
      *   according to the topology.
      *  @exception InvalidStateException If the graph is cyclic.
      */
@@ -304,7 +304,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  the graph is checked for cyclicity before this method is
      *  called, the use of the transitive closure matrix should
      *  not add any overhead. A bubble sort is used for the internal
-     *  implementation, so the complexity is n^2.
+     *  implementation, so the complexity is <i>O(n^2)</i>.
      *  @return The objects in their sorted order.
      */
     public Object[] topologicalSort(Object[] objects) {
@@ -332,8 +332,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Compute the up-set of an element in this CPO.
-     *  @param e an Object representing an element in this CPO.
-     *  @return an array of Objects representing the elements in the
+     *  @param e An Object representing an element in this CPO.
+     *  @return An array of Objects representing the elements in the
      *   up-set of the specified element.
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element of this CPO.
@@ -346,21 +346,22 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create and add an edge with a specified source node and sink node.
-     * The third parameter specifies whether the edge is to be
-     * weighted, and the fourth parameter is the weight that is
-     * to be applied if the edge is weighted.
-     * Returns the edge that is added.
-     * @param node1 The source node of the edge.
-     * @param node2 The sink node of the edge.
-     * @param weighted True if the edge is to be weighted.
-     * @param weight The weight that is to be applied if the edge is to
-     * be weighted.
-     * @return The edge.
-     * @exception IllegalArgumentException If either of the specified nodes
-     * is not in the graph, or if the specified nodes are identical.
-     * @exception NullPointerException If the edge is to be weighted, but
-     * the specified weight is null.
+    /** Create and add an edge with a specified source node, sink node,
+     *  and optional weight.
+     *  The third parameter specifies whether the edge is to be
+     *  weighted, and the fourth parameter is the weight that is
+     *  to be applied if the edge is weighted.
+     *  Returns the edge that is added.
+     *  @param node1 The source node of the edge.
+     *  @param node2 The sink node of the edge.
+     *  @param weighted True if the edge is to be weighted.
+     *  @param weight The weight that is to be applied if the edge is to
+     *  be weighted.
+     *  @return The edge.
+     *  @exception IllegalArgumentException If either of the specified nodes
+     *  is not in the graph, or if the specified nodes are identical.
+     *  @exception NullPointerException If the edge is to be weighted, but
+     *  the specified weight is null.
      */
     protected Edge _addEdge(Node node1, Node node2, boolean weighted,
             Object weight) {

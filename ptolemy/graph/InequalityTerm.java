@@ -56,7 +56,7 @@ public interface InequalityTerm {
      *  not associated with a particular Object, or it is not necessary
      *  to obtain the reference of the associated Object, this method
      *  can return <code>null</code>.
-     *  @return an Object.
+     *  @return The associated Object.
      */
     public Object getAssociatedObject();
 
@@ -65,7 +65,7 @@ public interface InequalityTerm {
      *  current value of that variable; if this term is a function,
      *  return the evaluation of that function based on the current
      *  value of variables in the function.
-     *  @return an Object representing an element in the underlying CPO.
+     *  @return An Object representing an element in the underlying CPO.
      */
     public Object getValue();
 
@@ -74,7 +74,7 @@ public interface InequalityTerm {
      *  if this term is a variable, return an array of size one that
      *  contains this variable; if this term is a function, return an
      *  array containing all the variables in the function.
-     *  @return an array of InequalityTerms
+     *  @return An array of InequalityTerms
      */
     public InequalityTerm[] getVariables();
 
@@ -86,7 +86,7 @@ public interface InequalityTerm {
      *  In some applications, this term is a structured object that only part
      *  of it is a simple variable. In this case, set that variable part to
      *  the specified argument.
-     *  @param e an Object representing an element in the underlying CPO.
+     *  @param e An Object representing an element in the underlying CPO.
      *  @exception IllegalActionException If this term is not a variable.
      */
     public void initialize(Object e)
@@ -95,8 +95,8 @@ public interface InequalityTerm {
     /** Check whether this term can be set to a specific element of the
      *  underlying CPO. Only variable terms are settable, constant
      *  and function terms are not.
-     *  @return <code>true</code> if this term is a variable;
-     *   <code>false</code> otherwise.
+     *  @return True if this term is a variable;
+     *  false otherwise.
      */
     public boolean isSettable();
 
@@ -109,7 +109,7 @@ public interface InequalityTerm {
     /** Set the value of this term to the specified CPO element.
      *  Only terms consisting of a single variable can have their
      *  values set.
-     *  @param e an Object representing an element in the
+     *  @param e An Object representing an element in the
      *   underlying CPO.
      *  @exception IllegalActionException If this term is not a variable.
      */

@@ -31,9 +31,9 @@ package ptolemy.graph;
 //Node
 /**
 An optionally-weighted node for an undirected or directed graph.  More
-specifically, a node consists of an optional <em>weight</em> (an arbitrary
+specifically, a node consists of an optional <i>weight</i> (an arbitrary
 object that is associated with the node).  We say that a node is
-<em>unweighted</em> if it does not have an assigned weight. It is an error to
+<i>unweighted</i> if it does not have an assigned weight. It is an error to
 attempt to access the weight of an unweighted node. Node weights must be
 genuine (non-null) objects.
 
@@ -55,6 +55,7 @@ public final class Node {
     /** Construct a node with a given node weight.
      *  @exception IllegalArgumentException If the specified weight is
      *  <code>null</code>.
+     *  @param weight The given weight.
      */
     public Node(Object weight) {
         if (weight == null) {
@@ -69,7 +70,7 @@ public final class Node {
     ////                         public methods                    ////
 
     /** Return <code>true</code> if and only if this is a weighted node.
-     *  @return <code>True</code> if and only if this is a weighted node.
+     *  @return True if and only if this is a weighted node.
      */
     public boolean hasWeight() {
         return _weight != null;
@@ -90,7 +91,7 @@ public final class Node {
     }
 
     /** Return the weight that has been associated with this node.
-     *  @return the associated weight.
+     *  @return The associated weight.
      *  @exception IllegalStateException If this is an unweighted node.
      */
     public Object weight() {
