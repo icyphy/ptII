@@ -86,6 +86,9 @@ endif
 # if (! $?LD_LIBRARY_PATH) setenv LD_LIBRARY_PATH ""
 setenv LD_LIBRARY_PATH /usr/ccs/lib:/usr/lib:/usr/openwin/lib:/usr/sww/X11/lib:/usr/sww/sunos-X11R5/lib
 
+# cvs reads this variable to determine how to ssh
+setenv CVS_RSH ssh
+
 # Source UCB local modifications
 if (-r ~/ucb-.cshrc) then
 	source ~/ucb-.cshrc
