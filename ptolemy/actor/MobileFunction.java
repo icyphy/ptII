@@ -1,6 +1,6 @@
 /* Modal models.
 
- Copyright (c) 1999-2002 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,6 +42,7 @@ import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// MobileFunction
+// FIXME: This needs a one sentence summary.
 /**
 This actor extends the TypedAtomicActor. It applies a function to its inputs
 and outputs the results. But rather than has the function specified
@@ -49,9 +50,10 @@ statically, this actor allows dynamic change to the function, which means
 the computation of this actor can be changed during executing. Its second
 input accept a function token for the new function's definition. The
 function token can be given by actors in the local model or remote actors.
+
 @author Yang Zhao
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 3.0
 */
 public class MobileFunction extends TypedAtomicActor{
 
@@ -61,7 +63,7 @@ public class MobileFunction extends TypedAtomicActor{
      *  use the default workspace.
      *  @param workspace The workspace that will list the actor.
      */
-    public MobileFunction (Workspace workspace)
+    public MobileFunction(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         input = new TypedIOPort(this, "input", true, false);
@@ -79,7 +81,7 @@ public class MobileFunction extends TypedAtomicActor{
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public MobileFunction (CompositeEntity container, String name)
+    public MobileFunction(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
@@ -89,32 +91,27 @@ public class MobileFunction extends TypedAtomicActor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    //public Parameter modelURL;
 
+    // FIXME: documentation of these ports?
     public TypedIOPort input, function, output;
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Initialize this actor.
-     *  @exception IllegalActionException.
-     */
-    public void initialize() throws IllegalActionException {
-        _function = null;
-        _argList = new LinkedList();
-        //System.out.println("--- invoke initialize of model manager, and do nothing. \n");
-        super.initialize();
-    }
 
-    /** if not function specified, performs as an identity function.
-     * otherwise, apply the specified function to its input and output
-     * the result.
-     * //Fixme: it now only considers one input port for data and the function
-     * //only has one argument.
-     * //how to resolve typy and type signature?
-     * @exception IllegalActionException.
+    /** If the function is not specified, then perform identity function;
+     *  otherwise, apply the specified function to its input and output
+     *  the result.
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's fire() method throws it, or if the actor is not
+     *   opaque.
      */
     public void fire() throws IllegalActionException  {
+
+       // FIXME: it now only considers one input port for data and the
+       // function only has one argument.  how to resolve typy and type
+       // signature?
+
         if (_debugging) {
             _debug("Invoking fire");
         }
@@ -122,7 +119,7 @@ public class MobileFunction extends TypedAtomicActor{
             _function = (FunctionToken)function.get(0);
         }
         if (input.hasToken(0)) {
-            if(_function == null) {
+            if (_function == null) {
                 output.broadcast(input.get(0));
             } else {
                 Token in = input.get(0);
@@ -135,8 +132,17 @@ public class MobileFunction extends TypedAtomicActor{
         }
     }
 
-    /** return true if the actor either of its input port has token.
-     *  @exception IllegalActionException should never be throwed
+    /** Initialize this actor.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        _function = null;
+        _argList = new LinkedList();
+        super.initialize();
+    }
+
+    /** Return true if the actor either of its input port has token.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
