@@ -1225,6 +1225,22 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                 fromFieldToReplacementLocal != null) {
                             if(debug) System.out.println("toFieldToReplacementLocal = " + toFieldToReplacementLocal);
                             if(debug) System.out.println("fromFieldToReplacementLocal = " + fromFieldToReplacementLocal);
+                            {
+                                List argumentList = new LinkedList();
+                                argumentList.add((Local)localToIsNotNullLocal.get(toLocal));
+                                argumentList.add(r.getArg(1));
+                                argumentList.add((Local)localToIsNotNullLocal.get(fromLocal));
+                                argumentList.add(r.getArg(3));
+                                argumentList.add(r.getArg(4));
+                                
+                                body.getUnits().insertBefore(
+                                        Jimple.v().newInvokeStmt(
+                                                Jimple.v().newStaticInvokeExpr(
+                                                        PtolemyUtilities.arraycopyMethod,
+                                                        argumentList)),
+                                        unit);
+                            }
+                            
                             for (Iterator tokenFields = toFieldToReplacementLocal.keySet().iterator();
                                  tokenFields.hasNext();) {
                                 SootField tokenField = (SootField)tokenFields.next();

@@ -1027,7 +1027,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                     continue;
                 }
 
-                System.err.println("inlining method " + r.getMethod());
+                // System.err.println("inlining method " + r.getMethod());
                 // FIXME: What if more than one method could be
                 // called?
                 SiteInliner.inlineSite(r.getMethod(), stmt, method);
