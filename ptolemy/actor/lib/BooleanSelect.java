@@ -173,8 +173,10 @@ public class BooleanSelect extends TypedAtomicActor {
         _control = false;
     }
 
-    /** Return false if any input channel does not have a token.
-     *  Otherwise, return whatever the superclass returns.
+    /** Return false if the control input channel does not have a token,
+     *  or if the control input is true, the true input does not have a
+     *  token, or if the control input is false, the false input does not
+     *  have a token. Otherwise, return whatever the superclass returns.
      *  @return False if there are not enough tokens to fire.
      *  @exception IllegalActionException If there is no director.
      */
