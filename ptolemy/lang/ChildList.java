@@ -47,6 +47,10 @@ set the parent field of each child that is added to a child list.
 FIXME: Probably, the TNLManip class should be removed, and its functionality 
 merged into this class.
 
+@author Shuvra S. Bhattacharyya 
+@version $Id
+@see ptolemy.lang.TNLManip
+
 */
 public class ChildList extends ArrayList {
 
