@@ -227,7 +227,7 @@ public class DTReceiver extends SDFReceiver {
                 }
     	    } else if (connectedPort.getContainer()
     	                          instanceof TypedCompositeActor) {
-    	        // FIXME: should use at isAtomic() insteadof instanceof?
+    	        // FIXME: should use at isAtomic() instead of instanceof?
     	        _from = (Actor) connectedPort.getContainer();
     	        _fromPort = connectedPort;
     	        if (_fromPort == null) {
