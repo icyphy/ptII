@@ -184,9 +184,17 @@ proc speedComparison  {xmlFile \
 # If statsOnly is 1, then we do not generate the code, we
 # just print the make command to run the stats.
 #
+# If speedComparison is 1, then a speed comparison of the generated 
+# code is performed.
+#
+# The command to run after generating code is given by the 
+# runCommand parameter.
+#
 proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	{defaultIterations {}} \
-        {statsOnly 0}} {
+        {statsOnly 0} \
+	{speedComparison 1} \
+	{runCommand "runDemo"}} {
     global relativePathToPTII
 
     if {[file extension $modelPath] == ""} {
@@ -285,17 +293,6 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	    return
 	}
     
-	set deepEntityList [$compositeActor deepEntityList]
-	for {set i 0} {$i < [$deepEntityList size]} {incr i} {
-	    set containedActor [$deepEntityList get $i]
-	    if [java::instanceof $containedActor \
-		    ptolemy.actor.TypedCompositeActor] {
-		puts "$modelPath:  Deep codegen does not work on models with opaque hierarchy"
-		return
-	    }
-
-	}
-
 	# check for transparent hierarchy
 	set entityList [$compositeActor entityList]
 	for {set i 0} {$i < [$entityList size]} {incr i} {
@@ -399,10 +396,8 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 
     # If the model has a different name than the file name, we
     # handle it here.
-    set command runDemo
-    if { $codeGenType == "Deep"} {
-	set command runDemoTest
-    }
+    set command $runCommand
+
     if { $statsOnly == 1} {
 	# Just print the command
 	puts "make MODEL=$modelName SOURCECLASS=$modelPath $command"
@@ -418,10 +413,13 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	puts $results
     }
 
-    return [speedComparison $modelPath $modelName $targetPackage \
-	    3 $modelClass $codeGenType]
+    if {$speedComparison == 1} {
+        return [speedComparison $modelPath $modelName $targetPackage \
+		    3 $modelClass $codeGenType]
+    } else {
+	return $results
+    }
 } 
-
 
 #  # Read in a model, generate code and run it in the current jvm
 #  proc sootShallowCodeGenerationBuiltin {model} {

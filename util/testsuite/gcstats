@@ -36,24 +36,19 @@
 
 
 awk 'BEGIN {FS="K|>| "}
+# accumulate GC lines
 /\[Full GC/ {
     fullCount++;
-    if(fullCount==1) {
-       startingMemory=$6
-    } else if(fullCount==2) {
-       endingMemory=$6
-       totalMemory=totalMemory+$4-$6
-    }
+    endingMemory=$6
+    totalMemory=totalMemory+$4-$6
 }
-# accumulate GC lines, between the first and the second Full GC
-/\[GC/ && (fullCount == 1)   {
+# accumulate GC lines
+/\[GC/ {
     gcCount++;
+    endingMemory=$5
     totalMemory=totalMemory+$3-$5
 }
 END {   
-       if (fullCount!=2) {
-	   print "Does not contain exactly 2 Full GCs: It has " fullCount
-       } 
-       print "GCStats: static: " startingMemory "K staticRT: " endingMemory-startingMemory "K totalStatic: " endingMemory "K dynamicRT: " totalMemory "K"
+       print "GCStats: totalStatic: " endingMemory "K dynamicRT: " totalMemory "K"
 }' -
 
