@@ -393,14 +393,12 @@ public class FSMGraphController extends FSMViewerGraphController {
             }
 
             FSMGraphModel graphModel = (FSMGraphModel)getGraphModel();
-            final double finalX = x;
-            final double finalY = y;
-            final NamedObj toplevel = graphModel.getPtolemyModel();
+            NamedObj toplevel = graphModel.getPtolemyModel();
 
-            final String stateName = toplevel.uniqueName("state");
+            String stateName = toplevel.uniqueName("state");
             // Create the state.
             String moml = null;
-            final String locationName = "_location";
+            String locationName = "_location";
 
             // Try to get the class name for the state from the library,
             // so that the library and the toolbar are assured of creating
@@ -425,7 +423,12 @@ public class FSMGraphController extends FSMViewerGraphController {
                         + "\" class=\"ptolemy.domains.fsm.kernel.State\">\n"
                         + "<property name=\""
                         + locationName
-                        + "\" class=\"ptolemy.kernel.util.Location\"/>\n"
+                        + "\" class=\"ptolemy.kernel.util.Location\""
+                        + " value=\"["
+                        + x
+                        + ", "
+                        + y
+                        + "]\"/>\n"
                         + "<property name=\"_centerName\""
                         + " class=\"ptolemy.kernel.util.SingletonAttribute\""
                         + "/>\n"
@@ -433,29 +436,7 @@ public class FSMGraphController extends FSMViewerGraphController {
             }
 
             ChangeRequest request =
-                new MoMLChangeRequest(this, toplevel, moml) {
-                        protected void _execute() throws Exception {
-                            super._execute();
-                            // Set the location of the icon.
-                            // Note that this really needs to be done after
-                            // the change request has succeeded, which is why
-                            // it is done here.  When the graph controller
-                            // gets around to handling this, it will draw
-                            // the icon at this location.
-
-                            NamedObj newObject = ((CompositeEntity)toplevel)
-                                    .getEntity(stateName);
-                            Location location =
-                                (Location) newObject.getAttribute(locationName);
-                            if (location == null) {
-                                location = new Location(newObject, locationName);
-                            }
-                            double point[] = new double[2];
-                            point[0] = ((int)finalX);
-                            point[1] = ((int)finalY);
-                            location.setLocation(point);
-                        }
-                    };
+                    new MoMLChangeRequest(this, toplevel, moml);
             toplevel.requestChange(request);
             try {
                 request.waitForCompletion();

@@ -34,6 +34,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -509,6 +510,17 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         try {
             Location location = new Location(attribute, "_location");
             location.setLocation(locationValue);
+            
+            // Since this isn't delegated to the MoML parser,
+            // we have to handle propagation here.
+            List heritageList = attribute.getHeritageList();
+            Iterator heritage = heritageList.iterator();
+            while (heritage.hasNext()) {
+                NamedObj inherited = (NamedObj)heritage.next();
+                Location inheritedLocation = new Location(inherited, "_location");
+                inheritedLocation.setLocation(locationValue);
+            }
+
         } catch (KernelException e) {
             throw new InternalErrorException(e);
         }

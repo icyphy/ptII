@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.basic;
 
+import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.data.ObjectToken;
@@ -43,7 +44,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.kernel.CompositePtolemyModel;
@@ -262,13 +262,14 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                 // then the move can be duplicated in the deferrers.
                 Locatable location = new Location(object, "_location");
                 
-                // To ensure propagation.
-                MoMLChangeRequest request = new MoMLChangeRequest(
-                        this,
-                        object,
-                        "<property name=\"_location\" " +
-                        "class=\"ptolemy.kernel.util.Location\"/>");
-                object.requestChange(request);
+                // Since this isn't delegated to the MoML parser,
+                // we have to handle propagation here.
+                List heritageList = object.getHeritageList();
+                Iterator heritage = heritageList.iterator();
+                while (heritage.hasNext()) {
+                    NamedObj inherited = (NamedObj)heritage.next();
+                    new Location(inherited, "_location");
+                }
                 
                 return location;
             }

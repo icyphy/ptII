@@ -1283,22 +1283,15 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             } else {
                 try {
                     // NOTE: We need the location right away, so we go ahead
-                    // and create it. However, we also issue a MoMLChangeRequest
-                    // so that the change propagates, and any models that defer
-                    // to this one (e.g. subclasses) also have locations.
-                    // This is necessary so that if the location later moves,
-                     // then the move can be duplicated in the deferrers.
+                    // and create it and handle the propagation locally.
                     Locatable location = new Location(entity, "_location");
-                
-                    // To ensure propagation.
-                    MoMLChangeRequest request = new MoMLChangeRequest(
-                              this,
-                              entity,
-                              "<property name=\"_location\" " +
-                            "class=\"ptolemy.kernel.util.Location\"/>");
-                    entity.requestChange(request);
-                
-                     return location;
+                    List heritageList = entity.getHeritageList();
+                    Iterator heritage = heritageList.iterator();
+                    while (heritage.hasNext()) {
+                        NamedObj inherited = (NamedObj)heritage.next();
+                        Location inheritedLocation = new Location(inherited, "_location");
+                    }                
+                    return location;
                  } catch (Exception e) {
                      throw new InternalErrorException("Failed to create " +
                              "location, even though one does not exist:" +
