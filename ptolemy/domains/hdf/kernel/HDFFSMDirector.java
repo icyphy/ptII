@@ -437,6 +437,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  one of the associated actors throws it, or there is no controller.
      */
     public void preinitialize() throws IllegalActionException {
+        _firingsPerScheduleIteration = 1;
         super.preinitialize();
         // Now propagate the type signature of the current refinment (the
         // refinement of the initial state) out to the corresponding ports
@@ -464,12 +465,17 @@ public class HDFFSMDirector extends FSMDirector {
             if (refinementDir instanceof HDFFSMDirector) {
                 //System.out.println("There is a HDFFSM Director");
                 refinementDir.preinitialize();
-            } else if ((refinementDir instanceof SDFDirector) ||
-                       (refinementDir instanceof HDFDirector)) {
+            } else if (refinementDir instanceof SDFDirector) {
+                Scheduler refinmentSched =
+                ((StaticSchedulingDirector)refinementDir).getScheduler();
+                refinmentSched.setValid(true);
+                refinmentSched.getSchedule();
+            } else if (refinementDir instanceof HDFDirector) {
                 Scheduler refinmentSched =
                     ((StaticSchedulingDirector)refinementDir).getScheduler();
                 refinmentSched.setValid(false);
-                refinmentSched.getSchedule();
+                //refinmentSched.getSchedule();
+                ((HDFDirector)refinementDir).getSchedule();
                 if (_debug_info) System.out.println(getName() +
                   " : preinitialize(): refinement's director : " +
                                       refinementDir.getFullName());
@@ -644,6 +650,47 @@ public class HDFFSMDirector extends FSMDirector {
         return trans;
     }
     
+    public void updateFiringCount
+            (int directorfiringCount, boolean preinitialize) 
+            throws IllegalActionException {
+        FSMActor ctrl = getController();
+        State currentState;
+
+        TypedCompositeActor currentRefinement;
+        // Get the current refinement.
+        if (preinitialize) {
+            currentState = ctrl.getInitialState();
+            currentRefinement = 
+                (TypedCompositeActor)(currentState.getRefinement())[0];
+        } else {
+            currentState = ctrl.currentState();
+            if (_debug_info) {
+                System.out.println(" : HDFFSM get current state : "
+                    + currentState.getName());
+            }
+            currentRefinement =
+                     // FIXME
+                     //(TypedCompositeActor)initialState.getRefinement();
+            (TypedCompositeActor)(currentState.getRefinement())[0];
+        }
+        if (currentRefinement != null) {
+            Director refinementDir = currentRefinement.getDirector();
+            if (_debug_info) {
+                System.out.println(getName() + 
+                    "HDFFSM current refinment director "
+                    + refinementDir.getName());
+            }
+            if (refinementDir instanceof HDFFSMDirector) {
+                //System.out.println("There is a HDFFSM Director");
+                ((HDFFSMDirector)refinementDir).
+                    updateFiringCount(directorfiringCount, preinitialize);
+            } else if (refinementDir instanceof HDFDirector) {
+                ((HDFDirector)refinementDir).
+                    updateFiringCount(directorfiringCount, preinitialize);
+            }
+        }
+    }
+    
     /** Return the firing count for the current refinement actor
       *  in the current dataflow schedule.
       *
@@ -651,6 +698,8 @@ public class HDFFSMDirector extends FSMDirector {
       *  in the current schedule.
       *  @exception IllegalActionException If FIXME.
       */
+    // No need right now.
+    /*
      public int updateFiringsPerScheduleIteration()
          throws IllegalActionException {
          if (_debug_info) System.out.println(getName() +
@@ -726,6 +775,7 @@ public class HDFFSMDirector extends FSMDirector {
          }
      }
 
+*/
     ///////////////////////////////////////////////////////////////////
     ////                         protected
 

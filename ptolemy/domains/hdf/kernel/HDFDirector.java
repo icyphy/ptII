@@ -331,7 +331,7 @@ public class HDFDirector extends SDFDirector {
                 // cache miss.
                 if (_debug_info) {
                     System.out.println(getName() +
-                            " : Cache miss.");
+                            " : Cache miss!");
                 }
                 if (cacheSize > 0) {
                     while (_scheduleKeyList.size() >= cacheSize) {
@@ -361,6 +361,8 @@ public class HDFDirector extends SDFDirector {
      *   the firing count.
      */
     // called by _getFiringsPerSchedulIteration in HDFFSMDirector.
+    // not used anywhere
+    /*
     public int getFiringCount(Actor actor) throws IllegalActionException {
         Schedule schedule = getSchedule();
         Iterator firings = schedule.firingIterator();
@@ -388,7 +390,7 @@ public class HDFDirector extends SDFDirector {
             }
         }
         return occurrence;
-    }
+    }*/
     
     /** Initialize the actors associated with this director, set the
      *  size of the schedule cache, and then compute the schedule.
@@ -415,52 +417,66 @@ public class HDFDirector extends SDFDirector {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         CompositeActor container = (CompositeActor)getContainer();
+        Director exeDirector = container.getExecutiveDirector();
+        if (exeDirector == null) {
+            //System.out.println(this.getFullName() + " is the top director");
+            _directorFiringCount = 1;
+            updateFiringCount(1, true);
+        }
         //LinkedList allActorList = new LinkedList();
-        for (Iterator entities = container.entityList().iterator();
-                    entities.hasNext();) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
-            if (entity instanceof CompositeActor) {
+        //for (Iterator entities = container.entityList().iterator();
+          //          entities.hasNext();) {
+            //ComponentEntity entity = (ComponentEntity)entities.next();
+            //if (entity instanceof CompositeActor) {
                 //System.out.println("preinitialize():" + entity.getName() + 
                 //    "is a ModalModel controller.");
-                Director director =((CompositeActor)entity).getDirector();
+              //  Director director =((CompositeActor)entity).getDirector();
                 //System.out.println("director = " + director.getFullName());
-                if (director instanceof HDFFSMDirector) {
+                //if (director instanceof HDFFSMDirector) {
                     //System.out.println(" the director is HDFFSM");
-                    int firingsPerScheduleIteration =
-                    ((HDFFSMDirector)director).updateFiringsPerScheduleIteration();
+                  //  int firingsPerScheduleIteration =
+                    //((HDFFSMDirector)director).updateFiringsPerScheduleIteration();
                     //System.out.println("firingsPerScheduleIteration = " +
                     //    firingsPerScheduleIteration);
-                    ((HDFFSMDirector)director).setFiringsPerScheduleIteration(
-                        firingsPerScheduleIteration);   
-                }
-            }
+                    //((HDFFSMDirector)director).setFiringsPerScheduleIteration(
+                    //    firingsPerScheduleIteration);   
+                //}
+            //}
             //allActorList.addLast(entity);
-        }       
+        //}       
     }
     
     public boolean postfire() throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
+        Director exeDirector = container.getExecutiveDirector();
+        if (exeDirector == null) {
+            //System.out.println(this.getFullName() + " is the top director");
+            getSchedule();
+            _directorFiringCount = 1;
+            updateFiringCount(1, false);
+        }
+        //CompositeActor container = (CompositeActor)getContainer();
         //LinkedList allActorList = new LinkedList();
-        for (Iterator entities = container.entityList().iterator();
-                    entities.hasNext();) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
-            if (entity instanceof CompositeActor) {
+        //for (Iterator entities = container.entityList().iterator();
+         //           entities.hasNext();) {
+           // ComponentEntity entity = (ComponentEntity)entities.next();
+           // if (entity instanceof CompositeActor) {
                 //System.out.println(entity.getName() + 
                 //    "is a ModalModel controller.");
-                Director director =((CompositeActor)entity).getDirector();
+            //    Director director =((CompositeActor)entity).getDirector();
                 //System.out.println("director = " + director.getFullName());
-                if (director instanceof HDFFSMDirector) {
+              //  if (director instanceof HDFFSMDirector) {
                     //System.out.println(" the director is HDFFSM");
-                    int firingsPerScheduleIteration =
-                    ((HDFFSMDirector)director).updateFiringsPerScheduleIteration();
+                //    int firingsPerScheduleIteration =
+                  //  ((HDFFSMDirector)director).updateFiringsPerScheduleIteration();
                     //System.out.println("firingsPerScheduleIteration = " +
                     //    firingsPerScheduleIteration);
-                    ((HDFFSMDirector)director).setFiringsPerScheduleIteration(
-                        firingsPerScheduleIteration);     
-                }
-            }
+                    //((HDFFSMDirector)director).setFiringsPerScheduleIteration(
+                    //    firingsPerScheduleIteration);     
+                //}
+            //}
             //allActorList.addLast(entity);
-        }        
+        //}        
         //System.out.println("SDF postfire");
         //int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
         //_iterationCount++;
@@ -470,27 +486,35 @@ public class HDFDirector extends SDFDirector {
         //}
         return super.postfire();
     }
-/*
-    public void preinitialize() throws IllegalActionException {
+    
+    public void updateFiringCount
+        (int directorFiringCount, boolean preinitialize) 
+            throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
-        //LinkedList allActorList = new LinkedList();
-        for (Iterator entities = container.entityList().iterator();
-                entities.hasNext();) {
+        Scheduler scheduler = ((SDFDirector)this).getScheduler();
+        for (Iterator entities = container.deepEntityList().iterator();
+                     entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
-            if (entity instanceof ModalModel) {
-                System.out.println(entity.getName() + 
-                   "is a ModalModel controller.");
-                Director director =((ModalModel)entity).getDirector();
-                System.out.println("director = " + director.getName());
+            int firingCount = 
+                ((SDFScheduler)scheduler).getFiringCount(entity);
+            //int firingCount = getFiringCount((Actor)entity);
+            if (entity instanceof CompositeActor) {
+                //System.out.println("preinitialize():" + entity.getName() + 
+                //    "is a ModalModel controller.");
+                Director director =((CompositeActor)entity).getDirector();
                 if (director instanceof HDFFSMDirector) {
-                    System.out.println(" the director is HDFFSM");
-                    ((HDFFSMDirector)director).preinitialize();
+                    firingCount = firingCount * directorFiringCount;
+                    ((HDFFSMDirector)director)
+                        .setFiringsPerScheduleIteration(firingCount);
+                    ((HDFFSMDirector)director).updateFiringCount(firingCount, preinitialize);  
+                } else if (director instanceof HDFDirector) {
+                    firingCount = firingCount * directorFiringCount;
+                    ((HDFDirector)director).
+                        updateFiringCount(firingCount, preinitialize);
                 }
             }
-            //allActorList.addLast(entity);
-        }        
+        }           
     }
-  */
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -595,6 +619,7 @@ public class HDFDirector extends SDFDirector {
     private List _outputPortList;
     private int _cacheSize = 100;
 
+    private int _directorFiringCount = 1;
     // Set to true to enable debugging.
     //private boolean _debug_info = true;
     private boolean _debug_info = false;
