@@ -386,7 +386,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot fire a non-opaque actor.");
+                        "Cannot initialize a non-opaque actor.");
             }
 
             // Note that this is assured of firing the local director,
@@ -599,7 +599,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot invoke postfire a non-opaque actor.");
+                        "Cannot postfire a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
@@ -631,7 +631,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot invoke prefire a non-opaque actor.");
+                        "Cannot invoke prefire on a non-opaque actor.");
             }
             boolean result = getDirector().prefire();
             if (_debugging) {
