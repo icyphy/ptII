@@ -133,9 +133,12 @@ proc sootShallowCodeGeneration {model} {
 proc autoShallowCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
 	puts "------------------ testing $file"
+	set time [java::call System currentTimeMillis]
 	test "Auto" "Automatic test in file $file" {
 	    sootShallowCodeGeneration $file
 	    list {}
 	} {{}}
+	java::call System gc
+	puts "[java::call ptolemy.actor.Manager timeAndMemory $time]"
     }
 }
