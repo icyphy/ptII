@@ -63,6 +63,7 @@ JSIMPLE_TESTS = \
 	IOPort.tcl \
 	IORelation.tcl \
 	QueueReceiver.tcl \
+	TypedAtomicActor.tcl \
 	TypeConflictException.tcl \
 	TypedIOPort.tcl \
 	TypedIORelation.tcl \
