@@ -43,13 +43,12 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// FileUtilities
 /**
-A collection of utilities for manipulating strings.
+A collection of utilities for manipulating files
 These utilities do not depend on any other ptolemy.* packages.
-
 
 @author Christopher Hylands Brooks
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 4.0
 */
 public class FileUtilities {
 
