@@ -48,7 +48,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 A tree cell renderer for Ptolemy objects.  This renderer just adds the
 objects name to the default rendition.
 
-@see #PtolemyTreeModel
 @author Steve Neuendorffer and Edward A. Lee
 @version $Revision$
 */
