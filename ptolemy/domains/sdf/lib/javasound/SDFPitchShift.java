@@ -153,23 +153,20 @@ public class SDFPitchShift extends SDFAtomicActor {
      *  public members to the parameters of the new actor.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            SDFPitchShift newobj = (SDFPitchShift)super.clone(ws);
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.scaleFactor = (SDFIOPort)newobj.getPort("scaleFactor");
-            newobj.pitchIn = (SDFIOPort)newobj.getPort("pitchIn");
-            newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
-            newobj.consumptionProductionRate = (Parameter)newobj.getAttribute("consumptionProductionRate");
-            // set the type constraints.
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        SDFPitchShift newobj = (SDFPitchShift)super.clone(ws);
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.scaleFactor = (SDFIOPort)newobj.getPort("scaleFactor");
+        newobj.pitchIn = (SDFIOPort)newobj.getPort("pitchIn");
+        newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
+        newobj.consumptionProductionRate =
+            (Parameter)newobj.getAttribute("consumptionProductionRate");
+        return newobj;
     }
 
     /** Output the sample value of the sound file corresponding to the

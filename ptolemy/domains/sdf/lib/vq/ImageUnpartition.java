@@ -113,26 +113,20 @@ public class ImageUnpartition extends SDFAtomicActor {
      *  actor will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            ImageUnpartition newobj = (ImageUnpartition)(super.clone(ws));
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.imageRows =
-                (Parameter)newobj.getAttribute("imageRows");
-            newobj.imageColumns =
-                (Parameter)newobj.getAttribute("imageColumns");
-            newobj.partitionRows =
-                (Parameter)newobj.getAttribute("partitionRows");
-            newobj.partitionColumns =
-                (Parameter)newobj.getAttribute("partitionColumns");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        ImageUnpartition newobj = (ImageUnpartition)(super.clone(ws));
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.imageRows = (Parameter)newobj.getAttribute("imageRows");
+        newobj.imageColumns = (Parameter)newobj.getAttribute("imageColumns");
+        newobj.partitionRows = (Parameter)newobj.getAttribute("partitionRows");
+        newobj.partitionColumns =
+            (Parameter)newobj.getAttribute("partitionColumns");
+        return newobj;
     }
 
     /**
