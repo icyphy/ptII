@@ -121,8 +121,6 @@ public interface ProcessReceiver extends Receiver {
      *  It is suggested that this method be implemented using
      *  the BoundaryDetector class although such an implementation 
      *  is not necessary.
-     *  <P>
-     *  This method is not synchronized so the caller
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
@@ -138,8 +136,6 @@ public interface ProcessReceiver extends Receiver {
      *  It is suggested that this method be implemented using
      *  the BoundaryDetector class although such an implementation 
      *  is not necessary.
-     *  <P>
-     *  This method is not synchronized so the caller
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
@@ -155,8 +151,6 @@ public interface ProcessReceiver extends Receiver {
      *  It is suggested that this method be implemented using
      *  the BoundaryDetector class although such an implementation 
      *  is not necessary.
-     *  <P>
-     *  This method is not synchronized so the caller
      *  @return True if this receiver is contained on the outside of
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
@@ -180,8 +174,6 @@ public interface ProcessReceiver extends Receiver {
      *  It is suggested that this method be implemented using
      *  the BoundaryDetector class although such an implementation 
      *  is not necessary.
-     *  <P>
-     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
@@ -197,8 +189,6 @@ public interface ProcessReceiver extends Receiver {
      *  It is suggested that this method be implemented using
      *  the BoundaryDetector class although such an implementation 
      *  is not necessary.
-     *  <P>
-     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the outside of
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
