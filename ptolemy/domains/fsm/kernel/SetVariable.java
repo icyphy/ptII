@@ -192,12 +192,12 @@ public class SetVariable extends Action implements CommitAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     // Cached reference to the specified variable.
-    private Variable _variable;
+    protected Variable _variable;
 
     // Version of reference to the specified variable.
-    private long _variableVersion = -1;
+    protected long _variableVersion = -1;
 
 }

@@ -197,14 +197,7 @@ public class FSMDirector extends Director {
      */
     public void fire() throws IllegalActionException {
         FSMActor ctrl = getController();
-        Iterator ports = ctrl.inputPortList().iterator();
-        while (ports.hasNext()) {
-            TypedIOPort p = (TypedIOPort)ports.next();
-            int width = p.getWidth();
-            for (int channel = 0; channel < width; ++channel) {
-                ctrl._setInputVariables(p, channel);
-            }
-        }
+        ctrl._setInputVariables();
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
@@ -214,16 +207,7 @@ public class FSMDirector extends Director {
         if (_fireRefinement) {
             TypedActor ref = st.getRefinement();
             ref.fire();
-            ports = ctrl.inputPortList().iterator();
-            while (ports.hasNext()) {
-                TypedIOPort p = (TypedIOPort)ports.next();
-                int width = p.getWidth();
-                for (int channel = 0; channel < width; ++channel) {
-                    if (ctrl._isRefinementOutput(p, channel)) {
-                        ctrl._setInputVariables(p, channel);
-                    }
-                }
-            }
+            ctrl._setInputsFromRefinement();
         }
         ctrl._chooseTransition(st.nonpreemptiveTransitionList());
         return;
@@ -323,21 +307,25 @@ public class FSMDirector extends Director {
         if (_fireRefinement) {
             ctrl.currentState().getRefinement().postfire();
         }
-        ctrl._commitLastChosenTransition();
+        boolean result = ctrl.postfire();
         _currentLocalReceiverMap =
                 (Map)_localReceiverMaps.get(ctrl.currentState());
-        return ctrl.postfire();
+        return result;
     }
 
-    /** Return true if the mode controller is ready to fire. Update current
-     *  time of this director to that of the executive director. Record
+    /** Return true if the mode controller is ready to fire. If the current
+     *  time of this director lags behind that of the executive director,
+     *  update the current time to that of the executive director. Record
      *  whether the refinement of the current state of the mode controller
      *  is ready to fire.
      *  @exception IllegalActionException If there is no controller.
      */
     public boolean prefire() throws IllegalActionException {
         Actor cont = (Actor)getContainer();
-        setCurrentTime(cont.getExecutiveDirector().getCurrentTime());
+        double outTime = cont.getExecutiveDirector().getCurrentTime();
+        if (getCurrentTime() < outTime) {
+            setCurrentTime(outTime);
+        }
         FSMActor ctrl = getController();
         _fireRefinement = false;
         Actor ref = ctrl.currentState().getRefinement();

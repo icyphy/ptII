@@ -237,14 +237,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   transition enabled.
      */
     public void fire() throws IllegalActionException {
-        Iterator inports = inputPortList().iterator();
-        while (inports.hasNext()) {
-            TypedIOPort p = (TypedIOPort)inports.next();
-            int width = p.getWidth();
-            for (int channel = 0; channel < width; ++channel) {
-                _setInputVariables(p, channel);
-            }
-        }
+        _setInputVariables();
         List trList = _currentState.outgoingPort.linkedRelationList();
         _chooseTransition(trList);
     }
@@ -874,13 +867,47 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
     }
 
+    /** Set the input variables for channels that are connected to an
+     *  output port of the refinement of current state.
+     *  @exception IllegalActionException If a value variable cannot take
+     *   the token read from its corresponding channel.
+     */
+    protected void _setInputsFromRefinement()
+            throws IllegalActionException {
+        Iterator inports = inputPortList().iterator();
+        while (inports.hasNext()) {
+            TypedIOPort p = (TypedIOPort)inports.next();
+            int width = p.getWidth();
+            for (int channel = 0; channel < width; ++channel) {
+                if (_isRefinementOutput(p, channel)) {
+                    _setInputVariables(p, channel);
+                }
+            }
+        }
+    }
+
+    /** Set the input variables for all ports of this actor.
+     *  @exception IllegalActionException If a value variable cannot take
+     *   the token read from its corresponding channel.
+     */
+    protected void _setInputVariables() throws IllegalActionException {
+        Iterator inports = inputPortList().iterator();
+        while (inports.hasNext()) {
+            TypedIOPort p = (TypedIOPort)inports.next();
+            int width = p.getWidth();
+            for (int channel = 0; channel < width; ++channel) {
+                _setInputVariables(p, channel);
+            }
+        }
+    }
+
     /** Set the input variables for the channel of the port.
      *  @see #_createInputVariables(TypedIOPort port)
      *  @param port An input port of this actor.
      *  @param channel A channel of the input port.
      *  @exception IllegalActionException If the port is not contained by
      *   this actor, or if the port is not an input port, or if the value
-     *   variable cannot take the token read from the port.
+     *   variable cannot take the token read from the channel.
      */
     protected void _setInputVariables(TypedIOPort port, int channel)
             throws IllegalActionException {
@@ -894,6 +921,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     "Cannot set input variables for port "
                     + "that is not input.");
         }
+        if (_debugging) {
+            _debug(this.getFullName(), "set input variables for port",
+                    port.getName());
+        }
         int width = port.getWidth();
         Variable[][] pVars = (Variable[][])_inputVariableMap.get(port);
         if (pVars == null) {
@@ -902,11 +933,18 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     + port.getName() + ".\n");
         }
         boolean t = port.hasToken(channel);
+        if (_debugging) {
+            _debug(port.getName(), "has token: " + t);
+        }
         Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
         pVars[channel][0].setToken(tok);
         // Update the value variable if there is a token in the channel.
         if (t == true) {
-            pVars[channel][1].setToken(port.get(channel));
+            tok = port.get(channel);
+            if (_debugging) {
+                _debug(port.getName(), "token value:", tok.toString());
+            }
+            pVars[channel][1].setToken(tok);
         }
     }
 

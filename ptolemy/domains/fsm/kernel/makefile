@@ -55,8 +55,11 @@ JSRCS = \
 	CommitAction.java \
 	FSMActor.java \
 	FSMDirector.java \
+	HSDirector.java \
 	ProduceOutput.java \
+	ResetRefinement.java \
 	SetVariable.java \
+	SetRefinementVariable.java \
 	State.java \
 	Transition.java
 
