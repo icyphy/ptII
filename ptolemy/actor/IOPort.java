@@ -179,7 +179,7 @@ public class IOPort extends ComponentPort {
     /** Return a description of the object specified by verbosity.
      *  If verbosity = RECEIVERS(7), then returns a String containing
      *  the receivers of this port. The returned String has the same 
-     *  format as the Receivers array, ie. each row corresponding to 
+     *  format as the Receivers array, i.e. each row corresponding to 
      *  a channel, and all the elements in a row are receiving the 
      *  clone of the same token. Each element in the receivers array 
      *  has the form: container's_full_name.receiver_type, 
@@ -189,7 +189,7 @@ public class IOPort extends ComponentPort {
      *  If verbosity = REMOTE_RECEIVERS(8), then returns a String 
      *  containing the remote receivers of this port.
      *  The returned String has the same 
-     *  format as the remoteReceivers array, ie. each row corresponding to 
+     *  format as the remoteReceivers array, i.e. each row corresponding to 
      *  a channel, and all the elements in a row are the destination 
      *  receiving the 
      *  clone of the same token. Each element in the receivers array 
