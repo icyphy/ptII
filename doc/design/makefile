@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 PTPACKAGE = 	design
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	design.pdf
@@ -70,7 +70,7 @@ OPTIONAL_FILES = \
 	usingVergil.pdf
 
 all: suball
-install: all
+install: all jars
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
