@@ -11,8 +11,8 @@
         <doc>Create a JFrame for sensing up, left, right, and down arrow key presses and releases</doc>
       </entity>
 
-      <entity name="DatagramReceiver"
-              class="ptolemy.actor.lib.net.DatagramReceiver">
+      <entity name="DatagramReader"
+              class="ptolemy.actor.lib.net.DatagramReader">
           <property name="encoding">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
               <property name="for_Ptolemy_parser" 
@@ -28,8 +28,8 @@
          </property>
       </entity>
 
-      <entity name="DatagramSender"
-              class="ptolemy.actor.lib.net.DatagramSender">
+      <entity name="DatagramWriter"
+              class="ptolemy.actor.lib.net.DatagramWriter">
           <property name="encoding">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
               <property name="for_Ptolemy_parser" 
