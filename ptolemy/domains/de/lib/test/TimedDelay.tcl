@@ -84,8 +84,8 @@ test TimedDelay-3.2 {test with negative delay} {
     $timedDelayAmount setExpression "-1.0"
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.TimedDelay.delay:
-.top.TimedDelay:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.TimedDelay.delay:
+Object name: .top.TimedDelay:
 Cannot have negative delay.}}
 
 test TimedDelay-4.1 {test a self loop with the zero TimedDelay} {
@@ -102,7 +102,7 @@ test TimedDelay-4.1 {test a self loop with the zero TimedDelay} {
     [java::field $add plus] link $r
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.DEDirector:
 Zero delay self-loop on actor: .top.add}}
 
 test TimedDelay-5.1 {test a more complex loop with the zero TimedDelay} {
@@ -124,7 +124,7 @@ test TimedDelay-5.1 {test a more complex loop with the zero TimedDelay} {
     [java::field $add plus] link $r
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.DEDirector:
 Found zero delay loop including: .top.add, .top.gain}}
 
 test TimedDelay-5.2 {fix the zero TimedDelay with a non-zero TimedDelay} {

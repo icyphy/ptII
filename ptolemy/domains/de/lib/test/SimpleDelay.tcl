@@ -90,7 +90,7 @@ test SimpleDelay-4.1 {test a self loop with the zero delay} {
     [java::field $add plus] link $r
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.DEDirector:
 Zero delay self-loop on actor: .top.add}}
 
 test SimpleDelay-5.1 {test a more complex loop with the zero delay} {
@@ -112,7 +112,7 @@ test SimpleDelay-5.1 {test a more complex loop with the zero delay} {
     [java::field $add plus] link $r
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .top.DEDirector:
 Found zero delay loop including: .top.add, .top.gain}}
 
 test SimpleDelay-5.2 {fix the zero delay with a non-zero delay} {

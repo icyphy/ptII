@@ -150,10 +150,10 @@ test Variable-2.5 {Check that dependency cycles are flagged as an error} {
     catch {$p1 getToken} errormsg1
     catch {$p3 getToken} errormsg2
     list $value1 $value2 $value3 $errormsg1 $errormsg2
-} {1.1 9.9 11.0 {ptolemy.kernel.util.IllegalActionException: .E.P1:
-.E.P3:
-Found dependency loop when evaluating .E.P1: P3} {ptolemy.kernel.util.IllegalActionException: .E.P3:
-.E.P1:
+} {1.1 9.9 11.0 {ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
+Object name: .E.P3:
+Found dependency loop when evaluating .E.P1: P3} {ptolemy.kernel.util.IllegalActionException: Object name: .E.P3:
+Object name: .E.P1:
 Found dependency loop when evaluating .E.P3: P1 + P2}}
 
 #################################
@@ -167,7 +167,7 @@ test Variable-3.0 {First check for no error message} {
 test Variable-3.1 {Next check for reasonable error message} {
     catch {$p1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E.P1:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
 Error parsing expression "P2":
 The ID P2 is undefined.}}
 
@@ -219,7 +219,7 @@ test Variable-5.1 {Set types without first clearing} {
     set doubleClass [java::field ptolemy.data.type.BaseType DOUBLE]
     catch {$p1 setTypeEquals $doubleClass} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E.P1:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
 Variable.setTypeEquals(): the currently contained token ptolemy.data.StringToken("foo") is not compatible with the desired type double}}
 
 test Variable-5.2 {Set types with first clearing} {
@@ -318,7 +318,7 @@ test Variable-6.4 {Check removeFromScope} {
     $v2 {removeFromScope ptolemy.data.expr.Variable} $v1
     catch {[[$v2 getToken] toString]} r2
     list $r1 $r2
-} {{"cb"} {ptolemy.kernel.util.IllegalActionException: .V2:
+} {{"cb"} {ptolemy.kernel.util.IllegalActionException: Object name: .V2:
 Error parsing expression "P1+P2":
 The ID P1 is undefined.}}
 
@@ -409,7 +409,7 @@ test Variable-10.0 {Check setContainer} {
     $p2 setContainer $e2
     set r3 [[$p2 getToken] toString]
     list $r1 $r2 $r3
-} {{"a"} {ptolemy.kernel.util.IllegalActionException: .E1.P2:
+} {{"a"} {ptolemy.kernel.util.IllegalActionException: Object name: .E1.P2:
 Error parsing expression "P1":
 The ID P1 is undefined.} {"a"}}
 

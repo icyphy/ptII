@@ -482,7 +482,7 @@ test PtParser-10.2 {Test for reasonable error messages on type problems} {
     $v1 setExpression "cos(1)"
     catch {$v1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E.v1:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .E.v1:
 No matching function cos( 1 ).}}
 
 

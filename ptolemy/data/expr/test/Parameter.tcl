@@ -144,7 +144,7 @@ test Parameter-3.5 {Check that we can't convert down} {
     set intClass [java::field ptolemy.data.type.BaseType INT]
     catch {$param1 setTypeEquals $intClass} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .entity.id1:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .entity.id1:
 Variable.setTypeEquals(): the currently contained token ptolemy.data.DoubleToken(7.0) is not compatible with the desired type int}}
 
 test Parameter-3.6 {Check that a new token is converted} {

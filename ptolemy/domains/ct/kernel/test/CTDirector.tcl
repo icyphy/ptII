@@ -306,14 +306,14 @@ test CTMultiSolverDirector-3.1 {register a breakpoint} {
     list $starttime $first $firstAgain $second $secondAgain $third $stoptime
 } {0.0 0.1 0.1 0.2 0.2 0.4 1.0}
 
-test CTMultiSolverDirector-3.1 {access empty breakpoint table} {     
+test CTMultiSolverDirector-3.2 {access empty breakpoint table} {     
     #Note: use above set up.
     $bptable removeFirst
     set nextone [$bptable first]
     list [expr {$nextone == [java::null]}]
 } {1}
 
-test CTMultiSolverDirector-3.1 {BreakpointODESolver} {
+test CTMultiSolverDirector-3.3 {BreakpointODESolver} {
     #Note: use above set up.
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]
@@ -322,6 +322,6 @@ test CTMultiSolverDirector-3.1 {BreakpointODESolver} {
     catch {$param setToken $token} msg
     #catch {$param getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .System.DIR:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .System.DIR:
 ptolemy.domains.ct.kernel.solver.DerivativeResolver can only be used as a breakpoint ODE solver.}}
 

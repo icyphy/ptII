@@ -85,9 +85,5 @@ test StaticSchedulingDirector-4.1 {Test setScheduler and getScheduler} {
     set s2 [java::new ptolemy.actor.sched.Scheduler]
     catch {[$d2 setScheduler $s2]} err1
     list [$s0 getFullName] [$s1 getFullName] $err1
-} {.D1.Scheduler .D1.Scheduler {ptolemy.kernel.util.IllegalActionException: .Scheduler and .D2:
+} {.D1.Scheduler .D1.Scheduler {ptolemy.kernel.util.IllegalActionException: Object names: .Scheduler and .D2:
 Cannot set container because workspaces are different.}}
-
-######################################################################
-####
-#
