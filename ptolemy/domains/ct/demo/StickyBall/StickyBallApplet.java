@@ -48,7 +48,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
-//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
 //// Sticky Ball
 /*
 @author Jie Liu, Xiaojun Liu
@@ -56,12 +56,12 @@ import java.util.Enumeration;
 */
 public class StickyBallApplet extends CTApplet {
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-/** Initialize the applet.
- */
-public void init() {
+    /** Initialize the applet.
+     */
+    public void init() {
 
     super.init();
     Panel controlpanel = new Panel();
@@ -408,8 +408,8 @@ public void init() {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
 // Query box.
 private Query _query;
@@ -417,11 +417,11 @@ private Query _query;
     // The gain for the stickiness decay.
     private Scale _ctGain;
 
-    //////////////////////////////////////////////////////////////////////////
-////                       inner classes                              ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classess                    ////
 
-/** Listener update the parameter change of stop time.
- */
+    /** Listener update the parameter change of stop time.
+     */
 private class ParameterListener implements QueryListener {
     public void changed(String name) {
         try {
