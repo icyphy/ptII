@@ -71,28 +71,36 @@ public class CSPProcessor extends CSPActor {
     public void accessMemory(boolean read) throws IllegalActionException {
         
         // State 1 
+	System.out.println("STATE 1: " +getName());
         double delayTime = java.lang.Math.random() * 10.0;
         System.out.println(getName()+" delaying for "+delayTime+" seconds.");
         delay( delayTime ); 
+        System.out.println(getName()+" is finished delaying.");
         
         // State 2 
+	System.out.println("STATE 2: " +getName());
         IntToken iToken = new IntToken( _code ); 
-        _requestOut.send(0, iToken); 
+        _requestOut.broadcast(iToken); 
+        
+        System.out.println(getName()+" is finished sending request.");
         
         // State 3 
+	System.out.println("STATE 3: " +getName());
         BooleanToken bToken = (BooleanToken)_requestIn.get(0); 
         if( bToken.booleanValue() ) {
+            System.out.println(getName()+" is accessing memory");
             if( read ) {
                 _memoryIn.get(0);
             }
             else {
                 StringToken strToken = new StringToken( getName() );
-                _memoryOut.send(0, strToken);
+                _memoryOut.broadcast(strToken);
             }
             return;
         }
         
         // State 4
+	System.out.println("STATE 4: " +getName());
         accessMemory(read);
     }
 
