@@ -168,6 +168,68 @@ Berkeley, CA 94706</property>
                         <property name="bundledJVMSource">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
                         <property name="bundledJVMArguments"/>
                     </extendedProperty>
+                    <extendedProperty name="solaris.jvm.resolution" type="com.installshield.wizard.platform.solaris.extra.SolarisJVMResolutionExtra">
+                        <property name="bundledJVMResource"/>
+                        <property name="useCurrentJVM">False</property>
+                        <property array="True" length="0" name="JVMFileResources" type="string"/>
+                        <property array="True" length="2" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jdk.1.3.solaris.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jdk.1.2.2.solaris.jvm</property>
+                            </arrayItem>
+                        </property>
+                        <property name="timeout">120</property>
+                        <property name="JVMResolution">2</property>
+                        <property name="bundledJVMSource"/>
+                        <property name="bundledJVMArguments">-qq -o</property>
+                    </extendedProperty>
+                    <extendedProperty name="linux.jvm.resolution" type="com.ibm.wizard.platform.linux.LinuxJVMResolutionExtra">
+                        <property name="bundledJVMResource"/>
+                        <property name="useCurrentJVM">False</property>
+                        <property array="True" length="0" name="JVMFileResources" type="string"/>
+                        <property array="True" length="8" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\sunjdk13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\sunjre13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\ibmjdk13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjdk13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjre13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\sunjre122.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjre122.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjdk12.jvm</property>
+                            </arrayItem>
+                        </property>
+                        <property name="timeout">120</property>
+                        <property name="JVMResolution">2</property>
+                        <property name="bundledJVMSource"/>
+                        <property name="bundledJVMArguments">-qq -o</property>
+                    </extendedProperty>
                     <property name="JVMId">jvm</property>
                     <property name="installLocation">_jvm</property>
                     <property name="useInstalledJVM">True</property>
@@ -516,8 +578,10 @@ Berkeley, CA 94706</property>
     <property name="archiveType">1</property>
     <property array="True" length="3" name="support" type="com.installshield.isje.build.BuildConfigurationSupport">
         <arrayItem type="com.installshield.isje.wizard.PlatformSupport">
-            <property array="True" length="1" name="builders" type="com.installshield.isje.build.ExtendedWizardBuilder">
+            <property array="True" length="3" name="builders" type="com.installshield.isje.build.ExtendedWizardBuilder">
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32Builder"/>
+                <arrayItem type="com.installshield.wizard.platform.solaris.SolarisBuilder"/>
+                <arrayItem type="com.ibm.wizard.platform.linux.LinuxBuilder"/>
             </property>
         </arrayItem>
         <arrayItem type="com.installshield.isje.build.LanguageSupport">
