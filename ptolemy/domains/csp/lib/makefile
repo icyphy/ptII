@@ -54,7 +54,6 @@ JSRCS = \
 	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
-	DisplayBlock.java \
 	CSPMultiSink.java
 
 
