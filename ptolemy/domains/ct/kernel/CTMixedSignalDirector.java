@@ -345,13 +345,21 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         + ", but the next iteration time = "
                         + nextIterationTime);
             }
+
+            // If the outside time and the next iteration time are so close
+            // that the difference is less than the time resolution, then
+            // we simply omit this firing and refire at the next iteration time.
+            if (nextIterationTime - _outsideTime < timeResolution) {
+                _currentTime = nextIterationTime;
+                exe.fireAt(container, nextIterationTime);
+                return false;
+            }
            
             // Ideally, the outside time should equal to the current 
             // local time. If the outside time is less than the local
             // time, then rollback is needed. If the outside time 
             // is greater than the local time, we will complain.
-            if (Math.abs(_outsideTime - getCurrentTime()) < 
-                    getTimeResolution()) {
+            if (Math.abs(_outsideTime - getCurrentTime()) < timeResolution) {
                 // We are woke up as we requested.
                 // Roundup the current time to the outside time
                 if(_debugging) _debug("Outside time is the current time.",
