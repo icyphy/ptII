@@ -212,7 +212,9 @@ public class UtilityFunctions {
      *  @return The subarray of this array containing exactly those
      *   elements, in order, for which the given function returns
      *   a BooleanToken with value true.  Any other return value
-     *   results in the element being ommitted.
+     *   results in the element being ommitted. If the given function
+     *   never returns true, then return an empty array with an
+     *   element type that matches the specified array.
      *  @exception IllegalActionException If applying the function
      *   triggers an exception.
      *  @since Ptolemy II 4.1 
@@ -220,6 +222,12 @@ public class UtilityFunctions {
     public static ArrayToken filter(FunctionToken predicate, ArrayToken array)
             throws IllegalActionException {
         List result = new LinkedList();
+        int arity = predicate.getNumberOfArguments();
+        if (arity != 1) {
+            throw new IllegalActionException(
+                    "The predicate argument of filter() must be a function"
+                    + " that takes one argument.");
+        }
         for (int i = 0; i < array.length(); i++) {
             Token element = array.getElement(i);
             Token[] elementList = { element } ;
@@ -239,80 +247,28 @@ public class UtilityFunctions {
         }
     }
     
-    /** Apply the specified predicate function to filter an array to produce an 
-     *  array of the specified length. For each array element, if applying
-     *  the predicate function on it returns ture, then keep it, otherwise skip it.
-     *  Do the above process until we get as many elements as the specified length 
-     *  or the entire array has been filtered. The <i>length</i> argument is 
-     *  required to be greater than 1.
-     *  @param function A single-argument predicate function.
-     *  @param length The length of the resulting array.
-     *  @param array The array to be filtered.
-     *  @return A new array that is the result of filtering the input array.
-     *  @exception IllegalActionException If the specified function does not
-     *  take exactly one argument, or if an error occurs applying the function.
-     */
-    public static ArrayToken filter(
-            FunctionToken function,
-            int length,
-            ArrayToken array)
-            throws IllegalActionException {
-        int arity = function.getNumberOfArguments();
-        if (arity != 1) {
-            throw new IllegalActionException(
-                    "filter() can only be used on functions that take "
-                    + "one argument.");
-        } else if (length < 1) {
-            throw new IllegalActionException(
-                    "filter() requires the length argument to be greater "
-                    + "than 1.");
-        } else {
-            int i = 0;
-            int j = 0;
-            LinkedList list = new LinkedList();
-            while(i<length && j < array.length()) {
-                Token t = (Token) array.getElement(j);
-                Token[] args = new Token[1];
-                args[0] = t;
-                if (((BooleanToken)function.apply(args)).booleanValue()){
-                    i++;
-                    list.add(t);
-                }
-                j++;
-            }
-            
-            Token[] result = new Token[list.size()];
-            for(i = 0; i < list.size(); i++) {
-                result[i] = (Token) list.get(i);
-            }
-
-            return new ArrayToken(result);
-        }
-    }
-
     /** Return the return type of the filter method, given the types
      *  of the argument.
-     *  @param functionType The type of the predicate function.
-     *  @param lengthType The type of the length argument.
+     *  @param predicateType The type of the predicate function.
      *  @param arrayTokenType The type of the array to be filtered.
-     *  @return The type of the result.
+     *  @return The type of the result, which is the same as the array
+     *   type to be filtered.
      *  @exception IllegalActionException If the specified function does not
      *   take exactly one argument, or if the type signature of the function
-     *   is not compatible with the other arguments.
+     *   is not compatible with the other array argument.
      */
     public static Type filterReturnType(
-            Type functionType,
-            Type lengthType,
+            Type predicateType,
             Type arrayTokenType)
             throws IllegalActionException {
-        if (functionType instanceof FunctionType) {
-            FunctionType castFunctionType = (FunctionType) functionType;
-            if (castFunctionType.getArgCount() != 1) {
+        if (predicateType instanceof FunctionType) {
+            FunctionType castPredicateType = (FunctionType) predicateType;
+            if (castPredicateType.getArgCount() != 1) {
                 throw new IllegalActionException(
                         "filter() can only be used on functions that take "
                         + "one argument.");
             } else {
-                Type argType = castFunctionType.getArgType(0);
+                Type argType = castPredicateType.getArgType(0);
                 int comparison = TypeLattice.compare(
                         ((ArrayType) arrayTokenType).getElementType(), argType);
                 if (comparison != CPO.LOWER && comparison != CPO.SAME) {
@@ -1472,6 +1428,40 @@ public class UtilityFunctions {
         return sortReturnType(type);
     }
 
+    /** Return the contiguous subarray of the specified array
+     *  starting at the specified index and of the specified length.
+     *  If the specified index is out of range,
+     *  or if the specified length extends beyond the end of the array,
+     *  then return an empty array with the same type as the specified array.
+     *  @param array The array.
+     *  @param index The index of the beginning of the subarray.
+     *  @param count The length of the subarray.
+     *  @return The extracted subarray.
+     *  @exception IllegalActionException If the index argument is less
+     *   than zero.
+     *  @since Ptolemy II 4.1
+     */
+    public static ArrayToken subarray(
+            ArrayToken array, IntToken index, IntToken count)
+            throws IllegalActionException {
+        return array.subarray(index.intValue(), count.intValue());
+    }
+
+    /** Return the return type of the subarray() method, which is the
+     *  same as the array type.
+     *  @param array The array.
+     *  @param index The index of the beginning of the subarray.
+     *  @param count The length of the subarray.
+     *  @return The extracted subarray.
+     *  @exception IllegalActionException If the index argument is less
+     *   than zero.
+     *  @since Ptolemy II 4.1
+     */
+    public static Type subarrayReturnType(
+            Type arrayType, Type indexType, Type countType) {
+        return arrayType;
+    }
+    
     /** Return the sum of the elements in the specified array.
      *  This method is polymorphic in that it can sum any array
      *  whose elements support addition.

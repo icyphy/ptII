@@ -445,23 +445,28 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Return the contiguous subarray starting at the specified index and
-     *  of the specified length.
-     *  @param index The index of the beginning of the subarray
-     *  @param count The length of the subarray
+     *  of the specified length. If the specified index is out of range,
+     *  or if the specified length extends beyond the end of the array,
+     *  then return an empty array with the same type as this array.
+     *  @param index The index of the beginning of the subarray.
+     *  @param count The length of the subarray.
      *  @return The extracted subarray.
-     *  @exception IllegalActionException If the requested subarray
-     *   falls outside of the actual bounds of this array.
+     *  @exception IllegalActionException If the index argument is
+     *   less than zero.
      *  @since Ptolemy II 4.1
      */
     public ArrayToken subarray(int index, int count) 
             throws IllegalActionException {
-        if (count > 0) {
-            Token result[] = new Token[count];
-            try {
-                System.arraycopy(_value, index, result, 0, count);
-            } catch (IndexOutOfBoundsException e) {
-                throw new IllegalActionException("Subarray is out of bounds.");
+        if (index < 0) {
+            throw new IllegalActionException(
+            "index argument of subarray() must be non-negative.");
+        }
+        if (count > 0 && index < _value.length && index >= 0) {
+            if (count + index > _value.length) {
+                count = _value.length - index;
             }
+            Token result[] = new Token[count];
+            System.arraycopy(_value, index, result, 0, count);
             return new ArrayToken(result);
         } else {
             return new ArrayToken(getElementPrototype());
