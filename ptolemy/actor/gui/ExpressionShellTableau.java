@@ -66,8 +66,9 @@ public class ExpressionShellTableau extends Tableau
     public ExpressionShellTableau(ExpressionShellEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        frame = newFrame();
+        frame = new ExpressionShellFrame(this);
         setFrame(frame);
+        frame.setTableau(this);
         _evaluator = new ParseTreeEvaluator();
     }
 
@@ -149,13 +150,6 @@ public class ExpressionShellTableau extends Tableau
      */
     public boolean isCommandComplete(String command) {
         return true;
-    }
-
-    /** Return an instance of ExpressionShellFrame.
-     */
-    public ExpressionShellFrame newFrame()
-           throws IllegalActionException, NameDuplicationException {
-        return new ExpressionShellFrame(this);
     }
 
     ///////////////////////////////////////////////////////////////////
