@@ -198,7 +198,7 @@ public class ComponentDialog extends JDialog {
                     // window closing.
                     _handleClosing();
 
-                    // Java's AWT yeilds random results if we do this.
+                    // Java's AWT yields random results if we do this.
                     // And anyway, it doesn't work.  Components still don't
                     // have their ComponentListener methods called to indicate
                     // that they have become invisible.
@@ -222,7 +222,7 @@ public class ComponentDialog extends JDialog {
                     (tk.getScreenSize().height - getSize().height)/2);
         }
 
-        // NOTE: Java's AWT may yeild random results if we do the following.
+        // NOTE: Java's AWT may yield random results if we do the following.
         // And anyway, it doesn't work.  Components still don't
         // have their ComponentListener methods called to indicate
         // that they have become invisible.
