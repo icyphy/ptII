@@ -370,6 +370,7 @@ public class DFUtilities {
             try {
                 variable = new Parameter(port, name);
                 variable.setVisibility(Settable.EXPERT);
+                variable.setPersistent(false);
             } catch (KernelException ex) {
                 throw new InternalErrorException(
                         port, ex, "Should not occur");
