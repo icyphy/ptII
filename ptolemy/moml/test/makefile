@@ -54,6 +54,7 @@ JSIMPLE_TESTS = \
 	EntityLibrary.tcl \
 	LibraryAttribute.tcl \
 	Location.tcl \
+	MoMLAttribute.tcl \
 	MoMLChangeRequest.tcl \
 	MoMLParser.tcl \
 	StreamErrorHandler.tcl \
