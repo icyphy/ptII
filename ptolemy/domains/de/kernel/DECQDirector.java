@@ -271,6 +271,20 @@ public class DECQDirector extends Director {
         _stopTime = st;
     }
 
+    /** FIXME: implement this
+     */
+    public boolean computeDepth() {
+        return true;
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+
+    // FIXME: implement this
+    private int setDepth(IOPort p, Actor a) {
+        return 1;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
     

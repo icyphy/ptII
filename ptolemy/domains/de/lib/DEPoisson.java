@@ -66,7 +66,7 @@ public class DEPoisson extends AtomicActor {
         _loopIn = new IOPort(this, "loop input" , true , false);
         _loopOut = new IOPort(this, "loop output", false, true );
         // now connect loopIn and loopOut
-        _loopRelation = new IORelation(container, "loop relation");
+        _loopRelation = new IORelation(container, name+" loop relation");
         _loopIn.link(_loopRelation);
         _loopOut.link(_loopRelation);
         // set the interval between events.

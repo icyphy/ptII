@@ -38,12 +38,12 @@ import java.awt.*;
 //////////////////////////////////////////////////////////////////////////
 //// DEPlot
 /** 
-A CT Start that calls ptplot to plot the result. Single input only.
+A DE Star that calls ptplot to plot the result. Single input only.
 @author Lukito Muliadi
 @version $Id$
 */
 public class DEPlot extends AtomicActor{
-    /** Construct a CTPlot star in a CT universe. Default Y-range is
+    /** Construct a DEPlot star in a CT universe. Default Y-range is
      *  [-1, 1]. Default X-range is from the startTime to the stopTime.
      */	
     public DEPlot(CompositeActor container, String name) 
@@ -51,6 +51,7 @@ public class DEPlot extends AtomicActor{
         super(container, name);
         // create the input port and make it a multiport.
         _input = new IOPort(this, "input", true, false);
+        _input.makeMultiport(true);
         // FIXME: design it to be single width first
         //_input.makeMultiport(true);
         _yMin = (double)-1;
@@ -64,11 +65,25 @@ public class DEPlot extends AtomicActor{
      */
     public void initialize() 
             throws CloneNotSupportedException, IllegalActionException {
-        System.out.println("Initializing "+description(CLASSNAME|FULLNAME));        
+        System.out.println("Initializing "+description(CLASSNAME|FULLNAME));
+   
         _exe = (DECQDirector) getDirector();
         if (_exe == null) {
             throw new IllegalActionException(this, "No director available");
         } 
+        _inputWidth = _input.getWidth();
+        if (_inputWidth == 0) {
+            throw new InvalidStateException("DEPlot.initialize(), bug in "+
+                    "scheduler, input width is equal to zero, therefore "+
+                    "shoudn't be scheduled.");
+        }
+        _firstPoint = new boolean[_inputWidth];
+        for (int i = 0; i<_inputWidth; i++) {
+            _firstPoint[i] = true;
+        }
+        // Initialization of the frame X-range is deferred until the fire()
+        // phase, because the director doesn't know the startTime() until
+        // some stars enqueue it.
     }
 
     /** fire: consume the input tokens. In the first fire() round, 
@@ -76,36 +91,53 @@ public class DEPlot extends AtomicActor{
      */
     public void fire() 
             throws CloneNotSupportedException, IllegalActionException{
+        
         System.out.println("Firing " + description(CLASSNAME|FULLNAME));
+        
         if (_frame == null) {
             _frame = new DEPlotFrame(); 
             _frame.resize(800, 400);
             _frame.setXRange(_exe.startTime(), _exe.stopTime());
             _frame.setYRange(getYMin(), getYMax());
-            // FIXME: just assume single width first.
-            //_frame.setNumSets(_input.getWidth());
-            _frame.init();            
+            // set the number of sets in the plot according to input port width
+            _frame.setNumSets(_inputWidth);
+            // initialize the plot.
+            _frame.init();
         }
         
-        try {
-            DEToken curToken = (DEToken)(_input.get(0));
-            double curValue = curToken.doubleValue();
-            double curTime = ((DETag)curToken.getTag()).timeStamp();
-            if (_firstPoint) {
-                _frame.addPoint(0, curTime, curValue, false);
-                _firstPoint = false;
-            } else {
-                _frame.addPoint(0, curTime, curValue, true);
-            }
+        int numEmptyChannel = 0;
 
+        for (int i = 0; i<_inputWidth; i++) {
+        
+            try {
+                // the following statement might throw an exception.
+                DEToken curToken = (DEToken)_input.get(i);
+                
+                // if an exception is not thrown then continue below.
+                double curValue = curToken.doubleValue();
+                double curTime = ((DETag)curToken.getTag()).timeStamp();
+                
+                if (_firstPoint[i]) {
+                    _frame.addPoint(i, curTime, curValue, false);
+                    _firstPoint[i] = false;
+                } else {
+                    _frame.addPoint(i, curTime, curValue, true);
+                }
+                
+            } catch (NoSuchItemException e) {
+                // Some channels might have no token in them, and it's okay.
+                numEmptyChannel++;
+            }
             
-            
-            
-        } catch (NoSuchItemException e) {
-            throw new InvalidStateException(_input, e.getMessage() +
-                    "No incoming token when needed. Schedule is wrong?");
         } 
+        // If all channels are empty, then the scheduler is wrong.
+        if (numEmptyChannel == _inputWidth) {
+            throw new InvalidStateException("DEPlot.fire(), no tokens in the "+
+                                        "input port, bad scheduler ?");
+        }
+        
     }
+    
     /*    
           public void setParam(String name, String valueString) {
           double value = (new Double(valueString)).doubleValue();
@@ -204,6 +236,8 @@ public class DEPlot extends AtomicActor{
     private double _yMin;
     private double _yMax;
 
-    private boolean _firstPoint = true;
+    private boolean[] _firstPoint;
+
+    private int _inputWidth;
 
 }

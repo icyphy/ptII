@@ -35,6 +35,14 @@
 #      |          ^
 #      |          |
 #      ------------
+#
+#  Clock--->Ramp1-------->Sampler1------------------------->Plot
+#                            ^                            |
+#                            |                            |
+#  Poisson-------------------O->Ramp2--->Sampler2---------
+#                            |                  ^
+#                            |                  |
+#                             ------------------
 
 # Create the top level Composite Actor
 set sys [java::new ptolemy.actor.CompositeActor]
@@ -51,7 +59,11 @@ $dir setStopTime 50.0
 
 # Build the system
 set poisson [java::new ptolemy.domains.de.lib.DEPoisson 1.0 1.0 $sys Poisson]
-set sampler [java::new ptolemy.domains.de.lib.DESampler $sys Sampler]
+set sampler1 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler1]
+set sampler2 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler2]
+set ramp1 [java::new ptolemy.domains.de.lib.DERamp 0 2 $sys Ramp1]
+set ramp2 [java::new ptolemy.domains.de.lib.DERamp -2 2 $sys Ramp2]
+set clock [java::new ptolemy.domains.de.lib.DEClock 1.0 $sys Clock] 
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports
@@ -61,17 +73,45 @@ set poissonOut [$poissonOutEnum nextElement]
 set plotInEnum [$plot inputPorts]
 set plotIn [$plotInEnum nextElement]
 
-set samplerInEnum [$sampler inputPorts]
-set samplerIn [$samplerInEnum nextElement]
-set samplerIn2 [$samplerInEnum nextElement]
+set sampler1InEnum [$sampler1 inputPorts]
+set sampler1DataIn [$sampler1InEnum nextElement]
+set sampler1ClockIn [$sampler1InEnum nextElement]
 
-set samplerOutEnum [$sampler outputPorts]
-set samplerOut [$samplerOutEnum nextElement]
+set sampler2InEnum [$sampler2 inputPorts]
+set sampler2DataIn [$sampler2InEnum nextElement]
+set sampler2ClockIn [$sampler2InEnum nextElement]
+
+set sampler1OutEnum [$sampler1 outputPorts]
+set sampler1Out [$sampler1OutEnum nextElement]
+
+set sampler2OutEnum [$sampler2 outputPorts]
+set sampler2Out [$sampler2OutEnum nextElement]
+
+set ramp1InEnum [$ramp1 inputPorts]
+set ramp1In [$ramp1InEnum nextElement]
+
+set ramp1OutEnum [$ramp1 outputPorts]
+set ramp1Out [$ramp1OutEnum nextElement]
+
+set ramp2InEnum [$ramp2 inputPorts]
+set ramp2In [$ramp2InEnum nextElement]
+
+set ramp2OutEnum [$ramp2 outputPorts]
+set ramp2Out [$ramp2OutEnum nextElement]
+
+set clockOutEnum [$clock outputPorts]
+set clockOut [$clockOutEnum nextElement]
 
 # Connect the ports
-set r1 [$sys connect $poissonOut $samplerIn R1]
-$samplerIn2 link $r1 
-set r3 [$sys connect $samplerOut $plotIn R3]
+set r1 [$sys connect $clockOut $ramp1In R1]
+set r2 [$sys connect $ramp1Out $sampler1DataIn R2]
+$plotIn link $r2
+set r3 [$sys connect $sampler1Out $plotIn R3]
+set r4 [$sys connect $poissonOut $sampler1ClockIn R4]
+$ramp2In link $r4
+$sampler2ClockIn link $r4
+set r5 [$sys connect $ramp2Out $sampler2DataIn R5]
+set r6 [$sys connect $sampler2Out $plotIn R6]
 
 # Run it
 $exec run
