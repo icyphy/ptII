@@ -96,14 +96,7 @@ public class DebugListenerView extends View {
 	frame.pack();
     }
 
-    /** Return the title of this view.  This class returns the string
-     *  DebugView: followed by the name of the debug object we are
-     *  attached to.
-     */
-    public String getViewTitle() {
-	return "DebugView: " + _debug.getFullName();
-    }
-
+    // FIXME what are we debugging?
     public class DebugListenerFrame extends TextEditor
 	implements DebugListener {
 	

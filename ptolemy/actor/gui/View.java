@@ -29,6 +29,8 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
 import ptolemy.kernel.util.IllegalActionException;
@@ -88,7 +90,15 @@ public class View extends ComponentEntity {
      *  returns the full name of the model.
      */
     public String getViewTitle() {
-	return "View";
+	try {
+	    ModelProxy proxy = (ModelProxy)getContainer();
+	    Parameter idParameter = 
+		(Parameter)proxy.getAttribute("identifier");
+	    return ((StringToken)idParameter.getToken()).stringValue();
+	}
+	catch (Exception ex) {
+	    return "UnNamed View";
+	}
     }
 
     /** Return true if the window associated with this attribute

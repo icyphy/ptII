@@ -92,15 +92,6 @@ public class RunView extends View {
 	frame.pack();
     }
 
-    /** Return the title of this view.  This class returns the 
-     *  string RunView: followed by the full name of the ptolemy
-     *  model.
-     */
-    public String getViewTitle() {
-	PtolemyModelProxy proxy = (PtolemyModelProxy)getContainer();
-	return "RunView: " + proxy.getModel().getFullName();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
