@@ -51,9 +51,10 @@ OTHER_FILES_TO_BE_JARED = \
 	AssemblyLine.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
-	AssemblyLine.htm \
-	AssemblyLineVergil.htm
+	$(OTHER_FILES_TO_BE_JARED)
+
+#	AssemblyLine.htm \
+#	AssemblyLineVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -72,9 +73,10 @@ all: jclass
 
 install: all jars
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) appletviewer AssemblyLine.htm
+demo: demo_ptolemy demo_vergil #demo_applet
+
+#demo_applet: $(PTCLASSJAR)
+#	CLASSPATH=$(CLASSPATH) appletviewer AssemblyLine.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" AssemblyLine.xml
