@@ -76,7 +76,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="77.7890625, 117.40625">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 27, 865, 680}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 27, 865, 682}}">
     </property>
     <entity name="1:giotto" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 200.0">
@@ -428,7 +428,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false, true, false, true, false, true, false, true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true, false, true, false, true, false, true, false, true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
