@@ -127,6 +127,9 @@ public class DDEDirector extends ProcessDirector {
      */
     public synchronized void registerWriteBlock(DDEReceiver rcvr) {
         _writeBlocks++;
+	if( _writeBlockedQs == null ) {
+	    _writeBlockedQs = new LinkedList();
+	} 
         _writeBlockedQs.insertFirst(rcvr);
     }
     
@@ -136,7 +139,10 @@ public class DDEDirector extends ProcessDirector {
     synchronized void addWriteBlock(DDEReceiver rcvr) {
         System.out.println("Added write block.");
         _writeBlocks++;
-        _writeBlockedQs.insertFirst(rcvr);
+	if( _writeBlockedQs == null ) {
+	    _writeBlockedQs = new LinkedList();
+	} 
+	_writeBlockedQs.insertFirst(rcvr);
 	notifyAll();
     }
 
@@ -264,6 +270,9 @@ public class DDEDirector extends ProcessDirector {
         if( _writeBlocks > 0 ) {
             _writeBlocks--;
         }
+	if( _writeBlockedQs == null ) {
+	    _writeBlockedQs = new LinkedList();
+	} 
         _writeBlockedQs.removeOneOf(rcvr);
     }
 
@@ -344,6 +353,9 @@ public class DDEDirector extends ProcessDirector {
      */
     protected void incrementLowestCapacityPort() 
             throws IllegalActionException {
+	if( _writeBlockedQs == null ) {
+	    _writeBlockedQs = new LinkedList();
+	} 
         _writeBlockedQs.sort(new RcvrCapacityComparator() );
         DDEReceiver smallestQueue;
         smallestQueue = (DDEReceiver)_writeBlockedQs.first();
