@@ -48,10 +48,12 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Attribute;
 
+//////////////////////////////////////////////////////////////////////////
+//// PeriodicTrigger
 /**
 This actor produces a ramp at 2 Hz.
-@author: Edward A. Lee
-@version: $Id$
+@author Edward A. Lee
+@version $Id$
 */
 public class PeriodicTrigger extends TypedAtomicActor {
 
