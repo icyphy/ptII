@@ -274,8 +274,22 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 		try {
 		    try {
 			// If the following fails, we should remove the effigy.
-			toplevel = parser.parse(base, in.openStream());
-
+			try {
+			    toplevel = parser.parse(base, in.openStream());
+			} catch (IOException io) {
+			    // If we are running under Web Start, we
+			    // might jave a URL that refers to another
+			    // jar file.
+			    URL anotherURL = 
+				MoMLApplication
+				.jarURLEntryResource(in.toString());
+			    if (anotherURL != null) {
+				toplevel = parser.parse(base,
+						    anotherURL.openStream());
+			    } else {
+				throw io;
+			    }
+			}
 			if (toplevel != null) {
 			    effigy.setModel(toplevel);
 

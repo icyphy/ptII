@@ -202,8 +202,10 @@ public class MoMLApplication {
                 return file.getCanonicalFile().toURL();
             } catch (MalformedURLException ex2) {
                 try {
+		    System.err.println("MoMLApplication.specToURL():2 "+ spec);
                     // Try one last thing, using the classpath.
                     // Need a class context, and this is a static method, so...
+		    // we can't use this.getClass().getClassLoader()
                     // NOTE: There doesn't seem to be any way to convert
                     // this a canonical name, so if a model is opened this
                     // way, and then later opened as a file, the model
@@ -212,7 +214,7 @@ public class MoMLApplication {
                             "ptolemy.kernel.util.NamedObj");
                     URL inurl = refClass.getClassLoader().getResource(spec);
                     if (inurl == null) {
-                        throw new Exception();
+			throw new Exception();
                     } else {
                         return inurl;
                     }
@@ -221,6 +223,44 @@ public class MoMLApplication {
                 }
             }
         }
+    }
+
+    /** Given a jar url of the format jar:<url>!/{entry}, return
+     *  the resource, if any of the {entry}.
+     *  If the string does not contain <code>!/</code>, then return null.
+     
+     *  @param spec The string containing the jar url.
+     *  @exception IOException If it cannot convert the specification to
+     *   a URL.
+     *  @see java.net.JarURLConnection
+     */	
+    public static URL jarURLEntryResource(String spec) throws IOException {
+	// At first glance, it would appear that this method could appear
+	// in specToURL(), but the problem is that specToURL() creates
+	// a new URL with the spec, so it only does further checks if
+	// the URL is malformed.  Unfortunately, in Web Start applications
+	// the URL will often refer to a resource in another jar file,
+	// which means that the jar url is not malformed, but there is
+	// no resource by that name.  Probably specToURL() should return
+	// the resource after calling new URL().
+	int jarEntry = spec.indexOf("!/");
+	if (jarEntry == -1) {
+	    return null;
+	} else {
+	    try {
+		// !/ means that this could be in a jar file.
+		String entry = spec.substring(jarEntry + 2);
+		Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
+		URL entryURL = refClass.getClassLoader().getResource(entry);
+		System.err.println("MoMLApplication.jarURLEntryResource(): "
+				   + " failed to open: " + spec
+				   + "\ntrying: " + entryURL);
+		return entryURL;
+	    } catch (Exception ex) {
+                    throw new IOException("File not found: " + spec + ": "
+					  + ex);
+	    }
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -166,7 +166,21 @@ public class HTMLViewerTableau extends Tableau {
                     tableau = new HTMLViewerTableau(
                             (HTMLEffigy)effigy, "htmlTableau");
                 }
-                ((HTMLViewer)tableau.getFrame()).setPage(effigy.url.getURL());
+		try {
+		    ((HTMLViewer)tableau.getFrame()).setPage(effigy.url.getURL());
+		} catch (IOException io) {
+		    // setPage() throws an IOException if the page can't
+		    // be found.  If we are under Web Start, it could be
+		    // that we are looking in the wrong Jar file, so
+		    // we try again.
+		    String urlString = effigy.url.getURL().toString();
+		    URL anotherURL =
+			MoMLApplication.jarURLEntryResource(urlString);
+		    if (anotherURL == null) {
+			throw io;
+		    }
+		    ((HTMLViewer)tableau.getFrame()).setPage(anotherURL);
+		}
                 // Don't call show() here.  If show() is called here,
                 // then you can't set the size of the window after
                 // createTableau() returns.  This will affect how
