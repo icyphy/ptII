@@ -256,7 +256,7 @@ public class GiottoCodeGenerator extends Attribute {
     /** Generate code for the output ports.
      *  In Giotto, the situation that one port has several inputs
      *  is illegal. From the output ports, it is easy to trace
-     *  to getreceivers for output delievery.
+     *  to getreceivers for output delivery.
      *  @return The output code.
      */
     private String _outputCode() throws IllegalActionException {
