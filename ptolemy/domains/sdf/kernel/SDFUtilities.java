@@ -285,6 +285,34 @@ public class SDFUtilities {
         }
     }
 
+    /** If a variable with the given name does not exist, then create
+     *  a variable with the given name and set the value of that
+     *  variable to the specified value. The resulting variable is not
+     *  persistent and not editable, but will be visible to the user.
+     *  @param port The port.
+     *  @param name Name of the variable.
+     *  @param value The value.
+     */
+    public static void setExpressionIfNotDefined(
+            Port port, String name, String value) 
+            throws IllegalActionException {
+        Variable rateParameter = (Variable)port.getAttribute(name);
+        if (rateParameter == null) {
+            try {
+                String altName = "_" + name;
+                rateParameter = (Variable)port.getAttribute(altName);
+                if(rateParameter == null) {
+                    rateParameter = new Parameter(port, altName);
+                    rateParameter.setVisibility(Settable.NOT_EDITABLE);
+                    rateParameter.setPersistent(false);
+                }
+                rateParameter.setExpression(value); 
+            } catch (KernelException ex) {
+                throw new InternalErrorException(port, ex, "Should not occur");
+            }
+        }
+    }
+
     /** If the specified container does not contain a variable with
      *  the specified name, then create such a variable and set its
      *  value to the specified integer.  The resulting variable is not
