@@ -91,7 +91,7 @@ public class BasicContextMenu extends JPopupMenu {
 		// Create a dialog for configuring the object.
                 try {
                     Configurer panel = new Configurer(_target);
-                    // FIXME: First argument below should a a parent window
+                    // FIXME: First argument below should be a parent window
                     // (a JFrame).
                     ComponentDialog dialog = new ComponentDialog(
                             null,
@@ -113,7 +113,7 @@ public class BasicContextMenu extends JPopupMenu {
 	    public void actionPerformed(ActionEvent e) {
 
 		// Create a dialog for configuring a parameter.
-// FIXME                try {
+                try {
                     List parameterList = _target.attributeList(Parameter.class);
                     String[] parameterNames = new String[parameterList.size()];
                     Iterator parameters = parameterList.iterator();
@@ -125,7 +125,7 @@ public class BasicContextMenu extends JPopupMenu {
                     Query query = new Query();
                     query.addChoice("Parameter", "Parameter", parameterNames,
                              parameterNames[0]);
-                    // FIXME: First argument below should a a parent window
+                    // FIXME: First argument below should be a parent window
                     // (a JFrame).
                     ComponentDialog dialog = new ComponentDialog(
                             null,
@@ -139,7 +139,7 @@ public class BasicContextMenu extends JPopupMenu {
                                 "choice", "radio button", "slider"};
                         query.addChoice("Style", "Interaction style",
                                 choices, choices[0]);
-                        // FIXME: First argument below should a a parent window
+                        // FIXME: First argument below should be a parent window
                         // (a JFrame).
                         dialog = new ComponentDialog(
                                 null,
@@ -158,12 +158,14 @@ public class BasicContextMenu extends JPopupMenu {
                             // FIXME...  need to deal with other styles.
                         }
                     }
-/* FIXME
                 } catch (IllegalActionException ex) {
                     // FIXME: How are errors reported in Vergil?
                     System.out.println(ex.toString());
+                } catch (NameDuplicationException ex) {
+                    // FIXME: How are errors reported in Vergil?
+                    // NOTE: This error should not occur.
+                    System.out.println(ex.toString());
                 }
-*/
 	    }
 	};
 	add(action, "Configure Parameters");
