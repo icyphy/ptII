@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/type
 
-DIRS = 		test
+DIRS = 		test demo
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
