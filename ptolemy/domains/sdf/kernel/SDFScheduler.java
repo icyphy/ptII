@@ -434,23 +434,12 @@ public class SDFScheduler extends Scheduler {
 	return inputCount;
     }
 
-    /** Return the number of firings associated with the Actor.   This is
-     *  equivalent to indexing into the Map returned by _getFiringVector and
-     *  casting the result to an integer.
+    /** Return the number of firings associated with the Actor.   The
+     *  number of firings is stored in the _firingvector Map, indexed
+     *  by the entity.
      */
     private int _getFiringCount(Entity entity) {
         return ((Integer) _firingvector.get(entity)).intValue();
-    }
-
-    /** Return the firing vector, which is a Map associating an Actor
-     *  with the number of times that it will fire during an SDF iteration.
-     *  The firing vector is only guaranteed to be valid if the schedule
-     *  is valid.
-     *
-     *  @return A Map from ComponentEntity to Integer.
-     */
-    private Map _getFiringVector() {
-        return _firingvector;
     }
 
     /** Normalize fractional firing ratios into a firing vector that
