@@ -162,8 +162,7 @@ public class UndoInfoAttribute extends SingletonAttribute
         List attrList = topLevel.attributeList(UndoInfoAttribute.class);
         if (attrList.size() > 0) {
             result = (UndoInfoAttribute)attrList.get(0);
-        }
-        else {
+        } else {
             // Create and attach a new instance
             result = new UndoInfoAttribute(topLevel, "_undoInfo");
         }
