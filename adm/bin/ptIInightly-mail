@@ -1,5 +1,5 @@
 #!/bin/sh
-# %W% %G%
+# $Id$
 # Script to mail a message about nightly build
 # ptIInightly run make nightly which runs this script when everything is done
 # This convoluted system is necessary so we can build on multiple
@@ -113,12 +113,20 @@ echo "Test results during code coverage" >> $mailmsg
 echo "" >> $mailmsg
 echo "............................................................" >> $mailmsg
 echo "|To add a directory to the list of directories to be tested|" >> $mailmsg
-echo "|edit the value of JSALLDIRS in $GENDIR/makefile|" >> $mailmsg
+echo "|edit the value of JSALLDIRS in $GENDIR/makefile           |" >> $mailmsg
 echo "............................................................" >> $mailmsg
 echo "" >> $mailmsg
-# Note that we only grep for the tests run during code coverage
-# which only occurred on /export/tycho/tycho2
-egrep 'Total Tests' $ptbuildlog >> $mailmsg
+echo "------------------------------------------------" >> $mailmsg
+echo "Test Failures during code coverage." >> $mailmsg
+echo "" >> $mailmsg
+egrep 'Total Tests' $ptbuildlog |
+    egrep -v '^Failed: 0' >> $mailmsg
+echo "------------------------------------------------" >> $mailmsg
+echo "Tests without Failures during code coverage." >> $mailmsg
+echo "" >> $mailmsg
+egrep 'Total Tests' $ptbuildlog |
+    egrep '^Failed: 0' >> $mailmsg
+
 
 echo "" >> $mailmsg
 echo "------------------------------------------------" >> $mailmsg
@@ -128,13 +136,5 @@ echo "To see code coverage, view:" >> $mailmsg
 echo "http://www.gigascale.org/ptolemy/nightly/coverage.html" >> $mailmsg
 echo "" >> $mailmsg
 sh $ADMDIR/bin/coveragesummary >> $mailmsg
-
-echo "" >> $mailmsg
-echo "------------------------------------------------" >> $mailmsg
-echo "Test Failures during code coverage." >> $mailmsg
-echo "" >> $mailmsg
-egrep 'Total Tests' $ptbuildlog |
-    egrep -v '^Failed: 0' >> $mailmsg
-
 
 cat $mailmsg | /usr/ucb/Mail -s "Ptolemy II Nightly Build" $mailto
