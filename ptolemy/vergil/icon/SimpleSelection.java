@@ -49,6 +49,11 @@ data being stored.
 */
 public class SimpleSelection implements Transferable, ClipboardOwner {
 
+    public SimpleSelection (Object selection, DataFlavor flavor) {
+        _selection = selection;
+        _flavor = flavor;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
