@@ -503,6 +503,44 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       JAI is the Java Advanced Imaging Framework
+#	For more information, 
+#       see http://java.sun.com/products/java-media/jai/
+#       See if there was a command-line option for where JAI is.
+#--------------------------------------------------------------------
+
+# PTJAI_DIR is set to jai and used in
+# $PTII/ptolemy/codegen/makefile if jai was found
+PTJAI_DIR=
+
+# We only need to look for JAI if the actor/lib/jai directory is present
+JAI_USER_DIR="$PTII/ptolemy/actor/lib/jai"
+
+if test ! -d "$JAI_USER_DIR"; then
+    AC_MSG_RESULT([$JAI_USER_DIR is not present,
+	so we need not find JAI - The Java Advanced Imaging API.])
+else
+    AC_MSG_CHECKING([for Java Advanced Imaging API])
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=`pwd`
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" JAITest.java ; then
+       AC_MSG_RESULT(ok)
+       PTJAI_DIR=jai
+    else
+       AC_MSG_WARN(['"$JAVAC" JAITest.java' failed.
+    perhaps the Java Advanced Imaging API is not installed?
+    You need not download Jai unless you plan on using the video
+    actors in $JAI_USER_DIR
+    The JAI API can be downloaded from 
+    http://java.sun.com/products/java-media/jai/])	
+    fi
+    cd "$startdir"
+fi
+
+#--------------------------------------------------------------------
 #       JHDL is a Java Highlevel Description Language, see
 #	http://www.jhdl.org
 #       See if there was a command-line option for where JHDL is
@@ -556,68 +594,38 @@ fi
 #--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information, 
-#       see http://java.sun.com/products/java-media/jmf/index.html
+#       see http://java.sun.com/products/java-media/jmf
 #       See if there was a command-line option for where JMF is.
 #--------------------------------------------------------------------
 
 # PTJMF_DIR is set to jmf and used in
-# $PTII/ptolemy/codegen/makefile if jmf was found
+# $PTII/ptolemy/actor/lib/makefile if jmf was found
 PTJMF_DIR=
 
-# Under Windows, installing JMF will adjust the CLASSPATH.
-# Ideally, we would check this.
-JMFHOME="c:/Program Files/JMF2.1.1"
-
-# Directory that contains the jmf jar files
-JMF_JAR='${JMFHOME}/lib/jmf.jar'
-
-# We only need to look for jmf if $PTII/ptolemy/apps/jmf exists
-if test ! -d "$PTII/ptolemy/apps/jmf"; then
-    AC_MSG_RESULT([$PTII/ptolemy/apps/jmf is not present,
+# We only need to look for jmf if $PTII/ptolemy/actor/lib exists
+JMF_USER_DIR="$PTII/ptolemy/actor/lib/jmf"
+if test ! -d "$JMF_USER_DIR"; then
+    AC_MSG_RESULT([$JMF_USER_DIR is not present,
 	so we need not find the JMF - The Java Media Framework.])
-    JMF_JAR='${PTII}/vendors/jmf/JMF_0_3_4.jar'
 else
-    AC_MSG_CHECKING([for jmf jar file])
-    AC_ARG_WITH(jmf_jar, [  --with-jmf-jar=JARFILE       use JMF from JARFILE,
-                          defaults to \$JMFHOME/lib/jmf.jar],
-	JMF_JAR=$withval,
-	JMF_JAR=$JMFHOME/lib/jmf.jar)
-
-    if test -f "$JMF_JAR"; then
-	AC_MSG_RESULT([$JMF_JAR])
-	# Set to jmf and used in
-	# $PTII/ptolemy/apps/makefile if jmf was found
-	PTJMF_DIR=jmf
-    fi	
-
-    if test "$PTJMF_DIR" = ""; then
-        AC_MSG_RESULT([Not found in $JMFHOME])
-
-        JMFHOME="c:/Program Files/JMF2.1"
-        AC_MSG_CHECKING([for jmf jar file again])
-	    AC_ARG_WITH(jmf_jar, [  --with-jmf-jar=JARFILE       use JMF from JARFILE,
-                          defaults to \$JMFHOME/lib/jmf.jar],
-  	JMF_JAR=$withval,
-	JMF_JAR=$JMFHOME/lib/jmf.jar)
-
-	if test -f "$JMF_JAR"; then
-	   AC_MSG_RESULT([$JMF_JAR])
-	   #Set to jmf and used in
-	   # $PTII/ptolemy/apps/makefile if jmf was found
-	   PTJMF_DIR=jmf
-        fi
-    fi	
-
-    if test "$PTJMF_DIR" = ""; then
-        AC_MSG_WARN(['Failed to find \$JMFHOME/lib/jmf.jar
-    perhaps Jmf is not installed?
-    You need not download Jmf unless you plan on using the video
-    actors in $PTII/apps/jmf	
+    AC_MSG_CHECKING([for Java Media Framework])
+    # We need to run javac in the config directory so that javac
+    # from jdk1.1.6 under NT and cygwin works properly
+    startdir=`pwd`
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" JMFTest.java ; then
+        AC_MSG_RESULT(ok)
+        PTJMF_DIR=jmf
+    else
+        AC_MSG_WARN(['"$JAVAC" JMFTest.java' failed.
+    perhaps the Java Media Framework (JMF) is not installed?
+    You need not download the JMF unless you plan on using the video
+    actors in $JMF_USER_DIR
     The JMF SDK can be downloaded from 
-    http://java.sun.com/products/java-media/jmf/index.html'])
-	# Note that we don't substitute in the ${JMFHOME} here
-	JMF_JAR='${JMFHOME}/lib/jmf.jar'
+    http://java.sun.com/products/java-media/jmf])
     fi
+    cd "$startdir"
 fi
 
 
@@ -808,7 +816,7 @@ fi
 # PTJAVA3D_DIR is set to gr and used in
 # $PTII/ptolemy/actor/lib/makefile if Java 3D was found
 PTJAVA3D_DIR=
-# We only need to look for Java3D if the gr demo is present
+# We only need to look for Java3D if the gr domain is present
 JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
 if test ! -d "$JAVA3D_USER_DIR"; then
@@ -831,8 +839,9 @@ else
 	$JAVA3D_USER_DIR,
 	otherwise the build will proceed fine with out Java 3D.])
     fi
+    cd "$startdir"
 fi
-cd "$startdir"
+
 
 #--------------------------------------------------------------------
 #	Test for javax.sound
@@ -1048,79 +1057,89 @@ fi
 # $PTII/ptolemy/makefile if matlab, extern/include/libeng.def and gcc are found
 PTMATLAB_DIR=
 
-# We only need to look for matlab if $PTII/ptolemy/matlab exists
-if test ! -d "$PTII/ptolemy/matlab"; then
-    AC_MSG_RESULT([$PTII/ptolemy/matlab is not present,
-	so we need not find matlab, gcc and dlltool.])
-    MATLAB_DIR=/matlab
-    PTCC=gcc
-    PTDLLTOOL=dlltool
+# Set PTWINDOWS to true if we are running under Windows
+PTWINDOWS=no
+case "`uname -s`" in
+CYGWIN*)
+	PTWINDOWS=yes
+	;;
+esac
+
+if test "$PTWINDOWS" = "no"; then
+    AC_MSG_WARN([The Matlab interface only works under Windows.
+    You are running `uname -s`.])
 else
-    AC_MSG_CHECKING([for matlab])
-    AC_PATH_PROG(MATLAB, matlab)
-    if test "${MATLAB:-none}" = "none"; then
-	AC_MSG_WARN([Failed to find matlab executable in the path.
+    # We only need to look for matlab if $PTII/ptolemy/matlab exists
+    if test ! -d "$PTII/ptolemy/matlab"; then
+	AC_MSG_RESULT([$PTII/ptolemy/matlab is not present,
+	    so we need not find matlab, gcc and dlltool.])
+	MATLAB_DIR=/matlab
+	PTCC=gcc
+	PTDLLTOOL=dlltool
+    else
+	AC_MSG_CHECKING([for matlab])
+	AC_PATH_PROG(MATLAB, matlab)
+	if test "${MATLAB:-none}" = "none"; then
+	    AC_MSG_WARN([Failed to find matlab executable in the path.
     Perhaps Matlab is not installed?
     If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable.]);
-    else 
-        startdir=`pwd`
-	cd "$srcdir/config"
-	if "$JAVAC" MatlabRootDirectory.java ; then
-	    AC_MSG_RESULT(ok)
-	    AC_MSG_CHECKING([the value of the Matlab root directory ])
-	    if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
-		# Run it again and get the results
-		MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
-		AC_MSG_RESULT('$MATLAB_DIR')
-	    else	
-		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB" failed.
+	else 
+	    startdir=`pwd`
+	    cd "$srcdir/config"
+	    if "$JAVAC" MatlabRootDirectory.java ; then
+		AC_MSG_RESULT(ok)
+		AC_MSG_CHECKING([the value of the Matlab root directory ])
+		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
+		    # Run it again and get the results
+		    MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
+		    AC_MSG_RESULT('$MATLAB_DIR')
+		else	
+		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB" failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
-
+		fi
+	    else
+		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC SystemJar.java failed.
+    We will not be able to compile the Matlab interface in ptolemy/matlab]);
 	    fi
-	else
-	    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC SystemJar.java failed.
-    We will not be able to compile the Matlab interface in ptolemy/matlab]);
-	fi
-	cd "$startdir"
+	    cd "$startdir"
 
-	if test ! -d "$MATLAB_DIR"; then
-		AC_MSG_WARN([Failed to find '${MATLAB_DIR}'
-        If Matlab is not present, then the Ptolemy II/Matlab interface in
+	    if test ! -d "$MATLAB_DIR"; then
+		    AC_MSG_WARN([Failed to find '${MATLAB_DIR}'
+	    If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable.]);
-	else
-	    if test -f "${MATLAB_DIR}/extern/include/libeng.def"; then
-		AC_MSG_RESULT([$MATLAB_DIR])
-		AC_MSG_CHECKING([for gcc])
-		AC_PATH_PROG(PTCC, gcc)
-		if test "${PTCC:-none}" != "none"; then
-		    AC_MSG_RESULT([$PTCC])
-		    PTMATLAB_DIR=matlab
-		else    
-		    AC_MSG_WARN([Failed to find gcc])
-		    AC_MSG_CHECKING([for cc])
-		    AC_PATH_PROG(PTCC, cc)
+	    else
+		if test -f "${MATLAB_DIR}/extern/include/libeng.def"; then
+		    AC_MSG_RESULT([$MATLAB_DIR])
+		    AC_MSG_CHECKING([for gcc])
+		    AC_PATH_PROG(PTCC, gcc)
 		    if test "${PTCC:-none}" != "none"; then
 			AC_MSG_RESULT([$PTCC])
 			PTMATLAB_DIR=matlab
-		    else	
-			AC_MSG_WARN([Failed to find gcc or cc, so we will
+		    else    
+			AC_MSG_WARN([Failed to find gcc])
+			AC_MSG_CHECKING([for cc])
+			AC_PATH_PROG(PTCC, cc)
+			if test "${PTCC:-none}" != "none"; then
+			    AC_MSG_RESULT([$PTCC])
+			    PTMATLAB_DIR=matlab
+			else	
+			    AC_MSG_WARN([Failed to find gcc or cc, so we will
+    not be able to compile the Matlab interface in ptolemy/matlab]);
+			fi
+		    fi
+		    AC_MSG_CHECKING([for dlltool])
+		    AC_PATH_PROG(PTDLLTOOL, dlltool)
+		    if test "${PTDLLTOOL:-none}" = "none"; then
+			PTMATLAB_DIR=
+			AC_MSG_WARN([Failed to find dlltool, so we will
     not be able to compile the Matlab interface in ptolemy/matlab]);
 		    fi
-		fi
-		# FIXME: currently, the Matlab interface only works
-		# under Windows
-		AC_MSG_CHECKING([for dlltool])
-		AC_PATH_PROG(PTDLLTOOL, dlltool)
-		if test "${PTDLLTOOL:-none}" = "none"; then
-		    PTMATLAB_DIR=
-		    AC_MSG_WARN([Failed to find dlltool, so we will
-    not be able to compile the Matlab interface in ptolemy/matlab]);
-		fi
-	    else 
-		AC_MSG_WARN([Failed to find matlab libeng.def file at
+		else 
+		    AC_MSG_WARN([Failed to find matlab libeng.def file at
     ${MATLAB_DIR}/extern/include/libeng.def. 
     Perhaps Matlab is not installed?]);
+		fi
 	    fi
 	fi
     fi	
@@ -1408,9 +1427,6 @@ AC_SUBST(JINI_DIR)
 # If Jini is present, the set to yes, otherwise, set to no
 AC_SUBST(JINI_PRESENT)
 
-# Jar file that contains JMF
-AC_SUBST(JMF_JAR)
-
 # Under JDK1.4, codegen requres javac -target 1.1 
 AC_SUBST(JTARGET)
 
@@ -1465,6 +1481,10 @@ AC_SUBST(PTJACL_DIR)
 
 # ptjacl.jar file, used to run the test suites
 AC_SUBST(PTJACL_JAR)
+
+# Set to jai and used in 
+# $PTII/ptolemy/actor/lib/makefile if Java Advanced Imaging was found
+AC_SUBST(PTJAI_DIR)
 
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)
