@@ -103,9 +103,14 @@ public class HTMLViewer extends TableauFrame
      */
     public void hyperlinkUpdate(HyperlinkEvent event) {
         if (event.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-            if (event != null && event.getURL() != null) {
-                // If the link was 'about:copyright', then getURL returns null
-                report(event.getURL().toString());
+            if (event != null) {
+                if (event.getURL() != null) {
+                    // If the link was 'about:copyright',
+                    // then getURL() returns null, but getDescription() works.
+                    report(event.getURL().toString());
+                } else if (event.getDescription() != null) {
+                    report(event.getDescription());
+                }
             }
         } else if (event.getEventType() == HyperlinkEvent.EventType.EXITED) {
             report("");
