@@ -64,6 +64,7 @@ JSIMPLE_TESTS = \
 	IllegalActionException.tcl \
 	InternalErrorException.tcl \
 	InvalidStateException.tcl \
+	Location.tcl \
 	KernelException.tcl \
 	KernelRuntimeException.tcl \
 	NameDuplicationException.tcl \
