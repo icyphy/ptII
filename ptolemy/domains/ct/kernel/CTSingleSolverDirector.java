@@ -238,6 +238,7 @@ public class CTSingleSolverDirector extends CTDirector {
         if(STAT) {
             NSTEP++;
         }
+        (Thread.currentThread()).yield();
         if(!scheduleValid()) {
             // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();

@@ -1,6 +1,6 @@
 /* A CT Director that handles the interaction with event based domains.
 
- Copyright (c) 1998-1999 The Regents of the University of California.
+ Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -324,8 +324,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             double timeAcc = getTimeResolution();
             double nextIterTime = exe.getNextIterationTime();
             double runlength = nextIterTime - _outsideTime;
+            if(runlength < 0 ) {
+                throw new InvalidStateException(this, "Outside domain" 
+                        + " time collapse."
+                        + " current time " + _outsideTime
+                        + " next iteration time " + nextIterTime);
+            }
             // synchronization, handle round up error.
-            if((runlength != 0.0)&& (runlength < timeAcc)) {
+            if(runlength < timeAcc) {
                 exe.fireAt(ca, nextIterTime);
                 if(DEBUG) {
                     System.out.println("Next iteration is too near" +
@@ -340,7 +346,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 }
                 setCurrentTime(_outsideTime);
             }
-
+            if (_outsideTime > getCurrentTime()) {
+                throw new IllegalActionException(this, exe,
+                        " time collapse.");
+            } 
             // check for roll back.
             if (_outsideTime < getCurrentTime()) {
                 if(DEBUG) {
@@ -352,15 +361,15 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                     NROLL ++;
                 }
                 _rollback();
-                _setFireEndTime(_outsideTime);
+                fireAt(null,_outsideTime);
                 _catchUp();
             }
-            if (_outsideTime > getCurrentTime()) {
-                throw new IllegalActionException(this, exe,
-                        " time collapse.");
-            } 
-            runlength = Math.min(runlength, _runAheadLength);
-            _setFireEndTime(_outsideTime + runlength);
+            //runlength = Math.min(runlength, _runAheadLength);
+            if(runlength < _runAheadLength) {
+                _setFireEndTime(nextIterTime);
+            } else {
+                _setFireEndTime(_outsideTime + _runAheadLength );
+            }
             // fireAt(null, _outsideTime);
             // fireAt(null, getFireEndTime());
             // Now it's guranteed that the current time is the outside time.
