@@ -187,14 +187,6 @@ public class Type extends SDFApplet {
 	_expr.output.addTypeListener(_typeListener);
 	_plotter.input.addTypeListener(_typeListener);
 	_printer.input.addTypeListener(_typeListener);
-
-        // Add code to extend the trace
-
-
-	// add execution listener for type conflict
-	MyTypeConflictListener conflictListener =
-            new MyTypeConflictListener();
-	_manager.addExecutionListener(conflictListener);
     }
 
     private void _buildControlPanel(Panel controlPanel) {
@@ -863,30 +855,6 @@ public class Type extends SDFApplet {
             // Update
             _currentElement[id] = element;
 
-        }
-    }
-
-    // FIXME: The following error handling should be done by PtolemyApplet.
-
-    /** Execution listener for type conflict.
-     */
-    public class MyTypeConflictListener implements ExecutionListener {
-	/** pop up a message.
-	 */
-	public void executionError(Manager manager, Exception ex) {
-	    if (ex instanceof TypeConflictException) {
-		Message msg = new Message(ex.getMessage());
-	    }
-	}
-
-	/** do nothing.
-         */
-	public void executionFinished(Manager manager) {
-	}
-
-	/** do nothing.
-         */
-        public void managerStateChanged(Manager manager) {
         }
     }
 }
