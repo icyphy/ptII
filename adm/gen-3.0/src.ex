@@ -32,6 +32,7 @@ doc/design/src
 doc/design/html
 doc/uml
 doc/uml/*
+doc/ptII3.0.releaseHyVisual.htm
 java.hprof.txt
 jni/demo/HelloWorld/HelloWorld.dll
 jni/demo/HelloWorld/HelloWorld.h
@@ -102,7 +103,16 @@ ptolemy/hsif/SwimmingPool_moml.xml
 ptolemy/hsif/Thermostat_moml.xml
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
+ptolemy/hsif/data/SwimmingPool_mid_g.xml
+ptolemy/hsif/data/SwimmingPool_mid_l.xml
+ptolemy/hsif/data/SwimmingPool_mid_sg.xml
+ptolemy/hsif/data/SwimmingPool_mid_sl.xml
+ptolemy/hsif/data/Thermostat_mid_g.xml
+ptolemy/hsif/data/Thermostat_mid_l.xml
+ptolemy/hsif/data/Thermostat_mid_sg.xml
+ptolemy/hsif/data/Thermostat_mid_sl.xml
 ptolemy/math/filter
+ptolemy/matlab/ptmatlab.h
 ptolemy/media/AudioQueue.java
 ptolemy/media/ByteArrayAudioQueue.java
 ptolemy/media/DoubleArrayAudioQueue.java
