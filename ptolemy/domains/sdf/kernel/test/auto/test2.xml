@@ -14,23 +14,13 @@
         <property name="output"/>
         <property name="_location" class="ptolemy.moml.Location" value="459.99998474121094, 225.0">
         </property>
+        <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
     </port>
-    <entity name="SequencePlotter1" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="459.99998474121094, 105.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -45,11 +35,19 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="Discard1" class="ptolemy.actor.lib.Discard">
+        <property name="_location" class="ptolemy.moml.Location" value="433.0, 101.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" class="ptolemy.moml.Vertex" value="300.0, 225.0">
         </vertex>
     </relation>
     <link port="port8" relation="relation5"/>
-    <link port="SequencePlotter1.input" relation="relation5"/>
     <link port="Const2.output" relation="relation5"/>
+    <link port="Discard1.input" relation="relation5"/>
 </entity>
