@@ -55,62 +55,79 @@ import ptolemy.kernel.util.Settable;
  */
 public class CodeGeneratorHelper implements ActorCodeGenerator {
 
-    /**
-     * FIXME
+    /** Construct the code generator helper associated with the given component.
+     *  @param component The associated componenet.
      */
     public CodeGeneratorHelper(NamedObj component) {
         _component = component;
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// public methods ////
+    ////                      public methods                       ////
     
-    /**
-     * FIXME
+    /** Do nothing. Subclasses may extend this method to generate the fire 
+     *  code of the associated component and append the code to the given
+     *  string buffer.
+     * @param stream The given string buffer.
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
     }
 
-    /**
-     * FIXME
+    /** Set the _firingCount and _firingPerIteration to their default
+     *  values. Subclasses may extend this method to generate the
+     *  initialize code of the associated component and append the
+     *  code to the given string buffer.
+     * @param stream The given string buffer.
      */
     public void generateInitializeCode(StringBuffer stream)
             throws IllegalActionException {
-        _firingCount = -1;
+        _firingCount = 0;
         _firingsPerIteration = 1;
     }
 
-    /**
-     * FIXME
+    /** Reset the _firingCount and _firingPerIteration to their default
+     *  values. Subclasses may extend this method to generate 
+     *  the wrapup code of the associated component and append the
+     *  code to the give string buffer.
+     * @param stream The given string buffer.
      */
     public void generateWrapupCode(StringBuffer stream)
             throws IllegalActionException {
+        _firingCount = 0;
+        _firingsPerIteration = 1;
     }
        
-    /**
-     * FIXME
+    /** Get the component associated with this helper.
+     * @return The associated component.
      */
     public NamedObj getComponent() {
         return _component;
     }
 
+    /** Get the number of times that the generateFireCode() method
+     *  of this helper has been called.
+     * @return The number of times that the generateFireCode() method
+     *  of this helper has been called.
+     */
     public int getFiringCount() {
         return _firingCount;
     }
     
+    /** Get the number of times that the generateFireCode() method
+     *  of this helper is called per iteration.
+     * @return The number of times that the generateFireCode() method
+     *  of this helper has been called.
+     */
     public int getFiringsPerIteration() {
         return _firingsPerIteration;
     }
     
-    /**
-     * Return the value of the specified parameter of the associated actor.
-     * 
-     * @param parameterName
-     *            The name of the parameter.
+    /** Return the value of the specified parameter of the associated actor.
+     * @param parameterName The name of the parameter.
      * @return The value as a string.
-     * @exception IllegalActionException
-     *                If the parameter does not exist or does not have a value.
+     * @exception IllegalActionException If the parameter does not exist or 
+     *  does not have a value.
      */
     public String getParameterValue(String name) throws IllegalActionException {
         Attribute attribute = _component.getAttribute(name);
@@ -131,90 +148,23 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 "Attribute does not have a value: " + name);
     }
 
-    /** Return a string that contains all the sink input ports
-     *  and channels given an output port and a given channel.
-     *  The returned string is in the form "inputPortName1_channelNumber1
-     *  = inputPortName2_channelNumber2 = ...". If the given output
-     *  channel doesn't have a sink input, the method returns
-     *  the output channel itself.
-     * @param outputPort The given output port.
-     * @param channelNumber The given channel number.
-     * @return The string.
-     */
-    public String getSinkChannels(IOPort outputPort, int channelNumber) {
-        StringBuffer result = new StringBuffer();
-        Receiver[][] remoteReceivers 
-            = (outputPort.getRemoteReceivers());
-        /*
-        if (remoteReceivers.length == 0) {
-            // This channel of this output port doesn't have any sink.
-            result.append(_component.getFullName().replace('.', '_'));
-            result.append("_");
-            result.append(outputPort.getName());
-            return result.toString();
-        }*/
-        
-        boolean foundIt = false;
-        for (int i = 0; i < remoteReceivers[channelNumber].length; i ++) {
-            IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
-            Receiver[][] portReceivers = sinkPort.getReceivers();
-            for (int j = 0; j < portReceivers.length; j ++) {
-                for (int k = 0; k < portReceivers[j].length; k ++) {
-                    if (remoteReceivers[channelNumber][i]
-                            == portReceivers[j][k]) {
-                        if (!foundIt) {
-                            foundIt = true;
-                        } else {
-                            result.append(" = ");
-                        }
-                        result.append(sinkPort.getContainer()
-                                .getFullName().replace('.', '_'));
-                        result.append("_");
-                        result.append(sinkPort.getName());
-                        if (sinkPort.isMultiport()) {
-                            result.append("[");
-                            result.append((new Integer(j)).toString());
-                            result.append("]");
-                        }
-                        break;
-                        //sinkPorts.add(sinkPort);
-                        //sinkChannels.add(new Integer(j));
-                    }
-                }
-                    
-            }
-        }
-        return result.toString();
-    }
     
-    /**
-     * Return the reference to the specified parameter or port of the associated
-     * actor.
-     * 
-     * @param parameterName
-     *            The name of the parameter or port
-     * @return The reference to that parameter or port (a variable name, for
-     *         example).
-     * @exception IllegalActionException
-     *                If the parameter or port does not exist or does not have a
-     *                value.
+    /** Return the reference to the specified parameter or port of the
+     *  associated actor. For a parameter, the returned string is in
+     *  the form "fullName_parameterName". For a port, the returned string
+     *  is in the form "fullName_portName[channelNumber][offset]", if
+     *  any channel number or offset is given.
+     * @param name The name of the parameter or port
+     * @return The reference to that parameter or port (a variable name,
+     *  for example).
+     * @exception IllegalActionException If the parameter or port does not
+     *  exist or does not have a value.
      */
     public String getReference(String name) throws IllegalActionException {
-        // FIXME: Implement this. The returned name should be that
-        // of a unique variable that represents the parameter
-        // or the port value. First deal with ports: a
-        // declaration should be created for each connection
-        // and produced in the initialization code. E.g.,
-        // the name fullName_inputPortName_channelNumber
-        // could be used for a variable representing the connection.
-        // This method needs to generate this name given
-        // the input port name.
-
+        
         StringBuffer result = new StringBuffer();
-
         if (_component instanceof Actor) {
             Actor actor = (Actor) _component;
-
             StringTokenizer tokenizer = new StringTokenizer(name, "#%", true);
             if (tokenizer.countTokens() != 1 && tokenizer.countTokens() != 3
                     && tokenizer.countTokens() != 5) {
@@ -258,7 +208,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
-                
                 IOPort port = (IOPort) outputPorts.next();
                 if (port.getName().equals(portName)) {
                     Receiver[][] remoteReceivers 
@@ -319,13 +268,65 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return _referencedParameters;
     }
     
+
+    /** Return a string that contains all the sink input ports
+     *  and channels given an output port and a given channel.
+     *  The returned string is in the form "inputPortName1[channelNumber1]
+     *  = inputPortName2[channelNumber2] = ...". If the given output
+     *  channel doesn't have a sink input, the method returns an empty string.
+     * @param outputPort The given output port.
+     * @param channelNumber The given channel number.
+     * @return The string.
+     */
+    public String getSinkChannels(IOPort outputPort, int channelNumber) {
+        
+        Receiver[][] remoteReceivers 
+            = (outputPort.getRemoteReceivers());
+       
+        if (remoteReceivers.length == 0) {
+            // This is a escape method. This class will not call this
+            // method if the output port does not have a remote receiver.
+            return "";
+        }
+        
+        StringBuffer result = new StringBuffer();
+        boolean foundIt = false;
+        for (int i = 0; i < remoteReceivers[channelNumber].length; i ++) {
+            IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
+            Receiver[][] portReceivers = sinkPort.getReceivers();
+            for (int j = 0; j < portReceivers.length; j ++) {
+                for (int k = 0; k < portReceivers[j].length; k ++) {
+                    if (remoteReceivers[channelNumber][i]
+                            == portReceivers[j][k]) {
+                        if (!foundIt) {
+                            foundIt = true;
+                        } else {
+                            result.append(" = ");
+                        }
+                        result.append(sinkPort.getContainer()
+                                .getFullName().replace('.', '_'));
+                        result.append("_");
+                        result.append(sinkPort.getName());
+                        if (sinkPort.isMultiport()) {
+                            result.append("[");
+                            result.append((new Integer(j)).toString());
+                            result.append("]");
+                        }
+                        break;
+                        //sinkPorts.add(sinkPort);
+                        //sinkChannels.add(new Integer(j));
+                    }
+                }
+                    
+            }
+        }
+        return result.toString();
+    }
     
-    /**
-     * Process the specified code, replacing macros with their values.
-     * 
-     * @param code
-     *            The code to process.
+    /** Process the specified code, replacing macros with their values.
+     * @param code The code to process.
      * @return The processed code.
+     * @exception IllegalActionException if illegal macro names are found.
      */
     public String processCode(String code) throws IllegalActionException {
 
@@ -420,19 +421,37 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return result.toString();
     }
 
+    /** Set the number of times that the generateFireCode() method
+     *  of this helper has been called.
+     * @param firingCount The number of times that the generateFireCode()
+     *  method of this helper has been called.
+     */
     public void setFiringCount(int firingCount) {
         _firingCount = firingCount;
     }
     
+    /** Set the number of times that the generateFireCode() method
+     *  of this helper is called per iteration.
+     * @param firingsPerIteration The number of times that the
+     *  generateFireCode() method of this helper is called per iteration.
+     */
     public void setFiringsPerIteration(int firingsPerIteration) {
         _firingsPerIteration = firingsPerIteration;
     }
     
-    /**
-     * 
-     * @param name
-     * @return
-     * @throws IllegalActionException
+    
+    /////////////////////////////////////////////////////////////
+    ////               private methods                       ////
+    
+    /** Return the channel number and offset given in a string.
+     *  The result is an integer array of length 2. The first element
+     *  indicates the channel number, the second the offset. If either
+     *  element is -1, it means that channel/offset is not specified.
+     * @param name The given string.
+     * @return An integer array of length 2, indicating the channel
+     *  number and offset.
+     * @throws IllegalActionException If the channel number or offset
+     *  specified in the given string is illegal.
      */
     private int[] _getChannelAndOffset(String name)
             throws IllegalActionException {
@@ -475,13 +494,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     
     
     ///////////////////////////////////////////////////////////////////
-    //// private variables ////
+    ////                      private variables                    ////
 
     /** The associated component. */
     private NamedObj _component;
-    // Number of firings already fired. The default value is -1.
+    // Number of firings already fired. The default value is 0.
     private int _firingCount;
     // Total number of firings per iteration. The default value is 1.
     private int _firingsPerIteration;
+    // A set of parameters that have been referenced.
     private HashSet _referencedParameters = new HashSet();
 }

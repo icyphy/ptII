@@ -54,7 +54,7 @@ import ptolemy.util.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerator
 
-/** FIXME
+/** Base class for code generator.
  * 
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Rachel Zhou
  *  @version $Id$
@@ -127,14 +127,18 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     
     /** Generate the body code that lies between initialize and wrapup.
      *  In this base class, nothing is generated.
+     * @return The empty string.
      */
     public String generateBodyCode() throws IllegalActionException {
         return "";
     }
 
-    /** Generate code.  This is the main entry point.
-     *  @exception 
-     *  FIXME: more
+    /** Generate code and append it to the given string buffer.
+     *  Write the code to the file specified by the codeDirectory parameter.
+     *  This is the main entry point.
+     *  @param code The given string buffer.
+     *  @exception KernelException if the target file cannot be overwritten
+     *   or write-to-file throw any exception.
      */
     public void generateCode(StringBuffer code) throws KernelException {
         generateInitializeCode(code);
@@ -162,10 +166,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
     
 
-    /** Generate the code associated with initialization of the
-     *  container composite actor. This is created by stringing
-     *  together the intialization code for actors contained by
-     *  the container of this attribute (in arbitrary order).
+    /** Generate the code associated with initialization of the container
+     *  composite actor and append it to the given string buffer. This is
+     *  created by stringing together the intialization code for actor
+     *  contained by the container of this attribute (inarbitrary order).
+     *  @param code The given string buffer.
      */
     public void generateInitializeCode(StringBuffer code) 
             throws IllegalActionException {
@@ -181,6 +186,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
+     *  Append the declarations to the given string buffer.
+     *  @param code The given string buffer.
      */
     public void generateVariableDeclarations(StringBuffer code)
             throws IllegalActionException {
@@ -253,17 +260,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 // Only generate declarations for those output ports with
                 // port width zero. 
                 if (outputPort.getWidth() == 0) {
-                    // The buffer size of this port is always 1.
                     code.append(outputPort.getType().toString());
                     code.append(" ");
                     code.append(outputPort.getFullName().replace('.', '_'));
-                    /*
-                    int bufferCapacity = getBufferCapacity(outputPort);
-                    if (bufferCapacity > 1) {
-                        code.append("[");
-                        code.append(new Integer(bufferCapacity).toString());
-                        code.append("]");
-                    }*/
                     code.append(";\n");
                 }
             }
@@ -297,7 +296,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     	return getContainer();
     }
     
-    public int getBufferCapacity(TypedIOPort port)
+    /** Return the buffer capacity of the given port. This method always
+     *  return the receiver length, or 1 if the port does not have a receiver.
+     * @param port The given port.
+     * @return The buffer capacity of the given port.
+     * @exception IllegalActionException Subclasses may throw it.
+     */
+    public int getBufferCapacity(TypedIOPort port) 
             throws IllegalActionException {
         int bufferCapacity = port.getReceivers()[0].length;
         if (bufferCapacity == 0) {
@@ -306,6 +311,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return bufferCapacity;
     }
     
+    /** Set the container of this object to be the given container.
+     *  @param container The given container.
+     *  @exception IllegalActionException if the given container
+     *   is not null and not an instance of CompositeEntity.
+     */
     public void setContainer(NamedObj container) 
             throws IllegalActionException, NameDuplicationException {
         if (container != null && !(container instanceof CompositeEntity)) {
@@ -319,6 +329,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
+    /** Get the code generator helper associated with the given component.
+     *  @param component The given component.
+     *  @return The code generator helper.
+     */
     protected ComponentCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
         
@@ -378,7 +392,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
-     
+    
+    // A hash map that stores the code generator helpers associated
+    // with the actors.
     private HashMap _helperStore = new HashMap();
     
 }

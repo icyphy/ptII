@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// StaticSchedulingCodeGenerator
 
-/** FIXME
+/** Base class for code generators for static scheduling models of computation.
  * 
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Rachel Zhou
  *  @version $Id$
@@ -162,14 +162,16 @@ public class StaticSchedulingCodeGenerator
             int firingsPerIteration = ((IntToken)firings.getToken()).intValue();
             helperObject.setFiringsPerIteration(firingsPerIteration);
             for (int i = 0; i < firing.getIterationCount(); i ++) {
+                helperObject.generateFireCode(code);
                 int firingCount = helperObject.getFiringCount() + 1;
                 helperObject.setFiringCount(firingCount);
-                helperObject.generateFireCode(code);
             }
         }
     }
     
-    /** 
+    /** Return the buffer capacity associated with the given port.
+     * @param port The given port.
+     * @return the buffer capacity associated with the given port.
      */
     public int getBufferCapacity(TypedIOPort port)
             throws IllegalActionException {
@@ -184,7 +186,11 @@ public class StaticSchedulingCodeGenerator
         return bufferCapacity;
     }
     
-    
+    /** Set the container of this object to be the given container.
+     *  @param container The given container.
+     *  @exception IllegalActionException if the given container
+     *   is not null and not an instance of CompositeEntity.
+     */
     public void setContainer(NamedObj container) 
             throws IllegalActionException, NameDuplicationException {
         if (container != null && !(container instanceof CompositeActor)) {
@@ -198,6 +204,10 @@ public class StaticSchedulingCodeGenerator
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
+    /** Get the code generator helper associated with the given component.
+     *  @param component The given component.
+     *  @return The code generator helper.
+     */
     protected ComponentCodeGenerator _getHelper(NamedObj actor)
             throws IllegalActionException {
         ComponentCodeGenerator helperObject = super._getHelper(actor);
