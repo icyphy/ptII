@@ -242,7 +242,7 @@ public class CSPActor extends TypedAtomicActor {
                     }
                 }
             }
-            // If get to here have more than one conditional branch.
+            // If we get to here, we have more than one conditional branch.
             LinkedList tmp = new LinkedList();
 
             // Now terminate non-successful branches

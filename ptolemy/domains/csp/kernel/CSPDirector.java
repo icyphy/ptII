@@ -54,7 +54,7 @@ method and started in the prefire method.  After the thread for an actor
 is started it is <i>active</i> until the thread finishes. While the
 process is active, it can also be <i>blocked</i> or <i>delayed</i>, but
 not both. A process is blocked if it is trying to communicate but
-the the process with which it is trying to communicate is not
+the process with which it is trying to communicate is not
 ready to do so yet. A process is delayed if it is waiting for
 time to advance, or if it is waiting for a deadlock to occur.
 <p>
