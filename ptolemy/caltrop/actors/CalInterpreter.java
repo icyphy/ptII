@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -163,9 +163,9 @@ public class CalInterpreter extends TypedAtomicActor {
             _bindActorParameters(env);
             _bindActorStateVariables(env);
         } catch (Exception ex) {
-            throw new IllegalActionException(
-                    "Cannot initialize actor environment for actor '"
-                    + _actor.getName(), ex);
+            throw new IllegalActionException(this, ex,
+                   "Cannot initialize actor environment for actor '"
+                    + _actor.getName());
         }
         _ddi = _getPlugin(env);
         if (!_ddi.isLegalActor())
@@ -344,7 +344,7 @@ public class CalInterpreter extends TypedAtomicActor {
             if (container != null && container.getEntity(_actor.getName())
                     != this) {
                 this.setName(((CompositeEntity) this.getContainer())
-                        uniqueName(_actor.getName()));
+                        + uniqueName(_actor.getName()));
             }
             _attachActorIcon(_actor.getName());
         } catch (Exception ex) {
