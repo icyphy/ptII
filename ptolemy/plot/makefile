@@ -83,7 +83,6 @@ JSRCS = \
 	EPSGraphics.java \
 	Histogram.java \
 	HistogramApplet.java \
-	LogicAnalyzer.java \
 	Plot.java \
 	PlotApplet.java \
 	PlotApplication.java \
@@ -92,8 +91,7 @@ JSRCS = \
 	PlotFrame.java \
 	PlotLive.java \
 	PlotLiveApplet.java \
-	PlotPoint.java \
-	PtolemyGraphics.java
+	PlotPoint.java
 
 # Used to build distributions with InstallShield's isjava tool
 ISJAVA_SRC = ptplot.isj
@@ -308,11 +306,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README
 	echo " because of limitations in the InstallShield tool." >> \
 		$(PTTMPDIR)/$(PTDIST)/README
-	@echo "Remove LogicAnalyzer from makefile"
-	grep -v LogicAnalyzer \
-		$(PTTMPME)/makefile > /tmp/ptplotfix
 	mv /tmp/ptplotfix $(PTTMPME)/makefile
-	rm -f $(PTTMPME)/LogicAnalyzer*
 	@echo "JShield needs the ico file to be in the top level directory"
 	cp $(PTTMPME)/doc/img/ptplot.ico \
 		$(PTTMPDIR)/$(PTDIST)
