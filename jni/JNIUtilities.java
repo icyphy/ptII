@@ -1038,7 +1038,7 @@ public class JNIUtilities {
 		    + "\t\t-I$(PTJAVA_DIR)/include \\\n"
 		    + "\t\t-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE) \\\n"
 		    + "\t\t-fno-exceptions \\\n"
-		    + "\t\t-Wl,--add-stdcall-alias -shared \\n";
+		    + "\t\t-Wl,--add-stdcall-alias -shared \\n"
 		    + "\t\t-L" + libraryPath + " -l" + libName + " \\\n"
 		    + "\t\t -o " + libName
 		    + ".$(PTJNI_SHAREDLIBRARY_SUFFIX) \\\n"
