@@ -116,7 +116,7 @@ public class TextEffigy extends Effigy {
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.  This is ignored in this
      *   class.
-     *  @param in The input URL.
+     *  @param in The input URL, or null if there is none.
      *  @return A new instance of TextEffigy.
      *  @exception Exception If the URL cannot be read, or if the data
      *   is malformed in some way.
@@ -175,11 +175,11 @@ public class TextEffigy extends Effigy {
             } else {
                 effigy.setModifiable(false);
             }
+            effigy.uri.setURL(in);
         } else {
             // No document associated.  Allow modifications.
             effigy.setModifiable(true);
         }
-        effigy.uri.setURL(in);
         return effigy;
     }
 
