@@ -81,7 +81,6 @@ public class Recorder extends Sink {
     public Recorder(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(BaseType.GENERAL);
 
         capacity = new Parameter(this, "capacity", new IntToken(-1));
         capacity.setTypeEquals(BaseType.INT);

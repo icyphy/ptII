@@ -97,7 +97,7 @@ test Minimum-2.2 {check types} {
     list [[$pulseOut getType] toString] [[$constOut getType] toString] \
 	[[$minimumIn getType] toString] [[$minimumOut getType] toString] \
 	[[$recIn getType] toString]
-} {int double double double general}
+} {int double double double double}
 
 ######################################################################
 #### Test integer input
@@ -116,7 +116,7 @@ test Minimum-2.4 {check types} {
     list [[$pulseOut getType] toString] [[$constOut getType] toString] \
 	[[$minimumIn getType] toString] [[$minimumOut getType] toString] \
 	[[$recIn getType] toString]
-} {int int int int general}
+} {int int int int int}
 
 ######################################################################
 #### Test long input
@@ -135,7 +135,7 @@ test Minimum-2.6 {check types} {
     list [[$pulseOut getType] toString] [[$constOut getType] toString] \
 	[[$minimumIn getType] toString] [[$minimumOut getType] toString] \
 	[[$recIn getType] toString]
-} {long int long long general}
+} {long int long long long}
 
 ######################################################################
 #### Test complex input
@@ -154,4 +154,5 @@ test Minimum-2.8 {check types} {
     list [[$pulseOut getType] toString] [[$constOut getType] toString] \
 	[[$minimumIn getType] toString] [[$minimumOut getType] toString] \
 	[[$recIn getType] toString]
-} {complex int complex complex general}
+} {complex int complex complex complex}
+

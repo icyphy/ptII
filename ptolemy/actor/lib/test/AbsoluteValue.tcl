@@ -86,7 +86,7 @@ test AbsoluteValue-2.2 {check types} {
 
     list [[$rampOut getType] toString] [[$absIn getType] toString] \
 	[[$absOut getType] toString] [[$recIn getType] toString]
-} {double double double general}
+} {double double double double}
 
 ######################################################################
 #### Test int type
@@ -104,7 +104,7 @@ test AbsoluteValue-2.3 {test int type} {
 test AbsoluteValue-2.4 {check types} {
     list [[$rampOut getType] toString] [[$absIn getType] toString] \
 	[[$absOut getType] toString] [[$recIn getType] toString]
-} {int int int general}
+} {int int int int}
 
 ######################################################################
 #### Test complex type
@@ -122,7 +122,7 @@ test AbsoluteValue-2.5 {test complex type} {
 test AbsoluteValue-2.6 {check types} {
     list [[$rampOut getType] toString] [[$absIn getType] toString] \
 	[[$absOut getType] toString] [[$recIn getType] toString]
-} {complex complex double general}
+} {complex complex double double}
 
 ######################################################################
 #### Test long type
@@ -137,7 +137,8 @@ test AbsoluteValue-2.7 {test long type} {
 ######################################################################
 #### Check types of above model
 #
-test AbsoluteValue-2.6 {check types} {
+test AbsoluteValue-2.8 {check types} {
     list [[$rampOut getType] toString] [[$absIn getType] toString] \
 	[[$absOut getType] toString] [[$recIn getType] toString]
-} {long long long general}
+} {long long long long}
+
