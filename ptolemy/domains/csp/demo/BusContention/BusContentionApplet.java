@@ -45,7 +45,6 @@ import ptolemy.data.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.domains.csp.lib.*;
-import ptolemy.domains.csp.gui.*;
 import ptolemy.domains.csp.kernel.*;
 
 import java.awt.BorderLayout;

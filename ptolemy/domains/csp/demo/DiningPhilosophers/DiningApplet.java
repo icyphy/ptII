@@ -35,7 +35,6 @@ import java.awt.*;
 import java.awt.event.*;
 import ptolemy.domains.csp.kernel.CSPDirector;
 import ptolemy.domains.csp.lib.*;
-import ptolemy.domains.csp.gui.*;
 import ptolemy.actor.*;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
