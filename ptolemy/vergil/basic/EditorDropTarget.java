@@ -88,7 +88,7 @@ public class EditorDropTarget extends DropTarget {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public memebers                   ////
+    ////                         public members                   ////
 
     /** The plain-text flavor that we will be using for our
      *  basic drag-and-drop protocol.
