@@ -423,7 +423,7 @@ public class IntToken extends ScalarToken {
      *  subtracted from the value of this Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightArg The token to subtract to this Token.
+     *  @param rightArg The token to subtract from this Token.
      *  @exception IllegalActionException If the passed token is
      *   not of a type that can be subtracted from this Tokens value.
      *  @return A new Token containing the result.
