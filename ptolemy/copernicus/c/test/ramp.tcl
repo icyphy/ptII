@@ -85,7 +85,7 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
     set phaseName wjtp.snapshot1
     set modelFile $modelName.xml
     set diagnostics $outputDirectory/$modelName-out.txt
-    set errors $outputDirectory/ramp-err.txt
+    set errors $outputDirectory/$modelName-err.txt
     set outputDirectorySpecifier outDir:$outputDirectory
 
     # Run C code generation.
