@@ -363,8 +363,8 @@ public class DDEReceiver extends TimedQueueReceiver
 	String name = ((Nameable)getContainer().getContainer()).getName();
 	timeKeeper.resortRcvrList();
 
-	if( name.equals("actorThru") ) {
-	    System.out.println(name + ":   hasToken being called." );
+	if( name.equals("join") ) {
+	    System.out.println(name + ":   _hasToken being called." );
 	    double time = getRcvrTime();
 	}
         if( timeKeeper.getNextTime() == INACTIVE ) {
@@ -372,9 +372,11 @@ public class DDEReceiver extends TimedQueueReceiver
 	}
         if( getRcvrTime() == IGNORE ) {
 	    if( _ignoreNotSeen ) {
+		System.out.println(name+":  Ignore called for first time");
 		_ignoreNotSeen = false;
 		return false;
 	    } else {
+		System.out.println(name+":  Ignore called for second time");
 		_ignoreNotSeen = true;
 		clearIgnoredTokens();
 		// Call the next line since TimeKeeper.updateIgnoredReceivers()
@@ -385,19 +387,21 @@ public class DDEReceiver extends TimedQueueReceiver
 	    }
         }
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
-	    if( name.equals("actorThru") ) {
+	    if( name.equals("join") ) {
             System.out.println("RcvrTime = "+getRcvrTime()+";   Time Keeper Time = "
             	+timeKeeper.getNextTime());
 	    }
-	    /*
-	    */
 	    return false;
+	}
+	    /*
 	} else if( !timeKeeper.hasMinRcvrTime() && !_terminate ) {
-	    if( name.equals("actorThru") ) {
+	    if( name.equals("join") ) {
 		System.out.println(name+":  Time is minimum but not unique");
 	    }
+            if( this == timeKeeper.getHighestPriorityNull() 
+		&& timeKeeper.getHighestPriorityReal() == null ) {
             if( this != timeKeeper.getHighestPriorityReceiver() ) {
-	        if( name.equals("actorThru") ) {
+	        if( name.equals("join") ) {
 	            System.out.println(name+":  This is not the highest priority receiver! The priority is " + getPriority() );
 		    if( getRcvrTime() > 20.0 ) {
 		        if( hasNullToken() ) {
@@ -408,8 +412,40 @@ public class DDEReceiver extends TimedQueueReceiver
                 timeKeeper.updateRcvrList(this);
 		return false;
 	    }
-	}
+	    */
         if( super.hasToken() && !_terminate ) {
+	    // System.out.println(name + ": about to call hasNullToken()");
+	    if( !timeKeeper.hasMinRcvrTime() ) {
+		if( hasNullToken() ) {
+		    if( timeKeeper.getHighestPriorityReal() != null ) {
+			return false;
+		    } else if( this != timeKeeper.getHighestPriorityNull() ) {
+			return false;
+		    } else if( !_hideNullTokens ) {
+			return true;
+		    } else {
+			super.get();
+			timeKeeper.sendOutNullTokens();
+			return _hasToken(workspace, director, 
+				timeKeeper, _hideNullTokens);
+		    }
+		} else {
+		    return true;
+		}
+	    } else {
+		if( hasNullToken() ) {
+		    if( !_hideNullTokens ) {
+			return true;
+		    }
+		    super.get();
+		    timeKeeper.sendOutNullTokens();
+		    return _hasToken(workspace, director, 
+				timeKeeper, _hideNullTokens);
+		}
+		return true;
+	    }
+	}
+	    /*
 	    // System.out.println(name + ": about to call hasNullToken()");
 	    if( hasNullToken() ) {
 		if( !_hideNullTokens ) {
@@ -429,9 +465,9 @@ public class DDEReceiver extends TimedQueueReceiver
 	    } else {
 		return true;
 	    }
-	}
+	    */
 	/*
-	// if( name.equals("actorThru") ) {
+	// if( name.equals("join") ) {
 	    System.out.println(name + ": about to call read block()");
 	// }
 	*/
