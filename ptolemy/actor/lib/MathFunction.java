@@ -191,7 +191,11 @@ public class MathFunction extends TypedAtomicActor {
                 super.attributeChanged(attribute);
             }
         } catch (NameDuplicationException e) {
-            throw new InternalErrorException("Unexpected name duplication.");
+            // Catch NameDuplicationException and rethrow it
+            InternalErrorException internalError =
+                new InternalErrorException("Unexpected name duplication:" + e);
+            internalError.fillInStackTrace();
+            throw internalError;
         }
     }
 
