@@ -2,11 +2,11 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 2.0-beta Release Notes</title>
+<title>Ptolemy II 2.0.1 Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#faf0e6">
-<h1>Ptolemy II 2.0-beta Release Notes</h1>
+<h1>Ptolemy II 2.0.1 Release Notes</h1>
 
 Ptolemy II is a set of Java packages supporting heterogeneous,
 concurrent modeling and design.  Its <code>kernel</code> package
@@ -33,13 +33,14 @@ processing functions, and
  <br><code>graph</code>, providing graph-theoretic manipulations.
 
 
- <p>The Ptolemy II design document describes the Ptolemy II design and
-the implementation of the Java classes.  The design document is not
-included with Ptolemy II 2.0-beta, but will be shipped with the
-Ptolemy II 2.0 production release.  In the interim, please see the
-"Using Vergil" chapter (
+ <p>The Ptolemy II 
+<a href="design/design.pdf">Design Document</a>
+describes the Ptolemy II design and
+the implementation of the Java classes.
+ <p>The "Using Vergil" chapter (
 <a href="design/usingVergil/usingVergil.pdf">PDF</a>
- - <a href="design/usingVergil/index.htm">HTML</a>)
+ - <a href="design/usingVergil/index.htm">HTML</a>) describes
+how to use Vergil.
 
 
 <h2>Complete List of Domains in Ptolemy II</h2>
@@ -81,7 +82,7 @@ The core of Ptolemy II 2.0 is 100% Java, so it should work on any
 platform that has JDK1.3
 
  <p>We developed Ptolemy II 2.0 under Solaris 8 and Windows 2000 sr2
-and with JDK1.3.1 and JDK1.4beta.  Note that code generation 
+and with JDK1.3.1 and JDK1.4.  Note that code generation 
 only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
 
 Ptolemy II 2.0 will not compile under JDK1.2.2.
@@ -692,14 +693,6 @@ than 100 characters.  If you do not have GNU tar, you can obtain
 source and selected binaries from 
 ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 
-<li> The Ptolemy II 2.0-beta release does not include the design
-document.  We will include an updated version of the design document
-in the full release.  The Ptolemy II 1.0 design document can be found
-in:
-
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm#in_browser">Ptolemy Web Site</a>
-
-
 <li> Instructions for adding an actor may be found at
 <a href="http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm</CODE></a>
 
@@ -711,9 +704,6 @@ the internal hyperlinks refer to usingVergil.html instead of index.htm
 <li> The documentation for custom actors used in demonstrations is not
 included in the release.
 
-
-<li> Ptolemy II will not configure and build properly if the pathname leading 
-up to the Ptolemy II directory contains a space. 
 
 <li> Applet issues:
 	<ul>
