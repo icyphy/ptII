@@ -425,11 +425,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 Object[] portTypeArray = portTypeList.toArray();
                 result = (Type)lattice.leastUpperBound(portTypeArray);
             }
-            return result;
-        } catch (IllegalActionException exception) {
-            // deepGetReceiver throws it. This means that there is no director,
-            // hence no receiver has been created. Return unknown.
-            return BaseType.UNKNOWN;
+	    return result;
         } finally {
             _workspace.doneReading();
         }

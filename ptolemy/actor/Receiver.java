@@ -71,6 +71,12 @@ public interface Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this receiver of any contained tokens.
+     *  @exception IllegalActionException If clear() is not supported by
+     *   the domain.
+     */
+    public void clear() throws IllegalActionException;
+
     /** Get a token from this receiver.
      *  @return A token read from the receiver.
      *  @exception NoTokenException If there is no token.
@@ -136,9 +142,14 @@ public interface Receiver {
      */
     public boolean hasToken(int numberOfTokens);
 
-    /** Return true if this receiver has known state, that is, the tokens in
-     *  this receiver are known or if this receiver is known not to contain
-     *  any tokens.
+    /** Return <i>true</i> if this receiver has known state;
+     *  that is, the tokens in this receiver are known, or this
+     *  receiver is known not to contain any tokens.
+     *  This method supports domains, such as SR, which have fixed-point
+     *  semantics.  In such domains, an iteration of a model starts with
+     *  the state of all channels unknown, and the iteration concludes when
+     *  the state of all channels is known. In domains that have no such
+     *  notion, this method should simply return <i>true</i>.
      *  @return True if this receiver has known state.
      */
     public boolean isKnown();
@@ -161,11 +172,6 @@ public interface Receiver {
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException;
-
-    /** Set the receiver to contain no tokens.
-     *  @exception NoRoomException If there is no room in the receiver.
-     */
-    public void setAbsent();
 
     /** Set the container.
      *  @param port The container.

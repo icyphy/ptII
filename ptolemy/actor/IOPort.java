@@ -29,7 +29,7 @@
 Review vectorized methods.
 Review broadcast/get/send/hasRoom/hasToken.
 Review setInput/setOutput/setMultiport.
-Review isKnown/sendAbsent.
+Review isKnown/broadcastClear/sendClear.
 createReceivers creates inside receivers based solely on insideWidth, and
    outsideReceivers based solely on outside width.
 connectionsChanged: no longer validates the attributes of this port.  This is
@@ -291,29 +291,19 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Set all connected receivers to have no token.
-     *  The transfer is accomplished by calling getRemoteReceivers()
-     *  to determine the number of channels with valid receivers and
-     *  then calling setAbsent on the appropriate receivers.
-     *  If there are no destination receivers, then nothing is sent.
-     *  If the port is not connected to anything, or receivers have not been
-     *  created in the remote port, then just return.
-     *  <p>
+    /** Set all connected receivers to have no tokens. The transfer
+     *  is accomplished by calling clear() on the appropriate receivers.
+     *  If there are no destination receivers, or if this is not an
+     *  output port, then do nothing.
      *  Some of this method is read-synchronized on the workspace.
-     *  Since it is possible for a thread to block while executing a put,
-     *  it is important that the thread does not hold read access on
-     *  the workspace when it is blocked. Thus this method releases
-     *  read access on the workspace before calling put.
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
-     *  @exception NoRoomException If a send to one of the channels throws
-     *     it.
+     *  @see #sendClear()
+     *  @exception IllegalActionException If a receiver does not support
+     *   clear().
      */
-    public void broadcastAbsent()
-            throws IllegalActionException, NoRoomException {
+    public void broadcastClear() throws IllegalActionException {
         Receiver[][] farReceivers;
         if (_debugging) {
-            _debug("broadcast absent.");
+            _debug("broadcast clear.");
         }
         try {
             _workspace.getReadAccess();
@@ -324,13 +314,14 @@ public class IOPort extends ComponentPort {
         } finally {
             _workspace.doneReading();
         }
-        // NOTE: This does not call send() here, because send()
-        // repeats the above on each call.
+        // NOTE: Conceivably, clear() in some domains may block,
+        // so we make sure to release read access above before calling
+        // clear().
         for (int i = 0; i < farReceivers.length; i++) {
             if (farReceivers[i] == null) continue;
 
             for (int j = 0; j < farReceivers[i].length; j++) {
-                farReceivers[i][j].setAbsent();
+                farReceivers[i][j].clear();
             }
         }
     }
@@ -571,12 +562,10 @@ public class IOPort extends ComponentPort {
      *  the boundary of opaque ports and actors.
      *  This method is <i>not</i> read-synchronized on the workspace, so the
      *  caller should be.
-     *
-     *  @return The inside receivers.
-     *  @exception IllegalActionException If there is no director, and hence
-     *   no receivers have been created.
+     *  @return The inside receivers, or an empty receiver array if there
+     *   are none.
      */
-    public Receiver[][] deepGetReceivers() throws IllegalActionException {
+    public Receiver[][] deepGetReceivers() {
         if (!isInput()) return _EMPTY_RECEIVER_ARRAY;
         int width = getWidth();
         if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
@@ -861,11 +850,10 @@ public class IOPort extends ComponentPort {
      *  that returned by getReceivers().
      *  This method is read-synchronized on the workspace.
      *
-     *  @return The local inside receivers.
-     *  @exception IllegalActionException If there is no local director,
-     *   and hence no receivers have been created.
+     *  @return The local inside receivers, or an empty array if there are
+     *   none.
      */
-    public Receiver[][] getInsideReceivers() throws IllegalActionException {
+    public Receiver[][] getInsideReceivers() {
         try {
             _workspace.getReadAccess();
             if (!isOutput() || !isOpaque()) return _EMPTY_RECEIVER_ARRAY;
@@ -911,6 +899,12 @@ public class IOPort extends ComponentPort {
             }
             _localInsideReceiversVersion = _workspace.getVersion();
             return _localInsideReceivers;
+        } catch (IllegalActionException ex) {
+            // This would be thrown only if the above call to
+            // getReceivers(IORelation, int) throws. This should not
+            // occur because we are sure the IORelation is connected.
+            throw new InternalErrorException(this, ex,
+            "Expected relation to be connected!");
         } finally {
             _workspace.doneReading();
         }
@@ -951,11 +945,9 @@ public class IOPort extends ComponentPort {
      *  list of local receivers is not valid, however, then it acquires
      *  write synchronization on the workspace to reconstruct it.
      *
-     *  @return The local receivers.
-     *  @exception IllegalActionException If there is no director, and hence
-     *   no receivers have been created.
+     *  @return The local receivers, or an empty array if there are none.
      */
-    public Receiver[][] getReceivers() throws IllegalActionException {
+    public Receiver[][] getReceivers() {
         try {
             _workspace.getReadAccess();
             if (!isInput()) return _EMPTY_RECEIVER_ARRAY;
@@ -1006,6 +998,12 @@ public class IOPort extends ComponentPort {
                 // Transparent port.
                 return deepGetReceivers();
             }
+        } catch (IllegalActionException ex) {
+            // This would be thrown only if the above call to
+            // getReceivers(IORelation, int) throws. This should not
+            // occur because we are sure the IORelation is connected.
+            throw new InternalErrorException(this, ex,
+            "Expected relation to be connected!");
         } finally {
             _workspace.doneReading();
         }
@@ -1052,9 +1050,9 @@ public class IOPort extends ComponentPort {
      *  @param relation Relations that are linked on the outside or inside.
      *  @param occurrence The occurrence number that we are interested in,
      *   starting at 0.
-     *  @return The local receivers.
+     *  @return The local receivers, or an empty array if there are none.
      *  @exception IllegalActionException If the relation is not linked
-     *   from the outside, or if there is no director.
+     *   from the outside.
      */
     public Receiver[][] getReceivers(IORelation relation, int occurrence)
             throws IllegalActionException {
@@ -1163,8 +1161,8 @@ public class IOPort extends ComponentPort {
      *  with any data they may contain.
      *  <p>
      *  This method is read-synchronized on the workspace.
-     *
-     *  @return The receivers for output data.
+     *  @return The receivers for output data, or an empty array if there
+     *   are none.
      */
     public Receiver[][] getRemoteReceivers() {
         try {
@@ -1235,10 +1233,10 @@ public class IOPort extends ComponentPort {
      *  with any data they may contain.
      *  <p>
      *  This method is read-synchronized on the workspace.
-     *
-     *  @return The receivers for output data.
+     *  @return The receivers for output data, or an empty array if there
+     *   are none.
      *  @exception IllegalActionException If the IORelation is not linked
-     *       to the port from the inside.
+     *   to the port from the inside.
      */
     public Receiver[][] getRemoteReceivers(IORelation relation)
             throws IllegalActionException {
@@ -1654,19 +1652,19 @@ public class IOPort extends ComponentPort {
         return _isInput;
     }
 
-    /** Return true if all channels of this port have known state, that is,
-     *  the tokens on each channel are known or each channel is known not to
+    /** Return true if all channels of this port have known state; that is,
+     *  the tokens on each channel are known, or each channel is known not to
      *  have any tokens.
      *  <p>
-     *  Note that this does not report any tokens in inside receivers
-     *  of an output port. Those are accessible only through
-     *  getInsideReceivers().
-     *
+     *  This method supports domains, such as SR, which have fixed-point
+     *  semantics.  In such domains, an iteration of a model starts with
+     *  the state of all channels unknown, and the iteration concludes when
+     *  the state of all channels is known.
+     *  @see #isKnown(int)
+     *  @see #isKnownInside(int)
      *  @return True if it is known whether there is a token in each channel.
      *  @exception IllegalActionException If the receivers do not support
-     *   this query, if there is no director, and hence no receivers,
-     *   if the port is not an input port, or if the channel index is out
-     *   of range.
+     *   this query, or if there is no director, and hence no receivers.
      */
     public boolean isKnown() throws IllegalActionException {
         boolean result = true;
@@ -1682,14 +1680,21 @@ public class IOPort extends ComponentPort {
         return result;
     }
 
-    /** Return true if the specified channel has known state, that is, the
-     *  tokens on this channel are known or this channel is known not to
-     *  have any tokens.  If the channel index is out of range, then throw
+    /** Return <i>true</i> if the specified channel has known state;
+     *  that is, the tokens on this channel are known, or this channel
+     *  is known not to have any tokens.
+     *  If the channel index is out of range, then throw
      *  an exception. If the port is an input and an output, then both
      *  the receivers in this port (for the input) and the remote
      *  receivers (for the output) must be known to return true.
      *  If the port is neither an input nor an output, then return true.
-     *
+     *  <p>
+     *  This method supports domains, such as SR, which have fixed-point
+     *  semantics.  In such domains, an iteration of a model starts with
+     *  the state of all channels unknown, and the iteration concludes when
+     *  the state of all channels is known.
+     *  @see #isKnown()
+     *  @see #isKnownInside(int)     *
      *  @param channelIndex The channel index.
      *  @return True if it is known whether there is a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
@@ -1702,6 +1707,10 @@ public class IOPort extends ComponentPort {
         try {
             if (isInput()) {
                 Receiver[][] receivers = getReceivers();
+                if (receivers.length <= channelIndex) {
+                    throw new IllegalActionException(this,
+                    "Channel index is out of range: " + channelIndex);
+                }
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
                         if (!receivers[channelIndex][j].isKnown()) {
@@ -1713,6 +1722,10 @@ public class IOPort extends ComponentPort {
             }
             if (result && isOutput()) {
                 Receiver[][] receivers = getRemoteReceivers();
+                if (receivers.length <= channelIndex) {
+                    throw new IllegalActionException(this,
+                    "Channel index is out of range: " + channelIndex);
+                }
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
                         if (!receivers[channelIndex][j].isKnown()) {
@@ -1732,21 +1745,25 @@ public class IOPort extends ComponentPort {
         return result;
     }
 
-    /** Return true if the specified inside channel has known state,
-     *  that is, the tokens on this channel are known or this channel
+    /** Return <i>true</i> if the specified inside channel has known state;
+     *  that is, the tokens on this channel are known, or this channel
      *  is known not to have any tokens.  If the channel index is out
      *  of range, then throw an exception.
      *  If the port is an input and an output, then both
      *  the receivers in this port (for the input) and the remote
      *  receivers (for the output) must be known to return true.
      *  If the port is neither an input nor an output, then return true.
+     *  <p>
+     *  This method supports domains, such as SR, which have fixed-point
+     *  semantics.  In such domains, an iteration of a model starts with
+     *  the state of all channels unknown, and the iteration concludes when
+     *  the state of all channels is known.
      *
      *  @param channelIndex The channel index.
      *  @return True if it is known whether there is a token in the channel.
      *  @exception IllegalActionException If the receivers do not
-     *  support this query, if there is no director, and hence no
-     *  receivers, if the port is not an output port, or if the inside
-     *  channel index is out of range.
+     *   support this query, if there is no director, and hence no
+     *   receivers, or if the inside channel index is out of range.
      */
     public boolean isKnownInside(int channelIndex)
             throws IllegalActionException {
@@ -1965,33 +1982,23 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Set all receivers connected to the specified channel to have no
-     *  tokens.  Receivers that do not support this action will do nothing.
-     *  If the port is not connected to anything, or receivers have not been
-     *  created in the remote port, or the channel index is out of
-     *  range, or the port is not an output port,
-     *  then just silently return.  This behavior makes it
-     *  easy to leave output ports unconnected when you are not interested
-     *  in the output.  The action is accomplished
-     *  by calling the setAbsent() method of the remote receivers.
-     *  If the port is not connected to anything, or receivers have not been
-     *  created in the remote port, then just return.
-     *  <p>
+    /** Set all destination receivers connected via the specified to channel
+     *  to have no token. The transfer is accomplished by calling
+     *  clear() on the appropriate receivers. If there are no
+     *  destination receivers on the specified channel, or if this is not
+     *  an output port, or if the array index is out of bounds,
+     *  then do nothing.
      *  Some of this method is read-synchronized on the workspace.
-     *  Since it is possible for a thread to block while executing setAbsent,
-     *  it is important that the thread does not hold read access on
-     *  the workspace when it is blocked. Thus this method releases
-     *  read access on the workspace before calling put.
-     *
+     *  @see #broadcastClear()
+     *  @see #sendClearInside()
      *  @param channelIndex The index of the channel, from 0 to width-1
-     *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If a receiver does not support
+     *   clear().
      */
-    public void sendAbsent(int channelIndex)
-            throws IllegalActionException, NoRoomException {
+    public void sendClear(int channelIndex) throws IllegalActionException {
         Receiver[][] farReceivers;
         if (_debugging) {
-            _debug("sendAbsent to channel " + channelIndex);
+            _debug("sendClear to channel " + channelIndex);
         }
         try {
             try {
@@ -2004,8 +2011,11 @@ public class IOPort extends ComponentPort {
             } finally {
                 _workspace.doneReading();
             }
+            // NOTE: Conceivably, clear() in some domains may block,
+            // so we make sure to release read access above before calling
+            // clear().
             for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j].setAbsent();
+                farReceivers[channelIndex][j].clear();
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the channel index is out of range.
@@ -2013,39 +2023,26 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Set all receivers connected on the inside to the specified
-     *  channel to have no tokens.  Receivers that do not support this
-     *  action will do nothing.  If the port is not connected to
-     *  anything, or receivers have not been created in the remote
-     *  port, or the channel index is out of range, or the port is not
-     *  an input port, then just silently return.  This behavior makes
-     *  it easy to leave external input ports unconnected on the
-     *  inside when you are not interested in the input.  The action
-     *  is accomplished by calling the setAbsent() method of the
-     *  inside receivers.  If the port is not connected to anything,
-     *  or receivers have not been created in the inside port, then
-     *  just return.  <p> Some of this method is read-synchronized on
-     *  the workspace.  Since it is possible for a thread to block
-     *  while executing setAbsent, it is important that the thread
-     *  does not hold read access on the workspace when it is
-     *  blocked. Thus this method releases read access on the
-     *  workspace before calling put.
-     *
-     *  @param channelIndex The index of the channel, from 0 to insideWidth-1
-     *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Set all destination receivers connected on the inside via the specified
+     *  to channel to have no token. This is accomplished by calling
+     *  clear() on the appropriate receivers. If there are no
+     *  destination inside receivers on the specified channel,
+     *  or if the channel index is out of bounds, then do nothing.
+     *  Some of this method is read-synchronized on the workspace.
+     *  @see #sendClear()
+     *  @param channelIndex The index of the channel, from 0 to insideWidth-1.
+     *  @exception IllegalActionException If a receiver does not support
+     *   clear().
      */
-    public void sendAbsentInside(int channelIndex)
-            throws IllegalActionException, NoRoomException {
+    public void sendClearInside(int channelIndex)
+            throws IllegalActionException {
         Receiver[][] farReceivers;
         if (_debugging) {
-            _debug("sendAbsentInside to channel " + channelIndex);
+            _debug("sendClearInside to channel " + channelIndex);
         }
         try {
             try {
                 _workspace.getReadAccess();
-                // Note that the deepGetReceivers() method doesn't throw
-                // any non-runtime exception.
                 farReceivers = deepGetReceivers();
                 if (farReceivers == null ||
                         farReceivers[channelIndex] == null) return;
@@ -2053,7 +2050,7 @@ public class IOPort extends ComponentPort {
                 _workspace.doneReading();
             }
             for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                farReceivers[channelIndex][j].setAbsent();
+                farReceivers[channelIndex][j].clear();
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the channel index is out of range.
@@ -2321,7 +2318,7 @@ public class IOPort extends ComponentPort {
                         sendInside(i, t);
                         wasTransferred = true;
                     } else {
-                        sendAbsentInside(i);
+                        sendClearInside(i);
                     }
                 }
             } catch (NoTokenException ex) {
@@ -2360,7 +2357,7 @@ public class IOPort extends ComponentPort {
                         send(i, t);
                         wasTransferred = true;
                     } else {
-                        sendAbsent(i);
+                        sendClear(i);
                     }
                 }
             } catch (NoTokenException ex) {
@@ -2690,25 +2687,20 @@ public class IOPort extends ComponentPort {
                     result += " ";
                 }
                 result += "receivers {\n";
-                try {
-                    Receiver[][] receivers = getReceivers();
-                    for (int i = 0; i < receivers.length; i++) {
-                        // One list item per group
-                        result += _getIndentPrefix(indent+1) + "{\n";
-                        for (int j = 0; j < receivers[i].length; j++) {
-                            result += _getIndentPrefix(indent+2);
-                            result += "{";
-                            if (receivers[i][j] != null) {
-                                result +=
-                                    receivers[i][j].getClass().getName();
-                            }
-                            result += "}\n";
+                Receiver[][] receivers = getReceivers();
+                for (int i = 0; i < receivers.length; i++) {
+                    // One list item per group
+                    result += _getIndentPrefix(indent+1) + "{\n";
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        result += _getIndentPrefix(indent+2);
+                        result += "{";
+                        if (receivers[i][j] != null) {
+                            result +=
+                            receivers[i][j].getClass().getName();
                         }
-                        result += _getIndentPrefix(indent+1) + "}\n";
+                        result += "}\n";
                     }
-                } catch (IllegalActionException ex) {
-                    result += _getIndentPrefix(indent+1) +
-                        ex.getMessage() + "\n";
+                    result += _getIndentPrefix(indent+1) + "}\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
             }

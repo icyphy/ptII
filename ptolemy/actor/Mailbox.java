@@ -62,6 +62,12 @@ public class Mailbox extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this receiver of any contained token.
+     */
+    public void clear() {
+        _token = null;
+    }
+
     /** Get the contained Token.  If there is none, throw an exception.
      *  The token is removed.
      *  @return The token contained by this mailbox.

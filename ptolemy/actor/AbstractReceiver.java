@@ -75,6 +75,15 @@ public abstract class AbstractReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Throw an exception.  By default, a receiver that extends this
+     *  class does not support this method.
+     *  @exception IllegalActionException Always thrown.
+     */
+    public void clear() throws IllegalActionException {
+        throw new IllegalActionException(getContainer(),
+        "Receiver does not support clear().");
+    }
+
     /** Get a token from this receiver.
      *  @exception NoTokenException If there is no token.
      */
@@ -189,13 +198,10 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public abstract boolean hasToken(int numberOfTokens);
 
-    /** Return true if this receiver has known state, that is, the tokens in
-     *  this receiver are known or if this receiver is known not to contain
-     *  any tokens.
-     *  <p>
-     *  In this base class, assume that the receiver has known state, so
-     *  return true.  Receivers that may have unknown state must override
-     *  this method.
+    /** Return <i>true</i>.  Most domains have no notion of the state of
+     *  the receiver being unknown.  It is always known whether there is
+     *  a token available. Certain domains with fixed point semantics,
+     *  however, such as SR, will need to override this method.
      *  @return True.
      */
     public boolean isKnown() {
@@ -234,18 +240,9 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException {
-        for (int i = 0; i < numberOfTokens; i++) {
-            put(tokenArray[i]);
-        }
-    }
-
-    /** Set the receiver to contain no tokens.
-     *  <p>
-     *  In this base class, do nothing.  Receivers that require some action
-     *  to be performed must override this method.
-     *  @exception NoRoomException If there is no room in the receiver.
-     */
-    public void setAbsent() {
+	for (int i = 0; i < numberOfTokens; i++) {
+	    put(tokenArray[i]);
+	}
     }
 
     /** Set the container.
