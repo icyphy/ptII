@@ -48,8 +48,14 @@ public class GRActor extends TypedAtomicActor {
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+
         super.attributeChanged(attribute);
-        _createModel();
+        try {
+            // FIXME: need to check every attribute and make changes
+            //_createModel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void initialize() throws IllegalActionException {
