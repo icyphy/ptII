@@ -81,6 +81,8 @@ Returns the sum of the terms <tt>0</tt> through <tt>k</tt> of the Negative Binom
  All arguments must be positive,</p></dd><dd><dl>
 <dt><b>Parameters:</b></dt><dd><code>k</code> - end term.</dd><dd><code>n</code> - the number of trials.</dd><dd><code>p</code> - the probability of success (must be in <tt>(0.0,1.0)</tt>).</dd>
 </blockquote>
+   The above description of negativeBinomial() is
+   <a href="doc-files/colt-copyright.htm">copyrighted</a>. 
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
