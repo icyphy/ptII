@@ -40,6 +40,8 @@ import ptolemy.actor.util.FIFOQueue;	/* Needed by javadoc */
 
 import java.util.NoSuchElementException;
 import java.util.Enumeration;
+import java.util.Collections;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueueReceiver
@@ -77,11 +79,20 @@ public class QueueReceiver implements Receiver {
     ////                         public methods                    ////
 
     /** Enumerate the tokens in the receiver, beginning with the oldest.
+     *  @deprecated Used elementList() instead.
      *  @return An enumeration of tokens.
      */
     public Enumeration elements() {
-        return _queue.elements();
+        return Collections.enumeration(elementList());
     }
+
+    /** List the tokens in the receiver, beginning with the oldest.
+     *  @return An enumeration of tokens.
+     */
+    public List elementList() {
+        return _queue.elementList();
+    }
+
 
     /** Remove the first token (the oldest one) from the receiver and
      *  return it. If there is no token in the receiver, throw an
@@ -176,9 +187,23 @@ public class QueueReceiver implements Receiver {
      *  includes all tokens previously taken from the receiver. If the
      *  history capacity is zero, then return an empty enumeration.
      *  @return An enumeration of tokens.
+     *  @deprecated Used historyElementList() instead.
      */
     public Enumeration historyElements() {
-        return _queue.historyElements();
+        return Collections.enumeration(historyElementList());
+    }
+
+    /** List the tokens stored in the history queue, which are
+     *  the N most recent tokens taken from the receiver, beginning with
+     *  the oldest, where N is less than or equal to the history capacity.
+     *  If the history capacity is INFINITE_CAPACITY, then the enumeration
+     *  includes all tokens previously taken from the receiver. If the
+     *  history capacity is zero, then return an empty enumeration.
+     *  @return An enumeration of tokens.
+     *  @deprecated Used historyElementList() instead.
+     */
+    public List historyElementList() {
+        return _queue.historyElementList();
     }
 
     /** Return the number of tokens in history.
