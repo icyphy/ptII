@@ -472,7 +472,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 }
             }
         }
-    };
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// InstantiateAttributeAction
