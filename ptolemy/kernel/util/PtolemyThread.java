@@ -31,8 +31,10 @@
 
 package ptolemy.kernel.util;
 
-import java.io.Serializable;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 ////
@@ -56,7 +58,7 @@ table. (as was mentioned in the previous paragraph)
 @version $Id$
 @since Ptolemy II 0.2
 */
-public class PtolemyThread extends Thread {
+public class PtolemyThread extends Thread implements Debuggable {
 
     /** Construct a new PtolemyThread object. This constructor has the
      *  same effect as PtolemyThread(null, null, <i>generatedName</i>), where
@@ -131,6 +133,22 @@ public class PtolemyThread extends Thread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append a listener to the current set of debug listeners.
+     *  If the listener is already in the set, do not add it again.
+     *  @param listener The listener to which to send debug messages.
+     */
+    public synchronized void addDebugListener(DebugListener listener) {
+        if (_debugListeners == null) {
+            _debugListeners = new LinkedList();
+        } else {
+            if (_debugListeners.contains(listener)) {
+                return;
+            }
+        }
+        _debugListeners.add(listener);
+        _debugging = true;
+    }
+
     /** Get the read depth field.
      *  @return The read depth field.
      */
@@ -138,13 +156,87 @@ public class PtolemyThread extends Thread {
         return readDepth;
     }
 
+    /** Unregister a debug listener.  If the specified listener has not
+     *  been previously registered, then do nothing.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which debug messages are sent.
+     */
+    public synchronized void removeDebugListener(DebugListener listener) {
+        if (_debugListeners == null) {
+            return;
+        }
+        _debugListeners.remove(listener);
+        if (_debugListeners.size() == 0) {
+            _debugging = false;
+        }
+        return;
+    }
+
     ///////////////////////////////////////////////////////////////////
-    ////                         variables                         ////
+    ////                         protected methods                 ////
+
+    /** Send a debug event to all debug listeners that have registered.
+     *  @param event The event.
+     */
+    protected final void _debug(DebugEvent event) {
+        if (_debugging) {
+            // We copy this list to that responding to the event may block.
+            // while the execution thread is blocked, we want to be able to
+            // add more debug listeners...
+            // Yes, this is slow, but hey, it's debug code.
+            List list;
+            synchronized(this) {
+                list = new ArrayList(_debugListeners);
+            }
+            Iterator listeners = list.iterator();
+            while (listeners.hasNext()) {
+                ((DebugListener)listeners.next()).event(event);
+            }
+        }
+    }
+
+    /** Send a debug message to all debug listeners that have registered.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  Note that using this method could be fairly expensive if the
+     *  message is constructed from parts, and that this expense will
+     *  be incurred regardless of whether there are actually any debug
+     *  listeners.  Thus, you should avoid, if possible, constructing
+     *  the message from parts.
+     *  @param message The message.
+     */
+    protected final void _debug(String message) {
+        if (_debugging) {
+            // We copy this list to that responding to the event may block.
+            // while the execution thread is blocked, we want to be able to
+            // add more debug listeners...
+            // Yes, this is slow, but hey, it's debug code.
+            List list;
+            synchronized(this) {
+                list = new ArrayList(_debugListeners);
+            }
+            Iterator listeners = list.iterator();
+            while (listeners.hasNext()) {
+                ((DebugListener)listeners.next()).message(message);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** @serial Flag that is true if there are debug listeners. */
+    protected boolean _debugging = false;
+
+    /** @serial The list of DebugListeners registered with this object. */
+    protected LinkedList _debugListeners = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         package variables                 ////
+
     /** readDepth the number of read permissions this thread holds.
      *  This field is made 'package friendly' because only the Workspace class
      *  should access this field.
      */
-    // FIXME: This should really be 'package friendly'.
-    // After the bug in JavaScope got fixed, remove the word 'public' (lmuliadi)
-    public int readDepth;
+    int readDepth;
 }

@@ -118,7 +118,7 @@ description.
 @since Ptolemy II 0.2
 */
 
-public class NamedObj implements Nameable, Debuggable,
+public class NamedObj implements Nameable, Debuggable, DebugListener,
                                  Serializable, Cloneable {
 
     // Note that Nameable extends ModelErrorHandler, so this class
@@ -545,6 +545,16 @@ public class NamedObj implements Nameable, Debuggable,
      */
     public String description(int detail) {
         return _description(detail, 0, 0);
+    }
+
+    /** React to the given debug event by relaying to any registered
+     *  debug listeners.
+     *  @param event The event.
+     */
+    public void event(DebugEvent event) {
+        if (_debugging) {
+            _debug(event);
+        }
     }
 
     /** Get a MoML description of this object.  This might be an empty string
@@ -998,6 +1008,16 @@ public class NamedObj implements Nameable, Debuggable,
             return container.handleModelError(context, exception);
         }
         return false;
+    }
+
+    /** React to a debug message by relaying it to any registered
+     *  debug listeners.
+     *  @param message The debug message.
+     */
+    public void message(String message) {
+        if (_debugging) {
+            _debug(message);
+        }
     }
 
     /** Remove a change listener. If there is a container, delegate the
