@@ -89,13 +89,20 @@ proc speedComparison  {xmlFile \
 	if {$codeGenType == "Applet"} {
 	    puts "Applet codegen done"
 	} else {
+	    set targetClass $modelName.$modelClass
+
 	    set args [java::new {String[]} 2 \
 			  [list \
 			       "-class" "$targetClass"]]
+
+	    set startDirectory [pwd]
+	    cd ../cg/$modelName
 	    puts "Running builtin $codeGenType codegen $repeat times"
 	    set codegenElapsed [time {java::call \
 					  ptolemy.actor.gui.CompositeActorApplication \
 					  main $args} $repeat]
+	    cd $startDirectory
+
 
 	    puts "Running exec $codeGenType codegen $repeat times"
 	    set codegenExecElapsed \
@@ -193,7 +200,7 @@ proc speedComparison  {xmlFile \
 proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	{defaultIterations {}} \
         {statsOnly 0} \
-	{speedComparison 1} \
+	{speedComparison 0} \
 	{runCommand "runDemo"}} {
     global relativePathToPTII
 
