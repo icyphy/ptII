@@ -32,6 +32,7 @@ import java.awt.event.*;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.*;
 import ptolemy.domains.ct.kernel.*;
+import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.domains.sc.kernel.*;
 import ptolemy.domains.sc.lib.*;
@@ -47,12 +48,12 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 ////  HeliControlApplet
 /**
-An applet that uses Ptolemy II DE domain.
+An applet that models a 2-D helicopter control system.
 
 @author Jie Liu, Xiaojun Liu
 @version $Id$
 */
-public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
+public class HeliControlApplet extends CTApplet {
 
     public  boolean DEBUG = false;
 
@@ -66,9 +67,6 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
         super.init();
         // Initialization
         _stopTimeBox = new TextField("70.0", 10);
-        _alphaPBox = new TextField("500.0 650.0 395.0 121.0 17.8", 10);
-        _alphaVBox = new TextField("100.0 110.0 57.0 12.80", 10);
-        _alphaABox = new TextField("20.0 18.0 7.80", 10);
         _currentTimeLabel = new Label("Current time = 0.0     ");
         _goButton = new Button("Go");
         _actionButton = new Button("Action");
@@ -95,7 +93,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2,3));
+        simulationParam.setLayout(new GridLayout(1,3));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
 
@@ -103,33 +101,12 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
         simulationParam.add(_currentTimeLabel);
         // Done adding average wait time.
 
-        // Adding sample time (minimum service time) in the simulation panel
-        Panel alphaPPanel = new Panel();
-        simulationParam.add(alphaPPanel);
-        alphaPPanel.add(new Label("alphaP:"));
-        alphaPPanel.add(_alphaPBox);
-        // done adding sigma
-
         // Adding Stop time in the simulation panel.
         Panel subSimul = new Panel();
         simulationParam.add(subSimul);
         subSimul.add(new Label("Stop time:"));
         subSimul.add(_stopTimeBox);
         // Done adding stop time.
-
-        // Adding lamda in the simulation panel
-        Panel alphaVPanel = new Panel();
-        simulationParam.add(alphaVPanel);
-        alphaVPanel.add(new Label("alphaV:"));
-        alphaVPanel.add(_alphaVBox);
-        // done adding lamda
-
-        // Adding b in the simulation panel
-        Panel alphaAPanel = new Panel();
-        simulationParam.add(alphaAPanel);
-        alphaAPanel.add(new Label("alphaA"));
-        alphaAPanel.add(_alphaABox);
-        // done adding b
 
         Panel buttonPanel = new Panel();
         simulationParam.add(buttonPanel);
@@ -145,14 +122,14 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
         // Creating the topology.
         try {
             // Set up the top level composite actor, director and manager
-            TypedCompositeActor sys = new TypedCompositeActor();
+            TypedCompositeActor sys = _toplevel;
             sys.setName("HeliControlSystem");
             _dir = new CTMultiSolverDirector("OutterDirector");
             sys.setDirector(_dir);
-            _manager = new Manager("Manager");
+            //_manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
-            sys.setManager(_manager);
-
+            //sys.setManager(_manager);
+            _thismanager = _manager;
             //_dir.setVERBOSE(true);
             //_dir.setDEBUG(true);
 
@@ -533,15 +510,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             Parameter m1 = (Parameter)MINUS.getAttribute("Gain");
             m1.setExpression("-1.0");
             m1.parameterChanged(null);
-            /*
-            Parameter m2 = (Parameter)MINUS2.getAttribute("Gain");
-            m2.setExpression("-1.0");
-            m2.parameterChanged(null);
-
-            Parameter m3 = (Parameter)MINUS3.getAttribute("Gain");
-            m3.setExpression("-1.0");
-            m3.parameterChanged(null);
-            */
+            
             //XYPlot ranges
             Parameter xmin = (Parameter)ctPlot.getAttribute("X_Min");
             xmin.setExpression("-1.0");
@@ -584,15 +553,12 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
     private boolean _isSimulationRunning;
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    private CTSingleSolverDirector _dir;
-    private Manager _manager;
+    private CTMultiSolverDirector _dir;
+    private Manager _thismanager;
 
     private TextField _stopTimeBox;
-    private TextField _alphaPBox;
-    private TextField _alphaVBox;
-    private TextField _alphaABox;
     private Label _currentTimeLabel;
-    private double _stopTime = 100.0;
+    private double _stopTime = 70.0;
     private Button _goButton;
     private Button _actionButton;
 
@@ -862,7 +828,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
     public class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             if (_isSimulationRunning) {
-                //System.out.println("Simulation still running.. hold on..");
+                System.out.println("Simulation still running.. hold on..");
                 return;
             }
 
@@ -876,50 +842,19 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
                     _paramStopT.setToken(new DoubleToken(tmp.doubleValue()));
                     _paramStopT.parameterChanged(null);
 
-System.out.println("Set stop time of simulation.");
+                    //System.out.println("Set stop time of simulation.");
 
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid stop time: " 
                             +ex.getMessage());
                     return;
                 }
-                // set alphaP
-                /*
-                try {
-                    Double tmp = Double.valueOf(_lamdaBox.getText());
-                    _paramLamda.setToken(new DoubleToken(tmp.doubleValue()));
-                    _paramLamda.parameterChanged(null);
-                } catch (NumberFormatException ex) {
-                    System.err.println("Invalid Lamda value: " + 
-                            ex.getMessage());
-                    return;
-                }
-                // set b.
-                try {
-                    Double tmp = Double.valueOf(_bBox.getText());
-                    _paramB.setToken(new DoubleToken(tmp.doubleValue()));
-                    _paramB.parameterChanged(null);
-                } catch (NumberFormatException ex) {
-                    System.err.println("Invalid B value: " + 
-                                       ex.getMessage());
-                    return;
-                }
-                // set sigma.
-                try {
-                    Double tmp = Double.valueOf(_sigmaBox.getText());
-                    _paramSigma.setToken(new DoubleToken(tmp.doubleValue()));
-                    _paramSigma.parameterChanged(null);
-                } catch (NumberFormatException ex) {
-                    System.err.println("Invalid SigmaValue: " + 
-                            ex.getMessage());
-                    return;
-                }   
-                */
+
                 // Start the CurrentTimeThread.
                 Thread ctt = new CurrentTimeThread();
                 _isSimulationRunning = true;
                 ctt.start();
-                _manager.startRun();
+                _thismanager.startRun();
 
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
