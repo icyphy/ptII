@@ -53,6 +53,7 @@ class RLEncoding {
         // FIXME FIXME FIXME
         c1.setManager(manager);
 	BasePNDirector local = new BasePNDirector("Local");
+        local.addProcessListener(new DefaultPNListener());
 	c1.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));
 
