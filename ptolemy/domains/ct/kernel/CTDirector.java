@@ -81,7 +81,7 @@ iterations for finding the fixed point at one time point.
 Default value is 20. </LI><Br>
 <LI> local trancation error tolerance (<code>LocalTruncationError
 Tolerance</code>): This used for controlling the local truncation error 
-in vairable step size ODE sovlers. If the local truncation error
+in variable step size ODE sovlers. If the local truncation error
 at some error control actors are greater than this tolerance, then the 
 integration step is considered failed, and should be restarted with 
 a reduced step size. Default value 1e-4. </LI><Br>
