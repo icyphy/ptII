@@ -413,6 +413,28 @@ directives inside the file.  This version only supports
  */
 public class Pxgraph extends Frame { 
 
+    /** Process the arguments and plot the data.
+      */
+    public Pxgraph(String args[]) {
+	//setLayout(new FlowLayout(FlowLayout.LEFT));
+	//setLayout(new BorderLayout());
+	_plotApplet = new Plot();
+	_makeButtons();
+
+	pack();
+	add("Center",_plotApplet);
+	try {
+	    _parseArgs(args);
+	} catch (CmdLineArgException e) {
+	    System.err.println("Failed to parse command line arguments: " + e);
+	}
+
+        show();
+	_plotApplet.init();
+	_plotApplet.start();
+    }
+
+
     public boolean action(Event e, Object arg) {
 	Object target = e.target;
 	if (_debug > 20) System.out.println("Pxgraph: action: "+e+" "+target);
@@ -476,8 +498,7 @@ public class Pxgraph extends Frame {
       * type <code>pxgraph -help</code> for the complete set of arguments.
       */
     public static void main(String args[]) {
-	Pxgraph pxgraph = new Pxgraph();
-	pxgraph.pxgraph(args);
+	Pxgraph pxgraph = new Pxgraph(args);
 
 	if (_test) {
 	    if (_debug > 4) System.out.println("Sleeping for 2 seconds");
@@ -488,29 +509,6 @@ public class Pxgraph extends Frame {
 	    }
 	    System.exit(0);
 	}
-    }
-
-    /** Process the arguments and plot the data.
-      */
-    public void pxgraph(String args[]) {
-	_plotApplet = new Plot();
-	_makeButtons();
-
-	pack();
-	add(_plotApplet);
-	try {
-	    // First we parse the args for things like -help or -version
-	    // then we have the Plot applet parse them
-	    _parseArgs(args);
-	    _plotApplet.parseArgs(args);
-	} catch (CmdLineArgException e) {
-	    System.err.println("Failed to parse command line arguments: " + e);
-	    System.exit(1);
-	}
-
-        show();
-	_plotApplet.init();
-	_plotApplet.start();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -719,8 +717,7 @@ public class Pxgraph extends Frame {
 
     /* Parse the arguments and make calls to the plotApplet accordingly.
      */	
-    private int _parseArgs(String args[])
-	{
+    private int _parseArgs(String args[]) throws CmdLineArgException {
         int i = 0, j, argsread;
         String arg;
 
@@ -813,6 +810,7 @@ public class Pxgraph extends Frame {
 			       " height = " + height +
 			       " _debug = " + _debug);
 	}
+	_plotApplet.parseArgs(args);
         return argsread;
     }
 
