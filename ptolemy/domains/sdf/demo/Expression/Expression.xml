@@ -12,7 +12,7 @@
            <svg>
            <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model repeatedly evaluates an expression, a function of two ramp
 signals, slow and fast. Try right clicking on the expr actor, select
-"Edit Parameters" and change it to "cos(slow)*cos(fast)" and then run
+"Configure" and change it to "cos(slow)*cos(fast)" and then run
 the demo with View->Run Window->Go. Other interesting alternatives
 include:
     "cos(fast*cos(slow))"
@@ -33,7 +33,7 @@ include:
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 50.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 260]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[76, 152]">
     </property>
