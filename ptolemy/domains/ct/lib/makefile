@@ -62,6 +62,7 @@ JSRCS = \
 	CTSin.java \
 	CTSink.java \
 	CTSquareWave.java \
+	CTXYPlot.java \
 	CTZeroCrossingDetector.java \
 	CTZeroOrderHold.java \
         GeneralFunctionActor.java \
