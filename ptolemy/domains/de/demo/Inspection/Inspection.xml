@@ -75,7 +75,7 @@ order.</text>
     </property>
     <property name="passengerArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 0, 880, 614}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 0, 880, 617}}">
     </property>
     <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.PoissonClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -83,6 +83,8 @@ order.</text>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="poissonBusArrivalRate">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
+        <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 265.0">
         </property>
@@ -100,6 +102,8 @@ order.</text>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="passengerArrivalRate">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+        <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 330.0">
         </property>
@@ -129,7 +133,7 @@ order.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="passenger, wait time, bus (Regular), bus (Poisson)">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={479, 234, 508, 254}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={479, 234, 508, 259}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 204]">
         </property>
@@ -149,7 +153,7 @@ order.</text>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="6.0368947094154475"/>
+<yRange min="0.0" max="6.1326154584297825"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -160,7 +164,7 @@ order.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Poisson, Regular">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={477, 493, 508, 255}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={477, 493, 508, 260}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 205]">
         </property>
@@ -182,7 +186,7 @@ order.</text>
 <xLabel>waiting times</xLabel>
 <yLabel>passengers</yLabel>
 <xRange min="0.1" max="6.199999999999999"/>
-<yRange min="0.0" max="25.0"/>
+<yRange min="0.0" max="24.0"/>
 <noGrid/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
@@ -197,6 +201,8 @@ order.</text>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{3.0}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 190.0">
@@ -367,11 +373,11 @@ actor, for example, adds strings by appending them.</text></svg></configure>
     <entity name="Display Average Waiting Times" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="25">
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="60">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={481, 124, 447, 105}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={481, 124, 432, 110}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 348.5">
         </property>
