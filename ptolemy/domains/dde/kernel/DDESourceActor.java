@@ -120,7 +120,6 @@ public class DDESourceActor extends DDEActor {
                       + "in the past is prohibited.");
 	}
         DoubleToken token = new DoubleToken();
-	// setDelay(delay);
         _reinvokeOutPort.send( 0, token, wakeTime);
     }
 
