@@ -32,6 +32,9 @@
 
 # Ptolemy II bed, see $PTII/doc/coding/testing.html for more information.
 
+# Set the timeOut to two hours
+set timeOutSeconds 12000
+
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
@@ -59,9 +62,11 @@ proc autoAppletCG {autoDirectory} {
 
 # Generate code for all the xml files in subdirectories
 proc autoAppletDemoCG {autoDirectory} {
+    set i 0
     foreach file [glob $autoDirectory/*/demo/*/*.xml] {
 	puts "---- testing $file"
-	test "Auto" "Automatic test in file $file" {
+	incr i
+	test "Auto-$i" "Automatic test in file $file" {
 	    set elapsedTime [time {sootCodeGeneration $file Applet 1000}]
 	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
 	    list {}
