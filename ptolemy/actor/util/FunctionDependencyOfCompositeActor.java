@@ -62,7 +62,7 @@ import ptolemy.kernel.util.InternalErrorException;
     
     @see FunctionDependency
     @author Haiyang Zheng
-    @version $Id $
+    @version $Id$
     @since Ptolemy II 4.0
     @Pt.ProposedRating Green (hyzheng)
     @Pt.AcceptedRating Yellow (eal)
