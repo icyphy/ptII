@@ -814,14 +814,19 @@ public class Plot extends PlotBox {
                 switch(fmt.marks) {
                 case 0:
                     options.append(" marks=\"none\"");
+                    break;
                 case 1:
                     options.append(" marks=\"points\"");
+                    break;
                 case 2:
                     options.append(" marks=\"dots\"");
+                    break;
                 case 3:
                     options.append(" marks=\"various\"");
+                    break;
                 case 4:
                     options.append(" marks=\"pixels\"");
+                    break;
                 }
             }
 
@@ -1610,12 +1615,16 @@ public class Plot extends PlotBox {
         switch(_marks) {
         case 1:
             output.println("Marks: points");
+            break;
         case 2:
             output.println("Marks: dots");
+            break;
         case 3:
             output.println("Marks: various");
+            break;
         case 4:
             output.println("Marks: pixels");
+            break;
         }
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
@@ -1636,14 +1645,19 @@ public class Plot extends PlotBox {
                 switch(fmt.marks) {
                 case 0:
                     output.println("Marks: none");
+                    break;
                 case 1:
                     output.println("Marks: points");
+                    break;
                 case 2:
                     output.println("Marks: dots");
+                    break;
                 case 3:
                     output.println("Marks: various");
+                    break;
                 case 4:
                     output.println("Marks: pixels");
+                    break;
                 }
             }
             // Write the data
