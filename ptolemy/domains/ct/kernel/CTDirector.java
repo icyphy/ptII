@@ -128,7 +128,7 @@ time minus the <i>minStepSize</i>.  The reason for this is that
 many actors use fireAt() to produce a discontinuity on their outputs.
 The earlier firing ensures that this appears as a discontinuity on
 the output.  How breakpoints are actually handled
-dependends on individual directors, but typically, all actors
+depends on individual directors, but typically, all actors
 will be fired at each such breakpoint.
 
 @author Jie Liu
