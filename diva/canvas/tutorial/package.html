@@ -1,0 +1,76 @@
+<!-- Copyright (c) 1998-2001 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+
+<html>
+<head>
+<title>diva.canvas.tutorial</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+A set of tutorials for the Diva canvas. Each class in this package
+illustrates how to use one key aspect of the canvas. Each class is
+self-contained, so that you can see all of the code in one place, and
+as short as possible given the constraints of making them somewhat
+realistic.  The classes are further broken into small methods, each
+illustrating one key point.
+
+<P>
+All of the tutorials show some common code in the constructor
+that creates an instance of JCanvas and places it into a
+frame. The code is:
+
+<pre>
+  canvas = new JCanvas();
+  graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+
+  BasicFrame frame = new BasicFrame("Simple canvas tutorial", canvas);
+  frame.setSize(600,400);
+  frame.setVisible(true);
+</pre>
+
+<P>
+(Where <B>canvas</B> and <B>graphicsPane</B> are private variables of
+the class.)  Every JCanvas contains a top-level canvas pane, which in
+turn contains layers. By default, the top-level pane is an instance of
+GraphicsPane.  BasicFrame is part of the <a
+href="../../gui/index.html">diva.gui</a> package and contains the
+JCanvas in its content pane.
+
+<p>
+To run a particular tutorial, simply move to the
+<B>diva/canvas/tutorial</B> directory and type:
+
+<pre>
+  make FigureTutorial
+</pre>
+
+(where FigureTutorial is replaced by the class you want to run).
+A Java window will appear where you can see and manipulate the
+figures.
+
+<ul>
+
+<li><a href="SimpleTutorial.html">Constructing a canvas and placing figures</a>
+
+<li><a href="FigureTutorial.html">Creating your own Figure class</a>
+
+<li><a href="CompositeFigureTutorial.html">Constructing composite figures</a>
+
+<li><a href="DragTutorial.html">Drag interators</a>
+
+<li><a href="ConnectorTutorial.html">Using straight connectors</a>
+
+<li><a href="ArcTutorial.html">Using arc connectors</a>
+
+<li><a href="TransformedFigureTutorial.html">Giving a figure a transform context</a>
+
+</ul>
+
+<p> For a slightly larger example, see the package
+<a href="../demo/index.html">diva.canvas.demo</a>.
+
+</body>
+</html>
+
+

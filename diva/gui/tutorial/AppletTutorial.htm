@@ -1,0 +1,61 @@
+<!-- $Id$ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Applet Tutorial: A Simple Text Editor</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Applet Tutorial: A Simple Text Editor</H1>
+
+This is a simple example of how to run an application from within an applet.
+By simply substituting an instance of diva.gui.AppletContext for the 
+ApplicationContext in the constructor for our simple text editor, it runs
+inside an applet.  The appropriate code is:
+<code>
+public class AppletTutorial extends AppletContext {
+    public AppletTutorial() {
+       new ApplicationTutorial(this);
+    }
+}
+</code>
+This roughly corresponds to the main() function we had before.
+<p>
+
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first 
+     section is for IE, the second is for Netscape
+ -->
+<OBJECT 
+ width=800 height=600
+ name="AppletTutorial"
+ codebase="http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0">
+<PARAM NAME="code" VALUE=diva.gui.tutorial.AppletTutorial
+<PARAM NAME="codebase" VALUE=../../..>
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2.2"
+ code=diva.gui.tutorial.AppletTutorial
+ codebase=../../..
+ name="AppletTutorial"
+ width="800" height="600"
+ background="#faf0e6"
+ pluginspage="http://java.sun.com/products/plugin/1.2.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I>
+</NOEMBED></EMBED>
+</OBJECT>
+</center>
+
+</ul>
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</BODY>
+</HTML>
+
+
+
+
+
