@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -99,7 +99,7 @@ public class DelayLine extends SDFTransformer {
 
     /** The initial values of the delay line.
      *  This parameter must contain an ArrayToken.
-     *  It defaults to contain a single zero-valued integer token.
+     *  The default value is an array that contains 4 integer tokens.
      *  Changes to this parameter after initialize() has been invoked
      *  are ignored until the next execution of the model.
      */
@@ -153,7 +153,8 @@ public class DelayLine extends SDFTransformer {
      *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
     public boolean prefire() throws IllegalActionException {
-        return input.hasToken(0);
+        if(!input.hasToken(0)) return false;
+        return super.prefire();
     }
 
     /** Return the type constraint that the type of the elements of the

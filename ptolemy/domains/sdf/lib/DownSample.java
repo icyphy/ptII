@@ -1,5 +1,4 @@
-/* Read a specified number of input tokens and send only one of them to
-   the output.
+/* Downsample a stream by the specified amount.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -26,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -54,8 +53,8 @@ import java.util.List;
 /**
 This actor downsamples an input stream by an integer factor by
 removing tokens.  The downsample factor is given by the <i>factor</i>
-parameter. On each firing, this actor <i>factor</i> tokens from the
-input and send only one of them to the output.  Which one is sent
+parameter. On each firing, this actor consumes <i>factor</i> tokens from the
+input and sends only one of them to the output.  The one sent
 depends on the <i>phase</i> parameter.  If <i>phase</i> is 0, then
 the most recent one (the last one consumed) is sent.  If <i>phase</i>
 is 1, then the next most recent one is sent. The value of <i>phase</i>

@@ -25,11 +25,12 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (srao@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
@@ -39,6 +40,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -49,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 An actor that repeats a block of input tokens the specified number of times
 on the output.  On each firing, it reads <i>blockSize</i> tokens
 and repeats each block <i>numberOfTimes</i> times
-on the output. Note that this causes a sample rate increase by
+on the output.  Note that this causes a sample rate increase by
 a factor of <i>numberOfTimes</i>,
 and hence affects the number of invocations of downstream actors.
 
@@ -85,16 +87,51 @@ public class Repeat extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The repetition factor.
+    /** The repetition factor.  It is of type integer and has a default
+     *  value of 2.  It must be greater than zero.
      */
     public Parameter numberOfTimes;
 
-    /** The number of tokens in a block.
+    /** The number of tokens in a block.  It is of type integer and has a 
+     *  default value of 1.  It must be greater than zero.
      */
     public Parameter blockSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the argument is the <i>numberOfTimes</i> parameter or the 
+     *  <i>blockSize</i> parameter, then
+     *  set the rate of the ports, and invalidate
+     *  the schedule of the director.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the parameters are out of range.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if(attribute == numberOfTimes || attribute == blockSize) {
+            int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
+            int count = ((IntToken)blockSize.getToken()).intValue();
+            if(repetitions < 1) 
+                throw new IllegalActionException(numberOfTimes, 
+                        "The value of numberOfTimes must be positive, but "
+                        + "was set to " + repetitions);
+            
+            if(count < 1) 
+                throw new IllegalActionException(blockSize,
+                        "The value of blockSize must be positive, but "
+                        + "was set to " + count);
+            
+            input.setTokenConsumptionRate(count);
+            output.setTokenProductionRate(count * repetitions);
+            Director dir = getDirector();
+            if (dir != null) {
+                dir.invalidateSchedule();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Consume <i>blockSize</i> input tokens from the input port.
      *  Produce <i>blocksize*numberOfTimes</i>
@@ -114,16 +151,18 @@ public class Repeat extends SDFTransformer {
             output.send(0, inputBlock, count);
     }
 
-    /** Calculate the token production rate and the token consumption
-     *  rate based on the parameters <i>blockSize</i> and <i>numberOfTimes</i>.
-     *  @exception IllegalActionException If the parent class throws it.
+    /** Return true if the input port has enough tokens for this actor to
+     *  fire. The number of tokens required is determined by the
+     *  value of the <i>blockSize</i> parameter.
+     *  @return boolean True if there are enough tokens at the input port
+     *   for this actor to fire.
+     *  @exception IllegalActionException If the hasToken() query to the
+     *   input port throws it.
+     *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
-    public void initialize() throws IllegalActionException {
-	super.initialize();
-	int repetitions = ((IntToken)numberOfTimes.getToken()).intValue();
-	int count = ((IntToken)blockSize.getToken()).intValue();
-	input.setTokenConsumptionRate(count);
-	output.setTokenProductionRate(count * repetitions);
+    public boolean prefire() throws IllegalActionException {
+        int length = ((IntToken)numberOfTimes.getToken()).intValue();
+	return input.hasToken(0, length);
     }
 }
 

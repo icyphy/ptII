@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -58,7 +58,7 @@ It is polymorphic, supporting any input data type that supports
 multiplication, addition, and division by an integer.
 However, since integer division will lose the fractional portion of the
 result, type resolution will resolve the input type to double or double
-matrix if the input port is connected to an integer or int matrix source,
+matrix if the input port is connected to an integer or integer matrix source,
 respectively.
 <p>
 Both biased and unbiased autocorrelation estimates are supported.
@@ -234,7 +234,10 @@ public class Autocorrelation extends SDFTransformer {
         return newObject;
     }
 
-    /** Consume the inputs and produce the outputs.
+    /** Consume tokens from the input and produce a token on the output
+     *  that contains an array token that represents an autocorrelation
+     *  estimate of the consumed tokens.  The estimate is consistent with
+     *  the parameters of the object, as described in the class comment.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

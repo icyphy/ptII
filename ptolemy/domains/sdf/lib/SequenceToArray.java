@@ -139,9 +139,9 @@ public class SequenceToArray extends SDFTransformer {
     }
 
     /** Return true if the input port has enough tokens for this actor to
-     *  fire. The number of tokens required is determined by the token
-     *  consumption rate.
-     *  @return boolean True if there is enough tokens at the input port
+     *  fire. The number of tokens required is determined by the 
+     *  value of the <i>arrayLength</i> parameter.
+     *  @return boolean True if there are enough tokens at the input port
      *   for this actor to fire.
      *  @exception IllegalActionException If the hasToken() query to the
      *   input port throws it.
@@ -149,7 +149,8 @@ public class SequenceToArray extends SDFTransformer {
      */
     public boolean prefire() throws IllegalActionException {
         int length = ((IntToken)arrayLength.getToken()).intValue();
-	return input.hasToken(0, length);
+        if(!input.hasToken(0, length)) return false;
+        return super.prefire();
     }
 
     /** Return the type constraint that the type of the elements of the
