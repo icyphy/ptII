@@ -73,13 +73,32 @@
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
-
+  
   <entity name="RectangularToPolar"
           class="ptolemy.actor.lib.conversions.RectangularToPolar">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
+  
+  <entity name="Round" class="ptolemy.actor.lib.Round">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+    <property name="function">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="ceil" value="ceil"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="floor" value="floor"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="round" value="round"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+	        <property name="truncate" value="truncate"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+  </entity>
+
 
 <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">

@@ -75,24 +75,6 @@
     </rendition>
   </entity>
   
-  <entity name="Round" class="ptolemy.actor.lib.Round">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
-    <property name="function">
-        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-            <property name="ceil" value="ceil"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="fix" value="fix"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="floor" value="floor"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="round" value="round"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-        </property>
-     </property>
-  </entity>
-
   <entity name="Scale" class="ptolemy.actor.lib.Scale">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
