@@ -56,8 +56,8 @@ public class VQEncode extends SDFAtomicActor {
         setTokenConsumptionRate(inputport, 1);
 
         Parameter p = new Parameter(this, "Codebook", new StringToken("VQcodebook.dat"));
-        new Parameter(this, "XDimension", new IntToken("4"));
-        new Parameter(this, "YDimension", new IntToken("2"));
+        new Parameter(this, "X Dimension", new IntToken("4"));
+        new Parameter(this, "Y Dimension", new IntToken("2"));
     }
 
 
@@ -65,10 +65,10 @@ public class VQEncode extends SDFAtomicActor {
         IntMatrixToken t = (IntMatrixToken) ((IOPort) getPort("imagepart")).get(0);
         if(t.getColumnCount() != xsize) 
             throw new IllegalActionException("Input column count does not " +
-                    "match parameter XDimension!");
+                    "match parameter X Dimension!");
         if(t.getRowCount() != ysize) 
             throw new IllegalActionException("Input row count does not " +
-                    "match parameter YDimension!");
+                    "match parameter Y Dimension!");
 
         int a[][] = t.intMatrix();
 

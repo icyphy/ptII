@@ -57,8 +57,8 @@ public class VQDecode extends SDFAtomicActor {
 
         Parameter p = new Parameter(this, "Codebook", 
                 new StringToken("VQcodebook.dat"));
-        new Parameter(this, "XDimension", new IntToken("4"));
-        new Parameter(this, "YDimension", new IntToken("2"));
+        new Parameter(this, "X Dimension", new IntToken("4"));
+        new Parameter(this, "Y Dimension", new IntToken("2"));
     }
 
 
@@ -82,9 +82,9 @@ public class VQDecode extends SDFAtomicActor {
 
         Parameter p = (Parameter) getAttribute("Codebook");
         String filename = ((StringToken)p.getToken()).stringValue();
-        Parameter px = (Parameter) getAttribute("XDimension");
+        Parameter px = (Parameter) getAttribute("X Dimension");
         xsize = ((IntToken)px.getToken()).intValue();
-        Parameter py = (Parameter) getAttribute("YDimension");
+        Parameter py = (Parameter) getAttribute("Y Dimension");
         ysize = ((IntToken)py.getToken()).intValue();
 
         try {

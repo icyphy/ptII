@@ -54,8 +54,8 @@ public class ImageSequence extends SDFAtomicActor {
 
         Parameter p = new Parameter(this, "File Name Template", 
                 new StringToken("missa***.qcf"));
-        new Parameter(this, "X Pixels", new IntToken("176"));
-        new Parameter(this, "Y Pixels", new IntToken("144"));
+        new Parameter(this, "X Image Size", new IntToken("176"));
+        new Parameter(this, "Y Image Size", new IntToken("144"));
         new Parameter(this, "Start Frame", new IntToken("0"));
         new Parameter(this, "End Frame", new IntToken("10"));
     }
@@ -65,8 +65,6 @@ public class ImageSequence extends SDFAtomicActor {
         FileInputStream source = null;
         Parameter p = (Parameter) getAttribute("File Name Template");
         String fileroot = ((StringToken)p.getToken()).stringValue();
-        p = (Parameter) getAttribute("File extension");
-        String fileext = ((StringToken)p.getToken()).stringValue();
         p = (Parameter) getAttribute("Start Frame");
         int startframe = ((IntToken)p.getToken()).intValue();
         p = (Parameter) getAttribute("End Frame");
