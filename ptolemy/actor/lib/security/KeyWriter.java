@@ -88,6 +88,9 @@ public class KeyWriter extends KeyStoreActor {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(KeyToken.KEY);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.BOOLEAN);                
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,6 +99,11 @@ public class KeyWriter extends KeyStoreActor {
     /** The input port, which contains on KeyToken.
      */
     public TypedIOPort input;
+
+    /** The output port, which contains a True boolean token when
+     *  the key has been written. 
+     */
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -131,6 +139,7 @@ public class KeyWriter extends KeyStoreActor {
                 _keyStore.store(keyStoreOutputStream,
                         keyPassword.getExpression().toCharArray());
                 keyStoreOutputStream.close();
+                output.broadcast(BooleanToken.TRUE);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to store keyStore or close '" + fileOrURL + "'");
