@@ -108,6 +108,13 @@ public class FIFOQueue implements Cloneable {
         return new FIFOQueue(this);
     }
 
+    /** List the objects in the queue, beginning with the oldest.
+     *  @return A list of objects.
+     */
+    public List elementList() {
+        return _queueList;
+    }
+
     /** Enumerate the objects in the queue, beginning with the oldest.
      *  This method is deprecated and calls elementList()
      *  @return An enumeration of objects.
@@ -115,13 +122,6 @@ public class FIFOQueue implements Cloneable {
      */
     public Enumeration elements() {
         return Collections.enumeration( _queueList );
-    }
-
-    /** List the objects in the queue, beginning with the oldest.
-     *  @return A list of objects.
-     */
-    public List elementList() {
-        return _queueList;
     }
 
     /** Return an object in the queue or history. The object is not
@@ -182,17 +182,6 @@ public class FIFOQueue implements Cloneable {
         return _historyCapacity;
     }
 
-    /** Enumerate the objects in the history, which are the N most recent
-     *  objects taken from the queue, beginning with the oldest, where
-     *  N is less than or equal to the history capacity. This method is
-     *  deprecated and calls historyElementList().
-     *  @return An enumeration of objects in the history.
-     *  @deprecated Use historyElementList() instead.
-     */
-    public Enumeration historyElements() {
-        return Collections.enumeration( _historyList );
-    }
-
     /** List the objects in the history, which are the N most recent
      *  objects taken from the queue, beginning with the oldest, where
      *  N is less than or equal to the history capacity. If the history
@@ -203,6 +192,17 @@ public class FIFOQueue implements Cloneable {
      */
     public List historyElementList() {
         return _historyList;
+    }
+
+    /** Enumerate the objects in the history, which are the N most recent
+     *  objects taken from the queue, beginning with the oldest, where
+     *  N is less than or equal to the history capacity. This method is
+     *  deprecated and calls historyElementList().
+     *  @return An enumeration of objects in the history.
+     *  @deprecated Use historyElementList() instead.
+     */
+    public Enumeration historyElements() {
+        return Collections.enumeration( _historyList );
     }
 
     /** Return the number of objects in the history.

@@ -78,19 +78,19 @@ public class QueueReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** List the tokens in the receiver, beginning with the oldest.
+     *  @return An enumeration of tokens.
+     */
+    public List elementList() {
+        return _queue.elementList();
+    }
+
     /** Enumerate the tokens in the receiver, beginning with the oldest.
      *  @deprecated Used elementList() instead.
      *  @return An enumeration of tokens.
      */
     public Enumeration elements() {
         return Collections.enumeration(elementList());
-    }
-
-    /** List the tokens in the receiver, beginning with the oldest.
-     *  @return An enumeration of tokens.
-     */
-    public List elementList() {
-        return _queue.elementList();
     }
 
     /** Remove the first token (the oldest one) from the receiver and
@@ -203,19 +203,6 @@ public class QueueReceiver extends AbstractReceiver {
         return _queue.size() >= numberOfTokens;
     }
 
-    /** Enumerate the tokens stored in the history queue, which are
-     *  the N most recent tokens taken from the receiver, beginning with
-     *  the oldest, where N is less than or equal to the history capacity.
-     *  If the history capacity is INFINITE_CAPACITY, then the enumeration
-     *  includes all tokens previously taken from the receiver. If the
-     *  history capacity is zero, then return an empty enumeration.
-     *  @return An enumeration of tokens.
-     *  @deprecated Used historyElementList() instead.
-     */
-    public Enumeration historyElements() {
-        return Collections.enumeration(historyElementList());
-    }
-
     /** List the tokens stored in the history queue, which are
      *  the N most recent tokens taken from the receiver, beginning with
      *  the oldest, where N is less than or equal to the history capacity.
@@ -227,6 +214,19 @@ public class QueueReceiver extends AbstractReceiver {
      */
     public List historyElementList() {
         return _queue.historyElementList();
+    }
+
+    /** Enumerate the tokens stored in the history queue, which are
+     *  the N most recent tokens taken from the receiver, beginning with
+     *  the oldest, where N is less than or equal to the history capacity.
+     *  If the history capacity is INFINITE_CAPACITY, then the enumeration
+     *  includes all tokens previously taken from the receiver. If the
+     *  history capacity is zero, then return an empty enumeration.
+     *  @return An enumeration of tokens.
+     *  @deprecated Used historyElementList() instead.
+     */
+    public Enumeration historyElements() {
+        return Collections.enumeration(historyElementList());
     }
 
     /** Return the number of tokens in history.
