@@ -392,7 +392,7 @@ public class DDEDirector extends ProcessDirector {
     protected boolean _handleDeadlock() throws IllegalActionException {
         if( _writeBlocks != 0 ) {
             // Artificial Non-timed Deadlock
-            incrementLowestCapacityPort();
+            _incrementLowestCapacityPort();
         } else {
             // Real Non-timed Deadlock
             System.out.println("Real deadlock!! Read blocks = " + _readBlocks);
@@ -418,9 +418,9 @@ public class DDEDirector extends ProcessDirector {
      * @exceptions IllegalActionException If there is an error
      *  while attempting to set the capacity of a DDE receiver.
      */
-    protected void incrementLowestCapacityPort()
+    protected void _incrementLowestCapacityPort()
             throws IllegalActionException {
-	System.out.println("Call to incrementLowestCapacityPort()");
+	System.out.println("Call to _incrementLowestCapacityPort()");
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
