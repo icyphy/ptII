@@ -1,6 +1,8 @@
 confTest.class
+FindClass.class
 JAITest.class
 java3dTest.class
+JavaHome.class
 JMFTest.class
 MajorOSName.class
 MatlabRootDirectory.class
