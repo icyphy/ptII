@@ -42,6 +42,12 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+PTPACKAGE = 	design
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+OTHER_FILES_TO_BE_JARED = \
+	design.pdf
+
 EXTRA_SRCS = \
 	body.htm \
 	buttons.htm \
