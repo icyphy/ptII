@@ -320,8 +320,7 @@ public class Expression extends TypedAtomicActor {
                     IOPort port = (IOPort)(inputPorts.next());
                     matlabEngine.put(engine, port.getName(), port.get(0));
                 }
-                matlabEngine.evalString
-                    (engine, ((StringToken)expression.getToken()).stringValue());
+                matlabEngine.evalString(engine, expression.stringValue());
                 Iterator outputPorts = outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort)(outputPorts.next());

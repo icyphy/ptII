@@ -41,7 +41,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-import ptolemy.data.StringToken;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -157,7 +156,7 @@ public class FileParameter extends StringParameter {
      *   reading the file name.
      */
     public File asFile() throws IllegalActionException {
-        String name = ((StringToken)getToken()).stringValue();
+        String name = stringValue();
         if (name == null || name.trim().equals("")) {
             return null;
         }
@@ -184,7 +183,7 @@ public class FileParameter extends StringParameter {
      *   the name specification cannot be parsed.
      */
     public URL asURL() throws IllegalActionException {
-        String name = ((StringToken)getToken()).stringValue();
+        String name = stringValue();
 
         if (name == null || name.trim().equals("")) {
             return null;
@@ -313,7 +312,7 @@ public class FileParameter extends StringParameter {
      *   opened.
      */
     public BufferedReader openForReading() throws IllegalActionException {
-        String name = ((StringToken)getToken()).stringValue();
+        String name = stringValue();
         if (name.trim().equals("System.in")) {
             if (_stdIn == null) {
                 _stdIn = new BufferedReader(new InputStreamReader(System.in));
@@ -371,7 +370,7 @@ public class FileParameter extends StringParameter {
      *   or created.
      */
     public Writer openForWriting(boolean append) throws IllegalActionException {
-        String name = ((StringToken)getToken()).stringValue();
+        String name = stringValue();
         if (name.trim().equals("System.out")) {
             if (_stdOut == null) {
                 _stdOut = new PrintWriter(System.out);
