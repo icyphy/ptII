@@ -54,6 +54,7 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			$(SIGNED_DIR)/lib/diva.jar \
 			$(SIGNED_DIR)/lib/jasminclasses.jar \
 			$(SIGNED_DIR)/lib/matlab.jar \
+			$(SIGNED_DIR)/lib/ptjacl.jar \
 			$(SIGNED_DIR)/lib/sootclasses.jar
 
 # Web Start can load jars either eagerly or lazily.
@@ -141,7 +142,9 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/matlab/demo/demo.jar \
-	$(SIGNED_DIR)/lib/matlab.jar
+	$(SIGNED_DIR)/lib/matlab.jar \
+	$(SIGNED_DIR)/lib/ptjacl.jar \
+	ptolemy/actor/gui/ptjacl/ptjacl.jar
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
@@ -343,6 +346,12 @@ $(SIGNED_DIR)/lib/matlab.jar: lib/matlab.jar
 		cp $< $@
 
 $(SIGNED_DIR)/lib/matlabWindows.jar: lib/matlabWindows.jar
+		if [ ! -d $(SIGNED_DIR)/lib ]; then \
+			mkdir -p $(SIGNED_DIR)/lib; \
+		fi
+		cp $< $@
+
+$(SIGNED_DIR)/lib/ptjacl.jar: lib/ptjacl.jar
 		if [ ! -d $(SIGNED_DIR)/lib ]; then \
 			mkdir -p $(SIGNED_DIR)/lib; \
 		fi
