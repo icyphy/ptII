@@ -404,13 +404,30 @@ grep mystring `find . -name "*.html" -print`
 </PRE>
 
 <H3>Spell checking</H3>
+<a href="../util/testsuite/ptspell"><CODE>$PTII/util/testsuite/ptspell</CODE></a>
+ is a Ptolemy II specific spelling checker.
+
+<CODE>ptspell</CODE> has the following features:
+<menu>
+<li> It uses
+<a href="../util/testsuite/ptlocaldict"><CODE>$PTII/util/testsuite/ptlocaldict</CODE></a>
+as a local dictionary of acceptable words that are not in the
+regular system dictionary. <CODE>ptlocaldict</CODE> 
+is kept in ASCII sort order.  
+
+<li> <CODE>ptspell</CODE> splits words up that contain embedded
+capital letters and then runs spell again.  Thus, <CODE>ptspell</CODE>
+can report spelling problems in variable, method and class names.
+This mechanism also reduces the number of words that are reported as
+misspelled because the word consists of two words stuck together.
+</menu>
+
+ <p>
 Checking the spelling in all the HTML files can be done with:
 <PRE>
 cd $PTII
-spell `find . -name "*.html" -print`
+ptspell `find . -name "*.html" -print`
 </PRE>
-You can spell check an individual HTML file by using the HTML
-editor built-in spell checker under the <CODE>Edit</CODE> menu.
 
 <H3>Check the distribution for bogus files</H3>
 Run the following makefile rules and commands:
