@@ -134,38 +134,6 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports, parameters and string attributes,
-     *  if any.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
-        TypedAtomicActor newObject = (TypedAtomicActor)super.clone(workspace);
-        Class myClass = getClass();
-        Field fields[] = myClass.getFields();
-        for(int i = 0; i < fields.length; i++) {
-            try {
-                if (fields[i].get(newObject) instanceof TypedIOPort) {
-                    fields[i].set(newObject,
-                            newObject.getPort(fields[i].getName()));
-                } else {
-                    if (fields[i].get(newObject) instanceof Settable) {
-                        fields[i].set(newObject,
-                                newObject.getAttribute(fields[i].getName()));
-                    }
-                }
-            } catch (IllegalAccessException e) {
-                throw new CloneNotSupportedException(e.getMessage() +
-                        ": " + fields[i].getName());
-            }
-        }
-        return newObject;
-    }
-
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.

@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Workspace;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -140,7 +141,7 @@ public class Entity extends NamedObj {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new entity with clones of the ports of the original
-     *  entity.  The ports are not connected to anything.
+     *  entity.  The ports are set to the ports of the new entity.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur), or
@@ -166,6 +167,19 @@ public class Entity extends NamedObj {
                 workspace.remove(newEntity);
                 throw new InvalidStateException(this,
                         "Failed to clone an Entity: " + ex.getMessage());
+            }
+        }
+        Class myClass = getClass();
+        Field fields[] = myClass.getFields();
+        for(int i = 0; i < fields.length; i++) {
+            try {
+                if (fields[i].get(newEntity) instanceof Port) {
+                    fields[i].set(newEntity,
+                            newEntity.getPort(fields[i].getName()));
+                }
+            } catch (IllegalAccessException e) {
+                throw new CloneNotSupportedException(e.getMessage() +
+                        ": " + fields[i].getName());
             }
         }
         return newEntity;

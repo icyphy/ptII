@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -333,7 +334,8 @@ public class NamedObj implements Nameable, Debuggable,
      *  yourself if you want it there). This uses the clone() method of
      *  java.lang.Object, which makes a field-by-field copy.
      *  It then adjusts the workspace reference and clones the
-     *  attributes on the attribute list, if there is one. In addition,
+     *  attributes on the attribute list, if there is one.  The attributes
+     *  are set to the attributes of the new object.  In addition,
      *  if this object has the MoML element name "class", as determined
      *  by elementName field of the associated MoMLInfo object,
      *  then the new object will not export
@@ -425,6 +427,19 @@ public class NamedObj implements Nameable, Debuggable,
                     newObject._MoMLInfo.className = _MoMLInfo.className;
                 }
                 */
+            }
+            Class myClass = getClass();
+            Field fields[] = myClass.getFields();
+            for(int i = 0; i < fields.length; i++) {
+                try {
+                    if (fields[i].get(newObject) instanceof Settable) {
+                        fields[i].set(newObject,
+                                newObject.getAttribute(fields[i].getName()));
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new CloneNotSupportedException(e.getMessage() +
+                            ": " + fields[i].getName());
+                }
             }
             return newObject;
         } finally {
