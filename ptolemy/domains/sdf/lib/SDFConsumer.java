@@ -34,46 +34,37 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 
+
 /**
  * @version $Id$
  */
-public class SDFRamp extends SDFAtomicActor {
-    private int value;
-    public IOPort outputport;
+public class SDFConsumer extends SDFAtomicActor {
+    public IOPort inputport;
 
-    public SDFRamp(CompositeActor container, String name)
-            throws IllegalActionException,
-            NameDuplicationException {
+    public SDFConsumer(CompositeActor container, String name)
+        throws IllegalActionException, NameDuplicationException {
         super(container,name);
         try{
-            outputport=(IOPort) newPort("output");
-            outputport.setOutput(true);
-            setTokenProductionRate(outputport,1);
+            inputport=(IOPort)newPort("input");
+            inputport.setInput(true);
+            setTokenConsumptionRate(inputport,1);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFRamp: constuctor error");
+            System.out.println("SDFConsumer: Constructor error");
         }
-        value=0;
-
     }
-
-    public void initialize() {
-            value=0;
-    }
-
-    public boolean prefire() throws IllegalActionException {
-        return true;
-    }
-
 
     public void fire() throws IllegalActionException {
+        int tokens = getTokenConsumptionRate(inputport);
         int i;
-        int tokens = getTokenProductionRate(outputport);
-        for(i=0;i<tokens;i++) {
-            Token message=new IntToken(value);
-            value=value+1;            
-            outputport.send(0,message);
-        }
+        for(i = 0; i < tokens; i++) 
+            inputport.get(0);
     }
+
 }
+
+
+
+
+
 

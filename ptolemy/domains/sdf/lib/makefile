@@ -40,7 +40,7 @@ include $(CONFIG)
 
 JFLAGS =
 
-DIRS = 		#doc
+DIRS = 		vq #doc
 
 # Used to build zip files
 PTPACKAGE = 	ptolemy.domains.sdf.lib
@@ -55,6 +55,7 @@ CLASSPATH = ../../../..
 
 JSRCS = \
 	Delay.java \
+	SDFConsumer.java \
 	SDFRamp.java \
 	SDFPrint.java \
 	SDFDelay.java \
