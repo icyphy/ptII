@@ -32,6 +32,15 @@
 package ptolemy.actor.lib.security;
 
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.AlgorithmParameters;
@@ -46,13 +55,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-import ptolemy.data.ArrayToken;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// SymmetricDecryption
@@ -60,7 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 This actor takes an unsigned byte array at the input and decrypts the
 message.  The resulting output is an unsigned byte array.  The shared
 secret key is received from the SymmetricEncryption actor on the
-<i>keyIn</i> and is used to decrypt the message.  Certain algorithms
+<i>key</i> and is used to decrypt the message.  Certain algorithms
 may also require extra parameters generated during encryption to
 decrypt the message.  These are received on the <i>parameters</i>
 port.  Various ciphers that are implemented by "providers" and
@@ -100,8 +103,8 @@ public class SymmetricDecryption extends CipherActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyIn = new TypedIOPort(this, "keyIn", true, false);
-        keyIn.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        key = new TypedIOPort(this, "key", true, false);
+        key.setTypeEquals(BaseType.OBJECT);
 
         parameters = new TypedIOPort(this, "parameters", true, false);
         parameters.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
@@ -110,11 +113,11 @@ public class SymmetricDecryption extends CipherActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This port receives the key to be used from AsymmetricDecryption actor
-     *  as an unsigned byte array.  This key is used to decrypt data from the
-     *  <i>input</i> port.
+    /** The key port.  This port contains the key that is used to
+     *  decrypt data from the <i>input</i> port.  The type is ObjectToken
+     *  that wraps a java.security.key
      */
-    public TypedIOPort keyIn;
+    public TypedIOPort key;
 
     /** This port receives any parameters that may have generated during
      *  encryption if parameters were generated during encryption.
@@ -124,7 +127,7 @@ public class SymmetricDecryption extends CipherActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there are tokens on the <i>input</i>, <i>keyIn</i> and
+    /** If there are tokens on the <i>input</i>, <i>key</i> and
      *  <i>parameters</i> ports, they are consumed. This method takes
      *  the data from the <i>input</i> and decrypts the data based
      *  on the <i>algorithm</i>, <i>provider</i>, <i>mode</i> and
@@ -137,10 +140,13 @@ public class SymmetricDecryption extends CipherActor {
      */
     public void fire() throws IllegalActionException {
         try {
-            if (keyIn.hasToken(0)) {
-                _secretKey =
-                    (SecretKey)_bytesToKey(_arrayTokenToUnsignedByteArray(
-                            (ArrayToken)keyIn.get(0)));
+            if (key.hasToken(0)) {
+                ObjectToken objectToken = (ObjectToken)key.get(0);
+                //_key =
+                //    (SecretKey)_bytesToKey(_arrayTokenToUnsignedByteArray(
+                //            (ArrayToken)key.get(0)));
+                // FIXME: shouldn't this be called _key? 
+                _key = (java.security.Key)objectToken.getValue();
             }
 
             if (parameters.hasToken(0)) {
@@ -157,7 +163,7 @@ public class SymmetricDecryption extends CipherActor {
                 _algorithmParameters.init(encodedAP);
             }
 
-            if (_secretKey != null) {
+            if (_key != null) {
                 super.fire();
             }
         } catch (Exception ex) {
@@ -185,7 +191,7 @@ public class SymmetricDecryption extends CipherActor {
             new ByteArrayOutputStream();
         try {
 
-            _cipher.init(Cipher.DECRYPT_MODE, _secretKey, _algorithmParameters);
+            _cipher.init(Cipher.DECRYPT_MODE, _key, _algorithmParameters);
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
             return byteArrayOutputStream.toByteArray();
 
@@ -201,7 +207,7 @@ public class SymmetricDecryption extends CipherActor {
     /* The secret key to be used for symmetric encryption and decryption.
      * This key is null for asymmetric decryption.
      */
-    private SecretKey _secretKey = null;
+    private java.security.Key _key = null;
 
     // The initialization parameter used in a block ciphering mode.
     private IvParameterSpec _spec;

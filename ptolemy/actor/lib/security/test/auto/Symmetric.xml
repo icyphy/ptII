@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Symmetric" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Symmetric4" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -38,67 +38,47 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 30.0">
         </property>
     </property>
-    <entity name="SymmetricDecryption" class="ptolemy.actor.lib.security.SymmetricDecryption">
-        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="DES">
+    <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="DES">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SunJCE">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
         </property>
-        <property name="keySize" class="ptolemy.data.expr.Parameter" value="56">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
         </property>
-        <property name="mode" class="ptolemy.data.expr.StringParameter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="padding" class="ptolemy.data.expr.StringParameter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 55.0">
         </property>
-        <doc>Receives a key from a SymmetricEncryption actor and
-          uses it to decrypt a data input based on a given symmetric
-          algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 65.0">
+    </property>
+    <property name="keySize" class="ptolemy.data.expr.Parameter" value="56">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="keyIn" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="parameters" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="SymmetricEncryption" class="ptolemy.actor.lib.security.SymmetricEncryption">
-        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="DES">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
         </property>
-        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SunJCE">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
         </property>
-        <property name="keySize" class="ptolemy.data.expr.Parameter" value="56">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="mode" class="ptolemy.data.expr.StringParameter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 80.0">
         </property>
-        <property name="padding" class="ptolemy.data.expr.StringParameter">
-        </property>
-        <doc>Creates and sends a key to a SymmetricDecryption and
-	  encrypts incoming data based on a given symmetric
-	  algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 160.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="keyOut" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="parameters" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -154,7 +134,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 95.0">
         </property>
@@ -166,38 +146,111 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="SymmetricDecryption" class="ptolemy.actor.lib.security.SymmetricDecryption">
+        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="$algorithm">
+        </property>
+        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
+        </property>
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="keySize">
+        </property>
+        <property name="mode" class="ptolemy.data.expr.StringParameter">
+        </property>
+        <property name="padding" class="ptolemy.data.expr.StringParameter">
+        </property>
+        <doc>Receives a key from a SymmetricEncryption actor and
+          uses it to decrypt a data input based on a given symmetric
+          algorithm.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 260.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="key" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="parameters" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="SymmetricEncryption" class="ptolemy.actor.lib.security.SymmetricEncryption">
+        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="$algorithm">
+        </property>
+        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
+        </property>
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="keySize">
+        </property>
+        <property name="mode" class="ptolemy.data.expr.StringParameter">
+        </property>
+        <property name="padding" class="ptolemy.data.expr.StringParameter">
+        </property>
+        <doc>Creates and sends a key to a SymmetricDecryption and
+	  encrypts incoming data based on a given symmetric
+	  algorithm.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 260.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="key" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="parameters" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Key" class="ptolemy.actor.lib.security.Key">
+        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="$algorithm">
+        </property>
+        <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
+        </property>
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="keySize">
+        </property>
+        <doc>Create a Key and output it.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 325.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="300.0, 150.0">
+        <vertex name="vertex1" value="180.0, 325.0">
         </vertex>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="310.0, 160.0">
-        </vertex>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="320.0, 170.0">
-        </vertex>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="SymmetricDecryption.input" relation="relation3"/>
-    <link port="SymmetricDecryption.output" relation="relation6"/>
-    <link port="SymmetricDecryption.keyIn" relation="relation4"/>
-    <link port="SymmetricDecryption.parameters" relation="relation5"/>
-    <link port="SymmetricEncryption.input" relation="relation2"/>
-    <link port="SymmetricEncryption.output" relation="relation3"/>
-    <link port="SymmetricEncryption.keyOut" relation="relation4"/>
-    <link port="SymmetricEncryption.parameters" relation="relation5"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="SequenceToArray.input" relation="relation"/>
-    <link port="SequenceToArray.output" relation="relation2"/>
-    <link port="ArrayToSequence.input" relation="relation6"/>
+    <link port="SequenceToArray.output" relation="relation6"/>
+    <link port="ArrayToSequence.input" relation="relation2"/>
     <link port="ArrayToSequence.output" relation="relation7"/>
     <link port="Test.input" relation="relation7"/>
+    <link port="SymmetricDecryption.input" relation="relation9"/>
+    <link port="SymmetricDecryption.output" relation="relation2"/>
+    <link port="SymmetricDecryption.key" relation="relation3"/>
+    <link port="SymmetricDecryption.parameters" relation="relation4"/>
+    <link port="SymmetricEncryption.input" relation="relation6"/>
+    <link port="SymmetricEncryption.output" relation="relation9"/>
+    <link port="SymmetricEncryption.key" relation="relation3"/>
+    <link port="SymmetricEncryption.parameters" relation="relation4"/>
+    <link port="Key.output" relation="relation3"/>
 </entity>

@@ -240,7 +240,8 @@ public class Decryption extends TypedAtomicActor {
                 byte[] dataBytes =
                     _ArrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
                 dataBytes = _crypt(dataBytes);
-                output.send(0, _unsignedByteArrayToArrayToken(dataBytes));
+                output.send(0,
+                        CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
             }
 
             if (_keyMode == _ASYMMETRIC) {
@@ -291,7 +292,8 @@ public class Decryption extends TypedAtomicActor {
 
         _algorithm = ((StringToken)algorithm.getToken()).stringValue();
         byte[] keyBytes = _createKeys();
-        //_keyOutput = _unsignedByteArrayToArrayToken(keyBytes);
+        //_keyOutput =
+        //  CryptographyActor.unsignedByteArrayToArrayToken(keyBytes);
         getDirector().invalidateResolvedTypes();
     }
 
@@ -417,23 +419,6 @@ public class Decryption extends TypedAtomicActor {
                     + "bytes data with the private key.");
         }
         return byteArrayOutputStream.toByteArray();
-    }
-
-    /** Take an array of unsigned bytes and convert it to an ArrayToken.
-     *
-     * @param dataBytes The array of unsigned bytes to convert
-     * @return The dataBytes converted to and ArrayToken
-     * @exception IllegalActionException If instantiating the ArrayToken
-     * throws it.
-     */
-    protected ArrayToken _unsignedByteArrayToArrayToken(byte[] dataBytes)
-            throws IllegalActionException {
-        int bytesAvailable = dataBytes.length;
-        Token[] dataArrayToken = new Token[bytesAvailable];
-        for (int j = 0; j < bytesAvailable; j++) {
-            dataArrayToken[j] = new UnsignedByteToken(dataBytes[j]);
-        }
-        return new ArrayToken(dataArrayToken);
     }
 
     ///////////////////////////////////////////////////////////////////

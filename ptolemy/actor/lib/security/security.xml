@@ -26,6 +26,16 @@
 	  incoming data.</doc>
 	</entity>  
 
+	<entity name="Key"
+	        class="ptolemy.actor.lib.security.Key">
+	  <doc>Create a Key and output it.</doc>
+	</entity>  	  
+
+	<entity name="PublicKeyReader
+"	        class="ptolemy.actor.lib.security.PublicKeyReader">
+	  <doc>Read a key from a key store and output it.</doc>
+	</entity>  	  
+
 	<entity name="ServiceInformation"
 	        class="ptolemy.actor.lib.security.ServiceInformation">
 	  <doc>Determine the cryptographic services available on the

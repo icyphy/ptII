@@ -1,5 +1,5 @@
-/* Creates and sends a key to a SymmetricDecryption and encrypts incoming data
-   based on a given symmetric algorithm.
+/* Reads in a key and encrypts incoming data based on a given
+ symmetric algorithm.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -45,6 +45,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 import ptolemy.actor.NoRoomException;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.TypedIOPort;
@@ -63,13 +64,10 @@ by specifying the algorithm in the <i>algorithm</i> parameter.  The
 specified algorithm must be symmetric.  The mode and padding can also
 be specified in the mode and padding parameters.  In case a provider
 specific instance of an algorithm is needed the provider may also be
-specified in the provider parameter. This actor sends its secret key
-on the <i>keyOut</i> port to a decryption actor as an unsigned byte
-array.  This key should be protected in some manner as the security of
-the encrypted message relies on the secrecy of this key. Key creation
-is done in pre-initialization and is put on the <i>keyOut</i> port
-during initialization so the decryption actor has a key to use when
-its first fired.
+specified in the provider parameter. This actor reads its secret key
+on the <i>key</i> port.
+This key should be protected in some manner as the security of
+the encrypted message relies on the secrecy of this key.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
@@ -100,8 +98,8 @@ public class SymmetricEncryption extends CipherActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyOut = new TypedIOPort(this, "keyOut", false, true);
-        keyOut.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        key = new TypedIOPort(this, "key", true, false);
+        key.setTypeEquals(BaseType.OBJECT);
 
         parameters = new TypedIOPort(this, "parameters", false, true);
         parameters.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
@@ -111,12 +109,15 @@ public class SymmetricEncryption extends CipherActor {
     ////                     ports and parameters                  ////
 
 
-    /** This port outputs the key to be used by the SymmetricDecryption actor
-     *  as an unsigned byte array.
+    /** The key to be used by this actor to encrypt the data.
+     *  The type is an ObjectToken of type java.security.Key.
      */
-    public TypedIOPort keyOut;
+    public TypedIOPort key;
 
-    // FIXME: what does this parameter do?
+    /** Algorithm specific parameters that are sent to the decryption
+     *  actor.  The type is an array of unsigned bytes.  The values
+     *  depend on the algorithm chosen
+     */   
     public TypedIOPort parameters;
 
 
@@ -135,41 +136,29 @@ public class SymmetricEncryption extends CipherActor {
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
+        if (key.hasToken(0)) {
+            try {
+                ObjectToken objectToken = (ObjectToken)key.get(0);
+                //SecretKey key = (SecretKey)objectToken.getValue();
+                java.security.Key key = (java.security.Key)objectToken.getValue(); 
+                _cipher.init(Cipher.ENCRYPT_MODE, key);
+                _algorithmParameters = _cipher.getParameters();
+            } catch (Exception ex) {
+                throw new IllegalActionException (this, ex,
+                        "Failed to initialize Cipher");
+            }
+        }
+
         super.fire();
-        keyOut.send(0,
-                _unsignedByteArrayToArrayToken(_keyToBytes(_secretKey)));
         if (_algorithmParameters != null) {
             try {
-
-                parameters.send(0, _unsignedByteArrayToArrayToken(
+                parameters.send(0,
+                        CryptographyActor.unsignedByteArrayToArrayToken(
                         _algorithmParameters.getEncoded()));
-
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex, "send failed");
             }
         }
-
-        //   if (FIRST_RUN == true) {
-        //       _byteArrayOutputStream = new ByteArrayOutputStream();
-        //       try {
-        //  _cipher.init(Cipher.ENCRYPT_MODE, _secretKey, _algorithmParameters);
-        //
-        //       } catch (InvalidKeyException e) {
-        //  // TODO Auto-generated catch block
-        //       } catch (InvalidAlgorithmParameterException e) {
-        //  // TODO Auto-generated catch block
-        //       }
-        //       _cos = new CipherOutputStream(_byteArrayOutputStream,
-        //           _cipher);
-        //       FIRST_RUN = false;
-        //   }
-        //        //} catch (NoRoomException e) {
-        //  } catch (IllegalActionException e) {
-        //        } catch (IOException e) {
-        //        } catch (InvalidKeyException e) {
-        //        } catch (InvalidAlgorithmParameterException e) {
-        //        }
-        //        super.fire();
     }
 
     /** Get an instance of the cipher and outputs the key required for
@@ -180,26 +169,6 @@ public class SymmetricEncryption extends CipherActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        try {
-            super.initialize();
-            _secretKey = (SecretKey)_createSymmetricKey();
-            //keyOut.send(0, _unsignedByteArrayToArrayToken(
-            //    _keyToBytes(_secretKey)));
-
-            _cipher.init(Cipher.ENCRYPT_MODE, _secretKey);
-
-            _algorithmParameters = _cipher.getParameters();
-            //if (_algorithmParameters != null) {
-            //    parameters.send(0,
-            //       _unsignedByteArrayToArrayToken(_algorithmParameters
-            //       .getEncoded()));
-            //}
-
-            FIRST_RUN = true;
-        } catch (Exception ex) {
-            throw new IllegalActionException (this, ex,
-                    "Failed to initialize");
-        }
     }
 
     /** Sets token production for initialize to one and resolves scheduling.

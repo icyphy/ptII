@@ -123,7 +123,8 @@ public class AsymmetricDecryption extends CipherActor {
     public void fire() throws IllegalActionException {
         super.fire();
         keyOut.send(0,
-                _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
+                CryptographyActor.unsignedByteArrayToArrayToken(
+                        CryptographyActor.keyToBytes(_publicKey)));
     }
 
     /** Outputs the key required for decryption.  The base classes retrieve
@@ -136,7 +137,8 @@ public class AsymmetricDecryption extends CipherActor {
         _publicKey = pair.getPublic();
         _privateKey = pair.getPrivate();
         keyOut.send(0,
-                _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
+                CryptographyActor.unsignedByteArrayToArrayToken(
+                        CryptographyActor.keyToBytes(_publicKey)));
     }
 
     /** Sets token production for keyOut to 1 and resolves scheduling.

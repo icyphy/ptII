@@ -137,7 +137,8 @@ public class SignatureSigner extends SignatureActor {
     public void fire() throws IllegalActionException {
         super.fire();
         keyOut.send(0,
-                _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
+                CryptographyActor.unsignedByteArrayToArrayToken(
+                        CryptographyActor.keyToBytes(_publicKey)));
 
     }
 
@@ -152,7 +153,8 @@ public class SignatureSigner extends SignatureActor {
         _publicKey = pair.getPublic();
         _privateKey = pair.getPrivate();
         keyOut.send(0,
-                _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
+                CryptographyActor.unsignedByteArrayToArrayToken(
+                        CryptographyActor.keyToBytes(_publicKey)));
     }
 
     /** Takes the data and calculates a message digest for it.
@@ -164,7 +166,8 @@ public class SignatureSigner extends SignatureActor {
         ByteArrayOutputStream byteArrayOutputStream =
             new ByteArrayOutputStream();
         try {
-            data.send(0, _unsignedByteArrayToArrayToken(dataBytes));
+            data.send(0,
+                    CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
             _signature.initSign(_privateKey);
             _signature.update(dataBytes);
             return _signature.sign();

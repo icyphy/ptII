@@ -220,13 +220,34 @@ public class CryptographyActor extends TypedAtomicActor {
                 byte[] dataBytes =
                     _arrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
                 dataBytes = _process(dataBytes);
-                output.send(0, _unsignedByteArrayToArrayToken(dataBytes));
+                output.send(0, 
+                        CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Problem sending data");
         }
 
+    }
+
+    /** Convert a key Object to a byte array using an ObjectStream.
+     *
+     * @param key the object whose byte array value is determined.
+     * @return the byte array of the key object.
+     * @exception IllegalActionException If IOException occurs.
+     */
+    public static byte[] keyToBytes(Key key) throws IllegalActionException {
+        ByteArrayOutputStream byteArrayOutputStream =
+            new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream objectOutputStream =
+                new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(key);
+            return byteArrayOutputStream.toByteArray();
+        } catch (IOException ex) {
+            throw new IllegalActionException(null, ex,
+                    "Problem with writing key");
+        }
     }
 
     /** This method retrieves the <i>algorithm</i>, <i>provider</i>,
@@ -241,6 +262,22 @@ public class CryptographyActor extends TypedAtomicActor {
         _algorithm = ((StringToken)algorithm.getToken()).stringValue();
         _provider = ((StringToken)provider.getToken()).stringValue();
         _keySize = ((IntToken)keySize.getToken()).intValue();
+    }
+
+    /** Take an array of unsigned bytes and convert it to an ArrayToken.
+     *
+     * @param dataBytes data to be converted to an ArrayToken.
+     * @return dataArrayToken the resulting ArrayToken.
+     * @exception IllegalActionException If ArrayToken can not be created.
+     */
+    public static ArrayToken unsignedByteArrayToArrayToken( byte[] dataBytes)
+            throws IllegalActionException{
+        int bytesAvailable = dataBytes.length;
+        Token[] dataArrayToken = new Token[bytesAvailable];
+        for (int j = 0; j < bytesAvailable; j++) {
+            dataArrayToken[j] = new UnsignedByteToken(dataBytes[j]);
+        }
+        return new ArrayToken(dataArrayToken);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -322,9 +359,9 @@ public class CryptographyActor extends TypedAtomicActor {
         try {
             KeyGenerator keyGen;
             if (_provider.equalsIgnoreCase("SystemDefault")) {
-                keyGen = KeyGenerator.getInstance(_keyAlgorithm);
+                keyGen = KeyGenerator.getInstance(_algorithm);
             } else {
-                keyGen = KeyGenerator.getInstance(_keyAlgorithm, _provider);
+                keyGen = KeyGenerator.getInstance(_algorithm, _provider);
             }
             keyGen.init(_keySize, new SecureRandom());
             return keyGen.generateKey();
@@ -340,26 +377,6 @@ public class CryptographyActor extends TypedAtomicActor {
         }
     }
 
-    /** Convert a key Object to a byte array using an ObjectStream.
-     *
-     * @param key the object whose byte array value is determined.
-     * @return the byte array of the key object.
-     * @exception IllegalActionException If IOException occurs.
-     */
-    protected byte[] _keyToBytes(Key key) throws IllegalActionException {
-        ByteArrayOutputStream byteArrayOutputStream =
-            new ByteArrayOutputStream();
-        try {
-            ObjectOutputStream objectOutputStream =
-                new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(key);
-            return byteArrayOutputStream.toByteArray();
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Problem with writing key");
-        }
-    }
-
     /** Processes the data based on parameter specifications.  This
      *  class returns the data in its original form.  Subclasses
      *  should process the data using one of the signature or cipher
@@ -372,22 +389,6 @@ public class CryptographyActor extends TypedAtomicActor {
     protected byte[] _process(byte [] dataBytes)
             throws IllegalActionException {
         return dataBytes;
-    }
-
-    /** Take an array of unsigned bytes and convert it to an ArrayToken.
-     *
-     * @param dataBytes data to be converted to an ArrayToken.
-     * @return dataArrayToken the resulting ArrayToken.
-     * @exception IllegalActionException If ArrayToken can not be created.
-     */
-    protected ArrayToken _unsignedByteArrayToArrayToken( byte[] dataBytes)
-            throws IllegalActionException{
-        int bytesAvailable = dataBytes.length;
-        Token[] dataArrayToken = new Token[bytesAvailable];
-        for (int j = 0; j < bytesAvailable; j++) {
-            dataArrayToken[j] = new UnsignedByteToken(dataBytes[j]);
-        }
-        return new ArrayToken(dataArrayToken);
     }
 
     ///////////////////////////////////////////////////////////////////
