@@ -280,10 +280,15 @@ public class ModelReference
             // Open the file and read the MoML to create a model.
             URL url = modelFileOrURL.asURL();
             if (url != null) {
-                File asFile = modelFileOrURL.asFile();
-                if (!asFile.isFile()) {
-                	throw new IllegalActionException(this,
-                            "Not a file: " + url);
+                // If the protocol is that of a file,
+                // make sure it is in fact a file, and not
+                // a directory.
+                if (url.getProtocol().equals("file")) {
+                    File asFile = modelFileOrURL.asFile();
+                    if (!asFile.isFile()) {
+                        throw new IllegalActionException(this,
+                                "Not a file: " + url);
+                    }                    
                 }
                 // By specifying no workspace argument to the parser, we
                 // are asking it to create a new workspace for the referenced
