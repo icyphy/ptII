@@ -63,9 +63,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
-
-install: all
+all: jclass
+install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

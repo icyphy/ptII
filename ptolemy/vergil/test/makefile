@@ -42,11 +42,6 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	vergil
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS)
@@ -59,13 +54,12 @@ MISC_FILES =	$(DIRS) \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass
 
 test_jsimple: $(EXTRA_SRCS) #jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	@echo "Nothing to be done in $(ME) for test_jsimple"

@@ -43,13 +43,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptolemy.vergil.ptolemy
+PTPACKAGE = 	ptolemy
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		ptolemy.vergil.ptolemy.jar \
+		kernel/kernel.jar \
 		fsm/fsm.jar
 
 PTCLASSALLJAR = ptolemy.jar
@@ -96,7 +96,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 depend:
 	@echo "no dependencies in this directory"

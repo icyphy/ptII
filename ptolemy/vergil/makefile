@@ -43,21 +43,27 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptolemy.vergil
+PTPACKAGE = 	vergil
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include these jars in PTAUXALLJAR
+PTAUXALLJARS = \
+		ptolemy/ptolemy.jar \
+		toolbox/toolbox.jar
+
+# All the .class files necessary to run a Vergil applet
+PTAUXALLJAR =	vergilapplet.jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		ptolemy.vergil.jar \
+		$(PTAUXALLJARS) \
 		debugger/debugger.jar \
 		icon/icon.jar \
 		lib/lib.jar \
-		ptolemy/ptolemy.jar \
-		toolbox/toolbox.jar \
 		tree/tree.jar
 
-PTCLASSALLJAR = vergil.jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	VergilApplication.java \
@@ -97,7 +103,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 depend:
 	@echo "no dependencies in this directory"
