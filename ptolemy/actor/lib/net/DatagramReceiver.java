@@ -278,12 +278,13 @@ public class DatagramReceiver extends TypedAtomicActor {
 
                     int portNum = ((IntToken)
                                 (localSocketNumber.getToken())).intValue();
-                    if(_debugging) _debug("New port number is " + portNum);
+                    if(false&&_debugging) 
+                            _debug("New port number is " + portNum);
                     try {
                         if(_debugging) _debug("Try creating socket "
                                 + portNum);
                         socket = new DatagramSocket(portNum);
-                        if(_debugging) _debug("A socket is created!!");
+                        if(false&&_debugging) _debug("A socket is created!!");
                     }
                     catch (SocketException ex) {
                         throw new InternalErrorException(
@@ -309,9 +310,9 @@ public class DatagramReceiver extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
 
-        //System.out.println(this + " fire() method beginsOOO");
+        if (false) System.out.println(this + " fire() method beginsOOO");
 
-        if(_debugging) _debug("Actor is fired");
+        if(false&&_debugging) _debug("Actor is fired");
         // this line stalls when __ vs ___
         //InetAddress __address = ___packet.getAddress();
         //String _address = __address.getHostAddress();
@@ -319,12 +320,12 @@ public class DatagramReceiver extends TypedAtomicActor {
         //NOTE: Avoid executing concurrently with thread's run()'s sync block.
         synchronized(_syncFireAndThread) {
 
-            //System.out.println(this + " fire() sync beginsOOO");
+            if (false) System.out.println(this + " fire() sync beginsOOO");
 
             if (((BooleanToken)(blockAwaitingDatagram
                     .getToken())).booleanValue()) {
 
-                //System.out.println(this + " fire() block=trueOOO");
+                if (false) System.out.println(this + " fire() block=trueOOO");
 
                 // Block awaiting a packet (useful in SDF).
                 // Has no effect in DE, since fire() is only called by
@@ -333,32 +334,37 @@ public class DatagramReceiver extends TypedAtomicActor {
                 // In the latter case, there is always a packet waiting.
                 // An exception to this is if the trigger input is
                 // connected.  Then, even in DE, this takes effect.
-                while (packetsAlreadyAwaitingFire == 0) {
+                while (_packetsAlreadyAwaitingFire == 0) {
                     try {
 
-                        //System.out.println(this + " fire() wait beginsOOO");
-
+                        if (false) System.out.println(this 
+                                + " fire() wait beginsOOO");
+                        
                         _syncFireAndThread.wait();
 
-                        //System.out.println(this + " fire() wait endsOOO");
-
+                        if (false) System.out.println(this 
+                                + " fire() wait endsOOO");
+                        
                     } catch (InterruptedException ex) {
 
-                        //System.out.println(this + " fire() wait's catchOOO");
+                        if (false) System.out.println(this 
+                                + " fire() wait's catchOOO");
 
                     }
                 }
             } else {
 
-                //System.out.println(this + " fire() block=falseOOO");
+                if (false) System.out.println(this + " fire() block=falseOOO");
 
             }
 
-            //System.out.println(this + " fire() skipped or done blockingOOO");
+            if (false) System.out.println(this 
+                    + " fire() skipped or done blockingOOO");
 
-            if (packetsAlreadyAwaitingFire != 0) {
+            if (_packetsAlreadyAwaitingFire != 0) {
 
-            //System.out.println(this + " fire() packets are waiting OOO");
+            if (false) System.out.println(this 
+                    + " fire() packets are waiting OOO");
 
                 boolean forParser = ((BooleanToken)(
                         decodeWithPtolemyParser.getToken())).booleanValue();
@@ -384,22 +390,24 @@ public class DatagramReceiver extends TypedAtomicActor {
                     }
                     _outputToken = new ArrayToken(dataIntTokens);
                 }
-                packetsAlreadyAwaitingFire--;
+                _packetsAlreadyAwaitingFire--;
                 _syncFireAndThread.notifyAll();
             } else {
 
-            //System.out.println(this + " fire() packets not waiting OOO");
+            if (false) System.out.println(this 
+                    + " fire() packets not waiting OOO");
 
                 _outputToken = defaultOutput.getToken();
             }
-
-            //System.out.println(this + " fire() _outputToken createdOOO");
-            //System.out.println(this + " fire() _outputToken = "
-            //        +  _outputToken.toString());
-
+                
+            if (false) System.out.println(this 
+                    + " fire() _outputToken createdOOO");
+            if (false) System.out.println(this + " fire() _outputToken = " 
+                    +  _outputToken.toString());
+                    
             output.broadcast(_outputToken);
 
-            //System.out.println(this + "fire() method endsOOO");
+            if (false) System.out.println(this + "fire() method endsOOO");
 
         }
     }
@@ -415,6 +423,10 @@ public class DatagramReceiver extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException /* ,
             NameDuplicationException */ {
         super.preinitialize();
+
+	// This is a key fix.  Programs in DE (such as 1plusFxC.xml)
+        // Used to only run the first time after opening the XML!
+	_packetsAlreadyAwaitingFire = 0;
 
         _overwrite = ((BooleanToken)(overwrite.getToken())).booleanValue();
 
@@ -434,17 +446,17 @@ public class DatagramReceiver extends TypedAtomicActor {
         // to open the socket or start a new thread.
         int portNumber = ((IntToken)(localSocketNumber.getToken())).intValue();
         if (portNumber == -1) {
-            if(_debugging) _debug("Can't run with port = -1");
+            if(false&&_debugging) _debug("Can't run with port = -1");
             throw new IllegalActionException(this, "Cannot run w/ port = -1");
         }
 
         // Allocate a new socket.
         try {
-            if(_debugging) {
+            if(false&&_debugging) {
                 _debug("Trying to create a new socket on port " + portNumber);
             }
             socket = new DatagramSocket(portNumber);
-            if(_debugging) {
+            if(false&&_debugging) {
                 _debug("Socket created successfully!");
             }
         }
@@ -457,7 +469,6 @@ public class DatagramReceiver extends TypedAtomicActor {
         _listenerThread = new ListenerThread();
         _listenerThread.start();
         if(_debugging) _debug("Socket-reading thread created & started.");
-
         //throw new IllegalActionException(this,
         //      "Intentional exception thrown.");
     }
@@ -481,7 +492,7 @@ public class DatagramReceiver extends TypedAtomicActor {
             _listenerThread.interrupt();
             _listenerThread = null;
         } else {
-            //System.out.println("listenerThread null at wrapup!?");
+            if (false) System.out.println("listenerThread null at wrapup!?");
             //throw new IllegalActionException(
             //        "listenerThread null at wrapup!?");
         }
@@ -490,7 +501,7 @@ public class DatagramReceiver extends TypedAtomicActor {
             socket.close();
             socket = null;
         } else {
-            //System.out.println("Socket null at wrapup!?");
+            if (false) System.out.println("Socket null at wrapup!?");
             //throw new IllegalActionException("Socket null at wrapup!?");
         }
 
@@ -504,7 +515,7 @@ public class DatagramReceiver extends TypedAtomicActor {
              new DatagramPacket(new byte[440], 0, 440);
     private DatagramPacket _broadcastPacket =
              new DatagramPacket(new byte[440], 0 ,440);
-    private int packetsAlreadyAwaitingFire = 0;
+    private int _packetsAlreadyAwaitingFire = 0;
     private boolean _overwrite;
     private DatagramSocket socket;
     private ListenerThread _listenerThread;
@@ -530,30 +541,35 @@ public class DatagramReceiver extends TypedAtomicActor {
                     return;
                 }
                 try {
-                    if(_debugging) _debug("attempt socket.receive");
+                    if(false&&_debugging) _debug("attempt socket.receive");
                     // NOTE: The following call may block.
                     _receivePacket.setLength(440);
 
-                    //System.out.println(this + " thread receive beginsooo");
+                    if (false) System.out.println(this 
+                            + " thread receive beginsooo");
 
                     socket.receive(_receivePacket);
 
-                    //System.out.println(this + "thread receive endsooo");
+                    if (false) System.out.println(this 
+                            + "thread receive endsooo");
 
-                    if(_debugging) _debug("receive unblocked!");
+                    if(false&&_debugging) _debug("receive unblocked!");
                 } catch (IOException ex) {
 
-                    //System.out.println(this + "thread receive's catchooo");
+                    if (false) System.out.println(this 
+                            + "thread receive's catchooo");
 
-                    if(_debugging) _debug("receive IOException in thread.");
+                    if(false&&_debugging) _debug("receive IOException"
+                            + " in thread.");
                     return;
                 }
 
                 // NOTE: Avoid executing concurrently with actor's fire().
                 synchronized(_syncFireAndThread) {
 
-                    //System.out.println(this + " thread sync beginsooo");
-
+                    if (false) System.out.println(this 
+                            + " thread sync beginsooo");
+                    
                     // There are 2 datagram packet buffers.
 
                     // If no data is already in the actor awaiting fire,
@@ -576,7 +592,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                     // increments the count, and calls fireAt().  Then
                     // go back around finally to the socket.receive call.
 
-                    if(packetsAlreadyAwaitingFire != 0 && !_overwrite) {
+                    if(_packetsAlreadyAwaitingFire != 0 && !_overwrite) {
                         try {
                             _syncFireAndThread.wait();
                         } catch (InterruptedException ex) {
@@ -585,7 +601,8 @@ public class DatagramReceiver extends TypedAtomicActor {
                             //I'd like to be able to still wait.
                             //FIXME - how to still wait while socket
                             //number attribute is being changed?
-                            //System.out.println("InterrExcept in wait()");
+                            if (false) System.out.println(this
+                                    + "InterruptedException in wait()");
                         }
                     }
 
@@ -594,33 +611,34 @@ public class DatagramReceiver extends TypedAtomicActor {
                     _broadcastPacket = _receivePacket;
                     _receivePacket = tmp;
 
-                    if(packetsAlreadyAwaitingFire == 0) {
+                    if(_packetsAlreadyAwaitingFire == 0) {
                         // Increment count & call fireAt()
-                        packetsAlreadyAwaitingFire++;
+                        _packetsAlreadyAwaitingFire++;
                         try {
 
-                            //System.out.println(this
-		            //        + " thread try fireAtCurrentTimeooo");
+                            if (false) System.out.println(this
+		                    + " thread try fireAtCurrentTimeooo");
 
                             getDirector().fireAtCurrentTime(
                                     DatagramReceiver.this);
 
-                            //System.out.println(this
-		            //        + " thread done fireAtCurrentTimeooo");
+                            if (false) System.out.println(this 
+		                    + " thread done fireAtCurrentTimeooo");
 
                         } catch (IllegalActionException ex) {
 
-                            //System.out.println(this
-		            //        + " thread catch fireAtCurrentTimeooo");
+                            if (false) System.out.println(this 
+		                    + " thread catch fireAtCurrentTimeooo");
 
-                            if(_debugging) _debug("IAE 0!!");
+                            if(false&&_debugging) _debug("IAE 0!!");
                         }
                     }
 
                     _syncFireAndThread.notifyAll();
 
-                    //System.out.println(this + " thread sync endsooo");
-
+                    if (false) System.out.println(this 
+                            + " thread sync endsooo");
+   
                 } // Close the Synchronized block
             } // Close the While
         }
