@@ -313,10 +313,10 @@ public class PtolemyDocument extends AbstractDocument
 	    String string = (String)
 		transferable.getTransferData(DataFlavor.stringFlavor);
 	    System.out.println("string = " + string);
-	    NamedObj context = (NamedObj)model.getRoot();
+	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
 	    MoMLParser parser = new MoMLParser(workspace);
-	    parser.setContext(context);
-	    parser.parse(string);
+	    parser.setContext(toplevel);
+	    toplevel.requestChange(new MoMLChangeRequest(parser, string));
 	} catch (UnsupportedFlavorException ex) {
 	    System.out.println("Transferable object didn't " + 
 			       "support stringFlavor: " +
