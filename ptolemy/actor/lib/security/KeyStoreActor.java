@@ -192,46 +192,46 @@ public class KeyStoreActor extends TypedAtomicActor {
      */
     public KeyStoreActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+                super(container, name);
 
-        alias = new StringParameter(this, "alias");
-        alias.setExpression("claudius");
+                alias = new StringParameter(this, "alias");
+                alias.setExpression("claudius");
 
-        fileOrURL = new FileParameter(this, "fileOrURL");
-        // To create the initial default KeyStore, do
-        // cd $PTII; make ptKeystore
-        fileOrURL.setExpression("$PTII/ptKeystore");
+                fileOrURL = new FileParameter(this, "fileOrURL");
+                // To create the initial default KeyStore, do
+                // cd $PTII; make ptKeystore
+                fileOrURL.setExpression("$PTII/ptKeystore");
 
-        keyPassword = new PortParameter(this, "keyPassword");
-        keyPassword.setTypeEquals(BaseType.STRING);
-        keyPassword.setStringMode(true);
-        keyPassword.setExpression(
-                "this.is.not.secure,it.is.for.testing.only");
+                keyPassword = new PortParameter(this, "keyPassword");
+                keyPassword.setTypeEquals(BaseType.STRING);
+                keyPassword.setStringMode(true);
+                keyPassword.setExpression(
+                        "this.is.not.secure,it.is.for.testing.only");
 
-        // Add the possible keystore types.
-        keyStoreType = new StringParameter(this, "keyStoreType");
-        keyStoreType.setExpression(KeyStore.getDefaultType());
-        Iterator keyStoreTypes = Security.getAlgorithms("KeyStore").iterator();
-        while(keyStoreTypes.hasNext()) {
-            String keyStoreName = (String)keyStoreTypes.next();
-            keyStoreType.addChoice(keyStoreName);
-        }
+                // Add the possible keystore types.
+                keyStoreType = new StringParameter(this, "keyStoreType");
+                keyStoreType.setExpression(KeyStore.getDefaultType());
+                Iterator keyStoreTypes = Security.getAlgorithms("KeyStore").iterator();
+                while(keyStoreTypes.hasNext()) {
+                    String keyStoreName = (String)keyStoreTypes.next();
+                    keyStoreType.addChoice(keyStoreName);
+                }
 
-        // Add the possible provider choices.
-        provider = new StringParameter(this, "provider");
-        provider.setExpression("SystemDefault");
-        provider.addChoice("SystemDefault");
-        Provider [] providers = Security.getProviders();
-        for (int i = 0; i < providers.length; i++) {
-            provider.addChoice(providers[i].getName());
-        }
+                // Add the possible provider choices.
+                provider = new StringParameter(this, "provider");
+                provider.setExpression("SystemDefault");
+                provider.addChoice("SystemDefault");
+                Provider [] providers = Security.getProviders();
+                for (int i = 0; i < providers.length; i++) {
+                    provider.addChoice(providers[i].getName());
+                }
 
-        storePassword = new PortParameter(this, "storePassword");
-        storePassword.setTypeEquals(BaseType.STRING);
-        storePassword.setStringMode(true);
-        storePassword.setExpression("this.is.not.secure,it.is.for.testing.only");
-        _storePassword = storePassword.getExpression();
-    }
+                storePassword = new PortParameter(this, "storePassword");
+                storePassword.setTypeEquals(BaseType.STRING);
+                storePassword.setStringMode(true);
+                storePassword.setExpression("this.is.not.secure,it.is.for.testing.only");
+                _storePassword = storePassword.getExpression();
+            }
 
 
     ///////////////////////////////////////////////////////////////////
