@@ -119,7 +119,8 @@ public class BusDisassembler extends TypedAtomicActor {
                 } else {
                     outputPort = (TypedIOPort)
                         (outputPorts.hasNext() ? outputPorts.next() : null);
-                    outputWidth = outputPort != null ? outputPort.getWidth() : 0;
+                    outputWidth = outputPort != null
+                        ? outputPort.getWidth() : 0;
                     j = 0;
                 }
             }
