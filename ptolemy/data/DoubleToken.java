@@ -322,9 +322,13 @@ public class DoubleToken extends ScalarToken {
      */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
-        // NOTE: This code is duplicated in ptolemy.math.DoubleMatrixMath.within(); if
-        // this implementation changes, also change the corresponding implementation there.
+
+        // NOTE: This code is duplicated in
+        // ptolemy.math.DoubleMatrixMath.within(); if this
+        // implementation changes, also change the corresponding
+        // implementation there.
         // NOTE: Used to compare against epsilon the following expression:
+
         // Math.abs(doubleValue() - ((DoubleToken)rightArgument).doubleValue()))
         // However, because of quantization errors, this did not work well.
         double right = ((DoubleToken)rightArgument).doubleValue();
