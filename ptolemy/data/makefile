@@ -68,6 +68,7 @@ JSRCS = \
 	IntToken.java \
 	LongToken.java \
 	MatrixToken.java \
+	Numerical.java \
 	ObjectToken.java \
 	ScalarToken.java \
 	StringToken.java \
