@@ -181,7 +181,13 @@ if [ "$1" = "-sandbox" ]; then
     fi	
 fi
 
+# Default invocation help string, used by -help, overridden as necessary.
+invokeHelp="$0: Usage: $0 [commonOptions] [modelOrClass]"
 
+# Set to no if we should not pass the -help argument to the exec'd process
+# For example, ptjacl does not handle the -help arg, so we exit rather
+# than passing -help to the exec'd processes
+passHelpArgument=yes
 
 # Optional jar file
 jarfile="$ALL_JAR"
@@ -204,13 +210,13 @@ javaflag="$ALL_JFLAG"
 # Keep these alphabetical
 case `basename "$0"` in
     copernicus)
-	# Do deep codegen
+	help="Do deep codegen"
 	javastartupclass=ptolemy.copernicus.kernel.Copernicus
 	javasourcedir=
         ;;
     decompile)
-        # Call either jode or javap
 	if [ -f "$JODE_JAR" ]; then
+	    help="Decompile by calling jode";
 	    javastartupclass=jode.decompiler.Main
 	    javasourcedir=
 	    jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
@@ -226,12 +232,12 @@ case `basename "$0"` in
         fi	    
 	;;
     histogram)
-	# Histogram Plotter
+	help="Histogram Plotter"
 	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
     htmlconverter)
-	# Java Plug-in applet converter
+	help="Java Plug-in applet converter"
 	javastartupclass=HTMLConverter
 	jarfile="$PTJAVA_DIR_CLEAN/lib/htmlconverter.jar"
 	if [ ! -f "$jarfile" ]; then
@@ -242,53 +248,57 @@ case `basename "$0"` in
 	applicationflags="-template \"$PTII_CLEAN/doc/coding/templates/ptExtend.tpl\""
 	;;
     jshrink)
-	# extractor/obfuscator
+	help="extractor/obfuscator"
 	javastartupclass=jshrink.Jshrink
 	javasourcedir=
 	jarfile="$PTII/lib/jshrink.jar"
 	javaflag=""
 	;;
     jode)
-	# JAva decompiler
+	help="Java decompiler"
 	javastartupclass=jode.decompiler.Main
 	javasourcedir=
 	jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
     obfuscate)
-	# JAva decompiler
+	help="Jode obfuscator, useful for reducing class file size"
 	javastartupclass=jode.obfuscator.Main
 	javasourcedir=
 	jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
     mescal)
-        # Mescal UI
+        help="Mescal UI"
 	javastartupclass=mescal.MescalApplication
 	javasourcedir=mescal
 	jarfile="$ALL_JAR$CLASSPATHSEPARATOR$PTII/mescal/lib/jsat.jar$CLASSPATHSEPARATOR$PTII/mescal/lib/mescal_java_cup.jar"
 	javaflag="$ALL_JFLAG \"-DmescalBinaries=$PTII/mescal/bin\""
 	;;	
     moml)
-	# Moml application
-	# This has no default configuration, run moml when you want
-	# to run your own graphical editor, for example:
-	# moml myBiggerBetterVergilConfiguration.xml foo.xml
+	help="MoML application \
+	    This has no default configuration, run moml when you want to \
+	    run your own graphical editor, for example: \
+	    moml myBiggerBetterVergilConfiguration.xml foo.xml"
+	invokeHelp="$0: Usage: $0 [commonOptions] configuration.xml model.xml"
 	javastartupclass=ptolemy.actor.gui.MoMLApplication
 	javasourcedir=
 	jarfile="$ALL_JAR"
 	javaflag="$ALL_JFLAG"
 	;;
     ptexecute)
-        # This takes over what CompositeActorApplication used to do (with the
-        # addition that you can give it either class files or MoML files).
-        # That is, it instantiates models, and all the models that are
-        # instances of CompositeActor, it runs.
+        help="This command takes one or more models as command line \
+	    arguments.  The models may be either class files or MoMFiles.  \
+	    This command instantiate models, and if a model is an instance \
+	    of CompositeActor, runs it."
+	invokeHelp="$0: Usage: $0 [commonOptions] classOrMoMLFile [classOrMoMLFile...]"
 	javastartupclass=ptolemy.actor.gui.PtExecuteApplication
 	javasourcedir=
 	;;
     ptinvoke)
-	# Invoke the class named by the first argument
+	help="Invoke the class named by the first argument"
+	invokeHelp="$0: Usage: $0 className [commonOptions] [classNameOptions]"
+	passHelpArgument=no
 	javastartupclass=$1
 	javasourcedir=
 	jarfile="$ALL_JAR"
@@ -296,21 +306,29 @@ case `basename "$0"` in
 	shift
 	;;
     ptjacl)
-	# tcl.lang.Shell brings up the Jacl prompt in the current window
+	help="Bring up Jacl (a 100% Java implementation of Tcl) in the \
+	    current window"
+	invokeHelp="$0: Usage: $0 [commonOptions] [TclFile]"
+	passHelpArgument=no
 	javastartupclass=tcl.lang.Shell
 	javasourcedir=
 	jarfile="$PTJACL_JAR$CLASSPATHSEPARATOR$ALL_JAR$CLASSPATHSEPARATOR$SOOT_JAR"
 	javaflag="$PTJACL_FLAG"
 	;;
     ptjaclapp)
-	# tcl.lang.PanelShellApp brings up Jacl in a separate window
+	help="Bring up Jacl (a 100% Java implementation of Tcl) in a \
+	    separate window"
+	invokeHelp="$0: Usage: $0 [commonOptions] [TclFile]"
+	passHelpArgument=no
 	javastartupclass=tcl.lang.PanelShellApp
 	javasourcedir=
 	jarfile="$PTJACL_JAR"
 	javaflag="$PTJACL_FLAG"
 	;;
     ptstartjini)
-	# Ptolemy II Application that starts up Jini
+	help="Start up Jini" 
+	invokeHelp="$0: Usage: $0"
+	passHelpArgument=no
 	javastartupclass=com.sun.jini.example.service.StartService
 	javasourcedir=ptolemy/actor/gui
 	jarfile="$JINI_LIB_DIR/jini-examples.jar"
@@ -333,9 +351,8 @@ case `basename "$0"` in
 	javaflag="$ALL_JFLAG"
 	;;
     ptolemy)
-	# Ptolemy II Application
-	# Bring up a control panel for each model rather than running it
-	# like ptinvoke.
+        help="Bring up a control panel for each model rather than running it \
+	    like ptinvoke."
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
 	# Please don't add jini or commapi to ptolemy.
@@ -344,24 +361,26 @@ case `basename "$0"` in
 	javaflag="${DIVA_JFLAG}"
 	;;
     ptplot)
-	# Signal Plotter
+	help="Signal Plotter, see \$PTII/ptolemy/plot/doc"
+	invokeHelp="$0: Usage: $0 [commonOptions] [PlotMLOrASCIIFile]"
 	javastartupclass=ptolemy.plot.plotml.EditablePlotMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
     pxgraph)
-	# Plotter compatible with old X11 pxgraph
+	help="Plotter compatible with old X11 pxgraph"
+	invokeHelp="$0: Usage: $0 [commonOptions] [pxgraphOrASCIIFile]"
 	javastartupclass=ptolemy.plot.compat.PxgraphApplication
 	javasourcedir=ptolemy/plot/compat
 	;;
     soot)
-	# Soot optimizer
+	help="Soot optimizer"
 	javastartupclass=soot.Main
 	javasourcedir=
 	jarfile="$SOOT_JAR"
 	javaflag="$SOOT_JFLAG"
 	;;
     vergil)
-	# Ptolemy II UI
+	help="Ptolemy II UI"
 	javastartupclass=ptolemy.vergil.VergilApplication
 	javasourcedir=ptolemy/vergil
 	jarfile="$ALL_JAR"
@@ -444,11 +463,36 @@ quiet=0
 #while [ "${1#-}" != "$1" ]; do
 # jode takes a -d argument, which causes problems unless we use "x..."
 while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
-    # If -debug is supplied then allow debugger attaches to java VM.
-    # Run "jdb -attach javadebug" to attach debugger to JVM.
+    if [ "$1" = "-help" ]; then
+	echo $invokeHelp
+	if [ "$help"x != "x" ]; then
+	    # Deal with multiline help messages
+	    echo "$help" | sed 's/   */ \
+/g'
+	fi    
+	echo " Where commonOptions is one of:"
+	echo " -debug   Enable debugging, see \$PTII/doc/coding/debugging.htm"
+	echo " -help    Print this help message"
+	echo " -jdb     Run jdb instead of java, see \$PTII/doc/coding/debugging.htm"
+	echo " -profiler Run under cpu sample profiling"
+        echo " -q       Do not echo the command being run"
+	echo " -sandbox Run model under tight security, see \$PTII/bin/sandbox.policy" 
+	# Most commands have their own help built in, but some do not. 
+	if [ "$passHelpArgument" = "no" ]; then
+	    exit
+	fi    
+    fi
     if [ "$1" = "-debug" ]; then
-        # TODO: jvm interface selection based on platform. This works on Windows
-        jdbflags="-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n"
+	# If -debug is supplied then allow debugger attaches to java VM.
+	echo "For details about debugging, see $PTII/doc/coding/debugging.htm"
+	if  [ "$windows" = "yes" ]; then
+	    echo "Note: Run 'jdb -attach javadebug' to attach debugger to JVM."
+	    jdbflags="-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n"
+	else
+	    jdbAddress=8000
+	    echo "Note: Run 'jdb -attach $jdbAddress' to attach debugger to JVM."
+     	    jdbflags="-Xdebug -Xrunjdwp:transport=dt_socket,address=$jdbAddress,server=y,suspend=n"
+	fi    
         shift
         continue
     fi
@@ -458,16 +502,16 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
         shift
         continue
     fi
+    if [ "$1" = "-profiler" ]; then
+        # This could be done "manually" through JAVAFLAGS, but here it is canned
+        javaflag="-Xrunhprof:cpu=samples,format=a $javaflag"
+        shift
+        continue
+    fi
     if [ "$1" = "-q" ]; then
         # Do not echo the command. Useful for batch mode (repeated test runs)
         # to reduce stdout clutter
         quiet=1
-        shift
-        continue
-    fi
-    if [ "$1" = "-profiler" ]; then
-        # This could be done "manually" through JAVAFLAGS, but here it is canned
-        javaflag="-Xrunhprof:cpu=samples,format=a $javaflag"
         shift
         continue
     fi
