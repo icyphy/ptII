@@ -110,12 +110,14 @@ public class PNSieve extends PNStar {
         } catch (NoSuchElementException e) {
             System.out.println("Terminating "+ this.getName());
             return;
-        } catch (NameDuplicationException n) {
+        } catch (NameDuplicationException e) {
+            System.err.println("Exception: " + e.toString());
             //This should never be thrown
-            System.out.println("Name being duplicated");
-        } catch (IllegalActionException a) {
+            //System.out.println("Name being duplicated");
+        } catch (IllegalActionException e) {
             //This should never be thrown
-            System.out.println("IllegalActionException thrown");
+            System.err.println("Exception: " + e.toString());
+            //System.out.println("IllegalActionException thrown");
         }
     }
     

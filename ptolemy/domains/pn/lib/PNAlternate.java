@@ -91,6 +91,7 @@ public class PNAlternate extends PNStar {
                             ((IntToken)data).intValue()+" to "+
                             _output1.getFullName());
                 } catch (InvalidStateException e) {
+                    System.err.println("Exception: " + e.toString());
                 }
                 data = (IntToken)readFrom(_input);
                 writeTo(_output2, data);
@@ -99,6 +100,7 @@ public class PNAlternate extends PNStar {
                             ((IntToken)data).intValue()+" to "+
                             _output2.getFullName());
                 } catch (InvalidStateException e) {
+                    System.err.println("Exception: " + e.toString());
                 }
             }                
         } catch (NoSuchElementException e) {
