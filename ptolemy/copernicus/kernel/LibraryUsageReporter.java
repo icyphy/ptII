@@ -29,13 +29,8 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.HasPhaseOptions;
-import soot.Hierarchy;
-import soot.PhaseOptions;
-import soot.Scene;
-import soot.SceneTransformer;
-import soot.SootClass;
-import soot.SootMethod;
+import soot.*;
+import soot.jimple.*;
 import soot.jimple.toolkits.callgraph.*;
 
 import java.io.FileWriter;
@@ -107,9 +102,7 @@ public class LibraryUsageReporter extends SceneTransformer
                 createableClasses.addAll(
                         hierarchy.getSuperclassesOfIncluding(
                                 method.getDeclaringClass()));
-                // FIXME: what about super interfaces
-                createableClasses.addAll(
-                        method.getDeclaringClass().getInterfaces());
+                _addAllInterfaces(createableClasses, method.getDeclaringClass());
             }
         }
 
@@ -140,6 +133,45 @@ public class LibraryUsageReporter extends SceneTransformer
             if (!declaringClass.getName().startsWith("java")) {
                 necessaryClasses.add(declaringClass);
             }
+            if(method.isConcrete())
+            for (Iterator units = 
+                     method.retrieveActiveBody().getUnits().iterator();
+                 units.hasNext();) {
+                Unit unit = (Unit)units.next();
+                for (Iterator boxes = unit.getUseBoxes().iterator();
+                     boxes.hasNext();) {
+                    ValueBox box = (ValueBox)boxes.next();
+                    Value value = box.getValue();
+                    if (value instanceof CastExpr) {
+                        CastExpr expr = (CastExpr)value;
+                        Type castType = expr.getCastType();
+                        if(castType instanceof RefType) {
+                            SootClass castClass = 
+                                ((RefType)castType).getSootClass();
+                            necessaryClasses.addAll(
+                                    hierarchy.getSuperclassesOfIncluding(
+                                            castClass));
+                            _addAllInterfaces(necessaryClasses, 
+                                    castClass);
+                         }
+                    } else if (value instanceof InstanceOfExpr) {
+                        InstanceOfExpr expr = (InstanceOfExpr)value;
+                        Type checkType = expr.getCheckType();
+                        if(checkType instanceof RefType) {
+                            SootClass checkClass = 
+                                ((RefType)checkType).getSootClass();
+                            if(!checkClass.isInterface()) {
+                                necessaryClasses.addAll(
+                                        hierarchy.getSuperclassesOfIncluding(
+                                                checkClass));
+                            }
+                            _addAllInterfaces(necessaryClasses, 
+                                    checkClass);
+                        }  
+                    }
+                }
+            }
+                    
         }
 
         // Print out all the used methods
@@ -169,6 +201,16 @@ public class LibraryUsageReporter extends SceneTransformer
             ex.printStackTrace();
         }
     }
+
+    private void _addAllInterfaces(Set classSet, SootClass theClass) {
+        for(Iterator i = theClass.getInterfaces().iterator();
+            i.hasNext();) {
+            SootClass theInterface = (SootClass)i.next();
+            classSet.add(theInterface);
+            _addAllInterfaces(classSet, theInterface);
+        }
+    }
+
     private static LibraryUsageReporter _instance = new LibraryUsageReporter();
 }
 

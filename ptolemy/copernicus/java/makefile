@@ -53,6 +53,7 @@ JSRCS = \
 	CommandLineTemplate.java \
 	CommandLineTransformer.java \
 	ConstantLoopUnroller.java \
+	ConstructorSpecializer.java \
 	DataUtilities.java \
 	DeadObjectEliminator.java \
 	ExceptionEliminator.java \

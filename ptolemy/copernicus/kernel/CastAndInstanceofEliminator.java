@@ -47,10 +47,7 @@ import soot.jimple.InstanceOfExpr;
 import soot.jimple.IntConstant;
 import soot.jimple.JimpleBody;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
 A transformer that remove unnecessary casts and instanceof checks.
@@ -77,12 +74,12 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
     protected void internalTransform(Body b, String phaseName, Map options)
     {
         JimpleBody body = (JimpleBody)b;
-
-        //         System.out.println("CastAndInstanceofEliminator.internalTransform("
-        //                 + b.getMethod() + phaseName + ")");
-
+        
         boolean debug = PhaseOptions.getBoolean(options, "debug");
-
+        if(debug) {
+            System.out.println("CastAndInstanceofEliminator.internalTransform("
+                    + b.getMethod() + phaseName + ")");
+        }
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
     }
 
@@ -145,6 +142,9 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
+                    if(debug) System.out.println("checking instanceof in " + unit);
+                    if(debug) System.out.println("op = " + op);
+                    if(debug) System.out.println("opType = " + opType);
                     replaceInstanceofCheck(box, hierarchy,
                             checkType, opType, debug);
                 }
@@ -209,7 +209,8 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                 }
             } else {
                 // opClass is a class, not an interface.
-                if (hierarchy.getImplementersOf(checkClass).contains(opClass)) {
+                List implementorList = hierarchy.getImplementersOf(checkClass);
+                if (implementorList.contains(opClass)) {
                     // Then we know the instanceof will be true.
                     if (debug) System.out.println("Replacing " +
                             box.getValue() + " with true.");
@@ -219,6 +220,20 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     // of opclass implements the
                     // interface.  This will mean we
                     // replace with false.
+                    boolean foundOne = false;
+                    for(Iterator implementors = implementorList.iterator();
+                        implementors.hasNext() && !foundOne;) {
+                        SootClass implementor = (SootClass)implementors.next();
+                        if(hierarchy.getSuperclassesOf(implementor).contains(
+                                   opClass)) {
+                            foundOne = true;
+                        }
+                    }
+                    if(!foundOne) {
+                        if (debug) System.out.println("Replacing " +
+                                box.getValue() + " with false.");
+                        box.setValue(IntConstant.v(0));
+                    }
                 }
             }
         } else {

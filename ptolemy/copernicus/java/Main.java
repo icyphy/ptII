@@ -86,7 +86,6 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.mt", ModelTransformer.v(toplevel),
                 "targetPackage:" + _targetPackage);
         
-        
         // Inline the director into the composite actor.
         addTransform(pack, "wjtp.idt",
                 InlineDirectorTransformer.v(toplevel),
@@ -165,16 +164,24 @@ public class Main extends KernelMain {
                         CastAndInstanceofEliminator.v()));
        
         addStandardOptimizations(pack, 4);
-
+        
         addTransform(pack, "wjtp.rcp",
                 ReplaceComplexParameters.v(toplevel),
+                "targetPackage:" + _targetPackage);       
+      
+        addTransform(pack, "wjtp.cs",
+                ConstructorSpecializer.v(toplevel),
                 "targetPackage:" + _targetPackage);       
         
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
         addTransform(pack, "wjtp.ta12",
                 new TransformerAdapter(TypeAssigner.v()));
-
+        
+        addTransform(pack, "wjtp.cie21",
+                new TransformerAdapter(
+                        CastAndInstanceofEliminator.v()));
+       
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -348,7 +355,7 @@ public class Main extends KernelMain {
                 new TransformerAdapter(
                         DeadObjectEliminator.v()));
         addStandardOptimizations(pack, 7);
-        
+          
         if(_snapshots) {
             addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple4");
@@ -359,7 +366,7 @@ public class Main extends KernelMain {
                     "outFile:" + _outputDirectory + 
                     "/jimple4/jarClassList.txt");
         }
-
+        
         if(_unboxing) {
             addTransform(pack, "wjtp.ttn",
                     TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
