@@ -898,7 +898,7 @@ Optional Packages:
                           defaults to \$PTII/vendors/dalsemi/tini
   --with-giotto=DIR       use GiottoSDF from DIR,
                           defaults to \$PTII/vendors/giotto
-  --with-ptvr=DIR       use Volume Rendering from DIR
+  --with-ptvr-jar=DIR       use Volume Rendering from DIR
                           defaults to \$PTII/lib/ptvr.jar
   --with-waba=DIR       use PalmOS WABA from DIR,
                           defaults to \$PTII/vendors/misc/waba/wabasdk
@@ -7553,9 +7553,9 @@ else
     echo "$as_me:$LINENO: checking for Java 3D Volume Rendering" >&5
 echo $ECHO_N "checking for Java 3D Volume Rendering... $ECHO_C" >&6
 
-# Check whether --with-ptvr or --without-ptvr was given.
-if test "${with_ptvr+set}" = set; then
-  withval="$with_ptvr"
+# Check whether --with-ptvr-jar or --without-ptvr-jar was given.
+if test "${with_ptvr_jar+set}" = set; then
+  withval="$with_ptvr_jar"
   PTVR_JAR=$withval
 else
   PTVR_JAR=$PTII/lib/ptvr.jar
@@ -7584,6 +7584,9 @@ fi
 
 if test -z "$PTVR_DIR"; then
     ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/vr"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	<classpathentry kind=\"lib\" path=\"$PTVR_JAR\"/> "
 fi
 
 #--------------------------------------------------------------------
