@@ -45,7 +45,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ParameterConfigurer
+//// ParameterEditor
 /** A class for configuring the parameter of NamedObjs.  This class is a
  *  PtolemyQuery that creates a typein entry for every Parameter in the 
  *  NamedObj.  This mechanism is similar to the way Ptolemy Classic worked,
@@ -53,13 +53,13 @@ import javax.swing.event.*;
  *  @author Steve Neuendorffer 
  *  @version $Id$
  */
-public class ParameterConfigurer extends PtolemyQuery implements Configurer,
+public class ParameterEditor extends PtolemyQuery implements Configurer,
     QueryListener {
     /** Create a new configurer that will configure the given NamedObject.
      *  @exception IllegalActionException If a subclass of this configurer
      *  cannot configure the given target.  Not thrown in this base class.
      */
-    public ParameterConfigurer(NamedObj target) 
+    public ParameterEditor(NamedObj target) 
         throws IllegalActionException {
         _target = target;
 	addQueryListener(this);
