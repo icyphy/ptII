@@ -222,6 +222,10 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
+        if(_debugging) {
+            _debug("_notDone = " + _notDone);
+            _debug("_stopRequested = " + _stopRequested);
+        }
         _notDone = _notDone && !_stopRequested;
         if (_debugging) {
             _debug(_name+": returning _notDone = " + _notDone);
@@ -397,6 +401,7 @@ public class ProcessDirector extends Director {
      *  @param receiver The receiver whose data transfer is blocked.
      */
     protected synchronized void _actorBlocked(ProcessReceiver receiver) {
+        System.out.println("Blocked on receiver " + receiver.getContainer());
         _blockedActorCount++;
         notifyAll();
     }
