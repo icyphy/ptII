@@ -149,7 +149,7 @@ clean:
 ptiidist: $(PTIIDIST)
 $(PTIIDIST):
 	@echo "#"
-	@echo "# Now creating $(PTIIDIST)"
+	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
 	@echo "$@ `date`"
 	mkdir $@
@@ -188,7 +188,10 @@ clean_src:
 src: $(PTII_FULL) #$(PTII_FULL_ZIP)
 PTII_FULL: $(PTII_FULL) #$(PTII_FULL_ZIP)
 $(PTII_FULL): $(PTIIDIST)
-	@echo "Creating $@"
+	@echo "#"
+	@echo "# Now creating PTII_FULL: $@"
+	@echo "#"
+	@echo "$@ `date`"
 	(cd $(PTIIDIST); chmod -R a+rX .)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
@@ -226,7 +229,10 @@ $(PTII_FULL_ZIP): $(PTIIDIST)
 
 ptii_src: $(PTII_SRC)
 $(PTII_SRC): $(PTII_FULL)
-	@echo "Creating $@"
+	@echo "#"
+	@echo "# Now creating PTII_SRC: $@"
+	@echo "#"
+	@echo "$@ `date`"
 	rm -rf src/ptII$(VERSION)
 	-mkdir src
 	(cd src; \
