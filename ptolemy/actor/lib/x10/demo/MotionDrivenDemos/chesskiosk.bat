@@ -1,1 +1,1 @@
-c:\j2sdk1.4.1_02\bin\java -Dptolemy.ptII.dir=c:\ptII -classpath c:\ptII;c:\ptII\lib\diva.jar;c:\ptII\vendors\sun\commapi\comm.jar;c:\ptII\vendors\misc\x10\tjx10p-11\lib\x10.jar ptolemy.vergil.VergilApplication c:\ptII\ptolemy\actor\lib\x10\demo\MotionDrivenDemos\MotionDrivenDemos.xml
+c:\j2sdk1.4.1_02\bin\java -Dptolemy.ptII.dir=c:\ptII -classpath c:\ptII;c:\ptII\lib\diva.jar;c:\ptII\vendors\sun\commapi\comm.jar;c:\ptII\vendors\misc\x10\tjx10p-11\lib\x10.jar ptolemy.actor.gui.PtExecuteApplication -full c:\ptII\ptolemy\actor\lib\x10\demo\MotionDrivenDemos\MotionDrivenDemos.xml
