@@ -95,6 +95,9 @@ public class TableauFactory extends CompositeEntity {
      *  A subclass that actually creates a tableau is resonsible for setting
      *  the container of the table to the specified effigy, and for naming
      *  the tableau.
+     *  Subclasses should not call show() in createTableau(), it is the
+     *  responsibility of the caller to check the return value and
+     *  call show() after doing things like adjusting the size.
      *  @param effigy The model effigy.
      *  @return A tableau for the effigy, or null if one cannot be created.
      *  @exception Exception If the factory should be able to create a
