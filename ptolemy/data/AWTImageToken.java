@@ -23,6 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 package ptolemy.data;
 
@@ -34,11 +36,12 @@ import java.awt.Image;
 //////////////////////////////////////////////////////////////////////////
 //// AWTImageToken
 /**
-   A token that contains a java.awt.Image.  This token is used in the
-   standard image processing library.
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
+A token that contains a java.awt.Image.  This token is used in the
+standard image processing library.
+
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.0
 */
 
 public class AWTImageToken extends ImageToken {
@@ -74,7 +77,6 @@ public class AWTImageToken extends ImageToken {
 
     /** The java.awt.Image */
     private Image _value;
-
 }
 
 
