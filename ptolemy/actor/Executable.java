@@ -72,9 +72,12 @@ public interface Executable {
      *  internal members of an actor and produces initial output data.
      *
      *  @exception IllegalActionException If the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
+     *  container or one of the deeply contained actors throws it.
+     *  @exception NameDuplicationException If the initialize() method of the 
+     *  container or one of the deeply contained actors throws it.
      */
-    public void initialize() throws IllegalActionException;
+    public void initialize() throws 
+            IllegalActionException, NameDuplicationException;
 
     /** This method should be invoked once per iteration, after the last
      *  invocation of fire() in that iteration. It may produce output data.

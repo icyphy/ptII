@@ -217,8 +217,11 @@ public class Director extends NamedObj implements Executable {
      *
      *  @exception IllegalActionException If the initialize() method of the
      *   container or one of the deeply contained actors throws it.
+     *  @exception NameDuplicationException If the initialize() method of the
+     *   container or one of the deeply contained actors throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() 
+            throws IllegalActionException, NameDuplicationException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Enumeration allactors = container.deepGetEntities();

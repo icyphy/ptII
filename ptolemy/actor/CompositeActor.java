@@ -283,8 +283,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @exception IllegalActionException If there is no director, or if
      *   the director's initialize() method throws it, or if this actor
      *   is not opaque.
+     *  @exception NameDuplicationException If the director's initialize()
+     *   method throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() 
+            throws IllegalActionException, NameDuplicationException {
         try {
             workspace().getReadAccess();
             if (!isOpaque()) {

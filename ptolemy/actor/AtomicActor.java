@@ -160,8 +160,10 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  internal members of an actor and produces initial output data.
      *
      *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception NameDuplicationException Not thrown in this base class.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() 
+            throws IllegalActionException, NameDuplicationException {
     }
 
     /** Return an enumeration of the input ports.
