@@ -207,6 +207,26 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
+    /** Schedule a firing of the given actor at the given time. It does
+     *  nothing in this base class. Derived class should override this method.
+     *  <p>
+     *  Note that this method is not made abstract to facilitate the use
+     *  of test suite.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The scheduled time.
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
+     */
+    public void fireAt(Actor actor, double time) 
+            throws IllegalActionException {
+        
+        // do nothing in this base class.
+        // Note that, alternatively, this method could have been abstract.
+        // But we didn't do that, because otherwise we wouldn't be able
+        // to run TclBlend testscript on this class.
+                
+    }
+
     /** Return the container, which is the composite actor for which this
      *  is the local director.
      *  @return The CompositeActor that this director is responsible for.
@@ -215,18 +235,26 @@ public class Director extends NamedObj implements Executable {
         return _container;
     }
 
-    /** Return the current time of the simulation. In this base class,
+    /** Return the current time of the simulation under this director. 
+     *  In this base class,
      *  it returns 0. The derived class should override this method
      *  and return the current time.
+     *  <p>
+     *  Note that this method is not made abstract to facilitate the use
+     *  of test suite.
+     *  @return The current time.
      */
-    // FIXME: complete this.
     public double getCurrentTime() {
         return 0.0;
     }
 
-    /** Get the next iteration time.
+    /** Get the next iteration time. It returns 0.0 in this base class;
+     *  derived class should override this method.
+     *  <p>
+     *  Note that this method is not made abstract to facilitate the use
+     *  of test suite.
+     *  @return The time of the next iteration.
      */
-    // FIXME: complete this.
     public double getNextIterationTime() {
         return 0.0;
     }
@@ -362,21 +390,7 @@ public class Director extends NamedObj implements Executable {
         _queuedTopologyRequests.insertLast(request);
     }
 
-    /** Schedule a firing of the given actor at the given time.
-     *  @param actor The actor scheduled to be fired.
-     *  @param time The scheduled time.
-     *  @exception IllegalActionException If the operation is not
-     *    permissible (e.g. the given time is in the past).
-     */
-    public void fireAt(Actor actor, double time) 
-            throws IllegalActionException {
-        
-        // do nothing in this base class.
-        // Note that, alternatively, this method could have been abstract.
-        // But we didn't do that, because otherwise we wouldn't be able
-        // to run TclBlend testscript on this class.
-                
-    }
+
 
     /** Remove a topology listener from this director.
      *  If the listener is not attached to this director, do nothing.
@@ -387,15 +401,17 @@ public class Director extends NamedObj implements Executable {
         _topologyListeners.removeTopologyListener(listener);
     }
 
-    /** Set the current time.
-     *  Do nothing in this base class implementation.
+    /** Set the current time of the simulation under this director. 
+     *  Do nothing in this base class. Derived class should override this
+     *  method.
+     *  Note that this method is not made abstract to facilitate the use
+     *  of test suite.    
      *  @exception IllegalActionException If time cannot be changed
      *   due to the state of the simulation. Only thrown in derived
      *   classes.
      *  @param newTime The new current simulation time.
      *
      */
-    // FIXME: complete this.
     public void setCurrentTime(double newTime) throws IllegalActionException {
 
     }
