@@ -68,12 +68,12 @@ if test  ! -w "$PTII"; then
     echo "try upgrading to cygwin1.1.0 or later"
 fi
 
-AC_MSG_CHECKING([if $PTII contains "cygdrive"])
+AC_MSG_CHECKING([if \$PTII ('$PTII') contains "cygdrive"])
 echo "$PTII" | grep cygdrive > /dev/null
 status=$?
 if test "$status" -eq 1 ; then
     AC_MSG_RESULT([ok
-	$PTII does not contain cygdrive, which is right.])
+	'$PTII' does not contain cygdrive, which is right.])
 else
     AC_MSG_WARN(['\$PTII == $PTII,
 which contains 'cygdrive'.
@@ -97,12 +97,12 @@ fi
 
 case "`uname -s`" in
     CYGWIN_NT-*)
-        AC_MSG_CHECKING([if $PTII contains "cygwin"])
-        cygpath -w $PTII | grep cygwin > /dev/null
+        AC_MSG_CHECKING([if \$PTII ('$PTII') contains "cygwin"])
+        cygpath -w "$PTII" | grep cygwin > /dev/null
         status=$?
         if test "$status" -eq 1 ; then
 	     AC_MSG_RESULT([ok
-  $PTII does not contain cygwin, which is right.])
+  \$PTII is '$PTII', which does not contain cygwin, which is right.])
         else
     AC_MSG_WARN([
 'cygpath -w \$PTII' == '`cygpath -w $PTII`'
