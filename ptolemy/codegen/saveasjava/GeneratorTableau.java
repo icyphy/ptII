@@ -48,7 +48,6 @@ import ptolemy.copernicus.c.Main;
 import ptolemy.copernicus.java.*;
 import ptolemy.copernicus.jhdl.*;
 import ptolemy.data.BooleanToken;
-import ptolemy.domains.sdf.codegen.SDFCodeGenerator;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.SwingWorker;

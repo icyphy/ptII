@@ -31,8 +31,7 @@
 
 ME =		ptolemy/codegen
 
-# $PTSOOT_DIR is set to soot by configure in $PTII/mk/ptII.mk if soot was found
-DIRS =		data saveasjava $(PTSOOT_DIR) test
+DIRS =		saveasjava
 
 # Root of the Java directory
 ROOT =		../..
@@ -50,20 +49,12 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		data/data.jar \
 		saveasjava/saveasjava.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	ActorCodeGenerator.java \
-	ActorCodeGeneratorInfo.java \
-	ActorTransformerVisitor.java \
-	CodeGeneratorClassFactory.java \
-	PtolemyTypeIdentifier.java \
-	PtolemyTypePolicy.java \
-	PtolemyTypeVisitor.java \
-	SpecializeTokenVisitor.java
+JSRCS =
+
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -74,14 +65,9 @@ MISC_FILES =	$(DIRS) \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'ActorCodeGenerator$$FindSuperClassDecl.class' \
-	'SpecializeTokenVisitor$$_ConstantTerm.class' \
-	'SpecializeTokenVisitor$$_VariableTerm.class' \
-	'SpecializeTokenVisitor$$ConstantTerm.class' \
-	'SpecializeTokenVisitor$$VariableTerm.class'
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+#JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass $(PTCLASSJAR)
