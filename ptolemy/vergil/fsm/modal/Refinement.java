@@ -32,6 +32,7 @@ package ptolemy.vergil.fsm.modal;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTEventGenerator;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
 import ptolemy.kernel.CompositeEntity;
@@ -54,13 +55,15 @@ This typed composite actor supports mirroring of its ports in its container
 mirroring of ports in each of the refinements and the controller.
 Refinements fulfills the CTStepSizeControlActor interface so that
 it can be used to construct hybrid systems using the CT domain.
+Refinements also fulfills the CTEventGenerator interfact so that
+it can report events generated inside.
 
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
 public class Refinement extends TypedCompositeActor
-    implements CTStepSizeControlActor {
+    implements CTStepSizeControlActor, CTEventGenerator {
 
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
@@ -83,6 +86,20 @@ public class Refinement extends TypedCompositeActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** This method is delegated to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return false, indicating that this composite actor does not
+     *  have an event at the current time.
+     *  @return True if there is an event at the current time.
+     */
+    public boolean hasCurrentEvent() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).hasCurrentEvent();
+        }
+        return false;
+    }
 
     /** Delegate to the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,

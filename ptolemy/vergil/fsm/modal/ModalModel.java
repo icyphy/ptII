@@ -39,6 +39,7 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTEventGenerator;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -113,6 +114,9 @@ This class is designed to work closely with ModalController and
 Refinement, since changes to ports can be initiated in this class
 or in those. It works with continuous-time as well as discrete-time
 models.
+<p>
+This class also fulfills the CTEventGenerator interfact so that
+it can report events generated inside.
 
 @see ModalController
 @see Refinement
@@ -121,7 +125,7 @@ models.
 @since Ptolemy II 2.0
 */
 public class ModalModel extends TypedCompositeActor
-    implements CTStepSizeControlActor {
+    implements CTStepSizeControlActor, CTEventGenerator {
 
     /** Construct a modal model in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -210,6 +214,20 @@ public class ModalModel extends TypedCompositeActor
         return newModel;
     }
     
+    /** This method is delegated to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return false, indicating that this composite actor does not
+     *  have an event at the current time.
+     *  @return True if there is an event at the current time.
+     */
+    public boolean hasCurrentEvent() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).hasCurrentEvent();
+        }
+        return false;
+    }
+
     /** Delegate to the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
      *  return true, indicating that this composite actor does not
