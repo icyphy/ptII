@@ -204,8 +204,6 @@ public class JNLPUtilities {
      */
     public static String saveJarURLInClassPath(String jarURLName)
         throws IOException {
-
-System.out.println("saveJarURLInClassPath(" + jarURLName + ")");
         URL jarURL = jarURLEntryResource(jarURLName);
         if (jarURL == null) {
             jarURL = Thread.currentThread()
@@ -267,7 +265,6 @@ System.out.println("saveJarURLInClassPath(" + jarURLName + ")");
                 input.close();
                 output.close();
             }
-            System.out.println("saveJarURLInClassPath: returning " + temporaryFile.toString());
             return temporaryFile.toString();
         }
         return null;
