@@ -243,10 +243,10 @@ public abstract class MatrixToken extends Token {
         for (int i = 0; i < tokens.length; i++) {
             typeTerms[i] = tokens[i].getType();
         }
-        
+
         Type type = (Type)TypeLattice.lattice().leastUpperBound(
                 typeTerms);
-        
+
         MatrixToken token;
         if (type == BaseType.UNKNOWN) {
             throw new IllegalActionException("Cannot resolve type for "
@@ -292,7 +292,7 @@ public abstract class MatrixToken extends Token {
             return BaseType.UNKNOWN;
         }
     }
-    
+
     /** Return a copy of the content of this token as a 2-D Complex matrix.
      *  In this base class, just throw an exception.
      *  @return A 2-D Complex matrix.
@@ -362,7 +362,7 @@ public abstract class MatrixToken extends Token {
             throws IllegalActionException {
         return new ArrayType(TypeLattice.leastUpperBound(type1, type2));
     }
- 
+
     /** Create an array of tokens of the given length.  The first
      *  token in the sequence will have value start and each succeeding
      *  token will have the value created by adding the given increment
@@ -662,7 +662,7 @@ public abstract class MatrixToken extends Token {
     public static ArrayToken matrixToArray(MatrixToken matrix) {
         return matrix.toArray();
     }
-    
+
     /** Return the (exact) return type of the toArray function above.  If the
      *  argument is a matrix type, then return an array type of its
      *  element type, otherwise return BaseType.UNKNOWN.
@@ -672,7 +672,7 @@ public abstract class MatrixToken extends Token {
     public static Type matrixToArrayReturnType(Type type) {
         return toArrayReturnType(type);
     }
-    
+
     /** Return a new token whose value is this token
      *  modulo the value of the argument token.
      *  @param rightArgument The token that performs modulo on this token.

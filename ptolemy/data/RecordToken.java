@@ -254,13 +254,13 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 type2 instanceof RecordType) {
             RecordType recordType1 = (RecordType)type1;
             RecordType recordType2 = (RecordType)type2;
-            
+
             Set unionSet = new HashSet();
             Set labelSet1 = recordType1.labelSet();
             Set labelSet2 = recordType2.labelSet();
             unionSet.addAll(labelSet1);
             unionSet.addAll(labelSet2);
-            
+
             Object[] labelsObjects = unionSet.toArray();
             int size = labelsObjects.length;
             String[] labels = new String[size];

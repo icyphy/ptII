@@ -334,7 +334,7 @@ public class LongToken extends ScalarToken {
             return BooleanToken.TRUE;
         }
     }
-        
+
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is LongToken.
      *  @param rightArgument The token to add to this token.

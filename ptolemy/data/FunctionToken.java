@@ -57,7 +57,7 @@ are supported.
 public class FunctionToken extends Token {
 
     /** Create a new FunctionToken from the given string.
-     *  @exception IllegalActionException If an error occurs, or the 
+     *  @exception IllegalActionException If an error occurs, or the
      *  string cannot be parsed into a function.
      */
     public FunctionToken(String init) throws IllegalActionException {
@@ -124,7 +124,7 @@ public class FunctionToken extends Token {
     }
 
     /** Test for equality of the values of this Token and the argument
-     *  Token.  Two function tokens are equal if they correspond to the 
+     *  Token.  Two function tokens are equal if they correspond to the
      *  same expression, under renaming of any bound variables.
      *  @param rightArgument The token to compare to this token.
      *         @return A token containing true if the value element of the first
@@ -171,7 +171,7 @@ public class FunctionToken extends Token {
          *  @return The number of arguments of the function.
          */
         public int getNumberOfArguments();
-        
+
         /** Return true if this function is congruent to the given
          *  function.  Classes should implement this method so that
          *  two functions are congruent under any renaming of the

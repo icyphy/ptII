@@ -374,7 +374,7 @@ public class FixToken extends ScalarToken {
      *  where "close" means that the distance between their values is less than
      *  or equal to the second argument. It is assumed that the type of
      *  the first argument is FixToken.  NOTE: Both the value of this token
-     *  and the token to compare are converted to double using 
+     *  and the token to compare are converted to double using
      *         convertToDouble() before the comparison is made.
      *  @param rightArgument The token to compare to this token.
      *  @param epsilon The value that we use to determine whether two

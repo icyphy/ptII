@@ -95,7 +95,7 @@ public class StringToken extends AbstractConvertibleToken {
                 // 3. Add the leading and trailing " and substitute
                 //    \" for every instance of the special word
                 _toString = "\""
-                    + backslashed2.replaceAll("MaGiCBakSlash", "\\\\\"") 
+                    + backslashed2.replaceAll("MaGiCBakSlash", "\\\\\"")
                     + "\"";
             }
         }
