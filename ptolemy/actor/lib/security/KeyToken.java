@@ -41,7 +41,7 @@ import java.security.Key;
 //////////////////////////////////////////////////////////////////////////
 //// KeyToken
 /**
-Tokens that contain java.security.Keys
+Tokens that contain java.security.Keys.
 
 @author Christopher Hylands Brooks, Based on TestToken by Steve Neuendorffer
 @version $Id$
@@ -55,7 +55,9 @@ public class KeyToken extends Token {
         super();
     }
 
-    /** Construct a token with a specified java.security.Key
+    /** Construct a token with a specified java.security.Key.
+     *  @param value The specified java.security.Key type to construct
+     *  the token with.
      */
     public KeyToken(Key value) {
         _value = value;
@@ -68,7 +70,8 @@ public class KeyToken extends Token {
         return KEY;
     }
 
-    /** Return the java.security.Key
+    /** Return the java.security.Key.
+     *  @return The java.security.Key that this Token was created with.
      */
     public java.security.Key getValue() {
         return _value;
@@ -76,6 +79,7 @@ public class KeyToken extends Token {
 
     /** Test for equality of the values of this Token and the argument
      *  Token.
+     *  @param rightArgument The Token to test against.
      *  @exception IllegalActionException Not thrown in this base class.
      *  @return A boolean token that contains the value true if the
      *  values and units of this token and the argument token are the same.
@@ -124,6 +128,7 @@ public class KeyToken extends Token {
         return result.toString();
     }
 
+    /** The cryptographic key type */
     public static class KeyType implements Type, Serializable {
 
         ///////////////////////////////////////////////////////////////////
@@ -223,6 +228,9 @@ public class KeyToken extends Token {
         }
     }
 
+    /** The Key type: the least upper bound of all the cryptographic 
+     *  key types
+     */   
     public static final Type KEY = new KeyType();
 
     ///////////////////////////////////////////////////////////////////

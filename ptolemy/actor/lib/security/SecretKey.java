@@ -186,7 +186,7 @@ public class SecretKey extends Source {
         output.send(0, _secretKeyToken);
     }
 
-    /** Initialize the key by using the cached values of the parameters
+    /** Initialize the key by using the cached values of the parameters.
      *
      *  @exception IllegalActionException If thrown by base class or
      *  if the algorithm is not found, or if the padding scheme is illegal,
