@@ -46,6 +46,7 @@ import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////
 //// Thermostat
@@ -72,36 +73,26 @@ ability of simulating hybrid system in Ptolemy II.
 @author Jie Liu
 @version $Id$
 */
-public class Thermostat extends CTApplet {
+public class Thermostat extends TypedCompositeActor{
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
-
-/** Initialize the applet.
- */
-public void init() {
-
-    super.init();
-    try {
-        // The 1 argument requests only a go button.
-        getContentPane().add(_createRunControls(2), BorderLayout.NORTH);
-
-        // the top level composite actor
-        _toplevel.setName("HybridSystem");
-
+    public Thermostat(Workspace workspace) 
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        setName("Thermostat");
+        
         // the top level CT director
         CTMultiSolverDirector topdir = new CTMultiSolverDirector(
-                _toplevel, "CTTopLevelDirector");
-        StreamListener dbl = new StreamListener();
+                this, "CTTopLevelDirector");
+        //StreamListener dbl = new StreamListener();
         //topdir.addDebugListener(dbl);
+        
         // a const source
-        Const source = new Const(_toplevel, "Const");
+        Const source = new Const(this, "Const");
         source.value.setToken(new DoubleToken(1.0));
-
+        
         // the plot
-        TimedPlotter responsePlot = new TimedPlotter(_toplevel, "plot");
-        responsePlot.place(getContentPane());
-        responsePlot.plot.setBackground(getBackground());
+        TimedPlotter responsePlot = new TimedPlotter(this, "plot");
+        responsePlot.plot = new Plot();
         responsePlot.plot.setGrid(true);
         responsePlot.plot.setTitle("Thermostat");
         responsePlot.plot.addLegend(0, "Temperature");
@@ -111,8 +102,8 @@ public void init() {
         responsePlot.plot.setXRange(0.0, 5.0);
         responsePlot.plot.setYRange(0.0, 0.2);
         responsePlot.plot.setSize(500, 300);
-
-        CTCompositeActor hs = new CTCompositeActor(_toplevel, "HS");
+        
+        CTCompositeActor hs = new CTCompositeActor(this, "HS");
         // the ports
         TypedIOPort hsin = (TypedIOPort)hs.newPort("input");
         hsin.setInput(true);
@@ -126,7 +117,7 @@ public void init() {
         //TypedIOPort hstr = (TypedIOPort)hs.newPort("trig");
         //hstr.setOutput(true);
         //hstr.setTypeEquals(BaseType.DOUBLE);
-
+        
         FSMActor ctrl = new FSMActor(hs, "Controller");
         //ctrl.addDebugListener(dbl);
         State ctrlInc = new State(ctrl, "Increasing");
@@ -143,7 +134,7 @@ public void init() {
         act0.variableName.setExpression("Integrator.initialState");
         ResetRefinement act1 =
             new ResetRefinement(ctrlTr1, "act1");
-
+    
         Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
         ctrlDec.outgoingPort.link(ctrlTr2);
         ctrlInc.incomingPort.link(ctrlTr2);
@@ -155,18 +146,18 @@ public void init() {
         act2.variableName.setExpression("Integrator.initialState");
         ResetRefinement act3 =
             new ResetRefinement(ctrlTr2, "act3");
-
+        
         IOPort ctrlIn = new TypedIOPort(ctrl, "output");
         ctrlIn.setInput(true);
         IOPort ctrlSt = new TypedIOPort(ctrl, "state");
         ctrlSt.setInput(true);
-
+        
         // the hybrid system director
         HSDirector hsdir = new HSDirector(hs, "HSDirector");
         //hs.setDirector(hsdir);
         hsdir.controllerName.setExpression("Controller");
         //hsdir.addDebugListener(dbl);
-
+        
         CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
         ZeroOrderHold ctIncH = new ZeroOrderHold(ctInc, "Hold");
         Integrator ctIncI = new Integrator(ctInc, "Integrator");
@@ -176,7 +167,7 @@ public void init() {
         //ctIncD.addDebugListener(dbl);
         Expression ctIncGF =
             new Expression(ctInc, "EXPRESSION");
-
+        
         TypedIOPort ctIncGFi = (TypedIOPort)ctIncGF.newPort("in");
         ctIncGFi.setInput(true);
         ctIncGFi.setTypeEquals(BaseType.DOUBLE);
@@ -214,7 +205,7 @@ public void init() {
         CTEmbeddedDirector ctIncDir = new CTEmbeddedDirector(
                 ctInc, "CTIncDir");
         //ctIncDir.addDebugListener(dbl);
-
+        
         CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
         //ctDec.addDebugListener(dbl);
         ZeroOrderHold ctDecH = new ZeroOrderHold(ctDec, "Hold");
@@ -222,7 +213,7 @@ public void init() {
         Scale ctGain = new Scale(ctDec, "Gain");
         ZeroCrossingDetector ctDecD =
             new ZeroCrossingDetector(ctDec, "ZD");
-
+        
         Expression ctDecGF =
             new Expression(ctDec, "EXPRESSION");
         TypedIOPort ctDecGFi = (TypedIOPort)ctDecGF.newPort("in");
@@ -263,10 +254,10 @@ public void init() {
         CTEmbeddedDirector ctDecDir = new CTEmbeddedDirector(
                 ctDec, "CTDecDir");
         //ctDecDir.addDebugListener(dbl);
-
+        
         ctrlInc.refinementName.setExpression("Increasing");
         ctrlDec.refinementName.setExpression("Decreasing");
-
+        
         // connect hs
         TypedIORelation hsr1 = (TypedIORelation)hs.newRelation("HSr1");
         hsin.link(hsr1);
@@ -285,21 +276,21 @@ public void init() {
         //hstr.link(hsr4);
         ctIncTr.link(hsr4);
         ctDecTr.link(hsr4);
-
+        
         // connect the top level system
-        _toplevel.connect(source.output, hsin);
+        this.connect(source.output, hsin);
         //sys.connect(hsout, responsePlot.input);
-        _toplevel.connect(hsst, responsePlot.input);
-        //_toplevel.connect(hstr, responsePlot.input);
-
+        this.connect(hsst, responsePlot.input);
+        //this.connect(hstr, responsePlot.input);
+        
         // try to run the system
         topdir.stopTime.setToken(new DoubleToken(5.0));
-
+        
         // CT embedded director 1 parameters
         ctIncDir.initStepSize.setToken(new DoubleToken(0.01));
         ctIncDir.minStepSize.setToken(new DoubleToken(1e-3));
         ctIncDir.maxStepSize.setToken(new DoubleToken(0.05));
-
+        
         StringToken tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
         ctIncDir.breakpointODESolver.setToken(tok);
@@ -307,12 +298,12 @@ public void init() {
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         ctIncDir.ODESolver.setToken(tok);
-
+        
         // CT embedded director 2  parameters
         ctDecDir.initStepSize.setToken(new DoubleToken(0.01));
         ctDecDir.minStepSize.setToken(new DoubleToken(1e-3));
         ctDecDir.maxStepSize.setToken(new DoubleToken(0.05));
-
+        
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
         ctDecDir.breakpointODESolver.setToken(tok);
@@ -320,7 +311,7 @@ public void init() {
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         ctDecDir.ODESolver.setToken(tok);
         ctGain.factor.setToken(new DoubleToken(-1.0));
-
+        
         // CT director parameters
         topdir.initStepSize.setToken(new DoubleToken(0.01));
         topdir.minStepSize.setToken(new DoubleToken(1e-3));
@@ -331,8 +322,5 @@ public void init() {
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         topdir.ODESolver.setToken(tok);
-    } catch (KernelException ex) {
-        report("Setup failed:", ex);
     }
-}
 }
