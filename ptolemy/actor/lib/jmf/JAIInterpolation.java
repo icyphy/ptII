@@ -62,15 +62,15 @@ public class JAIInterpolation extends Transformer {
      *   actor with this name.
      */    
     public JAIInterpolation(CompositeEntity container, String name)
-	    throws IllegalActionException, NameDuplicationException {
-	super(container, name);
-	input.setTypeEquals(BaseType.OBJECT);
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT); 
         
-	xScaleFactor =
-	    new Parameter(this, "xScaleFactor", new DoubleToken("1.0F"));
-	yScaleFactor =
-	    new Parameter(this, "yScaleFactor", new DoubleToken("1.0F"));
+        xScaleFactor =
+            new Parameter(this, "xScaleFactor", new DoubleToken("1.0F"));
+        yScaleFactor =
+            new Parameter(this, "yScaleFactor", new DoubleToken("1.0F"));
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -95,18 +95,18 @@ public class JAIInterpolation extends Transformer {
      *   or if a token is received that contains a null image.
      */    
     public void fire() throws IllegalActionException {
-	super.fire();
-	_parameters = new ParameterBlock();
-	ObjectToken objectToken = (ObjectToken) input.get(0);
-	RenderedOp oldImage = (RenderedOp) objectToken.getValue();
-	_parameters.addSource(oldImage);
-	_parameters.add((float)_xScaleFactor);
-	_parameters.add((float)_yScaleFactor);
-	_parameters.add(0.0F);
-	_parameters.add(0.0F);
-	_parameters.add(_interp);
-	RenderedOp newImage = JAI.create("scale", _parameters);
-	output.send(0, new ObjectToken(newImage));
+        super.fire();
+        _parameters = new ParameterBlock();
+        ObjectToken objectToken = (ObjectToken) input.get(0);
+        RenderedOp oldImage = (RenderedOp) objectToken.getValue();
+        _parameters.addSource(oldImage);
+        _parameters.add((float)_xScaleFactor);
+        _parameters.add((float)_yScaleFactor);
+        _parameters.add(0.0F);
+        _parameters.add(0.0F);
+        _parameters.add(_interp);
+        RenderedOp newImage = JAI.create("scale", _parameters);
+        output.send(0, new ObjectToken(newImage));
     }
     
     /** Initialize this actor.
@@ -114,10 +114,10 @@ public class JAIInterpolation extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
-	_xScaleFactor = ((DoubleToken)xScaleFactor.getToken()).doubleValue();
-	_yScaleFactor = ((DoubleToken)yScaleFactor.getToken()).doubleValue();        
-	_interp = Interpolation.getInstance(
+        super.initialize();
+        _xScaleFactor = ((DoubleToken)xScaleFactor.getToken()).doubleValue();
+        _yScaleFactor = ((DoubleToken)yScaleFactor.getToken()).doubleValue();        
+        _interp = Interpolation.getInstance(
                 Interpolation.INTERP_BILINEAR);
     }
     
