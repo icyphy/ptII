@@ -157,24 +157,24 @@ public class Helicopter extends TypedCompositeActor {
         Transition tr1 = new Transition(hsctrl, "tr1");
         hoverState.outgoingPort.link(tr1);
         accelState.incomingPort.link(tr1);
-        tr1.setGuardExpression("inputAction_V");
+        tr1.setGuardExpression("inputAction");
         Transition tr2 = new Transition(hsctrl, "tr2");
         accelState.outgoingPort.link(tr2);
         cruise1State.incomingPort.link(tr2);
-        tr2.setGuardExpression("(outputV_V >= 5.0) && (inputPz_V> -2.05) " +
-                "&& (inputPz_V < -1.95)");
+        tr2.setGuardExpression("(outputV >= 5.0) && (inputPz > -2.05) " +
+                "&& (inputPz < -1.95)");
         
         Transition tr3 = new Transition(hsctrl, "tr3");
         cruise1State.outgoingPort.link(tr3);
         climbState.incomingPort.link(tr3);
-        tr3.setGuardExpression("(outputV_V > 4.9) && (outputV_V < 5.1) " +
-                "&& (outputR_V > -0.01) && (outputR_V < 0.01)");
+        tr3.setGuardExpression("(outputV > 4.9) && (outputV < 5.1) " +
+                "&& (outputR > -0.01) && (outputR < 0.01)");
         Transition tr4 = new Transition(hsctrl, "tr4");
         climbState.outgoingPort.link(tr4);
         cruise2State.incomingPort.link(tr4);
         //
-        tr4.setGuardExpression("(outputV_V > 4.9) && (outputV_V < 5.1) " +
-                "&& (inputPz_V > -10.05) && (inputPz_V < -9.95)");
+        tr4.setGuardExpression("(outputV > 4.9) && (outputV < 5.1) " +
+                "&& (inputPz > -10.05) && (inputPz < -9.95)");
         
         TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
         TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
