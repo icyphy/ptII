@@ -1,6 +1,6 @@
 /* A FSMDirector governs the execution of a *chart model.
 
- Copyright (c)  The Regents of the University of California.
+ Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -141,13 +141,13 @@ public class FSMDirector extends Director {
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
         CompositeActor cont = (CompositeActor)getContainer();
-        Director execdir = (Director)cont.getExecutiveDirector();
-        if (execdir == null) {
+        Director execDir = (Director)cont.getExecutiveDirector();
+        if (execDir == null) {
             // PANIC!!
             throw new InvalidStateException(this,
                     "FSMDirector must have an executive director!");
         }
-        execdir.fireAt(cont, time);
+        execDir.fireAt(cont, time);
     }
 
     /** Return the current time of the simulation. In this base class,
@@ -164,13 +164,13 @@ public class FSMDirector extends Director {
             // a container.
             ctime = 0.0;
         } else {
-            Director execdir = (Director)cont.getExecutiveDirector();
-            if (execdir == null) {
+            Director execDir = (Director)cont.getExecutiveDirector();
+            if (execDir == null) {
                 // PANIC!!
                 throw new InvalidStateException(this,
                         "FSMDirector must have an executive director!");
             }
-            ctime = execdir.getCurrentTime();
+            ctime = execDir.getCurrentTime();
         }
         return ctime;
     }
@@ -183,22 +183,22 @@ public class FSMDirector extends Director {
     // governed by this director.
     // Should only be called by executive director.
     public double getNextIterationTime() {
-        double nxtime = 0.0;
+        double nextTime = 0.0;
         CompositeActor cont = (CompositeActor)getContainer();
         if (cont == null) {
             // In fact this should not happen, this director must have
             // a container.
-            nxtime = 0.0;
+            nextTime = 0.0;
         } else {
-            Director execdir = (Director)cont.getExecutiveDirector();
-            if (execdir == null) {
+            Director execDir = (Director)cont.getExecutiveDirector();
+            if (execDir == null) {
                 // PANIC!!
                 throw new InvalidStateException(this,
                         "FSMDirector must have an executive director!");
             }
-            nxtime = execdir.getNextIterationTime();
+            nextTime = execDir.getNextIterationTime();
         }
-        return nxtime;
+        return nextTime;
     }
 
     /** Create receivers and then invoke the initialize()
@@ -218,9 +218,9 @@ public class FSMDirector extends Director {
     public void initialize() throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         if (container != null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
+            Enumeration allActors = container.deepGetEntities();
+            while (allActors.hasMoreElements()) {
+                Actor actor = (Actor)allActors.nextElement();
                 if (actor == _controller) {
                     continue;
                 } else {
@@ -242,7 +242,7 @@ public class FSMDirector extends Director {
      *  @return A new Mailbox.
      */
     // Use QueueReceiver?
-    // NOTE! There is a problem of token accumulating in the reveivers.
+    // NOTE! There is a problem of token accumulating in the receivers.
     // FIXME!!
     public Receiver newReceiver() {
         return new Mailbox();
@@ -401,13 +401,13 @@ public class FSMDirector extends Director {
                     "transferOutputs: port argument is not an opaque output port.");
         }
         // do not handle multiple tokens, multiple channels now
-        Receiver insiderec = (port.getInsideReceivers())[0][0];
+        Receiver insideReceiver = (port.getInsideReceivers())[0][0];
 
         CompositeActor cont = (CompositeActor)getContainer();
         IOPort p = (IOPort)cont.getPort(port.getName());
-        if (insiderec.hasToken()) {
+        if (insideReceiver.hasToken()) {
             try {
-                Token t = insiderec.get();
+                Token t = insideReceiver.get();
 
                 //System.out.println("Transfer output from " +
                 //port.getFullName() + " " +

@@ -331,10 +331,10 @@ public class FSMTransition extends ComponentRelation {
             _te.addToScope(localInputVarS.getVariables());
             _tc.addToScope(localInputVarV.getVariables());
         }
-        Enumeration actvars = _actions.getVariables();
+        Enumeration actionVariables = _actions.getVariables();
         Variable act;
-        while (actvars.hasMoreElements()) {
-            act = (Variable)actvars.nextElement();
+        while (actionVariables.hasMoreElements()) {
+            act = (Variable)actionVariables.nextElement();
             act.addToScope(inputVarV.getVariables());
             act.addToScope(localVars.getVariables());
             if (!isPreemptive()) {

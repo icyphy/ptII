@@ -118,12 +118,12 @@ public class FSMController extends CompositeEntity implements TypedActor {
         } catch (NameDuplicationException ex) {
             // this should not happen
         }
-        if (_initTrans != null) {
-            newobj._initTrans = new LinkedList();
-            Enumeration trans = _initTrans.elements();
+        if (_initialTransitions != null) {
+            newobj._initialTransitions = new LinkedList();
+            Enumeration trans = _initialTransitions.elements();
             while (trans.hasMoreElements()) {
                 FSMTransition tr = (FSMTransition)trans.nextElement();
-                newobj._initTrans.insertLast(newobj.getRelation(tr.getName()));
+                newobj._initialTransitions.insertLast(newobj.getRelation(tr.getName()));
             }
         }
         newobj._currentState = null;
@@ -170,8 +170,8 @@ public class FSMController extends CompositeEntity implements TypedActor {
 
 
     // When an FSMController fires, its behavior is the parallel composition of
-    // its own sequential controll logic and its current refinement.
-    // Preemptive transitions of controll logic take precedence of refinement.
+    // its own sequential control logic and its current refinement.
+    // Preemptive transitions of control logic take precedence of refinement.
     // Question: what to do to the refinement when a transition is taken?
     public void fire() throws IllegalActionException {
         _takenTransition = null;
@@ -288,8 +288,8 @@ public class FSMController extends CompositeEntity implements TypedActor {
         // Evaluate initial transitions, determine initial state.
         _setInputVars();
         _takenTransition = null;
-        if (_initTrans != null) {
-            Enumeration trs = _initTrans.elements();
+        if (_initialTransitions != null) {
+            Enumeration trs = _initialTransitions.elements();
             FSMTransition trans;
             while (trs.hasMoreElements()) {
                 trans = (FSMTransition)trs.nextElement();
@@ -396,7 +396,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
 
 
     /** Return a new receiver of a type compatible with the director.
-     *  Derived classes may further specialize this to return a reciever
+     *  Derived classes may further specialize this to return a receiver
      *  specialized to the particular actor.
      *
      *  @exception IllegalActionException If there is no director.
@@ -526,13 +526,13 @@ public class FSMController extends CompositeEntity implements TypedActor {
             throw new IllegalActionException(this, initialTransition,
                     "Initial transition is not contained by FSMController.");
         }
-        if (_initTrans == null) {
-            _initTrans = new LinkedList();
-            _initTrans.insertFirst(initialTransition);
-        } else if (_initTrans.includes(initialTransition)) {
+        if (_initialTransitions == null) {
+            _initialTransitions = new LinkedList();
+            _initialTransitions.insertFirst(initialTransition);
+        } else if (_initialTransitions.includes(initialTransition)) {
             return;
         } else {
-            _initTrans.insertFirst(initialTransition);
+            _initialTransitions.insertFirst(initialTransition);
         }
     }
 
@@ -583,7 +583,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
 
 
     /** Do nothing.  Derived classes override this method to define
-     *  operations to be performed excatly once at the end of a complete
+     *  operations to be performed exactly once at the end of a complete
      *  execution of an application.  It typically closes
      *  files, displays final results, etc.
      *
@@ -823,7 +823,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
     FSMState _initialState = null;
 
     // The list of initial transitions.
-    LinkedList _initTrans = null;
+    LinkedList _initialTransitions = null;
 
     // The current state.
     protected FSMState _currentState = null;
@@ -849,11 +849,3 @@ public class FSMController extends CompositeEntity implements TypedActor {
 
 
 }
-
-
-
-
-
-
-
-
