@@ -439,10 +439,10 @@ public class PythonScript extends TypedAtomicActor {
                 _interpreter.exec(pythonScript);
             } catch (Exception ex) {
                 String message = ex.toString();
-                //              int i = message.indexOf("SyntaxError");
-                //if (i >= 0) {
-                //    message = message.substring(i);
-                //}
+                int i = message.indexOf("SyntaxError");
+                if (i >= 0) {
+                    message = message.substring(i);
+                }
                 throw new IllegalActionException(
                     this,
                     ex,
