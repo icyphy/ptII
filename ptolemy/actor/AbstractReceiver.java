@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor;
 
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -148,7 +149,7 @@ public abstract class AbstractReceiver implements Receiver {
      *   associated with every receiver.
      *   @return The current time associated with this receiver.
      */
-    public double getCurrentTime() {
+    public Time getCurrentTime() {
         IOPort containerPort = getContainer();
         Actor containerActor = (Actor) containerPort.getContainer();
         Director containerDirector = containerActor.getDirector();

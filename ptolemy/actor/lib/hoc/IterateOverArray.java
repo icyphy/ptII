@@ -46,6 +46,7 @@ import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -994,7 +995,7 @@ public class IterateOverArray extends TypedCompositeActor
          *  @param actor The actor requesting firing.
          *  @param time The time at which to fire.
          */
-        public void fireAt(Actor actor, double time)
+        public void fireAt(Actor actor, Time time)
                 throws IllegalActionException {
             Director director = IterateOverArray.this.getExecutiveDirector();
             if (director != null) {

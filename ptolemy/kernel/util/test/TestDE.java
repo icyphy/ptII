@@ -94,7 +94,7 @@ public class TestDE {
     /** Finish a run.  Return the time of the output events.
      */
     public Enumeration finish() throws KernelException {
-        while (_director.getCurrentTime() <= 10.0) {
+        while (_director.getCurrentTime().getTimeValue() <= 10.0) {
             _manager.iterate();
         }
         _manager.wrapup();
@@ -130,7 +130,7 @@ public class TestDE {
     public void start() throws KernelException {
         _manager.initialize();
         // Process up to time 1.0
-        while (_director.getCurrentTime() <= 1.0) {
+        while (_director.getCurrentTime().getTimeValue() <= 1.0) {
             _manager.iterate();
         }
     }

@@ -35,6 +35,7 @@ import javax.media.protocol.DataSource;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Source;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.type.BaseType;
@@ -87,14 +88,14 @@ public class StreamLoader extends Source {
         }
         Director director = getDirector();
         if (director != null) {
-            director.fireAt(this, 0.0);
+            director.fireAt(this, new Time(this));
         } else {
             throw new IllegalActionException(this, "No director");
         }
     }
 
     public boolean postfire() throws IllegalActionException {
-        if (getDirector().getCurrentTime() == 0.0) {
+        if (getDirector().getCurrentTime().getTimeValue() == 0.0) {
             output.send(0, new ObjectToken(_dataSource));
         }
         return super.postfire();

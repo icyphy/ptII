@@ -28,10 +28,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor;
 
+import ptolemy.actor.util.Time;
+
 //////////////////////////////////////////////////////////////////////////
 //// TimedDirector
 /**
-   This is a marker interface for directors that operate on time-based signals.
+   This is a interface for directors that operate on time-based signals.
    That is, logically, all signals observed or produced are tokens placed
    in time. Actors that implement the TimedActor marker interface are allowed
    to be executed by directors that implement this interfact.
@@ -44,6 +46,18 @@ package ptolemy.actor;
    @Pt.AcceptedRating Red (hyzheng)
 */
 
-public interface TimedDirector {}
+public interface TimedDirector {
+    /** Return a new object as the copy of the current time object of 
+     *  this director.  
+     *  @return A new object as the copy of the current time object of 
+     *  this director.
+     */
+    public Time getCurrentTime();
+    
+    /** Return the time resolution used by this director. 
+     *  @return The time resolution specified used by this director.
+     */
+    public double getTimeResolution();
+}
 
 

@@ -203,7 +203,8 @@ public class Recorder extends Sink {
         int capacityValue = ((IntToken)(capacity.getToken())).intValue();
         if (capacityValue != 0) {
             _records.add(record);
-            _timeRecord.add(new Double(getDirector().getCurrentTime()));
+            _timeRecord.add(new Double(
+                getDirector().getCurrentTime().getTimeValue()));
             if (capacityValue > 0 && _records.size() > capacityValue) {
                 // Remove the first element.
                 _records.remove(0);

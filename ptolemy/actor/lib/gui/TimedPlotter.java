@@ -91,17 +91,17 @@ public class TimedPlotter extends Plotter implements TimedActor {
      */
     public boolean postfire() throws IllegalActionException {
 
-        double currentTime;
+        double currentTimeValue;
         int width = input.getWidth();
         int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
-                currentTime = input.getCurrentTime(i);
+                currentTimeValue = input.getCurrentTime(i).getTimeValue();
                 DoubleToken currentToken = (DoubleToken)input.get(i);
                 double currentValue = currentToken.doubleValue();
                 // NOTE: We assume the superclass ensures this cast is safe.
                 ((Plot)plot).addPoint(
-                        i + offset, currentTime, currentValue, true);
+                        i + offset, currentTimeValue, currentValue, true);
             }
         }
         return super.postfire();

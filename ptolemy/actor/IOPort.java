@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -762,7 +763,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the channel index
      *  is out of range or if the port is not an input port.
      */
-    public double getCurrentTime(int channelIndex)
+    public Time getCurrentTime(int channelIndex)
             throws IllegalActionException {
         Receiver[][] localReceivers;
         try {
