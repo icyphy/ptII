@@ -111,7 +111,7 @@ public class StateSampler extends DETransformer {
 
     /** The trigger port, which has type Token. If this port
      *  receives a token, then the most recent token from the
-       *  <i>input</i> port will be emitted on the <i>output</i> port.
+     *  <i>input</i> port will be emitted on the <i>output</i> port.
      */
     public TypedIOPort trigger;
 
@@ -150,7 +150,7 @@ public class StateSampler extends DETransformer {
                 _lastInputs = new Token[widthOfInputs];
             }
             for (int i = 0; i < n; i++) {
-               if (input.hasToken(i)) {
+                if (input.hasToken(i)) {
                     _lastInputs[i] = input.get(i);
                 }
                 // in is the most recent token, assuming
