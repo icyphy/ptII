@@ -53,8 +53,6 @@ $manager addExecutionListener $listener
 # Build the system
 set source [java::new ptolemy.domains.sdf.lib.vq.ImageSequence $sys Source]
 set part [java::new ptolemy.domains.sdf.lib.vq.ImagePartition $sys Part]
-set encode [java::new ptolemy.domains.sdf.lib.vq.HTVQEncode $sys encode]
-set decode [java::new ptolemy.domains.sdf.lib.vq.VQDecode $sys decode]
 set unpart [java::new ptolemy.domains.sdf.lib.vq.ImageUnpartition $sys Unpart]
 set display [java::new ptolemy.domains.sdf.lib.vq.ImageDisplay $sys Display]
 
@@ -62,20 +60,14 @@ set display [java::new ptolemy.domains.sdf.lib.vq.ImageDisplay $sys Display]
 set source_image [$source getPort image]
 set part_image [$part getPort image]
 set part_partition [$part getPort partition]
-set encode_imagepart [$encode getPort imagepart]
-set encode_index [$encode getPort index]
-set decode_index [$decode getPort index]
-set decode_imagepart [$decode getPort imagepart]
 set unpart_image [$unpart getPort image]
 set unpart_partition [$unpart getPort partition]
 set display_image [$display getPort image]
 
 # Connect the ports
 set r1 [$sys connect $source_image $part_image R1]
-set r2 [$sys connect $part_partition $encode_imagepart R2]
-set r3 [$sys connect $encode_index $decode_index R3]
-set r4 [$sys connect $decode_imagepart $unpart_partition R4]
-set r5 [$sys connect $unpart_image $display_image R5]
+set r2 [$sys connect $part_partition $unpart_partition R2]
+set r3 [$sys connect $unpart_image $display_image R3]
 
 #set debug ptolemy.domains.sdf.kernel.Debug
 #set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]

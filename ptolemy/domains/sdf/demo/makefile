@@ -41,8 +41,6 @@ ME =		ptolemy/domains/sdf/demo
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JFLAGS =
-
 CLASSPATH = ../../../..
 
 TCL_SRCS = \
@@ -50,9 +48,11 @@ TCL_SRCS = \
 	RampSystem2.tcl
 
 JSRCS = \
+	VideoTest.java \
 	SDFdemo.java \
 	SDFdemo2.java \
-	SDFdemo3.java
+	SDFdemo3.java \
+	TokenTest.java
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
