@@ -634,7 +634,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         File destinationFile = new File(destinationDirectory,
-                destinationFileName);
+                    destinationFileName);
         File destinationParent = new File(destinationFile.getParent());
         destinationParent.mkdirs();
 
@@ -642,19 +642,39 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 + " (" + sourceFile.length()/1024 + "K) to "
                 + destinationFile);
 
-        // Avoid end of line and localization issues.
-        BufferedInputStream in =
-            new BufferedInputStream(new FileInputStream(sourceFile));
-        BufferedOutputStream out =
-            new BufferedOutputStream(new FileOutputStream(destinationFile));
-        int c;
+        BufferedInputStream in = null;
+        BufferedOutputStream out = null;
+        try {
+            in = new BufferedInputStream(new FileInputStream(sourceFile));
+            out = new BufferedOutputStream(
+                    new FileOutputStream(destinationFile));
+            int c;
 
-        while ((c = in.read()) != -1)
-            out.write(c);
+            // Avoid end of line and localization issues.
+            while ((c = in.read()) != -1) {
+                out.write(c);
+            }
 
-        // FIXME: need finally?
-        in.close();
-        out.close();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Throwable throwable) {
+                      System.out.println("Ignoring failure to close stream "
+                            + "on '" + sourceFile + "'");
+                      throwable.printStackTrace();
+                }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (Throwable throwable) {
+                      System.out.println("Ignoring failure to close stream "
+                            + "on '" + destinationFile + "'");
+                      throwable.printStackTrace();
+                }
+            }
+        }
     }
 
     // Given a domain package, return the corresponding jar file
