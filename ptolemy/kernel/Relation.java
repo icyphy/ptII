@@ -139,11 +139,11 @@ public class Relation extends NamedObj {
      * false if this is a source Relation and the source was already
      * set (in which case changeSourcePort() should be used). 
      */	
-    public boolean addSourcePort(GenPort port) {
-	GenPort genPortWithDuplicateName;
+    public boolean addSourcePort(Port port) {
+	Port genPortWithDuplicateName;
 	if( isSource() && _sourcePorts == null )
 	{
-	     genPortWithDuplicateName = (GenPort)
+	     genPortWithDuplicateName = (Port)
 		  _sourcePorts.put( port.getName(), port.newConnection() ); 
 	     if( genPortWithDuplicateName != null )
 	     {
@@ -153,7 +153,7 @@ public class Relation extends NamedObj {
 	}
 	else if( isDestination() )
 	{
-	     genPortWithDuplicateName = (GenPort)
+	     genPortWithDuplicateName = (Port)
 		  _destinationPorts.put( port.getName(), port.newConnection() );
 	     if( genPortWithDuplicateName != null )
 	     {
@@ -164,18 +164,18 @@ public class Relation extends NamedObj {
 	return false;
     }
 
-    /** If this is a source Relation, make the GenPort argument the
+    /** If this is a source Relation, make the Port argument the
      *  new source port. 
      * @param port The port which will become the new source port.
      * @return Return true if successful. Return false if this is 
      * not a source Relation. 
      */	
-    public boolean changeSourcePort(GenPort port) {
-	GenPort genPortWithDuplicateName;
+    public boolean changeSourcePort(Port port) {
+	Port genPortWithDuplicateName;
 	if( isSource() )
 	{
 	     _sourcePorts.clear();
-	     genPortWithDuplicateName = (GenPort)
+	     genPortWithDuplicateName = (Port)
 		  _sourcePorts.put( port.getName(), port.newConnection() ); 
 	     if( genPortWithDuplicateName != null )
 	     {
@@ -186,13 +186,13 @@ public class Relation extends NamedObj {
         return false;
     }
 
-    /** If this is a destination Relation, make the GenPort argument the
+    /** If this is a destination Relation, make the Port argument the
      *  new destination port. 
      * @param port The port which will become the new destinatino port.
      * @return Return true if successful. Return false if this is 
      * not a destination Relation. 
      */	
-    public boolean changeDestinationPort(GenPort port) {
+    public boolean changeDestinationPort(Port port) {
 	if( isDestination() )
 	{
 	     _destinationPorts.clear();
@@ -209,6 +209,24 @@ public class Relation extends NamedObj {
         _sourcePorts.clear();
         _destinationPorts.clear();
         return;
+    }
+
+    /** Remove a source port from this relation.
+     * @param port The Port to be removed.
+     * @return Return a Port reference if the remove is successful. Return
+     * null if the Port is not found.
+     */	
+    public Port removeSourcePort(Port port) {
+	return (Port) _sourcePorts.remove( port.getName() );
+    }
+
+    /** Remove a destination port from this relation.
+     * @param port The Port to be removed.
+     * @return Return a Port reference if the remove is successful. Return
+     * null if the Port is not found.
+     */	
+    public Port removeDestinationPort(Port port) {
+	return (Port) _destinationPorts.remove( port.getName() );
     }
 
     /** Description
