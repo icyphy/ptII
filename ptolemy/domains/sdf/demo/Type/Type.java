@@ -154,8 +154,7 @@ public class Type extends SDFApplet {
 	    _ramp2.init.setExpression(_query.stringValue("ramp2init"));
 	    _ramp2.step.setExpression(_query.stringValue("ramp2step"));
 
-	    _expr.expression.setToken(
-			new StringToken(_query.stringValue("expr")));
+	    _expr.expression.setExpression(_query.stringValue("expr"));
             
             // Reinitialize the trace display
             _tracePane.getTraceView().clear();

@@ -126,7 +126,7 @@ public class ExpressionApplet extends SDFApplet {
      *  @exception IllegalActionException Not thrown.
      */
     protected void _go() throws IllegalActionException {
-        _expr.expression.setToken(new StringToken(_query.stringValue("expr")));
+        _expr.expression.setExpression(_query.stringValue("expr"));
         super._go();
     }
 
