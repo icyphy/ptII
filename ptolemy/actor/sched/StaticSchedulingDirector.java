@@ -24,14 +24,12 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 */
 package ptolemy.actor;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,18 +45,19 @@ to fire the actors in that order.
 <p>
 "Static" means that the firing sequence, once constructed, can be
 used during the execution repeatedly.
-So the returned schedule is locally cached, and can be reused when needed.
-A schedule is called "valid" if is can be used to correctly direct
-the execution of the CompositeActor.
+So the schedule is locally cached in the scheduler, and can be reused
+when needed. A schedule is called "valid" if is can be used to correctly
+direct the execution of the CompositeActor.
 However, the schedule may become invalid when the CompositeActor mutates.
-A flag <code>_schedulevalid</code> can be set when such a mutation
-happens and the director must invoke the scheduler again to reschedule
-the CompositeActor.
+The scheduler is a TopologyListener of the director, and the schedule
+is automatically invalidated when a TopologyChange occurs.
+The setSchdulValid() method can also be used to explicitly validate 
+or invalidate the schedule when needed.
 
 @author Jie Liu
 @version $Id$
-@see Director
-@see Scheduler
+@see ptolemy.actor.Director
+@see ptolemy.actor.Scheduler
 */
 public class StaticSchedulingDirector extends Director{
     /** Construct a director in the default workspace with an empty string
@@ -100,7 +99,7 @@ public class StaticSchedulingDirector extends Director{
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new director with no container, no pending mutations,
-     *  no mutation listeners, and no scheduler.
+     *  no topology listeners, and no scheduler.
      *
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -114,11 +113,11 @@ public class StaticSchedulingDirector extends Director{
         return newobj;
     }
 
-    /** Return the scheduler responsible for scheduling the contained
-     *  actors.
+    /** Return the scheduler that is responsible for scheduling the
+     *  directed actors.
      *  This method is read-synchronized on the workspace.
      *
-     *  @return The scheduler responsible for scheduling inside actors.
+     *  @return The contained scheduler.
      */
     public Scheduler getScheduler() {
         try {
@@ -130,10 +129,11 @@ public class StaticSchedulingDirector extends Director{
     }
 
     /** Set the scheduler for this StaticSchedulingDirector.
-     *  The container of the specified scheduler is set to this director
-     *  , and if there was previously a scheduler, its container
+     *  The container of the specified scheduler is set to this director.
+     *  If there was a previous scheduler, the container of that schduler
      *  is set to null. This method is write-synchronized on the workspace.
-     *
+     *  If the scheduler is not compatible with the director, an 
+     *  IllegalActionException is thrown.
      *  @param director The Director responsible for execution.
      *  @exception IllegalActionException Not thrown in this base class,
      *   but derived classes may throw it if the scheduler is not compatible.

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (liuj@eecs.berkeley.edu)
+
 */
 
 package ptolemy.actor;
@@ -40,7 +40,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
 /**
-A base class for schedulers. A scheduler schedules the execution order
+The base class for schedulers. A scheduler schedules the execution order
 of the containees of a CompositeActor.
 <p>
 A scheduler has a reference to a StaticSchedulingDirector, and
@@ -53,12 +53,11 @@ next time if the schedule is still valid. The validation of a schedule
 is set by the <code>setValid()</code> method. If the current schedule
 is set to be not valid, the schedule() method will call the protected
 _schedule() method to reconstruct it. _schedule() is the place the
-scheduling algorithm lives, and is ready to be override by the derived
-classes.
+scheduling algorithm goes, and the derived class should override it.
 <p>
 Scheduler implements the TopologyListener interface, and register itself
-as a TopologyListener to the host director.  When a mutation occurs,
-the director will inform all the mutation listeners (including the
+as a TopologyListener to the host director.  When a topology change occurs,
+the director will inform all the listeners (including the
 scheduler), and the scheduler will invalidate the current schedule.
 
 FIXME: This class uses LinkedList in the collections package. Change it
@@ -69,23 +68,19 @@ to Java collection when update to JDK1.2
 public class Scheduler extends NamedObj implements TopologyListener{
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
-     *  "Basic Scheduler".
-     * @see ptolemy.kernel.util.NamedObj
-     * @return The scheduler
+     *  "Basic_Scheduler".
      */
     public Scheduler() {
         super(_DEFAULT_SCHEDULER_NAME);
     }
 
     /** Construct a scheduler in the given workspace with the name
-     *  "Basic Scheduler".
+     *  "Basic_Scheduler".
      *  If the workspace argument is null, use the default workspace.
      *  The scheduler is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this scheduler.
      */
     public Scheduler(Workspace ws) {
         super(ws, _DEFAULT_SCHEDULER_NAME);
@@ -93,8 +88,6 @@ public class Scheduler extends NamedObj implements TopologyListener{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
 
     /** Clone the scheduler into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -114,13 +107,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
         return newobj;
     }
 
-    /** Return the description of the scheduler. In this base class,
-     *  it returns the name and schedule (an Enumeration of the actors
-     *  returned by deepGetEntites()).
-     *  FIXME: Implementation needed.
-     */
-
-    /** Response for that an entity has been added to a composite.
+    /** Responce for that an entity has been added to a composite.
      *  This will invalidate the current schedule.
      *
      *  @param event The mutation event
@@ -167,7 +154,6 @@ public class Scheduler extends NamedObj implements TopologyListener{
     public void portLinked (TopologyEvent event){
         setValid(false);
     }
-
 
     /** Responce for that a port has been removed from a entity.
      * The <b>entity</b> and <b>port</b> fields of the
@@ -218,13 +204,12 @@ public class Scheduler extends NamedObj implements TopologyListener{
      *  IllegalActionException.
      *  This method read synchronize the workspace.
      *
-     * @return An Enumeration of the deeply contained opaque entities
-     *  in the firing order.
+     * @return An Enumeration returned by _schedule() method.
      * @exception IllegalActionException If the scheduler has no container
      *  (director), or the container has no container (CompositeActor).
      * @exception NotSchedulableException If the _schedule() method
      *  throws it. Not thrown in this base class, but may be needed
-     *  by the derived scheduler.
+     *  by the derived schedulers.
      */
     public Enumeration schedule() throws
             IllegalActionException, NotSchedulableException {
@@ -243,9 +228,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
             }
             if(!valid()) {
                 _cachedschedule = new LinkedList();
-                //System.out.println("new list");
                 Enumeration newsche = _schedule();
-                //System.out.println("new schedule");
                 while (newsche.hasMoreElements()) {
                     _cachedschedule.insertLast(newsche.nextElement());
                 }
@@ -256,18 +239,18 @@ public class Scheduler extends NamedObj implements TopologyListener{
         }
     }
 
-    /** Validate/invalidate the current schedule by set the _valid member.
+    /** Validate/invalidate the current schedule by giving a true/false
+     *  argument.
      *  A <code>true</code> argument will indicate that the current
      *  schedule is valid
      *  and can be returned immediately when schedule() is called without
      *  running the scheduling algorithm. A <code>false</code> argument
      *  will invalidate it.
-     *  @param true to set _valid flag to true.
+     *  @param true to set the current schedule to valid.
      */
     public void setValid(boolean valid) {
         _valid = valid;
     }
-
 
     /** Return true if the current schedule is valid.
      *@return true if the current schedule is valid.
@@ -280,9 +263,9 @@ public class Scheduler extends NamedObj implements TopologyListener{
     ////                         protected methods                 ////
 
     /** Make this scheduler the scheduler of the specified director, and
-     *  register itself as a mutation listener of the director.
+     *  register itself as a topology listener of the director.
      *  This method should not be called directly.  Instead, call
-     *  setScheduler of the StaticSchedulingDirector class
+     *  setScheduler() method of the StaticSchedulingDirector class
      *  (or a derived class).
      */
     protected void _makeSchedulerOf (StaticSchedulingDirector dir) {
@@ -295,7 +278,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
 
     /** Return the scheduling sequence. In this base class, it returns
      *  the containees of the CompositeActor in the order of construction.
-     *  (Same as calling deepCetEntities()). The derived classes will
+     *  (Same as calling deepCetEntities()). The derived classes should
      *  override this method and add their scheduling algorithms here.
      *  This method should not be called directly, rather the schedule()
      *  will call it when the schedule is not valid. So it is not
@@ -318,10 +301,12 @@ public class Scheduler extends NamedObj implements TopologyListener{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    // The container
     private StaticSchedulingDirector _container = null;
+    // The flag that indicate whether the current schedule is valid.
     private boolean _valid = false;
+    // The cached schedule.
     private LinkedList _cachedschedule = null;
+    // The static name
     private static final String _DEFAULT_SCHEDULER_NAME = "Basic Scheduler";
 }

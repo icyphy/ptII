@@ -24,8 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -39,10 +38,10 @@ This is a special case of InvelidStateException that a CompositeActor
 is not schedulable by a certain scheduler. The exception has an
 Enumeration that contains the possiblly unschedulable actors in the
 CompositeActor. The enumeration can be used by other algorithms
-to further schedule, or by UI to present to the user.
+to do further scheduling, or by the UI to present to the users.
 @author Jie Liu
 @version $Id$
-@see InvalidStateException
+@see ptolemy.kernel.util.InvalidStateException
 */
 public class NotSchedulableException extends InvalidStateException {
 
@@ -99,7 +98,6 @@ public class NotSchedulableException extends InvalidStateException {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    // The Enumeration of actors that are not schdulable.
     private Enumeration _actors = null;
 }
