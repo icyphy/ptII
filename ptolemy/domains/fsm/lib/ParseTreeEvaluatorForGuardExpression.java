@@ -134,6 +134,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      */
     public void setEvaluationMode(boolean mode) {
         _construction = mode;
+        if (mode) {
+            _relationNumber = 0;
+        }
     }
 
     /** Visit the leaf node. It is evaluated the same way as normal parse tree
@@ -265,7 +268,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         for (int i = 1; i < numChildren; i++) {
             // Evaluate the child
             ptolemy.data.Token nextToken = _evaluateChild(node, i);
-           
+
             if (!(nextToken instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
                         + "operation on " + nextToken + " which is a "
