@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
-import java.lang.reflect.Constructor;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
@@ -131,8 +130,6 @@ public class StaticSchedulingCodeGenerator
                 (StaticSchedulingDirector)director;
         Schedule schedule = castDirector.getScheduler().getSchedule();
         
-        String packageName = generatorPackage.stringValue();
-        
         Iterator actorsToFire = schedule.iterator();
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing)actorsToFire.next();
@@ -141,50 +138,37 @@ public class StaticSchedulingCodeGenerator
             // FIXME: Before looking for a helper class, we should
             // check to see whether the actor contains a code generator
             // attribute. If it does, we should use that as the helper.
-            
-            String actorClassName = actor.getClass().getName();
-            String helperClassName = actorClassName
-                    .replaceFirst("ptolemy", packageName);
-            
-            Class helperClass = null;
-            try {
-                helperClass = Class.forName(helperClassName);
-            } catch (ClassNotFoundException e) {
-                throw new IllegalActionException(this, e, 
-                        "Cannot find helper class " 
-                        + helperClassName);   
-            }
-            
-            Constructor constructor = null;
-            try {
-                constructor = helperClass
-                        .getConstructor(new Class[]{actor.getClass()});
-            } catch (NoSuchMethodException e) {
-                throw new IllegalActionException(this, e,
-                        "There is no constructor in " 
-                        + helperClassName
-                        + " which accepts an instance of "
-                        + actorClassName
-                        + " as the argument.");
-            }
-            
-            Object helperObject = null;
-            try {
-				helperObject = constructor.newInstance(new Object[]{actor});
-			} catch (Exception e) {
-                throw new IllegalActionException((NamedObj)actor, e,
-                        "Failed to create helper class code generator.");
-			}
-            
-            if (!(helperObject instanceof ActorCodeGenerator)) {
-                throw new IllegalActionException(this,
-                        "Cannot generate code for this actor: "
-                        + actor
-                        + ". Its helper class does not implement CodeFactory.");
-            }
-            ActorCodeGenerator castHelperObject = (ActorCodeGenerator)helperObject;
-            castHelperObject.generateFireCode(code);
+                        
+            ActorCodeGenerator helperObject 
+                    = (ActorCodeGenerator)_getHelper((NamedObj)actor);
+            helperObject.generateFireCode(code);
         }
+    }
+    
+    public void setContainer(NamedObj container) 
+            throws IllegalActionException, NameDuplicationException {
+        if (container != null && !(container instanceof CompositeActor)) {
+            throw new IllegalActionException(this, container,
+                    "StaticSchedulingCodeGenerator can only be contained " 
+                    + " by CompositeActor");
+        }  
+        super.setContainer(container);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    protected ComponentCodeGenerator _getHelper(NamedObj actor)
+            throws IllegalActionException {
+        ComponentCodeGenerator helperObject = super._getHelper(actor);
+        if (!(helperObject instanceof ActorCodeGenerator)) {
+            throw new IllegalActionException(this,
+                    "Cannot generate code for this actor: "
+                    + actor
+                    + ". Its helper class does not"
+                    + " implement ActorCodeGenerator.");
+        }
+        return helperObject;
     }
     
     // FIXME: Override setContainer to ensure that the container is an Actor.

@@ -28,11 +28,17 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
+import java.lang.reflect.Constructor;
+import java.util.Iterator;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -141,7 +147,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             throws IllegalActionException {
         code.append(comment(
                 "Initialize " + getContainer().getFullName()));
-        // FIXME: do the work.
+        Iterator actors = ((CompositeActor)getContainer())
+                .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
+            helperObject.generateInitializeCode(code);
+        }
     }
 
     /** Generate into the specified code stream the code associated
@@ -151,10 +163,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  order).
      *  @param code The code stream into which to generate the code.
      */
-    public void generateWrapupCode(StringBuffer code) {
+    public void generateWrapupCode(StringBuffer code) 
+            throws IllegalActionException {
         code.append(comment(
                 "Wrapup " + getContainer().getFullName()));
-        // FIXME: Do the work.
+        Iterator actors = ((CompositeActor)getContainer())
+                .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
+            helperObject.generateWrapupCode(code);
+        }
     }
     
     /** Return the associated component, which is always the container.
@@ -163,6 +182,70 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public NamedObj getComponent() {
     	return getContainer();
     }
+    
+    public void setContainer(NamedObj container) 
+            throws IllegalActionException, NameDuplicationException {
+        if (container != null && !(container instanceof CompositeEntity)) {
+            throw new IllegalActionException(this, container,
+                    "CodeGenerator can only be contained"
+                    + " by CompositeEntity");
+        }  
+        super.setContainer(container);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
 
-    // FIXME: Override setContainer to ensure that the container is a CompositeEntity.
+    protected ComponentCodeGenerator _getHelper(NamedObj component)
+            throws IllegalActionException {
+           
+        String packageName = generatorPackage.stringValue();
+        
+        String componentClassName = component.getClass().getName();
+        String helperClassName = componentClassName
+                .replaceFirst("ptolemy", packageName);
+    
+        Class helperClass = null;
+        try {
+            helperClass = Class.forName(helperClassName);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalActionException(this, e, 
+                    "Cannot find helper class " 
+                    + helperClassName);   
+        }
+    
+        Constructor constructor = null;
+        try {
+            constructor = helperClass
+                    .getConstructor(new Class[]{component.getClass()});
+        } catch (NoSuchMethodException e) {
+            throw new IllegalActionException(this, e,
+                    "There is no constructor in " 
+                    + helperClassName
+                    + " which accepts an instance of "
+                    + componentClassName
+                    + " as the argument.");
+        }
+    
+        Object helperObject = null;
+        try {
+            helperObject = constructor.newInstance(new Object[]{component});
+        } catch (Exception e) {
+            throw new IllegalActionException((NamedObj)component, e,
+                    "Failed to create helper class code generator.");
+        }
+    
+        if (!(helperObject instanceof ComponentCodeGenerator)) {
+            throw new IllegalActionException(this,
+                    "Cannot generate code for this component: "
+                    + component
+                    + ". Its helper class does not"
+                    + " implement componentCodeGenerator.");
+        }
+        ComponentCodeGenerator castHelperObject 
+                = (ComponentCodeGenerator)helperObject;
+        
+        return castHelperObject;
+    }   
+    
 }
