@@ -69,7 +69,7 @@ JSRCS = \
 	PolarToComplex.java \
 	Round.java \
     StringToUnsignedByteArray.java \
-    StringToXml.java \
+    StringToXML.java \
 	TokenToExpression.java 
 
 OTHER_FILES_TO_BE_JARED = \

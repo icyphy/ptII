@@ -121,7 +121,7 @@ public class XSLTransformer extends Transformer{
         if (_transformer != null ) {
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
-                    XmlToken in = (XmlToken)input.get(i);
+                    XMLToken in = (XMLToken)input.get(i);
                     Document doc = in.getDomTree();
                     try {
                         javax.xml.transform.Source xmlSource
@@ -152,7 +152,7 @@ public class XSLTransformer extends Transformer{
         else {
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
-                    XmlToken in = (XmlToken)input.get(i);
+                    XMLToken in = (XMLToken)input.get(i);
 					output.broadcast(new StringToken(in.toString()));
                 }
             }
