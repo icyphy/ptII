@@ -34,6 +34,7 @@ ME =		ptolemy/actor/lib/hoc/demo
 DIRS = 		DFTSubSet \
 		HocDE \
 		IterateOverArray \
+		MobileFunction \
 		ModelReference
 
 # Root of Ptolemy II directory
