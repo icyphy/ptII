@@ -337,9 +337,8 @@ public abstract class GraphFrame extends PtolemyTop
 	for(int i = 0; i < selection.length; i++) {
 	    if(selection[i] instanceof Figure) {
 		Object userObject = ((Figure)selection[i]).getUserObject();
-		NamedObj object = (NamedObj)userObject;
 		NamedObj actual = 
-		    (NamedObj)graphModel.getSemanticObject(object);
+		    (NamedObj)graphModel.getSemanticObject(userObject);
 		if(objectSet.contains(actual)) continue;
 		objectSet.add(actual);
 	    }
@@ -347,7 +346,6 @@ public abstract class GraphFrame extends PtolemyTop
 	
 	StringWriter buffer = new StringWriter();	   
 	try {
-	    buffer.write("<group>\n");
 	    Iterator elements = objectSet.iterator();
 	    while(elements.hasNext()) {
 		NamedObj element = (NamedObj) elements.next();
@@ -357,7 +355,6 @@ public abstract class GraphFrame extends PtolemyTop
 	    }
 	    CompositeEntity container = (CompositeEntity)graphModel.getRoot();
 	    buffer.write(container.exportLinks(1, objectSet));
-	    buffer.write("</group>\n");
 	 
 	    // The code below does not use a PtolemyTransferable, 
 	    // to work around
@@ -427,13 +424,17 @@ public abstract class GraphFrame extends PtolemyTop
 	if(transferable == null) 
 	    return;
 	try {
-	    String string = (String)
-		transferable.getTransferData(DataFlavor.stringFlavor);
 	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+	    String space = toplevel.uniqueName("");
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<group name=\"" + space + "\">\n");
+	    moml.append((String)
+		transferable.getTransferData(DataFlavor.stringFlavor));
+	    moml.append("</group>\n");
 	    MoMLParser parser = new MoMLParser(workspace);
 	    parser.setContext(toplevel);
 	    toplevel.requestChange(
-                new MoMLChangeRequest(this, parser, string));
+                new MoMLChangeRequest(this, parser, moml.toString()));
 	} catch (UnsupportedFlavorException ex) {
 	    System.out.println("Transferable object didn't " + 
 			       "support stringFlavor: " +
@@ -668,7 +669,8 @@ public abstract class GraphFrame extends PtolemyTop
 	    }
 	    
 	    // Add all the edges.
-	    Iterator i = GraphUtilities.localEdges(origComposite, model); 
+	    Iterator i = 
+		GraphUtilities.partiallyContainedEdges(origComposite, model); 
 	    while(i.hasNext()) {
 		Object origEdge = i.next();
 		Object origTail = model.getTail(origEdge);
