@@ -284,7 +284,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 10.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 89, 815, 568}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 100, 815, 568}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -515,7 +515,7 @@ of the two masses.</text></svg></configure>
             </port>
             <port name="P1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 180.0]">
                 </property>
             </port>
             <port name="P2" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -525,7 +525,7 @@ of the two masses.</text></svg></configure>
             </port>
             <port name="touched" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 375.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 365.0]">
                 </property>
             </port>
             <port name="force" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -538,29 +538,6 @@ of the two masses.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 480.0]">
                 </property>
             </port>
-            <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
-                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 365.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0*1.0 - 1.0*P1">
                 </property>
@@ -695,6 +672,16 @@ of the two masses.</text></svg></configure>
                     </property>
                 </port>
             </entity>
+            <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 365.0]">
+                </property>
+            </entity>
             <relation name="1:_R3" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex0" value="20.0, 200.0">
                 </vertex>
@@ -719,11 +706,11 @@ of the two masses.</text></svg></configure>
                 <vertex name="vertex0" value="270.0, 140.0">
                 </vertex>
             </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="V1" relation="1:_R2"/>
             <link port="V2" relation="1:_R6"/>
@@ -732,9 +719,6 @@ of the two masses.</text></svg></configure>
             <link port="touched" relation="relation"/>
             <link port="force" relation="relation2"/>
             <link port="stickness" relation="relation3"/>
-            <link port="ZeroCrossingDetector.input" relation="1:_R8"/>
-            <link port="ZeroCrossingDetector.output" relation="relation"/>
-            <link port="ZeroCrossingDetector.trigger" relation="1:_R8"/>
             <link port="Expression.output" relation="1:_R1"/>
             <link port="Expression.P1" relation="1:_R3"/>
             <link port="AddSubtract.plus" relation="1:_R3"/>
@@ -752,6 +736,8 @@ of the two masses.</text></svg></configure>
             <link port="P2 integrator.output" relation="1:_R7"/>
             <link port="Const.output" relation="relation2"/>
             <link port="Const2.output" relation="relation3"/>
+            <link port="ZeroCrossingDetector.output" relation="relation"/>
+            <link port="ZeroCrossingDetector.trigger" relation="1:_R8"/>
         </entity>
         <entity name="Together" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[629, 449]">

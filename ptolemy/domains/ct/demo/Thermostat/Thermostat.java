@@ -217,7 +217,6 @@ public class Thermostat extends TypedCompositeActor {
         ctIncI.output.link(ctIncR1);
 
         //ctIncS.input.link(ctIncR1);
-        ctIncD.input.link(ctIncR1);
         ctIncGFi.link(ctIncR1);
         ctIncSt.link(ctIncR1);
 
@@ -273,7 +272,6 @@ public class Thermostat extends TypedCompositeActor {
         ctDecI.output.link(ctDecR1);
 
         //ctDecS.input.link(ctDecR1);
-        ctDecD.input.link(ctDecR1);
         ctDecGFi.link(ctDecR1);
         ctDecSt.link(ctDecR1);
 

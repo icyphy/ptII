@@ -116,7 +116,7 @@ to see the modal behavior.</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -132,7 +132,7 @@ to see the modal behavior.</text></svg></configure>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="4.403112767753677E-7" max="10.0"/>
+<yRange min="-9.717952719409785E-5" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -170,7 +170,7 @@ to see the modal behavior.</text></svg></configure>
             </property>
             <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 154, 815, 459}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 150, 815, 468}, maximized=false}">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -306,9 +306,9 @@ of motion.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="6.6341314512223E-6">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-4.68057387639E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.3196838465837">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.1240640366167">
             </property>
             <property name="Refinement Solver" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -375,7 +375,7 @@ falling in a gravitational field.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 5.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 559}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 568}, maximized=false}">
             </property>
             <property name="annotation2" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -398,6 +398,10 @@ ball with the surface on which it bounces.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 195.0">
                 </property>
             </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
+            </property>
             <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 170.0">
@@ -415,29 +419,6 @@ ball with the surface on which it bounces.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 60.0">
                 </property>
             </port>
-            <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
-                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 125.0">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                    </property>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
-            </entity>
             <entity name="Position" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialPosition">
                 </property>
@@ -483,6 +464,16 @@ ball with the surface on which it bounces.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 105.0">
                 </property>
             </entity>
+            <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 125.0]">
+                </property>
+            </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="200.0, 115.0">
                 </vertex>
@@ -491,21 +482,20 @@ ball with the surface on which it bounces.</text></svg></configure>
                 <vertex name="vertex1" value="300.0, 170.0">
                 </vertex>
             </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <link port="position" relation="relation3"/>
-            <link port="bump" relation="relation4"/>
+            <link port="bump" relation="relation2"/>
             <link port="velocity" relation="relation"/>
-            <link port="ZeroCrossingDetector.input" relation="relation"/>
-            <link port="ZeroCrossingDetector.output" relation="relation4"/>
-            <link port="ZeroCrossingDetector.trigger" relation="relation3"/>
             <link port="Position.input" relation="relation"/>
             <link port="Position.output" relation="relation3"/>
             <link port="Velocity.input" relation="relation5"/>
             <link port="Velocity.output" relation="relation"/>
             <link port="Const.output" relation="relation5"/>
+            <link port="ZeroCrossingDetector.output" relation="relation2"/>
+            <link port="ZeroCrossingDetector.trigger" relation="relation3"/>
         </entity>
         <relation name="heightRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
