@@ -1,4 +1,5 @@
-/* One line description of file.
+/* One lin
+e description of file.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
