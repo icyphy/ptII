@@ -93,7 +93,7 @@ test BooleanToken-3.0 {Create an non-empty instance and add it to Strings} {
     set token6 [$token4 add $token5]
 
     list [$token6 toString]
-} {{value is truetrue.....}}
+} {{"value is truetrue....."}}
 
 ######################################################################
 ####

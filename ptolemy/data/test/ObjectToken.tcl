@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test ObjectToken-2.1 {Create an empty instance} {
     set p [java::new ptolemy.data.ObjectToken]
     $p toString
-} {present}
+} {object(null)}
 
 ######################################################################
 ####

@@ -65,7 +65,7 @@ test Variable-1.0 {Check constructors} {
     set name2 [$param2 getFullName]    
     set name3 [$param3 getFullName]
     set name4 [$param4 getFullName]
-    set value3 [[$param3 getToken] stringValue]
+    set value3 [[$param3 getToken] toString]
     list $name1 $name2 $name3 $name4 $value3 
 } {. . .entity.id2 .entity.id1 4.5}
 
@@ -84,7 +84,7 @@ test Variable-2.0 {Check addition of variables to the scope} {
     $list prepend $var1
     $var2 {addToScope java.util.Enumeration} [$list elements]
     set tok [$var2 getToken]
-    $tok stringValue
+    $tok toString
 } {3}
 
 test Variable-2.1 {Check scope with sets of params} {
@@ -100,7 +100,7 @@ test Variable-2.3 {Check expression evaluation} {
     set t [java::new {ptolemy.data.DoubleToken double} 9.9]
     $p2 setExpression 9.8
     $p3 setExpression "P1+P2"
-    [$p3 getToken] stringValue
+    [$p3 getToken] toString
 } {10.9}
 
 test Variable-2.4 {Check updating of Variables that refer to others} {
@@ -115,18 +115,18 @@ test Variable-2.4 {Check updating of Variables that refer to others} {
     $p3 setExpression "P1 + P2"
 
     set name1 [$p1 getFullName]
-    set value1 [[$p1 getToken] stringValue]
+    set value1 [[$p1 getToken] toString]
     set name2 [$p2 getFullName]
-    set value2 [[$p2 getToken] stringValue]
+    set value2 [[$p2 getToken] toString]
     set name3 [$p3 getFullName]
-    set value3 [[$p3 getToken] stringValue]
+    set value3 [[$p3 getToken] toString]
 
     $p1 setExpression  "((true) ? 5.5 : \"string\")"
     set name4 [$p1 getFullName]
-    set value4 [[$p1 getToken] stringValue]
+    set value4 [[$p1 getToken] toString]
 
     set name5 [$p3 getFullName]
-    set value5 [[$p3 getToken] stringValue]
+    set value5 [[$p3 getToken] toString]
 
     list $name1 $value1 $name2 $value2 $name3 $value3 $name4 $value4 $name5 $value5 
 } {.E.P1 1.1 .E.P2 9.9 .E.P3 11.0 .E.P1 5.5 .E.P3 15.4}
@@ -142,9 +142,9 @@ test Variable-2.5 {Check that dependency cycles are flagged as an error} {
     set p3 [java::new ptolemy.data.expr.Variable $e P3]
     $p3 setExpression "P1 + P2"
 
-    set value1 [[$p1 getToken] stringValue]
-    set value2 [[$p2 getToken] stringValue]
-    set value3 [[$p3 getToken] stringValue]
+    set value1 [[$p1 getToken] toString]
+    set value2 [[$p2 getToken] toString]
+    set value3 [[$p3 getToken] toString]
     $p1 setExpression  "P3"
 
     catch {$p1 getToken} errormsg1
@@ -174,9 +174,9 @@ test Variable-4.0 {Check notification} {
     $p1 setExpression "P2"
     set p2 [java::new ptolemy.data.expr.Variable $e P2]
     $p2 setExpression "1.0"
-    set r1 [[$p1 getToken] stringValue]
+    set r1 [[$p1 getToken] toString]
     $p2 setExpression "2.0"
-    set r2 [[$p1 getToken] stringValue]
+    set r2 [[$p1 getToken] toString]
     list $r1 $r2
 } {1.0 2.0}
 
@@ -186,9 +186,9 @@ test Variable-4.1 {Check notification} {
     $p1 setExpression "P2"
     set p2 [java::new ptolemy.data.expr.Variable $e P2]
     $p2 setExpression "1.0"
-    set r1 [[$p1 getToken] stringValue]
+    set r1 [[$p1 getToken] toString]
     $p2 setToken [java::new ptolemy.data.DoubleToken 2.0]
-    set r2 [[$p1 getToken] stringValue]
+    set r2 [[$p1 getToken] toString]
     list $r1 $r2
 } {1.0 2.0}
 
@@ -216,7 +216,7 @@ test Variable-5.1 {Set types without first clearing} {
     catch {$p1 setTypeEquals $doubleClass} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .E.P1:
-Variable.setTypeEquals(): the currently contained token ptolemy.data.StringToken(foo) is not compatible with the desired type double}}
+Variable.setTypeEquals(): the currently contained token ptolemy.data.StringToken("foo") is not compatible with the desired type double}}
 
 test Variable-5.2 {Set types with first clearing} {
     $p1 setToken [java::null]
@@ -230,7 +230,7 @@ test Variable-5.3 {Check return value is null} {
 
 test Variable-5.4 {Check setting expression to null} {
     $p1 setExpression 1
-    set r1 [[$p1 getToken] stringValue]
+    set r1 [[$p1 getToken] toString]
     $p1 setExpression ""
     set int [java::new ptolemy.data.IntToken 0]
     set intClass [$int getClass]
@@ -255,8 +255,8 @@ test Variable-6.0 {Check addToScope} {
     $v2 setExpression "P1+P2+V1"
     $v2 {addToScope java.util.Enumeration} [$e getAttributes]
     $v2 {addToScope ptolemy.data.expr.Variable} $v1
-    [$v2 getToken] stringValue
-} {abc}
+    [$v2 getToken] toString
+} {"abc"}
 
 test Variable-6.1 {Check shadowing} {
     set e [java::new {ptolemy.kernel.Entity String} E]
@@ -272,8 +272,8 @@ test Variable-6.1 {Check shadowing} {
     $v2 setExpression "P1+P2"
     $v2 {addToScope java.util.Enumeration} [$e getAttributes]
     $v2 {addToScope ptolemy.data.expr.Variable} $v1
-    [$v2 getToken] stringValue
-} {cb}
+    [$v2 getToken] toString
+} {"cb"}
 
 test Variable-6.2 {Check shadowing} {
     set e [java::new {ptolemy.kernel.Entity String} E]
@@ -289,8 +289,8 @@ test Variable-6.2 {Check shadowing} {
     $v2 setExpression "P1+P2"
     $v2 {addToScope ptolemy.data.expr.Variable} $v1
     $v2 {addToScope java.util.Enumeration} [$e getAttributes]
-    [$v2 getToken] stringValue
-} {ab}
+    [$v2 getToken] toString
+} {"ab"}
 
 test Variable-6.3 {check getScope} {
     set namelist [$v2 getScope]
@@ -311,11 +311,11 @@ test Variable-6.4 {Check removeFromScope} {
     $v2 setExpression "P1+P2"
     $v2 {addToScope java.util.Enumeration} [$e getAttributes]
     $v2 {addToScope ptolemy.data.expr.Variable} $v1
-    set r1 [[$v2 getToken] stringValue]
+    set r1 [[$v2 getToken] toString]
     $v2 {removeFromScope ptolemy.data.expr.Variable} $v1
-    catch {[[$v2 getToken] stringValue]} r2
+    catch {[[$v2 getToken] toString]} r2
     list $r1 $r2
-} {cb {ptolemy.kernel.util.IllegalActionException: Error parsing expression "P1+P2":
+} {{"cb"} {ptolemy.kernel.util.IllegalActionException: Error parsing expression "P1+P2":
 The ID P1 is undefined.}}
 
 test Variable-6.5 {Check that removeFromScope does not remove container's variables} {
@@ -326,8 +326,8 @@ test Variable-6.5 {Check that removeFromScope does not remove container's variab
     $p2 setExpression {P1}
     $p2 getToken
     $p2 {removeFromScope java.util.Enumeration} [$e getAttributes]
-    [$p2 getToken] stringValue
-} {a}
+    [$p2 getToken] toString
+} {"a"}
 
 #################################
 ####
@@ -336,10 +336,10 @@ test Variable-7.0 {Check clone} {
     set p1 [java::new ptolemy.data.expr.Variable $e P1]
     $p1 setExpression {"1.0"}
     set p2 [java::cast ptolemy.data.expr.Variable [$p1 clone]]
-    set r1 [[$p2 getToken] stringValue]
+    set r1 [[$p2 getToken] toString]
     set r2 [$p2 getContainer]
     list $r1 [string compare $r2 [java::null]]
-} {1.0 0}
+} {{"1.0"} 0}
 
 test Variable-7.1 {Check clone} {
     set e [java::new {ptolemy.kernel.Entity String} E]
@@ -349,7 +349,7 @@ test Variable-7.1 {Check clone} {
     $p3 setExpression 3.0
     set p2 [java::cast ptolemy.data.expr.Variable [$p1 clone]]
     $p2 {addToScope ptolemy.data.expr.Variable} $p3
-    set r1 [[$p2 getToken] stringValue]
+    set r1 [[$p2 getToken] toString]
     set r2 [$p2 getContainer]
     list $r1 [string compare $r2 [java::null]]
 } {3.0 0}
@@ -383,10 +383,10 @@ test Variable-9.1 {Check reset} {
     $p1 setToken [java::new ptolemy.data.DoubleToken 3.0]
     set r1 [$p1 getExpression]
     $p1 setExpression {1.0}
-    set r2 [[$p1 getToken] stringValue]
+    set r2 [[$p1 getToken] toString]
     $p1 reset
     set r3 [$p1 getExpression]
-    set r4 [[$p1 getToken] stringValue]
+    set r4 [[$p1 getToken] toString]
     list $r1 $r2 $r3 $r4
 } {{} 1.0 {} 3.0}
 
@@ -399,14 +399,14 @@ test Variable-10.0 {Check setContainer} {
     $p1 setExpression {"a"}
     set p2 [java::new ptolemy.data.expr.Variable $e1 P2]
     $p2 setExpression {P1}
-    set r1 [[$p2 getToken] stringValue]
+    set r1 [[$p2 getToken] toString]
     $p1 setContainer $e2
-    catch {[$p2 getToken] stringValue} r2
+    catch {[$p2 getToken] toString} r2
     $p2 setContainer $e2
-    set r3 [[$p2 getToken] stringValue]
+    set r3 [[$p2 getToken] toString]
     list $r1 $r2 $r3
-} {a {ptolemy.kernel.util.IllegalActionException: Error parsing expression "P1":
-The ID P1 is undefined.} a}
+} {{"a"} {ptolemy.kernel.util.IllegalActionException: Error parsing expression "P1":
+The ID P1 is undefined.} {"a"}}
 
 #################################
 ####
@@ -417,8 +417,8 @@ test Variable-11.0 {Check reach of scope} {
     $p1 setExpression {"a"}
     set p2 [java::new ptolemy.data.expr.Variable $e2 P2]
     $p2 setExpression {P1}
-    [$p2 getToken] stringValue
-} {a}
+    [$p2 getToken] toString
+} {"a"}
 
 ######################################################################
 ####

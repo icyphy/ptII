@@ -64,8 +64,8 @@ test UtilityFunctions-1.0 {Check readFile method} {
                 [$res toString] "\n" output
 
     list $output
-} {{Greetings...
-}}
+} {{"Greetings...
+"}}
 
 ######################################################################
 ####
@@ -80,7 +80,7 @@ test UtilityFunctions-1.1 {Check readFile method on a file that does not exist} 
     #$tree displayParseTree " "
     set res [$tree evaluateParseTree]
     $res toString
-} {}
+} {""}
 
 ######################################################################
 ####
@@ -105,7 +105,7 @@ test UtilityFunctions-4.0 {Test env} {
     set res  [ $root evaluateParseTree ]
     set fileSeparator [$res toString]
     set results "not ok"
-    if { "$fileSeparator" == "/" || "$fileSeparator" == "\\"} {
+    if { "$fileSeparator" == "\"/\"" || "$fileSeparator" == "\"\\\""} {
 	set results "ok"
     }
     list $results
@@ -117,7 +117,7 @@ test UtilityFunctions-4.1 {Test env on a parameter that does not exist} {
     set root [ $p1 {generateParseTree String} "env(\"not a parameter\")"]
     set res  [ $root evaluateParseTree ]
     $res toString
-} {}
+} {""}
 
 ######################################################################
 ## MatrixParser tests

@@ -318,4 +318,4 @@ test LongToken-9.0 {Create an non-empty instance and add it to Strings} {
     set token6 [$token4 add $token5]
 
     list [$token6 toString]
-} {{value is 2323.....}}
+} {{"value is 2323....."}}

@@ -155,7 +155,7 @@ test PtParser-3.0 {Construct a Parser,mixing doubles, strings and integers using
     list [$res toString]
     # for some reason TclBlend puts brackets around the result, it seems 
     # because there are spaces within the paranthesis???
-} {{-27.5 hello 11}}
+} {{"-27.5 hello 11"}}
 ######################################################################
 ####
 # 
@@ -259,7 +259,7 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     set res1  [ $root1 evaluateParseTree ]
    
     list [$res1 toString] 
-} {{11.45 hello world}}
+} {{"11.45 hello world"}}
 ######################################################################
 ####
 # 
@@ -291,7 +291,7 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
     set res2  [ $root1 {evaluateParseTree} ]
     
     list [$res1 toString] [$res2 toString] 
-} {{11.45 hello world} {111.45 hello world}}
+} {{"11.45 hello world"} {"111.45 hello world"}}
 ######################################################################
 ####
 # 
@@ -312,7 +312,7 @@ test PtParser-7.1 {Construct a Parser, try harder if then else} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {hello}
+} {{"hello"}}
 ######################################################################
 ####
 # 
@@ -332,7 +332,7 @@ test PtParser-7.3 {Test nested if then elses} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {hello}
+} {{"hello"}}
 ######################################################################
 ####
 # 
@@ -342,7 +342,7 @@ test PtParser-7.4 {Test many levels of parenthesis nesting} {
     set res  [ $root evaluateParseTree ]
 
     list  [$res toString] 
-} {hello}
+} {{"hello"}}
 ######################################################################
 ####
 # 
@@ -453,7 +453,7 @@ test PtParser-10.0 {Test that constants can be registered and recognized by the 
     set res1 [ $root1 evaluateParseTree ]
     set value4 [$res1 toString]
     list $value1 $value2 $value3 $value4
-} {5.86 1.5neil true 1000}
+} {5.86 {"1.5neil"} true 1000}
 ######################################################################
 ####
 # Need to test that functions can access methods registered in the 
