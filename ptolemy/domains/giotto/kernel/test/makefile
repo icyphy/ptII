@@ -35,7 +35,9 @@ ME =		ptolemy/domains/giotto/kernel/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+# auto/MultimodeTest.xml uses fsm,
+# which requires diva/graph/BasicNodeController
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
