@@ -848,8 +848,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     // Lcoal variable to indicate the distance to boundary.
     private double _distanceToBoundaryNonPreemptive = 0.0;
 
-    private Transition _enabledTransition;
-
     // Lcoal variable to indicate the last distance to boundary.
     private double _lastDistanceToBoundaryNonPremptive = 0.0;
 

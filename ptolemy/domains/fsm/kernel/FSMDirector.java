@@ -810,6 +810,9 @@ public class FSMDirector extends Director
     // The list of enabled actors that refines the current state.
     protected List _enabledRefinements;
 
+    // cached enabled transition.
+    protected Transition _enabledTransition = null;
+
     // Flag that is set to true for the first fire in an iteration.
     protected boolean _firstFire;
 
@@ -1064,6 +1067,4 @@ public class FSMDirector extends Director
     // Version of the local receiver maps.
     private long _localReceiverMapsVersion = -1;
 
-    // cached enabled transition.
-    private Transition _enabledTransition = null;
 }
