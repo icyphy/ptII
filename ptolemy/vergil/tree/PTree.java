@@ -65,8 +65,8 @@ public class PTree extends JTree {
 	setCellRenderer(new PtolemyTreeCellRenderer());
 	DragSource.getDefaultDragSource().
 	    createDefaultDragGestureRecognizer(
-		this, DnDConstants.ACTION_COPY_OR_MOVE,
-		new DesignTreeDragGestureListener());
+                    this, DnDConstants.ACTION_COPY_OR_MOVE,
+                    new DesignTreeDragGestureListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ public class PTree extends JTree {
 		Point sourcePoint = e.getDragOrigin();
 		TreePath path =
 		    tree.getPathForLocation(sourcePoint.x,
-					    sourcePoint.y);
+                            sourcePoint.y);
 		// If we didn't select anything.. then don't drag.
 		if(path == null) return;
 		Object object = path.getLastPathComponent();
@@ -111,7 +111,7 @@ public class PTree extends JTree {
                     transferable.addObject((NamedObj)object);
 		    //initial cursor, transferable, dsource listener
 		    e.startDrag(DragSource.DefaultCopyNoDrop,
-				transferable, dsl);
+                            transferable, dsl);
 
 		}
 	    }

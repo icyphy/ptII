@@ -139,7 +139,7 @@ public class EditorDropTarget extends DropTarget {
 			getTransferData(PtolemyTransferable.namedObjFlavor);
 		} catch(Exception e) {
 		    MessageHandler.error(
-                        "Couldn't find a supported data flavor in " + dtde, e);
+                            "Couldn't find a supported data flavor in " + dtde, e);
 		}
             } else {
                 dtde.rejectDrop();
@@ -172,7 +172,7 @@ public class EditorDropTarget extends DropTarget {
                 moml.append("<group>");
                 if (dropObj.getMoMLInfo().deferTo != null) {
                     CompositeEntity sourceContainer =
-                           (CompositeEntity)dropObj.getContainer();
+                        (CompositeEntity)dropObj.getContainer();
                     if (sourceContainer != null) {
                         Iterator imports = sourceContainer.attributeList(
                                 ImportAttribute.class).iterator();
@@ -263,10 +263,10 @@ public class EditorDropTarget extends DropTarget {
         // Note that this needs to be done after the change request
         // that creates the object has succeeded.
         private void _setLocation(NamedObj newObject, Point point)
-               throws Exception {
+                throws Exception {
             if (newObject == null) {
                 throw new InternalErrorException(
-                    "Dropped object not found after change completed!");
+                        "Dropped object not found after change completed!");
             }
 
             Location location = (Location) newObject.getAttribute("_location");

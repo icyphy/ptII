@@ -64,12 +64,12 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
      *  attributes and use those.
      */
     public Component getTreeCellRendererComponent(JTree tree,
-	Object value, boolean selected, boolean expanded, boolean leaf,
-	int row, boolean hasFocus) {
+            Object value, boolean selected, boolean expanded, boolean leaf,
+            int row, boolean hasFocus) {
 
 	DefaultTreeCellRenderer component = (DefaultTreeCellRenderer)
 	    super.getTreeCellRendererComponent(tree, value,
-		selected, expanded, leaf, row, hasFocus);
+                    selected, expanded, leaf, row, hasFocus);
 	if(value instanceof NamedObj) {
 	    NamedObj object = (NamedObj) value;
 	    // Fix the background colors because transparent
@@ -116,7 +116,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 } else {
                     String tip = Documentation.consolidate(object);
                     if (tip != null) {
-                            component.setToolTipText(tip);
+                        component.setToolTipText(tip);
                     }
                 }
             }

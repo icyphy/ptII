@@ -120,7 +120,7 @@ public class FSMViewerController extends GraphController {
                 (SelectionInteractor)_transitionController.getEdgeInteractor());
 
         MenuCreator _menuCreator = new MenuCreator(
-	    new SchematicContextMenuFactory(this));
+                new SchematicContextMenuFactory(this));
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
 
 	pane.getBackgroundEventLayer().setConsuming(false);

@@ -199,15 +199,15 @@ public class PlotFormatter extends JPanel {
                     _plot.setGrid(_narrowQuery.booleanValue("grid"));
                 } else if (name.equals("stems")) {
                     ((Plot)_plot).setImpulses(
-                             _narrowQuery.booleanValue("stems"));
+                            _narrowQuery.booleanValue("stems"));
                     _plot.repaint();
                 } else if (name.equals("color")) {
                     _plot.setColor(_narrowQuery.booleanValue("color"));
-                // FIXME: log axis format temporarily disable, see above.
-                // } else if (name.equals("xlog")) {
-                //    _plot.setXLog(_narrowQuery.booleanValue("xlog"));
-                // } else if (name.equals("ylog")) {
-                //    _plot.setYLog(_narrowQuery.booleanValue("ylog"));
+                    // FIXME: log axis format temporarily disable, see above.
+                    // } else if (name.equals("xlog")) {
+                    //    _plot.setXLog(_narrowQuery.booleanValue("xlog"));
+                    // } else if (name.equals("ylog")) {
+                    //    _plot.setYLog(_narrowQuery.booleanValue("ylog"));
                 } else if (name.equals("connected")) {
                     _setConnected(_narrowQuery.booleanValue("connected"));
                 }
@@ -391,11 +391,11 @@ public class PlotFormatter extends JPanel {
 
     // Oringal configuration of the plot.
     private String _originalTitle, _originalXLabel, _originalYLabel,
-            _originalMarks, _originalXTicksSpec, _originalYTicksSpec;
+        _originalMarks, _originalXTicksSpec, _originalYTicksSpec;
     private double[] _originalXRange, _originalYRange;
     private Vector[] _originalXTicks, _originalYTicks;
     private boolean _originalGrid, _originalStems, _originalColor,
-             _originalXLog, _originalYLog;
+        _originalXLog, _originalYLog;
     private boolean[][] _originalConnected;
     private PlotPoint[][] _originalPoints;
 }

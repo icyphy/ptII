@@ -109,8 +109,8 @@ import javax.swing.SwingUtilities;
 public class FSMGraphTableau extends Tableau {
 
     public FSMGraphTableau(PtolemyEffigy container,
-			      String name)
-	throws IllegalActionException, NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
 	// FIXME this attribute is not used.
@@ -119,7 +119,7 @@ public class FSMGraphTableau extends Tableau {
         NamedObj model = container.getModel();
         if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-            "Cannot graphically edit a model that is not a CompositeEntity.");
+                    "Cannot graphically edit a model that is not a CompositeEntity.");
         }
 	CompositeEntity entity = (CompositeEntity)model;
 
@@ -159,7 +159,7 @@ public class FSMGraphTableau extends Tableau {
 	 *   an entity already in the container.
 	 */
 	public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
 
@@ -181,7 +181,7 @@ public class FSMGraphTableau extends Tableau {
 	    if(effigy.getModel() instanceof FSMActor) {
 		FSMGraphTableau tableau =
 		    new FSMGraphTableau((PtolemyEffigy)proxy,
-					proxy.uniqueName("tableau"));
+                            proxy.uniqueName("tableau"));
 		return tableau;
 	    } else {
 		return null;

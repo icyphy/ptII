@@ -104,7 +104,7 @@ public class PtolemyTransferable implements Transferable {
      * not supported.
      */
     public Object getTransferData(DataFlavor flavor)
-	throws UnsupportedFlavorException, IOException {
+            throws UnsupportedFlavorException, IOException {
 	if (flavor.equals(DataFlavor.plainTextFlavor)) {
 	    // plain text flavor is deprecated, but everybody still
 	    // implements it.  The problem is that all the implementations
@@ -136,8 +136,8 @@ public class PtolemyTransferable implements Transferable {
      * reference to the contained object.
      */
     public static final DataFlavor namedObjFlavor =
-	new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
-		       "ptolemy.kernel.util.NamedObj", "Named Object");
+    new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
+            "ptolemy.kernel.util.NamedObj", "Named Object");
 
     // Return a string with a moml description of all the objects in the list.
     public String _getMoML() throws IOException {

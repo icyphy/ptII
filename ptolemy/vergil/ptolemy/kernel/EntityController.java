@@ -95,17 +95,17 @@ public class EntityController extends LocatableNodeController {
 	interactor.setSelectionModel(sm);
 
 	/*
-	VergilApplication application = VergilApplication.getInstance();
-	Action action = application.getAction("Look Inside");
-	ActionInteractor actionInteractor = new ActionInteractor(action);
-	actionInteractor.setConsuming(false);
-	actionInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
-	interactor.addInteractor(actionInteractor);
+          VergilApplication application = VergilApplication.getInstance();
+          Action action = application.getAction("Look Inside");
+          ActionInteractor actionInteractor = new ActionInteractor(action);
+          actionInteractor.setConsuming(false);
+          actionInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
+          interactor.addInteractor(actionInteractor);
 
 
-	// FIXME this is a horrible dance so that the actioninteractor gets
-	// the events before the drag interactor.
-	interactor.setDragInteractor(interactor.getDragInteractor());
+          // FIXME this is a horrible dance so that the actioninteractor gets
+          // the events before the drag interactor.
+          interactor.setDragInteractor(interactor.getDragInteractor());
 	*/
         // Initialize the menu creator.
 	_menuCreator = new MenuCreator(null);
@@ -117,7 +117,7 @@ public class EntityController extends LocatableNodeController {
 	    public boolean accept(Object o) {
 		GraphModel model = getController().getGraphModel();
 		if(o instanceof Port &&
-		   model.getParent(o) instanceof Location) {
+                        model.getParent(o) instanceof Location) {
 		    return true;
 		} else {
 		    return false;
@@ -129,7 +129,7 @@ public class EntityController extends LocatableNodeController {
 	// ports within that entity.
 	GlobalLayout layout = new EntityLayout();
 	controller.addGraphViewListener(new IncrementalLayoutListener(
-	     new IncrLayoutAdapter(layout), portFilter));
+                new IncrLayoutAdapter(layout), portFilter));
     }
 
     /** This layout algorithm is responsible for laying out the ports
@@ -173,16 +173,16 @@ public class EntityController extends LocatableNodeController {
 		(CompositeFigure)getLayoutTarget().getVisualObject(node);
 
 	    _placePortFigures(figure, inputs, inCount,
-			      SwingConstants.WEST);
+                    SwingConstants.WEST);
 	    _placePortFigures(figure, outputs, outCount,
-			      SwingConstants.EAST);
+                    SwingConstants.EAST);
 	    _placePortFigures(figure, inouts, inOutCount,
-			      SwingConstants.SOUTH);
+                    SwingConstants.SOUTH);
 
 	}
 
 	private void _placePortFigures(CompositeFigure figure, List portList,
-					int count, int direction) {
+                int count, int direction) {
 	    Iterator ports = portList.iterator();
 	    int number = 0;
 	    while(ports.hasNext()) {
@@ -196,10 +196,10 @@ public class EntityController extends LocatableNodeController {
 		    portFigure.getBounds();
 		BoundsSite site =
 		    new BoundsSite(figure.getBackgroundFigure(), 0,
-				   direction,
-				   100.0 * number / (count+1));
+                            direction,
+                            100.0 * number / (count+1));
 		CanvasUtilities.translateTo(portFigure,
-					    site.getX(), site.getY());
+                        site.getX(), site.getY());
 	    }
 	}
     }
@@ -226,15 +226,15 @@ public class EntityController extends LocatableNodeController {
 	    // FIXME: this code is the same as in PtolemyTreeCellRenderer and
             // AttributeController.
 	    EditorIcon icon;
-		try {
-		    icon = (EditorIcon)object.getAttribute("_icon");
+            try {
+                icon = (EditorIcon)object.getAttribute("_icon");
 		if(icon == null) {
 		    icon = new XMLIcon(object, "_icon");
 		}
 	    } catch (KernelException ex) {
 		throw new InternalErrorException("could not create icon " +
-						 "in " + object + " even " +
-						 "though one did not exist");
+                        "in " + object + " even " +
+                        "though one did not exist");
 	    }
 
 	    Figure figure = icon.createFigure();

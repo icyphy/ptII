@@ -177,17 +177,17 @@ public class KernelGraphFrame extends GraphFrame {
 	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
 	_controller.getAttributeController().setMenuFactory(
-                 new AttributeContextMenuFactory(_controller));
+                new AttributeContextMenuFactory(_controller));
 	_controller.getEntityController().setMenuFactory(
-                 new EntityContextMenuFactory(_controller));
+                new EntityContextMenuFactory(_controller));
  	_controller.getEntityPortController().setMenuFactory(
-                 new PortContextMenuFactory(_controller));
+                new PortContextMenuFactory(_controller));
   	_controller.getPortController().setMenuFactory(
-                 new PortContextMenuFactory(_controller));
+                new PortContextMenuFactory(_controller));
   	_controller.getRelationController().setMenuFactory(
-                 new RelationContextMenuFactory(_controller));
+                new RelationContextMenuFactory(_controller));
   	_controller.getLinkController().setMenuFactory(
-                 new RelationContextMenuFactory(_controller));
+                new RelationContextMenuFactory(_controller));
 	return pane;
     }
 
@@ -344,7 +344,7 @@ public class KernelGraphFrame extends GraphFrame {
                         // Put the effigy inside the effigy of the parent,
                         // rather than directly into the directory.
                         CompositeEntity parent =
-                                (CompositeEntity)entity.getContainer();
+                            (CompositeEntity)entity.getContainer();
                         boolean isContainerSet = false;
                         if (parent != null) {
                             PtolemyEffigy parentEffigy = getEffigy(parent);
@@ -352,7 +352,7 @@ public class KernelGraphFrame extends GraphFrame {
                                 // OK, we can put it into this other effigy.
                                 effigy.setName(parentEffigy.uniqueName(
                                         entity.getName()));
-                                        effigy.setContainer(parentEffigy);
+                                effigy.setContainer(parentEffigy);
 
                                 // Set the identifier of the effigy to be that
                                 // of the parent with the model name appended.

@@ -139,7 +139,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
                 "By: Edward A. Lee, eal@eecs.berkeley.edu " +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version " + PlotBox.PTPLOT_RELEASE +
-	         ", Build: $Id$\n\n"+
+                ", Build: $Id$\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
                 "Copyright (c) 1997-2000, " +
@@ -179,7 +179,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
                 "Choose a data set, then drag the right mouse button",
                 choices, choices[0]);
         ComponentDialog dialog =
-                new ComponentDialog(this, "Select dataset", query);
+            new ComponentDialog(this, "Select dataset", query);
         String buttonPressed = dialog.buttonPressed();
         if (buttonPressed.equals("OK")) {
             int result = query.intValue("choice");

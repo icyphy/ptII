@@ -50,7 +50,7 @@ public class SimpleSelection implements Transferable, ClipboardOwner {
 
     public Object getTransferData (DataFlavor f)
 
-        throws UnsupportedFlavorException {
+            throws UnsupportedFlavorException {
 
         if (f.equals (_flavor)) {
 

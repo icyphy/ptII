@@ -71,18 +71,18 @@ public class DisplayList extends JFrame implements ActionListener {
 	    JRadioButton radioButton = new JRadioButton(element.getName());
 	    radioButton.setActionCommand(element.getName());
 	    radioButton.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-			String selection = e.getActionCommand();
-			Iterator iter = _list.iterator();
-			while (iter.hasNext()) {
-			    Breakpoint brkpt = (Breakpoint)iter.next();
-			    if (selection.equals(brkpt.getName())) {
-				selectedItem = (Nameable)brkpt;
+                public void actionPerformed(ActionEvent e) {
+                    String selection = e.getActionCommand();
+                    Iterator iter = _list.iterator();
+                    while (iter.hasNext()) {
+                        Breakpoint brkpt = (Breakpoint)iter.next();
+                        if (selection.equals(brkpt.getName())) {
+                            selectedItem = (Nameable)brkpt;
 			    break;
-			    }
-			}
-		    }
-		});
+                        }
+                    }
+                }
+            });
 	    group.add(radioButton);
 	    box.add(radioButton);
 	}
@@ -92,31 +92,31 @@ public class DisplayList extends JFrame implements ActionListener {
 
 	JButton button = new JButton("Ok");
 	button.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			switch (_mode) {
-			case EDIT_B :
-			    BreakpointEditor editFrame =
-				new BreakpointEditor((Breakpoint)selectedItem);
-			    break;
-			case EDIT_W :
-			    break;
-			case DEL :
-			    try {
-				Workspace w =
-				    ((NamedObj) selectedItem).workspace();
-				w.getWriteAccess();
-				((Attribute) selectedItem).setContainer(null);
-				w.doneWriting();
-			    } catch (IllegalActionException ex) {
-			    } catch (NameDuplicationException ex) {
-			    }
-			    break;
-			default :
-			    break;
-			}
-			DisplayList.this.dispose();
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                switch (_mode) {
+                case EDIT_B :
+                    BreakpointEditor editFrame =
+                        new BreakpointEditor((Breakpoint)selectedItem);
+                    break;
+                case EDIT_W :
+                    break;
+                case DEL :
+                    try {
+                        Workspace w =
+                            ((NamedObj) selectedItem).workspace();
+                        w.getWriteAccess();
+                        ((Attribute) selectedItem).setContainer(null);
+                        w.doneWriting();
+                    } catch (IllegalActionException ex) {
+                    } catch (NameDuplicationException ex) {
+                    }
+                    break;
+                default :
+                    break;
+                }
+                DisplayList.this.dispose();
+            }
+        });
 	buttonPanel.add(button, BorderLayout.WEST);
 
 	button = new JButton("Cancel");
@@ -141,7 +141,7 @@ public class DisplayList extends JFrame implements ActionListener {
      * @param e an action event
      */
     public void actionPerformed(ActionEvent e) {
-		    DisplayList.this.dispose();
+        DisplayList.this.dispose();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -58,7 +58,7 @@ This class provides a tree view for ptolemy models.
 public class TreeTableau extends Tableau {
 
     public TreeTableau(PtolemyEffigy container, String name)
-	throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -137,7 +137,7 @@ public class TreeTableau extends Tableau {
 	 *   an entity already in the container.
 	 */
 	public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
 
@@ -163,7 +163,7 @@ public class TreeTableau extends Tableau {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a TreeTableau.
                 TreeTableau previous =
-                        (TreeTableau)effigy.getEntity("treeTableau");
+                    (TreeTableau)effigy.getEntity("treeTableau");
                 if (previous != null) {
                     previous.show();
                     return previous;

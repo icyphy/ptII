@@ -170,7 +170,7 @@ public class PxgraphApplication extends PlotApplication {
             } else if (arg.equals("-v") || arg.equals("-version")) {
                 // -version is not in the original X11 pxgraph.
                 System.out.println("Version " + PlotBox.PTPLOT_RELEASE +
-				   ", Build $Id$");
+                        ", Build $Id$");
                 System.exit(0);
                 continue;
             } else if (arg.startsWith("=")) {

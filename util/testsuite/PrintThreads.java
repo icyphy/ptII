@@ -142,15 +142,15 @@ public class PrintThreads {
 	try {
 	    if (thread == null) {
 		return new String("PrintThreads.toThreadDescription(): " +
-				     "thread argument == null\n   " +
-				     "This can happen if the thread was " +
-				     "killed while PrintThreads was called");
+                        "thread argument == null\n   " +
+                        "This can happen if the thread was " +
+                        "killed while PrintThreads was called");
 	    }
 	    if (thread.getName() != null) {
 		name = thread.getName();
 	    }
 	    if ((thread.getThreadGroup() != null)
-		&& (thread.getThreadGroup().getName() != null)) {
+                    && (thread.getThreadGroup().getName() != null)) {
 		group = thread.getThreadGroup().getName();
 	    }
 

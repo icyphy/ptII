@@ -1119,9 +1119,9 @@ public class PlotBox extends JPanel implements Printable {
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
             output.println(
-                "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+                    "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
             output.println(
-                "    \"http://ptolemy.eecs.berkeley.edu/archive/plotml.dtd\">");
+                    "    \"http://ptolemy.eecs.berkeley.edu/archive/plotml.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
@@ -1308,14 +1308,14 @@ public class PlotBox extends JPanel implements Printable {
         Rectangle drawRect = getBounds();
         graphics.setPaintMode();
         /* NOTE: The following seems to be unnecessary with Swing...
-        if (clearfirst) {
-            // NOTE: calling clearRect() here permits the background
-            // color to show through, but it messes up printing.
-            // Printing results in black-on-black title and axis labels.
-            graphics.setColor(_background);
-            graphics.drawRect(0, 0, drawRect.width, drawRect.height);
-            graphics.setColor(Color.black);
-        }
+           if (clearfirst) {
+           // NOTE: calling clearRect() here permits the background
+           // color to show through, but it messes up printing.
+           // Printing results in black-on-black title and axis labels.
+           graphics.setColor(_background);
+           graphics.drawRect(0, 0, drawRect.width, drawRect.height);
+           graphics.setColor(Color.black);
+           }
         */
 
         // If an error message has been set, display it and return.
@@ -1877,20 +1877,20 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected void _help() {
         String message =
-                "Ptolemy plot package\n" +
-                "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-                "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version " + PTPLOT_RELEASE +
-	        ", Build: $Id$\n\n" +
-                "Key bindings:\n" +
-                "   Cntr-c:  copy plot to clipboard (EPS format)\n" +
-                "   D: dump plot data to standard out\n" +
-                "   E: export plot to standard out (EPS format)\n" +
-                "   F: fill plot\n" +
-                "   H or ?: print help message (this message)\n" +
-                "   Cntr-D or Q: quit\n" +
-                "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n";
+            "Ptolemy plot package\n" +
+            "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
+            "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+            "Version " + PTPLOT_RELEASE +
+            ", Build: $Id$\n\n" +
+            "Key bindings:\n" +
+            "   Cntr-c:  copy plot to clipboard (EPS format)\n" +
+            "   D: dump plot data to standard out\n" +
+            "   E: export plot to standard out (EPS format)\n" +
+            "   F: fill plot\n" +
+            "   H or ?: print help message (this message)\n" +
+            "   Cntr-D or Q: quit\n" +
+            "For more information, see\n" +
+            "http://ptolemy.eecs.berkeley.edu/java/ptplot\n";
         JOptionPane.showMessageDialog(this, message,
                 "Ptolemy Plot Help Window", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -2155,11 +2155,11 @@ public class PlotBox extends JPanel implements Printable {
     protected int _uly = 1;
 
     /** The x value of the lower right corner of
-      * the plot rectangle in pixels. */
+     * the plot rectangle in pixels. */
     protected int _lrx = 100;
 
     /** The y value of the lower right corner of
-      * the plot rectangle in pixels. */
+     * the plot rectangle in pixels. */
     protected int _lry = 100;
 
     /** Scaling used for the vertical axis in plotting points.
@@ -2195,7 +2195,7 @@ public class PlotBox extends JPanel implements Printable {
 
     /** @serial Width and height of component in pixels. */
     protected int _width = 500, _height = 300,
-            _preferredWidth = 500, _preferredHeight = 300;
+        _preferredWidth = 500, _preferredHeight = 300;
 
     /** @serial Indicator that size has been set. */
     protected boolean _sizeHasBeenSet = false;
@@ -2669,7 +2669,7 @@ public class PlotBox extends JPanel implements Printable {
         }
 
 	//if (_xRangeGiven) {
-	    // The user specified the range, so don't pad.
+        // The user specified the range, so don't pad.
 	//    _xMin = min;
 	//    _xMax = max;
 	//} else {
@@ -2739,7 +2739,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param x The final x position.
      *  @param y The final y position.
      */
-     void _zoom(int x, int y) {
+    void _zoom(int x, int y) {
         // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
 
@@ -2833,7 +2833,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param x The x position.
      *  @param y The y position.
      */
-     void _zoomBox(int x, int y) {
+    void _zoomBox(int x, int y) {
 
         // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
@@ -2924,7 +2924,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param x The x position.
      *  @param y The y position.
      */
-     void _zoomStart(int x, int y) {
+    void _zoomStart(int x, int y) {
         // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
 
@@ -3012,7 +3012,7 @@ public class PlotBox extends JPanel implements Printable {
 
     // First values specified to setXRange() and setYRange().
     double _originalXlow = 0.0, _originalXhigh = 0.0,
-           _originalYlow = 0.0, _originalYhigh = 0.0;
+        _originalYlow = 0.0, _originalYhigh = 0.0;
 
     // A button for filling the plot
     private transient JButton _resetButton = null;
@@ -3171,8 +3171,8 @@ public class PlotBox extends JPanel implements Printable {
                     // The "null" sends the output to the clipboard.
                     export(null);
                     String message =
-                            "Encapsulated PostScript (EPS) " +
-                            "exported to clipboard.";
+                        "Encapsulated PostScript (EPS) " +
+                        "exported to clipboard.";
                     JOptionPane.showMessageDialog(PlotBox.this, message,
                             "Ptolemy Plot Message",
                             JOptionPane.INFORMATION_MESSAGE);
@@ -3195,8 +3195,8 @@ public class PlotBox extends JPanel implements Printable {
                 if (!_control && _shift) {
                     export(System.out);
                     String message =
-                            "Encapsulated PostScript (EPS) " +
-                            "exported to standard out.";
+                        "Encapsulated PostScript (EPS) " +
+                        "exported to standard out.";
                     JOptionPane.showMessageDialog(PlotBox.this, message,
                             "Ptolemy Plot Message",
                             JOptionPane.INFORMATION_MESSAGE);

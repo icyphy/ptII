@@ -138,22 +138,22 @@ public class FSMGraphController extends FSMViewerController {
 
 		// Temporary sites.  One of these will get blown away later.
 		headSite = new AutonomousSite(layer,
-					      event.getLayerX(),
-					      event.getLayerY());
+                        event.getLayerX(),
+                        event.getLayerY());
 		tailSite = new AutonomousSite(layer,
-					      event.getLayerX(),
-					      event.getLayerY());
+                        event.getLayerX(),
+                        event.getLayerY());
 		// Render the edge.
 		Connector c =
 		    getEdgeController(link).render(link, layer, tailSite, headSite);
 		// get the actual attach site.
 		tailSite =
 		    getEdgeController(link).getConnectorTarget().getTailSite(c, source,
-							    event.getLayerX(),
-							    event.getLayerY());
+                            event.getLayerX(),
+                            event.getLayerY());
 		if(tailSite == null) {
 		    throw new RuntimeException("Invalid connector target: " +
-			"no valid site found for tail of new connector.");
+                            "no valid site found for tail of new connector.");
 		}
 
 		// And reattach the connector.
@@ -188,7 +188,7 @@ public class FSMGraphController extends FSMViewerController {
 	    //putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
 	    putValue("tooltip", "Control-click to create a new state.");
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_S));
+                    new Integer(KeyEvent.VK_S));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -197,7 +197,7 @@ public class FSMGraphController extends FSMViewerController {
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
-	       getSourceType() == MENUBAR_TYPE) {
+                    getSourceType() == MENUBAR_TYPE) {
 		// no location in the action, so make something up.
 		// FIXME this is a lousy way to do this.
 		Point2D point = pane.getSize();
@@ -218,37 +218,37 @@ public class FSMGraphController extends FSMViewerController {
 	    // Create the state.
 	    StringBuffer moml = new StringBuffer();
 	    final String locationName = "location1";
-	   moml.append("<entity name=\"" + stateName +
-			"\" class=\"ptolemy.domains.fsm.kernel.State\">\n");
+            moml.append("<entity name=\"" + stateName +
+                    "\" class=\"ptolemy.domains.fsm.kernel.State\">\n");
 	    moml.append("<property name=\"" + locationName +
-	    		"\" class=\"ptolemy.moml.Location\"/>\n");
+                    "\" class=\"ptolemy.moml.Location\"/>\n");
 	    moml.append("</entity>\n");
 
 
 	    ChangeRequest request =
 		new MoMLChangeRequest(this, toplevel, moml.toString()) {
-		    protected void _execute() throws Exception {
-			super._execute();
-			// Set the location of the icon.
-			// Note that this really needs to be done after
-			// the change request has succeeded, which is why
-			// it is done here.  When the graph controller
-			// gets around to handling this, it will draw
-			// the icon at this location.
+                protected void _execute() throws Exception {
+                    super._execute();
+                    // Set the location of the icon.
+                    // Note that this really needs to be done after
+                    // the change request has succeeded, which is why
+                    // it is done here.  When the graph controller
+                    // gets around to handling this, it will draw
+                    // the icon at this location.
 
-			// FIXME: Have to know whether this is an entity,
-			// port, etc. For now, assuming it is an entity.
-			NamedObj newObject =
+                    // FIXME: Have to know whether this is an entity,
+                    // port, etc. For now, assuming it is an entity.
+                    NamedObj newObject =
 			toplevel.getEntity(stateName);
-			Location location =
+                    Location location =
 			(Location) newObject.getAttribute(locationName);
 
-			double point[] = new double[2];
-			point[0] = ((int)finalX);
-			point[1] = ((int)finalY);
-			location.setLocation(point);
-		    }
-                };
+                    double point[] = new double[2];
+                    point[0] = ((int)finalX);
+                    point[1] = ((int)finalY);
+                    location.setLocation(point);
+                }
+            };
 	    toplevel.requestChange(request);
 	    try {
 		request.waitForCompletion();

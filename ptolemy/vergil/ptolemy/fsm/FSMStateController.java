@@ -114,15 +114,15 @@ public class FSMStateController extends LocatableNodeController {
 	    // FIXME: may want to use another type of icon
 	    // FIXME: this code is the same as in PtolemyTreeCellRenderer.
 	    EditorIcon icon;
-		try {
-		    icon = (EditorIcon)object.getAttribute("_icon");
+            try {
+                icon = (EditorIcon)object.getAttribute("_icon");
 		if(icon == null) {
 		    icon = new XMLIcon(object, "_icon");
 		}
 	    } catch (KernelException ex) {
 		throw new InternalErrorException("could not create icon " +
-						 "in " + object + " even " +
-						 "though one did not exist");
+                        "in " + object + " even " +
+                        "though one did not exist");
 	    }
 
 	    Figure figure = icon.createFigure();

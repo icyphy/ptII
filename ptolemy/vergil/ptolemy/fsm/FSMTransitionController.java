@@ -175,7 +175,7 @@ public class FSMTransitionController extends EdgeController {
 		break;
 	    default:
 		throw new IllegalStateException(
-						"Cannot handle both ends of an edge being dragged.");
+                        "Cannot handle both ends of an edge being dragged.");
 	    }
             // rerender the edge.  This is necessary for several reasons.
             // First, the edge is only associated with a relation after it

@@ -185,8 +185,8 @@ public abstract class GraphFrame extends PtolemyFrame
 
 	ActionListener deletionListener = new DeletionListener();
 	_jgraph.registerKeyboardAction(deletionListener, "Delete",
-                  KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-                  JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 	_jgraph.setRequestFocusEnabled(true);
 	_jgraph.addMouseListener(new FocusMouseListener());
 	_jgraph.setAlignmentX(1);
@@ -235,16 +235,16 @@ public abstract class GraphFrame extends PtolemyFrame
                 if (toplevel instanceof CompositeEntity) {
                     // Put a clone of all libraries in the library panel.
                     Iterator libraries = ((CompositeEntity)toplevel)
-                            .entityList(EntityLibrary.class).iterator();
+                        .entityList(EntityLibrary.class).iterator();
                     while (libraries.hasNext()) {
                         EntityLibrary lib = (EntityLibrary)libraries.next();
                         try {
                             EntityLibrary clone =
-                                    (EntityLibrary)lib.clone(workspace);
+                                (EntityLibrary)lib.clone(workspace);
                             clone.setContainer(_topLibrary);
                         } catch (Exception ex) {
                             throw new InternalErrorException(
-                            "Failed to add library to top library! " + ex);
+                                    "Failed to add library to top library! " + ex);
                         }
                     }
                 }
@@ -258,13 +258,13 @@ public abstract class GraphFrame extends PtolemyFrame
 
         // If you want to expand the top-level libraries, uncomment this.
         /*
-        Object[] path = new Object[2];
-        path[0] = topLibrary;
-        Iterator libraries = topLibrary.entityList().iterator();
-        while(libraries.hasNext()) {
-            path[1] = libraries.next();
-            _library.expandPath(new TreePath(path));
-        }
+          Object[] path = new Object[2];
+          path[0] = topLibrary;
+          Iterator libraries = topLibrary.entityList().iterator();
+          while(libraries.hasNext()) {
+          path[1] = libraries.next();
+          _library.expandPath(new TreePath(path));
+          }
         */
 
         _libraryScrollPane = new JScrollPane(_library);
@@ -364,7 +364,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    // is that cut and paste through the system clipboard to native
 	    // applications doesn't work unless you use string selection.
 	    clipboard.setContents(new StringSelection(buffer.toString()),
-				  this);
+                    this);
 	}
 	catch (Exception ex) {
 	    ex.printStackTrace();
@@ -406,7 +406,7 @@ public abstract class GraphFrame extends PtolemyFrame
     /** Do nothing.
      */
     public void lostOwnership(Clipboard clipboard,
-			      Transferable transferable) {
+            Transferable transferable) {
     }
 
     /** Clone the objects currently on the clipboard, if any,
@@ -430,17 +430,17 @@ public abstract class GraphFrame extends PtolemyFrame
 	    StringBuffer moml = new StringBuffer();
 	    moml.append("<group name=\"" + space + "\">\n");
 	    moml.append((String)
-		transferable.getTransferData(DataFlavor.stringFlavor));
+                    transferable.getTransferData(DataFlavor.stringFlavor));
 	    moml.append("</group>\n");
 	    toplevel.requestChange(
-                new MoMLChangeRequest(this, toplevel, moml.toString()));
+                    new MoMLChangeRequest(this, toplevel, moml.toString()));
 	} catch (UnsupportedFlavorException ex) {
 	    System.out.println("Transferable object didn't " +
-			       "support stringFlavor: " +
-			       ex.getMessage());
+                    "support stringFlavor: " +
+                    ex.getMessage());
 	} catch (IOException ex) {
 	    System.out.println("IOException when pasting: " +
-			       ex.getMessage());
+                    ex.getMessage());
 	} catch (Exception ex) {
 	    ex.printStackTrace();
 	    throw new RuntimeException(ex.getMessage());
@@ -591,12 +591,12 @@ public abstract class GraphFrame extends PtolemyFrame
 	public CopyAction() {
 	    super("Copy");
 	    putValue("tooltip",
-		     "Copy the current selection onto the clipboard.");
+                    "Copy the current selection onto the clipboard.");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-		     KeyStroke.getKeyStroke(KeyEvent.VK_C,
-					    java.awt.Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_C,
+                            java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_C));
+                    new Integer(KeyEvent.VK_C));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -608,12 +608,12 @@ public abstract class GraphFrame extends PtolemyFrame
 	public CutAction() {
 	    super("Cut");
 	    putValue("tooltip",
-		     "Cut the current selection onto the clipboard.");
+                    "Cut the current selection onto the clipboard.");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-		     KeyStroke.getKeyStroke(KeyEvent.VK_X,
-					    java.awt.Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_X,
+                            java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_T));
+                    new Integer(KeyEvent.VK_T));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -625,12 +625,12 @@ public abstract class GraphFrame extends PtolemyFrame
 	public PasteAction() {
 	    super("Paste");
 	    putValue("tooltip",
-		     "Paste the contents of the clipboard.");
+                    "Paste the contents of the clipboard.");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-		     KeyStroke.getKeyStroke(KeyEvent.VK_V,
-					    java.awt.Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_V,
+                            java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_P));
+                    new Integer(KeyEvent.VK_P));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -643,10 +643,10 @@ public abstract class GraphFrame extends PtolemyFrame
 	    super("Automatic Layout");
 	    putValue("tooltip", "Layout the Graph");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-		     KeyStroke.getKeyStroke(KeyEvent.VK_L,
-					    java.awt.Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
+                            java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_L));
+                    new Integer(KeyEvent.VK_L));
 	}
 	public void actionPerformed(ActionEvent e) {
 	    try {
@@ -662,7 +662,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    super("Save In Library");
 	    putValue("tooltip", "Save as a Component in Library");
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_S));
+                    new Integer(KeyEvent.VK_S));
 	}
 	public void actionPerformed(ActionEvent e) {
 	    try {
@@ -709,7 +709,7 @@ public abstract class GraphFrame extends PtolemyFrame
 		icon = (XMLIcon)iconList.get(0);
 	    } else {
 		throw new InternalErrorException("entity " + entity +
-                       " contains more than one icon");
+                        " contains more than one icon");
 	    }
 	    // FIXME make a tableau.
 	    ApplicationContext appContext = new ApplicationContext();
@@ -723,10 +723,10 @@ public abstract class GraphFrame extends PtolemyFrame
 	    super("Go");
 	    putValue("tooltip", "Execute The Model");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-		     KeyStroke.getKeyStroke(KeyEvent.VK_G,
-					    java.awt.Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_G,
+                            java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_G));
+                    new Integer(KeyEvent.VK_G));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -755,12 +755,12 @@ public abstract class GraphFrame extends PtolemyFrame
 		Effigy effigy = (Effigy)getTableau().getContainer();
 		DocumentationViewerTableau viewer =
 		    new DocumentationViewerTableau(effigy,
-					  effigy.uniqueName("tableau"));
+                            effigy.uniqueName("tableau"));
 		viewer.dottedClass.setExpression(className);
 		viewer.show();
 	    } catch (Exception ex) {
 		MessageHandler.error("Could not view Documentation for " +
-				     className, ex);
+                        className, ex);
 	    }
 	}
     };
@@ -770,7 +770,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    super("Import Library");
 	    putValue("tooltip", "Import a libarary into the Palette");
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_I));
+                    new Integer(KeyEvent.VK_I));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -812,8 +812,8 @@ public abstract class GraphFrame extends PtolemyFrame
 		    if(library == null) return;
 		    ChangeRequest request =
 			new MoMLChangeRequest(this, library,
-					      buffer.toString(),
-					      file.toURL());
+                                buffer.toString(),
+                                file.toURL());
 		    library.requestChange(request);
                     _setDirectory(chooser.getCurrentDirectory());
 		} catch (Exception ex) {
@@ -933,7 +933,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	// figure out which of their parents IS in the graph
 	// and calculate the cost of that instead.
 	private Object _getParentInGraph(GraphModel model,
-					 Object graph, Object node) {
+                Object graph, Object node) {
 	    while(node != null && !model.containsNode(graph, node)) {
 		Object parent = model.getParent(node);
 		if(model.isNode(parent)) {

@@ -48,10 +48,10 @@ This class is created by a debugger frame to handle the logic of breakpoints.
 public class DebugController implements DebugListener {
 
     ////////////////////////////////////////////////////////
-    //                Public variables                    //
+//                Public variables                    //
 
-    //Boolean that becomes false  when the Button END is pushed
-    public boolean notFinished;
+//Boolean that becomes false  when the Button END is pushed
+public boolean notFinished;
 
     //Boolean that becomes true when the Button Step In is pushed
     public boolean stepInPause;
@@ -59,7 +59,7 @@ public class DebugController implements DebugListener {
     //List that contain the Watchers.
     public NamedList watcherList = new NamedList();
 
-   /**
+    /**
      * Construct a new debug controller with a reference to the given
      * debugger.
      * @param frame The debugger frame that created this controller.
@@ -116,7 +116,7 @@ public class DebugController implements DebugListener {
 	if (notFinished) {
 	    _method = "prefire";
 	    _frame.displayResult("Before prefiring " +
-		 ((Nameable)actor).getFullName());
+                    ((Nameable)actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("prefire");
 	    if(breakpoint != null && breakpoint.evaluateCondition()) {
@@ -138,7 +138,7 @@ public class DebugController implements DebugListener {
 	if (notFinished) {
 	    _method = "fire";
 	    _frame.displayResult("Before firing " +
-		((Nameable) actor).getFullName());
+                    ((Nameable) actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("fire");
 	    if(breakpoint != null && breakpoint.evaluateCondition()) {
@@ -177,7 +177,7 @@ public class DebugController implements DebugListener {
 	if (notFinished) {
 	    _method = "postfire";
 	    _frame.displayResult("Before postfiring " +
-		((Nameable)actor).getFullName());
+                    ((Nameable)actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("postfire");
 	    if (breakpoint != null && breakpoint.evaluateCondition()) {
@@ -202,7 +202,7 @@ public class DebugController implements DebugListener {
 	    // Refresh ExecState
 	    _method = "postpostfire";
 	    _frame.displayResult("After postfiring " +
-		       ((Nameable)actor).getFullName());
+                    ((Nameable)actor).getFullName());
 	    Breakpoint breakpoint = (Breakpoint)
 		((NamedObj) actor).getAttribute("postpostfire");
 	    if (breakpoint != null && breakpoint.evaluateCondition()) {
@@ -214,7 +214,7 @@ public class DebugController implements DebugListener {
 
 	    // After a composite is postpostfired, then pause execution.
 	    if (actor instanceof CompositeActor &&
-		_command == "stepout") {
+                    _command == "stepout") {
 		_command = "pause";
 	    }
 	}

@@ -125,7 +125,7 @@ public class EditorGraphController extends ViewerGraphController {
 
 	LinkCreator linkCreator2 = new LinkCreator();
 	linkCreator2.setMouseFilter(
-           new MouseFilter(InputEvent.BUTTON1_MASK,0));
+                new MouseFilter(InputEvent.BUTTON1_MASK,0));
 	((CompositeInteractor)getEntityPortController().getNodeInteractor()).addInteractor(linkCreator2);
 
 
@@ -153,10 +153,10 @@ public class EditorGraphController extends ViewerGraphController {
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
 	    putValue("tooltip", "Create a New External Port");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-		     KeyStroke.getKeyStroke(KeyEvent.VK_E,
-					    java.awt.Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_E,
+                            java.awt.Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_E));
+                    new Integer(KeyEvent.VK_E));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -165,7 +165,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
-	       getSourceType() == MENUBAR_TYPE) {
+                    getSourceType() == MENUBAR_TYPE) {
 		// no location in the action, so make something up.
 		Point2D point = pane.getSize();
 		x = point.getX()/2;
@@ -186,33 +186,33 @@ public class EditorGraphController extends ViewerGraphController {
 	    StringBuffer moml = new StringBuffer();
 	    moml.append("<port name=\"" + portName + "\">\n");
 	    moml.append("<property name=\"" + locationName +
-	    		"\" class=\"ptolemy.moml.Location\"/>\n");
+                    "\" class=\"ptolemy.moml.Location\"/>\n");
 	    moml.append("</port>");
 
 	    ChangeRequest request =
 		new MoMLChangeRequest(this, toplevel, moml.toString()) {
-		    protected void _execute() throws Exception {
-			super._execute();
-			// Set the location of the icon.
-			// Note that this really needs to be done after
-			// the change request has succeeded, which is why
-			// it is done here.  When the graph controller
-			// gets around to handling this, it will draw
-			// the icon at this location.
+                protected void _execute() throws Exception {
+                    super._execute();
+                    // Set the location of the icon.
+                    // Note that this really needs to be done after
+                    // the change request has succeeded, which is why
+                    // it is done here.  When the graph controller
+                    // gets around to handling this, it will draw
+                    // the icon at this location.
 
-			// FIXME: Have to know whether this is an entity,
-			// port, etc. For now, assuming it is an entity.
-			NamedObj newObject =
+                    // FIXME: Have to know whether this is an entity,
+                    // port, etc. For now, assuming it is an entity.
+                    NamedObj newObject =
 			toplevel.getPort(portName);
-			Location location =
+                    Location location =
 			(Location) newObject.getAttribute(locationName);
 
-			double point[] = new double[2];
-			point[0] = ((int)finalX);
-			point[1] = ((int)finalY);
-			location.setLocation(point);
-		    }
-                };
+                    double point[] = new double[2];
+                    point[0] = ((int)finalX);
+                    point[1] = ((int)finalY);
+                    location.setLocation(point);
+                }
+            };
 	    toplevel.requestChange(request);
 	    try {
 		request.waitForCompletion();
@@ -237,7 +237,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
 	    putValue("tooltip", "Control-click to create a new relation");
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_R));
+                    new Integer(KeyEvent.VK_R));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -246,7 +246,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
-	       getSourceType() == MENUBAR_TYPE) {
+                    getSourceType() == MENUBAR_TYPE) {
 		// no location in the action, so make something up.
 		// FIXME this is a lousy way to do this.
 		Point2D point = pane.getSize();
@@ -273,28 +273,28 @@ public class EditorGraphController extends ViewerGraphController {
 
 	    ChangeRequest request =
 		new MoMLChangeRequest(this, toplevel, moml.toString()) {
-		    protected void _execute() throws Exception {
-			super._execute();
-			// Set the location of the icon.
-			// Note that this really needs to be done after
-			// the change request has succeeded, which is why
-			// it is done here.  When the graph controller
-			// gets around to handling this, it will draw
-			// the icon at this location.
+                protected void _execute() throws Exception {
+                    super._execute();
+                    // Set the location of the icon.
+                    // Note that this really needs to be done after
+                    // the change request has succeeded, which is why
+                    // it is done here.  When the graph controller
+                    // gets around to handling this, it will draw
+                    // the icon at this location.
 
-			// FIXME: Have to know whether this is an entity,
-			// port, etc. For now, assuming it is an entity.
-			NamedObj newObject =
+                    // FIXME: Have to know whether this is an entity,
+                    // port, etc. For now, assuming it is an entity.
+                    NamedObj newObject =
 			toplevel.getRelation(relationName);
-			Vertex vertex =
+                    Vertex vertex =
 			(Vertex) newObject.getAttribute(vertexName);
 
-			double point[] = new double[2];
-			point[0] = ((int)finalX);
-			point[1] = ((int)finalY);
-			vertex.setLocation(point);
-		    }
-                };
+                    double point[] = new double[2];
+                    point[0] = ((int)finalX);
+                    point[1] = ((int)finalY);
+                    vertex.setLocation(point);
+                }
+            };
 	    toplevel.requestChange(request);
 	    try {
 		request.waitForCompletion();
@@ -344,22 +344,22 @@ public class EditorGraphController extends ViewerGraphController {
 
 		// Temporary sites.  One of these will get blown away later.
 		headSite = new AutonomousSite(layer,
-					      event.getLayerX(),
-					      event.getLayerY());
+                        event.getLayerX(),
+                        event.getLayerY());
 		tailSite = new AutonomousSite(layer,
-					      event.getLayerX(),
-					      event.getLayerY());
+                        event.getLayerX(),
+                        event.getLayerY());
 		// Render the edge.
 		Connector c =
 		    getEdgeController(link).render(link, layer, tailSite, headSite);
 		// get the actual attach site.
 		tailSite =
 		    getEdgeController(link).getConnectorTarget().getTailSite(c, source,
-							    event.getLayerX(),
-							    event.getLayerY());
+                            event.getLayerX(),
+                            event.getLayerY());
 		if(tailSite == null) {
 		    throw new RuntimeException("Invalid connector target: " +
-			"no valid site found for tail of new connector.");
+                            "no valid site found for tail of new connector.");
 		}
 
 		// And reattach the connector.
@@ -369,7 +369,7 @@ public class EditorGraphController extends ViewerGraphController {
                 // make events go to the grab-handle under the mouse
 		getSelectionModel().addSelection(c);
                 ConnectorManipulator cm =
-                       (ConnectorManipulator) c.getParent();
+                    (ConnectorManipulator) c.getParent();
                 GrabHandle gh = cm.getHeadHandle();
                 layer.grabPointer(event, gh);
             } catch (Exception ex) {

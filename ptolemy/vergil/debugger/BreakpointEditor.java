@@ -85,10 +85,10 @@ public class BreakpointEditor extends JFrame implements ActionListener {
 	//Cancel  button
 	JButton button = new JButton("Cancel");
 	button.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    BreakpointEditor.this.dispose();
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                BreakpointEditor.this.dispose();
+            }
+        });
 	buttonPanel.add(button, BorderLayout.EAST);
 
 	// Ok button
@@ -109,10 +109,10 @@ public class BreakpointEditor extends JFrame implements ActionListener {
 	    _selectedMethod = "prefire";
 	}
 	radioButton.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    _selectedMethod = new String("prefire");
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                _selectedMethod = new String("prefire");
+            }
+        });
 	group.add(radioButton);
 	buttonBox.add(radioButton);
 
@@ -122,10 +122,10 @@ public class BreakpointEditor extends JFrame implements ActionListener {
 	    _selectedMethod = "fire";
 	}
 	radioButton.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    _selectedMethod = new String("fire");
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                _selectedMethod = new String("fire");
+            }
+        });
 	group.add(radioButton);
 	buttonBox.add(radioButton);
 
@@ -135,10 +135,10 @@ public class BreakpointEditor extends JFrame implements ActionListener {
 	    _selectedMethod = "postfire";
 	}
 	radioButton.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    _selectedMethod = new String("postfire");
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                _selectedMethod = new String("postfire");
+            }
+        });
 	group.add(radioButton);
 	buttonBox.add(radioButton);
 
@@ -148,10 +148,10 @@ public class BreakpointEditor extends JFrame implements ActionListener {
 	    _selectedMethod = "postpostfire";
 	}
 	radioButton.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    _selectedMethod = new String("postpostfire");
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                _selectedMethod = new String("postpostfire");
+            }
+        });
 	group.add(radioButton);
 	buttonBox.add(radioButton);
 
@@ -198,7 +198,7 @@ public class BreakpointEditor extends JFrame implements ActionListener {
     /** Default method */
     protected String _selectedMethod = "fire";
 
-     ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                  ////
     private ButtonGroup group;
     private JTextField textField;

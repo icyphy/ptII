@@ -120,7 +120,7 @@ public class LinkController extends EdgeController {
 	    if(object instanceof Port) return super.acceptHead(c, f);
 	    if(object instanceof Vertex) return super.acceptHead(c, f);
 	    if(object instanceof Location &&
-	       ((Location)object).getContainer() instanceof Port)
+                    ((Location)object).getContainer() instanceof Port)
 		return super.acceptHead(c, f);
 	    return false;
         }
@@ -130,7 +130,7 @@ public class LinkController extends EdgeController {
 	    if(object instanceof Port) return super.acceptTail(c, f);
 	    if(object instanceof Vertex) return super.acceptTail(c, f);
 	    if(object instanceof Location &&
-	       ((Location)object).getContainer() instanceof Port)
+                    ((Location)object).getContainer() instanceof Port)
 		return super.acceptHead(c, f);
 	    return false;
         }
@@ -188,7 +188,7 @@ public class LinkController extends EdgeController {
 		break;
 	    default:
 		throw new IllegalStateException(
-						"Cannot handle both ends of an edge being dragged.");
+                        "Cannot handle both ends of an edge being dragged.");
 	    }
             // rerender the edge.  This is necessary for several reasons.
             // First, the edge is only associated with a relation after it

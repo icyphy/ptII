@@ -63,12 +63,12 @@ public class Breakpoint extends Variable {
      * an object with the given name.
      */
     public Breakpoint(NamedObj actor, String method)
-	throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
       	super(actor, method);
 	if(!(actor instanceof Actor))
 	    throw new IllegalActionException("Breakpoints can only be " +
-					     "contained by Actors");
+                    "contained by Actors");
 
 	setExpression("true");
     }

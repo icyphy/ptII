@@ -51,7 +51,7 @@ public class Render extends PlotBox {
     public Render() {
         setGrid(false);
 
-	 _setPadding(0.0);
+        _setPadding(0.0);
 
         int[] rgb = new int[256];
         for (int i = 0; i <= 255; i++) {
@@ -80,14 +80,14 @@ public class Render extends PlotBox {
 
         _imageData.add(newStripe);
 
-//         // Get the graphics context.
-//
-//         Graphics graphics = getGraphics();
-//
-//         // Draw the stripe if the graphics context ... ISTHERE(?)...
-//         if (graphics != null) {
-//             _drawStripe(graphics, newStripe, x);
-//         }
+        //         // Get the graphics context.
+        //
+        //         Graphics graphics = getGraphics();
+        //
+        //         // Draw the stripe if the graphics context ... ISTHERE(?)...
+        //         if (graphics != null) {
+        //             _drawStripe(graphics, newStripe, x);
+        //         }
     }
 
     /** Clear the render object of any image data.
@@ -156,7 +156,7 @@ public class Render extends PlotBox {
 
                     int[] stripe2 = new int[100];
                     System.arraycopy(stripe1, 0, stripe2, 1,
-                                     stripe2.length - 1);
+                            stripe2.length - 1);
                     stripe2[0] = _LOWCOLOR;
 
 		    // Reset the data structure.
@@ -189,10 +189,10 @@ public class Render extends PlotBox {
 		    // data elements per stripe and multiply it by the
 		    // verticle increment.
                     setXRange(getXOffset(),
-			      _imageData.size() * getXIncrement());
+                            _imageData.size() * getXIncrement());
                     setYRange(getYOffset(),
-			      ((int[])_imageData.getFirst()).length *
-			      getYIncrement());
+                            ((int[])_imageData.getFirst()).length *
+                            getYIncrement());
                 }
             }
         };
@@ -253,7 +253,7 @@ public class Render extends PlotBox {
         super._drawPlot(graphics, clearfirst);
 
 	double x1 = (double)(_ulx + ((double)(_originalXlow - _xMin) * _xscale)
-			     + 1.0);
+                + 1.0);
 
         double width = _xIncrement * _xscale;
 
@@ -347,32 +347,32 @@ public class Render extends PlotBox {
      *  to be drawn.
      *  @param width The width of the stripe to be drawn.
      */
-     private void _drawStripe(Graphics graphics, int[] stripe,
-                              double x, double width) {
+    private void _drawStripe(Graphics graphics, int[] stripe,
+            double x, double width) {
 
-         // The stripe needs to be at least one pixel wide.
-         if (width < 1.0) {
-             width = 1.0;
-         }
+        // The stripe needs to be at least one pixel wide.
+        if (width < 1.0) {
+            width = 1.0;
+        }
 
-         // Draw the stripe one patch (data element) at a time.
-         double y1 = _lry - (int)((_originalYhigh - _yMin) * _yscale) + 1.0;
+        // Draw the stripe one patch (data element) at a time.
+        double y1 = _lry - (int)((_originalYhigh - _yMin) * _yscale) + 1.0;
 
-	 double height = _yIncrement * _yscale;
+        double height = _yIncrement * _yscale;
 
-	 double y2 = y1 + height;
+        double y2 = y1 + height;
 
-         for (int i = 0; i < stripe.length; i++) {
+        for (int i = 0; i < stripe.length; i++) {
 
-             _drawPatch(graphics, (int)x, (int)y1, (int)width,
-			(int)y2 - (int)y1, stripe[i]);
+            _drawPatch(graphics, (int)x, (int)y1, (int)width,
+                    (int)y2 - (int)y1, stripe[i]);
 
-             // Increment the y values so the next patch is printed in the
-             // right place.
-             y1 = y2;
-	     y2 = y1 + height;
-         }
-     }
+            // Increment the y values so the next patch is printed in the
+            // right place.
+            y1 = y2;
+            y2 = y1 + height;
+        }
+    }
 
 
     /** Draw a rectangular piece of an image.
@@ -386,7 +386,7 @@ public class Render extends PlotBox {
      */
 
     private void _drawPatch(Graphics graphics, int x, int y,
-                             int width, int height, int colorValue) {
+            int width, int height, int colorValue) {
 
 	// The height of the patch must be at least one pixel.
 	if (height < 1){

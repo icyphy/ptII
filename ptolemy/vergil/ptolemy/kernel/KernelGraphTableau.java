@@ -51,14 +51,14 @@ notation as a a factory
 public class KernelGraphTableau extends Tableau {
 
     public KernelGraphTableau(PtolemyEffigy container,
-			      String name)
-	throws IllegalActionException, NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
         if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-            "Cannot graphically edit a model that is not a CompositeEntity.");
+                    "Cannot graphically edit a model that is not a CompositeEntity.");
         }
 	CompositeEntity entity = (CompositeEntity)model;
 
@@ -94,7 +94,7 @@ public class KernelGraphTableau extends Tableau {
 	 *   an entity already in the container.
 	 */
 	public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
 
@@ -113,7 +113,7 @@ public class KernelGraphTableau extends Tableau {
 	    if(effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 KernelGraphTableau tableau =
-                        (KernelGraphTableau)effigy.getEntity("graphTableau");
+                    (KernelGraphTableau)effigy.getEntity("graphTableau");
                 if (tableau == null) {
                     tableau = new KernelGraphTableau(
                             (PtolemyEffigy)effigy, "graphTableau");

@@ -159,8 +159,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * @param value The new value of the property.
      */
     public void setProperty(final Object object,
-			    final String propertyName,
-			    final Object value) {
+            final String propertyName,
+            final Object value) {
 	throw new UnsupportedOperationException("hack");
     }
 
@@ -174,8 +174,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      */
     public void setSemanticObject(Object object, Object semantic) {
 	throw new UnsupportedOperationException("Ptolemy Graph Model does" +
-						" not allow semantic objects" +
-						" to be changed");
+                " not allow semantic objects" +
+                " to be changed");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -217,8 +217,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 		    // that the graph might have
 		    // completely changed.
 		    dispatchGraphEvent(new GraphEvent(
-			AbstractPtolemyGraphModel.this,
-			GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                            AbstractPtolemyGraphModel.this,
+                            GraphEvent.STRUCTURE_CHANGED, getRoot()));
 		}
 	    });
 	}
@@ -236,8 +236,8 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
             }
 	    // Just in case something happened to the graph.
 	    dispatchGraphEvent(new GraphEvent(AbstractPtolemyGraphModel.this,
-					      GraphEvent.STRUCTURE_CHANGED,
-					      getRoot()));
+                    GraphEvent.STRUCTURE_CHANGED,
+                    getRoot()));
         }
     }
 

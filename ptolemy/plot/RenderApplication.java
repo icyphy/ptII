@@ -99,7 +99,7 @@ public class RenderApplication extends PlotFrame {
         // look and feel of the platform we are running on.
         try {
             UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName());
+                    UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
@@ -119,7 +119,7 @@ public class RenderApplication extends PlotFrame {
     public static void main(String args[]) {
         try {
             RenderApplication render =
-                   new RenderApplication(new Render(), args);
+                new RenderApplication(new Render(), args);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

@@ -94,7 +94,7 @@ public class Link {
 	return _relation;
     }
 
-   /** Return the tail of this link.   This may be a port, or a vertex
+    /** Return the tail of this link.   This may be a port, or a vertex
      *  in a relation.
      */
     public Object getTail() {
@@ -126,8 +126,8 @@ public class Link {
     public String toString() {
 	return "Link("
 	    + _head + ", "
-	    + _tail + ", "
-	    + _relation + ")";
+                + _tail + ", "
+                    + _relation + ")";
     }
 
     private Object _head;

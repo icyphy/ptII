@@ -101,7 +101,7 @@ import ptolemy.vergil.ptolemy.*;
 @see ptolemy.vergil.debugger.MMI.DebuggerUI
 */
 public class DebuggerFrame extends PtolemyFrame
-                      implements ActionListener, ItemListener {
+    implements ActionListener, ItemListener {
     JTextArea output;
     JScrollPane scrollPane;
     String newline = "\n";
@@ -162,55 +162,55 @@ public class DebuggerFrame extends PtolemyFrame
 	timer.start();
 
        	//////////////////////////////////////////////////////////
-        //Build the Breakpoint menu.
-	/////////////////////////////////////////////////////////
-        breakpointMenu = new JMenu("Breakpoint");
-        breakpointMenu.setMnemonic(KeyEvent.VK_B);
-        breakpointMenu.getAccessibleContext().setAccessibleDescription("Breakpoint tools");
-        _menubar.add(breakpointMenu);
+            //Build the Breakpoint menu.
+            /////////////////////////////////////////////////////////
+            breakpointMenu = new JMenu("Breakpoint");
+            breakpointMenu.setMnemonic(KeyEvent.VK_B);
+            breakpointMenu.getAccessibleContext().setAccessibleDescription("Breakpoint tools");
+            _menubar.add(breakpointMenu);
 
-        //a group of JMenuItems implementing the breakpoint tools
-	//add breakpoint JMenuItem
-        menuItem = new JMenuItem("Add Breakpoint", KeyEvent.VK_A);
-	menuItem.addActionListener(new ActionListener(){
+            //a group of JMenuItems implementing the breakpoint tools
+            //add breakpoint JMenuItem
+            menuItem = new JMenuItem("Add Breakpoint", KeyEvent.VK_A);
+            menuItem.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 		    disableMenu();
 		    Breakpoint brkpt = null;
 		    NamedObj actor = getSelectedActor();
 		    if (actor != null) {
-			    try {
-				brkpt = new Breakpoint(actor, "fire");
-			    } catch (NameDuplicationException ex) {
-			    } catch (IllegalActionException ex) {
-			    }
-			    JFrame editFrame = new BreakpointEditor(brkpt);
-			    displayResult("Breakpoint successfully added on "
-					  + actor.getFullName() +" !");
+                        try {
+                            brkpt = new Breakpoint(actor, "fire");
+                        } catch (NameDuplicationException ex) {
+                        } catch (IllegalActionException ex) {
+                        }
+                        JFrame editFrame = new BreakpointEditor(brkpt);
+                        displayResult("Breakpoint successfully added on "
+                                + actor.getFullName() +" !");
 		    } else displayResult ("An actor must be selected before " +
-					  "adding a breakpoint.");
+                            "adding a breakpoint.");
 		    enableMenu();
 		}
 	    });
-        breakpointMenu.add(menuItem);
+            breakpointMenu.add(menuItem);
 
-        //edit breakpoint JMenuItem
-        menuItem = new JMenuItem("Edit Breakpoint", KeyEvent.VK_E);
-	menuItem.addActionListener(new ActionListener(){
+            //edit breakpoint JMenuItem
+            menuItem = new JMenuItem("Edit Breakpoint", KeyEvent.VK_E);
+            menuItem.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 		    NamedObj actor = getSelectedActor();
 		    if (actor != null) {
 			DisplayList list =
 			    new DisplayList((Actor)actor, DebuggerFrame.this,
-					    DisplayList.EDIT_B);
+                                    DisplayList.EDIT_B);
 		    }
 		}
 	    });
-        breakpointMenu.add(menuItem);
+            breakpointMenu.add(menuItem);
 
-       //Delete breakpoint JMenuItem
-        menuItem = new JMenuItem("Delete Breakpoint",
-                                 KeyEvent.VK_D);
-	menuItem.addActionListener(new ActionListener(){
+            //Delete breakpoint JMenuItem
+            menuItem = new JMenuItem("Delete Breakpoint",
+                    KeyEvent.VK_D);
+            menuItem.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent e) {
 		    NamedObj actor = getSelectedActor();
 		    if (actor != null) {
@@ -218,53 +218,53 @@ public class DebuggerFrame extends PtolemyFrame
 		    }
 		}
 	    });
-        breakpointMenu.add(menuItem);
+            breakpointMenu.add(menuItem);
 
-	//////////////////////////////////////////////////////////
-        //Build the Watcher menu.
-	/////////////////////////////////////////////////////////
-        watcherMenu = new JMenu("Watcher");
-        watcherMenu.setMnemonic(KeyEvent.VK_W);  // Activates menu
-	                                  //by pressed keys
-        watcherMenu.getAccessibleContext().setAccessibleDescription(
-                "Watcher tools");
-        _menubar.add(watcherMenu);
+            //////////////////////////////////////////////////////////
+                //Build the Watcher menu.
+                /////////////////////////////////////////////////////////
+                watcherMenu = new JMenu("Watcher");
+                watcherMenu.setMnemonic(KeyEvent.VK_W);  // Activates menu
+                //by pressed keys
+                watcherMenu.getAccessibleContext().setAccessibleDescription(
+                        "Watcher tools");
+                _menubar.add(watcherMenu);
 
-        //a group of JMenuItems implementing the Watcher tools
+                //a group of JMenuItems implementing the Watcher tools
 
-       //add Watcher JMenuItem
-        menuItem = new JMenuItem("Add Watcher",
-                                 KeyEvent.VK_A);
-	menuItem.addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent e) {
-		    displayResult("Action for Add Watcher");
-		}
-	    });
-        watcherMenu.add(menuItem);
+                //add Watcher JMenuItem
+                menuItem = new JMenuItem("Add Watcher",
+                        KeyEvent.VK_A);
+                menuItem.addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e) {
+                        displayResult("Action for Add Watcher");
+                    }
+                });
+                watcherMenu.add(menuItem);
 
-       //edit Watcher JMenuItem
-        menuItem = new JMenuItem("Edit Watcher",
-                                 KeyEvent.VK_E);
-	menuItem.addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent e) {
-		    displayResult("Elements selected are:");
-		    //JFrame editWatcher = new WatcherEditor(DebuggerFrame.this);
-		    //editWatcher.pack();
-		    //editWatcher.setLocation(550,300);
-		    //editWatcher.setVisible(true);
-		}
-	    });
-        watcherMenu.add(menuItem);
+                //edit Watcher JMenuItem
+                menuItem = new JMenuItem("Edit Watcher",
+                        KeyEvent.VK_E);
+                menuItem.addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e) {
+                        displayResult("Elements selected are:");
+                        //JFrame editWatcher = new WatcherEditor(DebuggerFrame.this);
+                        //editWatcher.pack();
+                        //editWatcher.setLocation(550,300);
+                        //editWatcher.setVisible(true);
+                    }
+                });
+                watcherMenu.add(menuItem);
 
-       //Delete Watcher JMenuItem
-        menuItem = new JMenuItem("Delete Watcher",
-                                 KeyEvent.VK_D);
-	menuItem.addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent e) {
-		    displayResult("Action for delete watcher");
-		}
-	    });
-        watcherMenu.add(menuItem);
+                //Delete Watcher JMenuItem
+                menuItem = new JMenuItem("Delete Watcher",
+                        KeyEvent.VK_D);
+                menuItem.addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e) {
+                        displayResult("Action for delete watcher");
+                    }
+                });
+                watcherMenu.add(menuItem);
 
     }
 
@@ -280,12 +280,12 @@ public class DebuggerFrame extends PtolemyFrame
 	output.append(actionDescription + newline);
     }
 
-     /** Does nothing
+    /** Does nothing
      * @param e an action event
      */
     public void actionPerformed(ActionEvent e) {}
 
-     /** Return the command entered
+    /** Return the command entered
      * @return a reference on the command string
      */
     public String getuserCommand() {
@@ -422,60 +422,60 @@ public class DebuggerFrame extends PtolemyFrame
 	rsm = new JButton("RSM");
 	rsm.setMnemonic(KeyEvent.VK_R);
 	rsm.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    if (putCmd) {
-			_cmd ="resume";
-			displayResult("Command entered = resume");
-			_controller.commandEntered();
-		    }
-		    else {
-			displayResult("Wait a minute !!!");
-		    }
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                if (putCmd) {
+                    _cmd ="resume";
+                    displayResult("Command entered = resume");
+                    _controller.commandEntered();
+                }
+                else {
+                    displayResult("Wait a minute !!!");
+                }
+            }
+        });
 	_toolbar.add(rsm);
 
 	//End button
 	end = new JButton("END");
 	end.setMnemonic(KeyEvent.VK_E);
 	end.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    if (putCmd) {
-	/////////////////////////////////////////////////////////
-        // The next line is hacking : _cmd should be set to    //
-      	// "end" but this wouldn't work so we cheat the        //
-	// DbgController                                       //
-			_cmd = "microstep";
-			displayResult("Command entered = end");
-			_controller.notFinished = false;
-			_controller.commandEntered();
-		    }
-		    else {
-			displayResult("Wait a minute !!!");
-		    }
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                if (putCmd) {
+                    /////////////////////////////////////////////////////////
+                    // The next line is hacking : _cmd should be set to    //
+                    // "end" but this wouldn't work so we cheat the        //
+                    // DbgController                                       //
+                    _cmd = "microstep";
+                    displayResult("Command entered = end");
+                    _controller.notFinished = false;
+                    _controller.commandEntered();
+                }
+                else {
+                    displayResult("Wait a minute !!!");
+                }
+            }
+        });
 	_toolbar.add(end);
 
 	//Stop button
 	stop = new JButton("STOP");
  	stop.setMnemonic(KeyEvent.VK_T);
 	stop.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    // Here we must stop the execution of the model
+            public void actionPerformed(ActionEvent e) {
+                // Here we must stop the execution of the model
 
-		    //    if (putCmd) {
-			//In fact, exit directly.
+                //    if (putCmd) {
+                //In fact, exit directly.
 
-		    //_cmd ="stop";
-		    //displayResult("Command entered = stop");
-		    //_controller.cmdNotEntered = false;
-		    //}
-		    //else {
-		    //displayResult("Wait a minute !!!");
-		    //}
-		}
-	    });
+                //_cmd ="stop";
+                //displayResult("Command entered = stop");
+                //_controller.cmdNotEntered = false;
+                //}
+                //else {
+                //displayResult("Wait a minute !!!");
+                //}
+            }
+        });
 	_toolbar.add(stop);
 
 	_toolbar.addSeparator();
@@ -484,70 +484,70 @@ public class DebuggerFrame extends PtolemyFrame
 	step = new JButton("Step");
 	step.setMnemonic(KeyEvent.VK_S);
 	step.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    if (putCmd) {
-			_cmd ="step";
-			displayResult("Command entered = step");
-			_controller.commandEntered();
-		    }
-		    else {
-			displayResult("Wait a minute !!!");
-		    }
+            public void actionPerformed(ActionEvent e) {
+                if (putCmd) {
+                    _cmd ="step";
+                    displayResult("Command entered = step");
+                    _controller.commandEntered();
+                }
+                else {
+                    displayResult("Wait a minute !!!");
+                }
 
-		}
-	    });
+            }
+        });
 	_toolbar.add(step);
 
 	//Step in button
 	stepIn = new JButton("S.in");
 	stepIn.setMnemonic(KeyEvent.VK_I);
 	stepIn.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    if (putCmd) {
-			_cmd ="stepin";
-			displayResult("Command entered = Step in");
-			_controller.commandEntered();
-		    }
-		    else {
-			displayResult("Wait a minute !!!");
-		    }
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                if (putCmd) {
+                    _cmd ="stepin";
+                    displayResult("Command entered = Step in");
+                    _controller.commandEntered();
+                }
+                else {
+                    displayResult("Wait a minute !!!");
+                }
+            }
+        });
 	_toolbar.add(stepIn);
 
 	//Step out button
 	stepOut = new JButton("S.out");
 	stepOut.setMnemonic(KeyEvent.VK_O);
 	stepOut.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    if (putCmd) {
-			_cmd ="stepout";
-			displayResult("Command entered = Step Out");
-			_controller.commandEntered();
-		    }
-		    else {
-			displayResult("Wait a minute !!!");
-		    }
+            public void actionPerformed(ActionEvent e) {
+                if (putCmd) {
+                    _cmd ="stepout";
+                    displayResult("Command entered = Step Out");
+                    _controller.commandEntered();
+                }
+                else {
+                    displayResult("Wait a minute !!!");
+                }
 
-		}
-	    });
+            }
+        });
 	_toolbar.add(stepOut);
 
 	//MicroStep button
 	mstep = new JButton("µStep");
 	mstep.setMnemonic(KeyEvent.VK_P);
 	mstep.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    if (putCmd) {
-			_cmd ="microstep";
-			displayResult("Command entered = Micro Step");
-			_controller.commandEntered();
-		    }
-		    else {
-			displayResult("Wait a minute !!!");
-		    }
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                if (putCmd) {
+                    _cmd ="microstep";
+                    displayResult("Command entered = Micro Step");
+                    _controller.commandEntered();
+                }
+                else {
+                    displayResult("Wait a minute !!!");
+                }
+            }
+        });
 	_toolbar.add(mstep);
 	_toolbar.addSeparator();
 
@@ -557,13 +557,13 @@ public class DebuggerFrame extends PtolemyFrame
 	quit = new JButton("QUIT");
 	quit.setMnemonic(KeyEvent.VK_Q);
 	quit.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    int response;
-		    response = JOptionPane.showConfirmDialog(null, "Quit Pdb ?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		    if (response == JOptionPane.YES_OPTION)
-			DebuggerFrame.this.dispose();
-		}
-	    });
+            public void actionPerformed(ActionEvent e) {
+                int response;
+                response = JOptionPane.showConfirmDialog(null, "Quit Pdb ?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (response == JOptionPane.YES_OPTION)
+                    DebuggerFrame.this.dispose();
+            }
+        });
 	_toolbar.add(quit);
     }
 
@@ -584,39 +584,39 @@ public class DebuggerFrame extends PtolemyFrame
     private NamedObj getSelectedActor() {
 	NamedObj selectedActor = null;
 	/* FIXME FIXME FIXME
-	try {
-	    View v = VergilApplication.getInstance().getCurrentView();
-	    PtolemyDocument d = (PtolemyDocument) v.getDocument();
-	    JGraph g = (JGraph) v.getComponent();
-	    GraphPane graphPane = g.getGraphPane();
-	    GraphController controller =
-		(GraphController) graphPane.getGraphController();
-	    Object selection[] = controller.getSelectionModel().getSelectionAsArray();;
-	    if (selection.length == 1) {
-		if (selection[0] instanceof Figure) {
-		    Object obj = ((Figure)selection[0]).getUserObject();
-		    if (obj instanceof NamedObj) {
-			NamedObj userobj = (NamedObj)obj;
-			if (userobj instanceof ptolemy.moml.Icon) {
-			    ptolemy.moml.Icon icon =
-				(ptolemy.moml.Icon)userobj;
-			    ComponentEntity entity =
-				(ComponentEntity)icon.getContainer();
-			    NamedObj actor = (NamedObj)entity;
-			    selectedActor = actor;
-			} else {
-			    displayResult("Error !");
-			}
-		    }  else {
-			displayResult("You must select an ACTOR !");
-		    }
-		} else {
-		    displayResult("You must select one and only one Actor !");
-		}
-	    }
-	} catch (NullPointerException ex) {
-	    displayResult("Nothing to select");
-	}
+           try {
+           View v = VergilApplication.getInstance().getCurrentView();
+           PtolemyDocument d = (PtolemyDocument) v.getDocument();
+           JGraph g = (JGraph) v.getComponent();
+           GraphPane graphPane = g.getGraphPane();
+           GraphController controller =
+           (GraphController) graphPane.getGraphController();
+           Object selection[] = controller.getSelectionModel().getSelectionAsArray();;
+           if (selection.length == 1) {
+           if (selection[0] instanceof Figure) {
+           Object obj = ((Figure)selection[0]).getUserObject();
+           if (obj instanceof NamedObj) {
+           NamedObj userobj = (NamedObj)obj;
+           if (userobj instanceof ptolemy.moml.Icon) {
+           ptolemy.moml.Icon icon =
+           (ptolemy.moml.Icon)userobj;
+           ComponentEntity entity =
+           (ComponentEntity)icon.getContainer();
+           NamedObj actor = (NamedObj)entity;
+           selectedActor = actor;
+           } else {
+           displayResult("Error !");
+           }
+           }  else {
+           displayResult("You must select an ACTOR !");
+           }
+           } else {
+           displayResult("You must select one and only one Actor !");
+           }
+           }
+           } catch (NullPointerException ex) {
+           displayResult("Nothing to select");
+           }
 	*/
 	return selectedActor;
     }

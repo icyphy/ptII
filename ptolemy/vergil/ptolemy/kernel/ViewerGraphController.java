@@ -172,19 +172,19 @@ public class ViewerGraphController extends GraphController {
 	if(object instanceof Vertex) {
             return _relationController;
         } else if(object instanceof Location &&
-		  getGraphModel().getSemanticObject(object)
-		  instanceof Entity) {
+                getGraphModel().getSemanticObject(object)
+                instanceof Entity) {
             return _entityController;
 	} else if(object instanceof Location &&
-		  getGraphModel().getSemanticObject(object)
-		  instanceof Attribute) {
+                getGraphModel().getSemanticObject(object)
+                instanceof Attribute) {
             return _attributeController;
 	} else if(object instanceof Location &&
-		  getGraphModel().getSemanticObject(object)
-		  instanceof Port) {
+                getGraphModel().getSemanticObject(object)
+                instanceof Port) {
 	    return _portController;
 	} else if(object instanceof Port) {
-		return _entityPortController;
+            return _entityPortController;
         } else
             throw new RuntimeException(
                     "Node with unknown semantic object: " + object);
@@ -279,7 +279,7 @@ public class ViewerGraphController extends GraphController {
 		return ((Actor)object).getDirector();
 	    } else {
 		throw new InternalErrorException("Object " +
-		    object.getFullName() + "is not a director.");
+                        object.getFullName() + "is not a director.");
 	    }
 	}
     }
@@ -295,7 +295,7 @@ public class ViewerGraphController extends GraphController {
 		return ((Actor)object).getDirector();
 	    } else {
 		throw new InternalErrorException("Object " +
-		    object.getFullName() + "is not a director.");
+                        object.getFullName() + "is not a director.");
 	    }
 	}
     }

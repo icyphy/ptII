@@ -38,7 +38,7 @@ import diva.gui.DesktopContext;
  */
 public class VergilApplet extends AppletContext {
     public VergilApplet() {
-       VergilApplication.setInstance(new VergilApplication(new DesktopContext(this)));
+        VergilApplication.setInstance(new VergilApplication(new DesktopContext(this)));
     }
 }
 

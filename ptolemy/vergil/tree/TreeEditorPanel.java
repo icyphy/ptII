@@ -104,7 +104,7 @@ public class TreeEditorPanel extends JScrollPane {
                 base = file.toURL();
             } catch (FileNotFoundException ex2) {
                 URL inurl = Class.forName("ptolemy.kernel.util.NamedObj").
-                getClassLoader().getResource(filename);
+                    getClassLoader().getResource(filename);
                 instream = inurl.openStream();
                 base = inurl;
             }
@@ -112,7 +112,7 @@ public class TreeEditorPanel extends JScrollPane {
         _toplevel = _parser.parse(base, instream);
         if (_toplevel instanceof CompositeEntity) {
             FullTreeModel model
-                    = new FullTreeModel((CompositeEntity)_toplevel);
+                = new FullTreeModel((CompositeEntity)_toplevel);
             JTree tree = new JTree(model);
             tree.setPreferredSize(new Dimension(600,800));
             if (cellRenderer == null) {

@@ -94,14 +94,14 @@ A debugging tableau for ptolemy models.
 public class DebuggerTableau extends Tableau {
 
     public DebuggerTableau(PtolemyEffigy container,
-			      String name)
-	throws IllegalActionException, NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
         if (!(model instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-            "Cannot debug a model that is not a CompositeActor.");
+                    "Cannot debug a model that is not a CompositeActor.");
         }
 	CompositeActor actor = (CompositeActor)model;
 
@@ -139,7 +139,7 @@ public class DebuggerTableau extends Tableau {
 	 *   an entity already in the container.
 	 */
 	public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
 
@@ -159,7 +159,7 @@ public class DebuggerTableau extends Tableau {
 		return null;
 	    DebuggerTableau tableau =
 		new DebuggerTableau((PtolemyEffigy)proxy,
-				       proxy.uniqueName("tableau"));
+                        proxy.uniqueName("tableau"));
 	    return tableau;
 	}
     }

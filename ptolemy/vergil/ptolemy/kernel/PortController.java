@@ -162,8 +162,8 @@ public class PortController extends LocatableNodeController {
 		    IOPort ioport = (IOPort)port;
 
 		    if(ioport.isInput() &&
-		       ioport.isOutput()) {
-		    direction = SwingUtilities.NORTH;
+                            ioport.isOutput()) {
+                        direction = SwingUtilities.NORTH;
 		    } else if(ioport.isInput()) {
 			direction = SwingUtilities.EAST;
 		    } else if(ioport.isOutput()) {

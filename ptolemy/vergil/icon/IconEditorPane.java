@@ -243,7 +243,7 @@ public class IconEditorPane extends JCanvas {
     // The type of data that is operable via the cut, copy, and paste commands.
 
     public static final DataFlavor dataFlavor =
-        new DataFlavor(VersatileFigure.class, "Versatile Figure");
+    new DataFlavor(VersatileFigure.class, "Versatile Figure");
 
     //////////////////////////////////////////////////////////////////////
     //////////////////      Private methods.            /////////////////
@@ -354,7 +354,7 @@ public class IconEditorPane extends JCanvas {
 		vector.add(_currentFigure);
 	    }
 	    SimpleSelection s = new SimpleSelection(vector,
-						    dataFlavor);
+                    dataFlavor);
 	    clipboard.setContents(s, s);
 	} else {
 	    getToolkit().beep();
@@ -413,7 +413,7 @@ public class IconEditorPane extends JCanvas {
 		thickness = v.getLineWidth();
 	    } else {
 		if(thickness != v.getLineWidth());
-		    return 0.0f;
+                return 0.0f;
 	    }
 	}
 	return thickness;
@@ -497,8 +497,8 @@ public class IconEditorPane extends JCanvas {
 	    }
 	    catch(Exception ex) {
 	        JOptionPane.showMessageDialog(this,
-		"Printing failed:\n" + ex.toString(),
-		"Print Error", JOptionPane.WARNING_MESSAGE);
+                        "Printing failed:\n" + ex.toString(),
+                        "Print Error", JOptionPane.WARNING_MESSAGE);
 	    }
 	}
     }

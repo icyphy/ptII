@@ -162,7 +162,7 @@ public class GraphicElement {
      * Write the GraphicElement in XML format to the given writer.
      */
     public void exportMoML(Writer out, String prefix)
-	throws IOException {
+            throws IOException {
 	XmlElement element = new XmlElement(_type, _attributes);
 	element.setPCData(_label);
 	element.writeXML(out, prefix);
@@ -170,7 +170,7 @@ public class GraphicElement {
 
     // The painted object that is returned if an error occurs.
     private static final PaintedString _errorObject =
-	new PaintedString("ERROR!");
+            new PaintedString("ERROR!");
 
     // The attributes of this graphic element.
     private Map _attributes;
