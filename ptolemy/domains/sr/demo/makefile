@@ -46,7 +46,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	FeedbackLook/FeedbackLoop.jar \
+	FeedbackLoop/FeedbackLoop.jar \
 	ReflexGame/ReflexGame.jar \
 	TokenRing/TokenRing.jar
 
