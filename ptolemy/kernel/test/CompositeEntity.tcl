@@ -354,7 +354,7 @@ test CompositeEntity-8.4 {Remove relations by name with an error} {
 ######################################################################
 ####
 # 
-test CompositeEntity-9.1 {Test removing all entities} {
+test CompositeEntity-8.5 {Test removing all entities} {
     set a [java::new pt.kernel.CompositeEntity A]
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $a C]
@@ -366,7 +366,7 @@ test CompositeEntity-9.1 {Test removing all entities} {
 ######################################################################
 ####
 # 
-test CompositeEntity-8.3 {Remove all relations} {
+test CompositeEntity-8.6 {Remove all relations} {
     set a [java::new pt.kernel.CompositeEntity A]
     set r1 [java::new pt.kernel.ComponentRelation $a R1]
     set r2 [java::new pt.kernel.ComponentRelation $a R2]
