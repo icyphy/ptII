@@ -342,6 +342,14 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @return True if data are transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
+        int rate = SDFScheduler.getTokenConsumptionRate(port);
+	boolean wasTransferred = false;
+	for (int k=0; k<rate; k++) {
+	    wasTransferred |= super.transferInputs(port);
+	}
+	return wasTransferred;
+
+    /*
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque" +
@@ -371,6 +379,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             }
         }
         return trans;
+    */
     }
 
     /** Return true if transfers data from an output port of the
