@@ -123,9 +123,20 @@ depend:
 $(OPTIONAL_JSRCS): PtParser.java
 
 PtParser.java: PtParser.jj
+	@echo "This command runs JavaCC, which can be downloaded from"
+	@echo "http://www.sun.com/suntest"
+	@echo "You only need install JavaCC if you modify PtParser.jj"
+	@echo "If you don't have JavaCC, you can workaround this with"
+	@echo "   touch PtParser.jjt PtParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JAVACC) PtParser.jj
 
 PtParser.jj: $(EXTRA_SRCS)
+	@echo "This command runs JJTree, which is part of JavaCC"
+	@echo "JavaCC can be downloaded from http://www.sun.com/suntest"
+	@echo "You only need install JavaCC if you modify PtParser.jj"
+	@echo "If you don't have JavaCC, you can workaround this with"
+	@echo "   touch PtParser.jjt PtParser.java"
+
 	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
 
 # This rule is useful for cvs committing the derived files
