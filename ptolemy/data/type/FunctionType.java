@@ -350,7 +350,7 @@ public class FunctionType extends StructuredType {
         // Check that the argument counts are the same
         int argCount = getArgCount();
       
-        if (functionType.getArgCount() != argCount ) {
+        if (functionType.getArgCount() != argCount) {
             return false;
         }
 
@@ -363,7 +363,12 @@ public class FunctionType extends StructuredType {
             }
         }
 
-        // FIXME: Check return type?
+        // Check the return type.
+        if(!getReturnType().isSubstitutionInstance(
+                   functionType.getReturnType())) {
+            return false;
+        }
+       
         return true;
     }
 

@@ -120,7 +120,7 @@ test FunctionType-2.0 {Test convert} {
 
     list [[$TypeNothingToUnknown convert $r1] toString] [[$TypeIntIntToInt convert $r1] toString] \
          [[$TypeStringDoubleToDouble convert $r1] toString]
-} {{(function(x, y, z) (x+y+z))} {(function(x, y, z) (x+y+z))} {(function(x, y, z) (x+y+z))}} {Yeah, We haven't written the conversion yet.
+} {{(function(x, y, z) (x+y+z))} {(function(x, y, z) (x+y+z))} {(function(x, y, z) (x+y+z))}} {Yeah, We haven't written the conversion yet.}
 
 ######################################################################
 ####
@@ -238,13 +238,19 @@ test FunctionType-6.0 {Test isInstantiable} {
 # 
 test FunctionType-7.0 {Test isSubstitutionInstance} {
     list [$TypeNothingToUnknown isSubstitutionInstance $TypeIntIntToInt] \
-         [$TypeIntIntToInt isSubstitutionInstance $TypeNothingToUnknown] \
-         [$TypeIntIntToInt isSubstitutionInstance $TypeStringDoubleToDouble] \
-         [$TypeStringDoubleToDouble isSubstitutionInstance $TypeIntIntToInt] \
-         [$TypeStringDoubleToDouble isSubstitutionInstance $TypeStringDoubleToInt] \
-         [$TypeStringDoubleToDouble isSubstitutionInstance $TypeNothingToUnknown] \
-         [$TypeNothingToUnknown isSubstitutionInstance $TypeStringDoubleToDouble]
-} {0 0 0 0 1 0 0} {return types not checked}
+	[$TypeIntIntToInt isSubstitutionInstance $TypeNothingToUnknown] \
+	[$TypeIntIntToInt isSubstitutionInstance $TypeStringDoubleToDouble] \
+	[$TypeStringDoubleToDouble isSubstitutionInstance $TypeIntIntToInt] \
+	[$TypeStringDoubleToDouble isSubstitutionInstance $TypeStringDoubleToInt] \
+	[$TypeStringDoubleToInt isSubstitutionInstance $TypeStringDoubleToDouble] \
+	[$TypeStringDoubleToInt isSubstitutionInstance $TypeIntIntToInt] \
+	[$TypeIntIntToInt isSubstitutionInstance $TypeStringDoubleToInt] \
+	[$TypeStringDoubleToDouble isSubstitutionInstance $TypeNothingToUnknown] \
+	[$TypeStringDoubleToDouble isSubstitutionInstance $TypeStringDoubleToDouble] \
+	[$TypeStringDoubleToDouble isSubstitutionInstance $TypeStringUnknownToUnknown] \
+	[$TypeStringUnknownToUnknown isSubstitutionInstance $TypeStringDoubleToDouble] \
+	
+} {0 0 0 0 0 0 0 0 0 1 0 1}
 
 ######################################################################
 ####
