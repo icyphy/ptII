@@ -367,7 +367,7 @@ remote1distclean:
 	@echo "#"
 	@echo `date`
 	(cd $(REMOTE1PTIIDIST); \
-		$(OTHERMAKE) clean; \
+		$(MAKE) clean; \
 		find . -name codeDoc -exec rm -rf {} \;)
 
 remote1distjavadocs:
