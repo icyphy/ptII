@@ -44,6 +44,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.lang.Byte;
+import java.lang.Double;
+import java.lang.Float;
 import java.lang.Integer;
 import java.lang.Short;
 
@@ -153,19 +155,38 @@ public class JAIToDoubleMatrix extends Transformer {
                 _maxValue = (double)Short.MAX_VALUE - (double)Short.MIN_VALUE;
                 _minValue = 0;
                 break;
+            case DataBuffer.TYPE_FLOAT:
+                _maxValue = (double)Float.MAX_VALUE;
+                break;
+            case DataBuffer.TYPE_DOUBLE:
+                _maxValue = (double)Double.MAX_VALUE;
+                break;
             default:
                 throw new IllegalActionException("Data type not suitable for "
                         + "normalizing");
             }
-            if(_debugging) {
+            if (_debugging) {
                 _debug("max value is " + _maxValue);
                 _debug("min value is " + _minValue);
             }
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    data[i][j] = 
-                        (dataBuffer.getElemDouble(i*height + j) - _minValue)/
-                        (_maxValue - _minValue);
+            if (_type == DataBuffer.TYPE_DOUBLE ||
+                    _type == DataBuffer.TYPE_FLOAT) {
+                for (int i = 0; i < width; i++) {
+                    for (int j = 0; j < height; j++) {   
+                        data[i][j] = dataBuffer.getElemDouble(i*height + j);
+                        data[i][j] = data[i][j]/_maxValue;
+                        data[i][j] = data[i][j]/2;
+                        data[i][j] = data[i][j] + 0.5D;
+                    }
+                }
+            } else {
+                for (int i = 0; i < width; i++) {
+                    for (int j = 0; j < height; j++) {
+                        data[i][j] = 
+                            (dataBuffer.getElemDouble(i*height + j) - 
+                                    _minValue)/
+                            (_maxValue - _minValue);
+                    }
                 }
             }
         } else {

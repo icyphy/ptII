@@ -168,7 +168,7 @@ public class DoubleMatrixToJAI extends Transformer {
         double newdata[] = new double[width*height];
         _maxValue = 1;
         _minValue = 0;
-        if(_scale && (_dataFormat != _DOUBLE) && (_dataFormat != _FLOAT)) {
+        if(_scale) {
             switch(_dataFormat) {
             case _BYTE:
                 _maxValue = (double)Byte.MAX_VALUE - (double)Byte.MIN_VALUE;
@@ -186,6 +186,12 @@ public class DoubleMatrixToJAI extends Transformer {
                 _maxValue = (double)Short.MAX_VALUE - (double)Short.MIN_VALUE;
                 _minValue = 0;
                 break;
+            case _FLOAT:
+                _maxValue = (double)Float.MAX_VALUE;
+                break;
+            case _DOUBLE:
+                _maxValue = (double)Double.MAX_VALUE;
+                break;
             default:
                 throw new InternalErrorException(
                         "Invalid value for _dataFormat private variable. "
@@ -193,10 +199,21 @@ public class DoubleMatrixToJAI extends Transformer {
                         + ")"
                         + " on data type " + _dataFormat);
             }
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    newdata[i*height + j] = 
-                        data[i][j]*(_maxValue - _minValue) + _minValue;
+            if (_dataFormat == _DOUBLE || _dataFormat == _FLOAT) {
+                for (int i = 0; i < width; i++) {
+                    for (int j = 0; j < height; j++) {
+                        newdata[i*height + j] = data[i][j];
+                        newdata[i*height + j] = newdata[i*height + j] - 0.5D;
+                        newdata[i*height + j] = newdata[i*height + j]*2;
+                        newdata[i*height + j] = newdata[i*height + j]*_maxValue; 
+                    }
+                }
+            } else {
+                for (int i = 0; i < width; i++) {
+                    for (int j = 0; j < height; j++) {
+                        newdata[i*height + j] = 
+                            data[i][j]*(_maxValue - _minValue) + _minValue;
+                    }
                 }
             }
         } else {
