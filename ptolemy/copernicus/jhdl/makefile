@@ -49,9 +49,12 @@ JSRCS = \
 	CircuitAnalysis.java \
 	CircuitCreator.java \
 	CircuitTransformer.java \
+	DirectedGraphToDotty.java \
+	Inliner.java \
 	JHDLTransformer.java \
-	HashMutableToDotty.java \
-	Main.java
+	Main.java \
+	Predefined.java \
+	RegisterDelay.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	JHDLClass.java \

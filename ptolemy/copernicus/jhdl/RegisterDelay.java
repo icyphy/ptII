@@ -1,4 +1,4 @@
-/* Hash a mutable directed graph to dotty notation.
+/* Represent a register in a data flow graph
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
