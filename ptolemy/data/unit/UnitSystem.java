@@ -47,6 +47,11 @@ import java.util.Hashtable;
 /**
 A unit system as defined by a set of constants.
 <p>
+The constants represent the various measurement units in a unit system.
+The units belong to a number of categories, for example length and time
+in the International System of Units (SI). Each category has a base unit,
+for example meter in the length category.
+
 FIXME:
 In a Vergil configuration, a unit system is defined as. (Give example)
 
@@ -87,8 +92,7 @@ public class UnitSystem extends Attribute {
     public static void addUnitCategory(String categoryName,
 	    String baseUnitName) {
 
-	System.out.println("Add unit category: " + categoryName + " " +
-			   baseUnitName);
+System.out.println("Add unit category: " + categoryName + " " + baseUnitName);
 
 	Integer index = (Integer)_indexTable.get(categoryName);
 	if (index != null) {
