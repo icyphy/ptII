@@ -50,13 +50,13 @@ if {[info procs enumToObjects] == "" } then {
 test TMDirector-2.1 {Constructor tests} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set d1 [java::new ptolemy.domains.sdf.kernel.TMDirector]
+    set d1 [java::new ptolemy.domains.tm.kernel.TMDirector]
     $d1 setName D1
-    set d2 [java::new ptolemy.domains.sdf.kernel.TMDirector $w]
+    set d2 [java::new ptolemy.domains.tm.kernel.TMDirector $w]
     $d2 setName D2
     set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
     $e0 setName E0
-    set d3 [java::new ptolemy.domains.sdf.kernel.TMDirector $e0 D3]
+    set d3 [java::new ptolemy.domains.tm.kernel.TMDirector $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 .E0.D3}
 
@@ -66,275 +66,294 @@ test TMDirector-2.1 {Constructor tests} {
 test TMDirector-3.1 {Test clone} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set manager [java::new ptolemy.actor.Manager $w Manager]
-    set d4 [java::cast ptolemy.domains.sdf.kernel.TMDirector [$d2 clone $w]]
+    set d4 [java::cast ptolemy.domains.tm.kernel.TMDirector [$d2 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
 } {.Manager}
 
+# Get a parameter by name, properly cast to Parameter.
+#
+proc getParameter {namedobj paramname} {
+    set p [$namedobj getAttribute $paramname]
+    return [java::cast ptolemy.data.expr.Parameter $p]
+}
+
+# Create an TM model with no actors in it and return it.
+# The optional argument sets the stop time for the execution.
+# It defaults to 1.0.
+#
+proc tmModel {{stopTime 1.}} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set manager [java::new ptolemy.actor.Manager]
+    $e0 setName top
+    $e0 setManager $manager
+    set director \
+            [java::new ptolemy.domains.tm.kernel.TMDirector $e0 TMDirector]
+
+    set stopparam [getParameter $director stopTime]
+    $stopparam setToken [java::new ptolemy.data.DoubleToken $stopTime];
+
+    return $e0
+}
+
+
+
 ######################################################################
 ####
 #
-test TMDirector-4.1 {Test _makeDirectorOf} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
-    set manager [java::new ptolemy.actor.Manager $w Manager]
-    set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
-    $e0 setName E0
-    set d3 [java::new ptolemy.domains.sdf.kernel.TMDirector $e0 D3]
-    set e1 [java::new ptolemy.actor.TypedCompositeActor $w]
-    $e1 setName E1
-    $e1 setManager $manager
-    $e1 setDirector $d3
-    list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {.E1.D3 .D4 {.E0 .E1}}
+test TMDirector-4.1 {addScheduleListener} {
+    set e0 [tmModel]
+    set d4 [java::cast ptolemy.domains.tm.kernel.TMDirector [$e0 getDirector]]
 
-######################################################################
-####
-#
-test TMDirector-5.1 {Test action methods} {
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
-    $e1 connect [java::field $a1 output] [java::field $a2 input] R1
-    set iter [$d3 getAttribute iterations]
+    # No listeners have been added, and no scheduler is present
+    set listener [java::new ptolemy.domains.tm.kernel.test.TestScheduleListener]
+    # Try remove when there are no ScheduleListeners added yet
+    $d4 removeScheduleListener $listener
 
-    # _testSetToken is defined in $PTII/util/testsuite/testParams.tcl
-    _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
+    $d4 addScheduleListener $listener
 
-    $manager run
-    list [$a2 getHistory]
-} {{0
-1
-2
-3
-4
-5
-}}
+    # Try adding it twice
+    $d4 addScheduleListener $listener
+    set r1 [$listener getEvents]
+    $listener event "foo" 1.0 1
+    
+    # Remove the listener
+    $d4 removeScheduleListener $listener
+    $listener event "bar" 2.0 2
 
-test TMDirector-5.2 {Test action methods} {
-    # NOTE: Uses the setup above
-    set e1 [java::new ptolemy.actor.TypedCompositeActor $w]
-    set d3 [java::new ptolemy.domains.sdf.kernel.TMDirector $e1 D3]
-    $e1 setName E0
-    $e1 setManager $manager
-    $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $e1 Delay]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
-    $e1 connect [java::field $a1 output] [java::field $a2 input] R1
-    $e1 connect [java::field $a2 output] [java::field $a3 input] R2
-    set iter [$d3 getAttribute iterations]
-    _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
-    $manager run
-    list [$a3 getHistory]
-} {{0
-1
-2
-3
-4
-5
-}}
-
-test TMDirector-5.3 {Test action methods} {
-    # NOTE: Uses the setup above
-    set e1 [java::new ptolemy.actor.TypedCompositeActor $w]
-    set d3 [java::new ptolemy.domains.sdf.kernel.TMDirector $e1 D3]
-    $e1 setName E0
-    $e1 setManager $manager
-    $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestSplit $e1 Dist]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer1]
-    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer2]
-    $e1 connect [java::field $a1 output] [java::field $a2 input] R1
-    $e1 connect [java::field $a2 output1] [java::field $a3 input] R2
-    $e1 connect [java::field $a2 output2] [java::field $a4 input] R3
-    set iter [$d3 getAttribute iterations]
-    _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
-
-#set debugger [java::new ptolemy.kernel.util.StreamListener]
-#$d3 addDebugListener $debugger
-#set scheduler [$d3 getScheduler]
-#$scheduler addDebugListener $debugger
-
-    $manager run
-    list [$a3 getHistory] [$a4 getHistory]
-} {{0
-2
-4
-6
-8
-10
-} {1
-3
-5
-7
-9
-11
-}}
-
-test TMDirector-5.4 {Test action methods} {
-    # NOTE: Uses the setup above
-    set e1 [java::new ptolemy.actor.TypedCompositeActor $w]
-    set d3 [java::new ptolemy.domains.sdf.kernel.TMDirector $e1 D3]
-    $e1 setName E0
-    $e1 setManager $manager
-    $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestSplit $e1 Dist]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestJoin $e1 Comm]
-    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer1]
-    $e1 connect [java::field $a1 output] [java::field $a2 input] R1
-    $e1 connect [java::field $a2 output1] [java::field $a3 input1] R2a
-    $e1 connect [java::field $a2 output2] [java::field $a3 input2] R2d
-    $e1 connect [java::field $a3 output] [java::field $a4 input] R3
-    set iter [$d3 getAttribute iterations]
-    _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
-    $manager run
-    list [$a4 getHistory]
-} {{0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
+    set r2 [$listener getEvents]
+    list $r1 $r2
+} {{} {foo	1.0	1
+bar	2.0	2
 }}
 
 ######################################################################
 ####
 #
-test TMDirector-6.1 {Test wormhole activation} {
-    # NOTE: Uses the setup above
-    set e1 [java::new ptolemy.actor.TypedCompositeActor $w]
-    set d3 [java::new ptolemy.domains.sdf.kernel.TMDirector $e1 D3]
-    $e1 setName E0
-    $e1 setManager $manager
-    $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
-    set c1 [java::new ptolemy.actor.TypedCompositeActor $e1 Cont]
-    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
-    $p1 setInput 1
-    set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
-    $p2 setOutput 1
-    set d5 [java::new ptolemy.domains.sdf.kernel.TMDirector $c1 d5]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
-    $e1 connect [java::field $a1 output] $p1 R1
-    $c1 connect $p1 [java::field $a2 input] R2
-    $c1 connect [java::field $a2 output] $p2 R3
-    $e1 connect $p2 [java::field $a3 input] R4
+test TMDirector-5.1 {run a simple model } {
+    set e0 [tmModel 2.0]
+    set d5 [java::cast ptolemy.domains.tm.kernel.TMDirector [$e0 getDirector]]
 
-#set debugger [java::new ptolemy.kernel.util.StreamListener]
-#$d3 addDebugListener $debugger
-#set s3 [$d3 getScheduler]
-#$s3 addDebugListener $debugger
-#$d5 addDebugListener $debugger
-#set s5 [$d5 getScheduler]
-#$s5 addDebugListener $debugger
+    set scheduleListener \
+	[java::new ptolemy.domains.tm.kernel.test.TestScheduleListener]
+    $d5 addScheduleListener $scheduleListener
 
-    set iter [$d3 getAttribute iterations]
-    _testSetToken $iter  [java::new {ptolemy.data.IntToken int} 6]
-    $manager run
-    list [$a3 getHistory]
-} {{0
-1
-2
-3
-4
-5
+    set clock [java::new ptolemy.actor.lib.SequentialClock $e0 clock]
+
+    set ramp1 [java::new ptolemy.actor.lib.Ramp $e0 ramp1]
+    set priorityRamp1 [java::new ptolemy.data.expr.Parameter \
+			   $ramp1 "priority" \
+			   [java::new ptolemy.data.IntToken 4]]
+
+
+    set ramp2 [java::new ptolemy.actor.lib.Ramp $e0 ramp2]
+    set priorityRamp2 [java::new ptolemy.data.expr.Parameter \
+			   $ramp2 "priority" \
+			   [java::new ptolemy.data.IntToken 3]]
+
+    set rec1 [java::new ptolemy.actor.lib.Recorder $e0 rec1]
+    set priorityRec1 [java::new ptolemy.data.expr.Parameter \
+			   $rec1 "priority" \
+			   [java::new ptolemy.data.IntToken 2]]
+
+    set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]
+    set priorityRec2 [java::new ptolemy.data.expr.Parameter \
+			   $rec2 "priority" \
+			   [java::new ptolemy.data.IntToken 1]]
+
+
+
+    set relation [java::new ptolemy.actor.TypedIORelation $e0 relation]
+
+    [java::field $clock output] link $relation
+
+    [java::field [java::cast ptolemy.actor.lib.Source $ramp1] trigger] \
+	link $relation
+
+    [java::field [java::cast ptolemy.actor.lib.Source $ramp2] trigger] \
+	link $relation
+
+    $e0 connect \
+	[java::field [java::cast ptolemy.actor.lib.Source $ramp1] output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]
+
+    $e0 connect \
+	[java::field [java::cast ptolemy.actor.lib.Source $ramp2] output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
+
+    # cover debug() clause in TypedIOPort.broadcast
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set debugListener [java::new ptolemy.kernel.util.StreamListener $printStream]
+
+    $d5 addDebugListener $debugListener
+
+    [$e0 getManager] execute
+
+    $printStream flush
+    $d5 removeDebugListener $debugListener
+
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" debugOutput
+    # Only get the first 18 chars
+    set shortDebugOutput [string range "$debugOutput" 0 18]
+    list \
+	[enumToTokenValues [$rec1 getRecord 0]] \
+	[enumToTokenValues [$rec2 getRecord 0]] \
+	[$scheduleListener getEvents] \
+	$shortDebugOutput
+} {{0 1 2} {0 1 2} {	0.0	-1
+ramp2	0.0	1
+ramp1	0.0	2
+rec2	0.0	3
+rec2	0.0	1
+ramp1	0.0	3
+ramp1	0.0	1
+rec1	0.0	3
+rec1	0.0	1
+ramp2	1.0	1
+ramp1	1.0	2
+rec2	1.0	3
+rec2	1.0	1
+ramp1	1.0	3
+ramp1	1.0	1
+rec1	1.0	3
+rec1	1.0	1
+ramp2	2.0	1
+ramp1	2.0	2
+rec2	2.0	3
+rec2	2.0	1
+ramp1	2.0	3
+ramp1	2.0	1
+rec1	2.0	3
+rec1	2.0	1
+} {Updating TMDirector}}
+test TMDirector-5.2 {run a simple model with different priorities } {
+    # Uses test 5.1 above
+    $priorityRamp1 setToken [java::new ptolemy.data.IntToken 2]
+
+    [$e0 getManager] execute
+
+    # Note that ramp1 gets fired before ramp2 here
+    list \
+	[enumToTokenValues [$rec1 getRecord 0]] \
+	[enumToTokenValues [$rec2 getRecord 0]] \
+	[$scheduleListener getEvents]
+} {{0 1 2} {0 1 2} {	0.0	-1
+ramp1	0.0	1
+ramp2	0.0	2
+rec1	0.0	3
+rec1	0.0	1
+ramp2	0.0	3
+ramp2	0.0	1
+rec2	0.0	3
+rec2	0.0	1
+ramp1	1.0	1
+ramp2	1.0	2
+rec1	1.0	3
+rec1	1.0	1
+ramp2	1.0	3
+ramp2	1.0	1
+rec2	1.0	3
+rec2	1.0	1
+ramp1	2.0	1
+ramp2	2.0	2
+rec1	2.0	3
+rec1	2.0	1
+ramp2	2.0	3
+ramp2	2.0	1
+rec2	2.0	3
+rec2	2.0	1
 }}
 
-test TMDirector-6.2 {Test transparent activation} {
-    # NOTE: Uses the setup above
-    set e1 [java::new ptolemy.actor.TypedCompositeActor $w]
-    set d3 [java::new ptolemy.domains.sdf.kernel.TMDirector $e1 D3]
-    $e1 setName E0
-    $e1 setManager $manager
-    $e1 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
-    set c1 [java::new ptolemy.actor.TypedCompositeActor $e1 Cont]
-    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
-    $p1 setInput 1
-    set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
-    $p2 setOutput 1
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
-    $e1 connect [java::field $a1 output] $p1 R1
-    $c1 connect $p1 [java::field $a2 input] R2
-    $c1 connect [java::field $a2 output] $p2 R3
-    $e1 connect $p2 [java::field $a3 input] R4
+test TMDirector-5.3 {run a simple model with preemptive scheduling } {
+    set stopparam [getParameter $d5 stopTime]
+    $stopparam setToken [java::new ptolemy.data.DoubleToken 5.0];
 
-#set debugger [java::new ptolemy.kernel.util.StreamListener]
-#$d3 addDebugListener $debugger
-#set s3 [$d3 getScheduler]
-#$s3 addDebugListener $debugger
+    set preemptiveParameter [getParameter $d5 preemptive]
+    $preemptiveParameter setToken [java::new ptolemy.data.BooleanToken true];
 
-    set iter [$d3 getAttribute iterations]
-    _testSetToken $iter  [java::new {ptolemy.data.IntToken int} 6]
-    $manager run
-    list [$a3 getHistory]
-} {{0
-1
-2
-3
-4
-5
-}}
+    set defaultTaskExecutionTimeParameter \
+	[getParameter $d5 defaultTaskExecutionTime]
+    $defaultTaskExecutionTimeParameter setToken [java::new ptolemy.data.DoubleToken 1.0];
 
-######################################################################
-####
-#
-# Tests 7.* test multirate execution with hierarchy
-test TMDirector-7.1 {Multirate and Hierarchy execution tests} {
-    set manager [java::new ptolemy.actor.Manager $w Manager]
-    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
-    set director [java::new ptolemy.domains.sdf.kernel.TMDirector $toplevel Director]
-    $toplevel setName Toplevel
-    $toplevel setManager $manager
-    $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $director S]
- 
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
-    set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
-    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
-    $p1 setInput 1
-    set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
-    $p2 setOutput 1
-    set d5 [java::new ptolemy.domains.sdf.kernel.TMDirector $c1 d5]
-    $c1 setDirector $d5
-    set s5 [$d5 getScheduler]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
-    setTokenProductionRate [java::field $a2 output] 2
-    setTokenConsumptionRate [java::field $a2 input] 2
+    [$e0 getManager] execute
 
+    # Note that ramp1 gets fired before ramp2 here
+    list \
+	[enumToTokenValues [$rec1 getRecord 0]] \
+	[enumToTokenValues [$rec2 getRecord 0]] \
+	[$scheduleListener getEvents]
+} {{0 1} {} {	0.0	-1
+FIXME: KNOWN FAILURE: how come rec2 never fires?
+ramp2	0.0	2
+ramp1	0.0	3
+ramp1	1.0	1
+ramp2	1.0	2
+rec1	1.0	3
+ramp2	1.0	2
+ramp2	1.0	2
+ramp1	1.0	2
+rec1	1.0	3
+rec1	2.0	1
+ramp2	2.0	2
+ramp2	2.0	2
+ramp1	2.0	3
+ramp2	2.0	2
+ramp2	2.0	2
+ramp2	2.0	2
+ramp1	2.0	2
+ramp1	2.0	3
+ramp1	3.0	1
+ramp2	3.0	2
+ramp2	3.0	2
+ramp2	3.0	2
+rec1	3.0	2
+ramp1	3.0	3
+ramp2	3.0	2
+ramp2	3.0	2
+ramp2	3.0	2
+ramp2	3.0	2
+ramp1	3.0	2
+rec1	3.0	2
+ramp1	3.0	3
+ramp1	4.0	1
+ramp2	4.0	2
+ramp2	4.0	2
+ramp2	4.0	2
+ramp2	4.0	2
+rec1	4.0	2
+ramp1	4.0	2
+rec1	4.0	3
+ramp2	4.0	2
+ramp2	4.0	2
+ramp2	4.0	2
+ramp2	4.0	2
+ramp2	4.0	2
+ramp1	4.0	2
+rec1	4.0	2
+ramp1	4.0	2
+rec1	4.0	3
+rec1	5.0	1
+ramp2	5.0	2
+ramp2	5.0	2
+ramp2	5.0	2
+ramp2	5.0	2
+ramp2	5.0	2
+ramp1	5.0	2
+rec1	5.0	2
+ramp1	5.0	3
+ramp2	5.0	2
+ramp2	5.0	2
+ramp2	5.0	2
+ramp2	5.0	2
+ramp2	5.0	2
+ramp2	5.0	2
+ramp1	5.0	2
+ramp1	5.0	2
+rec1	5.0	2
+ramp1	5.0	3
+}} {KNOWN FAILURE: how come rec2 never fires?}
 
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
-    $toplevel connect [java::field $a1 output] $p1 R1
-    $c1 connect $p1 [java::field $a2 input] R2
-    $c1 connect [java::field $a2 output] $p2 R3
-    $toplevel connect $p2 [java::field $a3 input] R4
-
-    set iter [$director getAttribute iterations]
-    $director invalidateSchedule
-    $s5 setValid false
-
-    _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
-    $manager run
-    list [$a3 getHistory]
-} {{0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-}}
