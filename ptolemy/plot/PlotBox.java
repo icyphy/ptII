@@ -1984,7 +1984,7 @@ public class PlotBox extends Panel {
      * As a result, we don't use java.text.NumberFormat, instead
      * We use the method from Ptplot3.1
      */
-    private String _formatNum (double num, int numfracdigits) {
+    private String _formatNum(double num, int numfracdigits) {
         // When java.text.NumberFormat works under Netscape,
         // uncomment the next block of code and remove
         // the code after it.
