@@ -110,7 +110,9 @@ public class EntityController extends LocatableNodeController {
 	// entity.
 	Filter portFilter = new Filter() {
 	    public boolean accept(Object o) {
-		if(o instanceof Port) {
+		GraphModel model = getController().getGraphModel();
+		if(o instanceof Port &&
+		   model.getParent(o) instanceof Icon) {
 		    return true;
 		} else {
 		    return false;
