@@ -49,15 +49,15 @@ public class CGCWindow extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
-     *  @param name The name of this adder within the container.
+     *  @param adderName The name of this adder within the container.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public CGCWindow(CompositeEntity container, String name)
+    public CGCWindow(CompositeEntity container, String adderName)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super(container, adderName);
 
         // Name of the window function to generate:\nRectangle, Bartlett, Hanning, Hamming, Kaiser, Blackman, or SteepBlackman.
         name = new Parameter(this, "name");
