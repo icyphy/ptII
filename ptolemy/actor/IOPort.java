@@ -31,6 +31,8 @@
 package pt.kernel;
 
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
+import pt.domains.pn.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPort
@@ -102,7 +104,8 @@ public abstract class IOPort extends ComponentPort {
      *  if the port is not an input port.
      *  @exception IllegalActionException Port is not an input.
      */	
-    public abstract Token get() throws IllegalActionException;
+    public abstract Token get() throws NoSuchElementException, 
+	    IllegalActionException;
 
     /** Return true if the port is an input.  An input port is one
      *  that is capable of receiving tokens from another port 
@@ -151,8 +154,8 @@ public abstract class IOPort extends ComponentPort {
      *   and there is more than one destination.
      *  @exception IllegalActionException The port is not an output port.
      */	
-    public void put(Token token) 
-           throws CloneNotSupportedException, IllegalActionException {
+    public void put(Token token) throws 
+	    CloneNotSupportedException, IllegalActionException {
         if (!isOutput()) {
             throw new IllegalActionException(this,
                    "Attempt to send data from a port that is not an output.");
@@ -171,6 +174,41 @@ public abstract class IOPort extends ComponentPort {
             }
         }
     }
+
+    /** Send a token to all ports connected through the specified relation
+     *  that identify themselves as input ports.  
+     *  The transfer is accomplished by calling the receive()
+     *  method of the destination ports.  If there is more than one
+     *  destination port, then clone the token so that each destination
+     *  receives a distinct instance of the token.  The first recipient
+     *  will receive the instance that is passed as an argument here.
+     *  @param token The token to send
+     *  @param relation The ports connected only through this relation are 
+     *  considered.
+     *  @exception CloneNotSupportedException The token cannot be cloned
+     *   and there is more than one destination.
+     *  @exception IllegalActionException The port is not an output port.
+     */	
+    public void put(Token token, IORelation relation) throws 
+	    CloneNotSupportedException, IllegalActionException {
+        if (!isOutput()) {
+            throw new IllegalActionException(this,
+                   "Attempt to send data from a port that is not an output.");
+        }
+        Enumeration ports = relation.deepGetLinkedPorts();
+        boolean first = true;
+        while( ports.hasMoreElements() ) {
+            IOPort port = (IOPort)ports.nextElement();
+            if (port.isInput()) {
+                if (first) {
+                    port.receive(token);
+                    first = false;
+                } else {
+                    port.receive((Token)(token.clone()));
+                }
+            }
+        }
+    }    
 
     /** Receive a token from another port.  Different implementations
      *  of this method will react differently if, for example, there
