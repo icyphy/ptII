@@ -41,6 +41,7 @@ import ptolemy.caltrop.actors.CalInterpreter;
 import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import caltrop.interpreter.Context;
@@ -204,7 +205,6 @@ public class SDF extends AbstractDDI implements DDI {
         for (Iterator iterator = ioPorts.iterator(); iterator.hasNext();) {
             IOPort ioPort = (IOPort) iterator.next();
             Object o = ioPort.getAttribute(varName);
-
             if (o != null) {
                 if (o instanceof Variable) {
                     try {
@@ -223,7 +223,7 @@ public class SDF extends AbstractDDI implements DDI {
             }
 
             try {
-                new Variable(ioPort, varName,
+                new Parameter(ioPort, varName,
                         new IntToken(((Integer) rateMap
                                              .get(ioPort.getName())).intValue()));
             } catch (IllegalActionException ex) {
@@ -455,7 +455,6 @@ public class SDF extends AbstractDDI implements DDI {
         // FIXMELATER: state transition and potentially rollback
         try {
             if (_actorInterpreter.currentAction() == null) {
-
                 // This point is reached iff this is not the first fire()
                 // call of this iteration.
                 // Hence we could put rollback work here.
@@ -559,7 +558,7 @@ public class SDF extends AbstractDDI implements DDI {
 
     public boolean postfire() throws IllegalActionException {
     	_commitInputChannels();
-        return false;
+        return true;
     }
 
     /**
