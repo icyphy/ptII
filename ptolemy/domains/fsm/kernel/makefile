@@ -73,7 +73,10 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'FSMDirector$$1.class' \
+	'InterfaceAutomaton$$1.class' \
+	'InterfaceAutomaton$$Triple.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
