@@ -65,8 +65,10 @@ import soot.jimple.InvokeStmt;
 import soot.jimple.LengthExpr;
 import soot.jimple.NewArrayExpr;
 import soot.jimple.NewExpr;
+import soot.jimple.NewMultiArrayExpr;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
+import soot.jimple.UnopExpr;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
@@ -889,6 +891,24 @@ public class TypeSpecializerAnalysis {
             }
             // Otherwise there is nothing to be done.
             return null;
+        } else if (value instanceof NewMultiArrayExpr) {
+            // Since arrays are aliasable, we must update their types.
+            NewMultiArrayExpr newExpr = (NewMultiArrayExpr)value;
+            Type type = newExpr.getBaseType();
+            RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
+            if (tokenType != null && objectToInequalityTerm.get(newExpr) == null) {
+                InequalityTerm typeTerm = new VariableTerm(
+                        PtolemyUtilities.getTokenTypeForSootType(tokenType),
+                        newExpr);
+                // This is something we update, so put an entry
+                // in the map used for updating
+                objectToInequalityTerm.put(newExpr, typeTerm);
+                // Then the value of the expression is the type of the
+                // constructor.
+                return typeTerm;
+            }
+            // Otherwise there is nothing to be done.
+            return null;
         } else if (value instanceof FieldRef) {
             FieldRef r = (FieldRef)value;
             // Field references have the type of the field.
@@ -916,6 +936,7 @@ public class TypeSpecializerAnalysis {
             return (InequalityTerm)objectToInequalityTerm.get(value);
         } else if (value instanceof Constant) {
         } else if (value instanceof BinopExpr) {
+        } else if (value instanceof UnopExpr) {
         } else if (value instanceof LengthExpr) {
         } else if (value instanceof InstanceOfExpr) {
         } else {
