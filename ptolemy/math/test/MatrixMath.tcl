@@ -1437,7 +1437,7 @@ testMatrixMatrix subtract $types
 
 ######################################################################
 ####
-##  (NEW) *ArrayMath Test out double[] toComplexArray(xxx[])
+##  (NEW) *ArrayMath Test out Complex[] toComplexArray(xxx[])
 
 set types [list \
 	[list Double double double {{2.0 + 0.0i -1.0 + 0.0i}}] \
@@ -1446,6 +1446,18 @@ set types [list \
 	[list Long long long {{2.0 + 0.0i -1.0 + 0.0i}}]]
 
 testArrayMathArray toComplexArray $types
+
+######################################################################
+####
+##  (NEW) *ArrayMath Test out Complex[] toComplexMatrix(xxx[][])
+
+set types [list \
+	[list Double double double {{{2.0 + 0.0i -1.0 + 0.0i} {1.0 + 0.0i 0.0 + 0.0i}}}] \
+	[list Float float float {{{2.0 + 0.0i -1.0 + 0.0i} {1.0 + 0.0i 0.0 + 0.0i}}}] \
+	[list Integer int int {{{2.0 + 0.0i -1.0 + 0.0i} {1.0 + 0.0i 0.0 + 0.0i}}}] \
+	[list Long long long {{{2.0 + 0.0i -1.0 + 0.0i} {1.0 + 0.0i 0.0 + 0.0i}}}]]
+
+testMatrix toComplexMatrix $types
 
 ######################################################################
 ####
