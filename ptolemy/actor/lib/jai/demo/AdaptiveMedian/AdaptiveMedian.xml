@@ -19,14 +19,14 @@
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads an image, corrupts it with Salt and Pepper and then&#10;uses and adaptive media algorithm to clean up the corrupted image.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: James Yeh</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: James Yeh, Christopher Brooks</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -39,19 +39,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 300.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 888, 370}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 888, 459}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[673, 261]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[673, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.5, 130.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.5, 175.0}">
     </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/jai/demo/AdaptiveMedian/camera.png">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img/Helen256x256.png">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
         </property>
@@ -59,21 +59,21 @@
     <entity name="JAIToDoubleMatrix" class="ptolemy.actor.lib.jai.JAIToDoubleMatrix">
         <property name="normalize" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 120.0]">
         </property>
     </entity>
     <entity name="SaltAndPepper" class="ptolemy.actor.lib.jai.SaltAndPepper">
         <property name="probability" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 200.0]">
         </property>
     </entity>
     <entity name="Salt and Pepper Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={380, 232, 264, 304}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 215.0]">
         </property>
     </entity>
     <entity name="DoubleMatrixToJAI" class="ptolemy.actor.lib.jai.DoubleMatrixToJAI">
@@ -95,13 +95,13 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 215.0]">
         </property>
     </entity>
     <entity name="AdaptiveMedian" class="ptolemy.actor.lib.jai.AdaptiveMedian">
         <property name="maxWindowSize" class="ptolemy.data.expr.Parameter" value="7">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 275.0]">
         </property>
     </entity>
     <entity name="DoubleMatrixToJAI2" class="ptolemy.actor.lib.jai.DoubleMatrixToJAI">
@@ -123,29 +123,49 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 285.0]">
         </property>
     </entity>
     <entity name="Fixed Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={380, 232, 264, 304}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {594, 81, 264, 304}, maximized = false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 300.0]">
         </property>
     </entity>
     <entity name="Original Image" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={380, 232, 264, 304}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {574, 171, 264, 304}, maximized = false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 210.0]">
         </property>
     </entity>
+    <entity name="JAIBandCombine" class="ptolemy.actor.lib.jai.JAIBandCombine">
+        <property name="matrix" class="ptolemy.data.expr.Parameter" value="[0.333,0.333,0.33, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="JAIBandSelect" class="ptolemy.actor.lib.jai.JAIBandSelect">
+        <property name="bandIndices" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="Greyscale Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {574, 171, 264, 304}, maximized = false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 90.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[330.0, 120.0]">
+        <vertex name="vertex1" value="[370.0, 215.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -158,8 +178,14 @@
         <vertex name="vertex1" value="[110.0, 120.0]">
         </vertex>
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[365.0, 120.0]">
+        </vertex>
+    </relation>
     <link port="JAIImageReader.output" relation="relation"/>
-    <link port="JAIToDoubleMatrix.input" relation="relation"/>
+    <link port="JAIToDoubleMatrix.input" relation="relation8"/>
     <link port="JAIToDoubleMatrix.output" relation="relation2"/>
     <link port="SaltAndPepper.input" relation="relation2"/>
     <link port="SaltAndPepper.output" relation="relation3"/>
@@ -172,4 +198,9 @@
     <link port="DoubleMatrixToJAI2.output" relation="relation6"/>
     <link port="Fixed Image Display.input" relation="relation6"/>
     <link port="Original Image.input" relation="relation"/>
+    <link port="JAIBandCombine.input" relation="relation"/>
+    <link port="JAIBandCombine.output" relation="relation7"/>
+    <link port="JAIBandSelect.input" relation="relation7"/>
+    <link port="JAIBandSelect.output" relation="relation8"/>
+    <link port="Greyscale Image Display.input" relation="relation8"/>
 </entity>

@@ -47,8 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	AdaptiveMedian.xml \
-	camera.png
+	AdaptiveMedian.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
