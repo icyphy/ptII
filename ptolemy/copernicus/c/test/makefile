@@ -54,7 +54,6 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	Simple.tcl
 
-
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
@@ -107,18 +106,18 @@ Object:
 
 # Generate C code under single class mode for a simple class 
 Simple:
-		rm -f Simple.class Simple.c Simple.h Simple.i.h Simple.o; \
-		echo "Generating the class file ..."; \
-		javac Simple.java; \
-		echo "Translating the class file to C ..."
-		CLASSPATH="$(CLASSPATH)" \
+	rm -f Simple.class Simple.c Simple.h Simple.i.h Simple.o
+	@echo "Generating the class file ..."
+	javac Simple.java
+	@echo "Translating the class file to C ..."
+	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) -Dj2c_lib=\j2c_lib ptolemy.copernicus.c.JavaToC \
-		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" -singleClass Simple; \
-		echo "Compiling the generated C with 'gcc -c'..."; \
-		gcc -c -I../runtime Simple.c; \
-        echo "Compilation finished."; \
-        echo "The generated source files are Simple.c, Simple.i.h, and ";\
-        echo "Simple.h. The resulting object file is Simple.o"
+		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" -singleClass Simple
+	@echo "Compiling the generated C with 'gcc -c'..."
+	gcc -c -I../runtime Simple.c
+	@echo "Compilation finished."
+	@echo "The generated source files are Simple.c, Simple.i.h, and "
+	@echo "Simple.h. The resulting object file is Simple.o"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
