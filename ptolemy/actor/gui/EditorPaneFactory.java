@@ -31,6 +31,7 @@
 package ptolemy.actor.gui;
 
 // Ptolemy imports.
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.gui.style.*;
@@ -48,7 +49,7 @@ import javax.swing.JPanel;
 This is an attribute that can create a pane (called a "configuration
 widget") for interactively configuring its container.  This attribute
 is used by an instance of Configurer.
-
+<p>
 In this base class, the createEditorPane() method creates an
 instance of PtolemyQuery with one entry for each parameter in
 the container. This is the default mechanism
@@ -83,10 +84,16 @@ public class EditorPaneFactory extends Attribute {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
-        // FIXME PtolemyQuery will attach listeners to parameters.  How do
-        // they get removed?
-        PtolemyQuery query = new PtolemyQuery();
+        // Find a change handler for the PtolemyQuery by walking up the
+        // hierarchy until we find a composite entity.
+        Nameable handler = getContainer();
+        while (handler != null && !(handler instanceof CompositeEntity)) {
+            handler = handler.getContainer();
+        }
+        PtolemyQuery query = new PtolemyQuery((CompositeEntity)handler);
+
         query.setTextWidth(25);
+
         NamedObj container = (NamedObj)getContainer();
         Iterator params
             = container.attributeList(Parameter.class).iterator();
@@ -97,6 +104,7 @@ public class EditorPaneFactory extends Attribute {
 	    query.addStyledEntry(param);
         }
         if (!foundOne) {
+            // FIXME: Need a button to add parameters.
             return new JLabel(container.getName() + " has no parameters.");
         }
         return query;

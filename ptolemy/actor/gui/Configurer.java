@@ -53,7 +53,7 @@ are instances of EditorPaneFactory, then the panes made by those
 factories are stacked vertically in this panel.  Otherwise, a
 single instance of EditorPaneFactory is created and used to
 construct an editor.
-
+<p>
 The restore() method restores the values of the parameters of the
 object to their values when this object was created.  This can be used
 in a modal dialog to implement a cancel button, which restores
@@ -92,6 +92,9 @@ public class Configurer extends JPanel {
             add(editor.createEditorPane());
         }
         if (!foundOne) {
+            // FIXME: I believe this is where we get an error if we
+            // try to edit parameters in an already executing model,
+            // unless the editor pane has already been created.  EAL.
             try {
                 EditorPaneFactory editor = new EditorPaneFactory(object,
                         object.uniqueName("editorFactory"));
