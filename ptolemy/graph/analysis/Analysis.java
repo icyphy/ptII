@@ -108,7 +108,7 @@ abstract public class Analysis {
      *  derived classes in which issues of incompatability may arise.
      *
      *  @param graph The given graph.
-     *  @return True if the anlysis is compatible with the given graph.
+     *  @return True if the analysis is compatible with the given graph.
      */
     public boolean compatible(Graph graph) {
         return true;
