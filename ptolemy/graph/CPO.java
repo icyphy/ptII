@@ -34,7 +34,7 @@ import java.util.*;
 //// Cpo
 /**
 An interface for Complete Partial Order(CPO). 
-Please see "Introduction to Lattices and Orders" by Davey and Priestley
+Please see "Introduction to Lattices and Order" by Davey and Priestley
 for definition of operations.
 
 @author Yuhong Xiong
@@ -68,7 +68,7 @@ public interface Cpo
      *  @return An object representing the LUB of the subset.
      *  <code>null</code> if the LUB doesn't exist.
      *  @exception IllegalArgumentException at least one element
-     *  in the subset doesn't belong to this CPO.
+     *   in the subset doesn't belong to this CPO.
      */
     public Object lub(Object[] subset);
     
@@ -76,9 +76,9 @@ public interface Cpo
      *  @param e1 an object representing an element in this CPO.
      *  @param e2 another object representing an elemnet in this CPO.
      *  @return An object representing the GLB of the two specified
-     *  elements.  <code>null</code> if the GLB doesn't exist.
+     *   elements.  <code>null</code> if the GLB doesn't exist.
      *  @exception IllegalArgumentException at least one element
-     *  doesn't belong to this CPO.
+     *   doesn't belong to this CPO.
      */
     public Object glb(Object e1, Object e2);
     
@@ -94,27 +94,27 @@ public interface Cpo
     /** Computes the least element of a subset.
      *  @param subset an array of objects representing the subset.
      *  @return an object representing the least element of the subset.
-     *  <code>null</code> if the least element doesn't exist.
+     *   <code>null</code> if the least element doesn't exist.
      *  @exception IllegalArgumentException at least one element in the
-     *  subset doesn't belong to this CPO.
+     *   subset doesn't belong to this CPO.
      */
     public Object leastElement(Object[] subset);
     
     /** Computes the greatest element of a subset.
      *  @param subset an array of objects representing the subset.
      *  @return an object representing the greatest element of the subset.
-     *  <code>null</code> if the greatest element doesn't exist.
+     *   <code>null</code> if the greatest element doesn't exist.
      *  @exception IllegalArgumentException at least one element in the
-     *  subset doesn't belong to this CPO.
+     *   subset doesn't belong to this CPO.
      */
     public Object greatestElement(Object[] subset);
 
     /** Computes the up-set of an element in this CPO.
      *  @param e an Object representing an element in this CPO.
      *  @return an array of of objects representing the elements in the
-     *  up-set of the input.
+     *   up-set of the input.
      *  @exception IllegalArgumentException the specified object doesn't
-     *  belong to this CPO.
+     *   belong to this CPO.
      */
      // FIXME: up-set may be infinite for infinite CPOs.  move this to
      // FiniteCpo class?
@@ -123,9 +123,9 @@ public interface Cpo
      /** Computes the down-set of an element in this CPO.
       *  @param e an Object representing an element in this CPO.
       *  @return an array of of objects representing the elements in the
-      *  down-set of the input.
+      *   down-set of the input.
       *  @exception IllegalArgumentException the specified object doesn't
-      *  belong to this CPO.
+      *   belong to this CPO.
       */
       // FIXME: down-set may be infinite for infinite CPOs.  move this to
       // FiniteCpo class?
