@@ -1,6 +1,6 @@
 /* An actor that outputs the average of the input array.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,6 +56,7 @@ exception will be thrown in the fire() method.
 
 @author Mark Oliver and Edward A. Lee
 @version $ID: ArrayAverage.java,v0.1 2003/07/01
+@since Ptolemy II 3.0.2
 */
 
 public class ArrayAverage extends Transformer {
@@ -76,7 +77,11 @@ public class ArrayAverage extends Transformer {
         input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         ArrayType inputArrayType = (ArrayType)input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        // FIXME: Oddly, we no longer need to set the output type.
+        // If we do, then the clone tests in ptolemy/configs/test
+        // report that this has the same constraint twice and clone
+        // has it only once?
+        //output.setTypeAtLeast(elementTerm);
     }
 
     ///////////////////////////////////////////////////////////////////

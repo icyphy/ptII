@@ -83,7 +83,11 @@ public class ArrayElement extends Transformer {
         input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         ArrayType inputArrayType = (ArrayType)input.getType();
         InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
+        // FIXME: Oddly, we no longer need to set the output type.
+        // If we do, then the clone tests in ptolemy/configs/test
+        // report that this has the same constraint twice and clone
+        // has it only once?
+        //output.setTypeAtLeast(elementTerm);
 
         // Set parameters.
         index = new PortParameter(this, "index");
