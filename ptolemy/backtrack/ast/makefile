@@ -62,6 +62,7 @@ JSRCS = \
 	ASTResolutionException.java \
 	ASTRuntimeException.java \
 	LocalClassLoader.java \
+	Transformer.java \
 	Type.java \
 	TypeAnalyzer.java \
 	TypeAnalyzerState.java \
