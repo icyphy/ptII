@@ -203,24 +203,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 	// FIXME hack
     }
 
-    /** Return a true or false to indicate whether there is a read block
-     *  on this receiver or not, respectively.
-     *  @return a boolean indicating whether a read is blocked on this
-     *  receiver or not.
-     */
-    public synchronized boolean isReadBlocked() {
-	return _readBlocked;
-    }
-
-    /** Return a true or false to indicate whether there is a write block
-     *  on this receiver or not.
-     *  @return A boolean indicating whether a write is blocked  on this
-     *  receiver or not.
-     */
-    public synchronized boolean isWriteBlocked() {
-	return _writeBlocked;
-    }
-
     /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is contained
      *  by a composite actor. If this receiver is connected to the inside
@@ -263,6 +245,16 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 	return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
+    /** This class serves as an example of a ConsumerReceiver and
+     *  hence this method returns true;
+     */
+    public boolean isConsumerReceiver() {
+        if( isConnectedToBoundary() ) {
+             return true;
+        }
+    	return false;
+    }
+
     /** Return true if this receiver is contained on the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
@@ -289,10 +281,37 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 	 return _boundaryDetector.isOutsideBoundary();
      }
 
+    /** This class serves as an example of a ProducerReceiver and
+     *  hence this method returns true;
+     */
+    public boolean isProducerReceiver() {
+        if( isOutsideBoundary() || isInsideBoundary() ) {
+            return true;
+        }
+    	return false;
+    }
+
+    /** Return a true or false to indicate whether there is a read block
+     *  on this receiver or not, respectively.
+     *  @return a boolean indicating whether a read is blocked on this
+     *  receiver or not.
+     */
+    public synchronized boolean isReadBlocked() {
+	return _readBlocked;
+    }
+
+    /** Return a true or false to indicate whether there is a write block
+     *  on this receiver or not.
+     *  @return A boolean indicating whether a write is blocked  on this
+     *  receiver or not.
+     */
+    public synchronized boolean isWriteBlocked() {
+	return _writeBlocked;
+    }
+
     /**
      */
-    public synchronized void prepareToBlock(Branch branch) 
-            throws TerminateBranchException {
+    public synchronized void prepareToBlock(Branch branch) {
         if( branch != null ) {
             branch.registerRcvrBlocked(this);
             _otherBranch = branch;
