@@ -163,6 +163,11 @@ System.out.println(choAndReceiver.getInfo());
 System.out.println("finish " + i + "th philosopher/chopstick pair");
 System.out.println(phiCho[i].getInfo());
 
+            phiCho[i].combineInternalTransitions();
+
+System.out.println("finish " + i + "th philosopher/chopstick pair, after combine internals");
+System.out.println(phiCho[i].getInfo());
+
         }
 
         // compose all philosopher/chopstick pairs.
