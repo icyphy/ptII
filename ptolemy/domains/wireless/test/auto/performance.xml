@@ -21,14 +21,12 @@
         </property>
         <property name="randomizeLocations" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="range" class="ptolemy.data.expr.Parameter" value="{{0.0, 500.0}, {0.0, 500.0}}">
-        </property>
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={112, 1, 917, 765}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={53, 1, 917, 765}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[702, 649]">
     </property>
@@ -49,7 +47,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 10.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -72,14 +70,33 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 565.0">
         </property>
     </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">12/26/03: 4.3 seconds
+12/26/03: With type constraint optimization: 4.1 seconds.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 30.0">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{351.0, 324.5}">
+    </property>
     <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=400.0}">
-        </property>
-        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
-        </property>
-        <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 45.0">
         </property>
@@ -109,12 +126,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -126,12 +137,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -140,26 +145,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -191,12 +179,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -208,12 +190,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -222,26 +198,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -273,12 +232,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -290,12 +243,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -304,26 +251,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -355,12 +285,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -372,12 +296,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -386,26 +304,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -437,12 +338,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -454,12 +349,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -468,26 +357,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -519,12 +391,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -536,12 +402,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -550,26 +410,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -601,12 +444,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -618,12 +455,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -632,26 +463,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -683,12 +497,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -700,12 +508,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -714,26 +516,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -765,12 +550,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -782,12 +561,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -796,26 +569,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -847,12 +603,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -864,12 +614,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -878,26 +622,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -929,12 +656,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -946,12 +667,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -960,26 +675,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1011,12 +709,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -1028,12 +720,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -1042,26 +728,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1093,12 +762,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -1110,12 +773,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -1124,26 +781,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1175,12 +815,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -1192,12 +826,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -1206,26 +834,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1257,12 +868,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -1274,12 +879,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -1288,26 +887,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1339,12 +921,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -1356,12 +932,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -1370,26 +940,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1421,12 +974,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -1438,12 +985,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -1452,26 +993,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1503,12 +1027,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -1520,12 +1038,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -1534,26 +1046,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1585,12 +1080,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -1602,12 +1091,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -1616,26 +1099,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1667,12 +1133,6 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -1684,12 +1144,6 @@
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -1698,26 +1152,9 @@
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-            </property>
-            <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 215.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>

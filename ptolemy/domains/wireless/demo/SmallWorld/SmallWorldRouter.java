@@ -1,4 +1,4 @@
-/* A actor that route a message via a short path.
+/* A actor that routes a message via a short path.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -49,7 +49,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.wireless.kernel.ModelTopology;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -66,7 +65,7 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 /**
 This actor implements a routing algrithm to route a message to the destination
 via a short path based only on local information. It assumes that it knows which
-node is connected to it and the location of that node. It also assumes that the
+nodes are in range and the location of that node. It also assumes that the
 location of the destination is known. Based on this information, it finds the
 node that is closest to the destination from its connected node set.
 <p>
@@ -207,8 +206,8 @@ public class SmallWorldRouter extends TypedAtomicActor {
     public WirelessIOPort output;
     
     /** This port is for analysis uses. When the destination node 
-     *  receives the massage, it output an int token to indicate
-     *  how many hops from the source. 
+     *  receives the message, it outputs an int token to indicate
+     *  how many hops from the source.
      */
     public WirelessIOPort test;
 
@@ -253,13 +252,13 @@ public class SmallWorldRouter extends TypedAtomicActor {
      */
     public Parameter seed;
     
-    /** If ture, then this actor will also route the message to the node that
+    /** If true, then this actor will also route the message to the node that
      *  is the second closest to the destination among all its connected nodes.
      *  FIXME: This is still under experiment. The issue I try to address is that
-     *  some link may fails and long links may fail with higher probability. If so,
-     *  route a message to two pathes may improve the hit probability. However, this
+     *  some links may fail and long links may fail with higher probability. If so,
+     *  routing a message to two paths may improve the hit probability. However, this
      *  will also cost more energy and also lower the capacity of the network.
-     *  There is a trade off. A simple ides is to use a threshold to control the 
+     *  There is a tradeoff. A simple idea is to use a threshold to control the 
      *  exponentially increased branches. For example, with a threshold equals 2, 
      *  it only route to two pathes for the first hop.
      */
@@ -267,6 +266,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
     /** Check whether it is the destination of the massage, if so,
      *  change the color of the icon to red and schedule
      *  another firing after 1.0 time unit to change it back to white.

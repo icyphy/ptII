@@ -39,7 +39,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.wireless.kernel.WirelessChannel;
+import ptolemy.domains.wireless.kernel.AtomicWirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.domains.wireless.kernel.WirelessReceiver;
 import ptolemy.kernel.CompositeEntity;
@@ -76,7 +76,7 @@ to provide some other notion of distance.
 @author Edward A. Lee
 @version $Id$
 */
-public class ErasureChannel extends WirelessChannel {
+public class ErasureChannel extends AtomicWirelessChannel {
 
     /** Construct a channel with the given name and container.
      *  The container argument must not be null, or a

@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 6, 897, 761}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 3, 897, 761}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 645]">
     </property>
@@ -26,10 +26,10 @@ The receiver will correctly receive a signal
 if the signal to interference ratio is 3dB
 or better, meaning that the received signal
 has at least twice the power of the
-interfering signal.  When Transmitter2 is
+interfering signal.  When Transmitter1 is
 far away from the receiver, it cannot
 interfere with the tranmission of
-Transmitter1.  However, when it gets close,
+Transmitter0.  However, when it gets close,
 it can.
 
 The upper plot shows the received power
@@ -43,10 +43,10 @@ than twice the power of the interferer.
 
 The lower plot shows which messages were
 received and which were lost.  The messages
-from Transmitter2 will always be lost if
-they collide with messages from Transmitter1.
-However, messages from Transmitter1 can only
-be lost when Transmitter2 is close to the
+from Transmitter1 will always be lost if
+they collide with messages from Transmitter0.
+However, messages from Transmitter0 can only
+be lost when Transmitter1 is close to the
 Receiver.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -66,7 +66,7 @@ Receiver.</text></svg></configure>
     <property name="model ID" class="ptolemy.kernel.attributes.IDAttribute">
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Dec 24, 2003 12:56:49 PM">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Dec 26, 2003 11:46:56 AM">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="name">
@@ -77,13 +77,17 @@ Receiver.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 590.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{341.0, 322.5}">
+    </property>
     <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Infinity, power=Infinity, duration=1.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 35.0">
         </property>
     </entity>
-    <entity name="Transmitter1" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+    <entity name="Transmitter0" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 50.0">
             </property>
@@ -412,7 +416,11 @@ displays.</text></svg></configure>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter1, Transmitter2">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter0, Transmitter1">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 306, 477, 241}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[469, 186]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 145.0">
             </property>
@@ -466,9 +474,13 @@ displays.</text></svg></configure>
         <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter1, Transmitter2">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter0, Transmitter1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="725.0, 385.0">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 549, 508, 215}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 160]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 355.0">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -733,10 +745,6 @@ displays.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="605.0, 355.0">
             </property>
         </entity>
-        <entity name="Discard2" class="ptolemy.actor.lib.Discard">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="700.0, 315.0">
-            </property>
-        </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <doc>Create a constant sequence</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -801,12 +809,10 @@ displays.</text></svg></configure>
             <vertex name="vertex1" value="475.0, 245.0">
             </vertex>
         </relation>
-        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="655.0, 400.0">
+            <vertex name="vertex1" value="665.0, 380.0">
             </vertex>
         </relation>
         <relation name="relation19" class="ptolemy.actor.TypedIORelation">
@@ -848,11 +854,9 @@ displays.</text></svg></configure>
         <link port="Merge.input" relation="relation14"/>
         <link port="Merge.output" relation="relation15"/>
         <link port="Switch3.input" relation="relation21"/>
-        <link port="Switch3.output" relation="relation16"/>
         <link port="Switch3.output" relation="relation17"/>
         <link port="Switch3.output" relation="relation18"/>
         <link port="Switch3.control" relation="relation15"/>
-        <link port="Discard2.input" relation="relation16"/>
         <link port="Const.output" relation="relation19"/>
         <link port="Const.trigger" relation="relation13"/>
         <link port="Const2.output" relation="relation20"/>
@@ -861,7 +865,7 @@ displays.</text></svg></configure>
         <link port="Merge2.input" relation="relation20"/>
         <link port="Merge2.output" relation="relation21"/>
     </entity>
-    <entity name="Transmitter2" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+    <entity name="Transmitter1" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
             </property>

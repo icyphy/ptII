@@ -54,6 +54,7 @@ JSRCS = \
 	GraphicalLocator.java \
 	LimitedRangeChannel.java \
 	Locator.java \
+	NodeRandomizer.java \
 	PowerLossChannel.java \
 	Triangulator.java \
 	WiredToWireless.java \

@@ -147,6 +147,11 @@ and marks any message subjected to a collision by this arrival.
 When the duration expires, the message is produced on one of the
 two outputs depending on whether it is marked as having encountered
 a collision, and it is removed from the hash table.
+<p>
+NOTE: This actor assumes that the duration of messages is short
+relative to the rate at which the actors move. That is, the received
+power (and whether a receiver is in range) is determined once, at the
+time the message starts, and remains constant throughout the transmission.
 
 @author Yang Zhao, Xiaojun Liu, Edward Lee
 @version $Id$

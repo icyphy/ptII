@@ -48,6 +48,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AtomicWirelessChannel.java \
+	ChannelPort.java \
 	WirelessChannel.java \
 	WirelessComposite.java \
 	WirelessDirector.java \

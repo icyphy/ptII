@@ -59,7 +59,7 @@ This director is nearly identical to the DE director except that it
 creates instances of WirelessReceiver and it has
 a set of attributes that can be used to randomize the location of wireless
 nodes on each execution.  The location of each actor that is not an
-instance of WirelessChannel will be set to a random location.
+instance of AtomicWirelessChannel will be set to a random location.
 The <i>range</i> parameter is an array of arrays giving the range
 of possible values for each dimension of the location.  For example,
 if the location is in two dimensions, then range has the form
@@ -189,7 +189,7 @@ public class WirelessDirector extends DEDirector {
             Entity node = (Entity)actors.next();
 
             // Skip channels.
-            if (node instanceof WirelessMedia) {
+            if (node instanceof WirelessChannel) {
                 continue;
             }
             for (int i = 0; i < dimensions; i++) {

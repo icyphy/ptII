@@ -41,7 +41,7 @@
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows a sensor network with 25 nodes. Each node broadcast to other node in its radio range using a CSMA protocal 
 (I couldn't find a good broadcast MAC protocal for sensor nets to data, so I adapted the CSMA/CA protocol a little bit for 
 sensor nets. Please look inside "node" to see the protocol. Note that the DataCollectChannel and CollisionReportChannel 
-(both instance of WirelessChannel)are merely used for routing the ralated statistics for analysis.</text></svg></configure>
+(both instance of AtomicWirelessChannel)are merely used for routing the ralated statistics for analysis.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -429,13 +429,13 @@ sensor nets. Please look inside "node" to see the protocol. Note that the DataCo
         <link port="collisionRecord.detectTime" relation="relation5"/>
         <link port="TimedPlotter.input" relation="relation5"/>
     </entity>
-    <entity name="DataCollectChannel" class="ptolemy.domains.wireless.kernel.WirelessChannel">
+    <entity name="DataCollectChannel" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 45.0">
         </property>
     </entity>
-    <entity name="CollisionReportChannel" class="ptolemy.domains.wireless.kernel.WirelessChannel">
+    <entity name="CollisionReportChannel" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 45.0">

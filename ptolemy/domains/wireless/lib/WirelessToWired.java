@@ -36,7 +36,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.wireless.kernel.WirelessChannel;
+import ptolemy.domains.wireless.kernel.AtomicWirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -61,7 +61,7 @@ field is changed, then the type of the port will not be updated,
 and a run-time type error could occur.
 Thus, this actor assumes that these types do not change.
 If the channel has no default properties (as in the base class
-WirelessChannel), then the type of the properties port will
+AtomicWirelessChannel), then the type of the properties port will
 be undefined. If it is left disconnected, then this is fine,
 but if it is connected, then its type will need to be declared
 explicitly.
@@ -88,7 +88,7 @@ public class WirelessToWired extends TypedAtomicActor {
 
         // Create and configure the parameters.
         inputChannelName = new StringParameter(this, "inputChannelName");
-        inputChannelName.setExpression("WirelessChannel");
+        inputChannelName.setExpression("AtomicWirelessChannel");
 
         // Create and configure the ports.       
         input = new WirelessIOPort(this, "input", true, false);
@@ -117,7 +117,7 @@ public class WirelessToWired extends TypedAtomicActor {
     public WirelessIOPort input;
 
     /** Name of the input channel. This is a string that defaults to
-     *  "WirelessChannel".
+     *  "AtomicWirelessChannel".
      */
     public StringParameter inputChannelName;
 
@@ -185,8 +185,8 @@ public class WirelessToWired extends TypedAtomicActor {
         if (container != null) {
             Entity channel = container.getEntity(
                     inputChannelName.stringValue());
-            if (channel instanceof WirelessChannel) {
-                Parameter channelProperties = ((WirelessChannel)channel)
+            if (channel instanceof AtomicWirelessChannel) {
+                Parameter channelProperties = ((AtomicWirelessChannel)channel)
                         .defaultProperties;
                 // Only set up the type constraint if the type of the
                 // of the properties field is known.

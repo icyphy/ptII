@@ -26,9 +26,61 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 243, 656, 516}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={396, -5, 623, 771}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[441, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[408, 655]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">In this model, two transmitters send messages
+with duration 1.0 periodically.  The messages
+from Transmitter1 collide with every second
+message from Transmitter0, causing both messages
+to be lost.
+
+If you change the SNRThresholdInDB parameter of
+the Receiver to 3 (3dB is a factor of two in
+power), then the messages from Transmitter0
+will be successfully received despite the
+collision.
+
+If you then move Transmitter1 closer to the
+Receiver, then every second message from
+Transmitter0 will again be lost.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 270.0">
+        </property>
+    </property>
+    <property name="model ID" class="ptolemy.kernel.attributes.IDAttribute">
+        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+        </property>
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Dec 26, 2003 11:48:33 AM">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="name">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 605.0">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{204.0, 327.5}">
     </property>
     <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Infinity, power=Infinity, duration=1.0}">
@@ -36,7 +88,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 70.0">
         </property>
     </entity>
-    <entity name="Transmitter" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+    <entity name="Transmitter0" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -52,16 +104,60 @@
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 70.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 140.0">
         </property>
         <property name="power" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="duration" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="averagePeriod" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="messageValue" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 30.0">
+            </property>
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Send messages every two seconds with
+duration equal to one second.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 90.0">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <port name="output" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -73,7 +169,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 205.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 200.0">
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
@@ -86,6 +182,8 @@
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="messageValue">
+            </property>
             <doc>Create a constant sequence</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -105,7 +203,7 @@
         <link port="Const.output" relation="relation2"/>
         <link port="Const.trigger" relation="relation"/>
     </entity>
-    <entity name="Transmitter2" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+    <entity name="Transmitter1" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -121,10 +219,10 @@
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 70.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 245.0">
         </property>
         <property name="power" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -136,6 +234,47 @@
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
+        <property name="messageValue" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 40.0">
+            </property>
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">After a 2.5 second delay, send messages
+every four seconds with duration equal
+to one second</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 80.0">
+            </property>
+        </property>
         <port name="output" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PowerLossChannel">
@@ -146,7 +285,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 200.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 190.0">
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
@@ -163,11 +302,11 @@
         <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="2.5">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 200.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 190.0">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="messageValue">
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -211,7 +350,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 175.0">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 3, 1010, 596}}">
         </property>
@@ -255,6 +394,78 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 55.0">
             </property>
         </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Construct a plot with square pulses
+showing the received power over a
+time duration for each transmitter.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 0.0">
+            </property>
+        </property>
+        <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This receiver extracts the received power and message
+duration and feeds them into a CollisionDetector actor.
+This actor either ignores the message (if the received
+power is below the powerThreshold) or sends it to the
+received or collided output. It goes to the received
+output if the signal to interference ratio remains
+above SNRThresholdInDB for the entire duration of the
+message. Otherwise, it goes to the collided output.
+The rest of the actors are devoted to generating the
+displays.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 285.0">
+            </property>
+        </property>
+        <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Construct a plot showing the times
+at which messages are received and lost.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 410.0">
+            </property>
+        </property>
         <port name="input" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PowerLossChannel">
@@ -282,6 +493,10 @@
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter1, Transmitter2">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 314, 473, 219}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[465, 164]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 145.0">
             </property>
@@ -328,10 +543,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 100.0">
             </property>
         </entity>
-        <entity name="Discard" class="ptolemy.actor.lib.Discard">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 35.0">
-            </property>
-        </entity>
         <entity name="Switch2" class="ptolemy.actor.lib.Switch">
             <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 170.0">
             </property>
@@ -341,7 +552,11 @@
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter1, Transmitter2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="725.0, 385.0">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 533, 508, 234}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 179]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 355.0">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -606,10 +821,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="605.0, 355.0">
             </property>
         </entity>
-        <entity name="Discard2" class="ptolemy.actor.lib.Discard">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="700.0, 315.0">
-            </property>
-        </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <doc>Create a constant sequence</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -652,10 +863,6 @@
             <vertex name="vertex1" value="265.0, 275.0">
             </vertex>
         </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -678,12 +885,10 @@
             <vertex name="vertex1" value="490.0, 265.0">
             </vertex>
         </relation>
-        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="650.0, 385.0">
+            <vertex name="vertex1" value="670.0, 375.0">
             </vertex>
         </relation>
         <relation name="relation19" class="ptolemy.actor.TypedIORelation">
@@ -706,14 +911,10 @@
         <link port="RecordDisassembler.power" relation="relation5"/>
         <link port="RecordDisassembler.duration" relation="relation6"/>
         <link port="Switch.input" relation="relation5"/>
-        <link port="Switch.output" relation="relation7"/>
         <link port="Switch.output" relation="relation4"/>
         <link port="Switch.output" relation="relation10"/>
         <link port="Switch.control" relation="relation"/>
-        <link port="Discard.input" relation="relation7"/>
-        <link port="Discard.input" relation="relation3"/>
         <link port="Switch2.input" relation="relation6"/>
-        <link port="Switch2.output" relation="relation3"/>
         <link port="Switch2.output" relation="relation8"/>
         <link port="Switch2.output" relation="relation11"/>
         <link port="Switch2.control" relation="relation"/>
@@ -729,11 +930,9 @@
         <link port="Merge.input" relation="relation14"/>
         <link port="Merge.output" relation="relation15"/>
         <link port="Switch3.input" relation="relation21"/>
-        <link port="Switch3.output" relation="relation16"/>
         <link port="Switch3.output" relation="relation17"/>
         <link port="Switch3.output" relation="relation18"/>
         <link port="Switch3.control" relation="relation15"/>
-        <link port="Discard2.input" relation="relation16"/>
         <link port="Const.output" relation="relation19"/>
         <link port="Const.trigger" relation="relation13"/>
         <link port="Const2.output" relation="relation20"/>

@@ -78,7 +78,7 @@ public class WiredToWireless extends TypedAtomicActor {
         
         // Create and configure the parameters.
         outputChannelName = new StringParameter(this, "outputChannelName");
-        outputChannelName.setExpression("WirelessChannel");
+        outputChannelName.setExpression("AtomicWirelessChannel");
 
         // Create and configure the ports.       
         output = new WirelessIOPort(this, "output", false, true);
@@ -104,7 +104,7 @@ public class WiredToWireless extends TypedAtomicActor {
     public WirelessIOPort output;
 
     /** Name of the output channel. This is a string that defaults to
-     *  "WirelessChannel".
+     *  "AtomicWirelessChannel".
      */
     public StringParameter outputChannelName;
 

@@ -55,7 +55,7 @@
         </property>
         <port name="port" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="WirelessChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=250.0}">
             </property>
@@ -131,14 +131,14 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="WirelessChannel" class="ptolemy.domains.wireless.kernel.WirelessChannel">
+    <entity name="AtomicWirelessChannel" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 45.0">
         </property>
     </entity>
     <entity name="WirelessToWired2" class="ptolemy.domains.wireless.lib.WirelessToWired">
-        <property name="inputChannelName" class="ptolemy.data.expr.StringParameter" value="WirelessChannel">
+        <property name="inputChannelName" class="ptolemy.data.expr.StringParameter" value="AtomicWirelessChannel">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 155.0">
         </property>

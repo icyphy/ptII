@@ -97,7 +97,7 @@
         <link port="out" relation="relation"/>
         <link port="Clock.output" relation="relation"/>
     </entity>
-    <entity name="Channel" class="ptolemy.domains.wireless.kernel.WirelessChannel">
+    <entity name="Channel" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 40.0">
         </property>
     </entity>

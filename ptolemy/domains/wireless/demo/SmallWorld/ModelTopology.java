@@ -27,13 +27,14 @@
 @ProposedRating Red (sanjeev@eecs.berkeley.edu)
 @AcceptedRating Red (sanjeev@eecs.berkeley.edu)
 */
-package ptolemy.domains.wireless.kernel;
+package ptolemy.domains.wireless.demo.SmallWorld;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
+import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;

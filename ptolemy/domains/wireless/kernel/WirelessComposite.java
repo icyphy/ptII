@@ -38,7 +38,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// TypedCompositeActor
+//// WirelessComposite
 /**
 This is a composite actor for use in the wireless domain. Unlike
 the base class, this composite creates instances of WirelessIOPort

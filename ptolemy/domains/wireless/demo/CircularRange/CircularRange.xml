@@ -4,7 +4,7 @@
 <entity name="CircularRange" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 963, 757}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 5, 963, 757}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 641]">
     </property>
@@ -118,8 +118,12 @@ require physical connectivity.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 15.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{374.0, 320.5}">
+    </property>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[484.4327925502017, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[387.4666766435696, 250.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -268,11 +272,30 @@ require physical connectivity.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 260.0">
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            </entity>
+            <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+            </entity>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+            </entity>
+            <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            </entity>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Received Signals">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={728, 476, 292, 229}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={727, 525, 292, 229}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 140.0">
             </property>
