@@ -93,7 +93,7 @@ This breaks the deadlock and the execution can proceed.
 This director is capable of handling dynamic changes to the topology, 
 i.e. mutations of graphs. These mutations can be non-deterministic. In PN, 
 since the execution of a model is not centralized, it is impossible to define 
-a useful fixed point in the execution of all the active processes where 
+a useful point in the execution of all the active processes where 
 mutations can occur. Due to this, PN permits mutations
 to happen as soon as they are requested. Thus as soon as a process queues 
 mutations in PN, the director is notified and the director pauses the 

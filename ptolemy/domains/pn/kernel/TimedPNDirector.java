@@ -96,7 +96,12 @@ This breaks the deadlock and the execution can proceed.
 <p>
 A timed deadlock is when all the processes under the control of this 
 director are blocked, atleast one process is blocked on a delay (timed-block)
-and no process is blocked on a write. In such a case, the director
+and no process is blocked on a write. This director supports a notion of global
+time. All active processes that are not blocked and are executing concurrently
+are executing at the same global time. A process that wants time to advance, 
+suspends itself by calling the fireAt() method of the director and specifies 
+the time it wants to be awakened at. Time can advance only when a timed 
+deadlock occurs. In such a case, the director
 processes requests for mutations, if any. Otherwise the director advances time
 to the time when the first delay-blocked process can be awakened.
 <p>
