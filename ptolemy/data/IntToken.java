@@ -555,7 +555,10 @@ public class IntToken extends ScalarToken {
      *  @see ptolemy.data.ScalarToken#_unitString
      */
     public String toString() {
-	String unitString = _unitString();
+	String unitString = "";
+	if ( !_isUnitless()) {
+	    unitString = " * " + _unitString();
+	}
         return Integer.toString(_value) + unitString;
     }
 

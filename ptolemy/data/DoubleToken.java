@@ -645,7 +645,11 @@ public class DoubleToken extends ScalarToken {
      *  @see ptolemy.data.ScalarToken#_unitString
      */
     public String toString() {
-	String unitString = _unitString();
+	String unitString = "";
+	if ( !_isUnitless()) {
+	    unitString = " * " + _unitString();
+	}
+
         double mag = Math.abs(_value);
         if(mag == 0.0 || (mag < 1000000 && mag > .001)) {
             return _regularFormat.format(_value) + unitString;

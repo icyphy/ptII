@@ -273,12 +273,12 @@ public abstract class ScalarToken extends Token {
 
     /** Return the string representation of the units of this token.
      *  The general format of the returned string is
-     *  " * (l_1 * l_2 * ... * l_m) / (s_1 * s_2 * ... * s_n)".
-     *  For example: " * (meter * kilogram) / (second * second)".
+     *  "(l_1 * l_2 * ... * l_m) / (s_1 * s_2 * ... * s_n)".
+     *  For example: "(meter * kilogram) / (second * second)".
      *  If m or n is 1, then the parenthesis above or below "/" is
-     *  omited. For example: " * meter / second".
+     *  omited. For example: "meter / second".
      *  If there is no term above "/", the format becomes
-     *  " * 1 / (s_1 * s_2 * ... * s_n)". For example: " * 1 / meter".
+     *  "1 / (s_1 * s_2 * ... * s_n)". For example: "1 / meter".
      *  If this token does not have a unit, return an empty string.
      *  @return A string representation of the units of this token.
      */
@@ -323,11 +323,11 @@ public abstract class ScalarToken extends Token {
         }
 
         if (positiveUnits.equals("")) {
-            positiveUnits = " * 1";
+            positiveUnits = "1";
         } else if (justOnePositive) {
-            positiveUnits = " * " + positiveUnits;
+            positiveUnits = positiveUnits;
         } else {
-            positiveUnits = " * (" + positiveUnits + ")";
+            positiveUnits = "(" + positiveUnits + ")";
         }
 
         if (negativeUnits.equals("")) {
