@@ -148,7 +148,7 @@ public class InterruptApplet extends Applet {
             sys.setName("DEDemo");
 
             // Set up the top level composite actor, director and manager
-            _localDirector = new DECQDirector("DE Director");
+            _localDirector = new DEDirector("DE Director");
             sys.setDirector(_localDirector);
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
@@ -201,7 +201,7 @@ public class InterruptApplet extends Applet {
     private boolean _isSimulationRunning;
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    private DECQDirector _localDirector;
+    private DEDirector _localDirector;
     private Manager _manager;
 
     private TextField _stopTimeBox;

@@ -117,14 +117,14 @@ public class HierarchyApplet extends Applet {
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
             sys.setManager(_manager);
-            _localDirector = new DECQDirector("TopLocalDirector");
+            _localDirector = new DEDirector("TopLocalDirector");
             sys.setDirector(_localDirector);
 
             // Set up block A
 
             TypedCompositeActor blockA = new TypedCompositeActor(sys, 
                     "BlockA");
-            blockA.setDirector(new DECQDirector("Director A"));
+            blockA.setDirector(new DEDirector("Director A"));
 
             DEClock clock = new DEClock(blockA, "Clock", 1.0, 1.0);
             DERamp ramp1 = new DERamp(blockA, "Ramp1", 0, 2);
@@ -144,7 +144,7 @@ public class HierarchyApplet extends Applet {
             // Set up block B
 
             TypedCompositeActor blockB = new TypedCompositeActor(sys, "BlockB");
-            blockB.setDirector(new DECQDirector("Director B"));
+            blockB.setDirector(new DEDirector("Director B"));
 
             DERamp ramp2 = new DERamp(blockB, "Ramp2", -2, 2);
             DESampler sampler2 = new DESampler(blockB, "Sampler2");
@@ -164,7 +164,7 @@ public class HierarchyApplet extends Applet {
             // Set up block C
 
             TypedCompositeActor blockC = new TypedCompositeActor(sys, "BlockC");
-            blockC.setDirector(new DECQDirector("Director C"));
+            blockC.setDirector(new DEDirector("Director C"));
 
             DEPlot plot = new DEPlot(blockC, "Plot", plotPanel);
 
@@ -204,7 +204,7 @@ public class HierarchyApplet extends Applet {
     private boolean _isSimulationRunning;
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    private DECQDirector _localDirector;
+    private DEDirector _localDirector;
     private Manager _manager;
 
     private TextField _stopTimeBox;

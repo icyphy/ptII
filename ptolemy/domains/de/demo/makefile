@@ -182,13 +182,12 @@ CLOCK_CLASSFILES = \
 	'ptolemy/domains/de/demo/HistogramApplet$$IntervalSbListener.class' \
 	ptolemy/domains/de/demo/HistogramApplet.class \
 	ptolemy/domains/de/kernel/DEActor.class \
-	'ptolemy/domains/de/kernel/DECQDirector$$DECQComparator.class' \
-	'ptolemy/domains/de/kernel/DECQDirector$$DEEvent.class' \
-	ptolemy/domains/de/kernel/DECQDirector.class \
+	ptolemy/domains/de/kernel/DECQeventQueue.class \
 	ptolemy/domains/de/kernel/DEDirector.class \
+	ptolemy/domains/de/kernel/DEEventQueue.class \
+	ptolemy/domains/de/kernel/DEEventTag.class \
 	ptolemy/domains/de/kernel/DEIOPort.class \
 	ptolemy/domains/de/kernel/DEReceiver.class \
-	ptolemy/domains/de/kernel/DESortKey.class \
 	ptolemy/domains/de/lib/DEClock.class \
 	ptolemy/domains/de/lib/DEPlot.class \
 	ptolemy/domains/de/lib/DEPoisson.class \

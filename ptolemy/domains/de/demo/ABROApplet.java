@@ -125,7 +125,7 @@ public class ABROApplet extends Applet {
             sys.setName("Demo");
 
             // Set up the top level composite actor, director and manager
-            _localDirector = new DECQDirector("DEDir");
+            _localDirector = new DEDirector("DEDir");
             sys.setDirector(_localDirector);
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
@@ -173,7 +173,7 @@ public class ABROApplet extends Applet {
     private boolean _isSimulationRunning;
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    private DECQDirector _localDirector;
+    private DEDirector _localDirector;
     private Manager _manager;
 
     private TextField _stopTimeBox;

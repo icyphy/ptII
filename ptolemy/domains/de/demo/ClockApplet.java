@@ -82,7 +82,7 @@ public class ClockApplet extends Applet {
             topLevel.setName("Top");
 
             // Set up the directors
-            _localDirector = new DECQDirector("DE Director");
+            _localDirector = new DEDirector("DE Director");
             topLevel.setDirector(_localDirector);
             _executiveDirector = new Manager("Executive Director");
             topLevel.setManager(_executiveDirector);
@@ -109,7 +109,7 @@ public class ClockApplet extends Applet {
     private Plot _plot;
     private TypedCompositeActor topLevel;
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    public DECQDirector _localDirector;
+    public DEDirector _localDirector;
     public Manager _executiveDirector;
 
     public TextField _stopTimeBox = new TextField("10.0", 10);

@@ -78,7 +78,7 @@ public class QueueApp {
             sys.setName("DE Demo");
 
             // Set up the top level composite actor, director and manager
-            _localDirector = new DECQDirector("DE Director");
+            _localDirector = new DEDirector("DE Director");
             sys.setDirector(_localDirector);
             _executiveDirector = new Manager("Manager");
             sys.setManager(_executiveDirector);
@@ -183,7 +183,7 @@ public class QueueApp {
 
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    private DECQDirector _localDirector;
+    private DEDirector _localDirector;
     private Manager _executiveDirector;
 
     private double _stopTime = 5000.0;

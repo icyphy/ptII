@@ -172,7 +172,7 @@ public class HistogramApplet extends Applet implements Runnable {
             // Set up the directors
             _clock = new DEClock(topLevel, "Clock Bus", 1.0, 1.0);
             _poisson = new DEPoisson(topLevel, "Poisson Bus", 1.0, 1.0);
-            _localDirector = new DECQDirector("DE Director");
+            _localDirector = new DEDirector("DE Director");
             topLevel.setDirector(_localDirector);
             _manager = new Manager("Executive Director");
             _manager.addExecutionListener(new MyExecutionListener());
@@ -290,7 +290,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    /*private*/ DECQDirector _localDirector;
+    /*private*/ DEDirector _localDirector;
     /*private*/ Manager _manager;
 
     /*private*/ TextField _stopTimeBox;

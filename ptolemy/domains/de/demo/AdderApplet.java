@@ -143,7 +143,7 @@ public class AdderApplet extends Applet implements Runnable {
             topLevel.setName("Top");
 
             // Set up the top level composite actor, director and manager
-            _localDirector = new DECQDirector("DE Director");
+            _localDirector = new DEDirector("DE Director");
             topLevel.setDirector(_localDirector);
             _manager = new Manager("Executive Director");
             topLevel.setManager(_manager);
@@ -293,7 +293,7 @@ public class AdderApplet extends Applet implements Runnable {
 
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
-    private DECQDirector _localDirector;
+    private DEDirector _localDirector;
     private Manager _manager;
 
     private TextField _stopTimeBox;
