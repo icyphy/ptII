@@ -28,8 +28,9 @@
 
 */
 
-package ptolemy.kernel.event;
+package ptolemy.actor.event;
 
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;

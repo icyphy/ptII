@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test the Ptolemy kernel event package
+# Makefile for the Java classes used to test the Ptolemy actor event package
 #
 # @Authors: Christopher Hylands
 #
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/kernel/event/test
+ME =		ptolemy/kernel/actor/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -49,7 +49,11 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	SetParameter.tcl
+	Connect.tcl \
+	Link.tcl \
+	RemoveActor.tcl \
+	RemovePort.tcl \
+	RemoveRelation.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

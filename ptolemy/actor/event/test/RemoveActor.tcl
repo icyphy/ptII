@@ -60,7 +60,7 @@ test RemoveActor-1.0 {test removing an actor} {
             [java::new ptolemy.kernel.util.StreamListener]
     $m initialize
     $m iterate
-    set c1 [java::new ptolemy.kernel.event.RemoveActor $e0 $ramp]
+    set c1 [java::new ptolemy.actor.event.RemoveActor $e0 $ramp]
     $m requestChange $c1
     $m iterate
     $m iterate

@@ -1,6 +1,6 @@
-# Makefile for the Java classes used to test the Ptolemy kernel event package
+# Makefile for ptolemy.actor.event
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -29,61 +29,53 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/kernel/event/test
+ME =		ptolemy/actor/event
+
+DIRS = 		test
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
+# Flags to pass to javadoc. (Override value in ptII.mk)
+JDOCFLAGS = 	-author -version -public
 
-JSRCS =
+# Used to build jar files
+PTPACKAGE = 	event
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = \
-	SetParameter.tcl
+JSRCS = \
+	Connect.java \
+	InitializeActor.java \
+	Link.java \
+	RemoveActor.java \
+	RemovePort.java \
+	RemoveRelation.java
 
-# Graphical Java tests that use Tcl.
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc \
+	$(PTCLASSJAR)
 
-JCLASS =	$(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+all: jclass
+install: jclass $(PTCLASSJAR)
 
-test_java: jclass
-
-# PtolemyII-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
-
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	$(JTCLSH) alljtests.tcl
-docs: javadocs
 
 depend:
 	@echo "no dependencies in this directory"

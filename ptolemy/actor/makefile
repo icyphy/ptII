@@ -41,7 +41,7 @@
 
 ME =		ptolemy/actor
 
-DIRS = 		util sched process lib test
+DIRS = 		util sched process event lib test
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -58,6 +58,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	event/event.jar \
 	lib/lib.jar \
 	process/process.jar \
 	sched/sched.jar \

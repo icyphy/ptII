@@ -1,4 +1,4 @@
-/* A request to remove a port.
+/* A request to remove a relation.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -28,10 +28,11 @@
 
 */
 
-package ptolemy.kernel.event;
+package ptolemy.actor.event;
 
 import java.util.Enumeration;
 
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.Actor;
@@ -39,63 +40,63 @@ import ptolemy.actor.Director;
 import ptolemy.actor.CompositeActor;
 
 //////////////////////////////////////////////////////////////////////////
-//// RemovePort
+//// RemoveRelation
 /**
-A request to remove a port.  The execute() method of this request
-unlinks the port from all relations and sets its container to null.
+A request to remove a relation.  The execute() method of this request
+unlinks the relation from all ports and sets its container to null.
 
 @author  Edward A. Lee
 @version $Id$
-@see ptolemy.kernel.Port
+@see ptolemy.kernel.ComponentRelation
 */
-public class RemovePort extends ChangeRequest {
+public class RemoveRelation extends ChangeRequest {
 
     /** Construct a request with the specified originator and
-     *  port to be removed.
+     *  relation to be removed.
      *  @param originator The source of the change request.
-     *  @param port The port to remove.
+     *  @param relation The relation to remove.
      */
-    public RemovePort(Nameable originator, Port port) {
-        super(originator, "Remove " + port.getFullName());
-        _port = port;
+    public RemoveRelation(Nameable originator, ComponentRelation relation) {
+        super(originator, "Remove " + relation.getFullName());
+        _relation = relation;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Execute the change by calling the unlinkAll() method of the
-     *  port, then setting its container
-     *  to null.  If the port is contained by an instance of
-     *  Actor, then this method also notifies its director that the
+     *  relation, then setting its container
+     *  to null.  If the relation is contained by an instance of
+     *  CompositeActor, then this method also notifies its director that the
      *  schedule and type resolution may be invalid.
-     *  @exception ChangeFailedException If removing or unlinking the
-     *   port fails with an exception.
+     *  @exception ChangeFailedException If unlinking fails with an
+     *   exception.
      */
     public void execute() throws ChangeFailedException {
         try {
-            _port.unlinkAll();
-            Nameable container = _port.getContainer();
-            if (container instanceof Actor) {
+            _relation.unlinkAll();
+            Nameable container = _relation.getContainer();
+            if (container instanceof CompositeActor) {
                 Director director = ((Actor)container).getDirector();
                 director.invalidateSchedule();
                 director.invalidateResolvedTypes();
             }
-            _port.setContainer(null);
+            _relation.setContainer(null);
         } catch (KernelException ex) {
             throw new ChangeFailedException(this, ex);
         }
     }
 
-    /** Get the port.
-     *  @return The port to be removed.
+    /** Get the relation.
+     *  @return The relation to be removed.
      */
-    public Port getPort() {
-        return _port;
+    public ComponentRelation getRelation() {
+        return _relation;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The port to remove.
-    private Port _port;
+    // The relation to remove.
+    private ComponentRelation _relation;
 }

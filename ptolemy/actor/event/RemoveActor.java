@@ -1,4 +1,4 @@
-/* A request to initialize an actor.
+/* A request to remove an actor.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -28,63 +28,74 @@
 
 */
 
-package ptolemy.kernel.event;
+package ptolemy.actor.event;
 
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 
+import java.util.Enumeration;
+
 //////////////////////////////////////////////////////////////////////////
-//// InitializeActor
+//// RemoveActor
 /**
-A request to initialize an actor.  This class is used for certain
-kinds of mutations where the actor can be created directly (not via
-a queued mutation), but the initialization of the actor must be
-deferred so that it executes at an appropriate time.  Note that
-many domain will tolerate the creation of an actor at any time,
-and as long as the actor is not connected to any pre-existing actor,
-the director will ignore it.
+A request to remove an actor.  The execute() method of this request
+invokes the wrapup() method of the actor, then disconnects it from
+the topology and sets its container to null.
 
 @author  Edward A. Lee
 @version $Id$
 @see ptolemy.actor.Actor
 */
-public class InitializeActor extends ChangeRequest {
+public class RemoveActor extends ChangeRequest {
 
     /** Construct a request with the specified originator and
-     *  actor to be initialized.  The actor must also implement the
+     *  actor to be removed. The actor must also implement the
      *  Nameable interface or a ClassCastException will occur.
      *  @param originator The source of the change request.
-     *  @param actor The actor.
+     *  @param actor The actor to remove.
      */
-    public InitializeActor(Nameable originator, Actor actor) {
-        super(originator, "Initialize " + ((Nameable)actor).getFullName());
+    public RemoveActor(Nameable originator, Actor actor) {
+        super(originator, "Remove " + ((Nameable)actor).getFullName());
         _actor = actor;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Execute the change by calling the initialize() method of the
-     *  actor.  This method also notifies the director that scheduling
-     *  and type resolution may be invalid.
-     *  @exception ChangeFailedException If the initialize() method throws
-     *   an exception.
+    /** Execute the change by calling the wrapup() method of the
+     *  actor, then disconnecting all its ports and setting its container
+     *  to null.  This method also notifies the director that the
+     *  schedule and type resolution may be invalid.
+     *  @exception ChangeFailedException If the wrapup() method throws it,
+     *   or if the actor is not an instance of ComponentEntity.
      */
     public void execute() throws ChangeFailedException {
         try {
-            _actor.initialize();
+            _actor.wrapup();
+            if (!(_actor instanceof ComponentEntity)) {
+                throw new ChangeFailedException(this,
+                        "Cannot remove an actor that is not an Entity.");
+            }
+            ComponentEntity entity = (ComponentEntity)_actor;
+            Enumeration ports = entity.getPorts();
+            while (ports.hasMoreElements()) {
+                Port port = (Port)ports.nextElement();
+                port.unlinkAll();
+            }
+            Director director = _actor.getDirector();
+            director.invalidateSchedule();
+            director.invalidateResolvedTypes();
+            entity.setContainer(null);
         } catch (KernelException ex) {
             throw new ChangeFailedException(this, ex);
         }
-        Director director = _actor.getDirector();
-        director.invalidateSchedule();
-        director.invalidateResolvedTypes();
     }
 
     /** Get the actor.
-     *  @return The actor to be initialized.
+     *  @return The actor to be removed.
      */
     public Actor getActor() {
         return _actor;

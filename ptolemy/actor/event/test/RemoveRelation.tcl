@@ -1,4 +1,4 @@
-# Test Link
+# Test RemoveRelation
 #
 # @Author: Edward A. Lee
 #
@@ -38,28 +38,30 @@ if {[string compare test [info procs test]] == 1} then {
 # set VERBOSE 1
 
 ######################################################################
-#### Link
+#### RemoveRelation
 #
-test Link-1.0 {test adding a new link} {
+
+test RemoveRelation-1.0 {test removing a relation} {
     set e0 [sdfModel]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-
-    set relation [$e0 connect \
+    $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    set relation [$e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
     set m [$e0 getManager]
     $m initialize
     $m iterate
-    set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]
-    set recinput [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
-    set c1 [java::new ptolemy.kernel.event.Link $e0 $recinput $relation]
-    set c2 [java::new ptolemy.kernel.event.InitializeActor $e0 $rec2]
+    set c1 [java::new ptolemy.actor.event.RemoveRelation $e0 $relation]
+    set c2 [java::new ptolemy.actor.event.RemoveActor $e0 $ramp]
     $m requestChange $c1
     $m requestChange $c2
     $m iterate
     $m iterate
     $m wrapup
     list [enumToTokenValues [$rec getRecord 0]] \
-            [enumToTokenValues [$rec2 getRecord 0]]
-} {{1 1 1} {1 1}}
+            [enumToTokenValues [$rec getRecord 1]]
+} {{1 1 1} {0 _ _}}
