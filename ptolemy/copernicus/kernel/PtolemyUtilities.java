@@ -265,10 +265,6 @@ public class PtolemyUtilities {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                         Jimple.v().newStaticFieldRef(doubleMatrixTypeField)),
                         insertPoint);
-            } else if (type.equals(ptolemy.data.type.BaseType.FIX)) {
-                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
-                        Jimple.v().newStaticFieldRef(fixTypeField)),
-                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.FIX_MATRIX)) {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                         Jimple.v().newStaticFieldRef(fixMatrixTypeField)),
@@ -389,6 +385,12 @@ public class PtolemyUtilities {
                             typeConstructor, labelArrayLocal, typeArrayLocal)),
                     insertPoint);
             return typeLocal;
+        } else if (type instanceof ptolemy.data.type.FixType) {
+            Local typeLocal = Jimple.v().newLocal("type_fix",
+                    RefType.v(fixTypeClass));
+            units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                    Jimple.v().newStaticFieldRef(fixTypeField)),
+                    insertPoint);
         }
         throw new RuntimeException("Unidentified type class = " +
                 type.getClass().getName());
@@ -873,6 +875,9 @@ public class PtolemyUtilities {
     // Soot class representing the ptolemy.actor.Executable interface.
     public static SootClass executableInterface;
 
+    // Soot class representing the ptolemy.data.type.FixType class.
+    public static SootClass fixTypeClass;
+
     public static SootField fixTypeField;
     public static SootField fixMatrixTypeField;
 
@@ -1130,6 +1135,8 @@ public class PtolemyUtilities {
 
         arrayTypeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
+        arrayTypeClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.type.FixType");
         recordTypeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.RecordType");
         baseTypeClass =
