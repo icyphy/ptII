@@ -121,6 +121,4 @@ autoDeepCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
 #  autoDeepCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
 
 # Print out stats
-doneTests
-
-
+#doneTests
