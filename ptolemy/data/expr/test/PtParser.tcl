@@ -118,8 +118,9 @@ test PtParser-2.4 {Construct a Parser, try simple double expressions} {
     set root [ $p1 {generateParseTree String} "12.0 / 2.4 / 2.5"]
     set res4  [ $root evaluateParseTree ]
 
-    list [$res toString] [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {ptolemy.data.DoubleToken(9.7) ptolemy.data.DoubleToken(-5.6) ptolemy.data.DoubleToken(29.400) ptolemy.data.DoubleToken(1.6) ptolemy.data.DoubleToken(2.0)}
+    set reslist [list [$res stringValue] [$res1 stringValue] [$res2 stringValue] [$res3 stringValue] [$res4 stringValue]]
+    ptclose $reslist {9.7 -5.6 29.4 1.6 2.0}
+} {1}
 ######################################################################
 ####
 # 
