@@ -86,7 +86,7 @@ public class XMLElement extends Object {
     public void appendPCData(String s) {
         pcdata = pcdata + s;
     }
-
+    
     /**
      * Return an enumeration over the names of the attributes
      * in this schematic.
@@ -224,6 +224,18 @@ public class XMLElement extends Object {
      */
     void addAttribute (String name) {
         ;
+    }
+
+    /**
+     * Take an arbitrary XMLElement and figure out what type it is, then
+     * figure out what semantic meaning that has within this XMLElement.
+     * By default an arbitrary XMLElement has no semantic meaning for its
+     * child elements, so this just returns.
+     * This is primarily used by the parser to keep the semantic structures
+     * within an XMLElement consistant with the childElements.
+     */
+    void applySemanticsToChild(XMLElement e) {
+        return;
     }
 
     // The child elements of this element
