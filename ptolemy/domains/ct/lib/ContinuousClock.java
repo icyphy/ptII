@@ -41,7 +41,7 @@ import ptolemy.math.Utilities;
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousClock
 /**
-   This is a clock source used in continuous time domain.
+   This is a clock source used in continuous-time domain.
    It extends the clock actor in ptolemy/actor/lib directory
    but overrides the fire() method and postfire() method.
    <p>
@@ -60,14 +60,13 @@ import ptolemy.math.Utilities;
    extends this class, the defaultValue parameter is also used as output before
    the clock starts. The default value is 0.
    <p>
-   The clock has a stopTime parameter and a numberOfCycles parameter. If the
-   stopTime is a positive double, the whole model will stop execution when the
+   The clock has a stopTime parameter and a numberOfCycles parameter. 
+   The whole model will stop execution when the
    stop time is reached. If the numberOfCycles is set to a positive integer,
    the clock will continue outputting the value of the defaultValue parameter
-   after the number of cycles are reached.
+   after the number of cycles are reached if the stop time is not reached.
    <p>
    @see ptolemy.actor.lib.Clock
-
    @author Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.2
