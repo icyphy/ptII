@@ -133,30 +133,36 @@ public class Audio {
      */
     public Audio(DataInputStream input) throws IOException {
         input.read(magic, 0, 4);
+
+        // Check the magic number, which should be 0x2E736E64, '.snd'
+        // in ASCII.
+        if (magic[0] != 0x2E || magic[1] != 0x73 || magic[2] != 0x6E ||
+                 magic[3] != 0x64) {
+             throw new IllegalArgumentException(
+                     "ptolemy.media.Audio: bad magic number in "
+                     + "stream header.  Not an audio file?");
+        }
+
         offset = input.readInt();
         size = input.readInt();
         format = input.readInt();
         sampleRate = input.readInt();
         numChannels = input.readInt();
 
-        // Read the info field.
+        if (offset < 0 || offset > 10000) {
+            throw new IllegalArgumentException("ptolemy.media.Audio:"
+                    + " offset value '" + offset +
+                    "' is out of range 0-10000");
+        }
         info = new byte[offset-24];
         input.read(info, 0, offset-24);
 
-        // Check the magic number, which should be 0x2E736E64, '.snd'
-        // in ASCII.
-        if (magic[0] != 0x2E || magic[1] != 0x73 || magic[2] != 0x6E ||
-                magic[3] != 0x64) {
-            throw new IllegalArgumentException(
-                    "SignalProcessing.readAudio: bad magic number in "
-                    + "stream header.  Not an audio file?");
-        }
         if (format != 1) {
-            throw new IllegalArgumentException("SignalProcessing.readAudio:"
+            throw new IllegalArgumentException("ptolemy.media.Audio:"
                     + " Sorry, only 8-bit mu-law encoded data can be read.");
         }
         if (numChannels != 1) {
-            throw new IllegalArgumentException("SignalProcessing.readAudio:"
+            throw new IllegalArgumentException("ptolemy.media.Audio:"
                     + " Sorry, only one-channel audio data can be read.");
         }
 
