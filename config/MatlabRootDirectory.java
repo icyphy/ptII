@@ -81,8 +81,12 @@ public class MatlabRootDirectory {
         // 'if test -d \cygwin\c\ptII'
         
         File matlabFile = new File(matlabExecutable);
-        String matlabCanonicalPath = matlabFile.getCanonicalPath();
-        URI matlabURI = new URI(matlabCanonicalPath);
+        File matlabCanonicalFile = matlabFile.getCanonicalFile();
+
+        // We need to be careful and not try call new URI() with
+        // a String that contains backslashes.
+        URI matlabURI = matlabCanonicalFile.toURI();
+
         String matlabPath = matlabURI.getPath();
         if (File.separatorChar == '\\' 
             && matlabPath.startsWith("/")) {
