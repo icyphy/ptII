@@ -59,6 +59,7 @@ public class Mailbox extends AbstractReceiver {
     ////                         public methods                    ////
 
     /** Get the contained Token.  If there is none, thrown an exception.
+     *  The token is removed.
      *  @return A token.
      *  @exception NoTokenException If the Mailbox is empty.
      */
