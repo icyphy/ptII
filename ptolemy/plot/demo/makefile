@@ -53,6 +53,8 @@ EXTRA_SRCS = $(JSRCS) \
 	data.plt \
 	index.html
 
+# The data directory contains binary plot files that cannot be checked
+# into sccs.
 MISC_FILES = data #doc test 
 
 JCLASS =
