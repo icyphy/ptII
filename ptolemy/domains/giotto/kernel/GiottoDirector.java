@@ -207,7 +207,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	    //get containers, commActors and modes List, and controller first.
 	    //commActors List contains actors which are the common
-	    // part among modes. They might be at the top level rether than in
+	    // part among modes. They might be at the top level rather than in
 	    //the mode CompositeActor.
 	    TypedCompositeActor container = (TypedCompositeActor)getContainer();
 
