@@ -32,7 +32,6 @@ package ptolemy.actor.lib.x10;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -99,7 +98,7 @@ public class LevelListener extends Receiver {
     /** The X10 command to listen for.  This is a string with a value
      *  that is one of BRIGHT or DIM. The default is BRIGHT.
      */
-    public Parameter command;
+    public StringParameter command;
     
     /** An output with value 0-100, inclusive, is produced on this port
      *  when the specified X10 command is detected for the specified
@@ -134,7 +133,7 @@ public class LevelListener extends Receiver {
             Command sensedCommand = _getCommand();
             byte function = sensedCommand.getFunctionByte();
             byte functionOfInterest = Command.BRIGHT;
-            String commandValue = ((StringToken)command.getToken()).stringValue();
+            String commandValue = command.stringValue();
             if (!commandValue.equals("BRIGHT")) {
                 functionOfInterest = Command.DIM;
             }
@@ -142,7 +141,7 @@ public class LevelListener extends Receiver {
             String sensedHouseCode = "" + sensedCommand.getHouseCode();
             int sensedUnitCode = sensedCommand.getUnitCode();
             
-            String houseCodeValue = ((StringToken)houseCode.getToken()).stringValue();
+            String houseCodeValue = houseCode.stringValue();
             int unitCodeValue = ((IntToken)unitCode.getToken()).intValue();
             
             if (sensedHouseCode.equals(houseCodeValue)

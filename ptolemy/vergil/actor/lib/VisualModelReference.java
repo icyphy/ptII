@@ -189,7 +189,7 @@ public class VisualModelReference
     public void attributeChanged(Attribute attribute)
         throws IllegalActionException {
         if (attribute == openOnFiring) {
-            String openOnFiringValue = openOnFiring.getExpression();
+            String openOnFiringValue = openOnFiring.stringValue();
             if (openOnFiringValue.equals("do not open")) {
                 _openOnFiringValue = _DO_NOT_OPEN;
             } else if (openOnFiringValue.equals("open in Vergil")) {

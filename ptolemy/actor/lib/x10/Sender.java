@@ -33,7 +33,6 @@ package ptolemy.actor.lib.x10;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -97,8 +96,7 @@ public class Sender extends X10Interface {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        _destination = ((StringToken)houseCode.getToken()).stringValue()
-                + ((StringToken)unitCode.getToken()).stringValue();
+        _destination = houseCode.stringValue() + unitCode.stringValue();
     }
 	
     ///////////////////////////////////////////////////////////////////

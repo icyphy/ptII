@@ -35,7 +35,6 @@ import java.util.HashMap;
 import javax.comm.CommPortIdentifier;
 
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -191,8 +190,8 @@ public class X10Interface extends TypedAtomicActor {
         // NOTE: using private variables here ensures that if the parameter
         // values are changed while the model is running, the same port
         // and controller are taken down in wrapup() as are opened here.
-        _controllerName = ((StringToken)x10Interface.getToken()).stringValue();
-        _portName = ((StringToken)serialPortName.getToken()).stringValue();
+        _controllerName = x10Interface.stringValue();
+        _portName = serialPortName.stringValue();
         // The interface should only be opened ONCE during initialization.
         try {
             _interface = _openInterface(_portName, _controllerName);
