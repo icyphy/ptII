@@ -69,7 +69,7 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo: $(PTCLASSJAR)
-
+	CLASSPATH="$(CLASSPATH)" appletviewer SquareWave.htm	
 depend:
 	@echo "no dependencies in this directory"
 
