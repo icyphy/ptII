@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Settable;
    or Barry, Lee and Messerschmitt, <i>Digital Communication</i>, Third Edition,
    Kluwer, 2004.
    <p>
-   @author Rachel Zhou, contributor: Edward A. Lee
+   @author Ye Zhou, contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (eal)

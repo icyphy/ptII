@@ -77,7 +77,7 @@ import ptolemy.kernel.util.Workspace;
    the guard expression language to support consumption of more than one
    token.
 
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (zhouye)

@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    given by parameters. In addition, the seed can be specified as a
    parameter to control the sequence that is generated.
 
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 3.0
    @Pt.ProposedRating Green (eal)

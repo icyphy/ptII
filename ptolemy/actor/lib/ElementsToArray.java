@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    of the corresponding type.
    <p>
 
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (zhouye)

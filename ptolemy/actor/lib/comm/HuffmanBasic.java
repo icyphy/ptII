@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    consists of '0' and '1's. The code book is sent to the
    <i>huffmanCodeBook</i> output port.
 
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (zhouye)

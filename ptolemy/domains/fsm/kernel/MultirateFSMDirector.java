@@ -86,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
    <p>
    This director does not support transition refinements.
 
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 5.0
    @Pt.ProposedRating Red (hyzheng)

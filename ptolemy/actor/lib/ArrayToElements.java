@@ -58,7 +58,7 @@ import ptolemy.kernel.util.Workspace;
    type and send out tokens corresponding to that type.
    <p>
 
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (zhouye)

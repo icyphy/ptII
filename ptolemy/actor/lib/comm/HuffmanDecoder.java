@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
 
    @see HuffmanBasic
    @see HuffmanCoder
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (zhouye)

@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
    booleans in the code book.
    @see HuffmanBasic
 
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (zhouye)

@@ -135,7 +135,7 @@ import ptolemy.kernel.util.Workspace;
    <p>
    This CTScheduler does not support mutation.
 
-   @author Jie Liu, Haiyang Zheng, Rachel Zhou
+   @author Jie Liu, Haiyang Zheng, Ye Zhou
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (hyzheng)

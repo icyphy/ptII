@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    The actor produces Hadamard codeword in booleans. Therefore, 1 is treated
    as "true" and -1 is treated as "false".
    <p>
-   @author Edward A. Lee and Rachel Zhou
+   @author Edward A. Lee and Ye Zhou
    @version $Id$
    @since Ptolemy II 3.0
    @Pt.ProposedRating Red (eal)

@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    and Lee and Messerschmitt, Digital Communication, Second Edition,
    Kluwer Academic Publishers, 1994, pp. 595-603.
    <p>
-   @author Edward A. Lee and Rachel Zhou
+   @author Edward A. Lee and Ye Zhou
    @version $Id$
    @since Ptolemy II 3.0
    @Pt.ProposedRating Red (eal)

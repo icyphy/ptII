@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
    A helper class for ptolemy.actor.lib.AddSubtract
 
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 5.0
    @Pt.ProposedRating Red (eal)

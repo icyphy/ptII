@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    Lempel-Ziv decoder.
 
    @see LempelZivCoder
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (zhouye)

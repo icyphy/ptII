@@ -75,7 +75,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    For more information on Hamming codes, see Proakis, Digital
    Communications, Fourth Edition, McGraw-Hill, 2001, pp. 416-424.
    <p>
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 3.0
    @Pt.ProposedRating Red (eal)

@@ -58,7 +58,7 @@ import ptolemy.math.Complex;
    values are <i>false</i>. If the second entry minimizes the distance,
    then only the first boolean is true.
 
-   @author Rachel Zhou
+   @author Ye Zhou
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (zhouye)
