@@ -124,6 +124,7 @@ public class Distributor extends Transformer implements SequenceActor {
      *  on channel zero of the output.
      */
     public void connectionsChanged(Port port) {
+        super.connectionsChanged(port);
         if (port == output) {
             try {
                 input_tokenConsumptionRate.setToken(

@@ -120,6 +120,7 @@ public class Commutator extends Transformer implements SequenceActor {
      *  is a director.
      */
     public void connectionsChanged(Port port) {
+        super.connectionsChanged(port);
         if (port == input) {
             try {
                 output_tokenProductionRate.setToken(
