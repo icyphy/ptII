@@ -171,13 +171,14 @@ $(PTIIDIST):
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
 	@echo "Regenerate the documentation with gr and javasound"
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m -breakiterator" GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
+	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
 	#cd $(PTIIDIST); make javadocs
 	rm -f $(PTIIDIST)/.glimpse*
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
+	touch $(PTIIDIST)/configure
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
 	touch $(PTIIDIST)/mk/ptII.mk.in
@@ -311,7 +312,7 @@ ptbuild:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.4" JDOCFLAGS="-author -version -J-Xmx132m" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.4" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests:
@@ -440,6 +441,20 @@ remote1coverage: $(PTII_FULL) $(GENLOGDIR)
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	ssh $(REMOTE1HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		remote1nuke remote1ptiidist remote1configure \
+		remote1distclean \
+		remote1distjsall remote1distjsrestore remote1distjavadocs \
+		remote1done >& $(REMOTE1LOG)" &
+
+remote1local: $(PTII_FULL) $(GENLOGDIR)
+	@echo "#"
+	@echo "# Now building on $(REMOTE1HOST) for code coverage"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	ssh $(REMOTE1HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		USER=$(USER) PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm \
+		TAR=/bin/tar
 		remote1nuke remote1ptiidist remote1configure \
 		remote1distclean \
 		remote1distjsall remote1distjsrestore remote1distjavadocs \
@@ -746,7 +761,7 @@ remote1doc:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) JDOCFLAGS="-author -version -J-Xmx132m -breakiterator")
+	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE))
 
 # Remove the JavaScope instrumentation
 remote1build:
@@ -852,9 +867,18 @@ remote2jdk1.4:  $(PTII_FULL) $(GENLOGDIR)
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	ssh $(REMOTE2HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		OTHERMAKE=${OTHERMAKE} \
+		PTIIHOME=${PTIIHOME} \
+		PTIIADM=${PTIIADM} \
+		REMOTE2HOST=${REMOTE2HOST} \
+		REMOTE2HOME=${REMOTE2HOME} \
+		TAR=${TAR} \
 		remote2nuke remote2ptiidist remote2distclean \
 		remote2distjdk1.4 remote2distjdk1.4test remote2done \
 		>& $(REMOTE2LOG)" &
+
+remote2fortytwo:
+	$(MAKE) USER=cxh OTHERMAKE=make PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar REMOTE2HOST=fortytwo REMOTE2HOME=/tmp/cxh/r2 remote2
 
 # Remove the remote dist
 # $(REMOTE2DONEFILE) is used to signal when everything is done
@@ -863,13 +887,13 @@ remote2nuke:
 
 #Untar the remote dist.  Usually this is run on the remote machine
 remote2ptiidist: $(REMOTE2PTIIDIST)
-$(REMOTE2PTIIDIST): $(PTII_FULL)
+$(REMOTE2PTIIDIST): $(PTII_SRC)
 	@echo "#"
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE2HOME); $(TAR) -zxf $(PTII_FULL))
+	(cd $(REMOTE2HOME); $(TAR) -zxf $(PTII_SRC))
 
 
 # clean the remote tree
@@ -894,7 +918,7 @@ remote2distjdk1.4:
 	-(cd $(REMOTE2PTIIDIST); rm -f config.status config.cache; \
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH ./configure; \
-	PTII=$(REMOTE2PTIIDIST) $(MAKE) -k)
+	PTII=$(REMOTE2PTIIDIST) $(MAKE) -k fast)
 	@echo "$@ `date`"
 	@echo "`uptime`"
 
