@@ -48,6 +48,8 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	AtomicActor.tcl \
+	CompositeActor.tcl \
 	IOPort.tcl \
 	IORelation.tcl
 

@@ -46,27 +46,25 @@ public interface Executable {
 
     /** This fires an actor and maybe invoked several times between
      *  invocations of prefire() and postfire().
-     *  @exception IllegalActionException Throw by derived classes.
      */
     public void fire() throws IllegalActionException;
 
     /** This method should be invoked exactly once during the lifetime of
      *  an application. It maybe invoked again to restart an execution
      */
-    public void initialize();
+    public void initialize() throws IllegalActionException;
 
     /** This should be invoked before the first fire()
      *  @return the state of the actor. TRUE indicates that the fire() and
      *   postfire() methods can be invoked while FALSE indicates the opposite.
      */
-    public boolean prefire();
+    public boolean prefire() throws IllegalActionException;
 
     /** This should be invoked after the last fire()
      */
-    public void postfire();
+    public void postfire() throws IllegalActionException;
 
     /** This should be called at the end of the execution
      */
-    public void wrapup();
-
+    public void wrapup() throws IllegalActionException;
 }

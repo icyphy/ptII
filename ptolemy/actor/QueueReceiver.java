@@ -93,7 +93,7 @@ public class QueueReceiver extends NamedObj implements Receiver {
     /** Return the container of the queue, or null if there is none.
      */
     public Nameable getContainer() {
-        return (Nameable)_container;
+        return _container;
     }
 
     /** Returns the FIFOQueue */
@@ -101,10 +101,22 @@ public class QueueReceiver extends NamedObj implements Receiver {
         return _queue;
     }
 
+    /** Return true if put() will succeed in accepting a token. */
+    public boolean hasRoom() {
+        // FIXME
+        return false;
+    }
+
+    /** Return true if get() will succeed in returning a token. */
+    public boolean hasToken() {
+        // FIXME
+        return false;
+    }
 
     /** Put an object on the queue and return true if this will not
      *  cause the capacity to be exceeded.  Otherwise, do not put
      *  the object on the queue and return false.
+     *  FIXME: This comment is wrong!
      *  @param element An object to put on the queue.
      *  @return A boolean indicating success.
      *  @exception TokenHolderFullException The size of the queue is greater
@@ -120,7 +132,13 @@ public class QueueReceiver extends NamedObj implements Receiver {
 
     }
 
+    /** Set the container. */
+    public void setContainer(IOPort port) {
+        _container = port;
+    }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
 
     private FIFOQueue _queue;
     private IOPort _container;

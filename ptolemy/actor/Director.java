@@ -30,6 +30,7 @@ package pt.actor;
 import pt.kernel.*;
 import pt.kernel.util.*;
 import pt.kernel.mutation.*;
+import pt.data.*;
 
 import collections.LinkedList;
 import java.util.Enumeration;
@@ -39,8 +40,22 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Director
 /**
-A Director governs the execution of a CompositeActor. This should be
-associated with the top-level container of every executable application
+A Director governs the execution of a CompositeActor. It can serve either
+as a local director or as an executive director.  To make it a local director,
+use the setDirector() method of CompositeActor. To make it an executive
+director, use the setExecutiveDirector() method of CompositeActor. In both
+cases, the director will report the CompositeActor as its container
+when queried by calling getContainer().
+<p>
+A director implements the action methods (initialize, prefire, fire,
+postfire, and wrapup).  In this base class, default implementations
+are provided that may or may not be useful in specific domains.
+These default implementations behave differently depending on whether
+the director is serving the role of a local director or an executive
+director.  If it is an executive director, then the action methods
+simply invoke the corresponding action methods of the local director.
+If it is a local director, then the action methods invoke the
+corresponding action methods of all the deeply contained actors.
 
 @author Mudit Goel, Edward A. Lee
 @version $Id$
@@ -53,7 +68,8 @@ public class Director extends NamedObj implements Executable {
         super();
     }
 
-    /** Constructor
+    /** Constructor.  FIXME: This constructor now doesn't belong,
+     *  since we can't tell whether its a local or executive director.
      */
     public Director(CompositeActor container, String name) {
         super(name);
@@ -83,6 +99,27 @@ public class Director extends NamedObj implements Executable {
         _newactors = null;
     }
 
+    /** Clone the director into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new director with no container.
+     *
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
+     *  @return The new Director.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        Director newobj = (Director)super.clone(ws);
+        newobj._container = null;
+        newobj._complete = true;
+        newobj._schedulevalid = false;
+        newobj._newactors = null;
+        newobj._pendingMutations = null;
+        newobj._mutationListeners = null;
+        return newobj;
+    }
+
     /** Indicates whether the execution is complete or not
      * @return true indicates that execution is complete
      */
@@ -90,14 +127,33 @@ public class Director extends NamedObj implements Executable {
         return _complete;
     }
 
-    /** This should invoke the fire methods of the actors according to a
-     *  schedule. This can be called more than once in the same iteration.
-     * @exception IllegalActionException would be required by subclasses
+    /** Remove the argument (all instances of it) from the new actors list.
+     *  If it is not on the new actors list, do nothing.
+     *
+     *  @param actor The actor to remove.
      */
-    public void fire() throws IllegalActionException {
+    public void deregisterNewActor(Actor actor) {
+        synchronized(workspace()) {
+            if (_newactors != null) {
+                _newactors.removeOneOf(actor);
+            }
+        }
     }
 
-    /** Returns the top-level container, of the executable application
+    /** This should invoke the fire methods of the actors according to a
+     *  schedule. This can be called more than once in the same iteration.
+     *  This method need not be synchronized on the workspace, if as usual
+     *  it is called by the CompositeActor. 
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void fire() throws IllegalActionException {
+        // If we are the executive director of a composite with a director,
+        // we could invoke it's fire method now.  Be careful that that
+        // doesn't turn around and call this fire() method (i.e., the
+        // actor must return true to isAtomic().
+    }
+
+    /** Return the top-level container, of the executable application
      *  that this director is responsible for.
      * @return the top-level CompositeActor
      */
@@ -224,17 +280,19 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** This maintains a list of all the new actors that have been created
+    /** Add an actor to the list of new actors that have been created
      *  after the last call to the iterate method, and have not begun
-     *  execution
-     * @param actor is the new actor that has just been created
+     *  execution.  If the actor is already on the list, do nothing.
+     *  @param actor The actor to add.
      */
     public void registerNewActor(Actor actor) {
         synchronized(workspace()) {
             if (_newactors == null) {
                 _newactors = new LinkedList();
             }
-            _newactors.insertLast(actor);
+            if (!_newactors.includes(actor)) {
+                _newactors.insertLast(actor);
+            }
         }
     }
 
@@ -274,6 +332,77 @@ public class Director extends NamedObj implements Executable {
         _complete = complete;
     }
 
+    /** Transfer data from an input port of the container to the
+     *  ports it is connected to on the inside.  The port argument must
+     *  be an opaque input port.  If any channel of the input port
+     *  has no data, then that channel is ignored.
+     *
+     *  @exception CloneNotSupportedException If the token cannot be cloned
+     *   and there is more than one destination.
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port.
+     */
+    public void transferInputs(IOPort port)
+            throws CloneNotSupportedException, IllegalActionException {
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+            "transferInputs: port argument is not an opaque input port.");
+        }
+        Receiver[][] insiderecs = port.getInsideReceivers();
+        for (int i=0; i < port.getWidth(); i++) {
+            if (port.hasToken(i)) {
+                try {
+                    Token t = port.get(i);
+                    if (insiderecs != null && insiderecs[i] != null) {
+                        boolean first = true;
+                        for (int j=0; j < insiderecs[i].length; j++) {
+                            if (first) {
+                                insiderecs[i][j].put(t);
+                                first = false;
+                            } else {
+                                insiderecs[i][j].put((Token)t.clone());
+                            }
+                        }
+                    }
+                } catch (NoSuchItemException ex) {
+                    throw new InternalErrorException(
+                    "Director.transferInputs: Internal error: " +
+                    ex.getMessage());
+                }
+            }
+        }
+    }
+
+    /** Transfer data from an output port of the container to the
+     *  ports it is connected to on the outside.  The port argument must
+     *  be an opaque output port.  If any channel of the output port
+     *  has no data, then that channel is ignored.
+     *
+     *  @exception CloneNotSupportedException If the token cannot be cloned
+     *   and there is more than one destination.
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     */
+    public void transferOutputs(IOPort port)
+            throws CloneNotSupportedException, IllegalActionException {
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+            "transferOutputs: port argument is not an opaque output port.");
+        }
+        for (int i=0; i < port.getWidth(); i++) {
+            if (port.hasToken(i)) {
+                try {
+                    Token t = port.get(i);
+                    port.send(i,t);
+                } catch (NoSuchItemException ex) {
+                    throw new InternalErrorException(
+                    "Director.transferOutputs: Internal error: " +
+                    ex.getMessage());
+                }
+            }
+        }
+    }
+
     /** Mark the current schedule to be valid.
      *  @see #invalidateSchedule()
      */
@@ -283,8 +412,10 @@ public class Director extends NamedObj implements Executable {
 
     /** This invokes the corresponding methods of all the actors at the end
      *  of simulation
+     *
+     *  @exception IllegalActionException If one of the actors throws it.
      */
-    public void wrapup() {
+    public void wrapup() throws IllegalActionException {
         Enumeration allactors =
             ((CompositeActor)getContainer()).deepGetEntities();
         while (allactors.hasMoreElements()) {
@@ -293,13 +424,78 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////
+    ////                      protected methods                        ////
+
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the NamedObj class.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is speicified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
+     *  This method is read-synchronized on the workspace.
+     *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A description of the object.
+     */
+    protected String _description(int detail, int indent, int bracket) {
+        try {
+            workspace().getReadAccess();
+            String result;
+            if (bracket == 1 || bracket == 2) {
+                result = super._description(detail, indent, 1);
+            } else {
+                result = super._description(detail, indent, 0);
+            }
+            // FIXME: Add director-specific information here, like
+            // what is the state of the director.
+            // if ((detail & FIXME) != 0 ) {
+            //  if (result.trim().length() > 0) {
+            //      result += " ";
+            //  }
+            //  result += "fixme {\n";
+            //  result += _getIndentPrefix(indent) + "}";
+            // }
+            if (bracket == 2) result += "}";
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Make this director the local director of the specified composite
+     *  actor.  This method should not be called directly.  Instead, call
+     *  setDirector of the CompositeActor class (or a derived class).
+     */
+    protected void _makeDirectorOf (CompositeActor cast) {
+        _container = cast;
+        _executivedirector = false;
+    }
+        
+    /** Make this director the executive director of the specified composite
+     *  actor.  This method should not be called directly.  Instead, call
+     *  setExecutiveDirector of the CompositeActor class (or a derived class).
+     */
+    protected void _makeExecDirectorOf (CompositeActor cast) {
+        _container = cast;
+        _executivedirector = true;
+    }
+        
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
+    // The composite of which this is either a local or an executive director.
     private CompositeActor _container = null;
+
+    // True if this is an executive director of the container.
+    private boolean _executivedirector;
+
     private boolean _complete = true;
-    private boolean _schedulevalid;
-    private CompositeActor _subsystem;
+    private boolean _schedulevalid = false;
     private LinkedList _newactors = null;
 
     private LinkedList _pendingMutations = null;

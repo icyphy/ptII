@@ -79,10 +79,17 @@ public class Mailbox implements Receiver {
     }
 
     /** Return true if the Mailbox is empty.
-     *  @return true if the Mailbox is empty.
+     *  @return True if the Mailbox is empty.
      */
-    public boolean isEmpty() {
+    public boolean hasRoom() {
         return (_token == null);
+    }
+
+    /** Return true if the Mailbox is not empty.
+     *  @return True if the Mailbox is not empty.
+     */
+    public boolean hasToken() {
+        return (_token != null);
     }
 
     /** Put a token into the mailbox.  If the argument is null, then the

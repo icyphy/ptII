@@ -204,6 +204,8 @@ public class IOPort extends ComponentPort {
         newobj._localReceivers = null;
         newobj._localReceiversVersion = -1;
         newobj._localReceiversTable = null;
+        newobj._insideReceivers = null;
+        newobj._insideReceiversVersion = -1;
         return newobj;
     }
 
@@ -284,7 +286,7 @@ public class IOPort extends ComponentPort {
                         "get: Tokens can only be retreived from " +
                         "an input port.");
             }
-            if (channelindex >= getWidth()) {
+            if (channelindex >= getWidth() || channelindex < 0) {
                 throw new NoSuchItemException(this,
                         "get: channel index is out of range.");
             }
@@ -305,6 +307,45 @@ public class IOPort extends ComponentPort {
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** If the port is an input, return the receivers deeply linked on the
+     *  inside, otherwise return null.  The returned value is an array of
+     *  arrays in the same format as that returned by getReceivers(). The
+     *  difference between this method and getReceivers() is that this method
+     *  treats the port as a transparent port regardless of whether it is
+     *  one.  If there are no relations linked on the inside, it returns null.
+     *  This method is <i>not</i> read-synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @return The inside receivers.
+     *  @exception IllegalActionException If there is no director, and hence
+     *   no receivers have been created.
+     */
+    public Receiver[][] getInsideReceivers() throws IllegalActionException {
+        if (!isInput()) return null;
+        int width = getWidth();
+        if (width <= 0) return null;
+        if (_insideReceiversVersion != workspace().getVersion()) {
+            // Cache is invalid.  Update it.
+            _insideReceivers = new Receiver[width][];
+            int index = 0;
+            Enumeration insideRels = insideRelations();
+            while (insideRels.hasMoreElements()) {
+                IORelation r = (IORelation) insideRels.nextElement();
+                Receiver[][] rr = r.deepReceivers(this);
+                if (rr != null) {
+                    int size = java.lang.Math.min(rr.length, width-index);
+                    for (int i = 0; i < size; i++) {
+                        if (rr[i] != null) {
+                            _insideReceivers[index++] = rr[i];
+                        }
+                    }
+                }
+            }
+            _insideReceiversVersion = workspace().getVersion();
+        }
+        return _insideReceivers;
     }
 
     /** If the port is an input, return the receivers that receive data
@@ -375,23 +416,8 @@ public class IOPort extends ComponentPort {
                 _localReceiversVersion = workspace().getVersion();
                 return _localReceivers;
             } else {
-                // Transparent port. Does not use cache.
-                Receiver[][] result = new Receiver[width][];
-                int index = 0;
-                Enumeration insideRels = insideRelations();
-                while (insideRels.hasMoreElements()) {
-                    IORelation r = (IORelation) insideRels.nextElement();
-                    Receiver[][] rr = r.deepReceivers(this);
-                    if (rr != null) {
-                        int size = java.lang.Math.min(rr.length, width-index);
-                        for (int i = 0; i < size; i++) {
-                            if (rr[i] != null) {
-                                result[index++] = rr[i];
-                            }
-                        }
-                    }
-                }
-                return result;
+                // Transparent port.
+                return getInsideReceivers();
             }
         } finally {
             workspace().doneReading();
@@ -416,7 +442,8 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         try {
             workspace().getReadAccess();
-            if (!isLinked(relation)) {
+            // Allow inside relations also to support wormholes.
+            if (!isLinked(relation) && !isInsideLinked(relation)) {
                 throw new IllegalActionException(this, relation,
                         "getReceivers: Relation argument is not " +
                         "linked to me.");
@@ -444,19 +471,55 @@ public class IOPort extends ComponentPort {
                         (Receiver[][])_localReceiversTable.get(relation);
                     if (result.length == width) return result;
                 }
-                // Create a new list of receivers.
-                Receiver[][] result = new Receiver[width][1];
+                if (isInsideLinked(relation)) {
+                    // Construct the entire _localReceiversTable
+                    // with keys for all relations, inside and out.  It doesn't
+                    // work to just do it a piece at a time, because the inside
+                    // links share the same receivers.  The receivers are
+                    // created when we call this method with outside linked
+                    // relations.  We make sure they are all created with...
+                    Receiver[][] fullset = getReceivers();
 
-                // Populate it.
-                for (int i = 0; i< width; i++) {
-                    // This throws an exception if there is no director.
-                    result[i][0] = _newReceiver();
+                    // Note that the above does cause an infinite loop
+                    // because getReceivers calls this method back with
+                    // only outside relations as arguments.  Note therefore
+                    // that new receivers are created only when this method
+                    // is called with an outside relation as an argument.
+
+                    // Now we need to insert cache entries for all inside
+                    // linked relations.  As we do that, we intercept
+                    // the result to return.
+                    Receiver[][] result = null;
+                    Enumeration relations = insideRelations();
+                    int count = 0;
+                    while(relations.hasMoreElements()) {
+                        IORelation r = (IORelation) relations.nextElement();
+                        int rwidth = r.getWidth();
+                        Receiver[][] rr = new Receiver[rwidth][];
+                        for (int i=0; i < rwidth; i++) {
+                            rr[i] = fullset[i+count];
+                        }
+                        _localReceiversTable.put(r, rr);
+                        if (r == relation) result = rr;
+                        count += rwidth;
+                    }
+                    return result;
+                } else {
+                    // We have an outside link, but no table entry in the cache.
+                    // Create a new list of receivers.
+                    Receiver[][] result = new Receiver[width][1];
+                    
+                    // Populate it.
+                    for (int i = 0; i< width; i++) {
+                        // This throws an exception if there is no director.
+                        result[i][0] = _newReceiver();
+                    }
+                    // Save it, possibly replacing a previous version.
+                    // NOTE: if a previous version is replaced, then any data
+                    // in the receivers is lost.
+                    _localReceiversTable.put(relation, result);
+                    return result;
                 }
-                // Save it, possibly replacing a previous version.
-                // NOTE: if a previous version is replaced, then any data
-                // in the receivers is lost.
-                _localReceiversTable.put(relation, result);
-                return result;
             } else {
                 // If a transparent port, ask its all inside receivers,
                 // and trim the returned Receivers array to get the
@@ -643,10 +706,51 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Return true if the specified channel can accept a token via the
+     *  put() method.  If this port is not an output, or the channel index
+     *  is out of range, then always return false.  If there are multiple
+     *  receivers in the group associated with the channel, then return
+     *  true only if all the receivers can accept a token.
+     *  @return True if there is room for a token in the channel.
+     */
+    public boolean hasRoom(int channelindex) {
+        if (!isOutput()) return false;
+        if (channelindex >= getWidth() || channelindex < 0) return false;
+        Receiver[][] fr = getRemoteReceivers();
+        if (fr == null || fr[channelindex] == null) return false;
+        for (int j = 0; j < fr[channelindex].length; j++) {
+            if (!fr[channelindex][j].hasRoom()) return false;
+        }
+        return true;
+    }
+
+    /** Return true if the specified channel has a token to deliver via
+     *  via the get() method.  If this port is not an input, or if the
+     *  channel index is out of range, always return false.
+     *  @return True if there is a token in the channel.
+     */
+    public boolean hasToken(int channelindex) {
+        if (!isInput()) return false;
+        if (channelindex >= getWidth() || channelindex < 0) return false;
+        try {
+            Receiver[][] fr = getReceivers();
+            if (fr == null || fr[channelindex] == null) return false;
+            for (int j = 0; j < fr[channelindex].length; j++) {
+                if (fr[channelindex][j].hasToken()) return true;
+            }
+        } catch (IllegalActionException ex) {
+            // Thrown if there is no director, in which case, we return false.
+        }
+        return false;
+    }
+
     /** Return true if the port is an input.  The port is an input
      *  if either makeInput() has been called with a <i>true</i> argument, or
      *  it is connected on the inside to an input port, or if it is
-     *  connected on the inside to the inside of an output port.
+     *  connected on the inside to the inside of an output port, or if
+     *  it is opaque and is linked on the inside to any relation.
+     *  In other words, it is an input if data can be put directly into
+     *  it or sent through it to an input.
      *  This method is read-synchronized on the workspace.
      *
      *  @return True if the port is an input.
@@ -662,6 +766,13 @@ public class IOPort extends ComponentPort {
                     IOPort p = (IOPort) ports.nextElement();
                     // Rule out case where this port itself is listed...
                     if (p != this && p.isInput()) _isinput = true;
+                }
+                // If this port is opaque, then it is an input if
+                // anything at all is linked on the inside.
+                if (isOpaque()) {
+                    ports = insidePorts();
+                    // We only need there to be one relation on the inside.
+                    if (ports.hasMoreElements()) _isinput = true;
                 }
                 _insideinputversion = workspace().getVersion();
             }
@@ -796,7 +907,7 @@ public class IOPort extends ComponentPort {
                 throw new IllegalActionException(this,
                         "send: Tokens can only be sent from an output port.");
             }
-            if (channelindex >= getWidth()) {
+            if (channelindex >= getWidth() || channelindex < 0) {
                 throw new IllegalActionException(this,
                         "send: channel index is out of range.");
             }
@@ -961,6 +1072,7 @@ public class IOPort extends ComponentPort {
                     space = true;
                     result += "opaque";
                 }
+                if (space) result += " ";
                 result += "{width " + getWidth() + "}}";
             }
             if ((detail & RECEIVERS) != 0) {
@@ -1228,6 +1340,10 @@ public class IOPort extends ComponentPort {
     // 'transient' means that the variable will not be serialized.
     private transient Receiver[][] _localReceivers;
     private transient long _localReceiversVersion = -1;
+
+    // A cache of the inside Receivers, and the version.
+    private transient Receiver[][] _insideReceivers;
+    private transient long _insideReceiversVersion = -1;
 
     // The local receivers, indexed by relation.
     // NOTE: When upgrading to jdk 1.2, we should replace this with HashMap

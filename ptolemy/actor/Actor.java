@@ -38,10 +38,10 @@ import pt.kernel.util.*;
 An Actor is an executable entity. This interface defines the common
 functionality in AtomicActor and CompositeActor.
 
-@author Mudit Goel, Edward A. Lee
+@author Edward A. Lee
 @version $Id$
 @see pt.actors.CompositeActor
-@see pt.actors.IOPort
+@see pt.actors.AtomicActor
 */
 public interface Actor extends Executable {
 

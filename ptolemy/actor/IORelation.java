@@ -167,9 +167,9 @@ public class IORelation extends ComponentRelation {
             while(inputs.hasMoreElements()) {
                 IOPort p = (IOPort) inputs.nextElement();
 
-                if(p.isInsideLinked(this)) {
-                    // if p is a transparent port and this relation links from
-                    // the inside, then get the Receivers outside p.
+                if(p.isInsideLinked(this) && !p.isOpaque()) {
+                    // if p is a transparent port and this relation links
+                    // from the inside, then get the Receivers outside p.
                     try {
                         recvrs = p.getRemoteReceivers(this);
                     } catch (IllegalActionException e) {
@@ -181,6 +181,8 @@ public class IORelation extends ComponentRelation {
                     // if p not a transparent port, or this relation is linked
                     // to p from the outside.
                     try {
+                        // Note that this may be an inside or outside linked
+                        // relation.
                         recvrs = p.getReceivers(this);
                     } catch (IllegalActionException e) {
                          throw new InternalErrorException(

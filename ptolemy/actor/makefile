@@ -73,11 +73,9 @@ JSRCS = \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
+	QueueReceiver.java \
 	Receiver.java \
 	TokenHolderFullException.java
-
-# FIXME: Removed temporarily:
-#	QueueReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)
 

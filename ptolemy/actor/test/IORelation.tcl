@@ -55,14 +55,16 @@ set director [java::new pt.actor.Director]
 ####
 #
 test IORelation-2.1 {Construct Relations} {
-    set e1 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.CompositeActor]
+    $e1 setExecutiveDirector $director
     set r1 [java::new pt.actor.IORelation]
     set r2 [java::new pt.actor.IORelation $e1 R2]
     list [$r1 getFullName] [$r2 getFullName]
 } {. ..R2}
 
 test IORelation-2.2 {Construct Relations} {
-    set e1 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.CompositeActor]
+    $e1 setExecutiveDirector $director
     $e1 setName E1
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set r2 [java::new pt.actor.IORelation $e1 R2]
@@ -76,14 +78,16 @@ test IORelation-2.2 {Construct Relations} {
 ####
 #
 test IORelation-3.1 {Test getWidth} {
-    set e1 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.CompositeActor]
+    $e1 setExecutiveDirector $director
     $e1 setName E1
     set r1 [java::new pt.actor.IORelation $e1 R1]
     $r1 getWidth
 } {1}
 
 test IORelation-3.2 {Test getWidth} {
-    set e1 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.CompositeActor]
+    $e1 setExecutiveDirector $director
     $e1 setName E1
     set r1 [java::new pt.actor.IORelation $e1 R1]
     $r1 setWidth 4
@@ -91,7 +95,8 @@ test IORelation-3.2 {Test getWidth} {
 } {4}
 
 test IORelation-3.3 {Test getWidth} {
-    set e1 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.CompositeActor]
+    $e1 setExecutiveDirector $director
     $e1 setName E1
     set r1 [java::new pt.actor.IORelation $e1 R1]
     $r1 setWidth 0
@@ -99,7 +104,8 @@ test IORelation-3.3 {Test getWidth} {
 } {1}
 
 test IORelation-3.4 {Test getWidth of a port} {
-    set e1 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.CompositeActor]
+    $e1 setExecutiveDirector $director
     $e1 setName E1
     set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
@@ -110,7 +116,8 @@ test IORelation-3.4 {Test getWidth of a port} {
 } {{pt.kernel.util.IllegalActionException: .E1.R1 and .E1.E2.P1: Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.4.1 {Test getWidth of a port} {
-    set e1 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.CompositeActor]
+    $e1 setExecutiveDirector $director
     $e1 setName E1
     set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
@@ -122,7 +129,8 @@ test IORelation-3.4.1 {Test getWidth of a port} {
 } {4}
 
 test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
-    set e1 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.CompositeActor]
+    $e1 setExecutiveDirector $director
     $e1 setName E1
     set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
@@ -133,7 +141,8 @@ test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
 } {{pt.kernel.util.IllegalActionException: .E1.E2.P1 and .E1.R1: Attempt to link a bus relation to a single port.}}
 
 test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
-    set e1 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e1 [java::new pt.actor.CompositeActor]
+    $e1 setExecutiveDirector $director
     $e1 setName E1
     set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
@@ -145,9 +154,10 @@ test IORelation-3.6 {Test getWidth of a port with unspecified relation width} {
 } {1}
 
 test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e0 [java::new pt.actor.CompositeActor]
+    $e0 setExecutiveDirector $director
     $e1 setName E0
-    set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
+    set e1 [java::new pt.actor.CompositeActor $e0 E1]
     set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set r2 [java::new pt.actor.IORelation $e0 R2]
@@ -161,9 +171,10 @@ test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
 } {{pt.kernel.util.IllegalActionException: ..E1.R1 and ..E1.E2.P1: Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e0 [java::new pt.actor.CompositeActor]
+    $e0 setExecutiveDirector $director
     $e1 setName E0
-    set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
+    set e1 [java::new pt.actor.CompositeActor $e0 E1]
     set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set r2 [java::new pt.actor.IORelation $e0 R2]
@@ -178,9 +189,10 @@ test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
 } {{pt.kernel.util.IllegalActionException: ..E1.R1 and ..E1.P2: Cannot make bus because the relation is linked to a non-multiport.}}
 
 test IORelation-3.9 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e0 [java::new pt.actor.CompositeActor]
+    $e0 setExecutiveDirector $director
     $e1 setName E0
-    set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
+    set e1 [java::new pt.actor.CompositeActor $e0 E1]
     set e2 [java::new pt.actor.AtomicActor $e1 E2]
     set r1 [java::new pt.actor.IORelation $e1 R1]
     set r2 [java::new pt.actor.IORelation $e0 R2]
@@ -212,9 +224,10 @@ test IORelation-3.11 {Test getWidth of a port with inferred relation width} {
 } {{pt.kernel.util.IllegalActionException: ..E1.P2 and ..E1.R4: Attempt to link a second bus relation with unspecified width to the inside of a port.}}
 
 test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
-    set e0 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e0 [java::new pt.actor.CompositeActor]
+    $e0 setExecutiveDirector $director
     $e1 setName E0
-    set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
+    set e1 [java::new pt.actor.CompositeActor $e0 E1]
     set e2 [java::new pt.actor.AtomicActor $e0 E2]
     set r1 [java::new pt.actor.IORelation $e0 R1]
     $r1 setWidth 0
@@ -229,11 +242,12 @@ test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
 
 test IORelation-3.13 {Resolve width through three levels} {
     # E0 contains E1 contains E2
-    set e0 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e0 [java::new pt.actor.CompositeActor]
+    $e0 setExecutiveDirector $director
     $e1 setName E0
     set p0 [java::new pt.actor.IOPort $e0 P0]
     $p0 makeMultiport true
-    set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
+    set e1 [java::new pt.actor.CompositeActor $e0 E1]
     set p1 [java::new pt.actor.IOPort $e1 P1]
     $p1 makeMultiport true
     set e2 [java::new pt.actor.AtomicActor $e1 E2]
@@ -262,10 +276,11 @@ test IORelation-3.13 {Resolve width through three levels} {
 #
 test IORelation-4.1 {Elaborate test system} {
     # Top container
-    set e0 [java::new pt.actor.CompositeActor [java::null] $director]
+    set e0 [java::new pt.actor.CompositeActor]
+    $e0 setExecutiveDirector $director
     $e0 setName E0
     # First level of the hierarchy
-    set e1 [java::new pt.actor.CompositeActor $e0 E1 [java::null]]
+    set e1 [java::new pt.actor.CompositeActor $e0 E1]
     set p2 [java::new pt.actor.IOPort $e1 P2]
     $p2 makeMultiport true
     set p3 [java::new pt.actor.IOPort $e1 P3]
@@ -273,7 +288,7 @@ test IORelation-4.1 {Elaborate test system} {
     set p4 [java::new pt.actor.IOPort $e1 P4]
     $p4 makeMultiport true
 
-    set e3 [java::new pt.actor.CompositeActor $e0 E3 [java::null]]
+    set e3 [java::new pt.actor.CompositeActor $e0 E3]
     set p5 [java::new pt.actor.IOPort $e3 P5]
     $p5 makeMultiport true
     set p6 [java::new pt.actor.IOPort $e3 P6]

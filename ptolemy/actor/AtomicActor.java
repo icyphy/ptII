@@ -38,11 +38,15 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActor
 /**
-An AtomicActor is an executable entity. The Ports of AtomicActors are
-constrained to be IOPorts.
-The container of an AtomicActor is constrained to be
-an instance of CompositeActor.  In this base class, the actor does nothing
-in the action methods (prefire, fire, ...).
+An AtomicActor is an executable entity that does not itself contain
+other actors. The container is required to be an instance of CompositeActor.
+Derived classes may further constrain the container by overriding
+setContainer(). The Ports of AtomicActors are constrained to be IOPorts.
+Derived classes may further constrain the ports by overriding the public
+method newPort() to create a port of the appropriate subclass, and the
+protected method _addPort() to throw an exception if its argument is a
+port that is not of the appropriate subclass. In this base class, the
+actor does nothing in the action methods (prefire, fire, ...).
 
 @author Mudit Goel, Edward A. Lee
 @version $Id$
@@ -51,14 +55,34 @@ in the action methods (prefire, fire, ...).
 */
 public class AtomicActor extends ComponentEntity implements Actor {
 
+    /** Construct an actor in the default workspace with an empty string
+     *  The object is added to the workspace directory.
+     *  as its name. Increment the version number of the workspace.
+     */
+    public AtomicActor() {
+	super();
+    }
+
+    /** Construct an actor in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     */
+    public AtomicActor(Workspace workspace) {
+	super(workspace);
+    }
+
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  @param container The containing CompositeActor.
+     *
+     *  @param container The container.
      *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If the entity cannot be contained
-     *   by the proposed container.
+     *   by the proposed container (see the setContainer() method).
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
@@ -70,7 +94,25 @@ public class AtomicActor extends ComponentEntity implements Actor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    // FIXME: Implement clone() and _description().
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with the actor.
+     *
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new ComponentEntity.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        AtomicActor newobj = (AtomicActor)super.clone(ws);
+        newobj._inputPortsVersion = -1;
+        newobj._outputPortsVersion = -1;
+        return newobj;
+    }
 
     /** Return the director responsible for the execution of this actor.
      *  Return null if either there is no container or the container has no
@@ -85,15 +127,17 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return null;
     }
 
-    /** This is where the actors would normally define their actions
+    /** Do nothing.  Derived classes override this method to define their
+     *  their primary run-time action.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
     }
 
-    /** The actors would be initialized in this method before their execution
-     *  begins
-     */
+   /** Do nothing.  Derived classes override this method to define their
+    *  initialization code, which gets executed exactly once prior to
+    *  any other action methods.
+    */
     public void initialize() {
     }
 
@@ -126,25 +170,31 @@ public class AtomicActor extends ComponentEntity implements Actor {
     /** Create a new IOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
-     *  @param name The name of the newly created port.
+     *
+     *  @param name The name for the new port.
      *  @return The new port.
-     *  @exception IllegalActionException if the argument is null.
-     *  @exception NameDuplicationException if the actor already has a port
+     *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
      */
-    public Port newPort(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public Port newPort(String name) throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
             IOPort port = new IOPort(this, name);
-            workspace().incrVersion();
             return port;
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(
+            "AtomicActor.newPort: Internal error: " + ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
     }
 
     /** Return a new receiver of a type compatible with the director.
+     *  Derived classes may further specialize this to return a reciever
+     *  specialized to the particular actor.
+     *
      *  @exception IllegalActionException If there is no director.
      *  @return A new object implementing the Receiver interface.
      */
@@ -165,15 +215,14 @@ public class AtomicActor extends ComponentEntity implements Actor {
         try {
             workspace().getReadAccess();
             if(_outputPortsVersion != workspace().getVersion()) {
-                LinkedList outports = new LinkedList();
+                _cachedOutputPorts = new LinkedList();
                 Enumeration ports = getPorts();
                 while(ports.hasMoreElements()) {
                     IOPort p = (IOPort)ports.nextElement();
                     if( p.isOutput()) {
-                        outports.insertLast(p);
+                        _cachedOutputPorts.insertLast(p);
                     }
                 }
-                _cachedOutputPorts = outports;
                 _outputPortsVersion = workspace().getVersion();
             }
             return _cachedOutputPorts.elements();
@@ -182,15 +231,18 @@ public class AtomicActor extends ComponentEntity implements Actor {
         }
     }
 
-    /** Do nothing.  In derived classes, this defines operations to be
-     *  performed at the end of every iteration of its execution.
+    /** Do nothing.  Derived classes override this method to define
+     *  operations to be performed at the end of every iteration of
+     *  its execution, after at least one invocation of the fire()
+     *  method.
      */
     public void postfire() {
     }
 
-    /** Return true.  In derived classes, this defines operations to be
-     *  performed at the beginning of every iteration of its execution.
-     *  @return true if the actor is ready for firing, false otherwise.
+    /** Return true. Derived classes override this method to define
+     *  operations to be performed at the beginning of every iteration
+     *  of its execution, prior the invocation of the fire() method.
+     *  @return True if the actor is ready for firing, false otherwise.
      */
     public boolean prefire() {
         return true;
@@ -218,8 +270,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
         super.setContainer(container);
     }
 
-    /** Do nothing.  In derived classes, this defines operations to be
-     *  performed at the end of a complete execution of an application.
+    /** Do nothing.  Derived classes override this method to define
+     *  operations to be performed excatly once at the end of a complete 
+     *  execution of an application.
      */
     public void wrapup() {
     }
@@ -227,18 +280,16 @@ public class AtomicActor extends ComponentEntity implements Actor {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Override the base class to
-     *  throw an exception if the added port is not an instance of
-     *  IOPort.  This method should not be used
+    /** Override the base class to throw an exception if the added port
+     *  is not an instance of IOPort.  This method should not be used
      *  directly.  Call the setContainer() method of the port instead.
-     *  This method does not set
-     *  the container of the port to point to this entity.
-     *  It assumes that the port is in the same workspace as this
-     *  entity, but does not check.  The caller should check.
+     *  This method does not set the container of the port to point to
+     *  this entity. It assumes that the port is in the same workspace
+     *  as this entity, but does not check.  The caller should check.
      *  Derived classes may override this method to further constrain to
-     *  a subclass of IOPort.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
+     *  a subclass of IOPort. This method is <i>not</i> synchronized on
+     *  the workspace, so the caller should be.
+     *
      *  @param port The port to add to this entity.
      *  @exception IllegalActionException If the port class is not
      *   acceptable to this entity, or the port has no name.
@@ -254,6 +305,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
         super._addPort(port);
     }
 
+    // NOTE: There is nothing new to report in the _description() method,
+    // so we do not override it.
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
@@ -263,7 +317,3 @@ public class AtomicActor extends ComponentEntity implements Actor {
     private transient long _outputPortsVersion = -1;
     private transient LinkedList _cachedOutputPorts;
 }
-
-
-
-
