@@ -60,11 +60,11 @@ public class DTDebug {
     public static final void printStackTrace() {
         if (_debugOn) {
             try {
-		        throw new Exception("printStackTrace()");
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		}
+                throw new Exception("printStackTrace()");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static boolean _debugOn = false;

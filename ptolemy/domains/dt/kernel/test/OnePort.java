@@ -63,7 +63,7 @@ public class OnePort extends TypedAtomicActor {
 
 
         initialOutputs = new Parameter(this, "initialOutputs",
-                             new IntMatrixToken(defaultValues));
+                new IntMatrixToken(defaultValues));
 
 
         //Parameter tokenInitProduction = new Parameter(output,"tokenInitProduction",
@@ -119,10 +119,10 @@ public class OnePort extends TypedAtomicActor {
         //debug.prompt(""+input.getWidth());
         if (input.getWidth() >= 1) {
             for(i=0;i<_inrate;i++) {
-            // FIXME: should consider port widths
+                // FIXME: should consider port widths
                 //if (input.hasToken(0)) {
-                    //token = (DoubleToken) (input.get(0));
-                    _buffer[i] = input.get(0);
+                //token = (DoubleToken) (input.get(0));
+                _buffer[i] = input.get(0);
                 //} else {
                 //    throw new IllegalActionException(
                 //              "no Tokens available for OnePort during firing");

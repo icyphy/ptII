@@ -118,11 +118,11 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
     	if (_from == null)  {
     	    throw new InternalErrorException(
-    	        "internal DT error: Receiver with null source");
+                    "internal DT error: Receiver with null source");
     	} else {
 
     	    Parameter param = (Parameter)
-    	                        _fromPort.getAttribute("tokenProductionRate");
+                _fromPort.getAttribute("tokenProductionRate");
     	    if(param == null) {
                 _outrate = 1;
             } else {
@@ -132,7 +132,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
             if ((isCompositeContainer) && (_toPort.isOutput())) {
                 _inrate = 1;
             } else {
-    		    param = (Parameter) _toPort.getAttribute("tokenConsumptionRate");
+                param = (Parameter) _toPort.getAttribute("tokenConsumptionRate");
     	        if(param == null) {
                     _inrate = 1;
                 } else {
@@ -140,13 +140,13 @@ public class DTReceiver extends SDFReceiver implements Receiver {
                 }
             }
 
-        	if (_toPort.isOutput()) {
+            if (_toPort.isOutput()) {
 
-        	} else {
-        	}
+            } else {
+            }
 
-        	// FIXME: check tunneling topology
-           	periodValue = _localDirector.getPeriod();
+            // FIXME: check tunneling topology
+            periodValue = _localDirector.getPeriod();
             if (_toPort.isOutput()) {
                 repeats = _localDirector.getRepeats(_from);
                 _periodDivider = repeats * _outrate;
@@ -184,45 +184,45 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
     	Iterator portListIterator = listOfConnectedPorts.iterator();
 
-    	foundReceiver:
+    foundReceiver:
     	while (portListIterator.hasNext()) {
     	    connectedPort = (IOPort) portListIterator.next();
 
     	    if (connectedPort.isOutput() == true) {
-    		    Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
+                Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
 
-    		    for(int i=0;i<connectedPort.getWidth();i++) {
-    			    for(int j=0;j<remoteReceivers[i].length;j++) {
-    			        if (remoteReceivers[i][j] == this) {
+                for(int i=0;i<connectedPort.getWidth();i++) {
+                    for(int j=0;j<remoteReceivers[i].length;j++) {
+                        if (remoteReceivers[i][j] == this) {
                             _from = (Actor) connectedPort.getContainer();
                             _fromPort = connectedPort;
                             if (_fromPort == null) {
                                 throw new InternalErrorException(
-                                    "internal DT error: Receiver with null source");
+                                        "internal DT error: Receiver with null source");
                             }
                             break foundReceiver;
-    			        }
-    			    }
-    		    }
+                        }
+                    }
+                }
     	    } else if (connectedPort.getContainer() instanceof TypedCompositeActor) {
     	        // FIXME: should use at isAtomic() insteadof instanceof?
     	        _from = (Actor) connectedPort.getContainer();
     	        _fromPort = connectedPort;
     	        if (_fromPort == null) {
     	            throw new InternalErrorException(
-                        "internal DT error: Receiver with null source");
+                            "internal DT error: Receiver with null source");
     	        }
     	        break foundReceiver;
     	    } else if (connectedPort.isInput() == true) {
-    	       // This case occurs when the destination port and
-    	       // the queried connected port are both inputs.
-    	       // This case should be ignored.
+                // This case occurs when the destination port and
+                // the queried connected port are both inputs.
+                // This case should be ignored.
     	    }
     	}
 
     	if (_fromPort == null) {
     	    throw new InternalErrorException(
-    	        "internal DT error: Receiver with null source");
+                    "internal DT error: Receiver with null source");
     	}
     }
 
@@ -243,7 +243,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         try {
             director.setCurrentTime(_localTime);
         } catch (Exception e) {
-        // FIXME: process exception
+            // FIXME: process exception
         }
 
         String sourceName = ((Nameable) _to).getName();
@@ -280,7 +280,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     public void put(Token token) {
         if (_fromPort == null) {
             throw new InternalErrorException(
-                      "internal DT error: Receiver with null source");
+                    "internal DT error: Receiver with null source");
         }
         super.put(token);
     }
@@ -311,17 +311,17 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         String toString;
 
         if (_from == null) {
-              fromString="0";
+            fromString="0";
         } else {
-              fromString=((Nameable) _from).getName();
+            fromString=((Nameable) _from).getName();
         }
 
         fromString += " (" + ((TypedIOPort)_fromPort).getType() + ")";
 
         if (_to == null) {
-              toString="0";
+            toString="0";
         } else {
-              toString=((Nameable) _to).getName();
+            toString=((Nameable) _to).getName();
         }
 
         toString += " (" + ((TypedIOPort)_toPort).getType() + ")";

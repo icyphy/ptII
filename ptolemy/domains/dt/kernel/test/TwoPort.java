@@ -170,10 +170,10 @@ public class TwoPort extends TypedAtomicActor {
 
 
         for(i=0; i < _outrate1;i++) {
-                output1.send(0, new DoubleToken(i));
+            output1.send(0, new DoubleToken(i));
         }
         for(i=0; i < _outrate2;i++) {
-                output2.send(0, new DoubleToken(i));
+            output2.send(0, new DoubleToken(i));
         }
     }
 
