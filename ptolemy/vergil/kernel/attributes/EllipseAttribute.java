@@ -64,7 +64,9 @@ public class EllipseAttribute extends FilledShapeAttribute {
     public EllipseAttribute(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        centered.setExpression("true");
+        //NOTE: This used to be calling setExpression(), but the change
+        //does not take effect when the icon is created.
+        centered.setToken("true");
     }
 
     ///////////////////////////////////////////////////////////////////
