@@ -259,7 +259,7 @@ public class TxCoordination extends MACActorBase {
                         if ( ((IntToken)GotCtsMsg.get("kind")).intValue()==GotCts )
                             {
                                 cancelTimer(_Trsp);
-                                Time endRx = new Time(this,
+                                Time endRx = new Time(getDirector(),
                                     ((DoubleToken)GotCtsMsg.get("endRx")).doubleValue());
                                 _ssrc=0;
 

@@ -105,8 +105,8 @@ public class TimeKeeper {
         _receiverComparator = new ReceiverComparator(this);
 
         _setReceiverPriorities();
-        _currentTime = new Time(actor);
-        _outputTime = new Time(actor);
+        _currentTime = new Time(actor.getDirector());
+        _outputTime = new Time(actor.getDirector());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@ public class TimeKeeper {
      *  {@link #getModelTime()}
      */
     public double getCurrentTime() {
-        return getModelTime().getTimeValue();
+        return getModelTime().getDoubleValue();
     }
 
     /** Return the active PrioritizedTimedQueue with the oldest receiver time
@@ -192,7 +192,7 @@ public class TimeKeeper {
             PrioritizedTimedQueue receiver;
             for ( int i = 0; i < _receiverList.size(); i++ ) {
                 receiver = (PrioritizedTimedQueue)_receiverList.get(i);
-                if ( receiver.getReceiverTime().getTimeValue() ==
+                if ( receiver.getReceiverTime().getDoubleValue() ==
                         PrioritizedTimedQueue.IGNORE ) {
                     receiver.removeIgnoredToken();
                 }
@@ -240,8 +240,8 @@ public class TimeKeeper {
      */
     public synchronized void setCurrentTime(Time time) {
         if ( time.compareTo(_currentTime) < 0 
-                && time.getTimeValue() != PrioritizedTimedQueue.INACTIVE
-                && time.getTimeValue() != PrioritizedTimedQueue.IGNORE ) {
+                && time.getDoubleValue() != PrioritizedTimedQueue.INACTIVE
+                && time.getDoubleValue() != PrioritizedTimedQueue.IGNORE ) {
             throw new IllegalArgumentException(
                     ((NamedObj)_actor).getName() + " - Attempt to "
                     + "set current time in the past."
@@ -249,7 +249,7 @@ public class TimeKeeper {
                     + "; current time = " + _currentTime );
         }
 
-        if ( time.getTimeValue() != PrioritizedTimedQueue.IGNORE ) {
+        if ( time.getDoubleValue() != PrioritizedTimedQueue.IGNORE ) {
             _currentTime = time;
         }
     }
@@ -268,14 +268,14 @@ public class TimeKeeper {
         }
 
         Time time = prioritizedTimedQueue.getReceiverTime();
-        if (time.getTimeValue() == PrioritizedTimedQueue.IGNORE) {
+        if (time.getDoubleValue() == PrioritizedTimedQueue.IGNORE) {
             _ignoredReceivers = true;
         }
 
         if ( !_receiverList.contains(prioritizedTimedQueue) ) {
             // Add receiver to list with a touch of
             // optimization before actually sorting.
-            if ( time.getTimeValue() > 0 ) {
+            if ( time.getDoubleValue() > 0 ) {
                 _receiverList.addFirst(prioritizedTimedQueue);
             } else {
                 _receiverList.addLast(prioritizedTimedQueue);
@@ -339,7 +339,7 @@ public class TimeKeeper {
                     + "to set the time keeper's output time "
                     + "in the past");
         }
-        if ( outputTime.getTimeValue() != PrioritizedTimedQueue.IGNORE ) {
+        if ( outputTime.getDoubleValue() != PrioritizedTimedQueue.IGNORE ) {
             _outputTime = outputTime;
         }
     }

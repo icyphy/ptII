@@ -189,7 +189,7 @@ public class DDEDirector extends CompositeProcessDirector
      *  method.
      */
     public double getCurrentTime() {
-        return getModelTime().getTimeValue();
+        return getModelTime().getDoubleValue();
     }
 
     /** Return the current time of the DDEThread that calls this
@@ -240,11 +240,11 @@ public class DDEDirector extends CompositeProcessDirector
             if (_initialTimeTable == null) {
                 _initialTimeTable = new Hashtable();
             }
-            _initialTimeTable.put(actor, new Double(time.getTimeValue()));
+            _initialTimeTable.put(actor, new Double(time.getDoubleValue()));
             return;
         }
 
-        if (_completionTime.getTimeValue() != ETERNITY && 
+        if (_completionTime.getDoubleValue() != ETERNITY && 
             time.compareTo(_completionTime) > 0) {
             return;
         }

@@ -108,7 +108,7 @@ public class FakePlotter extends TypedAtomicActor {
                 DoubleToken currentToken = (DoubleToken)input.get(i);
                 double currentValue = currentToken.doubleValue();
                 outVal.send(0,new DoubleToken(currentValue));
-                outTime.send(0,new DoubleToken(currentTime.getTimeValue()));
+                outTime.send(0,new DoubleToken(currentTime.getDoubleValue()));
             }
         }
         return super.postfire();

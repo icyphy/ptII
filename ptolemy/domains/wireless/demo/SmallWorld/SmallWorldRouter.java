@@ -376,7 +376,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 if (_receptions == null) {
                     _receptions = new HashMap();
                 }
-                Double timeDouble = new Double(time.getTimeValue());
+                Double timeDouble = new Double(time.getDoubleValue());
                 String[] labels = {"data", "destination", "routeTo", "hops"};
                 RecordToken result = new RecordToken(labels, values);
                 _receptions.put(timeDouble, result);
@@ -401,7 +401,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
             if (_receptions != null) {
                 // We may be getting fired because of an impending event.
                 double currentTimeValue = 
-                    getDirector().getModelTime().getTimeValue();
+                    getDirector().getModelTime().getDoubleValue();
                 Double timeDouble = new Double(currentTimeValue);
                 RecordToken reception = (RecordToken)_receptions.get(timeDouble);
                 if (reception != null) {

@@ -264,7 +264,7 @@ public class BluetoothNode extends TypedAtomicActor {
                     locationArray[i] = new DoubleToken(location[i]);
                 }
 
-                double timeValue = getDirector().getModelTime().getTimeValue();
+                double timeValue = getDirector().getModelTime().getDoubleValue();
                 Token[] values = {
                     new ArrayToken(locationArray),
                     new DoubleToken(timeValue),

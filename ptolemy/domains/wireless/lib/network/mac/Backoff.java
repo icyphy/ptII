@@ -220,7 +220,7 @@ public class Backoff extends MACActorBase {
                 // modify standard here
             case Busy:
                 _slotCnt -= (int)(_currentTime.subtract(_backoffStartTime)
-                    .getTimeValue()*1e6/_aSlotTime);
+                    .getDoubleValue()*1e6/_aSlotTime);
                 cancelTimer(_BackoffTimer);
                 _state = Channel_Busy;
                 _status=Busy;
@@ -253,6 +253,7 @@ public class Backoff extends MACActorBase {
         _messageType = UNKNOWN;
         _status = Busy;
         _state = No_Backoff;
+        _backoffStartTime = new Time(getDirector());
         
         NamedObj macComposite = getContainer().getContainer();
         if (macComposite.getAttribute("mBkIP") != null) {
@@ -315,7 +316,7 @@ public class Backoff extends MACActorBase {
     // timer types
     private static final int BackoffTimeOut=0;
 
-    private Time _backoffStartTime = new Time(this);
+    private Time _backoffStartTime;
 
     private RecordToken _inputMessage;
     private int _messageType;

@@ -88,7 +88,8 @@ public class DTReceiver extends SDFReceiver {
     public DTReceiver(IOPort container) throws IllegalActionException {
         super(container);
         _init();
-        Time localTime = new Time((Actor) container.getContainer());
+        Time localTime = 
+            new Time(((Actor)container.getContainer()).getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -103,7 +104,8 @@ public class DTReceiver extends SDFReceiver {
             throws IllegalActionException {
         super(container, size);
         _init();
-        Time localTime = new Time((Actor) container.getContainer());
+        Time localTime = 
+            new Time(((Actor)container.getContainer()).getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -275,7 +277,7 @@ public class DTReceiver extends SDFReceiver {
      *   {@link #getModelTime()}
      */
     public double getCurrentTime() {
-        return getModelTime().getTimeValue();
+        return getModelTime().getDoubleValue();
     }
 
     /** Return the time interval between tokens for this receiver.

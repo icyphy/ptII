@@ -302,7 +302,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @exception NoRoomException If the queue is full.
      */
     public void put(Token token, Time time) throws NoRoomException {
-        double timeValue = time.getTimeValue();
+        double timeValue = time.getDoubleValue();
         if ( time.compareTo(_lastTime) < 0 && timeValue != INACTIVE 
             && timeValue != IGNORE ) {
             NamedObj actor = (NamedObj)getContainer().getContainer();
@@ -364,7 +364,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public synchronized void removeIgnoredToken() {
 
-        if ( getReceiverTime().getTimeValue() 
+        if ( getReceiverTime().getDoubleValue() 
             != PrioritizedTimedQueue.IGNORE ) {
             return;
         }
@@ -396,7 +396,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         }
 
         // Set the receiver time if value is still IGNORE
-        if ( getReceiverTime().getTimeValue()
+        if ( getReceiverTime().getDoubleValue()
              == PrioritizedTimedQueue.IGNORE ) {
             if ( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
@@ -486,7 +486,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @param time The completion time of this receiver.
      */
     void _setCompletionTime(Time time) {
-        double timeValue = time.getTimeValue();
+        double timeValue = time.getDoubleValue();
         if ( timeValue < 0.0 && timeValue != PrioritizedTimedQueue.ETERNITY ) {
             throw new IllegalArgumentException("Attempt to set "
                     + "completion time to a negative value.");
@@ -509,9 +509,9 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     // Initialize some time variables.
     private void _initializeTimeVariables() {
         Actor actor = (Actor) getContainer().getContainer();
-        _completionTime = new Time(actor, ETERNITY);
-        _lastTime = new Time(actor);
-        _receiverTime = new Time(actor);
+        _completionTime = new Time(actor.getDirector(), ETERNITY);
+        _lastTime = new Time(actor.getDirector());
+        _receiverTime = new Time(actor.getDirector());
     }
 
     ///////////////////////////////////////////////////////////////////

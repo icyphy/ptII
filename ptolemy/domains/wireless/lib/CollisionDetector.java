@@ -358,7 +358,7 @@ public class CollisionDetector extends TypedAtomicActor {
                 Reception reception = new Reception();
                 reception.data = message.get(0);
                 reception.power = powerValue;
-                reception.arrivalTime = currentTime.getTimeValue();
+                reception.arrivalTime = currentTime.getDoubleValue();
                 reception.collided = false;
                 reception.duration = ((DoubleToken)
                         duration.get(0)).doubleValue();
@@ -372,7 +372,7 @@ public class CollisionDetector extends TypedAtomicActor {
 
                 // Put the new reception into the list of prior receptions.
                 Time time = currentTime.add(reception.duration);
-                reception.expiration = time.getTimeValue();
+                reception.expiration = time.getDoubleValue();
 
                 _receptions.add(reception);
 
@@ -394,7 +394,7 @@ public class CollisionDetector extends TypedAtomicActor {
             }
             // If the reception is now expiring, send it to one of the two
             // output ports.
-            if (priorReception.expiration == currentTime.getTimeValue()) {
+            if (priorReception.expiration == currentTime.getDoubleValue()) {
                 if (_debugging) {
                     _debug("Current time matches expiration " +
                             "time of a prior message that arrived at: "

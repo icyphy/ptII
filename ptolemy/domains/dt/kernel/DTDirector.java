@@ -354,7 +354,7 @@ public class DTDirector extends SDFDirector {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        return getModelNextIterationTime().getTimeValue();
+        return getModelNextIterationTime().getDoubleValue();
     }
 
 
@@ -872,7 +872,7 @@ public class DTDirector extends SDFDirector {
                 + _formerValidTimeFired + " " + currentTime);
 
 
-        if ((currentTime.getTimeValue() != 0) && (! _inputTokensAvailable) &&
+        if ((currentTime.getDoubleValue() != 0) && (! _inputTokensAvailable) &&
                 (currentTime.compareTo(_formerTimeFired) == 0 )) {
             //  duplicate firings at the same time should be ignored
             //  unless there are input tokens
@@ -886,7 +886,7 @@ public class DTDirector extends SDFDirector {
         }
 
         // this occurs during startup
-        if (currentTime.getTimeValue() == 0) {
+        if (currentTime.getDoubleValue() == 0) {
             _debug("first firing");
             _shouldDoInternalTransferOutputs = true;
             _formerValidTimeFired = currentTime;
@@ -901,7 +901,7 @@ public class DTDirector extends SDFDirector {
         _debug("timeRemaining = " + timeRemaining);
         _debug("tolerance = " + _TOLERANCE);
 
-        if (timeRemaining.getTimeValue() < 0 ) {
+        if (timeRemaining.getDoubleValue() < 0 ) {
             // this case should not occur
             _debug("InternalErrorException time: "
                     + _formerValidTimeFired
@@ -909,8 +909,8 @@ public class DTDirector extends SDFDirector {
             throw new InternalErrorException("unexpected time rollback");
         }
 
-        if ((timeRemaining.getTimeValue() > 0)
-                && (timeElapsed.getTimeValue() > 0)) {
+        if ((timeRemaining.getDoubleValue() > 0)
+                && (timeElapsed.getDoubleValue() > 0)) {
 
             Iterator outputPorts = container.outputPortList().iterator();
             _isFiringAllowed = false;
@@ -921,7 +921,7 @@ public class DTDirector extends SDFDirector {
                 insideReceivers = port.getInsideReceivers();
                 double deltaTime =
                     ((DTReceiver)insideReceivers[0][0]).getDeltaTime();
-                double ratio = timeElapsed.getTimeValue() / deltaTime;
+                double ratio = timeElapsed.getDoubleValue() / deltaTime;
 
                 if (Math.abs(Math.round(ratio) - ratio) < _TOLERANCE) {
                     // firing at a time when transferOutputs should be called
@@ -1074,7 +1074,7 @@ public class DTDirector extends SDFDirector {
             for (int n = 1; n < periodDivider; n++) {
                 _requestRefireAt(currentTime.add(n * deltaTime));
                 _debug(" request pseudo-fire at "
-                        + (currentTime.add(n * deltaTime)).getTimeValue());
+                        + (currentTime.add(n * deltaTime)).getDoubleValue());
             }
         }
     }
@@ -1231,7 +1231,7 @@ public class DTDirector extends SDFDirector {
         public DTActor(Actor actor) {
             _actor = actor;
             _repeats = 0;
-            _localTime = new Time(_actor);
+            _localTime = new Time(_actor.getDirector());
             _shouldGenerateInitialTokens = false;
         }
     }

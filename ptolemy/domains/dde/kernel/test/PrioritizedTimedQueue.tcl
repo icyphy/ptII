@@ -74,8 +74,8 @@ test PrioritizedTimedQueue-3.1 {Check hasToken(), hasRoom(), rcvrTime
 and lastTime for empty queue} {
     set hasToken [$tqr hasToken]
     set hasRoom [$tqr hasRoom]
-    set rcvrTime [[$tqr getReceiverTime] getTimeValue]
-    set lastTime [[$tqr getLastTime] getTimeValue]
+    set rcvrTime [[$tqr getReceiverTime] getDoubleValue]
+    set lastTime [[$tqr getLastTime] getDoubleValue]
     list $hasToken $hasRoom $rcvrTime $lastTime
 } {0 1 0.0 0.0}
 
@@ -96,11 +96,11 @@ test PrioritizedTimedQueue-3.2 {Check hasToken() after putting token} {
     set t2 [java::new ptolemy.data.Token]
     $tqr put $t1 $time1
     set hasToken [$tqr hasToken]
-    set rcvrTime1 [[$tqr getReceiverTime] getTimeValue]
-    set lastTime1 [[$tqr getLastTime] getTimeValue]
+    set rcvrTime1 [[$tqr getReceiverTime] getDoubleValue]
+    set lastTime1 [[$tqr getLastTime] getDoubleValue]
     $tqr put $t1 $time2
-    set rcvrTime2 [[$tqr getReceiverTime] getTimeValue]
-    set lastTime2 [[$tqr getLastTime] getTimeValue]
+    set rcvrTime2 [[$tqr getReceiverTime] getDoubleValue]
+    set lastTime2 [[$tqr getLastTime] getDoubleValue]
     list $hasToken $rcvrTime1 $lastTime1 $rcvrTime2 $lastTime2
 } {1 5.0 5.0 5.0 15.0}
 
@@ -134,7 +134,7 @@ test PrioritizedTimedQueue-4.3 {Check hasRoom() for infinite capacity queue} {
     set t4 [java::new ptolemy.data.Token]
     catch {$tqr put $t4 $time4} msg
     list $msg
-} {{java.lang.IllegalArgumentException: actor - Attempt to set current time to the past; time = 3.7. The _lastTime was 5.0}}
+} {{java.lang.IllegalArgumentException: actor - Attempt to set current time to the past; time = 3.7000000000. The _lastTime was 5.0000000000}}
 
 ######################################################################
 ####
@@ -149,28 +149,28 @@ test PrioritizedTimedQueue-5.1 {Check get(), put(), _rcvrTime and _lastTime} {
     $tqr put $t0 $time1
     $tqr put $t1 $time5
 
-    set rcvrTime0 [[$tqr getReceiverTime] getTimeValue]
-    set lastTime0 [[$tqr getLastTime] getTimeValue]
+    set rcvrTime0 [[$tqr getReceiverTime] getDoubleValue]
+    set lastTime0 [[$tqr getLastTime] getDoubleValue]
 
     set outToken0 [$tqr get]
     set rslt0 [expr { $outToken0 == $t0 } ]
 
     $tqr put $t2 $time2
 
-    set rcvrTime1 [[$tqr getReceiverTime] getTimeValue]
-    set lastTime1 [[$tqr getLastTime] getTimeValue]
+    set rcvrTime1 [[$tqr getReceiverTime] getDoubleValue]
+    set lastTime1 [[$tqr getLastTime] getDoubleValue]
 
     set outToken1 [$tqr get]
     set rslt1 [expr { $outToken1 == $t1 } ]
 
-    set rcvrTime3 [[$tqr getReceiverTime] getTimeValue]
+    set rcvrTime3 [[$tqr getReceiverTime] getDoubleValue]
 
     $tqr get
 
     set empty [expr { [$tqr hasToken] == 0 } ]
 
-    set rcvrTime4 [[$tqr getReceiverTime] getTimeValue]
-    set rcvrTime5 [[$tqr getReceiverTime] getTimeValue]
+    set rcvrTime4 [[$tqr getReceiverTime] getDoubleValue]
+    set rcvrTime5 [[$tqr getReceiverTime] getDoubleValue]
 
     list $rcvrTime0 $lastTime0 $rslt0 $rcvrTime1 $lastTime1 $rslt1 $rcvrTime3 $rcvrTime4 $rcvrTime5 $empty
 } {5.0 7.0 1 7.0 15.0 1 15.0 15.0 15.0 1}
@@ -193,4 +193,4 @@ test PrioritizedTimedQueue-7.2 {Attempt to put negative time stamps} {
 
     catch {$tqr put $t1 $time6} msg
     list $msg
-} {{java.lang.IllegalArgumentException: actor - Attempt to set current time to the past; time = -1.5. The _lastTime was 0.0}}
+} {{java.lang.IllegalArgumentException: actor - Attempt to set current time to the past; time = -1.5000000000. The _lastTime was 0.0000000000}}

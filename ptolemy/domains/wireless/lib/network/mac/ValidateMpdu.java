@@ -168,7 +168,7 @@ public class ValidateMpdu extends MACActorBase {
                                         Token[] RxMpduvalues ={
                                             new IntToken(RxMpdu),
                                             _pdu,
-                                            new DoubleToken(_endRx.getTimeValue()),
+                                            new DoubleToken(_endRx.getDoubleValue()),
                                             new IntToken(_rxRate)};
                                         RecordToken msgout =
                                             new RecordToken(RxMpduMsgFields, RxMpduvalues);
@@ -184,7 +184,7 @@ public class ValidateMpdu extends MACActorBase {
                                 // send UseIfs message to ChannelState process
                                 Token[] Ifsvalues ={
                                     new IntToken(UseIfs),
-                                    new DoubleToken(_endRx.getTimeValue())};
+                                    new DoubleToken(_endRx.getDoubleValue())};
                                 RecordToken msgout =new RecordToken(UseIfsMsgFields, Ifsvalues);
                                 toChannelState.send(0, msgout);
 
@@ -210,6 +210,7 @@ public class ValidateMpdu extends MACActorBase {
         super.initialize();
         _D1=_aRxRfDelay+_aRxPlcpDelay;
         _currentState = Rx_Idle;
+        _endRx = new Time(getDirector());
     }
 
 
@@ -218,7 +219,7 @@ public class ValidateMpdu extends MACActorBase {
 
     private int _dRts;
     private int _rxRate;
-    private Time _endRx = new Time(this);
+    private Time _endRx;
     private RecordToken _pdu;
     private Timer _timer;
     private int _D1;

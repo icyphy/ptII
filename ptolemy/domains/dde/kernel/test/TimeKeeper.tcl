@@ -98,7 +98,7 @@ test TimeKeeper-3.1 {getNextTime()} {
 
     set newrcvr [$keeper getFirstReceiver]
 
-    list [[$keeper getNextTime] getTimeValue] [expr {$rcvr2 == $newrcvr} ]
+    list [[$keeper getNextTime] getDoubleValue] [expr {$rcvr2 == $newrcvr} ]
 
 } {5.0 1}
 
@@ -121,7 +121,7 @@ test TimeKeeper-3.2 {getNextTime()} {
 
     set newrcvr [$keeper getFirstReceiver]
 
-    list [[$keeper getNextTime] getTimeValue] [expr {$rcvr3 == $newrcvr} ]
+    list [[$keeper getNextTime] getDoubleValue] [expr {$rcvr3 == $newrcvr} ]
 
 } {5.0 1}
 
@@ -141,7 +141,7 @@ test TimeKeeper-3.3 {getNextTime()} {
 
     set newrcvr [$keeper getFirstReceiver]
 
-    list [[$keeper getNextTime] getTimeValue] [expr {$rcvr1 == $newrcvr} ]
+    list [[$keeper getNextTime] getDoubleValue] [expr {$rcvr1 == $newrcvr} ]
 
 } {-1.0 1}
 
@@ -161,7 +161,7 @@ test TimeKeeper-3.4 {getNextTime()} {
 
     set newrcvr [$keeper getFirstReceiver]
 
-    list [[$keeper getNextTime] getTimeValue] [expr {$rcvr2 == $newrcvr} ]
+    list [[$keeper getNextTime] getDoubleValue] [expr {$rcvr2 == $newrcvr} ]
 
 } {-2.0 1}
 
@@ -180,7 +180,7 @@ test TimeKeeper-4.1 {Call Methods On Uninitialized TimeKeeper} {
     if { [$keeper getCurrentTime] != 0.0 } {
 	set val 0
     }
-    if { [[$keeper getNextTime] getTimeValue] != 0.0 } {
+    if { [[$keeper getNextTime] getDoubleValue] != 0.0 } {
 	set val 0
     }
     if { ![java::isnull [$keeper getFirstReceiver]] } {
@@ -263,7 +263,7 @@ test TimeKeeper-5.2 {Ignore Tokens} {
 	set newVal 0
     }
 
-    set time [[$rcvr2 getReceiverTime] getTimeValue]
+    set time [[$rcvr2 getReceiverTime] getDoubleValue]
 
     list $val $time
 
@@ -301,7 +301,7 @@ test TimeKeeper-5.3 {Ignore Tokens} {
 	}
     }
 
-    set time [[$rcvr2 getReceiverTime] getTimeValue]
+    set time [[$rcvr2 getReceiverTime] getDoubleValue]
 
     list $val $newVal
 

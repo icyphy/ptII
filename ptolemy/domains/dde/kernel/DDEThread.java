@@ -111,9 +111,9 @@ public class DDEThread extends ProcessThread {
                     for (int j = 0; j < receivers[i].length; j++) {
                         try {
                             if ( ((DDEReceiver)receivers[i][j]).getReceiverTime()
-                                .getTimeValue() != endTime ) {
+                                .getDoubleValue() != endTime ) {
                                 ((DDEReceiver) receivers[i][j]).put(null,
-                                    new Time(getActor(), endTime));
+                                    new Time(getActor().getDirector(), endTime));
                             }
                         } catch( TerminateProcessException e ) {
                             // Do nothing since we are ending
@@ -142,7 +142,7 @@ public class DDEThread extends ProcessThread {
         if ( table != null ) {
             Double dTime = (Double)table.get(actor);
             if ( dTime != null ) {
-                Time time = new Time(actor, dTime.doubleValue());
+                Time time = new Time(director, dTime.doubleValue());
                 _timeKeeper.setCurrentTime( time );
             }
         }

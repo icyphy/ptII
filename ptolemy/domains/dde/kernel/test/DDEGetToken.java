@@ -102,7 +102,7 @@ public class DDEGetToken extends DDEGet {
                     DDEReceiver receiver = (DDEReceiver)receivers[i][j];
                     if ( receiver.hasToken() ) {
                         _receiverTimes[cnt] 
-                            = receiver.getReceiverTime().getTimeValue();
+                            = receiver.getReceiverTime().getDoubleValue();
                         _tokens[cnt] = receiver.get();
                         Thread thread = Thread.currentThread();
                         if ( thread instanceof DDEThread ) {

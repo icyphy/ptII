@@ -156,7 +156,7 @@ public class RxCoordination extends MACActorBase {
 
                             dAck= ((IntToken)msg.get("dAck")).intValue();
                             ackto= ((IntToken)msg.get("ackto")).intValue();
-                            endRx= new Time(this,
+                            endRx= new Time(getDirector(),
                                 ((DoubleToken)msg.get("endRx")).doubleValue());
 
                             if (dAck>0)
@@ -170,7 +170,7 @@ public class RxCoordination extends MACActorBase {
 
                         case RxIndicate:
                             pdu= (RecordToken)msg.get("pdu");
-                            endRx= new Time(this,
+                            endRx= new Time(getDirector(),
                                 ((DoubleToken)msg.get("endRx")).doubleValue());
                             int Type=((IntToken)pdu.get("Type")).intValue();
                             int Subtype=((IntToken)pdu.get("Subtype")).intValue();
@@ -185,7 +185,7 @@ public class RxCoordination extends MACActorBase {
                                         case Ack:
                                             Token[] GotAckvalues={
                                                 new IntToken(GotAckMsg),
-                                                new DoubleToken(endRx.getTimeValue())};
+                                                new DoubleToken(endRx.getDoubleValue())};
                                             RecordToken GotAckmsg =
                                                 new RecordToken(GotCtsMsgFields, GotAckvalues);
                                             // send the message to the TxCoordination process
@@ -195,7 +195,7 @@ public class RxCoordination extends MACActorBase {
                                         case Cts:
                                             Token[] GotCtsvalues={
                                                 new IntToken(GotCts),
-                                                new DoubleToken(endRx.getTimeValue())};
+                                                new DoubleToken(endRx.getDoubleValue())};
                                             RecordToken GotCtsmsg =
                                                 new RecordToken(GotCtsMsgFields, GotCtsvalues);
                                             // send the message to the TxCoordination process
@@ -207,7 +207,7 @@ public class RxCoordination extends MACActorBase {
                                             Time navEnd = currentTime.add(1.0);
                                             if (_tNavEnd != null && _tNavEnd instanceof Variable) {
                                                 Token token = ((Variable) _tNavEnd).getToken();
-                                                navEnd = new Time(this,
+                                                navEnd = new Time(getDirector(),
                                                     ((DoubleToken) token).doubleValue());
                                             } //FIXME: assume it is instanceof variable.
                                             if (navEnd.compareTo(currentTime) <= 0)

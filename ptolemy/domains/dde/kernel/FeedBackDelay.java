@@ -212,7 +212,7 @@ public class FeedBackDelay extends DDEActor {
             for ( int j = 0; j < receivers[i].length; j++ ) {
                 DDEReceiver rcvr = (DDEReceiver)receivers[i][j];
                 rcvr.put( new Token(), 
-                    new Time(this, PrioritizedTimedQueue.IGNORE));
+                    new Time(getDirector(), PrioritizedTimedQueue.IGNORE));
             }
         }
 

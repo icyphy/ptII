@@ -85,7 +85,7 @@ public class DDEPutToken extends DDEPut {
                         rcvr.put( _tokens[cnt] );
                     } else {
                         rcvr.put( _tokens[cnt], 
-                            new Time(this, _times[cnt]) );
+                            new Time(getDirector(), _times[cnt]) );
                     }
                 }
             }

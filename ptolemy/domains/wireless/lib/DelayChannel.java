@@ -140,7 +140,7 @@ public class DelayChannel extends ErasureChannel {
         if (_receptions != null) {
             // We may be getting fired because of an impending event.
             Time currentTime = getDirector().getModelTime();
-            Double timeDouble = new Double(currentTime.getTimeValue());
+            Double timeDouble = new Double(currentTime.getDoubleValue());
             Reception reception = (Reception)_receptions.get(timeDouble);
             if (reception != null) {
                 // The time matches a pending reception.
@@ -214,7 +214,7 @@ public class DelayChannel extends ErasureChannel {
             if (_receptions == null) {
                 _receptions = new HashMap();
             }
-            Double timeDouble = new Double(time.getTimeValue());
+            Double timeDouble = new Double(time.getDoubleValue());
             Reception reception = new Reception();
             reception.token = token;
             reception.sender = sender;

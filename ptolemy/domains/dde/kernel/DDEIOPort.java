@@ -186,7 +186,7 @@ public class DDEIOPort extends TypedIOPort {
     public void send(int chIndex, Token token, Time sendTime)
             throws IllegalActionException, NoRoomException {
         double currentTimeValue = 0.0;
-        double sentTimeValue = sendTime.getTimeValue();
+        double sentTimeValue = sendTime.getDoubleValue();
         Thread thread = Thread.currentThread();
         DDEThread ddeThread = null;
         if ( thread instanceof DDEThread ) {

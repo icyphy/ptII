@@ -150,14 +150,9 @@ public class GiottoDirector extends StaticSchedulingDirector
             throws IllegalActionException {
         if (attribute == period) {
             _periodValue = ((DoubleToken)period.getToken()).doubleValue();
-        } else if (attribute == timeResolution) {
-            double value = ((DoubleToken)timeResolution.getToken()).
-                doubleValue();
-            if (value <= 0.0) {
-                throw new IllegalActionException(this,
-                        "Cannot set a negative or zero time resolution.");
-            }
-            setTimeResolution(value);
+        } else if (attribute == timeScale) {
+            int value = ((IntToken)timeScale.getToken()).intValue();
+            setTimeScale(value);
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken())
@@ -201,10 +196,10 @@ public class GiottoDirector extends StaticSchedulingDirector
             long elapsedTime = System.currentTimeMillis() - _realStartTime;
             double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
 
-            if (_expectedNextIterationTime.getTimeValue() 
+            if (_expectedNextIterationTime.getDoubleValue() 
                 > elapsedTimeInSeconds) {
                 long timeToWait = (long)
-                    ((_expectedNextIterationTime.getTimeValue() 
+                    ((_expectedNextIterationTime.getDoubleValue() 
                         - elapsedTimeInSeconds) * 1000.0);
                 if (timeToWait > 0) {
                     if (_debugging) {
@@ -322,7 +317,7 @@ public class GiottoDirector extends StaticSchedulingDirector
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        return getModelNextIterationTime().getTimeValue();
+        return getModelNextIterationTime().getDoubleValue();
     }
 
     /** Get the period of the giotto director in ms
@@ -643,10 +638,10 @@ public class GiottoDirector extends StaticSchedulingDirector
      */
     public Parameter synchronizeToRealTime;
 
-    /** The resolution in comparing time.
-     *  The default value is 1e-10, of type DoubleToken.
+    /** The number of digits of the fractional part of the model time.
+     *  The default value is 10, and the type is int.
      */
-    public Parameter timeResolution;
+    public Parameter timeScale;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -672,9 +667,8 @@ public class GiottoDirector extends StaticSchedulingDirector
             period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
             iterations = new Parameter(this, "iterations", new IntToken(0));
 
-            timeResolution = new Parameter(this, "timeResolution",
-                    new DoubleToken("1e-10"));
-            timeResolution.setTypeEquals(BaseType.DOUBLE);
+            timeScale = new Parameter(this, "timeScale", new IntToken("10"));
+            timeScale.setTypeEquals(BaseType.INT);
 
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime",

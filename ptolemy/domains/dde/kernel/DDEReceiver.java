@@ -267,14 +267,14 @@ public class DDEReceiver extends PrioritizedTimedQueue
             //////////////////////////////////////////
             // Determine if the TimeKeeper is inactive
             //////////////////////////////////////////
-            if ( timeKeeper.getNextTime().getTimeValue() == INACTIVE ) {
+            if ( timeKeeper.getNextTime().getDoubleValue() == INACTIVE ) {
                 requestFinish();
             }
 
             ///////////////////
             // Check Receiver Times
             ///////////////////
-            if ( getReceiverTime().getTimeValue() == IGNORE && !_terminate ) {
+            if ( getReceiverTime().getDoubleValue() == IGNORE && !_terminate ) {
                 timeKeeper.removeAllIgnoreTokens();
 
                 sendNullTokens = true;
@@ -580,11 +580,12 @@ public class DDEReceiver extends PrioritizedTimedQueue
         synchronized(this) {
 
             if ( time.compareTo(_getCompletionTime()) > 0 
-                && _getCompletionTime().getTimeValue() != ETERNITY 
+                && _getCompletionTime().getDoubleValue() != ETERNITY 
                 && !_terminate ) {
                 time = new Time(
-                    (Actor)getContainer().getContainer().getContainer(), 
-                    INACTIVE);
+                        ((Actor)getContainer().getContainer().getContainer())
+                        .getDirector(), 
+                        INACTIVE);
             }
 
             if ( super.hasRoom() && !_terminate ) {

@@ -115,7 +115,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
         _hasLed = false;
         _hasTimer = false;
         _timerPeriod = 0.0;
-        _scheduledTime = new Time(this);
+        _scheduledTime = new Time(getDirector());
         //call the native method to initialize the application.
         initMote();
 
