@@ -1,0 +1,35 @@
+#!/bin/sh
+# Fix up the @since tags
+# @author: Christopher Hylands
+# @version: $Id$
+#
+# There are several cases
+# 1. The file is new between releases and has no tag
+# 2. The file is new between releases and has the wrong tag
+# 3. An old file has the incorrect tag
+
+# The first thing to do is to generate a list of new files
+# by running diff between the old release and the new release
+
+oldVersion=2.0.1
+newVersion=2.1devel
+
+diffOutput=/tmp/fixsince.diffOutput.$$
+if [ ! -f $diffOutput ]; then
+    echo "Generating $newJavaFiles, this will take awhile
+    diff -r $PTII/adm/dists/ptII$oldVersion \
+	$PTII/adm/dists/ptII$newVersion > $diffOutput
+
+newJavaFiles=/tmp/fixsince.newJavaFiles.$$
+if [ ! -f $newJavaFiles ]; then
+    egrep "^Only in ptII$newVersion" $diffOutput | 
+        egrep '.java$' |
+        sed -e 's/Only in //' -e 's@: @/@' > $newJavaFiles 
+fi
+
+if [ ! -f $newJavaFiles ]; then
+    echo "$0: Can't find $newJavaFiles to determine which files are new, exiting"
+    exit 9 
+fi
+
+# 1. The file is new between releases and has no tag
