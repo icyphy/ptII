@@ -139,7 +139,9 @@ public class URIAttribute extends SingletonAttribute {
      *  @exception IllegalArgumentException If the URI is not absolute.
      */
     public URL getURL() throws MalformedURLException {
-        if (_value == null) return null;
+        if (_value == null) {
+	    return null;
+	}
         return _value.toURL();
     }
 
