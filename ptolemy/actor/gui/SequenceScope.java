@@ -50,9 +50,9 @@ on this instance.  Each channel is plotted as a separate data set.
 The horizontal axis represents the count of the iterations, modulo
 the <i>width</i> parameter, scaled by the <i>xUnit</i> parameter.
 The <i>width</i> parameter must is an integer that gives the width
-of the plot in number of samples. It defaults to 1000.
+of the plot in number of samples. It defaults to 100.
 If the <i>persistence</i> parameter is positive, then it specifies
-the number of points that are remembered. It also defaults to 1000.
+the number of points that are remembered. It also defaults to 100.
 Any points older than these are erased and forgotten.
 The horizontal increment between samples is given by the
 <i>xUnit</i> parameter. Its default value is 1.0. The horizontal value
@@ -77,8 +77,8 @@ public class SequenceScope extends SequencePlotter implements SequenceActor {
         super(container, name);
 
         // set the parameters
-        width = new Parameter(this, "width", new IntToken(1000));
-        persistence = new Parameter(this, "persistence", new IntToken(1000));
+        width = new Parameter(this, "width", new IntToken(100));
+        persistence = new Parameter(this, "persistence", new IntToken(100));
     }
 
     ///////////////////////////////////////////////////////////////////
