@@ -42,7 +42,7 @@
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <entity name="Sinewave" class="ptolemy.domains.sdf.kernel.test.SinewaveTest">
             <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
                 <doc>The sampling frequency, in the same units as the frequency.</doc>
             </property>
@@ -68,12 +68,6 @@
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="172.0, 45.0">
                 </property>
             </property>
             <doc>This composite actor generates a sine wave.</doc>
