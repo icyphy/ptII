@@ -28,6 +28,7 @@
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Review changeRequest / changeListener code.
 Review container relationship and new parent class.
+Win added methods fireAtCurrentTime(Actor) and fireAtReletiveTime(Actor,double)
 */
 
 package ptolemy.actor;
