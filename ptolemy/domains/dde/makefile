@@ -49,8 +49,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 		kernel/kernel.jar \
 		lib/lib.jar \
-		gui/gui.jar \
-		demo/demo.jar
+		gui/gui.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
