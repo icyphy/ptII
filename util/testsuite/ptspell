@@ -34,10 +34,10 @@
 
 # If the local dictionary can be found, use it
 LOCALFILE=
-if [ -f "$PTII/util/ptlocaldict" ]; then
-	LOCALFILE="$PTII/util/ptlocaldict"
+if [ -f "$PTII/util/testsuite/ptlocaldict" ]; then
+	LOCALFILE="+$PTII/util/testsuite/ptlocaldict"
 else
-	echo "$0: The Ptolemy II local dictionary at '$PTII/util/ptlocaldict' can't be found"
+	echo "$0: The Ptolemy II local dictionary at '$PTII/util/testsuite/ptlocaldict' can't be found"
 fi
 
 spell $LOCALFILE ${1+"$@"} |
