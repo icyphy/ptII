@@ -5,8 +5,8 @@ run ptolemy classic SR
 add, update, and correct comments
 FIXMEs
 
-add AbstractReceiver.isKnown()
-write IOPort.isKnown()
+kill NonStrictIOPort, put methods into IOPort
+create an SRScheduler
 determine whether actors are ready to fire
 determine whether actors are done firing
 
