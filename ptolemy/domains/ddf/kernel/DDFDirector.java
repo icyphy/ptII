@@ -88,6 +88,14 @@ public class DDFDirector extends Director {
         iterationCount = 0;
     }
 
+    /**
+     * Always return what <tt>super.prefire()</tt> returns, because an DDF model can
+     * potentially always perform an iteration, regardless of the presence of input tokens.
+     *
+     * @return Always returns what <tt>super.prefire()</tt> returns.
+     * @throws IllegalActionException If thrown by <tt>super.prefire()</tt>
+     */
+
     public boolean prefire() throws IllegalActionException {
         reFire = false;
         return super.prefire();
@@ -277,7 +285,7 @@ public class DDFDirector extends Director {
         }
 
         ///////////////////////////////////////////////////////////////////
-        //// DDFReceiver                                               ////
+        ////                      DDFReceiver                          ////
         ///////////////////////////////////////////////////////////////////
 
         DDFReceiver() {
