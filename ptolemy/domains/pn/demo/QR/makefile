@@ -89,7 +89,7 @@ docs: javadocs
 KRUFT = QRcompile.jar
 
 # Jar file for the QRplane Applet
-QRplane.jar: $(JSRCS) $(JCLASS) makefile
+QRcompile.jar: $(JSRCS) $(JCLASS) makefile
 	(cd $(ROOT); \
 		$(JAR) cf \
 		$(ME)/$@ \

@@ -69,8 +69,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	super.init();
 	try {
 
-	    // setSize(600, 600);
-
+	     setSize(600, 600);
 
             getContentPane().setLayout(
                     new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -78,26 +77,16 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    _query = new Query();
             _query.setBackground(_getBackground());
             _query.addQueryListener(this);
-            _query.addLine("K", "Number of QRupdate Iterations", "10");
+            _query.addLine("K", "Number of QR update iterations", "10");
             _query.addLine("N", "Number of Antenna's", "6");
 
             getContentPane().add( _query );
-
-            /*
-              Parameter param =
-              (Parameter)_director.getAttribute("Initial_queue_capacity");
-              param.setToken(new IntToken(10));
-	    */
-
-	    _printplot = new Print(_toplevel, "print");
-            _printplot.place(getContentPane());
-            _printplot.plot.setBackground(_getBackground());
 
 	    _eventplot = new SequencePlotter(_toplevel, "plot");
             _eventplot.place(getContentPane());
             _eventplot.plot.setBackground(_getBackground());
 	    _eventplot.plot.setGrid(false);
-	    _eventplot.plot.setTitle("Events");
+	    _eventplot.plot.setTitle("Matrix R");
 	    _eventplot.plot.addLegend(0, "Matrix R");
 	    _eventplot.plot.setXLabel("Position");
 	    _eventplot.plot.setYLabel("R Values");
@@ -118,15 +107,12 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 	    _ND_86 = new ND_86(_toplevel,"ND_86");
 
 	    _copy = new Pass12(_toplevel,"Copy");
-	    _copy2 = new Pass12(_toplevel,"Copy_AGAIN");
-
-            _s2m = new StreamToMatrix(_toplevel,"StreamToMatrix");
+	    _s2m = new StreamToMatrix(_toplevel,"StreamToMatrix");
 
             _matrixViewer = new MatrixViewer(_toplevel,"MatrixViewer");
             _matrixViewer.place(getContentPane());
-            _matrixViewer.setBackground(_getBackground());
 
-	    System.out.println(" -- 1.) Process Nodes instantiated -- ");
+	    // System.out.println(" -- 1.) Process Nodes instantiated -- ");
 
 	    _toplevel.connect(_ND_6.out0, _ND_36.in1);
 	    _toplevel.connect(_ND_6.out1, _ND_66.in1);
@@ -148,38 +134,13 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 
 
 	    _toplevel.connect(_copy.out0, _eventplot.input);
-	    _toplevel.connect(_copy.out1, _copy2.in0);
-	    _toplevel.connect(_copy2.out0, _printplot.input);
-
-	    System.out.println(" -- 1a.) Process Nodes instantiated -- ");
-	    _toplevel.connect(_copy2.out1, _s2m.input);
-	    System.out.println(" -- 1b.) Process Nodes instantiated -- ");
+	    _toplevel.connect(_copy.out1,  _s2m.input);
 	    _toplevel.connect(_s2m.output, _matrixViewer.input);
-	    System.out.println(" -- 1c.) Process Nodes instantiated -- ");
 
             _initCompleted = true;
 
-	    System.out.println(" -- 2.) Connections made - DONER - ");
-
-	    
-	    // _query = new Query();
-            // _query.addQueryListener(new ParameterListener());
-            // add(_query);
-
             // The 2 argument requests a go and stop button.
             getContentPane().add(_createRunControls(2));
-            
-	    // String ds = _toplevel.description();
-	    // System.err.print(ds);
-            // _manager.execute();
-
-	    System.out.println("-- 3.) QRupdate installed properly -- ");
-
-	    System.out.println("-- 4.) Call the manager -- ");
-            
-            // _manager.run();
-
-            // super._go();
 	
 	} catch (Exception ex) {
             report("Setup failed:", ex);
@@ -215,34 +176,37 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
     public void changed(String name) {
 
         try {
-            _ND_6.parameter_K.
-                setToken(new IntToken((int)_query.intValue("K")));
-            _ND_14.parameter_K.
-                setToken(new IntToken((int)_query.intValue("K")));
-            _ND_66.parameter_K.
-                setToken(new IntToken((int)_query.intValue("K")));
-            _ND_36.parameter_K.
-                setToken(new IntToken((int)_query.intValue("K")));
-            _ND_86.parameter_K.
-                setToken(new IntToken((int)_query.intValue("K")));
 
-            _s2m.dimension.
-                setToken(new IntToken((int)_query.intValue("N")));
+	    if ( name == "K" ) {
+		_ND_6.parameter_K.
+			setToken(new IntToken((int)_query.intValue("K")));
+		_ND_14.parameter_K.
+			setToken(new IntToken((int)_query.intValue("K")));
+		_ND_66.parameter_K.
+			setToken(new IntToken((int)_query.intValue("K")));
+		_ND_36.parameter_K.
+			setToken(new IntToken((int)_query.intValue("K")));
+		_ND_86.parameter_K.
+			setToken(new IntToken((int)_query.intValue("K")));
+	    }
+	    
+	    if ( name == "N" ) {
 
-            _ND_6.parameter_N.
-                setToken(new IntToken((int)_query.intValue("N")));
-            _ND_14.parameter_N.
-                setToken(new IntToken((int)_query.intValue("N")));
-            _ND_66.parameter_N.
-                setToken(new IntToken((int)_query.intValue("N")));
-            _ND_36.parameter_N.
-                setToken(new IntToken((int)_query.intValue("N")));
-            _ND_86.parameter_N.
-                setToken(new IntToken((int)_query.intValue("N")));
+		_s2m.dimension.
+			setToken(new IntToken((int)_query.intValue("N")));
 
+		_ND_6.parameter_N.
+			setToken(new IntToken((int)_query.intValue("N")));
+		_ND_14.parameter_N.
+			setToken(new IntToken((int)_query.intValue("N")));
+		_ND_66.parameter_N.
+			setToken(new IntToken((int)_query.intValue("N")));
+		_ND_36.parameter_N.
+			setToken(new IntToken((int)_query.intValue("N")));
+		_ND_86.parameter_N.
+			setToken(new IntToken((int)_query.intValue("N")));
 
-            System.out.println(" -- parameter values changed, calculating new results -- ");
-            _go();
+	    }
 
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
@@ -260,11 +224,10 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
     private ND_36    _ND_36;
     private ND_86    _ND_86;
     private Pass12   _copy;
-    private Pass12   _copy2;
+ 
     private MatrixViewer   _matrixViewer;
     private StreamToMatrix _s2m;
     
-    private Print             _printplot;    
     private SequencePlotter   _eventplot;    
     private Query             _query;
 
