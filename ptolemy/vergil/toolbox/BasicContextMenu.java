@@ -60,11 +60,10 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// BasicContextMenu
 /**
-This is a base class for context menus for most objects in the ptolemy
+This is a base class for context menus for most objects in the vergil
 editor.  It contains a single action, for editing the parameters of 
-a named object.  This action creates a configurer consistent with the 
-object.  If the object does not specify a configurer, then an
-instance of ParameterEditor is used.
+a named object.  This action creates configuration widgets using
+the createEditor() method of the Configurer class.
 
 This class also contains methods that make it simple to add new actions to
 this menu.
@@ -73,6 +72,7 @@ this menu.
 @version $Id$
 */   
 public class BasicContextMenu extends JPopupMenu {
+
     public BasicContextMenu(NamedObj target) {
 	super(target.getFullName());
 	_target = target;
@@ -80,24 +80,22 @@ public class BasicContextMenu extends JPopupMenu {
 	Action action;
 	action = new AbstractAction ("Edit Parameters") {
 	    public void actionPerformed(ActionEvent e) {
-		// Create a dialog and attach the dialog values 
-		// to the parameters of the object                    
-		JFrame frame = 
-		new JFrame("Parameters for " + getTarget().getName());
-		JPanel pane = (JPanel) frame.getContentPane();
-		Query query;
-		try {
-		    // FIXME What if this implements the WidgetConfigurable
-		    // interface?
-		    query = new ParameterEditor(getTarget());
-		} catch (IllegalActionException ex) {
-		    ex.printStackTrace();
-		    throw new RuntimeException(ex.getMessage());
-		}
-		
-		pane.add(query);
-		frame.setVisible(true);
-		frame.pack();
+
+		// Create a dialog for configuring the object.
+                try {
+                    JPanel panel = Configurer.createEditor(_target);
+                    String[] buttons = {"OK"};
+                    // FIXME: First argument below should a a parent window
+                    // (a JFrame).
+                    ComponentDialog dialog = new ComponentDialog(
+                            null,
+                            "Edit parameters for " + _target.getName(),
+                            panel,
+                            buttons);
+                } catch (IllegalActionException ex) {
+                    // FIXME: How are errors reported in Vergil?
+                    System.out.println(ex.toString());
+                }
 	    }
 	};
 	add(action, "Edit Parameters");

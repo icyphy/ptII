@@ -59,10 +59,10 @@ import javax.swing.event.*;
 //// EntityController
 /**
 This class provides interaction with nodes that represent Ptolemy II entities.
-(Or, more specifically, for the icon that is contained in an entity.)
+(Or, more specifically, with the icon that is contained in an entity.)
 It contains a node controller for the ports that the entity contains, and when
 it draws an entity, it defers to that controller to draw the ports.  The
-figures for ports are automatically places on the left and right side of the 
+figures for ports are automatically placed on the left and right side of the 
 figure for the entity.  Standard selection and movement interaction is 
 provided.  In addition, right clicking on the entity will create a context
 menu for the entity. 
@@ -71,6 +71,11 @@ menu for the entity.
 @version $Id$
 */
 public class EntityController extends LocatableNodeController {
+
+    /** Create an entity controller associated with the specified graph
+     *  controller.
+     *  @param controller The associated graph controller.
+     */
     public EntityController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new EntityRenderer());

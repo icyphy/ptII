@@ -222,39 +222,8 @@ public class ViewerGraphController extends CompositeGraphController {
 
         public class Menu extends BasicContextMenu {
 	    public Menu(CompositeEntity target) {
-		super(target);
-		
-		// FIXME this action is similar to one in the application.
-		// Merge them (GUIActions?)
-		Action action;
-		action = new AbstractAction ("Edit Director Parameters") {
-		    public void actionPerformed(ActionEvent e) {
-			// Create a dialog and attach the dialog values 
-			// to the parameters of the schematic's director
-			CompositeActor object = 
-			(CompositeActor) getTarget();
-			
-			Director director = object.getDirector();
-			JFrame frame =
-			new JFrame("Parameters for " + director.getName());
-			JPanel pane = (JPanel) frame.getContentPane();
-			Query query;
-			try {
-			    query = new ParameterEditor(director);
-			} catch (Exception ex) {
-			    ex.printStackTrace();
-			    throw new RuntimeException(ex.getMessage());
-			}
-			
-			pane.add(query);
-			frame.setVisible(true);
-			frame.pack();
-		    }
-		};
-
-		add(action, "Edit Director Parameters");
-		
-		//FIXME
+		super(target);		
+		//FIXME -- implement this.
 		JLabel domain = new JLabel("Domain");
 		add(domain);
 		JLabel director = new JLabel("Director");

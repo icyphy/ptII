@@ -377,40 +377,6 @@ public class VergilApplication extends MDIApplication {
         addAction(action);
         addMenuItem(menuDevel, action, 'P', "Print current document info");
 
-        action = new AbstractAction ("Edit Director Parameters") {
-            public void actionPerformed(ActionEvent e) {
-                VergilDocument d = (VergilDocument)getCurrentDocument();
-                if (d == null) {
-                    return;
-                } 
-                try {
-		    CompositeActor toplevel = 
-                        (CompositeActor) d.getGraph();                    
-		    Director director = toplevel.getDirector();
-		    JFrame frame =
-                        new JFrame("Parameters for " + director.getName());
-                    JPanel pane = (JPanel) frame.getContentPane();
-		    Query query;
-		    try {
-			query = new ParameterEditor(director);
-		    } catch (Exception ex) {
-			ex.printStackTrace();
-			throw new RuntimeException(ex.getMessage());
-		    }
-                    
-		    pane.add(query);
-                    frame.setVisible(true);
-                    frame.pack();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new GraphException(ex.getMessage());
-                }
-            }
-        };
-            
-        addAction(action);
-        addMenuItem(menuDevel, action, 'P', "Edit Director Parameters");
-
         action = new AbstractAction ("Execute System") {
             public void actionPerformed(ActionEvent e) {
                 VergilDocument d = (VergilDocument)getCurrentDocument();
