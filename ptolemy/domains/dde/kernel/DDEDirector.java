@@ -39,6 +39,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.pn.kernel.BasePNDirector; // For Javadoc
 
 import java.util.Hashtable;
 import java.util.Enumeration;
