@@ -198,11 +198,11 @@ public class PowerLossChannel extends LimitedRangeChannel {
         // Evaluate the power loss factor, which will have been updated
         // with the new value of "distance."
         double powerLossFactorValue
-                = ((DoubleToken)powerLossFactor.getToken()).doubleValue();
+            = ((DoubleToken)powerLossFactor.getToken()).doubleValue();
 
         // Calculate the receive power.
         double receivePower
-                = transmitPower.doubleValue() * powerLossFactorValue;
+            = transmitPower.doubleValue() * powerLossFactorValue;
 
         // Create a record token with the receive power.
         String[] names = {"power"};

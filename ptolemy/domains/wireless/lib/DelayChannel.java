@@ -116,10 +116,10 @@ public class DelayChannel extends ErasureChannel {
             throws IllegalActionException {
         if (attribute == propagationSpeed) {
             double speed = ((DoubleToken)propagationSpeed.getToken())
-                    .doubleValue();
+                .doubleValue();
             if (speed <= 0.0) {
                 throw new IllegalActionException(this,
-                "Invalid value for propagationSpeed: " + speed);
+                        "Invalid value for propagationSpeed: " + speed);
             }
         } else {
             super.attributeChanged(attribute);
@@ -188,7 +188,7 @@ public class DelayChannel extends ErasureChannel {
             RecordToken properties)
             throws IllegalActionException {
         double speed = ((DoubleToken)propagationSpeed.getToken())
-                .doubleValue();
+            .doubleValue();
         if (speed == Double.POSITIVE_INFINITY) {
             super._transmitTo(token, sender, receiver, properties);
         } else {
@@ -205,7 +205,7 @@ public class DelayChannel extends ErasureChannel {
             // called only if the receiver is in range at the
             // initiation of the transmission.
             WirelessIOPort destination
-                    = (WirelessIOPort)receiver.getContainer();
+                = (WirelessIOPort)receiver.getContainer();
             double distance = _distanceBetween(sender, destination);
             double time = director.getCurrentTime() + distance/speed;
 

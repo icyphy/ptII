@@ -66,7 +66,7 @@ getProperty() method to get the property.
 @version $Id$
 */
 public class TerrainProperty extends TypedAtomicActor
-        implements PropertyTransformer {
+    implements PropertyTransformer {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -100,11 +100,11 @@ public class TerrainProperty extends TypedAtomicActor
         //Crate the icon.
         _icon = new EditorIcon(this, "_icon");
         _terrain =
-                new FilledShapeAttribute(_icon, "terrain") {
-            protected Shape _newShape() {
-                return new Polygon(_xPoints, _yPoints, _numberOfPoints);
-            }
-        };
+            new FilledShapeAttribute(_icon, "terrain") {
+                    protected Shape _newShape() {
+                        return new Polygon(_xPoints, _yPoints, _numberOfPoints);
+                    }
+                };
 
         // Set the color to green.
         _terrain.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
@@ -128,7 +128,7 @@ public class TerrainProperty extends TypedAtomicActor
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == xyPoints) {
             Token xypoints = xyPoints.getToken();
             if (xypoints instanceof ArrayToken) {
@@ -140,7 +140,7 @@ public class TerrainProperty extends TypedAtomicActor
                 }
                 for(int i = 0; i < xypointsArray.length(); i++) {
                     ArrayToken xypointArray = (ArrayToken)
-                            xypointsArray.getElement(i);
+                        xypointsArray.getElement(i);
                     _xPoints[i] = ((IntToken)xypointArray.
                             getElement(0)).intValue();
                     _yPoints[i] = ((IntToken)xypointArray.
@@ -152,7 +152,7 @@ public class TerrainProperty extends TypedAtomicActor
 
             } else {
                 throw new IllegalActionException (this,
-                "xPoints is required to be an integer array");
+                        "xPoints is required to be an integer array");
             }
         } else {
             super.attributeChanged(attribute);
@@ -168,7 +168,7 @@ public class TerrainProperty extends TypedAtomicActor
         _number = 10;
         _offset = new double[2];
         Locatable location = (Locatable)
-                getAttribute(LOCATION_ATTRIBUTE_NAME, Locatable.class);
+            getAttribute(LOCATION_ATTRIBUTE_NAME, Locatable.class);
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for entity "
@@ -183,7 +183,7 @@ public class TerrainProperty extends TypedAtomicActor
         if (channel instanceof WirelessChannel) {
             _channel = (WirelessChannel)channel;
             ((WirelessChannel)channel).
-                    registerPropertyTransformer(this, null);
+                registerPropertyTransformer(this, null);
         } else {
             throw new IllegalActionException(this,
                     "The channel name does not refer to a valid channel.");
@@ -212,30 +212,30 @@ public class TerrainProperty extends TypedAtomicActor
         boolean cross = false;
         for (int i = 0; i < _numberOfPoints; i++) {
             for (int j = i+1; j< _numberOfPoints; j++) {
-            x0 = _xPoints[i] + _offset[0];
-            y0 = _yPoints[i] + _offset[1];
-            x1 = _xPoints[j] + _offset[0];
-            y1 = _yPoints[j] + _offset[1];
-            if (x1 - x0 != 0) {
-                k = (y1-y0)/(x1-x0);
-                a = p1[1]-y0-k*(p1[0]-x0);
-                b =  p2[1]-y0-k*(p2[0]-x0);
-            } else {
-                a = p1[0]-x0;
-                b = p2[0]-x0;
-            }
-            if(p2[0]-p1[0] != 0) {
-                k = (p2[1]-p1[1])/(p2[0]-p1[0]);
-                c = y0 - p1[1]-k*(x0-p1[0]);
-                d = y1 - p1[1]-k*(x1-p1[0]);
-            } else {
-                c = x0 - p1[0];
-                d = x1 - p1[0];
-            }
-            if (a*b<0 && c*d<0) {
-                cross = true;
-                break;
-            }
+                x0 = _xPoints[i] + _offset[0];
+                y0 = _yPoints[i] + _offset[1];
+                x1 = _xPoints[j] + _offset[0];
+                y1 = _yPoints[j] + _offset[1];
+                if (x1 - x0 != 0) {
+                    k = (y1-y0)/(x1-x0);
+                    a = p1[1]-y0-k*(p1[0]-x0);
+                    b =  p2[1]-y0-k*(p2[0]-x0);
+                } else {
+                    a = p1[0]-x0;
+                    b = p2[0]-x0;
+                }
+                if(p2[0]-p1[0] != 0) {
+                    k = (p2[1]-p1[1])/(p2[0]-p1[0]);
+                    c = y0 - p1[1]-k*(x0-p1[0]);
+                    d = y1 - p1[1]-k*(x1-p1[0]);
+                } else {
+                    c = x0 - p1[0];
+                    d = x1 - p1[0];
+                }
+                if (a*b<0 && c*d<0) {
+                    cross = true;
+                    break;
+                }
             } //for j.
         }//for i.
         if (cross) {

@@ -161,10 +161,10 @@ public class NodeRandomizer extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         ChangeRequest doRandomize = new ChangeRequest(this, "randomize nodes") {
-            protected void _execute() throws IllegalActionException {
-                _randomize();
-            }
-        };
+                protected void _execute() throws IllegalActionException {
+                    _randomize();
+                }
+            };
         requestChange(doRandomize);
     }
 

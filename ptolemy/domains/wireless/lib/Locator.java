@@ -151,7 +151,7 @@ public class Locator extends TypedAtomicActor {
             Token[] values = {
                 new ArrayToken(locationArray),
                 new DoubleToken(time)
-            };
+                    };
             Token result = new RecordToken(labels, values);
 
             output.send(0, result);
@@ -177,7 +177,7 @@ public class Locator extends TypedAtomicActor {
                 "_location", Location.class);
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-            "Cannot find a _location attribute of class Location.");
+                    "Cannot find a _location attribute of class Location.");
         }
         return locationAttribute.getLocation();
     }

@@ -187,7 +187,7 @@ public class WirelessToWired extends TypedAtomicActor {
                     inputChannelName.stringValue());
             if (channel instanceof AtomicWirelessChannel) {
                 Parameter channelProperties = ((AtomicWirelessChannel)channel)
-                        .defaultProperties;
+                    .defaultProperties;
                 // Only set up the type constraint if the type of the
                 // of the properties field is known.
                 if (channelProperties.getType() != BaseType.UNKNOWN) {

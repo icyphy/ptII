@@ -183,7 +183,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
 
         double experiment = _random.nextDouble();
         double probability = ((DoubleToken)lossProbability.getToken())
-                .doubleValue();
+            .doubleValue();
         if (_debugging) {
             _debug(" **** loss probability is: " + probability);
         }

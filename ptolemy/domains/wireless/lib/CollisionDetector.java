@@ -268,13 +268,13 @@ public class CollisionDetector extends TypedAtomicActor {
                     SNRThresholdInDB.getToken()).doubleValue();
             if (SNRThresholdInDBValue <= 0.0) {
                 throw new IllegalActionException(this,
-                "SNRThresholdInDB is required to be positive. "
+                        "SNRThresholdInDB is required to be positive. "
                         + "Attempt to set it to: "
                         + SNRThresholdInDBValue);
             } else {
                 // Convert to linear scale.
                 _SNRThresholdInDB =
-                        Math.pow(10, SNRThresholdInDBValue/10);
+                    Math.pow(10, SNRThresholdInDBValue/10);
             }
 
         } else if (attribute == powerThreshold) {
@@ -282,9 +282,9 @@ public class CollisionDetector extends TypedAtomicActor {
                     powerThreshold.getToken()).doubleValue();
             if (_powerThreshold < 0.0) {
                 throw new IllegalActionException(this,
-                "powerThreshold is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + _powerThreshold);
+                        "powerThreshold is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + _powerThreshold);
             }
         } else {
             super.attributeChanged(attribute);
@@ -378,15 +378,15 @@ public class CollisionDetector extends TypedAtomicActor {
             Reception priorReception = (Reception)priorReceptions.next();
             if (_debugging) {
                 _debug("Checking reception with arrival time: "
-                + priorReception.arrivalTime);
+                        + priorReception.arrivalTime);
             }
             // If the reception is now expiring, send it to one of the two
             // output ports.
             if (priorReception.expiration == currentTime) {
                 if (_debugging) {
                     _debug("Current time matches expiration " +
-                        "time of a prior message that arrived at: "
-                        + priorReception.arrivalTime);
+                            "time of a prior message that arrived at: "
+                            + priorReception.arrivalTime);
                 }
                 // The time matches a pending reception.
                 priorReceptions.remove();
@@ -426,9 +426,9 @@ public class CollisionDetector extends TypedAtomicActor {
                 priorReception.collided = true;
                 if (_debugging) {
                     _debug("Message now has a collision. SNR is: "
-                    + snr
-                    + ". Total power is: "
-                    + _totalPower);
+                            + snr
+                            + ". Total power is: "
+                            + _totalPower);
                 }
             }
         }

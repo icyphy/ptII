@@ -236,7 +236,7 @@ public class Triangulator extends TypedAtomicActor {
             // from three distinct locations.
             double timeSpan = newestTime - oldestTime;
             double timeWindowValue
-                    = ((DoubleToken)timeWindow.getToken()).doubleValue();
+                = ((DoubleToken)timeWindow.getToken()).doubleValue();
             if (timeSpan > timeWindowValue) {
                 // We do not have enough data.
                 return;
@@ -311,11 +311,11 @@ public class Triangulator extends TypedAtomicActor {
             return false;
         }
         double tdiff1 =
-                Math.abs(_distance(x1, y1, result[0], result[1])/v - (t1 - result[2]));
+            Math.abs(_distance(x1, y1, result[0], result[1])/v - (t1 - result[2]));
         double tdiff2 =
-                Math.abs(_distance(x2, y2, result[0], result[1])/v - (t2 - result[2]));
+            Math.abs(_distance(x2, y2, result[0], result[1])/v - (t2 - result[2]));
         double tdiff3 =
-                Math.abs(_distance(x3, y3, result[0], result[1])/v - (t3 - result[2]));
+            Math.abs(_distance(x3, y3, result[0], result[1])/v - (t3 - result[2]));
         // FIXME: make the check threshold a parameter?
         if (tdiff1 > 1e-5 || tdiff2 > 1e-5 || tdiff3 > 1e-5) {
             return false;
@@ -399,9 +399,9 @@ public class Triangulator extends TypedAtomicActor {
         };
         double ea = m_inv_b[0] * m_inv_b[0] + m_inv_b[1] * m_inv_b[1] - v2;
         double eb = 2 * m_inv_b[0] * (m_inv_c[0] - x1)
-                + 2 * m_inv_b[1] * (m_inv_c[1] - y1) + 2 * v2 * t1;
+            + 2 * m_inv_b[1] * (m_inv_c[1] - y1) + 2 * v2 * t1;
         double ec = (m_inv_c[0] - x1) * (m_inv_c[0] - x1)
-                + (m_inv_c[1] - y1) * (m_inv_c[1] - y1) - t1 * t1 * v2;
+            + (m_inv_c[1] - y1) * (m_inv_c[1] - y1) - t1 * t1 * v2;
         double delta = eb * eb - 4 * ea * ec;
         //System.out.println("delta is " + delta);
         if (delta >= 0) {

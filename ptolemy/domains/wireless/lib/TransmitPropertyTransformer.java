@@ -84,7 +84,7 @@ from it.
 @version $Id$
 */
 public class TransmitPropertyTransformer extends RunCompositeActor
-        implements PropertyTransformer {
+    implements PropertyTransformer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -201,12 +201,12 @@ public class TransmitPropertyTransformer extends RunCompositeActor
                 // Found the port.
                 Entity container = (Entity)(port.getContainer());
                 String channelName
-                        = ((WirelessIOPort)port).outsideChannel.stringValue();
+                    = ((WirelessIOPort)port).outsideChannel.stringValue();
                 CompositeEntity container2 = (CompositeEntity)
-                        container.getContainer();
+                    container.getContainer();
                 if (container2 == null) {
                     throw new IllegalActionException(this,
-                    "The container does not have a container.");
+                            "The container does not have a container.");
                 }
                 Entity channel = container2.getEntity(channelName);
                 if (channel instanceof WirelessChannel) {
@@ -214,11 +214,11 @@ public class TransmitPropertyTransformer extends RunCompositeActor
                     _channel = (WirelessChannel)channel;
                     _wirelessIOPort = (WirelessIOPort)port;
                     ((WirelessChannel)channel).
-                            registerPropertyTransformer(this,
-                            (WirelessIOPort)port);
+                        registerPropertyTransformer(this,
+                                (WirelessIOPort)port);
                 } else {
                     throw new IllegalActionException(this,
-                    "The connected port does not refer to a valid channel.");
+                            "The connected port does not refer to a valid channel.");
                 }
             }
         }

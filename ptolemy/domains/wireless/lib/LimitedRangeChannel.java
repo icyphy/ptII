@@ -151,7 +151,7 @@ public class LimitedRangeChannel extends DelayChannel {
         if (!rangeIsSet) {
             // Type constraints in the constructor make the casts safe.
             RecordToken defaultPropertiesValue
-                    = (RecordToken)defaultProperties.getToken();
+                = (RecordToken)defaultProperties.getToken();
             // Type of the field must be convertible to double, but
             // need not actually be a double.
             ScalarToken field =
