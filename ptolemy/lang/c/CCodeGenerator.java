@@ -1,5 +1,5 @@
 /*
-A code generator that generates C code from a Java abstract syntax tree.
+A base class for C Code Generators.
 
 Copyright (c) 2001 The University of Maryland.
 All rights reserved.
@@ -44,59 +44,41 @@ import java.util.LinkedList;
 import java.util.Iterator;
 
 
-/** A code generator that generates C code from a Java abstract syntax tree.
- *  This code generator requires that static resolution has been
- *  performed beforehand, and it also requires that indentation
- *  levels (i.e., INDENTATION_KEY property settings) have been set.
+/** A base class for C code generators. This class contains 
+ *  general functionality for generating C code (both header files
+ *  and .c files) from the Ptolemy II Java abstract syntax tree format.
+ *  This functionality requires that static resolution has been
+ *  performed beforehand; that indentation
+ *  levels (i.e., INDENTATION_KEY property settings) have been set; that
+ *  unique identifiers for certain types of Java abstract syntax tree nodes 
+ *  (e.g., method and constructor declarations) have been set for these
+ *  nodes through the C_NAME KEY property; and that C_INCLUDE_FILE_KEY
+ *  properties associated with relevant type declaration nodes have
+ *  been set. The IndentationVisitor and
+ *  and UniqueNameGenerator classes should be used to handle the latter
+ *  three tasks.
+ * 
+ *  External (from outside the methods of this visitor) invocations of this
+ *  visitor should only be through CompileUnitNodes. This is because
+ *  this visitor maintains certain internal lists that need to be reset
+ *  between the processing of different CompileUnitNodes.
  *
  *  @author Shuvra S. Bhattacharyya
  *  @version $Id$
  *
  */
-public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstants {
+
+
+public abstract class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstants {
     public CCodeGenerator() {
         super(TM_CHILDREN_FIRST);
     }
 
-    /** Return the code fragment corresponding to a node. */
-    public static String writeCodeFragment(TreeNode node) {
-        CCodeGenerator ccg = new CCodeGenerator();
-        Object retval = node.accept(ccg, null);
 
-        if (retval instanceof String) {
-            return (String) retval;
-        }
-
-        return _stringListToString((List) retval);
-    }
-
-    /** Write out the code files for each member of the argument list of
-     *  CompileUnitNodes to the files with names corresponding to the members
-     *  of the argument filename list.
+    /** Generate code for an identifier.
+     *  @param node The AST node of the identifier to be translated. 
+     *  @param args Unused placeholder for visitor arguments.
      */
-    public static void writeCompileUnitNodeList(List unitList, List filenameList) {
-        Iterator unitItr = unitList.iterator();
-        Iterator filenameItr = filenameList.iterator();
-
-        while (unitItr.hasNext()) {
-            CompileUnitNode unitNode = (CompileUnitNode) unitItr.next();
-
-            String outCode = writeCodeFragment(unitNode);
-
-            String outFileName = (String) filenameItr.next();
-
-            try {
-                FileOutputStream outFile = new FileOutputStream(outFileName);
-                outFile.write(outCode.getBytes());
-                outFile.close();
-            } catch (IOException e) {
-                System.err.println("error opening/writing/closing output file "
-                        + outFileName);
-                System.err.println(e.toString());
-            }
-        }
-    }
-
     public Object visitNameNode(NameNode node, LinkedList args) {
         String ident = node.getIdent();
         TreeNode qualifier = node.getQualifier();
@@ -110,6 +92,10 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         return TNLManip.arrayToList(new Object[] {qualPartList, "." + ident});
     }
 
+    /** Generate a null string to represent the absence of a subtree.
+     *  @param node The AST node associated with an absent subtree.
+     *  @param args Unused placeholder for visitor arguments.a
+     */
     public Object visitAbsentTreeNode(AbsentTreeNode node, LinkedList args) {
         return TNLManip.addFirst("");
     }
@@ -175,8 +161,28 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         return TNLManip.addFirst("double");
     }
 
+    /** Given an AST node corresponding to a type name, return the name
+     *  to be used when referencing this type in the generated C code.
+     *  @param The AST node.
+     *  @param Visitor arguments (unused).
+     *  @return The name corresponding to the referenced type for C code
+     *  generation purposes.
+     */
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
-        return node.childReturnValueAt(node.CHILD_INDEX_NAME);
+        JavaDecl declaration = JavaDecl.getDecl((TreeNode)node);
+        if (declaration == null) 
+            _nodeVisitationError(node, "Unresolved type declaration."); 
+        else {
+            TreeNode source = declaration.getSource();
+            if (source.hasProperty(C_INCLUDE_FILE_KEY) &&
+                    (node.hasProperty(C_IMPORT_INCLUDE_FILE_KEY) ||
+                    _importForAllTypeNames))
+                _addIncludeFile((String)(source.getProperty(C_INCLUDE_FILE_KEY)));
+            if (source.hasProperty(C_NAME_KEY)) 
+                return TNLManip.addFirst(_getCNameOf(source));
+            else return node.childReturnValueAt(node.CHILD_INDEX_NAME);
+        }
+        return null; 
     }
 
     public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
@@ -198,33 +204,54 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
             node.childReturnValueAt(node.CHILD_INDEX_TYPE), ".super"});
     }
 
-    // FIXME : This returns a String instead of a string list, as it should
-    // for consistency. However, returning a string list will break some
-    // existing code, so this change will be deferred.
+    /** Generate C code for a Java compilation unit. The generated code
+     *  is in four parts: header code, code to import include files,
+     *  code for type definitions in the compilation unit, and 
+     *  footer code.
+     *
+     * FIXME : This returns a String instead of a string list, as it should
+     * for consistency. However, returning a string list will break some
+     * existing code, so this change will be deferred.
+     * @param The AST node associated with the compilation unit.
+     * @param Visitor arguments (unused).
+     * @return C code that implements the compilation unit.
+     */
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
 
-        if (node.getPkg() != AbsentTreeNode.instance) {
-            retList.addLast("package ");
-            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_PKG));
-            retList.addLast(";\n");
+        // FIXME: Do we need to do anything with the package name or
+        // the import list?
+
+        // Insert header code.
+        retList.addFirst(_headerCode);
+
+        // Generate #include directives for declarations that need to be
+        // imported.
+        if (_includeFileList != null) {
+            Iterator includeFiles = _includeFileList.iterator();
+            while (includeFiles.hasNext()) {
+                retList.addLast("#include \"" + (String)(includeFiles.next())
+                        + "\"\n");
+               
+            }
+            retList.addLast("\n");
         }
 
-        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_IMPORTS));
-
-        retList.addLast("\n");
-
+        // Generate code for the type definitions in the compilation unit.
         List typeList = (List) node.childReturnValueAt(node.CHILD_INDEX_DEFTYPES);
-
         Iterator typeItr = typeList.iterator();
-
         while (typeItr.hasNext()) {
             retList.addLast(typeItr.next());
             retList.addLast("\n");
         }
 
-        // for new version:
-        // return retList;
+        // Insert footer code.
+        retList.addLast(_footerCode);
+
+        // Reset internal lists for the next compilation unit to be processed.
+        _includeFileList = new LinkedList();
+        _headerCode = new LinkedList();
+        _footerCode = new LinkedList();
 
         return _stringListToString(retList);
     }
@@ -242,9 +269,6 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
 
 
     /** Generate C code for a Java class declaration.
-     *  The data structure associated with the class has
-     *  already been declared in the header file generation pass,
-     *  so just generate code for the methods.
      *  @param node The AST node of the Java class declaration that is
      *  to be translated to C. 
      *  @param args Unused placeholder for visitor arguments.
@@ -256,42 +280,79 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         // An iterator that sweeps through all different member declarations
         // (declarations for fields, methods, constructors, etc.) of the
         // given Java class declaration.
-        Iterator membersIter; 
+        Iterator membersIter;
 
-        // Include required standard header files.     
-        retList.addLast("#include <stdlib.h>\n");
- 
-        // Include the declarations generated by the HeaderFileGenerator
-        List className = (List) node.childReturnValueAt(node.CHILD_INDEX_NAME);
-        retList.addLast("#include \"" + _stringListToString(className) 
-                + ".h\"\n\n");
- 
-        // Just suppressing modifiers for now. 
-        // FIXME: figure out exactly what, if any, processing  
-        // needs to be done for each possible modifer.
-        // JCG: retList.addLast(Modifier.toString(node.getModifiers()));
+        // Extract the unique type name to use for the class
+        String className = _getCNameOf(node);
+
+        // Avoid multiple inclusions of the generated header file
+        retList.addLast("\n#ifndef _" + className + "_h\n");
+        retList.addLast("#define _" + className + "_h\n\n");
+
+        // Generate the type declaration header
+        retList.addLast("/* Structure that implements Class ");
+        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_NAME));
+        retList.addLast(" */\n");
+        retList.addLast("typedef struct ");
+        retList.addLast(" {\n");
 
         // FIXME: Figure out what needs to be done for super classes,
-        // and implemented interfaces.
+        // modifiers, and interfaces.
 
-        // Convert the declarations of member methods, and constructors.
+        // Extract the declarations of member methods, fields, constructors,
+        // etc.  
         List members = node.getMembers();
    
-        // Declare each method and constructor of the Java class as a 
-        // separate C function.
+        // Extract the fields, and insert them into the struct
+        // that is declared to implement the class. Methods will
+        // be implemented as separate functions outside the struct.
         membersIter = members.iterator();
         while (membersIter.hasNext()) {
             Object member = membersIter.next();
-            if (member instanceof MethodDeclNode) {
-                retList.addLast(((MethodDeclNode)member).
-                        returnValueAsElement());
-            }
-            else if (member instanceof ConstructorDeclNode) {
-                retList.addLast(((ConstructorDeclNode)member).
-                        returnValueAsElement());
+            if (member instanceof FieldDeclNode) {
+                FieldDeclNode fieldMember = (FieldDeclNode)member;
+                retList.addLast(_indent(1));
+                retList.addLast(fieldMember.returnValueAsElement());
+            } 
+        }
+
+        // Terminator for declared type.
+        retList.addLast("} " + className + ";\n\n");    
+
+
+        // Declare each constructor of the Java class as a separate C function.
+        // Include only the function prototype in the header file.
+        membersIter = members.iterator();
+        int constructorCount = 0;
+        while (membersIter.hasNext()) {
+            Object member = membersIter.next();
+            if (member instanceof ConstructorDeclNode) {
+                if ((++constructorCount)==1) {
+                    retList.addLast("/* Class constructors */\n");   
+                }
+                ConstructorDeclNode declaration = (ConstructorDeclNode)member;
+                retList.addLast(declaration.returnValueAsElement());
             }
         }
 
+        // Declare each method of the Java class as a separate C function.
+        // Include only the function prototype in the header file.
+        membersIter = members.iterator();
+        int methodCount = 0;
+        while (membersIter.hasNext()) {
+            Object member = membersIter.next();
+            if (member instanceof MethodDeclNode) {
+                if ((++methodCount)==1) {
+                    if (constructorCount > 0) retList.addLast("\n");
+                    retList.addLast("/* Member methods */\n");   
+                }
+                MethodDeclNode declaration = (MethodDeclNode)member;
+                retList.addLast(declaration.returnValueAsElement());
+            }
+        }
+
+        // Insert the conditional compilation terminator.
+        retList.addLast("\n#endif\n\n");
 
         return retList;
     }
@@ -305,89 +366,7 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         return _visitVarInitDeclNode(node);
     }
 
-    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
-        LinkedList retList = new LinkedList();
 
-        retList.addLast(Modifier.toString(node.getModifiers()));
-        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_RETURNTYPE));
-        retList.addLast(" ");
-        
-        String methodName = (String)(node.getProperty(C_NAME_KEY));
-        retList.addLast(methodName);
-        retList.addLast("(");
-
-        // Insert a reference to the containing class instance. This
-        // reference is used to implement accesses through "this." 
-        ClassDeclNode classDeclNode = (ClassDeclNode)
-                JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
-        System.out.print("Got class decl source: ");
-        System.out.println(classDeclNode.getClass().getName());
-        retList.addLast("struct ");
-        retList.addLast(_declaredClassNameOf(classDeclNode));
-        retList.addLast(" *this");
-        if (!(node.getParams().isEmpty())) retList.addLast(", ");
-       
-        retList.addLast(
-                _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
-        retList.addLast(")");
-
-        // FIXME: Incorporate any necessary support for the throws list.
-
-        if (node.getBody() == AbsentTreeNode.instance) {
-            retList.addLast(";");
-        } else {
-            retList.addLast(" ");
-            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_BODY));
-        }
-
-        retList.addLast("\n");
-
-        return retList;
-    }
-
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        LinkedList retList = new LinkedList();
-
-        // Set the return type of the constructor to be a pointer to
-        // a structure that implements the corresponding class.
-        ClassDeclNode classDeclNode = (ClassDeclNode)
-                JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
-        String equivalentType = "struct " + _declaredClassNameOf(classDeclNode);
-        retList.addLast(equivalentType);
-        retList.addLast(" *");
-
-        retList.addLast(Modifier.toString(node.getModifiers()));
-        retList.addLast((String)(node.getProperty(C_NAME_KEY)));
-        retList.addLast("(");
-        retList.addLast(
-                _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
-        retList.addLast(") ");
-
-        // FIXME: Add any necessary support for the throws list.
-
-        retList.addLast("{\n");
-
-        retList.addLast(_indent(1) + equivalentType + " *this ");
-        retList.addLast("= (" + equivalentType + "*)malloc(sizeof(" +
-                        equivalentType + "));\n");
-
-        // FIXME: convert nested constructor calls:
-        // retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_CONSTRUCTORCALL));
-
-        LinkedList bodyStrList =
-            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_BODY);
-
-        // Get rid of the first indentation string, '{' and '\n' 
-        // of the block node string. Get rid of the trailing '}\n" too.
-        bodyStrList.removeFirst();
-        bodyStrList.removeFirst();
-        bodyStrList.removeLast();
-        retList.addLast(bodyStrList);
-
-        retList.addLast(_indent(1) + "return this;\n}\n\n");
-
-        return retList;
-    }
 
     public Object visitThisConstructorCallNode(ThisConstructorCallNode node, LinkedList args) {
         List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
@@ -538,22 +517,16 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
     }
 
     public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
-        return TNLManip.arrayToList(new Object[] { _indent(node),
+        return TNLManip.arrayToList(new Object[] {
             node.childReturnValueAt(node.CHILD_INDEX_EXPR), ";\n"});
     }
 
     public Object visitForNode(ForNode node, LinkedList args) {
-        LinkedList retList = new LinkedList();
-        retList.addLast(_indent(node) + "for (");
-        retList.addLast(_forInitStringList(node.getInit()));
-        retList.addLast("; ");
-        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_TEST));
-        retList.addLast("; ");
-        retList.addLast(_commaList((List) 
-                node.childReturnValueAt(node.CHILD_INDEX_UPDATE)));
-        retList.addLast(") ");
-        _generateStmtOrBlock(node, node.CHILD_INDEX_STMT, retList);
-        return retList;
+        return TNLManip.arrayToList(new Object[] {"for (",
+                                                      _forInitStringList(node.getInit()), "; ",
+                                                      node.childReturnValueAt(node.CHILD_INDEX_TEST), "; ",
+                                                      _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_UPDATE)),
+                                                      ") ", node.childReturnValueAt(node.CHILD_INDEX_STMT), "\n"});
     }
 
     public Object visitBreakNode(BreakNode node, LinkedList args) {
@@ -663,12 +636,6 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
                 node.childReturnValueAt(node.CHILD_INDEX_NAME)});
     }
 
-
-    /**
-     *  Generate code for an access to a field of the enclosing object.
-     *  Since 'this' is a Java keyword, using 'this' in the C output
-     *  should be free of any danger of naming conflicts in the output code.
-     */
     public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"this->",
                                                       node.childReturnValueAt(node.CHILD_INDEX_NAME)});
@@ -688,61 +655,28 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
      */
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
         List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
-        LinkedList retList = new LinkedList();
 
-        ExprNode methodExpr = node.getMethod();
-        JavaDecl declaration = JavaDecl.getDecl((TreeNode)methodExpr);
-        TreeNode declarationNode = declaration.getSource();
-        if ((declarationNode == null) ||
-            !(declarationNode instanceof MethodDeclNode)) {
-            throw new RuntimeException("Could not resolve method call."
-                    + " A dump of the offending AST node follows.\n"
-                    + node.toString());
-            
-        }
-        String methodName = (String)(declarationNode.getProperty(C_NAME_KEY));
-
-        // FIXME: currently, we are assuming that this is a 
-        // call to a member method of the enclosing object.
-        retList.addLast(_indent(node) + methodName + "(this");
-        if (!argsList.isEmpty()) 
-                retList.addLast(", " + _stringListToString(_commaList(argsList)));
-        retList.addLast(")");
-
-        return retList;
+        // Object methodName = node.childReturnValueAt(node.CHILD_INDEX_METHOD);
+        // System.out.println("------------- debug -----------------");
+        // System.out.println(methodName.getClass().getName());
+        // System.out.println(methodName.toString());
+        // System.out.println("------------- debug -----------------");
+  
+        return TNLManip.arrayToList(new Object[] {
+            node.childReturnValueAt(node.CHILD_INDEX_METHOD), "(",
+                _commaList(argsList), ")"});
     }
 
 
 
-    /** Generate C code for an invocation of the 'new' (class instance
-     *  allocation) operator.  In other words, generate a call to
-     *  the corresponding version of the class constructor function.
-     *
-     *  @param node The AST node of the 'new' operation to be translated.
-     *  @param args Unused placeholder for visitor arguments.
-     *  @return Equivalent C code for the given 'new' operation.
-     */
     public Object visitAllocateNode(AllocateNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
 
         TreeNode enclosingInstance = node.getEnclosingInstance();
-       
-        // Extract the C function name of the associated class constructor. 
-        JavaDecl declaration = JavaDecl.getDecl(node);
-        TreeNode declarationNode = declaration.getSource();
-        if ((declarationNode == null) ||
-            !(declarationNode instanceof ConstructorDeclNode)) {
-            throw new RuntimeException("Could not resolve allocate node."
-                    + " A dump of the offending AST node follows.\n"
-                    + node.toString());
-        }
-        String functionName = (String)(declarationNode.getProperty(C_NAME_KEY));
-        
-        // FIXME figure out what support needs to be done for enclosing
-        // instances.    
+
         int enclosingID = enclosingInstance.classID();
-        if ((enclosingID != ABSENTTREENODE_ID) && (enclosingID != THISNODE_ID)) 
-        {
+
+        if ((enclosingID != ABSENTTREENODE_ID) && (enclosingID != THISNODE_ID)) {
 
             LinkedList enclosingStringList = (LinkedList)
                 node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
@@ -751,9 +685,11 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
             retList.addLast(".");
         }
 
-        retList.addLast(functionName);
-        retList.addLast("(");
         List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
+
+        retList.addLast("new ");
+        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
+        retList.addLast("(");
         retList.addLast(_commaList(argsList));
         retList.addLast(")");
 
@@ -953,7 +889,7 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
 
         e1StringList = _parenExpr(node.getExpr1(), e1StringList);
         e2StringList = _parenExpr(node.getExpr2(), e2StringList);
-        e3StringList = _parenExpr(node.getExpr3(), e3StringList);
+        e3StringList = _parenExpr(node.getExpr3(), e2StringList);
 
         return TNLManip.arrayToList(new Object[] {e1StringList, " ? ",
                                                       e2StringList, " : ", e3StringList});
@@ -961,6 +897,7 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
+        retList.addLast(_indent(node));
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_EXPR1));
         retList.addLast(" = ");
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_EXPR2));
@@ -1011,8 +948,92 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         return _visitBinaryOpAssignNode(node, "|=");
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
+    /**  Insert the specified header file name into the include file list
+     *   for the current compilation unit.
+     *   @param name The name of the header file.
+     */
+    protected void _addIncludeFile(String name)
+            throws IndexOutOfBoundsException {
+        if (!_includeFileList.contains(name)) _includeFileList.add(0, name);
+    }
+
+    /** Generate C code for the header associated with a C function
+     *  that implements a class constructor.
+     *  The header is of the form:
+     *      <return type> <function name> (<parameters>)
+     *  @param node The ConstructorDeclNode for the given declaration.
+     *  @return Code that implements the function header for the constructor.
+     */
+    protected Object _generateConstructorHeader(ConstructorDeclNode node) {
+        LinkedList retList = new LinkedList();
+        retList.addLast(Modifier.toString(node.getModifiers()));
+        Object nameProperty = node.getProperty(C_NAME_KEY) ;
+        if ((nameProperty == null) || !(nameProperty instanceof String))
+            _nodeVisitationError(node, "Unique method name not set."); 
+        else {
+            // Set the return type of the constructor to be a pointer to 
+            // a structure that implements the corresponding class.
+            ClassDeclNode classDeclNode = (ClassDeclNode)
+                    JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
+            retList.addLast(_getCNameOf(classDeclNode));
+            retList.addLast(" ");
+
+            retList.addLast((String)nameProperty);
+            retList.addLast("(");
+            retList.addLast(
+                    _commaList((List) node.childReturnValueAt(
+                    node.CHILD_INDEX_PARAMS)));
+            retList.addLast(")");
+
+            // FIXME: Does any code have to be generated based on the throws
+            // list for exceptions?
+        }
+        return retList;
+    }
+    
+    /** Generate C code for the header associated with a C function
+     *  that implements a method.
+     *  The header is of the form:
+     *      <return type> <function name> (<parameters>)
+     *  @param node The MethodDeclNode for the given method declaration.
+     *  @return Code that implements the function header for the method.
+     */
+    protected Object _generateMethodHeader(MethodDeclNode node) {
+        LinkedList retList = new LinkedList();
+
+        retList.addLast(Modifier.toString(node.getModifiers()));
+        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_RETURNTYPE));
+        retList.addLast(" ");
+        retList.addLast((String)_getCNameOf(node));
+        retList.addLast("(");
+
+        // Insert a reference to the containing class instance. This
+        // reference is used to implement accesses through "this."
+        // Since "this" is a reserved word in Java, naming conflicts
+        // in the generated code involving the identifier "this"
+        // should not occur.
+        ClassDeclNode classDeclNode = (ClassDeclNode)
+                JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
+        retList.addLast(_getCNameOf(classDeclNode));
+        retList.addLast(" this");
+        if (!(node.getParams().isEmpty())) retList.addLast(", ");
+        retList.addLast(
+                _commaList((List)
+                node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
+        retList.addLast(")");
+
+        // FIXME: Does any code have to be generated based on the throws
+        // list for exceptions?
+        return retList;
+    }
+
     protected LinkedList _visitVarInitDeclNode(VarInitDeclNode node) {
         LinkedList retList = new LinkedList();
+        
 
         retList.addLast(_indent(node));
         retList.addLast(Modifier.toString(node.getModifiers()));
@@ -1088,8 +1109,6 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         return retList;
     }
 
-
-
     protected List _forInitStringList(List list) {
         int length = list.size();
 
@@ -1127,15 +1146,10 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
             return retList;
 
         } else {
-            // Re-traverse the subtrees associated with the list
-            // expressions. This has the effect of ignoring indentation
-            // level settings.
             return _separateList(
-                    TNLManip.traverseList(this, null, list), ", ");
+                    TNLManip.traverseList(this, null, list), "; ");
         }
     }
-
-
 
     protected static LinkedList _parenExpr(TreeNode expr, LinkedList exprStrList) {
         int classID = expr.classID();
@@ -1180,6 +1194,8 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         }
     }
 
+    // FIXME: This code should be shared among JavaCodeGenerator,
+    // CCodeGenerator, HeaderFileGenerator, etc.
     protected static String _stringListToString(List stringList) {
         Iterator stringItr = stringList.iterator();
         StringBuffer sb = new StringBuffer();
@@ -1237,27 +1253,48 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         System.out.println("----------------------------------------------");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
-    /** Given a tree node for a Java class declaration, return the
-     *  name of the declared class. This operation is necessary only
-     *  before the AST subtree associated with the class declaration
-     *  has been fully traversed.
-     *  @param node The tree node associated with the class declaration.
-     *  @string A string containing the class name.
+    /** Get the name assigned to an abstract syntax tree (AST) node for 
+     *  C code generation purposes.
+     *  @param node The AST node.
+     *  @return The name assigned to the node.
+     *  @exception A run-time exception is thrown if a "code generation name"
+     *  has not yet been assigned to the given node.
      */
-    private String _declaredClassNameOf(ClassDeclNode node) {
-        NameNode nameNode = (NameNode)(node.getChild(node.CHILD_INDEX_NAME));
-        String ident = nameNode.getIdent();
-        TreeNode qualifier = nameNode.getQualifier();
-        if (qualifier != AbsentTreeNode.instance) {
-            // FIXME: Include support for qualifiers.
-            System.out.println("Class name qualifiers not supported yet!");
+    protected String _getCNameOf(TreeNode node) {
+        if (node == null)
+            _nodeVisitationError(node, "Non-null AST node expected.");
+        else {
+            Object nameProperty = node.getProperty(C_NAME_KEY) ;
+            if ((nameProperty == null) || !(nameProperty instanceof String))
+                _nodeVisitationError(node, "C code generation name not set.");
+            else return (String)nameProperty;
         }
-        return ident; 
+        return null;
     }
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected variables                   ////
+
+    /** A flag indicating to what extent associated header (.h) files
+     *  should be imported in the generated code for TypeNameNodes
+     *  (user-defined types). If the flag is set (true-valued), all
+     *  header files are imported for all user-defined types, otherwise,
+     *  they are imported selectively --- i.e., only for TypeNameNodes
+     *  that have their C_IMPORT_INCLUDE_FILES properties defined.
+     */
+    protected boolean _importForAllTypeNames = true;
+
+    /** Header code to be placed at the top of the output code file. */
+    protected LinkedList _headerCode = new LinkedList(); 
+
+    /** Footer code to be placed at the bottom of the output code file. */
+    protected LinkedList _footerCode = new LinkedList(); 
+    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+
+
 
     /**
      *  Generate C code for a tree node that can be either a statement
@@ -1272,7 +1309,7 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
      *  @param retList The linked list to which the generated code is to
      *  be appended.
      */
-    void _generateStmtOrBlock(TreeNode parent, int childIndex, 
+    private void _generateStmtOrBlock(TreeNode parent, int childIndex, 
             LinkedList retList) {
         Object child = parent.getChild(childIndex);
         if ((parent == null) || (child == null)) return;
@@ -1315,6 +1352,35 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         return _indent(level);
     }
 
+    /** Format a diagnostic message for node visitations in which serious
+     *  errors are detected, and throw a RuntimeException that 
+     *  contains the message.
+     *  @param node The node whose visitation triggered the error.
+     *  @param message A description of the error that occured.
+     *  @exception A run-time exception is thrown unconditionally.
+     */
+    private void _nodeVisitationError(TreeNode node, String message)
+            throws RuntimeException {
+        String exceptionMessage = new String(message + "\n");
+        if (node instanceof TreeNode) {
+            exceptionMessage += "A dump of the offending node follows.\n\n"
+                    + node.toString() + "\nEnd of offending node dump.\n\n";
+        }
+        else if (node == null) 
+            exceptionMessage += "The 'offending node' is NULL.\n";
+        else 
+            exceptionMessage += "The offending node is an instance of '" +
+                    node.getClass().getName() + "'\n";
+        throw new RuntimeException(exceptionMessage);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    // A list of names of header files that need to be included in
+    // the generated code 
+    private LinkedList _includeFileList = new LinkedList();
 
 
 }
