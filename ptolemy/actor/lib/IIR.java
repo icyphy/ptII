@@ -40,7 +40,8 @@ import ptolemy.data.expr.Parameter;
 //// IIR
 /**
 This actor implements an infinite impulse response (IIR) filter. A
-direct form II implementation is used.
+direct form II [1] implementation is used. The input and output types
+are DoubleToken.
 <p>
 This filter has a transfer function given by:
 <pre>
@@ -55,6 +56,11 @@ The <i>numerator</i> parameter represents the numerator coefficients as a row ve
 The <i>denominator</i> parameter represents the denominator coefficients as a row vector of a token of type DoubleMatrixToken. The format is {{a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}}. Note that the value of a<sub>0</sub> is constrained to be 1. This implementation will silently ignore whatever value the user enters for as the first element of <i>denominator</i>, and will use 1.0 instead.  The default value of this parameter is {{1.0}}.
 <p>
 The default values therefore correspond to a filter with a transfer function of 1.
+<h4>References</h4>
+<p>
+[1]
+A. V. Oppenheim, R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
+Prentice Hall, 1989
 @author Brian K. Vogel
 @version $Id$
 */
