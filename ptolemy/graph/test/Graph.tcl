@@ -556,3 +556,14 @@ test Graph-7.5 {test hashCode()} {
 	list $equ $nequ
 } {1 0}
 
+######################################################################
+####
+#
+test Graph-7.6 {test cloneAs()} {
+    set dirg [java::new ptolemy.graph.DirectedGraph]
+    set clng [$og cloneAs $dirg]
+    set clncls [$clng getClass]
+    set clnnam [$clncls getName]
+    list $clnnam
+} {ptolemy.graph.DirectedGraph}
+
