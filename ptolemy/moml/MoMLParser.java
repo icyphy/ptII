@@ -212,7 +212,7 @@ public class MoMLParser extends HandlerBase {
      *  causes the error.
      *  @param systemId The URI for the external entity.
      */
-    public void endExternalEntity (String systemId) {
+    public void endExternalEntity(String systemId) {
         _externalEntities.pop();
     }
 
@@ -873,7 +873,7 @@ public class MoMLParser extends HandlerBase {
      *  causes the error.
      *  @param systemId The URI for the external entity.
      */
-    public void startExternalEntity (String systemId) {
+    public void startExternalEntity(String systemId) {
         // NOTE: The Microstar XML parser incorrectly passes the
         // HTML file for the first external entity, rather than
         // XML file.  So error messages typically refer to the wrong file.
