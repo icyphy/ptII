@@ -120,7 +120,11 @@ public abstract class TableauFrame extends Top {
      */
     public ModelDirectory getDirectory() {
         Configuration configuration = getConfiguration();
-        return configuration.getDirectory();
+        if (configuration != null) {
+            return configuration.getDirectory();
+        } else {
+            return null;
+        }
     }
 
     /** Get the effigy for the model associated with this window.
@@ -234,7 +238,7 @@ public abstract class TableauFrame extends Top {
                             tableau.setMaster(true);
                             // NOTE: This size is the same as what's in
                             // the welcome window XML files in configs.
-                            tableau.size.setExpression("650x320");
+                            tableau.size.setExpression("[650, 350]");
                             tableau.show();
                             return;
                         }

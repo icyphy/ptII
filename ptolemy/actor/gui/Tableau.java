@@ -78,7 +78,8 @@ public class Tableau extends CompositeEntity {
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
-        size = new SizeAttribute(this, "size");
+        size = new SizeAttribute(
+                this, "size");
     }
 
     /** Construct a tableau with the given name and container.
@@ -93,14 +94,12 @@ public class Tableau extends CompositeEntity {
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
 
-        size = new SizeAttribute(this, "size");
+        size = new SizeAttribute(
+                this, "size");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
-
-    // FIXME: Recording the size is not sufficient.  We also need to
-    // record whether the window is maximized or not.
 
     /** A specification for the size of the frame.
      */
@@ -109,16 +108,18 @@ public class Tableau extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>size</i> parameter, and a frame has
-     *  been specified with setFrame(), then set the size of the frame.
+    /** If the argument is the <i>size</i> parameter, and a
+     *  frame has been specified with setFrame(), then set the size
+     *  of the frame.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the size specification is
-     *   not correctly formatted, or if the base class throws it.
+     *  @exception IllegalActionException If the size
+     *   specification is not correctly formatted, or if the base
+     *   class throws it.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == size) {
-            _setSize();
+        if (attribute == size && _frame != null) {
+            size.setSize(_frame);
         } else {
             super.attributeChanged(attribute);
         }
@@ -266,7 +267,9 @@ public class Tableau extends CompositeEntity {
     public void setFrame(JFrame frame) {
         _frame = frame;
 
-        _setSize();
+        if (_frame != null) {
+            size.setSize(_frame);
+        }
 
 	// Truncate the name so that dialogs under Web Start on the Mac
 	// work better.
@@ -322,45 +325,20 @@ public class Tableau extends CompositeEntity {
         JFrame frame = getFrame();
         if (frame != null) {
             if (!frame.isVisible()) {
-                _setSize();
+                size.setSize(frame);
                 frame.pack();
+                // NOTE: This used to override the location that might
+                // have been set in the _windowProperties attribute.
+                /*
                 if (frame instanceof Top) {
                     ((Top)frame).centerOnScreen();
                 }
+                */
                 frame.setVisible(true);
             }
             // Deiconify the window.
             frame.setState(Frame.NORMAL);
             frame.toFront();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Set the size of the associated frame according to the
-     *  specification in the size attribute.
-     *  If no frame has been specified, or if the
-     *  size spec consists only of white space, then do nothing.
-     */
-    private void _setSize() {
-        try {
-            IntMatrixToken token = (IntMatrixToken)size.getToken();
-            if (_frame != null && token != null) {
-                int x = token.getElementAt(0, 0);
-                int y = token.getElementAt(0, 1);
-                // NOTE: As usual with swing, it's not obvious what the
-                // right way to do this is. The sequence below seems to
-                // mostly work, however, when the packer first runs, it
-                // ignores all this.  This means that centerOnScreen
-                // as called in show() doesn't quite work.  Please complain
-                // to Sun about their incredibly lame packers.
-                _frame.setSize(x, y);
-                _frame.getRootPane().setPreferredSize(new Dimension(x, y));
-                _frame.getContentPane().setSize(x, y);
-            }
-        } catch (IllegalActionException ex) {
-            // Ignore... should not be thrown, and worst case is default size.
         }
     }
 

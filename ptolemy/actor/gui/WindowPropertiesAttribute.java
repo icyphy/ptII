@@ -1,4 +1,4 @@
-/* An attribute representing the size of a component.
+/* An attribute representing the size, location, and other window properties.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
@@ -30,21 +30,27 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.util.*;
-import ptolemy.data.IntMatrixToken;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.gui.Top;
+import ptolemy.kernel.util.*;
 
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Rectangle;
-
 import javax.swing.JComponent;
+
 //////////////////////////////////////////////////////////////////////////
-//// SizeAttribute
+//// WindowPropertiesAttribute
 /**
-This attribute stores the width and height of a graphical component.
-The token in this attribute is an IntMatrixToken containing a matrix
-of dimension 1x2, containing the width and the height, in that order.
+This attribute stores properties of a window, including the width,
+height, and location. The token in this attribute is a RecordToken
+containing a field "bounds" with a 4-element integer array.
+When we fully commit to Java 1.4, there will also be a field
+to indicate whether the window is maximized.
 By default, this attribute has visibility NONE, so the user will not
 see it in parameter editing dialogs.
 
@@ -52,7 +58,7 @@ see it in parameter editing dialogs.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class SizeAttribute extends Parameter {
+public class WindowPropertiesAttribute extends Parameter {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -67,7 +73,7 @@ public class SizeAttribute extends Parameter {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public SizeAttribute(NamedObj container, String name)
+    public WindowPropertiesAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);
@@ -77,51 +83,59 @@ public class SizeAttribute extends Parameter {
     ////                         public methods                    ////
 
     /** Set the value of the attribute to match those of the specified
-     *  component.
-     *  @param component The component whose size is to be recorded.
+     *  frame.
+     *  @param frame The frame whose properties are to be recorded.
      */
-    public void recordSize(Component component) {
+    public void recordProperties(Frame frame) {
         try {
-            Rectangle bounds = component.getBounds();
-            int[][] boundsMatrix = new int[1][2];
-            boundsMatrix[0][0] = bounds.width;
-            boundsMatrix[0][1] = bounds.height;
+            Rectangle bounds = frame.getBounds();
+            Token[] boundsArray = new IntToken[4];
+            boundsArray[0] = new IntToken(bounds.x);
+            boundsArray[1] = new IntToken(bounds.y);
+            boundsArray[2] = new IntToken(bounds.width);
+            boundsArray[3] = new IntToken(bounds.height);
 
-            IntMatrixToken token = new IntMatrixToken(boundsMatrix);
-            setToken(token);
+            // Construct values for the record token (currently only one).
+            Token[] values = new Token[1];
+            values[0] = new ArrayToken(boundsArray);
+
+            // Construct field names for the record token (currently only one).
+            String[] names = new String[1];
+            names[0] = "bounds";            
+
+            setToken(new RecordToken(names, values));
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("Can't set bounds value!");
+            throw new InternalErrorException(
+                    "Can't set propertes value! " + ex);
         }
     }
 
-    /** Set the size of the specified component to match the
+    /** Set the properties of the specified frame to match the
      *  current value of the attribute.  If the value of the attribute
-     *  has not been set, then do nothing.
-     *  @param component The component whose size is to be set.
+     *  has not been set, then do nothing and return true. If the
+     *  value of this attribute is malformed in any way, then just
+     *  return false.
+     *  @param frame The frame whose properties are to be set.
      *  @return True if successful.
      */
-    public boolean setSize(Component component) {
+    public boolean setProperties(Frame frame) {
         try {
-            IntMatrixToken token = (IntMatrixToken)getToken();
-            if (token != null) {
-                int width = token.getElementAt(0, 0);
-                int height = token.getElementAt(0, 1);
-                // NOTE: As usual with swing, it's not obvious what the
-                // right way to do this is. The following seems to work,
-                // found by trial and error.  Even then, the layout
-                // manager feels free to override it.
-                Dimension dimension = new Dimension(width, height);
-                component.setSize(dimension);
+            RecordToken value = (RecordToken)getToken();
+            if (value == null) return true;
+            ArrayToken boundsToken = (ArrayToken)value.get("bounds");
 
-                // NOTE: If it's a JComponent, the setSize() is
-                // insufficient to set the size (you will have to ask
-                // Sun why this is so).  We also have to do the
-                // following.
-                if (component instanceof JComponent) {
-                    ((JComponent)component).setPreferredSize(dimension);
-                    ((JComponent)component).setMinimumSize(dimension);
-                }
+            int x = ((IntToken)boundsToken.getElement(0)).intValue();
+            int y = ((IntToken)boundsToken.getElement(1)).intValue();
+            int width = ((IntToken)boundsToken.getElement(2)).intValue();
+            int height = ((IntToken)boundsToken.getElement(3)).intValue();
+
+            frame.setBounds(x, y, width, height);
+
+            if (frame instanceof Top) {
+                // Disable centering.
+                ((Top)frame).setCentering(false);
             }
+
             return true;
         } catch (Exception ex) {
             return false;

@@ -57,13 +57,14 @@ import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FocusMouseListener;
 import diva.gui.toolbox.JCanvasPanner;
 import diva.util.java2d.ShapeUtilities;
+
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.LocationAttribute;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.RunTableau;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
@@ -98,6 +99,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Graphics;
 import java.awt.Window;
@@ -183,32 +185,26 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	_jgraph.setAlignmentY(1);
 	_jgraph.setBackground(BACKGROUND_COLOR);
 
-	// Set the default size.
-        // Note that the location is of the frame, while the size
-        // is of the scrollpane.
-        _jgraph.setMinimumSize(new Dimension(200, 200));
-        _jgraph.setPreferredSize(new Dimension(600, 400));
-	_jgraph.setSize(600, 400);
-
-	// wrap the graph editor in a scroll pane.
-
         try {
-            SizeAttribute bounds = (
-                     SizeAttribute)getModel().getAttribute(
-                     "_vergilSize", SizeAttribute.class);
-            if (bounds == null) {
-                bounds = new SizeAttribute(getModel(), "_vergilSize");
+            // The SizeAttribute property is used to specify the size
+            // of the JGraph component. Unfortunately, with Swing's
+            // mysterious and undocumented handling of component sizes,
+            // there appears to be no way to control the size of the
+            // JGraph from the size of the Frame, which is specified
+            // by the WindowPropertiesAttribute.
+            SizeAttribute size = (
+                    SizeAttribute)getModel().getAttribute(
+                    "_vergilSize", SizeAttribute.class);
+            if (size != null) {
+                size.setSize(_jgraph);
+            } else {
+                // Set the default size.
+                // Note that the location is of the frame, while the size
+                // is of the scrollpane.
+                _jgraph.setMinimumSize(new Dimension(200, 200));
+                _jgraph.setPreferredSize(new Dimension(600, 400));
+                _jgraph.setSize(600, 400);
             }
-            bounds.setSize(_jgraph);
-
-            LocationAttribute location
-                     = (LocationAttribute)getModel().getAttribute(
-                     "_vergilLocation", LocationAttribute.class);
-            if (location == null) {
-                     location = new LocationAttribute(
-                     getModel(), "_vergilLocation");
-            }
-            location.setLocation(this);
         } catch (Exception ex) {
             // Ignore problems here.  Errors simply result in a default
             // size and location.
@@ -807,20 +803,35 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     protected void _writeFile(File file) throws IOException {
         // First, record size and position.
         try {
-            SizeAttribute bounds = (SizeAttribute)getModel().getAttribute(
-                     "_vergilSize", SizeAttribute.class);
-            if (bounds == null) {
-                bounds = new SizeAttribute(getModel(), "_vergilSize");
+            // Record the position of the top-level frame, assuming
+            // there is one.
+            Component component = _jgraph.getParent();
+            Component parent = component.getParent();
+            while (parent != null && !(parent instanceof Frame)) {
+                component = parent;
+                parent = component.getParent();
             }
-            bounds.recordSize(_jgraph);
-
-            LocationAttribute location
-                    = (LocationAttribute)getModel().getAttribute(
-                    "_vergilLocation", LocationAttribute.class);
-            if (location == null) {
-                location = new LocationAttribute(getModel(), "_vergilLocation");
+            // If there is no parent that is a Frame, do nothing.
+            if (parent instanceof Frame) {
+                WindowPropertiesAttribute properties
+                         = (WindowPropertiesAttribute)getModel().getAttribute(
+                         "_windowProperties", WindowPropertiesAttribute.class);
+                if (properties == null) {
+                    properties = new WindowPropertiesAttribute(
+                              getModel(), "_windowProperties");
+                }
+                properties.recordProperties((Frame)parent);
             }
-            location.recordLocation(this);
+            // Have to also record the size of the JGraph because
+            // setting the size of the frame is ignored if we don't
+            // also set the size of the JGraph. Why? Who knows. Swing.
+            SizeAttribute size = (
+                    SizeAttribute)getModel().getAttribute(
+                    "_vergilSize", SizeAttribute.class);
+            if (size == null) {
+                size = new SizeAttribute(getModel(), "_vergilSize");
+            }
+            size.recordSize(_jgraph);
         } catch (Exception ex) {
             // Ignore problems here.  Errors simply result in a default
             // size and location.

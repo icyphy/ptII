@@ -110,7 +110,8 @@ JSRCS = \
 	TextEditorTableau.java \
 	TextEffigy.java \
 	Tableau.java \
-	TableauFactory.java
+	TableauFactory.java \
+	WindowPropertiesAttribute.java
 
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED = \

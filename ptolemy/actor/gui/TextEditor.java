@@ -85,9 +85,9 @@ public class TextEditor extends TableauFrame {
         setTitle(title);
 
         text = new JTextArea(document);
-        JScrollPane scrollPane = new JScrollPane(text);
+        _scrollPane = new JScrollPane(text);
 
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
+        getContentPane().add(_scrollPane, BorderLayout.CENTER);
 
         // FIXME: Need to do something with the progress bar in the status bar.
     }
@@ -107,6 +107,30 @@ public class TextEditor extends TableauFrame {
 	// Song and dance to scroll to the new line.
 	text.scrollRectToVisible(new Rectangle(
                 new Point(0, text.getHeight())));
+    }
+
+    /** Get the background color.
+     *  @return The background color of the scroll pane.
+     */
+    public Color getBackground() {
+	return _scrollPane.getBackground();
+    }
+
+    /** Set background color.  This overrides the base class to set the
+     *  background of contained scroll pane and text area.
+     *  @param background The background color.
+     */
+    public void setBackground(Color background) {
+        super.setBackground(background);
+        // This seems to be called in a base class constructor, before
+        // this variable has been set. Hence the test against null.
+        if (_scrollPane != null) {
+            _scrollPane.setBackground(background);
+        }
+        if (text != null) {
+            // FIXME: Should the background always be white?
+            text.setBackground(background);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,4 +167,10 @@ public class TextEditor extends TableauFrame {
 
     // FIXME: Listen for edit changes.
     // FIXME: Listen for window closing.
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The scroll pane containing the text area. */
+    protected JScrollPane _scrollPane;
 }

@@ -155,6 +155,13 @@ public abstract class Top extends JFrame {
         GraphicalMessageHandler.setContext(this);
     }
 
+    /** Return true if the window is set to be centered when pack() is called.
+     *  @return True if the window will be centered when pack is called.
+     */
+    public boolean getCentering() {
+        return _centering;
+    }
+
     /** Return the most recently entered URL in the most recently
      *	invoked Open URL dialog box.
      *  Note that each Top has its own last url, this method returns
@@ -213,7 +220,7 @@ public abstract class Top extends JFrame {
     }
 
     /** Set background color.  This overrides the base class to set the
-     *  background of contained ModelPane.
+     *  background of the status bar.
      *  @param background The background color.
      */
     public void setBackground(Color background) {
@@ -223,6 +230,14 @@ public abstract class Top extends JFrame {
         if (_statusBar != null) {
             _statusBar.setBackground(background);
         }
+    }
+
+    /** Specify whether or not to center the window on the screen when
+     *  packing it.  The default is true.
+     *  @param False to disable centering.
+     */
+    public void setCentering(boolean centering) {
+        _centering = centering;
     }
 
     /** Set the value of the last overall URL.  
@@ -252,7 +267,9 @@ public abstract class Top extends JFrame {
 
     /** Size this window to its preferred size and make it
      *  displayable, and override the base class to populate the menu
-     *  bar if the menus have not already been populated.  This is
+     *  bar if the menus have not already been populated.  If the
+     *  window size has not been set (by some derived class), then
+     *  this will center the window on the screen. This is
      *  done here rather than in the constructor so that derived
      *  classes are assured that their constructors have been fully
      *  executed when _addMenus() is called.
@@ -334,6 +351,15 @@ public abstract class Top extends JFrame {
             getContentPane().add(_statusBar, BorderLayout.SOUTH);
         }
 	super.pack();
+        if (_centering) {
+            centerOnScreen();
+        }
+    }
+
+    /** Override the base class to record that the bounds have been set.
+     */
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -665,7 +691,6 @@ public abstract class Top extends JFrame {
     /** The status bar. */
     protected StatusBar _statusBar = new StatusBar();
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -678,11 +703,14 @@ public abstract class Top extends JFrame {
     // The most recently entered URL in any Open URL.
     private static String _lastOverallURL = null;
 
+    // Indicator that the menu has been populated.
+    private boolean _menuPopulated = false;
+
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
 
-    // Indicator that the menu has been populated.
-    private boolean _menuPopulated = false;
+    // A flag indicating whether or not to center the window.
+    private boolean _centering = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

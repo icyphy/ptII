@@ -79,6 +79,19 @@ public abstract class PtolemyFrame extends TableauFrame {
         super(tableau);
 	_fileFilter = new XMLOrMoMLFileFilter();
         setModel(model);
+
+        // Set the window properties if there is an attribute in the
+        // model specifying them.  Errors are ignored.
+        try {
+            WindowPropertiesAttribute properties
+                    = (WindowPropertiesAttribute)model.getAttribute(
+                    "_windowProperties", WindowPropertiesAttribute.class);
+            if (properties != null) {
+                properties.setProperties(this);
+            }
+        } catch (IllegalActionException ex) {
+            // Ignore.
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
