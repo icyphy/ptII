@@ -310,7 +310,8 @@ public class ModalPort extends TypedIOPort {
             throws IllegalActionException {
         if (!(container instanceof ModalModel) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "ModalPort can only be contained by ModalModel objects.");
+                    "ModalPort can only be contained by ModalModel objects. "
+                    + "The container was: " + container);
         }
     }
 }
