@@ -352,7 +352,8 @@ public class JAIJPEGWriter extends Sink {
         } catch (IOException error) {
             throw new IllegalActionException("Couldn't encode image");
         }
-        return false;
+        //return false;
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

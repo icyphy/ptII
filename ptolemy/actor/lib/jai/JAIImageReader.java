@@ -37,6 +37,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -88,36 +89,41 @@ public class JAIImageReader extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Output a JAIImageToken containing the image
-     *  @exception IllegalActionException If there is no director.
+    
+    /** An attempt is made to acquire the file name..
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the URL is null.
      */
-
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == fileOrURL) {
+            URL url = fileOrURL.asURL();
+            if (url == null) {
+                throw new IllegalActionException("URLToken was null");
+            } else {
+                _fileRoot = url.getFile();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+    
+    /** Output a JAIImageToken containing the image.
+     *  @exception IllegalActionException If a contained method throws it,
+     *  or if the attempt to load the file has failed.
+     */
     public void fire() throws IllegalActionException {
+        // We want to create the image in fire() simply because
+        // while the name of the file might not be changing, the 
+        // contents could be.
+        try {
+            _stream = new FileSeekableStream(_fileRoot);
+        } catch (IOException error) {
+            throw new IllegalActionException("Unable to load file");
+        }
+        _outputtedImage = JAI.create("stream", _stream);
         super.fire();
         output.send(0, new JAIImageToken(_outputtedImage));
-    }
-
-    /** An attempt is made at loading the file.  If this is successful,
-     *  then at time 0.0, request firing.
-     *  @exception IllegalActionException If the filename is null, if
-     *  the filename doesn't produce a loadable image, or if there is
-     *  no director.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        URL url = fileOrURL.asURL();
-        if (url == null) {
-            throw new IllegalActionException("URLToken was null");
-        } else {
-            _fileRoot = url.getFile();
-            try {
-                _stream = new FileSeekableStream(_fileRoot);
-            } catch (IOException error) {
-                throw new IllegalActionException("Unable to load file");
-            }
-            _outputtedImage = JAI.create("stream", _stream);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,7 +139,4 @@ public class JAIImageReader extends Source {
 
     /** A stream which JAI uses to create RenderedOp's */
     private FileSeekableStream _stream;
-
-    /** The StringToken that contains the file's URL */
-    private StringToken _urlToken;
 }

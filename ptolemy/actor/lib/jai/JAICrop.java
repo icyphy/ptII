@@ -140,6 +140,7 @@ public class JAICrop extends Transformer {
         parameters.add((float)_width);
         parameters.add((float)_height);
         RenderedOp newImage = JAI.create("Crop", parameters);
+        int width = newImage.getWidth();
         output.send(0, new JAIImageToken(newImage));
     }
 

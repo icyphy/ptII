@@ -79,7 +79,7 @@ JSRCS = DoubleMatrixToJAI.java \
 	JAITIFFWriter.java \
 	JAIToDoubleMatrix.java \
 	JAITranslate.java \
-	JAITranspose.java
+	JAITranspose.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	jai.xml \
