@@ -153,9 +153,8 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            // FIXME: Replace zoomin graphic with fullscreen.
             URL img = getClass().getResource(
-                    "/ptolemy/vergil/basic/img/zoomin.gif");
+                    "/ptolemy/vergil/basic/img/fullscreen.gif");
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
                 putValue(GUIUtilities.LARGE_ICON, icon);
