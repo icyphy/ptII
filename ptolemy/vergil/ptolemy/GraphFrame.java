@@ -133,6 +133,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -339,28 +340,63 @@ public abstract class GraphFrame extends PtolemyFrame
 	SelectionModel model = controller.getSelectionModel();
 	GraphModel graphModel = controller.getGraphModel();
 	Object selection[] = model.getSelectionAsArray();
-	HashSet objectSet = new HashSet();
+        // A set, because some objects may represent the same 
+        // ptolemy object.
+        HashSet namedObjSet = new HashSet();
+	HashSet nodeSet = new HashSet();
+        // First get all the nodes.
 	for(int i = 0; i < selection.length; i++) {
 	    if(selection[i] instanceof Figure) {
 		Object userObject = ((Figure)selection[i]).getUserObject();
-		NamedObj actual =
-		    (NamedObj)graphModel.getSemanticObject(userObject);
-		if(objectSet.contains(actual)) continue;
-		objectSet.add(actual);
+                if(graphModel.isNode(userObject)) {
+                    nodeSet.add(userObject);
+                    NamedObj actual =
+                        (NamedObj)graphModel.getSemanticObject(userObject);
+                    namedObjSet.add(actual);
+                }
 	    }
 	}
-
+	for(int i = 0; i < selection.length; i++) {
+	    if(selection[i] instanceof Figure) {
+		Object userObject = ((Figure)selection[i]).getUserObject();
+                if(graphModel.isEdge(userObject)) {
+                    // Check to see if the head and tail are both being 
+                    // copied.  Only if so, do we actually take the edge.
+                    Object head = graphModel.getHead(userObject);
+                    Object tail = graphModel.getTail(userObject);
+                    boolean headOK = nodeSet.contains(head);
+                    boolean tailOK = nodeSet.contains(tail);
+                    Iterator objects = nodeSet.iterator();
+                    while(!(headOK && tailOK) && objects.hasNext()) {
+                        Object object = objects.next();
+                        if(!headOK && GraphUtilities.isContainedNode(head,
+                                object, graphModel)) {
+                            headOK = true;
+                        }
+                        if(!tailOK && GraphUtilities.isContainedNode(tail,
+                                object, graphModel)) {
+                            tailOK = true;
+                        }
+                    }
+                    if(headOK && tailOK) {
+                        NamedObj actual =
+                            (NamedObj)graphModel.getSemanticObject(userObject);
+                         namedObjSet.add(actual);
+                    }
+                }
+            }
+        }
 	StringWriter buffer = new StringWriter();
 	try {
-	    Iterator elements = objectSet.iterator();
+	    Iterator elements = namedObjSet.iterator();
 	    while(elements.hasNext()) {
-		NamedObj element = (NamedObj) elements.next();
-		// first level to avoid obnoxiousness with
+                NamedObj element = (NamedObj)elements.next();
+                // first level to avoid obnoxiousness with
 		// toplevel translations.
 		element.exportMoML(buffer, 1);
 	    }
 	    CompositeEntity container = (CompositeEntity)graphModel.getRoot();
-	    buffer.write(container.exportLinks(1, objectSet));
+	    buffer.write(container.exportLinks(1, namedObjSet));
 
 	    // The code below does not use a PtolemyTransferable,
 	    // to work around
@@ -371,7 +407,7 @@ public abstract class GraphFrame extends PtolemyFrame
                     this);
 	}
 	catch (Exception ex) {
-	    ex.printStackTrace();
+	    MessageHandler.error("Copy failed", ex);
 	}
 
     }
@@ -381,8 +417,8 @@ public abstract class GraphFrame extends PtolemyFrame
      *  support such an operation, then do nothing.
      */
     public void cut() {
-	// FIXME
-	copy();
+        // FIXME
+        MessageHandler.error("Cut is not yet implemented.");
     }
 
     /** Return the jgraph instance that this view uses to represent the
@@ -438,16 +474,8 @@ public abstract class GraphFrame extends PtolemyFrame
 	    moml.append("</group>\n");
 	    toplevel.requestChange(
                     new MoMLChangeRequest(this, toplevel, moml.toString()));
-	} catch (UnsupportedFlavorException ex) {
-	    System.out.println("Transferable object didn't " +
-                    "support stringFlavor: " +
-                    ex.getMessage());
-	} catch (IOException ex) {
-	    System.out.println("IOException when pasting: " +
-                    ex.getMessage());
 	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
+	    MessageHandler.error("Copy failed", ex);
 	}
     }
 
