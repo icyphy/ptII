@@ -1346,7 +1346,7 @@ public class NamedObj implements
      *  @param index The position to move this object to.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
-     *  @throws IndexOutOfBoundsException If the index is out of bounds.
+     *  @exception IndexOutOfBoundsException If the index is out of bounds.
      */
     public int moveToIndex(int index) throws IndexOutOfBoundsException {
         NamedObj container = getContainer();
@@ -1470,7 +1470,7 @@ public class NamedObj implements
      *  when attempting to propagate the value to it.
      *  This also marks this object as overridden.
      *  @return The list of objects to which this propagated.
-     *  @throws IllegalActionException If propagation fails.
+     *  @exception IllegalActionException If propagation fails.
      *  @see Derivable
      *  @see #isOverridden()
      */
@@ -1490,7 +1490,7 @@ public class NamedObj implements
      *  object or any of its contained objects is having
      *  its value set directly. Instead, it uses the current
      *  state of override of this object as the starting point.
-     *  @throws IllegalActionException If propagation fails.
+     *  @exception IllegalActionException If propagation fails.
      */
     public void propagateValues() throws IllegalActionException {
         // If this object has not had its value set directly or
