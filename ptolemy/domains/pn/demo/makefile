@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	#$(PTPACKAGE).jar
 
 JSRCS = \
-	PNInterleavingExample.java \
 	PNWavepacket.java
 
 EXTRA_SRCS =	$(JSRCS)
