@@ -352,7 +352,7 @@ public final class Manager extends NamedObj implements Runnable {
 
                 // Figure out the appropriate write access.
                 _needWriteAccessDuringIteration =
-                    _checkIfWriteAccessNeededDuringIteration();
+                    _needWriteAccess();
 
                 // Call _iterate() until:
                 // _keepIterating is set to false (presumably by stop())
@@ -418,6 +418,12 @@ public final class Manager extends NamedObj implements Runnable {
      *  toplevel iterations.   This will normally be stopped by
      *  calling finish(), terminate(), or returning false in a postfire method.
      *  This method is non-blocking, i.e. it runs on 'background'
+     *  <p>
+     *  If this method is called while the simulation is still running, then
+     *  the call is 'buffered' and the simulation will rerun itself
+     *  immediately after the current running simulation ends. Since this
+     *  method is synchronized, it is not possible to call this method
+     *  while there is a 'buffered' run request.
      *  @see Manager#run()
      */
     public synchronized void startRun() {
@@ -426,11 +432,6 @@ public final class Manager extends NamedObj implements Runnable {
 
         // If the previous run hasn't totally finished yet, then be sure
         // it is good and dead before continuing.
-
-        // FIXME: Steve, this means that if the user click the START button
-        // twice before the first simulation ended, the second press will
-        // be buffered, and the second simulation will rerun immediately
-        // after the first one ends.. Is this what you want ? (lmuliadi)
 
         if(_simulationThread != null) {
             _simulationThread.stop();
@@ -502,39 +503,46 @@ public final class Manager extends NamedObj implements Runnable {
         _toplevel = ca;
     }
 
-    /** Check if write access in the workspace will be needed during an
-     *  iteration.
-     *  An iteration is defined to be one invocation of prefire(), fire(), and
-     *  postfire() methods of the top level composite actor.
-     *  <p>
-     *  This method recursively call the needWriteAccess() method of all lower
-     *  level directors. Intuitively, the workspace will only be made write-
-     *  protected, if all the directors permit it.
-     */
-    // FIXME: What's the appropriate protection level for this method ?
-    // FIXME: public ? private ?
-    protected boolean _checkIfWriteAccessNeededDuringIteration() {
-        // Get the top level composite actor.
-        CompositeActor toplevel = (CompositeActor)getToplevel();
-        if (toplevel == null) {
-            throw new InvalidStateException("Manager "+ getName() +
-                    " attempted execution with no topology to execute!");
-        }
-        // Call the needWriteAccess() method of the local director of the
-        // top level composite actor.
-        return toplevel.getDirector().needWriteAccess();
-    }
+
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /**
+     * Propagate the execution event to all the execution listeners.
+     */
+    private void _fireExecutionEvent(ExecutionEventType type,
+            ExecutionEvent event) {
+        Enumeration listeners = _ExecutionListeners.elements();
+        while(listeners.hasMoreElements()) {
+            ExecutionListener l =
+                (ExecutionListener) listeners.nextElement();
+            if(type == ExecutionEventType.EXECUTIONSTARTED)
+                l.executionStarted(event);
+            else if(type == ExecutionEventType.EXECUTIONPAUSED)
+                l.executionPaused(event);
+            else if(type == ExecutionEventType.EXECUTIONRESUMED)
+                l.executionResumed(event);
+            else if(type == ExecutionEventType.EXECUTIONERROR)
+                l.executionError(event);
+            else if(type == ExecutionEventType.EXECUTIONFINISHED)
+                l.executionFinished(event);
+            else if(type == ExecutionEventType.EXECUTIONTERMINATED)
+                l.executionTerminated(event);
+            else if(type == ExecutionEventType.ITERATIONSTARTED)
+                l.executionIterationStarted(event);
+
+        }
+    }
+
     /** Invoke one iteration.  An iteration consists of
      *  invocations of prefire(), fire(), and postfire(), in that
-     *  order.  Prefire() will be called multiple times until it returns true.
-     *  If prefire() return false, then fire() and postfire() are not
-     *  invoked.   Fire() will be called a single time.   If postfire()
-     *  returns false, then the execution should be terminated.
+     *  order.  Prefire() will be called at the beginning of an iteration.
+     *  If prefire() returns false, then fire() and postfire() are not
+     *  invoked.   Otherwise, fire() will be called once, followed by
+     *  invocation of postfire(). If postfire()
+     *  returns false, then the execution will be terminated.
      *  This method is read-synchronized on the workspace.
      *
      *  @return True if postfire() returns true.
@@ -591,33 +599,28 @@ public final class Manager extends NamedObj implements Runnable {
         }
     }
 
-    /**
-     * Propagate the execution event to all the execution listeners.
+
+
+    /** Check if write access will be needed in the workspace during an
+     *  iteration. An iteration consists of invocations of the prefire(),
+     *  fire(), and postfire() methods of the top level composite actor in
+     *  that order.
+     *  <p>
+     *  This method recursively calls the needWriteAccess() method of all lower
+     *  level directors. Intuitively, the workspace will only be made 
+     *  read-only, if all the directors permit it.
      */
-    private void _fireExecutionEvent(ExecutionEventType type,
-            ExecutionEvent event) {
-        Enumeration listeners = _ExecutionListeners.elements();
-        while(listeners.hasMoreElements()) {
-            ExecutionListener l =
-                (ExecutionListener) listeners.nextElement();
-            if(type == ExecutionEventType.EXECUTIONSTARTED)
-                l.executionStarted(event);
-            else if(type == ExecutionEventType.EXECUTIONPAUSED)
-                l.executionPaused(event);
-            else if(type == ExecutionEventType.EXECUTIONRESUMED)
-                l.executionResumed(event);
-            else if(type == ExecutionEventType.EXECUTIONERROR)
-                l.executionError(event);
-            else if(type == ExecutionEventType.EXECUTIONFINISHED)
-                l.executionFinished(event);
-            else if(type == ExecutionEventType.EXECUTIONTERMINATED)
-                l.executionTerminated(event);
-            else if(type == ExecutionEventType.ITERATIONSTARTED)
-                l.executionIterationStarted(event);
-
+    private boolean _needWriteAccess() {
+        // Get the top level composite actor.
+        CompositeActor toplevel = (CompositeActor)getToplevel();
+        if (toplevel == null) {
+            throw new InvalidStateException("Manager "+ getName() +
+                    " attempted execution with no topology to execute!");
         }
+        // Call the needWriteAccess() method of the local director of the
+        // top level composite actor.
+        return toplevel.getDirector().needWriteAccess();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         Inner Class                       ////
