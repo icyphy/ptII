@@ -42,7 +42,7 @@ import ptolemy.actor.lib.*;
 
 public class Time {
 
-    public static void main(String arg[]) throws IllegalActionException, 
+    public static void main(String arg[]) throws IllegalActionException,
             NameDuplicationException {
         Workspace w = new Workspace("w");
         TypedCompositeActor toplevel = new TypedCompositeActor(w);
@@ -50,7 +50,7 @@ public class Time {
         DEDirector director = new DEDirector(toplevel, "director");
         Manager manager = new Manager(w, "manager");
         toplevel.setManager(manager);
-        
+
         // The first clock controls the period of the second one.
         Clock clock = new Clock(toplevel, "clock");
         clock.values.setExpression("[1.0, 10.0, 100.0, 10.0, 1.0]");
@@ -61,10 +61,10 @@ public class Time {
 
         Recorder recorder = new Recorder(toplevel, "recorder");
         recorder.capacity.setExpression("0");
-                
+
         toplevel.connect(clock.output, varclock.periodControl);
         toplevel.connect(varclock.output, recorder.input);
-        
+
         director.setStopTime(10000.0);
         manager.run();
         manager.run();
