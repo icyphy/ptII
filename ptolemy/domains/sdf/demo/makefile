@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/sdf/demo
 
-DIRS = 		Butterfly ComSystem Expression HTVQ Sketch Type
+DIRS = 		Butterfly FixPointSystem ComSystem Expression HTVQ Sketch Type
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
