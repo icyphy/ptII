@@ -52,6 +52,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Attribute.java \
+	ChangeListener.java \
+	ChangeRequest.java \
 	CrossRefList.java \
 	Debuggable.java \
 	DebugEvent.java \
@@ -67,6 +69,7 @@ JSRCS = \
 	NoSuchItemException.java \
 	PtolemyThread.java \
 	RecorderListener.java \
+	StreamChangeListener.java \
 	StreamListener.java \
 	Workspace.java
 

@@ -28,9 +28,7 @@
 
 */
 
-package ptolemy.kernel.event;
-
-import ptolemy.kernel.util.Nameable;
+package ptolemy.kernel.util;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -48,17 +46,13 @@ which it is safe to make the modification.  Such changes are called
 A typical use of this class is to define an anonymous inner class that
 implements the _execute() method to bring about the desired change.
 The instance of that anonymous inner class is then queued with a
-a composite entity using its requestChange() method.
+a an instance of NamedObj using its requestChange() method.
 <p>
 Concrete derived classes can be defined to implement
 mutations of a certain kind or in a certain way. Instances of these
-classes should be queued with a composite entity, just like an anonymous
+classes should be queued with a NamedObj, just like an anonymous
 inner class extending this class. MoMLChangeRequest is such a concrete
 derived class, where the mutation is specified as MoML code.
-<p>
-To ensure that a group of such changes is executed together,
-use ChangeList to collect them, and queue the instance of
-ChangeList with the composite entity.
 
 @author  Edward A. Lee
 @version $Id$
@@ -132,17 +126,17 @@ public abstract class ChangeRequest {
      *  This class has this single method, rather than the usual
      *  addChangeListener() and removeChangeListener() because it is
      *  assumed that the list of listeners is being maintained in another
-     *  class, named CompositeEntity.
+     *  class, specifically the top-level named object in the hierarchy.
      *  The class copies the list, so that in the process of handling
      *  notifications from this class, more listeners can be added to
-     *  the list of listeners in the CompositeEntity.
+     *  the list of listeners in the top-level object.
      *  <p>
      *  Note that an alternative to using listeners is to call
      *  waitForCompletion().
      *
      *  @param listeners A list of instances of ChangeListener.
      *  @see ChangeListener
-     *  @see CompositeEntity
+     *  @see NamedObj
      */
     public void setListeners(List listeners) {
         _listeners = new LinkedList(listeners);

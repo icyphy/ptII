@@ -45,11 +45,11 @@ public interface DebugListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a debug message.
-     */
-    public void message(String message);
-
     /** React to the given event.
      */
     public void event(DebugEvent event);
+
+    /** React to a debug message.
+     */
+    public void message(String message);
 }

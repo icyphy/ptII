@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 test ChangeRequest-1.0 {test simple run with only parameter changes} {
-    set t [java::new ptolemy.kernel.event.test.ChangeRequestTest]
+    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
     $t start
     $t mutate
     enumToTokenValues [$t finish]
@@ -63,7 +63,7 @@ test ChangeRequest-2.0 {test elaborate run with graph rewiring} {
 } {2.0 6.0 7.0 8.0 9.0}
 
 test ChangeRequest-3.0 {test DE example with no mutations} {
-    set t [java::new ptolemy.kernel.event.test.TestDE]
+    set t [java::new ptolemy.kernel.util.test.TestDE]
     $t start
     # $t insertFeedback
     enumToObjects [$t finish]
@@ -76,7 +76,7 @@ test ChangeRequest-3.1 {test DE example with period change} {
 } {0.0 1.0 2.0 3.0 5.0 7.0 9.0 11.0}
 
 test ChangeRequest-3.2 {test DE example with inserted actor} {
-    set t [java::new ptolemy.kernel.event.test.TestDE]
+    set t [java::new ptolemy.kernel.util.test.TestDE]
     $t start
     $t insertClock
     enumToObjects [$t finish]

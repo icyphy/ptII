@@ -28,11 +28,10 @@
 
 */
 
-package ptolemy.kernel.event.test;
+package ptolemy.kernel.util.test;
 
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.Delay;

@@ -467,13 +467,12 @@ public class Entity extends NamedObj {
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        
+        super._exportMoMLContents(output, depth);
         Iterator ports = portList().iterator();
         while (ports.hasNext()) {
             Port port = (Port)ports.next();
             port.exportMoML(output, depth);
         }
-        super._exportMoMLContents(output, depth);
     }
 
     /** Remove the specified port. This method should not be used

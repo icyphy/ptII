@@ -32,7 +32,7 @@
 ME =		ptolemy/kernel
 
 # Order matters here, go into util first, since mutation depends on it
-DIRS = 		util event test
+DIRS = 		util test
 
 # Root of the Ptolemy II directory
 ROOT =		../..

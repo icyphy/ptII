@@ -1,4 +1,5 @@
-/* An exception that is thrown when execution of a change request fails.
+/* A ChangeListener is an interface implemented by objects that are
+   interested in being kept informed about mutations.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -25,48 +26,36 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
-package ptolemy.kernel.event;
+package ptolemy.kernel.util;
 
-import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
-//// ChangeFailedException
+//// ChangeListener
 /**
-An exception that is thrown when execution of a change request fails.
-This exception merely constructs a detailed message about the cause
-of the exception.
+A ChangeListener is an interface implemented by objects that are
+interested in being kept informed about changes in a model as they
+are executed. These listeners are informed when each change is successfully
+executed, or when an attempt to execute it results in an exception.
 
 @author Edward A. Lee
 @version $Id$
 */
-public class ChangeFailedException extends KernelException {
+public interface ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         constructors                      ////
+    ////                         public methods                    ////
 
-    /** Create an exception with a detailed message constructed from
-     *  the message of another exception.
-     *  @param request The change request.
-     *  @param ex The exception that resulted from executing it.
+    /** Notify the listener that a change has been successfully executed.
+     *  @param change The change that has been executed.
      */
-    public ChangeFailedException(ChangeRequest request, Exception ex) {
-        super(request.getOriginator(), null, "Change request failed: "
-                + request.getDescription() + "\n"
-                + ex.toString());
-    }
+    public void changeExecuted(ChangeRequest change);
 
-    /** Create an exception with a detailed message about the change
-     *  that failed.
-     *  @param request The change request.
-     *  @param msg A message explaining the problem with executing the change
-     *   request.
+    /** Notify the listener that a change has resulted in an exception.
+     *  @param change The change that was attempted.
+     *  @param exception The exception that resulted.
      */
-    public ChangeFailedException(ChangeRequest request, String msg) {
-        super(request.getOriginator(), null, "Change request failed: "
-                + request.getDescription() + "\n"
-                + msg);
-    }
+    public void changeFailed(ChangeRequest change, Exception exception);
 }

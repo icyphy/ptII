@@ -46,7 +46,9 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	ChangeRequestTest.java \
 	PtestWorkspace.java \
+	TestDE.java \
 	TestDebugEvent.java \
 	TestInvalidStateException.java \
 	TestNullNamedObj.java \
@@ -56,6 +58,7 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	Attribute.tcl \
+	ChangeRequest.tcl \
 	CrossRefList.tcl \
 	IllegalActionException.tcl \
 	InternalErrorException.tcl \

@@ -1,5 +1,4 @@
-/* A ChangeListener is an interface implemented by objects that are
-   interested in being kept informed about mutations.
+/* A change listener that describes the changes on the standard output.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -29,33 +28,58 @@
 @AcceptedRating Red
 */
 
-package ptolemy.kernel.event;
+package ptolemy.kernel.util;
 
+import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ChangeListener
+//// StreamChangeListener
 /**
-A ChangeListener is an interface implemented by objects that are
-interested in being kept informed about changes in a model as they
-are executed. These listeners are informed when each change is successfully
-executed, or when an attempt to execute it results in an exception.
+A change listener that describes the changes on the standard output.
+It simply prints the description of the change once it executes (or
+throws an exception).
 
 @author Edward A. Lee
 @version $Id$
 */
-public interface ChangeListener {
+public class StreamChangeListener implements ChangeListener {
+
+    /** Create a change listener that sends messages to the standard output.
+     */
+    public StreamChangeListener() {
+        _output = System.out;
+    }
+
+    /** Create a change listener that sends messages to the specified stream.
+     *  @param out The stream to send messages to.
+     */
+    public StreamChangeListener(OutputStream out) {
+        _output = new PrintStream(out);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify the listener that a change has been successfully executed.
+    /** Print the description of the change to the stream output.
      *  @param change The change that has been executed.
      */
-    public void changeExecuted(ChangeRequest change);
+    public void changeExecuted(ChangeRequest change) {
+        _output.println(change.getDescription());
+        _output.println("SUCCEEDED");
+    }
 
-    /** Notify the listener that a change has resulted in an exception.
-     *  @param change The change that was attempted.
-     *  @param exception The exception that resulted.
+    /** Print the description of the failure to the stream output.
+     *  @param change The change that has been executed.
+     *  @param exception The exception that occurred.
      */
-    public void changeFailed(ChangeRequest change, Exception exception);
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        _output.println(change.getDescription());
+        _output.println("FAILED:");
+        _output.println(exception.toString());
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private PrintStream _output;
 }

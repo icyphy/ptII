@@ -30,7 +30,6 @@
 
 package ptolemy.kernel;
 
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 
 import java.io.IOException;
@@ -129,29 +128,6 @@ public class CompositeEntity extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a change listener.  If there is a container, then
-     *  delegate to the container.  Otherwise, add the listener
-     *  to the list of change listeners in this entity. Each listener
-     *  will be notified of the execution (or failure) of each 
-     *  change request that is executed via the requestChange() method.
-     *  Note that in this implementation, only the toplevel composite
-     *  entity executes changes, which is why this method delegates
-     *  to the container if there is one.
-     *  <p>
-     *  If the listener is already in the list, do not add it again.
-     *  @param listener The listener to add.
-     */
-    public void addChangeListener(ChangeListener listener) {
-	CompositeEntity container = (CompositeEntity) getContainer();
-	if(container != null) {
-            container.addChangeListener(listener);
-        } else {
-            if (!_changeListeners.contains(listener)) {
-                _changeListeners.add(listener);
-            }
-        }
-    }
-
     /** Allow or disallow connections that are created using the connect()
      *  method to cross levels of the hierarchy.
      *  The default is that such connections are disallowed.
@@ -187,7 +163,6 @@ public class CompositeEntity extends ComponentEntity {
 
         newentity._containedEntities = new NamedList(newentity);
         newentity._containedRelations = new NamedList(newentity);
-        newentity._changeListeners = new LinkedList();
 
         // Clone the contained relations.
         Iterator relations = relationList().iterator();
@@ -869,41 +844,6 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Remove a change listener. If there is a container, delegate the
-     *  request to the container.  If the specified listener is not
-     *  on the list of listeners, do nothing.
-     *  @param listener The listener to remove.
-     */
-    public void removeChangeListener(ChangeListener listener) {
-	CompositeEntity container = (CompositeEntity) getContainer();
-	if(container != null) {
-            container.removeChangeListener(listener);
-        } else {
-            _changeListeners.remove(listener);
-        }
-    }
-
-    /** Request that given change request be executed.   In this base 
-     *  class, defer the change request to the container of this entity,
-     *  if there is one.
-     *  If the entity has no container, then execute the request immediately.
-     *  In other words, the request will get passed up to the toplevel 
-     *  composite entity and then executed.  Subclasses should override
-     *  this to queue the change request and execute it at an appropriate time.
-     *  Change listeners will be notified of success (or failure) or the
-     *  request.
-     *  @param change The requested change.
-     */
-    public void requestChange(ChangeRequest change) {
-	CompositeEntity container = (CompositeEntity) getContainer();
-	if(container == null) {
-            change.setListeners(_changeListeners);
-	    change.execute();
-	} else {
-	    container.requestChange(change);
-	}
-    }
-
     /** Return a name that is guaranteed to not be the name of
      *  any contained attribute, port, entity, or relation.
      *  @param prefix A prefix for the name.
@@ -1070,12 +1010,6 @@ public class CompositeEntity extends ComponentEntity {
     protected void _removeRelation(ComponentRelation relation) {
         _containedRelations.remove(relation);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** A list of change listeners. */
-    protected List _changeListeners = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
