@@ -41,7 +41,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.SingletonAttribute;
@@ -93,7 +92,8 @@ public class ArrayPeakSearch extends TypedAtomicActor {
         squelch.setExpression("40.0");
         squelch.setTypeEquals(BaseType.DOUBLE);
         
-        scale = new ChoiceAttribute(this, "scale");
+        scale = new Parameter(this, "scale");
+        scale.setStringMode(true);
         scale.setExpression("power decibels");
         scale.addChoice("linear");
         scale.addChoice("amplitude decibels");
@@ -172,7 +172,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *  "amplitude decibels" or "power decibels". The default value
      *  is "power decibels".
      */
-    public ChoiceAttribute scale;
+    public Parameter scale;
     
     /** The value below the highest peak that is ignored by the
      *  algorithm. This is a double that can be interpreted on a
