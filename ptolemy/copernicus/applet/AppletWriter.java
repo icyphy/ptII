@@ -44,6 +44,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 import soot.HasPhaseOptions;
@@ -288,22 +289,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             System.out.println("AppletWriter: about to write '"
                     + newModelFile + "'");
 
-            // Avoid end of line and localization issues.
-            URL modelURL = new URL(_modelPath);
-            BufferedInputStream in = 
-                new BufferedInputStream(modelURL.openStream());
-            BufferedOutputStream out =
-                new BufferedOutputStream(
-                        new FileOutputStream(newModelFile));
-            int c;
-
-            while ((c = in.read()) != -1) {
-                out.write(c);
-            }
-            // FIXME: need finally?
-            in.close();
-            out.close();
-
+            FileUtilities.binaryCopyURLToFile(
+                    new URL(_modelPath), newModelFile);
         } catch (IOException ex) {
             System.out.println("AppletWriter: WARNING: Problem reading '"
                     + _modelPath + "' and writing '" + newModelFileName

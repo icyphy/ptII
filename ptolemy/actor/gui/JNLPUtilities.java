@@ -30,6 +30,7 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 import java.io.BufferedInputStream;
@@ -193,7 +194,7 @@ public class JNLPUtilities {
         File temporaryFile = File.createTempFile(prefix, suffix, directory);
         temporaryFile.deleteOnExit();
 
-        _binaryCopyURLToFile(jarURL, temporaryFile);
+        FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
 
         return temporaryFile.toString();
     }
@@ -252,7 +253,7 @@ public class JNLPUtilities {
             // If the file exists, we assume that it is the right one.
             // FIXME: we could do more here, like check for file sizes.
             if ( !temporaryFile.exists()) {
-                _binaryCopyURLToFile(jarURL, temporaryFile);
+                FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
             }
             return temporaryFile.toString();
         }
@@ -262,50 +263,6 @@ public class JNLPUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
-
-    // Copy sourceURL to destinationFile without doing any byte conversion.
-    private static void _binaryCopyURLToFile(URL sourceURL,
-            File destinationFile)
-            throws IOException {
-
-        BufferedInputStream input = null;
-        BufferedOutputStream output = null;
-        try {
-            input = new BufferedInputStream(sourceURL.openStream());
-
-            output = new BufferedOutputStream(
-                        new FileOutputStream(destinationFile));
-
-            // The resource pointed to might be a pdf file, which
-            // is binary, so we are careful to read it byte by
-            // byte and not do any conversions of the bytes.
-
-            int c;
-            while (( c = input.read()) != -1) {
-                output.write(c);
-            }
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (Throwable throwable) {
-                        System.out.println("Ignoring failure to close stream "
-                                + "on " + sourceURL);
-                        throwable.printStackTrace();
-                }
-            }
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (Throwable throwable) {
-                    System.out.println("Ignoring failure to close stream "
-                            + "on " + destinationFile);
-                    throwable.printStackTrace();
-                }
-            }
-        }
-    }
-
 
     // Lookup a jarURLName as a resource.
     private static URL _lookupJarURL(String jarURLName) throws IOException {
