@@ -73,7 +73,7 @@ import diva.util.java2d.Polygon2D;
    be controlled via this interface.  The "Configure Ports" command of
    the container should be invoked instead.
 
-   @author Steve Neuendorffer and Edward A. Lee
+   @author Steve Neuendorffer and Edward A. Lee, Elaine Cheong
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Red (eal)
@@ -305,7 +305,11 @@ public class ExternalIOPortController extends AttributeController {
                                 try {
                                     tipText = tipText + ", type:"
                                         + ((Typeable)port).getType();
-                                } catch (IllegalActionException ex) {}
+                                } catch (ClassCastException ex) {
+                                    // Do nothing.
+                                } catch (IllegalActionException ex) {
+                                    // Do nothing.
+                                }
                             }
                             return tipText;
                         }
