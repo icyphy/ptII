@@ -77,7 +77,12 @@ FilterOutGraphicalClasses.</text></svg></configure>
 #
 test FilterOutGraphicalClasses-1.1 {This annotation already has a _hideName} { 
     set parser [java::new ptolemy.moml.MoMLParser]
-    $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    set filter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+
+    # ptolemy.copernicus.kernel.KernelMain does this
+    $filter put "ptolemy.copernicus.kernel.GeneratorAttribute" [java::null]
+
+    $parser addMoMLFilter $filter
     $parser addMoMLFilter [java::new ptolemy.moml.FilterHideAnnotationNames]
     set toplevel [$parser parse $hideMoml]
     set newMoML [$toplevel exportMoML]
