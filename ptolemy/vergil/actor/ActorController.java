@@ -141,8 +141,11 @@ public class ActorController extends AttributeController {
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new SaveInLibraryAction()));
 
+        _listenToActorAction = new ListenToActorAction(
+                (BasicGraphController)getController());
         _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new ListenToActorAction()));
+                new MenuActionFactory(_listenToActorAction));
+        _listenToActorAction.setConfiguration(_configuration);
 
         // "Set Breakpoints"
         if (access == FULL) {
@@ -197,6 +200,9 @@ public class ActorController extends AttributeController {
         if (_portDialogFactory != null) {
 	    _portDialogFactory.setConfiguration(configuration);
         }
+        if (_listenToActorAction != null) {
+            _listenToActorAction.setConfiguration(_configuration);
+        }
 	if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
@@ -217,6 +223,8 @@ public class ActorController extends AttributeController {
     ////                         private variables                 ////
 
     private BreakpointDialogFactory _breakpointDialogFactory;
+
+    private ListenToActorAction _listenToActorAction;
 
     private PortDialogFactory _portDialogFactory;
 
@@ -491,10 +499,19 @@ public class ActorController extends AttributeController {
         }
     }
 
-    // An action to listen to debug messages in the actor.
-    private class ListenToActorAction extends FigureAction {
-        public ListenToActorAction() {
+    /** An action to listen to debug messages in the actor.
+     *  This is static so that other classes can use it.
+     */
+    public static class ListenToActorAction extends FigureAction {
+        public ListenToActorAction(BasicGraphController controller) {
             super("Listen to Actor");
+            _controller = controller;
+        }
+        public ListenToActorAction(
+                NamedObj target, BasicGraphController controller) {
+            super("Listen to Actor");
+            _target = target;
+            _controller = controller;
         }
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
@@ -506,11 +523,12 @@ public class ActorController extends AttributeController {
             // Determine which entity was selected for the listen to
             // actor action.
             super.actionPerformed(e);
-            NamedObj object = getTarget();
+            NamedObj object = _target;
+            if (object == null) {
+                object = getTarget();
+            }
             try {
-                BasicGraphController controller =
-                    (BasicGraphController)getController();
-                BasicGraphFrame frame = controller.getFrame();
+                BasicGraphFrame frame = _controller.getFrame();
                 Tableau tableau = frame.getTableau();
 
                 // effigy is the whole model.
@@ -534,6 +552,17 @@ public class ActorController extends AttributeController {
                         "Failed to create debug listener.", ex);
             }
         }
+
+        /** Set the configuration for use by the help screen.
+         *  @param configuration The configuration.
+         */
+        public void setConfiguration(Configuration configuration) {
+            _configuration = configuration;
+        }
+
+        private Configuration _configuration;
+        private BasicGraphController _controller;
+        private NamedObj _target;
     }
 
     // An action to look inside a composite.

@@ -53,6 +53,7 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.MessageHandler;
@@ -74,6 +75,7 @@ import ptolemy.vergil.toolbox.FigureAction.SourceType;
 
 import javax.swing.Action;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -150,6 +152,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         if (_portDialogFactory != null) {
             _portDialogFactory.setConfiguration(configuration);
         }
+        if (_listenToActorFactory != null) {
+            _listenToActorFactory.setConfiguration(configuration);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -189,6 +194,11 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         _portDialogFactory = new PortDialogFactory();
 	_menuFactory.addMenuItemFactory(_portDialogFactory);
         _portDialogFactory.setConfiguration(getConfiguration());
+
+        // Add a menu command to list to the actor.
+        _listenToActorFactory = new ListenToActorFactory();
+	_menuFactory.addMenuItemFactory(_listenToActorFactory);
+        _listenToActorFactory.setConfiguration(getConfiguration());
 
         // Create listeners that creates new relations.  Note that
         // both control-click AND shift-click are used here, since
@@ -259,6 +269,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     /** The interactors that interactively creates edges. */
     private LinkCreator _linkCreator;  // For control-click
     private LinkCreator _linkCreator2;  // For shift-click
+
+    /** Factory for listen to actor menu item. */
+    private ListenToActorFactory _listenToActorFactory;
 
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
@@ -372,6 +385,42 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 MessageHandler.error("Drag connection failed:", ex);
             }
 	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// ListenToActorFactory
+
+    private class ListenToActorFactory implements MenuItemFactory {
+
+        /** Add an item to the given context menu that will open a listen
+         *  to actor window.
+         *  @param menu The context menu.
+         *  @param object The object whose ports are being manipulated.
+         */
+        public JMenuItem create(final JContextMenu menu, NamedObj object) {
+            String name = "Listen to Actor";
+            final NamedObj target = object;
+            
+            // Ensure that we actually have a target, and that it
+            // implements Debuggable.
+            if (!(target instanceof Debuggable)) return null;
+
+            _action = new ActorController.ListenToActorAction(
+                    target, ActorEditorGraphController.this);
+            _action.setConfiguration(_configuration);
+            return menu.add(_action, name);
+        }
+        /** Set the configuration for use by the help screen.
+         *  @param configuration The configuration.
+         */
+        public void setConfiguration(Configuration configuration) {
+            _configuration = configuration;
+            if (_action != null) {
+                _action.setConfiguration(_configuration);
+            }
+        }
+        private ActorController.ListenToActorAction _action;
+        private Configuration _configuration;
     }
 
     ///////////////////////////////////////////////////////////////////
