@@ -44,6 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 
 //////////////////////////////////////////////////////////////////////////
@@ -201,6 +202,19 @@ public class TextAttribute extends Attribute {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new TextAttribute.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        TextAttribute result = (TextAttribute)super.clone(workspace);
+        result._icon = (TextIcon)result.getAttribute("_icon");
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
