@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -165,14 +165,16 @@ public class GetProperties extends TypedAtomicActor {
                 Entity container = (Entity)(port.getContainer());
                 String channelName
                         = ((WirelessIOPort)port).outsideChannel.stringValue();
-                CompositeEntity container2 = (CompositeEntity)container.getContainer();
+                CompositeEntity container2 =
+                    (CompositeEntity)container.getContainer();
                 if (container2 == null) {
                     throw new IllegalActionException(this,
                     "The container does not have a container.");
                 }
                 Entity channel = container2.getEntity(channelName);
                 if (channel instanceof AtomicWirelessChannel) {
-                    Parameter channelProperties = ((AtomicWirelessChannel)channel)
+                    Parameter channelProperties =
+                        ((AtomicWirelessChannel)channel)
                             .defaultProperties;
                     // Only set up the type constraint if the type of the
                     // of the properties field is known.

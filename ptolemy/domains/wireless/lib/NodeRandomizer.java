@@ -100,7 +100,8 @@ public class NodeRandomizer extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        randomizeInPreinitialize = new Parameter(this, "randomizeInPreinitialize");
+        randomizeInPreinitialize =
+            new Parameter(this, "randomizeInPreinitialize");
         randomizeInPreinitialize.setExpression("false");
         randomizeInPreinitialize.setTypeEquals(BaseType.BOOLEAN);
 
@@ -186,7 +187,8 @@ public class NodeRandomizer extends TypedAtomicActor {
         } else {
             _random.setSeed(seedValue);
         }
-        if (((BooleanToken)randomizeInPreinitialize.getToken()).booleanValue()) {
+        if (((BooleanToken)randomizeInPreinitialize.getToken())
+                .booleanValue()) {
             _randomize();
         }
     }

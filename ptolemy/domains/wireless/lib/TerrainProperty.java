@@ -138,12 +138,12 @@ public class TerrainProperty extends TypedAtomicActor
                     _xPoints = new int[_numberOfPoints];
                     _yPoints = new int[_numberOfPoints];
                 }
-                for(int i=0; i<xypointsArray.length(); i++) {
+                for(int i = 0; i < xypointsArray.length(); i++) {
                     ArrayToken xypointArray = (ArrayToken)
                             xypointsArray.getElement(i);
-                    _xPoints[i]= ((IntToken)xypointArray.
+                    _xPoints[i] = ((IntToken)xypointArray.
                             getElement(0)).intValue();
-                    _yPoints[i]= ((IntToken)xypointArray.
+                    _yPoints[i] = ((IntToken)xypointArray.
                             getElement(1)).intValue();
                 }
                 _number++;
@@ -186,8 +186,7 @@ public class TerrainProperty extends TypedAtomicActor
                     registerPropertyTransformer(this, null);
         } else {
             throw new IllegalActionException(this,
-            "The channel nam" +
-            "e does not refer to a valid channel.");
+                    "The channel name does not refer to a valid channel.");
         }
     }
 
@@ -220,7 +219,7 @@ public class TerrainProperty extends TypedAtomicActor
             if (x1 - x0 != 0) {
                 k = (y1-y0)/(x1-x0);
                 a = p1[1]-y0-k*(p1[0]-x0);
-                b=  p2[1]-y0-k*(p2[0]-x0);
+                b =  p2[1]-y0-k*(p2[0]-x0);
             } else {
                 a = p1[0]-x0;
                 b = p2[0]-x0;
@@ -270,7 +269,8 @@ public class TerrainProperty extends TypedAtomicActor
      *  @exception IllegalActionException If a valid location attribute cannot
      *   be found.
      */
-    private double[] _locationOf(WirelessIOPort port) throws IllegalActionException {
+    private double[] _locationOf(WirelessIOPort port)
+            throws IllegalActionException {
         Entity container = (Entity)port.getContainer();
         Locatable location = null;
         location = (Locatable)container.getAttribute(

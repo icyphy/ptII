@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -166,7 +166,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *  @param sender The sending port.
      *  @param receiver The receiver to which to transmit.
      *  @param properties The transmit properties (ignored in this base class).
-     *  @throws IllegalActionException If the token cannot be converted
+     *  @exception IllegalActionException If the token cannot be converted
      *   or if the token argument is null and the destination receiver
      *   does not support clear.
      */
@@ -210,3 +210,4 @@ public class ErasureChannel extends AtomicWirelessChannel {
     /** A random number generator.
      */
     protected Random _random = new Random();
+}

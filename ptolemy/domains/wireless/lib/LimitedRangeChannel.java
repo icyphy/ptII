@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -128,7 +128,7 @@ public class LimitedRangeChannel extends DelayChannel {
      *  @param destination The destination port.
      *  @param properties The range of transmission.
      *  @return True if the destination is in range of the source.
-     *  @throws IllegalActionException If it cannot be determined
+     *  @exception IllegalActionException If it cannot be determined
      *   whether the destination is in range (not thrown in this base
      *   class).
      */
@@ -154,7 +154,8 @@ public class LimitedRangeChannel extends DelayChannel {
                     = (RecordToken)defaultProperties.getToken();
             // Type of the field must be convertible to double, but
             // need not actually be a double.
-            ScalarToken field = (ScalarToken)defaultPropertiesValue.get("range");
+            ScalarToken field =
+                (ScalarToken)defaultPropertiesValue.get("range");
             range = field.doubleValue();
         }
         boolean result = (_distanceBetween(source, destination) <= range);

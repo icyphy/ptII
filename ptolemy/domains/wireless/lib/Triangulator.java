@@ -184,10 +184,13 @@ public class Triangulator extends TypedAtomicActor {
             ArrayToken locationArray = (ArrayToken)recordToken.get("location");
             if (locationArray.length() < 2) {
                 throw new IllegalActionException(this,
-                "Input is malformed: location field does not have two entries.");
+                        "Input is malformed: location field does not "
+                        + "have two entries.");
             }
-            double locationX = ((DoubleToken)locationArray.getElement(0)).doubleValue();
-            double locationY = ((DoubleToken)locationArray.getElement(1)).doubleValue();
+            double locationX =
+                ((DoubleToken)locationArray.getElement(0)).doubleValue();
+            double locationY = 
+                ((DoubleToken)locationArray.getElement(1)).doubleValue();
 
             double time = ((DoubleToken)recordToken.get("time")).doubleValue();
 
@@ -240,7 +243,8 @@ public class Triangulator extends TypedAtomicActor {
             }
 
             // Get signal speed, from the signalPropagationSpeed parameter.
-            double speed = ((DoubleToken)(signalPropagationSpeed.getToken())).doubleValue();
+            double speed = ((DoubleToken)(signalPropagationSpeed.getToken()))
+                .doubleValue();
             // FIXME: Pass in the arrays for scalability.
             // FIXME: Replace naked 3 everywhere.
             double[] result = _locate(

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -269,8 +269,8 @@ public class CollisionDetector extends TypedAtomicActor {
             if (SNRThresholdInDBValue <= 0.0) {
                 throw new IllegalActionException(this,
                 "SNRThresholdInDB is required to be positive. "
-                + "Attempt to set it to: "
-                + SNRThresholdInDBValue);
+                        + "Attempt to set it to: "
+                        + SNRThresholdInDBValue);
             } else {
                 // Convert to linear scale.
                 _SNRThresholdInDB =
@@ -351,7 +351,8 @@ public class CollisionDetector extends TypedAtomicActor {
                 reception.duration = ((DoubleToken)
                         duration.get(0)).doubleValue();
                 if (_debugging) {
-                    _debug("Message is above threshold and has duration: " + reception.duration);
+                    _debug("Message is above threshold and has duration: "
+                            + reception.duration);
                 }
 
                 // Update the total power density.
@@ -399,12 +400,14 @@ public class CollisionDetector extends TypedAtomicActor {
                 if(!priorReception.collided) {
                     received.send(0, priorReception.data);
                     if (_debugging) {
-                        _debug("Message has been received: " + priorReception.data);
+                        _debug("Message has been received: "
+                                + priorReception.data);
                     }
                 } else {
                     collided.send(0, priorReception.data);
                     if (_debugging) {
-                        _debug("Message has been lost: " + priorReception.data);
+                        _debug("Message has been lost: "
+                                + priorReception.data);
                     }
                 }
                 continue;

@@ -119,7 +119,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");
-        getMoMLInfo().className = "ptolemy.domains.wireless.lib.TransmitPropertyTransformer";
+        getMoMLInfo().className =
+            "ptolemy.domains.wireless.lib.TransmitPropertyTransformer";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -158,7 +159,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        TransmitPropertyTransformer newObject = (TransmitPropertyTransformer)(super.clone(workspace));
+        TransmitPropertyTransformer newObject =
+            (TransmitPropertyTransformer)(super.clone(workspace));
 
         newObject._model = null;
         // set the type constraints
@@ -184,8 +186,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
 
     /** Register itself with the channel as a PropertyTranformer
      *  for its connected wireless output port.
-     *  @exception IllegalActionException Not thrown, but declared
-     *   so the subclasses can throw it.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but declared so the subclasses can throw it.
      */
     public void initialize() throws IllegalActionException {
         if (_debugging) {
@@ -223,8 +225,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
     }
 
     /** Return true, indicating that execution can continue.
-     *  @exception IllegalActionException Not thrown, but declared
-     *   so the subclasses can throw it.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but declared so the subclasses can throw it.
      */
     public boolean postfire() throws IllegalActionException {
         return true;
@@ -246,10 +248,10 @@ public class TransmitPropertyTransformer extends RunCompositeActor
 
         DoubleToken[] t1 = new DoubleToken[p1.length];
         DoubleToken[] t2 = new DoubleToken[p2.length];
-        for(int i=0; i<p1.length; i++) {
+        for(int i = 0; i < p1.length; i++) {
             t1[i] = new DoubleToken(p1[i]);
         }
-        for(int i=0; i<p2.length; i++) {
+        for(int i = 0; i < p2.length; i++) {
             t2[i] = new DoubleToken(p2[i]);
         }
         senderLocation.setToken(new ArrayToken(t1));
@@ -257,8 +259,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         property.setToken(properties);
 
         if (_debugging) {
-            _debug("----transformProperties is called, " +
-                "execute the subsystem.");
+            _debug("----transformProperties is called, "
+                    + "execute the subsystem.");
         }
 
         try {
@@ -278,16 +280,16 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         }
         RecordToken result = (RecordToken)property.getToken();
         if (_debugging) {
-            _debug("---- the modified property is. " +
-             result.toString());
+            _debug("---- the modified property is. "
+                    + result.toString());
         }
         return result;
     }
 
     /** Override the base class to call wrap up to unregister this with the
      *  channel and do nothing else.
-     *  @exception IllegalActionException Not thrown, but declared
-     *   so the subclasses can throw it.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but declared so the subclasses can throw it.
      */
     public void wrapup() throws IllegalActionException{
         if (_debugging) {
@@ -309,7 +311,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
      *  @exception IllegalActionException If a valid location attribute cannot
      *   be found.
      */
-    private double[] _locationOf(WirelessIOPort port) throws IllegalActionException {
+    private double[] _locationOf(WirelessIOPort port)
+            throws IllegalActionException {
         Entity container = (Entity)port.getContainer();
         Locatable location = null;
         location = (Locatable)container.getAttribute(
