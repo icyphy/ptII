@@ -29,17 +29,17 @@ COPYRIGHTENDKEY
 package ptolemy.domains.fsm.demo.ABP;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEMessageSource
@@ -66,11 +66,11 @@ public class DEMessageSource extends TypedAtomicActor {
     public DEMessageSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        output = new DEIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
-        request = new DEIOPort(this, "request", false, true);
+        request = new TypedIOPort(this, "request", false, true);
         request.setTypeEquals(BaseType.GENERAL);
-        next = new DEIOPort(this, "next", true, false);
+        next = new TypedIOPort(this, "next", true, false);
         next.setTypeEquals(BaseType.GENERAL);
         maxDelay = new Parameter(this, "maxDelay", new DoubleToken(0.5));
         //        next.delayTo(request);
@@ -88,15 +88,15 @@ public class DEMessageSource extends TypedAtomicActor {
         super.initialize();
         _firstFire = true;
         _msgNum = 0;
-        _nextMsgTime = -1.0;
+        _nextMsgTime = new Time(this, -1.0);
 
         //System.out.println("DEChannel " + getFullName() +
         //        " initializing at time " + getCurrentTime());
         DEDirector dir = (DEDirector) getDirector();
-        double now = dir.getCurrentTime();
-        dir.fireAt(this, now +
+        Time now = dir.getCurrentTime();
+        dir.fireAt(this, now.add(
                 ((DoubleToken)maxDelay.getToken()).doubleValue() *
-                Math.random());
+                Math.random()));
     }
 
     /** If this is the first fire, output the request
@@ -113,20 +113,19 @@ public class DEMessageSource extends TypedAtomicActor {
             return;
         }
         DEDirector dir = (DEDirector)getDirector();
-        double now = dir.getCurrentTime();
+        Time now = dir.getCurrentTime();
         double maxDelayValue =
             ((DoubleToken)maxDelay.getToken()).doubleValue();
 
         if (next.hasToken(0)) {
             next.get(0);
-            if (now < _nextMsgTime) {
+            if (now.compareTo(_nextMsgTime) < 0) {
                 // ignore this
             } else {
                 // compute a random delay between zero and MaxDelay.
                 double delay = maxDelayValue * Math.random();
-                dir.fireAt(this, now + delay);
-                _nextMsgTime = Utilities.round(now + delay,
-                    getDirector().getTimeResolution());
+                _nextMsgTime = now.add(delay);
+                dir.fireAt(this, _nextMsgTime);
             }
 
             //System.out.println("DEMessageSource " + this.getFullName() +
@@ -134,7 +133,7 @@ public class DEMessageSource extends TypedAtomicActor {
 
         }
 
-        if (now == _nextMsgTime) {
+        if (now.compareTo(_nextMsgTime) == 0) {
             ++_msgNum;
             output.broadcast(new IntToken(_msgNum));
         } else {
@@ -158,13 +157,13 @@ public class DEMessageSource extends TypedAtomicActor {
     ////                         public variables                  ////
 
     /** @serial The next port. */
-    public DEIOPort next;
+    public TypedIOPort next;
 
     /** @serial The output port. */
-    public DEIOPort output;
+    public TypedIOPort output;
 
     /** @serial The request port. */
-    public DEIOPort request;
+    public TypedIOPort request;
 
     /** @serial the mean inter-arrival time and value */
     public Parameter maxDelay;
@@ -179,5 +178,5 @@ public class DEMessageSource extends TypedAtomicActor {
     private int _msgNum = 0;
 
     /** @serial The next time to generate a message. */
-    private double _nextMsgTime = -1;
+    private Time _nextMsgTime = new Time(this, -1.0);
 }

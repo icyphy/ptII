@@ -44,6 +44,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.ExplicitChangeContext;
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
@@ -349,7 +350,7 @@ public class FSMDirector extends Director
      *   a firing of the container of this director at the given
      *   time with the executive director.
      */
-    public void fireAt(Actor actor, double time)
+    public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
         // FIXME: Changed by liuj, not yet reviewed.
         Nameable container = getContainer();
@@ -471,7 +472,7 @@ public class FSMDirector extends Director
      *  provide this, return that given by the superclass.
      *  @return The time of the next iteration.
      */
-    public double getNextIterationTime() {
+    public Time getNextIterationTime() {
         try {
             Actor[] actors = getController().currentState().getRefinement();
             if (actors == null || actors.length == 0) {
@@ -483,12 +484,13 @@ public class FSMDirector extends Director
                 if (actors[i].getDirector() != this) {
                     // The refinement has a local director.
                     result = Math.min(result,
-                            actors[i].getDirector().getNextIterationTime());
+                            actors[i].getDirector().getNextIterationTime()
+                            .getTimeValue());
                     givenByRefinement = true;
                 }
             }
             if (givenByRefinement) {
-                return result;
+                return new Time(this, result);
             } else {
                 return super.getNextIterationTime();
             }
@@ -716,7 +718,7 @@ public class FSMDirector extends Director
      *  @exception IllegalActionException Not thrown in this base class.
      *  FIXME: Changed by liuj, not yet reviewed.
      */
-    public void setCurrentTime(double newTime) 
+    public void setCurrentTime(Time newTime) 
         throws IllegalActionException {
         _currentTime = newTime;
     }

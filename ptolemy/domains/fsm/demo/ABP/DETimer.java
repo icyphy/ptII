@@ -28,15 +28,15 @@ COPYRIGHTENDKEY
 package ptolemy.domains.fsm.demo.ABP;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// DETimer
@@ -61,9 +61,9 @@ public class DETimer extends TypedAtomicActor {
     public DETimer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        expired = new DEIOPort(this, "expired", false, true);
+        expired = new TypedIOPort(this, "expired", false, true);
         expired.setTypeEquals(BaseType.GENERAL);
-        set = new DEIOPort(this, "set", true, false);
+        set = new TypedIOPort(this, "set", true, false);
         set.setTypeEquals(BaseType.DOUBLE);
         //        set.delayTo(expired);
     }
@@ -79,24 +79,23 @@ public class DETimer extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         DEDirector dir = (DEDirector)getDirector();
-        double now = dir.getCurrentTime();
+        Time now = dir.getCurrentTime();
 
         if (set.hasToken(0)) {
             // reset timer
             double delay = ((DoubleToken)set.get(0)).doubleValue();
             if (delay > 0.0) {
-                _expireTime = Utilities.round(now + delay,
-                    getDirector().getTimeResolution());
-                dir.fireAt(this, now + delay);
+                _expireTime = now.add(delay);
+                dir.fireAt(this, _expireTime);
             } else {
                 // disable timer
-                _expireTime = -1.0;
+                _expireTime = new Time(this, -1.0);
             }
 
             //System.out.println("Reset DETimer " + this.getFullName() +
             //        " to expire at " + _expireTime);
 
-        } else if (now == _expireTime) {
+        } else if (now.equalTo(_expireTime)){
             // timer expires
             expired.broadcast(_outToken);
 
@@ -113,7 +112,7 @@ public class DETimer extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _expireTime = -1.0;
+        _expireTime = new Time(this, -1.0);
     }
 
     /** Override the base class to declare that the <i>expired</i>
@@ -128,9 +127,9 @@ public class DETimer extends TypedAtomicActor {
     ////                         public variables                  ////
 
     /** @serial Set port. */
-    public DEIOPort set;
+    public TypedIOPort set;
     /** @serial Expired port. */
-    public DEIOPort expired;
+    public TypedIOPort expired;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -141,6 +140,6 @@ public class DETimer extends TypedAtomicActor {
     private static final Token _outToken = new Token();
 
     /** @serial The time to expire.*/
-    private double _expireTime = -1.0;
+    private Time _expireTime;
 
 }
