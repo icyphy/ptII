@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/sr
 
-DIRS =		kernel lib demo doc
+DIRS =		kernel lib demo
 
 # Root of Ptolemy II directory
 ROOT =		../../..
