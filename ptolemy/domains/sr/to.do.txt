@@ -8,6 +8,4 @@ FIXMEs
 modify actors to work in SR
        LogicFunction shouldn't produce an output unless it has enough inputs
 
-write a SequenceTest actor
-test for absent tokens
 fix tests
