@@ -44,13 +44,13 @@ import java.util.Enumeration;
 //
 /** This director implements the discrete-event model of computation (MoC).
  *  It should be used as the local director of a CompositeActor that is
- *  to be executed according to this MoC. This director maintains a notion
+ *  to be executed according to this MoC. This director maintain a notion
  *  of current time, and processes events chronologically in this time.
  *  An <i>event</i> is a token with a time stamp.  Much of the sophistication
  *  in this director is aimed at handling simultaneous events intelligently,
  *  so that deterministic behavior can be achieved.
  *  <p>
- *  The bottleneck in a typical DE simulator is in the mantainance of the
+ *  The bottleneck in a typical DE simulator is in the maintenance of the
  *  global event queue. By default, a DE director uses the calendar queue 
  *  as the global event queue. It is currently the most efficient algorithm
  *  with O(1) time complexity in both enqueue and dequeue operations.
@@ -130,7 +130,7 @@ import java.util.Enumeration;
  *  provided in this base class are ones that do not depend on the
  *  implementation of the global event queue. This will enable different
  *  implementations to be compared in term of efficiency. The bottleneck
- *  in a typical DE simulator is in the mantainance of the global event
+ *  in a typical DE simulator is in the maintenance of the global event
  *  queue. One good implementation is the calendar queue algorithm
  *  in ptolemy.actor.util.CalendarQueue class. This
  *  algorithm gives us O(1) time in both enqueue and dequeue operation.
