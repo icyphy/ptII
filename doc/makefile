@@ -108,7 +108,8 @@ OTHER_FILES_TO_BE_JARED = \
 
 	#doc/design/usingVergil/index.htm 
 
-
+codeDoc.jar:
+	$(JAR) -cvf $@ -C $(ROOT) doc/codeDoc
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
