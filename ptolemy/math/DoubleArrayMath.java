@@ -207,9 +207,9 @@ public class DoubleArrayMath {
      *  @param array2 The second array of doubles.
      *  @return A new array of doubles.
      */
-    public static final double[] divide(final double[] array1,
+    public static final double[] divideElements(final double[] array1,
             final double[] array2) {
-        int length = _commonLength(array1, array2, "DoubleArrayMath.divide");
+        int length = _commonLength(array1, array2, "DoubleArrayMath.divideElements");
         double[] returnValue = new double[length];
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] / array2[i];

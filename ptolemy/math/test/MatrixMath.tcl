@@ -885,7 +885,7 @@ set types [list \
 	[list Integer int int {{1 1}}] \
 	[list Long long long {{1 1}}]]
 
-testArrayMathArrayArray divide $types
+testArrayMathArrayArray divideElements $types
 
 ######################################################################
 ####
@@ -899,7 +899,7 @@ set types [list \
 	[list Integer int int {{{1 1} {1 1}}}] \
 	[list Long long long {{{1 1} {1 1}}}]]
 
-testMatrixMatrix divide $types 2_2nonzero
+testMatrixMatrix divideElements $types 2_2nonzero
 
 ######################################################################
 ####

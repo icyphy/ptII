@@ -314,9 +314,9 @@ public class IntegerArrayMath {
      *  @param array2 The second array of ints.
      *  @return A new array of ints.
      */
-    public static final int[] divide(final int[] array1,
+    public static final int[] divideElements(final int[] array1,
             final int[] array2) {
-        int length = _commonLength(array1, array2, "IntegerArrayMath.divide");
+        int length = _commonLength(array1, array2, "IntegerArrayMath.divideElements");
         int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] / array2[i];

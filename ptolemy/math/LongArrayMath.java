@@ -310,9 +310,9 @@ public class LongArrayMath {
      *  @param array2 The second array of longs.
      *  @return A new array of longs.
      */
-    public static final long[] divide(final long[] array1,
+    public static final long[] divideElements(final long[] array1,
             final long[] array2) {
-        int length = _commonLength(array1, array2, "LongArrayMath.divide");
+        int length = _commonLength(array1, array2, "LongArrayMath.divideElements");
         long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] / array2[i];

@@ -142,8 +142,8 @@ test DoubleArrayMath-4.5 {append(Double array1, int idx1,
 } {}
 
 ####################################################################
-test DoubleArrayMath-11.1 {divide} {
-    set ar [java::call ptolemy.math.DoubleArrayMath divide $a1 $a2]
+test DoubleArrayMath-11.1 {divideElements} {
+    set ar [java::call ptolemy.math.DoubleArrayMath divideElements $a1 $a2]
     # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
     #jdkPrintArray $ar
     epsilonDiff [$ar getrange 0] [list 0.000766648709129 -0.0279542566709 \
@@ -151,14 +151,14 @@ test DoubleArrayMath-11.1 {divide} {
 } {}
 
 ####################################################################
-test DoubleArrayMath-11.2 {divide with unequally sized arrays} {
-    catch {set ar [java::call ptolemy.math.DoubleArrayMath divide $a1 $b1]} errMsg
+test DoubleArrayMath-11.2 {divideElements with unequally sized arrays} {
+    catch {set ar [java::call ptolemy.math.DoubleArrayMath divideElements $a1 $b1]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayMath.divide() : input arrays must have the same length, but the first array has length 5 and the second array has length 3.}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayMath.divideElements() : input arrays must have the same length, but the first array has length 5 and the second array has length 3.}}
 
 ####################################################################
-test DoubleArrayMath-12.3 {divide with two empty arrays} {
-    set ar [java::call ptolemy.math.DoubleArrayMath divide $a0 $b0]
+test DoubleArrayMath-12.3 {divideElements with two empty arrays} {
+    set ar [java::call ptolemy.math.DoubleArrayMath divideElements $a0 $b0]
     jdkPrintArray $ar
 } {}
 

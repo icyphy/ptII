@@ -183,15 +183,15 @@ test DoubleMatrixMath-2.2 {determinant double[][]} {
 } {1}
 
 ####################################################################
-test DoubleMatrixMath-3.1 {divide double[][] double[][] not same size} {
-    catch {set r [java::call ptolemy.math.DoubleMatrixMath divide \
+test DoubleMatrixMath-3.1 {divideElements double[][] double[][] not same size} {
+    catch {set r [java::call ptolemy.math.DoubleMatrixMath divideElements \
            $m32 $m3]} errMsg
     list $errMsg
-} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.divide() : one matrix [3 x 2] is not the same size as another matrix [3 x 3].}}
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleMatrixMath.divideElements() : one matrix [3 x 2] is not the same size as another matrix [3 x 3].}}
 
 ####################################################################
-test DoubleMatrixMath-3.1.1 {divide double[][] double[][]} {
-   set mr [java::call ptolemy.math.DoubleMatrixMath divide $m23 $m23_2]
+test DoubleMatrixMath-3.1.1 {divideElements double[][] double[][]} {
+   set mr [java::call ptolemy.math.DoubleMatrixMath divideElements $m23 $m23_2]
    set mt [java::new {double[][]} 2 [list [list -1.15625 1.0 4.76190476190476E-5] [list 48622.0 26.2333333333333 6.90476190476191]]]
    set ok [java::call ptolemy.math.DoubleMatrixMath \
    {within double[][] double[][] double} $mr $mt $epsilon]

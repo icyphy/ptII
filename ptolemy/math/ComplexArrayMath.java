@@ -261,9 +261,9 @@ public class ComplexArrayMath {
      *  @exception IllegalArgumentException If the arrays are not of the same
      *   length.
      */
-    public static final Complex[] divide(Complex[] array1, Complex[] array2) {
+    public static final Complex[] divideElements(Complex[] array1, Complex[] array2) {
         int length = _commonLength(array1, array2,
-                "ComplexArrayMath.divide");
+                "ComplexArrayMath.divideElements");
         Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i].divide(array2[i]);

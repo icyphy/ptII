@@ -342,6 +342,27 @@ public class LongMatrixMath {
         return returnValue;
     }
 
+
+	/** Return a new matrix that is constructed by placing the
+	 *  elements of the input array on the diagonal of the square
+	 *  matrix, starting from the top left corner down to the bottom
+	 *  right corner. All other elements are zero. The size of of the
+	 *  matrix is n x n, where n is the length of the input array.
+	 */
+	public static final long[][] diag(final long[] array) {
+		int n = array.length;
+
+		long[][] returnValue = new long[n][n];
+
+		// Assume the matrix is zero-filled.
+
+		for (int i = 0; i < n; i++) {
+			returnValue[i][i] = array[i];
+		}
+
+		return returnValue;
+	}
+	
     /** Return a new matrix that is constructed from the argument by
      *  dividing the second argument to every element.
      *  @param matrix A matrix of longs.
@@ -358,38 +379,18 @@ public class LongMatrixMath {
         return returnValue;
     }
 
-    /** Return a new matrix that is constructed by placing the
-     *  elements of the input array on the diagonal of the square
-     *  matrix, starting from the top left corner down to the bottom
-     *  right corner. All other elements are zero. The size of of the
-     *  matrix is n x n, where n is the length of the input array.
-     */
-    public static final long[][] diag(final long[] array) {
-        int n = array.length;
-
-        long[][] returnValue = new long[n][n];
-
-        // Assume the matrix is zero-filled.
-
-        for (int i = 0; i < n; i++) {
-            returnValue[i][i] = array[i];
-        }
-
-        return returnValue;
-    }
-
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the
      *  second matrix.  If the two matrices are not the same size,
      *  throw an IllegalArgumentException.
      */
-    public static final long[][] divide(final long[][] matrix1,
+    public static final long[][] divideElements(final long[][] matrix1,
             final long[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("divide", matrix1, matrix2);
+        _checkSameDimension("divideElements", matrix1, matrix2);
 
         long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {

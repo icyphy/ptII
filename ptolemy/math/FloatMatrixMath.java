@@ -310,12 +310,12 @@ public class FloatMatrixMath {
      *  second matrix.  If the two matrices are not the same size,
      *  throw an IllegalArgumentException.
      */
-    public static final float[][] divide(final float[][] matrix1,
+    public static final float[][] divideElements(final float[][] matrix1,
             final float[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("divide", matrix1, matrix2);
+        _checkSameDimension("divideElements", matrix1, matrix2);
 
         float[][] returnValue = new float[rows][columns];
         for (int i = 0; i < rows; i++) {

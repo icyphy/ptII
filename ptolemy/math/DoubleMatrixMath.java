@@ -312,12 +312,12 @@ public class DoubleMatrixMath {
      *  second matrix.  If the two matrices are not the same size,
      *  throw an IllegalArgumentException.
      */
-    public static final double[][] divide(final double[][] matrix1,
+    public static final double[][] divideElements(final double[][] matrix1,
             final double[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("divide", matrix1, matrix2);
+        _checkSameDimension("divideElements", matrix1, matrix2);
 
         double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {

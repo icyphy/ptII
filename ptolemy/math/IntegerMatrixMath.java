@@ -382,12 +382,12 @@ public class IntegerMatrixMath {
      *  second matrix.  If the two matrices are not the same size,
      *  throw an IllegalArgumentException.
      */
-    public static final int[][] divide(final int[][] matrix1,
+    public static final int[][] divideElements(final int[][] matrix1,
             final int[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("divide", matrix1, matrix2);
+        _checkSameDimension("divideElements", matrix1, matrix2);
 
         int[][] returnValue = new int[rows][columns];
         for (int i = 0; i < rows; i++) {

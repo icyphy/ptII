@@ -397,12 +397,12 @@ public class ComplexMatrixMath {
      *  @exception IllegalArgumentException If the matrices do not
      *  have the same dimensions.
      */
-    public static final Complex[][] divide(final Complex[][] matrix1,
+    public static final Complex[][] divideElements(final Complex[][] matrix1,
             final Complex[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        _checkSameDimension("divide", matrix1, matrix2);
+        _checkSameDimension("divideElements", matrix1, matrix2);
 
         Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {

@@ -203,9 +203,9 @@ public class FloatArrayMath {
      *  @param array2 The second array of floats.
      *  @return A new array of floats.
      */
-    public static final float[] divide(final float[] array1,
+    public static final float[] divideElements(final float[] array1,
             final float[] array2) {
-        int length = _commonLength(array1, array2, "FloatArrayMath.divide");
+        int length = _commonLength(array1, array2, "FloatArrayMath.divideElements");
         float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] / array2[i];
