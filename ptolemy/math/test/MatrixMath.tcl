@@ -580,8 +580,6 @@ testArrayMathArrayArray append $types
 ####
 #  Test out *ArrayMath applyBinaryOperation(XXXBinaryOperation, xxx[], xxx)
 
-# FIXED (FIXME)	No applyBinaryOperation(Complex[], Complex)
-
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
 	{{0.0 + 0.0i -1.0 + 3.0i}}] \
@@ -648,7 +646,7 @@ testMatrixMath applyUnaryOperation $types 2_2 \
 
 ######################################################################
 ####
-#  FIXED (FIXME): Test out applyBinaryOperation(XXXBinaryOperation, xxx, xxx[][])
+#  Test out applyBinaryOperation(XXXBinaryOperation, xxx, xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -665,7 +663,7 @@ testMatrixMath applyBinaryOperation $types 2_2 \
 
 ######################################################################
 ####
-#  FIXED (FIXME): Test out applyBinaryOperation(XXXBinaryOperation, xxx[][], xxx)
+#  Test out applyBinaryOperation(XXXBinaryOperation, xxx[][], xxx)
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -682,7 +680,7 @@ testMatrixMath applyBinaryOperation $types 2_2 \
 
 ######################################################################
 ####
-#  FIXED (FIXME): Test out applyBinaryOperation(XXXBinaryOperation, xxx[][], xxx[][])
+#  Test out applyBinaryOperation(XXXBinaryOperation, xxx[][], xxx[][])
 
 set types [list \
         [list Complex ptolemy.math.Complex complex \
@@ -699,7 +697,7 @@ testMatrixMath applyBinaryOperation $types 2_2 \
 
 ######################################################################
 ####
-#  FIXED (FIXME): Test out applyUnaryOperation(XXXUnaryOperation, xxx[][])
+#  Test out applyUnaryOperation(XXXUnaryOperation, xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -865,10 +863,6 @@ testMatrixMatrix bitwiseXor $types
 ####
 #  *ArrayMath Test out: xxx[] divide(xxx[], xxx)
 
-# FIXED (FIXME): Missing Complex[] divide(Complex[], Complex)
-# FIXED (FIXME): Missing double[] divide(double[], double)
-# FIXED (FIXME): Missing float[] divide(float[], float)
-
 set types [list \
         [list Complex ptolemy.math.Complex complex \
 	{{1.0 + 0.0i 0.0 + 0.5i}}] \
@@ -1017,10 +1011,12 @@ testArrayMathArray l2norm $types 4_4
 
 ######################################################################
 ####
-#  FIXED (FIXME): *ArrayMath Test out: xxx[] limit(xxx[], int int)
+#  *ArrayMath Test out: xxx[] limit(xxx[], int, int)
 
-# FIXED (FIXME): Missing: Complex[] limit(Complex[], Complex, Complex), Added to 
-#                         ComplexArrayMath.tcl
+# Note: Complex[] limit(Complex[], Complex, Complex), Added to 
+# ComplexArrayMath.tcl because the test below will use
+# complex0 and complex1 which will trigger an exception:
+# "Complex.limit requires that bottom lie below and to the left of top."
 
 set types [list \
 	[list Double double double {{2.0 0.0 1.0 0.0}}] \
@@ -1032,12 +1028,12 @@ testArrayMathArrayScalarScalar limit $types 4_4
 
 ######################################################################
 ####
-#  FIXED (FIXME): void matrixCopy(xxx[][], xxx[][]); Tests are written in the
+#  void matrixCopy(xxx[][], xxx[][]); Tests are written in the
 #  5 test files for each data type.
 
 ######################################################################
 ####
-#  FIXED (FIXME): void matrixCopy(xxx[][], xxx[][], ...); Tests are written in the
+#  void matrixCopy(xxx[][], xxx[][], ...); Tests are written in the
 #  5 test files for each data type.
 
 ######################################################################
@@ -1087,8 +1083,6 @@ testMatrixMatrix modulo $types 2_2nonzero
 ######################################################################
 ####
 #  *ArrayMath Test out: xxx[] multiply(xxx[], xxx)
-
-# FIXED (FIXME): Missing methods xxx[] multiply(xxx[], xxx)
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -1199,10 +1193,6 @@ testMatrixMatrix multiplyElements $types
 ####
 ##  *ArrayMath Test out: xxx[] negative(xxx[])
 
-# FIXED (FIXME): Missing method "negative {ptolemy.math.Complex[]}"
-#	[list Complex ptolemy.math.Complex complex \
-#	{{-2.0 + 2.0i -1.0 - 1.0i}} ] \
-
 set types [list \
         [list Complex ptolemy.math.Complex complex \
 	{{-2.0 + 2.0i -1.0 - 1.0i}} ] \
@@ -1246,8 +1236,6 @@ testArrayMathArray normalize $types 4_4
 ####
 ##  *MatrixMath Test out: xxx[][] orthogonalizeColumns(xxx[][])
 
-## FIXED (FIXME): Missing Complex[][] orthogonalizeColumns(xxx[][])
-
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
 	{{{2.0 - 2.0i 0.2 + 0.2i} {-1.0 - 1.0i -0.4 + 0.4i}}}] \
@@ -1260,8 +1248,6 @@ testMatrix orthogonalizeColumns $types
 ######################################################################
 ####
 ##  *MatrixMath Test out: xxx[][] orthonormalizeColumns(xxx[][])
-
-## FIXED (FIXME): Missing Complex[][] orthonormalizeColumns(xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -1276,8 +1262,6 @@ testMatrix orthonormalizeColumns $types
 ####
 ##  *MatrixMath Test out: xxx[][] orthogonalizeRows(xxx[][])
 
-## FIXED (FIXME): Missing Complex[][] orthogonalizeRows(xxx[][])
-
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
 	{{{2.0 - 2.0i 1.0 + 1.0i} {-0.2 - 0.2i -0.4 + 0.4i}}}] \
@@ -1290,8 +1274,6 @@ testMatrix orthogonalizeRows $types
 ######################################################################
 ####
 ##  *MatrixMath Test out: xxx[][] orthonormalizeRows(xxx[][])
-
-## FIXED (FIXME): Missing Complex[][] orthonormalizeRows(xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -1392,9 +1374,6 @@ testArrayMathArrayInt resize $types 2_0 0
 ######################################################################
 ####
 ##  *ArrayMath Test out: xxx[] scale(xxx[], xxx)
-
-# FIXED (FIXME): Note that ComplexArrayMath.scale(Complex[], double)
-# takes a double, not a Complex - both versions are now present
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -1565,6 +1544,7 @@ testMatrixMatrix subtract $types
 ######################################################################
 ####
 #  *ArrayMath Test out sumOfSquares(xxx[])
+
 # FIXME: no Complex sumOfSquares(Complex [])
 
 set types [list \
@@ -1727,7 +1707,7 @@ testArrayIntInt toMatrixFromArray $types x_4 1 2
 
 ######################################################################
 ####
-##  FIXED - Tests added (FIXME): toString(xxx[][])
+##  *MatrixMath: toString(xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -1797,9 +1777,6 @@ testMatrix transpose $types
 ####
 ##  *ArrayMath Test out boolean within(xxx[], xxx[], xxx)
 
-# FIXED (FIXME): no boolean within(Complex[], Complex[], Complex)
-# boolean within added to ComplexArrayMath.java
-
 set types [list \
 	[list Complex ptolemy.math.Complex complex {1}] \
 	[list Double double double {1}] \
@@ -1812,8 +1789,6 @@ testArrayMathArrayArrayScalar within $types
 ######################################################################
 ####
 ##  *MatrixMath Test out boolean within(xxx[][], xxx[][], xxx)
-
-# FIXED (FIXME): no boolean within(Complex[][], Complex[][], Complex)
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex {1}] \
@@ -1828,12 +1803,6 @@ testMatrixMatrixScalar within $types
 ####
 ##  *ArrayMath Test out boolean within(xxx[], xxx[], xxx[])
 
-# FIXED (FIXME): no boolean within(Complex[], Complex[], Complex[])
-# FIXED (FIXME): no boolean within(double[], double[], double[])
-# FIXED (FIXME): no boolean within(float[], float[], float[])
-# FIXED (FIXME): no boolean within(int[], int[], int[])
-# FIXED (FIXME): no boolean within(long[], long[], long[])
-
 set types [list \
         [list Complex ptolemy.math.Complex complex {1}] \
   	[list Double double double {1}] \
@@ -1846,8 +1815,6 @@ testArrayMathArrayArrayArray within $types
 ######################################################################
 ####
 ##  *MatrixMath Test out boolean within(xxx[][], xxx[][], xxx[][])
-
-# FIXED (FIXME): no boolean within(Complex[][], Complex[][], Complex[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex {1}] \
