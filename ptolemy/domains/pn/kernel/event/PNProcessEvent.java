@@ -124,8 +124,9 @@ public class PNProcessEvent {
             } else if (_cause == FINISHED_PROPERLY) {
                 cause = "FINISHED_PROPERLY";
             } else if (_cause == FINISHED_WITH_EXCEPTION) {
-                cause = "FINISHED_WITH_EXCEPTION with exception " +
-                    _exception.toString();
+                cause = "FINISHED_WITH_EXCEPTION with " +
+                    (_exception == null ? "null exception" :
+                            "exception " + _exception);
             } else {
                 cause = "FINISHED_CAUSE_UNKNOWN";
             }
@@ -149,6 +150,8 @@ public class PNProcessEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                   public variables                  /////
+
+    // These are legitimate causes
     public static final int BLOCKED_ON_DELAY = 111;
     public static final int BLOCKED_ON_MUTATION = 112;
     public static final int BLOCKED_ON_READ = 113;
@@ -158,6 +161,7 @@ public class PNProcessEvent {
     public static final int FINISHED_PROPERLY = 735;
     public static final int FINISHED_WITH_EXCEPTION = 736;
 
+    // These are legitimate states
     public static final int PROCESS_BLOCKED = 367;
     public static final int PROCESS_FINISHED = 368;
     public static final int PROCESS_PAUSED = 369;
