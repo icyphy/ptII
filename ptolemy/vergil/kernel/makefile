@@ -62,7 +62,8 @@ JSRCS = \
 	Link.java \
 	PortDialogFactory.java \
 	RelationController.java \
-	RenameDialogFactory.java
+	RenameDialogFactory.java \
+	VergilUtilities.java
 
 EXTRA_SRCS =	$(JSRCS)
 
