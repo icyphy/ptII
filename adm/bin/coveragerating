@@ -91,10 +91,11 @@ fi
 if [ ! -f $complexityfile ]; then
 	echo "Regenerating $complexityfile"
 	complexityfile_tmp=/tmp/coveragerating.complexity_tmp
+        if [ "$testing" = "no" ]; then 
+	    rm -f $complexityfile_tmp
+	fi	
 	if [ ! -f $complexityfile_tmp ]; then
-	    if [ "$testing" = "no" ]; then 
-		rm -f $complexityfile_tmp
-	    fi	
+
 	    for javafile in `cat $javafiles`
 	    do
 		jv-scan --complexity $javafile >> $complexityfile_tmp
