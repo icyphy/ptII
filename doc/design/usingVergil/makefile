@@ -60,10 +60,55 @@ OTHER_FILES_TO_BE_JARED = \
 	index-18.gif \
 	index-19.gif \
 	index-2.gif \
+	index-20.gif \
+	index-21.gif \
+	index-22.gif \
+	index-23.gif \
+	index-24.gif \
+	index-25.gif \
+	index-26.gif \
+	index-27.gif \
+	index-28.gif \
+	index-29.gif \
 	index-3.gif \
+	index-30.gif \
+	index-31.gif \
+	index-32.gif \
+	index-33.gif \
+	index-34.gif \
+	index-35.gif \
+	index-36.gif \
+	index-37.gif \
+	index-38.gif \
+	index-39.gif \
 	index-4.gif \
+	index-40.gif \
+	index-41.gif \
+	index-42.gif \
+	index-43.gif \
+	index-44.gif \
+	index-45.gif \
+	index-46.gif \
+	index-47.gif \
+	index-48.gif \
+	index-49.gif \
 	index-5.gif \
+	index-50.gif \
+	index-51.gif \
+	index-52.gif \
+	index-53.gif \
+	index-54.gif \
+	index-55.gif \
+	index-56.gif \
+	index-57.gif \
+	index-58.gif \
+	index-59.gif \
 	index-6.gif \
+	index-60.gif \
+	index-61.gif \
+	index-62.gif \
+	index-63.gif \
+	index-64.gif \
 	index-7.gif \
 	index-8.gif \
 	index-9.gif \
