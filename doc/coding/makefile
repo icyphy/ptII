@@ -41,15 +41,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
-	develsetup.html \
-	directories.html \
-	index.html \
-	javalinks.html \
-	packages.html \
-	rating.html \
-	reviews.html \
-	style.html \
-	testing.html
+	develsetup.htm \
+	directories.htm \
+	index.htm \
+	javalinks.htm \
+	packages.htm \
+	rating.htm \
+	reviews.htm \
+	style.htm \
+	testing.htm
 
 MISC_FILES =	$(DIRS)
 
