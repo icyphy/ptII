@@ -599,9 +599,11 @@ public class DEDirector extends Director {
      *  that are deeply contained by the container of this director.
      */
     public void stopFire() {
-        synchronized(_eventQueue) {
-            _stopRequested = true;
-            _eventQueue.notifyAll();
+        if (_eventQueue != null) {
+            synchronized(_eventQueue) {
+                _stopRequested = true;
+                _eventQueue.notifyAll();
+            }
         }
         super.stopFire();
     }
