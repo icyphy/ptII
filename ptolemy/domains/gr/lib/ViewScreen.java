@@ -417,8 +417,8 @@ public class ViewScreen extends GRActor3D
         int verticalDimension = 400;
 
         try {
-            horizontalDimension = _getHorizontalResolution();
-            verticalDimension = _getVerticalResolution();
+            horizontalDimension = _getHorizontalPixels();
+            verticalDimension = _getVerticalPixels();
         } catch (Exception e) {
             // FIXME handle this
         }
@@ -506,6 +506,17 @@ public class ViewScreen extends GRActor3D
         _simpleUniverse.addBranchGraph(_branchRoot);
     }
 
+    /** Get the number of horizontal pixels in the rendered image.
+     */
+    protected int _getHorizontalPixels() throws IllegalActionException {
+        return ((IntToken) horizontalResolution.getToken()).intValue();
+    }
+
+    /** Get the number of vertical pixels in the rendered image.
+     */
+    protected int _getVerticalPixels() throws IllegalActionException {
+        return ((IntToken) verticalResolution.getToken()).intValue();
+    }
 
     /** Start the internal Java3D renderer
      */
@@ -526,13 +537,6 @@ public class ViewScreen extends GRActor3D
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private int _getHorizontalResolution() throws IllegalActionException {
-        return ((IntToken) horizontalResolution.getToken()).intValue();
-    }
-
-    private int _getVerticalResolution() throws IllegalActionException {
-        return ((IntToken) verticalResolution.getToken()).intValue();
-    }
 
     private boolean _isIterationSynchronized() throws IllegalActionException {
         return ((BooleanToken)
@@ -605,26 +609,26 @@ public class ViewScreen extends GRActor3D
         ViewScreen _viewContainer;
     }
 
-    private BoundingSphere _bounds;
+    protected BoundingSphere _bounds;
     // The main connection branch that connects to the universe
-    private BranchGroup _branchRoot;
+    protected BranchGroup _branchRoot;
     // The Java3D canvas component.
-    private Canvas3D _canvas;
+    protected Canvas3D _canvas;
     // The container set in the place() method, or the content pane of the
     // created frame if place was not called.
-    private Container _container;
+    protected Container _container;
     // The frame containing our canvas, if we created it.
-    private JFrame _frame;
+    protected JFrame _frame;
     // True for manual rendering, false for default rendering.
     // Steve doesn't think this is entirely necessary.
-    private boolean _iterationSynchronized = false;
+    protected boolean _iterationSynchronized = false;
 
-    private Transform3D _lastTransform = new Transform3D();
+    protected Transform3D _lastTransform = new Transform3D();
 
-    private MouseRotateView _mouseRotate;
+    protected MouseRotateView _mouseRotate;
     // The Java3D universe, displayed inside the canvas.
-    private SimpleUniverse _simpleUniverse;
+    protected SimpleUniverse _simpleUniverse;
 
-    private TransformGroup _userTransformation = new TransformGroup();
+    protected TransformGroup _userTransformation = new TransformGroup();
 }
 
