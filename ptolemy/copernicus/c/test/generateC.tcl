@@ -65,6 +65,8 @@ proc generateC {className {commandLineArgs {}}} {
 
     set outputDir testOutput/$className
     set lib testOutput/$className/j2c_lib
+    set ptII ../../../..
+    set gcDir $ptII/vendors/gc/gc
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -109,7 +111,7 @@ proc generateC {className {commandLineArgs {}}} {
     
     # Generate the code.
     generateCExec java -Xmx600m -classpath $classpath ptolemy.copernicus.c.JavaToC \
-        $classpath -lib $lib $className
+        $classpath -lib $lib -gcDir $gcDir $className
 
    
     generateCExec  make depend -s -f $makeFile

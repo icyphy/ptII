@@ -87,7 +87,7 @@ test SimpleSingle-1.1 {Generate .c, _i.h and .h files for Simple} {
 
     # Generate the code using singleClass compilation mode.
     exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath \
-            -compileMode singleClass -gc false $className
+            -compileMode singleClass $className
 
     # NOTE: JavaToC expects the class file to be converted to be in the
     # directory from which it is invoked. It outputs the generated code

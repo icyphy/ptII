@@ -58,9 +58,9 @@ JSRCS = \
 	FIRSingle.java \
         Simple.java
 
-# Script that removes testOutput/j2c_lib
+# Script that removes testOutput/j2c_lib and invoke.cache
 # Run 'rm alljtests.tcl; make CLEANLIB=' to avoid 
-# regenerating testOutput/j2c_lib
+# running cleanLib again.
 CLEANLIB = _cleanLib.tcl
 
 # Non-graphical Java tests written in Tcl. List these in alphabetical order
@@ -76,6 +76,7 @@ JSIMPLE_TESTS = \
     FIRSingle.tcl \
     HashSetTest.tcl \
     LinkedListTest.tcl \
+    Linpack.tcl\
     InnerField.tcl \
     InnerLocal.tcl \
     InstanceOfTest.tcl \
@@ -88,7 +89,6 @@ JSIMPLE_TESTS = \
     StringTest.tcl
 
 # Disabled tests:
-#    Linpack.tcl
 #   FIR.tcl
 #   ramp.tcl
 

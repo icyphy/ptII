@@ -54,6 +54,8 @@ test Interface1-1.1 {Generate all required files for Interface1_Main.java} {
     set outputDir testOutput/Interface1
     set className Interface1_Main
     set lib $outputDir/j2c_lib
+    set ptII ../../../..
+    set gcDir $ptII/vendors/gc/gc
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -95,24 +97,11 @@ test Interface1-1.1 {Generate all required files for Interface1_Main.java} {
     # like java.lang.Object.
     exec javac $javaFile
     
-    set args [java::new {String[]} 4 \
-        [list \
-        $classpath \
-        "-lib" \
-        $lib \
-        $className \
-        ]]
-
     set errors $className-err.txt
 
     # Generate the code.
-    # Catch errors on the first pass to prevent memory overruns.
-    if {[catch {exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
-        $classpath -lib $lib $className}]} {
-        
-        exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
-            $classpath -lib $lib $className
-    }
+    exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
+            $classpath -lib $lib -gcDir $gcDir $className
                 
    
     exec make depend -s -f $makeFile
