@@ -84,6 +84,7 @@ import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.LongConstant;
 import soot.jimple.MonitorStmt;
+import soot.jimple.NewArrayExpr;
 import soot.jimple.NewExpr;
 import soot.jimple.NullConstant;
 import soot.jimple.ParameterRef;
@@ -1430,7 +1431,8 @@ public class SootUtilities {
             value instanceof Local ||
             value instanceof FieldRef ||
             value instanceof CastExpr ||
-            value instanceof ArrayRef;
+            value instanceof ArrayRef ||
+            value instanceof NewArrayExpr;
         boolean isAliasableType =
             value.getType() instanceof ArrayType ||
             value.getType() instanceof RefType;

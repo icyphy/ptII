@@ -130,7 +130,8 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 Scene.v().loadClassAndSupport(className);
 
             Set unsafeLocalSet = new HashSet();
-            TypeSpecializerAnalysis analysis = new TypeSpecializerAnalysis(theClass, unsafeLocalSet);
+            TypeSpecializerAnalysis analysis =
+                new TypeSpecializerAnalysis(theClass, unsafeLocalSet);
             specializeTypes(debug, theClass, unsafeLocalSet, analysis);
         }
     }
@@ -167,7 +168,8 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                 while (boxes.hasNext()) {
                     ValueBox box = (ValueBox)boxes.next();
                     Value value = box.getValue();
-                    // Replace Array creations with a more specific type, if possible.
+                    // Replace Array creations with a more specific
+                    // type, if possible.
                     if (box.getValue() instanceof NewArrayExpr) {
                         NewArrayExpr newArrayExpr = (NewArrayExpr)box.getValue();
                         if (debug) System.out.println("newArrayExpr = " + newArrayExpr);

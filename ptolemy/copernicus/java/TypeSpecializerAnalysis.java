@@ -58,12 +58,16 @@ import soot.Value;
 import soot.ValueBox;
 import soot.jimple.ArrayRef;
 import soot.jimple.AssignStmt;
+import soot.jimple.BinopExpr;
 import soot.jimple.CastExpr;
+import soot.jimple.Constant;
 import soot.jimple.FieldRef;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.InstanceInvokeExpr;
+import soot.jimple.InstanceOfExpr;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeStmt;
+import soot.jimple.LengthExpr;
 import soot.jimple.NewArrayExpr;
 import soot.jimple.NewExpr;
 import soot.jimple.StaticInvokeExpr;
@@ -121,7 +125,7 @@ public class TypeSpecializerAnalysis {
             succeeded = _solver.solveLeast();
         } catch (Exception ex) {
             _printSolverVariables();
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException(ex);
         }
         if (_debug) {
             _printSolverVariables();
@@ -150,7 +154,7 @@ public class TypeSpecializerAnalysis {
     }
 
     /** Specialize all token types that appear in the given list of
-     *  class.  Return a map from locals and fields in the class to
+     *  classes.  Return a map from locals and fields in the class to
      *  their new specific Ptolemy type.  Exclude locals in the given
      *  set from the typing algorithm.
      *  @param list A list of SootClass.
@@ -200,6 +204,10 @@ public class TypeSpecializerAnalysis {
             }
         }
         //        System.out.println("Done");
+    }
+
+    public Iterator getSolverVariables() {
+        return _solver.variables();
     }
 
     public Type getSpecializedSootType(Local local) {
@@ -367,20 +375,23 @@ public class TypeSpecializerAnalysis {
 
         // FIXME: we also need the fields that we represent from
         //
-        for (Iterator fields = ModelTransformer.getModelClass().getFields().iterator();
-             fields.hasNext();) {
-            SootField field = (SootField)fields.next();
-            // Ignore things that aren't reference types.
-            Type type = field.getType();
-            _createInequalityTerm(debug, field, type, _objectToInequalityTerm);
-
-            // If the field has been tagged with a more specific type, then
-            // constrain the type more.
-            TypeTag tag = (TypeTag)field.getTag("_CGType");
-            if (tag != null) {
-                _addInequality(debug, _solver,
-                        new ConstantTerm(tag.getType(), field),
+        SootClass modelClass = ModelTransformer.getModelClass();
+        if(modelClass != null) {
+            for (Iterator fields = modelClass.getFields().iterator();
+                 fields.hasNext();) {
+                SootField field = (SootField)fields.next();
+                // Ignore things that aren't reference types.
+                Type type = field.getType();
+                _createInequalityTerm(debug, field, type, _objectToInequalityTerm);
+                
+                // If the field has been tagged with a more specific type, then
+                // constrain the type more.
+                TypeTag tag = (TypeTag)field.getTag("_CGType");
+                if (tag != null) {
+                    _addInequality(debug, _solver,
+                            new ConstantTerm(tag.getType(), field),
                         (InequalityTerm)_objectToInequalityTerm.get(field));
+                }
             }
         }
 
@@ -434,14 +445,14 @@ public class TypeSpecializerAnalysis {
                     _addInequality(debug, _solver, rightOpTerm,
                             leftOpTerm);
 
-                    // If an alias is created by this instruction, then the
-                    // left and right hand sides must actually be equal.
-                    // FIXME: Alternatively, we could create individual constraints for
-                    // all of the different aliases.  This might be better
+                    // If an alias is created by this instruction,
+                    // then the left and right hand sides must
+                    // actually be equal.  NOTE: Alternatively, we
+                    // could create individual constraints for all of
+                    // the different aliases.  This might be better
                     // given that we actually have alias information.
                     if (SootUtilities.isAliasableValue(leftOp) &&
-                            (SootUtilities.isAliasableValue(rightOp) ||
-                                    rightOp instanceof NewArrayExpr)) {
+                            SootUtilities.isAliasableValue(rightOp)) {
                         _addInequality(debug, _solver, leftOpTerm, rightOpTerm);
                     }
                 } else if (stmt instanceof InvokeStmt) {
@@ -474,11 +485,13 @@ public class TypeSpecializerAnalysis {
             RefType newType = PtolemyUtilities.getSootTypeForTokenType(newTokenType);
             if (debug) System.out.println("newType = " + newType);
             if (!SootUtilities.derivesFrom(newType.getSootClass(), tokenType.getSootClass())) {
-                // If the new Type is less specific, in Java terms, than what we
-                // had before, then the resulting code is likely not correct.
-                // FIXME: hack to get around the bogus type lattice.  This should be an exception.
-                System.out.println("Warning! Resolved type of " + object +
-                        " to " + newType + " which is more general than the old type " + type);
+                // If the new Type is less specific, in Java terms,
+                // than what we had before, then the resulting code is
+                // likely not correct.  FIXME: hack to get around the
+                // bogus type lattice.  This should be an exception.
+                System.out.println("Warning! Resolved type of " + object
+                        + " to " + newType 
+                        + " which is more general than the old type " + type);
                 newType = tokenType;
             }
 
@@ -566,15 +579,37 @@ public class TypeSpecializerAnalysis {
             if (!(r.getBase().getType() instanceof RefType)) {
                 return null;
             }
-            //     System.out.println("invokeExpr = " + r);
+            // System.out.println("invokeExpr = " + r);
             SootClass baseClass = ((RefType)r.getBase().getType()).getSootClass();
             InequalityTerm baseTerm =
                 (InequalityTerm)objectToInequalityTerm.get(r.getBase());
             // FIXME: match better.
             // If we are invoking a method on a token, then...
+          
             if (SootUtilities.derivesFrom(baseClass,
-                        PtolemyUtilities.tokenClass)) {
-                if (methodName.equals("one") ||
+                               PtolemyUtilities.tokenClass)) {
+                if (r.getMethod().equals(PtolemyUtilities.arrayTokenConstructor)) {
+                    InequalityTerm firstArgTerm = (InequalityTerm)
+                        objectToInequalityTerm.get(
+                                r.getArg(0));
+                    // If we call getElement or arrayValue on an array
+                    // token, then the returned type is the element
+                    // type of the array.
+                    ptolemy.data.type.ArrayType arrayType =
+                        new ptolemy.data.type.ArrayType(
+                                ptolemy.data.type.BaseType.UNKNOWN);
+                    VariableTerm newTerm =
+                        new VariableTerm(arrayType, r);
+                    _addInequality(debug, solver, baseTerm, newTerm);
+                    _addInequality(debug, solver, newTerm, baseTerm);
+                    InequalityTerm elementTerm = (InequalityTerm)
+                        arrayType.getElementTypeTerm();
+                    _addInequality(debug, solver, firstArgTerm,
+                            elementTerm);
+                    _addInequality(debug, solver, elementTerm, 
+                            firstArgTerm);
+                    return baseTerm;
+                } else if (methodName.equals("one") ||
                         methodName.equals("zero") ||
                         methodName.equals("bitwiseNot") ||
                         methodName.equals("pow") ||
@@ -770,29 +805,29 @@ public class TypeSpecializerAnalysis {
             // base of the array.
             return (InequalityTerm)objectToInequalityTerm.get(
                     ((ArrayRef)value).getBase());
+            
+            // If we call getElement or arrayValue on an array
+            // token, then the returned type is the element
+            // type of the array.
+//             InequalityTerm baseTerm = 
+//                 (InequalityTerm)objectToInequalityTerm.get(
+//                         ((ArrayRef)value).getBase());
+//             ptolemy.data.type.ArrayType arrayType =
+//                 new ptolemy.data.type.ArrayType(
+//                         ptolemy.data.type.BaseType.UNKNOWN);
+//             _addInequality(debug, solver, baseTerm,
+//                     new VariableTerm(arrayType, value));
+//             InequalityTerm returnTypeTerm = (InequalityTerm)
+//                 arrayType.getElementTypeTerm();
+//             return returnTypeTerm;
         } else if (value instanceof CastExpr) {
-            /* CastExpr castExpr = (CastExpr)value;
-               Type type = castExpr.getType();
-               RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-               if (tokenType != null) {
-               // The type of the argument must be greater than the
-               // type of the cast.  The return type will be the type
-               // of the cast.
-               InequalityTerm baseTerm = (InequalityTerm)objectToInequalityTerm.get(
-               castExpr.getOp());
-               InequalityTerm typeTerm = new ConstantTerm(
-               PtolemyUtilities.getTokenTypeForSootType(tokenType),
-               tokenType);
-               //System.out.println("baseTerm = " + baseTerm);
-               //System.out.println("typeTerm = " + typeTerm);
-               // _addInequality(debug, solver, typeTerm, baseTerm);
-               return baseTerm;
-               } else {
-               // Otherwise there is nothing to be done.
-               return null;
-               }*/
-            return null; // Since this is not aware of flow, casts can
-                         // have no information.
+            CastExpr castExpr = (CastExpr)value;
+            // The return type will be the type
+            // of the cast.
+            InequalityTerm baseTerm = (InequalityTerm)
+                objectToInequalityTerm.get(
+                        castExpr.getOp());
+            return baseTerm;
         } else if (value instanceof NewExpr) {
             NewExpr newExpr = (NewExpr)value;
             RefType type = newExpr.getBaseType();
@@ -840,8 +875,11 @@ public class TypeSpecializerAnalysis {
                 ptolemy.data.type.ArrayType arrayType =
                     new ptolemy.data.type.ArrayType(
                             ptolemy.data.type.BaseType.UNKNOWN);
+                InequalityTerm variableTerm = new VariableTerm(arrayType, r);
                 _addInequality(debug, solver, baseTerm,
-                        new VariableTerm(arrayType, r));
+                        variableTerm);
+                _addInequality(debug, solver, variableTerm,
+                        baseTerm);
                 InequalityTerm returnTypeTerm = (InequalityTerm)
                     arrayType.getElementTypeTerm();
                 return returnTypeTerm;
@@ -850,6 +888,12 @@ public class TypeSpecializerAnalysis {
         } else if (value instanceof Local) {
             // Local references have the type of the local.
             return (InequalityTerm)objectToInequalityTerm.get(value);
+        } else if (value instanceof Constant) {
+        } else if (value instanceof BinopExpr) {
+        } else if (value instanceof LengthExpr) {
+        } else if (value instanceof InstanceOfExpr) {
+        } else {
+            throw new RuntimeException("found unknown value = " + value);
         }
         // do nothing.
         return null;
@@ -857,6 +901,8 @@ public class TypeSpecializerAnalysis {
 
     private static void _addInequality(boolean debug,
             InequalitySolver solver, InequalityTerm lesser, InequalityTerm greater) {
+        if (debug) System.out.println("lesser = " + lesser);
+        if (debug) System.out.println("greater = " + greater);
         if (lesser != null && greater != null && greater.isSettable()) {
             Inequality inequality = new Inequality(lesser, greater);
             if (debug) System.out.println("adding inequality = " + inequality);
@@ -969,19 +1015,23 @@ public class TypeSpecializerAnalysis {
 
         public void setValue(Object e) throws IllegalActionException {
             //   System.out.println("setting value of " + toString() + " to " + e);
-            if (!_declaredType.isSubstitutionInstance((ptolemy.data.type.Type)e)) {
-                throw new RuntimeException("VariableTerm.setValue: "
-                        + "Cannot update the type of " + this + " to the "
-                        + "new type."
-                        + ", Variable type: " + _declaredType.toString()
-                        + ", New type: " + e.toString());
+            ptolemy.data.type.Type newType = (ptolemy.data.type.Type)e;
+            if (!_declaredType.isSubstitutionInstance(newType)) {
+                _currentType = newType;
+                return;
+//                 throw new RuntimeException("VariableTerm.setValue: "
+//                         + "Cannot update the type of " + this + " to the "
+//                         + "new type."
+//                         + ", Variable type: " + _declaredType.toString()
+//                         + ", New type: " + e.toString());
             }
 
             if (_declaredType == ptolemy.data.type.BaseType.UNKNOWN) {
-                _currentType = (ptolemy.data.type.Type)e;//((ptolemy.data.type.Type)e).clone();
+                _currentType = newType;//((ptolemy.data.type.Type)e).clone();
             } else {
                 // _declaredType is a StructuredType
-                ((ptolemy.data.type.StructuredType)_currentType).updateType((ptolemy.data.type.StructuredType)e);
+                ((ptolemy.data.type.StructuredType)_currentType).updateType(
+                        (ptolemy.data.type.StructuredType)e);
             }
         }
 

@@ -2114,23 +2114,23 @@ public class ModelTransformer extends SceneTransformer
 
     private static CompositeActor _model;
 
-    private static Map _entityToFieldMap;
-    private static Map _fieldToEntityMap;
+    private static Map _entityToFieldMap = new HashMap();
+    private static Map _fieldToEntityMap = new HashMap();
 
-    private static Map _classToObjectMap;
-    private static Map _objectToClassMap;
+    private static Map _classToObjectMap = new HashMap();
+    private static Map _objectToClassMap = new HashMap();
 
-    private static List _actorClasses;
-    private static List _attributeClasses;
+    private static List _actorClasses = new LinkedList();
+    private static List _attributeClasses = new LinkedList();
 
     // Map from Ports to Locals.
-    private static Map _portLocalMap;
+    private static Map _portLocalMap = new HashMap();
 
     // Map from Entitys to Locals.
-    private static Map _entityLocalMap;
+    private static Map _entityLocalMap = new HashMap();
 
     // Map from Relations to Locals.
-    private static Map _relationLocalMap;
+    private static Map _relationLocalMap = new HashMap();
 
     private static ConstVariableModelAnalysis _constAnalysis;
 

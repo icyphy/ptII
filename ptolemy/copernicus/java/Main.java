@@ -217,7 +217,7 @@ public class Main extends KernelMain {
 
         // While we still have references to ports, use the
         // resolved types of the ports and run a typing
-        // algorithm to specialize the types of domain
+        // algorithm to specialize the types of type
         // polymorphic actors.  After this step, no
         // uninstantiable types should remain.
         addTransform(pack, "wjtp.tie",
@@ -364,11 +364,12 @@ public class Main extends KernelMain {
                     "outFile:" + _outputDirectory +
                     "/jimple4/jarClassList.txt");
         }
-        
+      
         if (_unboxing) {
             addTransform(pack, "wjtp.ttn",
-                    TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
-
+                    TokenToNativeTransformer.v(toplevel));
+                    //"debug:true level:1");
+            
             addStandardOptimizations(pack, 8);
 
             addTransform(pack, "wjtp.ufr",
@@ -398,7 +399,7 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.ufr2",
                     UnusedFieldRemover.v());
             addStandardOptimizations(pack, 10);
-
+            
             // The library usage reporter also pulls in all depended
             // classes for analysis.
             addTransform(pack, "wjtp.lur",

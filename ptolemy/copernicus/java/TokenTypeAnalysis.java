@@ -101,8 +101,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         _namedObjAnalysis = null;
     }
 
-    /** Return the set of other fields and locals that must reference
-     *  the same object as the given field, at a point before
+    /** Return the type fo the given local, at a point before
      *  the given unit.  If no information is available about the local,
      *  then return ptolemy.data.type.BaseType.UNKNOWN;
      */
@@ -115,9 +114,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         return (ptolemy.data.type.Type)object;
     }
 
-    /** Return the set of other fields and locals that must reference
-     *  the same object as the given field, at a point before
-     *  the given unit.   If no information is available about the local,
+  /** Return the type fo the given local, at a point after
+     *  the given unit.  If no information is available about the local,
      *  then return ptolemy.data.type.BaseType.UNKNOWN;
      */
     public ptolemy.data.type.Type getTypeOfBefore(Local local, Unit unit) {
@@ -200,7 +198,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         Map in = (Map) inValue, out = (Map) outValue;
         Stmt stmt = (Stmt)d;
 
-        //System.out.println("flowing " + d + " " + in);
+        //  System.out.println("flowing " + d + " " + in);
 
         // By default, the out is equal to the in.
         copy(inValue, outValue);
@@ -283,7 +281,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                             methodName.equals("pow")) {
                         // The returned type must be equal to the type
                         // we are calling the method on.
-                        out.put(leftOp, in.get(r.getBase()));
+                        _updateTypeInAssignment(leftOp, in.get(r.getBase()), out);
                     } else if (methodName.equals("add") ||
                             methodName.equals("addReverse") ||
                             methodName.equals("subtract") ||
@@ -307,28 +305,32 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         if (baseType == null || argType == null) {
                             out.put(leftOp, null);
                         } else {
-                            out.put(leftOp, TypeLattice.lattice().leastUpperBound(baseType, argType));
+                            _updateTypeInAssignment(leftOp, TypeLattice.lattice().leastUpperBound(baseType, argType), out);
                         }
                     } else if (methodName.equals("convert")) {
                         // The return rightOp type is equal to the base type.
                         // The first argument type is less than or equal to the base type.
-                        out.put(leftOp, in.get(r.getBase()));
+                        _updateTypeInAssignment(leftOp, in.get(r.getBase()), out);
                     } else if (methodName.equals("getElement") ||
                             methodName.equals("arrayValue")) {
                         ptolemy.data.type.Type arrayType =
                             (ptolemy.data.type.Type)in.get(r.getBase());
                         if (arrayType != null &&
                                 arrayType instanceof ArrayType) {
-                            out.put(leftOp,
-                                    ((ArrayType)arrayType).getElementType());
+                            _updateTypeInAssignment(
+                                    leftOp,
+                                    ((ArrayType)arrayType).getElementType(),
+                                    out);
                         }
                     } else if (methodName.equals("getElementAsToken")) {
                         ptolemy.data.type.Type matrixType =
                             (ptolemy.data.type.Type)in.get(r.getBase());
                         if (matrixType != null &&
                                 matrixType instanceof UnsizedMatrixType) {
-                            out.put(leftOp,
-                                    ((UnsizedMatrixType)matrixType).getElementType());
+                            _updateTypeInAssignment(
+                                    leftOp,
+                                    ((UnsizedMatrixType)matrixType).getElementType(),
+                                    out);
                         }
                     } else if (methodName.equals("absolute")) {
                         // Return the same as the input type, unless complex,
@@ -336,9 +338,9 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         ptolemy.data.type.Type inType =
                             (ptolemy.data.type.Type)in.get(r.getBase());
                         if (inType.equals(BaseType.COMPLEX)) {
-                            out.put(leftOp, BaseType.DOUBLE);
+                            _updateTypeInAssignment(leftOp, BaseType.DOUBLE, out);
                         } else {
-                            out.put(leftOp, inType);
+                            _updateTypeInAssignment(leftOp, inType, out);
                         }
                     }
                 } else if (SootUtilities.derivesFrom(baseClass,
@@ -356,7 +358,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         // actually contain the port...  This happens, for
                         // instance, in MathFunction
                         if (port != null) {
-                            out.put(leftOp, port.getType());
+                            _updateTypeInAssignment(leftOp, port.getType(), out);
                         }
                     } else if (methodName.equals("send")) {
                         if (r.getArgCount() == 3) {
@@ -388,14 +390,14 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
 
                         } else if (methodName.equals("getToken")) {
                             // Return the type of the parameter.
-                            out.put(leftOp, parameter.getType());
+                            _updateTypeInAssignment(leftOp, parameter.getType(), out);
                         }
                     }
                 }
             } else if (rightOp instanceof ArrayRef) {
                 //  System.out.println("arrayRef stmt = " + stmt);
                 //                 System.out.println("right type = " + in.get(((ArrayRef)rightOp).getBase()));
-                out.put(leftOp, in.get(((ArrayRef)rightOp).getBase()));
+                _updateTypeInAssignment(leftOp, in.get(((ArrayRef)rightOp).getBase()), out);
             } else if (rightOp instanceof CastExpr) {
                 CastExpr castExpr = (CastExpr)rightOp;
                 Type type = castExpr.getType();
@@ -406,14 +408,14 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 //                 System.out.println("castOp = " + castExpr.getOp());
                 //                 System.out.println("currentType = " + in.get(castExpr.getOp()));
                 //if (tokenType != null) {
-                out.put(leftOp, in.get(castExpr.getOp()));
+                _updateTypeInAssignment(leftOp, in.get(castExpr.getOp()), out);
                 // } else {
                 // Otherwise there is nothing to be done.
                 //}
             } else if (rightOp instanceof Local) {
                 Local local = (Local)rightOp;
 
-                out.put(leftOp, in.get(local));
+                _updateTypeInAssignment(leftOp, in.get(local), out);
             } else if (rightOp instanceof NewExpr) {
                 NewExpr newExpr = (NewExpr)rightOp;
                 RefType type = newExpr.getBaseType();
@@ -423,8 +425,10 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                             PtolemyUtilities.tokenClass)) {
                     // Then the rightOp of the expression is the type of the
                     // constructor.
-                    out.put(leftOp,
-                            PtolemyUtilities.getTokenTypeForSootType(type));
+                    _updateTypeInAssignment(
+                            leftOp,
+                            PtolemyUtilities.getTokenTypeForSootType(type),
+                            out);
                 } else {
                     // Otherwise there is nothing to be done.
                 }
@@ -434,8 +438,10 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 Type type = newExpr.getBaseType();
                 RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
                 if (tokenType != null) {
-                    out.put(leftOp,
-                            PtolemyUtilities.getTokenTypeForSootType(tokenType));
+                    _updateTypeInAssignment(
+                            leftOp,
+                            PtolemyUtilities.getTokenTypeForSootType(tokenType),
+                            out);
                 }
                 // Otherwise there is nothing to be done.
             } else if (rightOp instanceof FieldRef) {
@@ -454,16 +460,16 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                                 fieldType);
                     } else {
                         // Then flow the type.
-                        newType = in.get(rightOp);
+                        newType = in.get(field);
                     }
                 } else {
                     // The type is fixed.
                     newType = tag.getType();
                 }
-                //     System.out.println("newType = " + newType);
-                out.put(leftOp, newType);
+                //  System.out.println("newType = " + newType);
+                _updateTypeInAssignment(leftOp, newType, out);
             }
-            //  System.out.println("type of " + leftOp + " set to " + out.get(leftOp));
+            // System.out.println("type of " + leftOp + " set to " + out.get(leftOp));
         }
         //   System.out.println("equals " + in + " == " + out + " = " + in.equals(out));
     }
@@ -471,6 +477,20 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     private boolean _isTokenType(Type type) {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
         return tokenType != null;
+    }
+
+    // Update the type of the locals or values in leftOp according to the 
+    private void _updateTypeInAssignment(
+            Value leftOp, Object rightType, Map out) {
+        if(leftOp instanceof Local) {
+            out.put(leftOp, rightType);
+        } else if(leftOp instanceof ArrayRef) {
+            out.put(((ArrayRef)leftOp).getBase(), rightType);
+        } else if(leftOp instanceof FieldRef) {
+            out.put(((FieldRef)leftOp).getField(), rightType);
+        } else {
+            throw new RuntimeException("unknown lefthand side:" + leftOp);
+        }
     }
 
     protected void copy(Object inValue, Object outValue) {

@@ -130,6 +130,10 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     ptolemy.data.type.Type type =
                         tokenTypes.getTypeOfBefore((Local)op, unit);
 
+                    if (debug) System.out.println("checking cast in " + unit);
+                    if (debug) System.out.println("op = " + op);
+                    if (debug) System.out.println("type = " + type);
+
                     // Don't try to replace non-instantiable types, since they
                     // might be more refined later.
                     // General, is unfortuantely, considered instantiable.
@@ -152,9 +156,8 @@ public class TokenInstanceofEliminator extends BodyTransformer
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
-                    if (debug) System.out.println("checking cast in " + unit);
-                    if (debug) System.out.println("op = " + op);
                     if (debug) System.out.println("opType = " + opType);
+
                     CastAndInstanceofEliminator.replaceCast(box, hierarchy,
                             castType, op, opType, debug);
 
@@ -175,6 +178,10 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     ptolemy.data.type.Type type =
                         tokenTypes.getTypeOfBefore((Local)op, unit);
 
+                    if (debug) System.out.println("Checking instanceof check: " + expr);
+                    if (debug) System.out.println("op = " + op);
+                    if (debug) System.out.println("type = " + type);
+
                     // Don't try to replace non-instantiable types, since they
                     // might be more refined later.
                     // General, is unfortuantely, considered instantiable.
@@ -186,7 +193,8 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     Type opType =
                         PtolemyUtilities.getSootTypeForTokenType(type);
 
-                    if (debug) System.out.println("Checking instanceof check: " + expr);
+                    if (debug) System.out.println("opType = " + opType);
+
                     CastAndInstanceofEliminator.replaceInstanceofCheck(
                             box, Scene.v().getActiveHierarchy(),
                             checkType, opType, debug);

@@ -132,6 +132,15 @@ public abstract class KernelMain {
         // Execute the transforms.
         generateCode(sootArgs);
 
+        // Reset the state of the manager.  We haven't actually done
+        // anything, but the state of the manager must be reset.
+        try {
+            _toplevel.getManager().wrapup();
+        } catch (Exception exception) {
+            throw new KernelRuntimeException(exception,
+                    "Could not wrapup composite actor");
+        }
+
         // Print out memory usage info
         System.out.println(modelName + " "
                 + ptolemy.actor.Manager.timeAndMemory(startTime));
@@ -166,15 +175,6 @@ public abstract class KernelMain {
         //                     "Option parse error");
 
         PackManager.v().getPack("wjtp").apply();
-
-        // Reset the state of the manager.  We haven't actually done
-        // anything, but the state of the manager must be reset.
-        try {
-            _toplevel.getManager().wrapup();
-        } catch (Exception exception) {
-            throw new KernelRuntimeException(exception,
-                    "Could not wrapup composite actor");
-        }
     }
 
     /** Read in a MoML class, sanitize the top level name,

@@ -200,7 +200,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
         localToIsNotNullLocal = new HashMap();
 
         // FIXME: Compute max depth.
-        int depth = 4;
+        int depth = 5;
         while (depth > level) {
 
             // Inline all methods on types that have the given depth.
@@ -215,7 +215,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
             classList.addAll(Scene.v().getApplicationClasses());
 
             updateTokenTypes(classList, depth, unsafeLocalSet, debug);
-
+        
             // Inline all methods on tokens that have the given depth.
             for (Iterator classes =
                      Scene.v().getApplicationClasses().iterator();
@@ -225,9 +225,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 inlineTokenAndTypeMethods(entityClass, depth,
                         unsafeLocalSet, debug);
             }
-
+            
             updateTokenTypes(classList, depth, unsafeLocalSet, debug);
-
+    
             // Create replacement fields for all token fields in the
             // given class with the given depth.
             for (Iterator classes =
@@ -239,6 +239,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                         unsafeLocalSet, debug);
             }
 
+            updateTokenTypes(classList, depth, unsafeLocalSet, debug);    
+            updateTokenTypes(classList, depth, unsafeLocalSet, debug);
+                
             // Replace the locals and fields of the given depth.
             for (Iterator classes =
                      Scene.v().getApplicationClasses().iterator();
@@ -268,7 +271,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                             body, _phaseName + ".lns");
                 }
             }
-
+ 
             updateTokenTypes(classList, depth, unsafeLocalSet, debug);
 
             depth--;
@@ -1164,16 +1167,25 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 Local local = (Local)locals.next();
                 Type localType = typeAnalysis.getSpecializedSootType(local);
 
+                if (debug) System.out.println("Attempting to create replacement fields for local = " + local);
+                if (debug) System.out.println("Type = " + localType);
+                
                 // If the type is not a token, then skip it.
                 if (!PtolemyUtilities.isConcreteTokenType(localType) ||
                         unsafeLocalSet.contains(local)) {
+                    if (debug) System.out.println("skipping: unsafe or not concrete");
                     continue;
                 }
+
                 ptolemy.data.type.Type localTokenType =
                     typeAnalysis.getSpecializedType(local);
 
+                if (debug) System.out.println("localTokenType = " + localTokenType);
+
                 // Ignore fields that aren't of the right depth.
                 if (PtolemyUtilities.getTypeDepth(localTokenType) != depth) {
+                    if (debug) System.out.println("skipping: depth is only " + 
+                            PtolemyUtilities.getTypeDepth(localTokenType));
                     continue;
                 }
 
@@ -1193,6 +1205,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
 
                 if (!SootUtilities.derivesFrom(localClass,
                             PtolemyUtilities.tokenClass)) {
+                    if (debug) System.out.println("skipping: not a token.");
                     continue;
                 }
 
@@ -1352,6 +1365,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                 Local baseLocal = (Local)r.getBase();
                                 Local instanceLocal = _getInstanceLocal(body, baseLocal,
                                         field, localToFieldToLocal, debug);
+                                if (debug) System.out.println("instanceLocal = " + instanceLocal);
                                 if (instanceLocal != null) {
                                     stmt.getLeftOpBox().setValue(instanceLocal);
                                     doneSomething = true;
@@ -2155,14 +2169,14 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
 
                 badType = true;
             }
-            if (type instanceof ptolemy.data.type.ArrayType) {
-                ptolemy.data.type.Type elementType =
-                    ((ptolemy.data.type.ArrayType)type).getElementType();
-                if (elementType instanceof ptolemy.data.type.ArrayType) {
-                    System.out.println("elementType = " + elementType.getClass());
-                    badType = true;
-                }
-            }
+        //     if (type instanceof ptolemy.data.type.ArrayType) {
+//                 ptolemy.data.type.Type elementType =
+//                     ((ptolemy.data.type.ArrayType)type).getElementType();
+//                 if (elementType instanceof ptolemy.data.type.ArrayType) {
+//                     System.out.println("elementType = " + elementType.getClass());
+//                     badType = true;
+//                 }
+//             }
             if (badType) {
                 throw new IllegalActionException(object.getFullName() +
                         " has type " + type + " which cannot be unboxed.");
