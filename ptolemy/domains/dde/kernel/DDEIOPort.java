@@ -111,6 +111,11 @@ public class DDEIOPort extends TypedIOPort {
             boolean isinput, boolean isoutput)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, isinput, isoutput);
+        if( !container.isAtomic() ) {
+            throw new IllegalActionException(container, this,
+                    "A DDEIOPort can not be contained by a " +
+                    "composite actor.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -186,5 +191,23 @@ public class DDEIOPort extends TypedIOPort {
         }
 
         super.send( chIndex, token );
+    }
+    
+    /** Constrain DDEIOPorts to only be contained by non-atomic
+     *  entities.
+     * @exception IllegalActionException If the container argument
+     *  is not atomic.
+     * @exception NameDuplicationException If the name of this
+     *  port is not unique with respect to other objects 
+     *  contained by this port's container.
+     */
+    public void setContainer(ComponentEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        if( !container.isAtomic() ) {
+            throw new IllegalActionException(container, this,
+                    "A DDEIOPort can not be contained by a " +
+                    "composite actor.");
+        }
+        super.setContainer(container);
     }
 }
