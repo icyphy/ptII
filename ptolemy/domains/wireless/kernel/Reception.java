@@ -40,15 +40,15 @@ import ptolemy.data.Token;
 A class that defines the data structure being passed between actors in
 a composite channel.
 
-FIXME: I am not sure whether this is the sturcture we want. For example,
+FIXME: I am not sure whether this is the structure we want. For example,
 should it contains a receivers list or not? I think, the advantage for "yes"
 is it makes the ChannelOutput actor's design easy and clear (the token in a
 reception is put to all the receives in the list); the disadvantage is it
 causes actors manipulate on a reception to be specific for this domain...
 
 @author Yang
-@version $ $
-@since Ptolemy II 3.0
+@version $Id$
+@since Ptolemy II 3.1
 */
 public class Reception {
     public Token token;

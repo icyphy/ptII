@@ -43,13 +43,14 @@ import ptolemy.kernel.util.Locatable;
 //////////////////////////////////////////////////////////////////////////
 //// ModelTopology
 /**
-Define the mothods that deal with the model topology here statically for the
-convenience to build a set of actors to be used for a composite wireless channel.
+Define the methods that deal with the model topology here statically
+for the convenience to build a set of actors to be used for a
+composite wireless channel.
 
 
 @author Yang Zhao and Edward A. Lee
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 3.1
 */
 public class ModelTopology {
 
@@ -215,7 +216,7 @@ public class ModelTopology {
 
     /** Return the distance between two ports.  This is a convenience
      *  method provided to make it easier to write subclasses that
-     *  limit transmision range using position information.
+     *  limit transmission range using position information.
      *  @param port1 The first port.
      *  @param port2 The second port.
      *  @return The distance between the two ports.

@@ -163,3 +163,4 @@ public class WirelessReceiver extends DEReceiver {
 
     // Most recently seen properties.
     private Token _properties;
+}

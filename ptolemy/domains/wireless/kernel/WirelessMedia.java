@@ -41,12 +41,12 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
 Define an interface for (Atomic)WirelessChannel and CompositeWirelessChannel.
 
-FIXME: It might be prefered to use "WirelessChannle" for this and change
+FIXME: It might be preferred to use "WirelessChannel" for this and change
 WirelessChannel to AtomicWirelessChannel. I decided to use this name so that
 I need to change fewer classes at this stage...
 @author Yang
-@version $ $
-@since Ptolemy II 3.0
+@version $Id $
+@since Ptolemy II 3.1
 */
 public interface WirelessMedia {
 

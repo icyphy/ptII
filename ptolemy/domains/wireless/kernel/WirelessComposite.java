@@ -121,3 +121,4 @@ public class WirelessComposite extends TypedCompositeActor {
             workspace().doneWriting();
         }
     }
+}

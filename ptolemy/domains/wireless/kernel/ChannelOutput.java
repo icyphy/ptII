@@ -85,7 +85,7 @@ public class ChannelOutput extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Itterate over the receivers list and put the token and properties
+    /** Iterate over the receivers list and put the token and properties
      *  to each receiver in the list.
      *
      *  @exception IllegalActionException If there is no director.

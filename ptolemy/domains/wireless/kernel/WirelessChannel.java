@@ -61,7 +61,7 @@ this channel.  The model can also itself contain ports that are
 instances of WirelessIOPort, in which case their <i>insideChannel</i>
 parameter should contain the name of this channel.
 <p>
-In this base class, tranmission on a channel reaches all ports at the
+In this base class, transmission on a channel reaches all ports at the
 same level of the hierarchy that are instances of WirelessIOPort and
 that specify that they use this channel. These ports include those
 contained by entities that have the container as this channel and
@@ -164,7 +164,7 @@ public class WirelessChannel extends TypedAtomicActor
             workspace().getReadAccess();
             // NOTE: This caching relies on the fact that WirelessIOPort
             // will increment the workspace version number if any
-            // paramter identifying the channel changes.
+            // parameter identifying the channel changes.
             if (workspace().getVersion() == _listeningInputPortsVersion) {
                 return _listeningInputPorts;
             }
@@ -211,7 +211,7 @@ public class WirelessChannel extends TypedAtomicActor
             workspace().getReadAccess();
             // NOTE: This caching relies on the fact that WirelessIOPort
             // will increment the workspace version number if any
-            // paramter identifying the channel changes.
+            // parameter identifying the channel changes.
             if (workspace().getVersion() == _listeningOutputPortsVersion) {
                 return _listeningOutputPorts;
             }
@@ -253,7 +253,7 @@ public class WirelessChannel extends TypedAtomicActor
             workspace().getReadAccess();
             // NOTE: This caching relies on the fact that WirelessIOPort
             // will increment the workspace version number if any
-            // paramter identifying the channel changes.
+            // parameter identifying the channel changes.
             if (workspace().getVersion() == _sendingInputPortsVersion) {
                 return _sendingInputPorts;
             }
@@ -295,7 +295,7 @@ public class WirelessChannel extends TypedAtomicActor
             workspace().getReadAccess();
             // NOTE: This caching relies on the fact that WirelessIOPort
             // will increment the workspace version number if any
-            // paramter identifying the channel changes.
+            // parameter identifying the channel changes.
             if (workspace().getVersion() == _sendingOutputPortsVersion) {
                 return _sendingOutputPorts;
             }
@@ -395,7 +395,7 @@ public class WirelessChannel extends TypedAtomicActor
 
     /** Return the distance between two ports.  This is a convenience
      *  method provided to make it easier to write subclasses that
-     *  limit transmision range using position information.
+     *  limit transmission range using position information.
      *  @param port1 The first port.
      *  @param port2 The second port.
      *  @return The distance between the two ports.
@@ -479,7 +479,7 @@ public class WirelessChannel extends TypedAtomicActor
      *  not included.  Note that this method does
      *  not guarantee that those receivers will receive.  That is determined
      *  by the transmit() method, which subclasses may override to, for
-     *  example, introduce probabilitic message losses.
+     *  example, introduce probabilistic message losses.
      *  The calling method is expected to have read access on the workspace.
      *  @param sourcePort The sending port.
      *  @param properties The transmit properties (ignored in this base class).
