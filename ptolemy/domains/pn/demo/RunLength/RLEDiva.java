@@ -44,6 +44,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -412,11 +413,11 @@ public class RLEDiva extends PNApplet implements Runnable {
      *  the buttons and the entry box is returned.
      *  @param numbuttons The number of buttons to create.
      */
-    protected Panel _createRunControls(int numbuttons) {
-        Panel controlPanel = super._createRunControls(numbuttons);
+    protected JPanel _createRunControls(int numbuttons) {
+        JPanel controlPanel = super._createRunControls(numbuttons);
 
         if (numbuttons > 2) {
-            Button layout = new Button("Layout");
+            JButton layout = new JButton("Layout");
             controlPanel.add(layout);
             layout.addActionListener(new LayoutListener());
         }

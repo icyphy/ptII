@@ -97,7 +97,7 @@ public class SquareWaveResponse extends CTApplet {
             Scale gain2 = new Scale( _toplevel, "Gain2");
             Scale gain3 = new Scale( _toplevel, "Gain3");
             TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
-            myplot.setPanel(this);
+            myplot.place(this);
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(0.0, 6.0);
             myplot.plot.setYRange(-2.0, 2.0);

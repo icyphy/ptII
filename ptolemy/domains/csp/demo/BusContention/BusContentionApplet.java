@@ -38,11 +38,6 @@ import diva.canvas.toolbox.*;
 import diva.canvas.connector.*;
 import diva.util.gui.BasicWindow;
 
-
-
-
-
-
 import ptolemy.data.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -58,6 +53,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -112,7 +108,7 @@ public class BusContentionApplet extends CSPApplet {
     public void init() {
 	super.init();
 
-	setLayout( new BorderLayout(5, 5) );
+	getContentPane().setLayout( new BorderLayout(5, 5) );
 
 	// Panel for controls and plotter
 	Panel topPanel = new Panel();
@@ -120,14 +116,14 @@ public class BusContentionApplet extends CSPApplet {
 
 	// The '3' argument specifies a 'go', 'stop' and 'layout' buttons.
 	topPanel.add( _createRunControls(3), BorderLayout.NORTH );
-	add( topPanel, BorderLayout.NORTH );
+	getContentPane().add( topPanel, BorderLayout.NORTH );
 
 	constructPtolemyModel();
 
 	_divaPanel = new JPanel( new BorderLayout() );
 	_divaPanel.setSize( new Dimension(600, 350) );
 	_divaPanel.setBackground( getBackground() );
-	add( _divaPanel, BorderLayout.CENTER );
+	getContentPane().add( _divaPanel, BorderLayout.CENTER );
 
         _model = constructDivaGraph();
 	final GraphModel finalModel = _model;
@@ -332,11 +328,11 @@ public class BusContentionApplet extends CSPApplet {
      *  the buttons and the entry box is returned.
      *  @param numButtons The number of buttons to create.
      */
-    protected Panel _createRunControls(int numButtons) {
-        Panel controlPanel = super._createRunControls(numButtons);
+    protected JPanel _createRunControls(int numButtons) {
+        JPanel controlPanel = super._createRunControls(numButtons);
 
         if (numButtons > 2) {
-            Button layout = new Button("Layout");
+            JButton layout = new JButton("Layout");
             controlPanel.add(layout);
             layout.addActionListener(new LayoutListener());
         }

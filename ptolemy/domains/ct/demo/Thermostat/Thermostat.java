@@ -99,7 +99,7 @@ public void init() {
 
         // the plot
         TimedPlotter myplot = new TimedPlotter(_toplevel, "plot");
-        myplot.setPanel(this);
+        myplot.place(this);
         myplot.plot.setGrid(true);
         myplot.plot.setTitle("Thermostat");
         myplot.plot.addLegend(0, "Temperature");

@@ -37,7 +37,8 @@ import ptolemy.data.type.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.plot.*;
-import java.awt.Panel;
+
+import java.awt.Container;
 
 /** A histogram plotter.  This plotter contains an instance of the Histogram
  *  class from the Ptolemy plot package as a public member.  A histogram
@@ -123,44 +124,43 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     }
 
     /** If the histogram has not already been created, create it using
-     *  setPanel().
+     *  place().
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (histogram == null) {
-            setPanel(_panel);
+            place(_container);
         } else {
             histogram.clear(false);
         }
         histogram.repaint();
     }
 
-    /** Specify the panel into which this histogram should be placed.
+    /** Specify the GUI container into which this histogram should be placed.
      *  This method needs to be called before the first call to initialize().
      *  Otherwise, the histogram will be placed in its own frame.
      *  The histogram is also placed in its own frame if this method
      *  is called with the argument null.
-     *  If the panel argument is an instance
-     *  of Histogram, then plot data to that instance.  If a panel has been
+     *  If the GUI container argument is an instance
+     *  of Histogram, then plot data to that instance.  If a container has been
      *  specified but it is not an instance of Histogram, then create a new
-     *  instance of Histogram and place it in that panel
+     *  instance of Histogram and place it in that container
      *  using its add() method.
-     *
-     *  @param panel The panel into which to place the histogram.
+     *  @param container The container into which to place the histogram.
      */
-    public void setPanel(Panel panel) {
-        _panel = panel;
-        if (_panel == null) {
+    public void place(Container container) {
+        _container = container;
+        if (_container == null) {
             // place the histogram in its own frame.
             histogram = new Histogram();
             PlotFrame frame = new PlotFrame(getFullName(), histogram);
         } else {
-            if (_panel instanceof Histogram) {
-                histogram = (Histogram)_panel;
+            if (_container instanceof Histogram) {
+                histogram = (Histogram)_container;
             } else {
                 histogram = new Histogram();
-                _panel.add(histogram);
+                _container.add(histogram);
                 histogram.setButtons(true);
             }
         }
@@ -181,6 +181,6 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** @serial Panel into which this histogram should be placed */
-    private Panel _panel;
+    /** @serial Container into which this histogram should be placed */
+    private Container _container;
 }

@@ -36,11 +36,12 @@ import ptolemy.kernel.*;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Configurable;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.expr.Variable;
 
 // Java imports.
-import java.awt.Panel;
+import java.awt.Container;
 import java.util.EmptyStackException;
 import java.util.Map;
 import java.util.List;
@@ -102,7 +103,7 @@ public class MoMLParser extends HandlerBase {
      *  @param workspace The workspace into which to place entities.
      *  @param panel The panel into which to place Placeable entities.
      */
-    public MoMLParser(Workspace workspace, Panel panel) {
+    public MoMLParser(Workspace workspace, Container panel) {
         super();
         if (workspace == null) {
             // NOTE: Workspace has no name, to ensure that full names
@@ -422,7 +423,7 @@ public class MoMLParser extends HandlerBase {
                         + _current.toString());
                 Object newEntity = _createEntity(className, entityName);
                 if (_panel != null && newEntity instanceof Placeable) {
-                    ((Placeable)newEntity).setPanel(_panel);
+                    ((Placeable)newEntity).place(_panel);
                 }
                 _containers.push(_current);
                 _current = newEntity;
@@ -823,8 +824,11 @@ public class MoMLParser extends HandlerBase {
     // List of top-level entities imported via import element.
     private List _imports;
 
-    // The panel into which to place Placeable entities.
-    private Panel _panel;
+    // The manager for this model.
+    private Manager _manager;
+
+    // The graphical container into which to place Placeable entities.
+    private Container _panel;
 
     // The parser.
     private XmlParser _parser = new XmlParser();

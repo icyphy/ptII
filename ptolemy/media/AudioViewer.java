@@ -32,12 +32,16 @@ package ptolemy.media;
 
 import ptolemy.plot.*;
 
-import java.awt.*;
+import java.awt.Event;
 import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
-import sun.audio.AudioPlayer;
 import java.util.StringTokenizer;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+
+import sun.audio.AudioPlayer;
 
 //////////////////////////////////////////////////////////////////////////
 //// AudioViewer
@@ -62,7 +66,9 @@ public class AudioViewer extends PlotApplication {
      */
     public AudioViewer(String args[]) throws Exception {
         super(args);
-        MenuItem play = new MenuItem("Play", new MenuShortcut(KeyEvent.VK_H));
+        JMenuItem play = new JMenuItem("Play", KeyEvent.VK_P);
+        play.setAccelerator(
+            KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
         play.setActionCommand("Play");
         PlayListener playlistener = new PlayListener();
         play.addActionListener(playlistener);
@@ -100,22 +106,25 @@ public class AudioViewer extends PlotApplication {
     /** Display basic information about the application.
      */
     protected void _about() {
-        Message message = new Message(
+        JOptionPane.showMessageDialog(this,
                 "Ptolemy AudioViewer (ptaudio program)\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "Version 2.0, Build: " +
                 "$Id$" +
                 "\n\n"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot");
-        message.setTitle("About Ptolemy AudioViewer");
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot",
+                "About Ptolemy AudioViewer",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display some help.
      */
     protected void _help() {
-        Message message = new Message("Use Control-P to play the sound");
-        message.setTitle("Usage of Ptolemy AudioViewer");
+        JOptionPane.showMessageDialog(this, 
+                "Use Control-P to play the sound",
+                "Usage of Ptolemy AudioViewer",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether
@@ -165,16 +174,18 @@ public class AudioViewer extends PlotApplication {
     }
 
     /** Save the plot to the current file, determined by the _directory
-     *  and _filename protected variables.
+     *  and _file protected variables.
      */
     protected void _save() {
-        if (_filename != null) {
-            File file = new File(_directory, _filename);
+        if (_file != null) {
             try {
-                FileOutputStream fout = new FileOutputStream(file);
+                FileOutputStream fout = new FileOutputStream(_file);
                 _sound.write(new DataOutputStream(fout));
             } catch (IOException ex) {
-                Message msg = new Message("Error writing file: " + ex);
+                JOptionPane.showMessageDialog(this, 
+                "Error writing file: " + ex,
+                "AudioViewer error",
+                JOptionPane.ERROR_MESSAGE);
             }
         } else {
             _saveAs();
@@ -200,7 +211,7 @@ public class AudioViewer extends PlotApplication {
 
     private class PlayListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            MenuItem target = (MenuItem)e.getSource();
+            JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
             if (actionCommand.equals("Play")) {
                 _play();

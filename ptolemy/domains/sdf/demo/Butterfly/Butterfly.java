@@ -30,9 +30,9 @@
 
 package ptolemy.domains.sdf.demo.Butterfly;
 
-import java.applet.Applet;
-import java.awt.*;
 import java.awt.event.*;
+import java.awt.Container;
+import java.awt.Dimension;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -64,7 +64,7 @@ public class Butterfly {
 
     /** Initialize the demo
      */
-    public static void init(TypedCompositeActor toplevel, Panel panel,
+    public static void init(TypedCompositeActor toplevel, Container panel,
 			    Dimension size)
 	throws Exception {
 	
@@ -104,7 +104,7 @@ public class Butterfly {
 	cos2.output.setTypeEquals(DoubleToken.class);
 
 	XYPlotter xyPlotter = new XYPlotter(toplevel, "xyPlotter");
-	xyPlotter.setPanel(panel);
+	xyPlotter.place(panel);
 	xyPlotter.plot.setSize(size.width, size.height - 50);
 	xyPlotter.plot.setXRange(-3, 4);
 	xyPlotter.plot.setYRange(-4, 4);
@@ -140,7 +140,6 @@ public class Butterfly {
 	cos2Input.link(node9);
 
 	toplevel.connect(polarToRect1.xOutput, xyPlotter.inputX); 
-	toplevel.connect(polarToRect1.yOutput, xyPlotter.inputY); 
-
+	toplevel.connect(polarToRect1.yOutput, xyPlotter.inputY);
     }
 }

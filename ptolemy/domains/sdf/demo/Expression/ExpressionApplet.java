@@ -29,11 +29,10 @@
 
 package ptolemy.domains.sdf.demo.Expression;
 
-import java.applet.Applet;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
 import java.util.Enumeration;
 import java.lang.Math;
+import javax.swing.JPanel;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -73,20 +72,20 @@ public class ExpressionApplet extends SDFApplet {
     public void init() {
         super.init();
         try {
-            Panel controlpanel = new Panel();
+            JPanel controlpanel = new JPanel();
             controlpanel.setLayout(new BorderLayout());
-            add(controlpanel);
+            getContentPane().add(controlpanel, BorderLayout.SOUTH);
 
             _query = new Query();
-            controlpanel.add("West", _query);
+            controlpanel.add(_query, BorderLayout.EAST);
             _query.setTextWidth(30);
             _query.addLine("expr", "Expression", "cos(slow) + cos(fast)");
             _query.addQueryListener(new ParameterListener());
             _query.setBackground(_getBackground());
 
             // Create a "Go" button.
-            Panel runcontrols = new Panel();
-            controlpanel.add("East", runcontrols);
+            JPanel runcontrols = new JPanel();
+            controlpanel.add(runcontrols, BorderLayout.WEST);
             runcontrols.add(_createRunControls(1));
 
             // Create and configure ramp1
@@ -106,7 +105,7 @@ public class ExpressionApplet extends SDFApplet {
 
             // Create and configure plotter
             SequencePlotter myplot = new SequencePlotter(_toplevel, "plot");
-            myplot.setPanel(this);
+            myplot.place(getContentPane());
             myplot.plot.setGrid(false);
             myplot.plot.setXRange(0.0, 200.0);
             myplot.plot.setYRange(-2.0, 2.0);

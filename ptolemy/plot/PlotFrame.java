@@ -427,8 +427,8 @@ public class PlotFrame extends JFrame {
 
         // Open the dialog.
         String[] buttons = {"Apply", "Cancel"};
-        PanelDialog dialog =
-            new PanelDialog(this, "Set plot format", panel, buttons);
+        ComponentDialog dialog =
+            new ComponentDialog(this, "Set plot format", panel, buttons);
 
         if (dialog.buttonPressed().equals("Apply")) {
             // Apply current values.

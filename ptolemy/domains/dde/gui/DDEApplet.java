@@ -39,6 +39,7 @@ import ptolemy.kernel.util.InternalErrorException;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEApplet
@@ -119,14 +120,14 @@ public class DDEApplet extends PtolemyApplet {
      *  selection box should be displayed.
      * @return The panel containing the controls.
      */
-    protected Panel _createRunControls(int numbuttons) {
-        Panel panel = super._createRunControls(numbuttons);
+    protected JPanel _createRunControls(int numbuttons) {
+        JPanel panel = super._createRunControls(numbuttons);
 
         if( !_stopTimeGiven ) {
             // To keep the label and entry box together,
             // put them in a new panel.
-            Panel stopTimePanel = new Panel();
-            stopTimePanel.add(new Label("Stop time:"));
+            JPanel stopTimePanel = new JPanel();
+            stopTimePanel.add(new JLabel("Stop time:"));
 
             // Process the default iterations parameter.
             String defaultStopSpec =
@@ -136,7 +137,7 @@ public class DDEApplet extends PtolemyApplet {
                 defaultStopSpec = "100.0";
             }
 
-            _stopTimeBox = new TextField(defaultStopSpec, 10);
+            _stopTimeBox = new JTextField(defaultStopSpec, 10);
             _stopTimeBox.addActionListener(new StopTimeBoxListener());
             stopTimePanel.add(_stopTimeBox);
             panel.add(stopTimePanel);
@@ -196,7 +197,7 @@ public class DDEApplet extends PtolemyApplet {
     /** The entry box containing the stop time, or null if
      *  there is none.
      */
-    protected TextField _stopTimeBox;
+    protected JTextField _stopTimeBox;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

@@ -30,9 +30,11 @@
 
 package ptolemy.domains.sdf.demo.Butterfly;
 
-import java.applet.Applet;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -56,7 +58,7 @@ import ptolemy.plot.*;
 @author Christopher Hylands
 @version : ptmkmodel,v 1.7 1999/07/16 01:17:49 cxh Exp ButterflyApplet.java.java,v 1.1 1999/05/06 20:14:28 cxh Exp $
 */
-public class ButterflyApplication extends Frame {
+public class ButterflyApplication extends JFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -64,13 +66,16 @@ public class ButterflyApplication extends Frame {
     /** Create a Butterfly Application
      */
     public ButterflyApplication()
-	throws IllegalActionException , NameDuplicationException {
+	throws IllegalActionException, NameDuplicationException {
 	super("Butterfly");
 
-        resize(400, 400);
+        setSize(400, 400);
 
-	Panel panel = new Panel();
-	add("Center", panel);
+	JPanel panel = new JPanel();
+        // Despite Sun's documentation, the default is that a panel
+        // is opaque, so the background doesn't come through.  Change that...
+        panel.setOpaque(false);
+	getContentPane().add(panel, BorderLayout.CENTER);
 
 	show();
 
@@ -90,16 +95,11 @@ public class ButterflyApplication extends Frame {
 
         try {
 	    Butterfly.init(toplevel, panel, panel.getSize());
-
-	    // FIXME: Why does DE have setStopTime, but SDF has an
-	    // interations parameter?
 	    director.iterations.setToken(new IntToken(1200));
 	    manager.run();
-	    //manager.run();
         } catch (Exception ex) {
             System.err.println("Error constructing model." + ex);
         }
-
     }
 
     /** Create a new window with the Butterfly plot in it and map it

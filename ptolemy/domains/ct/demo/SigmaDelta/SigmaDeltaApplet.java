@@ -141,7 +141,7 @@ public class SigmaDeltaApplet extends CTApplet {
             _gain3 = new Scale(ctsub, "Gain3");
 
             _ctPlot = new TimedPlotter(ctsub, "CTPlot");
-            _ctPlot.setPanel(this);
+            _ctPlot.place(this);
             _ctPlot.plot.setGrid(true);
             _ctPlot.plot.setYRange(-1.0, 1.0);
             _ctPlot.plot.setSize(500, 180);
@@ -191,7 +191,7 @@ public class SigmaDeltaApplet extends CTApplet {
             clk.values.setExpression("[true]");
             
             _dePlot = new TimedPlotter(_toplevel, "DEPlot");
-            _dePlot.setPanel(this);
+            _dePlot.place(this);
             _dePlot.plot.setGrid(true);
             _dePlot.plot.setYRange(-1.0, 1.0);
             _dePlot.plot.setSize(500, 180);

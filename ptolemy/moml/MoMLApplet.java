@@ -131,7 +131,7 @@ public class MoMLApplet extends PtolemyApplet {
         } catch (Exception ex) {
             report("Warning: background parameter failed: ", ex);
         }
-        setBackground(_background);
+        getContentPane().setBackground(_background);
 
         // Process the runControls parameter.
         try {

@@ -30,11 +30,13 @@
 package ptolemy.domains.sdf.demo.HTVQ;
 
 import java.applet.Applet;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.util.Enumeration;
 import java.lang.Math;
 import java.net.URL;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -68,35 +70,35 @@ public class HTVQApplet extends SDFApplet {
     public void init() {
         super.init();
         try {
-	    setLayout(new BorderLayout());
+	    getContentPane().setLayout(new BorderLayout());
 
-            Panel controlpanel = new Panel();
+            JPanel controlpanel = new JPanel();
             controlpanel.setLayout(new BorderLayout());
-            add(controlpanel, "South");
+            getContentPane().add(controlpanel, BorderLayout.SOUTH);
 
             // Create a "Go" button.
-            Panel runcontrols = new Panel();
-            controlpanel.add("Center", runcontrols);
+            JPanel runcontrols = new JPanel();
+            controlpanel.add(runcontrols, BorderLayout.CENTER);
             runcontrols.add(_createRunControls(2));
 
-	    Panel displayPanel = new Panel();
-	    add(displayPanel, "North");
+	    JPanel displayPanel = new JPanel();
+	    getContentPane().add(displayPanel, BorderLayout.NORTH);
 	    displayPanel.setLayout(new BorderLayout());
 
-	    Panel originalPanel = new Panel();
-            displayPanel.add("West", originalPanel);
+	    JPanel originalPanel = new JPanel();
+            displayPanel.add(originalPanel, BorderLayout.WEST);
 
-            Panel compressedPanel = new Panel();
-	    displayPanel.add("Center", compressedPanel);
+            JPanel compressedPanel = new JPanel();
+	    displayPanel.add(compressedPanel, BorderLayout.CENTER);
 
-            Panel prnPanel = new Panel();
-            prnPanel.add(new Label("SNR (dB)"));
+            JPanel prnPanel = new JPanel();
+            prnPanel.add(new JLabel("SNR (dB)"));
             prnPanel.setLayout(new BorderLayout());
-            displayPanel.add("East", prnPanel);
+            displayPanel.add(prnPanel, BorderLayout.EAST);
 
-            Panel labelPanel = new Panel();
-            labelPanel.add(new Label("SNR (dB)"));
-            prnPanel.add("North", labelPanel);
+            JPanel labelPanel = new JPanel();
+            labelPanel.add(new JLabel("SNR (dB)"));
+            prnPanel.add(labelPanel, BorderLayout.NORTH);
 
             Parameter blockWidth = new Parameter(_toplevel, "blockWidth", 
                     new IntToken(4));
@@ -132,16 +134,16 @@ public class HTVQApplet extends SDFApplet {
             unPartition.partitionRows.setExpression("blockHeight");           
 
 	    ImageDisplay consumer = new ImageDisplay(_toplevel, "Compressed");
-	    consumer.setPanel(compressedPanel);
+	    consumer.place(compressedPanel);
 
 	    ImageDisplay original = new ImageDisplay(_toplevel, "Original");
-	    original.setPanel(originalPanel);
+	    original.place(originalPanel);
 
             //added Print actor and put the text area at the right of the
             //applet window. Text Area size is set to be 7*10 (row* column)
             //in order to fit well with the image size.
             Print prn = new Print(_toplevel, "Print");
-            prn.setPanel(prnPanel);
+            prn.place(prnPanel);
             prn.textArea.setColumns(10);
             prn.textArea.setRows(7);
             prnPanel.validate();

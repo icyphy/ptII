@@ -590,7 +590,7 @@ public class ABPApplet extends Applet {
         }
     }
 
-    private class MyExecutionListener extends DefaultExecutionListener {
+    private class MyExecutionListener extends StreamExecutionListener {
         public void executionFinished(Manager manager) {
             super.executionFinished(manager);
             _isSimulationRunning = false;

@@ -93,7 +93,7 @@ public class StickyBallApplet extends CTApplet {
             // the plot
             // FIXME: adjust configuration.
             TimedPlotter myplot = new TimedPlotter(_toplevel, "plot");
-            myplot.setPanel(this);
+            myplot.place(this);
             myplot.plot.setGrid(true);
             myplot.plot.setTitle("Sticky Masses");
             myplot.plot.addLegend(0, "Mass 1 Position");

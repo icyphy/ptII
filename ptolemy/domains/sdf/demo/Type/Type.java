@@ -29,8 +29,12 @@
 
 package ptolemy.domains.sdf.demo.Type;
 
-import java.applet.Applet;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Graphics;
+import java.awt.Font;
 import java.awt.event.*;
 import java.util.Hashtable;
 
@@ -55,6 +59,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 import ptolemy.domains.sdf.gui.SDFApplet;
 import ptolemy.plot.*;
 
@@ -70,10 +75,55 @@ It displays a Diva animation of the type resolution process.
 @version $Id$
 */
 
-public class Type extends SDFApplet {
+public class Type extends SDFApplet implements QueryListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in the query box.
+     *  @param name The name of the item that changed.
+     */
+    public void changed(String name) {
+        if (name.equals("display")) {
+            String display = _query.stringValue("display");
+            try {
+                if (display.equals("Plotter") && _previousDisplayPrinter) {
+System.out.println("******** putting in plotter");
+                    _previousDisplayPrinter = false;
+                    _plotter.plot.setGrid(true);
+                    _plotter.plot.setXRange(0.0, 10.0);
+                    _plotter.plot.setYRange(0.0, 20.0);
+                    _plotter.plot.setConnected(false);
+                    _plotter.plot.setImpulses(true);
+                    _plotter.plot.setMarksStyle("dots");
+
+                    _expr.output.unlinkAll();
+                    _printer.setContainer(null);
+                    _plotter.setContainer(_toplevel);
+                    
+                    _toplevel.connect(_expr.output, _plotter.input);
+                    _director.setScheduleValid(false);
+
+                } else if (display.equals("Printer")
+                        && !_previousDisplayPrinter) {
+                    _previousDisplayPrinter = true;
+                    _expr.output.unlinkAll();
+                    _plotter.setContainer(null);
+                    _printer.place(getContentPane());
+                    _toplevel.connect(_expr.output, _printer.input);
+                    _director.setScheduleValid(false);
+                } else {
+                    return;
+                }
+                // NOTE: In theory, the following is not necessary, but there
+                // appears to be a bug in swing...
+                _ioPanel.revalidate();
+                _schemPanel.repaint();
+            } catch (Exception ex) {
+                report("setDisplay failed:", ex);
+            }
+        }
+    }
 
     /** After invoking super.init(), create and connect the actors.
      *  Also, create the on-screen Diva displays.
@@ -91,25 +141,34 @@ public class Type extends SDFApplet {
 	    //	       plot/print Panel
 	    //     _schemPanel (schematics with type annotation)
 
-	    setLayout(new GridLayout(3, 1));
-            _ioPanel.setLayout(new GridLayout(1, 2));
-            add(_ioPanel);
-	    add(_schemPanel);
 
-            Panel controlPanel = new Panel();
-	    controlPanel.setLayout(new BorderLayout());
-            _ioPanel.add(controlPanel);
+            // The control panel has run control and parameter control,
+            JPanel controlPanel = new JPanel();
+            controlPanel.setOpaque(false);
 	    _buildControlPanel(controlPanel);
 
+            // The IO panel has the control panel and the output display.
+            _ioPanel.setLayout(new GridLayout(1, 2));
+            _ioPanel.setOpaque(false);
+            _ioPanel.add(controlPanel);
+
+            // Build the PtII model, placing a plotter in the IO panel.
 	    _buildModel();
 
+            // Visualization panel contains the type lattice and
+            // animation of type resolution progress (trace model).
             JPanel visPanel = new JPanel();
-            visPanel.setLayout(new BorderLayout());
-            add(visPanel);
-
             visPanel.add(_jgraph, BorderLayout.WEST);
             _jgraph.setPreferredSize(new Dimension(400, 290));
             _jgraph.setSize(new Dimension(400, 290));
+
+            // Place items in the top-level.
+	    getContentPane().setLayout(new GridLayout(3, 1));
+            getContentPane().add(_ioPanel);
+	    getContentPane().add(_schemPanel);
+            getContentPane().add(visPanel);
+
+            getContentPane().setBackground(_getBackground());
 
             // Construct the Ptolemy type lattice model
             final GraphModel graphModel = _constructLattice();
@@ -176,9 +235,6 @@ public class Type extends SDFApplet {
     private void _addListeners()
 	    throws NameDuplicationException, IllegalActionException {
 
-	_plotterBox.addItemListener(new DisplayListener());
-	_printerBox.addItemListener(new DisplayListener());
-
 	_typeListener = new MyTypeListener();
 	_ramp1.output.addTypeListener(_typeListener);
 	_ramp2.output.addTypeListener(_typeListener);
@@ -189,26 +245,20 @@ public class Type extends SDFApplet {
 	_printer.input.addTypeListener(_typeListener);
     }
 
-    private void _buildControlPanel(Panel controlPanel) {
-	Panel runControlPanel = _createRunControls(1);
-	controlPanel.add("South", runControlPanel);
-	controlPanel.add("Center", _query);
+    private void _buildControlPanel(JPanel controlPanel) {
+	JPanel runControlPanel = _createRunControls(1);
+	controlPanel.add(runControlPanel, BorderLayout.SOUTH);
+	controlPanel.add(_query, BorderLayout.NORTH);
 
 	_query.addLine("ramp1init", "Ramp1 Initial Value", "0");
 	_query.addLine("ramp1step", "Ramp1 Step Size", "1");
 	_query.addLine("ramp2init", "Ramp2 Init Value", "0");
 	_query.addLine("ramp2step", "Ramp2 Step Size", "1");
 	_query.addLine("expr", "Expression", "input1 + input2");
+        String[] options = {"Plotter", "Printer"};
+        _query.addRadioButtons("display", "Display using", options, "Plotter");
         _query.setBackground(_getBackground());
-
-	Panel displayPanel = new Panel();
-	displayPanel.add(new Label("Display using"));
-	CheckboxGroup displayGroup = new CheckboxGroup();
-	_plotterBox = new Checkbox("Plotter", displayGroup, true);
-	_printerBox = new Checkbox("Printer", displayGroup, false);
-	displayPanel.add(_plotterBox);
-	displayPanel.add(_printerBox);
-	controlPanel.add("North", displayPanel);
+        _query.addQueryListener(this);
     }
 
     private void _buildModel()
@@ -216,11 +266,7 @@ public class Type extends SDFApplet {
 
         // Create the ramps
         _ramp1 = new Ramp(_toplevel, "ramp1");
-	// _ramp1.init.setToken(new DoubleToken(0.0));
-	// _ramp1.step.setToken(new DoubleToken(1.0));
 	_ramp2 = new Ramp(_toplevel, "ramp2");
-	// _ramp2.init.setToken(new DoubleToken(0.0));
-	// _ramp2.step.setToken(new DoubleToken(1.0));
 
         // Create and configure expr
         _expr = new Expression(_toplevel, "expr");
@@ -230,7 +276,8 @@ public class Type extends SDFApplet {
         // Create and configure plotter
         _plotter = new SequencePlotter(_toplevel, "plot");
 
-        _plotter.setPanel(_ioPanel);
+        _plotter.place(_ioPanel);
+        _plotter.plot.setSize(200, 200);
         _plotter.plot.setGrid(true);
         _plotter.plot.setXRange(0.0, 10.0);
         _plotter.plot.setYRange(0.0, 20.0);
@@ -240,7 +287,15 @@ public class Type extends SDFApplet {
 
 	// Create printer. Can't use null in constructor, thus
 	// set the container to null after construction.
+        // NOTE: We used to place only the plotter OR the printer,
+        // but the Containter.remove() method does not work in swing,
+        // so we can't do that anymore.
 	_printer = new Print(_toplevel, "print");
+        _printer.place(_ioPanel);
+        // As usual in swing, setSize does nothing...
+        // _printer.textArea.setSize(100, 100);
+        _printer.textArea.setRows(10);
+        _printer.textArea.setColumns(20);
 	_printer.setContainer(null);
 
         _toplevel.connect(_ramp1.output, input1);
@@ -423,44 +478,6 @@ public class Type extends SDFApplet {
         return traceWidget;
     }
 
-    // set the plotter or the printer as display. connect the
-    // topology accordingly.
-    private void _setDisplay() {
-
-	try {
-	    if (_plotterBox.getState() == true) {
-	        _ioPanel.remove(_printer.textArea);
-                _plotter.setPanel(_ioPanel);
-		_plotter.plot.setGrid(true);
-        	_plotter.plot.setXRange(0.0, 10.0);
-        	_plotter.plot.setYRange(0.0, 20.0);
-		_plotter.plot.setConnected(false);
-		_plotter.plot.setImpulses(true);
-		_plotter.plot.setMarksStyle("dots");
-
-	        _expr.output.unlinkAll();
-		_printer.setContainer(null);
-		_plotter.setContainer(_toplevel);
-
-                _toplevel.connect(_expr.output, _plotter.input);
-		_director.setScheduleValid(false);
-
-	    } else {
-	        _ioPanel.remove(_plotter.plot);
-	        _printer.setPanel(_ioPanel);
-	        _expr.output.unlinkAll();
-		_plotter.setContainer(null);
-		_printer.setContainer(_toplevel);
-		_toplevel.connect(_expr.output, _printer.input);
-		_director.setScheduleValid(false);
-	    }
-	    _ioPanel.validate();
-	    _schemPanel.repaint();
-        } catch (Exception ex) {
-            report("setDisplay failed:", ex);
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Expression _expr;
@@ -478,8 +495,7 @@ public class Type extends SDFApplet {
     private String _plotterType = "Double";
     private String _printerType = "String";
 
-    private Checkbox _plotterBox, _printerBox;
-    private Panel _ioPanel = new Panel();
+    private JPanel _ioPanel = new JPanel();
     private SchematicPanel _schemPanel = new SchematicPanel();
 
     // The JGraph where we display stuff
@@ -501,15 +517,19 @@ public class Type extends SDFApplet {
     // The current element of each state;
     private TraceModel.Element _currentElement[];
 
+    // Indication of the previous display;
+    private boolean _previousDisplayPrinter = false;
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    private class SchematicPanel extends Panel {
+    private class SchematicPanel extends JPanel {
 
 	public SchematicPanel() {
 	}
 
-    	public void paint(Graphics graph) {
+    	public void paintComponent(Graphics graph) {
 
 	    final int ACTOR_WIDTH = 90;
 	    final int ACTOR_HEIGHT = 65;
@@ -607,7 +627,8 @@ public class Type extends SDFApplet {
 	    graph.fillRect(PLOT_X+10, PLOT_Y+10,
                     ACTOR_WIDTH-20, ACTOR_HEIGHT-20);
 	    graph.setColor(Color.black);
-	    if (_plotterBox.getState() == true) {
+            String display = _query.stringValue("display");
+	    if (display.equals("Plotter")) {
 		// draw the axis
 		graph.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
                         PLOT_X+20, PLOT_Y+20);
@@ -664,18 +685,12 @@ public class Type extends SDFApplet {
 	    graph.drawString(_exprIn2Type, EXPR_IN_TYPE_X, EXPR_IN_TYPE_Y2);
 	    graph.drawString(_exprOutType, EXPR_OUT_TYPE_X, EXPR_OUT_TYPE_Y);
 
-	    if (_plotterBox.getState() == true) {
+	    if (display.equals("Plotter")) {
 		graph.drawString(_plotterType, PLOT_TYPE_X, PLOT_TYPE_Y);
 	    } else {
 		graph.drawString(_printerType, PLOT_TYPE_X, PLOT_TYPE_Y);
 	    }
     	}
-    }
-
-    private class DisplayListener implements ItemListener {
-	public void itemStateChanged(ItemEvent e) {
-	    _setDisplay();
-	}
     }
 
     // TypeRenderer draws the nodes to represent types in a type lattice

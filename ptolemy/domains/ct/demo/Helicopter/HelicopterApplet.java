@@ -27,10 +27,6 @@
 
 package ptolemy.domains.ct.demo.Helicopter;
 
-import java.awt.*;
-import java.awt.event.*;
-//import ptolemy.domains.de.kernel.*;
-//import ptolemy.domains.de.lib.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.domains.ct.gui.CTApplet;
@@ -44,11 +40,15 @@ import ptolemy.actor.lib.*;
 import ptolemy.actor.util.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-//import ptolemy.plot.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-//import collections.LinkedList;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.event.*;
 import java.util.Enumeration;
+import javax.swing.*;
 
 ///////////////////////////////////////////////////////////
 ////  HelicopterApplet
@@ -67,37 +67,37 @@ public class HelicopterApplet extends CTApplet {
     public void init() {
 
         super.init();
-        Panel controlpanel = new Panel();
-        controlpanel.setLayout(new BorderLayout());
-        add(controlpanel);
-        Panel progresspanel = new Panel();
-        //progresspanel.setLayout(new BorderLayout());
-        //add(progresspanel);
-        //_currentTimeCanvas = new ProgressBar();
-        //controlpanel.add(_currentTimeCanvas);
-
+        JPanel controlpanel = new JPanel();
+        controlpanel.setOpaque(false);
+        getContentPane().add(controlpanel);
+        JPanel progresspanel = new JPanel();
+        // FIXME: Why is this commented out?
+        // progresspanel.setOpaque(false);
+        // getContentPane().add(progresspanel);
+        // _currentTimeCanvas = new ProgressBar();
+        // controlpanel.add(_currentTimeCanvas);
 
         _query = new Query();
         _query.setBackground(_getBackground());
         //_query.addQueryListener(new ParameterListener());
         controlpanel.add("West", _query);
         _query.addLine("stopT", "Stop Time", "70.0");
-        Panel runcontrols = new Panel();
+        JPanel runcontrols = new JPanel();
         runcontrols.setLayout(new GridLayout(1, 3));
         controlpanel.add("East",runcontrols);
         runcontrols.add(_createRunControls(1));
-        _actionButton = new Button("Climb");
+        _actionButton = new JButton("Climb");
         _actionButton.addActionListener(new ActionButtonListener());
         runcontrols.add(_actionButton);
 
 
-        Panel plotpanel = new Panel();
+        JPanel plotpanel = new JPanel();
         plotpanel.setLayout(new GridLayout(2, 2));
-        add(plotpanel, "Center");
-        Panel xzPanel = new Panel();
-        Panel vxPanel = new Panel();
-        Panel pzPanel = new Panel();
-        Panel thPanel = new Panel();
+        getContentPane().add(plotpanel, "Center");
+        JPanel xzPanel = new JPanel();
+        JPanel vxPanel = new JPanel();
+        JPanel pzPanel = new JPanel();
+        JPanel thPanel = new JPanel();
         plotpanel.add(xzPanel);
         plotpanel.add(vxPanel);
         plotpanel.add(pzPanel);
@@ -321,7 +321,7 @@ public class HelicopterApplet extends CTApplet {
             Scale MINUS = new Scale(_toplevel, "MINUS");
             //CTPlot ctPlot = new CTPlot(_toplevel, "CTPlot", ctPanel);
             XYPlotter xzPlot = new XYPlotter(_toplevel, "Helicopter Position");
-            xzPlot.setPanel(xzPanel);
+            xzPlot.place(xzPanel);
             xzPlot.plot.setTitle("Helicopter Position");
             xzPlot.plot.setButtons(false);
             xzPlot.plot.setGrid(true);
@@ -332,7 +332,7 @@ public class HelicopterApplet extends CTApplet {
 
             TimedPlotter vxPlot = new TimedPlotter(_toplevel,
                     "Horizontal Speed");
-            vxPlot.setPanel(vxPanel);
+            vxPlot.place(vxPanel);
             vxPlot.plot.setTitle("Horizontal Speed");
             vxPlot.plot.setButtons(false);
             vxPlot.plot.setGrid(true);
@@ -343,7 +343,7 @@ public class HelicopterApplet extends CTApplet {
 
             TimedPlotter pzPlot = new TimedPlotter(_toplevel,
                     "Vertical Position");
-            pzPlot.setPanel(pzPanel);
+            pzPlot.place(pzPanel);
             pzPlot.plot.setTitle("Vertical Position");
             pzPlot.plot.setButtons(false);
             pzPlot.plot.setGrid(true);
@@ -354,7 +354,7 @@ public class HelicopterApplet extends CTApplet {
 
             TimedPlotter thPlot = new TimedPlotter(_toplevel,
                     "Pitch Angle");
-            thPlot.setPanel(thPanel);
+            thPlot.place(thPanel);
             thPlot.plot.setTitle("Pitch Angle");
             thPlot.plot.setButtons(false);
             thPlot.plot.setGrid(true);
@@ -729,7 +729,6 @@ public class HelicopterApplet extends CTApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // FIXME: Under jdk 1.2, the following can (and should) be private
     private CTMultiSolverDirector _dir;
     private HSDirector _hsdir;
     private int _currentState;
@@ -740,7 +739,7 @@ public class HelicopterApplet extends CTApplet {
     private Query _query;
     private ProgressBar _currentTimeCanvas;
     private double _stopTime = 70.0;
-    private Button _actionButton;
+    private JButton _actionButton;
     private CTButtonEvent _button;
 
     //////////////////////////////////////////////////////////////////////////
@@ -819,7 +818,7 @@ public class HelicopterApplet extends CTApplet {
 
     /** Draw the progress bar.
      */
-    public class ProgressBar extends Canvas {
+    public class ProgressBar extends JPanel {
 
         /** draw the progress bar.
          */

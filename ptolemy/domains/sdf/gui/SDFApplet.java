@@ -30,8 +30,10 @@
 
 package ptolemy.domains.sdf.gui;
 
-import java.awt.*;
 import java.awt.event.*;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
@@ -127,13 +129,17 @@ public class SDFApplet extends PtolemyApplet {
      *  @param numberOfButtons The number of buttons to create.
      *  @return The panel containing the controls.
      */
-    protected Panel _createRunControls(int numberOfButtons) {
-        Panel panel = super._createRunControls(numberOfButtons);
+    protected JPanel _createRunControls(int numberOfButtons) {
+        JPanel panel = super._createRunControls(numberOfButtons);
         if (!_iterationsgiven) {
             // To keep the label and entry box together, put them
             // in a new panel.
-            Panel iterpanel = new Panel();
-            iterpanel.add(new Label("Number of iterations:"));
+            JPanel iterpanel = new JPanel();
+            // Despite Sun's documentation, the default is that a panel
+            // is opaque, so the background doesn't come through.
+            // Change that...
+            iterpanel.setOpaque(false);
+            iterpanel.add(new JLabel("Number of iterations:"));
 
             // Process the defaultIterations parameter.
             String defiterspec = getParameter("defaultIterations");
@@ -141,7 +147,7 @@ public class SDFApplet extends PtolemyApplet {
                 defiterspec = "1";
             }
 
-            _iterationsbox = new TextField(defiterspec, 10);
+            _iterationsbox = new JTextField(defiterspec, 10);
             _iterationsbox.addActionListener(new IterBoxListener());
             iterpanel.add(_iterationsbox);
             panel.add(iterpanel);
@@ -208,7 +214,7 @@ public class SDFApplet extends PtolemyApplet {
      *  is protected in case a derived class overrides _createRunControls()
      *  and wants access to this variable.
      */
-    protected TextField _iterationsbox;
+    protected JTextField _iterationsbox;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

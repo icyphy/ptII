@@ -32,6 +32,8 @@ package ptolemy.domains.ct.demo.Lorenz;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.JPanel;
+
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.gui.*;
 import ptolemy.domains.ct.lib.*;
@@ -42,10 +44,8 @@ import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-//import ptolemy.plot.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-//import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// LorenzApplet
@@ -71,7 +71,7 @@ public class LorenzApplet extends CTApplet {
     public void init() {
 
         super.init();
-        Panel controlpanel = new Panel();
+        JPanel controlpanel = new JPanel();
         controlpanel.setLayout(new BorderLayout());
         add(controlpanel);
 
@@ -84,7 +84,7 @@ public class LorenzApplet extends CTApplet {
         _query.addLine("b", "b", "2.0");
         _query.setBackground(_getBackground());
 
-        Panel runcontrols = new Panel();
+        JPanel runcontrols = new JPanel();
         controlpanel.add("East",runcontrols);
         runcontrols.add(_createRunControls(2));
 
@@ -124,7 +124,7 @@ public class LorenzApplet extends CTApplet {
             Scale MINUS3 = new Scale(_toplevel, "MINUS3");
 
             XYPlotter myplot = new XYPlotter(_toplevel, "CTXYPlot");
-            myplot.setPanel(this);
+            myplot.place(this);
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(-25.0, 25.0);
             myplot.plot.setYRange(-25.0, 25.0);

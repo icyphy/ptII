@@ -89,7 +89,7 @@ public class NonlinearClientApplication {
             TypedIOPort cout = new TypedIOPort(_client, "output", false, true);
             TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
             
-            myplot.setPanel(null);
+            myplot.place(null);
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(0.0, 6.0);
             myplot.plot.setYRange(-2.0, 2.0);

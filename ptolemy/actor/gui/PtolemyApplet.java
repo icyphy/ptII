@@ -31,16 +31,17 @@
 package ptolemy.actor.gui;
 
 // Java imports
-import java.applet.Applet;
 import java.lang.System;
-import java.awt.*;
 import java.awt.event.*;
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JApplet;
 
 // Ptolemy imports
-// import ptolemy.gui.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 
@@ -59,7 +60,7 @@ controlling the background color.
 @author Edward A. Lee
 @version $Id$
 */
-public class PtolemyApplet extends Applet implements ExecutionListener {
+public class PtolemyApplet extends JApplet implements ExecutionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -125,7 +126,10 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
         } catch (Exception ex) {
             report("Warning: background parameter failed: ", ex);
         }
+        // FIXME: None of the following work!
+        getRootPane().setBackground(_background);
         setBackground(_background);
+        getContentPane().setBackground(_background);
         _setupOK = true;
 
         _workspace = new Workspace(getClass().getName());
@@ -259,15 +263,18 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  additional controls, or to create a panel with a different layout.
      *  @param numberOfButtons How many buttons to create.
      */
-    protected Panel _createRunControls(int numberOfButtons) {
-        Panel panel = new Panel();
+    protected JPanel _createRunControls(int numberOfButtons) {
+        JPanel panel = new JPanel();
+        // Despite Sun's documentation, the default is that a panel
+        // is opaque, so the background doesn't come through.  Change that...
+        panel.setOpaque(false);
         if (numberOfButtons > 0) {
-            _goButton = new Button("Go");
+            _goButton = new JButton("Go");
             panel.add(_goButton);
             _goButton.addActionListener(new GoButtonListener());
         }
         if (numberOfButtons > 1) {
-            _stopButton = new Button("Stop");
+            _stopButton = new JButton("Stop");
             panel.add(_stopButton);
             _stopButton.addActionListener(new StopButtonListener());
         }
@@ -345,8 +352,8 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Button _goButton;
-    private Button _stopButton;
+    private JButton _goButton;
+    private JButton _stopButton;
     private Manager.State _previousState;
 
     ///////////////////////////////////////////////////////////////////
@@ -367,5 +374,4 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
             _stop();
         }
     }
-
 }

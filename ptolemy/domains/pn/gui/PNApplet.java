@@ -33,6 +33,7 @@ package ptolemy.domains.pn.gui;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
@@ -123,13 +124,13 @@ public class PNApplet extends PtolemyApplet {
      *  the buttons and the entry box is returned.
      *  @param numbuttons The number of buttons to create.
      */
-    protected Panel _createRunControls(int numbuttons) {
-        Panel panel = super._createRunControls(numbuttons);
+    protected JPanel _createRunControls(int numbuttons) {
+        JPanel panel = super._createRunControls(numbuttons);
         if (!_queuesizegiven) {
             // To keep the label and entry box together, put them
             // in a new panel.
-            Panel queuepanel = new Panel();
-            queuepanel.add(new Label("Initial capacity of FIFO channels:"));
+            JPanel queuepanel = new JPanel();
+            queuepanel.add(new JLabel("Initial capacity of FIFO channels:"));
 
             // Process the defaultiterations parameter.
             String defqueuespec = getParameter("defaultcapacity");

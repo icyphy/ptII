@@ -39,7 +39,8 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Source;
 import ptolemy.plot.*;
-import java.awt.Panel;
+
+import java.awt.Container;
 
 /** This actor produces as its output a signal that is sketched by the
  *  user on the screen.  The <i>length</i> parameter specifies the
@@ -62,9 +63,9 @@ import java.awt.Panel;
  *  processing the sketched signal.
  *  <p>
  *  When this actor has its own plot widget, you can specify where that
- *  widget appears by calling setPanel().  If you do not, then the
+ *  widget appears by calling place().  If you do not, then the
  *  plot widget will be created in its own window.  You can also
- *  call setPanel() with an argument that is an instance of EditablePlot.
+ *  call place() with an argument that is an instance of EditablePlot.
  *  This is how you create a shared plot.  That same instance of
  *  EditablePlot can be used by another actor, such as SequencePlotter,
  *  to display data.  Be sure to set the <i>dataset</i> parameter
@@ -74,7 +75,8 @@ import java.awt.Panel;
  *  @author  Edward A. Lee
  *  @version $Id$
  */
-public class SketchedSource extends Source implements SequenceActor {
+public class SketchedSource extends Source
+        implements Placeable, SequenceActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -190,7 +192,7 @@ public class SketchedSource extends Source implements SequenceActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (plot == null) {
-            setPanel(_panel);
+            place(_container);
         }
         // NOTE: Do not clear the plot here, as that will erase
         // user-entered data!
@@ -200,13 +202,13 @@ public class SketchedSource extends Source implements SequenceActor {
         _data = ((EditablePlot)plot).getData(set);
     }
 
-    /** Specify the panel into which this editable plot should be placed.
+    /** Specify the container into which this editable plot should be placed.
      *  This method needs to be called before the first call to initialize().
      *  Otherwise, the plot will be placed in its own frame.
      *  The plot is also placed in its own frame if this method
      *  is called with a null argument.  The size of the plot,
      *  unfortunately, cannot be effectively determined from the size
-     *  of the panel because the panel may not yet be laid out
+     *  of the container because the container may not yet be laid out
      *  (its size will be zero).  Thus, you will have to explicitly
      *  set the size of the plot by calling plot.setSize().
      *  This method can be called with an instance of EditablePlot
@@ -214,20 +216,20 @@ public class SketchedSource extends Source implements SequenceActor {
      *  This way, the same plot object can be shared by a SequencePlotter
      *  actor and an instance of this actor.
      *
-     *  @param panel The panel into which to place the plot.
+     *  @param container The container into which to place the plot.
      */
-    public void setPanel(Panel panel) {
-        _panel = panel;
-        if (_panel == null) {
+    public void place(Container container) {
+        _container = container;
+        if (_container == null) {
             // place the plot in its own frame.
             plot = new EditablePlot();
             PlotFrame frame = new PlotFrame(getFullName(), plot);
         } else {
-            if (_panel instanceof EditablePlot) {
-                plot = (EditablePlot)_panel;
+            if (_container instanceof EditablePlot) {
+                plot = (EditablePlot)_container;
             } else {
                 plot = new EditablePlot();
-                _panel.add(plot);
+                _container.add(plot);
                 plot.setButtons(true);
             }
         }
@@ -256,8 +258,8 @@ public class SketchedSource extends Source implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
-    /** @serial Panel into which this plot should be placed */
-    protected Panel _panel;
+    /** @serial GUI Container into which this plot should be placed */
+    protected Container _container;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////

@@ -31,12 +31,12 @@
 
 package ptolemy.actor.gui;
 
-import java.awt.Panel;
+import java.awt.Container;
 
 //////////////////////////////////////////////////////////////////////////
 //// Placeable
 /**
-Interface for objects that have UI components that can be placed in panels.
+Interface for objects that have UI components that can be placed in containers.
 
 @author Edward A. Lee
 @version $Id$
@@ -46,11 +46,12 @@ public interface Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Specify the panel into which this object should be placed.
+    /** Specify the container into which this object should be placed.
      *  Obviously, this method needs to be called before the object
-     *  is actually placed in a panel.  Otherwise, the object will be
+     *  is actually placed in a container.  Otherwise, the object will be
      *  expected to create its own frame into which to place itself.
      *  For actors, this method should be called before initialize().
+     *  @param container The container in which to place the object.
      */
-    public void setPanel(Panel panel);
+    public void place(Container container);
 }

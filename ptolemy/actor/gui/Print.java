@@ -34,7 +34,12 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
-import java.awt.*;
+
+import java.awt.Container;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JTextArea;
+import javax.swing.JFrame;
 
 /** Display the values of the tokens arriving on the input channels
  *  in a text area on the screen.
@@ -63,7 +68,7 @@ public class Print extends TypedAtomicActor implements Placeable {
     public TypedIOPort input;
 
     /** The text area in which the data will be displayed. */
-    public TextArea textArea;
+    public JTextArea textArea;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -104,45 +109,48 @@ public class Print extends TypedAtomicActor implements Placeable {
 
     /** Create a text area on the screen, if necessary, or clear the
      *  previously existing text area.
-     *  If a panel has not been specified, place the text area into
-     *  its own frame.  Otherwise, place it in the specified panel.
+     *  If a grapical container has not been specified,
+     *  place the text area into
+     *  its own frame.  Otherwise, place it in the specified container.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (textArea == null) {
-            setPanel(_panel);
+            place(_container);
         } else {
-            // FIXME: Incredibly, TextArea has no clear method!
+            // FIXME: Incredibly, JTextArea has no clear method!
             // textArea.clear();
         }
     }
 
-    /** Specify the panel in which the data should be displayed.
-     *  An instance of TextArea will be added to that panel.
+    /** Specify the container in which the data should be displayed.
+     *  An instance of JTextArea will be added to that container.
      *  This method needs to be called before the first call to initialize().
      *  Otherwise, an instance of TextArea will be placed in its own frame.
      *  The text area is also placed in its own frame if this method
      *  is called with a null argument.
      *
-     *  @param panel The panel into which to place the text area.
+     *  @param container The container into which to place the text area.
      */
-    public void setPanel(Panel panel) {
-        _panel = panel;
-        if (_panel == null) {
+    public void place(Container container) {
+        _container = container;
+        if (_container == null) {
             // place the text area in its own frame.
             // FIXME: This probably needs to be a PtolemyFrame, when one
             // exists, so that the close button is dealt with, etc.
-            Frame frame = new Frame(getFullName());
-            frame.add(textArea);
+            JFrame frame = new JFrame(getFullName());
+            textArea = new JTextArea();
+            frame.getContentPane().add(textArea);
         } else {
-            textArea = new TextArea();
-            _panel.add(textArea);
+            textArea = new JTextArea();
+            textArea.setBorder(BorderFactory.createLineBorder(Color.black));
+            _container.add(textArea);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    private Panel _panel;
+    private Container _container;
 }

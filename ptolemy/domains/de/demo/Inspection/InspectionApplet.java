@@ -183,7 +183,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
 
             // Create and configure plotter
             _eventplot = new TimedPlotter(_toplevel, "plot");
-            _eventplot.setPanel(this);
+            _eventplot.place(getContentPane());
             _eventplot.plot.setGrid(false);
             _eventplot.plot.setTitle("Events");
             _eventplot.plot.addLegend(0, "Bus");
@@ -201,7 +201,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
 
             // Create and configure histogram
             _histplot = new HistogramPlotter(_toplevel, "histplot");
-            _histplot.setPanel(this);
+            _histplot.place(getContentPane());
             _histplot.histogram.setGrid(false);
             _histplot.histogram.setTitle("Histogram of Waiting Times");
             _histplot.histogram.setXLabel("Waiting Time");

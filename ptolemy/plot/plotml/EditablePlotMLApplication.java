@@ -175,7 +175,8 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         query.addChoice("choice",
                 "Choose a data set, then drag the right mouse button",
                 choices, choices[0]);
-        PanelDialog dialog = new PanelDialog(this, "Select dataset", query);
+        ComponentDialog dialog =
+                new ComponentDialog(this, "Select dataset", query);
         String buttonPressed = dialog.buttonPressed();
         if (buttonPressed.equals("OK")) {
             int result = query.intValue("choice");

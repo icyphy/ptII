@@ -30,7 +30,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gui;
 
-import java.awt.Panel;
+import java.awt.Container;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -128,7 +130,8 @@ public class Plotter extends TypedAtomicActor
 
     /** Configure the plot with data from the specified input stream,
      *  which is assumed to be in PlotML format.  This should be called
-     *  after setPanel(), if setPanel() is going to be called at all.
+     *  after place(), if place()
+     *  is going to be called at all.
      *  @param base The base relative to which references within the input
      *   stream are found, or null if this is not known.
      *  @param in InputStream
@@ -137,7 +140,7 @@ public class Plotter extends TypedAtomicActor
      */
     public void configure(URL base, InputStream in) throws Exception {
         if (plot == null) {
-            setPanel(_panel);
+            place(_container);
         }
 
         PlotMLParser parser = new PlotMLParser(plot);
@@ -150,7 +153,7 @@ public class Plotter extends TypedAtomicActor
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (plot == null) {
-            setPanel(_panel);
+            place(_container);
         }
         int width = plot.getNumDataSets();
         int offset = ((IntToken)startingDataset.getToken()).intValue();
@@ -160,31 +163,31 @@ public class Plotter extends TypedAtomicActor
         plot.repaint();
     }
 
-    /** Specify the panel into which this plot should be placed.
+    /** Specify the container into which this plot should be placed.
      *  This method needs to be called before the first call to initialize().
      *  Otherwise, the plot will be placed in its own frame.
      *  The plot is also placed in its own frame if this method
      *  is called with a null argument.  The size of the plot,
      *  unfortunately, cannot be effectively determined from the size
-     *  of the panel because the panel may not yet be laid out
+     *  of the container because the container may not yet be laid out
      *  (its size will be zero).  Thus, you will have to explicitly
      *  set the size of the plot by calling plot.setSize().
      *
-     *  @param panel The panel into which to place the plot.
+     *  @param container The container into which to place the plot.
      */
-    public void setPanel(Panel panel) {
-        _panel = panel;
-        if (_panel == null) {
+    public void place(Container container) {
+        _container = container;
+        if (_container == null) {
             // place the plot in its own frame.
             plot = new Plot();
             PlotFrame frame = new PlotFrame(getFullName(), plot);
 	    frame.setVisible(true);
         } else {
-            if (_panel instanceof Plot) {
-                plot = (Plot)_panel;
+            if (_container instanceof Plot) {
+                plot = (Plot)_container;
             } else {
                 plot = new Plot();
-                _panel.add(plot);
+                _container.add(plot);
                 plot.setButtons(true);
             }
         }
@@ -207,6 +210,6 @@ public class Plotter extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
-    /** @serial Panel into which this plot should be placed */
-    protected Panel _panel;
+    /** @serial Container into which this plot should be placed */
+    protected Container _container;
 }

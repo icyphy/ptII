@@ -33,15 +33,20 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
-import java.io.*;
 import ptolemy.actor.*;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.domains.sdf.kernel.*;
+import ptolemy.media.Picture;
+
+import java.io.*;
 import java.text.MessageFormat;
 import java.util.Enumeration;
-import ptolemy.domains.sdf.kernel.*;
-import java.awt.*;
+import java.awt.Container;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.awt.image.*;
-import ptolemy.media.Picture;
+import javax.swing.JFrame;
+import javax.swing.JWindow;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
@@ -57,7 +62,7 @@ input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 @version $Id$
 */
 
-public final class ImageDisplay extends SDFAtomicActor {
+public final class ImageDisplay extends SDFAtomicActor implements Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -78,7 +83,7 @@ public final class ImageDisplay extends SDFAtomicActor {
         _oldxsize = 0;
         _oldysize = 0;
         _frame = null;
-        _panel = null;
+        _container = null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,7 +115,7 @@ public final class ImageDisplay extends SDFAtomicActor {
 
     /**
      * Initialize this actor.
-     * If setPanel has not been called, then create a frame to display the
+     * If place has not been called, then create a frame to display the
      * image in.
      * @exception IllegalActionException If a contained method throws it.
      */
@@ -119,9 +124,9 @@ public final class ImageDisplay extends SDFAtomicActor {
 
         _oldxsize = 0;
         _oldysize = 0;
-        if(_panel == null) {
+        if(_container == null) {
             _frame = new _PictureFrame("ImageDisplay");
-            _panel = _frame.getPanel();
+            _container = _frame.getContainer();
         } else {
             _frame = null;
         }
@@ -132,7 +137,7 @@ public final class ImageDisplay extends SDFAtomicActor {
      * Consume an IntMatrixToken from the input port.  If the image is not
      * the same size as the previous image, or this is the first image, then
      * create a new Picture object to represent the image, and put it in the
-     * appropriate panel (either the panel set using setPanel, or the frame
+     * appropriate container (either the container set using place, or the frame
      * created during the initialize phase).
      * Convert the pixels from greyscale to RGBA triples (setting the
      * image to be opaque) and update the picture.
@@ -151,32 +156,32 @@ public final class ImageDisplay extends SDFAtomicActor {
             _oldxsize = xsize;
             _oldysize = ysize;
             _RGBbuffer = new int[xsize*ysize];
-            if(_panel == null) {
+            if(_container == null) {
                 _frame = new _PictureFrame("ImageDisplay");
-                _panel = _frame.getPanel();
+                _container = _frame.getContainer();
             } else {
                 _frame = null;
             }
             if(_picture != null)
-                _panel.remove(_picture);
-            _panel.setSize(xsize, ysize);
+                _container.remove(_picture);
+            _container.setSize(xsize, ysize);
             _picture = new Picture(xsize, ysize);
             _picture.setImage(_RGBbuffer);
-            _panel.add("Center", _picture);
-            _panel.validate();
+            _container.add("Center", _picture);
+            _container.validate();
 
-            Container c = _panel.getParent();
+            Container c = _container.getParent();
             while(c.getParent() != null) {
                 c = c.getParent();
             }
-            if(c instanceof Window) {
-                ((Window) c).pack();
+            if(c instanceof JWindow) {
+                ((JWindow) c).pack();
             } else {
                 c.validate();
             }
 
-            _panel.invalidate();
-            _panel.repaint();
+            _container.invalidate();
+            _container.repaint();
 
             if(_frame != null) {
                 _frame.pack();
@@ -200,35 +205,35 @@ public final class ImageDisplay extends SDFAtomicActor {
         _picture.repaint();
     }
 
-    /** Set the panel that this actor should display data in.  If setPanel
+    /** Set the container that this actor should display data in.  If place
      * is not called, then the actor will create its own frame for display.
      */
-    public void setPanel(Panel panel) {
-        _panel = panel;
+    public void place(Container container) {
+        _container = container;
     }
 
-    /** This inner class provides a convenient way to create a Frame for the
+    /** This inner class provides a convenient way to create a JFrame for the
      *  picture when it becomes necessary.
      */
-    private class _PictureFrame extends Frame {
+    private class _PictureFrame extends JFrame {
         public _PictureFrame(String title) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
             this.show();
-            _panel = new Panel();
-            this.add("Center", _panel);
+            _container = new Container();
+            this.add("Center", _container);
             this.pack();
             this.validate();
         }
-        public Panel getPanel() {
-            return _panel;
+        public Container getContainer() {
+            return _container;
         }
-        private Panel _panel;
+        private Container _container;
     }
 
     private Picture _picture;
     private _PictureFrame _frame;
-    private Panel _panel;
+    private Container _container;
     private int _oldxsize, _oldysize;
     private int _RGBbuffer[] = null;
 }

@@ -58,6 +58,7 @@ import java.util.*;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.JButton;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocalZenoApplet
@@ -82,17 +83,17 @@ public class LocalZenoApplet extends DDEApplet {
 	setLayout( new BorderLayout(5, 5) );
 
 	// Panel for controls and plotter
-	Panel topPanel = new Panel();
+	JPanel topPanel = new JPanel();
 	topPanel.setSize( new Dimension(600, 200) );
 
 	// The '3' argument specifies a 'go', 'stop' and 'layout' buttons.
 	topPanel.add( _createRunControls(3), BorderLayout.NORTH );
 
-	_plotPanel = new Panel();
+	_plotPanel = new JPanel();
 	_plotPanel.setSize( new Dimension(600, 200) );
 	topPanel.add( _plotPanel, BorderLayout.CENTER );
 
-	add( topPanel, BorderLayout.NORTH );
+	getContentPane().add( topPanel, BorderLayout.NORTH );
 
 	constructPtolemyModel();
 
@@ -211,7 +212,7 @@ public class LocalZenoApplet extends DDEApplet {
 
 	    _upperTime = new TimeAdvance( _toplevel, "upperTime" );
 	    _upperPlotter = new TimedPlotter( _toplevel, "upperPlotter" );
-	    _upperPlotter.setPanel( _plotPanel );
+	    _upperPlotter.place( _plotPanel );
 	    _upperPlotter.plot.setTitle("Upper Branch");
 	    _upperPlotter.plot.setXRange(0.0, 90.0);
 	    _upperPlotter.plot.setYRange(-1.0, 1.0);
@@ -220,7 +221,7 @@ public class LocalZenoApplet extends DDEApplet {
 
 	    _lowerTime = new TimeAdvance( _toplevel, "lowerTime" );
 	    _lowerPlotter = new TimedPlotter( _toplevel, "lowerPlotter" );
-	    _lowerPlotter.setPanel( _plotPanel );
+	    _lowerPlotter.place( _plotPanel );
 	    _lowerPlotter.plot.setTitle("Lower Branch");
 	    _lowerPlotter.plot.setXRange(0.0, 90.0);
 	    _lowerPlotter.plot.setYRange(-1.0, 1.0);
@@ -312,11 +313,11 @@ public class LocalZenoApplet extends DDEApplet {
      *  the buttons and the entry box is returned.
      *  @param numButtons The number of buttons to create.
      */
-    protected Panel _createRunControls(int numButtons) {
-        Panel controlPanel = super._createRunControls(numButtons);
+    protected JPanel _createRunControls(int numButtons) {
+        JPanel controlPanel = super._createRunControls(numButtons);
 
         if (numButtons > 2) {
-            Button layout = new Button("Layout");
+            JButton layout = new JButton("Layout");
             controlPanel.add(layout);
             layout.addActionListener(new LayoutListener());
         }
@@ -343,7 +344,7 @@ public class LocalZenoApplet extends DDEApplet {
     private TimedPlotter _lowerPlotter;
 
     // Plot Panel
-    private Panel _plotPanel;
+    private JPanel _plotPanel;
 
     // The mapping from Ptolemy actors to Diva graph nodes
     private HashMap _nodeMap = new HashMap();

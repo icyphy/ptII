@@ -30,8 +30,6 @@
 
 package ptolemy.domains.sdf.demo.ComSystem;
 
-import java.applet.Applet;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.Enumeration;
 
@@ -70,7 +68,7 @@ public class ComSystem extends SDFApplet {
     public void init() {
         super.init();
         // The 1 argument requests a go and a stop button.
-        add(_createRunControls(2));
+        getContentPane().add(_createRunControls(2));
         try {
             // Create and configure data source
             Bernoulli data = new Bernoulli(_toplevel, "data");
@@ -97,7 +95,7 @@ public class ComSystem extends SDFApplet {
 
             // Create and configure plotter
             SequencePlotter myplot = new SequencePlotter(_toplevel, "plot");
-            myplot.setPanel(this);
+            myplot.place(getContentPane());
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Eye Diagram");
             myplot.plot.setXRange(0.0, 32.0);

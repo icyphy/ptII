@@ -37,8 +37,6 @@ import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.Plot;
 import ptolemy.gui.Query;
-import ptolemy.gui.PanelDialog;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;

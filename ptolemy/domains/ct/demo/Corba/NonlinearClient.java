@@ -103,7 +103,7 @@ public class NonlinearClient extends CTApplet{
             TypedIOPort cin = new TypedIOPort(_client, "input", true, false);
             TypedIOPort cout = new TypedIOPort(_client, "output", false, true);
             TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
-            myplot.setPanel(this);
+            myplot.place(this);
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(0.0, 6.0);
             myplot.plot.setYRange(-2.0, 2.0);
