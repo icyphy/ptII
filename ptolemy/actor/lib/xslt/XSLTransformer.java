@@ -1,6 +1,6 @@
 /* An actor that read an XSLT file and apply it to its input.
 
-@Copyright (c) 1998-2002 The Regents of the University of California.
+@Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -36,13 +36,17 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.*;
-import java.io.*;
-import org.w3c.dom.*;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import javax.xml.transform.TransformerException;
+import org.w3c.dom.Document;
 
 //////////////////////////////////////////////////////////////////////////
-//// XsltTransformer
+//// XSLTTransformer
 /**
-This actor reads an xslt file and apply it to a dom tree. The file or
+This actor reads an XSLT file and apply it to a dom tree. The file or
 URL is specified using any form acceptable to the FileAttribute class.
 
 <p>FIXME: what should the type of the input/output ports be???.
@@ -130,7 +134,7 @@ public class XSLTransformer extends Transformer{
                             output.broadcast(t);
                             //System.out.println("--- change request string token send out. \n");
                         }
-                    } catch (Exception ex) {
+                    } catch (TransformerException ex) {
                         throw new IllegalActionException(this, ex,
                                 "Failed  to process '" + in + "'");
                     }
