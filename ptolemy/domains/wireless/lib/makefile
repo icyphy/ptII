@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/wireless/lib
 
-DIRS = 		test mac
+DIRS = 		test network
 
 # Root of the Java directory
 ROOT =		../../../..
