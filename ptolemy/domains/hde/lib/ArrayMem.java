@@ -84,8 +84,8 @@ public class ArrayMem extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	// Set type constraints.
-	index = new TypedIOPort(this, "index", true, false);
+        // Set type constraints.
+        index = new TypedIOPort(this, "index", true, false);
         index.setTypeEquals(BaseType.INT);
       
         dataInPar = new TypedIOPort(this, "dataInPar", true, false);
@@ -173,18 +173,18 @@ public class ArrayMem extends TypedAtomicActor {
      *   is out of range.
      */
     public void fire() throws IllegalActionException {
-	BooleanToken yes=BooleanToken.TRUE;
+        BooleanToken yes=BooleanToken.TRUE;
         /**Read the Serial/Parallel Control*/
         if(serPar.hasToken(0)){
             _serPar = ((BooleanToken)serPar.get(0)).booleanValue();
-	}  	
+        }          
     
      
-        /** Read the Index*/	  
+        /** Read the Index*/          
         if (index.hasToken(0)) {
             _index = ((IntToken)index.get(0)).intValue();
             if ((_index < 0) || (_index >= _aLength)) {
-		throw new IllegalActionException(this,
+                throw new IllegalActionException(this,
                         "index " + _index + " is out of range for the memory "
                         + "array, which has length " + _aLength);
             }
