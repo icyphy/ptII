@@ -139,9 +139,9 @@ public class BackwardEulerSolver extends FixedStepSolver
                 next.fire();
             }
             if(iterations++ > dir.getMaxIterations()) {
-                throw new InvalidStateException(this,
+                throw new NumericalNonconvergeException(this,
                     "Fixed point is not converge for maximum iterations "+
-                    dir.getMaxIterations());
+                    dir.getMaxIterations() + " at time "+dir.getCurrentTime());
             }
         }
     }

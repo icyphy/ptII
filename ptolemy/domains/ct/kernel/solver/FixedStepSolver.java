@@ -75,6 +75,13 @@ public abstract class FixedStepSolver extends ODESolver{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true always, since this is a fixed step size method.
+     *  @return true always.
+     */
+    public final boolean errorTolerable(){
+        return true;
+    }
+
     /** Hook method for isSuccess() method of integrators.
      *  Always returns true, since not error control.
      *  @return True always.
@@ -92,16 +99,21 @@ public abstract class FixedStepSolver extends ODESolver{
         return 0;
     }
 
+    /** Method for resolveing the next step size if the current
+     *  step is a success. Do nothing in this kind of methods.
+     *  Different solver may implement it differently.
+     * 
+     * @exception IllegalActionException Not thrown in this base
+     *  class. May be needed by the derived class.
+     */
+    public void resolveNextStepSize(){
+     }
+
     /** Override the startOverLastStep() for the base class. Do nothing.
      */
     public final void startOverLastStep(){
     }
 
-    /** Return true always, since this is a fixed step size method.
-     *  @return true always.
-     */
-    public final boolean errorTolerable(){
-        return true;
-    }
+
 
 }
