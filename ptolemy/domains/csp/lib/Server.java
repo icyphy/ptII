@@ -47,7 +47,8 @@ import java.util.Random;
 
 Model of a server in a M/M/1 queue. It serves customers with times
 that are exponentially distributed. It is parameterized by the
-Parameter "serviceRate". The default service rate is 1.
+Parameter "serviceRate". The default service rate is 1. The process 
+continues executing until a TerminateProcesException is thrown.
 <p>
 @author Neil Smyth
 @version $Id$
@@ -126,17 +127,16 @@ public class Server extends CSPActor {
      *  representing the service times, described by an 
      *  exponential distribution. A customer arrival is marked by 
      *  the arrival of a message at the input channel of the actor. 
-     *  It then repeats.
+     *  It then repeats. This process continues
      *  executing until a TerminateProcessException is thrown.
      *  @exception IllegalActionException If an error occurs during 
      *   executing the process.
      */
     public void fire() throws IllegalActionException {
         Random rand = new Random();
-        int count = 0;
         double interval = 0;
         try {
-            while (count < 10 ) {
+            while (true) {
                 Token t = _input.get(0);
                 //double rate = ((DoubleToken)_rate.getToken()).doubleValue();
                 double rate = 1.0;
@@ -146,7 +146,6 @@ public class Server extends CSPActor {
                 delay(interval/1000);
                 System.out.println(getName() + " serviced customer: " +
                       t.toString());
-                count++;
             }
             System.out.println("Server(" + getName() + "):finished normally.");
             return;
