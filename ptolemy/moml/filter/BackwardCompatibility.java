@@ -38,7 +38,7 @@ import java.util.List;
 /** Return a list where each element is a backward compatibility filter
 to be applied by the MoMLParser
 
-<p>When this class is registered with 
+<p>When this class is registered with
 <pre>
 MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters())
 <pre>
@@ -50,16 +50,16 @@ earlier releases will run in the current release.
 @since Ptolemy II 2.0
 */
 public class BackwardCompatibility {
-    /** Return a list where each element of the list is a 
+    /** Return a list where each element of the list is a
      *  MoMLFilter to be applied to handle backward compatibility
      */
     public static List allFilters() {
-	List results = new LinkedList();
-	results.add(new AddEditorFactory());
-	results.add(new AddIcon());
-	results.add(new HideAnnotationNames());
-	results.add(new PortNameChanges());
-	results.add(new PropertyClassChanges());
-	return results;
+        List results = new LinkedList();
+        results.add(new AddEditorFactory());
+        results.add(new AddIcon());
+        results.add(new HideAnnotationNames());
+        results.add(new PortNameChanges());
+        results.add(new PropertyClassChanges());
+        return results;
     }
 }
