@@ -1,3 +1,5 @@
+
+The comm API comes from http://java.sun.com/products/javacomm/
 To install the comm API on a Windows machine:
 
 - place the win32com.dll in <jdk>\jre\bin directory. 
