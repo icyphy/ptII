@@ -464,7 +464,7 @@ public class Director extends NamedObj implements Executable {
                         if (insiderecs[i][j].hasToken()) {
                             try {
                                 Token t = insiderecs[i][j].get();
-                                port.send(i,t);
+                                port.send(i, t);
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
                                         "Director.transferOutputs: " +
