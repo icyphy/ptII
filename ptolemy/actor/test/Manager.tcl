@@ -314,11 +314,12 @@ test Manager-10.0 {Test execution listener} {
     regsub {[0-9]* ms.*$} $stdoutResults "xxx ms" stdoutResultsWithoutTime
 
     #puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
+    #9/02 - 'processing mutations' moved from line 4 to line 2
     list $stdoutResultsWithoutTime [[$manager getState] getDescription] 
 } {{preinitializing
+processing mutations
 resolving types
 initializing
-processing mutations
 executing number 1
 wrapping up
 idle
@@ -358,11 +359,12 @@ test Manager-10.1 {Test execution listener with one arg} {
     regsub -all {	at .*$\n} $stdoutResultsWithoutTime "" \
 	    stdoutResultsWithoutStackTrace	   
     #puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
+    #9/02 - 'processing mutations' moved from line 4 to line 2
     list $stdoutResultsWithoutStackTrace
 } {{preinitializing
+processing mutations
 resolving types
 initializing
-processing mutations
 executing number 1
 wrapping up
 idle
