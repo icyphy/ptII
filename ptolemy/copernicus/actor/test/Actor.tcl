@@ -44,13 +44,14 @@ if {[info procs sootCodeGeneration] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-test Actor-1.1 {Compile and run the SDF IIR test} {
+test Actor-1.1 {Generate a .class file for the Sinewave.xml composite actor} {
     global PTII
+    catch {file delete -force ../cg/Sinewave/Sinewave/Sinewave.class}
     set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy actor lib Sinewave.xml] \
-	    "Actor"]
+	    "Actor" {} 0 0]
     puts $result
-    list {}
-} {{}}
+    file exists ../cg/Sinewave/Sinewave/Sinewave.class
+} {1}
 
 
