@@ -4,7 +4,7 @@
 #
 # @Version: : CSPActor.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
 #
-# @Copyright (c) 1999 The Regents of the University of California.
+# @Copyright (c) 1999-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
