@@ -566,13 +566,14 @@ public class BrowserLauncher {
      * Methods required for Mac OS X.  The presence of native methods
      * does not cause any problems on other platforms.
      */
-    private native static int ICStart(int[] instance, int signature);
-    private native static int ICStop(int[] instance);
-
     private native static int ICLaunchURL(int instance, byte[] hint,
             byte[] data, int len,
             int[] selectionStart,
             int[] selectionEnd);
+
+    private native static int ICStart(int[] instance, int signature);
+    private native static int ICStop(int[] instance);
+
 
     /**
      * Called by a static initializer to load any classes, fields, and
