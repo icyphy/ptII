@@ -76,41 +76,48 @@ public class CSPBuffer extends CSPActor {
     public void fire() {
         try {
             int count = 0;
+            boolean guard = false;
+            boolean continueCDO = true;
             ConditionalBranch[] branches = new ConditionalBranch[2];
-            while (true) {
-                
-                if (_size < _depth) {
-                    branches[0] = new ConditionalReceive(input, 0, 0);
-                } else {
-                    branches[0] = null;
-                } 
-                if (_size > 0) {
-                    branches[1] = new ConditionalSend(output, 0, 1, 
-                            _buffer[_readFrom]);
-                } else {
-                    branches[1] = null;
-                }
-                int successfulBranch = chooseBranch(branches);
+            while (continueCDO) {
+                // step 1
+                guard = (_size < _depth);
+                branches[0] = new ConditionalReceive(guard, input, 0, 0);
+              
+                guard = (_size > 0);
+                branches[1] = new ConditionalSend(guard, output, 0, 1, 
+                        _buffer[_readFrom]);
 
+                // step 2
+                int successfulBranch = chooseBranch(branches);
+                                
+                // step 3
                 if (successfulBranch == 0) {
                     _size++;
-                    _buffer[_writeTo] = getToken();
+                    _buffer[_writeTo] = branches[0].getToken();
                     System.out.println(getName() + " got Token: " + 
                             _buffer[_writeTo].toString() + ", size is: " + 
                             _size);
                     _writeTo = ++_writeTo % _depth;
-                } else {
-                    // successful branch = 1
+                } else if (successfulBranch == 1) {
                     _size--;
                     System.out.println(getName() + " sent Token: " + 
                             _buffer[_readFrom].toString() + ", size is: " +
                             _size);
                     _readFrom = ++_readFrom % _depth;
+                } else if (successfulBranch == -1) {
+                    // all guards false so exit CDO
+                    continueCDO = false;
+                } else {
+                    throw new TerminateProcessException(getName() + ": " +
+                            "branch id returned during execution of CDO.");
                 }
+
                 count++;
             }
         } catch (IllegalActionException ex) {
-            System.out.println("CSPBuffer: IllegalActionException, exitingy" + ex.getMessage());
+            System.out.println("CSPBuffer: IllegalActionException, exiting" + 
+                    ex.getMessage());
         } catch (NoTokenException ex) {
             System.out.println("CSPBuffer: cannot get token.");
         } finally {

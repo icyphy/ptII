@@ -36,7 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
-import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSource
@@ -69,21 +68,23 @@ public class CSPMultiSource extends CSPActor {
             int size = output.getWidth();
             _branchCount = new int[size];
             int i = 0;
-            boolean[] bools = new boolean[size];
+            boolean[] guards = new boolean[size];
             for (i=0; i<size; i++) {
                 _branchCount[i] = 0;
-                bools[i] = true;
+                guards[i] = true;
             }
-            Token t;
-            while (count < 25 ) {
-                t = new IntToken(count);
+
+            boolean continueCDO = true;
+            while (continueCDO || (count < 25) ) {
+                Token t = new IntToken(count);
                 ConditionalBranch[] branches = new ConditionalBranch[size];
                 for (i=0; i<size; i++) {
-                    if (bools[i]) {
-                        branches[i] = new ConditionalSend(output, i, i,t);
-                    }
+                    branches[i] = new ConditionalSend(guards[i], 
+                            output, i, i, t);
                 }
+
                 int successfulBranch = chooseBranch(branches);
+
                 _branchCount[successfulBranch]++;
                 boolean flag = false;
                 for (i=0; i<size; i++) {
@@ -93,8 +94,13 @@ public class CSPMultiSource extends CSPActor {
                         flag = true;
                     }
                 }
-                if (!flag) {
-                    System.out.println("Error: branch id not valid!");
+                if (successfulBranch == -1) {
+                    // all guards false so exit CDO
+                    continueCDO = false;
+                } else if (!flag) {
+                    throw new TerminateProcessException(getName() + ": " +
+                            "invalid branch id returned during execution " +
+                            "of CDO.");
                 }
                 count++;
             }

@@ -68,30 +68,38 @@ public class CSPMultiSink extends CSPActor {
             int size = input.getWidth();
             _branchCount = new int[size];
             int i = 0;
-            boolean[] bools = new boolean[size];
+            boolean[] guards = new boolean[size];
             for (i=0; i<size; i++) {
                 _branchCount[i] = 0;
-                bools[i] = true;
+                guards[i] = true;
             }
-            while (count < 25 ) {
+
+            boolean continueCDO = true;
+            while (continueCDO || (count < 25) ) {
                 ConditionalBranch[] branches = new ConditionalBranch[size];
-                for (i=0; i<size; i++) {
-                    if (bools[i]) {
-                        branches[i] = new ConditionalReceive(input, i, i);
-                    }
+                for (i = 0; i < size; i++) {
+                    branches[i] = new ConditionalReceive(guards[i], 
+                            input, i, i);
                 }
+
                 int successfulBranch = chooseBranch(branches);
+
                 _branchCount[successfulBranch]++;
                 boolean flag = false;
                 for (i=0; i<size; i++) {
                     if (successfulBranch == i) {
+                        Token t = branches[successfulBranch].getToken();
                         System.out.println(getName() + ": received Token: " +
-                                getToken().toString() + " from receiver " + i);
+                                t.toString() + " from receiver " + i);
                         flag = true;
                     }
                 }
-                if (!flag) {
-                    System.out.println("Error: branch id not valid!");
+                if (successfulBranch == -1) {
+                    // all guards false so exit CDO
+                    continueCDO = false;
+                } else if (!flag) {
+                    throw new TerminateProcessException(getName() + ": " +
+                            "branch id returned during execution of CDO.");
                 }
                 count++;
             }
