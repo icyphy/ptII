@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating none
+@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 
 */
 
@@ -272,7 +272,8 @@ public class CSPDirector extends ProcessDirector {
     public void wrapup() throws IllegalActionException {
         System.out.println(Thread.currentThread().getName() +
                 ": CSPDirector: about to end the model");
-        if ((_actorsDelayed !=0) || _topologyChangesPending || (_getPausedActorsCount() != 0)) {
+        if ((_actorsDelayed !=0) || _topologyChangesPending || 
+                (_getPausedActorsCount() != 0)) {
             /*throw new InvalidStateException( "CSPDirector wrapping up " +
                     "when there are actors delayed or paused, or when " +
                     "topology changes are pending.");*/
@@ -312,8 +313,9 @@ public class CSPDirector extends ProcessDirector {
 	    throw new InvalidStateException(((Nameable)actor).getName() +
 		       ": delayed for negative time.");
 	} else {
-	  // System.out.println("Delaying actor " + ((Nameable)actor).getName()+
-	  //    " for time " + delta + ".");
+            // System.out.println("Delaying actor " + 
+            // ((Nameable)actor).getName()+
+            //    " for time " + delta + ".");
 	    _actorsDelayed++;
 	    // Enter the actor and the time to wake it up into the
 	    // LinkedList of delayed actors.
