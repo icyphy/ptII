@@ -263,10 +263,18 @@ test ConstVariableModelAnalysis-3.1 {test port parameters} {
     $init setExpression "inport"
     $step setExpression "1"
 
-    set repeat [java::new ptolemy.domains.sdf.lib.Repeat $e1 repeat]
-    set blockSize [getParameter $repeat blockSize]
+    set repeat [java::new ptolemy.actor.TypedAtomicActor $e1 repeat]
+    set blockSize [java::new ptolemy.data.expr.Parameter $repeat blockSize]
     $blockSize setExpression "inport"
-  
+    set numberOfTimes [java::new ptolemy.data.expr.Parameter $repeat numberOfTimes]
+    $numberOfTimes setExpression "5"
+    set repeat_input [java::new ptolemy.actor.TypedIOPort $repeat input]
+    set repeat_output [java::new ptolemy.actor.TypedIOPort $repeat output]
+    set repeat_input_tokenConsumptionRate [java::new ptolemy.data.expr.Parameter $repeat_input tokenConsumptionRate]
+    $repeat_input_tokenConsumptionRate setExpression "blockSize"
+    set repeat_output_tokenProductionRate [java::new ptolemy.data.expr.Parameter $repeat_output tokenProductionRate]
+    $repeat_output_tokenProductionRate setExpression "blockSize * numberOfTimes"
+
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
     list [lsort [listToNames [$analysis getNotConstVariables $e1]]] \
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]] \
@@ -288,9 +296,17 @@ test ConstVariableModelAnalysis-3.2 {test port parameters} {
     $init setExpression "inport"
     $step setExpression "1"
 
-    set repeat [java::new ptolemy.domains.sdf.lib.Repeat $e1 repeat]
-    set blockSize [getParameter $repeat blockSize]
+    set repeat [java::new ptolemy.actor.TypedAtomicActor $e1 repeat]
+    set blockSize [java::new ptolemy.data.expr.Parameter $repeat blockSize]
     $blockSize setExpression "inport"
+    set numberOfTimes [java::new ptolemy.data.expr.Parameter $repeat numberOfTimes]
+    $numberOfTimes setExpression "5"
+    set repeat_input [java::new ptolemy.actor.TypedIOPort $repeat input]
+    set repeat_output [java::new ptolemy.actor.TypedIOPort $repeat output]
+    set repeat_input_tokenConsumptionRate [java::new ptolemy.data.expr.Parameter $repeat_input tokenConsumptionRate]
+    $repeat_input_tokenConsumptionRate setExpression "blockSize"
+    set repeat_output_tokenProductionRate [java::new ptolemy.data.expr.Parameter $repeat_output tokenProductionRate]
+    $repeat_output_tokenProductionRate setExpression "blockSize * numberOfTimes"
   
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
     list [lsort [listToNames [$analysis getConstVariables $e1]]] \
@@ -320,9 +336,17 @@ test ConstVariableModelAnalysis-3.3 {test port parameters} {
     $init setExpression "inport"
     $step setExpression "1"
 
-    set repeat [java::new ptolemy.domains.sdf.lib.Repeat $e1 repeat]
-    set blockSize [getParameter $repeat blockSize]
+    set repeat [java::new ptolemy.actor.TypedAtomicActor $e1 repeat]
+    set blockSize [java::new ptolemy.data.expr.Parameter $repeat blockSize]
     $blockSize setExpression "inport"
+    set numberOfTimes [java::new ptolemy.data.expr.Parameter $repeat numberOfTimes]
+    $numberOfTimes setExpression "5"
+    set repeat_input [java::new ptolemy.actor.TypedIOPort $repeat input]
+    set repeat_output [java::new ptolemy.actor.TypedIOPort $repeat output]
+    set repeat_input_tokenConsumptionRate [java::new ptolemy.data.expr.Parameter $repeat_input tokenConsumptionRate]
+    $repeat_input_tokenConsumptionRate setExpression "blockSize"
+    set repeat_output_tokenProductionRate [java::new ptolemy.data.expr.Parameter $repeat_output tokenProductionRate]
+    $repeat_output_tokenProductionRate setExpression "blockSize * numberOfTimes"
     
     set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0]
     list [[$analysis getChangeContext $inport] getFullName] \
