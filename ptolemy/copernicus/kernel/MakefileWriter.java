@@ -286,11 +286,19 @@ public class MakefileWriter extends SceneTransformer {
         }
 
 
-	try {
-            Map substituteMap = Copernicus.newMap(generatorAttribute); 
+        Map substituteMap;
+        try {
+            substituteMap = Copernicus.newMap(generatorAttribute); 
             substituteMap.put("@outDir@", _outputDirectory);
             substituteMap.put("@targetPackage@", _targetPackage);
             substituteMap.put("@templateDirectory@", _templateDirectory);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(_model, ex,
+                    "Problem generating substitution map from " 
+                    + generatorAttribute);
+        }
+
+	try {
             System.out.println("MakefileWriter: reading '"
                     + _templateDirectory + "makefile.in'\n\t writing '" 
                     + _outputDirectory + "makefile'");
@@ -298,9 +306,6 @@ public class MakefileWriter extends SceneTransformer {
             Copernicus.substitute(_templateDirectory + "makefile.in",
                     substituteMap,
                     _outputDirectory + "makefile");
-            Copernicus.substitute(_templateDirectory + "obfuscateScript.jos.in",
-                    substituteMap,
-                    _outputDirectory + "obfuscateScript.jos");
 	} catch (Exception ex) {
 	    // This exception tends to get eaten by soot, so we print as well.
 	    System.err.println("Problem writing makefile:" + ex);
@@ -308,6 +313,29 @@ public class MakefileWriter extends SceneTransformer {
 	    throw new InternalErrorException(_model, ex,
                     "Problem writing the makefile");
 	}
+
+        // Obfuscation script is optional
+	BufferedReader inputFile = null;
+        String obfuscateTemplate = _templateDirectory
+            + "obfuscateScript.jos.in";
+	try {
+            inputFile = Copernicus.openAsFileOrURL(obfuscateTemplate);
+        } catch (IOException ex) {
+            System.err.println("Note: Optional obfuscation template not "
+                    + "found (This can be ignored): "  + ex);
+        }
+        if (inputFile != null) {
+            try {
+                Copernicus.substitute(inputFile, substituteMap,
+                        _outputDirectory + "obfuscateScript.jos");
+            } catch (Exception ex) {
+                // This exception tends to get eaten by soot, so we print
+                System.err.println("Problem writing obfuscation script:" + ex);
+                ex.printStackTrace();
+                throw new InternalErrorException(_model, ex,
+                        "Problem writing the makefile");
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
