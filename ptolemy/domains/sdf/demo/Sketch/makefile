@@ -47,11 +47,16 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	SketchApplet.java
 
+# Don't include the applet java file in the jar file, Web Start will not
+# refer to it anyway.
+OTHER_FILES_TO_BE_JARED = \
+	Sketch.xml
+
 EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 	Sketch.htm \
-	Sketch.xml \
-	SketchVergil.htm \
-	$(JSRCS)
+	SketchVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

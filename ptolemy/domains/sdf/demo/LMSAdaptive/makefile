@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II SDF Fix Point demo
+# Makefile for Ptolemy II SDF LMS Adaptive demo
 #
-# @Authors: Bart Kienhuis, Christopher Hylands
+# @Authors: Bart Kienhuis, Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo/FixPoint
+ME =		ptolemy/domains/sdf/demo/LMSAdaptive
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,14 +41,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	FixPoint
+PTPACKAGE = 	LMSAdaptive
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) \
-	FixPoint.htm \
-	FixPoint.xml
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	LMSAdaptive.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	LMSAdaptive.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -70,13 +74,13 @@ install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer FixPoint.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer LMSAdaptive.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" FixPoint.xml
+	"$(PTII)/bin/ptolemy" LMSAdaptive.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" FixPoint.xml
+	"$(PTII)/bin/vergil" LMSAdaptive.xml
 
 depend:
 	@echo "no dependencies in this directory"

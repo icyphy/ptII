@@ -46,9 +46,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) \
-	Expression.htm \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
 	Expression.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	Expression.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

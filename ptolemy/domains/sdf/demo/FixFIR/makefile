@@ -46,10 +46,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) \
-	FixFIR.htm \
-	FixFIRVergil.htm \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
 	FixFIR.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	FixFIR.htm \
+	FixFIRVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

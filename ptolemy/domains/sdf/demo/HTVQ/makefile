@@ -47,9 +47,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	HTVQApplet.java
 
-EXTRA_SRCS =	$(JSRCS) \
-	HTVQ.htm \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
 	HTVQ.xml \
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	HTVQ.htm \
 	HTVQVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
