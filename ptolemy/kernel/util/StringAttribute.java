@@ -60,7 +60,7 @@ so that the value can reference other parameters.  The primary reason
 to use StringAttribute is if you want a string that will not be parsed
 and you do not want to type a leading a trailing double quote.
 
-@see Settable#Full
+@see Settable#FULL
 @author Edward A. Lee
 @version $Id$
 */
