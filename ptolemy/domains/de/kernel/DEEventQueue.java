@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @author Lukito Muliadi, Jie Liu
  *  @version $Id$
  *  @see DEReceiver
- *  @see CalendarQueue
+ *  @see ptolemy.actor.util.CalendarQueue
  *  @see DEDirector
  */
 public interface DEEventQueue extends Debuggable{

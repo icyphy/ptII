@@ -63,7 +63,7 @@ import java.lang.Comparable;
  *  @author Lukito Muliadi, Edward A. Lee
  *  @version $Id$
  *  @see DEReceiver
- *  @see CalendarQueue
+ *  @see ptolemy.actor.util.CalendarQueue
  *  @see DEDirector
  */
 

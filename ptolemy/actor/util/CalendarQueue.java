@@ -115,7 +115,7 @@ CalendarQueue class.</i>
 </ul>
 @author Lukito Muliadi and Edward A. Lee
 @version $Id$
-@see CQComparator
+@see ptolemy.actor.util.CQComparator
 */
 
 public class CalendarQueue implements Debuggable {
