@@ -107,7 +107,7 @@ public class ArrayAppend extends Transformer {
      */
     public void fire() throws IllegalActionException {
         Token array[] = null;
-	for(int i=0; i < input.getWidth(); i++) {
+	for(int i = 0; i < input.getWidth(); i++) {
             if(input.hasToken(i)) {
                 ArrayToken token = (ArrayToken)input.get(i);
                 if(array == null) {
