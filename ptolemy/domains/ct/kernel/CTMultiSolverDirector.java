@@ -685,6 +685,51 @@ public class CTMultiSolverDirector extends CTDirector {
         return accurate;
     }
 
+    /** Predict the next step size. This method should be called if the
+     *  current integration step is accurate to estimate the step size
+     *  for the next step. The predicted step size
+     *  is the minimum of all predictions from step size control actors,
+     *  and it never exceeds 10 times this step size.
+     *  If there are no step-size control actors at all, then return
+     *  the current step size.  This results in leaving the step size
+     *  at its initial value.
+     *  @exception IllegalActionException If the scheduler throws it.
+     */
+    protected double _predictNextStepSize() throws IllegalActionException {
+        if (!isBreakpointIteration()) {
+            double predictedStep = 10.0*getCurrentStepSize();
+            boolean foundOne = false;
+            CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+            Iterator actors = schedule.get(
+                    CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS).actorIterator();
+            while (actors.hasNext()) {
+                CTStepSizeControlActor actor =
+                    (CTStepSizeControlActor) actors.next();
+                predictedStep = Math.min(predictedStep,
+                        actor.predictedStepSize());
+                foundOne = true;
+            }
+            actors = schedule.get(
+                    CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
+            while (actors.hasNext()) {
+                CTStepSizeControlActor actor =
+                    (CTStepSizeControlActor) actors.next();
+                predictedStep = Math.min(predictedStep,
+                        actor.predictedStepSize());
+                foundOne = true;
+            }
+            if (foundOne) {
+                return predictedStep;
+            } else {
+                return getCurrentStepSize();
+            }
+        } else {
+            // The first iteration after a breakpoint iteration.
+            // Use the initial step size.
+            return getInitialStepSize();
+        }
+    }
+
     /** Invoke prefire() on all DYNAMIC_ACTORS, such as integrators,
      *  and emit their tentative outputs.
      *  Return true if all the prefire() methods return true and stop()
@@ -772,49 +817,34 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-    /** Predict the next step size. This method should be called if the
-     *  current integration step is accurate to estimate the step size
-     *  for the next step. The predicted step size
-     *  is the minimum of all predictions from step size control actors,
-     *  and it never exceeds 10 times this step size.
-     *  If there are no step-size control actors at all, then return
-     *  the current step size.  This results in leaving the step size
-     *  at its initial value.
+    /** Return the refined the step size with respect to the outputs.
+     *  It asks all the step size control actors in the state transition
+     *  and dynamic schedule for the refined step size, and take the
+     *  minimum of them.
+     *  @return The refined step size.
      *  @exception IllegalActionException If the scheduler throws it.
      */
-    protected double _predictNextStepSize() throws IllegalActionException {
-        if (!isBreakpointIteration()) {
-            double predictedStep = 10.0*getCurrentStepSize();
-            boolean foundOne = false;
-            CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-            Iterator actors = schedule.get(
-                    CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                CTStepSizeControlActor actor =
-                    (CTStepSizeControlActor) actors.next();
-                predictedStep = Math.min(predictedStep,
-                        actor.predictedStepSize());
-                foundOne = true;
-            }
-            actors = schedule.get(
-                    CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
-            while (actors.hasNext()) {
-                CTStepSizeControlActor actor =
-                    (CTStepSizeControlActor) actors.next();
-                predictedStep = Math.min(predictedStep,
-                        actor.predictedStepSize());
-                foundOne = true;
-            }
-            if (foundOne) {
-                return predictedStep;
-            } else {
-                return getCurrentStepSize();
-            }
-        } else {
-            // The first iteration after a breakpoint iteration.
-            // Use the initial step size.
-            return getInitialStepSize();
+    protected double _refinedStepWRTOutput() throws IllegalActionException {
+
+        double refinedStep = getCurrentStepSize();
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            CTStepSizeControlActor actor =
+                 (CTStepSizeControlActor)actors.next();
+            refinedStep = Math.min(refinedStep, actor.refinedStepSize());
         }
+        if (refinedStep < 0.5*getMinStepSize()) {
+            throw new IllegalActionException(this,
+                    "Cannot resolve new states even using "+
+                    "the minimum step size, at time "+
+                    getCurrentTime());
+        }
+        if (_debugging)
+            _debug(getFullName(), "refine step with respect to output to"
+                    + refinedStep);
+        return refinedStep;
     }
 
     /** Return the refined step size with respect to resolving the
@@ -848,36 +878,6 @@ public class CTMultiSolverDirector extends CTDirector {
                     "the minimum step size, at time "+
                     getCurrentTime());
         }
-        return refinedStep;
-    }
-
-    /** Return the refined the step size with respect to the outputs.
-     *  It asks all the step size control actors in the state transition
-     *  and dynamic schedule for the refined step size, and take the
-     *  minimum of them.
-     *  @return The refined step size.
-     *  @exception IllegalActionException If the scheduler throws it.
-     */
-    protected double _refinedStepWRTOutput() throws IllegalActionException {
-
-        double refinedStep = getCurrentStepSize();
-        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-        Iterator actors = schedule.get(
-                CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            CTStepSizeControlActor actor =
-                 (CTStepSizeControlActor)actors.next();
-            refinedStep = Math.min(refinedStep, actor.refinedStepSize());
-        }
-        if (refinedStep < 0.5*getMinStepSize()) {
-            throw new IllegalActionException(this,
-                    "Cannot resolve new states even using "+
-                    "the minimum step size, at time "+
-                    getCurrentTime());
-        }
-        if (_debugging)
-            _debug(getFullName(), "refine step with respect to output to"
-                    + refinedStep);
         return refinedStep;
     }
 
