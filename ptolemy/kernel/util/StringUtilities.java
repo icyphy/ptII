@@ -30,11 +30,18 @@
 
 package ptolemy.kernel.util;
 
+import java.io.IOException;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
+import java.util.LinkedList;
+import java.util.List;
+
 //////////////////////////////////////////////////////////////////////////
 //// StringUtilities
 /**
 A collection of utilities for manipulating strings.
 
+@see ptolemy.gui.GUIStringUtilities
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
