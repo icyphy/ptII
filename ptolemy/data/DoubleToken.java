@@ -49,7 +49,7 @@ versa, as both have 64 bit representations in Java.
 @author Neil Smyth, Yuhong Xiong
 @see ptolemy.data.Token
 @see java.text.NumberFormat
-@version $Id$ %G
+@version $Id$
 
 */
 public class DoubleToken extends ScalarToken {
@@ -268,10 +268,63 @@ public class DoubleToken extends ScalarToken {
         return BaseType.DOUBLE;
     }
 
+    /** Test that the value of this Token is close to the argument
+     *  Token.  The value of the ptolemy.math.Complex epsilon field is
+     *  used to determine whether the two Tokens are close.
+     *
+     *  <p>If A and B are the values of the tokens, and if
+     *  the following is true:
+     *  <pre>
+     *  abs(A-B) < epsilon 
+     *  </pre>
+     *  then A and B are considered close.
+     * 
+     *  @see ptolemy.math.Complex#epsilon
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.  */
+    public BooleanToken isCloseTo(Token token) throws IllegalActionException{
+        int typeInfo = TypeLattice.compare(this, token);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            DoubleToken doubleToken;
+            if (typeInfo == CPO.HIGHER) {
+               doubleToken = (DoubleToken)DoubleToken.convert(token);
+            } else {
+               doubleToken = (DoubleToken)token;
+            }
+
+            if (_value == doubleToken.doubleValue()
+                && _isUnitEqual(doubleToken)) {
+                return new BooleanToken(true);
+            } else {
+		double difference = _value - doubleToken.doubleValue();
+		// Here is where we differ from isEqualTo().
+		return new BooleanToken(Math.abs(difference)
+					< ptolemy.math.Complex.epsilon);
+            }
+
+        } else if (typeInfo == CPO.LOWER) {
+            return token.isEqualTo(this);
+        } else {
+            throw new IllegalActionException("DoubleToken.isCloseTo: "
+                    + "Cannot compare "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + token.getClass().getName() + " " + token.toString()
+                    + " for equality.");
+        }
+    }
+
+
     /** Test the value and units of this token and the argument token
      *  for equality.
      *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
+     *  @see #isCloseTo
      *  @param token The token to test equality of this token with.
      *  @return a boolean token that contains the value true if the
      *   value and units of this token are equal to those of the argument

@@ -38,19 +38,17 @@ import java.io.Serializable;
 //////////////////////////////////////////////////////////////////////////
 //// Token
 /**
-Token is the base class for data capsules.
-Tokens are immutable, meaning that their
-value cannot change after construction.
-They have a set of polymorphic methods providing a set of basic
-arithmetic and logical operations.
-Not all derived classes are required to implement these methods,
-so the default implementation in this base class throws an exception.
-<p>
-Instances of this
-base class can be used to represent pure events, i.e., to
-indicate that an event is present. To support this use, the toString()
-method returns the String "present".
-<p>
+Token is the base class for data capsules.  Tokens are immutable,
+meaning that their value cannot change after construction.  They have
+a set of polymorphic methods providing a set of basic arithmetic and
+logical operations.  Not all derived classes are required to implement
+these methods, so the default implementation in this base class throws
+an exception.
+
+<p> Instances of this base class can be used to represent pure events,
+i.e., to indicate that an event is present. To support this use, the
+toString() method returns the String "present".
+
 
 @author Neil Smyth, Yuhong Xiong, Edward A. Lee
 @version $Id$
@@ -153,9 +151,29 @@ public class Token implements Serializable {
         return BaseType.GENERAL;
     }
 
+    /** Test that the value of this Token is close to the argument
+     *  Token.  In this base class, we call isEqualTo().  This method
+     *  should be overridden in derived classes such as DoubleToken
+     *  and ComplexToken to provide type specific actions for
+     *  equality testing using an epsilon factor.
+     *
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     */
+    public BooleanToken isCloseTo(Token token) throws IllegalActionException{
+	return isEqualTo(token);
+    }
+
     /** Test for equality of the values of this Token and the argument Token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for equality testing.
+     *
+     *  @see #isCloseTo
      *  @param token The token with which to test equality.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.

@@ -81,3 +81,104 @@ test ArrayToken-2.1 {test subtract} {
     $tadd toString
 } {{0.5, 0.5, -3.0}}
 
+
+######################################################################
+####
+# 
+test ArrayToken-3.0 {test isEqualTo and isCloseTo on an array of Doubles} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+    set t3 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, -6.0}"]
+
+    set res1 [$t1 {isEqualTo} $t1]
+    set res2 [$t1 {isEqualTo} $t2]
+    set res3 [$t1 {isEqualTo} $t3]
+    set res4 [$t1 {isCloseTo} $t1]
+    set res5 [$t1 {isCloseTo} $t2]
+    set res6 [$t1 {isCloseTo} $t3]
+    list [$res1 toString] [$res2 toString] [$res3 toString] \
+	    [$res4 toString] [$res5 toString] [$res6 toString]
+
+} {true true false true true false}
+
+test ArrayToken-3.1 {test isEqualTo on an array of Complexes} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} \
+	    "{0.5 - 10.0, 0.0 + 0.0, -10.0 + 10.0}"]
+
+    set t2 [java::new {ptolemy.data.ArrayToken String} \
+	    "{0.5 -10.0, 0.0 + 0.0, -10.0 + 10.0}"]
+    set t3 [java::new {ptolemy.data.ArrayToken String} \
+	    "{0.5 -10.0, 0.0 + 0.0, -10.0 + 10000.0}"]
+
+    set res1 [$t1 {isEqualTo} $t1]
+    set res2 [$t1 {isEqualTo} $t2]
+    set res3 [$t1 {isEqualTo} $t3]
+    set res4 [$t1 {isCloseTo} $t1]
+    set res5 [$t1 {isCloseTo} $t2]
+    set res6 [$t1 {isCloseTo} $t3]
+    list [$res1 toString] [$res2 toString] [$res3 toString] \
+	    [$res4 toString] [$res5 toString] [$res6 toString]
+} {true true false true true false}
+
+
+######################################################################
+####
+# 
+test ArrayToken-4.0 {test isCloseTo on an array of Doubles} {
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
+    java::field ptolemy.math.Complex epsilon $epsilon
+
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+
+    set a [expr {0.5 - 0.5 * $epsilon}]
+    set b [expr {1.5 + 0.5 * $epsilon}]
+    set c [expr {6.0 + 0.5 * $epsilon}]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{$a, $b, $c}"]
+
+    set d [expr {0.5 - 2.0 * $epsilon}]
+    set e [expr {1.5 + 2.0 * $epsilon}]
+    set f [expr {6.0 + 2.0 * $epsilon}]
+    set t3 [java::new {ptolemy.data.ArrayToken String} "{$d, $e, $f} "]
+
+    set res1 [$t1 {isEqualTo} $t1]
+    set res2 [$t1 {isEqualTo} $t2]
+    set res3 [$t1 {isEqualTo} $t3]
+    set res4 [$t1 {isCloseTo} $t1]
+    set res5 [$t1 {isCloseTo} $t2]
+    set res6 [$t1 {isCloseTo} $t3]
+
+    java::field ptolemy.math.Complex epsilon $oldEpsilon
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] \
+	    [$res4 toString] [$res5 toString] [$res6 toString]
+} {true false false true true false}
+
+
+test ArrayToken-4.1 {test isCloseTo on an array of Complexes} {
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
+    java::field ptolemy.math.Complex epsilon $epsilon
+
+    set t1 [java::new {ptolemy.data.ArrayToken String} \
+	    "{0.5 - 10.0, 0.0 + 0.0, -10.0 + 10.0}"]
+
+    set t2 [java::new {ptolemy.data.ArrayToken String} \
+	    "{0.5 -10.0, 0.0 + 0.0, -10.0 + 10.0}"]
+    set t3 [java::new {ptolemy.data.ArrayToken String} \
+	    "{0.5 -10.0, 0.0 + 0.0, -10.0 + 10000.0}"]
+
+    set res1 [$t1 {isEqualTo} $t1]
+    set res2 [$t1 {isEqualTo} $t2]
+    set res3 [$t1 {isEqualTo} $t3]
+    set res4 [$t1 {isCloseTo} $t1]
+    set res5 [$t1 {isCloseTo} $t2]
+    set res6 [$t1 {isCloseTo} $t3]
+
+    java::field ptolemy.math.Complex epsilon $oldEpsilon
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] \
+	    [$res4 toString] [$res5 toString] [$res6 toString]
+} {true true false true true false}
+
+

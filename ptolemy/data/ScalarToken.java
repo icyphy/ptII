@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
+@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 */
 

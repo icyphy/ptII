@@ -270,6 +270,106 @@ test ComplexToken-5.2 {Test equality between Complex and int} {
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
 } {true false true false}
 
+
+######################################################################
+####
+# Test isCloseTo operator applied to other Complex and Tokens types 
+# below it in the lossless type hierarchy.
+test ComplexToken-5.5 {Test equality between Complex} {
+    set c1 [java::new {ptolemy.math.Complex double double} 7.7 8.8]
+    set p1 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c1]
+    set c2 [java::new {ptolemy.math.Complex double double} 0.5 0.6]
+    set p2 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c2]
+
+    set res1 [$p1 {isCloseTo ptolemy.data.Token} $p1]
+    set res2 [$p1 {isCloseTo ptolemy.data.Token} $p2]
+
+    list [$res1 toString] [$res2 toString]
+} {true false}
+
+######################################################################
+####
+# 
+test ComplexToken-5.6 {Test closeness between Complex and double} {
+    set c1 [java::new {ptolemy.math.Complex double double} 8.0 0.0]
+    set p1 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c1]
+    set c2 [java::new {ptolemy.math.Complex double double} 4.0 0.0]
+    set p2 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c2]
+
+    set d1 [java::new {ptolemy.data.DoubleToken double} 8]
+    set d2 [java::new {ptolemy.data.DoubleToken double} 4]
+
+    set res1 [$p1 {isCloseTo ptolemy.data.Token} $d1]
+    set res2 [$p1 {isCloseTo ptolemy.data.Token} $d2]
+
+    set res3 [$d1 {isCloseTo ptolemy.data.Token} $p1]
+    set res4 [$d1 {isCloseTo ptolemy.data.Token} $p2]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+} {true false true false}
+
+######################################################################
+####
+# 
+test ComplexToken-5.7 {Test closeness between Complex and int} {
+    # use the Complex above
+
+    set i1 [java::new {ptolemy.data.IntToken int} 8]
+    set i2 [java::new {ptolemy.data.IntToken int} 4]
+
+    set res1 [$p1 {isCloseTo ptolemy.data.Token} $i1]
+    set res2 [$p1 {isCloseTo ptolemy.data.Token} $i2]
+
+    set res3 [$i1 {isCloseTo ptolemy.data.Token} $p1]
+    set res4 [$i1 {isCloseTo ptolemy.data.Token} $p2]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+} {true false true false}
+
+######################################################################
+####
+# 
+test ComplexToken-5.8 {Test closeness between two Complex} {
+
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
+    java::field ptolemy.math.Complex epsilon $epsilon
+
+    set c1 [java::new {ptolemy.math.Complex double double} -10.0 0.0]
+    set p1 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c1]
+
+    set c2 [java::new {ptolemy.math.Complex double double} \
+	    [expr {-10.0 + 0.5 * $epsilon}] \
+	    [expr {0.0 + 0.5 * $epsilon}]]
+
+    set p2 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c2]
+
+    set c3 [java::new {ptolemy.math.Complex double double} \
+	    [expr {-10.0 + 2.0 * $epsilon}] \
+	    [expr {0.0 + 2.0* $epsilon}]]
+
+    set p3 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c3]
+
+    set res1 [$p1 {isCloseTo ptolemy.data.Token} $p1]
+    set res2 [$p1 {isCloseTo ptolemy.data.Token} $p2]
+    set res3 [$p1 {isCloseTo ptolemy.data.Token} $p3]
+
+    set res4 [$p2 {isCloseTo ptolemy.data.Token} $p1]
+    set res5 [$p2 {isCloseTo ptolemy.data.Token} $p2]
+    set res6 [$p2 {isCloseTo ptolemy.data.Token} $p3]
+
+    set res7 [$p3 {isCloseTo ptolemy.data.Token} $p1]
+    set res8 [$p3 {isCloseTo ptolemy.data.Token} $p2]
+    set res9 [$p3 {isCloseTo ptolemy.data.Token} $p3]
+
+    java::field ptolemy.math.Complex epsilon $oldEpsilon
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] \
+	    [$res4 toString] [$res5 toString] [$res6 toString] \
+	    [$res7 toString] [$res8 toString] [$res9 toString]
+
+} {true true false true true false false false true}
+
 ######################################################################
 ####
 #

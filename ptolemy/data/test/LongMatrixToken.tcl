@@ -183,7 +183,7 @@ test LongMatrixToken-7.0 {Test multiply operator between longs.} {
     catch {$q3 multiply $p} res3
 
     list [$res1 toString] [$res2 toString] $res3
-} {{[22, 9; 12, 5]} {[22, 9, 39; 12, 5, 21]}
+} {{[22, 9; 12, 5]} {[22, 9, 39; 12, 5, 21]} {ptolemy.kernel.util.IllegalActionException: Cannot multiply matrix with 3 columns by a matrix with 2 rows.}}
 
 ######################################################################
 ####

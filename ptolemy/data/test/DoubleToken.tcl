@@ -90,46 +90,6 @@ test DoubleToken-1.4 {Create a non-empty instance from an String} {
 ######################################################################
 ####
 # 
-test DoubleToken-1.5 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.DoubleToken String} "0.000000000000000013"]
-    $p toString
-} {1.3E-17}
-
-######################################################################
-####
-# 
-test DoubleToken-1.6 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.DoubleToken String} "130000000000000000"]
-    $p toString
-} {1.3E17}
-
-######################################################################
-####
-# 
-test DoubleToken-1.7 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.DoubleToken String} "130000000000400000"]
-    $p toString
-} {1.300000000004E17}
-
-######################################################################
-####
-# 
-test DoubleToken-1.8 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.DoubleToken String} "0.13000000000040000"]
-    $p toString
-} {0.1300000000004}
-
-######################################################################
-####
-# 
-test DoubleToken-1.9 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.DoubleToken String} "0.000000000000000013000000000040000"]
-    $p toString
-} {1.300000000004E-17}
-
-######################################################################
-####
-# 
 test DoubleToken-2.0 {Create a non-empty instance and query its value as a Complex} {
     set p [java::new {ptolemy.data.DoubleToken double} 3.3]
     set res [$p complexValue]
@@ -240,7 +200,7 @@ test DoubleToken-4.1 {Test dividing doubles and ints.} {
     set res3 [$tok2 divide $tok1]
  
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {6.1 0.1639344262295 0.1639344262295}
+} {6.1 0.1639344 0.1639344}
 
 ######################################################################
 ####
@@ -271,6 +231,101 @@ test DoubleToken-5.1 {Test equality between doubles and ints.} {
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
 } {true false true}
+
+######################################################################
+####
+# Test isCloseTo operator applied to other doubles and Tokens types 
+# below it in the lossless type hierarchy.
+test DoubleToken-5.5 {Test closeness between doubles. \
+    This test should be the same as the similar DoubleToken-5.0 \
+    isEquals test. \
+} {
+    set tok1 [java::new {ptolemy.data.DoubleToken double} 12.2]
+    set tok2 [java::new {ptolemy.data.DoubleToken double} 2.2]
+
+    set res1 [$tok1 {isCloseTo ptolemy.data.Token} $tok1]
+    set res2 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {true false}
+######################################################################
+####
+# 
+test DoubleToken-5.6 {Test closeness between doubles and ints. \
+    This test should be the same as the similar DoubleToken-5.0 \
+    isEquals test. \
+} {
+    set tok1 [java::new {ptolemy.data.DoubleToken double} 12]
+    set tok2 [java::new {ptolemy.data.IntToken int} 12]
+    set tok3 [java::new {ptolemy.data.DoubleToken double} 2]
+    set tok4 [java::new {ptolemy.data.IntToken int} 2]
+
+    set res1 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]
+    set res2 [$tok1 {isCloseTo ptolemy.data.Token} $tok4]
+
+    set res3 [$tok2 {isCloseTo ptolemy.data.Token} $tok1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {true false true}
+
+######################################################################
+####
+# 
+test DoubleToken-5.7 {Test closeness between doubles} {
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
+    java::field ptolemy.math.Complex epsilon $epsilon
+
+    set token1 [java::new {ptolemy.data.DoubleToken double} 12.0]
+    set notCloseToken1 [java::new {ptolemy.data.DoubleToken double} \
+	    [expr {12.0 + $epsilon*100.0} ] ]
+    set closeToken1 [java::new {ptolemy.data.DoubleToken double} \
+	    [expr {12.0 - (0.9 * $epsilon)}] ]
+
+    #puts "5.7: $epsilon [$token1 toString] [$notCloseToken1 toString] \
+    #	    [$closeToken1 toString]"
+    set res1 [$token1 {isCloseTo ptolemy.data.Token} $notCloseToken1]
+    set res2 [$token1 {isCloseTo ptolemy.data.Token} $closeToken1]
+    set res3 [$notCloseToken1 {isCloseTo ptolemy.data.Token} $token1]
+    set res4 [$closeToken1 {isCloseTo ptolemy.data.Token} $token1]
+
+    java::field ptolemy.math.Complex epsilon $oldEpsilon
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+} {false true false true}
+
+test DoubleToken-5.8 {Test closeness between doubles around 0} {
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
+    java::field ptolemy.math.Complex epsilon $epsilon
+
+    set token1 [java::new {ptolemy.data.DoubleToken double} 0.0]
+    set notCloseToken1 [java::new {ptolemy.data.DoubleToken double} \
+	    [expr {0.0 + 1.1 * $epsilon} ] ]
+    set anotherNotCloseToken1 [java::new {ptolemy.data.DoubleToken double} \
+	    [expr {0.0 - 1.1 * $epsilon} ] ]
+    set closeToken1 [java::new {ptolemy.data.DoubleToken double} \
+	    [expr {0.0 - 0.9 * $epsilon}] ]
+
+    set res1 [$token1 {isCloseTo ptolemy.data.Token} $notCloseToken1]
+    set res2 [$token1 {isCloseTo ptolemy.data.Token} $anotherNotCloseToken1]
+    set res3 [$token1 {isCloseTo ptolemy.data.Token} $closeToken1]
+    set res4 [$notCloseToken1 {isCloseTo ptolemy.data.Token} $token1]
+    set res5 [$anotherNotCloseToken1 {isCloseTo ptolemy.data.Token} $token1]
+    set res6 [$closeToken1 {isCloseTo ptolemy.data.Token} $token1]
+
+    java::field ptolemy.math.Complex epsilon $oldEpsilon
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] \
+	    [$res4 toString] [$res5 toString] [$res6 toString]
+} {false false true false false true}
+
+test DoubleToken-5.9 {Test closeness between a double and a String} {
+    set doubleToken [java::new {ptolemy.data.DoubleToken double} 12.0]
+    set stringToken [java::new ptolemy.data.StringToken "12.0"]
+    catch {[$doubleToken {isCloseTo ptolemy.data.Token} $stringToken]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: equality method not supported between ptolemy.data.StringToken and ptolemy.data.DoubleToken}}
 
 ######################################################################
 ####
@@ -353,3 +408,4 @@ test DoubleToken-8.1 {Test subtract operator between doubles and ints.} {
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
 } {9.2 -9.2 -9.2}
+

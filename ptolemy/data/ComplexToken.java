@@ -248,11 +248,55 @@ public class ComplexToken extends ScalarToken {
 	return BaseType.COMPLEX;
     }
 
+    /** Test that the value of this Token is close to the argument
+     *  Token.  The value of the ptolemy.math.Complex epsilon field is
+     *  used to determine whether the two Tokens are close.
+     *
+     *  <p>If A and B are the values of the tokens, and if
+     *  the following is true:
+     *  <pre>
+     *  abs(A-B) < epsilon 
+     *  </pre>
+     *  then A and B are considered close.
+     * 
+     *  @see #epsilon
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     */
+    public BooleanToken isCloseTo(Token token) throws IllegalActionException{
+        int compare = TypeLattice.compare(this, token);
+	if (compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException("ComplexToken.isEqualTo: " +
+                    "type of argument: " + token.getClass().getName() +
+                    "is incomparable with ComplexToken in the type " +
+                    "hierarchy.");
+        }
+
+        if (compare == CPO.LOWER) {
+            return token.isEqualTo(this);
+        } else {
+	    // argument type is lower or the same as Complex.
+	    ComplexToken complexToken = (ComplexToken)convert(token);
+            Complex complexValue = complexToken.complexValue();
+	    if (_value.equals(complexValue)) {
+                return new BooleanToken(true);
+	    }
+	    // Here is where we differ from isEqualTo:
+	    return new BooleanToken(_value.isCloseTo(complexValue));
+        }
+    }
+
     /** Test the values of this Token and the argument Token for equality.
      *  The type of the specified token must be such that either it can be
      *  converted to the type of this token, or the type of this token can
      *  be converted to the type of the specified token, without loss of
      *  information.
+     *  @see #isCloseTo
      *  @param token The token to test equality of this token with.
      *  @return BooleanToken indicating whether the values are equal.
      *  @exception IllegalActionException If the specified token is
@@ -272,9 +316,9 @@ public class ComplexToken extends ScalarToken {
             return token.isEqualTo(this);
         } else {
 	    // argument type is lower or the same as Complex.
-	    ComplexToken comptoken = (ComplexToken)convert(token);
-            Complex tem = comptoken.complexValue();
-	    if (_value.equals(tem)) {
+	    ComplexToken complexToken = (ComplexToken)convert(token);
+            Complex complexValue = complexToken.complexValue();
+	    if (_value.equals(complexValue)) {
                 return new BooleanToken(true);
 	    }
 	    return new BooleanToken(false);
