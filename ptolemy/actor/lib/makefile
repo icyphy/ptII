@@ -102,6 +102,7 @@ JSRCS = \
 	Lattice.java \
 	LevinsonDurbin.java \
 	Limiter.java \
+	LinearDifferenceEquationSystem.java \
 	LookupTable.java \
 	MathFunction.java \
 	MaxIndex.java \
@@ -144,6 +145,8 @@ JSRCS = \
 	URLReader.java \
 	URLDirectoryReader.java \
 	VariableClock.java \
+	VectorAssembler.java \
+	VectorDisassembler.java \
 	WallClockTime.java \
 	Writer.java
 
