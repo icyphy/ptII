@@ -390,21 +390,10 @@ public class HDFFSMDirector extends FSMDirector {
             Director refinementDir = curRefinement.getDirector();
             if (refinementDir instanceof HDFFSMDirector) {
                 refinementDir.initialize();
-            } else if (refinementDir instanceof HDFDirector) {
-                Scheduler refinmentSched = ((StaticSchedulingDirector)
-                        refinementDir).getScheduler();
-                refinmentSched.setValid(false);
-                ((HDFDirector)refinementDir).getSchedule();
-            } else if (refinementDir instanceof SDFDirector) {
-                Scheduler refinmentSched = ((StaticSchedulingDirector)
-                        refinementDir).getScheduler();
-                refinmentSched.setValid(true);
-                ((SDFScheduler)refinmentSched).getSchedule();
-            } else {
-                // Invalid director.
-                throw new IllegalActionException(this,
-                        "Only HDF, SDF, or HDFFSM director is " +
-                        "allowed in the refinement");
+            } else if (refinementDir instanceof StaticSchedulingDirector) {
+                // Recompute the schedule if the refinement domain has a schedule.
+                refinementDir.invalidateSchedule();
+                ((StaticSchedulingDirector)refinementDir).getScheduler().getSchedule();
             }
             _updateInputTokenConsumptionRates(curRefinement);
             _updateOutputTokenProductionRates(curRefinement);
@@ -425,6 +414,9 @@ public class HDFFSMDirector extends FSMDirector {
      *  rates is detected between refinement actors.
      */
     public boolean makeStateTransition() throws IllegalActionException {
+        // Note: This method is called in postfire() method. We have checked 
+        // that the current state is not null in initialize() method or 
+        // in the fire() method.
         FSMActor controller = getController();
         State currentState = controller.currentState();
         Transition lastChosenTransition = _getLastChosenTransition();
@@ -434,48 +426,34 @@ public class HDFFSMDirector extends FSMDirector {
         if (lastChosenTransition  == null) {
             // No transition enabled. Remain in the current state.
             TypedActor[] actors = currentState.getRefinement();
-            //if (actors != null) {
-                // FIXME
-                actor = (TypedCompositeActor)(actors[0]);
-                //refinementDir = actor.getDirector();
-                superPostfire = super.postfire();
-            //} else {
-            //    throw new IllegalActionException(this,
-            //            "State refinement cannot be null in HDF or SDF");
-            //}
+            if (actors.length != 1) {
+                throw new IllegalActionException(this,
+                        "Current state is required to have exactly one refinement: "
+                        + currentState.getName());
+            }
+            actor  = (TypedCompositeActor)(actors[0]);
+            superPostfire = super.postfire();
+            
         } else {
             // Make a state transition.
             State newState = lastChosenTransition.destinationState();
             _setCurrentState(newState);
-
             superPostfire = super.postfire();
             currentState = newState;
             // Get the new current refinement actor.
             TypedActor[] actors = currentState.getRefinement();
-            //if (actors != null) {
-                //FIXME
-                actor = (TypedCompositeActor)(actors[0]);
-            //} else {
-            //    throw new IllegalActionException(this,
-            //            "State refinement cannot be null in HDF or SDF");
-            //}
+            if (actors.length != 1) {
+                throw new IllegalActionException(this,
+                        "Current state is required to have exactly one refinement: "
+                        + currentState.getName());
+            }
+            actor = (TypedCompositeActor)(actors[0]);
             refinementDir = actor.getDirector();
             if (refinementDir instanceof HDFFSMDirector) {
                 refinementDir.postfire();
-            } else if (refinementDir instanceof HDFDirector) {
-                Scheduler refinmentSched = ((StaticSchedulingDirector)
-                        refinementDir).getScheduler();
-                refinmentSched.setValid(false);
-                ((HDFDirector)refinementDir).getSchedule();
-            } else if (refinementDir instanceof SDFDirector) {
-                Scheduler refinmentSched = ((StaticSchedulingDirector)
-                        refinementDir).getScheduler();
-                refinmentSched.setValid(true);
-                ((SDFScheduler)refinmentSched).getSchedule();
-            } else {
-                throw new IllegalActionException(this,
-                        "Only HDF, SDF, or HDFFSM director is "
-                        + "allowed in the refinement.");
+            } else if (refinementDir instanceof StaticSchedulingDirector) {
+                refinementDir.invalidateSchedule();
+                ((StaticSchedulingDirector)refinementDir).getScheduler().getSchedule();
             }
         }
         // Even when the finite state machine remains in the
@@ -487,10 +465,7 @@ public class HDFFSMDirector extends FSMDirector {
 
         CompositeActor hdfActor = _getEnclosingDomainActor();
         Director director = hdfActor.getExecutiveDirector();
-        if (director instanceof HDFDirector) {
-            ((HDFDirector)director).invalidateSchedule();
-        }
-        //return super.postfire();
+        director.invalidateSchedule();
         return superPostfire;
     }
 
@@ -565,33 +540,26 @@ public class HDFFSMDirector extends FSMDirector {
         State initialState = controller.getInitialState();
         _setCurrentState(initialState);
         
-        // Make transient state transition in case the initial state
-        // does not have a refinement.
+        // NOTE: The following will throw an exception if
+        // the state does not have a refinement, so after
+        // this call, we can assume the state has a refinement.
         _nextIntransientState = transientStateTransition();
         super.preinitialize();
         _setCurrentState(_nextIntransientState);
         TypedActor[] currentRefinements
-            = _nextIntransientState.getRefinement();
-        //if (currentRefinements != null) {
-            // FIXME
-            TypedCompositeActor curRefinement
+                = _nextIntransientState.getRefinement();
+        if (currentRefinements.length != 1) {
+            throw new IllegalActionException(this,
+                    "Current state is required to have exactly one refinement: "
+                    + controller.currentState().getName());
+        }
+        
+        TypedCompositeActor curRefinement
                 = (TypedCompositeActor)(currentRefinements[0]);
-            Director refinementDir = curRefinement.getDirector();
-
-            if (!(refinementDir instanceof HDFFSMDirector)
-                    && !(refinementDir instanceof SDFDirector)) {
-                // Invalid director.
-                throw new IllegalActionException(this,
-                        "Only HDF, SDF, or HDFFSM director is "
-                        + "allowed in the refinement.");
-            }
-            _updateInputTokenConsumptionRates(curRefinement);
-            _updateOutputTokenProductionRates(curRefinement);
-
-        //} else {
-        //    throw new IllegalActionException(this,
-        //            "current refinement is null.");
-        //}
+        Director refinementDir = curRefinement.getDirector();
+        
+        _updateInputTokenConsumptionRates(curRefinement);
+        _updateOutputTokenProductionRates(curRefinement);
            
         // Declare reconfiguration constraints on the ports of the
         // actor.  The constraints indicate that the ports are
