@@ -61,7 +61,8 @@ test TimedQueueReceiver-2.1 {Check IOPort container in new receiver} {
 #
 test TimedQueueReceiver-3.1 {Check that hasToken() works for empty queue} {
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper]
+    set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
     $tqr setReceivingTimeKeeper $keeper
     list [expr { 0 == [$tqr hasToken] } ]
 } {1}

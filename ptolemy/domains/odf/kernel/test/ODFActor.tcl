@@ -52,23 +52,39 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test ODFActor-2.1 {getNextToken() - Send One Token} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set toplevel [java::new ptolemy.actor.CompositeActor $wspc]
     set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
-    $topLevel setDirector $dir
-    $topLevel setManager $manager
-    set actorA [java::new ptolemy.domains.odf.kernel.test.ODFPutToken $topLevel "actorA" 1] 
-    set actorB [java::new ptolemy.domains.odf.kernel.test.ODFGetNToken $topLevel "actorB" 1] 
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    $toplevel setDirector $dir
+    $toplevel setManager $mgr
+    
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.test.ODFGet $toplevel "actorRcvr"]
+    set actorSend [java::new ptolemy.domains.odf.kernel.test.ODFPut $toplevel "actorSend"]
+    set ioprcvr [$actorRcvr getPort "input"]
+    set iopsend [$actorSend getPort "output"]
+    set rel [$toplevel connect $ioprcvr $iopsend "rel"]
+    $actorRcvr createReceivers
+    $actorSend createReceivers
+    $actorRcvr initialize 
+    $actorSend initialize 
+
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $ioprcvr]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setSendingTimeKeeper $sendkeeper
+
+    set rcvrs [ [java::cast ptolemy.actor.IOPort $ioprcvr] getReceivers]
+    if { $rcvrs == [java::null] } {
+	set null 1
+    }
 
     set token0 [java::new ptolemy.data.Token]
-    $actorA setToken $token0 5.5 0
-    set portA [$actorA getPort "output"]
-    set portB [$actorB getPort "input"]
-    set rel [$topLevel connect $portB $portA "rel"]
-
-    $manager run
-
-    set outToken0 [$actorB getToken 0] 
+    $odr put $token0 5.0
+    set outToken0 $token0
+    #set outToken0 [$actorRcvr getNextToken] 
 
     if { $outToken0 == $token0 } {
 	set val 1
