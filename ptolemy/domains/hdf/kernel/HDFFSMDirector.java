@@ -301,7 +301,7 @@ public class HDFFSMDirector extends FSMDirector {
         // been fired the number of times specified by the current
         // static schedule of the HDF/SDF graph in which this FSM
         // refines.
-        /*
+
         if (_firingsPerScheduleIteration == -1) {
             // Get the firing count for the HDF actor (the container
             // of this director) in the current schedule.
@@ -314,7 +314,7 @@ public class HDFFSMDirector extends FSMDirector {
                ", _firingsPerScheduleIteration = " +
                                _firingsPerScheduleIteration);
         }
-        */
+        
         // Check if the fire() has been called the number of
         // times specified in the static schedule.
         //if (_firingsSoFar == _firingsPerScheduleIteration) {
@@ -734,7 +734,6 @@ public class HDFFSMDirector extends FSMDirector {
      *  in the current schedule.
      *  @exception IllegalActionException If FIXME.
      */
-    /*
     private int _getFiringsPerSchedulIteration()
         throws IllegalActionException {
         if (_debug_info) System.out.println(getName() +
@@ -809,7 +808,6 @@ public class HDFFSMDirector extends FSMDirector {
                 "should be either an SDFDirector or an HDFDirector.");
         }
     }
-    */
 
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor, as supplied by
@@ -1095,9 +1093,9 @@ public class HDFFSMDirector extends FSMDirector {
                         "rate of port: " +
                         outputPortOutside.getFullName());
 
-                        // set the outside port = port rate of the refinement.
-                        int portRateToSet = SDFScheduler.getTokenProductionRate(refineOutPort);
-                        SDFScheduler.setTokenConsumptionRate(outputPortOutside, portRateToSet);
+                    // set the outside port = port rate of the refinement.
+                    int portRateToSet = SDFScheduler.getTokenProductionRate(refineOutPort);
+                    SDFScheduler.setTokenConsumptionRate(outputPortOutside, portRateToSet);
                 }
             }
         }
@@ -1110,8 +1108,8 @@ public class HDFFSMDirector extends FSMDirector {
     // iteration of the SDF graph containing this FSM.
     private int _firingsSoFar;
     // Set to true to enable debugging.
-    private boolean _debug_info = true;
-    //private boolean _debug_info = false;
+    //private boolean _debug_info = true;
+    private boolean _debug_info = false;
     // The firing count for the HDF actor (the container
     // of this director) in the current schedule.
     private int _firingsPerScheduleIteration = -1;
