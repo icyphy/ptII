@@ -29,12 +29,12 @@ public abstract class DamageRegion {
      */
     TransformContext _context;
 
-   /** This class cannot be directly instantiated.
+    /** This class cannot be directly instantiated.
      */
     /** FIXME: Visual Cafe barfs on this
         private
-        */
-   DamageRegion () {}
+    */
+    DamageRegion () {}
 
     /** Tell the damage region to inflict itself on the given
      * JCanvas.

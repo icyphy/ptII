@@ -86,7 +86,7 @@ public class JTreePane extends JSplitPane {
         _selectedTitle = "";
         _defaultPanel = new JPanel();
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(
-            new Entry(this, null, name, _defaultPanel));
+                new Entry(this, null, name, _defaultPanel));
         DefaultTreeModel model = new DefaultTreeModel(node);
         _tree = new JTree(model);
         TreeNode nodePath[] = node.getPath();
@@ -95,24 +95,24 @@ public class JTreePane extends JSplitPane {
         _tree.getSelectionModel().setSelectionMode
             (TreeSelectionModel.SINGLE_TREE_SELECTION);
         _tree.addTreeSelectionListener(new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode)
-                    _tree.getLastSelectedPathComponent();
+                public void valueChanged(TreeSelectionEvent e) {
+                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode)
+                        _tree.getLastSelectedPathComponent();
 
-                if (treeNode == null) return;
+                    if (treeNode == null) return;
 
-                Entry entry = (Entry)treeNode.getUserObject();
-                setSelectedTitle(entry._title);
-                refresh();
-            }
-        });
+                    Entry entry = (Entry)treeNode.getUserObject();
+                    setSelectedTitle(entry._title);
+                    refresh();
+                }
+            });
 
         _scrollPane = new JScrollPane(_tree);
         setTopComponent(_scrollPane);
         setBottomComponent(_defaultPanel);
 
         setContinuousLayout(true);
-               _scrollPane.setPreferredSize(_scrollPaneSize);
+        _scrollPane.setPreferredSize(_scrollPaneSize);
         refresh();
         //setSplitPosition(.5);
     }
@@ -210,12 +210,12 @@ public class JTreePane extends JSplitPane {
             JComponent component, String tip) {
 
         /*
-        Icon disabledIcon = null;
-        if (icon != null && icon instanceof ImageIcon) {
-            disabledIcon = new ImageIcon(
-                    GrayFilter.createDisabledImage(
-                        ((ImageIcon)icon).getImage()));
-        }
+          Icon disabledIcon = null;
+          if (icon != null && icon instanceof ImageIcon) {
+          disabledIcon = new ImageIcon(
+          GrayFilter.createDisabledImage(
+          ((ImageIcon)icon).getImage()));
+          }
         */
 
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode();

@@ -80,7 +80,7 @@ public class JCanvas extends JComponent implements Printable {
         setBackground(Color.white);
         setCanvasPane(pane);
         enableEvents(AWTEvent.MOUSE_EVENT_MASK
-                     | AWTEvent.MOUSE_MOTION_EVENT_MASK );
+                | AWTEvent.MOUSE_MOTION_EVENT_MASK );
         // We have to set this to something other than null, or else no
         // tool tips will appear!
         super.setToolTipText("");

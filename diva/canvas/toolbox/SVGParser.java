@@ -51,8 +51,8 @@ public class SVGParser {
      */
     public static String[] colorNames () {
         String[] result = {"black", "blue", "cyan", "darkgray", "gray", "green",
-                "lightgray", "magenta", "orange", "pink", "red", "white",
-                "yellow"};
+                           "lightgray", "magenta", "orange", "pink", "red", "white",
+                           "yellow"};
         return result;
     }
 
@@ -177,7 +177,7 @@ public class SVGParser {
                                 Class.forName("diva.canvas.toolbox.SVGParser");
                         } catch (ClassNotFoundException ex) {
                             throw new RuntimeException("Could not find " +
-                                                       "diva.canvas.toolbox.SVGParser");
+                                    "diva.canvas.toolbox.SVGParser");
                         }
                     }
                     url = _refClass.getClassLoader().getResource(link);
@@ -200,7 +200,7 @@ public class SVGParser {
                     }
                     int bitflags = tk.checkImage(img, -1, -1, image);
                     if((bitflags &
-                        (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
+                            (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
                         // There was an error if either flag is set,
                         // so return null.
                         return null;

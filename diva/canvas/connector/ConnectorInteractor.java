@@ -75,7 +75,7 @@ public class ConnectorInteractor extends DragInteractor {
         _connectorListeners.add(l);
     }
 
-     /** Detach the connector from its current site and attach
+    /** Detach the connector from its current site and attach
      * it to the given site.
      */
     private void attach (Site site) {
@@ -167,7 +167,7 @@ public class ConnectorInteractor extends DragInteractor {
         return _handle;
     }
 
-     /** Get the current target figure. If there isn't one, return
+    /** Get the current target figure. If there isn't one, return
      * null.
      */
     public Figure getTarget () {
@@ -213,35 +213,35 @@ public class ConnectorInteractor extends DragInteractor {
         //debug("SNAPPING TO SITE IN: " + container);
 
         Figure figure = container.pick(hitRect, new Filter() {
-            public boolean accept(Object o) {
-                // debug("checking = " + o);
-                if (!(o instanceof Figure)) {
-                    return false;
+                public boolean accept(Object o) {
+                    // debug("checking = " + o);
+                    if (!(o instanceof Figure)) {
+                        return false;
+                    }
+                    if (o instanceof ConnectorManipulator) {
+                        return false;
+                    }
+                    Figure f = (Figure)o;
+                    if (f.getInteractor() == null) {
+                        return false;
+                    }
+                    TransformContext figureContext = f.getParent().getTransformContext();
+                    TransformContext containerContext = container.getTransformContext();
+                    AffineTransform transform;
+                    try {
+                        transform = figureContext.getTransform(containerContext).
+                            createInverse();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        return false;
+                    }
+                    Rectangle2D bounds = ShapeUtilities.transformBounds(hitRect, transform);
+                    if (findSite(f, bounds.getCenterX(), bounds.getCenterY()) == null) {
+                        return false;
+                    }
+                    return true;
                 }
-                if (o instanceof ConnectorManipulator) {
-                    return false;
-                }
-                Figure f = (Figure)o;
-                if (f.getInteractor() == null) {
-                    return false;
-                }
-                TransformContext figureContext = f.getParent().getTransformContext();
-                TransformContext containerContext = container.getTransformContext();
-                AffineTransform transform;
-                try {
-                    transform = figureContext.getTransform(containerContext).
-                    createInverse();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    return false;
-                }
-                Rectangle2D bounds = ShapeUtilities.transformBounds(hitRect, transform);
-                if (findSite(f, bounds.getCenterX(), bounds.getCenterY()) == null) {
-                    return false;
-                }
-                return true;
-            }
-        });
+            });
         if(figure != null) {
             Site snap = findSite(figure, hitRect.getCenterX(), hitRect.getCenterY());
             if (snap != null) {

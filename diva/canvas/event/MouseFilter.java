@@ -33,19 +33,19 @@ public class MouseFilter {
     /** The alternate selection filter -- accepts button 1 with shift.
      */
     public static MouseFilter alternateSelectionFilter =
-        new MouseFilter(1,InputEvent.SHIFT_MASK);
+    new MouseFilter(1,InputEvent.SHIFT_MASK);
 
     /** The mouse button mask
      */
     private int _buttonMask =
-      InputEvent.BUTTON1_MASK
+    InputEvent.BUTTON1_MASK
     | InputEvent.BUTTON2_MASK
     | InputEvent.BUTTON3_MASK;
 
     /** The modifier mask
      */
     private int _modifierMask =
-      InputEvent.SHIFT_MASK
+    InputEvent.SHIFT_MASK
     | InputEvent.CTRL_MASK;
 
     // AWT is lame
@@ -121,7 +121,7 @@ public class MouseFilter {
         _modifierMask = mask;
     }
 
-   /**
+    /**
      * Construct a mouse filter that responds to the given mouse buttons
      * and modifier keys. The three arguments must be constructed using
      * the button and modifier masks defined by
@@ -144,7 +144,7 @@ public class MouseFilter {
      */
     public boolean accept (MouseEvent event) {
         if(_pressNumber != -1 &&
-           event.getClickCount() != _pressNumber) return false;
+                event.getClickCount() != _pressNumber) return false;
         int m = event.getModifiers();
         boolean val = (m & _buttonMask) != 0 &&
             (_modifierFlags == (m & _modifierMask));
@@ -158,10 +158,10 @@ public class MouseFilter {
     public String toString () {
         StringBuffer result = new StringBuffer();
         result.append(super.toString()
-            + "; Button " + LayerEvent.toString(_buttonMask)
-            + "; Modifiers " + LayerEvent.toString(_modifierFlags)
-            + "; Modifier mask " + LayerEvent.toString(_modifierMask)
-            + "; Press Number " + LayerEvent.toString(_pressNumber));
+                + "; Button " + LayerEvent.toString(_buttonMask)
+                + "; Modifiers " + LayerEvent.toString(_modifierFlags)
+                + "; Modifier mask " + LayerEvent.toString(_modifierMask)
+                + "; Press Number " + LayerEvent.toString(_pressNumber));
         return result.toString();
     }
 }

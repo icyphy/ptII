@@ -57,19 +57,19 @@ public class ApplicationContext extends JFrame implements AppContext {
         // Set the system look and feel.
         try {
             UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName());
+                    UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {}
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         // hook the exit action into the window closing.
         addWindowListener(new WindowAdapter () {
-            public void windowClosing(WindowEvent e) {
-                if(_exitAction != null) {
-                    _exitAction.actionPerformed(null);
+                public void windowClosing(WindowEvent e) {
+                    if(_exitAction != null) {
+                        _exitAction.actionPerformed(null);
+                    }
                 }
-            }
-        });
+            });
     }
 
     /**

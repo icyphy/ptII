@@ -56,7 +56,7 @@ public class VectorFigure extends AbstractFigure {
     static final int FILLMODE = 87;
     static final int LINEMODE = 143;
 
-     /** The list containing the objects that we paint
+    /** The list containing the objects that we paint
      */
     private ArrayList _objects = new ArrayList();
 
@@ -204,7 +204,7 @@ public class VectorFigure extends AbstractFigure {
      */
     public void paint (Graphics2D g) {
         if (!isVisible()) {
-             return;
+            return;
         }
         // Push the context
         _transformContext.push(g);

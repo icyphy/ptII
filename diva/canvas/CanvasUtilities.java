@@ -405,13 +405,13 @@ public final class CanvasUtilities {
         final Rectangle2D rl = region;
 
         return new FilteredIterator(i, new Filter() {
-            Rectangle2D _region = rl;
+                Rectangle2D _region = rl;
 
-            public boolean accept(Object o) {
-                Figure f = (Figure)o;
-                return f.hit(_region);
-            }
-        });
+                public boolean accept(Object o) {
+                    Figure f = (Figure)o;
+                    return f.hit(_region);
+                }
+            });
 
     }
 
@@ -475,9 +475,9 @@ public final class CanvasUtilities {
             return r;
 
         } else if ((at.getType() &
-                        (AffineTransform.TYPE_MASK_SCALE |
-                                AffineTransform.TYPE_TRANSLATION |
-                                AffineTransform.TYPE_IDENTITY)) != 0) {
+                (AffineTransform.TYPE_MASK_SCALE |
+                        AffineTransform.TYPE_TRANSLATION |
+                        AffineTransform.TYPE_IDENTITY)) != 0) {
             double x = r.getX();
             double y = r.getY();
             double w = r.getWidth();
@@ -549,7 +549,7 @@ public final class CanvasUtilities {
      *  @deprecated Use local.getTransform(root) instead.
      */
     public static Point2D transformInto (Point2D p, TransformContext local,
-                                         TransformContext root) {
+            TransformContext root) {
         Point2D p2 = p;
         while(local != root) {
             p2 = local.getTransform().transform(p, null);
@@ -677,7 +677,7 @@ public final class CanvasUtilities {
      */
     public static Shape translate (
             Shape s, double x, double y) {
-       return ShapeUtilities.translateModify(s, x, y);
+        return ShapeUtilities.translateModify(s, x, y);
     }
 
     /**

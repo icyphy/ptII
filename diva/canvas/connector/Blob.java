@@ -158,9 +158,9 @@ public class Blob implements ConnectorEnd {
         return _filled;
     }
 
-   /** Paint the blob.  This method assumes that
-    * the graphics context is already set up with the correct
-    * paint and stroke.
+    /** Paint the blob.  This method assumes that
+     * the graphics context is already set up with the correct
+     * paint and stroke.
      */
     public void paint (Graphics2D g) {
         if (!_shapeValid) {
@@ -209,7 +209,7 @@ public class Blob implements ConnectorEnd {
     /** Test the flag that sets whether to fill the blob.
      */
     public void setFilled(boolean flag) {
-         _filled = flag;
+        _filled = flag;
     }
 
     /** Set the normal of the blob. The argument is the
@@ -252,7 +252,7 @@ public class Blob implements ConnectorEnd {
                 ((Polygon2D) _shape).translate(x, y);
             } else {
                 AffineTransform at = AffineTransform.getTranslateInstance(x,y);
-                 _shape = at.createTransformedShape(_shape);
+                _shape = at.createTransformedShape(_shape);
             }
         }
     }

@@ -40,8 +40,8 @@ public class BasicRectangle extends BasicFigure {
      * fill paint. It has no outline.
      */
     public BasicRectangle (
-                         double x, double y, double width, double height,
-                         Paint fill) {
+            double x, double y, double width, double height,
+            Paint fill) {
         super(new Rectangle2D.Double(x,y,width,height), fill);
     }
 
@@ -49,8 +49,8 @@ public class BasicRectangle extends BasicFigure {
      * fill paint. It has no outline.
      */
     public BasicRectangle (
-                         Rectangle2D bounds,
-                         Paint fill) {
+            Rectangle2D bounds,
+            Paint fill) {
         super(bounds, fill);
     }
 
@@ -58,34 +58,34 @@ public class BasicRectangle extends BasicFigure {
      * outline width. It has no fill.
      */
     public BasicRectangle (
-                         double x, double y, double width, double height,
-                         float lineWidth) {
-       super(new Rectangle2D.Double(x,y,width,height), lineWidth);
+            double x, double y, double width, double height,
+            float lineWidth) {
+        super(new Rectangle2D.Double(x,y,width,height), lineWidth);
     }
 
     /** Create a new rectangle with the given origin, size, fill, and
      * outline width.
      */
     public BasicRectangle (
-                         double x, double y, double width, double height,
-                         Paint fill,
-                         float lineWidth) {
-       super(new Rectangle2D.Double(x,y,width,height), fill, lineWidth);
+            double x, double y, double width, double height,
+            Paint fill,
+            float lineWidth) {
+        super(new Rectangle2D.Double(x,y,width,height), fill, lineWidth);
     }
 
-  /** Translate the rectangle the given distance
-   */
-  public void translate (double x, double y) {
-    Shape s = getShape();
-    if (s instanceof Rectangle2D) {
-      Rectangle2D r = (Rectangle2D)s;
-      repaint();
-      r.setFrame(r.getX()+x, r.getY()+y, r.getWidth(), r.getHeight());
-      repaint();
-    } else {
-      super.translate(x,y);
+    /** Translate the rectangle the given distance
+     */
+    public void translate (double x, double y) {
+        Shape s = getShape();
+        if (s instanceof Rectangle2D) {
+            Rectangle2D r = (Rectangle2D)s;
+            repaint();
+            r.setFrame(r.getX()+x, r.getY()+y, r.getWidth(), r.getHeight());
+            repaint();
+        } else {
+            super.translate(x,y);
+        }
     }
-  }
 }
 
 

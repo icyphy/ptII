@@ -249,7 +249,7 @@ public class BasicSelectionModel implements SelectionModel {
         }
     }
 
-     /**
+    /**
      * Set the selection mode, either
      * SINGLE_SELECTION or MULTIPLE_SELECTION.
      */

@@ -142,7 +142,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      */
     public boolean hit (Rectangle2D r) {
         if (!isVisible()) {
-             return false;
+            return false;
         }
         boolean hit = intersects(r);
 

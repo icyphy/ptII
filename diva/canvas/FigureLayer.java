@@ -163,13 +163,13 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     }
 
     /** Dispatch an AWT event on this layer.  If the layer
-      * is not enabled, return immediately. Otherwise process the event
-      * according to its type. If the event represents a mouse click, drag,
-      * or release, call the protected method <b>processLayerEvent</b>;
-      * if it represents a mouse movement, call the protected method
-      * </b>processLayerMotionEvent</b>. Currently other events types
-      * are not handled.
-      */
+     * is not enabled, return immediately. Otherwise process the event
+     * according to its type. If the event represents a mouse click, drag,
+     * or release, call the protected method <b>processLayerEvent</b>;
+     * if it represents a mouse movement, call the protected method
+     * </b>processLayerMotionEvent</b>. Currently other events types
+     * are not handled.
+     */
     public void dispatchEvent (AWTEvent event) {
         if (!isEnabled()) {
             return;
@@ -214,7 +214,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * be intercepted.
      */
     public Iterator figuresFromFront () {
-       return _zlist.figuresFromFront();
+        return _zlist.figuresFromFront();
     }
 
     /** Get the figure at the given index. Indexes are contiguous from
@@ -328,25 +328,25 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     }
 
     /** Test the enabled flag of this layer. Note that this flag
-      *  does not indicate whether the layer is actually enabled,
-      * as its pane or one if its ancestors may not be enabled.
-      */
+     *  does not indicate whether the layer is actually enabled,
+     * as its pane or one if its ancestors may not be enabled.
+     */
     public final boolean isEnabled () {
         return _enabled;
     }
 
     /** Test the visibility flag of this layer. Note that this flag
-      *  does not indicate whether the layer is actually visible on
-      *  the screen, as its pane or one if its ancestors may not be visible.
-      */
+     *  does not indicate whether the layer is actually visible on
+     *  the screen, as its pane or one if its ancestors may not be visible.
+     */
     public final boolean isVisible () {
         return _visible;
     }
 
     /** Paint this layer onto a 2D graphics object. If the layer
-      * is not visible, return immediately. Otherwise paint all figures
-      * from back to front.
-      */
+     * is not visible, return immediately. Otherwise paint all figures
+     * from back to front.
+     */
     public void paint (Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -360,10 +360,10 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     }
 
     /** Paint this layer onto a 2D graphics object, within the given
-      * region.  If the layer is not visible, return
-      * immediately. Otherwise paint all figures that overlap the given
-      * region, from back to front.
-      */
+     * region.  If the layer is not visible, return
+     * immediately. Otherwise paint all figures that overlap the given
+     * region, from back to front.
+     */
     public void paint (Graphics2D g, Rectangle2D region) {
         if (!isVisible()) {
             return;
@@ -377,11 +377,11 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     }
 
     /** Get the picked figure. This method recursively traverses the
-      * tree until it finds a figure that is "hit" by the region. Note
-      * that a region is given instead of a point so that "hysteresis"
-      * can be implemented. If no figure is picked, return null.  The
-      * region should not have zero size, or no figure will be hit.
-      */
+     * tree until it finds a figure that is "hit" by the region. Note
+     * that a region is given instead of a point so that "hysteresis"
+     * can be implemented. If no figure is picked, return null.  The
+     * region should not have zero size, or no figure will be hit.
+     */
     public Figure pick (Rectangle2D region) {
         return CanvasUtilities.pick(
                 _zlist.getIntersectedFigures(region).figuresFromFront(),
@@ -389,11 +389,11 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     }
 
     /** Get the picked figure. This method recursively traverses the
-      * tree until it finds a figure that is "hit" by the region. Note
-      * that a region is given instead of a point so that "hysteresis"
-      * can be implemented. If no figure is picked, return null.  The
-      * region should not have zero size, or no figure will be hit.
-      */
+     * tree until it finds a figure that is "hit" by the region. Note
+     * that a region is given instead of a point so that "hysteresis"
+     * can be implemented. If no figure is picked, return null.  The
+     * region should not have zero size, or no figure will be hit.
+     */
     public Figure pick (Rectangle2D region, Filter filter) {
         Iterator iterator =
             _zlist.getIntersectedFigures(region).figuresFromFront();
@@ -401,8 +401,8 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     }
 
     /** Remove the given figure from this layer. The figure's
-      * layer is set to null.
-      */
+     * layer is set to null.
+     */
     public void remove (Figure f) {
         _zlist.remove(f);
         f.setParent(null);
@@ -410,8 +410,8 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     }
 
     /** Remove the figure at the given position in the list. The figure's
-      * layer is set to null.
-      */
+     * layer is set to null.
+     */
     public void remove (int index) {
         Figure f = _zlist.get(index);
         _zlist.remove(index);
@@ -420,24 +420,24 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     }
 
     /** Repaint all figures that intersect the given rectangle.
-      */
+     */
     public void repaint (Rectangle2D region) {
         repaint(DamageRegion.createDamageRegion(
                 getTransformContext(), region));
     }
 
     /** Set the enabled flag of this layer. If the flag is false,
-      * then the layer will not respond to user input events.
-      */
+     * then the layer will not respond to user input events.
+     */
     public final void setEnabled (boolean flag) {
         _enabled = flag;
     }
 
     /** Set the "pick halo". This is the distance a figure
-      * can be from the mouse in either axis to be considered
-      * hit by the mouse. By default, it it set to 0.5, meaning
-      * that the hit detection rectangle is 1.0 along each side.
-      */
+     * can be from the mouse in either axis to be considered
+     * hit by the mouse. By default, it it set to 0.5, meaning
+     * that the hit detection rectangle is 1.0 along each side.
+     */
     public final void setPickHalo (double halo) {
         _pickHalo = halo;
     }
@@ -462,16 +462,16 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     }
 
     /** Set the visibility flag of this layer. If the flag is false,
-      * then the layer will not be drawn on the screen.
-      */
+     * then the layer will not be drawn on the screen.
+     */
     public final void setVisible (boolean flag) {
         _visible = flag;
         repaint();
     }
 
     /** Remove a figure from the given decorator and add
-      * it back into this container.
-      */
+     * it back into this container.
+     */
     public void undecorate (FigureDecorator decorator) {
         if (decorator.getParent() != this) {
             throw new IllegalArgumentException(
@@ -493,14 +493,14 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     //// protected methods
 
     /** Dispatch a layer event up the tree. Proceed up the hierarchy
-      * looking for a figure that has an interactor that is
-      * enabled for layer events. Dispatch the event to the first
-      * one found. If the event is not consumed, repeat.
-      */
+     * looking for a figure that has an interactor that is
+     * enabled for layer events. Dispatch the event to the first
+     * one found. If the event is not consumed, repeat.
+     */
     private void dispatchEventUpTree(Figure f, LayerEvent e) {
         // Scan up the tree try to dispatch the event
         while (f != null) {
-           Interactor interactor = f.getInteractor();
+            Interactor interactor = f.getInteractor();
             if (interactor != null) {
                 // Set the figure source
                 e.setFigureSource(f);
@@ -566,7 +566,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
                     }
                 }
             }
-             // Move up to the parent
+            // Move up to the parent
             CanvasComponent p = f.getParent();
             if ( !(p instanceof Figure)) {
                 break;
@@ -736,11 +736,11 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
             if(figure != _pointerOver) {
                 LayerEvent event;
                 event = new LayerEvent(e,
-                                       MouseEvent.MOUSE_EXITED);
+                        MouseEvent.MOUSE_EXITED);
                 dispatchMotionEventUpTree(_pointerOver, event);
                 _pointerOver = figure;
                 event = new LayerEvent(e,
-                                       MouseEvent.MOUSE_ENTERED);
+                        MouseEvent.MOUSE_ENTERED);
                 dispatchMotionEventUpTree(_pointerOver, event);
             }
         }

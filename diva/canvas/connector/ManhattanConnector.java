@@ -103,15 +103,15 @@ public class ManhattanConnector extends AbstractConnector {
         if(count > 1) {
             // pick a location for the label in the middle of the connector.
             _labelLocation = new Point2D.Double(
-                       (poly.getX(count/2) + poly.getX(count/2-1))/2,
-                       (poly.getY(count/2) + poly.getY(count/2-1))/2);
+                    (poly.getX(count/2) + poly.getX(count/2-1))/2,
+                    (poly.getY(count/2) + poly.getY(count/2-1))/2);
         } else {
             // attach the label to the only point of the connector.
             _labelLocation =
                 new Point2D.Double(poly.getX(0), poly.getY(0));
         }
 
-         if(_bendRadius == 0) {
+        if(_bendRadius == 0) {
             setShape(poly);
         }
         else {
@@ -135,9 +135,9 @@ public class ManhattanConnector extends AbstractConnector {
                 //first make sure that the radius is not
                 //bigger than half one of the arms of the triplets
                 double d0 = Math.sqrt((x1-x0)*(x1-x0) +
-                                      (y1-y0)*(y1-y0));
+                        (y1-y0)*(y1-y0));
                 double d1 = Math.sqrt((x2-x1)*(x2-x1) +
-                                      (y2-y1)*(y2-y1));
+                        (y2-y1)*(y2-y1));
                 double r = Math.min(_bendRadius, d0);
                 r = Math.min(r, d1);
 
@@ -165,7 +165,7 @@ public class ManhattanConnector extends AbstractConnector {
             }
             //finally close the last segment with a line.
             path.lineTo((float)poly.getX(poly.getVertexCount()-1),
-                        (float)poly.getY(poly.getVertexCount()-1));
+                    (float)poly.getY(poly.getVertexCount()-1));
 
             //now set the shape
             setShape(path);

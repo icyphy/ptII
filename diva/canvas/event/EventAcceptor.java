@@ -21,22 +21,22 @@ import java.awt.AWTEvent;
  */
 public interface EventAcceptor extends CanvasComponent {
 
-  /** Test the enabled flag of this object. If true, the object
-   * is prepared to handle events with processEvent().
-   */
-  public boolean isEnabled ();
+    /** Test the enabled flag of this object. If true, the object
+     * is prepared to handle events with processEvent().
+     */
+    public boolean isEnabled ();
 
-  /** Set the enabled flag of this object. If true, the object
-   * is prepared to handle events with processEvent().
-   */
-  public void setEnabled (boolean flag);
+    /** Set the enabled flag of this object. If true, the object
+     * is prepared to handle events with processEvent().
+     */
+    public void setEnabled (boolean flag);
 
-  /** Dispatch an AWT event within this component.  The implementing
-   * object should test if it is enabled first, and return if not.
-   * Otherwise, it should handle the event in whatever way it thinks
-   * appropriate.
-   */
-  public void dispatchEvent (AWTEvent event);
+    /** Dispatch an AWT event within this component.  The implementing
+     * object should test if it is enabled first, and return if not.
+     * Otherwise, it should handle the event in whatever way it thinks
+     * appropriate.
+     */
+    public void dispatchEvent (AWTEvent event);
 }
 
 

@@ -90,12 +90,12 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
      * layer events are handled.
      */
     public void dispatchEvent (AWTEvent event) {
-      if (event instanceof LayerEvent) {
-        processLayerEvent((LayerEvent)event);
-      } else {
-        // FIXME
-        System.out.println("Bad event: " + event);
-      }
+        if (event instanceof LayerEvent) {
+            processLayerEvent((LayerEvent)event);
+        } else {
+            // FIXME
+            System.out.println("Bad event: " + event);
+        }
     }
 
     /**
@@ -167,7 +167,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
         }
 
         int id = event.getID();
-            // Pass the event to attached interactors
+        // Pass the event to attached interactors
         switch(id) {
         case MouseEvent.MOUSE_PRESSED:
             // Find what interactor will grab the event.

@@ -76,7 +76,7 @@ public class BoundsGeometry implements Geometry {
         return _sites[id];
     }
 
-   /** Get the minimum size of the rectangle.
+    /** Get the minimum size of the rectangle.
      */
     public double getMinimumSize () {
         return _minSize;
@@ -156,9 +156,9 @@ public class BoundsGeometry implements Geometry {
         _minSize = minimumSize;
     }
 
-     /** Set the shape that defines this geometry object.
-      * The shape must be a Rectangle2D, or an exception
-      * will be thrown.
+    /** Set the shape that defines this geometry object.
+     * The shape must be a Rectangle2D, or an exception
+     * will be thrown.
      */
     public void setShape (Shape shape) {
         if ( !(shape instanceof Rectangle2D)) {
@@ -169,9 +169,9 @@ public class BoundsGeometry implements Geometry {
         _rect = (Rectangle2D) ((Rectangle2D) shape).clone();
     }
 
-     /** Set the rectangle that defines this geometry object.
-      * This is the same as setShape(), but does not need to
-      * perform the type check.
+    /** Set the rectangle that defines this geometry object.
+     * This is the same as setShape(), but does not need to
+     * perform the type check.
      */
     public void setBounds (Rectangle2D rect) {
         // Important: make a copy of it
@@ -182,24 +182,24 @@ public class BoundsGeometry implements Geometry {
      */
     public Iterator sites () {
         return new Iterator() {
-            // Note: SwingConstants start at 1!
-            int cursor = 1;
-            public boolean hasNext() {
-                return cursor < _siteCount;
-            }
-            public Object next() {
-                if (_sites[cursor] == null) {
-                    _sites[cursor] = new BoundsSite(cursor);
+                // Note: SwingConstants start at 1!
+                int cursor = 1;
+                public boolean hasNext() {
+                    return cursor < _siteCount;
                 }
-                Site result = _sites[cursor];
-                cursor++;
-                return result;
-            }
-            public void remove() {
-                throw new UnsupportedOperationException(
-                        "Sites cannot be removed");
-            }
-        };
+                public Object next() {
+                    if (_sites[cursor] == null) {
+                        _sites[cursor] = new BoundsSite(cursor);
+                    }
+                    Site result = _sites[cursor];
+                    cursor++;
+                    return result;
+                }
+                public void remove() {
+                    throw new UnsupportedOperationException(
+                            "Sites cannot be removed");
+                }
+            };
     }
 
     /** Translate the geometry object
@@ -437,7 +437,7 @@ public class BoundsGeometry implements Geometry {
         /** Set the point location of the site
          */
         public void setPoint (Point2D point) {
-           translate(point.getX()-getX(), point.getY() - getY());
+            translate(point.getX()-getX(), point.getY() - getY());
         }
     }
 }

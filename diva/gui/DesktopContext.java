@@ -445,10 +445,10 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
          * @param iconifiable if true, the frame can be iconified
          */
         public DesktopInternalFrame(String title,
-                                    boolean resizable,
-                                    boolean closable,
-                                    boolean maximizable,
-                                    boolean iconifiable) {
+                boolean resizable,
+                boolean closable,
+                boolean maximizable,
+                boolean iconifiable) {
             super(title, resizable, closable, maximizable, iconifiable);
         }
 
@@ -458,7 +458,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
         public void doDefaultCloseAction() {
             fireInternalFrameEvent(InternalFrameEvent.INTERNAL_FRAME_CLOSING);
         }
-     }
+    }
 
     private class DesktopPseudoFrame extends JPseudoFrame {
         public DesktopPseudoFrame (JDesktopPane desktopPane, JMenuBar menuBar) {
@@ -563,11 +563,11 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
             if(f.getContentPane().getComponentCount() == 1) {
                 c = (JComponent) f.getContentPane().getComponent(0);
             } else if(f.getContentPane().getComponentCount() == 0 &&
-                      isMaximizeMode()) {
+                    isMaximizeMode()) {
                 c = getCurrentContentPane();
             } else {
                 throw new RuntimeException("Could not find content " +
-                                           "for frame " + f);
+                        "for frame " + f);
             }
             ViewEvent event = new ViewEvent(c, id);
             Object[] listeners = _listeners.getListenerList();

@@ -57,7 +57,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
      * length of each side. The default is 4.0.
      */
     public float getSize () {
-      return _size;
+        return _size;
     }
 
     /**
@@ -83,18 +83,18 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
      * Set the set to which this grab-handle is attached.
      */
     public void setSite (Site s) {
-       _site = s;
-       relocate();
+        _site = s;
+        relocate();
     }
 
-   /**
+    /**
      * Set the "size" of the grab-handle.  The size is half the
      * length of each side.
      */
     public void setSize (float size) {
-      this._size = size;
-      ((Rectangle2D)getShape()).setFrame(
-                          _x - _size, _y - _size, _size*2, _size*2);
+        this._size = size;
+        ((Rectangle2D)getShape()).setFrame(
+                _x - _size, _y - _size, _size*2, _size*2);
     }
 
     /**

@@ -74,7 +74,7 @@ public class CircleGeometry implements Geometry {
         return _sites[id];
     }
 
-   /** Get the minimum size of the rectangle.
+    /** Get the minimum size of the rectangle.
      */
     public double getMinimumSize () {
         return _minSize;
@@ -112,9 +112,9 @@ public class CircleGeometry implements Geometry {
         _minSize = minimumSize;
     }
 
-     /** Set the shape that defines this geometry object.
-      * The shape must be a Rectangle2D, or an exception
-      * will be thrown.
+    /** Set the shape that defines this geometry object.
+     * The shape must be a Rectangle2D, or an exception
+     * will be thrown.
      */
     public void setShape (Shape shape) {
         if ( !(shape instanceof Rectangle2D)) {
@@ -125,9 +125,9 @@ public class CircleGeometry implements Geometry {
         _rect = (Rectangle2D) ((Rectangle2D) shape).clone();
     }
 
-     /** Set the rectangle that defines this geometry object.
-      * This is the same as setShape(), but does not need to
-      * perform the type check.
+    /** Set the rectangle that defines this geometry object.
+     * This is the same as setShape(), but does not need to
+     * perform the type check.
      */
     public void setBounds (Rectangle2D rect) {
         // Important: make a copy of it
@@ -138,22 +138,22 @@ public class CircleGeometry implements Geometry {
      */
     public Iterator sites () {
         return new Iterator() {
-            // Note: SwingConstants start at 1!
-            int cursor = 0;
-            public boolean hasNext() {
-                return cursor < _siteCount;
-            }
-            public Object next() {
-                if (_sites[cursor] == null) {
-                    _sites[cursor] = new CircleSite(cursor);
+                // Note: SwingConstants start at 1!
+                int cursor = 0;
+                public boolean hasNext() {
+                    return cursor < _siteCount;
                 }
-                return _sites[cursor++];
-            }
-            public void remove() {
-                throw new UnsupportedOperationException(
-                        "Site cannot be removed");
-            }
-        };
+                public Object next() {
+                    if (_sites[cursor] == null) {
+                        _sites[cursor] = new CircleSite(cursor);
+                    }
+                    return _sites[cursor++];
+                }
+                public void remove() {
+                    throw new UnsupportedOperationException(
+                            "Site cannot be removed");
+                }
+            };
     }
 
     /** Translate the geometry object
@@ -290,37 +290,37 @@ public class CircleGeometry implements Geometry {
             _rect.setFrameFromDiagonal(cx-r,cy-r,cx+r,cy+r);
 
             /*
-            // Adjust the coordinates.
-            double x1 = _rect.getX();
-            double y1 = _rect.getY();
-            double x2 = x1 + _rect.getWidth();
-            double y2 = y1 + _rect.getHeight();
+              // Adjust the coordinates.
+              double x1 = _rect.getX();
+              double y1 = _rect.getY();
+              double x2 = x1 + _rect.getWidth();
+              double y2 = y1 + _rect.getHeight();
 
-            x1 += y;
-            y1 += y;
-            x2 -= y;
-            y2 -= y;
+              x1 += y;
+              y1 += y;
+              x2 -= y;
+              y2 -= y;
 
-            // Check if below minimum allowable size.  If so, put the
-            // coordinates back where they were.
-            if (x2 - x1 < _minSize) {
+              // Check if below minimum allowable size.  If so, put the
+              // coordinates back where they were.
+              if (x2 - x1 < _minSize) {
               x1 -= y;
               x2 += y;
-            }
-            if (y2 - y1 < _minSize) {
+              }
+              if (y2 - y1 < _minSize) {
               y1 -= y;
               y2 += y;
-            }
+              }
 
-            // Set the rectangle.
-            _rect.setFrameFromDiagonal(x1,y1,x2,y2);
+              // Set the rectangle.
+              _rect.setFrameFromDiagonal(x1,y1,x2,y2);
             */
         }
 
         /** Set the point location of the site
          */
         public void setPoint (Point2D point) {
-           translate(point.getX()-getX(), point.getY() - getY());
+            translate(point.getX()-getX(), point.getY() - getY());
         }
     }
 }

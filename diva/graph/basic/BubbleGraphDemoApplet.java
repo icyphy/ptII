@@ -16,7 +16,7 @@ import diva.gui.AppletContext;
  */
 public class BubbleGraphDemoApplet extends AppletContext {
     public BubbleGraphDemoApplet() {
-       new BubbleGraphDemo(this);
+        new BubbleGraphDemo(this);
     }
 }
 

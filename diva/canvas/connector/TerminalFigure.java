@@ -106,7 +106,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
         return _figure.getTransformContext();
     }
 
-   /** Get the outline shape of this figure. The outline shape is
+    /** Get the outline shape of this figure. The outline shape is
      *  used for things like highlighting. The result shape is given
      *  in the enclosing transform context.
      */

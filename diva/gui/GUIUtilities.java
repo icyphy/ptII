@@ -66,7 +66,7 @@ public class GUIUtilities {
      *  ACCELERATOR_KEY property to the given key stroke.
      */
     public static void addHotKey(JComponent pane, Action action,
-                                 KeyStroke key) {
+            KeyStroke key) {
         String name = (String)action.getValue(action.NAME);
         if (key == null) {
             key = (KeyStroke) action.getValue(ACCELERATOR_KEY);
@@ -75,7 +75,7 @@ public class GUIUtilities {
         }
         if(key != null)
             pane.registerKeyboardAction(action, name,
-                                        key, pane.WHEN_IN_FOCUSED_WINDOW);
+                    key, pane.WHEN_IN_FOCUSED_WINDOW);
     }
 
     /** Add an action to a menu and return the menu item created.  If
@@ -93,7 +93,7 @@ public class GUIUtilities {
         Integer i = (Integer)action.getValue(MNEMONIC_KEY);
         if (i != null)
             mnemonic = i.intValue();
-           return addMenuItem(menu, label, action, mnemonic, null, true);
+        return addMenuItem(menu, label, action, mnemonic, null, true);
     }
 
 
@@ -121,7 +121,7 @@ public class GUIUtilities {
      * and is disabled or enabled according to "isEnabled."
      */
     public static JMenuItem addMenuItem (JMenu menu, String label,
-        Action action, int mnemonic, String tooltip, boolean isEnabled) {
+            Action action, int mnemonic, String tooltip, boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
         } else {
@@ -179,7 +179,7 @@ public class GUIUtilities {
     public static JButton addToolBarButton (JToolBar toolbar, Action action,
             String tooltip, Icon icon, boolean isEnabled){
         return addToolBarButton(toolbar, action, tooltip, icon,
-                                null, isEnabled);
+                null, isEnabled);
     }
 
     /** Add an action to the toolbar.  If the tool tip is null, use

@@ -119,7 +119,7 @@ public class StateBubble extends AbstractFigure {
      */
     public boolean hit (Rectangle2D r) {
         if (!isVisible()) {
-             return false;
+            return false;
         }
         return _outsideEllipse.hit(r);
     }
@@ -129,7 +129,7 @@ public class StateBubble extends AbstractFigure {
      */
     public void paint (Graphics2D g) {
         if (!isVisible()) {
-             return;
+            return;
         }
         _outsideEllipse.paint(g);
         if (_insideEllipse != null) {
@@ -176,17 +176,17 @@ public class StateBubble extends AbstractFigure {
         case INITIAL_STATE:
             Ellipse2D bounds = (Ellipse2D) _outsideEllipse.shape;
             Shape s = new Ellipse2D.Double(
-                  bounds.getX() + _spacing,
-                  bounds.getY() + _spacing,
-                  bounds.getWidth() - 2 * _spacing,
-                  bounds.getHeight() - 2 * _spacing);
+                    bounds.getX() + _spacing,
+                    bounds.getY() + _spacing,
+                    bounds.getWidth() - 2 * _spacing,
+                    bounds.getHeight() - 2 * _spacing);
 
             _insideEllipse = new PaintedShape(s);
             _outsideEllipse.setLineWidth(1);
             break;
 
         case FINAL_STATE:
-             if (_insideEllipse != null) {
+            if (_insideEllipse != null) {
                 _insideEllipse = null;
             }
             _outsideEllipse.setLineWidth((float)_spacing);
@@ -221,7 +221,7 @@ public class StateBubble extends AbstractFigure {
         if (_insideEllipse != null) {
             _insideEllipse.shape = ShapeUtilities.transformModify(
                     _insideEllipse.shape, at);
-         }
+        }
         repaint();
     }
 

@@ -122,7 +122,7 @@ public class PathManipulator extends Manipulator {
             PathManipulator parent = (PathManipulator) g.getParent();
             PathGeometry geometry = parent.getGeometry();
 
-           ((ShapedFigure)parent.getChild()).setShape(geometry.getShape());
+            ((ShapedFigure)parent.getChild()).setShape(geometry.getShape());
         }
     }
 }

@@ -36,7 +36,7 @@ public interface GraphListener extends java.util.EventListener {
      */
     public void edgeTailChanged(GraphEvent e);
 
-     /**
+    /**
      * A node has been been added to the registered
      * graph or one of its subgraphs.  The added node
      * is the "source" of the event.

@@ -41,7 +41,7 @@ public class MenuCreator extends AbstractInteractor {
      */
     public MenuCreator(MenuFactory factory) {
         MouseFilter filter = new MouseFilter (
-            InputEvent.BUTTON3_MASK);
+                InputEvent.BUTTON3_MASK);
         setMouseFilter(filter);
         setMenuFactory(factory);
     }

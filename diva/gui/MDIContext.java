@@ -18,7 +18,7 @@ import javax.swing.event.EventListenerList;
  * @version $Revision$
  */
 public interface MDIContext extends AppContext {
-   /** Add a new content pane to this frame. Generally, a client
+    /** Add a new content pane to this frame. Generally, a client
      * should call setCurrentPane() after calling this method.
      */
     public void addContentPane (String title, JComponent pane);
@@ -46,7 +46,7 @@ public interface MDIContext extends AppContext {
      *
      * FIXME: do we need this in the interface??
      *
-    public EventListenerList getViewListenerList ();
+     public EventListenerList getViewListenerList ();
     */
 
     /** Remove the given content pane from the display and close.

@@ -110,7 +110,7 @@ public class LabelFigure extends AbstractFigure {
      * given string, using the default font.
      */
     public LabelFigure(String s) {
-      this(s, _defaultFont);
+        this(s, _defaultFont);
     }
 
     /**
@@ -131,9 +131,9 @@ public class LabelFigure extends AbstractFigure {
      * be shared by many labels.
      */
     public LabelFigure(String s, Font f) {
-      _string = s;
-      _font = f;
-      _transformContext = new TransformContext(this);
+        _string = s;
+        _font = f;
+        _transformContext = new TransformContext(this);
     }
 
     /**
@@ -199,14 +199,14 @@ public class LabelFigure extends AbstractFigure {
      * Get the bounds of this string
      */
     public Rectangle2D getBounds () {
-      if (_cachedBounds == null) {
-        if (_shape == null) {
-          _update();
+        if (_cachedBounds == null) {
+            if (_shape == null) {
+                _update();
+            }
+            AffineTransform at = _transformContext.getTransform();
+            _cachedBounds = ShapeUtilities.transformBounds(_bounds, at);
         }
-        AffineTransform at = _transformContext.getTransform();
-        _cachedBounds = ShapeUtilities.transformBounds(_bounds, at);
-      }
-      return _cachedBounds;
+        return _cachedBounds;
     }
 
     /**
@@ -263,13 +263,13 @@ public class LabelFigure extends AbstractFigure {
      */
     public void paint (Graphics2D g) {
         if (!isVisible()) {
-             return;
+            return;
         }
         if(_cachedBounds == null) {
             getBounds();
         }
         if(_string != null) {
-           // Push the context
+            // Push the context
             _transformContext.push(g);
 
             g.setPaint(_fillPaint);
@@ -295,17 +295,17 @@ public class LabelFigure extends AbstractFigure {
     public void setAnchor (int anchor) {
         // Optimize if the figure is not yet painted
         if (_bounds == null) {
-          _anchor = anchor;
+            _anchor = anchor;
         } else {
-          Point2D oldpt = getAnchorPoint();
-          _anchor = anchor;
-          Point2D newpt = getAnchorPoint();
+            Point2D oldpt = getAnchorPoint();
+            _anchor = anchor;
+            Point2D newpt = getAnchorPoint();
 
-          repaint();
-          translate(
+            repaint();
+            translate(
                     oldpt.getX() - newpt.getX(),
                     oldpt.getY() - newpt.getY());
-          repaint();
+            repaint();
         }
     }
 
@@ -322,16 +322,16 @@ public class LabelFigure extends AbstractFigure {
      * Set the font.
      */
     public void setFont (Font f) {
-      if (_cachedBounds == null) {
-        _font = f;
-      } else {
-        // Remember the current anchor point
-        Point2D pt = getAnchorPoint();
-        _font = f;
-        _update();
-        // Move it back
-        translateTo(pt);
-      }
+        if (_cachedBounds == null) {
+            _font = f;
+        } else {
+            // Remember the current anchor point
+            Point2D pt = getAnchorPoint();
+            _font = f;
+            _update();
+            // Move it back
+            translateTo(pt);
+        }
     }
 
     /**
@@ -352,25 +352,25 @@ public class LabelFigure extends AbstractFigure {
      * Set the string.
      */
     public void setString(String s) {
-      if (_cachedBounds == null) {
-        _string = s;
-      } else {
-        // repaint the string where it currently is
-        repaint();
+        if (_cachedBounds == null) {
+            _string = s;
+        } else {
+            // repaint the string where it currently is
+            repaint();
 
-        // Remember the current anchor point
-        Point2D pt = getAnchorPoint();
-        // Modify the string
-        _string = s;
-        _update();
+            // Remember the current anchor point
+            Point2D pt = getAnchorPoint();
+            // Modify the string
+            _string = s;
+            _update();
 
-        // Recalculate and translate
-        Point2D badpt = getAnchorPoint();
-        translate(pt.getX() - badpt.getX(), pt.getY() - badpt.getY());
+            // Recalculate and translate
+            Point2D badpt = getAnchorPoint();
+            translate(pt.getX() - badpt.getX(), pt.getY() - badpt.getY());
 
-        // Repaint in new location
-        repaint();
-      }
+            // Repaint in new location
+            repaint();
+        }
     }
 
     /**
@@ -379,12 +379,12 @@ public class LabelFigure extends AbstractFigure {
      * to move it back again if this method being called to
      * (for example) rotate the label.
      */
-  //public void setTransform (AffineTransform at) {
-  //      repaint();
-  //      _transform = at;
-  //      _bounds = null;
-  //      repaint();
-  //  }
+    //public void setTransform (AffineTransform at) {
+    //      repaint();
+    //      _transform = at;
+    //      _bounds = null;
+    //      repaint();
+    //  }
 
     /**
      * Transform the label with the given transform.  Note that the anchor
@@ -397,7 +397,7 @@ public class LabelFigure extends AbstractFigure {
         _cachedBounds = null;
         _transformContext.preConcatenate(at);
         repaint();
-     }
+    }
 
     /**
      * Translate the label so that the current anchor is located
@@ -412,7 +412,7 @@ public class LabelFigure extends AbstractFigure {
         Point2D pt = getAnchorPoint();
         translate(x-pt.getX(),y-pt.getY());
         repaint();
-     }
+    }
 
     /**
      * Translate the label so that the current anchor is located
@@ -422,7 +422,7 @@ public class LabelFigure extends AbstractFigure {
      */
     public void translateTo (Point2D pt) {
         translateTo(pt.getX(), pt.getY());
-     }
+    }
 
     /** Update the shape used to draw the figure.
      */
@@ -431,7 +431,7 @@ public class LabelFigure extends AbstractFigure {
         // Since we are generating a shape and drawing that, it makes
         // no difference what the values of the flags are
         FontRenderContext frc = new FontRenderContext(
-                                    new AffineTransform(), false, false);
+                new AffineTransform(), false, false);
         // Only a single line
         if (_string.indexOf('\n') < 0) {
             // Get the shape

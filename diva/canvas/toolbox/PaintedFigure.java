@@ -45,7 +45,7 @@ public class PaintedFigure extends AbstractFigure {
      */
     private AffineTransform _transform = new AffineTransform();
 
-     /** The list containing the objects that we paint
+    /** The list containing the objects that we paint
      */
     private PaintedList _paintedList;
 
@@ -111,7 +111,7 @@ public class PaintedFigure extends AbstractFigure {
      */
     public void paint (Graphics2D g) {
         if (!isVisible()) {
-             return;
+            return;
         }
         if (_composite != null) {
             g.setComposite(_composite);

@@ -72,7 +72,7 @@ public abstract class AbstractGraphController implements GraphController {
      * valid site on the node's figure.
      */
     public void addEdge(Object edge, Object node,
-                        int end, double x, double y) {
+            int end, double x, double y) {
         getEdgeController(edge).addEdge(edge, node, end, x, y);
     }
 
@@ -273,8 +273,8 @@ public abstract class AbstractGraphController implements GraphController {
 
             if(_model.isEdge(object)) {
                 if(!GraphUtilities.isPartiallyContainedEdge(object,
-                                                            _model.getRoot(),
-                                                            _model)) {
+                        _model.getRoot(),
+                        _model)) {
                     if(_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -289,8 +289,8 @@ public abstract class AbstractGraphController implements GraphController {
 
             if(_model.isNode(object)) {
                 if(!GraphUtilities.isContainedNode(object,
-                                                   _model.getRoot(),
-                                                   _model)) {
+                        _model.getRoot(),
+                        _model)) {
                     if(_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -358,15 +358,15 @@ public abstract class AbstractGraphController implements GraphController {
         // FIXME this is way overkill.
         rerender();
         /*
-        Figure oldFigure = getFigure(edge);
-        boolean selected = _selectionModel.containsSelection(oldFigure);
-        if(selected) {
-            _selectionModel.removeSelection(oldFigure);
-        }
-        clearEdge(edge);
-        Figure newFigure = drawEdge(edge);
-            if(selected)
-            _selectionModel.addSelection(newFigure);
+          Figure oldFigure = getFigure(edge);
+          boolean selected = _selectionModel.containsSelection(oldFigure);
+          if(selected) {
+          _selectionModel.removeSelection(oldFigure);
+          }
+          clearEdge(edge);
+          Figure newFigure = drawEdge(edge);
+          if(selected)
+          _selectionModel.addSelection(newFigure);
         */
     }
 
@@ -379,28 +379,28 @@ public abstract class AbstractGraphController implements GraphController {
         // FIXME this is way overkill.
         rerender();
         /*
-        Figure oldFigure = getFigure(node);
-        boolean selected = _selectionModel.containsSelection(oldFigure);
-        if(selected) {
-            _selectionModel.removeSelection(oldFigure);
-        }
-        Point2D center;
-        if(oldFigure != null) {
-            center = CanvasUtilities.getCenterPoint(oldFigure.getBounds());
-            clearNode(node);
-        } else {
-            // no previous figure.  which means that we are probably
-            // rendering for the first time.
-            center = null; //FIXME: layout?
-        }
-        Figure newFigure = drawNode(node);
-        if(center != null) {
-            // place the new figure where the old one was.
-            CanvasUtilities.translateTo(newFigure,
-                                        center.getX(), center.getY());
-        }
-        if(selected)
-            _selectionModel.addSelection(newFigure);
+          Figure oldFigure = getFigure(node);
+          boolean selected = _selectionModel.containsSelection(oldFigure);
+          if(selected) {
+          _selectionModel.removeSelection(oldFigure);
+          }
+          Point2D center;
+          if(oldFigure != null) {
+          center = CanvasUtilities.getCenterPoint(oldFigure.getBounds());
+          clearNode(node);
+          } else {
+          // no previous figure.  which means that we are probably
+          // rendering for the first time.
+          center = null; //FIXME: layout?
+          }
+          Figure newFigure = drawNode(node);
+          if(center != null) {
+          // place the new figure where the old one was.
+          CanvasUtilities.translateTo(newFigure,
+          center.getX(), center.getY());
+          }
+          if(selected)
+          _selectionModel.addSelection(newFigure);
         */
     }
 
@@ -415,7 +415,7 @@ public abstract class AbstractGraphController implements GraphController {
         FigureLayer layer = getGraphPane().getForegroundLayer();
 
         if(_model != null) {
-        // Clear existing figures
+            // Clear existing figures
             Object root = _model.getRoot();
             if (_model.getNodeCount(root) != 0) {
                 for (i = _model.nodes(root); i.hasNext(); ) {
@@ -578,17 +578,17 @@ public abstract class AbstractGraphController implements GraphController {
                 rerender();
                 /* Object root = e.getTarget();
 
-                //FIXME - this could be optimized--
-                //        we may not need to rerender every
-                //        node.
+                   //FIXME - this could be optimized--
+                   //        we may not need to rerender every
+                   //        node.
 
-                for(Iterator i = _model.nodes(root); i.hasNext(); ) {
-                    rerenderNode(i.next());
-                }
-                for(Iterator i = GraphUtilities.localEdges(root, _model);
-                    i.hasNext(); ) {
-                    rerenderEdge(i.next());
-                }
+                   for(Iterator i = _model.nodes(root); i.hasNext(); ) {
+                   rerenderNode(i.next());
+                   }
+                   for(Iterator i = GraphUtilities.localEdges(root, _model);
+                   i.hasNext(); ) {
+                   rerenderEdge(i.next());
+                   }
                 */
             }
         }

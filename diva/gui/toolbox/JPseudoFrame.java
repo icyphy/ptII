@@ -104,39 +104,39 @@ public abstract class JPseudoFrame extends JComponent {
         _iconifyButton.setBounds(0,2,16,14);
         _iconifyButton.setRequestFocusEnabled(false);
         _iconifyButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                try {
-                    setIcon(true);
-                } catch (PropertyVetoException ex) {}
-                fireInternalAction("iconified");
-            }
-        });
+                public void actionPerformed (ActionEvent e) {
+                    try {
+                        setIcon(true);
+                    } catch (PropertyVetoException ex) {}
+                    fireInternalAction("iconified");
+                }
+            });
         add(_iconifyButton);
 
         _minimizeButton = new JButton((Icon)ui.get("InternalFrame.minimizeIcon"));
         _minimizeButton.setBounds(16,2,16,14);
         _minimizeButton.setRequestFocusEnabled(false);
         _minimizeButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                try {
-                    setMaximum(false);
-                } catch (PropertyVetoException ex) {}
-                fireInternalAction("minimized");
-            }
-        });
+                public void actionPerformed (ActionEvent e) {
+                    try {
+                        setMaximum(false);
+                    } catch (PropertyVetoException ex) {}
+                    fireInternalAction("minimized");
+                }
+            });
         add(_minimizeButton);
 
         _closeButton = new JButton((Icon)ui.get("InternalFrame.closeIcon"));
         _closeButton.setBounds(34,2,16,14);
         _closeButton.setRequestFocusEnabled(false);
         _closeButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                try {
-                    setClosed(true);
-                } catch (PropertyVetoException ex) {}
-                fireInternalAction("closed");
-            }
-        });
+                public void actionPerformed (ActionEvent e) {
+                    try {
+                        setClosed(true);
+                    } catch (PropertyVetoException ex) {}
+                    fireInternalAction("closed");
+                }
+            });
         add(_closeButton);
     }
 

@@ -113,15 +113,15 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
         return _headEnd;
     }
 
-   /** Get the site that marks the "head" of the connector.
+    /** Get the site that marks the "head" of the connector.
      */
     public Site getHeadSite () {
         return _headSite;
     }
 
-   /** Get the figure that display's this connector's label.
-    * This may be null.
-    */
+    /** Get the figure that display's this connector's label.
+     * This may be null.
+     */
     public LabelFigure getLabelFigure () {
         return _labelFigure;
     }
@@ -184,7 +184,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
      */
     public boolean hit (Rectangle2D r) {
         if (!isVisible()) {
-             return false;
+            return false;
         }
 
         boolean hit = ShapeUtilities.intersectsOutline(r, _shape);
@@ -207,7 +207,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
      *  path of the connector, the label, or either of the connector ends.
      */
     public boolean intersects (Rectangle2D r) {
-               boolean hit = ShapeUtilities.intersectsOutline(r, _shape);
+        boolean hit = ShapeUtilities.intersectsOutline(r, _shape);
         if (_labelFigure != null) {
             hit = hit || _labelFigure.intersects(r);
         }
@@ -259,9 +259,9 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
      */
     public abstract void route ();
 
-   /** Set the dash array of the stroke. The existing stroke will
-    * be removed, but the line width will be preserved if possible.
-    */
+    /** Set the dash array of the stroke. The existing stroke will
+     * be removed, but the line width will be preserved if possible.
+     */
     public void setDashArray (float dashArray[]) {
         repaint();
         if (_stroke instanceof BasicStroke) {
@@ -288,7 +288,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
      * Set the object drawn at the head end of the connector.
      */
     public void setHeadEnd (ConnectorEnd e) {
-         // We can't just call reroute, because then route() doesn't have a
+        // We can't just call reroute, because then route() doesn't have a
         // chance to set the normal of the end before painting it.
         repaint();
         _headEnd = e;
@@ -326,7 +326,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
                     ((BasicStroke) _stroke).getDashArray(),
                     0.0f);
         } else {
-             new BasicStroke(
+            new BasicStroke(
                     lineWidth,
                     BasicStroke.CAP_SQUARE,
                     BasicStroke.JOIN_MITER,
@@ -344,7 +344,7 @@ public abstract class AbstractConnector extends AbstractFigure implements Connec
     }
 
     /** Set the stroke of this connector.
-    */
+     */
     public void setStroke (Stroke s) {
         repaint();
         _stroke = s;

@@ -62,7 +62,7 @@ public class NodeDragInteractor extends DragInteractor {
                 // tc.getInverseTransform().deltaTransform(pt, localpt);
                 //t.translate(localpt.x,localpt.y);
                 t.translate(x, y);
-                 }
+            }
         }
 
         edgeSet.addAll(GraphUtilities.edgeSet(model.getRoot(), model));
@@ -70,32 +70,32 @@ public class NodeDragInteractor extends DragInteractor {
         // We used to do all this to figure out the correct edges to
         // route, but it is rather slow, so now we reroute all the
         // edges.
-//         i = targets();
-//            while (i.hasNext()) {
-//             Figure t = (Figure) i.next();
-//             System.out.println("obj = " + t.getUserObject());
-//             // Remember the edges so we route them later.
-//             if (model.isNode(t.getUserObject())) {
-//                 Iterator j;
-//                 j = model.inEdges(t.getUserObject());
-//                 while(j.hasNext()) {
-//                     edgeSet.add(j.next());
-//                 }
-//                 j = model.outEdges(t.getUserObject());
-//                 while(j.hasNext()) {
-//                     edgeSet.add(j.next());
-//                 }
-//                 if(model.isComposite(t.getUserObject())) {
-//                     j = GraphUtilities.partiallyContainedEdges(t.getUserObject(),
-//                                                                model);
-//                     while(j.hasNext()) {
-//                         edgeSet.add(j.next());
-//                     }
-//                 }
-//             }
-//         }
+        //         i = targets();
+        //            while (i.hasNext()) {
+        //             Figure t = (Figure) i.next();
+        //             System.out.println("obj = " + t.getUserObject());
+        //             // Remember the edges so we route them later.
+        //             if (model.isNode(t.getUserObject())) {
+        //                 Iterator j;
+        //                 j = model.inEdges(t.getUserObject());
+        //                 while(j.hasNext()) {
+        //                     edgeSet.add(j.next());
+        //                 }
+        //                 j = model.outEdges(t.getUserObject());
+        //                 while(j.hasNext()) {
+        //                     edgeSet.add(j.next());
+        //                 }
+        //                 if(model.isComposite(t.getUserObject())) {
+        //                     j = GraphUtilities.partiallyContainedEdges(t.getUserObject(),
+        //                                                                model);
+        //                     while(j.hasNext()) {
+        //                         edgeSet.add(j.next());
+        //                     }
+        //                 }
+        //             }
+        //         }
 
-           for (Iterator edges = edgeSet.iterator(); edges.hasNext(); ) {
+        for (Iterator edges = edgeSet.iterator(); edges.hasNext(); ) {
             Object edge = edges.next();
             Connector c = (Connector) (_controller.getFigure(edge));
             if (c != null) {
@@ -110,30 +110,30 @@ public class NodeDragInteractor extends DragInteractor {
      * FIXME: currently inefficient.
      * Rewrite this to use the X and Y coordinates.
 
-    private void routeAttachedEdges(Object node, double x, double y) {
-        // We have to check for null figures, since if an edge is
-        // connected at only one end in one view, other views will
-        // have no edge figure for that edge.
-        GraphModel model = _controller.getGraphModel();
-        for (Iterator ins = model.inEdges(node); ins.hasNext(); ) {
-            Connector c = (Connector) (_controller.getFigure(ins.next()));
-            if (c != null) {
-                c.reroute();
-            }
-        }
-        for (Iterator outs = model.outEdges(node); outs.hasNext(); ) {
-            Connector c = (Connector) (_controller.getFigure(outs.next()));
-            if (c != null) {
-                c.reroute();
-            }
-        }
-        if(model.isComposite(node)) {
-            for (Iterator contained = model.nodes(node);
-                 contained.hasNext(); ) {
-                routeAttachedEdges(contained.next(), x, y);
-            }
-        }
-        }*/
+     private void routeAttachedEdges(Object node, double x, double y) {
+     // We have to check for null figures, since if an edge is
+     // connected at only one end in one view, other views will
+     // have no edge figure for that edge.
+     GraphModel model = _controller.getGraphModel();
+     for (Iterator ins = model.inEdges(node); ins.hasNext(); ) {
+     Connector c = (Connector) (_controller.getFigure(ins.next()));
+     if (c != null) {
+     c.reroute();
+     }
+     }
+     for (Iterator outs = model.outEdges(node); outs.hasNext(); ) {
+     Connector c = (Connector) (_controller.getFigure(outs.next()));
+     if (c != null) {
+     c.reroute();
+     }
+     }
+     if(model.isComposite(node)) {
+     for (Iterator contained = model.nodes(node);
+     contained.hasNext(); ) {
+     routeAttachedEdges(contained.next(), x, y);
+     }
+     }
+     }*/
 }
 
 

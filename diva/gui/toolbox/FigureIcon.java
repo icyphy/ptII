@@ -88,7 +88,7 @@ public class FigureIcon extends ImageIcon {
      * @param antialias True if antialiasing should be used.
      */
     public FigureIcon(Figure figure, int x, int y,
-                      int border, boolean antialias) {
+            int border, boolean antialias) {
         super();
         if(figure instanceof ImageFigure && border == 0) {
             ImageFigure imageFigure = (ImageFigure)figure;

@@ -280,17 +280,17 @@ public class GraphicsParser {
         } else {
             return Color.black;
         }
-//          Color c = Color.getColor(s);
-//          if (c == null) {
-//              try {
-//                  c = Color.decode(s);
-//              }
-//              catch (Exception e) {}
-//          }
-//          if (c == null) {
-//              c = Color.black;
-//          }
-//          return c;
+        //          Color c = Color.getColor(s);
+        //          if (c == null) {
+        //              try {
+        //                  c = Color.decode(s);
+        //              }
+        //              catch (Exception e) {}
+        //          }
+        //          if (c == null) {
+        //              c = Color.black;
+        //          }
+        //          return c;
     }
 
     /** Parse a string of numbers into an array of double
@@ -340,7 +340,7 @@ public class GraphicsParser {
      */
     private static void processPaintedPathAttributes (
             PaintedPath pp, Map attributes) {
-       Iterator i = attributes.keySet().iterator();
+        Iterator i = attributes.keySet().iterator();
         while (i.hasNext()) {
             String key = (String) i.next();
             String val = (String) attributes.get(key);

@@ -195,17 +195,17 @@ public class JShadePane extends JPanel {
         if (icon != null && icon instanceof ImageIcon) {
             disabledIcon = new ImageIcon(
                     GrayFilter.createDisabledImage(
-                        ((ImageIcon)icon).getImage()));
+                            ((ImageIcon)icon).getImage()));
         }
 
         JButton button = new JButton(title, icon);
         final String titleHandle = title;
         button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int i = indexOfShade(titleHandle);
-                setSelectedIndex(i);
-            }
-        });
+                public void actionPerformed(ActionEvent e) {
+                    int i = indexOfShade(titleHandle);
+                    setSelectedIndex(i);
+                }
+            });
         button.setToolTipText(tip);
 
         //Add this shade to the data structure and also
@@ -504,15 +504,15 @@ public class JShadePane extends JPanel {
         }
 
         public Point getLocationOnScreen() {
-             Point parentLocation = _parent.getLocationOnScreen();
-             Point componentLocation = getLocation();
-             componentLocation.translate(parentLocation.x, parentLocation.y);
-             return componentLocation;
+            Point parentLocation = _parent.getLocationOnScreen();
+            Point componentLocation = getLocation();
+            componentLocation.translate(parentLocation.x, parentLocation.y);
+            return componentLocation;
         }
 
         public Point getLocation() {
-             Rectangle r = getBounds();
-             return new Point(r.x, r.y);
+            Rectangle r = getBounds();
+            return new Point(r.x, r.y);
         }
 
         public void setLocation(Point p) {
@@ -569,67 +569,67 @@ public class JShadePane extends JPanel {
 
         JButton b1 = new JButton("rm sel");
         b1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int i = sp.getSelectedIndex();
-                if(i >= 0) {
-                    sp.removeShadeAt(i);
+                public void actionPerformed(ActionEvent e) {
+                    int i = sp.getSelectedIndex();
+                    if(i >= 0) {
+                        sp.removeShadeAt(i);
+                    }
                 }
-            }
-        });
+            });
         btns.add(b1);
 
         JButton b2 = new JButton("rm sel-1");
         b2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int i = sp.getSelectedIndex()-1;
-                if(i >= 0) {
-                    sp.removeShadeAt(i);
+                public void actionPerformed(ActionEvent e) {
+                    int i = sp.getSelectedIndex()-1;
+                    if(i >= 0) {
+                        sp.removeShadeAt(i);
+                    }
                 }
-            }
-        });
+            });
         btns.add(b2);
 
         JButton b3 = new JButton("rm sel+1");
         b3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int i = sp.getSelectedIndex() + 1;
-                if(i >= 1 && i < sp.getShadeCount()) {
-                    sp.removeShadeAt(i);
+                public void actionPerformed(ActionEvent e) {
+                    int i = sp.getSelectedIndex() + 1;
+                    if(i >= 1 && i < sp.getShadeCount()) {
+                        sp.removeShadeAt(i);
+                    }
                 }
-            }
-        });
+            });
         btns.add(b3);
 
         JButton b4 = new JButton("rm all");
         b4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                sp.removeAll();
-            }
-        });
+                public void actionPerformed(ActionEvent e) {
+                    sp.removeAll();
+                }
+            });
         btns.add(b4);
 
         JButton b5 = new JButton("toggle sel");
         b5.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int i = sp.getSelectedIndex();
-                if(i >= 0) {
-                    boolean en = sp.isEnabledAt(i);
-                    sp.setEnabledAt(i, !en);
+                public void actionPerformed(ActionEvent e) {
+                    int i = sp.getSelectedIndex();
+                    if(i >= 0) {
+                        boolean en = sp.isEnabledAt(i);
+                        sp.setEnabledAt(i, !en);
+                    }
                 }
-            }
-        });
+            });
         btns.add(b5);
 
         JButton b6 = new JButton("toggle sel-1");
         b6.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int i = sp.getSelectedIndex()-1;
-                if(i >= 0) {
-                    boolean en = sp.isEnabledAt(i);
-                    sp.setEnabledAt(i, !en);
+                public void actionPerformed(ActionEvent e) {
+                    int i = sp.getSelectedIndex()-1;
+                    if(i >= 0) {
+                        boolean en = sp.isEnabledAt(i);
+                        sp.setEnabledAt(i, !en);
+                    }
                 }
-            }
-        });
+            });
         btns.add(b6);
 
         f.setSize(600,400);

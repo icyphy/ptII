@@ -52,32 +52,32 @@ public abstract class Manipulator extends FigureDecorator {
     /** Add a grab-handle to this manipulator's collection of grab-handles.
      */
     public void addGrabHandle (GrabHandle gh) {
-      _grabHandles.add(gh);
+        _grabHandles.add(gh);
     }
 
     /** Clear all grab-handles.
      */
     public void clearGrabHandles () {
-      _grabHandles.clear();
+        _grabHandles.clear();
     }
 
     /** Get the bounds. This is the union of the child's bounding box
      * and the bounding boxes of all the grab-handles
      */
     public Rectangle2D getBounds () {
-      Rectangle2D bounds = getChild().getBounds();
-      if (_grabHandles.size() > 0) {
-        bounds = bounds.createUnion(
+        Rectangle2D bounds = getChild().getBounds();
+        if (_grabHandles.size() > 0) {
+            bounds = bounds.createUnion(
                     CanvasUtilities.computeCompositeBounds(
-                        _grabHandles.iterator()));
-      }
-      return bounds;
+                            _grabHandles.iterator()));
+        }
+        return bounds;
     }
 
     /** Get the grab handle factory.
      */
     public GrabHandleFactory getGrabHandleFactory () {
-      return this._factory;
+        return this._factory;
     }
 
     /** Get the grab handle interactor.
@@ -90,7 +90,7 @@ public abstract class Manipulator extends FigureDecorator {
      * itself and its child.
      */
     public boolean isRepainting () {
-      return _repainting;
+        return _repainting;
     }
 
     /** Paint the manipulator. This default implementation first
@@ -158,7 +158,7 @@ public abstract class Manipulator extends FigureDecorator {
      */
     public abstract void refresh ();
 
-     /** Relocate grab-handles to their correct positions. This is
+    /** Relocate grab-handles to their correct positions. This is
      * a utility method to simplify notification callbacks.
      */
     public void relocateGrabHandles () {

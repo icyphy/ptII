@@ -45,21 +45,21 @@ public class GraphEventMulticaster implements GraphListener {
      */
     public void dispatchEvent(GraphEvent e) {
         switch(e.getID()) {
-            case GraphEvent.EDGE_HEAD_CHANGED:
-                edgeHeadChanged(e);
-                break;
-            case GraphEvent.EDGE_TAIL_CHANGED:
-                edgeTailChanged(e);
-                break;
-            case GraphEvent.NODE_ADDED:
-                nodeAdded(e);
-                break;
-            case GraphEvent.NODE_REMOVED:
-                nodeRemoved(e);
-                break;
-            case GraphEvent.STRUCTURE_CHANGED:
-                structureChanged(e);
-                break;
+        case GraphEvent.EDGE_HEAD_CHANGED:
+            edgeHeadChanged(e);
+            break;
+        case GraphEvent.EDGE_TAIL_CHANGED:
+            edgeTailChanged(e);
+            break;
+        case GraphEvent.NODE_ADDED:
+            nodeAdded(e);
+            break;
+        case GraphEvent.NODE_REMOVED:
+            nodeRemoved(e);
+            break;
+        case GraphEvent.STRUCTURE_CHANGED:
+            structureChanged(e);
+            break;
         }
     }
 

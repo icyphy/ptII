@@ -53,7 +53,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                     String title = "Closing Document";
                     int val =
                         JOptionPane.showConfirmDialog(parent, message, title,
-                            JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.YES_NO_CANCEL_OPTION,
                                 JOptionPane.WARNING_MESSAGE);
                     if(val == JOptionPane.YES_OPTION){
                         if(save(d)) {

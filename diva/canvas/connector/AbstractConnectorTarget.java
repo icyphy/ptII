@@ -28,8 +28,8 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * is not attached to the same figure.
      */
     public boolean acceptHead(Connector c, Figure f) {
-          if(c != null && c.getTailSite().getFigure() == f) return false;
-          return true;
+        if(c != null && c.getTailSite().getFigure() == f) return false;
+        return true;
     }
 
     /** Return true if the given connector can be connected to the given
@@ -37,8 +37,8 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * is not attached to the same figure.
      */
     public boolean acceptTail(Connector c, Figure f) {
-          if(c != null && c.getHeadSite().getFigure() == f) return false;
-          return true;
+        if(c != null && c.getHeadSite().getFigure() == f) return false;
+        return true;
     }
 
     /** Return a suitable site to connect a connector's head to,

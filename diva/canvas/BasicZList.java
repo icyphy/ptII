@@ -93,19 +93,19 @@ public class BasicZList implements ZList {
      */
     public Iterator figuresFromFront () {
         return new Iterator() {
-            int cursor = _elements.size();
-            public boolean hasNext() {
-                return cursor > 0;
-            }
-            public Object next() {
-                cursor--;
-                return _elements.get(cursor);
-            }
-            public void remove() {
-                throw new UnsupportedOperationException(
-                                                        "Cannot delete figure from zlist");
-            }
-        };
+                int cursor = _elements.size();
+                public boolean hasNext() {
+                    return cursor > 0;
+                }
+                public Object next() {
+                    cursor--;
+                    return _elements.get(cursor);
+                }
+                public void remove() {
+                    throw new UnsupportedOperationException(
+                            "Cannot delete figure from zlist");
+                }
+            };
     }
 
     /** Get the figure at the given index.
@@ -218,19 +218,19 @@ public class BasicZList implements ZList {
          */
         public Iterator figuresFromFront () {
             return new Iterator() {
-                int cursor = _currentFigures.size();
-                public boolean hasNext() {
-                    return cursor > 0;
-                }
-                public Object next() {
-                    cursor--;
-                    return _currentFigures.get(cursor);
-                }
-                public void remove() {
-                    throw new UnsupportedOperationException(
-                        "Cannot delete figure from geometric set");
-                }
-            };
+                    int cursor = _currentFigures.size();
+                    public boolean hasNext() {
+                        return cursor > 0;
+                    }
+                    public Object next() {
+                        cursor--;
+                        return _currentFigures.get(cursor);
+                    }
+                    public void remove() {
+                        throw new UnsupportedOperationException(
+                                "Cannot delete figure from geometric set");
+                    }
+                };
         }
 
         /** Get the geometry.
@@ -259,7 +259,7 @@ public class BasicZList implements ZList {
         /* Filter the figures into the given ArrayList
          */
         protected abstract void _filter (ArrayList result,
-                                         Iterator i, Rectangle2D region);
+                Iterator i, Rectangle2D region);
 
     }
 

@@ -115,18 +115,18 @@ public class GraphEvent extends java.util.EventObject {
      */
     private String idToString() {
         switch(getID()) {
-            case EDGE_HEAD_CHANGED:
-                return "EDGE_HEAD_CHANGED";
-            case EDGE_TAIL_CHANGED:
-                return "EDGE_TAIL_CHANGED";
-            case NODE_ADDED:
-                return "NODE_ADDED";
-            case NODE_REMOVED:
-                return "NODE_REMOVED";
-            case STRUCTURE_CHANGED:
-                return "STRUCTURE_CHANGED";
-            default:
-                return "Invalid event ID";
+        case EDGE_HEAD_CHANGED:
+            return "EDGE_HEAD_CHANGED";
+        case EDGE_TAIL_CHANGED:
+            return "EDGE_TAIL_CHANGED";
+        case NODE_ADDED:
+            return "NODE_ADDED";
+        case NODE_REMOVED:
+            return "NODE_REMOVED";
+        case STRUCTURE_CHANGED:
+            return "STRUCTURE_CHANGED";
+        default:
+            return "Invalid event ID";
         }
     }
 

@@ -266,7 +266,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
      * Debugging output.
      */
     private void debug(String s) {
-       System.err.println(s);
+        System.err.println(s);
     }
 
     /**

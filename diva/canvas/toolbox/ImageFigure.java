@@ -25,7 +25,7 @@ import diva.canvas.AbstractFigure;
  * @version $Revision$
  */
 public class ImageFigure extends AbstractFigure
-       implements ImageObserver {
+    implements ImageObserver {
     /**
      * The local transform
      */

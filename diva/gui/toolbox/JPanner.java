@@ -183,9 +183,9 @@ public class JPanner extends JPanel {
             g.drawRect(r.x, r.y, r.width, r.height);
 
             /* NOTE: No longer meaningful, since always full space.
-            g.setColor(Color.blue);
-            Dimension d = canvas.getSize();
-            g.drawRect(0, 0, d.width, d.height);
+               g.setColor(Color.blue);
+               Dimension d = canvas.getSize();
+               g.drawRect(0, 0, d.width, d.height);
             */
 
             g2d.transform(inverse);
@@ -201,8 +201,8 @@ public class JPanner extends JPanel {
         Insets insets = getInsets();
         Rectangle myRect =
             new Rectangle(insets.left, insets.top,
-                          mySize.width - insets.top - insets.bottom,
-                          mySize.height - insets.left - insets.right);
+                    mySize.width - insets.top - insets.bottom,
+                    mySize.height - insets.left - insets.right);
         return myRect;
     }
 

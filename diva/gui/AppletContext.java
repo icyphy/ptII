@@ -59,7 +59,7 @@ public class AppletContext extends JApplet implements AppContext {
             };
         try {
             UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName());
+                    UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {}
     }
 

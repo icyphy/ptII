@@ -38,7 +38,7 @@ public interface MutableGraphModel extends GraphModel {
      * @exception GraphException if the operation fails.
      */
     public void addNode(Object eventSource, Object node, Object parent)
-        throws GraphException;
+            throws GraphException;
 
     /**
      * Connect the given edge to the given tail and head nodes,
@@ -50,8 +50,8 @@ public interface MutableGraphModel extends GraphModel {
      * @exception GraphException if the operation fails.
      */
     public void connectEdge(Object eventSource, Object edge,
-                            Object tailNode, Object headNode)
-        throws GraphException;
+            Object tailNode, Object headNode)
+            throws GraphException;
 
     /**
      * Disconnect an edge from its two enpoints and notify graph
@@ -63,7 +63,7 @@ public interface MutableGraphModel extends GraphModel {
      * @exception GraphException if the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge)
-        throws GraphException;
+            throws GraphException;
 
     /**
      * Delete a node from its parent graph and notify
@@ -74,7 +74,7 @@ public interface MutableGraphModel extends GraphModel {
      * @exception GraphException if the operation fails.
      */
     public void removeNode(Object eventSource, Object node)
-        throws GraphException;
+            throws GraphException;
 
     /**
      * Connect an edge to the given head node and notify listeners
@@ -86,7 +86,7 @@ public interface MutableGraphModel extends GraphModel {
      * @exception GraphException if the operation fails.
      */
     public void setEdgeHead(Object eventSource, Object edge, Object newHead)
-        throws GraphException;
+            throws GraphException;
 
     /**
      * Connect an edge to the given tail node and notify listeners
@@ -98,6 +98,6 @@ public interface MutableGraphModel extends GraphModel {
      * @exception GraphException if the operation fails.
      */
     public void setEdgeTail(Object eventSource, Object edge, Object newTail)
-        throws GraphException;
+            throws GraphException;
 }
 

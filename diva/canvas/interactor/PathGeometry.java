@@ -161,10 +161,10 @@ public class PathGeometry implements Geometry {
      * all "Close" segments.
      */
     public int getVertexCount () {
-      if (!_geometryValid) {
-          updateGeometry();
-      }
-      return _vertexCount;
+        if (!_geometryValid) {
+            updateGeometry();
+        }
+        return _vertexCount;
     }
 
     /** Set the shape that defines this geometry object.
@@ -193,55 +193,55 @@ public class PathGeometry implements Geometry {
             updateGeometry();
         }
         return new Iterator() {
-            // cursor is the current place in the iteration
-            int cursor = 0;
-            // control_point is an internal counter to cursor, needed if the segment is quadratic or cubic.
-            int control_point = 0;
-            public boolean hasNext() {
-                return cursor < _vertexCount;
-            }
-            // Get the next Vertex
-            public Object next() {
-                // The first time through, getVertex() needs to be called
-                if (_vertices[cursor] == null) {
-                    getVertex(cursor);
+                // cursor is the current place in the iteration
+                int cursor = 0;
+                // control_point is an internal counter to cursor, needed if the segment is quadratic or cubic.
+                int control_point = 0;
+                public boolean hasNext() {
+                    return cursor < _vertexCount;
                 }
-                // Depending on the type of segment
-                switch (_type[cursor]) {
-                    // If a cubic curve, then make sure to include the two control points
-                case PathIterator.SEG_CUBICTO:
-                    if (control_point == 0) {
-                        control_point = 1;
-                        return new Vertex(cursor, control_point);
+                // Get the next Vertex
+                public Object next() {
+                    // The first time through, getVertex() needs to be called
+                    if (_vertices[cursor] == null) {
+                        getVertex(cursor);
                     }
-                    else if (control_point == 1) {
-                        control_point = 2;
-                        return new Vertex(cursor, control_point);
-                    }
-                    else {
-                        control_point = 0;
+                    // Depending on the type of segment
+                    switch (_type[cursor]) {
+                        // If a cubic curve, then make sure to include the two control points
+                    case PathIterator.SEG_CUBICTO:
+                        if (control_point == 0) {
+                            control_point = 1;
+                            return new Vertex(cursor, control_point);
+                        }
+                        else if (control_point == 1) {
+                            control_point = 2;
+                            return new Vertex(cursor, control_point);
+                        }
+                        else {
+                            control_point = 0;
+                            return _vertices[cursor++];
+                        }
+                        // If a quadratic curve, then make sure to include the one control point
+                    case PathIterator.SEG_QUADTO:
+                        if (control_point == 0) {
+                            control_point = 1;
+                            return new Vertex(cursor, control_point);
+                        }
+                        else {
+                            // Otherwise, there is no control points on the segment.
+                            control_point = 0;
+                            return _vertices[cursor++];
+                        }
+                    default:
                         return _vertices[cursor++];
                     }
-                     // If a quadratic curve, then make sure to include the one control point
-                case PathIterator.SEG_QUADTO:
-                    if (control_point == 0) {
-                        control_point = 1;
-                        return new Vertex(cursor, control_point);
-                    }
-                    else {
-                        // Otherwise, there is no control points on the segment.
-                        control_point = 0;
-                        return _vertices[cursor++];
-                    }
-                default:
-                    return _vertices[cursor++];
                 }
-            }
-            public void remove() {
-                throw new UnsupportedOperationException(
-                        "Vertex sites cannot be removed");
-            }
-        };
+                public void remove() {
+                    throw new UnsupportedOperationException(
+                            "Vertex sites cannot be removed");
+                }
+            };
     }
 
 

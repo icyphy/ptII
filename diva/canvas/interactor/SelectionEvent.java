@@ -65,14 +65,14 @@ public class SelectionEvent extends java.util.EventObject {
         }
         else {
             return new IteratorAdapter() {
-                int i = 0;
-                public boolean hasNext() {
-                    return (i < _added.length);
-                }
-                public Object next() {
-                    return _added[i++];
-                }
-            };
+                    int i = 0;
+                    public boolean hasNext() {
+                        return (i < _added.length);
+                    }
+                    public Object next() {
+                        return _added[i++];
+                    }
+                };
         }
     }
 
@@ -86,14 +86,14 @@ public class SelectionEvent extends java.util.EventObject {
         }
         else {
             return new IteratorAdapter() {
-                int i = 0;
-                public boolean hasNext() {
-                    return (i < _removed.length);
-                }
-                public Object next() {
-                    return _removed[i++];
-                }
-            };
+                    int i = 0;
+                    public boolean hasNext() {
+                        return (i < _removed.length);
+                    }
+                    public Object next() {
+                        return _removed[i++];
+                    }
+                };
         }
     }
 

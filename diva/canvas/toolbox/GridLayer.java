@@ -129,51 +129,51 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      * <p>FIXME: Vertexes are not yet supported.
      */
     /*
-    public void paint (Graphics2D g) {
-        Point2D paneSize = getCanvasPane().getSize();
-        if (!isVisible()) {
-            return;
-        }
+      public void paint (Graphics2D g) {
+      Point2D paneSize = getCanvasPane().getSize();
+      if (!isVisible()) {
+      return;
+      }
 
-        double originX = _origin.getX();
-        double originY = _origin.getY();
-        double sizeX = _size.getX();
-        double sizeY = _size.getY();
-        double paneX = paneSize.getX();
-        double paneY = paneSize.getY();
+      double originX = _origin.getX();
+      double originY = _origin.getY();
+      double sizeX = _size.getX();
+      double sizeY = _size.getY();
+      double paneX = paneSize.getX();
+      double paneY = paneSize.getY();
 
-        if (_gridPaint != null) {
-            g.setPaint(_gridPaint);
-            g.setStroke(_gridStroke);
+      if (_gridPaint != null) {
+      g.setPaint(_gridPaint);
+      g.setStroke(_gridStroke);
 
-            Line2D.Double vline = new Line2D.Double();
-            Line2D.Double hline = new Line2D.Double();
+      Line2D.Double vline = new Line2D.Double();
+      Line2D.Double hline = new Line2D.Double();
 
-            double x = originX;
-            double y;
+      double x = originX;
+      double y;
 
-            vline.y1 = originY;
-            vline.y2 = paneY;
+      vline.y1 = originY;
+      vline.y2 = paneY;
 
-            hline.x1 = originY;
-            hline.x2 = paneX;
+      hline.x1 = originY;
+      hline.x2 = paneX;
 
-            while (x < paneX) {
-                vline.x1 = x;
-                vline.x2 = x;
-                g.draw(vline);
+      while (x < paneX) {
+      vline.x1 = x;
+      vline.x2 = x;
+      g.draw(vline);
 
-                y = originY;
-                while (y < paneY) {
-                    hline.y1 = y;
-                    hline.y2 = y;
-                    g.draw(hline);
-                    y += sizeY;
-                }
-                x += sizeX;
-            }
-        }
-    }
+      y = originY;
+      while (y < paneY) {
+      hline.y1 = y;
+      hline.y2 = y;
+      g.draw(hline);
+      y += sizeY;
+      }
+      x += sizeX;
+      }
+      }
+      }
     */
 
     public void paint (Graphics2D g) {

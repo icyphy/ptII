@@ -46,10 +46,10 @@ public interface Geometry {
      */
     public Shape getShape ();
 
-     /** Set the shape that defines this geometry object.
-      * Implementing classes should check that the specific
-      * type of the shape is one that they can accept, and
-      * throw an IllegalArgumentException exception if not.
+    /** Set the shape that defines this geometry object.
+     * Implementing classes should check that the specific
+     * type of the shape is one that they can accept, and
+     * throw an IllegalArgumentException exception if not.
      */
     public void setShape (Shape shape);
 

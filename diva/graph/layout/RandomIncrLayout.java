@@ -27,7 +27,7 @@ public class RandomIncrLayout implements IncrementalLayout {
      * the context of the given layout target.
      */
     public RandomIncrLayout(LayoutTarget target) {
-            _global = new RandomLayout(target);
+        _global = new RandomLayout(target);
     }
 
     /**

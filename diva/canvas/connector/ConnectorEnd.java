@@ -38,9 +38,9 @@ public interface ConnectorEnd {
      */
     public void getOrigin (Point2D p);
 
-   /** Paint the connector end. This method assumes that
-    * the graphics context is already set up with the correct
-    * paint and stroke.
+    /** Paint the connector end. This method assumes that
+     * the graphics context is already set up with the correct
+     * paint and stroke.
      */
     public void paint (Graphics2D g);
 

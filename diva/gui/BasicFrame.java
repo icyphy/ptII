@@ -57,10 +57,10 @@ public class BasicFrame extends ApplicationContext {
 
         // NOT a default action.
         Action action = new AbstractAction ("Exit") {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        };
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0);
+                }
+            };
         setExitAction(action);
 
         JMenuItem itemQuit = menuFile.add(action);
@@ -95,10 +95,10 @@ public class BasicFrame extends ApplicationContext {
 
         // NOT a default action.
         Action action = new AbstractAction ("Exit") {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        };
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0);
+                }
+            };
         setExitAction(action);
 
         JMenuItem itemQuit = menuFile.add(action);

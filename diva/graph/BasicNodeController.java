@@ -164,11 +164,11 @@ public class BasicNodeController implements NodeController {
             // place the new figure where the old one was, if there
             // was an old figure.
             CanvasUtilities.translateTo(newFigure,
-                                        center.getX(), center.getY());
+                    center.getX(), center.getY());
         }
 
         _controller.dispatch(new GraphViewEvent(this,
-            GraphViewEvent.NODE_DRAWN, node));
+                GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -188,7 +188,7 @@ public class BasicNodeController implements NodeController {
         _drawChildren(node);
 
         _controller.dispatch(new GraphViewEvent(this,
-                             GraphViewEvent.NODE_DRAWN, node));
+                GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -233,7 +233,7 @@ public class BasicNodeController implements NodeController {
         // we assume that the model will remove any edges that are connected.
         model.removeNode(_controller, node);
         _controller.getGraphPane().repaint();
-     }
+    }
 
     /**
      * Set the node interactor for this controller

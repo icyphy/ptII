@@ -204,7 +204,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      */
     public boolean hit (Rectangle2D r) {
         if (!isVisible()) {
-             return false;
+            return false;
         }
         boolean hit = false;
         if (_fillPaint != null) {
@@ -261,13 +261,13 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** Set the compositing operation for this figure.
      */
     public void setComposite (AlphaComposite c) {
-         _composite = c;
+        _composite = c;
         repaint();
     }
 
-   /** Set the dash array of the stroke. The existing stroke will
-    * be removed, but the line width will be preserved if possible.
-    */
+    /** Set the dash array of the stroke. The existing stroke will
+     * be removed, but the line width will be preserved if possible.
+     */
     public void setDashArray (float dashArray[]) {
         repaint();
         if (_stroke instanceof BasicStroke) {
@@ -314,7 +314,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
                     ((BasicStroke) _stroke).getDashArray(),
                     0.0f);
         } else {
-             new BasicStroke(
+            new BasicStroke(
                     lineWidth,
                     BasicStroke.CAP_SQUARE,
                     BasicStroke.JOIN_MITER,

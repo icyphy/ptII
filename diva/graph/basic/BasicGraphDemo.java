@@ -46,7 +46,7 @@ public class BasicGraphDemo {
     public BasicGraphDemo(AppContext context) {
         final BasicGraphModel model = new BasicGraphModel();
         JGraph jg = new JGraph(new GraphPane(new BasicGraphController(),
-                                             model));
+                model));
         JGraph jg2 = new JGraph(new GraphPane(new BasicGraphController(),
                 model));
 
@@ -55,23 +55,23 @@ public class BasicGraphDemo {
         context.getContentPane().add(jg2);
 
         /*
-        GraphController controller = jg.getGraphPane().getGraphController();
-        final BasicLayoutTarget target = new BasicLayoutTarget(controller);
-        JButton but = new JButton("Layout");
-        but.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //                GlobalLayout l = new GridAnnealingLayout();
-                GlobalLayout l = new LevelLayout();
-                l.layout(target, model.getRoot());
-            }
-        });
-        context.getContentPane().add("South", but);
+          GraphController controller = jg.getGraphPane().getGraphController();
+          final BasicLayoutTarget target = new BasicLayoutTarget(controller);
+          JButton but = new JButton("Layout");
+          but.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent evt) {
+          //                GlobalLayout l = new GridAnnealingLayout();
+          GlobalLayout l = new LevelLayout();
+          l.layout(target, model.getRoot());
+          }
+          });
+          context.getContentPane().add("South", but);
 
-        ActionListener deletionListener = new DeletionListener();
-        jg.registerKeyboardAction(deletionListener, "Delete",
-                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
-        jg.setRequestFocusEnabled(true);
+          ActionListener deletionListener = new DeletionListener();
+          jg.registerKeyboardAction(deletionListener, "Delete",
+          KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+          JComponent.WHEN_IN_FOCUSED_WINDOW);
+          jg.setRequestFocusEnabled(true);
         */
 
         context.setSize(600, 400);

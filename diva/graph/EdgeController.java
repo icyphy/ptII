@@ -34,7 +34,7 @@ public interface EdgeController {
      * @see diva.canvas.connector.ConnectorEvent
      */
     public void addEdge(Object edge, Object node,
-                        int end, double x, double y);
+            int end, double x, double y);
 
     /**
      * Add an edge to this graph between the given tail and head
@@ -102,7 +102,7 @@ public interface EdgeController {
     /** Render the edge on the given layer between the two sites.
      */
     public Connector render(Object edge, FigureLayer layer,
-                               Site tailSite, Site headSite);
+            Site tailSite, Site headSite);
 
 }
 

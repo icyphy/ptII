@@ -88,19 +88,19 @@ public class BasicCanvasPane extends CanvasPane {
      */
     public Iterator layersFromBack () {
         return new Iterator() {
-            int cursor = _layers.size();
-            public boolean hasNext() {
-                return cursor > 0;
-            }
-            public Object next() {
-                cursor--;
-                return _layers.get(cursor);
-            }
-            public void remove() {
-                throw new UnsupportedOperationException(
-                        "Cannot delete layer from canvas pane");
-            }
-        };
+                int cursor = _layers.size();
+                public boolean hasNext() {
+                    return cursor > 0;
+                }
+                public Object next() {
+                    cursor--;
+                    return _layers.get(cursor);
+                }
+                public void remove() {
+                    throw new UnsupportedOperationException(
+                            "Cannot delete layer from canvas pane");
+                }
+            };
     }
 
     /** Remove the given layer. Do nothing if the layer is

@@ -72,7 +72,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         }
     }
 
-     /** Get the background figure.
+    /** Get the background figure.
      */
     public Figure getBackground () {
         return _background;

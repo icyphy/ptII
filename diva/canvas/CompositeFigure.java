@@ -292,7 +292,7 @@ public class CompositeFigure extends AbstractFigureContainer {
         }
         // Paint the children
         Iterator i = _children.getIntersectedFigures(r).figuresFromBack();
-              while (i.hasNext()) {
+        while (i.hasNext()) {
             Figure f = (Figure) i.next();
             f.paint(g, r);
         }
@@ -427,7 +427,7 @@ public class CompositeFigure extends AbstractFigureContainer {
         repaint();
     }
 
-     /** Translate this figure the given distance.
+    /** Translate this figure the given distance.
      * This method modifies the transform context with the transform.
      */
     public void translate (double x, double y) {

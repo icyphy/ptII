@@ -101,18 +101,18 @@ public class SimplePane extends GraphicsPane {
         // Create a cloud, Claude
         Shape area = ShapeUtilities.createCloudShape();
 
-//         Area area = new Area();
-//         Ellipse2D c = new Ellipse2D.Double();
-//         c.setFrame(0,25,50,50);
-//         area.add(new Area(c));
-//         c.setFrame(25,0,40,40);
-//         area.add(new Area(c));
-//         c.setFrame(25,25,60,60);
-//         area.add(new Area(c));
-//         c.setFrame(60,30,40,40);
-//         area.add(new Area(c));
-//         c.setFrame(60,10,30,30);
-//         area.add(new Area(c));
+        //         Area area = new Area();
+        //         Ellipse2D c = new Ellipse2D.Double();
+        //         c.setFrame(0,25,50,50);
+        //         area.add(new Area(c));
+        //         c.setFrame(25,0,40,40);
+        //         area.add(new Area(c));
+        //         c.setFrame(25,25,60,60);
+        //         area.add(new Area(c));
+        //         c.setFrame(60,30,40,40);
+        //         area.add(new Area(c));
+        //         c.setFrame(60,10,30,30);
+        //         area.add(new Area(c));
 
         AffineTransform cat = new AffineTransform();
         cat.translate(200,100);

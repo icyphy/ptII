@@ -22,7 +22,7 @@ public class EdgeInteractor extends SelectionInteractor {
     /** Create a new edge interactor.
      */
     public EdgeInteractor () {
-       super();
+        super();
     }
 
     /** Create a new edge interactor that belongs to the given

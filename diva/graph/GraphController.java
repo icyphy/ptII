@@ -35,7 +35,7 @@ public interface GraphController {
      * valid site on the node's figure.
      */
     public void addEdge(Object edge, Object node,
-                        int end, double x, double y);
+            int end, double x, double y);
 
     /** Add an edge to this graph between the given tail and head
      * nodes.  Give the new edge the given semanticObject.

@@ -59,7 +59,7 @@ public abstract class AbstractSite implements Site {
      * that method.
      */
     public Point2D getPoint () {
-         return getPoint(getNormal());
+        return getPoint(getNormal());
     }
 
     /** Get the point location of the site, in the given
@@ -71,14 +71,14 @@ public abstract class AbstractSite implements Site {
      */
     public Point2D getPoint (TransformContext tc) {
         return CanvasUtilities.transformInto(
-                   getPoint(), getTransformContext(), tc);
+                getPoint(), getTransformContext(), tc);
     }
 
     /** Get the point location of the site, in the enclosing
      * transform context with the given normal.
      */
     public Point2D getPoint (double normal) {
-         return new Point2D.Double(getX(), getY());
+        return new Point2D.Double(getX(), getY());
     }
 
     /** Get the point location of the site, in the given

@@ -70,21 +70,21 @@ public class FigureTest extends TestSuite {
      */
     public void testProperties () {
         runTestCase(new TestCase("Figure properties") {
-            Figure figure;
-            Interactor r = new DragInteractor();
+                Figure figure;
+                Interactor r = new DragInteractor();
 
-            public void init () throws Exception {
-                figure = factory.createFigure();
-            }
-            public void run () throws Exception {
-                figure.setInteractor(r);
-                figure.setVisible(false);
-            }
-            public void check () throws TestFailedException {
-                assertExpr(!figure.isVisible(), "Property visible");
-                assertExpr(figure.getInteractor() == r, "Property interactionRole");
-            }
-        });
+                public void init () throws Exception {
+                    figure = factory.createFigure();
+                }
+                public void run () throws Exception {
+                    figure.setInteractor(r);
+                    figure.setVisible(false);
+                }
+                public void check () throws TestFailedException {
+                    assertExpr(!figure.isVisible(), "Property visible");
+                    assertExpr(figure.getInteractor() == r, "Property interactionRole");
+                }
+            });
     }
 
     /** Test hit. This doesn't actually do a hit test,
@@ -92,10 +92,10 @@ public class FigureTest extends TestSuite {
      */
     public void testHit () {
         runTestCase(new RegionTestCase("Figure hit") {
-            public void run () throws Exception {
-                result = figure.hit(region);
-            }
-        });
+                public void run () throws Exception {
+                    result = figure.hit(region);
+                }
+            });
     }
 
     /** Test intersection. This doesn't actually do an intersection test,
@@ -103,10 +103,10 @@ public class FigureTest extends TestSuite {
      */
     public void testIntersects () {
         runTestCase(new RegionTestCase("Figure intersects") {
-            public void run () throws Exception {
-                result = figure.intersects(region);
-            }
-        });
+                public void run () throws Exception {
+                    result = figure.intersects(region);
+                }
+            });
     }
 
     /** Test painting. This method calls both versions of the paint
@@ -123,118 +123,118 @@ public class FigureTest extends TestSuite {
         final Graphics2D g = buffer.createGraphics();
 
         runTestCase(new TestCase("Figure paint") {
-            Figure figure;
-            AffineTransform at1, at2, at3;
-            Rectangle2D region = new Rectangle2D.Double(10,20,30,40);
+                Figure figure;
+                AffineTransform at1, at2, at3;
+                Rectangle2D region = new Rectangle2D.Double(10,20,30,40);
 
-            public void init () throws Exception {
-                figure = factory.createFigure();
+                public void init () throws Exception {
+                    figure = factory.createFigure();
 
-                AffineTransform at = new AffineTransform();
-                at.translate(10,20);
-                at.scale(0.5,2.0);
-                figure.transform(at);
-             }
-            public void run () throws Exception {
-                at1 = new AffineTransform(g.getTransform());
-                figure.paint(g);
-                at2 = new AffineTransform(g.getTransform());
-                figure.paint(g,region);
-                at3 = new AffineTransform(g.getTransform());
-            }
-            public void check () throws TestFailedException {
-                assertExpr(at1.equals(at2),
-                        "Graphics2D transform changed from:\n    "
-                        + at1 + " \nto:\n    " + at2);
-                assertExpr(at2.equals(at3),
-                        "Graphics2D transform changed from:\n    "
-                        + at2 + " \nto:\n    " + at3);
-            }
-        });
+                    AffineTransform at = new AffineTransform();
+                    at.translate(10,20);
+                    at.scale(0.5,2.0);
+                    figure.transform(at);
+                }
+                public void run () throws Exception {
+                    at1 = new AffineTransform(g.getTransform());
+                    figure.paint(g);
+                    at2 = new AffineTransform(g.getTransform());
+                    figure.paint(g,region);
+                    at3 = new AffineTransform(g.getTransform());
+                }
+                public void check () throws TestFailedException {
+                    assertExpr(at1.equals(at2),
+                            "Graphics2D transform changed from:\n    "
+                            + at1 + " \nto:\n    " + at2);
+                    assertExpr(at2.equals(at3),
+                            "Graphics2D transform changed from:\n    "
+                            + at2 + " \nto:\n    " + at3);
+                }
+            });
 
         runTestCase(new RegionTestCase("Figure paint region test") {
-            public void run () throws Exception {
-                figure.paint(g,region);
-            }
-        });
+                public void run () throws Exception {
+                    figure.paint(g,region);
+                }
+            });
     }
 
     /** Test how transforms affect the figure
      */
     public void testTransform () {
         runTestCase(new TestCase("Figure transform") {
-            Figure figure;
-            AffineTransform at;
-            Shape shape;
-            Rectangle2D bounds;
+                Figure figure;
+                AffineTransform at;
+                Shape shape;
+                Rectangle2D bounds;
 
-            public void init () throws Exception {
-                figure = factory.createFigure();
-                at = new AffineTransform();
-                at.translate(40,-20);
-                at.scale(2.0,0.5);
-            }
-            public void run () throws Exception {
-                shape = (Shape) figure.getShape();
-                shape = ShapeUtilities.transformModify(shape, at);
-                bounds = (Rectangle2D) figure.getBounds();
-                bounds = (Rectangle2D) bounds.clone();
-                ShapeUtilities.transformModify(bounds, at);
+                public void init () throws Exception {
+                    figure = factory.createFigure();
+                    at = new AffineTransform();
+                    at.translate(40,-20);
+                    at.scale(2.0,0.5);
+                }
+                public void run () throws Exception {
+                    shape = (Shape) figure.getShape();
+                    shape = ShapeUtilities.transformModify(shape, at);
+                    bounds = (Rectangle2D) figure.getBounds();
+                    bounds = (Rectangle2D) bounds.clone();
+                    ShapeUtilities.transformModify(bounds, at);
 
-                figure.transform(at);
-            }
-            public void check () throws TestFailedException {
-                assertExpr(TestUtilities.shapeEquals(
-                        shape, figure.getShape(), 0.01),
-                        "Shape not transformed: "
-                        + shape + " != " + figure.getShape());
+                    figure.transform(at);
+                }
+                public void check () throws TestFailedException {
+                    assertExpr(TestUtilities.shapeEquals(
+                            shape, figure.getShape(), 0.01),
+                            "Shape not transformed: "
+                            + shape + " != " + figure.getShape());
 
-                // For the bounds, we need to allow a large error,
-                // because bounds don't necessarily transform correctly!
-                // So this test is only useful for catching the most
-                // gross errors
-                assertExpr(TestUtilities.shapeEquals(
-                        bounds, figure.getBounds(), 2.0),
-                        "Bounds not transformed: "
-                        + bounds + " != " + figure.getBounds());
-            }
-        });
+                    // For the bounds, we need to allow a large error,
+                    // because bounds don't necessarily transform correctly!
+                    // So this test is only useful for catching the most
+                    // gross errors
+                    assertExpr(TestUtilities.shapeEquals(
+                            bounds, figure.getBounds(), 2.0),
+                            "Bounds not transformed: "
+                            + bounds + " != " + figure.getBounds());
+                }
+            });
     }
 
     /** Test how translates affect the figure
      */
     public void testTranslate () {
         runTestCase(new TestCase("Figure translate") {
-            Figure figure;
-            Shape shape;
-            Rectangle2D bounds;
+                Figure figure;
+                Shape shape;
+                Rectangle2D bounds;
 
-            public void init () throws Exception {
-                figure = factory.createFigure();
-            }
-            public void run () throws Exception {
-                shape = (Shape) figure.getShape();
-                shape = new GeneralPath(shape);
-                shape = ShapeUtilities.translateModify(shape, 10.0, -20.0);
-                bounds = (Rectangle2D) figure.getBounds();
-                bounds = (Rectangle2D) bounds.clone();
-                bounds = (Rectangle2D) ShapeUtilities.translateModify(
-                        bounds, 10.0, -20.0);
+                public void init () throws Exception {
+                    figure = factory.createFigure();
+                }
+                public void run () throws Exception {
+                    shape = (Shape) figure.getShape();
+                    shape = new GeneralPath(shape);
+                    shape = ShapeUtilities.translateModify(shape, 10.0, -20.0);
+                    bounds = (Rectangle2D) figure.getBounds();
+                    bounds = (Rectangle2D) bounds.clone();
+                    bounds = (Rectangle2D) ShapeUtilities.translateModify(
+                            bounds, 10.0, -20.0);
 
-                figure.translate(10.0, -20.0);
-            }
-            public void check () throws TestFailedException {
-                assertExpr(TestUtilities.shapeEquals(
-                        shape, figure.getShape(), 0.01),
-                        "Shape not translated: "
-                        + shape + " != " + figure.getShape());
+                    figure.translate(10.0, -20.0);
+                }
+                public void check () throws TestFailedException {
+                    assertExpr(TestUtilities.shapeEquals(
+                            shape, figure.getShape(), 0.01),
+                            "Shape not translated: "
+                            + shape + " != " + figure.getShape());
 
-                assertExpr(TestUtilities.shapeEquals(
-                        bounds, figure.getBounds(), 0.01),
-                        "Bounds not translated: "
-                        + bounds + " != " + figure.getBounds());
-            }
-        });
+                    assertExpr(TestUtilities.shapeEquals(
+                            bounds, figure.getBounds(), 0.01),
+                            "Bounds not translated: "
+                            + bounds + " != " + figure.getBounds());
+                }
+            });
     }
 
     ////////////////////////////////////////////////////////////////

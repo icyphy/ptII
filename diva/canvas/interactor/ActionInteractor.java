@@ -52,9 +52,9 @@ public class ActionInteractor extends AbstractInteractor {
      */
     public void mousePressed (LayerEvent layerEvent) {
         ActionEvent event = new ActionEvent(layerEvent,
-                                            layerEvent.getID(),
-                                            "Pressed",
-                                            layerEvent.getModifiers());
+                layerEvent.getID(),
+                "Pressed",
+                layerEvent.getModifiers());
         _action.actionPerformed(event);
     }
 

@@ -44,13 +44,13 @@ public interface FigureSet {
      * back to front. This is the order in which
      * figures should normally be painted.
      */
-  public Iterator figuresFromBack ();
+    public Iterator figuresFromBack ();
 
     /** Return an iteration of the figures in this set, from back to
      * front. This is the order in which events should normally be
      * intercepted.
      */
-  public Iterator figuresFromFront ();
+    public Iterator figuresFromFront ();
 }
 
 

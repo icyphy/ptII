@@ -89,7 +89,7 @@ public class SelectionInteractor extends CompositeInteractor {
             || super.accept(e);
     }
 
-     /**
+    /**
      * Get the mouse filter that controls when this selection
      * filter is activated.
      */
@@ -177,7 +177,7 @@ public class SelectionInteractor extends CompositeInteractor {
                 }
             }
         }
-         // Allow superclass to process event
+        // Allow superclass to process event
         super.mousePressed(event);
 
         // Always consume the event if the figure was moved into or

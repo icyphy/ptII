@@ -56,13 +56,13 @@ public class BoundsConstraint implements PointConstraint {
     /** Get the bounds
      */
     public Rectangle2D getBounds () {
-         return _bounds;
+        return _bounds;
     }
 
     /** Return false. This constraint never snaps.
      */
     public boolean snapped () {
-      return false;
+        return false;
     }
 
     /** Set the bounds

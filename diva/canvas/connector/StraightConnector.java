@@ -77,13 +77,13 @@ public class StraightConnector extends AbstractConnector {
         Point2D tailCenter, headCenter;
         if (tailSite.getFigure() != null) {
             tailCenter = CanvasUtilities.getCenterPoint(tailSite.getFigure(),
-                                                        currentContext);
+                    currentContext);
         } else {
             tailCenter = tailPt;
         }
         if (headSite.getFigure() != null) {
             headCenter = CanvasUtilities.getCenterPoint(headSite.getFigure(),
-                                                        currentContext);
+                    currentContext);
         } else {
             headCenter = headPt;
         }

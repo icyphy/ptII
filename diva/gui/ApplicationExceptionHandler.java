@@ -29,7 +29,7 @@ public class ApplicationExceptionHandler {
         _application = application;
         try {
             System.setProperty("sun.awt.exception.handler",
-                               "diva.gui.ApplicationExceptionHandler");
+                    "diva.gui.ApplicationExceptionHandler");
         } catch (Exception ex) {
             // Ignore an errors that we get here..  which mean that we
             // aren't allowed to set that property.  Applets will just have

@@ -44,14 +44,14 @@ public class DefaultActions {
      */
     public static Action copyAction(final Application app) {
         return new AbstractAction (COPY) {
-            public void actionPerformed(ActionEvent e) {
-                View view = app.getCurrentView();
-                Clipboard c = app.getClipboard();
-                if(view != null && c != null) {
-                    view.copy(c);
+                public void actionPerformed(ActionEvent e) {
+                    View view = app.getCurrentView();
+                    Clipboard c = app.getClipboard();
+                    if(view != null && c != null) {
+                        view.copy(c);
+                    }
                 }
-            }
-        };
+            };
     }
 
     /** Create an action named "Close" that closes the current
@@ -59,10 +59,10 @@ public class DefaultActions {
      */
     public static Action closeAction(final Application app) {
         return new AbstractAction (CLOSE) {
-            public void actionPerformed(ActionEvent e) {
-                app.closeDocument(app.getCurrentView().getDocument());
-            }
-        };
+                public void actionPerformed(ActionEvent e) {
+                    app.closeDocument(app.getCurrentView().getDocument());
+                }
+            };
     }
 
     /** Create an action named "Cut" that cuts the current selection from
@@ -72,14 +72,14 @@ public class DefaultActions {
      */
     public static Action cutAction(final Application app) {
         return new AbstractAction (CUT) {
-            public void actionPerformed(ActionEvent e) {
-                View view = app.getCurrentView();
-                Clipboard c = app.getClipboard();
-                if(view != null && c != null) {
-                    view.cut(c);
+                public void actionPerformed(ActionEvent e) {
+                    View view = app.getCurrentView();
+                    Clipboard c = app.getClipboard();
+                    if(view != null && c != null) {
+                        view.cut(c);
+                    }
                 }
-            }
-        };
+            };
     }
 
     /** Create an action named "Exit" that tries to close all the
@@ -89,18 +89,18 @@ public class DefaultActions {
      */
     public static Action exitAction(final Application app) {
         return new AbstractAction (EXIT) {
-            public void actionPerformed(ActionEvent e) {
-                Iterator docs = app.documentList().iterator();
-                boolean succeeded = true;
-                while(docs.hasNext() && succeeded) {
-                    Document d = (Document)docs.next();
-                    succeeded &= app.closeDocument(d);
+                public void actionPerformed(ActionEvent e) {
+                    Iterator docs = app.documentList().iterator();
+                    boolean succeeded = true;
+                    while(docs.hasNext() && succeeded) {
+                        Document d = (Document)docs.next();
+                        succeeded &= app.closeDocument(d);
+                    }
+                    if(succeeded) {
+                        System.exit(0);
+                    }
                 }
-                if(succeeded) {
-                    System.exit(0);
-                }
-            }
-        };
+            };
     }
 
     /** Create an action named "New" that creates a new
@@ -108,14 +108,14 @@ public class DefaultActions {
      */
     public static Action newAction(final Application app) {
         return new AbstractAction (NEW) {
-            public void actionPerformed(ActionEvent e) {
-                Document doc = app.getDocumentFactory().createDocument(app);
-                app.addDocument(doc);
-                View v = app.createView(doc);
-                app.addView(v);
-                app.setCurrentView(v);
-            }
-        };
+                public void actionPerformed(ActionEvent e) {
+                    Document doc = app.getDocumentFactory().createDocument(app);
+                    app.addDocument(doc);
+                    View v = app.createView(doc);
+                    app.addView(v);
+                    app.setCurrentView(v);
+                }
+            };
     }
 
     /** Create an action named "Open" that opens a new
@@ -123,17 +123,17 @@ public class DefaultActions {
      */
     public static Action openAction(final Application app) {
         return new AbstractAction (OPEN) {
-            public void actionPerformed(ActionEvent e) {
-                Document doc = app.getStoragePolicy().open(app);
-                //FIXME: should this check be done in the app instead?
-                if(doc != null) {
-                    app.addDocument(doc);
-                    View v = app.createView(doc);
-                    app.addView(v);
-                    app.setCurrentView(v);
+                public void actionPerformed(ActionEvent e) {
+                    Document doc = app.getStoragePolicy().open(app);
+                    //FIXME: should this check be done in the app instead?
+                    if(doc != null) {
+                        app.addDocument(doc);
+                        View v = app.createView(doc);
+                        app.addView(v);
+                        app.setCurrentView(v);
+                    }
                 }
-            }
-        };
+            };
     }
 
     /** Create an action named "Print" that prints the current
@@ -143,34 +143,34 @@ public class DefaultActions {
      */
     public static Action printAction(final Application app) {
         return new AbstractAction (PRINT) {
-            public void actionPerformed(ActionEvent e) {
-                View view = app.getCurrentView();
-                if(view != null && view instanceof Printable) {
-                    PrinterJob job = PrinterJob.getPrinterJob();
-                    PageFormat format = job.pageDialog(job.defaultPage());
-                    job.setPrintable((Printable)view, format);
-                    if (job.printDialog()) {
-                        try {
-                            job.print();
-                        } catch (Exception ex) {
-                            app.showError("PrintingFailed", ex);
+                public void actionPerformed(ActionEvent e) {
+                    View view = app.getCurrentView();
+                    if(view != null && view instanceof Printable) {
+                        PrinterJob job = PrinterJob.getPrinterJob();
+                        PageFormat format = job.pageDialog(job.defaultPage());
+                        job.setPrintable((Printable)view, format);
+                        if (job.printDialog()) {
+                            try {
+                                job.print();
+                            } catch (Exception ex) {
+                                app.showError("PrintingFailed", ex);
+                            }
+                        }
+                    }
+                    else if(view != null && view instanceof Pageable) {
+                        PrinterJob job = PrinterJob.getPrinterJob();
+                        PageFormat format = job.pageDialog(job.defaultPage());
+                        job.setPageable((Pageable)view);
+                        if (job.printDialog()) {
+                            try {
+                                job.print();
+                            } catch (Exception ex) {
+                                app.showError("PrintingFailed", ex);
+                            }
                         }
                     }
                 }
-                else if(view != null && view instanceof Pageable) {
-                    PrinterJob job = PrinterJob.getPrinterJob();
-                    PageFormat format = job.pageDialog(job.defaultPage());
-                    job.setPageable((Pageable)view);
-                    if (job.printDialog()) {
-                        try {
-                            job.print();
-                        } catch (Exception ex) {
-                            app.showError("PrintingFailed", ex);
-                        }
-                    }
-                }
-            }
-        };
+            };
     }
 
     /** Create an action named "Paste" that pastes the current selection from
@@ -180,14 +180,14 @@ public class DefaultActions {
      */
     public static Action pasteAction(final Application app) {
         return new AbstractAction (PASTE) {
-            public void actionPerformed(ActionEvent e) {
-                View view = app.getCurrentView();
-                Clipboard c = app.getClipboard();
-                if(view != null && c != null) {
-                    view.paste(c);
+                public void actionPerformed(ActionEvent e) {
+                    View view = app.getCurrentView();
+                    Clipboard c = app.getClipboard();
+                    if(view != null && c != null) {
+                        view.paste(c);
+                    }
                 }
-            }
-        };
+            };
     }
 
     /** Create an action named "Quit" that exits Java.
@@ -203,10 +203,10 @@ public class DefaultActions {
      */
     public static Action saveAction(final Application app) {
         return new AbstractAction (SAVE) {
-            public void actionPerformed(ActionEvent e) {
-                app.getStoragePolicy().save(app.getCurrentView().getDocument());//FIXME???
-            }
-        };
+                public void actionPerformed(ActionEvent e) {
+                    app.getStoragePolicy().save(app.getCurrentView().getDocument());//FIXME???
+                }
+            };
     }
 
     /** Create an action named "Save As" that saves the current
@@ -215,10 +215,10 @@ public class DefaultActions {
      */
     public static Action saveAsAction(final Application app) {
         return new AbstractAction (SAVE_AS) {
-            public void actionPerformed(ActionEvent e) {
-                app.getStoragePolicy().saveAs(app.getCurrentView().getDocument());
-            }
-        };
+                public void actionPerformed(ActionEvent e) {
+                    app.getStoragePolicy().saveAs(app.getCurrentView().getDocument());
+                }
+            };
     }
 }
 

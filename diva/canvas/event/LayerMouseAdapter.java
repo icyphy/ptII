@@ -67,11 +67,11 @@ public class LayerMouseAdapter implements LayerListener, LayerMotionListener {
     }
 
     public void mouseEntered(LayerEvent e) {
-      //  _mml.mouseEntered(e);
+        //  _mml.mouseEntered(e);
     }
 
     public void mouseExited(LayerEvent e) {
-      //  _mml.mouseExited(e);
+        //  _mml.mouseExited(e);
     }
 
     public void setMouseFilter(MouseFilter f) {

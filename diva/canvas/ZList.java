@@ -112,7 +112,7 @@ public interface ZList extends FigureSet {
     /** Replace the figure at the given index with the passed-in
      * figure.
      */
-  public void set (int index, Figure f);
+    public void set (int index, Figure f);
 
     /** Set the index of the given figure. That is, move it in the
      * display list to the given position. To move the figure to just

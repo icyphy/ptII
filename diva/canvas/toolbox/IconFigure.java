@@ -178,7 +178,7 @@ public class IconFigure extends AbstractFigure {
      */
     public void paint (Graphics2D g) {
         if (!isVisible()) {
-             return;
+            return;
         }
         if (_composite != null) {
             g.setComposite(_composite);

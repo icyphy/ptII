@@ -165,18 +165,18 @@ public class BasicLayoutTarget implements LayoutTarget {
         ZList zlist = getGraphicsPane().getForegroundLayer().getFigures();
         Iterator i = zlist.getIntersectedFigures(r).figuresFromFront();
         Iterator j = new FilteredIterator(i, new Filter() {
-            public boolean accept(Object o) {
-                Figure f = (Figure)o;
-                return (model.isNode(f.getUserObject()));
-            }
-        });
+                public boolean accept(Object o) {
+                    Figure f = (Figure)o;
+                    return (model.isNode(f.getUserObject()));
+                }
+            });
 
         return new ProxyIterator(j) {
-            public Object next() {
-                Figure nf = (Figure)super.next();
-                return nf.getUserObject();
-            }
-        };
+                public Object next() {
+                    Figure nf = (Figure)super.next();
+                    return nf.getUserObject();
+                }
+            };
     }
 
     /**
@@ -187,16 +187,16 @@ public class BasicLayoutTarget implements LayoutTarget {
         ZList zlist = getGraphicsPane().getForegroundLayer().getFigures();
         Iterator i = zlist.getIntersectedFigures(r).figuresFromFront();
         Iterator j = new FilteredIterator(i, new Filter() {
-            public boolean accept(Object o) {
-                return (o instanceof Connector);
-            }
-        });
+                public boolean accept(Object o) {
+                    return (o instanceof Connector);
+                }
+            });
         return new ProxyIterator(j) {
-            public Object next() {
-                Connector ef = (Connector)super.next();
-                return ef.getUserObject();
-            }
-        };
+                public Object next() {
+                    Connector ef = (Connector)super.next();
+                    return ef.getUserObject();
+                }
+            };
     }
 
     /**

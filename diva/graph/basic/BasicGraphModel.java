@@ -144,14 +144,14 @@ public class BasicGraphModel extends BasicModularGraphModel {
          */
         public Iterator inNodes() {
             return new diva.util.IteratorAdapter () {
-                Iterator edges = inEdges();
-                public boolean hasNext() {
-                    return edges.hasNext();
-                }
-                public Object next() {
-                    return ((Edge)edges.next()).getTail();
-                }
-            };
+                    Iterator edges = inEdges();
+                    public boolean hasNext() {
+                        return edges.hasNext();
+                    }
+                    public Object next() {
+                        return ((Edge)edges.next()).getTail();
+                    }
+                };
         }
 
         /**
@@ -170,14 +170,14 @@ public class BasicGraphModel extends BasicModularGraphModel {
          */
         public Iterator outNodes() {
             return new diva.util.IteratorAdapter () {
-                Iterator edges = outEdges();
-                public boolean hasNext() {
-                    return edges.hasNext();
-                }
-                public Object next() {
-                    return ((Edge)edges.next()).getHead();
-                }
-            };
+                    Iterator edges = outEdges();
+                    public boolean hasNext() {
+                        return edges.hasNext();
+                    }
+                    public Object next() {
+                        return ((Edge)edges.next()).getHead();
+                    }
+                };
         }
 
         public void removeInEdge(Edge e) {

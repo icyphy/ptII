@@ -233,8 +233,8 @@ public class JCanvasPanner extends JPanel {
 
             // NOTE: No longer meaningful, since always full space.
             /*      g.setColor(Color.blue);
-            Dimension d = canvas.getSize();
-            g.drawRect(0, 0, d.width, d.height);
+                    Dimension d = canvas.getSize();
+                    g.drawRect(0, 0, d.width, d.height);
             */
         } else {
             Rectangle r = _getInsetBounds();
@@ -250,8 +250,8 @@ public class JCanvasPanner extends JPanel {
         int border = 2;
         Rectangle myRect =
             new Rectangle(insets.left + border, insets.top + border,
-                          mySize.width - insets.top - insets.bottom - border,
-                          mySize.height - insets.left - insets.right - border);
+                    mySize.width - insets.top - insets.bottom - border,
+                    mySize.height - insets.left - insets.right - border);
         return myRect;
     }
 
@@ -277,89 +277,89 @@ public class JCanvasPanner extends JPanel {
     }
 
     /*
-    private class ScaleMouseListener extends MouseAdapter
-        implements MouseMotionListener {
-        public Point2D origin = null;
-        public Point2D scaled = null;
-        public AffineTransform transformOrigin = null;
-        public void setScale(int x, int y) {
-            double scale;
-            // The 5.0 and 1.3 below were determined by trial and error
-            // tuning.
-            if(x > origin.getX() && y > origin.getY()) {
-                if(x - origin.getX() > y - origin.getY()) {
-                    scale = (y - origin.getY()) / 5.0;
-                } else {
-                    scale = (x - origin.getX()) / 5.0;
-                }
-            } else if(x < origin.getX() && y < origin.getY()) {
-                if(origin.getX() - x > origin.getY() - y) {
-                    scale = (y - origin.getY()) / 5.0;
-                } else {
-                    scale = (x - origin.getX()) / 5.0;
-                }
-            } else {
-                scale = 0.0;
-            }
-            scale = Math.pow(1.3, scale);
-            JCanvas canvas = (JCanvas)_target.getView();
+      private class ScaleMouseListener extends MouseAdapter
+      implements MouseMotionListener {
+      public Point2D origin = null;
+      public Point2D scaled = null;
+      public AffineTransform transformOrigin = null;
+      public void setScale(int x, int y) {
+      double scale;
+      // The 5.0 and 1.3 below were determined by trial and error
+      // tuning.
+      if(x > origin.getX() && y > origin.getY()) {
+      if(x - origin.getX() > y - origin.getY()) {
+      scale = (y - origin.getY()) / 5.0;
+      } else {
+      scale = (x - origin.getX()) / 5.0;
+      }
+      } else if(x < origin.getX() && y < origin.getY()) {
+      if(origin.getX() - x > origin.getY() - y) {
+      scale = (y - origin.getY()) / 5.0;
+      } else {
+      scale = (x - origin.getX()) / 5.0;
+      }
+      } else {
+      scale = 0.0;
+      }
+      scale = Math.pow(1.3, scale);
+      JCanvas canvas = (JCanvas)_target.getView();
 
-            AffineTransform current =
-                canvas.getCanvasPane().getTransformContext().getTransform();
-            current.setTransform(transformOrigin);
-            current.translate(scaled.getX(), scaled.getY());
-            current.scale(scale, scale);
-            current.translate(-scaled.getX(), -scaled.getY());
-            canvas.getCanvasPane().setTransform(current);
-        }
+      AffineTransform current =
+      canvas.getCanvasPane().getTransformContext().getTransform();
+      current.setTransform(transformOrigin);
+      current.translate(scaled.getX(), scaled.getY());
+      current.scale(scale, scale);
+      current.translate(-scaled.getX(), -scaled.getY());
+      canvas.getCanvasPane().setTransform(current);
+      }
 
-        public void mousePressed(MouseEvent evt) {
-            if(_target != null &&
-                    (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-                setPosition(evt.getX(), evt.getY());
-                origin = evt.getPoint();
-                JCanvas canvas = ((JCanvas)_target.getView());
-                TransformContext context =
-                    canvas.getCanvasPane().getTransformContext();
-                // clone the transform that is in the context, so we can
-                // avoid alot of repeated scaling of the same transform.
-                transformOrigin =
-                    (AffineTransform)context.getTransform().clone();
+      public void mousePressed(MouseEvent evt) {
+      if(_target != null &&
+      (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+      setPosition(evt.getX(), evt.getY());
+      origin = evt.getPoint();
+      JCanvas canvas = ((JCanvas)_target.getView());
+      TransformContext context =
+      canvas.getCanvasPane().getTransformContext();
+      // clone the transform that is in the context, so we can
+      // avoid alot of repeated scaling of the same transform.
+      transformOrigin =
+      (AffineTransform)context.getTransform().clone();
 
-                // Take the event and first transform it from the panner
-                // coordinates into the view coordinates.
-                Dimension viewSize =_target.getView().getSize();
-                Rectangle viewRect =
-                    new Rectangle(0, 0, viewSize.width, viewSize.height);
-                Rectangle myRect = _getInsetBounds();
+      // Take the event and first transform it from the panner
+      // coordinates into the view coordinates.
+      Dimension viewSize =_target.getView().getSize();
+      Rectangle viewRect =
+      new Rectangle(0, 0, viewSize.width, viewSize.height);
+      Rectangle myRect = _getInsetBounds();
 
-                AffineTransform forward =
-                    CanvasUtilities.computeFitTransform(viewRect, myRect);
+      AffineTransform forward =
+      CanvasUtilities.computeFitTransform(viewRect, myRect);
 
-                double xScaled =
-                    (origin.getX() - myRect.getX()) / forward.getScaleX();
-                double yScaled =
-                    (origin.getY() - myRect.getY()) / forward.getScaleY();
-                scaled = new Point2D.Double(xScaled, yScaled);
+      double xScaled =
+      (origin.getX() - myRect.getX()) / forward.getScaleX();
+      double yScaled =
+      (origin.getY() - myRect.getY()) / forward.getScaleY();
+      scaled = new Point2D.Double(xScaled, yScaled);
 
-                // Now transform from the view coordinates into the
-                // pane coordinates.
-                try {
-                    context.getInverseTransform().transform(scaled, scaled);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        public void mouseMoved(MouseEvent evt) {
-        }
-        public void mouseDragged(MouseEvent evt) {
-            if(_target != null &&
-                    (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-                setScale(evt.getX(), evt.getY());
-            }
-        }
-    }
+      // Now transform from the view coordinates into the
+      // pane coordinates.
+      try {
+      context.getInverseTransform().transform(scaled, scaled);
+      } catch (Exception ex) {
+      ex.printStackTrace();
+      }
+      }
+      }
+      public void mouseMoved(MouseEvent evt) {
+      }
+      public void mouseDragged(MouseEvent evt) {
+      if(_target != null &&
+      (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+      setScale(evt.getX(), evt.getY());
+      }
+      }
+      }
     */
 
     public static void main(String argv[]) {

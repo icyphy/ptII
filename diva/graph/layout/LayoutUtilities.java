@@ -71,7 +71,7 @@ public final class LayoutUtilities {
      * layout.
      */
     public static final boolean checkContainment(Object composite,
-                                                 GraphModel model) {
+            GraphModel model) {
         if(!GraphUtilities.checkContainment(composite, model)) {
             return false;
         }
@@ -84,30 +84,30 @@ public final class LayoutUtilities {
      * and checkContainment().
      */
     private static final boolean checkCommon(Object composite,
-                                             GraphModel model) {
+            GraphModel model) {
         /*
-        for(Iterator i = g.nodes(); i.hasNext(); ) {
-            Node n = (Node)i.next();
-            if(target.getLayoutNode(n) == null) {
-                return false;
-            }
+          for(Iterator i = g.nodes(); i.hasNext(); ) {
+          Node n = (Node)i.next();
+          if(target.getLayoutNode(n) == null) {
+          return false;
+          }
 
-            for(Iterator j = n.outEdges(); j.hasNext(); ) {
-                Edge e = (Edge)j.next();
-                if((target.getLayoutEdge(e) == null) ||
-                    (target.getLayoutNode(e.getHead()) == null)) {
-                    return false;
-                }
-            }
-            for(Iterator j = n.inEdges(); j.hasNext(); ) {
-                Edge e = (Edge)j.next();
-                if((target.getLayoutEdge(e) == null) ||
-                    (target.getLayoutNode(e.getTail()) == null)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+          for(Iterator j = n.outEdges(); j.hasNext(); ) {
+          Edge e = (Edge)j.next();
+          if((target.getLayoutEdge(e) == null) ||
+          (target.getLayoutNode(e.getHead()) == null)) {
+          return false;
+          }
+          }
+          for(Iterator j = n.inEdges(); j.hasNext(); ) {
+          Edge e = (Edge)j.next();
+          if((target.getLayoutEdge(e) == null) ||
+          (target.getLayoutNode(e.getTail()) == null)) {
+          return false;
+          }
+          }
+          }
+          return true;
         */
         //XXX
         return true;

@@ -18,7 +18,7 @@ import diva.gui.AppletContext;
  */
 public class BasicGraphDemoApplet extends AppletContext {
     public BasicGraphDemoApplet() {
-       new BasicGraphDemo(this);
+        new BasicGraphDemo(this);
     }
 }
 

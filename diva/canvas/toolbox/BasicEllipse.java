@@ -39,8 +39,8 @@ public class BasicEllipse extends BasicFigure {
      * fill paint. It has no outline.
      */
     public BasicEllipse (
-                         double x, double y, double width, double height,
-                         Paint fill) {
+            double x, double y, double width, double height,
+            Paint fill) {
         super(new Ellipse2D.Double(x,y,width,height),fill);
     }
 
@@ -48,8 +48,8 @@ public class BasicEllipse extends BasicFigure {
      * outline width. It has no fill.
      */
     public BasicEllipse (
-                         double x, double y, double width, double height,
-                         float lineWidth) {
+            double x, double y, double width, double height,
+            float lineWidth) {
         super(new Ellipse2D.Double(x,y,width,height),lineWidth);
     }
 
@@ -57,9 +57,9 @@ public class BasicEllipse extends BasicFigure {
      * outline width.
      */
     public BasicEllipse (
-                         double x, double y, double width, double height,
-                         Paint fill,
-                         float lineWidth) {
+            double x, double y, double width, double height,
+            Paint fill,
+            float lineWidth) {
         super(new Ellipse2D.Double(x,y,width,height),fill,lineWidth);
     }
 }

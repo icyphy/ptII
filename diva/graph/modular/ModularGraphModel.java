@@ -79,7 +79,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Return the parent graph of this node, return
      * null if there is no parent.
      */
-     public Object getParent(Object node) {
+    public Object getParent(Object node) {
         if(node == _root) {
             return null;
         } else {
@@ -178,7 +178,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * the given property name.
      */
     public abstract void setProperty(Object o, String propertyName,
-                                     Object value);
+            Object value);
 
     /**
      * Set the semantic object correspoding

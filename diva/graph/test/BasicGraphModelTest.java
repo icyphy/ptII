@@ -64,7 +64,7 @@ public class BasicGraphModelTest extends TestSuite {
     /** Create a default test harness and run all tests on it.
      */
     public static void main (String argv[]) {
-         new BasicGraphModelTest(new TestHarness(),
+        new BasicGraphModelTest(new TestHarness(),
                 new BasicGraphModelTest.BasicGraphModelFactory()).run();
     }
 
@@ -75,48 +75,48 @@ public class BasicGraphModelTest extends TestSuite {
      */
     public void testEmpty () {
         runTestCase(new TestCase("Empty graph") {
-            BasicGraphModel g;
+                BasicGraphModel g;
 
-            public void init () throws Exception {
-                g = factory.createGraph();
-            }
-            public void run () throws Exception {
-                ;
-            }
-            public void check () throws TestFailedException {
-                // assertExpr(g.getNodeCount(g) == 0, "Node count != 0");
-            }
-        });
+                public void init () throws Exception {
+                    g = factory.createGraph();
+                }
+                public void run () throws Exception {
+                    ;
+                }
+                public void check () throws TestFailedException {
+                    // assertExpr(g.getNodeCount(g) == 0, "Node count != 0");
+                }
+            });
     }
 
     /** Test a star-connected graph
      */
     public void testStarConnected () {
         runTestCase(new TestCase("Star-connected from single node") {
-            BasicGraphModel g;
-            CompositeNode root;
+                BasicGraphModel g;
+                CompositeNode root;
 
-            public void init () throws Exception {
-                startTimer();
-                g = factory.createGraph();
-                root = (CompositeNode) g.getRoot();
-            }
-            public void run () throws Exception {
-                Node first = g.createNode(null);
-                g.addNode(this, first, root);
-
-                for (int i = 1; i < 32; i++) {
-                    Node n = g.createNode(null);
-                    g.addNode(this, n, root);
-                    Edge e = g.createEdge(null);
-                    g.connectEdge(this, e, first, n);
+                public void init () throws Exception {
+                    startTimer();
+                    g = factory.createGraph();
+                    root = (CompositeNode) g.getRoot();
                 }
-                stopTimer();
-            }
-            public void check () throws TestFailedException {
-                assertExpr(g.getNodeCount(root) == 32, "Node count != 32");
-            }
-        });
+                public void run () throws Exception {
+                    Node first = g.createNode(null);
+                    g.addNode(this, first, root);
+
+                    for (int i = 1; i < 32; i++) {
+                        Node n = g.createNode(null);
+                        g.addNode(this, n, root);
+                        Edge e = g.createEdge(null);
+                        g.connectEdge(this, e, first, n);
+                    }
+                    stopTimer();
+                }
+                public void check () throws TestFailedException {
+                    assertExpr(g.getNodeCount(root) == 32, "Node count != 32");
+                }
+            });
     }
 
     /** Test a large (64 knode) graph. Unfortunately, something
@@ -126,33 +126,33 @@ public class BasicGraphModelTest extends TestSuite {
      */
     public void testBig () {
         runTestCase(new TestCase("Test 64 knode graph") {
-            BasicGraphModel g;
-            CompositeNode root;
-            Node[] nodes = new Node[65536];
+                BasicGraphModel g;
+                CompositeNode root;
+                Node[] nodes = new Node[65536];
 
-            public void init () throws Exception {
-                startTimer();
-                g = factory.createGraph();
-                root = (CompositeNode) g.getRoot();
-            }
-            public void run () throws Exception {
-                Node first = g.createNode(null);
-                g.addNode(this, first, root);
-                //nodes[0] = first;
-
-                for (int i = 1; i < 65536; i++) {
-                    Node n = g.createNode(null);
-                    g.addNode(this, n, root);
-                    //nodes[i] = n;
-                    Edge e = g.createEdge(null);
-                    int s = i / 2;
-                    g.connectEdge(this, e, first, n);
+                public void init () throws Exception {
+                    startTimer();
+                    g = factory.createGraph();
+                    root = (CompositeNode) g.getRoot();
                 }
-                stopTimer();
-            }
-            public void check () throws TestFailedException {
-                assertExpr(g.getNodeCount(root) == 65536, "Node count != 65536");
-            }
-        });
+                public void run () throws Exception {
+                    Node first = g.createNode(null);
+                    g.addNode(this, first, root);
+                    //nodes[0] = first;
+
+                    for (int i = 1; i < 65536; i++) {
+                        Node n = g.createNode(null);
+                        g.addNode(this, n, root);
+                        //nodes[i] = n;
+                        Edge e = g.createEdge(null);
+                        int s = i / 2;
+                        g.connectEdge(this, e, first, n);
+                    }
+                    stopTimer();
+                }
+                public void check () throws TestFailedException {
+                    assertExpr(g.getNodeCount(root) == 65536, "Node count != 65536");
+                }
+            });
     }
 }

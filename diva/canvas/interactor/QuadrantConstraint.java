@@ -26,9 +26,9 @@ public class QuadrantConstraint implements PointConstraint {
     private double _originX;
     private double _originY;
 
-  /** The quadrant
-   */
-  private int _quadrant;
+    /** The quadrant
+     */
+    private int _quadrant;
 
     /** Create a new QuadrantConstraint with the given origin and
      * quadrant.
@@ -48,32 +48,32 @@ public class QuadrantConstraint implements PointConstraint {
         switch (_quadrant) {
         case SwingConstants.NORTH_EAST:
         case SwingConstants.SOUTH_EAST:
-          if (x < _originX) {
-            x = _originX;
-          }
-          break;
+            if (x < _originX) {
+                x = _originX;
+            }
+            break;
         case SwingConstants.NORTH_WEST:
         case SwingConstants.SOUTH_WEST:
-          if (x > _originX) {
-            x = _originX;
-          }
-          break;
+            if (x > _originX) {
+                x = _originX;
+            }
+            break;
         }
 
         // Constrain y
         switch (_quadrant) {
         case SwingConstants.NORTH_EAST:
         case SwingConstants.NORTH_WEST:
-          if (y > _originY) {
-            y = _originY;
-          }
-          break;
+            if (y > _originY) {
+                y = _originY;
+            }
+            break;
         case SwingConstants.SOUTH_EAST:
         case SwingConstants.SOUTH_WEST:
-          if (y < _originY) {
-            y = _originY;
-          }
-          break;
+            if (y < _originY) {
+                y = _originY;
+            }
+            break;
         }
         point.setLocation(x,y);
     }
@@ -81,13 +81,13 @@ public class QuadrantConstraint implements PointConstraint {
     /** Get the origin
      */
     public Point2D getOrigin () {
-         return _origin;
+        return _origin;
     }
 
     /** Get the quadrant
      */
     public int getQuadrant () {
-         return _quadrant;
+        return _quadrant;
     }
 
     /** Set the origin
@@ -101,18 +101,18 @@ public class QuadrantConstraint implements PointConstraint {
     /** Set the quadrant
      */
     public void setQuadrant (int quadrant) {
-      if (quadrant < SwingConstants.NORTH_EAST
-              || quadrant > SwingConstants.SOUTH_WEST) {
-        throw new IllegalArgumentException(
-                        "Quadrant " + quadrant + " not legal");
-}
-      this._quadrant = quadrant;
+        if (quadrant < SwingConstants.NORTH_EAST
+                || quadrant > SwingConstants.SOUTH_WEST) {
+            throw new IllegalArgumentException(
+                    "Quadrant " + quadrant + " not legal");
+        }
+        this._quadrant = quadrant;
     }
 
     /** Return false. This constraint never snaps.
      */
     public boolean snapped () {
-      return false;
+        return false;
     }
 }
 

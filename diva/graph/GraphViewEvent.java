@@ -108,9 +108,9 @@ public class GraphViewEvent extends java.util.EventObject {
         case EDGE_ROUTED:
             return "EDGE_ROUTED";
         case NODE_DRAWN:
-                return "NODE_DRAWN";
+            return "NODE_DRAWN";
         case EDGE_DRAWN:
-                return "EDGE_DRAWN";
+            return "EDGE_DRAWN";
         default:
             return "Invalid event ID";
         }

@@ -61,7 +61,7 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
      * length of each side. The default is 4.0.
      */
     public float getSize () {
-      return _size;
+        return _size;
     }
 
     /**
@@ -72,11 +72,11 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
         // need to take the transformcontext into account.
         // FIXME.  OK, we hacked it, but what about nested panes?
         /*
-        TransformContext tc = getTransformContext();
-        while(tc.getParent() != null) {
-            tc = tc.getParent(); //hack hack hack
-        }
-        Point2D p = _site.getPoint(tc);
+          TransformContext tc = getTransformContext();
+          while(tc.getParent() != null) {
+          tc = tc.getParent(); //hack hack hack
+          }
+          Point2D p = _site.getPoint(tc);
         */
         Point2D p = _site.getPoint();
         double x = p.getX();
@@ -94,18 +94,18 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
      * Set the set to which this grab-handle is attached.
      */
     public void setSite (Site s) {
-       _site = s;
-       relocate();
+        _site = s;
+        relocate();
     }
 
-   /**
+    /**
      * Set the "size" of the grab-handle.  The size is half the
      * length of each side.
      */
     public void setSize (float size) {
-      this._size = size;
-      ((Rectangle2D)getShape()).setFrame(
-                          _x - _size, _y - _size, _size*2, _size*2);
+        this._size = size;
+        ((Rectangle2D)getShape()).setFrame(
+                _x - _size, _y - _size, _size*2, _size*2);
     }
 
     /**

@@ -1,4 +1,4 @@
- /*
+/*
  * $Id$
  *
  * Copyright (c) 1998-2001 The Regents of the University of California.
@@ -28,7 +28,7 @@ public class IncrementalLayoutListener
      * whenever a graph event is received.
      */
     public IncrementalLayoutListener(IncrementalLayout layout,
-                                     Filter filter) {
+            Filter filter) {
         _layout = layout;
         _filter = filter;
     }

@@ -66,20 +66,20 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * then dispatch events to the listeners.
      */
     public void connectEdge(Object eventSource, Object edge,
-                            Object tailNode, Object headNode) {
+            Object tailNode, Object headNode) {
         Object prevTail = getMutableEdgeModel(edge).getTail(edge);
         Object prevHead = getMutableEdgeModel(edge).getHead(edge);
         getMutableEdgeModel(edge).setHead(edge, headNode);
         getMutableEdgeModel(edge).setTail(edge, tailNode);
 
         GraphEvent e1 = new GraphEvent(eventSource,
-                                       GraphEvent.EDGE_HEAD_CHANGED,
-                                       edge, prevHead);
+                GraphEvent.EDGE_HEAD_CHANGED,
+                edge, prevHead);
         dispatchGraphEvent(e1);
 
         GraphEvent e2 = new GraphEvent(eventSource,
-                                       GraphEvent.EDGE_TAIL_CHANGED,
-                                       edge, prevTail);
+                GraphEvent.EDGE_TAIL_CHANGED,
+                edge, prevTail);
         dispatchGraphEvent(e2);
     }
 
@@ -96,14 +96,14 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
         model.setHead(edge, null);
         if(head != null) {
             GraphEvent e = new GraphEvent(eventSource,
-                                          GraphEvent.EDGE_HEAD_CHANGED,
-                                          edge, head);
+                    GraphEvent.EDGE_HEAD_CHANGED,
+                    edge, head);
             dispatchGraphEvent(e);
         }
         if(tail != null) {
             GraphEvent e = new GraphEvent(eventSource,
-                                          GraphEvent.EDGE_TAIL_CHANGED,
-                                          edge, tail);
+                    GraphEvent.EDGE_TAIL_CHANGED,
+                    edge, tail);
             dispatchGraphEvent(e);
         }
     }
@@ -156,7 +156,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
         Object prevParent = getMutableNodeModel(node).getParent(node);
         getMutableNodeModel(node).setParent(node, null);
         GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_REMOVED,
-                                      node, prevParent);
+                node, prevParent);
         dispatchGraphEvent(e);
     }
 
@@ -168,8 +168,8 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
         Object prevHead = getMutableEdgeModel(edge).getHead(edge);
         getMutableEdgeModel(edge).setHead(edge, head);
         GraphEvent e = new GraphEvent(eventSource,
-                                      GraphEvent.EDGE_HEAD_CHANGED,
-                                      edge, prevHead);
+                GraphEvent.EDGE_HEAD_CHANGED,
+                edge, prevHead);
         dispatchGraphEvent(e);
     }
 
@@ -181,8 +181,8 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
         Object prevTail = getMutableEdgeModel(edge).getTail(edge);
         getMutableEdgeModel(edge).setTail(edge, tail);
         GraphEvent e = new GraphEvent(eventSource,
-                                      GraphEvent.EDGE_TAIL_CHANGED,
-                                      edge, prevTail);
+                GraphEvent.EDGE_TAIL_CHANGED,
+                edge, prevTail);
         dispatchGraphEvent(e);
     }
 }

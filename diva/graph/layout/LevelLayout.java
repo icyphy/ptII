@@ -212,22 +212,22 @@ public class LevelLayout extends AbstractGlobalLayout {
             applyLayout(levelData, composite);
         }
         /*
-        _origComposite = g;
-        _target = t;
+          _origComposite = g;
+          _target = t;
 
-        if(g.getNodeCount() > 0) {
-            _levelData._copyGraph = copyComposite(g, t);
+          if(g.getNodeCount() > 0) {
+          _levelData._copyGraph = copyComposite(g, t);
 
-//              if(isCyclic(_copyGraph)) {
-//                  String err = "Unable to perform levelizing layout on cyclic composites";
-//                  throw new IllegalArgumentException(err);
-//              }
-            breakCycles(_levelData._copyGraph);
-            //doLayout();
-            copyLayout(_levelData._copyGraph, t);
+          //              if(isCyclic(_copyGraph)) {
+          //                  String err = "Unable to perform levelizing layout on cyclic composites";
+          //                  throw new IllegalArgumentException(err);
+          //              }
+          breakCycles(_levelData._copyGraph);
+          //doLayout();
+          copyLayout(_levelData._copyGraph, t);
 
-            cleanupStructures();
-        }
+          cleanupStructures();
+          }
         */
     }
 
@@ -341,9 +341,9 @@ public class LevelLayout extends AbstractGlobalLayout {
     public void applyLayout(LevelData levelData, Object g){
         applyLayout(levelData, g, true);
         /*
-        Rectangle2D r = t.getViewport(g);
-        placeNodes(levelData, r);
-        copyLayout(levelData._origGraph, levelData._copyGraph, t);
+          Rectangle2D r = t.getViewport(g);
+          placeNodes(levelData, r);
+          copyLayout(levelData._origGraph, levelData._copyGraph, t);
         */
     }
 
@@ -492,95 +492,95 @@ public class LevelLayout extends AbstractGlobalLayout {
      * to the algorithm outlined in the class description.
      */
     /*
-    private void doLayout() {
-        //Assign level numbers to the nodes in the graph.
-        computeLevels();
+      private void doLayout() {
+      //Assign level numbers to the nodes in the graph.
+      computeLevels();
 
-        //POST all nodes have level greater than
-        //     their incoming nodes
-        for(Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
-                Node n = (Node)i.next();
-                int lvl = getLevel(n);
-                for(Iterator j = GraphUtilities.inNodes(n); j.hasNext(); ) {
-                    Node n2 = (Node)j.next();
-                    int lvl2 = getLevel(n2);
-                    ASSERT(lvl2 < lvl, "Level order error " + n + ", " + n2);
-                }
-        }
-        ASSERT(LayoutUtilities.checkContainment(_levelData._copyGraph, _target),
-                "Inconsistent post-computeLevels");
+      //POST all nodes have level greater than
+      //     their incoming nodes
+      for(Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
+      Node n = (Node)i.next();
+      int lvl = getLevel(n);
+      for(Iterator j = GraphUtilities.inNodes(n); j.hasNext(); ) {
+      Node n2 = (Node)j.next();
+      int lvl2 = getLevel(n2);
+      ASSERT(lvl2 < lvl, "Level order error " + n + ", " + n2);
+      }
+      }
+      ASSERT(LayoutUtilities.checkContainment(_levelData._copyGraph, _target),
+      "Inconsistent post-computeLevels");
 
-        //Add dummies to edges that span multiple levels in the
-        //graph.
-        addDummies();
+      //Add dummies to edges that span multiple levels in the
+      //graph.
+      addDummies();
 
-        //POST all nodes have level one greater
-        //     than their incoming nodes
-        //POST all dummy nodes have one in-edge and
-        //     one out-edge
-        for(Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
-            Node n = (Node)i.next();
-            int lvl = getLevel(n);
-            for(Iterator j = GraphUtilities.inNodes(n); j.hasNext(); ) {
-                Node n2 = (Node)j.next();
-                int lvl2 = getLevel(n2);
-                ASSERT((lvl2 == lvl-1), "Level equality error " + n + ", " + n2);
-            }
-        }
-        for(Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
-            Node n = (Node)i.next();
-            if(isDummy(n)) {
-                Iterator outs = n.outEdges();
-                ASSERT(outs.hasNext(), "Dummy w/ no out-edges");
-                outs.next();
-                ASSERT(!outs.hasNext(), "Dummy w/ multiple out edges");
+      //POST all nodes have level one greater
+      //     than their incoming nodes
+      //POST all dummy nodes have one in-edge and
+      //     one out-edge
+      for(Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
+      Node n = (Node)i.next();
+      int lvl = getLevel(n);
+      for(Iterator j = GraphUtilities.inNodes(n); j.hasNext(); ) {
+      Node n2 = (Node)j.next();
+      int lvl2 = getLevel(n2);
+      ASSERT((lvl2 == lvl-1), "Level equality error " + n + ", " + n2);
+      }
+      }
+      for(Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
+      Node n = (Node)i.next();
+      if(isDummy(n)) {
+      Iterator outs = n.outEdges();
+      ASSERT(outs.hasNext(), "Dummy w/ no out-edges");
+      outs.next();
+      ASSERT(!outs.hasNext(), "Dummy w/ multiple out edges");
 
-                Iterator ins = n.inEdges();
-                ASSERT(ins.hasNext(), "Dummy w/ no in edges");
-                ins.next();
-                ASSERT(!ins.hasNext(), "Dummy w/ multiple in edges");
-            }
-        }
-        ASSERT(LayoutUtilities.checkContainment(_levelData._copyGraph, _target),
-                "Inconsistent post-addDummies");
+      Iterator ins = n.inEdges();
+      ASSERT(ins.hasNext(), "Dummy w/ no in edges");
+      ins.next();
+      ASSERT(!ins.hasNext(), "Dummy w/ multiple in edges");
+      }
+      }
+      ASSERT(LayoutUtilities.checkContainment(_levelData._copyGraph, _target),
+      "Inconsistent post-addDummies");
 
-        //Create the _levels data structure which provides
-        //convenient access to all the nodes in each level.
-        makeLevels();
+      //Create the _levels data structure which provides
+      //convenient access to all the nodes in each level.
+      makeLevels();
 
-        //POST no levels are empty, and for each
-        //     node in a level it's level is appropriate
-        for(int i  = 1; i < _levelData._levels.length; i++) {
-            ArrayList nodes = _levelData._levels[i];
-            ASSERT((nodes.size() != 0), "Empty level " + i);
-        }
-        ASSERT(LayoutUtilities.checkContainment(_levelData._copyGraph, _target),
-                "Inconsistent post-makeLevels");
+      //POST no levels are empty, and for each
+      //     node in a level it's level is appropriate
+      for(int i  = 1; i < _levelData._levels.length; i++) {
+      ArrayList nodes = _levelData._levels[i];
+      ASSERT((nodes.size() != 0), "Empty level " + i);
+      }
+      ASSERT(LayoutUtilities.checkContainment(_levelData._copyGraph, _target),
+      "Inconsistent post-makeLevels");
 
-        //Place the nodes in the viewport according to their
-        //levels and sorting order (note: sorting is not yet
-        //implemented).
-        Rectangle2D r = _target.getViewport(_origGraph);
-        placeNodes(_levelData, r);
+      //Place the nodes in the viewport according to their
+      //levels and sorting order (note: sorting is not yet
+      //implemented).
+      Rectangle2D r = _target.getViewport(_origGraph);
+      placeNodes(_levelData, r);
 
-        //POST no post per se because this step does not
-        //     modify graph topology.
-    }
+      //POST no post per se because this step does not
+      //     modify graph topology.
+      }
     */
 
     /**
      * Inefficient check for cycles in a graph.
      *
-    private boolean isCyclic(Graph g) {
-        for(Iterator i = g.nodes(); i.hasNext(); ) {
-            Node root = (Node)i.next();
-            setAllVisited(g, false);
-            if(checkCyclic(root)) {
-                return true;
-            }
-        }
-        return false;
-    }
+     private boolean isCyclic(Graph g) {
+     for(Iterator i = g.nodes(); i.hasNext(); ) {
+     Node root = (Node)i.next();
+     setAllVisited(g, false);
+     if(checkCyclic(root)) {
+     return true;
+     }
+     }
+     return false;
+     }
     */
 
     /**
@@ -645,25 +645,25 @@ public class LevelLayout extends AbstractGlobalLayout {
      * Perform DFS from the given node, checking for
      * cycles.
      *
-    private boolean checkCyclic(Object node) {
-        ASSERT(n != null, "null tail: " + n);
+     private boolean checkCyclic(Object node) {
+     ASSERT(n != null, "null tail: " + n);
 
-        if(n.isVisited()) {
-            //          debug("CYCLE AT: " + n);
-            return true;
-        }
-        n.setVisited(true);
-        for(Iterator i = n.outEdges(); i.hasNext(); ) {
-            Edge e = (Edge)i.next();
-            Node out = e.getHead();
-            ASSERT(out != null, "null head: " + e);
-            if(checkCyclic(out)) {
-                return true;
-            }
-        }
-        n.setVisited(false);
-        return false;
-    }
+     if(n.isVisited()) {
+     //          debug("CYCLE AT: " + n);
+     return true;
+     }
+     n.setVisited(true);
+     for(Iterator i = n.outEdges(); i.hasNext(); ) {
+     Edge e = (Edge)i.next();
+     Node out = e.getHead();
+     ASSERT(out != null, "null head: " + e);
+     if(checkCyclic(out)) {
+     return true;
+     }
+     }
+     n.setVisited(false);
+     return false;
+     }
     */
 
     /**
@@ -759,10 +759,10 @@ public class LevelLayout extends AbstractGlobalLayout {
         initialOrderNodes(levelData, maxNode);
 
         //debug
-//          for(int i = 0; i < _levelData._levels.length; i++) {
-//              ArrayList l = _levelData._levels[i];
-//              IteratorUtil.printElements("Level " + i + ":", l.iterator());
-//          }
+        //          for(int i = 0; i < _levelData._levels.length; i++) {
+        //              ArrayList l = _levelData._levels[i];
+        //              IteratorUtil.printElements("Level " + i + ":", l.iterator());
+        //          }
     }
 
     /**
@@ -833,8 +833,8 @@ public class LevelLayout extends AbstractGlobalLayout {
                     levelWidth = nodes.size();
                 }
                 else{
-                // HH, use the number of real nodes (no dummies) to
-                // determine the step size in the x direction.
+                    // HH, use the number of real nodes (no dummies) to
+                    // determine the step size in the x direction.
                     levelWidth = 0;
                     for(Iterator j = nodes.iterator(); j.hasNext();){
                         Object n = j.next();
@@ -875,8 +875,8 @@ public class LevelLayout extends AbstractGlobalLayout {
                     levelWidth = nodes.size();
                 }
                 else{
-                // HH, use the number of real nodes (no dummies) to
-                // determine the step size in the x direction.
+                    // HH, use the number of real nodes (no dummies) to
+                    // determine the step size in the x direction.
                     levelWidth = 0;
                     for(Iterator j = nodes.iterator(); j.hasNext();){
                         Object n = j.next();
@@ -1087,15 +1087,15 @@ public class LevelLayout extends AbstractGlobalLayout {
                 level = Math.max(level, getLevel(in)+1);
             }
             //            debug("INITIAL: " + getLevelInfo(n).origNode + ", " + level);
-//              for(Iterator ins = GraphUtilities.inNodes(n); ins.hasNext();) {
-//                  Node in = (Node)ins.next();
-//                  debug("\tin: " + getLevelInfo(in).origNode + ", " + getLevel(in));
-//              }
+            //              for(Iterator ins = GraphUtilities.inNodes(n); ins.hasNext();) {
+            //                  Node in = (Node)ins.next();
+            //                  debug("\tin: " + getLevelInfo(in).origNode + ", " + getLevel(in));
+            //              }
             setLevel(node, level);
             maxLevel = Math.max(maxLevel, level);
         }
 
-         /* Find maximum usage, which is the maximum
+        /* Find maximum usage, which is the maximum
          * level of any of your predecessors - 1.
          *
          *         A
@@ -1129,7 +1129,7 @@ public class LevelLayout extends AbstractGlobalLayout {
             //debug("LEVEL: " + getLevelInfo(n).origNode + ", " + getUsage(n));
         }
 
-            removeMeta(levelData);
+        removeMeta(levelData);
     }
 }
 
@@ -1149,209 +1149,209 @@ public class LevelLayout extends AbstractGlobalLayout {
 
 
 /*
-    ///////////////////////////////////////////////////////////////////////
-    // Under construction
-    ///////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////
+  // Under construction
+  ///////////////////////////////////////////////////////////////////////
 
 
 
-    /**
-     * Do insertion sort on the level based on the barycenters,
-     * then reorder
-     *
-     private final void sortLevel(ArrayList nodes) {
-        Object []ns = nodes.toArray();
-        Arrays.sort(ns, new BarycentricComparator());
-        nodes.clear();
-        for(Iterator i = new ArrayIterator(ns); i.hasNext(); ) {
-            nodes.add(i.next());
-        }
+  /**
+   * Do insertion sort on the level based on the barycenters,
+   * then reorder
+   *
+   private final void sortLevel(ArrayList nodes) {
+   Object []ns = nodes.toArray();
+   Arrays.sort(ns, new BarycentricComparator());
+   nodes.clear();
+   for(Iterator i = new ArrayIterator(ns); i.hasNext(); ) {
+   nodes.add(i.next());
+   }
 
-        /*
-          int len = nodes.size();
-          for(int i = 1; i < len; i++) {
-          Node n1 = (Node) nodes.get(i);
-          double bc = barycenter(n1);
-          int j;
-          for(j = i; j > 0; j--) {
-          Node n2 = (Node)nodes.get(j-1);
-          if( bc >= getBarycenter(n2)) break;
-          nodes.add(j, n2);
-          }
-          nodes.add(j, n1);
-          }*
-    }
-
-
-    private final void orderLevel( ArrayList nodes, double l, double y,
-            boolean doin, boolean doout ) {
-        int levelcnt = nodes.size();
-        for(Iterator e = nodes.iterator(); e.hasNext();) {
-            Node n = (Node) e.next();
-            computeBarycenter(n, doin, doout);
-        }
-        sortLevel( nodes );
-        //XXX placeLevel( l, y, nodes );
-    }
-
-    // Do downwards barycentering on first pass, upwards on second, then average
-    private final void orderNodes( double l, int op ) {
-        boolean doup = ((op & 0x1) == 1);
-        boolean doin = (op > 5 || !doup);
-        boolean doout = (op > 5 || doup);
-        double ystep = (_maxLevel>0) ? (_target.getViewport(_origGraph).getHeight()/_maxLevel) : 0.0;
-        if( doup ) {
-            double y = 0.0;
-            for( int i = 0; i <= _maxLevel; ++i ) {                // Going upwards
-                ArrayList nodes = _levels[i];
-                orderLevel( nodes, l, y, doin, doout );
-                y += ystep;
-            }
-        }
-        else {
-            double y = l;
-            for( int i = _maxLevel; i >= 0; --i ) {                // Going downwards
-                ArrayList nodes = _levels[i];
-                orderLevel( nodes, l, y, doin, doout );
-                y -= ystep;
-            }
-        }
-    }
-
-      protected final void straightenDummy(Node n) {
-      Node tail = n.getInNode(0);
-      Node head = n.getOutNode(0);
-      double avg = (n.getX() + tail.getX() + head.getX()) / 3;
-      n.setX(avg);
-      }
-
-      private final int xmarginSize = 10;
-      protected synchronized final void straightenLayout( double l ) {
-      double ystep = l/(_maxLevel+1);
-      double y = 0.0;
-      for(int i = 0; i <= _maxLevel; i++) {
-      ArrayList nodes = _levels[i];
-      for(Iterator e = nodes.iterator(); e.hasNext(); ) {
-      Node n = (Node)e.next();
-      if(n instanceof DummyNode) {
-      straightenDummy(n);
-      }
-      }
-
-      for(int j = 1; j < nodes.size(); j++) {
-      Node n = (Node)nodes.get(j);
-      Node prev = (Node)nodes.get( j-1 );
-      double prevright = prev.getX() + prev.getW()/2 + xmarginSize;
-      double thisleft =  n.getX() - n.getW()/2 - xmarginSize;
-      double overlap = prevright - thisleft;
-      if( overlap > 0 ) {
-      prev.setX(prev.getX() - overlap/2);
-      n.setX(n.getX() + overlap/2);
-      }
-      n.setY(y);
-      }
-      y += ystep;
-      }
-      }
+   /*
+     int len = nodes.size();
+     for(int i = 1; i < len; i++) {
+     Node n1 = (Node) nodes.get(i);
+     double bc = barycenter(n1);
+     int j;
+     for(j = i; j > 0; j--) {
+     Node n2 = (Node)nodes.get(j-1);
+     if( bc >= getBarycenter(n2)) break;
+     nodes.add(j, n2);
+     }
+     nodes.add(j, n1);
+     }*
+     }
 
 
+     private final void orderLevel( ArrayList nodes, double l, double y,
+     boolean doin, boolean doout ) {
+     int levelcnt = nodes.size();
+     for(Iterator e = nodes.iterator(); e.hasNext();) {
+     Node n = (Node) e.next();
+     computeBarycenter(n, doin, doout);
+     }
+     sortLevel( nodes );
+     //XXX placeLevel( l, y, nodes );
+     }
 
-      protected int _operation = 0;
-      protected final int _Order = 100;
-      private final void Embed() {
-      double L = _bb.globals.L();
-      _bb.setArea( 0, 0, L, L );
-      if( _operation < _Order ) {
-      orderNodes( L, _operation );
-      }
-      else {
-      straightenLayout( L );
-      }
-      _bb.Update();
-      ++_operation;
-      _bb.globals.Temp( (double)_operation );
-      }
+     // Do downwards barycentering on first pass, upwards on second, then average
+     private final void orderNodes( double l, int op ) {
+     boolean doup = ((op & 0x1) == 1);
+     boolean doin = (op > 5 || !doup);
+     boolean doout = (op > 5 || doup);
+     double ystep = (_maxLevel>0) ? (_target.getViewport(_origGraph).getHeight()/_maxLevel) : 0.0;
+     if( doup ) {
+     double y = 0.0;
+     for( int i = 0; i <= _maxLevel; ++i ) {                // Going upwards
+     ArrayList nodes = _levels[i];
+     orderLevel( nodes, l, y, doin, doout );
+     y += ystep;
+     }
+     }
+     else {
+     double y = l;
+     for( int i = _maxLevel; i >= 0; --i ) {                // Going downwards
+     ArrayList nodes = _levels[i];
+     orderLevel( nodes, l, y, doin, doout );
+     y -= ystep;
+     }
+     }
+     }
 
-    private void computeBarycenter(Node n, boolean doin, boolean doout) {
-        double insum = 0.0;
-        double outsum = 0.0;
-        int insize = 0;
-        int outsize = 0;
+     protected final void straightenDummy(Node n) {
+     Node tail = n.getInNode(0);
+     Node head = n.getOutNode(0);
+     double avg = (n.getX() + tail.getX() + head.getX()) / 3;
+     n.setX(avg);
+     }
 
-        if(doin) {
-            for(Iterator e = GraphUtilities.inNodes(n); e.hasNext();) {
-                insize++;
-                insum += getX((Node)e.next());
-            }
-            if(insize == 0) {
-                insize = 1;
-                insum = getX(n);
-            }
-        }
+     private final int xmarginSize = 10;
+     protected synchronized final void straightenLayout( double l ) {
+     double ystep = l/(_maxLevel+1);
+     double y = 0.0;
+     for(int i = 0; i <= _maxLevel; i++) {
+     ArrayList nodes = _levels[i];
+     for(Iterator e = nodes.iterator(); e.hasNext(); ) {
+     Node n = (Node)e.next();
+     if(n instanceof DummyNode) {
+     straightenDummy(n);
+     }
+     }
 
-        if( doout ) {
-            for(Iterator e = GraphUtilities.outNodes(n); e.hasNext();) {
-                outsize++;
-                outsum += getX(n);
-            }
-            if(outsize == 0) {
-                outsize = 1;
-                outsum = getX(n);
-            }
-        }
-
-        double barycenter;
-        if( doin && doout ) {
-            barycenter = (insum+outsum)/(insize+outsize);
-        }
-        else if(doin) {
-            barycenter = insum/insize;
-        }
-        else if(doout) {
-            barycenter = outsum/outsize;
-        }
-        else {
-            barycenter = getX(n);
-        }
-
-        LevelInfo info = getLevelInfo(n);
-        info.barycenter = barycenter;
-    }
-
-
-    private double getBarycenter(Node n) {
-        return getLevelInfo(n).barycenter;
-    }
+     for(int j = 1; j < nodes.size(); j++) {
+     Node n = (Node)nodes.get(j);
+     Node prev = (Node)nodes.get( j-1 );
+     double prevright = prev.getX() + prev.getW()/2 + xmarginSize;
+     double thisleft =  n.getX() - n.getW()/2 - xmarginSize;
+     double overlap = prevright - thisleft;
+     if( overlap > 0 ) {
+     prev.setX(prev.getX() - overlap/2);
+     n.setX(n.getX() + overlap/2);
+     }
+     n.setY(y);
+     }
+     y += ystep;
+     }
+     }
 
 
 
-    private Filter _defaultIgnoreFilter = new Filter() {
-        public boolean accept(Object o) {
-            if(o instanceof Node) {
-                Node n = (Node)o;
-                return (n == null) || !_target.isNodeVisible(n);
-            }
-            return false;
-        }
-    };
+     protected int _operation = 0;
+     protected final int _Order = 100;
+     private final void Embed() {
+     double L = _bb.globals.L();
+     _bb.setArea( 0, 0, L, L );
+     if( _operation < _Order ) {
+     orderNodes( L, _operation );
+     }
+     else {
+     straightenLayout( L );
+     }
+     _bb.Update();
+     ++_operation;
+     _bb.globals.Temp( (double)_operation );
+     }
 
-    private Filter _ignoreFilter = _defaultIgnoreFilter;
+     private void computeBarycenter(Node n, boolean doin, boolean doout) {
+     double insum = 0.0;
+     double outsum = 0.0;
+     int insize = 0;
+     int outsize = 0;
 
-    public void setIgnoreFilter(Filter f) {
-        if(f == null) {
-            _ignoreFilter = _defaultIgnoreFilter;
-        }
-        _ignoreFilter = new OrFilter(f, _defaultIgnoreFilter);
-    }
+     if(doin) {
+     for(Iterator e = GraphUtilities.inNodes(n); e.hasNext();) {
+     insize++;
+     insum += getX((Node)e.next());
+     }
+     if(insize == 0) {
+     insize = 1;
+     insum = getX(n);
+     }
+     }
 
-    private boolean ignoreNode(Node n) {
-        return _ignoreFilter.accept(n);
-    }
+     if( doout ) {
+     for(Iterator e = GraphUtilities.outNodes(n); e.hasNext();) {
+     outsize++;
+     outsum += getX(n);
+     }
+     if(outsize == 0) {
+     outsize = 1;
+     outsum = getX(n);
+     }
+     }
 
-    private boolean ignoreEdge(Edge e) {
-        return (ignoreNode(e.getHead()) || ignoreNode(e.getTail()));
-    }
-    */
+     double barycenter;
+     if( doin && doout ) {
+     barycenter = (insum+outsum)/(insize+outsize);
+     }
+     else if(doin) {
+     barycenter = insum/insize;
+     }
+     else if(doout) {
+     barycenter = outsum/outsize;
+     }
+     else {
+     barycenter = getX(n);
+     }
+
+     LevelInfo info = getLevelInfo(n);
+     info.barycenter = barycenter;
+     }
+
+
+     private double getBarycenter(Node n) {
+     return getLevelInfo(n).barycenter;
+     }
+
+
+
+     private Filter _defaultIgnoreFilter = new Filter() {
+     public boolean accept(Object o) {
+     if(o instanceof Node) {
+     Node n = (Node)o;
+     return (n == null) || !_target.isNodeVisible(n);
+     }
+     return false;
+     }
+     };
+
+     private Filter _ignoreFilter = _defaultIgnoreFilter;
+
+     public void setIgnoreFilter(Filter f) {
+     if(f == null) {
+     _ignoreFilter = _defaultIgnoreFilter;
+     }
+     _ignoreFilter = new OrFilter(f, _defaultIgnoreFilter);
+     }
+
+     private boolean ignoreNode(Node n) {
+     return _ignoreFilter.accept(n);
+     }
+
+     private boolean ignoreEdge(Edge e) {
+     return (ignoreNode(e.getHead()) || ignoreNode(e.getTail()));
+     }
+*/
 
 
 

@@ -63,7 +63,7 @@ public class GraphLogger implements GraphListener {
     public String toString() {
         String ret = "LOG: \n";
         for(Iterator i = iterator(); i.hasNext(); ) {
-           ret = ret + "\t" + i.next() + "\n";
+            ret = ret + "\t" + i.next() + "\n";
         }
         return ret;
     }

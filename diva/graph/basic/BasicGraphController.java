@@ -40,7 +40,7 @@ public class BasicGraphController extends SimpleGraphController {
      */
     private SelectionDragger _selectionDragger;
 
-   /** The interactor for creating new nodes
+    /** The interactor for creating new nodes
      */
     private NodeCreator _nodeCreator;
 
@@ -93,12 +93,12 @@ public class BasicGraphController extends SimpleGraphController {
 
         // Create the interactor that drags new edges.
         _edgeCreator = new EdgeCreator(this) {
-            public Object createEdge() {
-                Object semanticObject = new Integer(_globalCount++);
-                BasicGraphModel bgm = (BasicGraphModel)getGraphModel();
-                return bgm.createEdge(semanticObject);
-            }
-        };
+                public Object createEdge() {
+                    Object semanticObject = new Integer(_globalCount++);
+                    BasicGraphModel bgm = (BasicGraphModel)getGraphModel();
+                    return bgm.createEdge(semanticObject);
+                }
+            };
         _edgeCreator.setMouseFilter(_controlFilter);
         ((NodeInteractor)getNodeController().getNodeInteractor()).addInteractor(_edgeCreator);
     }

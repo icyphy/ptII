@@ -25,7 +25,7 @@ public abstract class AbstractGlobalLayout implements GlobalLayout {
 
     /** Return the layout target.
      */
-     public LayoutTarget getLayoutTarget() {
+    public LayoutTarget getLayoutTarget() {
         return _layoutTarget;
     }
 

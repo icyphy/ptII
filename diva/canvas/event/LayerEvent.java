@@ -173,11 +173,11 @@ public class LayerEvent extends MouseEvent {
     public String toString () {
         StringBuffer result = new StringBuffer(this.getClass().getName());
         result.append("[" + idToString(getID())
-                      + ",mods=" + toString(getModifiers())
-                      + ",clickcount=" + getClickCount()
-                      + ",figure=" + getFigureSource()
-                      + ",layer=(" + _layerX + "," + _layerY + ")"
-                      + "]");
+                + ",mods=" + toString(getModifiers())
+                + ",clickcount=" + getClickCount()
+                + ",figure=" + getFigureSource()
+                + ",layer=(" + _layerX + "," + _layerY + ")"
+                + "]");
         return result.toString();
     }
 
@@ -239,7 +239,7 @@ public class LayerEvent extends MouseEvent {
         case MouseEvent.MOUSE_CLICKED:
             return "MOUSE_CLICKED";
 
-         case MouseEvent.MOUSE_ENTERED:
+        case MouseEvent.MOUSE_ENTERED:
             return "MOUSE_ENTERED";
         case MouseEvent.MOUSE_MOVED:
             return "MOUSE_MOVED";

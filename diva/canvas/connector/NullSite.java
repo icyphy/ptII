@@ -42,7 +42,7 @@ public class NullSite extends AbstractSite {
     /** Return 0.0.
      */
     public double getY () {
-       return 0.0;
+        return 0.0;
     }
 }
 
