@@ -68,7 +68,6 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
    <li> "do not open" (the default)
    <li> "open in Vergil"
    <li> "open in Vergil (full screen)"
-   <li> "open run control panel"
    </ul>
    Note that it is dangerous to use the full-screen mode because it
    becomes difficult to stop execution of the model that contains this
@@ -137,7 +136,6 @@ public class VisualModelReference
         openOnFiring.addChoice("doNotOpen");
         openOnFiring.addChoice("open in Vergil");
         openOnFiring.addChoice("open in Vergil (full screen)");
-        openOnFiring.addChoice("open run control panel");
 
         // Create the closeOnPostfire parameter.
         closeOnPostfire = new StringParameter(this, "closeOnPostfire");
@@ -156,7 +154,6 @@ public class VisualModelReference
      *  <li> "do not open" (the default)
      *  <li> "open in Vergil"
      *  <li> "open in Vergil (full screen)"
-     *  <li> "open run control panel"
      *  </ul>
      */
     public StringParameter openOnFiring;
@@ -191,8 +188,6 @@ public class VisualModelReference
             } else if (
                     openOnFiringValue.equals("open in Vergil (full screen)")) {
                 _openOnFiringValue = _OPEN_IN_VERGIL_FULL_SCREEN;
-            } else if (openOnFiringValue.equals("open run control panel")) {
-                _openOnFiringValue = _OPEN_RUN_CONTROL_PANEL;
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized option for openOnFiring: " + openOnFiringValue);
@@ -270,7 +265,6 @@ public class VisualModelReference
                 try {
                     // Conditionally show the model in Vergil. The openModel()
                     // method also creates the right effigy.
-                    // FIXME: Haven't dealt with open run control panel option.
                     if (_openOnFiringValue == _OPEN_IN_VERGIL
                             || _openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
                         
@@ -401,7 +395,6 @@ public class VisualModelReference
     private static int _DO_NOT_OPEN = 0;
     private static int _OPEN_IN_VERGIL = 1;
     private static int _OPEN_IN_VERGIL_FULL_SCREEN = 2;
-    private static int _OPEN_RUN_CONTROL_PANEL = 3;
 
     /** The value of the openOnFiring parameter. */
     private transient int _openOnFiringValue = _DO_NOT_OPEN;
