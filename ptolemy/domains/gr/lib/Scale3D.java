@@ -196,4 +196,3 @@ public class Scale3D extends GRTransform {
         return factor * zFactor;
     }
 }
-

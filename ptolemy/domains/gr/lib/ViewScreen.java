@@ -627,4 +627,3 @@ public class ViewScreen extends GRActor3D
 
     protected TransformGroup _userTransformation = new TransformGroup();
 }
-

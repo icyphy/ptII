@@ -195,4 +195,3 @@ public class IconViewScreen3D extends ViewScreen {
     private int _frameNumber;
     private int _frameRateValue;
 }
-
