@@ -38,10 +38,12 @@ import ptolemy.lang.java.nodetypes.*;
 //////////////////////////////////////////////////////////////////////////
 //// JavaDecl
 /**
+ *  <p> 
  *  The class JavaDecl declares many members, most of which make sense only
  *  for certain types of JavaDecl.  Attempts to access nonsensical members
  *  will cause runtime errors.
-
+ *  </p>  
+ *  <p> 
  *  By convention, a JavaDecl member named "getFoo()" will return the "foo"
  *  attribute when called with no parameters, and the member "setFoo()"
  *  will set the "foo" attribute when called with one parameter.  
@@ -51,36 +53,49 @@ import ptolemy.lang.java.nodetypes.*;
  *  there is a member "hasFoo()" that returns true or false depending on whether 
  *  object on which it is called has a class for which "getFoo" and 
  *  "setFoo()" may be called.
+ *  </p>   
  *
+ *  <p>
  *  Objects of type JavaDecl should not be allocated; the class is intended
  *  as a base class for others.
-
+ *  </p>   
+ *  <p>
  *   ATTRIBUTE name
+ *  </p>   
+ *  <p>  
  *     All Decls have a name, of type String.  These are
  *     the unique representative strings assigned by lexical analysis.
  *     The names of two Decls are considered the same iff they are the
  *     same pointer, ignoring contents: names that are different pointers
  *     to strings containing the same characters are considered distinct.
+ *  </p>   
  *
+ *  <p>  
  *   ATTRIBUTE container
+ *  </p>   
+ *  <p>  
  *     Members, classes, interfaces, and packages are all parts of some
  *     larger declared entity, which is their container.  Members are
  *     contained in classes and interfaces, which are themselves contained
  *     in packages, which are in turn contained in other packages. However,
  *     inner classes have their outer classes as their container. (CHECK THIS)
- *
+ *  </p>   
+ *  <p>   
  *     Outer-level packages have as their container the special Decl
  *     StaticResolution.SYSTEM_PACKAGE
- *
+ *  </p>  
+ *  <p>    
  *   ATTRIBUTE modifiers
  *     Classes, interfaces, and their members have modifiers, as defined
  *     by Modifier.
- *
+ *  </p>  
+ *  <p>    
  *   ATTRIBUTE environ
  *     Classes, interfaces, and packages define environments:  mappings of
  *     names (of members, classes, interfaces, and subpackages) to
  *     JavaDecls of these entities.
- *
+ *  </p>  
+ *  <p>    
  *   ATTRIBUTE source
  *     Decls that come from the current compilation have some piece of the
  *     AST associated with them.  For example, a JavaDecl for a local variable
@@ -89,14 +104,16 @@ import ptolemy.lang.java.nodetypes.*;
  *     declaration.  ClassDecls have a a ClassDeclNode as their source,
  *     and so on.  Decls that arise as the result of importing a class
  *     have special dummy source nodes created for them.
- *
+ *  </p>  
+ *  <p>    
  *   ATTRIBUTE defType
  *     For Decls for which isType() is true, a resolved
  *     TypeNameNode that stands for the type this class represents.  That
  *     is, it is a TypeNameNode whose decl() is THIS.
- *
+ *  </p>  
+ *  <p>    
  *  Code and comments converted from Decl in the Titanium project.
- *
+ *  </p>  
  *  @author Jeff Tsay
  */
 public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstants {
@@ -175,7 +192,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
 
     /** Return the modifiers of this declaration.
      *  Classes, interfaces, and their members have modifiers, as defined in
-     *  Modifiers.
+     *  JavaStaticSemanticConstants.
      */
     public int getModifiers() {
         throw new RuntimeException(getClass().getName() + " has no modifiers.");

@@ -111,9 +111,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         
         NameNode typeName = new NameNode(AbsentTreeNode.instance, "<anon>");
         typeName.setProperty(DECL_KEY, decl);
-        
-        node.setProperty(TYPE_KEY, new TypeNameNode(typeName));
-        
+                        
         node.setProperty(DECL_KEY, decl);
 
         LinkedList listArgs = new LinkedList();

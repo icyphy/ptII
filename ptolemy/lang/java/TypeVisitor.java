@@ -153,8 +153,14 @@ public class TypeVisitor extends JavaVisitor implements JavaStaticSemanticConsta
                   node.getDimExprs().size() + node.getDims()));
     }
 
-    // for AllocateAnonymousClassNode, type property is already defined by ResolvePackageVisitor
-
+    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
+        ClassDecl decl = (ClassDecl) node.getDefinedProperty(DECL_KEY);
+        NameNode nameNode = new NameNode(AbsentTreeNode.instance, decl.getName());
+        nameNode.setProperty(DECL_KEY, decl);
+     
+        return _setType(node, new TypeNameNode(nameNode));
+    }
+        
     public Object visitPostIncrNode(PostIncrNode node, LinkedList args) {
         return _visitIncrDecrNode(node);
     }

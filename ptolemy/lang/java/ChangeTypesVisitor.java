@@ -62,7 +62,7 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
         
         if (typeNode != null) {
            node.setDefType(typeNode);
-           typedDecl.setType(typeNode);
+           // typedDecl.setType(typeNode);
            _declsLeft--;
         }
         
@@ -85,7 +85,7 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
         
         if (typeNode != null) {
            node.setDefType(typeNode);
-           typedDecl.setType(typeNode);           
+           // typedDecl.setType(typeNode);           
            _declsLeft--;
         }
         

@@ -376,9 +376,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
           return resolvePass0(node);
               
           case 1:
+          node = resolvePass0(node);          
           return resolvePass1(node);              
            
           case 2:                    
+          node = resolvePass0(node);
+          node = resolvePass1(node);          
           return resolvePass2(node);              
           
           default:
@@ -421,7 +424,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static CompileUnitNode resolvePass1(CompileUnitNode node) {    
         // ensure pass 0 has been run
-        node = resolvePass0(node);
+        //node = resolvePass0(node);
     
         buildEnvironments();
     
@@ -448,7 +451,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static CompileUnitNode resolvePass2(CompileUnitNode node) {        
         // ensure pass 0 and pass 1 have been run
-        node = resolvePass1(node); // will call buildEnvironments()
+        //node = resolvePass1(node); // will call buildEnvironments()
     
         String filename = (String) node.getProperty(IDENT_KEY);    
 
@@ -557,14 +560,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     /** A List containing values of CompileUnitNodes that have only been parsed
      *  and have undergone package resolution, but not including nodes that
      *  have undergone later stages of static resolution, indexed by the 
-     *  canonical filename of the source file.
+     *  canonical filename of the source file, without the filename extension.
      */
     public static final List pass0ResolvedList = new LinkedList();
 
     /** A Map containing values of CompileUnitNodes that have only been parsed
      *  and have undergone package resolution, including nodes that
      *  have undergone later stages of static resolution, indexed by the 
-     *  canonical filename of the source file.
+     *  canonical filename of the source file, without the filename extension.
      */
     public static final Map allPass0ResolvedMap = new HashMap();
                             
@@ -577,7 +580,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
       
     /** A Map containing values of all CompileUnitNodes that have undergone
      *  name and field resolution, indexed by the canonical filename of the 
-     *  source file.
+     *  source file, without the filename extension.
      */
     public static final Map allPass2ResolvedMap = new HashMap();
     
