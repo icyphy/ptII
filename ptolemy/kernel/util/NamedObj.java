@@ -255,16 +255,24 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send debug messages.
      */
-    public synchronized void addDebugListener(DebugListener listener) {
-        if (_debugListeners == null) {
-            _debugListeners = new LinkedList();
-        } else {
-            if (_debugListeners.contains(listener)) {
-                return;
+    public void addDebugListener(DebugListener listener) {
+        // NOTE: This method needs to be synchronized to prevent two
+        // threads from each creating a new _debugListeners list.
+        synchronized(this) {
+            if (_debugListeners == null) {
+                _debugListeners = new LinkedList();
             }
         }
-        _debugListeners.add(listener);
-        _debugging = true;
+        // NOTE: This has to be synchronized to prevent
+        // concurrent modification exceptions.
+        synchronized(_debugListeners) {
+            if (_debugListeners.contains(listener)) {
+                return;
+            } else {
+                _debugListeners.add(listener);
+            }
+            _debugging = true;
+        }
     }
 
     /** React to a change in an attribute.  This method is called by
@@ -1042,15 +1050,19 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @param listener The listener to remove from the list of listeners
      *   to which debug messages are sent.
      */
-    public synchronized void removeDebugListener(DebugListener listener) {
+    public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             return;
         }
-        _debugListeners.remove(listener);
-        if (_debugListeners.size() == 0) {
-            _debugging = false;
+        // NOTE: This has to be synchronized to prevent
+        // concurrent modification exceptions.
+        synchronized(_debugListeners) {
+            _debugListeners.remove(listener);
+            if (_debugListeners.size() == 0) {
+                _debugging = false;
+            }
+            return;
         }
-        return;
     }
 
     /** Request that given change request be executed.   In this base
@@ -1353,12 +1365,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     protected final void _debug(DebugEvent event) {
         if (_debugging) {
-            // We copy this list to that responding to the event may block.
+            // We copy this list so that responding to the event may block.
             // while the execution thread is blocked, we want to be able to
             // add more debug listeners...
             // Yes, this is slow, but hey, it's debug code.
             List list;
-            synchronized(this) {
+            // NOTE: This used to synchronize on this, which caused
+            // deadlocks.  We use a more specialized lock now.
+            synchronized(_debugListeners) {
                 list = new ArrayList(_debugListeners);
             }
             Iterator listeners = list.iterator();
@@ -1375,12 +1389,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     protected final void _debug(String message) {
         if (_debugging) {
-            // We copy this list to that responding to the event may block.
+            // We copy this list so that responding to the event may block.
             // while the execution thread is blocked, we want to be able to
             // add more debug listeners...
             // Yes, this is slow, but hey, it's debug code.
             List list;
-            synchronized(this) {
+            // NOTE: This used to synchronize on this, which caused
+            // deadlocks.  We use a more specialized lock now.
+            synchronized(_debugListeners) {
                 list = new ArrayList(_debugListeners);
             }
             Iterator listeners = list.iterator();
@@ -1608,7 +1624,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
 
-    /** @serial The list of DebugListeners registered with this object. */
+    /** @serial The list of DebugListeners registered with this object.
+     *  NOTE: Because of the way we synchronize on this object, it should
+     *  never be reset to null after the first list is created.
+     */
     protected LinkedList _debugListeners = null;
 
     /** @serial The workspace for this object.
