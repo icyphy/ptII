@@ -363,6 +363,7 @@ public class Director extends NamedObj implements Executable {
 
     /** Schedule to be refired after a specified delay with respect to the
      *  current time.
+     *  @exception IllegalActionException FIXME
      */
     // FIXME: complete this.
     public void fireAfterDelay(Actor actor, double delay)

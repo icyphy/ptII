@@ -56,7 +56,7 @@ public class ExecutionEvent {
     /** Create a new event that occurs during the specified toplevel
      *  iteration of the specified Manager's execution.
      */
-     public ExecutionEvent(Manager m, int iteration) {
+    public ExecutionEvent(Manager m, int iteration) {
         _manager = m;
         _iteration = iteration;
         _exception = null;
