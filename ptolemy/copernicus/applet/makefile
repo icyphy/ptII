@@ -146,6 +146,23 @@ runDemo:
 	cd $(ROOT)/$(APPLETTARGETDIRECTORY); appletviewer $(MODEL).htm
 	cd $(ROOT)/$(APPLETTARGETDIRECTORY); appletviewer $(MODEL)Vergil.htm
 
+# Test writing in a separate directory
+test1: $(JCLASS)
+	@echo "generate an applet for '$(MODELPATH)'"
+	$(JAVA) \
+		-classpath "$(ROOT)" \
+		ptolemy.copernicus.kernel.Copernicus \
+		-verbose \
+		-codeGenerator   '"applet"' \
+		-compile	 true \
+		-java            `echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'` \
+		-modelPath       '"$(MODELPATH)"' \
+		-run		 true \
+		-ptIIUserDirectory   '"d:/tmp/test directory"' \
+		-targetPackage   '"$(MODEL)"'
+
+
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
