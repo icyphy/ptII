@@ -4,7 +4,7 @@
 #
 # @Version: : ptmkmodel,v 1.6 1999/06/13 21:47:21 cxh Exp $
 #
-# @Copyright (c) 1999 The Regents of the University of California.
+# @Copyright (c) 1999-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
