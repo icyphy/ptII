@@ -59,9 +59,8 @@
 <doc>A clock producing exactly one output per clock tick</doc>
 </entity>
 
-<entity name="SerialComm"
-        class="ptolemy.actor.lib.comm.SerialComm">
-</entity>
+<!-- Do not include SerialComm here, it requires the javacomm api, 
+which is not always present --!>
 
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
 
