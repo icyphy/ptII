@@ -162,9 +162,16 @@ use the <CODE>--with-javacc=DIR</CODE> <CODE>configure</CODE> argument.
 
 
 <h2>Rebuilding</h2>
-The Ptolemy II distribution includes the compiled Java <CODE>.class</CODE>
-files and the <CODE>javadoc</CODE> output, so it is not
-necessary to 'build' or run <CODE>make</CODE> to use Ptolemy II.
+The Installshield Installer distributions of Ptolemy II do not
+require rebuilding.  
+<menu>
+<li> However, the Installshield Installer versions
+are primarily for Windows, so if you are on a Unix platform, you
+will need to rebuild.  
+<li> In addition, if you are installing Ptolemy II on Window and would
+like to design your own actors, you will need to rebuild.
+<li> The <CODE>*.src.tar.gz</CODE> file requires rebuilding.
+</menu>
 
 <h3><a name="Unix">Unix</a></h3>
  If you would like to rebuild from the Java sources under Unix,
