@@ -362,7 +362,7 @@ public class DoubleArrayMath {
             sb.append(format.doubleString(array[i]));
 
             if (i < (length - 1)) {
-                sb.append(format.elementDeliminatorString());
+                sb.append(format.elementDelimiterString());
             }
         }
 

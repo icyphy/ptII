@@ -531,7 +531,7 @@ public class ComplexArrayMath {
             sb.append(format.complexString(array[i]));
 
             if (i < (length - 1)) {
-                sb.append(format.elementDeliminatorString());
+                sb.append(format.elementDelimiterString());
             }
         }
 

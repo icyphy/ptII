@@ -48,7 +48,7 @@ public interface ArrayStringFormat {
     /**
      *  Return a String separating elements in the matrix or vector.
      */
-    public String elementDeliminatorString();
+    public String elementDelimiterString();
 
     /**
      *  Return a String marking the beginning of a matrix.
@@ -68,7 +68,7 @@ public interface ArrayStringFormat {
     /**
      *  Return a String separating the row vectors.
      */
-    public String vectorDeliminatorString();
+    public String vectorDelimiterString();
 
     /**
      *  Return a String marking the beginning of a vector.
@@ -96,7 +96,7 @@ public interface ArrayStringFormat {
             return Double.toString(d);
         }
 
-        public String elementDeliminatorString() {
+        public String elementDelimiterString() {
             return ", ";
         }
 
@@ -112,7 +112,7 @@ public interface ArrayStringFormat {
             return "{";
         }
 
-        public String vectorDeliminatorString() {
+        public String vectorDelimiterString() {
             return ", ";
         }
 
@@ -134,7 +134,7 @@ public interface ArrayStringFormat {
             return c.toString();
         }
 
-        public String elementDeliminatorString() {
+        public String elementDelimiterString() {
             return " ";
         }
 
@@ -154,7 +154,7 @@ public interface ArrayStringFormat {
             return "[";
         }
 
-        public String vectorDeliminatorString() {
+        public String vectorDelimiterString() {
             return " | ";
         }
 

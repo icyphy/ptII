@@ -617,14 +617,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
                         sb.append(asf.doubleString(matrix[i][j]));
 
                         if (j < (_columns(matrix) - 1)) {
-                            sb.append(asf.elementDeliminatorString());
+                            sb.append(asf.elementDelimiterString());
                         }
                     }
 
                     sb.append(asf.vectorEndString());
 
                     if (i < (_rows(matrix) - 1)) {
-                        sb.append(asf.vectorDeliminatorString());
+                        sb.append(asf.vectorDelimiterString());
                     }
                 }
 
