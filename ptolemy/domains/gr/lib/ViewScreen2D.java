@@ -208,6 +208,11 @@ public class ViewScreen2D extends GRActor2D
     }
     
     
+    public Iterator getFigureIterator()
+    {
+        return _layer.figures();
+    }
+    
     /** Return the location of the origin of the viewscreen.
      * @return The origin of the viewscreen.
      */
@@ -339,10 +344,10 @@ public class ViewScreen2D extends GRActor2D
      *  @exception IllegalActionException Always thrown for this base class.
      */
     protected void _addChild(Figure figure) throws IllegalActionException {
-        //if(figure.getInteractor() instanceof FigureInteractor){
+        if(figure.getInteractor() instanceof FigureInteractor){
             ((FigureInteractor)(figure.getInteractor())).setViewScreen(this);
-            _layer.add(figure);
-        //}
+        }
+        _layer.add(figure);
     }
 
     /** Create the view screen component.  If place() was called with
@@ -491,4 +496,6 @@ public class ViewScreen2D extends GRActor2D
     
     //The figure, if any, currently selected in the viewscreen.
     private Figure _selectedFigure;
+    
+    private Iterator _allFigures;
 }

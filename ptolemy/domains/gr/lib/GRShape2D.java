@@ -125,6 +125,11 @@ abstract public class GRShape2D extends GRActor2D {
         interactor = new FigureInteractor(_figure);
         _figure.setInteractor(interactor);
     }
+    
+    
+    public BasicFigure getFigure(){
+        return _figure;
+    }
 
 
     /** Return false if the scene graph is already initialized.
@@ -150,6 +155,7 @@ abstract public class GRShape2D extends GRActor2D {
      */
     abstract protected BasicFigure _createFigure() 
             throws IllegalActionException;
+  
  
     /** Setup the scene graph connections of this actor.
      *

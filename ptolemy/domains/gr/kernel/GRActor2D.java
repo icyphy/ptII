@@ -28,7 +28,6 @@
 
 package ptolemy.domains.gr.kernel;
 
-import ptolemy.apps.superb.actor.lib.FigureInteractor;
 import ptolemy.domains.gr.lib.ViewScreen2D;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
