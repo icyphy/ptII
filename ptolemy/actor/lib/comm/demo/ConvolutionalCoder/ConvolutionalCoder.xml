@@ -61,26 +61,6 @@ The ViterbiDecoder actor does hard decoding.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 5.0">
         </property>
     </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">To run this demo, click on the red triangle in the toolbar.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 85.0">
-        </property>
-    </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -139,9 +119,13 @@ the error rate.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 748}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {24, 184, 996, 565}, maximized = false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 456]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.5, 228.0}">
         </property>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -231,19 +215,11 @@ the error rate.</text></svg></configure>
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={348, 112, 252, 234}}">
+            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Data">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {348, 112, 308, 222}, maximized = false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 380.0">
-            </property>
-        </entity>
-        <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={345, 336, 252, 234}}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="709.2740516662598, 244.69725799560547">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -362,7 +338,6 @@ the error rate.</text></svg></configure>
         <link port="Accumulator.input" relation="relation9"/>
         <link port="Accumulator.output" relation="relation2"/>
         <link port="Display.input" relation="relation5"/>
-        <link port="Display2.input" relation="relation2"/>
         <link port="Const.output" relation="relation8"/>
         <link port="Comparator.left" relation="relation"/>
         <link port="Comparator.right" relation="relation8"/>
@@ -398,7 +373,7 @@ the error rate.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -521,7 +496,7 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Error Rate on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.003">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0038910505837">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -530,11 +505,11 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 340.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 335.0]">
         </property>
     </entity>
     <entity name="Errors on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="778">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="142">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -543,11 +518,11 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="645.0, 400.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 415.0]">
         </property>
     </entity>
     <entity name="Error Rate on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0778">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0920881971466">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -560,7 +535,7 @@ the error rate.</text></svg></configure>
         </property>
     </entity>
     <entity name="Errors on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="30.0">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="6.0">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -663,7 +638,7 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 460.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 460.0]">
         </property>
     </entity>
     <entity name="Bernoulli2" class="ptolemy.actor.lib.Bernoulli">
@@ -672,7 +647,7 @@ the error rate.</text></svg></configure>
         <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="probabilityOfChannelError">
         </property>
         <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 505.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 505.0]">
         </property>
     </entity>
     <entity name="DeScrambler2" class="ptolemy.actor.lib.comm.DeScrambler">
@@ -680,7 +655,7 @@ the error rate.</text></svg></configure>
         </property>
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 460.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 460.0]">
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
