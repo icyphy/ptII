@@ -34,7 +34,7 @@ ME =            ptolemy/domains/actor/lib/security
 DIRS =		    
 
 # Root of the Java directory
-ROOT =          ../../../../..
+ROOT =          ../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
