@@ -528,10 +528,9 @@ public class Complex implements Cloneable, Serializable {
         return polarToComplex(magnitude, angle);
     }
 
-    /** Return the reciprocial of this complex number.
-     *  <p>
+    /** Return the reciprocal of this complex number.
+     *
      *  @return A new complex number that is the reciprocal of this one.
-     *  </p>
      */
     public final Complex reciprocal() {
         // This algorithm results from writing 1/a as (a*)/|a|^2.
