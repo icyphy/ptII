@@ -51,6 +51,7 @@ JSRCS =
 JSIMPLE_TESTS = \
 	Comparator.tcl \
 	Equals.tcl \
+	IsPresent.tcl \
 	LogicFunction.tcl \
 	LogicalNot.tcl
 
