@@ -223,14 +223,14 @@ public class PlotBox extends Panel {
             // Clear all the way from the top so that we erase the title.
             // If we don't do this, then zooming in with the pxgraph
             // application ends up blurring the title.
-            graphics.clearRect(0,0,drawRect.width-1, drawRect.height-1);
+            graphics.clearRect(0,0,drawRect.width, drawRect.height);
         }
 
         if (_debug > 8) {
             System.out.println("PlotBox: drawPlot drawRect ="+
                     drawRect.width+" "+drawRect.height+" "+
                     drawRect.x+" "+drawRect.y); 
-            graphics.drawRect(0,0,drawRect.width-1, drawRect.height-1);
+            graphics.drawRect(0,0,drawRect.width, drawRect.height);
         }
 
         // If an error message has been set, display it and return.
@@ -916,7 +916,7 @@ public class PlotBox extends Panel {
     }
 
     /** 
-     * Paint the applet contents, which in this base class is
+     * Paint the component contents, which in this base class is
      * only the axes.
      */
     public void paint(Graphics graphics) {
