@@ -113,26 +113,22 @@ public class UndoStackAttribute extends SingletonAttribute {
     }
 
     /** Merge the top two undo entries into a single action. If there
-     *  are fewer than two entries on the stack, do nothing.
+     *  are fewer than two entries on the stack, do nothing. Note
+     *  that when two entries are merged, the one on the top of
+     *  the stack becomes the first one executed and the one
+     *  below that on the stack becomes the second one executed.
      */
     public void mergeTopTwo() {
         if (_undoEntries.size() > 1) {
-            final UndoAction actionLast = (UndoAction)_undoEntries.pop();
-            final UndoAction actionFirst = (UndoAction)_undoEntries.pop();
-            UndoAction newAction = new UndoAction() {
-                    public void execute() throws Exception {
-                        actionFirst.execute();
-                        // Need to ensure that any redo that is generated
-                        // this execute is merged with the previous.
-                        try {
-                            _inExecuteSecondOfMerged = true;
-                            actionLast.execute();
-                        } finally {
-                            _inExecuteSecondOfMerged = false;
-                        }
-                    }
-                };
-            _undoEntries.push(newAction);
+            UndoAction lastUndo = (UndoAction)_undoEntries.pop();
+            UndoAction firstUndo = (UndoAction)_undoEntries.pop();
+            UndoAction mergedAction = _mergeActions(lastUndo, firstUndo);
+            _undoEntries.push(mergedAction);
+            if (_DEBUG) {
+                System.out.println(
+                        "=======> Merging top two on undo stack:\n"
+                        + mergedAction.toString());
+            }            
         }
     }
 
@@ -141,30 +137,70 @@ public class UndoStackAttribute extends SingletonAttribute {
      *  @param action The undo action.
      */
     public void push(UndoAction action) {
-        if (_inUndo) {
-            _redoEntries.push(action);
-        } else {
-            _undoEntries.push(action);
-            if (!_inRedo) {
-                _redoEntries.clear();
+        if (_inUndo > 1) {
+            if (_DEBUG) {
+                System.out.println(
+                        "=======> Merging action onto redo stack:\n"
+                        + action.toString());
             }
-        }
-        if (_inExecuteSecondOfMerged) {
-            mergeTopTwo();
+            UndoAction previousRedo = (UndoAction)_redoEntries.pop();
+            _redoEntries.push(_mergeActions(previousRedo, action));
+            _inUndo++;
+        } else if (_inUndo == 1) {
+            if (_DEBUG) {
+                System.out.println(
+                        "=======> Pushing action onto redo stack:\n"
+                        + action.toString());
+            }
+            _redoEntries.push(action);
+            _inUndo++;
+        } else if (_inRedo > 1) {
+            if (_DEBUG) {
+                System.out.println(
+                        "=======> Merging redo action onto undo stack:\n"
+                        + action.toString());
+            }
+            UndoAction previousRedo = (UndoAction)_redoEntries.pop();
+            _undoEntries.push(_mergeActions(previousRedo, action));
+            _inRedo++;
+        } else if (_inRedo == 1) {
+            if (_DEBUG) {
+                System.out.println(
+                        "=======> Pushing redo action onto undo stack:\n"
+                        + action.toString());
+            }
+            _undoEntries.push(action);
+            _inRedo++;
+        } else {
+            if (_DEBUG) {
+                System.out.println(
+                        "=======> Pushing action onto undo stack:\n"
+                        + action.toString());
+            }
+            _undoEntries.push(action);
+            if (_DEBUG) {
+                System.out.println( "======= Clearing redo stack.\n");
+            }
+            _redoEntries.clear();
         }
     }
-
+    
     /** Remove the top redo action and execute it.
      *  If there are no redo entries, do nothing.
      */
     public void redo() throws Exception {
         if (_redoEntries.size() > 0) {
             UndoAction action = (UndoAction)_redoEntries.pop();
+            if (_DEBUG) {
+                System.out.println(
+                        "<====== Executing redo action:\n"
+                        + action.toString());
+            }
             try {
-                _inRedo = true;
+                _inRedo = 1;
                 action.execute();
             } finally {
-                _inRedo = false;
+                _inRedo = 0;
             }
         }
     }
@@ -175,30 +211,54 @@ public class UndoStackAttribute extends SingletonAttribute {
     public void undo() throws Exception {
         if (_undoEntries.size() > 0) {
             UndoAction action = (UndoAction)_undoEntries.pop();
+            if (_DEBUG) {
+                System.out.println(
+                        "<====== Executing undo action:\n"
+                        + action.toString());
+            }
             try {
-                _inUndo = true;
+                _inUndo = 1;
                 action.execute();
             } finally {
-                _inUndo = false;
+                _inUndo = 0;
             }
         }
+    }
+  
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+  
+    /** Return an action that is a merger of the two specified actions.
+     *  @return An action that is a merger of the two specified actions.
+     */
+    private UndoAction _mergeActions(
+            final UndoAction firstAction,
+            final UndoAction lastAction) {
+        return new UndoAction() {
+            public void execute() throws Exception {
+                firstAction.execute();
+                lastAction.execute();
+            }
+            public String toString() {
+                return "Merged action.\nFirst part:\n"
+                        + firstAction.toString()
+                        + "\n\nSecond part:\n"
+                        + lastAction.toString();
+            }
+        };
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Flag indicating that we are executing the second of
-    // two merged actions.  Anything pushed onto the stack
-    // when this is true will be merged with the previous
-    // item on the stack.  Thus, if you undo merged
-    // actions, then the corresponding redos will be merged.
-    private boolean _inExecuteSecondOfMerged = false;
+    // Flag indicating whether to debug.
+    private static boolean _DEBUG = false;
+    
+    // Counter used to count pushes during a redo.
+    private int _inRedo = 0;
 
-    // Flag to indicate that we are in a redo.
-    private boolean _inRedo = false;
-
-    // Flag to indicate that we are in an undo.
-    private boolean _inUndo = false;
+    // Counter used to count pushes during an undo.
+    private int _inUndo = 0;
 
     // The stack of available redo entries
     private Stack _redoEntries = new Stack();

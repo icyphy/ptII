@@ -61,7 +61,6 @@ JSRCS = \
 	Debuggable.java \
 	DebugEvent.java \
 	DebugListener.java \
-	DropListener.java \
 	KernelException.java \
 	KernelRuntimeException.java \
 	IllegalActionException.java \
