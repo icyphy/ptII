@@ -745,6 +745,24 @@ public class PtolemyUtilities {
      *  ptolemy token type.  In other words It is either a direct
      *  reference to a token, or an array of tokens.
      */
+    public static boolean isArrayTokenType(Type type) {
+        RefType refType;
+        if(type instanceof RefType) {
+            refType = (RefType)type;
+        } else if(type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType)type;
+            if(arrayType.baseType instanceof RefType) {
+                refType = (RefType)arrayType.baseType;
+            } else return false;
+        } else return false;
+        return SootUtilities.derivesFrom(refType.getSootClass(),
+                PtolemyUtilities.arrayTokenClass);
+    }
+
+    /** Return true if the given type references a
+     *  ptolemy token type.  In other words It is either a direct
+     *  reference to a token, or an array of tokens.
+     */
     public static boolean isTokenType(Type type) {
         RefType refType;
         if(type instanceof RefType) {
