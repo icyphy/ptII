@@ -49,12 +49,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = DoubleMatrixToJAI.java \
+	ImageToJAI.java \
 	JAIAffineTransform.java \
 	JAIBandCombine.java \
 	JAIBandSelect.java \
 	JAIBorder.java \
 	JAIBoxFilter.java \
 	JAIBMPWriter.java \
+	JAIConstant.java \
 	JAIConvolve.java \
 	JAICrop.java \
 	JAIDataCaster.java \
@@ -73,6 +75,7 @@ JSRCS = DoubleMatrixToJAI.java \
 	JAIPeriodicShift.java \
 	JAIPhase.java \
 	JAIPolarToComplex.java \
+	JAIPNGWriter.java \
 	JAIPNMWriter.java \
 	JAIRotate.java \
 	JAIScale.java \

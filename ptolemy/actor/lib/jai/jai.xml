@@ -8,6 +8,8 @@
         <doc>Java Advanced Imaging actors</doc>
 	<entity name="DoubleMatrixToJAI" class="ptolemy.actor.lib.jai.DoubleMatrixToJAI">
 	</entity>
+	<entity name="ImageToJAI" class="ptolemy.actor.lib.jai.ImageToJAI">
+	</entity>
 	<entity name="JAIAffineTransform" class="ptolemy.actor.lib.jai.JAIAffineTransform">
 	  <property name="interpolationType">
 	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -45,6 +47,8 @@
 	<entity name="JAIBoxFilter" class="ptolemy.actor.lib.jai.JAIBoxFilter">
 	</entity>
 	<entity name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
+	</entity>
+	<entity name="JAIConstant" class="ptolemy.actor.lib.jai.JAIConstant">
 	</entity>
 	<entity name="JAIConvolve" class="ptolemy.actor.lib.jai.JAIConvolve">
 	</entity>
@@ -210,6 +214,8 @@
 	<entity name="JAIPolarToComplex" class="ptolemy.actor.lib.jai.JAIPolarToComplex">
 	</entity>		
 	<entity name="JAIPNMWriter" class="ptolemy.actor.lib.jai.JAIPNMWriter">
+	</entity>
+	<entity name="JAIPNGWriter" class="ptolemy.actor.lib.jai.JAIPNGWriter">
 	</entity>
 	<entity name="JAIRotate" class="ptolemy.actor.lib.jai.JAIRotate">
 	  <property name="interpolationType">
