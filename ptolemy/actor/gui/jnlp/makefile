@@ -56,7 +56,8 @@ JSRCS = \
 	HyVisualApplication.java \
 	MenuApplication.java \
 	PtinyApplication.java \
-	PtinySandboxApplication.java
+	PtinySandboxApplication.java \
+	VisualSenseApplication.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -75,7 +76,8 @@ OTHER_JARS = \
 	FullApplication.jar \
 	HyVisualApplication.jar \
 	PtinyApplication.jar \
-	PtinySandboxApplication.jar
+	PtinySandboxApplication.jar \
+	VisualSenseApplication.jar
 
 all: jclass $(OTHER_JARS)
 install: all
@@ -139,6 +141,19 @@ PtinySandboxApplication.jar: PtinySandboxApplication.class MenuApplication.class
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
+
+VisualSenseApplication.jar: VisualSenseApplication.class MenuApplication.class
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy Application specific classes from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp $< MenuApplication.class \
+		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
