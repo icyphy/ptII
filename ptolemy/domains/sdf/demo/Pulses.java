@@ -106,7 +106,7 @@ public class Pulses extends SDFApplet {
             myplot.plot.addLegend(1, "Sqrt");
             myplot.plot.setXRange(0.0, 64.0);
             myplot.plot.setYRange(-0.3, 1.0);
-            myplot.plot.setSize(500,300);
+            myplot.plot.setSize(500, 300);
             myplot.timed.setToken(new BooleanToken(false));
 
             ComponentRelation r1 =

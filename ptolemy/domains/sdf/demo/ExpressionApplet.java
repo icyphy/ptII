@@ -98,7 +98,7 @@ public class ExpressionApplet extends SDFApplet {
             myplot.plot.setGrid(false);
             myplot.plot.setXRange(0.0, 200.0);
             myplot.plot.setYRange(-2.0, 2.0);
-            myplot.plot.setSize(500,300);
+            myplot.plot.setSize(500, 300);
             myplot.timed.setToken(new BooleanToken(false));
 
             _toplevel.connect(ramp1.output, slow);
