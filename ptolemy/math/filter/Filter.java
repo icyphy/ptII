@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -29,16 +29,16 @@ package ptolemy.math.filter;
 
 //////////////////////////////////////////////////////////////////////////
 //// Filter
-/** 
-The Filter class is an abstract class from which the AnalogFilter and 
-DigitalFilter are derived.  This class contains the shared methods of 
+/**
+The Filter class is an abstract class from which the AnalogFilter and
+DigitalFilter are derived.  This class contains the shared methods of
 AnalogFilter and DigitalFilter.
 @author  David Teng (davteng@hkn.eecs.berkeley.edu)
 @version %W%	%G%
 */
 
 public abstract class Filter {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -49,26 +49,26 @@ public abstract class Filter {
     public final static int FIROPT = 3;
     public final static int FIRFS = 4;
     public final static int FIRCOMB = 5;
- 
+
     // Constants describe the approximation method for (IIR) filter
-    public final static int BUTTERWORTH = 1; 
-    public final static int CHEBYSHEV1 = 2; 
-    public final static int CHEBYSHEV2 = 3; 
-    public final static int ELLIPTICAL = 4; 
- 
+    public final static int BUTTERWORTH = 1;
+    public final static int CHEBYSHEV1 = 2;
+    public final static int CHEBYSHEV2 = 3;
+    public final static int ELLIPTICAL = 4;
+
     // Constants describe the frequency band type
-    public final static int LOWPASS = 1; 
-    public final static int HIGHPASS = 2; 
-    public final static int BANDPASS = 3; 
-    public final static int BANDSTOP = 4; 
- 
+    public final static int LOWPASS = 1;
+    public final static int HIGHPASS = 2;
+    public final static int BANDPASS = 3;
+    public final static int BANDSTOP = 4;
+
     // Constants describe the analog to digital transfer method
-    public final static int BILINEAR = 1; 
-    public final static int IMPULSEINVAR = 1; 
-    public final static int MATCHZ = 1; 
-    
-    
-    
+    public final static int BILINEAR = 1;
+    public final static int IMPULSEINVAR = 1;
+    public final static int MATCHZ = 1;
+
+
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -86,7 +86,7 @@ public abstract class Filter {
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-   
+
 }
 
 

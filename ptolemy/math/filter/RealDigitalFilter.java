@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -33,28 +33,28 @@ import collections.*;
 import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
 //// RealDigitalFilter
-/** 
-   The RealDigitalFilter class implements, as the name states, real digital 
+/**
+   The RealDigitalFilter class implements, as the name states, real digital
    filters.  This class contains a list of factors that represent the transfer
    function of the filter.  Some methods supported are addPoleZero, addFactor,
-   deletePole, deleteZero, setTransferFn, getOuput, getResponse, and etc 
-   methods to set the properties of a digital filter.  One can create an 
-   instance of  RealDigitalFilter given a transfer function.  On default, 
-   a RealDigitalFilter will constructed with a transfer function of one.  
-   To improve displaying efficiency, a cached/refined 
-   version of the filter's poles and zeros will kept inside the 
-   RealDigitalFilter, so that the display engines can access these 
+   deletePole, deleteZero, setTransferFn, getOuput, getResponse, and etc
+   methods to set the properties of a digital filter.  One can create an
+   instance of  RealDigitalFilter given a transfer function.  On default,
+   a RealDigitalFilter will constructed with a transfer function of one.
+   To improve displaying efficiency, a cached/refined
+   version of the filter's poles and zeros will kept inside the
+   RealDigitalFilter, so that the display engines can access these
    efficiently.  The poles and zeroes will be updated when it is necessary.
-   The Frequency Response, Impulse Response, and the transfer function of the 
+   The Frequency Response, Impulse Response, and the transfer function of the
    filter  are also cached in the same style.
-      
+
    @author  David Teng (davteng@hkn.eecs.berkeley.edu)
    @version %W%	%G%
 */
 
 
 public class RealDigitalFilter extends DigitalFilter{
-    
+
     /** Default Constructor
      * Construct a Real Filter with a transfer function
      * of one
@@ -69,8 +69,8 @@ public class RealDigitalFilter extends DigitalFilter{
         _updateFreqImpResponse();
         _updateGain();
     }
-    
-   
+
+
     /** Construct Filter given transfer function
      * The transfer function is in the following form
      * <pre>
@@ -81,7 +81,7 @@ public class RealDigitalFilter extends DigitalFilter{
      *
      * </pre>
      * <p>
-     * @param numer numerator polynomial coefficients 
+     * @param numer numerator polynomial coefficients
      * @param denom denominator polynomial coefficients
      * @param gain gain of this transfer function
      */
@@ -94,8 +94,8 @@ public class RealDigitalFilter extends DigitalFilter{
         _updateFreqImpResponse();
         _updateGain();
     }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -108,16 +108,16 @@ public class RealDigitalFilter extends DigitalFilter{
         _freqImpulseValid = false;
         _gainValid = false;
     }
-    
-    /** Take as argument a transfer function represented by a 
-     * list of factors, f, to replace the existing transfer 
+
+    /** Take as argument a transfer function represented by a
+     * list of factors, f, to replace the existing transfer
      * function of the filter
      * @param f a list factors representing the new transfer
      *      function to be designed
      */
     public void setTransferFn(RealZFactor[] f) {
         _factors.clear();
-        
+
         // doing insert instead of addFactor because this avoid setting
         // _polesZeroesValid = false  f.length times
         for (int i = 0; i < f.length; i++) {
@@ -129,8 +129,8 @@ public class RealDigitalFilter extends DigitalFilter{
         _freqImpulseValid = false;
         _gainValid = false;
     }
-    
-    /** Takes parameter f, a factor, and multiply it to the 
+
+    /** Takes parameter f, a factor, and multiply it to the
      * existing transfer function of the filter
      * @param f a factor to added the transfer function
      */
@@ -159,7 +159,7 @@ public class RealDigitalFilter extends DigitalFilter{
             return _impulseResponse;
         }
     }
-    
+
     /** get the numerator of the filter's transfer function
      */
     public double[] getNumerator() {
@@ -171,7 +171,7 @@ public class RealDigitalFilter extends DigitalFilter{
             return _numerator;
         }
     }
-    
+
     /** get the denominator of the filter's transfer function
      */
     public double[] getDenominator() {
@@ -194,8 +194,8 @@ public class RealDigitalFilter extends DigitalFilter{
             return _gain;
         }
     }
-    
-    
+
+
     /** Put the _factors LinkedList into an array and return it
      */
     public RealZFactor[] getFactors() {
@@ -208,61 +208,61 @@ public class RealDigitalFilter extends DigitalFilter{
 
     /** Takes parameter state, values of the state of the filter
      * and replaces the current state with the new one
-     * @param state an array containing the new state of the 
+     * @param state an array containing the new state of the
      *                   filter
      */
     public void setState(RealZFactor f, double[] state) {
         f.setState(state);
     }
-    
-   
-    /** reset all the states of the factors in the filter to 
+
+
+    /** reset all the states of the factors in the filter to
      * zero
      */
     public void resetState() {
-        
+
         for (int i = 0; i < getNumberOfFactors(); i++) {
             RealZFactor currentFactor = (RealZFactor)_factors.at(i);
             currentFactor.resetState();
         }
-        
+
     }
-     
-    /** Takes parameter zero, a zero location, and finds the 
-     * factor that contain this zero.  
+
+    /** Takes parameter zero, a zero location, and finds the
+     * factor that contain this zero.
      * @param zero a zero location
      */
-    public RealZFactor getFactorWithZero(Complex zero) 
+    public RealZFactor getFactorWithZero(Complex zero)
             throws IllegalArgumentException{
                 int j = 0;
-                
+
                 while (j < getNumberOfFactors()) {
                     if (((RealZFactor)_factors.at(j)).ifZero(zero)) {
                         return (RealZFactor)_factors.at(j);
                     }
                     j++;
                 }
-                
-                throw new 
+
+                throw new
                     IllegalArgumentException(
                             "cannot find the factor with the given zero");
     }
-    
-    /** Takes parameter pole, a pole location, and finds the 
-     * factor that contain this pole.  
+
+    /** Takes parameter pole, a pole location, and finds the
+     * factor that contain this pole.
      * @param pole a pole location
      */
-    public RealZFactor getFactorWithPole(Complex Pole) 
+    public RealZFactor getFactorWithPole(Complex Pole)
             throws IllegalArgumentException{
                 int j = 0;
-                
+
                 while (j < getNumberOfFactors()) {
                     if (((RealZFactor)_factors.at(j)).ifPole(Pole)) {
                         return (RealZFactor)_factors.at(j);
                     }
                     j++;
                 }
-                
+
                 throw new IllegalArgumentException(
                         "cannot find the factor with the given pole");
     }
@@ -287,7 +287,7 @@ public class RealDigitalFilter extends DigitalFilter{
         poles.
     */
     public Complex[] getPoles() {
-        
+
         if (_polesZeroesValid) {
             return _poles;
         }
@@ -296,22 +296,22 @@ public class RealDigitalFilter extends DigitalFilter{
             return _poles;
         }
     }
-            
+
     /** Take as parameter a pole location and incorporate it into the
      * current transfer function of the filter
-     * @param pole the value of a real pole's location that is to be 
+     * @param pole the value of a real pole's location that is to be
      *                             added
      */
     public void addPoleZero(Complex pole, Complex zero, double gain,
             boolean conj) {
-        
+
         // if the pole and zero are the same location, then they cancel
         if (pole.isInfinite() & zero.isInfinite()) {
             return;
         } else if (pole.equals(zero)) {
             return;
         }
-        
+
         // a pole at infinity gives denominator of one
         if (pole.isInfinite()) {
             double[] denom = {1};
@@ -334,7 +334,7 @@ public class RealDigitalFilter extends DigitalFilter{
             _transferFnValid = false;
             _freqImpulseValid = false;
             _gainValid = false;
-               
+
         } else if (zero.isInfinite()) {
             // a zero at infinity gives numerator of one
             double[] numer = {1};
@@ -386,8 +386,8 @@ public class RealDigitalFilter extends DigitalFilter{
             _gainValid = false;
         }
     }
-      
-    /** Given a pole, deletePole will find the factor associated 
+
+    /** Given a pole, deletePole will find the factor associated
      * with this pole and delete that factor
      * @param pole the pole to be deleted
      */
@@ -398,7 +398,7 @@ public class RealDigitalFilter extends DigitalFilter{
         _freqImpulseValid = false;
         _gainValid = false;
     }
-    
+
     /** Given a zero, deleteZero will find the factor associated
      * with this zero and delete that factor
      * @param zero the zero to be deleted
@@ -410,7 +410,7 @@ public class RealDigitalFilter extends DigitalFilter{
         _freqImpulseValid = false;
         _gainValid = false;
     }
-    
+
     /** Take as parameter a zero and the value for its new location and
      * and updates the value of the zero's location to the new one
      * @param zero the zero that is to be moved
@@ -425,7 +425,7 @@ public class RealDigitalFilter extends DigitalFilter{
         _freqImpulseValid = false;
         _gainValid = false;
     }
-    
+
     /** Take as parameter a pole and the value for its new location and
      * and updates the value of the pole's location to the new one
      * @param pole the pole that is to be moved
@@ -440,7 +440,7 @@ public class RealDigitalFilter extends DigitalFilter{
         _freqImpulseValid = false;
         _gainValid = false;
     }
-        
+
     /** Take one sample of input and returns the output of the filter.
      * The input will go through each factor sequentially.
      *
@@ -452,33 +452,33 @@ public class RealDigitalFilter extends DigitalFilter{
      *           ------------                       ------------
      * </pre>
      * <p>
-     * @param input the input to be filtered 
+     * @param input the input to be filtered
      */
     public double getOutput(double input) {
         double output = input;
-        
+
         for (int i = 0; i < getNumberOfFactors(); i++) {
             RealZFactor currentFactor = (RealZFactor)_factors.at(i);
             output = currentFactor.computeOutput(output);
-            
+
         }
         return output;
     }
-   
+
     /** takes a sequence of inputs and put them through the filter
      * @param input an array containing the values of samples
      * @param numSamples number of samples
      */
     public double[] getResponse(double[] input, int numSamples) {
         double[] output = new double[numSamples];
-        
+
         for (int i = 0; i < numSamples; i++) {
             output[i] = getOutput(input[i]);
-            
+
         }
         return output;
     }
-    
+
     /** return the frequency response
      */
     public Complex[] getFrequencyResponse() {
@@ -490,14 +490,14 @@ public class RealDigitalFilter extends DigitalFilter{
             return _freqResponse;
         }
     }
-        
-        
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     // Checks if the distance between a pole and a zero is less than the
     // the given parameter distance
-    private boolean _comparePoleZero(Complex pole, Complex zero, 
+    private boolean _comparePoleZero(Complex pole, Complex zero,
             double distance) {
         // if the pole and zero are both at infinity, then return true
         if (Double.isInfinite(pole.real)) {
@@ -510,25 +510,25 @@ public class RealDigitalFilter extends DigitalFilter{
                 return true;
             }
         }
-    
-        return false;
-    }      
 
-    /** Update the cached pole and zero locations of all the factors.  If 
-     * a zero  is close to a pole, they will not be returned.  
+        return false;
+    }
+
+    /** Update the cached pole and zero locations of all the factors.  If
+     * a zero  is close to a pole, they will not be returned.
     */
     protected void _updatePolesZeroes() {
-        
+
         LinkedList zeroesList = new LinkedList();
         LinkedList polesList = new LinkedList();
         RealZFactor currentFactor = new RealZFactor();
         int zeroesListLength = 0;
         int polesListLength = 0;
-        
+
         int previousPolesCounter = 0;
         int checkLength = 0;
         boolean insertNewZero;
-        
+
         // create a list of all the poles
         for (int i = 0; i < getNumberOfFactors(); i++) {
             currentFactor = (RealZFactor)_factors.at(i);
@@ -538,21 +538,21 @@ public class RealDigitalFilter extends DigitalFilter{
                 polesListLength++;
             }
         }
-        
+
         // check each zero against each poles in polesList, and if a zero
-        // and a pole are close, then the zero will not be inserted into 
+        // and a pole are close, then the zero will not be inserted into
         // the list, the pole will be removed from the list
         for (int i = 0; i < getNumberOfFactors(); i++) {
             currentFactor = (RealZFactor)_factors.at(i);
             Complex[] currentZeroes = currentFactor.getZeroes();
-            
+
             for (int j = 0; j < currentZeroes.length; j++) {
                 previousPolesCounter = 0;
                 checkLength = polesListLength;
                 insertNewZero = true;
-                
+
                 while (previousPolesCounter < checkLength) {
-                    
+
                     if (_comparePoleZero(
                             (Complex)polesList.at(previousPolesCounter),
                             currentZeroes[j], DELTA)) {
@@ -561,10 +561,10 @@ public class RealDigitalFilter extends DigitalFilter{
                         insertNewZero = false;
                         break;
                     }
-                    
+
                     previousPolesCounter++;
                 }
-                
+
                 // if zero is not close to any of the poles, then it is added
                 // to the zeroesList
                 if (insertNewZero) {
@@ -573,7 +573,7 @@ public class RealDigitalFilter extends DigitalFilter{
                 }
             }
         }
-        
+
         // replace the old zeroes and poles with the new ones
         _zeroes = new Complex[zeroesListLength];
         _poles = new Complex[polesListLength];
@@ -584,25 +584,25 @@ public class RealDigitalFilter extends DigitalFilter{
             _poles[i] = (Complex)polesList.at(i);
         }
         _polesZeroesValid = true;
-    }           
+    }
 
     // update the cached version of the RealDigitalFilter's transfer function
     private void _updateTransferFn() {
         Complex[] numerator;
         Complex[] denominator;
         Complex[] tempFn;
-        
+
         double[] partialFn = ((RealZFactor)_factors.at(0)).getNumerator();
         numerator = new Complex[partialFn.length];
-        
+
         // put the first factor's numerator into Complex[] numerator
         for (int i = 0; i < partialFn.length; i++) {
             numerator[i] = new Complex(partialFn[i]);
-        } 
+        }
 
         partialFn = ((RealZFactor)_factors.at(0)).getDenominator();
         denominator = new Complex[partialFn.length];
-    
+
         // put the first factor's denominator into Complex[] denominator
         for (int i = 0; i < partialFn.length; i++) {
             denominator[i] = new Complex(partialFn[i]);
@@ -612,23 +612,23 @@ public class RealDigitalFilter extends DigitalFilter{
         for (int i = 1; i < getNumberOfFactors(); i++) {
             partialFn = ((RealZFactor)_factors.at(i)).getNumerator();
             tempFn = new Complex[partialFn.length];
-            
+
             for (int j = 0; j < partialFn.length; j++) {
                 tempFn[j] = new Complex(partialFn[j]);
             }
-            
+
             numerator = MathWizard.polyMultiply(numerator, tempFn);
         }
-    
+
         // multiply the denominators out
         for (int i = 1; i < getNumberOfFactors(); i++) {
             partialFn = ((RealZFactor)_factors.at(i)).getDenominator();
             tempFn = new Complex[partialFn.length];
-            
+
             for (int j = 0; j < partialFn.length; j++) {
                 tempFn[j] = new Complex(partialFn[j]);
-            } 
-            
+            }
+
             denominator = MathWizard.polyMultiply(denominator, tempFn);
         }
 
@@ -638,7 +638,7 @@ public class RealDigitalFilter extends DigitalFilter{
         for (int i = 0; i < numerator.length; i++) {
             _numerator[i] = numerator[i].real;
         }
-        
+
         for (int i = 0; i < denominator.length; i++) {
             _denominator[i] = denominator[i].real;
         }
@@ -649,7 +649,7 @@ public class RealDigitalFilter extends DigitalFilter{
         _gain = 1;
         for (int i = 0; i < getNumberOfFactors(); i++) {
             _gain *= ((RealZFactor)_factors.at(i)).getGain();
-        } 
+        }
         _gainValid = true;
     }
 
@@ -658,27 +658,27 @@ public class RealDigitalFilter extends DigitalFilter{
         if (_polesZeroesValid == false) {
             _updatePolesZeroes();
         }
-        
+
         double[] input = new double[_taps];
         input[0] = 1;
         _impulseResponse = new double[_taps];
         _impulseResponse = getResponse(input, _taps);
         double gain = getGain();
-         
+
         _freqResponse = SignalProcessing.poleZeroToFreq(_poles, _zeroes,
                 new Complex(gain), NUMSTEP);
-        
+
         _freqImpulseValid = true;
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-                                     
-    // cached transfer function with numerator and denominator with its 
+
+    // cached transfer function with numerator and denominator with its
     // validity indication flags
     private double[] _numerator;
     private double[] _denominator;
-    
+
     private boolean _gainValid;
     private double _gain;
     private boolean _transferFnValid;
@@ -687,6 +687,6 @@ public class RealDigitalFilter extends DigitalFilter{
     private double[] _impulseResponse;
     private int _taps = 50;
     private final double DELTA = 0.01;
-    
+
 }
 

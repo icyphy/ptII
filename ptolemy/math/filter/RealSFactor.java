@@ -20,10 +20,10 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-                                        
+
 */
 
 package ptolemy.math.filter;
@@ -32,10 +32,10 @@ import java.util.Vector;
 import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
 //// RealSFactor
-/** 
+/**
 The RealSFactor class is used to implement RealAnalogFilter's transfer
-function.  This class is derived from RealFactor where pertinent data about 
-the RealSFactor is held.  The coefficients of the transfer and the pole/zero 
+function.  This class is derived from RealFactor where pertinent data about
+the RealSFactor is held.  The coefficients of the transfer and the pole/zero
 locations are contained in RealFactor.
 
 
@@ -46,12 +46,12 @@ locations are contained in RealFactor.
 public class RealSFactor extends RealFactor {
     /** Construct a real factor of unit one.  The transfer function is :
      * <pre>
-     *       1.0 
+     *       1.0
      *  1.0 -----
-     *       1.0 
+     *       1.0
      * </pre>
-     *  
-     */	
+     *
+     */
     public RealSFactor() {
         _numerator = new double[1];
         _numerator[0] = 1.0;
@@ -63,7 +63,7 @@ public class RealSFactor extends RealFactor {
 
     /** Construct a real factor with the given parameters.  The parameter
      * is two arrays of double describing the numerator/denominator polynomial
-     * coefficients, and a double value describing the gain.  The resulting 
+     * coefficients, and a double value describing the gain.  The resulting
      * transfer function is equal to:
      * <pre>
      *
@@ -73,24 +73,24 @@ public class RealSFactor extends RealFactor {
      *
      * </pre>
      * <p>
-     * This factor is used to describe continuous time systems, so the 
+     * This factor is used to describe continuous time systems, so the
      * polynomials is implemented in positive decreasing powers of s.
      * <p>
-     * This function uses <code> arrayCopy() </code> to copy the given 
+     * This function uses <code> arrayCopy() </code> to copy the given
      * coefficients to the internal container.
      * <p>
      * Poles and zeroes associated with this transfer function are calculated.
      * <p>
-     * @param numer numerator polynomial coefficients 
+     * @param numer numerator polynomial coefficients
      * @param denom denominator polynomial coefficients
      * @param gain gain of this factor
-     * @exception IllealArgumentException 
+     * @exception IllealArgumentException
      *                if any input array is null
-     */	
-    public RealSFactor(double [] numer, double [] denom, double gain) 
+     */
+    public RealSFactor(double [] numer, double [] denom, double gain)
                       throws IllegalArgumentException{
 
-                          
+
         if ((numer == null) || (denom == null)) {
             String str = new String(
                     "array of coefficients for numerator / denominator is null");
@@ -104,11 +104,11 @@ public class RealSFactor extends RealFactor {
         _solvePoleZero();
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
@@ -121,17 +121,17 @@ public class RealSFactor extends RealFactor {
 
     // Private methods should not have doc comments, they should
     // have regular C++ comments.
-    protected void _solvePoleZero() throws IllegalArgumentException { 
-         Complex pole, zero; 
- 
+    protected void _solvePoleZero() throws IllegalArgumentException {
+         Complex pole, zero;
+
          Vector singlepole = new Vector();
          Vector singlezero = new Vector();
          Vector conjpole = new Vector();
          Vector conjzero = new Vector();
-         
+
          if (_numerator.length == 1) {
              // single scalar value, no pole/zero produced
-                   
+
          } else if (_numerator.length == 2) {
              // case a*s + b
              Complex[] roots = new Complex[2];
@@ -145,28 +145,28 @@ public class RealSFactor extends RealFactor {
              }
          } else if (_numerator.length == 3) {
               // case a*s^2 + b*s + c
-              double a = _numerator[0];   
-              double b = _numerator[1];   
-              double c = _numerator[2]; 
-              
-              Complex [] roots = new Complex[2]; 
-              
-              boolean conjugate = 
-                  MathWizard.realquadraticRoots(a, b, c, roots); 
-              
+              double a = _numerator[0];
+              double b = _numerator[1];
+              double c = _numerator[2];
+
+              Complex [] roots = new Complex[2];
+
+              boolean conjugate =
+                  MathWizard.realquadraticRoots(a, b, c, roots);
+
               if (conjugate){
                   // produce two complex conjugate zeroes, and two
                   // conjugate poles at infinity.
                   ConjugateComplex conjz = new ConjugateComplex(roots[0]);
                   conjzero.addElement(conjz);
-                  ConjugateComplex conjp = 
+                  ConjugateComplex conjp =
                       new ConjugateComplex(
                               new Complex(Double.POSITIVE_INFINITY));
-                 
+
                   conjpole.addElement(conjp);
               } else {
                   if (roots[0] == null && roots[1] == null) {
-              
+
                   } else if (roots[1] == null) {
                       pole = new Complex(Double.POSITIVE_INFINITY);
                       singlepole.addElement(pole);
@@ -175,7 +175,7 @@ public class RealSFactor extends RealFactor {
                   else {
                       // produce two single real zeroes, and two single
                       // poles at infinity
-                            
+
                       pole = new Complex(Double.POSITIVE_INFINITY);
                       singlepole.addElement(pole);
                       singlezero.addElement(roots[0]);
@@ -187,7 +187,7 @@ public class RealSFactor extends RealFactor {
               String str = new String("Only order less than or equal to 2 can be factored ");
               throw new IllegalArgumentException(str);
          }
-         
+
          if (_denominator.length == 1) {
              // single scalar value, no pole/zero produced
          } else if (_denominator.length == 2) {
@@ -203,27 +203,27 @@ public class RealSFactor extends RealFactor {
              }
          } else if (_denominator.length == 3){
              // case a*s^2 + b*s + c
-             double a = _denominator[0];   
-             double b = _denominator[1];   
-             double c = _denominator[2]; 
-             Complex [] roots = new Complex[2]; 
-             
-             boolean conjugate = 
-                 MathWizard.realquadraticRoots(a, b, c, roots); 
-             
+             double a = _denominator[0];
+             double b = _denominator[1];
+             double c = _denominator[2];
+             Complex [] roots = new Complex[2];
+
+             boolean conjugate =
+                 MathWizard.realquadraticRoots(a, b, c, roots);
+
              if (conjugate){
                  // produce two complex conjugate poles, and two
                  // conjugate zeroes at infinity.
                  ConjugateComplex conjp = new ConjugateComplex(roots[0]);
-                 ConjugateComplex conjz = 
+                 ConjugateComplex conjz =
                      new ConjugateComplex(
                              new Complex(Double.POSITIVE_INFINITY));
-                 
+
                  conjzero.addElement(conjz);
                  conjpole.addElement(conjp);
              } else {
                  if (roots[0] == null && roots[1] == null) {
-                     
+
                  } else if (roots[1] == null) {
                      zero = new Complex(Double.POSITIVE_INFINITY);
                      singlezero.addElement(zero);
@@ -237,38 +237,38 @@ public class RealSFactor extends RealFactor {
                      singlepole.addElement(roots[0]);
                      singlezero.addElement(zero);
                      singlepole.addElement(roots[1]);
-                     
+
                  }
              }
          } else {
              String str = new String("Only order less than or equal to 2 can be factored ");
              throw new IllegalArgumentException(str);
          }
-        
+
          _singlePole = new Complex[singlepole.size()];
          for (int i=0;i<singlepole.size();i++){
              _singlePole[i] = (Complex) singlepole.elementAt(i);
-         } 
-         
+         }
+
          _singleZero = new Complex[singlezero.size()];
          for (int i=0;i<singlezero.size();i++){
              _singleZero[i] = (Complex) singlezero.elementAt(i);
-         } 
-         
+         }
+
          _conjugatePole = new ConjugateComplex[conjpole.size()];
          for (int i=0;i<conjpole.size();i++){
              _conjugatePole[i] = (ConjugateComplex) conjpole.elementAt(i);
          }
-         
+
          _conjugateZero = new ConjugateComplex[conjzero.size()];
          for (int i=0;i<conjzero.size();i++){
              _conjugateZero[i] = (ConjugateComplex) conjzero.elementAt(i);
          }
     }
 
-    
+
     // update the numerator with the new pole
-    protected void _updateNumerator() { 
+    protected void _updateNumerator() {
         Complex [] tmpnum = MathWizard.zeroesToPoly(getZeroes());
         _numerator = new double[tmpnum.length];
 
@@ -282,7 +282,7 @@ public class RealSFactor extends RealFactor {
         Complex [] tmpden = MathWizard.zeroesToPoly(getPoles());
         _denominator = new double[tmpden.length];
 
-        // since this is a real factor, thus only the real part of is kept 
+        // since this is a real factor, thus only the real part of is kept
         for (int i=0;i<tmpden.length;i++){
             _denominator[i] = tmpden[i].real;
         }
@@ -294,9 +294,9 @@ public class RealSFactor extends RealFactor {
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-    
-    private static final double TINY = 1.0e-6;   
-    
+
+    private static final double TINY = 1.0e-6;
+
 }
 
 

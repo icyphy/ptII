@@ -29,16 +29,16 @@ package ptolemy.math.filter;
 import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
-//// ConjugateComplex 
+//// ConjugateComplex
 /**
   A complex conjugate data type.  This class contain two complex number,
   which form a complex conjugate pair.  This class ensures the pair is always
-  conjugate of each other.  
+  conjugate of each other.
   <p>
   @author: William Wu (wbwu@eecs.berkeley.edu)
   @version: $id$
   @date: 11/21/98
-*/ 
+*/
 
 public class ConjugateComplex {
 
@@ -49,7 +49,7 @@ public class ConjugateComplex {
     public ConjugateComplex(Complex indata){
         value = indata;
         conj = value.conjugate();
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -59,11 +59,11 @@ public class ConjugateComplex {
      * value, saves it, then creates and saves its complex conjugate value.
      * <p>
      * @param indata new complex value.
-     */ 
+     */
     public void setValue(Complex indata){
         value = indata;
         conj = value.conjugate();
-    } 
+    }
 
     /**
      * Get one of the complex value from the pair.
@@ -72,7 +72,7 @@ public class ConjugateComplex {
     public Complex getValue(){
         return value;
     }
-    
+
     /**
      * Get the other one of the complex value from the pair.
      * @return one complex value in the conjugate pair.
@@ -80,10 +80,10 @@ public class ConjugateComplex {
     public Complex getConjValue(){
         return conj;
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
- 
+
     private Complex value;
     private Complex conj;
 

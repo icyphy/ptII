@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -30,21 +30,21 @@ package ptolemy.math.filter;
 
 import java.util.Vector;
 import java.util.NoSuchElementException;
-import ptolemy.math.*; 
+import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
 //// RealFactor
-/** 
- This is the real factor class.  It is the component that will be used to 
- build real LTI transfer function for a digital system.  It store two 
- polynomial of negative decreasing power of z with real coefficients, and a 
+/**
+ This is the real factor class.  It is the component that will be used to
+ build real LTI transfer function for a digital system.  It store two
+ polynomial of negative decreasing power of z with real coefficients, and a
  real number gain or positive decreasing powers of s and real number gain.
- Internal function is used to factor pole/zero of this factor.  
- Methods are provided to extract and modify these poles and zeroes.  
- When pole/zero are modified the two polynomials are also updated to reflect 
+ Internal function is used to factor pole/zero of this factor.
+ Methods are provided to extract and modify these poles and zeroes.
+ When pole/zero are modified the two polynomials are also updated to reflect
  the changes.  The factor also stores the internal states of the factor.
  The states is stored in a circular array.
 
-<p> 
+<p>
 @author  David Teng(davteng@hkn.eecs.berkeley.edu)
 @version %W%	%G%
 */
@@ -60,18 +60,18 @@ public abstract class RealFactor extends Factor{
     public void setNumerator(double[] numerator) {
         _numerator = new double[numerator.length];
         System.arraycopy(numerator, 0, _numerator, 0, numerator.length);
-        _state = new double[Math.max(_numerator.length-1, 
+        _state = new double[Math.max(_numerator.length-1,
                 _denominator.length-1)];
         _solvePoleZero();
     }
-    
+
     /** replaces the current denominator with the new denominator in parameter
      * @param denominator the new denominator to replace the old one
      */
     public void setDenominator(double[] denominator) {
         _denominator = new double[denominator.length];
         System.arraycopy(denominator, 0, _denominator, 0, denominator.length);
-        _state = new double[Math.max(_numerator.length-1, 
+        _state = new double[Math.max(_numerator.length-1,
                 _denominator.length-1)];
         _solvePoleZero();
     }
@@ -81,80 +81,80 @@ public abstract class RealFactor extends Factor{
     public void setGain(double gain) {
         _gain = gain;
     }
-    
-    /** Return the gain of this factor.   
-     * @return double value equal to the gain 
-     */	
+
+    /** Return the gain of this factor.
+     * @return double value equal to the gain
+     */
     public double getGain(){
         return _gain;
     }
 
-    /** Return the numerator of this factor.   
-     * @return array of double values represent the numerator polynomials 
-     *    coefficients, with decrease negative power of z ordering.  
-     */	
+    /** Return the numerator of this factor.
+     * @return array of double values represent the numerator polynomials
+     *    coefficients, with decrease negative power of z ordering.
+     */
     public double[] getNumerator(){
         return _numerator;
     }
 
-    /** Return the denominator of this factor.   
-     * @return array of double values represent the denominator polynomials 
-     *    coefficients, with decrease negative power of z ordering.  
-     */	
+    /** Return the denominator of this factor.
+     * @return array of double values represent the denominator polynomials
+     *    coefficients, with decrease negative power of z ordering.
+     */
     public double[] getDenominator(){
         return _denominator;
     }
-    
-    /** Return all the poles of this factor.   
+
+    /** Return all the poles of this factor.
      * @return array of Complex poles
-     */	
+     */
     public Complex[] getPoles(){
         return _streamlineComplex(_singlePole, _conjugatePole);
     }
 
-    /** Return all the zeroes of this factor. 
+    /** Return all the zeroes of this factor.
      * @return array of Complex zeroes
-     */	
+     */
     public Complex[] getZeroes(){
         return _streamlineComplex(_singleZero, _conjugateZero);
     }
 
-    /** Check if this factor contains the given pole.  
+    /** Check if this factor contains the given pole.
      * @param pole the given pole to be checked on.
-     * @return boolean value indicating if the given pole is part of this 
+     * @return boolean value indicating if the given pole is part of this
      *         factor.
-     */	
+     */
     public boolean ifPole(Complex pole){
-        
+
         boolean found = false;
-        
+
         for (int i=0;i<_singlePole.length;i++){
             if (_singlePole[i] == pole){
                  found = true;
              }
          }
-        
-         if (!found) {  
-             
-             for (int i=0;i<_conjugatePole.length;i++){                       
-             
-                 if ((pole == _conjugatePole[i].getValue()) 
+
+         if (!found) {
+
+             for (int i=0;i<_conjugatePole.length;i++){
+
+                 if ((pole == _conjugatePole[i].getValue())
                   || (pole == _conjugatePole[i].getConjValue())){
                        found = true;
                        break;
                    }
                }
           }
-          return found; 
+          return found;
     }
 
-    /** Check if this factor contains the given zero. 
+    /** Check if this factor contains the given zero.
      * @param zero the given zero to be checked on.
-     * @return boolean value indicating if the given pole is part of this 
+     * @return boolean value indicating if the given pole is part of this
      * factor
-     */	
+     */
     public boolean ifZero(Complex zero){
-        
+
          boolean found = false;
 
          for (int i=0;i<_singleZero.length;i++){
@@ -162,36 +162,36 @@ public abstract class RealFactor extends Factor{
                  found = true;
              }
          }
-       
-         if (!found) {  
-             for (int i=0;i<_conjugateZero.length;i++){                       
-                 if ((zero == _conjugateZero[i].getValue()) 
+
+         if (!found) {
+             for (int i=0;i<_conjugateZero.length;i++){
+                 if ((zero == _conjugateZero[i].getValue())
                   || (zero == _conjugateZero[i].getConjValue())){
                        found = true;
                        break;
                    }
                }
           }
-          return found; 
+          return found;
     }
 
-    /** Move the given pole to the given value.  If the given pole is a single 
-     * pole, then only its real value can be changed.  If the given pole is a 
-     * part of conjugate pair poles, then the given pole will move to the 
-     * desired location, its conjugate will also be changed to the appropriate 
-     * value.  The denominator will be updated to 
+    /** Move the given pole to the given value.  If the given pole is a single
+     * pole, then only its real value can be changed.  If the given pole is a
+     * part of conjugate pair poles, then the given pole will move to the
+     * desired location, its conjugate will also be changed to the appropriate
+     * value.  The denominator will be updated to
      * reflect the change.
      * If the given pole can't be found in this factor, a NoSuchElementException
      * is thrown.  Thus this function should only be called when ifZero
-     * returns true on the same zero. 
+     * returns true on the same zero.
      * <p>
      * @param pole the given pole to be moved
      * @param real destination's real value
      * @param imag destination's imaginary value
-     * @exception NoSuchElementException 
+     * @exception NoSuchElementException
      *              if the given pole is not found in this factor.
-     */	
-    public void movePole(Complex pole, double real, double imag) 
+     */
+    public void movePole(Complex pole, double real, double imag)
             throws NoSuchElementException{
      // first check if the given pole is in the single pole array
      boolean found = false;
@@ -202,11 +202,11 @@ public abstract class RealFactor extends Factor{
          found = true;
          }
      }
-         
+
      if (!found){
          // then check if the given pole is in the conjugate pole array
-         for (int i=0;i<_conjugatePole.length;i++){                       
-             if ((pole == _conjugatePole[i].getValue()) 
+         for (int i=0;i<_conjugatePole.length;i++){
+             if ((pole == _conjugatePole[i].getValue())
                      || (pole == _conjugatePole[i].getConjValue())){
                  // update the conjugate pair to the new value
                  pole = new Complex(real, imag);
@@ -220,26 +220,26 @@ public abstract class RealFactor extends Factor{
              String str = new String("Given pole can not be found");
              throw new NoSuchElementException(str);
          }
-     } 
+     }
      _updateDenominator();
     }
 
-    /** Move the given zero to the given value.  If the given zero is a single 
-     * zero, then only its real value can be changed.  If the given zero is a 
-     * part of conjugate pair zeros, then the given zero will move to the 
-     * desired location, its conjugate will also be changed to the appropriate 
+    /** Move the given zero to the given value.  If the given zero is a single
+     * zero, then only its real value can be changed.  If the given zero is a
+     * part of conjugate pair zeros, then the given zero will move to the
+     * desired location, its conjugate will also be changed to the appropriate
      * value.  The numerator will be updated to reflect the change.
-     * If the given zero can't be found in this factor, a 
+     * If the given zero can't be found in this factor, a
      * NoSuchElementException
      * is thrown.  Thus this function should only be called when ifZero
-     * returns true on the same zero. 
+     * returns true on the same zero.
      * <p>
      * @param zero the given zero to be moved
      * @param real destination's real value
      * @param imag destination's imaginary value
-     * @exception NoSuchElementException 
+     * @exception NoSuchElementException
      *              if the given pole is not found in this factor.
-     */	
+     */
     public void moveZero(Complex zero, double real, double imag)
                         throws NoSuchElementException {
 
@@ -252,11 +252,11 @@ public abstract class RealFactor extends Factor{
                  found = true;
              }
          }
-         
+
          if (!found){
              // then check if the given zero is in the conjugate pole array
-             for (int i=0;i<_conjugateZero.length;i++){                       
-                 if ((zero == _conjugateZero[i].getValue()) 
+             for (int i=0;i<_conjugateZero.length;i++){
+                 if ((zero == _conjugateZero[i].getValue())
                   || (zero == _conjugateZero[i].getConjValue())){
                        // update the conjugate pair to the new value
                        zero = new Complex(real, imag);
@@ -270,36 +270,36 @@ public abstract class RealFactor extends Factor{
                  String str = new String("Given zero can not be found");
                  throw new NoSuchElementException(str);
              }
-         } 
+         }
          _updateNumerator();
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
 
-    // Solve the pole/zero of this factor 
+    // Solve the pole/zero of this factor
     // Currently only the polynomials with order less than 2 can be solved
     // in this function.
     protected abstract void _solvePoleZero() throws IllegalArgumentException;
-            
-    // add the second parameter to the first parameter. If the first parameter 
+
+    // add the second parameter to the first parameter. If the first parameter
     // is at the beginning of the circular number field, then substraction
-    // will take the first parameter to the end of the circular 
+    // will take the first parameter to the end of the circular
     // number field.  If the first parameter is at the end, then
-    // addition will take it to the beginning.  This function is 
-    // used in the computation of the positions in a circular 
+    // addition will take it to the beginning.  This function is
+    // used in the computation of the positions in a circular
     // array.
     // @param position the number to be perform add or subtract on
     // @param incr value to add to or substract from position
     // @param size the size of the circular number field
     protected int _circularAddition(int position, int incr, int size){
         int result = position;
-        
+
         if (size == 0) {
             return result;
         }
-        
+
         while (Math.abs(incr) > size) {
             if (incr > 0) {
                 incr -= size;
@@ -308,7 +308,7 @@ public abstract class RealFactor extends Factor{
                 incr += size;
             }
         }
-        
+
         result += incr;
         if (result >= size) {
             result -= size;
@@ -319,39 +319,39 @@ public abstract class RealFactor extends Factor{
             return result;
         }
         else return result;
-    } 
+    }
 
-    // Update the numerator with the new zero 
+    // Update the numerator with the new zero
     protected abstract void _updateNumerator();
-    
+
     // Update the denominator with new pole
     protected abstract void _updateDenominator();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-      
-    //     
-    // Convert a linked list of single complex number, and a linked 
+
+    //
+    // Convert a linked list of single complex number, and a linked
     // list of complex conjugate pairs to an array of complex number.
-    //       
+    //
     // @param single array of single complex number
     // @param conj array of complex conjugate pairs
     // @return array of all complex numbers
-    private Complex [] _streamlineComplex(Complex[] single, 
+    private Complex [] _streamlineComplex(Complex[] single,
                                           ConjugateComplex[] conj){
-        
+
         int length = single.length + 2*conj.length;
         Complex [] allComplex = new Complex[length];
 
         int ind;
         for (ind=0;ind<single.length;ind++){
             allComplex[ind] = single[ind];
-        
+
         }
-                
+
         for (int i=0;i<conj.length;i++){
             ConjugateComplex conjcomplex = conj[i];
-            
+
             allComplex[ind++] = conjcomplex.getValue();
             allComplex[ind++] = conjcomplex.getConjValue();
         }
@@ -360,15 +360,15 @@ public abstract class RealFactor extends Factor{
     }
 
 
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     protected double [] _numerator;
     protected double [] _denominator;
     protected double _gain;
-    
+
     // for RealZFactor use
     protected double [] _state;
     protected int _firstState;
