@@ -418,11 +418,11 @@ public class IORelation extends ComponentRelation {
         return result;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-            ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////////
+    ////                      private variables                        ////
 
-            // whether the relation is a bus
-            private boolean _bus = false;
+    // whether the relation is a bus
+    private boolean _bus = false;
 
     // width of the relation. 
     private int _width = 1;

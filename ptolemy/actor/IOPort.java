@@ -152,7 +152,8 @@ public class IOPort extends ComponentPort {
         synchronized(workspace()) {
             if (!isOutput()) {
                 throw new IllegalActionException(this,
-                        "broadcast: Tokens can only be sent from an output port.");
+                        "broadcast: Tokens can only be sent from an " + 
+                        "output port.");
             }
             Receiver fr[][] = getRemoteReceivers();
             if(fr == null) {
@@ -240,7 +241,8 @@ public class IOPort extends ComponentPort {
         synchronized(workspace()) {
             if (!isInput()) {
                 throw new NoSuchItemException(this,
-                        "get: Tokens can only be retreived from an input port.");
+                        "get: Tokens can only be retreived from " + 
+                        "an input port.");
             }
             if (channelindex >= getWidth()) {
                 throw new NoSuchItemException(this,
@@ -374,7 +376,8 @@ public class IOPort extends ComponentPort {
         synchronized(workspace()) {
             if (!isLinked(relation)) {
                 throw new IllegalActionException(this, 
-                        "getReceivers: Relation argument is not linked to me.");
+                        "getReceivers: Relation argument is not " +
+                        "linked to me.");
             }
             if (!isInput()) return null;
 
@@ -471,7 +474,8 @@ public class IOPort extends ComponentPort {
             
             // For atomic port, try the cached _farReceivers
             // Check validity of cached version
-            if(isOpaque() && _farReceiversVersion == workspace().getVersion()) {
+            if(isOpaque() && 
+                    _farReceiversVersion == workspace().getVersion()) {
                 return _farReceivers;
             }
             // If not an atomic port or Cache is not valid.  Reconstruct it.
@@ -842,15 +846,17 @@ public class IOPort extends ComponentPort {
                     // Relation is a bus.
                     if(!isMultiport()) {
                         throw new IllegalActionException(this,  rel,
-                                "Attempt to link a bus relation to a single port.");
+                                "Attempt to link a bus relation " +
+                                "to a single port.");
                     }
                     Enumeration relations = linkedRelations();
                     while (relations.hasMoreElements()) {
                         IORelation r = (IORelation)relations.nextElement();
                         if (!r.widthFixed()) {
                             throw new IllegalActionException(this, rel,
-                                    "Attempt to link a second bus relation with " +
-                                    "unspecified width to the outside of a port.");
+                                    "Attempt to link a second bus relation " +
+                                    "with unspecified width to the outside " +
+                                    "of a port.");
                         }
                     }
                 }
@@ -897,7 +903,8 @@ public class IOPort extends ComponentPort {
                     // Relation is a bus.
                     if(!isMultiport()) {
                         throw new IllegalActionException(this,  rel,
-                                "Attempt to link a bus relation to a single port.");
+                                "Attempt to link a bus relation " +
+                                "to a single port.");
                     }
                     if (!rel.widthFixed()) {
                         // Make sure there are no other busses already
@@ -906,8 +913,9 @@ public class IOPort extends ComponentPort {
                             _getInsideWidth(null);
                         } catch (InvalidStateException ex) {
                             throw new IllegalActionException(this, rel,
-                                    "Attempt to link a second bus relation with " +
-                                    "unspecified width to the inside of a port.");
+                                    "Attempt to link a second bus relation " +
+                                    "with unspecified width to the inside " +
+                                    "of a port.");
                         }
                     }
                 }
@@ -967,5 +975,4 @@ public class IOPort extends ComponentPort {
      * The description() method returns the remote receivers of this port.
      */ 
     public static final int REMOTE_RECEIVERS = 8;
-    
 }

@@ -47,13 +47,13 @@ to be contained in an IOPort. So the getContainer method is defined.
 */
 public interface Receiver {
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    /////////////////////////////////////////////////////////////////////
+    ////                      public methods                         ////
 
-/** Get a token from the object
- * @exception NoSuchItemException Thrown by derived classes.
- */
-public Token get() throws NoSuchItemException;
+    /** Get a token from the object
+     * @exception NoSuchItemException Thrown by derived classes.
+     */
+    public Token get() throws NoSuchItemException;
 
     /** Return the container (IOPort) of the object.*/
     public Nameable getContainer();
