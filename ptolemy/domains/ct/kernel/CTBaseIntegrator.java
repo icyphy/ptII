@@ -475,7 +475,7 @@ public class CTBaseIntegrator extends CTActor
 
     // The history states and its derivative.
     // This variable is needed by Linear Multistep (LMS) methods,
-    // like Tropezoidal rule.
+    // like Trapezoidal rule.
     // FIXME: In the current implememtation, the highest LMS method is of
     // order 2. So only the information of the last step is needed. But
     // the interface is provided to have multiple histories and retrieve
