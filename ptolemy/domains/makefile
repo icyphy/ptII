@@ -41,7 +41,7 @@ EXPERIMENTAL_DOMAINS = \
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
 # The tm domain uses java.util.Timer, so it requires JDK 1.3
-DOMAINS =	csp ct dde de fsm hde pn sdf dt giotto pbo petrinet rtp \
+DOMAINS =	ci csp ct dde de fsm hde pn sdf dt giotto pbo petrinet rtp \
 		sr tm $(PTJAVA3D_DIR) 
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
@@ -61,6 +61,7 @@ PTCLASSJAR =
 # Include these jars in PTAUXALLJAR
 # Don't include rtp/rtp.jar, it is not being shipped
 PTAUXALLJARS = \
+		ci/ci.jar \
 		dde/dde.jar \
                 dt/dt.jar \
 		giotto/giotto.jar \
