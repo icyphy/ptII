@@ -45,7 +45,13 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	codegen
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		saveasjava/saveasjava.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	ActorCodeGenerator.java \
