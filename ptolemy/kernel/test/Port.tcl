@@ -67,19 +67,18 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {equals java.lang.Object} getAssocEntity getClass getCo
-    nnectedPorts getContainer getFullName getLinkedRelation
-    s getName hashCode {link pt.kernel.Relation} notify not
-    ifyAll numLinks {setAssocEntity pt.kernel.Entity} {setN
-    ame java.lang.String} toString {unlink pt.kernel.Relati
-    on} unlinkAll wait {wait long} {wait long int} workspac
-    e
+  methods:       {equals java.lang.Object} getClass getConnectedPorts ge
+    tContainer getFullName getLinkedRelations getName hashC
+    ode {link pt.kernel.Relation} notify notifyAll numLinks
+     {setContainer pt.kernel.Entity} {setName java.lang.Str
+    ing} toString {unlink pt.kernel.Relation} unlinkAll wai
+    t {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String} {pt.kernel.Port pt.kernel.Workspace}
     
-  properties:    assocEntity class connectedPorts container fullName lin
-    kedRelations name
+  properties:    class connectedPorts container fullName linkedRelations
+     name
     
   superclass:    pt.kernel.NamedObj
     
@@ -102,7 +101,7 @@ test Port-2.1 {Construct Ports} {
 test Port-3.1 {Test link with one port, one relation} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
-    $p1 setAssocEntity $e1
+    $p1 setContainer $e1
     $p1 setName P1
     set r1 [java::new pt.kernel.Relation R1]
     $p1 link $r1
@@ -116,7 +115,7 @@ test Port-3.1 {Test link with one port, one relation} {
 test Port-3.1.1 {Test link with one port, one relation twice} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
-    $p1 setAssocEntity $e1
+    $p1 setContainer $e1
     set r1 [java::new pt.kernel.Relation R1]
     $p1 link $r1
     $p1 link $r1
@@ -140,7 +139,7 @@ test Port-3.1.2 {Test link with one port to a null relation} {
 test Port-3.2 {Test link with one port, two relations} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
-    $p1 setAssocEntity $e1
+    $p1 setContainer $e1
     set r1 [java::new pt.kernel.Relation R1]
     set r2 [java::new pt.kernel.Relation R2]
     $p1 link $r1
@@ -190,7 +189,7 @@ test Port-3.4 {Test link with two ports, two relations} {
 test Port-4.1 {Test unlinkAll} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
-    $p1 setAssocEntity $e1
+    $p1 setContainer $e1
     set p2 [java::new pt.kernel.Port $e1 P2]
     set r1 [java::new pt.kernel.Relation "relation1"]
     set r2 [java::new pt.kernel.Relation "relation2"]
@@ -223,7 +222,7 @@ test Port-5.1 {Test unlink} {
     # The error is: 
     # wrong # args for calling constructor "pt.kernel.Port"
     # set p3 [java::new pt.kernel.Port]
-    $p3 setAssocEntity $e1
+    $p3 setContainer $e1
     set r1 [java::new pt.kernel.Relation "relation1"]
     set r2 [java::new pt.kernel.Relation "relation2"]
     $p1 link $r1
@@ -257,7 +256,7 @@ relation2 {}
 test Port-5.2 {Test unlink on a relation we are not connected to} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]
-    $p1 setAssocEntity $e1
+    $p1 setContainer $e1
     set r1 [java::new pt.kernel.Relation "relation1"]
     set r2 [java::new pt.kernel.Relation "relation2"]
     $p1 link $r1
@@ -278,19 +277,19 @@ test Port-6.1 {Test getLinkedRElations} {
 ######################################################################
 ####
 # 
-test Port-7.1 {Test getContainer on a Port that has no associated entity} {
+test Port-7.1 {Test getContainer on a Port that has no container } {
     set p1 [java::new pt.kernel.Port]
-    list [expr { [java::null] == [$p1 getAssocEntity] } ]
+    list [expr { [java::null] == [$p1 getContainer] } ]
 } {1}
 
 ######################################################################
 ####
 # 
-test Port-7.2 {Test getAssocEntity on a Port that has a entity } {
+test Port-7.2 {Test getContainer on a Port that has a container } {
     set p1 [java::new pt.kernel.Port]
     set e1 [java::new pt.kernel.Entity "entity1"]
-    $p1 setAssocEntity $e1
-    list [expr { $e1 == [$p1 getAssocEntity] } ]
+    $p1 setContainer $e1
+    list [expr { $e1 == [$p1 getContainer] } ]
 } {1}
 
 ######################################################################
@@ -329,7 +328,7 @@ test Port-9.1 {Remove a port from its container} {
     $out link $arc
     $in link $arc
 
-    $out setAssocEntity [java::null]
+    $out setContainer [java::null]
 
     # Note that we are not getting all the information we could
     list [_testPortGetLinkedRelations $out $in] \
@@ -352,7 +351,7 @@ test Port-10.1 {Reassign a port to a new container} {
     $out link $arc
     $in link $arc
 
-    $out setAssocEntity $print
+    $out setContainer $print
 
     # Note that we are not getting all the information we could
     list [_testPortGetLinkedRelations $out $in] \
@@ -373,7 +372,7 @@ test Port-11.1 {Move Port in and out of the workspace} {
     set r1 [enumToFullNames [$w elements]]
     set r2 [enumToFullNames [$e1 getPorts]]
     $e1 removePort $p2
-    $p3 setAssocEntity [java::null]
+    $p3 setContainer [java::null]
     set r3 [enumToFullNames [$w elements]]
     set r4 [enumToFullNames [$e1 getPorts]]
     list $r1 $r2 $r3 $r4
