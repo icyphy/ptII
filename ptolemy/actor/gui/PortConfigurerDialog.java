@@ -159,6 +159,7 @@ public class PortConfigurerDialog
         _portTable.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent ke) {
                 if (ke.getKeyChar() == '\n') {
+                    _apply();
                     _cancel();
                 }
             }
