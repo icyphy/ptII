@@ -38,6 +38,7 @@ import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
 import ptolemy.gui.*;
+import ptolemy.moml.Location;
 import ptolemy.moml.Vertex;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.Locatable;
@@ -523,8 +524,15 @@ public class PtolemyModule implements Module {
 	    toplevel.requestChange(new ChangeRequest(this,
 		    "Creating new Port in " + toplevel.getFullName()) {
 		protected void _execute() throws Exception {
-                    Port port =  toplevel.newPort(toplevel.uniqueName("port"));
-                    controller.addNode(port, finalX, finalY);
+                    Port port = toplevel.newPort(toplevel.uniqueName("port"));
+		    Location location =
+			new Location(port, 
+				     port.uniqueName("_location"));
+		
+		    double coords[] = new double[2];
+		    coords[0] = ((int)finalX);
+		    coords[1] = ((int)finalY);
+		    location.setLocation(coords);
 		}
 	    });
 	}
@@ -577,10 +585,10 @@ public class PtolemyModule implements Module {
 		    Vertex vertex =
                          new Vertex(relation, relation.uniqueName("vertex"));
 		
-		    double location[] = new double[2];
-		    location[0] = ((int)finalX);
-		    location[1] = ((int)finalY);
-		    vertex.setLocation(location);
+		    double coords[] = new double[2];
+		    coords[0] = ((int)finalX);
+		    coords[1] = ((int)finalY);
+		    vertex.setLocation(coords);
 		}
             });
 	}
