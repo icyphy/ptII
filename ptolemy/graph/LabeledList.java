@@ -140,8 +140,6 @@ public class LabeledList implements List {
     /** Clear all of the elements in this list.
      */
     public void clear() {
-        // Invoke the remove(int) and size() methods, which get overridden in
-        // sub lists.
         int elements = size();
         for (int i = 0; i < elements; i++) {
             remove(0);
@@ -426,14 +424,6 @@ public class LabeledList implements List {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    // This method is provide to provide support for sub lists, as specified
-    // by the list interface. It adds an element at a given index, and
-    // re-labels the list elements accordingly.
-    private void _add(int index, Object element) {
-        _elements.add(index, element);
-        _labelElements(index);
-    }
 
     // Return a dump of a list element that is suitable for inclusion
     // in an error message.
