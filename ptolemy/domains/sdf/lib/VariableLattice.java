@@ -87,6 +87,14 @@ public class VariableLattice extends Lattice {
         newCoefficients.setTypeSameAs(reflectionCoefficients);
         output.setTypeSameAs(input);
 
+        input_tokenConsumptionRate =
+            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate.setExpression("blockSize");
+
+        output_tokenProductionRate =
+            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate.setExpression("blockSize");
+
         // The reflectionCoefficients parameter is no longer
         // of any use, so it is hidden.
         reflectionCoefficients.setVisibility(Settable.NONE);
@@ -104,6 +112,16 @@ public class VariableLattice extends Lattice {
      *  of doubles.
      */
     public TypedIOPort newCoefficients;
+ 
+    /** The parameter that gives the number of tokens consumed by the input
+     *  port.  This is set equal to <i>blockSize</i>.
+     */
+    public Parameter input_tokenConsumptionRate;
+   
+    /** The parameter that gives the number of tokens produces by the output
+     *  port.  This is set equal to <i>blockSize</i>.
+     */
+    public Parameter output_tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -124,30 +142,7 @@ public class VariableLattice extends Lattice {
                 throw new IllegalActionException(this,
                         "Invalid blockSize: " + _blockSizeValue);
             }
-            // NOTE: The base class is not an SDF actor, so we have
-            // to manually add these port parameter.
-            IntToken rate = new IntToken(_blockSizeValue);
-            try {
-                Parameter tokenConsumptionRate = (Parameter)
-                    input.getAttribute("tokenConsumptionRate");
-                if (tokenConsumptionRate == null) {
-                    tokenConsumptionRate = new Parameter(input,
-                            "tokenConsumptionRate");
-                }
-                tokenConsumptionRate.setToken(rate);
-
-                Parameter tokenProductionRate = (Parameter)
-                    output.getAttribute("tokenProductionRate");
-                if (tokenProductionRate == null) {
-                    tokenProductionRate = new Parameter(output,
-                            "tokenProductionRate");
-                }
-                tokenProductionRate.setToken(rate);
-            } catch (NameDuplicationException ex) {
-                throw new InternalErrorException(
-                        "Unexpected name duplication.");
-            }
-
+            
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
