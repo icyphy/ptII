@@ -472,11 +472,13 @@ public abstract class ActorController extends AttributeController {
                 double y = site.getY() - portBounds.getCenterY();
                 portFigure.translate(x, y);
 
-                // If the actor contains an attribute named "_showRate",
-                // then visualize the rate information.
+                // If the actor contains a variable named "_showRate",
+                // with value true, then visualize the rate information.
                 // NOTE: Showing rates only makes sense for IOPorts.
+                Attribute showRateAttribute = port.getAttribute("_showRate");
                 if (port instanceof IOPort &&
-                        port.getAttribute("_showRate") != null) {
+                        showRateAttribute instanceof Variable &&
+                        ((Variable)showRateAttribute).getToken().equals(BooleanToken.TRUE)) {
                     // Infer the rate.  See DFUtilities.
                     String rateString = "";
                     Variable rateParameter = null;
