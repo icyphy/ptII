@@ -1132,6 +1132,9 @@ test IOPort-13.1 {test getReceivers()} {
     {
         {ptolemy.actor.Mailbox}
     }
+    {
+        {ptolemy.actor.Mailbox}
+    }
 }}
 
 test IOPort-13.2 {test getReceivers()} {
@@ -1264,6 +1267,10 @@ test IOPort-17.1 {test sourcePortList} {
     listToFullNames [$p2 sourcePortList]
 } {.E0.E1.P1}
 
+test IOPort-17.1.1 {test numberOfSources} {
+    list [$p1 numberOfSources] [$p2 numberOfSources]
+} {0 1}
+
 test IOPort-17.2 {test sourcePortList} {
     # NOTE: expands on the above.
     set e3 [java::new ptolemy.actor.TypedAtomicActor $e0 E3]
@@ -1273,6 +1280,10 @@ test IOPort-17.2 {test sourcePortList} {
     listToFullNames [$p2 sourcePortList]
 } {.E0.E1.P1 .E0.E3.P3}
 
+test IOPort-17.2.1 {test numberOfSources} {
+    $p2 numberOfSources
+} {2}
+
 test IOPort-17.3 {test sourcePortList} {
     # NOTE: expands on the above.
     set e4 [java::new ptolemy.actor.TypedCompositeActor $e0 E4]
@@ -1281,6 +1292,10 @@ test IOPort-17.3 {test sourcePortList} {
     $p4 link $r
     listToFullNames [$p2 sourcePortList]
 } {.E0.E1.P1 .E0.E3.P3}
+
+test IOPort-17.3.1 {test numberOfSources} {
+    $p2 numberOfSources
+} {2}
 
 test IOPort-17.4 {test sourcePortList} {
     # NOTE: expands on the above.
@@ -1292,6 +1307,10 @@ test IOPort-17.4 {test sourcePortList} {
     $p4 link $r5
     listToFullNames [$p2 sourcePortList]
 } {.E0.E1.P1 .E0.E3.P3 .E0.E4.E5.P5}
+
+test IOPort-17.4.1 {test numberOfSources} {
+    $p2 numberOfSources
+} {3}
 
 test IOPort-18.1 {test sourcePortList} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -1315,11 +1334,20 @@ test IOPort-18.1 {test sourcePortList} {
     listToFullNames [$p3 sourcePortList]
 } {.E0.E1.P1}
 
+test IOPort-18.1.1 {test numberOfSources} {
+    $p3 numberOfSources
+} {1}
+
+
 test IOPort-18.2 {test sourcePortList} {
     # NOTE: Builds on the above.
     set d2 [java::new ptolemy.actor.Director $e2 D2]
     listToFullNames [$p3 sourcePortList]
 } {.E0.E2.P2}
+
+test IOPort-18.2.1 {test numberOfSources} {
+    $p3 numberOfSources
+} {1}
 
 test IOPort-19.1 {test sinkPortList} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -1337,6 +1365,10 @@ test IOPort-19.1 {test sinkPortList} {
     listToFullNames [$p1 sinkPortList]
 } {.E0.E2.P2}
 
+test IOPort-19.1.1 {test numberOfSinks} {
+    list [$p1 numberOfSinks] [$p2 numberOfSinks]
+} {1 0}
+
 test IOPort-19.2 {test sinkPortList} {
     # NOTE: expands on the above.
     set e3 [java::new ptolemy.actor.TypedAtomicActor $e0 E3]
@@ -1346,6 +1378,10 @@ test IOPort-19.2 {test sinkPortList} {
     listToFullNames [$p1 sinkPortList]
 } {.E0.E2.P2 .E0.E3.P3}
 
+test IOPort-19.2.1 {test numberOfSinks} {
+    $p1 numberOfSinks
+} {2}
+
 test IOPort-19.3 {test sinkPortList} {
     # NOTE: expands on the above.
     set e4 [java::new ptolemy.actor.TypedCompositeActor $e0 E4]
@@ -1354,6 +1390,10 @@ test IOPort-19.3 {test sinkPortList} {
     $p4 link $r
     listToFullNames [$p1 sinkPortList]
 } {.E0.E2.P2 .E0.E3.P3}
+
+test IOPort-19.3.1 {test numberOfSinks} {
+    $p1 numberOfSinks
+} {2}
 
 test IOPort-19.4 {test sinkPortList} {
     # NOTE: expands on the above.
@@ -1365,6 +1405,10 @@ test IOPort-19.4 {test sinkPortList} {
     $p4 link $r5
     listToFullNames [$p1 sinkPortList]
 } {.E0.E2.P2 .E0.E3.P3 .E0.E4.E5.P5}
+
+test IOPort-19.4.1 {test numberOfSinks} {
+    $p1 numberOfSinks
+} {3}
 
 test IOPort-20.1 {test sinkPortList} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -1388,11 +1432,19 @@ test IOPort-20.1 {test sinkPortList} {
     listToFullNames [$p3 sinkPortList]
 } {.E0.E2.P2}
 
+test IOPort-20.1.1 {test numberOfSinks} {
+    $p3 numberOfSinks
+} {1}
+
 test IOPort-20.2 {test sinkPortList} {
     # NOTE: Builds on the above.
     set d2 [java::new ptolemy.actor.Director $e1 D2]
     listToFullNames [$p3 sinkPortList]
 } {.E0.E1.P1}
+
+test IOPort-20.2.1 {test numberOfSinks} {
+    $p3 numberOfSinks
+} {1}
 
 test IOPort-21.1 {test insideSinkPortList} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -1415,7 +1467,7 @@ test IOPort-21.1 {test insideSinkPortList} {
     listToFullNames [$p0 insideSinkPortList]
 } {.E0.E1.E2.P2}
 
-test IOPort-21.2 {test sinkPortListInside} {
+test IOPort-21.2 {test insideSinkPortList} {
     set d1 [java::new ptolemy.actor.Director $e1 D1]
     listToFullNames [$p0 insideSinkPortList]
 } {.E0.E1.P1}
