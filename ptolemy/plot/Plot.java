@@ -1710,12 +1710,13 @@ public class Plot extends PlotBox {
             // most data consists of two data points, we want
             // to handle that case as efficiently as possible.
 
+            System.out.println("Plot: line = <" + line + ">");
             int fieldsplit = line.indexOf(",");
             if (fieldsplit == -1) {
                 fieldsplit = line.indexOf(" ");
             }
             if (fieldsplit == -1) {
-                fieldsplit = line.indexOf(" ");  // a tab
+                fieldsplit = line.indexOf("\t");  // a tab
             }
 
             if (fieldsplit > 0) {
@@ -1727,7 +1728,7 @@ public class Plot extends PlotBox {
                     fieldsplit2 = y.indexOf(" ");
                 }
                 if (fieldsplit2 == -1) {
-                    fieldsplit2 = y.indexOf(" ");  // a tab
+                    fieldsplit2 = y.indexOf("\t");  // a tab
                 }
                 if (fieldsplit2 > 0) {
                     line = (y.substring(fieldsplit2+1)).trim();
@@ -1744,7 +1745,7 @@ public class Plot extends PlotBox {
                             fieldsplit3 = line.indexOf(" ");
                         }
                         if (fieldsplit3 == -1) {
-                            fieldsplit2 = line.indexOf(" ");  // a tab
+                            fieldsplit2 = line.indexOf("\t");  // a tab
                         }
 
                         if (fieldsplit3 > 0) {
