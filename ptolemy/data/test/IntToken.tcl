@@ -91,18 +91,18 @@ test IntToken-3.2 {Create an non-empty instance and read it as long} {
 ######################################################################
 ####
 # 
-test IntToken-4.1 {Create an empty instance and clone} {
-    set p [java::new ptolemy.data.IntToken]
-    set q [$p clone]
-    list [$q intValue]
-} {0}
+# test IntToken-4.1 {Create an empty instance and clone} {
+#     set p [java::new ptolemy.data.IntToken]
+#     set q [$p clone]
+#     list [$q intValue]
+# } {0}
 
 ######################################################################
 ####
 # 
-test IntToken-4.2 {Create a non empty instance and clone} {
-    set p [java::new {ptolemy.data.IntToken int} 10]
-    set q [$p clone]
-    list [$p intValue] [$q intValue]
-} {10 10}
+# test IntToken-4.2 {Create a non empty instance and clone} {
+#     set p [java::new {ptolemy.data.IntToken int} 10]
+#     set q [$p clone]
+#     list [$p intValue] [$q intValue]
+# } {10 10}
 

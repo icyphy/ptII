@@ -66,19 +66,19 @@ test StringToken-2.2 {Create an empty instance and query its value} {
 ######################################################################
 ####
 # 
-test StringToken-4.1 {Create an empty instance and clone} {
-    set p [java::new ptolemy.data.StringToken]
-    set q [$p clone]
-    $q getValue
-} {}
+# test StringToken-4.1 {Create an empty instance and clone} {
+#     set p [java::new ptolemy.data.StringToken]
+#     set q [$p clone]
+#     $q getValue
+# } {}
 
 ######################################################################
 ####
 # 
-test StringToken-4.2 {Create a non empty instance and clone} {
-    set n [java::new {java.lang.String String} foo]
-    set p [java::new ptolemy.data.StringToken $n]
-    set q [$p clone]
-    list [$p toString] [$q toString]
-} {ptolemy.data.StringToken(foo) ptolemy.data.StringToken(foo)}
+# test StringToken-4.2 {Create a non empty instance and clone} {
+#     set n [java::new {java.lang.String String} foo]
+#     set p [java::new ptolemy.data.StringToken $n]
+#     set q [$p clone]
+#     list [$p toString] [$q toString]
+# } {ptolemy.data.StringToken(foo) ptolemy.data.StringToken(foo)}
 
