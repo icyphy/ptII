@@ -103,7 +103,11 @@ deepDemo: compileDeepDemo runDeepDemo
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
 MODEL = OrthogonalCom
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
-#make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
+
+# Other tests
+#make SOURCECLASS=../../../ptolemy/actor/lib/test/auto/CommDistDiscard.xml MODEL=CommDistDiscard compileDeepDemo 
+#make SOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
+
 
 TARGETPATH =	ptolemy/copernicus/java/cg/$(MODEL)
 
@@ -133,7 +137,7 @@ SOOT_USER_ARGS =
 # Time that we should let code generation run before exiting in ms.
 WATCH_DOG_TIMEOUT = 300000
 compileDeepDemo: $(JCLASS)
-	@echo "generate deep code for $(SOURCEPACKAGE)"
+	@echo "generate deep code for $(SOURCECLASS)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
 	 -Dptolemy.ptII.dir=$(ROOT) \
