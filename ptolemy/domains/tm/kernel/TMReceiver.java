@@ -86,6 +86,11 @@ public class TMReceiver extends AbstractReceiver {
 	super();
     }
 
+    //FIXME: why doesn't this have the usual constructors
+    // TMReceiver(IOPort container), TMReceiver(IOPort container, name)
+    // It could also use TMReceiver(IOPort container, priority)
+    // like DDEReceiver(IOPort container, priority)
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -210,8 +215,18 @@ public class TMReceiver extends AbstractReceiver {
     public synchronized void put(Token token) {
         try {
             IOPort port = getContainer();
+            if (port == null) {
+                throw new InternalErrorException(
+                        "put() requires that the port has a container");
+            }
             Parameter priority = (Parameter)port.getAttribute("priority");
             if (priority == null) {
+                if (port.getContainer() == null) {
+                    throw new InternalErrorException(
+                            "put() requires that the port '" + port 
+                            + "' that contains this receiver be itself "
+                            + "contained");
+                }
                 priority = (Parameter)((NamedObj)port.getContainer()).
                     getAttribute("priority");
             }
