@@ -123,6 +123,14 @@ public class IORelation extends ComponentRelation {
             throws InvalidStateException {
         Enumeration inputs = linkedInputPortsExcept(givenPort);
         Receptionist[][] result = new Receptionist[_width][];
+        if(inputs.hasMoreElements()) {
+            IOPort p = (IOPort) inputs.nextElement();
+            Receptionist[][] portHolder = p.deepReceptionists(this);
+            if(portHolder.length !=_width) {
+                throw new InvalidStateException("width error");
+            }
+            result = portHolder;
+        }
         while(inputs.hasMoreElements()) {
             IOPort p = (IOPort) inputs.nextElement();
             Receptionist[][] portHolder = p.deepReceptionists(this);
@@ -256,12 +264,13 @@ public class IORelation extends ComponentRelation {
                                      Receptionist[][] array2) {
         int n = array1.length;
         Receptionist[][] result = new Receptionist[n][];
-        for (int i = 0; i <n; i++) {
+        for (int i = 0; i < n; i++) {
             int m1 = array1[i].length;
             int m2 = array2[i].length;
             result[i] = new Receptionist[m1+m2];
             for (int j = 0; j < m1; j++) {
                 result[i][j] = array1[i][j];
+                
             }
             for (int j = m1; j < m1+m2; j++) {
                 result[i][j] = array2[i][j-m1];
