@@ -65,10 +65,10 @@ public class DECQEventQueue implements DEEventQueue {
         _director = director;
 
         try {
-			// Construct a calendar queue _cQueue with its default parameters:
-			// minBinCount is 2, binCountFactor is 2, and isAdaptive is true.
-			_cQueue = new CalendarQueue(new DECQComparator());
-		} catch (IllegalActionException e) {
+            // Construct a calendar queue _cQueue with its default parameters:
+            // minBinCount is 2, binCountFactor is 2, and isAdaptive is true.
+            _cQueue = new CalendarQueue(new DECQComparator());
+        } catch (IllegalActionException e) {
             // If the time resolution of the director is invalid,
             // it should have been caught before this.
             throw new InternalErrorException(e);
@@ -86,14 +86,14 @@ public class DECQEventQueue implements DEEventQueue {
         _director = director;
 
         try {
-			// Construct a calendar queue _cQueue with the given parameters.
-			_cQueue = new CalendarQueue(new DECQComparator(), minBinCount,
-			        binCountFactor);
-		} catch (IllegalActionException e) {
+            // Construct a calendar queue _cQueue with the given parameters.
+            _cQueue = new CalendarQueue(new DECQComparator(), minBinCount,
+                    binCountFactor);
+        } catch (IllegalActionException e) {
             // If the time resolution of the director is invalid,
             // it should have been caught before this.
             throw new InternalErrorException(e);
-		}
+        }
         _cQueue.setAdaptive(isAdaptive);
     }
 
@@ -184,8 +184,8 @@ public class DECQEventQueue implements DEEventQueue {
     private class DECQComparator implements CQComparator {
         
         /** Construct a new comparator.
-         *  @exception IllegalActionException If the time resolution of the director
-         *   is invalid.
+         *  @exception IllegalActionException If the time resolution
+         *  of the director is invalid.
          */
         public DECQComparator() throws IllegalActionException {
             // This constructor exists only to declare the thrown exception.
@@ -232,26 +232,9 @@ public class DECQEventQueue implements DEEventQueue {
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            long value = (((DEEvent) event).timeStamp()
+            return (((DEEvent) event).timeStamp()
                     .subtract(_zeroReference.timeStamp()))
                     .divide(_binWidth.timeStamp());
-            
-            // What used to be here:
-            /*
-            long value = (long) ((((DEEvent) event).timeStamp()
-                                         .subtract(_zeroReference.timeStamp()))
-                    .getDoubleValue() / _binWidth.timeStamp().getDoubleValue());
-             */
-
-            // Long.MAX_VALUE is returned to indicate infinity.
-
-            // Note that this method cannot return a long.MAX_VALUE, which
-            // is used internally by CalendarQueue class.
-            if (value != Long.MAX_VALUE) {
-                return value;
-            } else {
-                return Long.MAX_VALUE - 1;
-            }
         }
 
         /** Given an array of DE events, set an appropriate bin width.
@@ -272,48 +255,51 @@ public class DECQEventQueue implements DEEventQueue {
          */
         public void setBinWidth(Object[] entryArray) {
             try {
-				if ((entryArray == null) || (entryArray.length < 2)) {
-				    _zeroReference = new DEEvent((Actor) null,
-				            new Time(_director, 0.0), 0, 0);
-				    return;
-				}
-
-				Time[] diff = new Time[entryArray.length - 1];
-				Time average = (((DEEvent) entryArray[entryArray.length - 1]).timeStamp()
-				        .subtract(((DEEvent) entryArray[0]).timeStamp()))
-                        .divide((long) (entryArray.length - 1));
-				Time zero = new Time(_director, 0.0);
+                if ((entryArray == null) || (entryArray.length < 2)) {
+                    _zeroReference = new DEEvent((Actor) null,
+                            new Time(_director, 0.0), 0, 0);
+                    return;
+                }
+                
+                Time[] diff = new Time[entryArray.length - 1];
+                Time average = (((DEEvent) entryArray[entryArray.length - 1])
+                        .timeStamp()
+                        .subtract(((DEEvent) entryArray[0]).timeStamp()))
+                    .divide((long) (entryArray.length - 1));
+                Time zero = new Time(_director, 0.0);
                 Time effectiveAverage = zero;
-				int effectiveSamples = 0;
+                int effectiveSamples = 0;
 
-				if (average.isInfinite()) {
-				    return;
-				}
+                if (average.isInfinite()) {
+                    return;
+                }
 
-				for (int i = 0; i < (entryArray.length - 1); ++i) {
-				    diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
-				        .subtract(((DEEvent) entryArray[i]).timeStamp());
+                for (int i = 0; i < (entryArray.length - 1); ++i) {
+                    diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
+                        .subtract(((DEEvent) entryArray[i]).timeStamp());
+                    
+                    if (diff[i].compareTo(average.add(average)) < 0) {
+                        effectiveSamples++;
+                        effectiveAverage = effectiveAverage.add(diff[i]);
+                    }
+                }
 
-				    if (diff[i].compareTo(average.add(average)) < 0) {
-				        effectiveSamples++;
-				        effectiveAverage = effectiveAverage.add(diff[i]);
-				    }
-				}
+                if (effectiveAverage.equals(zero) || (effectiveSamples == 0)) {
+                    // To avoid setting NaN or 0.0
+                    // for the width, apparently due to simultaneous events,
+                    // we leave it unchanged instead.
+                    return;
+                }
 
-				if (effectiveAverage.equals(zero) || (effectiveSamples == 0)) {
-				    // To avoid setting NaN or 0.0
-				    // for the width, apparently due to simultaneous events,
-				    // we leave it unchanged instead.
-				    return;
-				}
-
-				effectiveAverage = effectiveAverage.divide((long) effectiveSamples);
-				_binWidth = new DEEvent((Actor) null, effectiveAverage.multiply(3L), 0, 0);
-			} catch (IllegalActionException e) {
+                effectiveAverage =
+                    effectiveAverage.divide((long) effectiveSamples);
+                _binWidth = new DEEvent((Actor) null,
+                        effectiveAverage.multiply(3L), 0, 0);
+            } catch (IllegalActionException e) {
                 // If the time resolution of the director is invalid,
                 // it should have been caught before this.
                 throw new InternalErrorException(e);
-			}
+            }
         }
 
         /** Set the zero reference, to be used in calculating the virtual

@@ -75,8 +75,7 @@ public interface CQComparator extends Comparator {
      *  to perform a downcast on the arguments (of type Object) to the
      *  appropriate user defined classes. If the arguments are not of
      *  appropriate type, the implementation should throw a
-     *  ClassCastException.  Note that this method cannot return
-     *  long.MAX_VALUE, which is used internally by the CalendarQueue.
+     *  ClassCastException. 
      *
      *  @param entry An object that can be inserted in a calendar queue.
      *  @return The index of the bin.
