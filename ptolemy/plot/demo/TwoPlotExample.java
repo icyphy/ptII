@@ -118,9 +118,9 @@ public class TwoPlotExample extends JFrame {
             rightPlot.clear(true);
             rightPlot.read(new FileInputStream(file));
         } catch (FileNotFoundException ex) {
-            Message msg = new Message("File not found: " + file + " : " + ex);
+            System.err.println("File not found: " + file + " : " + ex);
         } catch (IOException ex) {
-            Message msg = new Message("Error reading input: " + file +
+            System.err.println("Error reading input: " + file +
                     " : " + ex);
         }
         // Override the title in the file.
