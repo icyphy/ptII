@@ -46,6 +46,7 @@
 # HDRS		.h files.
 # JSRCS		.java files
 # OPTIONAL_JSRCS derived .java files (i.e. created by javacc)
+# OPTIONAL_JSRCS2 master derived .java file (i.e. created by javacc)
 # JCLASS	.class files
 # OBJS		.o files
 # LIBR		The name of the library being created.  We can't just call
@@ -222,7 +223,8 @@ makefiles: makefile
 
 # Build all the Java class files.
 # Run in the subdirs first in case the subpackages need to be compiled first.
-jclass:	$(JSRCS) subjclass $(JCLASS) 
+
+jclass:	$(OPTIONAL_JSRCS2) $(JSRCS) subjclass $(JCLASS) 
 
 subjclass:
 	@if [ "x$(DIRS)" != "x" ]; then \
