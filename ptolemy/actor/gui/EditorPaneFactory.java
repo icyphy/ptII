@@ -100,8 +100,6 @@ public class EditorPaneFactory extends Attribute {
         boolean foundOne = false;
         while (params.hasNext()) {
             Settable param = (Settable)params.next();
-// FIXME
-System.out.println("**** checking " + ((NamedObj)param).getFullName() + ": " + param.getClass().getName());
             if (param.getVisibility() == Settable.FULL) {
                 foundOne = true;
                 query.addStyledEntry(param);
