@@ -103,14 +103,14 @@ test IllegalActionException-3.2 {Create a IllegalActionException with a null det
 
 ######################################################################
 ####
-# 
-# FIXME: Bogus test.  Can't succeed.
-# test IllegalActionException-3.3 {Create a IllegalActionException with a detail message \
-# 	that is not a String} {
-#     set n1 [java::new pt.kernel.NamedObj]
-#     catch {set pe [java::new {pt.kernel.IllegalActionException String} $n1]} errmsg
-#     list $errmsg
-# } {{expected object of type java.lang.String but got "java0x1fc" (pt.kernel.NamedObj)}}
+test IllegalActionException-3.3 {Create a IllegalActionException with a \
+	detail message that is not a String} {
+    set n1 [java::new pt.kernel.NamedObj]
+    # We can't check the error message here because Tcl Blend returns
+    # a hex number that changes:
+    # expected object of type java.lang.String but got "java0x1fc" (pt.kernel.NamedObj
+    catch {set pe [java::new {pt.kernel.IllegalActionException String} $n1]}
+} {1}
 
 ######################################################################
 ####

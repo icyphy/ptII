@@ -92,13 +92,14 @@ test NoSuchItemException-3.2 {Create a NoSuchItemException with a null detail me
 ######################################################################
 ####
 # 
-# THIS TEST IS NO GOOD.  The string changes on every run.
-# test NoSuchItemException-3.3 {Create a NoSuchItemException with a detail message \
-# 	that is not a String} {
-#     set n1 [java::new pt.kernel.NamedObj]
-#     catch {set pe [java::new {pt.kernel.NoSuchItemException String} $n1]} errmsg
-#     list $errmsg
-# } {{expected object of type java.lang.String but got "java0x2c4" (pt.kernel.NamedObj)}}
+test NoSuchItemException-3.3 {Create a NoSuchItemException with a \
+	detail message that is not a String} {
+    set n1 [java::new pt.kernel.NamedObj]
+    # We can't check the error message here because Tcl Blend returns
+    # a hex number that changes:
+    # expected object of type java.lang.String but got "java0x2c4" (pt.kernel.NamedObj)
+    catch {set pe [java::new {pt.kernel.NoSuchItemException String} $n1]}
+} {1}
 
 ######################################################################
 ####

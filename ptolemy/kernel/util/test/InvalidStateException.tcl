@@ -103,14 +103,14 @@ test InvalidStateException-3.2 {Create a InvalidStateException with a null detai
 
 ######################################################################
 ####
-# 
-# FIXME: Bogus test.  Can't succeed.
-# test InvalidStateException-3.3 {Create a InvalidStateException with a detail message \
-# 	that is not a String} {
-#     set n1 [java::new pt.kernel.NamedObj]
-#     catch {set pe [java::new {pt.kernel.InvalidStateException String} $n1]} errmsg
-#     list $errmsg
-# } {{expected object of type java.lang.String but got "java0x222" (pt.kernel.NamedObj)}}
+test InvalidStateException-3.3 {Create a InvalidStateException with a detail \
+	message that is not a String} {
+    set n1 [java::new pt.kernel.NamedObj]
+    # We can't check the error message here because Tcl Blend returns
+    # a hex number that changes:
+    # expected object of type java.lang.String but got "java0x222" (pt.kernel.NamedObj)
+    catch {set pe [java::new {pt.kernel.InvalidStateException String} $n1]}
+} {1}
 
 ######################################################################
 ####
