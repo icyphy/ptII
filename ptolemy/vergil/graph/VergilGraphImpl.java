@@ -201,7 +201,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 			addNode(n, g);
 		    }
 		}
-		// If there are no vertecies, then give the relation a vertex
+		// If there are no verticies, then give the relation a vertex
 		if(rootVertex == null) {
 		    try {
 			Vertex v = new Vertex(relation,
@@ -254,10 +254,10 @@ public class VergilGraphImpl extends BasicGraphImpl {
   	Node currentHead = (BasicNode)e.getHead();
 	Node currentTail = (BasicNode)e.getTail();
 	if(currentHead != null) {
-	    _findObjectsAndUnlink(currentHead, currentTail);
+	    _findObjectsAndUnlink(e, currentHead, currentTail);
 	}
 	if((currentHead != null || currentTail != null) && head != null) {
-	    _findObjectsAndLink(head, currentTail);
+	    _findObjectsAndLink(e, head, currentTail);
 	}
 	super.setEdgeHead(e, head);
     }
@@ -269,70 +269,96 @@ public class VergilGraphImpl extends BasicGraphImpl {
    	Node currentHead = (BasicNode)e.getHead();
 	Node currentTail = (BasicNode)e.getTail();
 	if(currentTail != null) {
-	    _findObjectsAndUnlink(currentHead, currentTail);
+	    _findObjectsAndUnlink(e, currentHead, currentTail);
 	}
 	if((currentHead != null || currentTail != null) && tail != null) {
-	    _findObjectsAndLink(currentHead, tail);
+	    _findObjectsAndLink(e, currentHead, tail);
 	}
 	super.setEdgeTail(e, tail);
     }
 
-    public String createLinkName(NamedObj container) {
-	String root = "link_";
-	int ID = 0;
-	String name = null;
-	// This is unimportant..  it just gets the loop started.
-	Object obj = root;
-	while(obj != null) {
-	    name = root + ID++;
-	    obj = container.getAttribute(name);
-	}
-	return name;
-    }
-
-    private void _findObjectsAndUnlink(Node head, Node tail) {
+    private void _findObjectsAndUnlink(Edge e, Node head, Node tail) {
 	Port port;
-	Relation relation;
-	Vertex vertex;
+	ComponentRelation relation;
+	Vertex vertex;       
         if(head == null || tail == null) return;
-	if(tail.getSemanticObject() instanceof Port &&
-                head.getSemanticObject() instanceof Vertex) {
-	    vertex = (Vertex)head.getSemanticObject();
-	    port = (Port)tail.getSemanticObject();
-	    relation = (Relation)vertex.getContainer();
-	} else if(tail.getSemanticObject() instanceof Vertex &&
-                head.getSemanticObject() instanceof Port) {
-	    vertex = (Vertex)tail.getSemanticObject();
-	    port = (Port)head.getSemanticObject();
-	    relation = (Relation)vertex.getContainer();
+        Object headObject = head.getSemanticObject();
+        Object tailObject = tail.getSemanticObject();
+        if(headObject instanceof Port && tailObject instanceof Port) {
+            relation = (ComponentRelation)e.getSemanticObject();
+            port = (Port)headObject;
+            port.unlink(relation);
+            port = (Port)tailObject;
+            port.unlink(relation);
+            // blow the relation away.
+            try {
+                relation.setContainer(null);
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+                throw new GraphException(ex.getMessage());
+            }             
+            return;
+        }
+	if(tailObject instanceof Port && headObject instanceof Vertex) {
+	    vertex = (Vertex)headObject;
+	    port = (Port)tailObject;
+	    relation = (ComponentRelation)vertex.getContainer();
+	} else if(tailObject instanceof Vertex && headObject instanceof Port) {
+	    vertex = (Vertex)tailObject;
+	    port = (Port)headObject;
+	    relation = (ComponentRelation)vertex.getContainer();
 	} else {
-	    throw new GraphException("Trying to link port to relation, " +
-                    "but head is " + head.getSemanticObject() +
-                    " and tail is " + tail.getSemanticObject());
+	    throw new GraphException("Trying to unlink port from relation, " +
+                    "but head is " + headObject +
+                    " and tail is " + tailObject);
 	}
 	port.unlink(relation);
-
     }
 
-    private void _findObjectsAndLink(Node head, Node tail) {
+    private void _findObjectsAndLink(Edge e, Node head, Node tail) {
 	Port port;
 	Relation relation;
 	Vertex vertex;
         if(head == null || tail == null) return;
-	if(tail.getSemanticObject() instanceof Port &&
-                head.getSemanticObject() instanceof Vertex) {
-	    vertex = (Vertex)head.getSemanticObject();
-	    port = (Port)tail.getSemanticObject();
+        Object headObject = head.getSemanticObject();
+        Object tailObject = tail.getSemanticObject();
+        if(headObject instanceof Port && tailObject instanceof Port) {
+            // This may break when we start to deal with ports of composite
+            // entity.
+            Graph graph = head.getParent();
+            while(graph instanceof Node) {
+                graph = ((Node)graph).getParent();
+            }
+            CompositeEntity container = 
+                (CompositeEntity) graph.getSemanticObject();
+            try {
+                relation = 
+                    container.newRelation(container.uniqueName("relation"));
+                e.setSemanticObject(relation);
+                port = (Port)headObject;
+                port.link(relation);
+                port = (Port)tailObject;
+                port.link(relation);
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+                throw new GraphException(ex.getMessage());
+            }
+            return;
+        }
+	if(tailObject instanceof Port && headObject instanceof Vertex) {
+	    vertex = (Vertex)headObject;
+	    port = (Port)tailObject;
 	    relation = (Relation)vertex.getContainer();
-	} else if(tail.getSemanticObject() instanceof Vertex &&
-                head.getSemanticObject() instanceof Port) {
-	    vertex = (Vertex)tail.getSemanticObject();
-	    port = (Port)head.getSemanticObject();
+	} else if(tailObject instanceof Vertex && headObject instanceof Port) {
+	    vertex = (Vertex)tailObject;
+	    port = (Port)headObject;
 	    relation = (Relation)vertex.getContainer();
 	} else {
 	    throw new GraphException("Trying to link port to relation, " +
-                    "but head is " + head.getSemanticObject() +
-                    " and tail is " + tail.getSemanticObject());
+                    "but head is " + headObject +
+                    " and tail is " + tailObject);
 	}
 	try {
 	    port.link(relation);
