@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <TITLE>CSP domain demo- Dining Philosophers</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FAF0E6" LINK="#0000FF" VLINK="#800080">
+
+<CENTER>
+<H1>
+Ptolemy II CSP Domain demo - <I>Dining Philosophers</I></H1></CENTER>
+
+<HR>
+<H1>
+Problem:</H1>
+Five philosophers are seated at a table with a large bowl of food in 
+the middle. Between each pair of philosophers is one chopstick, and to 
+eat a philosopher must use both chopsticks beside him. Each philosopher 
+spends his life in the following cycle: He thinks for a while, gets hungry,
+ picks up one of the chopsticks beside him, then the other, eats for a 
+while and puts the chopsticks down on the table again. If a philosopher 
+tries to grab a chopstick  but it is already being used by another 
+philosopher, then the philosopher waits until that chopstick becomes 
+available. This implies that no neighboring philosophers can eat at the 
+same time and at most two philosophers can eat at a time.
+<P>
+<CENTER><APPLET name="Dining Philosophers"
+   bgcolor=#FAF0E6
+   archive="ptolemy/domains/csp/demo/diningapplet.jar,
+	ptolemy/domains/csp/csp.jar,
+	ptolemy/ptsupport.jar"
+   code=ptolemy.domains.csp.demo.DiningApplet.class
+   codebase=../../../..
+   width=650 height=250>
+	<param name="background" value="#faf0e6">
+</APPLET></CENTER>
+<P>
+The Dining Philosophers problem was first dreamt up by Edsger W. Dijkstra 
+in 1965. It is a classic concurrent programming problem that illustrates 
+the two basic properties of concurrent programming:
+<LI>
+<B>Liveness</B>. How can we design the program to avoid deadlock, where 
+none of the philosophers can make progress because each is waiting 
+for someone else to do something?
+<LI>
+<B>Fairness</B>. How can we design the program to avoid starvation, where 
+one of the philosophers could make progress but does not because others 
+always go first?
+</LI>
+<P >
+The above applet uses an algorithm that lets each philosopher randomly chose 
+which chopstick to pick up first, and all philosophers eat and think at the 
+same rates. This algorithm is fair as any time a chopstick is not being used 
+and both philosophers try to use it, they both have an equal chance of 
+succeeding. However this algorithm does not guarantee the absence of 
+deadlock, and if it is let run long enough this will eventually occur. 
+The probability that deadlock occurs sooner increases as he thinking 
+times are decreased relative to the eating times.
+<P>
+<P>
+<H1>
+Implementation:</H1>
+The above applet is implemented using the 
+<A HREF="" "http://ptolemy.eecs.berkeley.edu">Ptolemy II</A> 
+Communicating Sequential Processes (CSP) domain. Ptolemy II is an 
+environment that supports heterogeneous modeling and design of 
+embedded systems. The CSP domain models a system as a network of process 
+communicating with messages through unidirectional channels. The 
+communication is rendezvous based as both the sending and receiving 
+processes block until the other side is ready to communicate. The model of 
+communication used in the CSP domain is different from the CSP model 
+normally encountered in that a notion of time has been added to the model. 
+<P>
+In the above applet, each chopstick and each philosopher is represented as a 
+separate process. A chopstick must be ready to communicate with either 
+philosopher beside it at any stage. The chopstick process uses a conditional 
+communication construct to be ready to rendezvous at any stage. Each 
+philosopher uses the notion of time built into the CSP domain to allow 
+itself to delay while it is eating or thinking. It should be noted that the 
+applet has been slowed down to allow the progression of the problem to be seen.
+<P>
+<HR>
+<CENTER>UNIVERSITY OF CALIFORNIA</CENTER>
+
+<CENTER>Department of Electrical Engineering and Computer Sciences</CENTER>
+
+</BODY>
+</HTML>
