@@ -47,15 +47,15 @@ import ptolemy.kernel.util.NameDuplicationException;
    as the input.  The remaining one is the token read from the input.
    The position of this remaining one is determined by the <i>phase</i>
    parameter.  This parameter has a value between 0 and <i>factor</i>-1.
-   If it is 0, then the input token is the last output token.
-   If it is <i>factor</i>-1, then it is the first output, followed
-   by zeros. Thus, if this actor is followed by the DownSample
-   actor with the same <i>factor</i> and <i>phase</i>, the combination
-   has no effect.
+   If it is 0, then the input token is the first output token, followed
+   by zeros. If it is <i>factor</i>-1, then it is the last output.
+   Thus, if this actor is followed by the DownSample actor with the same 
+   <i>factor</i>, and the two <i>phase</i> parameters have a sum of 
+   <i>factor</i>-1, the combination has no effect.
    <p>
    By default, <i>factor</i> is 2, and <i>phase</i> is the expression
    "factor-1".  This means that by default, the input token that is read
-   is the first one produced at the output.
+   is the last one produced at the output.
    <p>
    This actor is data polymorphic. It can accept any token
    type on the input that supports the zero() method,
