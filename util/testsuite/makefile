@@ -65,6 +65,7 @@ SCRIPTS = \
 	deprecated \
 	html2ps \
 	jindent \
+	memorystats \
 	mkreview \
 	ptIIbuildfast \
 	ptIIbuildtest \
