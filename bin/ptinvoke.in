@@ -539,12 +539,12 @@ and run:
 	javaflag="$ALL_JFLAG"
 	;;
     ptexecute)
-        help="This command takes one or more models as command line \
-	    arguments.  The models may be either class files or MoMLFiles.  \
+        help="This command takes one or more models as command line arguments. \
+            The models may be either class files or MoMLFiles.  \
 	    This command instantiate models, and if a model is an instance \
 	    of CompositeActor, runs it without a control panel. For example: \
             \"$0\" \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
-	    This command als understands some of the same arguments as \
+	    This command also understands some of the same arguments as \
 	    the vergil command, so for example	
             \"$0\" -full \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
             will display the model using vergil and run the model."
