@@ -9,7 +9,10 @@ getStickyDate() {
 }
 
 cd $PTII
+echo "current directory is `pwd`, \$PTII= $PTII"
 
+# de Time.java was added 1999/09/03
+# sdf Time.java was added 1999/10/08
 domains="de sdf"
 for domain in $domains
 do
@@ -20,6 +23,7 @@ do
 	    domain=$domain stickyDate=$stickyDate 
 done
 
+# giotto realtime was first add 2003/03/12
 domains="giotto"
 for domain in $domains
 do
