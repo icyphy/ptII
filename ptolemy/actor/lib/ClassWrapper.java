@@ -1,4 +1,4 @@
-/* An actor that wraps an instance of a Java class.
+/* An actor that wraps (an instance of) a Java class.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -46,26 +46,29 @@ import java.util.Hashtable;
 //////////////////////////////////////////////////////////////////////////
 //// ClassWrapper
 /**
-This actor wraps an instance of a Java class specified by the <i>className</i>
-parameter. If an input port is added to the actor, the name of the port is
-interpreted as a method name of the Java class. When this actor is fired and
-a token is received from this input port, the content of the token is treated
-as the argument(s) for calling the method. If the method has a return value
-and the actor has an output port named <i>methodName</i>Result, the value is
-wrapped in a token that is sent to the output port.
+This actor wraps (an instance of) a Java class specified by the
+<i>className</i> parameter. The actor has no port when created.
+If an input port is added to the actor, the name of the port is
+interpreted as the name of a method of the Java class. When the
+actor is fired and a token is received from this input port, the
+content of the token is treated as the argument(s) for invoking
+the method. If the method has a return value and the actor has
+an output port named <i>methodName</i>Result, the return value
+is wrapped in a token that is sent to the output port.
 <p>
-For example, suppose the specified class has a method named foo and the actor
-has an input port named foo. If the method foo takes no argument, the token
-received from port foo is treated as a trigger for invoking the method, and
-its content is ignored. When method foo takes arguments, the input token
-should be a record token whose field values are used as values of the
-arguments. The field lables of the record token should be "arg1", "arg2", etc.
-For example, if method foo takes two double arguments, the record token
-"{arg1 = 0.0, arg2 = 1.0}" can be the input.
+For example, suppose the specified class has a method named foo
+and the actor has an input port of the same name. If method foo
+takes no argument, the token received from port <i>foo</i> is
+treated as the trigger for invoking the method, and its content
+is ignored. If method foo takes arguments, the input token
+should be a record token whose field values are used as the
+arguments. The field lables of the record token should be "arg1",
+"arg2", etc. For example, if method foo takes two double arguments,
+the record token "{arg1 = 0.0, arg2 = 1.0}" can be the input.
 
-A special case is when the method foo takes one argument, the token containing
-the argument value can be input directly, and does not need to be put into
-a record token.
+A special case is when method foo takes one argument, the token
+containing the argument value can be input directly, and does not
+need to be put into a record token.
 <p>
 FIXME: Need to set type constraints appropriately.
        Need (and how) to handle overloaded methods.
@@ -77,17 +80,17 @@ FIXME: Need to set type constraints appropriately.
 public class ClassWrapper extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
-     *  In addition to invoking the base class constructors, construct
+     *  In addition to invoking the base class constructor, create
      *  the <i>className</i> parameter.
-     *  @param container The container.
+     *  @param container The container of this actor.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
+     *   actor with the specified name.
      */
     public ClassWrapper(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         className = new StringAttribute(this, "className");
     }
@@ -102,22 +105,12 @@ public class ClassWrapper extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class, but currently do nothing.
-     *  FIXME: Is it reasonable to allow changing the class name during
-     *  execution?
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        super.attributeChanged(attribute);
-    }
-
-    /** Read at most one token from each input port. If an input port has
-     *  a token, the content of the token is used as argument(s) for invoking
-     *  (on the wrapped instance) the method of the same name as the port. If
-     *  the method has a return value, the value is wrapped in a token, and is
-     *  sent to the output port named <i>methodName</i>Result.
+    /** Read at most one token from each input port. If an input port
+     *  has a token, the content of the token is used as argument(s)
+     *  for invoking (on the wrapped instance or class) the method of
+     *  the same name as the port. If the method has a return value,
+     *  the value is wrapped in a token, and is sent to the output port
+     *  named <i>methodName</i>Result.
      *  @exception IllegalActionException If the method invocation fails.
      */
     public void fire() throws IllegalActionException {
@@ -130,11 +123,13 @@ public class ClassWrapper extends TypedAtomicActor {
 	}
     }
 
-    /** Get the Class object for the specified class. Gather method invocation
-     *  information corresponding to each input port. If there is no method
-     *  of the same name as an input port, throw an exception.
-     *  @exception IllegalActionException If the specified class cannot be
-     *   loaded, or there is no method of the same name as an input port.
+    /** Get the Class object of the specified class. Gather method
+     *  invocation information corresponding to each input port. If
+     *  at least one method corresponding to a port is not static,
+     *  create an instance of the specified class.
+     *  @exception IllegalActionException If the specified class cannot
+     *   be loaded, or there is no method of the same name as an input
+     *   port, or an instance of the class cannot be created.
      */
     public void preinitialize() throws IllegalActionException {
 	try {
@@ -304,8 +299,18 @@ public class ClassWrapper extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // A hash table containing the method invocation information for the
+    // input ports. For each input port, the entry in the hash table is
+    // an array of three objects. The first is the Method object of the
+    // method to be invoked. The second is the array of argument types
+    // of the method. The third is the output port to which the return
+    // value of the method is sent.
     private Hashtable _methodTable = null;
+
+    // The instance of the specified class.
     private Object _instance = null;
+
+    // The Class object of the specified class.
     private Class _class = null;
 
 }
