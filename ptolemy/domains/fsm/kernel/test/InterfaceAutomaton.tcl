@@ -211,7 +211,7 @@ test InterfaceAutomaton-7.2 {test setting output transition} {
 test InterfaceAutomaton-7.3 {test setting internal transition} {
     $lab setExpression "c;"
     list [$t0 getTransitionType] [$t0 getGuardExpression] [$act getExpression] 
-} {2 true {}}
+} {2 true c=true}
 
 ######################################################################
 ####
@@ -222,6 +222,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="s0">
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="c" class="ptolemy.data.expr.Parameter">
     </property>
     <entity name="s0" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
@@ -242,7 +244,7 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     <relation name="t0" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="c=true">
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>

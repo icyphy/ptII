@@ -29,27 +29,15 @@
 
 package ptolemy.domains.fsm.kernel;
 
-// import ptolemy.kernel.Port;
 import ptolemy.kernel.CompositeEntity;
-// import ptolemy.kernel.ComponentRelation;
-// import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.StringAttribute;
-// import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Settable;
-// import ptolemy.data.Token;
-// import ptolemy.data.BooleanToken;
-// import ptolemy.data.StringToken;
-// import ptolemy.data.expr.Variable;
-// import ptolemy.data.expr.Parameter;
-// import ptolemy.data.type.BaseType;
-
-// import java.util.List;
-// import java.util.Iterator;
-// import java.util.LinkedList;
+import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonTransition
@@ -87,8 +75,6 @@ transition.
 @see Action
 */
 
-// FIXME: parameters corresponding to internal transitions are not created
-// yet.
 public class InterfaceAutomatonTransition extends Transition {
 
     /** Construct a transition with the specified container and name.
@@ -128,13 +114,17 @@ public class InterfaceAutomatonTransition extends Transition {
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
-     *  <i>label</i>, check the ending character of the label to
-     *  determine the transition type. Increment the version number of
-     *  the workspace.
+     *  <i>label</i>, use the ending character of the label to determine
+     *  the transition type, and set the guard and output action of this
+     *  transtion. For internal transition, also create the parameter
+     *  corresponding to the transition.
+     *  Increment the version number of the workspace.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the superclass
      *   attributeChanged() method, or the changed attribute is 
-     *   <i>label</i> and it does not ends with "?" or "!" or ";".
+     *   <i>label</i> and it does not ends with "?" or "!" or ";",
+     *   or the parameter for the internal transition cannot be created
+     *   due to name duplication.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -149,13 +139,25 @@ public class InterfaceAutomatonTransition extends Transition {
 	        setGuardExpression("true");
 		outputActions.setExpression(name + "=true");
 	    } else if (labelString.endsWith(";")) {
-	        // FIXME: create(?) set parameter, set action to <param>=true
+	        // create parameter. Note that if this transition is removed,
+		// or changed to an input or output transition, the parameter
+		// is still in the Interface Automaton.
+		try {
+		    Parameter param = new Parameter((NamedObj)getContainer(),
+		                                    name);
+		} catch (NameDuplicationException exception) {
+		    throw new IllegalActionException(
+		        "InterfaceAutomatonTransition.attributeChanged: "
+			+ "Cannot create Parameter for internal transition: "
+			+ exception.getMessage());
+		}
 		setGuardExpression("true");
-                outputActions.setExpression("");
+                outputActions.setExpression(name + "=true");
 	    } else {
-	        throw new IllegalArgumentException(
-	                "InterfaceAutomatonTransition.setLabel: The argument "
-		        + label + " does not end with ? or ! or ;");
+	        throw new IllegalActionException(
+	            "InterfaceAutomatonTransition.attributeChanged: "
+		        + "The argument " + label + " does not end with ? "
+			+ "or ! or ;");
 	    }
         }
     }

@@ -32,11 +32,14 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.actor.IOPort;
+import ptolemy.data.expr.Parameter;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,10 +52,11 @@ model defined by Luca de Alfaro in the paper "Interface Automata".
 An InterfaceAutomaton contains a set of states and
 InterfaceAutomatonTransitions. There are three kinds transitions:
 input transition, output transition, and internal transitions.
+The input and output transitions correspond to input and output ports,
+respectively. These ports are added by the user. The internal transition
+correspond to a parameter in this InterfaceAutomaton. The parameter is
+added automatically when the internal transition is added.
 <p>
-(FIXME: Are interface automata that are fired required to be deterministic?
-or just randomly choose a transition.)
-
 When an InterfaceAutomaton is fired, the outgoing transitions of the current
 state are examined. An IllegalActionException is thrown if there is more than
 one enabled transition. If there is exactly one enabled transition then it is
@@ -62,15 +66,16 @@ An InterfaceAutomaton enters its initial state during initialization. The
 name of the initial state is specified by the <i>initialStateName</i> string
 attribute.
 <p>
-An InterfaceAutomaton contains a set of variables for the input ports that
-can be referenced in the labels of input transitions.
-<p>
 
 @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
 @version $Id$
 @see State
 @see InterfaceAutomatonTransition
 */
+
+// FIXME: Are interface automata that are fired required to be deterministic?
+// or just randomly choose a transition.
+
 public class InterfaceAutomaton extends FSMActor {
 
     /** Construct an InterfaceAutomaton in the default workspace with an
@@ -125,8 +130,8 @@ public class InterfaceAutomaton extends FSMActor {
     public InterfaceAutomaton compose(InterfaceAutomaton automaton)
                 throws IllegalActionException {
 
-	// this.check();
-	// automaton.check();
+	this._check();
+	automaton._check();
 
 	// check composability and computes the input, output, and internal
 	// transitions
@@ -141,10 +146,9 @@ public class InterfaceAutomaton extends FSMActor {
         return null;
     }
 
-    // FIXME: do we allow non-determinism? how to handle it?
-    /** Set the values of input variables. Choose the enabled transition
-     *  among the outgoing transitions of the current state. Throw an
-     *  exception if there is more than one transition enabled.
+    /** Choose the enabled transition among the outgoing transitions of
+     *  the current state. Throw an exception if there is more than one
+     *  transition enabled.
      *  @exception IllegalActionException If there is more than one
      *   transition enabled.
      */
@@ -203,6 +207,49 @@ public class InterfaceAutomaton extends FSMActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    // Check if this automaton is consistent. The automaton is consistent
+    // if all input transitions have a corresponding input port, all
+    // output transitions have a corresponding output port, and all
+    // internal transitions have a corresponding parameter.
+    // If this automaton is not consistent, an exception is thrown;
+    // otherwise, this method just returns.
+    //
+    private void _check() throws IllegalActionException {
+	Iterator iterator = relationList().iterator();
+	while (iterator.hasNext()) {
+	    InterfaceAutomatonTransition transition =
+	        (InterfaceAutomatonTransition)iterator.next();
+	    String label = transition.getLabel();
+	    String name = label.substring(0, label.length()-1);
+	    if (label.endsWith("?")) {
+	        IOPort port = (IOPort)getPort(name);
+		if (port == null || port.isInput() == false) {
+		    throw new IllegalActionException(
+		        "InterfaceAutomaton._check: The input transition "
+			+ name + " does not have a corresponding input port.");
+		}
+	    } else if (label.endsWith("!")) {
+	        IOPort port = (IOPort)getPort(name);
+		if (port == null || port.isOutput() == false) {
+		    throw new IllegalActionException(
+		        "InterfaceAutomaton._check: The input transition "
+			+ name + " does not have a corresponding output port.");
+		}
+	    } else if (label.endsWith(";")) {
+	        Attribute attribute = getAttribute(name);
+		if (attribute == null || !(attribute instanceof Parameter)) {
+		    throw new IllegalActionException(
+		        "InterfaceAutomaton._check: The internal transition "
+			+ name + " does not have a corresponding Parameter.");
+		}
+	    } else {
+	        throw new InternalErrorException(
+		    "InterfaceAutomaton._check: The label " + label
+		        + " does not end with ?, !, or ;.");
+	    }
+	}
+    }
 
     // Compute the product of this autmaton and the argument.
     // Use frontier exploration. The frontier is represented by a HashMap
@@ -295,7 +342,7 @@ public class InterfaceAutomaton extends FSMActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                            inner class                    ////
     private class Triple {
