@@ -45,6 +45,7 @@ import com.microstar.xml.XmlException;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
+import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -52,8 +53,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.Documentation;
-import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;
 
 
@@ -221,6 +222,9 @@ public class MoMLApplet extends PtolemyApplet {
 
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);
+        // We set the last overall url so that signed applets
+        // will not invoke the 'Security concern' message in MoMLParser.
+        Top.setLastOverallURL(docBase.toExternalForm());
         _manager = null;
         NamedObj toplevel = parser.parse(docBase, xmlFile);
         _workspace = toplevel.workspace();
