@@ -44,9 +44,8 @@ import ptolemy.data.expr.Variable;
 A class representing the type of an ArrayToken.
 
 @author Steve Neuendorffer, Yuhong Xiong
-@version: $Id$
+@version $Id$
 */
-
 public class ArrayType extends StructuredType {
 
     /** Construct a new ArrayType with the specified type for the array
