@@ -169,8 +169,10 @@ configure: configure.in
 # This requires that the CVS directory be present and takes
 # quite awhile to update
 ChangeLog:
-	if [ -d CVS ]; then \
-		./util/testsuite/cvs2cl; \
+	@if [ -d CVS ]; then \
+		echo "Running ./util/testsuite/cvs2cl.pl"; \
+		echo " This could take several minutes"; \
+		./util/testsuite/cvs2cl.pl; \
 	else \
 		echo "CVS directory not present, so we can't update $@"; \
 	fi
