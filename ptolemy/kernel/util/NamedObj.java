@@ -668,19 +668,21 @@ public class NamedObj implements Nameable, Debuggable,
         if (depth == 0 && getContainer() == null) {
             // No container, and this is a top level moml element.
             // Generate header information.
-            if (momlElement.equals("class")) {
+            if (momlElement.equals("class") 
+                || momlElement.equals("entity")) {
                 output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                        + "<!DOCTYPE class PUBLIC "
-                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                        + "    \"http://ptolemy.eecs.berkeley.edu"
-                        + "/xml/dtd/MoML_1.dtd\">\n");
-            } else if (momlElement.equals("entity")) {
-                output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                        + "<!DOCTYPE entity PUBLIC "
+                        + "<!DOCTYPE " + momlElement + " PUBLIC "
                         + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
                         + "    \"http://ptolemy.eecs.berkeley.edu"
                         + "/xml/dtd/MoML_1.dtd\">\n");
             }
+            // Add the version.
+            output.write(_getIndentPrefix(depth)
+                    + "<entity name=\"_createdBy\" " 
+                    + "class=\"ptolemy.kernel.util.VersionAttribute\" "
+                    + "value=\""
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + "\">\n");
         }
         output.write(_getIndentPrefix(depth)
                 + "<"
