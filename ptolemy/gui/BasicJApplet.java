@@ -144,7 +144,16 @@ public class BasicJApplet extends JApplet {
         // applet pops up, so be sure to print the stack trace to stderr.
         throwable.printStackTrace();
         MessageHandler.error(message, throwable);
-        showStatus("exception occurred.");
+        try {
+            showStatus("exception occurred.");
+        } catch (Throwable throwable) {
+            // Under JDK 1.4.2_04, we get NullPointerExceptions
+            System.err.println("showStatus() threw a NullPointerException\n"
+                    + "This can happen if the Applet has already exited\n "
+                    + "because of an error or exception.\n"
+                    + "The original error or exception was:\n"
+                    + _stackTraceToString(throwable));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -182,14 +191,14 @@ public class BasicJApplet extends JApplet {
      *  @param ex The exception for which we want the stack trace.
      *  @return The stack trace.
      */
-    protected String _stackTraceToString(Exception ex) {
+    protected String _stackTraceToString(Throwable throwable) {
         // For a similar method, see
         // ptolemy.kernel.util.KernelException.stackTraceToString()
         // We do not use that method here because we do not want to
         // make this class depend on the kernel.
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         PrintWriter printWriter = new PrintWriter(stream);
-        ex.printStackTrace(printWriter);
+        throwable.printStackTrace(printWriter);
         printWriter.flush();
         return stream.toString();
     }
