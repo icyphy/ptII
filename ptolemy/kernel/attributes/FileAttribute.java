@@ -120,6 +120,7 @@ import ptolemy.util.StringUtilities;
    @version $Id$
    @see URIAttribute
    @since Ptolemy II 3.0
+   @deprecated Use {@link ptolemy.data.expr.FileParameter} instead.
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Yellow (cxh)
 */
