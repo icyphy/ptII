@@ -336,9 +336,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     Iterator ports = ((Entity)actor).portList().iterator();
                     while (ports.hasNext()) {
                         TypedIOPort sourcePort = (TypedIOPort)ports.next();
-                        Receiver[][] receivers = sourcePort.getRemoteReceivers();
-                        
-                        List destinationPorts = _receiverToPort(receivers);
+                        List destinationPorts = sourcePort.sinkPortList();
                         result.addAll(_typeConstraintsFromTo(sourcePort,
                                               destinationPorts));
                     }
@@ -348,8 +346,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 Iterator boundaryPorts = portList().iterator();
                 while (boundaryPorts.hasNext()) {
                     TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
-                    Receiver[][] receivers = sourcePort.deepGetReceivers();
-                    List destinationPorts = _receiverToPort(receivers);
+                    List destinationPorts = sourcePort.insideSinkPortList();
                     result.addAll(_typeConstraintsFromTo(sourcePort,
                                           destinationPorts));
                 }
