@@ -114,6 +114,57 @@ test FixPoint-1.2 {constructors} {
 -10.00000000000000 -2.0 Overflow Occurred 
 -1.000000000000000 -1.0 Overflow Occurred }}
 
+test FixPoint-1.3 {constructors} {
+    set p0 [java::new ptolemy.math.Precision "(1.0)" ]
+    set p1 [java::new ptolemy.math.Precision "(1.1)" ]
+    set p2 [java::new ptolemy.math.Precision "(2.0)" ]
+    set c0 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 1 $p0 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -1 $p0 ]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 0 $p0 ]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 1 $p1 ]
+    set c4 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -1 $p1 ]
+    set c5 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 0 $p1 ]
+    set c6 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 1 $p2 ]
+    set c7 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -1 $p2 ]
+    set c8 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 0 $p2 ]
+    list "
+[$c0 toBitString] [ $c0 toString ][[$c0 getError] getDescription]
+[$c1 toBitString] [ $c1 toString ][[$c1 getError] getDescription] 
+[$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription]
+[$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription]
+[$c4 toBitString] [ $c4 toString ][[$c4 getError] getDescription] 
+[$c5 toBitString] [ $c5 toString ][[$c5 getError] getDescription]
+[$c6 toBitString] [ $c6 toString ][[$c6 getError] getDescription]
+[$c7 toBitString] [ $c7 toString ][[$c7 getError] getDescription] 
+[$c8 toBitString] [ $c8 toString ][[$c8 getError] getDescription] "
+} {{
+0 0.0 Overflow Occurred
+-1 -1.0 No overflow Occurred 
+0 0.0 No overflow Occurred
+0.1 0.5 Overflow Occurred
+-1.0 -1.0 No overflow Occurred 
+0.0 0.0 No overflow Occurred
+1 1.0 No overflow Occurred
+-1 -1.0 No overflow Occurred 
+0 0.0 No overflow Occurred }}
+
+test FixPoint-1.4 {constructors} {
+    catch { set p0 [java::new ptolemy.math.Precision "(0.0)" ] } msg
+    set c0 [java::call ptolemy.math.Quantizer \
+		{round double ptolemy.math.Precision} 1 $p0 ]
+    list $msg
+} {{java.lang.IllegalArgumentException: Incorrect definition of Precision. A FixPoint requires the use of at least a single integer bit to represent the sign.}}
+
+
 ####################################################################
 
 test FixPoint-2.1 {add} {

@@ -69,7 +69,15 @@ single bit is used to represent the sign of the number, i.e where it
 is a positive or a negative number. Therefore, when a precision is
 given of, for example, <i>(6,3)</i>, then 6 bits are used for the
 integer part and 3 are used for the fractional part. Of the 6 integer
-bits, 5 are used to represent a number and 1 is used for the sign.
+bits, 5 are used to represent a number and 1 is used for the sign. 
+
+<p>
+
+In giving a precision, at least a single bit is required to describe
+the sign and thus the minimum precision that can be given to a
+FixPoint is equal to <i>(1.0)</i>. Since a single bit is used, the
+FixPoint represents the numbers <i>0</i> and <i>-1</i>. Note that a
+precision of <i>(2.0)</i> represents the numbers <i>1,0,-1</i>.
 
 <p>
 
@@ -143,12 +151,16 @@ public class Precision {
             }
             _fraction = _length - _integerBits;
 
+            if ( _integerBits == 0 ) {
+                throw new IllegalArgumentException("Incorrect definition of " +
+                        "Precision. A FixPoint requires the use of at least " +
+                        "a single integer bit to represent the sign.");
+            }
             if (_length <= 0 || _integerBits < 0 || _integerBits > _length) {
                 throw new IllegalArgumentException("Incorrect definition of " +
                         "Precision. Do not use negative values or have an " +
                         "integer part larger than the total length ");
             }
-
         }
 
     /** Construct a Precision object based on the provided
