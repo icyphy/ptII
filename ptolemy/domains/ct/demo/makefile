@@ -32,8 +32,9 @@
 ME =		ptolemy/domains/ct/demo
 
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
-DIRS = 		BouncingBall CarTracking ComparedClocks \
-		Helicopter LevelCrossingDetector \
+DIRS = 		ContinuousClock \
+		BouncingBall CarTracking ComparedClocks \
+		Helicopter HierarchicalExecution LevelCrossingDetector \
 		LevelCrossingDetectorDetectsGlitches \
 		Lorenz SigmaDelta SquareWave \
 		SampledClocks StickyMasses Switch \
@@ -56,10 +57,12 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 # We don't include Corba/Corba.jar because we don't ship Corba.
 PTCLASSALLJARS = \
+	ContinuousClock/ContinuousClock.jar \
 	BouncingBall/BouncingBall.jar \
 	CarTracking/CarTracking.jar \
 	ComparedClocks/ComparedClocks.jar \
 	Helicopter/Helicopter.jar \
+	HierarchicalExecution/HierarchicalExecution.jar \
 	LevelCrossingDetector/LevelCrossingDetector.jar \
 	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
 	Lorenz/Lorenz.jar \
