@@ -53,7 +53,8 @@ JSRCS = \
 	Plot.java \
 	PlotApplication.java \
 	PlotBox.java \
-	PlotPoint.java
+	PlotPoint.java \
+	PtMath.java
 
 EXTRA_SRCS =	$(JSRCS)
 
