@@ -125,13 +125,14 @@ public class FeedBackDelay extends DDEActor {
     ////                         public  variables                 ////
 
     public TypedIOPort input = null;
-    public TypedIOPort output = null;
 
     /** The boolean parameter that indicates whether a delay value
      *  will be added to the time stamp of null tokens that are
      *  produced by this actor. This parameter defaults to true.
      */
     public Parameter nullDelay;
+
+    public TypedIOPort output = null;
 
     /** The boolean parameter that indicates whether a delay value
      *  will be added to the time stamp of real tokens that are
