@@ -31,8 +31,10 @@ package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,21 +49,31 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import ptolemy.actor.TypeAttribute;
@@ -359,15 +371,16 @@ public class PortConfigurerDialog
                 if (col == COL_UNITS)
                     return false;
             }
-			Object portInfo[] = (Object[]) (_ports.elementAt(row));
-			Port port = (Port) (portInfo[COL_ACTUAL_PORT]);
-			if (port != null && port.isClassElement()
-				&& (col == COL_NAME
-					|| col == COL_INPUT
-					|| col == COL_OUTPUT
-					|| col == COL_MULTIPORT)) {
-				return false;
-			}
+            Object portInfo[] = (Object[]) (_ports.elementAt(row));
+            Port port = (Port) (portInfo[COL_ACTUAL_PORT]);
+            if (port != null
+                && port.isClassElement()
+                && (col == COL_NAME
+                    || col == COL_INPUT
+                    || col == COL_OUTPUT
+                    || col == COL_MULTIPORT)) {
+                return false;
+            }
             return true;
         }
 
@@ -399,6 +412,118 @@ public class PortConfigurerDialog
         public final static int COL_UNITS = 8;
         public final static int COL_ACTUAL_PORT = 9;
 
+    }
+
+    class PortBooleanCellRenderer
+        extends JCheckBox
+        implements TableCellRenderer {
+
+        public PortBooleanCellRenderer() {
+            super();
+        }
+        public Component getTableCellRendererComponent(
+            JTable table,
+            Object value,
+            boolean isSelected,
+            boolean hasFocus,
+            int row,
+            int col) {
+            if (value == Boolean.TRUE) {
+                setSelected(true);
+            } else {
+                setSelected(false);
+            }
+            setHorizontalAlignment(SwingConstants.CENTER);
+            if (!table.isCellEditable(row, col))
+                setBackground(Color.red);
+            else
+                setBackground(Color.white);
+            return this;
+        }
+    }
+
+    class PortStringCellRenderer extends JLabel implements TableCellRenderer {
+
+        public PortStringCellRenderer() {
+            super();
+        }
+        public Component getTableCellRendererComponent(
+            JTable table,
+            Object value,
+            boolean isSelected,
+            boolean hasFocus,
+            int row,
+            int col) {
+            setOpaque(true);
+            setText((String) value);
+            if (!table.isCellEditable(row, col))
+                setBackground(Color.red);
+            else
+                setBackground(Color.white);
+            return this;
+        }
+    }
+
+    class PortStringCellEditor
+        extends AbstractCellEditor
+        implements TableCellEditor, ActionListener {
+
+        String currentLabel;
+        JButton button;
+        JTable _jTable;
+
+        public PortStringCellEditor() {
+            button = new JButton();
+            button.setActionCommand("edit");
+            button.addActionListener(this);
+        }
+
+        public Object getCellEditorValue() {
+            return currentLabel;
+        }
+
+        public Component getTableCellEditorComponent(
+            JTable table,
+            Object value,
+            boolean isSelected,
+            int row,
+            int col) {
+            _jTable = table;
+            currentLabel = (String) value;
+            button.setText(currentLabel);
+            return button;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals("edit")) {
+                Component source = (Component) e.getSource();
+                JOptionPane pane = new JOptionPane();
+                pane.setWantsInput(true);
+                pane.setInitialSelectionValue(currentLabel);
+                pane.setMessage("");
+                pane.setMessageType(JOptionPane.QUESTION_MESSAGE);
+                pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
+                Point p = source.getLocation();
+                SwingUtilities.convertPointToScreen(p, _jTable);
+                JDialog dialog = pane.createDialog(source, null);
+                dialog.setLocation(p);
+                dialog.show();
+                if (pane.getValue() != null) {
+                    String nv = (String) (pane.getInputValue());
+                    if (!nv.equals(JOptionPane.UNINITIALIZED_VALUE)) {
+                        currentLabel = nv;
+                        fireEditingStopped();
+                        return;
+                    }
+                }
+                fireEditingCanceled();
+                return;
+            }
+        }
+
+        protected String _getText() {
+            return currentLabel;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -971,17 +1096,6 @@ public class PortConfigurerDialog
         return momlUpdate.toString();
     }
 
-    private final static String[] _columnNames =
-        {
-            "Name",
-            "Input",
-            "Output",
-            "Multiport",
-            "Type",
-            "Direction",
-            "Show Name",
-            "Hide",
-            "Units" };
 
     // The Listener that is sensitive to selection changes in the table.
     // When a row is selected change the label in the Remove button to
@@ -1016,6 +1130,10 @@ public class PortConfigurerDialog
     private void _deiconify() {
         setExtendedState(Frame.NORMAL);
     }
+
+        private void _enableApplyButton(boolean e) {
+                _applyButton.setEnabled(e);
+        }
 
     private void _iconify() {
         setExtendedState(Frame.ICONIFIED);
@@ -1075,23 +1193,14 @@ public class PortConfigurerDialog
     private void _setupTableModel() {
         _portTableModel = new PortTableModel(_target.portList());
         _portTable.setModel(_portTableModel);
-        _applyButton.setEnabled(false);
-        TableColumn _portNameColumn =
-            ((TableColumn) (_portTable
-                .getColumnModel()
-                .getColumn(PortTableModel.COL_NAME)));
-        JTextField nameTextField = new JTextField();
-        nameTextField.setBackground(Color.yellow);
-        final DefaultCellEditor portNameEditor =
-            new DefaultCellEditor(nameTextField);
-        portNameEditor.setClickCountToStart(1);
-        _portNameColumn.setCellEditor(portNameEditor);
-        nameTextField.addFocusListener(new FocusAdapter() {
-            public void focusLost(FocusEvent fe) {
-                portNameEditor.stopCellEditing();
-            }
-        });
-        _portNameColumn.setCellRenderer(new DefaultTableCellRenderer());
+        _portTable.setDefaultRenderer(
+            Boolean.class,
+            new PortBooleanCellRenderer());
+        _portTable.setDefaultRenderer(
+            String.class,
+            new PortStringCellRenderer());
+        _portTable.setDefaultEditor(String.class, new PortStringCellEditor());
+        _enableApplyButton(false);
 
         TableColumn _portLocationColumn =
             ((TableColumn) (_portTable
@@ -1099,28 +1208,40 @@ public class PortConfigurerDialog
                 .getColumn(PortTableModel.COL_DIRECTION)));
         _portLocationColumn.setCellEditor(
             new DefaultCellEditor(_portLocationComboBox));
-        _portLocationColumn.setCellRenderer(new DefaultTableCellRenderer());
 
         TableColumn _portTypeColumn =
             ((TableColumn) (_portTable
                 .getColumnModel()
                 .getColumn(PortTableModel.COL_TYPE)));
-        JTextField typeTextField = new JTextField();
-        typeTextField.setBackground(Color.yellow);
-        final DefaultCellEditor portTypeEditor =
-            new DefaultCellEditor(typeTextField);
-        portTypeEditor.setClickCountToStart(1);
+        final PortStringCellEditor portTypeEditor = new PortStringCellEditor();
         _portTypeColumn.setCellEditor(portTypeEditor);
-        typeTextField.addFocusListener(new FocusAdapter() {
-            public void focusLost(FocusEvent fe) {
-                portTypeEditor.stopCellEditing();
+        portTypeEditor.addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            public void editingCanceled(ChangeEvent arg0) {
+                // TODO Auto-generated method stub
             }
         });
-        _portTypeColumn.setCellRenderer(new DefaultTableCellRenderer());
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+        private final static String[] _columnNames =
+                {
+                        "Name",
+                        "Input",
+                        "Output",
+                        "Multiport",
+                        "Type",
+                        "Direction",
+                        "Show Name",
+                        "Hide",
+                        "Units" };
+
     // The configuration.
     private Configuration _configuration;
     private boolean _debug = false;
