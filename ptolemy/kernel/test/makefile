@@ -48,6 +48,7 @@ TCL_SRCS = \
 	testEnums.tcl
 
 JSRCS = \
+	JavaScopeFlush.java \
 	ParamTest.java
 
 # Non-graphical Java tests written in Tcl
