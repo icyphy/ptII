@@ -131,7 +131,8 @@ public class GraphDocument extends AbstractDocument {
 
     /** Throw an exception, as save to URLs is not supported.
      *
-     * @throws Exception Always
+     * @throws UnsupportedOperationException always, as the save to
+     * URL operation is not supported.
      */
     public void saveAs (URL url) {
         throw new UnsupportedOperationException(
