@@ -127,12 +127,12 @@ public class ConfigurableAttribute
     public void configure(URL base, String source, String text)
             throws Exception {
         _base = base;
-        _source = source;
-        _text = text;
+        _configureSource = source;
+        _configureText = text;
         // FIXME: Do we really want to call this right away?
         validate();
         // Make sure the new value is exported in MoML.  EAL 12/03.
-        setModifiedFromClass(true);
+        setModifiedHeritage(true);
     }
 
     /** Return the base specified in the most recent call to the
@@ -161,16 +161,16 @@ public class ConfigurableAttribute
      *  @return A URL specifying an external source for configure
      *   information.
      */
-    public String getSource() {
-        return _source;
+    public String getConfigureSource() {
+        return _configureSource;
     }
 
     /** Return the text specified in the most recent call to the
      *  configure() method, or null if none.
      *  @return Text giving configure information.
      */
-    public String getText() {
-        return _text;
+    public String getConfigureText() {
+        return _configureText;
     }
 
     /** Get the visibility of this attribute, as set by setVisibility().
@@ -258,8 +258,8 @@ public class ConfigurableAttribute
     public String value() throws IOException {
         StringBuffer value = new StringBuffer();
         // If a source is given, read its data.
-        if (_source != null && !_source.trim().equals("")) {
-            URL textFile = new URL(_source);
+        if (_configureSource != null && !_configureSource.trim().equals("")) {
+            URL textFile = new URL(_configureSource);
             InputStream stream = textFile.openStream();
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(stream));
@@ -273,8 +273,8 @@ public class ConfigurableAttribute
             // NOTE: Do we need to close both?  Java docs don't say.
             stream.close();
         }
-        if (_text != null) {
-            value.append(_text);
+        if (_configureText != null) {
+            value.append(_configureText);
         }
         return value.toString();
     }
@@ -294,17 +294,17 @@ public class ConfigurableAttribute
             throws IOException {
         super._exportMoMLContents(output, depth);
         String sourceSpec = "";
-        if (_source != null && !_source.trim().equals("")) {
-            sourceSpec = " source=\"" + _source + "\"";
-            if (_text == null) {
+        if (_configureSource != null && !_configureSource.trim().equals("")) {
+            sourceSpec = " source=\"" + _configureSource + "\"";
+            if (_configureText == null) {
                 output.write(_getIndentPrefix(depth)
                         + "<configure" + sourceSpec + "/>\n");
             }
         }
-        if (_text != null) {
+        if (_configureText != null) {
             output.write(_getIndentPrefix(depth)
                     + "<configure" + sourceSpec + ">"
-                    + _text
+                    + _configureText
                     + "</configure>\n");
         }
     }
@@ -315,14 +315,14 @@ public class ConfigurableAttribute
     // The base specified in the configure() method.
     private URL _base;
 
-    // Listeners for changes in value.
-    private List _valueListeners;
-
     // The URL from which configure data is read.
-    private String _source;
+    private String _configureSource;
 
     // The text in the body of the configure.
-    private String _text;
+    private String _configureText;
+
+    // Listeners for changes in value.
+    private List _valueListeners;
 
     // The visibility of this attribute, which defaults to NONE;
     private Settable.Visibility _visibility = Settable.NONE;

@@ -43,6 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,14 +53,14 @@ An Prototype is a named object that can be either a class definition
 or not.  If it is a class definition, then "instances" of that class
 definition can be created by the instantiate() method.
 It supports a deferral and propagation mechanism. That is, changes
-to a class definition propagate automatically to "instances" that
-were created from the class definition.
+to the prototype propagate automatically to "instances" that
+were created from the prototype.
 
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 4.0
 */
-public class Prototype extends NamedObj {
+public class Prototype extends NamedObj implements Instantiable {
 
     /** Construct a prototype in the default workspace with an empty string
      *  as its name.
@@ -125,12 +126,16 @@ public class Prototype extends NamedObj {
             throws CloneNotSupportedException {
         Prototype newObject = (Prototype)super.clone(workspace);
         
-        if (getDeferTo() != null) {
-            newObject.setDeferTo(getDeferTo());
+        if (getParent() != null) {
+            try {
+                newObject.setParent(getParent());
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(ex);
+            }
         }
         // The new object does not have any other objects deferring
         // their MoML definitions to it, so we have to reset this.
-        newObject._deferredFrom = null;
+        newObject._children = null;
 
         return newObject;
     }
@@ -199,11 +204,11 @@ public class Prototype extends NamedObj {
                 + "<class name=\""
                 + name
                 + "\" extends=\""
-                + getMoMLInfo().className
+                + getClassName()
                 + "\"");
 
-        if (getMoMLInfo().source != null) {
-            output.write(" source=\"" + getMoMLInfo().source + "\">\n");
+        if (getSource() != null) {
+            output.write(" source=\"" + getSource() + "\">\n");
         } else {
             output.write(">\n");
         }
@@ -213,105 +218,62 @@ public class Prototype extends NamedObj {
         output.write(_getIndentPrefix(depth) + "</class>\n");
     }
 
-    /** Get the list of prototypes that defer to this object.
+    /** Get a list of weak references to instance of Instantiable
+     *  that defer to this object.
      *  @return An unmodifiable list of weak references to
-     *   prototypes or null if no object defers to this one.
+     *   instances of Instantiable or null if no object defers to this one.
      */
-    public List getDeferredFrom() {
-        if (_deferredFrom == null) {
+    public List getChildren() {
+        if (_children == null) {
             return null;
         }
-        return Collections.unmodifiableList(_deferredFrom);
+        return Collections.unmodifiableList(_children);
+    }
+
+    /** Get the MoML element name. If this is a class definition, then
+     *  return "class". Otherwise, defer to the base class.
+     *  @return The MoML element name for this object.
+     */
+    public String getElementName() {
+        if (isClassDefinition()) {
+            return "class";
+        } else {
+            return super.getElementName();
+        }
     }
 
     /** Get the prototype to which this object defers its definition.
      *  @return A prototype or null to indicate that this object does
      *   not defer its definition.
      */
-    public Prototype getDeferTo() {
-        return _deferTo;
-    }
-    
-    /** Get the MoML element name. If this is a a class definition, then
-     *  return "class". Otherwise, defer to the base class.
-     *  @return The MoML element name for this object.
-     */
-    public String getMoMLElementName() {
-        if (isClassDefinition()) {
-            return "class";
-        } else {
-            return super.getMoMLElementName();
-        }
+    public Instantiable getParent() {
+        return _parent;
     }
 
-    /** Create an instance by cloning this prototype and then adjusting
-     *  the deferral relationships in the clone.  Specifically, the
-     *  clone defers its definition to this prototype. To create a
-     *  subclass, first instantiate it, then convert it to a class
-     *  definition by calling setClassDefinition(). The returned
-     *  instance will refer to this prototype by its full name
-     *  in the class attribute of its exported MoML. Derived classes
-     *  with setContainer() methods are responsible for overriding this
-     *  and calling setContainer().
-     *  @see #setClassDefinition(boolean)
-     *  @param container The container for the instance.
-     *  @param name The name for the clone.
-     *  @return A new instance that is a clone of this prototype
-     *   with adjusted deferral relationships.
-     *  @throws CloneNotSupportedException If this prototype
-     *   cannot be cloned.
-     *  @throws IllegalActionException If this object is not a
-     *   class definition or the proposed container
-     *   is not acceptable.
-     *  @throws NameDuplicationException If the name collides with
-     *   an object already in the container.
-     */
-    public Prototype instantiate(CompositeEntity container, String name)
-            throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException {
-        if (!isClassDefinition()) {
-            throw new IllegalActionException(this,
-            "Cannot instantiate an object that is not a class definition");
-        }
-        // Use the workspace of the container, if there is one,
-        // or the workspace of this object, if there isn't.
-        Workspace workspace = workspace();
-        if (container != null) {
-            workspace = container.workspace();
-        }
-        Prototype clone = (Prototype)clone(workspace);
-        // Set the name before the container to not get
-        // spurious name conflicts.
-        clone.setName(name);
-        clone.setDeferTo(this);
-        clone.setClassDefinition(false);
-        clone.getMoMLInfo().className = getFullName();
-        
-        return clone;
-    }
-
-    /** Return true if this object is a class definition.
+    /** Return true if this object is a class definition, which means that
+     *  it can be instantiated.
      *  @return True if this object is a class definition.
+     *  @see #setClassDefinition(boolean)
      */
     public final boolean isClassDefinition() {
         return _isClassDefinition;
     }
 
     /** Return the maximum deferral depth of this object.
-     *  Going up the hierarchy, each time a parent is encountered
-     *  that defers its definition, increment the depth of the
-     *  deferred to object by one. Return the larges such
-     *  incremented depths, or zero if no parent defers its
+     *  Going up the hierarchy, each time a container is encountered
+     *  that defers its definition to a parent, increment the parent
+     *  depth by one. Return the largest such
+     *  incremented depths, or zero if no container defers its
      *  definition.
      *  @return The maximum deferral depth.
      */
-    public int maximumDeferralDepth() {
+    public int maximumParentDepth() {
         Prototype context = this;
         int result = 0;
         while (context != null) {
-            Prototype deferTo = context.getDeferTo();
-            if (deferTo != null) {
-                int newDepth = 1 + deferTo.maximumDeferralDepth();
+            Instantiable parent = context.getParent();
+            if (parent != null) {
+                int newDepth = 1 + parent.maximumParentDepth();
                 if (newDepth > result) {
                     result = newDepth;
                 }
@@ -344,16 +306,22 @@ public class Prototype extends NamedObj {
      *  as a MoML "class". This method is write synchronized on
      *  the workspace because it modifies the object that is the
      *  argument to refer back to this one.
-     *  @param deferTo The object to defer to, or null to defer to none.
+     *  @param parent The object to defer to, or null to defer to none.
      *  @see #exportMoML(Writer, int)
+     *  @exception IllegalActionException If the parent is not an
+     *   instance of Prototype.
      */
-    public void setDeferTo(Prototype deferTo) {
+    public void setParent(Instantiable parent) throws IllegalActionException {
+        if (parent != null && !(parent instanceof Prototype)) {
+            throw new IllegalActionException(this,
+            "Parent of a Prototype must also be a Prototype.");
+        }
         try {
             _workspace.getWriteAccess();
-            if (_deferTo != null) {
+            if (_parent != null) {
                 // Previously existing deferral.
                 // Remove it.
-                List deferredFromList = _deferTo._deferredFrom;
+                List deferredFromList = _parent._children;
                 if (deferredFromList != null) {
                     // Removing a previous reference.
                     // Note that this is a list of weak references, so
@@ -367,19 +335,69 @@ public class Prototype extends NamedObj {
                     }
                 }
             }
-            _deferTo = deferTo;
-            if (deferTo != null) {
-                if (deferTo._deferredFrom == null) {
-                    deferTo._deferredFrom = new LinkedList();
+            _parent = (Prototype)parent;
+            if (parent != null) {
+                if (((Prototype)parent)._children == null) {
+                    ((Prototype)parent)._children = new LinkedList();
                 }
                 // NOTE: These need to be weak references.
-                deferTo._deferredFrom.add(new WeakReference(this));
+                ((Prototype)parent)._children.add(new WeakReference(this));
             }
         } finally {
             _workspace.doneWriting();
         }
     }
     
+    /** Create an instance by cloning this prototype and then adjust
+     *  the deferral relationship between the the clone and its parent.
+     *  Specifically, the
+     *  clone defers its definition to this prototype, which is its
+     *  "parent." It inherits all the objects contained by this prototype.
+     *  <p>
+     *  The new object is not a class definition (it is by default an "instance"
+     *  rather than a "class").  To make it a class definition (a "subclass"),
+     *  call setClassDefinition(true).
+     *  <p>
+     *  In this base class, the container argument is ignored except that
+     *  it provides the workspace into which to clone this prototype. Derived
+     *  classes with setContainer() methods are responsible for overriding this
+     *  and calling setContainer().
+     *  @see #setClassDefinition(boolean)
+     *  @param container The container for the instance.
+     *  @param name The name for the clone.
+     *  @return A new instance that is a clone of this prototype
+     *   with adjusted deferral relationships.
+     *  @throws CloneNotSupportedException If this prototype
+     *   cannot be cloned.
+     *  @throws IllegalActionException If this object is not a class definition
+     *   or the proposed container is not acceptable.
+     *  @throws NameDuplicationException If the name collides with
+     *   an object already in the container.
+     */
+    public Instantiable instantiate(NamedObj container, String name)
+            throws CloneNotSupportedException,
+            IllegalActionException, NameDuplicationException {
+        if (!isClassDefinition()) {
+            throw new IllegalActionException(this,
+            "Cannot instantiate an object that is not a class definition");
+        }
+        // Use the workspace of the container, if there is one,
+        // or the workspace of this object, if there isn't.
+        Workspace workspace = workspace();
+        if (container != null) {
+            workspace = container.workspace();
+        }
+        Prototype clone = (Prototype)clone(workspace);
+        // Set the name before the container to not get
+        // spurious name conflicts.
+        clone.setName(name);
+        clone.setParent(this);
+        clone.setClassDefinition(false);
+        clone.setClassName(getFullName());
+        
+        return clone;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -388,7 +406,7 @@ public class Prototype extends NamedObj {
      *  deeply contained by the specified prototype, then find
      *  the corresponding object in the specified clone and defer
      *  to it instead. This method also calls the same method
-     *  on all contained class definitions and entities.
+     *  on all contained class definitions and ordinary entities.
      *  @param prototype The object that was cloned.
      *  @param clone The clone.
      *  @throws IllegalActionException If the clone does not contain
@@ -396,17 +414,24 @@ public class Prototype extends NamedObj {
      */
     protected void _adjustDeferrals(
             CompositeEntity prototype, CompositeEntity clone) {
-        Prototype originalDefersTo = getDeferTo();
-        if (originalDefersTo != null) {
+        Instantiable originalDefersTo = getParent();
+        if (originalDefersTo instanceof NamedObj) {
             // defersTo was cloned from the original, presumably.
-            if (prototype.deepContains(originalDefersTo)) {
+            if (prototype.deepContains((NamedObj)originalDefersTo)) {
                 String relativeName = originalDefersTo.getName(prototype);
                 ComponentEntity revisedDefersTo = clone.getEntity(relativeName);
                 if (revisedDefersTo == null) {
                     throw new InternalErrorException(
                     "Clone is not identical to the prototype!");
                 }
-                setDeferTo(revisedDefersTo);
+                try {
+                    setParent(revisedDefersTo);
+                } catch (IllegalActionException e) {
+                    // This should not occur because the parent
+                    // relationship was acceptable to the source
+                    // of the clone.
+                    throw new InternalErrorException(e);
+                }
             }
         }
     }
@@ -422,12 +447,12 @@ public class Prototype extends NamedObj {
      *  @return The depth of the deferral.
      */
     protected int _getDeferralDepth(NamedObj definedObject) {
-        if (_deferTo != null && deepContains(definedObject)) {
+        if (_parent != null && deepContains(definedObject)) {
             String relativeName = definedObject.getName(this);
             // Regrettably, we have to look at the type
             // of definedObject to figure out how to look it up.
             if (definedObject instanceof Attribute) {
-                Attribute definition = _deferTo.getAttribute(relativeName);
+                Attribute definition = _parent.getAttribute(relativeName);
                 if (definition != null
                         && definedObject.exportMoML()
                         .equals(definition.exportMoML())) {
@@ -442,12 +467,12 @@ public class Prototype extends NamedObj {
     ////                         private variables                 ////
 
     /** List of prototypes that defer their definition to this object. */
-    private List _deferredFrom;
+    private List _children;
     
     /** Prototype to which this object defers its definition to, or
      *  null if none.
      */
-    private Prototype _deferTo;
+    private Prototype _parent;
     
     /** Indicator of whether this is a class definition. */
     private boolean _isClassDefinition;

@@ -24,6 +24,13 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Red (johnr@eecs.berkeley.edu)
+
+FIXME: Accepted rating was green, but
+FIXME: Need review of methods from Heritable and Changeable interfaces,
+FIXME: and also containedObjectsIterator()
+FIXME: and also the private method _getHeritageObject() and protected method _getHeritageList().
 */
 
 package ptolemy.kernel.util;
@@ -50,27 +57,26 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
 /**
-This is a base class for objects with a name. A simple name is an arbitrary
-string. If no simple name is provided, the name is taken to be an
-empty string (not a null reference). The class also has a full name,
+This is a base class for almost all Ptolemy II objects.
+This class supports a naming scheme, change requests, a peristent
+file format (MoML), a mutual execlusion mechanism for models (the
+workspace), and a hierarchical class mechanism with inheritance.
+Instances of this class can also be parameterized by making this
+instance the container of instances of the Attribute class.
+<p>
+A simple name is an arbitrary string with no periods.
+If no simple name is provided, the name is taken to be an
+empty string (not a null reference). An instance also has a full name,
 which is a concatenation of the container's full name and the simple
-name, separating by a period. Obviously, if the simple name contains
-a period then there may be some confusion resolving the full name,
-so periods are expressly disallowed. If there is no
-container, then the full name is a concatenation of the workspace
-name with the simple name. The
-full name is used for error reporting throughout the package, which
-is why it is supported at this low level of the class hierarchy.
+name, separated by a period. If there is no
+container, then the full name begins with a period. The
+full name is used for error reporting throughout Ptolemy II.
 <p>
 Instances of this class are associated with a workspace, specified
 as a constructor argument.  The workspace is immutable.  It cannot
 be changed during the lifetime of the object.  It is used for
 synchronization of methods that depend on or modify the state of
-objects within it.  It is also used for tracking the version of any
-topology within the workspace.
-Any method in this class or derived classes that changes visible
-state of any object within the workspace should call the
-incrVersion() method of the workspace.  If no workspace is
+objects within it. If no workspace is
 specified, then the default workspace is used.
 Note that the workspace should not be confused with the container.
 The workspace never serves as a container.
@@ -79,10 +85,10 @@ In this base class, the container is null by default, and no method is
 provided to change it. Derived classes that support hierarchy provide one
 or more methods that set the container.
 <p>
-By convention, if the container of
-a NamedObj is set, then it should be removed from the workspace directory,
-if it is present.  The workspace directory is expected
-to list only top-level objects in a hierarchy.
+By convention, if the container of an instance of
+NamedObj is set, then the instance should be removed from the
+workspace directory, if it is present.  The workspace directory
+is expected to list only top-level objects in a hierarchy.
 The NamedObj can still use the workspace for synchronization.
 Any object contained by another uses the workspace of its container
 as its own workspace by default.
@@ -95,7 +101,8 @@ of Attribute.  To do that, they should override the protected
 _addAttribute() method to throw an exception if the
 object provided is not of the right class.
 <p>
-This class supports <i>mutations</i>, which are changes to a model
+This class supports <i>change requests</i> or
+<i>mutations</i>, which are changes to a model
 that are performed in a disciplined fashion.  In particular, a
 mutation can be requested via the requestChange() method.
 Derived classes will ensure that the mutation is executed
@@ -115,29 +122,13 @@ description.
 @author Mudit Goel, Edward A. Lee, Neil Smyth
 @version $Id$
 @since Ptolemy II 0.2
-@Pt.ProposedRating Green (eal@eecs.berkeley.edu)
-FIXME: Need review of _classElement related changes.  Look
-for comments with:
-     EAL 12/03
-     Corresponding changes are made in:
-     kernel.Port
-     kernel.ComponentEntity
-     kernel.Relation
-     (all in their setContainer() methods)
-     moml.MoMLParser
-FIXME: Need review of:
-     isDeferChangeRequests()
-     requestChange()
-     executeChangeRequests()
-     setDeferChangeRequests()
-     _getDeferralDepth
-@Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
-
-
+@see Attribute
+@see Workspace
 */
 
-public class NamedObj implements Nameable, Debuggable, DebugListener,
-                                 Serializable, Cloneable {
+public class NamedObj implements
+        Changeable, Cloneable, Debuggable,
+        DebugListener, Heritable, Serializable {
 
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
@@ -255,6 +246,8 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  other listeners that have been previously registered with the
      *  top-level object.
      *  @param listener The listener to add.
+     *  @see #removeChangeListener(ChangeListener)
+     *  @see #requestChange(ChangeRequest)
      */
     public void addChangeListener(ChangeListener listener) {
         NamedObj container = (NamedObj) getContainer();
@@ -410,7 +403,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             
             // Make sure the new object is not marked as a class.
             // It may have been cloned from a class.
-            newObject._isClassElement = false;
+            newObject._isInherited = false;
             
             if(workspace == null) {
                 newObject._workspace = _DEFAULT_WORKSPACE;
@@ -444,20 +437,17 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                             workspace.getFullName());
                 }
             }
-            if (_MoMLInfo != null) {
-                newObject._MoMLInfo = new MoMLInfo(newObject);
-                newObject._elementName = _elementName;
-                newObject._MoMLInfo.source = _MoMLInfo.source;
+            newObject._elementName = _elementName;
+            newObject._source = _source;
 
-                // NOTE: The value for the classname and superclass isn't
-                // correct if this cloning operation is meant to create
-                // an extension rather than a clone.  A clone has exactly
-                // the same className and superclass as the master.
-                // It is up to the caller to correct these fields if
-                // that is the case.  It cannot be done here because
-                // we don't know the name of the new class.
-                newObject._MoMLInfo.className = _MoMLInfo.className;
-            }
+            // NOTE: The value for the classname and superclass isn't
+            // correct if this cloning operation is meant to create
+            // an extension rather than a clone.  A clone has exactly
+            // the same className and superclass as the master.
+            // It is up to the caller to correct these fields if
+            // that is the case.  It cannot be done here because
+            // we don't know the name of the new class.
+            newObject.setClassName(getClassName());
 
             _cloneFixAttributeFields(newObject);
          
@@ -558,13 +548,13 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
 
     /** Execute requested changes. If there is a container, then
      *  delegate the request to the container.  Otherwise,
-     *  this method will execute the
-     *  pending changes even if setDeferChangeRequests() has been
-     *  called with a true argument.  Listeners will be notified
+     *  this method will execute all
+     *  pending changes (even if setDeferringChangeRequests() has been
+     *  called with a true argument).  Listeners will be notified
      *  of success or failure.
      *  @see #addChangeListener(ChangeListener)
      *  @see #requestChange(ChangeRequest)
-     *  @see #setDeferChangeRequests(boolean)
+     *  @see #setDeferringChangeRequests(boolean)
      */
     public void executeChangeRequests() {
         NamedObj container = (NamedObj) getContainer();
@@ -594,7 +584,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
 
                     // Defer change requests so that if changes are
                     // requested during execution, they get queued.                    
-                    setDeferChangeRequests(true);
+                    setDeferringChangeRequests(true);
                     while (requests.hasNext()) {
                         ChangeRequest change = (ChangeRequest)requests.next();
                         change.setListeners(_changeListeners);
@@ -607,7 +597,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                     }
                 } finally {
                     _workspace.doneWriting();
-                    setDeferChangeRequests(previousDeferStatus);
+                    setDeferringChangeRequests(previousDeferStatus);
                 }
                 
                 // Change requests may have been queued during the execute.
@@ -619,14 +609,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     
     /** Get a MoML description of this object.  This might be an empty string
      *  if there is no MoML description of this object or if this object is
-     *  not persistent or if this object is a class element.  This uses the
+     *  not persistent or if this object is an inherited object.  This uses the
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
      *  @return A MoML description, or an empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isClassElement()
+     *  @see #isInherited()
      */
     public final String exportMoML() {
         try {
@@ -642,14 +632,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** Get a MoML description of this object with its name replaced by
      *  the specified name.  The description might be an empty string
      *  if there is no MoML description of this object or if this object
-     *  is not persistent, or this object a class element.  This uses the
+     *  is not persistent, or this object an inherited object.  This uses the
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only override that method to change
      *  the MoML description.
      *  @return A MoML description, or the empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isClassElement()
+     *  @see #isInherited()
      */
     public final String exportMoML(String name) {
         try {
@@ -664,7 +654,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
 
     /** Write a MoML description of this object using the specified
      *  Writer.  If there is no MoML description, or if the object
-     *  is not persistent, or if this object is a class element,
+     *  is not persistent, or if this object is an inherited object,
      *  then nothing is written. To write to standard out, do
      *  <pre>
      *      exportMoML(new OutputStreamWriter(System.out))
@@ -677,7 +667,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @param output The stream to write to.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isClassElement()
+     *  @see #isInherited()
      */
     public final void exportMoML(Writer output) throws IOException {
         exportMoML(output, 0);
@@ -696,7 +686,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @exception IOException If an I/O error occurs.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
-     *  @see #isClassElement()
+     *  @see #isInherited()
      */
     public final void exportMoML(Writer output, int depth) throws IOException {
         exportMoML(output, depth, getName());
@@ -742,7 +732,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @see #clone(Workspace)
      *  @see #getMoMLInfo()
      *  @see #isPersistent()
-     *  @see #isClassElement()
+     *  @see #isInherited()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
@@ -751,7 +741,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         if (_suppressMoML(depth)) {
             return;
         }
-        String className = getMoMLInfo().className;
+        String className = getClassName();
         if (depth == 0 && getContainer() == null) {
             // No container, and this is a top level moml element.
             // Generate header information.
@@ -773,18 +763,12 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                 + className
                 + "\"");
 
-        if (getMoMLInfo().source != null) {
-            output.write(" source=\"" + getMoMLInfo().source + "\">\n");
+        if (getSource() != null) {
+            output.write(" source=\"" + getSource() + "\">\n");
         } else {
             output.write(">\n");
         }
 
-        // NOTE: This used to export MoML contents only if
-        // getMoMLInfo().deferTo was null.  This wasn't right
-        // because a deeply contained object might have been
-        // modified, thus becoming an instance variable.
-        // Now, we rely on _classElement == true suppressing
-        // export of MoML.  EAL 12/03
         _exportMoMLContents(output, depth + 1);
 
         // Write the close of the element.
@@ -870,12 +854,27 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         return Collections.enumeration(attributeList());
     }
 
+    /** Return the MoML class name.  This is either the
+     *  class of which this object is an instance, or if this
+     *  object is itself a class, then the class that it extends.
+     *  By default, it will be the Java class name of this object.
+     *  This method never returns null.
+     *  @return The MoML class name.
+     *  @see #setClassName(String)
+     */
+    public String getClassName() {
+        if (_className == null) {
+            _className = getClass().getName();
+        }
+        return _className;
+    }
+
     /** Get the container.  Always return null in this base class.
      *  A null returned value should be interpreted as indicating
      *  that there is no container.
      *  @return null.
      */
-    public Nameable getContainer() {
+    public NamedObj getContainer() {
         return null;
     }
     
@@ -883,7 +882,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  but can be set to something else by subclasses.
      *  @return The MoML element name for this object.
      */
-    public String getMoMLElementName() {
+    public String getElementName() {
         return _elementName;
     }
 
@@ -935,20 +934,29 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             _workspace.doneReading();
         }
     }
-
-    /** Get the data structure defining the MoML description of this class.
-     *  This method creates an instance of the data structure if one does
-     *  not already exist, so this method never returns null.
-     *  @return An instance of MoMLInfo.
-     *  @see NamedObj.MoMLInfo
+    
+    /** Return a list of objects to which a change to this
+     *  object should propagate, which is the list of objects that
+     *  are created as a side effect of creating this one (that is, they
+     *  are "heritage" that is "inherited" by their containers from
+     *  a container of this object). This method returns a
+     *  complete list, including objects that have been locally
+     *  modified (as indicated by isModifiedHeritage()).
+     *  <p>
+     *  In this base class, the returned list is empty.
+     *  The implementation of this method uses the strategy
+     *  pattern, and derived classes should override the
+     *  protected method _getHeritageList() to return an
+     *  object of the appropriate type.
+     *  @return A list of instances of of the same class as
+     *   this object.  In this base class, the list is emtpy.
+     *  @see #isModifiedHeritage()
+     *  @see #getShadowedHeritageList()
      */
-    public MoMLInfo getMoMLInfo() {
-        if (_MoMLInfo == null) {
-            _MoMLInfo = new MoMLInfo(this);
-        }
-        return _MoMLInfo;
+    public List getHeritageList() {
+        return _getHeritageList(null, false, this, null);
     }
-
+    
     /** Get the model error handler specified by setErrorHandler().
      *  @return The error handler, or null if none.
      *  @see #setModelErrorHandler(ModelErrorHandler handler)
@@ -984,10 +992,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  so this error is caught here.
      *  <p>
      *  This method is read-synchronized on the workspace.
-     *  @param parent An object that deeply contains this object.
+     *  @param relativeTo The object relative to which you want the name.
      *  @return A string of the form "name2...nameN".
+     *  @exception InvalidStateException If a recursive structure is
+     *   encountered, where this object directly or indirectly contains
+     *   itself. Note that this is a runtime exception so it need not
+     *   be declared explicitly.
      */
-    public String getName(NamedObj parent) {
+    public String getName(NamedObj parent) throws InvalidStateException {
         if (parent == null) {
             return getFullName();
         }
@@ -1022,6 +1034,40 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Return a list of objects to which a change to this
+     *  object should propagate, which is the list of objects that
+     *  are created as a side effect of creating this one (that is, they
+     *  are "heritage" that is "inherited" by their containers from
+     *  a container of this object), and that have not been locally
+     *  modified as indicated by isModifiedHeritage().  If an object
+     *  has been locally modified, then its heritage is also not
+     *  included in the list (it "shadows" changes to those objects).
+     *  <p>
+     *  In this base class, the returned list is empty.
+     *  The implementation of this method uses the strategy
+     *  pattern, and derived classes should override the
+     *  protected method _getHeritageList() to return an
+     *  object of the appropriate type.
+     *  @return A list of instances of the same class as this object.
+     *   This base class returns an empty list.
+     *  @see #isModifiedHeritage()
+     *  @see #getHeritageList()
+     */
+    public List getShadowedHeritageList() {
+        return _getHeritageList(null, true, this, null);
+    }
+
+    /** Get the source, which gives an external URL
+     *  associated with an entity (presumably from which the entity
+     *  was defined).  This becomes the value in the "source"
+     *  attribute of exported MoML.
+     *  @return The source, or null if there is none.
+     *  @see #setSource(String)
+     */
+    public String getSource() {
+        return _source;
     }
 
     /** Handle a model error. If a model error handler has been registered
@@ -1065,36 +1111,45 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         return false;
     }
 
-    /** Return true if this object is a class element.  An object
-     *  is a class instance if it contained by an instance, but is
-     *  defined in the class of the container.  If this returns true,
-     *  then MoML will not be  exported for the object, and changing
-     *  the name or container will trigger an exception.
-     *  @return True if the object is a class element.
-     *  @see #setPersistent(boolean)
+    /** Return true if this object is an inherited object.  An object
+     *  is inherited it is created in its container as a side effect
+     *  of the creation of a similar object in some other container.
+     *  For example, some container of this object may be an instance
+     *  of Instantiable that was created by another instance of Instantiable,
+     *  and this object was created during that instantiation.
+     *  If this method returns true, then there is typically no need
+     *  to export a description of this object to a persistent representation
+     *  (such as MoML), unless this object has been modified (as indicated
+     *  by isModifiedHeritage().  Moreover, if this method returns true,
+     *  then it is reasonable to prohibit certain changes to this object,
+     *  such as a name change or a change of container.  Such changes
+     *  break the relationship with the object from which this inherits.
+     *  @see Instantiable
+     *  @see #isModifiedHeritage()
+     *  @return True if the object is an inherited object.
      */
-    public final boolean isClassElement() {
+    public final boolean isInherited() {
         // NOTE: New method added. EAL 12/03
-        return _isClassElement;
+        return _isInherited;
     }
     
-    /** Return true if setDeferChangeRequests() has been called
+    /** Return true if setDeferringChangeRequests() has been called
      *  to specify that change requests should be deferred.
      *  @return True if change requests are being deferred.
-     *  @see #setDeferChangeRequests(boolean)
+     *  @see #setDeferringChangeRequests(boolean)
      */
-    public boolean isDeferChangeRequests() {
+    public boolean isDeferringChangeRequests() {
         return _deferChangeRequests;
     }
 
-    /** Return true if this object is a class element that has been
+    /** Return true if this object is an inherited object that has been
      *  modified locally.
-     *  @return True if this object is a class element and it has
+     *  @return True if this object is an inherited object and it has
      *   been modified locally.
-     *  @see #setModifiedFromClass(boolean)
+     *  @see #setModifiedHeritage(boolean)
      */
-    public boolean isModifiedFromClass() {
-        return _isClassElement && _modifiedFromClass;
+    public boolean isModifiedHeritage() {
+        return _isInherited && _modifiedHeritage;
     }
 
     /** Return true if this object is persistent.
@@ -1205,20 +1260,26 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
     
-    /** Set whether this object is a class element.  If an object
-     *  is a class element, then it exports no MoML (unless it is
+    /** Set whether this object is an inherited object.  If an object
+     *  is an inherited object, then it exports no MoML (unless it is
      *  changed) and cannot have its name or container changed.
-     *  By default, instances of NamedObj are not class elements.
-     *  If this method is called with a <i>false</i> argument, then
-     *  it will call setClassElement(false) on the container as
-     *  well, making all containers above in the hierarchy not
-     *  class elements.
-     *  @param classElement True to mark this object as a class element.
-     *  @see #isClassElement()
+     *  By default, instances of NamedObj are not inherited objects.
+     *  @param inherited True to mark this object as an inherited object.
+     *  @see #isInherited()
      */
-    public final void setClassElement(boolean classElement) {
-        _isClassElement = classElement;
-        _modifiedFromClass = false;
+    public final void setInherited(boolean inherited) {
+        _isInherited = inherited;
+        _modifiedHeritage = false;
+    }
+
+    /** Set the MoML class name.  This is either the
+     *  class of which this object is an instance, or if this
+     *  object is itself a class, then the class that it extends.
+     *  @param name The MoML class name.
+     *  @see #getClassName()
+     */
+    public void setClassName(String name) {
+        _className = name;
     }
 
     /** Specify whether change requests made by calls to requestChange()
@@ -1227,27 +1288,27 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  if the argument is true, then requests
      *  are simply queued until either this method is called again
      *  with argument false, or until executeChangeRequests() is called.
-     *  If the argument is false, the execute any pending change requests
+     *  If the argument is false, then execute any pending change requests
      *  and set a flag requesting that future requests be executed
      *  immediately.
-     *  @param defer If true, defer change requests.
+     *  @param isDeferring If true, defer change requests.
      *  @see #addChangeListener(ChangeListener)
      *  @see #executeChangeRequests()
-     *  @see #isDeferChangeRequests()
+     *  @see #isDeferringChangeRequests()
      *  @see #requestChange(ChangeRequest)
      */
-    public void setDeferChangeRequests(boolean defer) {
+    public void setDeferringChangeRequests(boolean isDeferring) {
         NamedObj container = (NamedObj) getContainer();
         if (container != null) {
-            container.setDeferChangeRequests(defer);
+            container.setDeferringChangeRequests(isDeferring);
             return;
         }
 
         // Make sure to avoid modification of this flag in the middle
         // of a change request or change execution.
         synchronized(_changeLock) {
-            _deferChangeRequests = defer;
-            if (defer == false) {
+            _deferChangeRequests = isDeferring;
+            if (isDeferring == false) {
                 executeChangeRequests();
             }
         }
@@ -1262,19 +1323,19 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     }
 
     /** Specify whether this object has been modified,.  This has an effect
-     *  only if setClassElement() has been called with a true argument.
+     *  only if setInherited() has been called with a true argument.
      *  In that case, if this method is called with argument true, then this
-     *  object will export MoML despite the fact that it is a class element.
-     *  I.e., call this with true to specify that this class element has been
+     *  object will export MoML despite the fact that it is an inherited object.
+     *  I.e., call this with true to specify that this inherited object has been
      *  modified. To reverse the effect of this call, call it again with
      *  false argument.
      *  @param modified True to mark modified.
-     *  @see #setClassElement(boolean)
-     *  @see #isModifiedFromClass()
+     *  @see #setInherited(boolean)
+     *  @see #isModifiedHeritage()
      */
-    public void setModifiedFromClass(boolean modified) {
-        if (_isClassElement) {
-            _modifiedFromClass = modified;
+    public void setModifiedHeritage(boolean modified) {
+        if (_isInherited) {
+            _modifiedHeritage = modified;
         }
     }
 
@@ -1284,12 +1345,12 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  This method is write-synchronized on the workspace.
      *  @param name The new name.
      *  @exception IllegalActionException If the name contains a period
-     *   or if the object is a class element and the name argument does
+     *   or if the object is an inherited object and the name argument does
      *   not match the current name.
      *  @exception NameDuplicationException Not thrown in this base class.
      *   May be thrown by derived classes if the container already contains
      *   an object with this name.
-     *  @see #isClassElement()
+     *  @see #isInherited()
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
@@ -1330,6 +1391,18 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     public void setPersistent(boolean persistent) {
         _isPersistent = persistent;
+    }
+
+    /** Set the source, which gives an external URL
+     *  associated with an entity (presumably from which the entity
+     *  was defined).  This becomes the value in the "source"
+     *  attribute of exported MoML. Call this with null to prevent
+     *  any source attribute from being generated.
+     *  @param source The source, or null if there is none.
+     *  @see #getSource()
+     */
+    public void setSource(String source) {
+        _source = source;
     }
 
     /** Return the class name and the full name of the object,
@@ -1733,10 +1806,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** Return the depth of the deferral that defines the specified object.
      *  The specified object is assumed to be contained (deeply) by this
      *  object (or to be equal to this object). If this object is not
-     *  a class element, then the depth is -1. If this object is a
-     *  class element defined by an object that a container defers to,
+     *  an inherited object, then the depth is -1. If this object is an
+     *  inherited object defined by an object that a container defers to,
      *  then the depth is the number of levels up the hierarchy to that
-     *  container.  If this object is a class element but is not defined
+     *  container.  If this object is an inherited object but is not defined
      *  by an object that a container defers to (e.g., it is a class
      *  element defined by the Java definition of some container), then
      *  the depth is the number of class objects containing it up the
@@ -1747,13 +1820,13 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @return The depth of the deferral.
      */
     protected int _getDeferralDepth(NamedObj definedObject) {
-        if (isClassElement()) {
+        if (isInherited()) {
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 return 1 + container._getDeferralDepth(definedObject);
             } else {
                 // It seems strange for the top of the hierarchy
-                // to be a class element, but I suppose it's possible.
+                // to be an inherited object, but I suppose it's possible.
                 // Return 0 because there is no more depth to reach.
                 return 0;
             }
@@ -1762,6 +1835,22 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
 
+    /** Get an object with the specified name in the specified container.
+     *  The type of object sought is an instance of the same class as
+     *  this object.  In this base class, return null, as there
+     *  is no containment mechanism. Derived classes should override this
+     *  method to return an object of their same type.
+     *  @param relativeName The name relative to the container.
+     *  @param container The container expected to contain the object.
+     *  @return null.
+     *  @throws InternalErrorException If the object does not exist
+     *   or has the wrong class. Not thrown in this base class.
+     */
+    protected NamedObj _getHeritageObject(String relativeName, NamedObj container)
+            throws InternalErrorException {
+        return null;
+    }
+    
     /** Return a number of spaces that is proportional to the argument.
      *  If the argument is negative or zero, return an empty string.
      *  @param level The level of indenting represented by the spaces.
@@ -1852,7 +1941,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     
     /** Return true if this class should not export a MoML description.
      *  This will return true if setPersistent() has been called
-     *  with argument false, or it is a class element that has not
+     *  with argument false, or it is an inherited object that has not
      *  been modified and all of the objects it contains return true
      *  on this same method (indicating that none of them needs to
      *  export MoML). It will always return false if the depth argument
@@ -1866,16 +1955,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             return true;
         } else {
             // Always export at the top level, even if it's
-            // a class element.
+            // an inherited object.
             if (depth == 0) {
                 return false;
             }
             // Object has not been explicitly declared not persistent.
-            // Suppress MoML only if it is a class element that has
+            // Suppress MoML only if it is an inherited object that has
             // not been locally changed, and that its contained objects
             // have not been locally changed.
-            if (_isClassElement) {
-                if (_modifiedFromClass) {
+            if (_isInherited) {
+                if (_modifiedHeritage) {
                     return false;
                 } else {
                     // The object defers its definition, but the
@@ -1893,7 +1982,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                         return false;
                     }
                 }
-                // If we get here, then this object is a class element
+                // If we get here, then this object is an inherited object
                 // that has not been modified, and all its contained
                 // objects have not been modified. In this case,
                 // it is OK to suppress MoML.
@@ -1920,10 +2009,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** A list of weak references to change listeners. */
     protected List _changeListeners;
     
-    /** @serial Flag that is true if there are debug listeners. */
+    /** Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
 
-    /** @serial The list of DebugListeners registered with this object.
+    /** The list of DebugListeners registered with this object.
      *  NOTE: Because of the way we synchronize on this object, it should
      *  never be reset to null after the first list is created.
      */
@@ -1931,19 +2020,133 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     
     /** The MoML element name. This defaults to "entity".
      *  Subclasses that wish this to be different should set it
-     *  in their constructor, or override getMoMLElementName()
+     *  in their constructor, or override getElementName()
      *  to return the desired value.
      */
     protected String _elementName = "entity";
     
-    /** Flag indicating that this class element has been modified.
-     */
-    protected boolean _modifiedFromClass = false;
-    
-    /** @serial The workspace for this object.
-     * This should be set by the constructor and never changed.
+    /** The workspace for this object.
+     *  This should be set by the constructor and never changed.
      */
     protected Workspace _workspace;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return a list of objects to which a change to this
+     *  object should propagate.  This method is read-synchronized
+     *  on the workspace.
+     *  @param visited A set of objects that have previously been
+     *   visited. This should be non-null only on the recursive calls
+     *   to this method.
+     *  @param shadow True to shadow objects that have had local
+     *   changes.
+     *  @param context The context (this except in recursive calls).
+     *  @param relativeName The name of the object relative to the
+     *   context (null except in recursive calls).
+     *  @return A list of instances of the same class as this object
+     *   which should receive the same changes that are applied to
+     *   this object. The list is empty in this base class, but
+     *   derived classes that override _getHeritageObject() can
+     *   return non-empty lists.
+     */
+    private List _getHeritageList(
+            HashSet visited, 
+            boolean shadow, 
+            NamedObj context, 
+            String relativeName) {
+        try {
+            workspace().getReadAccess();
+            LinkedList result = new LinkedList();
+
+            // We may have visited this container already, in
+            // which case the propogation has occurred already.
+            // It should not occur again because the first occurrence
+            // would have been from an object that propagated to
+            // this occurrence. A similar propagation will occur
+            // in propagation from the container, and for shadowing
+            // to work in that context, we must not issue the
+            // change from here.  There is also no need to
+            // go any further up the containment tree, since
+            // the previous occurrence would have taken care of that.
+            if (visited == null) {
+                visited = new HashSet();
+            } else {
+                if (visited.contains(context)) {
+                    return result;
+                }
+            }
+            visited.add(context);
+
+            // Need to do deepest propagations
+            // (those closest to the root of the tree) first.
+            NamedObj container = context.getContainer();
+            if (container != null) {
+                String newRelativeName;
+                if (relativeName == null) {
+                    newRelativeName = context.getName();
+                } else {
+                    newRelativeName = context.getName() + "." + relativeName;
+                }
+                result.addAll(_getHeritageList(
+                        visited, shadow, container, newRelativeName));
+            }
+            if (!(context instanceof Instantiable)) {
+                // This level can't possibly defer, so it has
+                // nothing to add.
+                return result;
+            }
+            List othersList = ((Instantiable)context).getChildren();
+            if (othersList != null) {
+                Iterator others = othersList.iterator();
+                while (others.hasNext()) {
+                    WeakReference reference = (WeakReference)others.next();
+                    NamedObj other = (NamedObj)reference.get();
+                    if (other != null) {
+                        // Found a deferral.
+                        // Look for an object with the relative name.
+                        NamedObj candidate = other;
+                        if (relativeName != null) {
+                            candidate = _getHeritageObject(relativeName, other);
+                        }
+                        if (candidate == null) {
+                            // No candidate and no error.  In theory, we
+                            // should never reach this line.
+                            continue;
+                        }
+                        // We may have done this already.  Check this
+                        // by finding the object that will be affected by
+                        // this propagation.                           
+                        if (visited.contains(candidate)) {
+                            // Skip this candidate. We've done it already.
+                            // Continue to the next deferral in the list.
+                            continue;
+                        }
+                    
+                        // Is it shadowed?
+                        if (shadow && candidate.isModifiedHeritage()) {
+                            // Yes, it is.
+                            continue;
+                        }
+                        result.add(candidate);
+                    
+                        // Add objects that this defers to.
+                        // Note that if this candidate is modified from
+                        // class and shadow is true, then it shadows other changes.
+                        result.addAll(candidate._getHeritageList(
+                                visited, shadow, candidate, null));
+
+                        // Note that the above recursive call will
+                        // add the candidate to the HashSet, so we
+                        // don't have to do that here.
+                    }
+                }
+            }
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -1951,7 +2154,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** The Attributes attached to this object. */
     private NamedList _attributes;
     
-    /** @serial Instance of a workspace that can be used if no other
+    /** The class name for MoML exports. */
+    private String _className;
+    
+    /** Instance of a workspace that can be used if no other
      *  is specified.
      */
     private static Workspace _DEFAULT_WORKSPACE = new Workspace();
@@ -1967,9 +2173,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
 
-    // Boolean variable to indicate whether this is a class element.
-    // By default, instances of NamedObj are not class elements.
-    private boolean _isClassElement = false;
+    // Boolean variable to indicate whether this is an inherited object.
+    // By default, instances of NamedObj are not inherited.
+    private boolean _isInherited = false;
 
     // Boolean variable to indicate the persistence of the object.
     // By default, instances of NamedObj are persistent.
@@ -1978,48 +2184,17 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;
 
-    // The MoML information describing this object.
-    private MoMLInfo _MoMLInfo;
+    /** Flag indicating that this inherited object has been modified. */
+    private boolean _modifiedHeritage = false;
 
-    /** @serial The name */
+    /** The name */
     private String _name;
+    
+    /** The value for the source MoML attribute. */
+    private String _source;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
-    /** This class is a data structure for storing MoML information
-     *  used to construct the MoML description of an associated NamedObj.
-     *  Each NamedObj has at most one instance of this class.  That
-     *  instance can be accessed (or created if it does not exist)
-     *  by calling getMoMLInfo().
-     *  @see NamedObj#getMoMLInfo()
-     */
-    public static class MoMLInfo implements Serializable {
-
-        /** Construct an object with default values for the fields.
-         *  @param owner The object that this describes.
-         */
-        protected MoMLInfo(NamedObj owner) {
-            Class ownerClass = owner.getClass();
-            className = ownerClass.getName();
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                     public members                    ////
-
-        /** The MoML class name, which defaults to the Java
-         *  class name of the enclosing class.  This is either the
-         *  class of which this object is an instance, or if this
-         *  object is itself a class, then the class that it extends.
-         */
-        public String className;
-
-        /** The source attribute, which gives an external URL
-         *  associated with an entity (presumably from which the entity
-         *  was defined).
-         */
-        public String source;
-    }
     
     /** This class is an iterator over all the contained objects
      *  (all instances of NamedObj). In this base class, the contained

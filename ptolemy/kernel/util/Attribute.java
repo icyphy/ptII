@@ -30,6 +30,7 @@
 
 package ptolemy.kernel.util;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Attribute
 /**
@@ -108,7 +109,7 @@ public class Attribute extends NamedObj {
     /** Get the NamedObj that this Attribute is attached to.
      *  @return The container, an instance of NamedObj.
      */
-    public Nameable getContainer() {
+    public NamedObj getContainer() {
         return _container;
     }
 
@@ -162,7 +163,7 @@ public class Attribute extends NamedObj {
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
                 // EAL 12/03, 2/04
-                setModifiedFromClass(true);
+                setModifiedHeritage(true);
             }
             _container = container;
             if (previousContainer != null) {
@@ -195,6 +196,34 @@ public class Attribute extends NamedObj {
             }
         }
         super.setName(name);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Get an attribute with the specified name in the specified container.
+     *  The type of object sought is an instance of the same class as
+     *  this object.  The returned object is assured of being an
+     *  instance of the same class as this object.
+     *  @param relativeName The name relative to the container.
+     *  @param container The container expected to contain the object.
+     *  @return An object of the same class as this object.
+     *  @throws InternalErrorException If the object does not exist
+     *   or has the wrong class.
+     */
+    protected NamedObj _getHeritageObject(String relativeName, NamedObj container)
+            throws InternalErrorException {
+        Attribute candidate = container.getAttribute(relativeName);
+        if (!getClass().isInstance(candidate)) {
+            throw new InternalErrorException(
+                    "Expected "
+                    + container.getFullName()
+                    + " to contain an attribute with name "
+                    + relativeName
+                    + " and class "
+                    + getClass().getName());
+        }
+        return candidate;
     }
 
     ///////////////////////////////////////////////////////////////////

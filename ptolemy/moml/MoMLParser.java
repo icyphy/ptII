@@ -67,8 +67,12 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Instantiable;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -127,7 +131,7 @@ so it is best to give the DOCTYPE element.
 <p>
 The parse() methods can be used for incremental parsing.  After
 creating an initial model using a call to parse(), further MoML
-fragments without top-level entity or class elements can be evaluated
+fragments without top-level entity or inherited objects can be evaluated
 to modify the model.  You can specify the context in which the
 MoML to be interpreted by calling setContext().  However, the
 XML parser limits each fragment to one element.  So there always has
@@ -191,7 +195,7 @@ master exports MoML.
 @version $Id$
 @since Ptolemy II 0.4
 */
-public class MoMLParser extends HandlerBase {
+public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Construct a parser that creates a new workspace into which to
      *  put the entities created by the parse() method.
@@ -296,7 +300,6 @@ public class MoMLParser extends HandlerBase {
         // this would otherwise just result in chaotic names for
         // propagated changes.
         if (_namespace == _AUTO_NAMESPACE
-                && (_propagator == null)
                 && _current != null
                 && (name.equals("name")
                         || name.equals("port")
@@ -387,6 +390,42 @@ public class MoMLParser extends HandlerBase {
         // NOTE: value may be null if attribute default is #IMPLIED.
         _attributes.put(name, value);
         _attributeNameList.add(name);
+    }
+    
+    /** React to a change request has been successfully executed.
+     *  This method is called after a change request
+     *  has been executed successfully. It does nothing.
+     *  @param change The change that has been executed, or null if
+     *   the change was not done via a ChangeRequest.
+     */
+    public void changeExecuted(ChangeRequest change) {
+    }
+
+    /** React to a change request has resulted in an exception.
+     *  This method is called after a change request was executed,
+     *  but during the execution an exception was thrown.
+     *  Presumably the change was a propagation request.
+     *  If there is a registered error handler, then the
+     *  error is delegated to that handler.  Otherwise,
+     *  the error is reported to stderr.
+     *  @param change The change that was attempted or null if
+     *   the change was not done via a ChangeRequest.
+     *  @param exception The exception that resulted.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        if (_handler != null) {
+            int reply = _handler.handleError(
+                    change.toString(),
+                    _toplevel,
+                    exception);
+            if (reply == ErrorHandler.CONTINUE) {
+                return;
+            }
+        }
+        // No handler, or cancel button pushed.
+        // FIXME: What is the right thing to do here?
+        System.err.println(exception.toString());
+        exception.printStackTrace();
     }
 
     /** Handle character data.  In this implementation, the
@@ -483,6 +522,20 @@ public class MoMLParser extends HandlerBase {
                 // Ignore, since this is a one-time notification.
             }
         }
+        
+        // Execute any change requests that might have been queued
+        // as a consequence of this change request.
+        // NOTE: This used to be done after validating parameters,
+        // but now these change requests might add to the list
+        // of parameters to validate (because of propagation).
+        // EAL 3/04
+        if (_toplevel != null) {
+            // Set the top level back to the default
+            // found in startDocument.
+            _toplevel.setDeferringChangeRequests(_previousDeferStatus);
+            _toplevel.executeChangeRequests();
+        }
+
         // Force evaluation of parameters so that any listeners are notified.
         // This will also force evaluation of any parameter that this variable
         // depends on.
@@ -512,14 +565,6 @@ public class MoMLParser extends HandlerBase {
                 // No handler, or cancel button pushed.
                 throw ex;
             }
-        }
-        // Execute any change requests that might have been queued
-        // as a consequence of this change request.
-        if (_toplevel != null) {
-            // Set the top level back to the default
-            // found in startDocument.
-            _toplevel.setDeferChangeRequests(_previousDeferStatus);
-            _toplevel.executeChangeRequests();
         }
     }
 
@@ -608,6 +653,20 @@ public class MoMLParser extends HandlerBase {
             try {
                 ((Configurable)_current).configure(
                         _base, _configureSource, _currentCharData.toString());
+                        
+                // Propagate to instances and derived classes.
+                Iterator heritage
+                        = _current.getShadowedHeritageList().iterator();
+                while (heritage.hasNext()) {
+                    Configurable inherited
+                            = (Configurable)heritage.next();
+                    inherited.configure(
+                            _base, _configureSource, _currentCharData.toString());
+                    // The above sets the modified field true, which
+                    // need to reverse because we are propagating.
+                    ((NamedObj)inherited).setModifiedHeritage(false);
+                }
+
             } catch (NoClassDefFoundError e) {
                 // If we are running without a display and diva.jar
                 // is not in the classpath, then we may get"
@@ -637,45 +696,53 @@ public class MoMLParser extends HandlerBase {
                 if (_currentCharData.length() > 0
                         && !_currentCharData.equals(previousValue)) {
                     if (previous != null) {
-                        // If we are propagating, then don't allow this to
-                        // change the doc value if it was previously changed.
-                        // If we are propagating and the doc value was not
-                        // previously changed, then don't allow this to mark
-                        // it changed from class.
-                        // EAL 2/04.
-                        if (_propagator != null) {
-                            // NOTE: This is not sufficient to use
-                            // previous.isModifiedFromClass() here.
-                            // The property may have been modified from class
-                            // in an intermediate subclass, and this will not
-                            // show up as a false from isModifiedFromClass().
-                            if (!_propagator._isShadowed(previous, _propagatingContext)) {
-                                // Propagating, and value has not been modified.
-                                previous.setExpression(_currentCharData.toString());
-                                // The above will mark it modified, which we don't
-                                // want since this was a propogation, not a local
-                                // modification.
-                                previous.setModifiedFromClass(false);
-                            }
-                        } else {
-                            // Not propagating. Just set the value.
-                            previous.setExpression(_currentCharData.toString());
+                        previous.setExpression(_currentCharData.toString());
+                        
+                        // Propagate to instances and derived classes.
+                        Iterator heritage
+                                = previous.getShadowedHeritageList().iterator();
+                        while (heritage.hasNext()) {
+                            Documentation inherited
+                                    = (Documentation)heritage.next();
+                            inherited.setExpression(
+                                    _currentCharData.toString());
+                            // The above sets the modified field true, which
+                            // need to reverse because we are propagating.
+                            inherited.setModifiedHeritage(false);
                         }
+                        
                     } else {
                         Documentation doc
                                 = new Documentation(_current, _currentDocName);
                         doc.setValue(_currentCharData.toString());
-                        // If we are currently propagating, then mark the new
-                        // doc element itself as a class element and restore
-                        // the container to the state it was in before.  EAL 2/04
-                        if (_propagator != null) {
-                            doc.setClassElement(true);
+                        
+                        // Propagate to instances and derived classes.
+                        Iterator heritage
+                                = _current.getShadowedHeritageList().iterator();
+                        while (heritage.hasNext()) {
+                            NamedObj inherited = (NamedObj)heritage.next();
+                            Documentation newDoc = new Documentation(
+                                    inherited, _currentDocName);
+                            newDoc.setValue(_currentCharData.toString());
+                            // The above sets the modified field true, which
+                            // need to reverse because we are propagating.
+                            newDoc.setInherited(true);
+                            newDoc.setModifiedHeritage(false);
                         }
                     }
                 } else {
                     // Empty doc tag.  Remove previous doc element, if
                     // there is one.
                     if (previous != null) {
+                        // Propagate to instances and derived classes.
+                        Iterator heritage
+                                = previous.getShadowedHeritageList().iterator();
+                        while (heritage.hasNext()) {
+                            Documentation inherited
+                                    = (Documentation)heritage.next();
+                            inherited.setContainer(null);
+                        }
+
                         previous.setContainer(null);
                     }
                 }
@@ -1304,8 +1371,7 @@ public class MoMLParser extends HandlerBase {
                         realClassName = name.substring(lastPeriod + 1);
                     }
                 
-                    String candidateClassName
-                            = candidate.getMoMLInfo().className;
+                    String candidateClassName = candidate.getClassName();
                     lastPeriod = candidateClassName.lastIndexOf(".");
                     if (lastPeriod >= 0
                             && (candidateClassName.length() > lastPeriod + 1)) {
@@ -1322,7 +1388,7 @@ public class MoMLParser extends HandlerBase {
         // Source has not been previously loaded.
         // Only if the source is null can we have a matching previous instance.
         if (source == null) {
-            ComponentEntity candidate = _searchForEntity(name);
+            ComponentEntity candidate = _searchForEntity(name, _current);
             if (candidate != null) {
                 // Check that it's a class.
                 if (candidate.isClassDefinition()) {
@@ -1423,8 +1489,8 @@ public class MoMLParser extends HandlerBase {
             _handler.enableErrorSkipping(true);
         }
         if (_toplevel != null) {
-            _previousDeferStatus = _toplevel.isDeferChangeRequests();
-            _toplevel.setDeferChangeRequests(true);
+            _previousDeferStatus = _toplevel.isDeferringChangeRequests();
+            _toplevel.setDeferringChangeRequests(true);
         } else {
             // Make sure a default is provided.
             _previousDeferStatus = false;
@@ -1530,7 +1596,7 @@ public class MoMLParser extends HandlerBase {
 
                 // For undo purposes need to know if the entity existed
                 // already
-                Entity entity = _searchForEntity(entityName);
+                Entity entity = _searchForEntity(entityName, _current);
                 boolean existedAlready = (entity != null);
                 if (!existedAlready) {
                     NamedObj candidate = _createEntity(className, entityName, source);
@@ -1562,7 +1628,7 @@ public class MoMLParser extends HandlerBase {
                     // consequence of adding items to this top level,
                     // that execution of those change requests is deferred
                     // until endDocument().
-                    _toplevel.setDeferChangeRequests(true); 
+                    _toplevel.setDeferringChangeRequests(true); 
 
                     // As early as possible, set URL attribute.
                     // This is needed in case any of the parameters
@@ -1580,23 +1646,16 @@ public class MoMLParser extends HandlerBase {
                 if (!existedAlready) {
                     entity.setClassDefinition(true);
                     // Adjust the classname and superclass of the object.
-                    NamedObj.MoMLInfo info = entity.getMoMLInfo();
                     // NOTE: This used to set the class name to entity.getFullName(),
                     // and superclass to className.  Now that we've consolidated
                     // these, we set the class name to the value of "extends"
                     // attribute that was used to create this.
-                    info.className = className;
+                    entity.setClassName(className);
                 } else {
                     // If the object is not already a class, then convert
                     // it to one.
                     if (!entity.isClassDefinition()) {
                         entity.setClassDefinition(true);
-                        NamedObj.MoMLInfo info = entity.getMoMLInfo();
-                        // className now stays the same, since it provides the
-                        // base class whether its an instance or a class.
-                        // Used to be:
-                        // info.superclass = info.className;
-                        // info.className = entity.getFullName();
                         converted = true;
                     }
                 }
@@ -1785,6 +1844,8 @@ public class MoMLParser extends HandlerBase {
                 // NamedObj container = _current;
                 _pushContext();
                 Class newClass = Class.forName(className, true, _classLoader);
+                // NOTE: No propagation occurs here... Hopefully, deprecated
+                // elements are not used with class structures.
                 _current = _createInstance(newClass, arguments);
                 _namespace = _DEFAULT_NAMESPACE;
 
@@ -1810,7 +1871,7 @@ public class MoMLParser extends HandlerBase {
                 String source = (String)_attributes.get("source");
                 // For undo purposes need to know if the entity existed
                 // already
-                Entity entity = _searchForEntity(entityName);
+                Entity entity = _searchForEntity(entityName, _current);
                 boolean existedAlready = (entity != null);
                 boolean converted = false;
                 if (existedAlready) {
@@ -1818,9 +1879,8 @@ public class MoMLParser extends HandlerBase {
                     // it is being converted to an entity.
                     if (entity.isClassDefinition()) {
                         entity.setClassDefinition(false);
-                        NamedObj.MoMLInfo info = entity.getMoMLInfo();
                         Class entityClass = entity.getClass();
-                        info.className = entityClass.getName();
+                        entity.setClassName(entityClass.getName());
                         converted = true;
                     }
                 } else {
@@ -1854,7 +1914,7 @@ public class MoMLParser extends HandlerBase {
                     // consequence of adding items to this top level,
                     // that execution of those change requests is deferred
                     // until endDocument().
-                    _toplevel.setDeferChangeRequests(true); 
+                    _toplevel.setDeferringChangeRequests(true); 
 
                     // As early as possible, set URL attribute.
                     // This is needed in case any of the parameters
@@ -1962,7 +2022,6 @@ public class MoMLParser extends HandlerBase {
                         new MoMLParser(_workspace, _classLoader);
 
                     newParser.setContext(_current);
-                    newParser._propagator = _propagator;
                     _parse(newParser, _base, source);
                 }
 
@@ -2026,17 +2085,53 @@ public class MoMLParser extends HandlerBase {
                     }
                 } else {
                     // No previously existing port with this name.
+                    
+                    // First check that there will be no name collision
+                    // when this is propagated. Note that we need to
+                    // include all heritage objects, irrespective of whether
+                    // they are locally changed.
+                    List heritageList = container.getHeritageList();
+                    Iterator heritage = heritageList.iterator();
+                    while (heritage.hasNext()) {
+                        Entity inherited = (Entity)heritage.next();
+                        if (inherited.getPort(portName) != null) {
+                            throw new IllegalActionException(container,
+                            "Cannot create port because a subclass or instance "
+                            + "contains a port with the same name: "
+                            + inherited.getPort(portName).getFullName());
+                        }
+                    }
+
                     if (newClass == null) {
                         // Classname is not given.  Invoke newPort() on the
                         // container.
                         port = container.newPort(portName);
+                        
+                        // Propagate to instances and derived classes.
+                        heritage = heritageList.iterator();
+                        while (heritage.hasNext()) {
+                            Entity inherited = (Entity)heritage.next();
+                            Port newPort = inherited.newPort(portName);
+                            newPort.setInherited(true);
+                        }
                     } else {
                         // Classname is given.
                         Object[] arguments = new Object[2];
                         arguments[0] = container;
                         arguments[1] = portName;
                         port = (Port)_createInstance(newClass, arguments);
-                    }
+
+                        // Propagate to instances and derived classes.
+                        heritage = heritageList.iterator();
+                        while (heritage.hasNext()) {
+                            Entity inherited = (Entity)heritage.next();
+                            // Invoke the constructor.
+                            arguments[0] = inherited;
+                            NamedObj propagatedPort
+                                    = _createInstance(newClass, arguments);
+                            propagatedPort.setInherited(true);
+                        }
+                    }                   
                 }
                 _pushContext();
                 _current = port;
@@ -2071,7 +2166,9 @@ public class MoMLParser extends HandlerBase {
                 }
 
                 // NOTE: The direction attribute is deprecated, but
-                // supported nonetheless.
+                // supported nonetheless. This is not propagated, but
+                // hopefully deprecated attributes are not used with
+                // the class mechanism.
                 if (port instanceof IOPort) {
                     String direction = (String)_attributes.get("direction");
                     if (direction != null) {
@@ -2080,11 +2177,10 @@ public class MoMLParser extends HandlerBase {
                                 || direction.equals("both");
                         boolean isInput = direction.equals("input")
                                 || direction.equals("both");
-                        // If this object is a class element, then its I/O status
+                        // If this object is an inherited object, then its I/O status
                         // cannot be changed.  EAL 1/04.
                         if (alreadyExisted
-                                &&  ioport.isClassElement()
-                                && (_propagator == null)) {
+                                &&  ioport.isInherited()) {
                             if (ioport.isInput() != isInput
                                     || ioport.isOutput() != isOutput) {
                                 throw new IllegalActionException(ioport,
@@ -2131,17 +2227,55 @@ public class MoMLParser extends HandlerBase {
                 boolean alreadyExisted = (relation != null);
                 if (relation == null) {
                     // No previous relation with this name.
+                    
+                    // First check that there will be no name collision
+                    // when this is propagated. Note that we need to
+                    // include all heritage objects, irrespective of whether
+                    // they are locally changed.
+                    List heritageList = container.getHeritageList();
+                    Iterator heritage = heritageList.iterator();
+                    while (heritage.hasNext()) {
+                        CompositeEntity inherited = (CompositeEntity)heritage.next();
+                        if (inherited.getRelation(relationName) != null) {
+                            throw new IllegalActionException(container,
+                            "Cannot create relation because a subclass or instance "
+                            + "contains a relation with the same name: "
+                            + inherited.getRelation(relationName).getFullName());
+                        }
+                    }
+
                     NamedObj newRelation = null;
                     _pushContext();
                     if (newClass == null) {
                         // No classname. Use the newRelation() method.
                         newRelation = container.newRelation(relationName);
+
+                        // Propagate to instances and derived classes.
+                        heritage = heritageList.iterator();
+                        while (heritage.hasNext()) {
+                            CompositeEntity inherited = (CompositeEntity)heritage.next();
+                            Relation propagatedRelation
+                                    = inherited.newRelation(relationName);
+                            propagatedRelation.setInherited(true);
+                        }
                     } else {
                         Object[] arguments = new Object[2];
                         arguments[0] = (CompositeEntity)_current;
                         arguments[1] = relationName;
                         newRelation = _createInstance(newClass, arguments);
-                    }
+ 
+                        // Propagate to instances and derived classes.
+                        heritage = heritageList.iterator();
+                        while (heritage.hasNext()) {
+                            CompositeEntity inherited = (CompositeEntity)heritage.next();
+                            // Invoke the constructor.
+                            arguments[0] = inherited;
+                            NamedObj propagatedRelation
+                                    = _createInstance(newClass, arguments);
+                            propagatedRelation.setInherited(true);
+                        }
+                    }                   
+
                     _namespace = _DEFAULT_NAMESPACE;
                     _current = newRelation;
 
@@ -2195,15 +2329,90 @@ public class MoMLParser extends HandlerBase {
                 if (_current != null) {
                     String oldName = _current.getName();
                     
-                    // NOTE: Added to ensure that class elements aren't changed.
+                    // NOTE: Added to ensure that inherited objects aren't changed.
                     // EAL 1/04.
                     if (!oldName.equals(newName) 
-                            && _current.isClassElement() 
-                            && (_propagator == null)) {
+                            && _current.isInherited()) { 
                         throw new IllegalActionException(_current,
                             "Cannot change the name to "
                             + newName
                             + ". The name is fixed by the class definition.");
+                    }
+                    // Propagate.  Note that a rename in a derived class
+                    // could cause a NameDuplicationException.  We have to
+                    // be able to unroll the changes if that occurs.
+                    Iterator heritage = _current.getHeritageList().iterator();
+                    Set changedName = new HashSet();
+                    HashMap changedClassName = new HashMap();
+                    NamedObj inherited = null;
+                    try {
+                        while (heritage.hasNext()) {
+                            inherited = (NamedObj)heritage.next();
+                            // If the inherited object has the same
+                            // name as the old name, then we assume it
+                            // should change.
+                            if (inherited.getName().equals(oldName)) {
+                                inherited.setName(newName);
+                                changedName.add(inherited);
+                            }
+                            // Also need to modify the class name of
+                            // the instance or derived class if the
+                            // class or base class changes its name.
+                            if (inherited instanceof Instantiable) {
+                                Instantiable parent = ((Instantiable)inherited)
+                                        .getParent();
+                                // This relies on the depth-first search
+                                // order of the getHeritageList() method
+                                // to be sure that the base class will
+                                // already be in the changedName set if 
+                                // its name will change.
+                                if (parent != null
+                                        && (parent == _current 
+                                        || changedName.contains(parent))) {
+                                    String previousClassName
+                                            = inherited.getClassName();
+                                    int last = previousClassName
+                                            .lastIndexOf(oldName);
+                                    if (last < 0) {
+                                        throw new InternalErrorException(
+                                        "Expected instance "
+                                        + inherited.getFullName()
+                                        + " to have class name ending with "
+                                        + oldName
+                                        + " but its class name is "
+                                        + previousClassName);
+                                    }
+                                    String newClassName = newName;
+                                    if (last > 0) {
+                                        newClassName
+                                                = previousClassName
+                                                .substring(0, last)
+                                                + newName;
+                                    }
+                                    inherited.setClassName(newClassName);
+                                    changedClassName.put(
+                                            inherited, previousClassName);
+                                }
+                            }                                
+                        }
+                    } catch (NameDuplicationException ex) {
+                        // Unravel the name changes before
+                        // rethrowing the exception.
+                        Iterator toUndo = changedName.iterator();
+                        while (toUndo.hasNext()) {
+                            NamedObj revert = (NamedObj)toUndo.next();
+                            revert.setName(oldName);
+                        }
+                        Iterator classNameFixes = changedClassName.entrySet().iterator();
+                        while (classNameFixes.hasNext()) {
+                            Map.Entry revert = (Map.Entry)classNameFixes.next();
+                            NamedObj toFix = (NamedObj)revert.getKey();
+                            String previousClassName = (String)revert.getValue();
+                            toFix.setClassName(previousClassName);
+                        }
+                        throw new IllegalActionException(_current, ex,
+                        "Propagation to instance and/or derived class causes" +
+                        "name duplication: " + inherited.getFullName());
                     }
 
                     _current.setName(newName);
@@ -2230,10 +2439,10 @@ public class MoMLParser extends HandlerBase {
                     // subclasses and instances and propagate the
                     // change to the name of the
                     // object they refer to.
-                    if ((_current instanceof Prototype)
-                            && ((Prototype)_current).isClassDefinition()) {
+                    if ((_current instanceof Instantiable)
+                            && ((Instantiable)_current).isClassDefinition()) {
                         List deferredFrom
-                                = ((Prototype)_current).getDeferredFrom();
+                                = ((Instantiable)_current).getChildren();
                         if (deferredFrom != null) {
                             Iterator deferrers = deferredFrom.iterator();
                             while (deferrers.hasNext()) {
@@ -2245,11 +2454,10 @@ public class MoMLParser extends HandlerBase {
                                 // Need to determine whether the name is
                                 // absolute or relative.
                                 String replacementName = newName;
-                                    if (deferrer.getMoMLInfo().className.startsWith(".")) {
+                                    if (deferrer.getClassName().startsWith(".")) {
                                         replacementName = _current.getFullName();
                                     }
-                                    deferrer.getMoMLInfo().className
-                                            = replacementName;
+                                    deferrer.setClassName(replacementName);
                                 }
                             }
                         }
@@ -2313,21 +2521,47 @@ public class MoMLParser extends HandlerBase {
                 if (previous != null) {
                     previousValue = previous.getExpression();
                 }
+                
+                // No need to check for name collision on propagated
+                // objects because Vertex is a singleton.
 
-                // Note that vertexes are settable, but they are handled
-                // separately.  This is probably the wrong way to do this.
-                // Create an instance of Vertex and attach it to the Relation.
-                Vertex vertex = new Vertex((Relation)_current, vertexName);
-
+                Vertex vertex = previous;
+                // Create a new vertex only if it didn't previously exist.
+                if (vertex == null) {
+                    vertex = new Vertex((Relation)_current, vertexName);
+                    
+                    // Propagate to instances and derived classes.
+                    Iterator heritage = _current.getHeritageList().iterator();
+                    while (heritage.hasNext()) {
+                        Relation inherited = (Relation)heritage.next();
+                        Vertex propagatedVertex
+                                = new Vertex(inherited, vertexName);
+                        propagatedVertex.setInherited(true);
+                    }
+                }
+                
                 // Deal with setting the location.
                 String value = (String)_attributes.get("value");
-                // If value is null and the property already
-                // exists, then there is nothing to do.
-                if (value != null) {
+                // If value is null or same as before, then there is
+                // nothing to do.
+                if (value != null && !value.equals(previousValue)) {
                     vertex.setExpression(value);
+                    vertex.setModifiedHeritage(true);
                     _paramsToParse.add(vertex);
-                }
 
+                    // Propagate to instances and derived classes.
+                    Iterator heritage
+                            = vertex.getShadowedHeritageList().iterator();
+                    while (heritage.hasNext()) {
+                        Vertex inherited = (Vertex)heritage.next();
+                        inherited.setExpression(value);
+                        // The above sets the modified field true, which
+                        // need to reverse because we are propagating.
+                        inherited.setModifiedHeritage(false);
+                        _paramsToParse.add(inherited);
+                    }
+                }
+                
                 _pushContext();
                 _current = vertex;
                 _namespace = _DEFAULT_NAMESPACE;
@@ -2478,21 +2712,6 @@ public class MoMLParser extends HandlerBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         package friendly variables        ////
-
-    /** If this is non-null, then it specifies that an instance of
-     *  MoMLChangeRequest triggered the current parse action by
-     *  propagating its own change request to objects that defer
-     *  their definition to it, directly or indirectly.
-     */
-    MoMLChangeRequest _propagator = null;
-    
-    /** In conjuction with the above, the context in which propagation
-     *  is occurring.
-     */
-    NamedObj _propagatingContext = null;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Attempt to find a MoML class from an external file.
@@ -2542,7 +2761,7 @@ public class MoMLParser extends HandlerBase {
                             altClassAsFile, className, source);
                     classAsFile = altClassAsFile;
                 } catch (Exception ex3) {
-                    // Cannot find class definition.
+                    // Cannot find a class definition.
                     // Unfortunately exception chaining does not work here
                     // since we really want to know what ex2 and ex3
                     // both were.
@@ -2631,7 +2850,7 @@ public class MoMLParser extends HandlerBase {
      *  this is reasonable). If _current is not an instance
      *  of CompositeEntity, then an XML exception is thrown.
      *  If an object is created and we are propagating, then that
-     *  object is marked as a class element.
+     *  object is marked as an inherited object.
      *  The third argument, if non-null, gives a URL to import
      *  to create a reference class from which to instantiate this
      *  entity.
@@ -2655,7 +2874,7 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
         CompositeEntity container = (CompositeEntity)_current;
-        ComponentEntity previous = _searchForEntity(entityName);
+        ComponentEntity previous = _searchForEntity(entityName, _current);
         Class newClass = null;
         ComponentEntity reference = null;
         if (className != null) {
@@ -2802,6 +3021,23 @@ public class MoMLParser extends HandlerBase {
             // Not a named entity. Instantiate a Java class.
             if (_current != null) {
                 // Not a top-level entity.
+                
+                // First check that there will be no name collision
+                // when this is propagated. Note that we need to
+                // include all heritage objects, irrespective of whether
+                // they are locally changed.
+                List heritageList = container.getHeritageList();
+                Iterator heritage = heritageList.iterator();
+                while (heritage.hasNext()) {
+                    CompositeEntity inherited = (CompositeEntity)heritage.next();
+                    if (inherited.getEntity(entityName) != null) {
+                        throw new IllegalActionException(container,
+                        "Cannot create entity because a subclass or instance "
+                        + "contains an entity with the same name: "
+                        + inherited.getEntity(entityName).getFullName());
+                    }
+                }
+                
                 _checkClass(_current, CompositeEntity.class,
                         "Cannot create an entity inside an element that "
                         + "is not a CompositeEntity. It is: "
@@ -2812,9 +3048,23 @@ public class MoMLParser extends HandlerBase {
                 arguments[1] = entityName;
                 NamedObj newEntity = _createInstance(newClass, arguments);
                 _loadIconForClass(className, newEntity);
+                
+                // Propagate to instances and derived classes.
+                heritage = heritageList.iterator();
+                while (heritage.hasNext()) {
+                    CompositeEntity inherited = (CompositeEntity)heritage.next();
+                    // Invoke the constructor.
+                    arguments[0] = inherited;
+                    NamedObj propagatedEntity = _createInstance(newClass, arguments);
+                    _loadIconForClass(className, propagatedEntity);
+                    propagatedEntity.setInherited(true);
+                    _markContentsInherited(propagatedEntity);
+                }
+
                 return newEntity;
             } else {
                 // Top-level entity.  Instantiate in the workspace.
+                // Note that there cannot possibly be any propagation here.
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
                 NamedObj result = _createInstance(newClass, arguments);
@@ -2824,7 +3074,7 @@ public class MoMLParser extends HandlerBase {
             }
         } else {
             // Extending a previously defined entity.  Check to see that
-            // it was defined to be a class.
+            // it was defined to be a class definition.
             if (!reference.isClassDefinition()) {
                 throw new XmlException("Attempt to extend an entity that "
                         + "is not a class: " + reference.getFullName(),
@@ -2832,8 +3082,26 @@ public class MoMLParser extends HandlerBase {
                         _parser.getLineNumber(),
                         _parser.getColumnNumber());
             }
+            
+            // First check that there will be no name collision
+            // when this is propagated. Note that we need to
+            // include all heritage objects, irrespective of whether
+            // they are locally changed.
+            List heritageList = container.getHeritageList();
+            Iterator heritage = heritageList.iterator();
+            while (heritage.hasNext()) {
+                CompositeEntity inherited = (CompositeEntity)heritage.next();
+                if (inherited.getEntity(entityName) != null) {
+                    throw new IllegalActionException(container,
+                    "Cannot create entity because a subclass or instance "
+                    + "contains an entity with the same name: "
+                    + inherited.getEntity(entityName).getFullName());
+                }
+            }
 
             // Instantiate it.
+            // FIXME: Note that if container is null, this will fail.
+            // This means that a top level cannot be an instance of a class.
             ComponentEntity newEntity = (ComponentEntity)reference.instantiate(
                     container, entityName);
             
@@ -2851,21 +3119,33 @@ public class MoMLParser extends HandlerBase {
                 modelURI.setContainer(null);
             }
             
-            // Mark contents as being class elements.  EAL 12/03
-            _markContentsClassElements(newEntity);
+            // Mark contents as being inherited objects.  EAL 12/03
+            _markContentsInherited(newEntity);
             
-            // If we are currently propagating, then mark the new
-            // entity itself as a class element.  EAL 2/04
-            if (_propagator != null) {
-                newEntity.setClassElement(true);
-            }
-
             // Set the class name as specified in this method call.
             // This overrides what Prototype does.  The reason we want to
             // do that is that Prototype uses the name of the object
             // that we cloned as the classname.  But this may not provide
             // enough information to instantiate the class.
-            newEntity.getMoMLInfo().className = className;
+            newEntity.setClassName(className);
+            
+            // Propagate to instances and derived classes.
+            heritage = heritageList.iterator();
+            while (heritage.hasNext()) {
+                CompositeEntity inherited = (CompositeEntity)heritage.next();
+                ComponentEntity propagatedEntity
+                        = (ComponentEntity)reference.instantiate(
+                        inherited, entityName);
+                _markContentsInherited(propagatedEntity);
+                propagatedEntity.setInherited(true);
+                propagatedEntity.setClassName(className);
+                URIAttribute propagatedURI
+                        = (URIAttribute)propagatedEntity.getAttribute(
+                        "_uri", URIAttribute.class);
+                if (propagatedURI != null) {
+                    propagatedURI.setContainer(null);
+                }
+            }
 
             return newEntity;
         }
@@ -2878,10 +3158,10 @@ public class MoMLParser extends HandlerBase {
      *  of inner classes, since those take an additional argument (the
      *  first argument), which is the enclosing class. Static inner
      *  classes, however, work fine.
-     *  This method marks the contents of what it creates as class elements,
+     *  This method marks the contents of what it creates as inherited objects,
      *  since they are defined in the Java code of the constructor.
      *  If we are currently propagating, then it also marks the new
-     *  instance itself as a class element.
+     *  instance itself as an inherited object.
      *  @param newClass The class.
      *  @param arguments The constructor arguments.
      *  @exception Exception If no matching constructor is found, or if
@@ -2903,13 +3183,8 @@ public class MoMLParser extends HandlerBase {
             }
             if (match) {
                 NamedObj newEntity = (NamedObj)constructor.newInstance(arguments);
-                // Mark the contents of the new entity as being class elements.
-                _markContentsClassElements(newEntity);
-                // If we are currently propagating, then mark the new
-                // entity itself as a class element.  EAL 2/04
-                if (_propagator != null) {
-                    newEntity.setClassElement(true);
-                }
+                // Mark the contents of the new entity as being inherited objects.
+                _markContentsInherited(newEntity);
                 return newEntity;
             }
         }
@@ -2935,10 +3210,16 @@ public class MoMLParser extends HandlerBase {
                 _parser.getColumnNumber());
     }
 
-    // Delete the entity after verifying that it is contained (deeply)
-    // by the current environment.
+    /** Delete the entity after verifying that it is contained (deeply)
+     *  by the current environment.
+     *  @param entityName The relative or absolute name of the
+     *   entity to delete.
+     *  @return The deleted object.
+     *  @throws Exception If there is no such entity or if the entity
+     *   is defined in the class definition.
+     */
     private NamedObj _deleteEntity(String entityName) throws Exception {
-        ComponentEntity toDelete = _searchForEntity(entityName);
+        ComponentEntity toDelete = _searchForEntity(entityName, _current);
         if (toDelete == null) {
             throw new XmlException("No such entity to delete: " + entityName,
                     _currentExternalEntity(),
@@ -2946,9 +3227,9 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
 
-        // NOTE: Added to ensure that class elements aren't changed.
+        // NOTE: Added to ensure that inherited objects aren't changed.
         // EAL 1/04.
-        if (toDelete.isClassElement() && (_propagator == null)) {
+        if (toDelete.isInherited()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This entity is part of the class definition.");
         }
@@ -2981,13 +3262,31 @@ public class MoMLParser extends HandlerBase {
 
         }
 
+        // Propagate. The name might be absolute and have
+        // nothing to do with the current context.  So
+        // we look for its heritage, not the context's heritage.
+        // We have to do this before actually deleting it,
+        // which also has the side effect of triggering errors
+        // before the deletion.
+        Iterator heritage = toDelete.getHeritageList().iterator();
+        while (heritage.hasNext()) {
+            ComponentEntity inherited = (ComponentEntity)heritage.next();
+            inherited.setContainer(null);
+        }
+
         toDelete.setContainer(null);
 
         return toDelete;
     }
 
-    // Delete the port after verifying that it is contained (deeply)
-    // by the current environment.
+    /** Delete the port after verifying that it is contained (deeply)
+     *  by the current environment.
+     *  @param portName The relative or absolute name of the
+     *   port to delete.
+     *  @return The deleted object.
+     *  @throws Exception If there is no such port or if the port
+     *   is defined in the class definition.
+     */
     private Port _deletePort(String portName, String entityName)
             throws Exception {
         // NOTE: if the entity attribute is not used, then the
@@ -3004,7 +3303,7 @@ public class MoMLParser extends HandlerBase {
         }
         else {
             entityAttrUsed = true;
-            portContainer = _searchForEntity(entityName);
+            portContainer = _searchForEntity(entityName, _current);
             if (portContainer == null) {
                 throw new XmlException("No such entity (" + entityName +
                         ") to delete the port on: " + portName,
@@ -3030,9 +3329,9 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
 
-        // NOTE: Added to ensure that class elements aren't changed.
+        // NOTE: Added to ensure that inherited objects aren't changed.
         // EAL 1/04.
-        if (toDelete.isClassElement() && (_propagator == null)) {
+        if (toDelete.isInherited()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This port is part of the class definition.");
         }
@@ -3104,35 +3403,72 @@ public class MoMLParser extends HandlerBase {
             }
             _undoContext.appendUndoMoML("</group>\n");
         }
+        
+        // Propagate. The name might be absolute and have
+        // nothing to do with the current context.  So
+        // we look for its heritage, not the context's heritage.
+        // We have to do this before actually deleting it,
+        // which also has the side effect of triggering errors
+        // before the deletion.
+        Iterator heritage = toDelete.getHeritageList().iterator();
+        while (heritage.hasNext()) {
+            Port inherited = (Port)heritage.next();
+            inherited.setContainer(null);
+        }
+
         toDelete.setContainer(null);
 
         return toDelete;
     }
 
-    // Delete the property after verifying that it is contained (deeply)
-    // by the current environment.
-    private Attribute _deleteProperty(String propName) throws Exception {
-        Attribute toDelete = _searchForAttribute(propName);
+    /** Delete an attribute after verifying that it is contained (deeply)
+     *  by the current environment.
+     *  @param attributeName The relative or absolute name of the
+     *   attribute to delete.
+     *  @return The deleted object.
+     *  @throws Exception If there is no such attribute or if the attribute
+     *   is defined in the class definition.
+     */
+    private Attribute _deleteProperty(String attributeName) throws Exception {
+        Attribute toDelete = _searchForAttribute(attributeName);
         if (toDelete == null) {
             throw new XmlException("No such property to delete: "
-                    + propName,
+                    + attributeName,
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
-        // NOTE: Added to ensure that class elements aren't changed.
+        // NOTE: Added to ensure that inherited objects aren't changed.
         // EAL 1/04.
-        if (toDelete.isClassElement() && (_propagator == null)) {
+        if (toDelete.isInherited()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This attribute is part of the class definition.");
+        }
+        
+        // Propagate. The name might be absolute and have
+        // nothing to do with the current context.  So
+        // we look for its heritage, not the context's heritage.
+        // We have to do this before actually deleting it,
+        // which also has the side effect of triggering errors
+        // before the deletion.
+        Iterator heritage = toDelete.getHeritageList().iterator();
+        while (heritage.hasNext()) {
+            Attribute inherited = (Attribute)heritage.next();
+            inherited.setContainer(null);
         }
 
         toDelete.setContainer(null);
         return toDelete;
     }
 
-    // Delete the relation after verifying that it is contained (deeply)
-    // by the current environment.
+    /** Delete the relation after verifying that it is contained (deeply)
+     *  by the current environment.
+     *  @param relationName The relative or absolute name of the
+     *   relation to delete.
+     *  @return The deleted object.
+     *  @throws Exception If there is no such relation or if the relation
+     *   is defined in the class definition.
+     */
     private Relation _deleteRelation(String relationName) throws Exception {
         ComponentRelation toDelete = _searchForRelation(relationName);
         if (toDelete == null) {
@@ -3143,9 +3479,9 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
 
-        // NOTE: Added to ensure that class elements aren't changed.
+        // NOTE: Added to ensure that inherited objects aren't changed.
         // EAL 1/04.
-        if (toDelete.isClassElement() && (_propagator == null)) {
+        if (toDelete.isInherited()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This relation is part of the class definition.");
         }
@@ -3178,6 +3514,19 @@ public class MoMLParser extends HandlerBase {
             _undoContext.moveContextEnd(_current, toDelete);
             _undoContext.appendUndoMoML("</group>\n");
         }
+
+        // Propagate. The name might be absolute and have
+        // nothing to do with the current context.  So
+        // we look for its heritage, not the context's heritage.
+        // We have to do this before actually deleting it,
+        // which also has the side effect of triggering errors
+        // before the deletion.
+        Iterator heritage = toDelete.getHeritageList().iterator();
+        while (heritage.hasNext()) {
+            ComponentRelation inherited = (ComponentRelation)heritage.next();
+            inherited.setContainer(null);
+        }
+
         toDelete.setContainer(null);
 
         return toDelete;
@@ -3233,7 +3582,7 @@ public class MoMLParser extends HandlerBase {
             // further instances of this class will be cloned
             // from this same reference (otherwise, we break look
             // inside).
-            toplevel.getMoMLInfo().className = className;
+            toplevel.setClassName(className);
 
             // NOTE: This might be a relative file reference, which
             // won't be of much use if a MoML file is moved.
@@ -3241,7 +3590,7 @@ public class MoMLParser extends HandlerBase {
             // either.  So we record the source as originally
             // specified, since it was sufficient to find this.
             // Note that the source may be null.
-            toplevel.getMoMLInfo().source = source;
+            toplevel.setSource(source);
 
             // Record the import to avoid repeated reading
             if (_imports == null) {
@@ -3288,13 +3637,18 @@ public class MoMLParser extends HandlerBase {
         return result.toString();
     }
 
-    // Return the port corresponding to the specified port name in the
-    // specified composite entity.  If the port belongs directly to the
-    // composite entity, then the argument is a simple name.  If the
-    // port belongs to a component entity, then the name is the entity
-    // name, a period, and the port name.
-    // Throw an exception if there is no such port.
-    // The returned value is never null.
+    /** Return the port corresponding to the specified port name in the
+     *  specified composite entity.  If the port belongs directly to the
+     *  composite entity, then the argument is a simple name.  If the
+     *  port belongs to a component entity, then the name is the entity
+     *  name, a period, and the port name.
+     *  Throw an exception if there is no such port.
+     *  The returned value is never null.
+     *  @param portspec The relative port name.
+     *  @param context The context in which to look for the port.
+     *  @return The port.
+     *  @throws XmlException If no such port is found.
+     */
     private ComponentPort _getPort(String portspec, CompositeEntity context)
             throws XmlException {
         ComponentPort port = (ComponentPort)context.getPort(portspec);
@@ -3312,7 +3666,7 @@ public class MoMLParser extends HandlerBase {
     private void _handlePropertyElement(
             String className,
             String propertyName,
-            String value)
+            final String value)
             throws Exception {
         // First handle special properties that are not translated
         // into Ptolemy II attributes.
@@ -3336,37 +3690,32 @@ public class MoMLParser extends HandlerBase {
             // Get the previous value to use when generating the
             // undo MoML
             boolean previousValue = currentIOPort.isMultiport();
-            boolean newValue = value == null
-                    || value.trim().toLowerCase().equals("true");
-            if (newValue) {
-                // If this object is a class element, then its I/O status
-                // cannot be changed.  EAL 1/04.
-                if (_current.isClassElement()
-                        && (_propagator == null) 
-                        && ((IOPort)_current).isMultiport() != newValue) {
-                    throw new IllegalActionException(_current,
-                            "Cannot change whether this port is " +
-                            "a multiport. That property is fixed by " +
-                            "the class definition.");
-                }                
-                ((IOPort)_current).setMultiport(true);
-            } else if (value.trim().toLowerCase().equals("false")) {
-                // If this object is a class element, then its I/O status
-                // cannot be changed.  EAL 1/04.
-                if (_current.isClassElement()
-                        && (_propagator == null) 
-                        && ((IOPort)_current).isMultiport() != newValue) {
-                    throw new IllegalActionException(_current,
-                            "Cannot change whether this port is " +
-                            "a multiport. That property is fixed by " +
-                            "the class definition.");
-                }
-                ((IOPort)_current).setMultiport(false);
+            
+            // Default for new value is true, unless it is explicitly false.
+            boolean newValue = true;
+            if (value != null && value.trim().toLowerCase().equals("false")) {
+                newValue = false;
+            }
+            // If this object is an inherited object, then its I/O status
+            // cannot be changed.  EAL 1/04.
+            if (_current.isInherited()
+                    && ((IOPort)_current).isMultiport() != newValue) {
+                throw new IllegalActionException(_current,
+                        "Cannot change whether this port is " +
+                        "a multiport. That property is fixed by " +
+                        "the class definition.");
+            }                
+            ((IOPort)_current).setMultiport(newValue);
+
+            // Propagate.
+            Iterator heritage = _current.getHeritageList().iterator();
+            while (heritage.hasNext()) {
+                IOPort inherited = (IOPort)heritage.next();
+                inherited.setMultiport(newValue);
             }
         
             _pushContext();
-            _current =  (Attribute)
-                _current.getAttribute(propertyName);
+            _current =  (Attribute)_current.getAttribute(propertyName);
             _namespace = _DEFAULT_NAMESPACE;
         
             // Handle undo
@@ -3393,35 +3742,29 @@ public class MoMLParser extends HandlerBase {
             // Get the previous value to use when generating the
             // undo MoML
             boolean previousValue = currentIOPort.isOutput();
-            // Default is "true" if no value is given.
-            boolean newValue = value == null
-                    || value.trim().toLowerCase().equals("true");
-            if (newValue) {
-                // If this object is a class element, then its I/O status
-                // cannot be changed.  EAL 1/04.
-                if (_current.isClassElement()
-                        && (_propagator == null) 
-                        && ((IOPort)_current).isOutput() != newValue) {
-                    throw new IllegalActionException(_current,
-                            "Cannot change whether this port is " +
-                            "an output. That property is fixed by " +
-                            "the class definition.");
-                }
-        
-                ((IOPort)_current).setOutput(true);
-            } else if (value.trim().toLowerCase().equals("false")) {
-                // If this object is a class element, then its I/O status
-                // cannot be changed.  EAL 1/04.
-                if (_current.isClassElement()
-                        && (_propagator == null) 
-                        && ((IOPort)_current).isOutput() != newValue) {
-                    throw new IllegalActionException(_current,
-                            "Cannot change whether this port is " +
-                            "an output. That property is fixed by " +
-                            "the class definition.");
-                }
-        
-                ((IOPort)_current).setOutput(false);
+            
+            // Default for new value is true, unless it is explicitly false.
+            boolean newValue = true;
+            if (value != null && value.trim().toLowerCase().equals("false")) {
+                newValue = false;
+            }
+            // If this object is an inherited object, then its I/O status
+            // cannot be changed.  EAL 1/04.
+            if (_current.isInherited()
+                    && ((IOPort)_current).isOutput() != newValue) {
+                throw new IllegalActionException(_current,
+                        "Cannot change whether this port is " +
+                        "an output. That property is fixed by " +
+                        "the class definition.");
+            }
+    
+            ((IOPort)_current).setOutput(newValue);
+
+            // Propagate.
+            Iterator heritage = _current.getHeritageList().iterator();
+            while (heritage.hasNext()) {
+                IOPort inherited = (IOPort)heritage.next();
+                inherited.setOutput(newValue);
             }
         
             _pushContext();
@@ -3453,36 +3796,31 @@ public class MoMLParser extends HandlerBase {
             // Get the previous value to use when generating the
             // undo MoML
             boolean previousValue = currentIOPort.isInput();
-            // Default is "true" if no value is given.
-            boolean newValue = value == null
-                    || value.trim().toLowerCase().equals("true");
-            if (newValue) {
-                // If this object is a class element, then its I/O status
-                // cannot be changed.  EAL 1/04.
-                if (_current.isClassElement()
-                        && (_propagator == null) 
-                        && ((IOPort)_current).isInput() != newValue) {
-                    throw new IllegalActionException(_current,
-                            "Cannot change whether this port is " +
-                            "an input. That property is fixed by " +
-                            "the class definition.");
-                }
-        
-                ((IOPort)_current).setInput(true);
-            } else if (value.trim().toLowerCase().equals("false")) {
-                // If this object is a class element, then its I/O status
-                // cannot be changed.  EAL 1/04.
-                if (_current.isClassElement()
-                        && (_propagator == null) 
-                        && ((IOPort)_current).isInput() != newValue) {
-                    throw new IllegalActionException(_current,
-                            "Cannot change whether this port is " +
-                            "an input. That property is fixed by " +
-                            "the class definition.");
-                }
-        
-                ((IOPort)_current).setInput(false);
+            
+            // Default for new value is true, unless it is explicitly false.
+            boolean newValue = true;
+            if (value != null && value.trim().toLowerCase().equals("false")) {
+                newValue = false;
             }
+            // If this object is an inherited object, then its I/O status
+            // cannot be changed.  EAL 1/04.
+            if (_current.isInherited()
+                    && ((IOPort)_current).isInput() != newValue) {
+                throw new IllegalActionException(_current,
+                        "Cannot change whether this port is " +
+                        "an input. That property is fixed by " +
+                        "the class definition.");
+            }
+    
+            ((IOPort)_current).setInput(newValue);
+
+            // Propagate.
+            Iterator heritage = _current.getHeritageList().iterator();
+            while (heritage.hasNext()) {
+                IOPort inherited = (IOPort)heritage.next();
+                inherited.setInput(newValue);
+            }
+
             _pushContext();
             _current =  (Attribute)
                 _current.getAttribute(propertyName);
@@ -3535,11 +3873,13 @@ public class MoMLParser extends HandlerBase {
             // Otherwise, we try to replace it, something that
             // will only work if it is a singleton (it might throw
             // NameDuplicationException).
+            boolean previouslyExisted = (property != null);
+            
+            // Even if the object previously existed, if the
+            // class does not match, we may create a new object.
             boolean createdNew = false;
         
-            // Also need the previous value, if any, to generate undo
-            // MoML. Also need to know if the property already existed
-            boolean previouslyExisted = (property != null);
+            // Also need the previous value, if any, to generate undo MoML.
             String oldClassName = null;
             String oldValue = null;
             if (previouslyExisted) {
@@ -3549,18 +3889,8 @@ public class MoMLParser extends HandlerBase {
                     oldValue = settable.getExpression();
                 }
             }
-            // NOTE: This used to use the following code to
-            // match _exactly_ the specified class, rather
-            // than checking that it be an instance of it.
-            // The new behavior is more flexible, because, for
-            // example, it allows actors to replace parameters
-            // with a derived class of Parameter.  This was done,
-            // for example, to replace some instances of Parameter
-            // with ParameterPort.
-            // if (property == null || (className != null &&
-            //      !property.getClass().getName().equals(className))) {
         
-            if (property == null || (newClass != null
+            if (!previouslyExisted || (newClass != null
                     && !newClass.isInstance(property))) {
                 // The following will result in a
                 // NameDuplicationException if there is a previous
@@ -3579,12 +3909,46 @@ public class MoMLParser extends HandlerBase {
                         "Attempt to create an attribute with no container: "
                         + propertyName);
                     }
-        
+                            
+                    // First check that there will be no name collision
+                    // when this is propagated. Note that we need to
+                    // include all heritage objects, irrespective of whether
+                    // they are locally changed.
+                    List heritageList = _current.getHeritageList();
+                    Iterator heritage = heritageList.iterator();
+                    while (heritage.hasNext()) {
+                        NamedObj inherited = (NamedObj)heritage.next();
+                        if (inherited.getAttribute(propertyName) != null) {
+                            throw new IllegalActionException(_current,
+                            "Cannot create attribute because a subclass or instance "
+                            + "contains an attribute with the same name: "
+                            + inherited.getAttribute(propertyName).getFullName());
+                        }
+                    }
                     // Invoke the constructor.
                     Object[] arguments = new Object[2];
                     arguments[0] = _current;
                     arguments[1] = propertyName;
                     property = _createInstance(newClass, arguments);
+
+                    // Check that the result is an instance of Attribute.
+                    if (!(property instanceof Attribute)) {
+                        // NOTE: Need to get rid of the object.
+                        // Unfortunately, setContainer() is not defined,
+                        // so we have to find the right class.
+                        if (property instanceof ComponentEntity) {
+                            ((ComponentEntity)property).setContainer(null);
+                        } else if (property instanceof Port) {
+                            ((Port)property).setContainer(null);
+                        } else if (property instanceof ComponentRelation) {
+                            ((ComponentRelation)property).setContainer(null);
+                        }
+                        throw new XmlException("Property is not an "
+                                + "instance of Attribute. ",
+                                _currentExternalEntity(),
+                                _parser.getLineNumber(),
+                                _parser.getColumnNumber());
+                    }
         
                     if (value != null) {
                         if (property == null) {
@@ -3616,6 +3980,21 @@ public class MoMLParser extends HandlerBase {
                         _paramsToParse.add(property);
                     }
                     createdNew = true;
+                    
+                    // Propagate to instances and derived classes.
+                    heritage = heritageList.iterator();
+                    while (heritage.hasNext()) {
+                        NamedObj inherited = (NamedObj)heritage.next();
+                        // Invoke the constructor.
+                        arguments[0] = inherited;
+                        NamedObj newAttribute = _createInstance(newClass, arguments);
+                        // It would be redundant to perform the same checks as above.
+                        if (value != null) {
+                            ((Settable)newAttribute).setExpression(value);
+                            _paramsToParse.add(newAttribute);
+                        }
+                        newAttribute.setInherited(true);
+                    }
                 } catch (NameDuplicationException ex) {
                     // Ignore, so we can try to set the value.
                     // The createdNew variable will still be false.
@@ -3640,31 +4019,33 @@ public class MoMLParser extends HandlerBase {
                                 _parser.getColumnNumber());
                     }
                     Settable settable = (Settable)property;
-                    // If we are propagating, then don't allow this to
-                    // change the parameter value if it was previously changed.
-                    // If we are propagating and the parameter was not
-                    // previously changed, then don't allow this to mark
-                    // it changed from class.
-                    // EAL 2/04.
-                    if (_propagator != null) {
-                        // NOTE: This is not sufficient to use
-                        // previous.isModifiedFromClass() here.
-                        // The property may have been modified from class
-                        // in an intermediate subclass, and this will not
-                        // show up as a false from isModifiedFromClass().
-                        if (!_propagator._isShadowed(property, _propagatingContext)) {
-                            // Propagating, and value has not been modified.
-                            settable.setExpression(value);
-                            // The above will mark it modified, which we don't
-                            // want since this was a propogation, not a local
-                            // modification.
-                            property.setModifiedFromClass(false);
-                            _paramsToParse.add(property);                            
-                        }
-                    } else {
-                        // Not propagating. Just set the value.
-                        settable.setExpression(value);
-                        _paramsToParse.add(property);
+                    settable.setExpression(value);
+                    _paramsToParse.add(property);
+                    
+                    // Propagate, if appropriate.
+                    Iterator propagated
+                            = property.getShadowedHeritageList().iterator();
+                    while (propagated.hasNext()) {
+                        // The following cast is safe because property is known
+                        // to be of type Attribute.
+                        final Attribute attribute = (Attribute)propagated.next();
+                        // Use a change request because we can't be sure
+                        // that the change is applicable now.
+                        ChangeRequest request = new ChangeRequest(
+                                this, "Propagating change from "
+                                + property.getFullName()) {
+                            protected void _execute() throws IllegalActionException {
+                                ((Settable)attribute).setExpression(value);
+                                // Indicate that the current value is propagated in.
+                                attribute.setModifiedHeritage(false);
+                            }
+                        };
+                        request.addChangeListener(this);
+                        attribute.requestChange(request);
+                        // Need to make sure that the above attribute is validated
+                        // after the change request is processed. That is taken
+                        // care of in endDocument().
+                        _paramsToParse.add(attribute);
                     }
                 }
             }
@@ -3720,10 +4101,10 @@ public class MoMLParser extends HandlerBase {
     /** Return true if the link between the specified port and
      *  relation is part of the class definition. It is part of the
      *  class definition if either the port and the relation are
-     *  at the same level of hierarchy and are both class elements, or if
+     *  at the same level of hierarchy and are both inherited objects, or if
      *  the relation and the container of the port are both class
      *  elements. If the relation is null, then this return true
-     *  if the port and its container are class elements.
+     *  if the port and its container are inherited objects.
      *  NOTE: This is not perfect, since a link could have been
      *  created between these elements in a subclass.
      *  @param context The context containing the link.
@@ -3734,11 +4115,11 @@ public class MoMLParser extends HandlerBase {
     private boolean _isLinkInClass(NamedObj context, Port port, Relation relation) {
         boolean portIsInClass = (port.getContainer()
                 == context)
-                ? (port.isClassElement() )
-                : (((NamedObj)port.getContainer()).isClassElement());
-        return (portIsInClass && (relation == null || relation.isClassElement()));
+                ? (port.isInherited() )
+                : (((NamedObj)port.getContainer()).isInherited());
+        return (portIsInClass && (relation == null || relation.isInherited()));
     }
-
+    
     /** Return whether or not the given element name is undoable. NOTE: we need
      *  this method as the list of actions on namespaces and _current does not
      *  apply to elements such as "link"
@@ -3794,10 +4175,9 @@ public class MoMLParser extends HandlerBase {
         // NOTE: Should we keep the parser to re-use?
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
         newParser.setContext(context);
-        newParser._propagator = _propagator;
         NamedObj result = newParser.parse(_base, input);
         
-        // Have to mark the contents class elements, so that
+        // Have to mark the contents inherited objects, so that
         // the icon is not exported with the MoML export.
         // Unfortunately, we can't be sure what contents
         // were added to the context, so we just mark the
@@ -3805,10 +4185,10 @@ public class MoMLParser extends HandlerBase {
         // FIXME: Instead of doing this, which only work for
         // attributes named "_icon", we could set a private
         // variable on the parser to indicate that any new
-        // objects it creates should be marked class elements.
+        // objects it creates should be marked inherited objects.
         Attribute icon = context.getAttribute("_icon");
         if (icon != null) {
-            _markContentsClassElements(icon);
+            _markContentsInherited(icon);
         }
         
         return true;
@@ -3834,7 +4214,7 @@ public class MoMLParser extends HandlerBase {
         return _loadFileInContext(fileName, context);
     }
 
-    /** Mark the contents as being class elements.
+    /** Mark the contents as being inherited objects.
      *  This makes them not export MoML, and prohibits name and
      *  container changes. Normally, the argument is an Entity,
      *  but this method will accept any NamedObj.
@@ -3845,7 +4225,7 @@ public class MoMLParser extends HandlerBase {
      *  @exception IllegalActionException If the specified object
      *   has settables that cannot be validated.
      */
-    private void _markContentsClassElements(NamedObj object)
+    private void _markContentsInherited(NamedObj object)
             throws IllegalActionException {
         // NOTE: Added as part of big change in class handling. EAL 12/03.
         // NOTE: It is necessary to mark objects deeply contained
@@ -3855,11 +4235,11 @@ public class MoMLParser extends HandlerBase {
         Iterator objects = object.containedObjectsIterator();
         while (objects.hasNext()) {
             NamedObj containedObject = (NamedObj)objects.next();
-            containedObject.setClassElement(true);
+            containedObject.setInherited(true);
             if (containedObject instanceof Settable) {
                 _paramsToParse.add(containedObject);
             }
-            _markContentsClassElements(containedObject);
+            _markContentsInherited(containedObject);
         }
     }
 
@@ -3958,11 +4338,11 @@ public class MoMLParser extends HandlerBase {
             relation = (ComponentRelation)tmpRelation;
         }
         
-        // NOTE: Added to ensure that class elements aren't changed.
+        // NOTE: Added to ensure that inherited objects aren't changed.
         // EAL 1/04. We have to prohit adding links between class
         // elements because this operation cannot be undone, and
         // it will not be persistent.
-        if ((_propagator == null) && _isLinkInClass(context, port, relation)) {
+        if (_isLinkInClass(context, port, relation)) {
             throw new IllegalActionException(port,
                     "Cannot link a port to a relation when both" +
                     " are part of the class definition.");
@@ -3987,6 +4367,46 @@ public class MoMLParser extends HandlerBase {
             port.link(relation);
         }
         
+        // Propagate. Get the heritage list for the relation,
+        // then use its container as the context in which to
+        // find the port. NOTE: The relation can be null
+        // (to insert an empty link in a multiport), so
+        // we have two cases to consider.
+        if (relation != null) {
+            Iterator heritage = relation.getHeritageList().iterator();
+            while (heritage.hasNext()) {
+                ComponentRelation inheritedRelation
+                        = (ComponentRelation)heritage.next();
+                CompositeEntity inheritedContext
+                        = (CompositeEntity)inheritedRelation.getContainer();
+                ComponentPort inheritedPort
+                        = _getPort(portName, inheritedContext);
+                // NOTE: Duplicate the above logic exactly.
+                if (insertAtSpec != null) {
+                    inheritedPort.insertLink(insertAt, inheritedRelation);
+                } else if (insertInsideAtSpec != null) {
+                    inheritedPort.insertInsideLink(insertInsideAt, inheritedRelation);
+                } else {
+                    inheritedPort.link(inheritedRelation);
+                }
+            }
+        } else {
+            Iterator heritage = port.getHeritageList().iterator();
+            while (heritage.hasNext()) {
+                ComponentPort inheritedPort
+                        = (ComponentPort)heritage.next();
+                // NOTE: Duplicate the above logic exactly.
+                if (insertAtSpec != null) {
+                    inheritedPort.insertLink(insertAt, null);
+                } else if (insertInsideAtSpec != null) {
+                    inheritedPort.insertInsideLink(insertInsideAt, null);
+                } else {
+                    // This one probably shouldn't occur.
+                    inheritedPort.link(null);
+                }
+            }  
+        }
+
         // Handle the undo aspect.
         if (_undoEnabled && _undoContext.isUndoable()) {
             // NOTE: always unlink using an index
@@ -4091,9 +4511,9 @@ public class MoMLParser extends HandlerBase {
                     relationName + "\" in " + context.getFullName());
             ComponentRelation relation = (ComponentRelation)tmpRelation;
             
-            // NOTE: Added to ensure that class elements aren't changed.
+            // NOTE: Added to ensure that inherited objects aren't changed.
             // EAL 1/04.
-            if ((_propagator == null) && _isLinkInClass(context, port, relation)) {
+            if (_isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -4122,17 +4542,33 @@ public class MoMLParser extends HandlerBase {
                             relationName + "\" />\n");
                 }
             }
+
+            // Propagate. Get the heritage list for the relation,
+            // then use its container as the context in which to
+            // find the port.
+            Iterator heritage = relation.getHeritageList().iterator();
+            while (heritage.hasNext()) {
+                ComponentRelation inheritedRelation
+                        = (ComponentRelation)heritage.next();
+                CompositeEntity inheritedContext
+                        = (CompositeEntity)inheritedRelation.getContainer();
+                ComponentPort inheritedPort
+                        = _getPort(portName, inheritedContext);
+                inheritedPort.unlink(inheritedRelation);
+            }
+
             port.unlink(relation);
+            
         } else if (indexSpec != null) {
             // index is given.
             int index = Integer.parseInt(indexSpec);
         
-            // NOTE: Added to ensure that class elements aren't changed.
+            // NOTE: Added to ensure that inherited objects aren't changed.
             // EAL 1/04.  Unfortunately, getting the relation is fairly
             // expensive.
             List relationList = port.linkedRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if ((_propagator == null) && _isLinkInClass(context, port, relation)) {
+            if (_isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -4156,17 +4592,27 @@ public class MoMLParser extends HandlerBase {
                 }
                 _undoContext.appendUndoMoML(" />\n");
             }
+            
+            // Propagate.
+            Iterator heritage = port.getHeritageList().iterator();
+            while (heritage.hasNext()) {
+                ComponentPort inheritedPort
+                        = (ComponentPort)heritage.next();
+                inheritedPort.unlink(index);
+            }
+
             port.unlink(index);
+            
         } else {
             // insideIndex is given.
             int index = Integer.parseInt(insideIndexSpec);
             
-            // NOTE: Added to ensure that class elements aren't changed.
+            // NOTE: Added to ensure that inherited objects aren't changed.
             // EAL 1/04.  Unfortunately, getting the relation is fairly
             // expensive.
             List relationList = port.insideRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if ((_propagator == null) && _isLinkInClass(context, port, relation)) {
+            if (_isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -4190,6 +4636,14 @@ public class MoMLParser extends HandlerBase {
                 }
                 _undoContext.appendUndoMoML(" />\n");
             }
+            // Propagate.
+            Iterator heritage = port.getHeritageList().iterator();
+            while (heritage.hasNext()) {
+                ComponentPort inheritedPort
+                        = (ComponentPort)heritage.next();
+                inheritedPort.unlinkInside(index);
+            }
+
             port.unlinkInside(index);
         }
         
@@ -4199,28 +4653,33 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
-    // Push the current context.
+    /** Push the current context.
+     */
     private void _pushContext() {
         _containers.push(_current);
         _namespaces.push(_namespace);
         _namespaceTranslations.push(_namespaceTranslationTable);
     }
 
-    //  Reset the undo information to give a fresh setup for the next
-    //  incremental change. NOTE: this resets all the undo information except
-    //  for the UndoStackAttribute which is associated with the model.
-    //  @since Ptolemy II 2.1
+    /** Reset the undo information to give a fresh setup for the next
+     *  incremental change. NOTE: this resets all the undo information except
+     *  for the UndoStackAttribute which is associated with the model.
+     */
     private void _resetUndo() {
         _undoContext = null;
         _undoContexts = new Stack();
         _undoEnabled = false;
     }
 
-    // Given a name that is either absolute (with a leading period)
-    // or relative to _current, find an attribute with that name.
-    // Return null if it is not found.  The attribute is required to
-    // be contained (deeply) by the current environment, or an XmlException
-    // will be thrown.
+    /** Given a name that is either absolute (with a leading period)
+     *  or relative to _current, find an attribute with that name.
+     *  The attribute is required to
+     *  be contained (deeply) by the current environment, or an XmlException
+     *  will be thrown.
+     *  @param name The name of the attribute, relative or absolute.
+     *  @return The attribute.
+     *  @throws XmlException If the attribute is not found.
+     */
     private Attribute _searchForAttribute(String name)
             throws XmlException {
         Attribute result = null;
@@ -4260,7 +4719,7 @@ public class MoMLParser extends HandlerBase {
     private ComponentEntity _searchForClassInContext(
             String name, String source) 
             throws Exception {
-        ComponentEntity candidate = _searchForEntity(name);
+        ComponentEntity candidate = _searchForEntity(name, _current);
         // Search upwards in the hierarchy if necessary.
         NamedObj context = _current;
         while (candidate == null && context != null) {
@@ -4273,7 +4732,7 @@ public class MoMLParser extends HandlerBase {
             // Check that it's a class.
             if (candidate.isClassDefinition()) {
                 // Check that its source matches.
-                String candidateSource = candidate.getMoMLInfo().source;
+                String candidateSource = candidate.getSource();
 
                 if (source == null && candidateSource == null) {
                     return candidate;
@@ -4292,14 +4751,17 @@ public class MoMLParser extends HandlerBase {
     }
     
     /** Given a name that is either absolute (with a leading period)
-     *  or relative to _current, find a component entity with that name.
-     *  Return null if it is not found.
+     *  or relative to the specified context, find a component entity
+     *  with that name.  Return null if it is not found.
      *  @param name The name of the entity.
+     *  @param context The context in which to search.
      *  @return An entity with the specified name, or null if none is found.
      *  @throws XmlException If the name refers to an entity in an
-     *   innappropriate context.
+     *   innappropriate context or if the context is not an instance
+     *   of CompositeEntity.
      */
-    private ComponentEntity _searchForEntity(String name) throws XmlException {
+    private ComponentEntity _searchForEntity(String name, NamedObj context)
+            throws XmlException {
 
         // If the name is absolute, we first have to find a
         // name from the imports that matches.
@@ -4316,13 +4778,13 @@ public class MoMLParser extends HandlerBase {
             if (_toplevel != null && _toplevel instanceof ComponentEntity
                     && topLevelName.equals(_toplevel.getName())) {
                 if (nextPeriod < 1) {
-                    if (_current != null
-                            && _current != _toplevel) {
+                    if (context != null
+                            && context != _toplevel) {
                         throw new XmlException(
                                 "Reference to an existing entity: "
                                 + _toplevel.getFullName()
                                 + " in an inappropriate context: "
-                                + _current.getFullName(),
+                                + context.getFullName(),
                                 _currentExternalEntity(),
                                 _parser.getLineNumber(),
                                 _parser.getColumnNumber());
@@ -4334,13 +4796,13 @@ public class MoMLParser extends HandlerBase {
                             ((CompositeEntity)_toplevel).getEntity(
                                     name.substring(nextPeriod + 1));
                         if (result != null) {
-                            if (_current != null
-                                    && !_current.deepContains(result)) {
+                            if (context != null
+                                    && !context.deepContains(result)) {
                                 throw new XmlException(
                                         "Reference to an existing entity: "
                                         + result.getFullName()
                                         + " in an inappropriate context: "
-                                        + _current.getFullName(),
+                                        + context.getFullName(),
                                         _currentExternalEntity(),
                                         _parser.getLineNumber(),
                                         _parser.getColumnNumber());
@@ -4353,25 +4815,29 @@ public class MoMLParser extends HandlerBase {
             return null;
         } else {
             // Name is relative.
-            if (_current instanceof CompositeEntity) {
+            if (context instanceof CompositeEntity) {
                 ComponentEntity result
-                        = ((CompositeEntity)_current).getEntity(name);
+                        = ((CompositeEntity)context).getEntity(name);
                 return result;
             }
-            if (_current == null) {
+            if (context == null) {
                 // The name might be a top-level name, but without
                 // the leading period.
-                return _searchForEntity("." + name);
+                return _searchForEntity("." + name, context);
             }
             return null;
         }
     }
 
-    // Given a name that is either absolute (with a leading period)
-    // or relative to _current, find a port with that name.
-    // Return null if it is not found.  The port is required to
-    // be contained (deeply) by the current environment, or an XmlException
-    // will be thrown.
+    /** Given a name that is either absolute (with a leading period)
+     *  or relative to _current, find a port with that name.
+     *  The port is required to
+     *  be contained (deeply) by the current environment, or an XmlException
+     *  will be thrown.
+     *  @param name The name of the port.
+     *  @return The port.
+     *  @throws XmlException If the port is not found.
+     */
     private Port _searchForPort(String name)
             throws XmlException {
         Port result = null;
@@ -4400,11 +4866,15 @@ public class MoMLParser extends HandlerBase {
         return result;
     }
 
-    // Given a name that is either absolute (with a leading period)
-    // or relative to _current, find a relation with that name.
-    // Return null if it is not found.  The relation is required to
-    // be contained (deeply) by the current environment, or an XmlException
-    // will be thrown.
+    /** Given a name that is either absolute (with a leading period)
+     *  or relative to _current, find a relation with that name.
+     *  The relation is required to
+     *  be contained (deeply) by the current environment, or an XmlException
+     *  will be thrown.
+     *  @param name The name of the relation.
+     *  @return The relation.
+     *  @throws XmlException If the relation is not found.
+     */
     private ComponentRelation _searchForRelation(String name)
             throws XmlException {
         ComponentRelation result = null;
@@ -4523,7 +4993,7 @@ public class MoMLParser extends HandlerBase {
     
     // Status of the deferral of the top-level.
     private boolean _previousDeferStatus = false;
-
+    
     // If greater than zero, skipping an element.
     private int _skipElement = 0;
 

@@ -567,7 +567,7 @@ public class Entity extends Prototype {
      *  @return The depth of the deferral.
      */
     protected int _getDeferralDepth(NamedObj definedObject) {
-        Prototype deferTo = getDeferTo();
+        Prototype deferTo = (Prototype)getParent();
         if (deferTo != null && deepContains(definedObject)) {
             String relativeName = definedObject.getName(this);
             // Regrettably, we have to look at the type

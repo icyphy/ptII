@@ -111,8 +111,8 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
     set toplevel [$parser parse $moml_1]
     set entityLibrary [java::cast ptolemy.moml.EntityLibrary $toplevel]
     list [$toplevel exportMoML] "\n" \
-	    [$entityLibrary -noconvert getSource] "\n" \
-	    [$entityLibrary getText] "\n" \
+	    [$entityLibrary -noconvert getConfigureSource] "\n" \
+	    [$entityLibrary getConfigureText] "\n" \
 	    [$entityLibrary numEntities]
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -150,8 +150,8 @@ test EntityLibrary-1.3 {clone} {
     set clonedEntityLibrary [java::cast ptolemy.moml.EntityLibrary \
 	    [$entityLibrary clone]] 
     list \
-	    [$clonedEntityLibrary -noconvert getSource] "\n" \
-	    [$clonedEntityLibrary getText] "\n" \
+	    [$clonedEntityLibrary -noconvert getConfigureSource] "\n" \
+	    [$clonedEntityLibrary getConfigureText] "\n" \
 	    [$clonedEntityLibrary numEntities]
 } {java0x0 {
 } {<group>
@@ -204,8 +204,8 @@ Because:
 test EntityLibrary-2.1 {Constructor: EntityLibrary()} {
     set entityLibrary [java::new ptolemy.moml.EntityLibrary]
     list [$entityLibrary exportMoML] "\n" \
-	    [$entityLibrary -noconvert getSource] "\n" \
-	    [$entityLibrary getText] "\n" \
+	    [$entityLibrary -noconvert getConfigureSource] "\n" \
+	    [$entityLibrary getConfigureText] "\n" \
 	    [$entityLibrary numEntities]
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -234,8 +234,8 @@ test EntityLibrary-2.2 {Constructor: EntityLibrary(workspace)} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set entityLibrary [java::new ptolemy.moml.EntityLibrary $w]
     list [$entityLibrary exportMoML] "\n" \
-	    [$entityLibrary -noconvert getSource] "\n" \
-	    [$entityLibrary getText] "\n" \
+	    [$entityLibrary -noconvert getConfigureSource] "\n" \
+	    [$entityLibrary getConfigureText] "\n" \
 	    [$entityLibrary numEntities]
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"

@@ -273,8 +273,8 @@ public class EntityLibrary
      */
     public void configure(URL base, String source, String text) {
         _base = base;
-        _source = source;
-        _text = text;
+        _configureSource = source;
+        _configureText = text;
         _configureDone = false;
     }
 
@@ -385,8 +385,8 @@ public class EntityLibrary
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
-    public String getSource() {
-        return _source;
+    public String getConfigureSource() {
+        return _configureSource;
     }
 
     /** Return the text string that represents the current configuration of
@@ -397,7 +397,7 @@ public class EntityLibrary
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
-    public String getText() {
+    public String getConfigureText() {
         try {
             StringWriter stringWriter = new StringWriter();
             stringWriter.write("<group>\n");
@@ -416,7 +416,6 @@ public class EntityLibrary
         } catch (IOException ex) {
             return "";
         }
-        //    return _text;
     }
 
     /** Return the number of contained class definitions. This overrides
@@ -481,17 +480,17 @@ public class EntityLibrary
                 MoMLParser parser = new MoMLParser(workspace());
 
                 parser.setContext(this);
-                if (_source != null && !_source.equals("")) {
-                    URL xmlFile = new URL(_base, _source);
+                if (_configureSource != null && !_configureSource.equals("")) {
+                    URL xmlFile = new URL(_base, _configureSource);
                     InputStream stream = xmlFile.openStream();
                     parser.parse(xmlFile, stream);
                     stream.close();
                 }
-                if (_text != null && !_text.equals("")) {
+                if (_configureText != null && !_configureText.equals("")) {
                     // NOTE: Regrettably, the XML parser we are using cannot
                     // deal with having a single processing instruction at the
                     // outer level.  Thus, we have to strip it.
-                    String trimmed = _text.trim();
+                    String trimmed = _configureText.trim();
                     if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
                         trimmed = trimmed.substring(2, trimmed.length() - 2)
                             .trim();
@@ -503,7 +502,7 @@ public class EntityLibrary
                     } else {
                         // Data is not enclosed in a processing instruction.
                         // Must have been given in a CDATA section.
-                        parser.parse(_base, _text);
+                        parser.parse(_base, _configureText);
                     }
                 }
             }
@@ -561,8 +560,8 @@ public class EntityLibrary
     private boolean _populating = false;
 
     /** URL specified to the configure() method. */
-    private String _source;
+    private String _configureSource;
 
     /** Text specified to the configure() method. */
-    private String _text;
+    private String _configureText;
 }

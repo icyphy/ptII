@@ -40,10 +40,7 @@ its container. In addition, the interface supports a
 and the individual object. The implementations in the kernel package
 define the full name of an object to be the full name of its container
 followed by a period followed by the simple name of the object.
-Given the implementations of this interface in the kernel
-package, it is not a good idea to have periods or braces in the name,
-although this is not enforced.  Braces will make it difficult to parse
-the descriptions returned by the description() method.
+Periods and braces are not permitted in the name.
 
 @author Christopher Hylands, Edward A. Lee
 @version $Id$
@@ -70,7 +67,7 @@ public interface Nameable extends ModelErrorHandler {
     public String description();
 
     /** Return the container. */
-    public Nameable getContainer();
+    public NamedObj getContainer();
 
     /** Return the full name, which reflects the container object, if there
      *  is one. For example the implementation in NamedObj concatenates the
@@ -84,6 +81,24 @@ public interface Nameable extends ModelErrorHandler {
      *  @return The name of the object.
      */
     public String getName();
+    
+    /** Get the name of this object relative to the specified container.
+     *  If this object is contained directly by the specified container,
+     *  this is just its name, as returned by getName().  If it is deeply
+     *  contained by the specified container, then the relative name is
+     *  <i>x1</i>.<i>x2</i>. ... .<i>name</i>, where <i>x1</i> is directly
+     *  contained by the specified container, <i>x2</i> is contained by
+     *  <i>x1</i>, etc.  If this object is not deeply contained by the
+     *  specified container, then this method returns the full name of
+     *  this object, as returned by getFullName().
+     *  @param relativeTo The object relative to which you want the name.
+     *  @return A string of the form "name2...nameN".
+     *  @exception InvalidStateException If a recursive structure is
+     *   encountered, where this object directly or indirectly contains
+     *   itself. Note that this is a runtime exception so it need not
+     *   be declared explicitly.
+     */
+    public String getName(NamedObj relativeTo) throws InvalidStateException;
 
     /** Set or change the name. By convention, if the argument is null,
      *  the name should be set to an empty string rather than to null.

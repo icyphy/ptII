@@ -41,7 +41,7 @@ import java.util.List;
 Abstract base class for change requests.  A change request is any
 modification to a model that might be performed during execution of the
 model, but where there might only be certain phases of execution during
-which it is safe to make the modification.  Such changes are called
+which it is safe to make the modification.  Such changes are also called
 <i>mutations</i>.
 <p>
 A typical use of this class is to define an anonymous inner class that
@@ -179,9 +179,8 @@ public abstract class ChangeRequest {
                     object = (Nameable)_source;
                 }
                 throw new InternalErrorException(object, _exception,
-                        "There was no ChangeListener associated with "
-                        + "this ChangeRequest:\n" + _description
-                        + "\n The above ChangeRequest failed.");
+                        "ChangeRequest failed (NOTE: there is no "
+                        + "ChangeListener):\n" + _description);
             }
         }
         _pending = false;

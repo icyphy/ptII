@@ -30,16 +30,16 @@
 
 package ptolemy.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.Workspace;
-
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComponentRelation
@@ -186,7 +186,7 @@ public class ComponentRelation extends Relation {
     /** Get the container entity.
      *  @return An instance of CompositeEntity.
      */
-    public Nameable getContainer() {
+    public NamedObj getContainer() {
         return _container;
     }
 
@@ -247,7 +247,7 @@ public class ComponentRelation extends Relation {
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
                 // EAL 12/03, 2/04
-                setModifiedFromClass(true);
+                setModifiedHeritage(true);
             }
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.

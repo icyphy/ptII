@@ -303,7 +303,7 @@ public final class Workspace implements Nameable, Serializable {
      *  has no container.
      *  @return null.
      */
-    public Nameable getContainer() {
+    public NamedObj getContainer() {
         return null;
     }
 
@@ -321,6 +321,15 @@ public final class Workspace implements Nameable, Serializable {
     public String getName() {
         return _name;
     }
+    
+    /** Get the name. Since this can have no container, the relative
+     *  name is always the same as the name.
+     *  @return The name of the workspace.
+     */
+    public String getName(NamedObj relativeTo) {
+        return _name;
+    }
+
 
     /** Obtain permission to read objects in the workspace.
      *  This method suspends the calling thread until such permission

@@ -2507,9 +2507,9 @@ test MoMLParser-10.1 {test vertex} {
         </port>
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
-        <vertex name="v1" value="0.0, 0.0">
+        <vertex name="v1" value="{0.0, 0.0}">
         </vertex>
-        <vertex name="v2" value="0.0, 0.0">
+        <vertex name="v2" value="{0.0, 0.0}">
         </vertex>
     </relation>
     <link port="A.out" relation="r"/>
@@ -2543,9 +2543,9 @@ test MoMLParser-10.2 {exportMoML and then parse it - a good test for SaveAs } {
         </port>
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
-        <vertex name="v1" value="0.0, 0.0">
+        <vertex name="v1" value="{0.0, 0.0}">
         </vertex>
-        <vertex name="v2" value="0.0, 0.0">
+        <vertex name="v2" value="{0.0, 0.0}">
         </vertex>
     </relation>
     <link port="A.out" relation="r"/>
@@ -2842,7 +2842,8 @@ test MoMLParser-14.1 {check that instance of a class defer to a common obj} {
             [$parser parse $moml]]
     set a [$toplevel getEntity b]
     set b [$toplevel getEntity b]
-    [$b getDeferTo] equals [$a getDeferTo]
+    # %$(&$%* lame Jacl misunderstanding of OO...
+    [java::cast java.lang.Object [$b getParent]] equals [$a getParent]
 } {1}
 
 ######################################################################
@@ -2936,7 +2937,7 @@ test MoMLParser-18.1 {parse testdir.moml and get the filename of the inner part 
     set toplevel [$parser parseFile "testdir.moml"]
     set compositeEntity [java::cast ptolemy.kernel.CompositeEntity $toplevel]
     set testdir2 [$compositeEntity getEntity testdir2]
-    set deferredTo [$testdir2 getDeferTo]
+    set deferredTo [java::cast ptolemy.kernel.util.NamedObj [$testdir2 getParent]]
     set uriAttribute [$deferredTo getAttribute _uri]
     # This will crap out if testdir/testdir2 does not have a _uri attribute
     set uri [[java::cast ptolemy.kernel.attributes.URIAttribute $uriAttribute] getURI]

@@ -68,9 +68,9 @@ test ConfigurableAttribute-1.1 {test export moml.} {
 ######################################################################
 ####
 #
-test ConfigurableAttribute-1.5 {test value, getText, getSource methods.} {
+test ConfigurableAttribute-1.5 {test value, getConfigureText, getConfigureSource methods.} {
     # Uses Test 1.1 above 
-    list [$p1 value] [$p1 getText] [$p1 getSource]
+    list [$p1 value] [$p1 getConfigureText] [$p1 getConfigureSource]
 } {{My Test String} {My Test String} {}}
 
 
@@ -150,17 +150,17 @@ test ConfigurableAttribute-4.1 {setExpression, getExpression} {
     list $r1 [$c1 getExpression]
 } {{My Test String} {Another Test String}}
 
-test ConfigurableAttribute-4.1.1 {value, getText, getSource} {
+test ConfigurableAttribute-4.1.1 {value, getConfigureText, getConfigureSource} {
     # Uses 4.1 above, testing that the StringAttributes don't show up
-    list [$c1 value] [$c1 getText] [$c1 getSource]
+    list [$c1 value] [$c1 getConfigureText] [$c1 getConfigureSource]
 } {{Another Test String} {Another Test String} {}}
 
-test ConfigurableAttribute-4.2 {getExpression exception, check out getSource} {
+test ConfigurableAttribute-4.2 {getExpression exception, check out getConfigureSource} {
     set c1 [java::new ptolemy.kernel.util.ConfigurableAttribute]
     $c1 configure [java::null] "NotAFile" {My Test String}
-    set r1 [$c1 getSource]
+    set r1 [$c1 getConfigureSource]
     catch {$c1 getExpression} errMsg
-    list $r1 $errMsg [$c1 getSource]
+    list $r1 $errMsg [$c1 getConfigureSource]
 } {NotAFile {java.net.MalformedURLException: no protocol: NotAFile} NotAFile}
 
 

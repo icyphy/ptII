@@ -53,19 +53,23 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Attribute.java \
 	BasicModelErrorHandler.java \
+	Changeable.java \
 	ChangeListener.java \
 	ChangeRequest.java \
-	CrossRefList.java \
 	Configurable.java \
 	ConfigurableAttribute.java \
-	Debuggable.java \
+	CrossRefList.java \
 	DebugEvent.java \
+	Debuggable.java \
 	DebugListener.java \
-	KernelException.java \
-	KernelRuntimeException.java \
+	Exportable.java \
+	Heritable.java \
 	IllegalActionException.java \
+	Instantiable.java \
 	InternalErrorException.java \
 	InvalidStateException.java \
+	KernelException.java \
+	KernelRuntimeException.java \
 	Locatable.java \
 	Location.java \
 	ModelErrorHandler.java \

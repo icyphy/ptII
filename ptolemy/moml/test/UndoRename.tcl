@@ -468,7 +468,7 @@ test UndoRename-1.6a {Test a vertex rename is updated across MoML} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top.level">
             <relation name="R1">
-                <vertex name="any" value="22, 33" />
+                <vertex name="any" value="22,33" />
             </relation>
         </entity>
     }]
@@ -476,12 +476,12 @@ test UndoRename-1.6a {Test a vertex rename is updated across MoML} {
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $change
 
-    # Now errname the added vertex
+    # Now rename the added vertex
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top.level">
             <relation name="R1">
                 <vertex name="any">
-                    <rename name="soemthing different" />
+                    <rename name="something different" />
                 </vertex>
             </relation>
         </entity>
@@ -509,7 +509,7 @@ test UndoRename-1.6a {Test a vertex rename is updated across MoML} {
         <relation name="r1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="R1" class="ptolemy.actor.TypedIORelation">
-            <vertex name="soemthing different" value="0.0, 0.0">
+            <vertex name="something different" value="22,33">
             </vertex>
         </relation>
     </entity>
@@ -542,7 +542,7 @@ test UndoRename-1.6b {Test a vertex rename is updated across MoML} {
         <relation name="r1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="R1" class="ptolemy.actor.TypedIORelation">
-            <vertex name="any" value="22, 33">
+            <vertex name="any" value="22,33">
             </vertex>
         </relation>
     </entity>

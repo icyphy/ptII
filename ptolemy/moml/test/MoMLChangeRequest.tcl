@@ -1119,8 +1119,6 @@ test MoMLChangeRequest-9.7 {test shadowing on deeper inner subclass} {
 	[$iiipD getExpression] \
 } {4 5 6 6 8 8 7 7 4 5 6 3 8 8 8 8}
 
-puts [$toplevel exportMoML]
-
 ######################################################################
 ####
 # Export MoML of inner components (builds on the above).
@@ -1289,4 +1287,16 @@ test MoMLChangeRequest-11.2 {test export MoML with parameter values} {
 </entity>
 }
 
-
+# Now paste the above MoML in the same context.
+test MoMLChangeRequest-11.2.1 {test paste with inherited and overridden values} {
+    set paste [$export exportMoML {iABcopy}]
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cA"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context $paste]
+    $context requestChange $change
+    set export [$toplevel getEntity "cA.iABcopy.iABC"]
+    $export exportMoML
+} {<entity name="iABC" class="cABC">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="6">
+    </property>
+</entity>
+}

@@ -32,6 +32,7 @@ package ptolemy.kernel;
 
 import ptolemy.kernel.util.CrossRefList;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
@@ -301,6 +302,39 @@ public class Relation extends NamedObj {
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Get a relation with the specified name in the specified container.
+     *  The returned object is assured of being an
+     *  instance of the same class as this object.
+     *  @param relativeName The name relative to the container.
+     *  @param container The container expected to contain the object, which
+     *   must be an instance of CompositeEntity.
+     *  @return An object of the same class as this object.
+     *  @throws InternalErrorException If the object does not exist
+     *   or has the wrong class, or if the specified container is not
+     *   an instance of CompositeEntity.
+     */
+    protected NamedObj _getHeritageObject(String relativeName, NamedObj container)
+            throws InternalErrorException {
+        if (!(container instanceof CompositeEntity)) {
+            throw new InternalErrorException(
+                    "Expected "
+                    + container.getFullName()
+                    + " to be an instance of ptolemy.kernel.CompositeEntity, but it is "
+                    + container.getClass().getName());
+        }
+        Relation candidate = ((CompositeEntity)container).getRelation(relativeName);
+        if (!getClass().isInstance(candidate)) {
+            throw new InternalErrorException(
+                    "Expected "
+                    + container.getFullName()
+                    + " to contain a port with name "
+                    + relativeName
+                    + " and class "
+                    + getClass().getName());
+        }
+        return candidate;
     }
 
     /** Return a reference to the local port list.

@@ -58,7 +58,7 @@ test Location-1.1 {} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="N0" class="ptolemy.kernel.util.NamedObj">
-    <property name="L1" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
+    <property name="L1" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
     </property>
 </entity>
 }
@@ -84,7 +84,7 @@ test Location-1.3 {} {
     set toplevel [$parser parse $moml_1]
     $parser parse {
 <entity name=".top">
-    <property name="location" class="ptolemy.kernel.util.Location" value="83.0, 69.0">
+    <property name="location" class="ptolemy.kernel.util.Location" value="{83.0, 69.0}">
     </property>
 </entity>
 }
@@ -93,7 +93,7 @@ test Location-1.3 {} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
-    <property name="location" class="ptolemy.kernel.util.Location" value="83.0, 69.0">
+    <property name="location" class="ptolemy.kernel.util.Location" value="{83.0, 69.0}">
     </property>
 </entity>
 }

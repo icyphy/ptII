@@ -41,6 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.Workspace;
 
 import java.io.IOException;
@@ -190,7 +191,8 @@ public class CompositeEntity extends ComponentEntity {
         _levelCrossingConnectAllowed = boole;
     }
 
-    /** List the contained class definitions in the order they were added
+    /** List the contained class definitions
+     *  in the order they were added
      *  (using their setContainer() method). The returned list does
      *  not include any entities that are not class definitions.
      *  The returned list is static in the sense
@@ -578,11 +580,11 @@ public class CompositeEntity extends ComponentEntity {
      *  links that this entity is responsible for are the inside links of
      *  its ports, and links on ports contained by contained entities.
      *  <p>
-     *  If any link is found where both ends of the link are class elements,
+     *  If any link is found where both ends of the link are inherited objects,
      *  then that link is not exported. It is assumed that the base class
      *  will export that link.  For this purpose, a port of a contained
-     *  entity is deemed to be a class element if it is itself a class
-     *  element <i>and</i> its container is a class element.
+     *  entity is deemed to be an inherited object if it is itself a class
+     *  element <i>and</i> its container is an inherited object.
      *  @param indentation The depth at which the output should be indented.
      *  @param filter A collection of ports, parameters, and entities, or
      *   null to apply no filtering.
@@ -615,9 +617,9 @@ public class CompositeEntity extends ComponentEntity {
                     useIndex = true;
                     continue;
                 }
-                // If both ends of the link are class elements, then
+                // If both ends of the link are inherited objects, then
                 // suppress the export.
-                if (relation.isClassElement() && port.isClassElement()) {
+                if (relation.isInherited() && port.isInherited()) {
                     continue;
                 }
                 // Apply filter.
@@ -680,12 +682,12 @@ public class CompositeEntity extends ComponentEntity {
                         useIndex = true;
                         continue;
                     }
-                    // If both ends of the link are class elements, then
+                    // If both ends of the link are inherited objects, then
                     // suppress the export.
-                    if (relation.isClassElement()
-                            && port.isClassElement()
+                    if (relation.isInherited()
+                            && port.isInherited()
                             && ((NamedObj)port.getContainer())
-                            .isClassElement()) {
+                            .isInherited()) {
                         continue;
                     }
                     // Apply filter.
@@ -788,7 +790,8 @@ public class CompositeEntity extends ComponentEntity {
     /** Get a contained entity by name. The name may be compound,
      *  with fields separated by periods, in which case the entity
      *  returned is contained by a (deeply) contained entity.
-     *  This method will return class definitions and ordinary entities.
+     *  This method will return class definitions
+     *  and ordinary entities.
      *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired entity.
      *  @return An entity with the specified name, or null if none exists.
@@ -885,26 +888,29 @@ public class CompositeEntity extends ComponentEntity {
         return Collections.enumeration(relationList());
     }
 
-    /** Create an instance by cloning this composite and then adjusting
-     *  the deferral relationships in the clone.  Specifically, any
-     *  deeply contained class definitions in the clone become subclasses
-     *  of the corresponding class definition in this prototype.
-     *  Any deeply contained instances instances of classes that
-     *  are deeply contained by this prototype become instances of
-     *  the corresponding new subclasses in the clone.
+    /** Create an instance by cloning this prototype and then adjust
+     *  the deferral relationship between the the clone and its parent,
+     *  and also any deferral relationships that are entirely contained
+     *  within the clone. That is, for any deferral relationship that
+     *  is entirely contained within the parent, a corresponding
+     *  deferral relationship is created within the clone.
+     *  <p>
+     *  The instantiated object is not a class definition (it is by default an
+     *  "instance" rather than a "class").  To make it a class definition
+     *  (a "subclass"), call setClassDefinition(true).
+     *  @see #setClassDefinition(boolean)
      *  @param container The container for the instance.
      *  @param name The name for the clone.
      *  @return A new instance that is a clone of this prototype
      *   with adjusted deferral relationships.
      *  @throws CloneNotSupportedException If this prototype
      *   cannot be cloned.
-     *  @throws IllegalActionException If this object is not a
-     *   class definition or the proposed container
-     *   is not acceptable.
+     *  @throws IllegalActionException If this object is not a class definition
+     *   or the proposed container is not acceptable.
      *  @throws NameDuplicationException If the name collides with
      *   an object already in the container.
      */
-    public Prototype instantiate(CompositeEntity container, String name)
+    public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
         CompositeEntity clone = (CompositeEntity)super.instantiate(container, name);
@@ -1106,7 +1112,7 @@ public class CompositeEntity extends ComponentEntity {
         }
         prefix = _stripNumericSuffix(prefix);
         String candidate = prefix;
-        int depth = maximumDeferralDepth();
+        int depth = maximumParentDepth();
         if (depth > 0) {
             prefix = prefix + "_" + depth + "_";
         }
@@ -1367,7 +1373,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @return The depth of the deferral.
      */
     protected int _getDeferralDepth(NamedObj definedObject) {
-        Prototype deferTo = getDeferTo();
+        Prototype deferTo = (Prototype)getParent();
         if (deferTo != null && deepContains(definedObject)) {
             String relativeName = definedObject.getName(this);
             // Regrettably, we have to look at the type
@@ -1453,7 +1459,8 @@ public class CompositeEntity extends ComponentEntity {
      *  deeply contained by the specified prototype, then find
      *  the corresponding object in the specified clone and defer
      *  to it instead. This method also calls the same method
-     *  on all contained class definitions and entities.
+     *  on all contained class definitions and
+     *  ordinary entities.
      *  @param prototype The object that was cloned.
      *  @param clone The clone.
      *  @throws IllegalActionException If the clone does not contain

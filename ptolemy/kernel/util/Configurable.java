@@ -100,7 +100,7 @@ public interface Configurable {
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
-    public String getSource();
+    public String getConfigureSource();
 
     /** Return the text string that represents the current configuration of
      *  this object.  Note that any configuration that was previously
@@ -110,5 +110,5 @@ public interface Configurable {
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
-    public String getText();
+    public String getConfigureText();
 }

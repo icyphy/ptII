@@ -35,9 +35,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.Workspace;
 
 
@@ -130,36 +131,46 @@ public class ComponentEntity extends Entity {
     /** Get the container entity.
      *  @return The container, which is an instance of CompositeEntity.
      */
-    public Nameable getContainer() {
+    public NamedObj getContainer() {
         return _container;
     }
 
-    /** Create an instance by cloning this prototype and then adjusting
-     *  the deferral relationships in the clone.  Specifically, the
-     *  clone defers its definition to this prototype. To create a
-     *  subclass, first instantiate it, then convert it to a class
-     *  definition by calling setClassDefinition(). The returned
-     *  instance will refer to this prototype by its full name
-     *  in the class attribute of its exported MoML. This overrides
-     *  the base class to set the container.
+    /** Create an instance by cloning this prototype and then adjust
+     *  the deferral relationship between the the clone and its parent.
+     *  Specifically, the
+     *  clone defers its definition to this prototype, which is its
+     *  "parent." It inherits all the objects contained by this prototype.
+     *  <p>
+     *  The new object is not a class definition (it is by default an "instance"
+     *  rather than a "class").  To make it a class definition (a "subclass"),
+     *  call setClassDefinition(true).
+     *  <p>
+     *  This method overrides the base class to use setContainer() to
+     *  specify the container.
+     *  @see #setClassDefinition(boolean)
      *  @param container The container for the instance.
      *  @param name The name for the clone.
      *  @return A new instance that is a clone of this prototype
      *   with adjusted deferral relationships.
      *  @throws CloneNotSupportedException If this prototype
      *   cannot be cloned.
-     *  @throws IllegalActionException If this object is not a
-     *   class definition or the proposed container
-     *   is not acceptable.
+     *  @throws IllegalActionException If this object is not a class definition
+     *   or the proposed container is not acceptable.
      *  @throws NameDuplicationException If the name collides with
      *   an object already in the container.
      */
-    public Prototype instantiate(CompositeEntity container, String name)
+    public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
+        if (!(container instanceof CompositeEntity)) {
+            throw new IllegalActionException(this,
+            "Cannot instantiate into a container that is not an instance of" +
+            " CompositeEntity: " +
+            container.getFullName());
+        }
         ComponentEntity clone = (ComponentEntity)
                 super.instantiate(container, name);
-        clone.setContainer(container);        
+        clone.setContainer((CompositeEntity)container);        
         return clone;
     }
 
@@ -282,7 +293,7 @@ public class ComponentEntity extends Entity {
                 }
                 // Since the new container is null, this object is being
                 // deleted. Break deferral references that it may have.
-                setDeferTo(null);
+                setParent(null);
             } else {
                 // checkContainer() above ensures that this cast is valid.
                 ((CompositeEntity)container)._finishedAddEntity(this);
@@ -290,7 +301,7 @@ public class ComponentEntity extends Entity {
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
                 // EAL 12/03, 2/04
-                setModifiedFromClass(true);
+                setModifiedHeritage(true);
             }
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.
@@ -371,7 +382,7 @@ public class ComponentEntity extends Entity {
             // If the class has objects that defer to it, then
             // refuse to convert.
             boolean hasDeferrals = false;
-            List deferred = getDeferredFrom();
+            List deferred = getChildren();
             StringBuffer names = new StringBuffer();
             if (deferred != null) {
                 // List contains weak references, so it's not
@@ -398,6 +409,41 @@ public class ComponentEntity extends Entity {
         }
     }
     
+    /** Get an entity with the specified name in the specified container.
+     *  The returned object is assured of being an
+     *  instance of the same class as this object.
+     *  @param relativeName The name relative to the container.
+     *  @param container The container expected to contain the object, which
+     *   must be an instance of CompositeEntity.
+     *  @return An object of the same class as this object.
+     *  @throws InternalErrorException If the object does not exist
+     *   or has the wrong class, or if the specified container is not
+     *   an instance of CompositeEntity.
+     */
+    protected NamedObj _getHeritageObject(String relativeName, NamedObj container)
+            throws InternalErrorException {
+        if (!(container instanceof CompositeEntity)) {
+            throw new InternalErrorException(
+                    "Expected "
+                    + container.getFullName()
+                    + " to be an instance of ptolemy.kernel.CompositeEntity,"
+                    + " but it is "
+                    + container.getClass().getName());
+        }
+        ComponentEntity candidate
+                = ((CompositeEntity)container).getEntity(relativeName);
+        if (!getClass().isInstance(candidate)) {
+            throw new InternalErrorException(
+                    "Expected "
+                    + container.getFullName()
+                    + " to contain a port with name "
+                    + relativeName
+                    + " and class "
+                    + getClass().getName());
+        }
+        return candidate;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
