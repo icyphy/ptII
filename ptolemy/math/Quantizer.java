@@ -276,24 +276,23 @@ public class Quantizer {
         BigDecimal epsilon;
         BigDecimal tmp;
 
+        // calculate epsilon
+        // This division divides two number in a precision of 40
+        // decimal behind the point. This is equivalent with a
+        // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
+        epsilon = _one.divide(_getTwoRaisedTo(number + 11),
+                40, BigDecimal.ROUND_HALF_EVEN);
+      
+        // Since there is slack in floating point numbers, add or
+        // subtract epsilon as appropriate to get the 'intuitively
+        // correct' fixed point value.  Note that this epsilon is MUCH smaller
+        // than the one performed with round.
         if ( x.signum() >= 0 ) {
-            // calculate epsilon
-            // This division divides two number in a precision of 40
-            // decimal behind the point. This is equivalent with a
-            // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
-            epsilon = _one.divide(_getTwoRaisedTo(number+5),
-                    40, BigDecimal.ROUND_HALF_EVEN);
             multiplier = x.add( epsilon );
         } else {
-            // calculate epsilon
-            // This division divides two number in a precision of 40
-            // decimal behind the point. This is equivalent with a
-            // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
-            tmp = _one.divide(_two, 40, BigDecimal.ROUND_HALF_EVEN);
-            epsilon = tmp.subtract( _one.divide(_getTwoRaisedTo(number+11),
-                    40, BigDecimal.ROUND_HALF_EVEN));
             multiplier = x.subtract(epsilon);
         }
+
         // determine the scale factor.
         BigDecimal kl = _getTwoRaisedTo(number).multiply( multiplier );
 
