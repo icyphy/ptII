@@ -9,8 +9,8 @@ supported at present.
 
 Partial list of unsupported features:
 
-method calls, inheritance, import statements, interfaces, reflection, garbage
-collection.
+class constructors, method calls, inheritance, import statements, interfaces, 
+reflection, garbage collection.
 
 .\test contains Java source files for testing the C code generator.
 .\bin  contains useful testing scripts
