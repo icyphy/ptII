@@ -1998,7 +1998,8 @@ void genDef ()
 /* include files */
 	//fprintf (fp, "#include \"%s.h\"\n", fullClass);
 	// FIXME: The package hardwired in
-	fprintf (fp, "package ptolemy.domains.sdf.cgc.lib;\n\n");
+	fprintf (fp, "package ptolemy.codegen.lib;\n\n");
+	fprintf (fp, "import ptolemy.data.*;\n");
 	fprintf (fp, "import ptolemy.data.expr.Parameter;\n");
 	fprintf (fp, "import ptolemy.data.type.BaseType;\n");
 	fprintf (fp, "import ptolemy.codegen.kernel.ClassicCGCActor;\n");
