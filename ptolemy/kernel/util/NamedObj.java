@@ -382,7 +382,7 @@ public class NamedObj implements
      *  are set to the attributes of the new object.
      *  The new object will be set to defer change requests, so change
      *  requests can be safely issued during cloning. However, it is
-     *  up to the caller of this clone() method to then executed the
+     *  up to the caller of this clone() method to then execute the
      *  the change requests, or to call setDeferringChangeRequests(false).
      *  This method read-synchronizes on the workspace.
      *  @param workspace The workspace for the new object.
