@@ -441,10 +441,9 @@ remote1distjavadocs:
 	-(cd $(REMOTE1PTIIDIST); $(OTHERMAKE) -k javadocs)
 
 # JSALLDIRS contains the directory that has the java files, not the test dir.
-# Kernel first, then data, then actor, then alphabetical
+# math first, then kernel, then data, then actor, then alphabetical
 # If you edit JSALLDIRS, then you should probably add the directory to
 # $PTII/doc/makefile in two places so that we automatically generate docs.
-# data/expr uxes math.ExtendedMath
 # Tests in actor/lib use DE, so actor/lib should be after de/lib
 # Tests in actor/lib/auto use vergil and moml
 # de/test should be run after sdf
@@ -459,9 +458,9 @@ remote1distjavadocs:
 # it hangs
 #
 JSALLDIRS = \
+	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/util \
-	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/data \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
 	$(REMOTE1PTIIDIST)/ptolemy/data/type \
