@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.Utilities;;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,30 +46,28 @@ import ptolemy.kernel.util.InternalErrorException;
    POSITIVE_INFINITY.
    
    <p> The time value contained by a time object is quantized according to
-   the time resolution specified by the <i>timePrecisionInDigits</i> parameter. The reason 
-   for this is that without quantization, it is extremely difficult to compare 
-   two time values with bit-to-bit accuracy because of the unpredictable 
-   numerical errors introduced during computation. 
+   the time resolution specified by the <i>timePrecisionInDigits</i> parameter. 
+   The reason for this is that without quantization, it is extremely difficult 
+   to compare two time values with digit-to-digit accuracy because of the 
+   unpredictable numerical errors introduced during computation. 
    In practice, two time values can only be distinguished if their difference 
    can be detected by some measuring instrument, which always has a smallest 
    unit for measurement. This smallest unit measurement gives the physical 
    meaning of the time resolution used for quantization. The quantization is 
    performed with the half-even rounding mode by default.        
    
-   <p> The time value can be retrived in two ways, the 
-   {@link #getBigDecimalValue()} method 
-   and the {@link #getDoubleValue()} method. The first method returns a 
-   BigDecimal while the second method returns a double value. There are some
-   limitations on both methods. First, the getBigDecimalValue method can not 
-   be applied on the above two time constants, because BigDecimal can not be 
-   used to represent infinities. Second, the getDoubleValue method can not 
+   <p> The time value can be retrived in two ways, the {@link #toString()} 
+   method and the {@link #getDoubleValue()} method. The first method returns a 
+   string representation while the second method returns a double value. There 
+   are some limitations on both methods. For the toString method, we can not 
+   directly do numerical operations on strings, in particular the above two 
+   time constants. For the getDoubleValue method, we can not 
    garantee that the returned double value preserves the time resolution 
-   because of the limited digits for double representation. The 
-   getBigDecimalValue method is recommanded and the getDoubleValue is 
-   deprecated but kept to support backwards compatibility. 
-   
+   because of the limited digits for double representation. We recommand to
+   operate time objects directly instead of the time values of time objects.
+      
    <p> Two operations, add and subtract, can be performed on a time object, 
-   where the argument can be a double, a BigDecimal, or a time object. If the 
+   where the argument can be a double or a time object. If the 
    argument is not a time object, the argument is quantized before the 
    operations are performed. These operations return a new time object with a 
    quantized result. 
@@ -109,6 +108,9 @@ import ptolemy.kernel.util.InternalErrorException;
 */
 public class Time implements Comparable {
     
+    // FIXME: added a double representation for time values to compare the 
+    // performance penalties introduced by using BigDecimal.
+    
     /** Construct a Time object with zero as the time value. This object
      *  is associated with the given director, which provides the necessary
      *  information for quantization. 
@@ -116,18 +118,12 @@ public class Time implements Comparable {
      */
     public Time(Director director) {
         _director = director;
-        _timeValue = _quantizeTimeValue(new BigDecimal(0));
-    }
-
-    /** Construct a Time object with the specified BigDecimal value as its
-     *  time value. The time object is associated with the given director, 
-     *  which provides the necessary information for quantization.  
-     *  @param director The director with which this time object is associated.
-     *  @param timeValue A BidDecimal value as the specified time value.
-     */
-    public Time(Director director, BigDecimal timeValue) {
-        _director = director;
-        _timeValue = _quantizeTimeValue(timeValue);
+        if (_usingDouble) {
+            _timeDoubleValue = 0.0;
+        } else {
+            _timeValue = _quantizeTimeValue(new BigDecimal(0));
+        }
+        
     }
 
     /** Construct a Time object with the specified double value as its
@@ -150,7 +146,28 @@ public class Time implements Comparable {
                 _isPositiveInfinite = true;
             }
         } else {
-            _timeValue = _quantizeTimeValue(new BigDecimal(timeValue));
+            if (!_usingDouble) {
+                _timeValue = _quantizeTimeValue(new BigDecimal(timeValue));
+            }
+        }
+        _timeDoubleValue = timeValue;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private constructor               ////
+
+    /** Construct a Time object with the specified BigDecimal value as its
+     *  time value. The time object is associated with the given director, 
+     *  which provides the necessary information for quantization.  
+     *  @param director The director with which this time object is associated.
+     *  @param timeValue A BidDecimal value as the specified time value.
+     */
+    private Time(Director director, BigDecimal timeValue) {
+        _director = director;
+        if (_usingDouble) {
+            _timeDoubleValue = 0.0;
+        } else {
+            _timeValue = _quantizeTimeValue(timeValue);
         }
     }
 
@@ -171,26 +188,6 @@ public class Time implements Comparable {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return a new time object whose time value is increased by the 
-     *  time value of the given BigDecimal. If the time value of this
-     *  time object is infinite, return this time object. Quantization 
-     *  is performed on both the timeValue argument and the result. 
-     *  @param timeValue The amount of time increment.
-     *  @return A new time object with the quantized and incremented time value.
-     */
-    public Time add(BigDecimal timeValue) {
-        // NOTE: A BigDecimal can not have its value being infinite or NaN, 
-        // so we only need to check whether this time object is infinite.
-        if (isInfinite()) {
-            // NOTE: we do not create a new time object since infinities
-            // are static and final constants of the time class.
-            return this;
-        } else {
-            BigDecimal quantizedTimeValue = _quantizeTimeValue(timeValue);
-            return new Time(_director, _timeValue.add(quantizedTimeValue));
-        }
-    }
 
     /** Return a new time object whose time value is increased by the 
      *  given double value. Quantization is performed on both the timeValue 
@@ -226,7 +223,15 @@ public class Time implements Comparable {
                 }
             }
         } else {
-            return add(new BigDecimal(timeValue));
+            if (isInfinite()) {
+                return this;
+            } else if (_usingDouble) {
+                double newValue = 
+                    _quantizeTimeValue(_timeDoubleValue + timeValue);
+                return new Time(_director, newValue);
+            } else {
+                return _add(new BigDecimal(timeValue));
+            }
         }
     }
 
@@ -258,7 +263,11 @@ public class Time implements Comparable {
                 return POSITIVE_INFINITY;
             }
         } else {
-            return add(time.getBigDecimalValue());
+            if (_usingDouble) {
+                return add(time.getDoubleValue());
+            } else {
+                return _add(time._getBigDecimalValue());
+            }
         }
     }
 
@@ -298,7 +307,12 @@ public class Time implements Comparable {
                 }
             }
         } else {
-            return _timeValue.compareTo(castedTime.getBigDecimalValue());
+            if (_usingDouble) {
+                return Double.compare(
+                        _timeDoubleValue, castedTime.getDoubleValue());
+            } else {
+                return _timeValue.compareTo(castedTime._getBigDecimalValue());
+            }
         }
     }
 
@@ -311,29 +325,12 @@ public class Time implements Comparable {
         return (this.compareTo(time) == 0);    
     }
 
-    /** Return the time value of this time object as a BigDecimal.
-     *  The returned value is not quantized. This method can not be applied
-     *  on time objects that have infinite time values. 
-     *  @return The BigDecimal time value.
-     */
-    public BigDecimal getBigDecimalValue() {
-        if (isInfinite()) {
-            throw new InternalErrorException("The getBigDecimalValue method " +
-                    "can not be applied on time objects with infinite " +
-                    "time values.");
-        } else {
-            return _timeValue;
-        }
-    }
-
     /** Return the double representation of the time value of this time object.
      *  Note limitations may apply, see BigDecimal.doubleValue(). 
      *  In particular, due to the fixed and limited number of bits of
      *  double representation in Java, the returned double value may not 
      *  have the specified time resoution if it is too big.
      *  @return The double representation of the time value.
-     *  @deprecated As Ptolemy II 4.1, use {@link #getBigDecimalValue()} 
-     *  instead.
      */
     public double getDoubleValue() {
         if (isPositiveInfinite()){
@@ -341,21 +338,25 @@ public class Time implements Comparable {
         } else if (isNegativeInfinite()) {
             return Double.NEGATIVE_INFINITY;
         } else {
-            // NOTE: A simple computation may help to warn users that
-            // the returned double value loses the specified precisoin.
-            // One example: if timePrecisionInDigits = 12, and time resolution is 1E-12,
-            // any double that is bigger than 8192.0 can distinguish from itself
-            // from a value slighter bigger (with the difference as time 
-            // resolution). 8192 is the LUB of the set of double values have
-            // the time resolution.
-            // NOTE: The strategy to find the LUB for a given time resolution r:
-            // find the smallest N such that time resolution r >=  2^(-1*N);
-            // get M = 52 - N, which is the multiplication we can apply on the
-            // significand without loss of time resolution;
-            // the LUB is approximately (1+1)*2^M. 
-            // NOTE: the formula to calculate a decimal value from a binary 
-            // representation is (-1)^(sign)x(1+significand)x2^(exponent-127). 
-            return getBigDecimalValue().doubleValue();
+            if (_usingDouble) {
+                return _timeDoubleValue;
+            } else {
+                // NOTE: A simple computation may help to warn users that
+                // the returned double value loses the specified precisoin.
+                // One example: if timePrecisionInDigits = 12, and time resolution is 1E-12,
+                // any double that is bigger than 8192.0 can distinguish from itself
+                // from a value slighter bigger (with the difference as time 
+                // resolution). 8192 is the LUB of the set of double values have
+                // the time resolution.
+                // NOTE: The strategy to find the LUB for a given time resolution r:
+                // find the smallest N such that time resolution r >=  2^(-1*N);
+                // get M = 52 - N, which is the multiplication we can apply on the
+                // significand without loss of time resolution;
+                // the LUB is approximately (1+1)*2^M. 
+                // NOTE: the formula to calculate a decimal value from a binary 
+                // representation is (-1)^(sign)x(1+significand)x2^(exponent-127). 
+                return _getBigDecimalValue().doubleValue();
+            }
         }
     }
 
@@ -371,7 +372,11 @@ public class Time implements Comparable {
         } else if (isPositiveInfinite()){
             return Integer.MAX_VALUE;
         } else {
-            return getBigDecimalValue().hashCode();
+            if (_usingDouble) {
+                return (new Double(_timeDoubleValue)).hashCode();
+            } else {
+                return _getBigDecimalValue().hashCode();
+            }
         }
     }
     
@@ -396,16 +401,6 @@ public class Time implements Comparable {
         return _isPositiveInfinite;
     }
     
-    /** Return a new time object whose time value is decreased by the 
-     *  time value of the given BigDecimal. Quantization 
-     *  is performed on both the timeValue argument and the result.  
-     *  @param timeValue The amount of time decrement.
-     *  @return A new time object with time value decremented.
-     */
-    public Time subtract(BigDecimal timeValue) {
-        return add(timeValue.negate());
-    }
-
     /** Return a new time object whose time value is decreased by the 
      *  given double value. Quantization is performed on both the 
      *  timeValue argument and the result. 
@@ -444,7 +439,11 @@ public class Time implements Comparable {
                 return NEGATIVE_INFINITY;
             }
         } else {
-            return add(time.getBigDecimalValue().negate());
+            if (_usingDouble) {
+                return add(-1*time.getDoubleValue());
+            } else {
+                return _add(time._getBigDecimalValue().negate());
+            }
         }
     }
 
@@ -459,7 +458,49 @@ public class Time implements Comparable {
         } else if (isNegativeInfinite()) {
             return "A negative infinity.";
         } else {
-            return getBigDecimalValue().toString();
+            if (_usingDouble) {
+                return "" + _timeDoubleValue;
+            } else {
+                return _getBigDecimalValue().toString();
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Return a new time object whose time value is increased by the 
+     *  time value of the given BigDecimal. If the time value of this
+     *  time object is infinite, return this time object. Quantization 
+     *  is performed on both the timeValue argument and the result. 
+     *  @param timeValue The amount of time increment.
+     *  @return A new time object with the quantized and incremented time value.
+     */
+    private Time _add(BigDecimal timeValue) {
+        // NOTE: A BigDecimal can not have its value being infinite or NaN, 
+        // so we only need to check whether this time object is infinite.
+        if (isInfinite()) {
+            // NOTE: we do not create a new time object since infinities
+            // are static and final constants of the time class.
+            return this;
+        } else {
+            BigDecimal quantizedTimeValue = _quantizeTimeValue(timeValue);
+            return new Time(_director, _timeValue.add(quantizedTimeValue));
+        }
+    }
+
+    /** Return the time value of this time object as a BigDecimal.
+     *  The returned value is not quantized. This method can not be applied
+     *  on time objects that have infinite time values. 
+     *  @return The BigDecimal time value.
+     */
+    private BigDecimal _getBigDecimalValue() {
+        if (isInfinite()) {
+            throw new InternalErrorException("The getBigDecimalValue method " +
+                    "can not be applied on time objects with infinite " +
+                    "time values.");
+        } else {
+            return _timeValue;
         }
     }
 
@@ -494,17 +535,36 @@ public class Time implements Comparable {
         }
     }
 
+    private double _quantizeTimeValue(double originalTimeValue) {
+        return Utilities.round(originalTimeValue, _getTimePrecisionInDigits());
+    }
+
+    /** Return a new time object whose time value is decreased by the 
+     *  time value of the given BigDecimal. Quantization 
+     *  is performed on both the timeValue argument and the result.  
+     *  @param timeValue The amount of time decrement.
+     *  @return A new time object with time value decremented.
+     */
+    private Time _subtract(BigDecimal timeValue) {
+        return _add(timeValue.negate());
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     // The director that this time object is associated with.
     private Director _director;
-    // The time value, which is quantized.
-    private BigDecimal _timeValue;
     // A boolean variable is true if the time value is a positive infinity.
     // By default, it is false.
     private boolean _isPositiveInfinite = false;
     // A boolean variable is true if the time value is a negative infinity.
     // By default, it is false.
     private boolean _isNegativeInfinite = false;
+    // A double representation of the time value.
+    private double _timeDoubleValue = 0.0;
+    // The time value, which is quantized.
+    private BigDecimal _timeValue = null;
+    // A boolean value that choose different representation of time values
+    // for performance comparison.
+    private boolean _usingDouble = false;
 }
