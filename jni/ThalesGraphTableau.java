@@ -55,6 +55,7 @@ import java.awt.Color;
    @see ThalesGraphFrame
    @author  Steve Neuendorffer
    @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ThalesGraphTableau extends ActorGraphTableau {
 

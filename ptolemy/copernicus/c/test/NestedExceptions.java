@@ -40,6 +40,7 @@
 
      @author Paul C. Yang, Ankush Varma
      @version $Id$
+     @since Ptolemy II 4.0
 */
 
 public class NestedExceptions {

@@ -62,6 +62,7 @@ import java.util.Iterator;
 
     @author Ankush Varma
     @version $Id$
+    @since Ptolemy II 4.0
 */
 public class NativeMethodGenerator {
 

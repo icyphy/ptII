@@ -98,6 +98,7 @@ import java.net.URL;
 
    @author Eric Albert (<a href="mailto:ejalbert@cs.stanford.edu">ejalbert@cs.stanford.edu</a>)
    @version $Id$, based on 1.4b1 (Released June 20, 2001)
+   @since Ptolemy II 3.0
 */
 public class BrowserLauncher {
 

@@ -39,6 +39,7 @@
 
     @author Paul C. Yang
     @version $Id$
+    @since Ptolemy II 4.0
 */
 
 

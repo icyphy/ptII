@@ -48,6 +48,7 @@ import soot.Transform;
     @author Shuvra S. Bhattacharyya, Michael Wirthlin, Stephen Neuendorffer,
     Edward A. Lee, Christopher Hylands
     @version $Id$
+    @since Ptolemy II 4.0
 */
 
 public class Main extends ptolemy.copernicus.java.Main {

@@ -48,6 +48,7 @@ import ptolemy.kernel.util.NamedObj;
 
    @author Edward A. Lee
    @version $Id$
+   @since Ptolemy II 3.0
 */
 public class LocationParameter extends Parameter implements Locatable {
 

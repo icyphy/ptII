@@ -38,6 +38,7 @@
 
     @author Ankush Varma
     @version $Id$
+    @since Ptolemy II 4.0
 */
 
 // This is the outer class.

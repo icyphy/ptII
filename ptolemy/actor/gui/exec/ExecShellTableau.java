@@ -58,6 +58,7 @@ import javax.swing.JPanel;
 
    @author Christopher Hylands and Edward A. Lee
    @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ExecShellTableau extends Tableau
     implements ShellInterpreter {

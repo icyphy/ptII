@@ -60,6 +60,7 @@ import ptolemy.util.MessageHandler;
    @see ArgumentConfigurer
    @author Edward A. Lee, V.Arnould
    @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ArgumentConfigurerDialog
     extends ComponentDialog

@@ -54,6 +54,7 @@ import org.python.util.PythonInterpreter;
    A tableau that provides an interactive shell for evaluating Python expressions.
    @author Christopher Hylands and Edward A. Lee
    @version $Id$
+   @since Ptolemy II 3.0
 */
 public class PythonShellTableau extends Tableau
     implements ShellInterpreter {

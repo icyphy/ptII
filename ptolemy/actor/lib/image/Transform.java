@@ -44,6 +44,7 @@ import java.awt.image.BufferedImage;
 @see ptolemy.apps.fullscreen.FullScreenImageDisplay
 @author  Christopher Hylands
 @version $Id$
+@since Ptolemy II 3.0
 */
 public class Transform {
 

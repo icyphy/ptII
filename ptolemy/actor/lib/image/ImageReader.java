@@ -58,6 +58,7 @@ import ptolemy.kernel.util.Workspace;
    @see AWTImageToken
    @author  Christopher Hylands
    @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ImageReader extends Source {
     // We don't extend ptolemy.actor.lib.Reader because we are not

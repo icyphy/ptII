@@ -49,6 +49,7 @@ import java.awt.Image;
 
    @author  Christopher Hylands
    @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ImageToString extends Transformer {
 

@@ -63,6 +63,7 @@ import javax.swing.SwingUtilities;
 
    @author James Yeh, Edward A. Lee
    @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ImageDisplay extends Sink implements Placeable {
 

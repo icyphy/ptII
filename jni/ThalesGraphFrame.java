@@ -53,6 +53,7 @@ import diva.graph.GraphPane;
 
    @author  Steve Neuendorffer, Vincent Arnould, Contributor: Edward A. Lee
    @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ThalesGraphFrame extends ActorGraphFrame {
 
