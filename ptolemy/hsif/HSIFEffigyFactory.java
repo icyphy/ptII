@@ -56,7 +56,7 @@ An HSIF filename can end with either .xml or .hsif
 @author Haiyang Zheng, Edward A. Lee, Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.2
-@see ptolemy.actor.Configuration
+@see ptolemy.actor.gui.Configuration
 @see Effigy
 */
 public class HSIFEffigyFactory extends EffigyFactory {
