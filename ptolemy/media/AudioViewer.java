@@ -87,15 +87,33 @@ public class AudioViewer extends PlotApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Release an resources. */
+    public void cleanup() {
+        if (_dataInputStream != null) {
+            try {
+                _dataInputStream.close();
+            } catch (Throwable throwable) {
+                System.out.println("Ignoring failure to close stream "
+                        + "on '" + _dataInputStream + "'");
+                throwable.printStackTrace();
+            }
+        }
+    }
+
     /** Create a new plot window and map it to the screen.
      */
     public static void main(String args[]) {
+        AudioViewer plot = null;
         try {
-            AudioViewer plot = new AudioViewer(args);
+            plot = new AudioViewer(args);
             plot.setTitle("Ptolemy Audio Viewer");
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
+        }  finally {
+            if (plot != null) {
+                plot.cleanup();
+            }
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -145,21 +163,30 @@ public class AudioViewer extends PlotApplication {
      *  @exception IOException If the stream cannot be read.
      */
     protected void _read(URL base, InputStream in) throws IOException {
-        _sound = new Audio(new DataInputStream(in));
-        // Configure the plot.
-        Plot plt = (Plot)plot;
-        plt.clear(true);
-        plt.setXRange(0, (_sound.size - 1)/8000.0);
-        plt.setXLabel("Time in seconds");
-        plt.setYRange(-1.0, 1.0);
-        double[] pltdata = _sound.toDouble(0);
-        if (pltdata != null) {
-            plt.addPoint(0, 0, pltdata[0], false);
-            for (int i = 1; i < pltdata.length; i++) {
-                plt.addPoint(0, i/8000.0, pltdata[i], true);
+        try {
+            _dataInputStream = new DataInputStream(in);
+            _sound = new Audio(_dataInputStream);
+            // Configure the plot.
+            Plot plt = (Plot)plot;
+            plt.clear(true);
+            plt.setXRange(0, (_sound.size - 1)/8000.0);
+            plt.setXLabel("Time in seconds");
+            plt.setYRange(-1.0, 1.0);
+            double[] pltdata = _sound.toDouble(0);
+            if (pltdata != null) {
+                plt.addPoint(0, 0, pltdata[0], false);
+                for (int i = 1; i < pltdata.length; i++) {
+                    plt.addPoint(0, i/8000.0, pltdata[i], true);
+                }
             }
+            plt.repaint();
+        } catch (IOException ex) {
+            cleanup();
+            // FIXME: fill in stack trace?
+            IOException newException = new IOException();
+            newException.initCause(ex);
+            throw newException;
         }
-        plt.repaint();
     }
 
     /** Play the sound.
@@ -169,12 +196,25 @@ public class AudioViewer extends PlotApplication {
             // Fill the iobuffer with audio data.
             ByteArrayOutputStream out =
                 new ByteArrayOutputStream(_sound.size);
+            DataOutputStream dataOutputStream = null;
             try {
-                _sound.writeRaw(new DataOutputStream(out));
+                dataOutputStream = new DataOutputStream(out);
+                _sound.writeRaw(dataOutputStream);
             } catch (IOException ex) {
                 throw new RuntimeException(
                         "Failed to convert audio data to stream.");
+            } finally {
+                if (dataOutputStream != null) {
+                    try {
+                        dataOutputStream.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on '" + dataOutputStream + "'");
+                        throwable.printStackTrace();
+                    }
+                }
             }
+
             byte[] _iobuffer = out.toByteArray();
             _instream = new ByteArrayInputStream(_iobuffer);
         }
@@ -212,6 +252,7 @@ public class AudioViewer extends PlotApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private DataInputStream _dataInputStream;
     private Audio _sound;
     private ByteArrayInputStream _instream;
 
