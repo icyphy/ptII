@@ -775,6 +775,8 @@ public class Query extends JPanel {
                     buttons[i].setSelected(false);
                 }
             }
+        } else if (result instanceof QueryFileChooser) {
+            ((QueryFileChooser)result).setFileName(value);
         } else {
             throw new IllegalArgumentException("Query class cannot set"
                     + " a string representation for entries of type "
@@ -1256,14 +1258,22 @@ public class Query extends JPanel {
         public void actionPerformed(ActionEvent e) {
             JFileChooser fileChooser 
                     = new JFileChooser(new File(_directory));
+            fileChooser.setApproveButtonText("Select");
+            // FIXME: The following doesn't have any effect.
+            fileChooser.setApproveButtonMnemonic('S');
             int returnValue = fileChooser.showOpenDialog(Query.this);
             if(returnValue == JFileChooser.APPROVE_OPTION) {
+                // FIXME: Not so simple... need directory info.
+                // getCurrentDirectory().  setCurrentDirectory(File).
                 _entryBox.setText(fileChooser.getSelectedFile().getName());
                 _notifyListeners(_name);
             }
         }
         public String getSelectedFileName() {
             return _entryBox.getText();
+        }
+        public void setFileName(String name) {
+            _entryBox.setText(name);
         }
         private JTextField _entryBox;
         private String _directory;
