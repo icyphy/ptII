@@ -196,7 +196,7 @@ public abstract class Branch {
 
     /** Set the BoundaryReceiver this branch is trying to rendezvous with.
      *  This method should only be called from derived classes.
-     *  @param rec The BoundaryReceiver this branch is trying to 
+     *  FIXME:param rec The BoundaryReceiver this branch is trying to 
      *   rendezvous with.
     protected void setReceiver(BoundaryReceiver rec) {
         _receiver = rec;
