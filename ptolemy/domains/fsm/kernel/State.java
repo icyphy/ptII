@@ -193,16 +193,16 @@ public class State extends ComponentEntity {
             _refinement = new TypedActor[size];
             Nameable container = getContainer();
             TypedCompositeActor containerContainer =
-                    (TypedCompositeActor)container.getContainer();
+                (TypedCompositeActor)container.getContainer();
             int index = 0;
             while (tokenizer.hasMoreTokens()) {
                 String name = tokenizer.nextToken().trim();
                 if (name.equals("")) {
                     throw new IllegalActionException(this,
-                    "Malformed list of refinements: " + names);
+                            "Malformed list of refinements: " + names);
                 }
                 TypedActor element =
-                        (TypedActor)containerContainer.getEntity(name);
+                    (TypedActor)containerContainer.getEntity(name);
                 if (element == null) {
                     throw new IllegalActionException(this, "Cannot find "
                             + "refinement with name \"" + name

@@ -91,7 +91,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *   any relation already in the container.
      */
     public InterfaceAutomatonTransition(InterfaceAutomaton container,
-                                        String name)
+            String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
@@ -143,24 +143,24 @@ public class InterfaceAutomatonTransition extends Transition {
                 // an input or output transition, the parameter is still
                 // in the Interface Automaton.
                 InterfaceAutomaton container =
-                        (InterfaceAutomaton)getContainer();
+                    (InterfaceAutomaton)getContainer();
                 if (container.getAttribute(name) == null) {
                     try {
                         Parameter param = new Parameter(container, name);
                     } catch (NameDuplicationException exception) {
                         // should not happen
                         throw new InternalErrorException(
-                            "InterfaceAutomatonTransition.attributeChanged:\n"
-                            + "Cannot create Parameter for internal "
-                            + "transition:\n"
-                            + exception.getMessage());
+                                "InterfaceAutomatonTransition.attributeChanged:\n"
+                                + "Cannot create Parameter for internal "
+                                + "transition:\n"
+                                + exception.getMessage());
                     }
                 }
                 setGuardExpression("true");
                 outputActions.setExpression(name + "=true");
             } else {
                 throw new IllegalActionException(
-                    "InterfaceAutomatonTransition.attributeChanged: "
+                        "InterfaceAutomatonTransition.attributeChanged: "
                         + "The argument " + label + " does not end with ? "
                         + "or ! or ;");
             }
