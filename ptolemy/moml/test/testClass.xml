@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<class name="a" extends="ptolemy.kernel.CompositeEntity">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="x">
+    </property>
+    <port name="port" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <entity name="c" class="ptolemy.kernel.ComponentEntity">
+    </entity>
+</class>
