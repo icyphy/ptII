@@ -74,12 +74,12 @@ foreach i $configs {
     set inputFileNamesToSkip [java::new java.util.LinkedList]
     # Alphabetical please
     $inputFileNamesToSkip add "/apps/apps.xml"
-    $inputFileNamesToSkip add "/comm/comm.xml"
+    $inputFileNamesToSkip add "/io/comm/comm.xml"
     $inputFileNamesToSkip add "/experimentalDirectors.xml"
     $inputFileNamesToSkip add "/lib/interactive.xml"
     $inputFileNamesToSkip add "/jai/jai.xml"
     $inputFileNamesToSkip add "/jmf/jmf.xml"
-    $inputFileNamesToSkip add "/joystick/joystick.xml"
+    $inputFileNamesToSkip add "/joystick/jstick.xml"
     $inputFileNamesToSkip add "/jxta/jxta.xml"
     $inputFileNamesToSkip add "/matlab.xml"
 
