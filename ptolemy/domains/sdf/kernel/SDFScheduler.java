@@ -726,11 +726,11 @@ public class SDFScheduler extends Scheduler {
      *  @return A CircularList of the Actors in the order they should fire.
      *  @exception NotSchedulableException If the algorithm encounters an SDF
      *  graph that is not consistent with the firing vector, or detects an
-     *  inconsistent internal state, or detects a graph that cannot be 
+     *  inconsistent internal state, or detects a graph that cannot be
      *  scheduled.
      */
     private CircularList _scheduleConnectedActors(
-            CircularList actorList) 
+            CircularList actorList)
 	throws NotSchedulableException {
 
         // A linked list containing all the actors that have no inputs
@@ -762,7 +762,7 @@ public class SDFScheduler extends Scheduler {
 		    waitingTokens.putAt(ainputport, tokencount);
 		}
 	    }
-		    
+
 	    schedulableEntities = actorList.elements();
 	    // simulate the creation of initialization tokens (delays).
 	    // Fill readyToScheduleActorList with all the actors that have
@@ -771,18 +771,18 @@ public class SDFScheduler extends Scheduler {
 		Actor a = (Actor)schedulableEntities.nextElement();
 
 		Enumeration aoutputports = a.outputPorts();
-		while(aoutputports.hasMoreElements()) {		
+		while(aoutputports.hasMoreElements()) {
 		    IOPort aOutputPort = (IOPort) aoutputports.nextElement();
 		    int count = _getTokenInitProduction(aOutputPort);
 		    if(count > 0) {
-			_simulateTokensCreated(aOutputPort, 
+			_simulateTokensCreated(aOutputPort,
 					       count,
 					       actorList,
-					       readyToScheduleActorList, 
+					       readyToScheduleActorList,
 					       waitingTokens);
 		    }
 		}
-     
+
 		int inputCount = _countUnfulfilledInputs(a, actorList,
                         waitingTokens);
 		if(inputCount == 0)
@@ -791,7 +791,7 @@ public class SDFScheduler extends Scheduler {
 		_debug("Actor " + ((ComponentEntity) a).getName() +
                         " has " + (new Integer(inputCount)).toString() +
                         " unfulfilledInputs.");
-		    
+
 	    }
 
 	    while(readyToScheduleActorList.size() > 0) {
@@ -802,10 +802,10 @@ public class SDFScheduler extends Scheduler {
 		    _debug("Port " + port.getFullName());
 		    int tokencount[] = (int[])waitingTokens.at(port);
 		    _debug("Number of channels = " + tokencount.length);
-		    for(int channel = 0; 
-			channel < tokencount.length; 
+		    for(int channel = 0;
+			channel < tokencount.length;
 			channel++)
-			_debug("Channel " + channel + " has " + 
+			_debug("Channel " + channel + " has " +
 			       tokencount[channel] + " tokens.");
 		}
 
@@ -839,10 +839,10 @@ public class SDFScheduler extends Scheduler {
 		    int count =
 			_getTokenProductionRate(aOutputPort);
 
-		    _simulateTokensCreated(aOutputPort, 
+		    _simulateTokensCreated(aOutputPort,
 					   count,
 					   actorList,
-					   readyToScheduleActorList, 
+					   readyToScheduleActorList,
 					   waitingTokens);
 		}
 
@@ -911,7 +911,7 @@ public class SDFScheduler extends Scheduler {
 	    }
 	    throw new NotSchedulableException(s);
 	}
-		
+
         Enumeration eschedule = newSchedule.elements();
         _debug("Schedule is:");
         while(eschedule.hasMoreElements())
@@ -1149,18 +1149,18 @@ public class SDFScheduler extends Scheduler {
                 outputPort.getFullName());
 
 	Receiver[][] creceivers = outputPort.getRemoteReceivers();
-	
+
 	_debug("source channels = " + creceivers.length);
 	int sourcechannel;
-	for(sourcechannel = 0; 
-	    sourcechannel < creceivers.length; 
+	for(sourcechannel = 0;
+	    sourcechannel < creceivers.length;
 	    sourcechannel++) {
-	    _debug("destination receivers = " + 
+	    _debug("destination receivers = " +
 		   creceivers[sourcechannel].length);
 	    int destinationreceiver;
-	    for(destinationreceiver = 0; 
-		destinationreceiver < creceivers[sourcechannel].length; 
-		destinationreceiver++) {		
+	    for(destinationreceiver = 0;
+		destinationreceiver < creceivers[sourcechannel].length;
+		destinationreceiver++) {
 		IOPort connectedPort =
 		    (IOPort) creceivers[sourcechannel][destinationreceiver].
 		    getContainer();
@@ -1168,17 +1168,17 @@ public class SDFScheduler extends Scheduler {
 		    (ComponentEntity) connectedPort.getContainer();
 		// Only proceed if the connected actor is something we are
 		// scheduling.  The most notable time when this will not be
-		// true is when a connections is made to the 
+		// true is when a connections is made to the
 		// inside of an opaque port.
 		if(actorList.includes(connectedActor)) {
-		    int destinationchannel = 
-			_getChannel(connectedPort, 
+		    int destinationchannel =
+			_getChannel(connectedPort,
 				    creceivers[sourcechannel]
 				    [destinationreceiver]
 				    );
 		    int[] tokens = (int[]) waitingTokens.at(connectedPort);
 		    tokens[destinationchannel] += createdTokens;
-		    _debug("Channel " + destinationchannel + " of " + 
+		    _debug("Channel " + destinationchannel + " of " +
 			   connectedPort.getName());
 		    // Check and see if the connectedActor can be scheduled
 		    int ival =
@@ -1305,7 +1305,7 @@ public class SDFScheduler extends Scheduler {
      *  given receiver.  If the receiver is not contained within the port,
      *  throw an InternalErrorException.
      */
-    private int _getChannel(IOPort port, Receiver receiver) 
+    private int _getChannel(IOPort port, Receiver receiver)
 	throws IllegalActionException {
 	int width = port.getWidth();
 	_debug("port width = " + width);
@@ -1315,8 +1315,8 @@ public class SDFScheduler extends Scheduler {
 	for(channel = 0; channel < receivers.length; channel++) {
 	    int receivernumber;
 	    _debug("number of receivers = " + receivers[channel].length);
-	    for(receivernumber = 0; 
-		receivernumber < receivers[channel].length; 
+	    for(receivernumber = 0;
+		receivernumber < receivers[channel].length;
 		receivernumber++)
 		if(receivers[channel][0] == receiver) return channel;
 	}
@@ -1326,8 +1326,8 @@ public class SDFScheduler extends Scheduler {
 	for(channel = 0; channel < receivers.length; channel++) {
 	    int receivernumber;
 	    _debug("number of insidereceivers = " + receivers[channel].length);
-	    for(receivernumber = 0; 
-		receivernumber < receivers[channel].length; 
+	    for(receivernumber = 0;
+		receivernumber < receivers[channel].length;
 		receivernumber++)
 		if(receivers[channel][0] == receiver) return channel;
 	}

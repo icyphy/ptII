@@ -233,7 +233,7 @@ test SDFDirector-6.1 {Test wormhole activation} {
     set iter [$d3 getAttribute iterations]
     _testSetToken $iter  [java::new {ptolemy.data.IntToken int} 6]
     $manager run
-    list [$a3 getHistory] 
+    list [$a3 getHistory]
 } {{ptolemy.data.IntToken(0)
 ptolemy.data.IntToken(1)
 ptolemy.data.IntToken(2)
@@ -270,7 +270,7 @@ test SDFDirector-6.2 {Test transparent activation} {
     set iter [$d3 getAttribute iterations]
     _testSetToken $iter  [java::new {ptolemy.data.IntToken int} 6]
     $manager run
-    list [$a3 getHistory] 
+    list [$a3 getHistory]
 } {{ptolemy.data.IntToken(0)
 ptolemy.data.IntToken(1)
 ptolemy.data.IntToken(2)
