@@ -49,7 +49,7 @@ and Army Research Office.
 
 @see ResolveClassVisitor
 
-@author Jeff Tsay
+@author Jeff Tsay, Christopher Hylands
 @version $Id$
  */
 public class ResolveInheritanceVisitor extends ResolveVisitorBase
@@ -168,18 +168,96 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         return _myClass;
     }
 
-    /** Return true iff newThrows is a "subset" of oldThrows (j8.4.4) */
-    protected static boolean _throwsSubset(Set newThrows,
-            Set oldThrows) {
-        // FIXME : even Titanium appears to be having trouble
-        return true;
+    /** The default visit method. Visit all child nodes. */
+    protected Object _defaultVisit(TreeNode node, LinkedList args) {
+        LinkedList childArgs = new LinkedList();
+        TNLManip.traverseList(this, args, node.children());
+        return null;
     }
 
-    /** Return true iff MEMBER would be hidden or overridden by a declaration in TO.
-     */
-    protected boolean _overriddenIn(JavaDecl member, ClassDecl to) {
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The type policy used to do comparison of types. */
+    protected TypePolicy _typePolicy = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Given ClassDecls TO and FROM, add to TO's environ the members in
+    // CATEGORIES (a bitwise union of category values) that TO
+    // inherits from FROM.
+    private void _fillInInheritedMembers(ClassDecl to,
+            ClassDecl from) {
+        // make sure 'from' is filled in
+        TreeNode sourceNode = from.getSource();
+
+        if ((sourceNode != null) && (sourceNode != AbsentTreeNode.instance)) {
+            sourceNode.accept(this, null);
+        }
+
+        Iterator declItr = from.getEnviron().allProperDecls();
+
+        Environ toEnviron = to.getEnviron();
+
+        while (declItr.hasNext()) {
+            JavaDecl member = (JavaDecl) declItr.next();
+
+            if (((member.category &
+                    (CG_FIELD | CG_METHOD | CG_USERTYPE)) != 0) &&
+                    ((member.getModifiers() & PRIVATE_MOD) == 0) &&
+                    !_overriddenIn(member, to)) {
+                toEnviron.add(member);
+            }
+        }
+    }
+
+
+    // Return true if there is at least one abstract method in the class
+    // environment.
+    private static boolean _hasAbstractMethod(UserTypeDeclNode node,
+            boolean debug ) {
+        Environ classEnv = JavaDecl.getDecl((NamedNode) node).getEnviron();
+
+        Iterator memberItr = classEnv.allProperDecls();
+
+        if (node.getName().getIdent().equals("Variable")) {
+            System.out.println("----Now checking Variable");
+            debug = true;
+        }
+
+        while (memberItr.hasNext()) {
+            JavaDecl member = (JavaDecl) memberItr.next();
+            if (debug) {
+                System.out.println("ResolveInheritanceVisitor." +
+                            "_hasAbstractMethod: " + member.fullName());
+            }
+            if ((member.category == CG_METHOD) &&
+                    ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
+                if (debug) {
+                    System.out.println("ResolveInheritanceVisitor." +
+                            "_hasAbstractMethod: Found abstract method " +
+                            member.fullName() + " while looking in " +
+                            node.getName().getIdent());
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Return true iff MEMBER would be hidden or overridden by a
+    // declaration in TO. 
+    private boolean _overriddenIn(JavaDecl member, ClassDecl to) {
         Environ env = to.getEnviron();
         String memberName = member.getName();
+        boolean debug = false;
+        if (to.fullName().equals("ptolemy.data.expr.Variable")) {
+            debug = true;
+            System.out.println("ResolveInheritanceVisitor." +
+                    "_overriddenIn(" +
+                            member.fullName() + "," +  to.fullName() + ")#1");
+        }
 
         if (member.category == CG_FIELD) {
             FieldDecl current = (FieldDecl)
@@ -204,11 +282,23 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
                 MethodDecl d = (MethodDecl) methodItr.next();
 
+                if (debug) {
+                    System.out.println("ResolveInheritanceVisitor." +
+                            "_overriddenIn(" +
+                            member.getName() + "," +  to.getName() + ")#2 " + 
+                            d.fullName() + " " +
+                            methodMember.fullName());
+                }
+
                 if (_typePolicy.doMethodsConflict(d, methodMember)) {
 
                     // Note: member is overriden method, d is overriding method
 
                     if (d == methodMember) {
+                        if (debug) {
+                            System.out.println("ResolveInheritanceVisitor." +
+                                    "_overriddenIn(): seeing the same thing twice");
+                        }
                         return true; // seeing the same thing twice
                     }
 
@@ -222,6 +312,17 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
                     boolean inheritAllAbstract =
                         (!isLocalDecl && ((dm & ABSTRACT_MOD) != 0));
 
+                    if (debug) {
+                            System.out.println("ResolveInheritanceVisitor." +
+                                    "_overriddenIn(" +
+                                    member.getName() + "," +
+                                    to.getName() + "): " + 
+                                    "isLocalDecl: " + isLocalDecl +
+                                    " inheritAllAbstract: " +
+                                    inheritAllAbstract +
+                                    d.getContainer().getName() + " " +
+                                    to.getName());
+                                    }
                     TypeNode dtype = d.getType();
 
                     if (!_typePolicy.compareTypes(d.getType(),
@@ -255,12 +356,15 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
                     */
 
                     if (!inheritAllAbstract &&
-                            !_throwsSubset(d.getThrows(), methodMember.getThrows())) {
+                            !_throwsSubset(d.getThrows(),
+                                    methodMember.getThrows())) {
                         ApplicationUtility.error(d.getName() +
-                                " throws more exceptions than overridden " + memberName);
+                                " throws more exceptions than overridden " +
+                                memberName);
                     }
 
-                    // update overriding/hiding information for declarations of 'to'
+                    // update overriding/hiding information for
+                    // declarations of 'to'
                     if (isLocalDecl) {
                         methodMember.addOverrider(d);
 
@@ -274,92 +378,54 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 		            break;
                         }
                     }
+                        if (debug) {
+                            System.out.println("ResolveInheritanceVisitor." +
+                                    "_overriddenIn(" +
+                                    member.getName() + "," +
+                                    to.getName() + "): " + 
+                                    "!inheritAllAbstract: " + 
+                                    !inheritAllAbstract);
+                        }
+
                     return !inheritAllAbstract;
                 } // if (doMethodsConflict(dtype, mtype))
             } // while methodItr.hasNext()
-            return false;
-        } else if (member.category == CG_CLASS) {
-            return true; // declared inner classes override those in outer scope
-        } else if (member.category == CG_INTERFACE) {
-            return true; // declared inner classes override those in outer scope
-        }
-
-        return false;
-    }
-
-    /** Given ClassDecls TO and FROM, add to TO's environ the members in
-     *  CATEGORIES (a bitwise union of category values) that TO
-     *  inherits from FROM.
-     */
-    protected void _fillInInheritedMembers(ClassDecl to,
-            ClassDecl from) {
-        // make sure 'from' is filled in
-        TreeNode sourceNode = from.getSource();
-
-        if ((sourceNode != null) && (sourceNode != AbsentTreeNode.instance)) {
-            sourceNode.accept(this, null);
-        }
-
-        Iterator declItr = from.getEnviron().allProperDecls();
-
-        Environ toEnviron = to.getEnviron();
-
-        while (declItr.hasNext()) {
-            JavaDecl member = (JavaDecl) declItr.next();
-
-            if (((member.category &
-                    (CG_FIELD | CG_METHOD | CG_USERTYPE)) != 0) &&
-                    ((member.getModifiers() & PRIVATE_MOD) == 0) &&
-                    !_overriddenIn(member, to)) {
-                toEnviron.add(member);
-            }
-        }
-    }
-
-    /** The default visit method. Visit all child nodes. */
-    protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        LinkedList childArgs = new LinkedList();
-        TNLManip.traverseList(this, args, node.children());
-        return null;
-    }
-
-    /** Return true if there is at least one abstract method in the class
-     *  environment.
-     */
-    private static boolean _hasAbstractMethod(UserTypeDeclNode node, boolean debug ) {
-        Environ classEnv = JavaDecl.getDecl((NamedNode) node).getEnviron();
-
-        Iterator memberItr = classEnv.allProperDecls();
-
-        if (node.getName().getIdent().equals("Variable")) {
-            System.out.println("----Now checking Variable");
-            debug = true;
-        }
-
-        while (memberItr.hasNext()) {
-            JavaDecl member = (JavaDecl) memberItr.next();
             if (debug) {
                 System.out.println("ResolveInheritanceVisitor." +
-                            "_hasAbstractMethod: " + member.fullName());
+                        "_overriddenIn(): false #1");
             }
-            if ((member.category == CG_METHOD) &&
-                    ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
-                if (debug) {
-                    System.out.println("ResolveInheritanceVisitor." +
-                            "_hasAbstractMethod: Found abstract method " +
-                            member.fullName() + " while looking in " +
-                            node.getName().getIdent());
-                }
-                return true;
-            }
+            return false;
+        } else if (member.category == CG_CLASS) {
+            // Declared inner classes override those in outer scope.
+            if (debug) {
+                System.out.println("ResolveInheritanceVisitor." +
+                        "_overriddenIn(): Declared inner classes override those in outer scope.");
+                        }
+
+            return true;
+        } else if (member.category == CG_INTERFACE) {
+            // Declared inner classes override those in outer scope.
+            if (debug) {
+                System.out.println("ResolveInheritanceVisitor." +
+                        "_overriddenIn(): Declared inner classes override those in outer scope.");
+                        }
+
+            return true;
         }
+
         return false;
     }
 
-    /** The type policy used to do comparison of types. */
-    protected TypePolicy _typePolicy = null;
+    // Return true iff newThrows is a "subset" of oldThrows (j8.4.4)
+    private static boolean _throwsSubset(Set newThrows,
+            Set oldThrows) {
+        // FIXME : even Titanium appears to be having trouble
+        return true;
+    }
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The Class object of this visitor. */
     private static Class _myClass = new ResolveInheritanceVisitor().getClass();
-
 }
