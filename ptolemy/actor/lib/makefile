@@ -90,7 +90,6 @@ JSRCS = \
 	BooleanSwitch.java \
 	BusAssembler.java \
 	BusDisassembler.java \
-        CheckResult.java\
 	ClassWrapper.java \
 	Clock.java \
 	Commutator.java \

@@ -75,10 +75,12 @@ channel and 4 on the second.  Then you can set <i>correctValues</i> to
 With this setting, no tests are performed after the first two iterations
 of this actor.
 <p>
-The input values are checked in the postfire() method, which checks to
+The input values are checked in the fire() method, which checks to
 make sure that each input channel has a token.  If an input value is
-missing or differs from what it should be, then postfire() throws an
+missing or differs from what it should be, then fire() throws an
 exception. Thus, the test passes if no exception is thrown.
+If you need to check the input value in postfire() (say, after
+a fixed-point iteration has converged), then use NonStrictTest.
 <p>
 If the input is a DoubleToken or ComplexToken,
 then the comparison passes if the value is close to what it should
@@ -86,14 +88,11 @@ be, within the specified <i>tolerance</i> (which defaults to
 10<sup>-9</sup>.  The input data type is undeclared, so it can
 resolve to anything.
 <p>
-
-During ever iteration in which this actor checks an input value
-against a value from <i>correctValues</i>, the actor outputs a boolean
-with value false.  After reacing the end of the <i>correctValues</i>,
-this actor outputs true from its output port on every firing,
-regardless of the input data, indicating that the test has passed.
-This is useful for implementing tests that have data-dependent
-stopping conditions.
+On each firing, this actor produces the output <i>false</i> until
+it reaches the end of the <i>correctValues</i> array, at which point
+it outputs <i>true</i>.  This can be fed, for example, to an instance
+of the Stop actor to stop the test upon successfully matching the
+test data.
 
 @see NonStrictTest
 @author Edward A. Lee, Christopher Hylands, Jim Armsrong
@@ -101,7 +100,7 @@ stopping conditions.
 @since Ptolemy II 1.0
 */
 
-public class Test extends Sink {
+public class Test extends Transformer {
 
     /** Construct an actor with an input multiport.
      *  @param container The container.
@@ -115,7 +114,6 @@ public class Test extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
 
         Token[] defaultEntries = new Token[1];
@@ -142,12 +140,6 @@ public class Test extends Sink {
      */
     public Parameter tolerance;
 
-    /** An output port, which outputs true when the actor has reached
-     * the end of the <i>correctValues</i>, indicating that the test
-     * has passed.  Otherwise the port outputs false.
-     */
-    public TypedIOPort output;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -171,19 +163,21 @@ public class Test extends Sink {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _numberOfInputTokensSeen = 0;
-        output.send(0, new BooleanToken(false));
     }
 
     /** Read one token from each input channel and compare against
-     *  the value specified in <i>correctValues</i>.  If the iteration count
-     *  is larger than the length of <i>correctValues</i>, then return
-     *  immediately, indicating that the inputs correctly matched
-     *  the values in <i>correctValues</i> and that the test succeeded.
+     *  the value specified in <i>correctValues</i>. If the value
+     *  matches, then output false (to indicate that the test is not
+     *  complete yet) and return.  Otherwise, throw an exception.
+     *  If the iteration count is larger than the length of
+     *  <i>correctValues</i>, then output <i>true</i> and return,
+     *  indicating that the test is complete, i.e. that all
+     *  values in <i>correctValues</i> have been matched.
      *
      *  @exception IllegalActionException If an input is missing,
      *   or if its value does not match the required value.
      */
-    public boolean postfire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
         int width = input.getWidth();
         if (_numberOfInputTokensSeen
                 >= ((ArrayToken)(correctValues.getToken())).length()) {
@@ -196,13 +190,13 @@ public class Test extends Sink {
             }
             // Indicate that the test has passed.
             output.send(0, new BooleanToken(true));
-            return true;
-        } else { 
-            output.send(0, new BooleanToken(false));
+            return;
         }
+        output.send(0, new BooleanToken(false));
+
         Token referenceToken
-            = ((ArrayToken)(correctValues.getToken()))
-            .getElement(_numberOfInputTokensSeen);
+                = ((ArrayToken)(correctValues.getToken()))
+                .getElement(_numberOfInputTokensSeen);
         Token[] reference;
         if (width == 1 && !(referenceToken instanceof ArrayToken)) {
             reference = new Token[1];
@@ -264,7 +258,6 @@ public class Test extends Sink {
             }
         }
         _numberOfInputTokensSeen++;
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

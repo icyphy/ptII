@@ -7,7 +7,6 @@
       <group>
 <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest"/>
 <entity name="Test" class="ptolemy.actor.lib.Test"/>
-<entity name="CheckResult" class="ptolemy.actor.lib.CheckResult"/>
       </group>
     ?>
   </configure>
