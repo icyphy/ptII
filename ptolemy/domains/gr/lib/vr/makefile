@@ -41,7 +41,8 @@ DIRS =	$(PTQUICKTIME_DIR)
 # Root of the Java directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# PTVAR_JAR is set by configure in $PTII/mk/ptII.mk to $PTII/lib/ptvr.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTVR_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
