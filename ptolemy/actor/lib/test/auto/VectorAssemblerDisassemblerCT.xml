@@ -4,7 +4,7 @@
 <entity name="VectorAssemblerDisassemblerCT" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 518}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -78,46 +78,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 175.0]">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 70.0]">
-        </property>
-    </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 195.0]">
-        </property>
-    </entity>
-    <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 300.0]">
-        </property>
-    </entity>
-    <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[0.0; 0.0; 0.0], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9]}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 255.0]">
-        </property>
-    </entity>
     <entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
         </property>
@@ -136,6 +96,30 @@
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[0.0; 0.0; 0.0], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [1.0; 2.1; 3.1], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9], [0.0; 2.9; 3.9]}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 60.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.1, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9, 2.9}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.1, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9, 3.9}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 290.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -172,10 +156,6 @@
     <link port="VectorDisassembler.output" relation="relation3"/>
     <link port="VectorDisassembler.output" relation="relation4"/>
     <link port="VectorDisassembler.output" relation="relation5"/>
-    <link port="Test.input" relation="relation3"/>
-    <link port="Test2.input" relation="relation4"/>
-    <link port="Test3.input" relation="relation5"/>
-    <link port="Test4.input" relation="relation2"/>
     <link port="ContinuousClock.output" relation="relation8"/>
     <link port="ContinuousClock2.output" relation="relation9"/>
     <link port="ContinuousClock3.output" relation="relation6"/>
@@ -185,4 +165,8 @@
     <link port="PeriodicSampler.output" relation="relation7"/>
     <link port="PeriodicSampler.output" relation="relation10"/>
     <link port="PeriodicSampler.output" relation="relation11"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest2.input" relation="relation3"/>
+    <link port="NonStrictTest3.input" relation="relation4"/>
+    <link port="NonStrictTest4.input" relation="relation5"/>
 </entity>
