@@ -35,8 +35,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.lang.*;
-import java.util.*;
 import java.lang.Float;              /* Needed by javadoc */
 
 //////////////////////////////////////////////////////////////////////////

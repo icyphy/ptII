@@ -97,7 +97,7 @@ public class ComplexMatrixMath {
      *  @return A new matrix of complex numbers.
      */
     public static final Complex[][] allocCopy(final Complex[][] matrix) {
-        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
+        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix));
     }
 
     /** Return a new array that is formed by applying an instance of a 

@@ -32,11 +32,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.lang.*;
-import java.util.*;
-import java.lang.reflect.*;
-
-
 //////////////////////////////////////////////////////////////////////////
 //// ExtendedMath
 /**
@@ -46,7 +41,6 @@ import java.lang.reflect.*;
  * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
  * @version $Id$
  */
-
 public class ExtendedMath {
 
     ///////////////////////////////////////////////////////////////////
