@@ -31,11 +31,10 @@
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -92,10 +91,10 @@ public class HammingDecoder extends Transformer {
         codeBlockSize.setExpression("7");
 
         // Declare data types, consumption rate and production rate.
-        input.setTypeEquals(BaseType.INT);
+        input.setTypeEquals(BaseType.BOOLEAN);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
                 new IntToken(1));
-        output.setTypeEquals(BaseType.INT);
+        output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
                 new IntToken(1));
     }
@@ -203,16 +202,11 @@ public class HammingDecoder extends Transformer {
 
         // Read from the input; set up output size.
         Token[] inputToken = (Token[])input.get(0, _codeSizeValue);
-        IntToken[] input = new IntToken[_codeSizeValue];
-        IntToken[] result = new IntToken[_uncodeSizeValue];
+        BooleanToken[] input = new BooleanToken[_codeSizeValue];
 
         // Convert the first "_uncodeSizeValue" tokens to binaries.
         for (int i = 0; i < _codeSizeValue; i++) {
-            if (((IntToken)inputToken[i]).intValue() != 0) {
-                input[i] = _tokenOne;
-            } else {
-                input[i] = _tokenZero;
-            }
+            input[i] = ((BooleanToken)inputToken[i]);
         }
          
         // Compute syndrome.
@@ -225,19 +219,17 @@ public class HammingDecoder extends Transformer {
         int eValue = 0;
         for (int i = 0; i < _order; i++) {
             for (int j = 0; j < _uncodeSizeValue; j++) {
-               if (input[j].intValue() != 0) {
-                    syndrome[i] = syndrome[i] ^ (1 & _parityMatrix[j][i]);
-                }
+                syndrome[i] = syndrome[i] ^ 
+                    ((input[j].booleanValue() ? 1:0) & _parityMatrix[j][i]);
             }
-            if ((input[i + _uncodeSizeValue].intValue()) != 0) {
-                syndrome[i] = syndrome[i] ^ 1;
-            }
+            syndrome[i] = syndrome[i] ^ 
+                (input[i + _uncodeSizeValue].booleanValue() ? 1:0);
             eValue = (eValue << 1) | syndrome[i];
         }
          
         int eIndex = _index[eValue];
         if (eIndex < _uncodeSizeValue) {
-            input[eIndex] = new IntToken( input[eIndex].intValue() ^ 1);
+            input[eIndex] = new BooleanToken( !input[eIndex].booleanValue());
         }
 
         output.broadcast(input, _uncodeSizeValue);
@@ -272,9 +264,4 @@ public class HammingDecoder extends Transformer {
     // _inputNumber is invalid.
     private transient boolean _parameterInvalid = true;
 
-    // Since this actor always sends one of two tokens,
-    // we statically create those tokens to avoid unnecessary
-    // object construction.
-    private static IntToken _tokenZero = new IntToken(0);
-    private static IntToken _tokenOne = new IntToken(1);
 }

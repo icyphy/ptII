@@ -31,6 +31,7 @@
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -52,10 +53,10 @@ line is fed back.
 The low-order bit is called the 0-th bit, and should always be set.
 The next low-order bit indicates whether the output of the first delay
 should be fed back, etc.
-All the bits that are fed back are exclusive-ored together (i.e., their parity
-is computed), and the result is exclusive-ored with the input bit. The
-result is produced at the output and shifted into the delay line. We treat
-zero to be 0 and any non-zero integer to be 1.
+The input port receives boolean tokens. "TRUE" is treated as 1 and "FALSE"
+is treated as 0. All the bits that are fed back are exclusive-ored together
+(i.e., their parity is computed), and the result is exclusive-ored with the
+input bit. The result is produced at the output and shifted into the delay line.
 <p>
 With a proper choice of polynomial, the resulting output appears highly
 random even if the input is highly non-random.
@@ -178,8 +179,8 @@ public class Scrambler extends Transformer {
 
         // Create input port and declare data types.
         //input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.INT);
-        output.setTypeEquals(BaseType.INT);
+        input.setTypeEquals(BaseType.BOOLEAN);
+        output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -253,19 +254,17 @@ public class Scrambler extends Transformer {
         // Exclusive-or with the input if there is any.
         for (int i = 0; i < input.getWidth(); i++){
             if (input.hasToken(0)){
-                IntToken inputToken = (IntToken)input.get(0);
-                int inputTokenValue = inputToken.intValue();
-                if (inputTokenValue != 0){
-                    parity = parity ^ 1;
-                }
+                BooleanToken inputToken = (BooleanToken)input.get(0);
+                boolean inputTokenValue = inputToken.booleanValue();
+                parity =parity ^ (inputTokenValue ? 1:0);
             }
         }
         _latestShiftReg = reg | parity;
 
         if (parity == 1) {
-            output.broadcast(_tokenOne);
+            output.broadcast(BooleanToken.TRUE);
         } else {
-            output.broadcast(_tokenZero);
+            output.broadcast(BooleanToken.FALSE);
         }
     }
 
@@ -297,8 +296,4 @@ public class Scrambler extends Transformer {
     // Updated state of the shift register.
     private int _latestShiftReg;
 
-    // Since this actor always sends one of the two tokens, we statically
-    // create those tokens to avoid unnecessary object construction.
-    private static IntToken _tokenOne = new IntToken(1);
-    private static IntToken _tokenZero = new IntToken(0);
 }

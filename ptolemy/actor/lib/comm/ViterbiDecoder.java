@@ -31,6 +31,7 @@
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.TypeAttribute;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -53,22 +54,24 @@ parities for the corresponding convolutional encoder.
 The <i>uncodeBlockSize</i> is the input rate of the encoder, and it is
 actually the output rate of the decoder.
 <p>
-The input port of the decoder is double type and receives signals from
-the encoder corrupted with noise. The decoder tries to "guess" the most
-likely input sequence of the encoder by searching all possibilities and
-computing the "distance" between the codewords they produce and the
-received ones. The one that makes the minimum distance is the most likely
-input sequence.
+The decoder tries to "guess" the most likely input sequence of the 
+encoder by searching all possibilities and computing the "distance"
+between the codewords they produce and the received ones. The one
+that makes the minimum distance is the most likely input sequence.
 <p>
 There are 2 choices offered in this actor to compute such "distance".
-If the parameter <i>softDecoding</i> is set to be true, it will compute
-the Euclidean distance. If it is false, the decoder will first make a
-decision between 0 and 1 of the corrupted signals with a threshold of 0.5.
-Then it computes the Hamming distance. Soft decoding has lower probability
-of decoding error than hard decoding. But distance computation for hard
-decoding is easier, since it is based on bit-operations. Users can choose
-either mode based on the trade-off between probability of decoding error
-and computational complexity.
+If it the parameter <i>softDecoding<i> is set to be false, the input
+port will accept boolean tokens and compute the Hamming distance. 
+If the parameter <i>softDecoding</i> is set to be true, the input port
+will accept double tokens and compute the Euclidean distance. 
+The parameter <i>amplitude<i> should be a double array of length 2.
+The first element specifies the amplitude of "true" input. The second
+element specifies the amplitude of "false" input.
+<p>
+Soft decoding has lower probability of decoding error than hard decoding.
+But distance computation for hard decoding is easier, since it is based
+on bit-operations. Users can choose either mode based on the trade-off
+between probability of decoding error and computational complexity.
 <p>
 As each new corrupted codeword is received, the decoder makes a final
 decision on the most-likely input symbol of "D" firings earlier, where "D"
@@ -121,14 +124,20 @@ public class ViterbiDecoder extends Transformer {
         delay.setExpression("10");
 
         softDecoding = new Parameter(this, "softDecoding");
-        softDecoding.setExpression("true");
+        softDecoding.setExpression("false");
         softDecoding.setTypeEquals(BaseType.BOOLEAN);
+        
+        amplitude = new Parameter(this, "amplitude");
+        amplitude.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        amplitude.setExpression("{1.0, 0.0}");
 
         // Declare data types, consumption rate and production rate.
-        input.setTypeEquals(BaseType.DOUBLE);
+        //input.setTypeEquals(BaseType.DOUBLE);
+        _type = new ptolemy.actor.TypeAttribute(input, "inputType");
+        _type.setExpression("boolean");
         _inputRate = new Parameter(input, "tokenConsumptionRate",
                 new IntToken(1));
-        output.setTypeEquals(BaseType.INT);
+        output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
                 new IntToken(1));
 
@@ -163,11 +172,20 @@ public class ViterbiDecoder extends Transformer {
      *  soft decoding.
      */
     public Parameter softDecoding;
+    
+    /** This parameter should be a double array of length 2. The first
+     *  element defines the amplitude of "true" input. The second element
+     *  defines the amplitude of "false" input.
+     */
+    public Parameter amplitude;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>uncodeBlockSize</i> or
+    /** If the attribute being changed is <i>mode<i>, set input port
+     *  type to be double if <i>mode<i> is true; set it to be boolean
+     *  type  if it is false.
+     *  If the attribute being changed is <i>uncodeBlockSize</i> or
      *  <i>delay</i> then verify it is a positive integer; if it is
      *  <i>polynomialArray</i>, then verify that each of its elements
      *  is a positive integer.
@@ -179,6 +197,12 @@ public class ViterbiDecoder extends Transformer {
             throws IllegalActionException {
         if (attribute == softDecoding) {
             _mode = ((BooleanToken)softDecoding.getToken()).booleanValue();
+            // Set different input port types for soft and hard decoding.
+            if (_mode) {
+                _type.setExpression("double");
+            } else {
+                _type.setExpression("boolean");
+            }
         } else if (attribute == uncodeBlockSize) {
             _inputNumber = ((IntToken)uncodeBlockSize.getToken()).intValue();
             if (_inputNumber < 1 ) {
@@ -234,6 +258,20 @@ public class ViterbiDecoder extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (_inputNumberInvalid) {
+            if (_mode) {
+                ArrayToken ampToken = ((ArrayToken)amplitude.getToken());
+                if (ampToken.length() != 2) {
+                    throw new IllegalActionException(this,
+                        "Invalid amplitudes for soft decoding!");
+                }
+                _trueAmp = ((DoubleToken)ampToken.getElement(0)).doubleValue();
+                _falseAmp = ((DoubleToken)ampToken.getElement(1)).doubleValue();
+                if (_trueAmp == _falseAmp) {
+                    throw new IllegalActionException(this,
+                        "Amplitudes for true input and false input cannot be same!");    
+                }
+            }    
+            
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
                         "Output rate should be larger than input rate.");
@@ -311,10 +349,6 @@ public class ViterbiDecoder extends Transformer {
 
         // Read from the input port.
         Token[] inputToken = (Token[])input.get(0, _maskNumber);
-        double[] y = new double[_maskNumber];
-        for (int i = 0; i < _maskNumber; i++) {
-            y[i] = ((DoubleToken)inputToken[i]).doubleValue();
-        }
 
         // Search the optimal path (minimum distance) for each state.
         for (int state = 0; state < _rowNum; state ++) {
@@ -323,8 +357,22 @@ public class ViterbiDecoder extends Transformer {
             int minState = 0;
             for (int colIndex = 0; colIndex < _colNum; colIndex ++) {
                 // Compute the distance for each possible path to "state".
-                double d = _computeDistance(y,
-                        _truthTable[state][colIndex][0], _maskNumber, _mode);
+                double d = 0.0;
+                if (_mode) {
+                    double[] y = new double[_maskNumber];
+                    for (int i = 0; i < _maskNumber; i++) {
+                        y[i] = ((DoubleToken)inputToken[i]).doubleValue();
+                    }
+                    d = _computeSoftDistance(y, _trueAmp, _falseAmp,
+                        _truthTable[state][colIndex][0], _maskNumber);
+                } else {
+                    boolean[] y = new boolean[_maskNumber];
+                    for (int i = 0; i < _maskNumber; i++) {
+                        y[i] = ((BooleanToken)inputToken[i]).booleanValue();
+                    }
+                    d = (double)(_computeHardDistance(y, _truthTable[state][colIndex][0],
+                        _maskNumber));
+                }
                 // The previous state for that possibility.
                 int oldState = _truthTable[state][colIndex][1];
                 d = _tempDistance[oldState] + d;
@@ -351,9 +399,9 @@ public class ViterbiDecoder extends Transformer {
         // If the waiting time has reached "D", the decoder starts to send
         // the decoded bits to the output port.
         if (_flag < _depth) {
-            IntToken[] initialOutput = new IntToken[_inputNumber];
+            BooleanToken[] initialOutput = new BooleanToken[_inputNumber];
             for (int i = 0; i < _inputNumber; i ++) {
-                initialOutput[i] = _tokenZero;
+                initialOutput[i] = BooleanToken.FALSE;
             }
             output.broadcast(initialOutput, _inputNumber);
         } else {
@@ -367,9 +415,9 @@ public class ViterbiDecoder extends Transformer {
                 }
             }
 
-            // Cast the decoding result into binary bits and
+            // Cast the decoding result into booleans and
             // send them in sequence to the output.
-            IntToken[] decoded = new IntToken[_inputNumber];
+            BooleanToken[] decoded = new BooleanToken[_inputNumber];
             decoded = _convertToBit(_path[minIndex][0], _inputNumber);
             output.broadcast(decoded, _inputNumber);
 
@@ -434,41 +482,56 @@ public class ViterbiDecoder extends Transformer {
         return parity;
     }
 
-    /** Compute the distance given by the datum received from
+    /** Compute the Hamming distance given by the datum received from
      *  the input port and the value in the truthTable.
-     *  @param y Array of the double-type numbers received from
-     *  the input port.
+     *  @param y Array of the booleans received from the input port.
      *  @param truthValue integer representing the truth value
      *  from the truth table.
      *  @param maskNum The length of "y" and "truthValue".
-     *  @param mode The mode based on which the distance is computed.
      *  @return The distance.
      */
-    private double _computeDistance(
-            double[] y, int truthValue, int maskNum, boolean mode) {
-        double distance = 0.0;
+    private int _computeHardDistance(
+            boolean[] y, int truthValue, int maskNum) {
         int hammingDistance = 0;
         int z = 0;
         for (int i = 0; i < maskNum; i ++) {
             int truthBit = truthValue & 1;
             truthValue = truthValue >> 1;
-            if (mode == true) {
-                // Euclidean distance for soft decoding. Here we
-                // actually compute the square of the Euclidean distance.
-                distance = distance
-                    + java.lang.Math.pow(y[i] - truthBit, 2);
+
+            // Compute Hamming distance for hard decoding.
+            hammingDistance = hammingDistance + ((y[i] ? 1:0) ^ truthBit);
+        }
+        return hammingDistance;
+    }
+    
+    /** Compute the Euclidean distance given by the datum received from
+     *  the input port and the value in the truthTable.
+     *  @param y Array of the double-type numbers received from
+     *  the input port.
+     *  @param trueAmp Amplitude of "true" input.
+     *  @param falseAmp Amplitude of "false" input.
+     *  @param truthValue integer representing the truth value
+     *  from the truth table.
+     *  @param maskNum The length of "y" and "truthValue".
+     *  @return The distance.
+     */
+    private double _computeSoftDistance( double[] y, double trueAmp,
+        double falseAmp, int truthValue, int maskNum) {
+        double distance = 0.0;
+
+        for (int i = 0; i < maskNum; i ++) {
+            int truthBit = truthValue & 1;
+            truthValue = truthValue >> 1;
+            double truthAmp;
+            if (truthBit == 1) {
+                truthAmp = trueAmp;
             } else {
-                // Hard decoding.
-                // Make a decision of 0 or 1 before computing distance.
-                if (y[i] > 0.5) {
-                    z = 1;
-                } else {
-                    z = 0;
-                }
-                // Compute Hamming distance for hard decoding.
-                hammingDistance = hammingDistance + (z ^ truthBit);
-                distance = hammingDistance;
+                truthAmp = falseAmp;
             }
+            // Euclidean distance for soft decoding. Here we
+            // actually compute the square of the Euclidean distance.
+            distance = distance
+                + java.lang.Math.pow(y[i] - truthAmp, 2); 
         }
         return distance;
     }
@@ -479,13 +542,13 @@ public class ViterbiDecoder extends Transformer {
      *  @param length The length of "integer" in binary form.
      *  @return The bits of "integer" stored in an array.
      */
-    private IntToken[] _convertToBit(int integer, int length) {
-        IntToken[] bit = new IntToken[length];
+    private BooleanToken[] _convertToBit(int integer, int length) {
+        BooleanToken[] bit = new BooleanToken[length];
         for (int i = length -1; i >= 0; i --) {
             if ((integer & 1) == 1) {
-                bit[i] = _tokenOne;
+                bit[i] = BooleanToken.TRUE;
             } else {
-                bit[i] = _tokenZero;
+                bit[i] = BooleanToken.FALSE;
             }
             integer = integer >> 1;
         }
@@ -502,8 +565,15 @@ public class ViterbiDecoder extends Transformer {
     // Production rate of the output port.
     private Parameter _outputRate;
 
+    // Input port type.
+    private TypeAttribute _type;
+
     // Decoding mode.
     private boolean _mode;
+    
+    // Amplitudes for soft decoding.
+    private double _trueAmp;
+    private double _falseAmp;
 
     // Number bits the actor consumes per firing.
     private int _inputNumber;
@@ -546,9 +616,4 @@ public class ViterbiDecoder extends Transformer {
     // should be inserted in the buffers.
     private int _flag;
 
-    // Since this actor always sends one of two tokens,
-    // we statically create those tokens to avoid unnecessary
-    // object construction.
-    private static IntToken _tokenZero = new IntToken(0);
-    private static IntToken _tokenOne = new IntToken(1);
 }

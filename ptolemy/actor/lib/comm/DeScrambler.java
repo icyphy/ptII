@@ -31,6 +31,7 @@
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -80,10 +81,10 @@ public class DeScrambler extends Transformer {
         initial.setExpression("1");
 
         // Declare input data type.
-        input.setTypeEquals(BaseType.INT);
+        input.setTypeEquals(BaseType.BOOLEAN);
 
         // Declare output data type.
-        output.setTypeEquals(BaseType.INT);
+        output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,13 +143,12 @@ public class DeScrambler extends Transformer {
     public void fire() throws IllegalActionException {
         _latestShiftReg = _shiftReg;
         int mask = ((IntToken)polynomial.getToken()).intValue();
-        IntToken inputToken = ((IntToken)input.get(0));
-        int inputTokenValue = inputToken.intValue();
+        BooleanToken inputToken = ((BooleanToken)input.get(0));
+        boolean inputTokenValue = inputToken.booleanValue();
         int reg = _latestShiftReg << 1;
-        // Put the input in the low-order bit: non-zero is treated 1.
-        if (inputTokenValue != 0){
-            reg = reg | 1;
-        } 
+        // Put the input in the low-order bit.
+        reg =reg ^ (inputTokenValue ? 1:0);
+
         // Find the parity of "masked".
         int masked = mask & reg;
         int parity = 0;
@@ -160,9 +160,9 @@ public class DeScrambler extends Transformer {
 
         _latestShiftReg = reg;
         if (parity == 1){
-            output.broadcast(_tokenOne);
+            output.broadcast(BooleanToken.TRUE);
         }else {
-            output.broadcast(_tokenZero);
+            output.broadcast(BooleanToken.FALSE);
         }
     }
 
@@ -192,9 +192,5 @@ public class DeScrambler extends Transformer {
 
     // Updated state of the shift register.
     private int _latestShiftReg;
-
-    // Since this actor always sends one of the two tokens, we statically
-    // create those tokens to avoid unnecessary object construction.
-    private static IntToken _tokenOne = new IntToken(1);
-    private static IntToken _tokenZero = new IntToken(0);
+    
 }

@@ -31,11 +31,10 @@
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
-//import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-//import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -106,10 +105,10 @@ public class HammingCoder extends Transformer {
         codeBlockSize.setExpression("7");
 
         // Declare data types, consumption rate and production rate.
-        input.setTypeEquals(BaseType.INT);
+        input.setTypeEquals(BaseType.BOOLEAN);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
                 new IntToken(1));
-        output.setTypeEquals(BaseType.INT);
+        output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
                 new IntToken(1));
     }
@@ -206,15 +205,11 @@ public class HammingCoder extends Transformer {
 
         // Read from the input; set up output size.
         Token[] inputToken = (Token[])input.get(0, _uncodeSizeValue);
-        IntToken[] result = new IntToken[_codeSizeValue];
+        BooleanToken[] result = new BooleanToken[_codeSizeValue];
         
         // Convert the first "_uncodeSizeValue" tokens to binaries.
         for (int i = 0; i < _uncodeSizeValue; i++) {
-            if (((IntToken)inputToken[i]).intValue() != 0) {
-                result[i] = _tokenOne;
-            } else {
-                result[i] = _tokenZero;
-            }
+            result[i] = (BooleanToken)inputToken[i];
         }
          
         // Compute parities.
@@ -224,20 +219,15 @@ public class HammingCoder extends Transformer {
             parity[i] = 0;
         }
         for (int i = 0; i < _uncodeSizeValue; i++) {
-            if (result[i].intValue() != 0) {
-                for (int j = 0; j < _order; j++) {
-                    parity[j] = parity[j] ^ (1 & _parityMatrix[i][j]);
-                }
+            for (int j = 0; j < _order; j++) {
+                parity[j] = parity[j] ^ 
+                    ((result[i].booleanValue() ? 1:0) & _parityMatrix[i][j]);
             }
         }
-    
+        
         // Send the parity results to the output.
         for (int i = 0; i < _order; i++) {
-            if (parity[i] == 1){
-                result[i + _uncodeSizeValue] = _tokenOne;
-            }else{
-                result[i + _uncodeSizeValue] = _tokenZero;
-            }
+            result[i + _uncodeSizeValue] = new BooleanToken((parity[i] == 1));
         }
         output.broadcast(result, result.length);
     }
@@ -267,9 +257,4 @@ public class HammingCoder extends Transformer {
     // _inputNumber is invalid.
     private transient boolean _parameterInvalid = true;
 
-    // Since this actor always sends one of two tokens,
-    // we statically create those tokens to avoid unnecessary
-    // object construction.
-    private static IntToken _tokenZero = new IntToken(0);
-    private static IntToken _tokenOne = new IntToken(1);
 }

@@ -32,6 +32,7 @@ package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -47,8 +48,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 Generate a convolutional code by passing the information sequence to be
 transmitted through a linear finite-state shift register.
-The input port accepts a sequence of integers 0 and 1. The output port
-produces the encoded bits in a sequence of 0 and 1.
 The initial state of the shift register is given by the <i>initial</i>
 parameter, which should be a non-negative integer.
 The <i>uncodeBlockSize</i> parameter, denoted by "k", is the number of
@@ -66,6 +65,10 @@ The "n" parity results are produced in a sequence, where "n" is the
 length of the <i>polynomialArray</i>. The i-th bit in the sequence
 corresponds to the parity computed from the i-th polynomial. We call such
 an n-bit block of result as a <i>codeword</i>.
+<p>
+Like Scrambler, the input port accepts a sequence of booleans. When computing
+parities, the actor treats "true" as 1 and "false" as 0. The output port
+produces the encoded bits also into booleans.
 <p>
 Therefore, during each firing the encoder consumes "k" bits and produces
 "n" bits. The rate of this convolutional code is k/n.
@@ -121,10 +124,10 @@ public class ConvolutionalCoder extends Transformer {
         initial.setExpression("0");
 
         // Declare data types, consumption rate and production rate.
-        input.setTypeEquals(BaseType.INT);
+        input.setTypeEquals(BaseType.BOOLEAN);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
                 new IntToken(1));
-        output.setTypeEquals(BaseType.INT);
+        output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
                 new IntToken(1));
     }
@@ -237,24 +240,22 @@ public class ConvolutionalCoder extends Transformer {
         int reg = _latestShiftReg;
         for (int i = 0; i < _inputNumber; i++) {
             reg = reg << 1;
-            IntToken input = (IntToken)inputToken[i];
-            if (input.intValue() != 0) {
-                reg = reg | 1;
-            }
+            BooleanToken input = (BooleanToken)inputToken[i];
+                reg = reg | (input.booleanValue() ? 1:0);
         }
         _latestShiftReg = reg;
 
         // Compute the parities for all polynomials respectively.
-        IntToken[] result = new IntToken[_maskNumber];
+        BooleanToken[] result = new BooleanToken[_maskNumber];
         int[] parity = new int[_maskNumber];
         parity = _calculateParity(_mask, _maskNumber, reg);
 
         // Send the parity results to the output.
         for (int i = 0; i < _maskNumber; i++) {
             if (parity[i] == 1){
-                result[i] = _tokenOne;
+                result[i] = BooleanToken.TRUE;
             }else{
-                result[i] = _tokenZero;
+                result[i] = BooleanToken.FALSE;
             }
         }
         output.broadcast(result, result.length);
@@ -335,9 +336,4 @@ public class ConvolutionalCoder extends Transformer {
     // _inputNumber is invalid.
     private transient boolean _inputNumberInvalid = true;
 
-    // Since this actor always sends one of two tokens,
-    // we statically create those tokens to avoid unnecessary
-    // object construction.
-    private static IntToken _tokenZero = new IntToken(0);
-    private static IntToken _tokenOne = new IntToken(1);
 }

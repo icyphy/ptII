@@ -32,6 +32,7 @@ package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -66,6 +67,9 @@ Therefore, H<sub><i>n</i></sub> is a 2<sup><i>n</i></sup> by
 2<sup><i>n</i></sup> square matrix.
 The codeword length is 2<sup><i>n</i></sup>.
 <p>
+The actor produces Hadamard codeword in booleans. Therefore, 1 is treated
+as "true" and -1 is treated as "false".
+<p>
 @author Edward A. Lee and Rachel Zhou
 @version $Id$
 @since Ptolemy II 3.0
@@ -94,7 +98,7 @@ public class HadamardCode extends Source {
         log2Length.setExpression("5");
 
         // Declare output data type.
-        output.setTypeEquals(BaseType.INT);
+        output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -187,11 +191,8 @@ public class HadamardCode extends Source {
             // new sequence.
             _index = 0;
         }
-        if (_row[_index] == 1) {
-            output.broadcast(_tokenOne);
-        } else {
-            output.broadcast(_tokenMinusOne);
-        }
+        output.broadcast(new BooleanToken(_row[_index]));
+
         _index++;
         if (_index >= _row.length) {
             _index = 0;
@@ -227,7 +228,7 @@ public class HadamardCode extends Source {
      *  @param index Row index.
      *  @return Desired Hadamard row.
      */
-    private int[] _calculateRow(int matrixDimension, int index) {
+    private boolean[] _calculateRow(int matrixDimension, int index) {
         // NOTE: Don't need to check the arguments for validity
         // because this is a private method, and the usage pattern
         // guarantees that matrixDimension is a power of 2 and that
@@ -245,17 +246,17 @@ public class HadamardCode extends Source {
                 return _row1;
             }
         } else {
-            int[] result = new int[matrixDimension];
+            boolean[] result = new boolean[matrixDimension];
             int halfDimension = matrixDimension/2;
             int indexIntoHalfMatrix = index;
             if (index >= halfDimension) {
                 indexIntoHalfMatrix -= halfDimension;
             }
-            int[] halfRow = _calculateRow(halfDimension, indexIntoHalfMatrix);
+            boolean[] halfRow = _calculateRow(halfDimension, indexIntoHalfMatrix);
             System.arraycopy(halfRow, 0, result, 0, halfDimension);
             if (index >= halfDimension) {
                 for (int i = 0; i < halfDimension; i++) {
-                    result[halfDimension+i] = -halfRow[i];
+                    result[halfDimension+i] = !(halfRow[i]);
                 }
             } else {
                 System.arraycopy(
@@ -279,17 +280,13 @@ public class HadamardCode extends Source {
     private int _latestIndex;
 
     // Hadamard row computed from _calculateRow.
-    private int[] _row;
+    private boolean[] _row;
 
     // Rows of H<sub>1</sub>.
-    private static int[] _row0 = {1, 1};
-    private static int[] _row1 = {1, -1};
+    private static boolean[] _row0 = {true, true};
+    private static boolean[] _row1 = {true, false};
 
     // A flag indicating that the private variable _row is invalid.
     private transient boolean _rowValueInvalid = true;
 
-    // Since this actor always sends one of two tokens, we statically
-    // create those tokens to avoid unnecessary object construction.
-    private static IntToken _tokenMinusOne = new IntToken(-1);
-    private static IntToken _tokenOne = new IntToken(1);
 }
