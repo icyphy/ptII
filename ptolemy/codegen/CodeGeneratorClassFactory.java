@@ -43,30 +43,30 @@ public class CodeGeneratorClassFactory {
     protected CodeGeneratorClassFactory() {}
 
     public ActorCodeGeneratorInfo createActorCodeGeneratorInfo() {
-       return new ActorCodeGeneratorInfo();
+        return new ActorCodeGeneratorInfo();
     }
 
     public ActorTransformerVisitor createActorTransformerVisitor(
-     ActorCodeGeneratorInfo actorInfo) {
-       return new ActorTransformerVisitor(actorInfo,
-        createPtolemyTypeVisitor(actorInfo));
+            ActorCodeGeneratorInfo actorInfo) {
+        return new ActorTransformerVisitor(actorInfo,
+                createPtolemyTypeVisitor(actorInfo));
     }
 
     public PtolemyTypeIdentifier createPtolemyTypeIdentifier() {
-       return new PtolemyTypeIdentifier();
+        return new PtolemyTypeIdentifier();
     }
 
     public PtolemyTypePolicy createPtolemyTypePolicy() {
-       return new PtolemyTypePolicy(createPtolemyTypeIdentifier());
+        return new PtolemyTypePolicy(createPtolemyTypeIdentifier());
     }
 
     public PtolemyTypeVisitor createPtolemyTypeVisitor(ActorCodeGeneratorInfo actorInfo) {
-       return new PtolemyTypeVisitor(actorInfo, createPtolemyTypePolicy());
+        return new PtolemyTypeVisitor(actorInfo, createPtolemyTypePolicy());
     }
 
     public static CodeGeneratorClassFactory getInstance() {
         if (_instance == null) {
-           _instance = new CodeGeneratorClassFactory();
+            _instance = new CodeGeneratorClassFactory();
         }
         return _instance;
     }

@@ -55,7 +55,7 @@ import ptolemy.math.FixPoint;
  *  NullValue.instance, or a list of such objects. Such objects are
  *  converted into statements by ExprStmtNode.
  *
- *  A statement may return NullValue.instance to indicate that it should 
+ *  A statement may return NullValue.instance to indicate that it should
  *  be removed.
  *
  *  A member of a class may return NullValue.instance to indicate that
@@ -64,30 +64,30 @@ import ptolemy.math.FixPoint;
  *  @author Jeff Tsay
  */
 public class ActorTransformerVisitor extends ReplacementJavaVisitor
-     implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
 
     public ActorTransformerVisitor(ActorCodeGeneratorInfo actorInfo,
-                                   PtolemyTypeVisitor typeVisitor) {
+            PtolemyTypeVisitor typeVisitor) {
         super(TM_CUSTOM);
 
-       _actorInfo = actorInfo;
-       _actorName = actorInfo.actor.getName();
+        _actorInfo = actorInfo;
+        _actorName = actorInfo.actor.getName();
 
-       _typeVisitor = typeVisitor;
-       _typePolicy = (PtolemyTypePolicy) typeVisitor.typePolicy();
-       _typeID = (PtolemyTypeIdentifier) _typePolicy.typeIdentifier();
+        _typeVisitor = typeVisitor;
+        _typePolicy = (PtolemyTypePolicy) typeVisitor.typePolicy();
+        _typeID = (PtolemyTypeIdentifier) _typePolicy.typeIdentifier();
     }
 
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
         int kind = _typeID.kindOfTypeNameNode(node);
 
         if (!_typeID.isSupportedTokenKind(kind)) {
-           return node;
+            return node;
         }
 
         // leave Token declarations alone for now
         if (kind == PtolemyTypeIdentifier.TYPE_KIND_TOKEN) {
-           return node;
+            return node;
         }
 
         return _typeID.encapsulatedDataType(kind);
@@ -98,7 +98,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         List importList = node.getImports();
 
         importList.add(new ImportOnDemandNode((NameNode)
-         StaticResolution.makeNameNode("ptolemy.math")));
+                StaticResolution.makeNameNode("ptolemy.math")));
 
         return _defaultVisit(node, args);
     }
@@ -111,7 +111,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // Ptolemy name of the actor are actor classes created in the first pass
         // to be modified with the code generator
         if (className.startsWith("CG_") && className.endsWith("_" + _actorName)) {
-           return _actorClassDeclNode(node, args);
+            return _actorClassDeclNode(node, args);
         }
 
         return node;
@@ -126,29 +126,29 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         int kind = _typeID.kind(type);
 
         if (_typeID.isSupportedTokenKind(kind)) {
-           if (initExpr.classID() == NULLPNTRNODE_ID) {
-              node.setInitExpr(_dummyValue(type));
-           }
+            if (initExpr.classID() == NULLPNTRNODE_ID) {
+                node.setInitExpr(_dummyValue(type));
+            }
         } else if (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
-           String paramName = node.getName().getIdent();
+            String paramName = node.getName().getIdent();
 
-           Token token = (Token) _actorInfo.parameterNameToTokenMap.get(paramName);
+            Token token = (Token) _actorInfo.parameterNameToTokenMap.get(paramName);
 
-           if (token != null) {
-              node.setModifiers(node.getModifiers() | FINAL_MOD);
-              node.setDefType((TypeNode)
-               _typeID.typeNodeForTokenType(token.getType()).accept(this, args));
+            if (token != null) {
+                node.setModifiers(node.getModifiers() | FINAL_MOD);
+                node.setDefType((TypeNode)
+                        _typeID.typeNodeForTokenType(token.getType()).accept(this, args));
 
-              node.setInitExpr(tokenToExprNode(token));
+                node.setInitExpr(tokenToExprNode(token));
 
-              return node;
-           } else {
-              ApplicationUtility.error("found parameter field, but no associated token");
-           }
+                return node;
+            } else {
+                ApplicationUtility.error("found parameter field, but no associated token");
+            }
         } else if (_typeID.isSupportedPortKind(kind)) {
-           Object retval = _portFieldDeclNode(node, args);
+            Object retval = _portFieldDeclNode(node, args);
 
-           if (retval != null) return retval;
+            if (retval != null) return retval;
         }
 
         node.setDefType((TypeNode) type.accept(this, args));
@@ -165,11 +165,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         int kind = _typeID.kind(type);
 
         if (_typeID.isSupportedTokenKind(kind)) {
-           if (initExpr.classID() == NULLPNTRNODE_ID) {
-              node.setInitExpr(_dummyValue(type));
-           }
+            if (initExpr.classID() == NULLPNTRNODE_ID) {
+                node.setInitExpr(_dummyValue(type));
+            }
         } else if (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
-           return node; // leave everything alone
+            return node; // leave everything alone
         }
 
         node.setDefType((TypeNode) type.accept(this, args));
@@ -182,19 +182,19 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         // get rid of the following methods
         if (methodName.equals("clone") ||
-            methodName.equals("attributeChanged") ||
-            methodName.equals("attributeTypeChanged")) {
-           return NullValue.instance;
+                methodName.equals("attributeChanged") ||
+                methodName.equals("attributeTypeChanged")) {
+            return NullValue.instance;
         }
 
         node.setParams(
-         TNLManip.traverseList(this, node, args, node.getParams()));
+                TNLManip.traverseList(this, node, args, node.getParams()));
 
         node.setBody((TreeNode) node.getBody().accept(this, args));
 
         // eliminate declared, throwable Ptolemy exceptions
         node.setThrowsList(_eliminatePtolemyExceptionList(
-         TNLManip.traverseList(this, node, args, node.getThrowsList())));
+                TNLManip.traverseList(this, node, args, node.getThrowsList())));
 
         node.setReturnType((TypeNode) node.getReturnType().accept(this, args));
 
@@ -205,8 +205,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // allow only one constructor
 
         if (_constructorCount++ > 1) {
-           ApplicationUtility.error("more than one constructor found in actor " +
-            _actorInfo.actor.getName());
+            ApplicationUtility.error("more than one constructor found in actor " +
+                    _actorInfo.actor.getName());
         }
 
         // get rid of all parameters
@@ -214,11 +214,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         node.setBody((BlockNode) node.getBody().accept(this, args));
         node.setConstructorCall((ConstructorCallNode)
-         node.getConstructorCall().accept(this, args));
+                node.getConstructorCall().accept(this, args));
 
         // eliminate declared, throwable Ptolemy exceptions
         node.setThrowsList(_eliminatePtolemyExceptionList(
-         TNLManip.traverseList(this, node, args, node.getThrowsList())));
+                TNLManip.traverseList(this, node, args, node.getThrowsList())));
 
         return node;
     }
@@ -241,7 +241,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
         node.setStmts(_makeStmtList(
-         TNLManip.traverseList(this, node, args, node.getStmts())));
+                TNLManip.traverseList(this, node, args, node.getStmts())));
 
         return node;
     }
@@ -258,8 +258,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         node.setThenPart(_makeStmt(node.getThenPart().accept(this, args)));
 
         if (node.getElsePart() != AbsentTreeNode.instance) {
-           node.setElsePart(
-            (TreeNode) _makeStmt(node.getElsePart().accept(this, args)));
+            node.setElsePart(
+                    (TreeNode) _makeStmt(node.getElsePart().accept(this, args)));
         }
 
         return node;
@@ -267,7 +267,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitSwitchBranchNode(SwitchBranchNode node, LinkedList args) {
         node.setStmts(_makeStmtList(
-         TNLManip.traverseList(this, node, args, node.getStmts())));
+                TNLManip.traverseList(this, node, args, node.getStmts())));
 
         return node;
     }
@@ -276,11 +276,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         node.setTest((ExprNode) node.getTest().accept(this, args));
 
         if (node.getForeStmt() == AbsentTreeNode.instance) {
-           node.setAftStmt((TreeNode)
-            _makeStmt(node.getAftStmt().accept(this, args)));
+            node.setAftStmt((TreeNode)
+                    _makeStmt(node.getAftStmt().accept(this, args)));
         } else {
-           node.setForeStmt((TreeNode)
-            _makeStmt(node.getForeStmt().accept(this, args)));
+            node.setForeStmt((TreeNode)
+                    _makeStmt(node.getForeStmt().accept(this, args)));
         }
         return node;
 
@@ -292,12 +292,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitForNode(ForNode node, LinkedList args) {
         node.setInit(
-         TNLManip.traverseList(this, node, args, node.getInit()));
+                TNLManip.traverseList(this, node, args, node.getInit()));
 
         node.setTest((ExprNode) node.getTest().accept(this, args));
 
         node.setUpdate(
-         TNLManip.traverseList(this, node, args, node.getUpdate()));
+                TNLManip.traverseList(this, node, args, node.getUpdate()));
 
         node.setStmt(_makeStmt(node.getStmt().accept(this, args)));
 
@@ -306,22 +306,22 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitThrowNode(ThrowNode node, LinkedList args) {
         TypeNameNode exceptionType =
-         (TypeNameNode) _typeVisitor.type(node.getExpr());
+            (TypeNameNode) _typeVisitor.type(node.getExpr());
 
         int kind = _typeID.kindOfTypeNameNode(exceptionType);
 
         if (_typeID.isPtolemyExceptionKind(kind)) {
-           String message = "ptolemy non-runtime exception";
-           if (_typeID.isPtolemyRuntimeExceptionKind(kind)) {
-              message = "ptolemy runtime exception";
-           }
+            String message = "ptolemy non-runtime exception";
+            if (_typeID.isPtolemyRuntimeExceptionKind(kind)) {
+                message = "ptolemy runtime exception";
+            }
 
-           node.setExpr(new AllocateNode(new TypeNameNode(
-            new NameNode(AbsentTreeNode.instance, "RuntimeException")),
-            TNLManip.cons(new StringLitNode(message)),
-            AbsentTreeNode.instance));
+            node.setExpr(new AllocateNode(new TypeNameNode(
+                    new NameNode(AbsentTreeNode.instance, "RuntimeException")),
+                    TNLManip.cons(new StringLitNode(message)),
+                    AbsentTreeNode.instance));
 
-           return node;
+            return node;
         }
 
         node.setExpr((ExprNode) node.getExpr().accept(this, args));
@@ -342,7 +342,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         // don't catch any Ptolemy exceptions
         if (_typeID.isPtolemyExceptionKind(kind)) {
-           return NullValue.instance;
+            return NullValue.instance;
         }
 
         node.setParam((ParameterNode) node.getParam().accept(this, args));
@@ -356,24 +356,24 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // CHECK ME : are we handling the finally clause correctly here?
 
         Iterator catchNodeItr =
-         TNLManip.traverseList(this, node, args, node.getCatches()).iterator();
+            TNLManip.traverseList(this, node, args, node.getCatches()).iterator();
 
         LinkedList newCatchNodeList = new LinkedList();
 
         while (catchNodeItr.hasNext()) {
-           Object catchNodeObj = catchNodeItr.next();
+            Object catchNodeObj = catchNodeItr.next();
 
-           // don't add catch clauses that catch Ptolemy exceptions
-           if (catchNodeObj != NullValue.instance) {
-              newCatchNodeList.addLast(catchNodeObj);
-           }
+            // don't add catch clauses that catch Ptolemy exceptions
+            if (catchNodeObj != NullValue.instance) {
+                newCatchNodeList.addLast(catchNodeObj);
+            }
         }
 
         node.setBlock((BlockNode) node.getBlock().accept(this, args));
 
         // if there's nothing to catch, return the block
         if (newCatchNodeList.size() < 1) {
-           return node.getBlock();
+            return node.getBlock();
         }
 
         node.setCatches(newCatchNodeList);
@@ -392,7 +392,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         // if this is a static method call, we can't do any more.
         if (fieldAccessNode instanceof TypeFieldAccessNode) {
-           return _defaultVisit(node, args);
+            return _defaultVisit(node, args);
         }
 
         ExprNode accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
@@ -403,239 +403,239 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         int accessedObjKind = _typeID.kind(accessedObjType);
 
         if (_typePolicy.isSubClassOfSupportedActor(accessedObjType)) {
-           Object retval = _actorMethodCallNode(node, args);
+            Object retval = _actorMethodCallNode(node, args);
 
-           if (retval != null) return retval;
+            if (retval != null) return retval;
 
         } else if (_typeID.isSupportedTokenKind(accessedObjKind)) {
-           MethodDecl methodDecl =
-            (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);
+            MethodDecl methodDecl =
+                (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);
 
-           fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
+            fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
 
-           node.setMethod(fieldAccessNode);
+            node.setMethod(fieldAccessNode);
 
-           accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+            accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
 
-           String methodName = methodDecl.getName();
+            String methodName = methodDecl.getName();
 
-           // transform the arguments
-           List methodArgs =
-            TNLManip.traverseList(this, null, args, node.getArgs());
+            // transform the arguments
+            List methodArgs =
+                TNLManip.traverseList(this, null, args, node.getArgs());
 
-           node.setArgs(methodArgs);
+            node.setArgs(methodArgs);
 
-           ExprNode firstArg = null;
+            ExprNode firstArg = null;
 
-           if (methodArgs.size() > 0) {
-              firstArg = (ExprNode) methodArgs.get(0);
-           }
+            if (methodArgs.size() > 0) {
+                firstArg = (ExprNode) methodArgs.get(0);
+            }
 
-           if (methodName.equals("booleanValue")) {
-              return accessedObj;
-           } else if (methodName.equals("intValue")) {
-              return accessedObj;
-           } else if (methodName.equals("longValue")) {
-              return accessedObj;
-           } else if (methodName.equals("doubleValue")) {
-              return accessedObj;
-           } else if (methodName.equals("complexValue")) {
-              return accessedObj;
-           } else if (methodName.equals("fixValue")) {
-              return accessedObj;
-           } else if (methodName.equals("booleanMatrix")) {
-              return accessedObj;
-           } else if (methodName.equals("intMatrix")) {
-              return accessedObj;
-           } else if (methodName.equals("longMatrix")) {
-              return accessedObj;
-           } else if (methodName.equals("doubleMatrix")) {
-              return accessedObj;
-           } else if (methodName.equals("complexMatrix")) {
-              return accessedObj;
-           } else if (methodName.equals("fixMatrix")) {
-              return accessedObj;
-           } else if (methodName.equals("add")) {
-              return new PlusNode(accessedObj, firstArg);
-           } else if (methodName.equals("addReverse")) {
-              return new PlusNode(firstArg, accessedObj);
-           } else if (methodName.equals("subtract")) {
-              return new MinusNode(accessedObj, firstArg);
-           } else if (methodName.equals("subtractReverse")) {
-              return new MinusNode(firstArg, accessedObj);
-           } else if (methodName.equals("multiply")) {
-              return new MultNode(accessedObj, firstArg);
-           } else if (methodName.equals("multiplyReverse")) {
-              return new MultNode(firstArg, accessedObj);
-           } else if (methodName.equals("divide")) {
-              return new DivNode(accessedObj, firstArg);
-           } else if (methodName.equals("divideReverse")) {
-              return new DivNode(firstArg, accessedObj);
-           } else if (methodName.equals("modulo")) {
-              return new RemNode(accessedObj, firstArg);
-           } else if (methodName.equals("moduloReverse")) {
-              return new RemNode(firstArg, accessedObj);
-           } else if (methodName.equals("convert")) {
-              return new CastNode(_typeID.typeNodeForKind(accessedObjKind), firstArg);
-           } else if (methodName.equals("zero")) {
-              return _zeroValue(accessedObjKind, accessedObj);
-           } else if (methodName.equals("one")) {
-              return _oneValue(accessedObjKind, accessedObj);
-           } else if (methodName.equals("oneRight")) {
-              return new MethodCallNode(
-               new TypeFieldAccessNode(
-                new NameNode(AbsentTreeNode.instance, "oneRight"),
-                 new TypeNameNode(
-                  new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
-               TNLManip.cons(accessedObj));
-           } else if (methodName.equals("isEqualTo")) {
-              ExprNode retval = new EQNode(accessedObj, firstArg);
-              // mark this node as being created by the actor transformer
-              retval.setProperty(PtolemyTypeIdentifier.PTOLEMY_TRANSFORMED_KEY,
-               NullValue.instance);
-              return retval;
-           } else if (methodName.equals("not")) {
-              return new NotNode(accessedObj);
-           } else if (methodName.equals("getColumnCount")) {
-              return new ObjectFieldAccessNode(
-               new NameNode(AbsentTreeNode.instance, "length"),
-               new ArrayAccessNode(accessedObj, new IntLitNode("0")));
-           } else if (methodName.equals("getRowCount")) {
-              return new ObjectFieldAccessNode(
-               new NameNode(AbsentTreeNode.instance, "length"),
-               accessedObj);
-           } else if (methodName.equals("getElementAsToken") ||
-                      methodName.equals("getElementAt")) {
-              ExprNode secondArg = (ExprNode) methodArgs.get(1);
-              return new ArrayAccessNode(
-               new ArrayAccessNode(accessedObj, firstArg), secondArg);
-           } else if (methodName.equals("stringValue") ||    
-                      methodName.equals("toString")) {                      
-              switch (accessedObjKind) {
+            if (methodName.equals("booleanValue")) {
+                return accessedObj;
+            } else if (methodName.equals("intValue")) {
+                return accessedObj;
+            } else if (methodName.equals("longValue")) {
+                return accessedObj;
+            } else if (methodName.equals("doubleValue")) {
+                return accessedObj;
+            } else if (methodName.equals("complexValue")) {
+                return accessedObj;
+            } else if (methodName.equals("fixValue")) {
+                return accessedObj;
+            } else if (methodName.equals("booleanMatrix")) {
+                return accessedObj;
+            } else if (methodName.equals("intMatrix")) {
+                return accessedObj;
+            } else if (methodName.equals("longMatrix")) {
+                return accessedObj;
+            } else if (methodName.equals("doubleMatrix")) {
+                return accessedObj;
+            } else if (methodName.equals("complexMatrix")) {
+                return accessedObj;
+            } else if (methodName.equals("fixMatrix")) {
+                return accessedObj;
+            } else if (methodName.equals("add")) {
+                return new PlusNode(accessedObj, firstArg);
+            } else if (methodName.equals("addReverse")) {
+                return new PlusNode(firstArg, accessedObj);
+            } else if (methodName.equals("subtract")) {
+                return new MinusNode(accessedObj, firstArg);
+            } else if (methodName.equals("subtractReverse")) {
+                return new MinusNode(firstArg, accessedObj);
+            } else if (methodName.equals("multiply")) {
+                return new MultNode(accessedObj, firstArg);
+            } else if (methodName.equals("multiplyReverse")) {
+                return new MultNode(firstArg, accessedObj);
+            } else if (methodName.equals("divide")) {
+                return new DivNode(accessedObj, firstArg);
+            } else if (methodName.equals("divideReverse")) {
+                return new DivNode(firstArg, accessedObj);
+            } else if (methodName.equals("modulo")) {
+                return new RemNode(accessedObj, firstArg);
+            } else if (methodName.equals("moduloReverse")) {
+                return new RemNode(firstArg, accessedObj);
+            } else if (methodName.equals("convert")) {
+                return new CastNode(_typeID.typeNodeForKind(accessedObjKind), firstArg);
+            } else if (methodName.equals("zero")) {
+                return _zeroValue(accessedObjKind, accessedObj);
+            } else if (methodName.equals("one")) {
+                return _oneValue(accessedObjKind, accessedObj);
+            } else if (methodName.equals("oneRight")) {
+                return new MethodCallNode(
+                        new TypeFieldAccessNode(
+                                new NameNode(AbsentTreeNode.instance, "oneRight"),
+                                new TypeNameNode(
+                                        new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
+                        TNLManip.cons(accessedObj));
+            } else if (methodName.equals("isEqualTo")) {
+                ExprNode retval = new EQNode(accessedObj, firstArg);
+                // mark this node as being created by the actor transformer
+                retval.setProperty(PtolemyTypeIdentifier.PTOLEMY_TRANSFORMED_KEY,
+                        NullValue.instance);
+                return retval;
+            } else if (methodName.equals("not")) {
+                return new NotNode(accessedObj);
+            } else if (methodName.equals("getColumnCount")) {
+                return new ObjectFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "length"),
+                        new ArrayAccessNode(accessedObj, new IntLitNode("0")));
+            } else if (methodName.equals("getRowCount")) {
+                return new ObjectFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "length"),
+                        accessedObj);
+            } else if (methodName.equals("getElementAsToken") ||
+                    methodName.equals("getElementAt")) {
+                ExprNode secondArg = (ExprNode) methodArgs.get(1);
+                return new ArrayAccessNode(
+                        new ArrayAccessNode(accessedObj, firstArg), secondArg);
+            } else if (methodName.equals("stringValue") ||
+                    methodName.equals("toString")) {
+                switch (accessedObjKind) {
                 case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
-                return new StringLitNode("bad token");
+                    return new StringLitNode("bad token");
 
                 case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
-                return new MethodCallNode(new TypeFieldAccessNode(
-                 new NameNode(AbsentTreeNode.instance, "valueOf"),
-                 (TypeNameNode) StaticResolution.STRING_TYPE.clone()),
-                 TNLManip.cons(accessedObj));
+                    return new MethodCallNode(new TypeFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "valueOf"),
+                            (TypeNameNode) StaticResolution.STRING_TYPE.clone()),
+                            TNLManip.cons(accessedObj));
 
                 case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
-                return new MethodCallNode(new ObjectFieldAccessNode(
-                 new NameNode(AbsentTreeNode.instance, "toString"),
-                 accessedObj), new LinkedList());
+                    return new MethodCallNode(new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "toString"),
+                            accessedObj), new LinkedList());
 
                 case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
-                // FIXME : this is not the new toString() behavior of 
-                // StringToken
-                return accessedObj;
+                    // FIXME : this is not the new toString() behavior of
+                    // StringToken
+                    return accessedObj;
 
-                // for matrices, call the toString() method of
-                // the helper classes in ptolemy.math using
-                // ArrayStringFormat.exprASFormat                
-                
+                    // for matrices, call the toString() method of
+                    // the helper classes in ptolemy.math using
+                    // ArrayStringFormat.exprASFormat
+
                 case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
-                ApplicationUtility.warn("toString() on boolean matrix not " +
-                 "supported yet");
-                break;
-                
+                    ApplicationUtility.warn("toString() on boolean matrix not " +
+                            "supported yet");
+                    break;
+
                 case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
-                ApplicationUtility.error("toString() on fix matrix not " +
-                 "supported yet");
-                break;
-                
-                case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN: 
-                case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:                
-                case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:                
-                case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:                
-                {
-                  LinkedList toStringArgList = TNLManip.cons(accessedObj);
-                  toStringArgList.addLast(new TypeFieldAccessNode(
-                   new NameNode(AbsentTreeNode.instance, "exprASFormat"),
-                   new TypeNameNode(new NameNode(AbsentTreeNode.instance, 
-                    "ArrayStringFormat"))));
-                  
-                  String matrixMathClassName = null;
-                    
-                  switch (accessedObjKind) {
-                     case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN: 
-                     matrixMathClassName = "IntMatrixMath";
-                     break;
+                    ApplicationUtility.error("toString() on fix matrix not " +
+                            "supported yet");
+                    break;
 
-                     case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN: 
-                     matrixMathClassName = "LongMatrixMath";
-                     break;
-                     
-                     case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN: 
-                     matrixMathClassName = "DoubleMatrixMath";
-                     break;
-                     
-                     case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN: 
-                     matrixMathClassName = "ComplexMatrixMath";
-                     break;
-                     
-                     default:
-                     ApplicationUtility.error("unknown kind to call " + 
-                      "toString() / stringValue()");                  
-                  }   
-                                                                            
-                  return new MethodCallNode(new TypeFieldAccessNode(
-                   new NameNode(AbsentTreeNode.instance, "toString"),
-                   new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                    matrixMathClassName))),
-                   toStringArgList);
-                }              
-              }
-           }
+                case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
+                case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
+                case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+                case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+                    {
+                        LinkedList toStringArgList = TNLManip.cons(accessedObj);
+                        toStringArgList.addLast(new TypeFieldAccessNode(
+                                new NameNode(AbsentTreeNode.instance, "exprASFormat"),
+                                new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                                        "ArrayStringFormat"))));
 
-           // method not supported, create a new Token, and call the method
-           // with new (converted) args. This may be a problem.
-           ApplicationUtility.warn("found unsupported method: " + methodName +
-            ", replacing with creation of token and method call");
+                        String matrixMathClassName = null;
 
-           return new MethodCallNode(
-             new ObjectFieldAccessNode(fieldAccessNode.getName(),
-              new AllocateNode(_typeID.typeNodeForKind(accessedObjKind),
-               TNLManip.cons(accessedObj), AbsentTreeNode.instance)),
-             methodArgs);
+                        switch (accessedObjKind) {
+                        case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
+                            matrixMathClassName = "IntMatrixMath";
+                            break;
+
+                        case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+                            matrixMathClassName = "LongMatrixMath";
+                            break;
+
+                        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
+                            matrixMathClassName = "DoubleMatrixMath";
+                            break;
+
+                        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+                            matrixMathClassName = "ComplexMatrixMath";
+                            break;
+
+                        default:
+                            ApplicationUtility.error("unknown kind to call " +
+                                    "toString() / stringValue()");
+                        }
+
+                        return new MethodCallNode(new TypeFieldAccessNode(
+                                new NameNode(AbsentTreeNode.instance, "toString"),
+                                new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                                        matrixMathClassName))),
+                                toStringArgList);
+                    }
+                }
+            }
+
+            // method not supported, create a new Token, and call the method
+            // with new (converted) args. This may be a problem.
+            ApplicationUtility.warn("found unsupported method: " + methodName +
+                    ", replacing with creation of token and method call");
+
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(fieldAccessNode.getName(),
+                            new AllocateNode(_typeID.typeNodeForKind(accessedObjKind),
+                                    TNLManip.cons(accessedObj), AbsentTreeNode.instance)),
+                    methodArgs);
 
         } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
-           MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);
+            MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);
 
-           fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
+            fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
 
-           accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+            accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
 
-           String methodName = methodDecl.getName();
+            String methodName = methodDecl.getName();
 
-           if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
-              if (methodName.equals("getToken")) {
-                 return accessedObj; // return the value of the parameter
-              } else if (methodName.equals("removeFromScope") ||
-                         methodName.equals("removeValueListener") ||
-                         methodName.equals("reset") ||
-                         methodName.equals("setContainer") ||
-                         methodName.equals("setExpression") ||
-                         methodName.equals("setToken") ||
-                         methodName.equals("setTypeAtLeast") ||
-                         methodName.equals("setTypeAtMost") ||
-                         methodName.equals("setTypeEquals") ||
-                         methodName.equals("setTypeSameAs")) {
-                 // return a list of the transformed arguments
-                 // so that side effects are preserved
-                 // the list will be processed by visitBlockNode()
-                 return TNLManip.traverseList(this, null, args, node.getArgs());
-              }
-           }
+            if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
+                if (methodName.equals("getToken")) {
+                    return accessedObj; // return the value of the parameter
+                } else if (methodName.equals("removeFromScope") ||
+                        methodName.equals("removeValueListener") ||
+                        methodName.equals("reset") ||
+                        methodName.equals("setContainer") ||
+                        methodName.equals("setExpression") ||
+                        methodName.equals("setToken") ||
+                        methodName.equals("setTypeAtLeast") ||
+                        methodName.equals("setTypeAtMost") ||
+                        methodName.equals("setTypeEquals") ||
+                        methodName.equals("setTypeSameAs")) {
+                    // return a list of the transformed arguments
+                    // so that side effects are preserved
+                    // the list will be processed by visitBlockNode()
+                    return TNLManip.traverseList(this, null, args, node.getArgs());
+                }
+            }
         } else if (_typeID.isSupportedPortKind(accessedObjKind)) {
-           Object retval = _portMethodCallNode(node, args);
-           if (retval != null) return retval;
+            Object retval = _portMethodCallNode(node, args);
+            if (retval != null) return retval;
         }
 
         return _defaultVisit(node, args);
@@ -646,10 +646,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         TypeNameNode type = node.getDtype();
 
         MethodDecl constructorDecl =
-         (MethodDecl) node.getDefinedProperty(DECL_KEY);
+            (MethodDecl) node.getDefinedProperty(DECL_KEY);
 
         List constructorArgs =
-         TNLManip.traverseList(this, null, null, node.getArgs());
+            TNLManip.traverseList(this, null, null, node.getArgs());
 
         node.setArgs(constructorArgs);
 
@@ -657,259 +657,259 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         switch (_typeID.kind(type)) {
 
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
-          if (constructorTypes.length == 0) {
-            return new BoolLitNode("false");
-          }
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
+            if (constructorTypes.length == 0) {
+                return new BoolLitNode("false");
+            }
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0], BoolTypeNode.instance)) {
-             // new BooleanToken(boolean)
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0], BoolTypeNode.instance)) {
+                // new BooleanToken(boolean)
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new BooleanToken(???, ???, ...)
-          // call the booleanValue() method of the created BooleanToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "booleanValue"), node),
-            new LinkedList());
+            // new BooleanToken(???, ???, ...)
+            // call the booleanValue() method of the created BooleanToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "booleanValue"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
-          if (constructorTypes.length == 0) {
-             return new IntLitNode("0");
-          }
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
+            if (constructorTypes.length == 0) {
+                return new IntLitNode("0");
+            }
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0], IntTypeNode.instance)) {
-             // new IntToken(int)
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0], IntTypeNode.instance)) {
+                // new IntToken(int)
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new IntToken(???, ???, ...)
-          // call the intValue() method of the created IntToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "intValue"), node),
-            new LinkedList());
+            // new IntToken(???, ???, ...)
+            // call the intValue() method of the created IntToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "intValue"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
-          if (constructorTypes.length == 0) {
-            return new DoubleLitNode("0.0");
-          }
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
+            if (constructorTypes.length == 0) {
+                return new DoubleLitNode("0.0");
+            }
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0], DoubleTypeNode.instance)) {
-             // new DoubleToken(double)
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          } else {
-             // new DoubleToken(???, ???, ...)
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0], DoubleTypeNode.instance)) {
+                // new DoubleToken(double)
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            } else {
+                // new DoubleToken(???, ???, ...)
 
-             // call the doubleValue() method of the created DoubleToken
-             return new MethodCallNode(
-              new ObjectFieldAccessNode(
-               new NameNode(AbsentTreeNode.instance, "doubleValue"), node),
-              new LinkedList());
-          }
+                // call the doubleValue() method of the created DoubleToken
+                return new MethodCallNode(
+                        new ObjectFieldAccessNode(
+                                new NameNode(AbsentTreeNode.instance, "doubleValue"), node),
+                        new LinkedList());
+            }
 
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
-          if (constructorTypes.length == 0) {
-            return new LongLitNode("0L");
-          }
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
+            if (constructorTypes.length == 0) {
+                return new LongLitNode("0L");
+            }
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0], LongTypeNode.instance)) {
-             // new LongToken(long)
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0], LongTypeNode.instance)) {
+                // new LongToken(long)
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new LongToken(???, ???, ...)
-          // call the longValue() method of the created LongToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "longValue"), node),
-            new LinkedList());
+            // new LongToken(???, ???, ...)
+            // call the longValue() method of the created LongToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "longValue"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
-          if (constructorTypes.length == 0) {
-            return new AllocateNode(PtolemyTypeIdentifier.COMPLEX_TYPE, new LinkedList(),
-             AbsentTreeNode.instance);
-          }
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
+            if (constructorTypes.length == 0) {
+                return new AllocateNode(PtolemyTypeIdentifier.COMPLEX_TYPE, new LinkedList(),
+                        AbsentTreeNode.instance);
+            }
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               PtolemyTypeIdentifier.COMPLEX_TYPE)) {
-             // new ComplexToken(Complex)
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            PtolemyTypeIdentifier.COMPLEX_TYPE)) {
+                // new ComplexToken(Complex)
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new ComplexToken(???, ???, ...)
-          // call the complexValue() method of the created ComplexToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "complexValue"), node),
-           new LinkedList());
+            // new ComplexToken(???, ???, ...)
+            // call the complexValue() method of the created ComplexToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "complexValue"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
-          if (constructorTypes.length == 0) {
-            return new AllocateNode(PtolemyTypeIdentifier.FIX_POINT_TYPE, new LinkedList(),
-             AbsentTreeNode.instance);
-          }
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
+            if (constructorTypes.length == 0) {
+                return new AllocateNode(PtolemyTypeIdentifier.FIX_POINT_TYPE, new LinkedList(),
+                        AbsentTreeNode.instance);
+            }
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               PtolemyTypeIdentifier.FIX_POINT_TYPE)) {
-             // new FixToken(Fix)
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          } else {
-             // new FixToken(???, ???, ...)
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            PtolemyTypeIdentifier.FIX_POINT_TYPE)) {
+                // new FixToken(Fix)
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            } else {
+                // new FixToken(???, ???, ...)
 
-             // call the fixValue() method of the created FixToken
-             return new MethodCallNode(
-              new ObjectFieldAccessNode(
-               new NameNode(AbsentTreeNode.instance, "fixValue"), node),
-              new LinkedList());
-          }
+                // call the fixValue() method of the created FixToken
+                return new MethodCallNode(
+                        new ObjectFieldAccessNode(
+                                new NameNode(AbsentTreeNode.instance, "fixValue"), node),
+                        new LinkedList());
+            }
 
 
-          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               StaticResolution.OBJECT_TYPE)) {
-             // new ObjectToken(Object)
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+        case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            StaticResolution.OBJECT_TYPE)) {
+                // new ObjectToken(Object)
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new ObjectToken(???, ???, ...)
-          // call the getValue() method of the created ObjectToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "getValue"), node),
-            new LinkedList());
+            // new ObjectToken(???, ???, ...)
+            // call the getValue() method of the created ObjectToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "getValue"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
-          if (constructorTypes.length == 0) {
-             return new StringLitNode("");
-          }
+        case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
+            if (constructorTypes.length == 0) {
+                return new StringLitNode("");
+            }
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               StaticResolution.STRING_TYPE)) {
-             // new StringToken(String)
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            StaticResolution.STRING_TYPE)) {
+                // new StringToken(String)
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new StringToken(???, ???, ...)
+            // new StringToken(???, ???, ...)
 
-          // call the stringValue() method of the created StringToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "stringValue"), node),
-           new LinkedList());
+            // call the stringValue() method of the created StringToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "stringValue"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
-          // no support for constructor with no arguments
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
+            // no support for constructor with no arguments
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               TypeUtility.makeArrayType(BoolTypeNode.instance, 2))) {
-             // new BooleanMatrixToken(boolean[][])
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            TypeUtility.makeArrayType(BoolTypeNode.instance, 2))) {
+                // new BooleanMatrixToken(boolean[][])
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new BooleanMatrixToken(???, ???, ...)
-          // call the booleanMatrix() method of the created BooleanMatrixToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "booleanMatrix"), node),
-            new LinkedList());
+            // new BooleanMatrixToken(???, ???, ...)
+            // call the booleanMatrix() method of the created BooleanMatrixToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "booleanMatrix"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
-          // no support for constructor with no arguments
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
+            // no support for constructor with no arguments
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               TypeUtility.makeArrayType(IntTypeNode.instance, 2))) {
-             // new IntMatrixToken(int[][])
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            TypeUtility.makeArrayType(IntTypeNode.instance, 2))) {
+                // new IntMatrixToken(int[][])
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new IntMatrixToken(???, ???, ...)
-          // call the intMatrix() method of the created IntMatrixToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "intMatrix"), node),
-            new LinkedList());
+            // new IntMatrixToken(???, ???, ...)
+            // call the intMatrix() method of the created IntMatrixToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "intMatrix"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
-          // no support for constructor with no arguments
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
+            // no support for constructor with no arguments
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               TypeUtility.makeArrayType(DoubleTypeNode.instance, 2))) {
-             // new DoubleMatrixToken(int[][])
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            TypeUtility.makeArrayType(DoubleTypeNode.instance, 2))) {
+                // new DoubleMatrixToken(int[][])
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new DoubleMatrixToken(???, ???, ...)
-          // call the doubleMatrix() method of the created DoubleMatrixToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "doubleMatrix"), node),
-            new LinkedList());
+            // new DoubleMatrixToken(???, ???, ...)
+            // call the doubleMatrix() method of the created DoubleMatrixToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "doubleMatrix"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
-          // no support for constructor with no arguments
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+            // no support for constructor with no arguments
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               TypeUtility.makeArrayType(LongTypeNode.instance, 2))) {
-             // new LongMatrixToken(int[][])
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            TypeUtility.makeArrayType(LongTypeNode.instance, 2))) {
+                // new LongMatrixToken(int[][])
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-             // new LongMatrixToken(???, ???, ...)
-             // call the longMatrix() method of the created LongMatrixToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "longMatrix"), node),
-            new LinkedList());
+            // new LongMatrixToken(???, ???, ...)
+            // call the longMatrix() method of the created LongMatrixToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "longMatrix"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
-          // no support for constructor with no arguments
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+            // no support for constructor with no arguments
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               TypeUtility.makeArrayType(
-                (TypeNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone(), 2))) {
-             // new ComplexMatrixToken(Complex[][])
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            TypeUtility.makeArrayType(
+                                    (TypeNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone(), 2))) {
+                // new ComplexMatrixToken(Complex[][])
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
 
-          // new ComplexMatrixToken(???, ???, ...)
-          // call the complexMatrix() method of the created ComplexMatrixToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "complexMatrix"), node),
-            new LinkedList());
+            // new ComplexMatrixToken(???, ???, ...)
+            // call the complexMatrix() method of the created ComplexMatrixToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "complexMatrix"), node),
+                    new LinkedList());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
-          // no support for constructor with no arguments
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
+            // no support for constructor with no arguments
 
-          if ((constructorTypes.length == 1) &&
-              _typePolicy.compareTypes(constructorTypes[0],
-               TypeUtility.makeArrayType(
-                (TypeNode) PtolemyTypeIdentifier.FIX_POINT_TYPE.clone(), 2))) {
-             // new FixMatrixToken(FixPoint[][])
-             return ((ExprNode) constructorArgs.get(0)).accept(this, args);
-          }
-          // new FixMatrixToken(???, ???, ...)
+            if ((constructorTypes.length == 1) &&
+                    _typePolicy.compareTypes(constructorTypes[0],
+                            TypeUtility.makeArrayType(
+                                    (TypeNode) PtolemyTypeIdentifier.FIX_POINT_TYPE.clone(), 2))) {
+                // new FixMatrixToken(FixPoint[][])
+                return ((ExprNode) constructorArgs.get(0)).accept(this, args);
+            }
+            // new FixMatrixToken(???, ???, ...)
 
-          // call the fixMatrix() method of the created FixMatrixToken
-          return new MethodCallNode(
-           new ObjectFieldAccessNode(
-            new NameNode(AbsentTreeNode.instance, "fixMatrix"), node),
-            new LinkedList());
+            // call the fixMatrix() method of the created FixMatrixToken
+            return new MethodCallNode(
+                    new ObjectFieldAccessNode(
+                            new NameNode(AbsentTreeNode.instance, "fixMatrix"), node),
+                    new LinkedList());
         }
 
         return node;
@@ -929,8 +929,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         int kind = _typeID.kind(type);
         if (_typeID.isSupportedTokenKind(kind) &&
-            !_typeID.isConcreteTokenKind(kind)) {
-           return castTarget;
+                !_typeID.isConcreteTokenKind(kind)) {
+            return castTarget;
         }
 
         node.setDtype((TypeNode) node.getDtype().accept(this, args));
@@ -943,16 +943,16 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         if (rightType.classID() == TYPENAMENODE_ID) {
 
-           TypeNode leftType = _typeVisitor.type(node.getExpr());
-           int leftKind = _typeID.kind(leftType);
+            TypeNode leftType = _typeVisitor.type(node.getExpr());
+            int leftKind = _typeID.kind(leftType);
 
-           if (_typeID.isSupportedTokenKind(leftKind)) {
-              if (_typePolicy.isSubClass(leftType, rightType)) {
-                 return new BoolLitNode("true");
-              } else {
-                return new BoolLitNode("false");
-              }
-           }
+            if (_typeID.isSupportedTokenKind(leftKind)) {
+                if (_typePolicy.isSubClass(leftType, rightType)) {
+                    return new BoolLitNode("true");
+                } else {
+                    return new BoolLitNode("false");
+                }
+            }
         }
 
         return _defaultVisit(node, args);
@@ -973,8 +973,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         // prevent assignment to ports and parameters
         if (_typeID.isSupportedPortKind(kind) ||
-            (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER)) {
-           return new NullPntrNode(); // must be eliminated by visitBlockNode()
+                (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER)) {
+            return new NullPntrNode(); // must be eliminated by visitBlockNode()
         }
 
         node.setExpr1((ExprNode) leftExpr.accept(this, args));
@@ -987,89 +987,89 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     public ExprNode tokenToExprNode(Token token) {
         switch (_typeID.kindOfTokenType(token.getType())) {
 
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
-          if (((BooleanToken) token).booleanValue()) {
-             return new BoolLitNode("true");
-          }
-          return new BoolLitNode("false");
-
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
-          {
-            int val = ((IntToken) token).intValue();
-            return new IntLitNode(String.valueOf(val));
-          }
-
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
-          {
-            double val = ((DoubleToken) token).doubleValue();
-            return new DoubleLitNode(String.valueOf(val));
-          }
-
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
-          {
-            long val = ((LongToken) token).longValue();
-            return new LongLitNode(String.valueOf(val) + "L");
-          }
-
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
-          {
-            Complex val = ((ComplexToken) token).complexValue();
-            LinkedList args = new LinkedList();
-            args.addLast(new DoubleLitNode(String.valueOf(val.real)));
-            args.addLast(new DoubleLitNode(String.valueOf(val.imag)));
-
-            return new AllocateNode(PtolemyTypeIdentifier.COMPLEX_TYPE,
-             args, AbsentTreeNode.instance);
-          }
-
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
-          {
-            // FIXME : not done
-            FixPoint val = ((FixToken) token).fixValue();
-            return null;
-          }
-
-          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
-          ApplicationUtility.error("tokenToExprNode not supported on ObjectToken");
-
-          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
-          {
-            // FIXME : this does not handle special escape characters correctly
-            return new StringLitNode(((StringToken) token).stringValue());
-          }
-
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
-          // won't work correctly, but same principle
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
-          {
-            MatrixToken matrixToken = (MatrixToken) token;
-
-            LinkedList rowList = new LinkedList();
-            for (int i = 0; i < matrixToken.getRowCount(); i++) {
-
-                LinkedList columnList = new LinkedList();
-                for (int j = 0; j < matrixToken.getColumnCount(); j++) {
-                    columnList.addLast(tokenToExprNode(matrixToken.getElementAsToken(i, j)));
-                }
-
-                rowList.addLast(new ArrayInitNode(columnList));
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
+            if (((BooleanToken) token).booleanValue()) {
+                return new BoolLitNode("true");
             }
-            return new ArrayInitNode(rowList);
-          }
+            return new BoolLitNode("false");
 
-          default:
-          ApplicationUtility.error("tokenToExprNode() not supported on token class " +
-           token.getClass().getName());
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
+            {
+                int val = ((IntToken) token).intValue();
+                return new IntLitNode(String.valueOf(val));
+            }
+
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
+            {
+                double val = ((DoubleToken) token).doubleValue();
+                return new DoubleLitNode(String.valueOf(val));
+            }
+
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
+            {
+                long val = ((LongToken) token).longValue();
+                return new LongLitNode(String.valueOf(val) + "L");
+            }
+
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
+            {
+                Complex val = ((ComplexToken) token).complexValue();
+                LinkedList args = new LinkedList();
+                args.addLast(new DoubleLitNode(String.valueOf(val.real)));
+                args.addLast(new DoubleLitNode(String.valueOf(val.imag)));
+
+                return new AllocateNode(PtolemyTypeIdentifier.COMPLEX_TYPE,
+                        args, AbsentTreeNode.instance);
+            }
+
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
+            {
+                // FIXME : not done
+                FixPoint val = ((FixToken) token).fixValue();
+                return null;
+            }
+
+        case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
+            ApplicationUtility.error("tokenToExprNode not supported on ObjectToken");
+
+        case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
+            {
+                // FIXME : this does not handle special escape characters correctly
+                return new StringLitNode(((StringToken) token).stringValue());
+            }
+
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+            // won't work correctly, but same principle
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
+            {
+                MatrixToken matrixToken = (MatrixToken) token;
+
+                LinkedList rowList = new LinkedList();
+                for (int i = 0; i < matrixToken.getRowCount(); i++) {
+
+                    LinkedList columnList = new LinkedList();
+                    for (int j = 0; j < matrixToken.getColumnCount(); j++) {
+                        columnList.addLast(tokenToExprNode(matrixToken.getElementAsToken(i, j)));
+                    }
+
+                    rowList.addLast(new ArrayInitNode(columnList));
+                }
+                return new ArrayInitNode(rowList);
+            }
+
+        default:
+            ApplicationUtility.error("tokenToExprNode() not supported on token class " +
+                    token.getClass().getName());
         }
         return null;
     }
 
-    /** Transform the class declaration of an actor port. When this method is 
-     *  called, no visitation of the child list of the node has been done 
+    /** Transform the class declaration of an actor port. When this method is
+     *  called, no visitation of the child list of the node has been done
      *  yet. This method should be overloaded in subclasses.
      */
     protected Object _actorClassDeclNode(ClassDeclNode node, LinkedList args) {
@@ -1079,13 +1079,13 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         TypeNameNode superTypeNode = (TypeNameNode) node.getSuperClass();
 
         ClassDecl superClassDecl =
-         (ClassDecl) JavaDecl.getDecl((NamedNode) superTypeNode);
+            (ClassDecl) JavaDecl.getDecl((NamedNode) superTypeNode);
 
         int superKind = _typeID.kindOfClassDecl(superClassDecl);
 
         if (_typeID.isSupportedActorKind(superKind)) {
-           node.setSuperClass((TypeNameNode) StaticResolution.OBJECT_TYPE.clone());
-           _isBaseClass = true;
+            node.setSuperClass((TypeNameNode) StaticResolution.OBJECT_TYPE.clone());
+            _isBaseClass = true;
         }
 
         List memberList = node.getMembers();
@@ -1097,20 +1097,20 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         LinkedList newMemberList = new LinkedList();
 
         while (memberItr.hasNext()) {
-           Object memberObj = memberItr.next();
+            Object memberObj = memberItr.next();
 
-           if (memberObj instanceof List) {
-              // allow list return values
-              newMemberList.addAll((List) memberObj);
-           } else if (memberObj != NullValue.instance) {
-              // don't add unwanted fields and methods
-              newMemberList.add(memberObj);
-           }
+            if (memberObj instanceof List) {
+                // allow list return values
+                newMemberList.addAll((List) memberObj);
+            } else if (memberObj != NullValue.instance) {
+                // don't add unwanted fields and methods
+                newMemberList.add(memberObj);
+            }
         }
 
         if (_isBaseClass) {
-           // default execution methods are not transformed
-           _addDefaultExecutionMethods(newMemberList);
+            // default execution methods are not transformed
+            _addDefaultExecutionMethods(newMemberList);
         }
 
         node.setMembers(newMemberList);
@@ -1119,7 +1119,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     /** Transform a method call to an actor. When this method is called, no
-     *  visitation of the child list of the node has been done yet. This 
+     *  visitation of the child list of the node has been done yet. This
      *  method should be overloaded in subclasses.
      */
     public Object _actorMethodCallNode(MethodCallNode node, LinkedList args) {
@@ -1131,12 +1131,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         // eliminate the following method calls no matter what
         if (methodName.equals("attributeTypeChanged") ||
-            methodName.equals("attributeChanged")) {
-           return NullValue.instance;
+                methodName.equals("attributeChanged")) {
+            return NullValue.instance;
         }
 
         ExprNode accessedObj =
-         (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+            (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
 
         // for the remaining methods,
         // we can only handle actor calls to the actor itself
@@ -1145,15 +1145,15 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // eliminate the following method calls if this is the most basic actor class
         // and an invocation of super.XXX() occurs
         if (_isBaseClass && (fieldAccessNode.classID() == SUPERFIELDACCESSNODE_ID)) {
-           if (methodName.equals("initialize") || methodName.equals("fire") ||
-               methodName.equals("preinitialize") || methodName.equals("wrapup")) {
-              return NullValue.instance;
-           }
+            if (methodName.equals("initialize") || methodName.equals("fire") ||
+                    methodName.equals("preinitialize") || methodName.equals("wrapup")) {
+                return NullValue.instance;
+            }
 
-           // return true for prefire() and postfire() which is the default
-           if (methodName.equals("prefire") || methodName.equals("postfire")) {
-              return new BoolLitNode("true");
-           }
+            // return true for prefire() and postfire() which is the default
+            if (methodName.equals("prefire") || methodName.equals("postfire")) {
+                return new BoolLitNode("true");
+            }
         }
 
         return null;
@@ -1175,49 +1175,49 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         Iterator memberItr = memberList.iterator();
 
         while (memberItr.hasNext()) {
-           TreeNode member = (TreeNode) memberItr.next();
+            TreeNode member = (TreeNode) memberItr.next();
 
-           if (member.classID() == METHODDECLNODE_ID) {
-              String methodName = ((MethodDeclNode) member).getName().getIdent();
+            if (member.classID() == METHODDECLNODE_ID) {
+                String methodName = ((MethodDeclNode) member).getName().getIdent();
 
-              if (methodName.equals("preinitialize")) {
-                 foundPreinit = true;
-              } else if (methodName.equals("initialize")) {
-                 foundInit = true;
-              } else if (methodName.equals("prefire")) {
-                 foundPrefire = true;
-              } else if (methodName.equals("fire")) {
-                 foundFire = true;
-              } else if (methodName.equals("postfire")) {
-                 foundPostfire = true;
-              } else if (methodName.equals("wrapup")) {
-                 foundWrapup = true;
-              }
-           }
+                if (methodName.equals("preinitialize")) {
+                    foundPreinit = true;
+                } else if (methodName.equals("initialize")) {
+                    foundInit = true;
+                } else if (methodName.equals("prefire")) {
+                    foundPrefire = true;
+                } else if (methodName.equals("fire")) {
+                    foundFire = true;
+                } else if (methodName.equals("postfire")) {
+                    foundPostfire = true;
+                } else if (methodName.equals("wrapup")) {
+                    foundWrapup = true;
+                }
+            }
         }
 
         if (!foundPreinit) {
-           memberList.add(_makeDefaultPreinitializeMethod());
+            memberList.add(_makeDefaultPreinitializeMethod());
         }
 
         if (!foundInit) {
-           memberList.add(_makeDefaultInitializeMethod());
+            memberList.add(_makeDefaultInitializeMethod());
         }
 
         if (!foundPrefire) {
-           memberList.add(_makeDefaultPrefireMethod());
+            memberList.add(_makeDefaultPrefireMethod());
         }
 
         if (!foundFire) {
-           memberList.add(_makeDefaultFireMethod());
+            memberList.add(_makeDefaultFireMethod());
         }
 
         if (!foundPostfire) {
-           memberList.add(_makeDefaultPostfireMethod());
+            memberList.add(_makeDefaultPostfireMethod());
         }
 
         if (!foundWrapup) {
-           memberList.add(_makeDefaultWrapupMethod());
+            memberList.add(_makeDefaultWrapupMethod());
         }
     }
 
@@ -1227,39 +1227,39 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     protected ExprNode _dummyValue(TypeNode type) {
         switch (_typeID.kind(type)) {
 
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
-          return new BoolLitNode("false");
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
+            return new BoolLitNode("false");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
-          return new IntLitNode("-777777");
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
+            return new IntLitNode("-777777");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
-          return new DoubleLitNode("-777777.77");
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
+            return new DoubleLitNode("-777777.77");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
-          return new LongLitNode("-7777777777L");
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
+            return new LongLitNode("-7777777777L");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
-          return new NullPntrNode();
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
+            return new NullPntrNode();
 
-          // remove this later
-          case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
-          return new NullPntrNode();
+            // remove this later
+        case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
+            return new NullPntrNode();
 
-          // needed for default port behavior
-          case PtolemyTypeIdentifier.TYPE_KIND_DUMMY_TOKEN:
-          return new IntLitNode("-777777");
+            // needed for default port behavior
+        case PtolemyTypeIdentifier.TYPE_KIND_DUMMY_TOKEN:
+            return new IntLitNode("-777777");
         }
 
         ApplicationUtility.error("unexpected type for _dummyValue() : " + type);
@@ -1276,13 +1276,13 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         Iterator exceptionTypeItr = exceptionTypeList.iterator();
 
         while (exceptionTypeItr.hasNext()) {
-           TypeNameNode exceptionType = (TypeNameNode) exceptionTypeItr.next();
+            TypeNameNode exceptionType = (TypeNameNode) exceptionTypeItr.next();
 
-           int exceptionKind = _typeID.kindOfTypeNameNode(exceptionType);
+            int exceptionKind = _typeID.kindOfTypeNameNode(exceptionType);
 
-           if (!_typeID.isPtolemyExceptionKind(exceptionKind)) {
-              retval.addLast(exceptionType);
-           }
+            if (!_typeID.isPtolemyExceptionKind(exceptionKind)) {
+                retval.addLast(exceptionType);
+            }
         }
 
         return retval;
@@ -1290,76 +1290,76 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     protected Object _makeDefaultPreinitializeMethod() {
         return new MethodDeclNode(PUBLIC_MOD,
-         new NameNode(AbsentTreeNode.instance, "preinitialize"), new LinkedList(),
-         new LinkedList(),
-         new BlockNode(new LinkedList()), VoidTypeNode.instance);
+                new NameNode(AbsentTreeNode.instance, "preinitialize"), new LinkedList(),
+                new LinkedList(),
+                new BlockNode(new LinkedList()), VoidTypeNode.instance);
     }
 
     protected Object _makeDefaultInitializeMethod() {
         return new MethodDeclNode(PUBLIC_MOD,
-         new NameNode(AbsentTreeNode.instance, "initialize"), new LinkedList(),
-         new LinkedList(),
-         new BlockNode(new LinkedList()), VoidTypeNode.instance);
+                new NameNode(AbsentTreeNode.instance, "initialize"), new LinkedList(),
+                new LinkedList(),
+                new BlockNode(new LinkedList()), VoidTypeNode.instance);
     }
 
     protected Object _makeDefaultPrefireMethod() {
         List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));
         return new MethodDeclNode(PUBLIC_MOD,
-         new NameNode(AbsentTreeNode.instance, "prefire"), new LinkedList(),
-         new LinkedList(),
-         new BlockNode(blockList), BoolTypeNode.instance);
+                new NameNode(AbsentTreeNode.instance, "prefire"), new LinkedList(),
+                new LinkedList(),
+                new BlockNode(blockList), BoolTypeNode.instance);
     }
 
     protected Object _makeDefaultFireMethod() {
         return new MethodDeclNode(PUBLIC_MOD,
-         new NameNode(AbsentTreeNode.instance, "fire"), new LinkedList(),
-         new LinkedList(),
-         new BlockNode(new LinkedList()), VoidTypeNode.instance);
+                new NameNode(AbsentTreeNode.instance, "fire"), new LinkedList(),
+                new LinkedList(),
+                new BlockNode(new LinkedList()), VoidTypeNode.instance);
     }
 
     protected Object _makeDefaultPostfireMethod() {
         List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));
         return new MethodDeclNode(PUBLIC_MOD,
-         new NameNode(AbsentTreeNode.instance, "postfire"), new LinkedList(),
-         new LinkedList(),
-         new BlockNode(blockList), BoolTypeNode.instance);
+                new NameNode(AbsentTreeNode.instance, "postfire"), new LinkedList(),
+                new LinkedList(),
+                new BlockNode(blockList), BoolTypeNode.instance);
     }
 
     protected Object _makeDefaultWrapupMethod() {
         return new MethodDeclNode(PUBLIC_MOD,
-         new NameNode(AbsentTreeNode.instance, "wrapup"),
-         new LinkedList(),
-         new LinkedList(),
-         new BlockNode(new LinkedList()), VoidTypeNode.instance);
+                new NameNode(AbsentTreeNode.instance, "wrapup"),
+                new LinkedList(),
+                new LinkedList(),
+                new BlockNode(new LinkedList()), VoidTypeNode.instance);
     }
 
-    /** Convert the argument object, which may be a list, expression, 
+    /** Convert the argument object, which may be a list, expression,
      *  statement, or NullValue.instance to a statement.
      */
     protected StatementNode _makeStmt(Object obj) {
         if (obj instanceof List) {
-           List listObj = (List) obj;
-           int listSize = listObj.size();
-           if (listSize == 0) {
-              return new EmptyStmtNode();
-           } else if (listSize == 1) {
-              return _makeStmt(listObj.get(0));
-           } else {
-              return new BlockNode(_makeStmtList(listObj));
-           }
+            List listObj = (List) obj;
+            int listSize = listObj.size();
+            if (listSize == 0) {
+                return new EmptyStmtNode();
+            } else if (listSize == 1) {
+                return _makeStmt(listObj.get(0));
+            } else {
+                return new BlockNode(_makeStmtList(listObj));
+            }
         } else if (obj instanceof ExprNode) {
-           ExprNode exprNode = (ExprNode) obj;
+            ExprNode exprNode = (ExprNode) obj;
 
-           if (ExprUtility.isStatementExpression(exprNode)) {
-              return new ExprStmtNode(exprNode);
-           }
-           return new EmptyStmtNode();
+            if (ExprUtility.isStatementExpression(exprNode)) {
+                return new ExprStmtNode(exprNode);
+            }
+            return new EmptyStmtNode();
         } else if (obj == NullValue.instance) {
-           return new EmptyStmtNode();
+            return new EmptyStmtNode();
         } else if (obj instanceof StatementNode) {
-           return (StatementNode) obj;
+            return (StatementNode) obj;
         } else {
-           throw new IllegalArgumentException("unknown object : " + obj);
+            throw new IllegalArgumentException("unknown object : " + obj);
         }
     }
 
@@ -1373,79 +1373,79 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         Iterator retvalItr = retvalList.iterator();
 
         while (retvalItr.hasNext()) {
-           Object obj = retvalItr.next();
+            Object obj = retvalItr.next();
 
-           if (obj instanceof List) {
-              newStmtList.addAll(_makeStmtList((List) obj));
-           } else if (obj != NullValue.instance) {
-              // don't add statements that have NullValue.instance as the result
-              // of visitation
-              obj = _makeStmt(obj);
+            if (obj instanceof List) {
+                newStmtList.addAll(_makeStmtList((List) obj));
+            } else if (obj != NullValue.instance) {
+                // don't add statements that have NullValue.instance as the result
+                // of visitation
+                obj = _makeStmt(obj);
 
-              // eliminate empty statements
-              if (!(obj instanceof EmptyStmtNode)) {
-                 newStmtList.addLast(_makeStmt(obj));
-              }
-           }
+                // eliminate empty statements
+                if (!(obj instanceof EmptyStmtNode)) {
+                    newStmtList.addLast(_makeStmt(obj));
+                }
+            }
         }
 
         return newStmtList;
     }
 
-    /** Return an expression node representing the "one" value of the 
+    /** Return an expression node representing the "one" value of the
      *  argument expression, whose type has kind accessedObjKind.
      */
     protected ExprNode _oneValue(int accessedObjKind, ExprNode accessedObj) {
         switch (accessedObjKind) {
-          case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
-          return new NullPntrNode();
+        case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
+            return new NullPntrNode();
 
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
-          return new IntLitNode("1");
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
+            return new IntLitNode("1");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
-          return new BoolLitNode("true");
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
+            return new BoolLitNode("true");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
-          return new DoubleLitNode("1.0");
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
+            return new DoubleLitNode("1.0");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
-          return new LongLitNode("1L");
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
+            return new LongLitNode("1L");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
-          return new TypeFieldAccessNode(new NameNode(AbsentTreeNode.instance, "ONE"),
-           (TypeNameNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone());
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
+            return new TypeFieldAccessNode(new NameNode(AbsentTreeNode.instance, "ONE"),
+                    (TypeNameNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
-          ApplicationUtility.error("found one() method call on unsupported token kind " +
-           accessedObjKind);
-          return null;
+        case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
+            ApplicationUtility.error("found one() method call on unsupported token kind " +
+                    accessedObjKind);
+            return null;
 
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
-          return new MethodCallNode(new TypeFieldAccessNode(
-                  new NameNode(AbsentTreeNode.instance, "one"),
-                   new TypeNameNode(
-                    new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
-                  TNLManip.cons(accessedObj));
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
+            return new MethodCallNode(new TypeFieldAccessNode(
+                    new NameNode(AbsentTreeNode.instance, "one"),
+                    new TypeNameNode(
+                            new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
+                    TNLManip.cons(accessedObj));
 
-          default:
-          ApplicationUtility.error("found zero() method call on unknown token kind " +
-           accessedObjKind);
-          return null;
+        default:
+            ApplicationUtility.error("found zero() method call on unknown token kind " +
+                    accessedObjKind);
+            return null;
         }
     }
 
     /** Transform a field declaration of a port. When this method is called, no
-     *  visitation of the child list of the node has been done yet. This 
+     *  visitation of the child list of the node has been done yet. This
      *  method should be overloaded in subclasses.
      */
     protected Object _portFieldDeclNode(FieldDeclNode node, LinkedList args) {
@@ -1454,7 +1454,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     /** Transform a method call to a port. When this method is called, no
-     *  visitation of the child list of the node has been done yet. This 
+     *  visitation of the child list of the node has been done yet. This
      *  method should be overloaded in subclasses.
      */
     protected Object _portMethodCallNode(MethodCallNode node, LinkedList args) {
@@ -1467,7 +1467,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         node.setMethod(fieldAccessNode);
 
         ExprNode accessedObj =
-         (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+            (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
 
         node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs()));
 
@@ -1483,50 +1483,50 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);
 
         if (methodName.equals("get")) {
-           // dummy value
-           TypeNameNode portType =
-            _typeID.typeNodeForTokenType(port.getType());
+            // dummy value
+            TypeNameNode portType =
+                _typeID.typeNodeForTokenType(port.getType());
 
-           return _dummyValue(portType);
+            return _dummyValue(portType);
 
         } else if (methodName.equals("getWidth")) {
-           return new IntLitNode(String.valueOf(port.getWidth()));
+            return new IntLitNode(String.valueOf(port.getWidth()));
         } else if (methodName.equals("hasRoom")) {
-           // dummy value
-           return new BoolLitNode("false");
+            // dummy value
+            return new BoolLitNode("false");
         } else if (methodName.equals("hasToken")) {
-           // dummy value
-           return new BoolLitNode("false");
+            // dummy value
+            return new BoolLitNode("false");
         } else if (methodName.equals("isInput")) {
-           if (port.isInput()) {
-              return new BoolLitNode("true");
-           } else {
-              return new BoolLitNode("false");
-           }
+            if (port.isInput()) {
+                return new BoolLitNode("true");
+            } else {
+                return new BoolLitNode("false");
+            }
         } else if (methodName.equals("isMultiport")) {
-           if (port.isMultiport()) {
-              return new BoolLitNode("true");
-           } else {
-              return new BoolLitNode("false");
-           }
+            if (port.isMultiport()) {
+                return new BoolLitNode("true");
+            } else {
+                return new BoolLitNode("false");
+            }
         } else if (methodName.equals("isOutput")) {
-           if (port.isOutput()) {
-              return new BoolLitNode("true");
-           } else {
-              return new BoolLitNode("false");
-           }
+            if (port.isOutput()) {
+                return new BoolLitNode("true");
+            } else {
+                return new BoolLitNode("false");
+            }
         } else if (methodName.equals("send") ||
-                   methodName.equals("setInput") ||
-                   methodName.equals("setMultiport") ||
-                   methodName.equals("setOutput") ||
-                   methodName.equals("setTokenConsumptionRate") ||
-                   methodName.equals("setTokenInitRate") ||
-                   methodName.equals("setTokenProductionRate") ||
-                   methodName.equals("setTypeAtLeast") ||
-                   methodName.equals("setTypeAtMost") ||
-                   methodName.equals("setTypeEquals") ||
-                   methodName.equals("setTypeSameAs")) {
-           return NullValue.instance; // must be eliminated by ExprStmtNode
+                methodName.equals("setInput") ||
+                methodName.equals("setMultiport") ||
+                methodName.equals("setOutput") ||
+                methodName.equals("setTokenConsumptionRate") ||
+                methodName.equals("setTokenInitRate") ||
+                methodName.equals("setTokenProductionRate") ||
+                methodName.equals("setTypeAtLeast") ||
+                methodName.equals("setTypeAtMost") ||
+                methodName.equals("setTypeEquals") ||
+                methodName.equals("setTypeSameAs")) {
+            return NullValue.instance; // must be eliminated by ExprStmtNode
         }
         return node;
     }
@@ -1542,89 +1542,89 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         if (_typeID.isSupportedTokenKind(leftKind)) {
 
-           ApplicationUtility.warn("comparison of Token found : " + leftExpr +
-            " with " + rightExpr);
+            ApplicationUtility.warn("comparison of Token found : " + leftExpr +
+                    " with " + rightExpr);
 
-           if (rightExpr.classID() == NULLPNTRNODE_ID) {
-              ApplicationUtility.warn("comparison with null replaced with dummy value");
+            if (rightExpr.classID() == NULLPNTRNODE_ID) {
+                ApplicationUtility.warn("comparison with null replaced with dummy value");
 
-              node.setExpr2(_dummyValue(leftType));
+                node.setExpr2(_dummyValue(leftType));
 
-              node.setExpr1((ExprNode) leftExpr.accept(this, args));
+                node.setExpr1((ExprNode) leftExpr.accept(this, args));
 
-              return node;
-           }
+                return node;
+            }
         }
 
         if (_typeID.isSupportedTokenKind(rightKind)) {
 
-           ApplicationUtility.warn("comparison of Token found : " + leftExpr +
-            " with " + rightExpr + "(may be a duplicate message)");
+            ApplicationUtility.warn("comparison of Token found : " + leftExpr +
+                    " with " + rightExpr + "(may be a duplicate message)");
 
-           if (leftExpr.classID() == NULLPNTRNODE_ID) {
-              ApplicationUtility.warn("comparison with null replaced with dummy value");
+            if (leftExpr.classID() == NULLPNTRNODE_ID) {
+                ApplicationUtility.warn("comparison with null replaced with dummy value");
 
-              node.setExpr1(_dummyValue(rightType));
+                node.setExpr1(_dummyValue(rightType));
 
-              node.setExpr2((ExprNode) rightExpr.accept(this, args));
+                node.setExpr2((ExprNode) rightExpr.accept(this, args));
 
-              return node;
-           }
+                return node;
+            }
         }
 
         return _defaultVisit(node, args);
     }
 
-    /** Return an expression node representing the "zero" value of the 
+    /** Return an expression node representing the "zero" value of the
      *  argument expression, whose type has kind accessedObjKind.
      */
     protected ExprNode _zeroValue(int accessedObjKind, ExprNode accessedObj) {
         switch (accessedObjKind) {
-          case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
-          return new NullPntrNode();
+        case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
+            return new NullPntrNode();
 
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
-          return new IntLitNode("0");
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
+            return new IntLitNode("0");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
-          return new BoolLitNode("false");
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
+            return new BoolLitNode("false");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
-          return new DoubleLitNode("0.0");
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
+            return new DoubleLitNode("0.0");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
-          return new LongLitNode("0L");
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
+            return new LongLitNode("0L");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
-          return new TypeFieldAccessNode(new NameNode(AbsentTreeNode.instance, "ZERO"),
-           (TypeNameNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone());
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
+            return new TypeFieldAccessNode(new NameNode(AbsentTreeNode.instance, "ZERO"),
+                    (TypeNameNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone());
 
-          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
-          ApplicationUtility.error("found zero() method call on ObjectToken");
-          return null;
+        case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
+            ApplicationUtility.error("found zero() method call on ObjectToken");
+            return null;
 
-          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
-          return new StringLitNode("");
+        case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
+            return new StringLitNode("");
 
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
-          return new MethodCallNode(new TypeFieldAccessNode(
-                  new NameNode(AbsentTreeNode.instance, "zero"),
-                   new TypeNameNode(
-                    new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
-                  TNLManip.cons(accessedObj));
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+        case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
+            return new MethodCallNode(new TypeFieldAccessNode(
+                    new NameNode(AbsentTreeNode.instance, "zero"),
+                    new TypeNameNode(
+                            new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
+                    TNLManip.cons(accessedObj));
 
-          default:
-          ApplicationUtility.error("found zero() method call on unknown token kind " +
-           accessedObjKind);
-          return null;
+        default:
+            ApplicationUtility.error("found zero() method call on unknown token kind " +
+                    accessedObjKind);
+            return null;
         }
     }
 

@@ -53,14 +53,14 @@ import ptolemy.lang.java.nodetypes.*;
 public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
     public SpecializeTokenVisitor(ActorCodeGeneratorInfo actorInfo,
-                                  PtolemyTypeVisitor typeVisitor) {
+            PtolemyTypeVisitor typeVisitor) {
         this(actorInfo, typeVisitor, new InequalitySolver(_cpo), new HashMap());
     }
 
     public SpecializeTokenVisitor(ActorCodeGeneratorInfo actorInfo,
-                                  PtolemyTypeVisitor typeVisitor,
-                                  InequalitySolver solver,
-                                  Map declToTermMap) {
+            PtolemyTypeVisitor typeVisitor,
+            InequalitySolver solver,
+            Map declToTermMap) {
         super(TM_CUSTOM);
         _actorInfo = actorInfo;
 
@@ -77,7 +77,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
      *  declaration could have.
      */
     public static Map specializeTokens(List nodeList,
-     ActorCodeGeneratorInfo actorInfo, PtolemyTypeVisitor typeVisitor) {
+            ActorCodeGeneratorInfo actorInfo, PtolemyTypeVisitor typeVisitor) {
 
         Iterator nodeItr = nodeList.iterator();
 
@@ -88,27 +88,27 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         // inequality term map is used in each invocation
 
         SpecializeTokenVisitor specializeVisitor =
-         new SpecializeTokenVisitor(actorInfo, typeVisitor, solver, declToTermMap);
+            new SpecializeTokenVisitor(actorInfo, typeVisitor, solver, declToTermMap);
 
         while (nodeItr.hasNext()) {
-           CompileUnitNode unitNode = (CompileUnitNode) nodeItr.next();
+            CompileUnitNode unitNode = (CompileUnitNode) nodeItr.next();
 
-           unitNode.accept(specializeVisitor, null);
+            unitNode.accept(specializeVisitor, null);
         }
 
         boolean ok = solver.solveLeast();
 
         if (!ok) {
-           ApplicationUtility.warn("unable to solve for Token types");
+            ApplicationUtility.warn("unable to solve for Token types");
 
-           Iterator unsatisfiedItr = solver.unsatisfiedInequalities();
+            Iterator unsatisfiedItr = solver.unsatisfiedInequalities();
 
-           ApplicationUtility.warn("unsatisfied inequalities:");
+            ApplicationUtility.warn("unsatisfied inequalities:");
 
-           while (unsatisfiedItr.hasNext()) {
-               ApplicationUtility.warn(unsatisfiedItr.next().toString());
-           }
-           ApplicationUtility.warn("end of unsatisfied inequalities");
+            while (unsatisfiedItr.hasNext()) {
+                ApplicationUtility.warn(unsatisfiedItr.next().toString());
+            }
+            ApplicationUtility.warn("end of unsatisfied inequalities");
         }
 
         HashMap declToTokenTypeMap = new HashMap();
@@ -116,30 +116,30 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         Iterator termItr = declToTermMap.values().iterator();
 
         while (termItr.hasNext()) {
-           InequalityTerm term = (InequalityTerm) termItr.next();
+            InequalityTerm term = (InequalityTerm) termItr.next();
 
-           ApplicationUtility.trace(term.toString());
+            ApplicationUtility.trace(term.toString());
 
-           ClassDecl value = (ClassDecl) term.getValue();
+            ClassDecl value = (ClassDecl) term.getValue();
 
-           TypedDecl typedDecl = (TypedDecl) term.getAssociatedObject();
+            TypedDecl typedDecl = (TypedDecl) term.getAssociatedObject();
 
-           if ((value == PtolemyTypeIdentifier.DUMMY_LOWER_BOUND) ||
-               (value == PtolemyTypeIdentifier.TOKEN_DECL) ||
-               (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||
-               (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {
-              ApplicationUtility.warn("could not solve for specific token type for " +
-              "declaration " + typedDecl.getName() + " in " + actorInfo.actor.getName());
+            if ((value == PtolemyTypeIdentifier.DUMMY_LOWER_BOUND) ||
+                    (value == PtolemyTypeIdentifier.TOKEN_DECL) ||
+                    (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||
+                    (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {
+                ApplicationUtility.warn("could not solve for specific token type for " +
+                        "declaration " + typedDecl.getName() + " in " + actorInfo.actor.getName());
 
-              // replace the declaration type with "Token" as an indication for
-              // later passes
-              declToTokenTypeMap.put(typedDecl,
-               PtolemyTypeIdentifier.TOKEN_TYPE.clone());
-           } else {
-              TypeNameNode typeNode = (TypeNameNode) value.getDefType().clone();
+                // replace the declaration type with "Token" as an indication for
+                // later passes
+                declToTokenTypeMap.put(typedDecl,
+                        PtolemyTypeIdentifier.TOKEN_TYPE.clone());
+            } else {
+                TypeNameNode typeNode = (TypeNameNode) value.getDefType().clone();
 
-              declToTokenTypeMap.put(typedDecl, typeNode);
-           }
+                declToTokenTypeMap.put(typedDecl, typeNode);
+            }
         }
 
         return declToTokenTypeMap;
@@ -173,7 +173,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             TreeNode member = (TreeNode) memberItr.next();
 
             if (member.classID() == FIELDDECLNODE_ID) {
-               visitFieldDeclNode((FieldDeclNode) member, null);
+                visitFieldDeclNode((FieldDeclNode) member, null);
             }
         }
 
@@ -185,7 +185,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             TreeNode member = (TreeNode) memberItr.next();
 
             if (member.classID() != FIELDDECLNODE_ID) {
-               member.accept(this, null);
+                member.accept(this, null);
             }
         }
         return null;
@@ -229,11 +229,11 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         InequalityTerm term = _makeVariableTerm(type, typedDecl);
 
         if (term != null) {
-           // add to the map from decls to inequality terms
-           _declToTermMap.put(typedDecl, term);
+            // add to the map from decls to inequality terms
+            _declToTermMap.put(typedDecl, term);
 
-           // constrain the type (it must be added the inequalities)
-           _solver.addInequality(new Inequality(term, _makeConstantTerm(type, null)));
+            // constrain the type (it must be added the inequalities)
+            _solver.addInequality(new Inequality(term, _makeConstantTerm(type, null)));
         }
         return null;
     }
@@ -262,7 +262,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         TypeNode returnType = _typeVisitor.type(node);
         InequalityTerm retval =
-         (InequalityTerm) _makeConstantTerm(returnType, null);
+            (InequalityTerm) _makeConstantTerm(returnType, null);
 
         List argTerms = TNLManip.traverseList(this, node, null, node.getArgs());
 
@@ -272,7 +272,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         // if this is a static method call, we can't do any more.
         if (accessedObj == null) {
-           return null;
+            return null;
         }
 
         Object accessedObjTermObj = accessedObj.accept(this, null);
@@ -285,115 +285,115 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         if (_typeID.isSupportedTokenKind(accessedObjKind)) {
 
-           // if the return type is not a subclass of Token, we can't do any more
-           if (retval == null) {
-              return null;
-           }
+            // if the return type is not a subclass of Token, we can't do any more
+            if (retval == null) {
+                return null;
+            }
 
-           InequalityTerm accessedObjTerm = (InequalityTerm) accessedObjTermObj;
+            InequalityTerm accessedObjTerm = (InequalityTerm) accessedObjTermObj;
 
-           boolean variableAccessedTerm = (accessedObjTerm instanceof VariableTerm);
+            boolean variableAccessedTerm = (accessedObjTerm instanceof VariableTerm);
 
-           if (variableAccessedTerm) {
-              retval = _makeVariableTerm(returnType, null);
-           }
+            if (variableAccessedTerm) {
+                retval = _makeVariableTerm(returnType, null);
+            }
 
-           int numArgs = argTerms.size();
+            int numArgs = argTerms.size();
 
-           switch (numArgs) {
+            switch (numArgs) {
 
-             case 0:
-             if (methodName.equals("one") || methodName.equals("zero")) {
-                retval = accessedObjTerm;
-             }
-             break;
+            case 0:
+                if (methodName.equals("one") || methodName.equals("zero")) {
+                    retval = accessedObjTerm;
+                }
+                break;
 
-             case 1:
-             {
-               InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(0);
+            case 1:
+                {
+                    InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(0);
 
-               if (!variableAccessedTerm &&
-                   (firstArgTerm instanceof VariableTerm)) {
-                  retval = _makeVariableTerm(returnType, null);
-               }
+                    if (!variableAccessedTerm &&
+                            (firstArgTerm instanceof VariableTerm)) {
+                        retval = _makeVariableTerm(returnType, null);
+                    }
 
-               if (methodName.equals("add") || methodName.equals("addReverse") ||
-                   methodName.equals("subtract") || methodName.equals("subtractReverse") ||
-                   methodName.equals("multiply") || methodName.equals("multiplyReverse") ||
-                   methodName.equals("divide") || methodName.equals("divideReverse") ||
-                   methodName.equals("modulo") || methodName.equals("moduloReverse")) {
-                  // constrain the return value to be >= both the accessedObject and
-                  // the first argument
+                    if (methodName.equals("add") || methodName.equals("addReverse") ||
+                            methodName.equals("subtract") || methodName.equals("subtractReverse") ||
+                            methodName.equals("multiply") || methodName.equals("multiplyReverse") ||
+                            methodName.equals("divide") || methodName.equals("divideReverse") ||
+                            methodName.equals("modulo") || methodName.equals("moduloReverse")) {
+                        // constrain the return value to be >= both the accessedObject and
+                        // the first argument
 
-                  _solver.addInequality(new Inequality(accessedObjTerm, retval));
-                  _solver.addInequality(new Inequality(firstArgTerm, retval));
+                        _solver.addInequality(new Inequality(accessedObjTerm, retval));
+                        _solver.addInequality(new Inequality(firstArgTerm, retval));
 
-               } else if (methodName.equals("convert")) {
-                  // constrain the return value to be equal the accessedObject
-                  // also constain the first argument to be <= the accessedObject
+                    } else if (methodName.equals("convert")) {
+                        // constrain the return value to be equal the accessedObject
+                        // also constain the first argument to be <= the accessedObject
 
-                  retval = accessedObjTerm;
+                        retval = accessedObjTerm;
 
-                  _solver.addInequality(new Inequality(firstArgTerm,
-                   accessedObjTerm));
-               }
-             } // numArgs == 1
-             break;
-          }
+                        _solver.addInequality(new Inequality(firstArgTerm,
+                                accessedObjTerm));
+                    }
+                } // numArgs == 1
+                break;
+            }
 
         } else if (_typeID.isSupportedPortKind(accessedObjKind)) {
-           // use the resolved type of ports to do type inference
+            // use the resolved type of ports to do type inference
 
-           TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
-           String varName = typedDecl.getName();
+            TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
+            String varName = typedDecl.getName();
 
-           TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);
+            TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);
 
-           if (port == null) {
-              ApplicationUtility.warn("method called on port that is not " +
-               "a field of the actor");
-              return null;
-           }
+            if (port == null) {
+                ApplicationUtility.warn("method called on port that is not " +
+                        "a field of the actor");
+                return null;
+            }
 
-           TypeNameNode portTypeNode =
-            _typeID.typeNodeForTokenType(port.getType());
+            TypeNameNode portTypeNode =
+                _typeID.typeNodeForTokenType(port.getType());
 
-           if (methodName.equals("broadcast")) {
-              // first argument is a token, constrain it
-              InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(0);
-              _solver.addInequality(new Inequality(firstArgTerm,
-               _makeConstantTerm(portTypeNode, null)));
-              return null; // return type is void
-           } else if (methodName.equals("get")) {
-              return _makeConstantTerm(portTypeNode, null);
-           } else if (methodName.equals("send")) {
-              // second argument is a token, constrain it
-              InequalityTerm secondArgTerm = (InequalityTerm) argTerms.get(1);
-              _solver.addInequality(new Inequality(secondArgTerm,
-               _makeConstantTerm(portTypeNode, null)));
-              return null; // return type is void
-           } // support getArray ...
+            if (methodName.equals("broadcast")) {
+                // first argument is a token, constrain it
+                InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(0);
+                _solver.addInequality(new Inequality(firstArgTerm,
+                        _makeConstantTerm(portTypeNode, null)));
+                return null; // return type is void
+            } else if (methodName.equals("get")) {
+                return _makeConstantTerm(portTypeNode, null);
+            } else if (methodName.equals("send")) {
+                // second argument is a token, constrain it
+                InequalityTerm secondArgTerm = (InequalityTerm) argTerms.get(1);
+                _solver.addInequality(new Inequality(secondArgTerm,
+                        _makeConstantTerm(portTypeNode, null)));
+                return null; // return type is void
+            } // support getArray ...
 
         } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
-           // use the tokens returned by parameters to do type inference
+            // use the tokens returned by parameters to do type inference
 
-           if (methodName.equals("getToken")){
-              TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
-              String varName = typedDecl.getName();
+            if (methodName.equals("getToken")){
+                TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
+                String varName = typedDecl.getName();
 
-              Token token = (Token) _actorInfo.parameterNameToTokenMap.get(varName);
+                Token token = (Token) _actorInfo.parameterNameToTokenMap.get(varName);
 
-              if (token == null) {
-                 ApplicationUtility.warn("getToken() called on parameter that is not " +
-                  "a field of the actor");
-                 return null;
-              }
+                if (token == null) {
+                    ApplicationUtility.warn("getToken() called on parameter that is not " +
+                            "a field of the actor");
+                    return null;
+                }
 
-              TypeNameNode tokenTypeNode =
-               _typeID.typeNodeForTokenType(token.getType());
+                TypeNameNode tokenTypeNode =
+                    _typeID.typeNodeForTokenType(token.getType());
 
-              return _makeConstantTerm(tokenTypeNode, null);
-           }
+                return _makeConstantTerm(tokenTypeNode, null);
+            }
         }
 
         return retval;
@@ -409,8 +409,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         InequalityTerm term = (InequalityTerm) node.getExpr().accept(this, null);
 
         if (term != null) {
-           _solver.addInequality(new Inequality(term,
-            _makeConstantTerm(node.getDtype(), null)));
+            _solver.addInequality(new Inequality(term,
+                    _makeConstantTerm(node.getDtype(), null)));
         }
 
         return term;
@@ -421,7 +421,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         InequalityTerm rightTerm = (InequalityTerm) node.getExpr2().accept(this, null);
 
         if ((leftTerm != null) && (rightTerm != null)) {
-           _solver.addInequality(new Inequality(rightTerm, leftTerm));
+            _solver.addInequality(new Inequality(rightTerm, leftTerm));
         }
 
         return leftTerm;
@@ -449,15 +449,15 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         InequalityTerm initExprTerm = (InequalityTerm) node.getInitExpr().accept(this, null);
 
         if (term != null) {
-           // add to the map from decls to inequality terms
-           _declToTermMap.put(typedDecl, term);
+            // add to the map from decls to inequality terms
+            _declToTermMap.put(typedDecl, term);
 
-           // constrain the type (it must be added the inequalities)
-           _solver.addInequality(new Inequality(term, _makeConstantTerm(type, null)));
+            // constrain the type (it must be added the inequalities)
+            _solver.addInequality(new Inequality(term, _makeConstantTerm(type, null)));
 
-           if (initExprTerm != null) {
-              _solver.addInequality(new Inequality(initExprTerm, term));
-           }
+            if (initExprTerm != null) {
+                _solver.addInequality(new Inequality(initExprTerm, term));
+            }
         }
         return null;
     }
@@ -469,7 +469,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     protected VariableTerm _makeVariableTerm(TypeNode type, TypedDecl decl) {
         int kind = _typeID.kind(type);
         if (!_typeID.isSupportedTokenKind(kind)) {
-           return null;
+            return null;
         }
 
         return new VariableTerm((ClassDecl) JavaDecl.getDecl((NamedNode) type), decl);
@@ -482,7 +482,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     protected ConstantTerm _makeConstantTerm(TypeNode type, TypedDecl decl) {
         int kind = _typeID.kind(type);
         if (!_typeID.isSupportedTokenKind(kind)) {
-           return null;
+            return null;
         }
 
         return new ConstantTerm((ClassDecl) JavaDecl.getDecl((NamedNode) type), decl);
@@ -528,7 +528,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         public void setValue(Object e) throws IllegalActionException {
             throw new IllegalActionException(
-             "ConstantTerm.setValue(): This term is a constant");
+                    "ConstantTerm.setValue(): This term is a constant");
         }
 
         public String toString() {
@@ -570,7 +570,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         public void setValue(Object e) {
             if (!_fixed) {
-               _classDecl = (ClassDecl) e;
+                _classDecl = (ClassDecl) e;
             }
         }
 
@@ -591,50 +591,50 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         _cpo.add(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND);
 
-	    _cpo.add(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.FIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.INT_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.LONG_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.STRING_TOKEN_DECL);
-	    _cpo.add(PtolemyTypeIdentifier.TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.FIX_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.INT_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.LONG_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeIdentifier.STRING_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.STRING_TOKEN_DECL, PtolemyTypeIdentifier.TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
         _cpo.addEdge(PtolemyTypeIdentifier.MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeIdentifier.LONG_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.LONG_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
         _cpo.addEdge(PtolemyTypeIdentifier.FIX_TOKEN_DECL, PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL, PtolemyTypeIdentifier.LONG_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL, PtolemyTypeIdentifier.LONG_TOKEN_DECL);
         _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL, PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
-	    _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
         _cpo.addEdge(PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.MATRIX_TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
 
-	    _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL);
 
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.OBJECT_TOKEN_DECL);
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.STRING_TOKEN_DECL);
@@ -646,9 +646,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
 
-	    if (!_cpo.isLattice()) {
-  		   throw new RuntimeException("SpecializeTokenVisitor: The " +
-			  "type hierarchy is not a lattice.");
-	    }
+        if (!_cpo.isLattice()) {
+            throw new RuntimeException("SpecializeTokenVisitor: The " +
+                    "type hierarchy is not a lattice.");
+        }
     }
 }

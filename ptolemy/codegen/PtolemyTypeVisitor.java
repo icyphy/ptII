@@ -51,21 +51,21 @@ import ptolemy.math.FixPoint;
  *  @author Jeff Tsay
  */
 public class PtolemyTypeVisitor extends TypeVisitor
-     implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
 
     public PtolemyTypeVisitor(ActorCodeGeneratorInfo actorInfo) {
         this(actorInfo, new PtolemyTypePolicy(new PtolemyTypeIdentifier()));
     }
 
     public PtolemyTypeVisitor(ActorCodeGeneratorInfo actorInfo,
-     PtolemyTypePolicy typePolicy) {
+            PtolemyTypePolicy typePolicy) {
         super(typePolicy);
         _actorInfo = actorInfo;
 
         _ptolemyTypePolicy = typePolicy;
 
         _ptolemyTypeID =
-         (PtolemyTypeIdentifier) typePolicy.typeIdentifier();
+            (PtolemyTypeIdentifier) typePolicy.typeIdentifier();
     }
 
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
@@ -76,71 +76,71 @@ public class PtolemyTypeVisitor extends TypeVisitor
         // if this is a static method call, we can't do any more.
         if (!(fieldAccessNode instanceof TypeFieldAccessNode)) {
 
-           String methodName = decl.getName();
+            String methodName = decl.getName();
 
-           ExprNode accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+            ExprNode accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
 
-           TypeNode accessedObjType = type(accessedObj);
+            TypeNode accessedObjType = type(accessedObj);
 
-           int accessedObjKind = _ptolemyTypeID.kind(accessedObjType);
+            int accessedObjKind = _ptolemyTypeID.kind(accessedObjType);
 
-           if (_ptolemyTypeID.isSupportedTokenKind(accessedObjKind)) {
+            if (_ptolemyTypeID.isSupportedTokenKind(accessedObjKind)) {
 
-              if (methodName.equals("convert") || methodName.equals("one") ||
-                  methodName.equals("oneRight") || methodName.equals("zero")) {
-                 return _setType(node, accessedObjType);
-              }
+                if (methodName.equals("convert") || methodName.equals("one") ||
+                        methodName.equals("oneRight") || methodName.equals("zero")) {
+                    return _setType(node, accessedObjType);
+                }
 
-              if (methodName.equals("getElementAsToken")) {
-                 return _setType(node,
-                  _ptolemyTypeID.typeNodeForKind(
-                   _ptolemyTypeID.kindOfMatrixElement(accessedObjKind)));
-              }
+                if (methodName.equals("getElementAsToken")) {
+                    return _setType(node,
+                            _ptolemyTypeID.typeNodeForKind(
+                                    _ptolemyTypeID.kindOfMatrixElement(accessedObjKind)));
+                }
 
-              List methodArgs = node.getArgs();
+                List methodArgs = node.getArgs();
 
-              if (methodArgs.size() == 1) {
-                 ExprNode firstArg = (ExprNode) methodArgs.get(0);
-                 int firstArgKind = _ptolemyTypeID.kind(type(firstArg));
+                if (methodArgs.size() == 1) {
+                    ExprNode firstArg = (ExprNode) methodArgs.get(0);
+                    int firstArgKind = _ptolemyTypeID.kind(type(firstArg));
 
-                 if (methodName.equals("add") || methodName.equals("addReverse") ||
-                     methodName.equals("subtract") || methodName.equals("subtractReverse") ||
-                     methodName.equals("multiply") || methodName.equals("multiplyReverse") ||
-                     methodName.equals("divide") || methodName.equals("divideReverse") ||
-                     methodName.equals("modulo") || methodName.equals("moduloReverse"))  {
-                    TypeNode retval = _ptolemyTypeID.typeNodeForKind(
-                     _ptolemyTypePolicy.moreGeneralTokenKind(accessedObjKind, firstArgKind));
-                    return _setType(node, retval);
-                 }
-              }
-
-           } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
-              if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
-                 if (methodName.equals("getToken")) {
-                    String paramName = fieldAccessNode.getName().getIdent();
-                    Token token = (Token) _actorInfo.parameterNameToTokenMap.get(paramName);
-                    if (token != null) {
-                       return _setType(node,
-                        _ptolemyTypeID.typeNodeForTokenType(token.getType()));
+                    if (methodName.equals("add") || methodName.equals("addReverse") ||
+                            methodName.equals("subtract") || methodName.equals("subtractReverse") ||
+                            methodName.equals("multiply") || methodName.equals("multiplyReverse") ||
+                            methodName.equals("divide") || methodName.equals("divideReverse") ||
+                            methodName.equals("modulo") || methodName.equals("moduloReverse"))  {
+                        TypeNode retval = _ptolemyTypeID.typeNodeForKind(
+                                _ptolemyTypePolicy.moreGeneralTokenKind(accessedObjKind, firstArgKind));
+                        return _setType(node, retval);
                     }
-                 }
-              }
-           } else if (_ptolemyTypeID.isSupportedPortKind(accessedObjKind)) {
-              if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
-                 if (methodName.equals("get")) {
+                }
 
-                    TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
-                    String portName = typedDecl.getName();
-
-                    TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(portName);
-
-                    if (port != null) {
-                       return _setType(node,
-                        _ptolemyTypeID.typeNodeForTokenType(port.getType()));
+            } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
+                if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
+                    if (methodName.equals("getToken")) {
+                        String paramName = fieldAccessNode.getName().getIdent();
+                        Token token = (Token) _actorInfo.parameterNameToTokenMap.get(paramName);
+                        if (token != null) {
+                            return _setType(node,
+                                    _ptolemyTypeID.typeNodeForTokenType(token.getType()));
+                        }
                     }
-                 }
-              }
-           }
+                }
+            } else if (_ptolemyTypeID.isSupportedPortKind(accessedObjKind)) {
+                if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
+                    if (methodName.equals("get")) {
+
+                        TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
+                        String portName = typedDecl.getName();
+
+                        TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(portName);
+
+                        if (port != null) {
+                            return _setType(node,
+                                    _ptolemyTypeID.typeNodeForTokenType(port.getType()));
+                        }
+                    }
+                }
+            }
         }
 
         return _setType(node, decl.getType());

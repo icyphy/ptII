@@ -60,7 +60,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      */
     public TypeNode encapsulatedDataType(int kind) {
         if (!isSupportedTokenKind(kind)) {
-           throw new IllegalArgumentException("kind " + kind + " is not a token kind");
+            throw new IllegalArgumentException("kind " + kind + " is not a token kind");
         }
 
         return (TypeNode) _TOKEN_CONTAINED_TYPES[kind - TYPE_KIND_TOKEN].clone();
@@ -83,14 +83,14 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      */
     public boolean isClassKind(int kind) {
         return (((kind >= TYPE_KIND_COMPLEX) &&
-                 (kind <= TYPE_KIND_NO_TOKEN_EXCEPTION)) ||
+                (kind <= TYPE_KIND_NO_TOKEN_EXCEPTION)) ||
                 super.isClassKind(kind));
     }
 
     /** Return true iff the kind is that of a concrete token class. */
     public boolean isConcreteTokenKind(int kind) {
         if (!isSupportedTokenKind(kind)) {
-           return false;
+            return false;
         }
         return _IS_CONCRETE_TOKEN[kind - TYPE_KIND_TOKEN];
     }
@@ -155,7 +155,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public int kindOfClassDecl(ClassDecl classDecl) {
         for (int i = 0; i < _KNOWN_CLASS_DECLS.length; i++) {
             if (classDecl == _KNOWN_CLASS_DECLS[i]) {
-               return _KNOWN_KINDS[i];
+                return _KNOWN_KINDS[i];
             }
         }
         return super.kindOfClassDecl(classDecl);
@@ -168,9 +168,9 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      */
     public int kindOfMatrixElement(int kind) {
         if ((kind < TYPE_KIND_MATRIX_TOKEN) ||
-            (kind > TYPE_KIND_FIX_MATRIX_TOKEN)) {
-           throw new IllegalArgumentException("matrixElementTokenKind() : kind ("
-            + kind + ") is not a MatrixToken kind,");
+                (kind > TYPE_KIND_FIX_MATRIX_TOKEN)) {
+            throw new IllegalArgumentException("matrixElementTokenKind() : kind ("
+                    + kind + ") is not a MatrixToken kind,");
         }
 
         return _MATRIX_ELEMENT_TOKEN_KINDS[kind - TYPE_KIND_MATRIX_TOKEN];
@@ -182,7 +182,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public int kindOfTokenType(Type type) {
         for (int i = 0; i < _KNOWN_TOKEN_TYPES.length; i++) {
             if (type == _KNOWN_TOKEN_TYPES[i]) {
-               return i + TYPE_KIND_TOKEN;
+                return i + TYPE_KIND_TOKEN;
             }
         }
         ApplicationUtility.error("kindOfTokenType(): type unknown, type = " + type);
@@ -241,27 +241,27 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
     // Ptolemy exception kinds
     public static final int TYPE_KIND_CHANGE_FAILED_EXCEPTION
-     = TYPE_KIND_TYPED_IO_PORT + 1;
+    = TYPE_KIND_TYPED_IO_PORT + 1;
     public static final int TYPE_KIND_ILLEGAL_ACTION_EXCEPTION
-     = TYPE_KIND_CHANGE_FAILED_EXCEPTION + 1;
+    = TYPE_KIND_CHANGE_FAILED_EXCEPTION + 1;
     public static final int TYPE_KIND_KERNEL_EXCEPTION
-     = TYPE_KIND_ILLEGAL_ACTION_EXCEPTION + 1;
+    = TYPE_KIND_ILLEGAL_ACTION_EXCEPTION + 1;
     public static final int TYPE_KIND_NAME_DUPLICATION_EXCEPTION
-     = TYPE_KIND_KERNEL_EXCEPTION + 1;
+    = TYPE_KIND_KERNEL_EXCEPTION + 1;
     public static final int TYPE_KIND_NO_SUCH_ITEM_EXCEPTION
-     = TYPE_KIND_NAME_DUPLICATION_EXCEPTION + 1;
+    = TYPE_KIND_NAME_DUPLICATION_EXCEPTION + 1;
     public static final int TYPE_KIND_TYPE_CONFLICT_EXCEPTION
-     = TYPE_KIND_NO_SUCH_ITEM_EXCEPTION + 1;
+    = TYPE_KIND_NO_SUCH_ITEM_EXCEPTION + 1;
     public static final int TYPE_KIND_INTERNAL_ERROR_EXCEPTION
-     = TYPE_KIND_TYPE_CONFLICT_EXCEPTION + 1;
+    = TYPE_KIND_TYPE_CONFLICT_EXCEPTION + 1;
     public static final int TYPE_KIND_INVALID_STATE_EXCEPTION
-     = TYPE_KIND_INTERNAL_ERROR_EXCEPTION + 1;
+    = TYPE_KIND_INTERNAL_ERROR_EXCEPTION + 1;
     public static final int TYPE_KIND_NOT_SCHEDULABLE_EXCEPTION
-     = TYPE_KIND_INVALID_STATE_EXCEPTION + 1;
+    = TYPE_KIND_INVALID_STATE_EXCEPTION + 1;
     public static final int TYPE_KIND_NO_ROOM_EXCEPTION
-     = TYPE_KIND_NOT_SCHEDULABLE_EXCEPTION + 1;
+    = TYPE_KIND_NOT_SCHEDULABLE_EXCEPTION + 1;
     public static final int TYPE_KIND_NO_TOKEN_EXCEPTION
-     = TYPE_KIND_NO_ROOM_EXCEPTION + 1;
+    = TYPE_KIND_NO_ROOM_EXCEPTION + 1;
 
     // actor type
     public static final ClassDecl TYPED_ATOMIC_ACTOR_DECL;
@@ -375,7 +375,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final TypeNameNode NO_TOKEN_EXCEPTION_TYPE;
 
     public static final Integer PTOLEMY_TRANSFORMED_KEY =
-     new Integer(RESERVED_JAVA_PROPERTIES);
+    new Integer(RESERVED_JAVA_PROPERTIES);
 
     /** An array indexed by (kind - TYPE_KINDS) containing known declarations
      *  of types in Ptolemy.
@@ -391,60 +391,60 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      *  Ptolemy.
      */
     protected static final int[] _KNOWN_KINDS = {
-         TYPE_KIND_COMPLEX, TYPE_KIND_FIX_POINT,
-         TYPE_KIND_TYPED_ATOMIC_ACTOR,
-         TYPE_KIND_TOKEN, TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_SCALAR_TOKEN,
-         TYPE_KIND_INT_TOKEN, TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN,
-         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN, TYPE_KIND_OBJECT_TOKEN,
-         TYPE_KIND_STRING_TOKEN, TYPE_KIND_MATRIX_TOKEN,
-         TYPE_KIND_BOOLEAN_MATRIX_TOKEN, TYPE_KIND_INT_MATRIX_TOKEN,
-         TYPE_KIND_DOUBLE_MATRIX_TOKEN, TYPE_KIND_LONG_MATRIX_TOKEN,
-         TYPE_KIND_COMPLEX_MATRIX_TOKEN, TYPE_KIND_FIX_MATRIX_TOKEN,
-         TYPE_KIND_DUMMY_TOKEN,
-         TYPE_KIND_PARAMETER,
-         TYPE_KIND_TYPED_IO_PORT,
-         TYPE_KIND_CHANGE_FAILED_EXCEPTION, TYPE_KIND_ILLEGAL_ACTION_EXCEPTION,
-         TYPE_KIND_KERNEL_EXCEPTION, TYPE_KIND_NAME_DUPLICATION_EXCEPTION,
-         TYPE_KIND_NO_SUCH_ITEM_EXCEPTION, TYPE_KIND_TYPE_CONFLICT_EXCEPTION,
-         TYPE_KIND_INTERNAL_ERROR_EXCEPTION, TYPE_KIND_INVALID_STATE_EXCEPTION,
-         TYPE_KIND_NOT_SCHEDULABLE_EXCEPTION, TYPE_KIND_NO_ROOM_EXCEPTION,
-         TYPE_KIND_NO_TOKEN_EXCEPTION };
+        TYPE_KIND_COMPLEX, TYPE_KIND_FIX_POINT,
+        TYPE_KIND_TYPED_ATOMIC_ACTOR,
+        TYPE_KIND_TOKEN, TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_SCALAR_TOKEN,
+        TYPE_KIND_INT_TOKEN, TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN,
+        TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN, TYPE_KIND_OBJECT_TOKEN,
+        TYPE_KIND_STRING_TOKEN, TYPE_KIND_MATRIX_TOKEN,
+        TYPE_KIND_BOOLEAN_MATRIX_TOKEN, TYPE_KIND_INT_MATRIX_TOKEN,
+        TYPE_KIND_DOUBLE_MATRIX_TOKEN, TYPE_KIND_LONG_MATRIX_TOKEN,
+        TYPE_KIND_COMPLEX_MATRIX_TOKEN, TYPE_KIND_FIX_MATRIX_TOKEN,
+        TYPE_KIND_DUMMY_TOKEN,
+        TYPE_KIND_PARAMETER,
+        TYPE_KIND_TYPED_IO_PORT,
+        TYPE_KIND_CHANGE_FAILED_EXCEPTION, TYPE_KIND_ILLEGAL_ACTION_EXCEPTION,
+        TYPE_KIND_KERNEL_EXCEPTION, TYPE_KIND_NAME_DUPLICATION_EXCEPTION,
+        TYPE_KIND_NO_SUCH_ITEM_EXCEPTION, TYPE_KIND_TYPE_CONFLICT_EXCEPTION,
+        TYPE_KIND_INTERNAL_ERROR_EXCEPTION, TYPE_KIND_INVALID_STATE_EXCEPTION,
+        TYPE_KIND_NOT_SCHEDULABLE_EXCEPTION, TYPE_KIND_NO_ROOM_EXCEPTION,
+        TYPE_KIND_NO_TOKEN_EXCEPTION };
 
     /** An array indexed by (kind - TYPE_KIND_TOKEN) that is the corresponding
      *  Ptolemy type of the kind of token.
      */
     protected static final Type[] _KNOWN_TOKEN_TYPES = new Type[] {
-         BaseType.GENERAL, BaseType.BOOLEAN, BaseType.SCALAR,
-         BaseType.INT, BaseType.DOUBLE, BaseType.LONG,
-         BaseType.COMPLEX, BaseType.FIX, BaseType.OBJECT,
-         BaseType.STRING, BaseType.MATRIX,
-         BaseType.BOOLEAN_MATRIX, BaseType.INT_MATRIX,
-         BaseType.DOUBLE_MATRIX, BaseType.LONG_MATRIX,
-         BaseType.COMPLEX_MATRIX, BaseType.FIX_MATRIX,
-         BaseType.NAT };
+        BaseType.GENERAL, BaseType.BOOLEAN, BaseType.SCALAR,
+            BaseType.INT, BaseType.DOUBLE, BaseType.LONG,
+            BaseType.COMPLEX, BaseType.FIX, BaseType.OBJECT,
+            BaseType.STRING, BaseType.MATRIX,
+            BaseType.BOOLEAN_MATRIX, BaseType.INT_MATRIX,
+            BaseType.DOUBLE_MATRIX, BaseType.LONG_MATRIX,
+            BaseType.COMPLEX_MATRIX, BaseType.FIX_MATRIX,
+            BaseType.NAT };
 
     /** An array indexed by (kind - TYPE_KIND_TOKEN) that indicates whether
      *  or not the token kind is concrete.
      */
     protected static final boolean[] _IS_CONCRETE_TOKEN = {
-         false, true, false,
-         true, true, true,
-         true, true, true,
-         true, false,
-         true, true,
-         true, true,
-         true, true,
-         true };
+        false, true, false,
+        true, true, true,
+        true, true, true,
+        true, false,
+        true, true,
+        true, true,
+        true, true,
+        true };
 
     /** An array indexed by (kind - TYPE_KIND_MATRIX_TOKEN) that gives the
      *  the kind of the token that would be returned by getElementAsToken()
      *  on a token of the index kind.
      */
     protected static final int[] _MATRIX_ELEMENT_TOKEN_KINDS = new int[] {
-         TYPE_KIND_TOKEN, TYPE_KIND_INT_TOKEN,
-         TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_INT_TOKEN,
-         TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN,
-         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN };
+        TYPE_KIND_TOKEN, TYPE_KIND_INT_TOKEN,
+            TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_INT_TOKEN,
+            TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN,
+            TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN };
 
     /** An array indexed by (kind - TYPE_KIND_TOKEN) that is the corresponding
      *  type of the data encapsulated by the kind of token.
@@ -454,162 +454,162 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     static {
 
         CompileUnitNode typedAtomicActorUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedAtomicActor", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedAtomicActor", true), 1);
 
         TYPED_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
-         typedAtomicActorUnit, "TypedAtomicActor", CG_CLASS);
+                typedAtomicActorUnit, "TypedAtomicActor", CG_CLASS);
 
         TYPED_ATOMIC_ACTOR_TYPE = TYPED_ATOMIC_ACTOR_DECL.getDefType();
 
         CompileUnitNode complexUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.math.Complex", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.math.Complex", true), 1);
 
         COMPLEX_DECL = (ClassDecl) StaticResolution.findDecl(complexUnit,
-         "Complex", CG_CLASS);
+                "Complex", CG_CLASS);
 
         COMPLEX_TYPE = COMPLEX_DECL.getDefType();
 
         CompileUnitNode fixPointUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.math.FixPoint", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.math.FixPoint", true), 1);
 
         FIX_POINT_DECL = (ClassDecl) StaticResolution.findDecl(fixPointUnit,
-         "Complex", CG_CLASS);
+                "Complex", CG_CLASS);
 
         FIX_POINT_TYPE = FIX_POINT_DECL.getDefType();
 
         CompileUnitNode tokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.Token", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.Token", true), 1);
 
         TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(tokenUnit,
-         "Token", CG_CLASS);
+                "Token", CG_CLASS);
 
         TOKEN_TYPE = TOKEN_DECL.getDefType();
 
         CompileUnitNode booleanTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.BooleanToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.BooleanToken", true), 1);
 
         BOOLEAN_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(booleanTokenUnit,
-         "BooleanToken", CG_CLASS);
+                "BooleanToken", CG_CLASS);
 
         BOOLEAN_TOKEN_TYPE = BOOLEAN_TOKEN_DECL.getDefType();
 
         CompileUnitNode scalarTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.ScalarToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.ScalarToken", true), 1);
 
         SCALAR_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(booleanTokenUnit,
-         "ScalarToken", CG_CLASS);
+                "ScalarToken", CG_CLASS);
 
         SCALAR_TOKEN_TYPE = SCALAR_TOKEN_DECL.getDefType();
 
         CompileUnitNode intTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.IntToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.IntToken", true), 1);
 
         INT_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(intTokenUnit,
-         "IntToken", CG_CLASS);
+                "IntToken", CG_CLASS);
 
         INT_TOKEN_TYPE = INT_TOKEN_DECL.getDefType();
 
         CompileUnitNode doubleTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.DoubleToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.DoubleToken", true), 1);
 
         DOUBLE_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(doubleTokenUnit,
-         "DoubleToken", CG_CLASS);
+                "DoubleToken", CG_CLASS);
 
         DOUBLE_TOKEN_TYPE = DOUBLE_TOKEN_DECL.getDefType();
 
         CompileUnitNode longTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.LongToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.LongToken", true), 1);
 
         LONG_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(doubleTokenUnit,
-         "LongToken", CG_CLASS);
+                "LongToken", CG_CLASS);
 
         LONG_TOKEN_TYPE = LONG_TOKEN_DECL.getDefType();
 
         CompileUnitNode complexTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.ComplexToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.ComplexToken", true), 1);
 
         COMPLEX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(complexTokenUnit,
-         "ComplexToken", CG_CLASS);
+                "ComplexToken", CG_CLASS);
 
         COMPLEX_TOKEN_TYPE = COMPLEX_TOKEN_DECL.getDefType();
 
         CompileUnitNode fixTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.FixToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.FixToken", true), 1);
 
         FIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(fixTokenUnit,
-         "FixToken", CG_CLASS);
+                "FixToken", CG_CLASS);
 
         FIX_TOKEN_TYPE = FIX_TOKEN_DECL.getDefType();
 
         CompileUnitNode objectTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.ObjectToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.ObjectToken", true), 1);
 
         OBJECT_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(objectTokenUnit,
-         "ObjectToken", CG_CLASS);
+                "ObjectToken", CG_CLASS);
 
         OBJECT_TOKEN_TYPE = OBJECT_TOKEN_DECL.getDefType();
 
         CompileUnitNode stringTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.StringToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.StringToken", true), 1);
 
         STRING_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(stringTokenUnit,
-         "StringToken", CG_CLASS);
+                "StringToken", CG_CLASS);
 
         STRING_TOKEN_TYPE = STRING_TOKEN_DECL.getDefType();
 
         CompileUnitNode matrixTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.MatrixToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.MatrixToken", true), 1);
 
         MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
-         matrixTokenUnit,  "MatrixToken", CG_CLASS);
+                matrixTokenUnit,  "MatrixToken", CG_CLASS);
 
         MATRIX_TOKEN_TYPE = MATRIX_TOKEN_DECL.getDefType();
 
         CompileUnitNode booleanMatrixTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.BooleanMatrixToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.BooleanMatrixToken", true), 1);
 
         BOOLEAN_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
-         booleanMatrixTokenUnit,  "BooleanMatrixToken", CG_CLASS);
+                booleanMatrixTokenUnit,  "BooleanMatrixToken", CG_CLASS);
 
         BOOLEAN_MATRIX_TOKEN_TYPE = BOOLEAN_MATRIX_TOKEN_DECL.getDefType();
 
         CompileUnitNode intMatrixTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.IntMatrixToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.IntMatrixToken", true), 1);
 
         INT_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
-         intMatrixTokenUnit,  "IntMatrixToken", CG_CLASS);
+                intMatrixTokenUnit,  "IntMatrixToken", CG_CLASS);
 
         INT_MATRIX_TOKEN_TYPE = INT_MATRIX_TOKEN_DECL.getDefType();
 
         CompileUnitNode doubleMatrixTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.DoubleMatrixToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.DoubleMatrixToken", true), 1);
 
         DOUBLE_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
-         doubleMatrixTokenUnit,  "DoubleMatrixToken", CG_CLASS);
+                doubleMatrixTokenUnit,  "DoubleMatrixToken", CG_CLASS);
 
         DOUBLE_MATRIX_TOKEN_TYPE = DOUBLE_MATRIX_TOKEN_DECL.getDefType();
 
         CompileUnitNode longMatrixTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.LongMatrixToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.LongMatrixToken", true), 1);
 
         LONG_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
-         longMatrixTokenUnit,  "LongMatrixToken", CG_CLASS);
+                longMatrixTokenUnit,  "LongMatrixToken", CG_CLASS);
 
         LONG_MATRIX_TOKEN_TYPE = LONG_MATRIX_TOKEN_DECL.getDefType();
 
         CompileUnitNode complexMatrixTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.ComplexMatrixToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.ComplexMatrixToken", true), 1);
 
         COMPLEX_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
-         complexMatrixTokenUnit,  "ComplexMatrixToken", CG_CLASS);
+                complexMatrixTokenUnit,  "ComplexMatrixToken", CG_CLASS);
 
         COMPLEX_MATRIX_TOKEN_TYPE = COMPLEX_MATRIX_TOKEN_DECL.getDefType();
 
         CompileUnitNode fixMatrixTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.FixMatrixToken", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.FixMatrixToken", true), 1);
 
         FIX_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
-         booleanMatrixTokenUnit,  "FixMatrixToken", CG_CLASS);
+                booleanMatrixTokenUnit,  "FixMatrixToken", CG_CLASS);
 
         FIX_MATRIX_TOKEN_TYPE = FIX_MATRIX_TOKEN_DECL.getDefType();
 
@@ -619,177 +619,177 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         DUMMY_LOWER_BOUND_TYPE = new TypeNameNode(dummyName);
 
         CompileUnitNode parameterUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.data.expr.Parameter", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.data.expr.Parameter", true), 1);
 
         PARAMETER_DECL = (ClassDecl) StaticResolution.findDecl(
-         parameterUnit,  "Parameter", CG_CLASS);
+                parameterUnit,  "Parameter", CG_CLASS);
 
         PARAMETER_TYPE = PARAMETER_DECL.getDefType();
 
         CompileUnitNode typedIOPortUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedIOPort", true), 1);
+                SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedIOPort", true), 1);
 
         TYPED_IO_PORT_DECL = (ClassDecl) StaticResolution.findDecl(
-         typedIOPortUnit,  "TypedIOPort", CG_CLASS);
+                typedIOPortUnit,  "TypedIOPort", CG_CLASS);
 
         TYPED_IO_PORT_TYPE = TYPED_IO_PORT_DECL.getDefType();
 
         CompileUnitNode changeFailedUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.kernel.event.ChangeFailedException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.kernel.event.ChangeFailedException", true), 1);
 
         CHANGE_FAILED_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         changeFailedUnit,  "ChangeFailedException", CG_CLASS);
+                changeFailedUnit,  "ChangeFailedException", CG_CLASS);
 
         CHANGE_FAILED_EXCEPTION_TYPE = CHANGE_FAILED_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode illegalActionUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.kernel.util.IllegalActionException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.kernel.util.IllegalActionException", true), 1);
 
         ILLEGAL_ACTION_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         illegalActionUnit,  "IllegalActionException", CG_CLASS);
+                illegalActionUnit,  "IllegalActionException", CG_CLASS);
 
         ILLEGAL_ACTION_EXCEPTION_TYPE = ILLEGAL_ACTION_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode kernelExceptionUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.kernel.util.KernelException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.kernel.util.KernelException", true), 1);
 
         KERNEL_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         kernelExceptionUnit,  "KernelException", CG_CLASS);
+                kernelExceptionUnit,  "KernelException", CG_CLASS);
 
         KERNEL_EXCEPTION_TYPE = KERNEL_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode nameDuplicationUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.kernel.util.NameDuplicationException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.kernel.util.NameDuplicationException", true), 1);
 
         NAME_DUPLICATION_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         nameDuplicationUnit,  "NameDuplicationException", CG_CLASS);
+                nameDuplicationUnit,  "NameDuplicationException", CG_CLASS);
 
         NAME_DUPLICATION_EXCEPTION_TYPE = NAME_DUPLICATION_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode noSuchItemUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.kernel.util.NoSuchItemException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.kernel.util.NoSuchItemException", true), 1);
 
         NO_SUCH_ITEM_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         noSuchItemUnit,  "NoSuchItemException", CG_CLASS);
+                noSuchItemUnit,  "NoSuchItemException", CG_CLASS);
 
         NO_SUCH_ITEM_EXCEPTION_TYPE = NO_SUCH_ITEM_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode typeConflictUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.actor.TypeConflictException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.actor.TypeConflictException", true), 1);
 
         TYPE_CONFLICT_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         typeConflictUnit,  "TypeConflictException", CG_CLASS);
+                typeConflictUnit,  "TypeConflictException", CG_CLASS);
 
         TYPE_CONFLICT_EXCEPTION_TYPE = TYPE_CONFLICT_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode internalErrorUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.kernel.util.InternalErrorException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.kernel.util.InternalErrorException", true), 1);
 
         INTERNAL_ERROR_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         internalErrorUnit,  "InternalErrorException", CG_CLASS);
+                internalErrorUnit,  "InternalErrorException", CG_CLASS);
 
         INTERNAL_ERROR_EXCEPTION_TYPE = INTERNAL_ERROR_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode invalidStateUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.kernel.util.InvalidStateException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.kernel.util.InvalidStateException", true), 1);
 
         INVALID_STATE_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         internalErrorUnit,  "InvalidStateException", CG_CLASS);
+                internalErrorUnit,  "InvalidStateException", CG_CLASS);
 
         INVALID_STATE_EXCEPTION_TYPE = INVALID_STATE_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode notSchedulableUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.actor.sched.NotSchedulableException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.actor.sched.NotSchedulableException", true), 1);
 
         NOT_SCHEDULABLE_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         notSchedulableUnit,  "NotSchedulableException", CG_CLASS);
+                notSchedulableUnit,  "NotSchedulableException", CG_CLASS);
 
         NOT_SCHEDULABLE_EXCEPTION_TYPE = NOT_SCHEDULABLE_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode noRoomUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.actor.NoRoomException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.actor.NoRoomException", true), 1);
 
         NO_ROOM_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         noRoomUnit,  "NoRoomException", CG_CLASS);
+                noRoomUnit,  "NoRoomException", CG_CLASS);
 
         NO_ROOM_EXCEPTION_TYPE = NO_ROOM_EXCEPTION_DECL.getDefType();
 
         CompileUnitNode noTokenUnit = StaticResolution.load(
-         SearchPath.NAMED_PATH.openSource(
-          "ptolemy.actor.NoTokenException", true), 1);
+                SearchPath.NAMED_PATH.openSource(
+                        "ptolemy.actor.NoTokenException", true), 1);
 
         NO_TOKEN_EXCEPTION_DECL = (ClassDecl) StaticResolution.findDecl(
-         noRoomUnit,  "NoTokenException", CG_CLASS);
+                noRoomUnit,  "NoTokenException", CG_CLASS);
 
         NO_TOKEN_EXCEPTION_TYPE = NO_TOKEN_EXCEPTION_DECL.getDefType();
 
         _KNOWN_CLASS_DECLS = new ClassDecl[] {
-         COMPLEX_DECL, FIX_POINT_DECL,
-         TYPED_ATOMIC_ACTOR_DECL,
-         TOKEN_DECL, BOOLEAN_TOKEN_DECL, SCALAR_TOKEN_DECL,
-         INT_TOKEN_DECL, DOUBLE_TOKEN_DECL, LONG_TOKEN_DECL,
-         COMPLEX_TOKEN_DECL, FIX_TOKEN_DECL, OBJECT_TOKEN_DECL,
-         STRING_TOKEN_DECL, MATRIX_TOKEN_DECL,
-         BOOLEAN_MATRIX_TOKEN_DECL, INT_MATRIX_TOKEN_DECL,
-         DOUBLE_MATRIX_TOKEN_DECL, LONG_MATRIX_TOKEN_DECL,
-         COMPLEX_MATRIX_TOKEN_DECL, FIX_MATRIX_TOKEN_DECL,
-         DUMMY_LOWER_BOUND,
-         PARAMETER_DECL,
-         TYPED_IO_PORT_DECL,
-         CHANGE_FAILED_EXCEPTION_DECL, ILLEGAL_ACTION_EXCEPTION_DECL,
-         KERNEL_EXCEPTION_DECL, NAME_DUPLICATION_EXCEPTION_DECL,
-         NO_SUCH_ITEM_EXCEPTION_DECL, TYPE_CONFLICT_EXCEPTION_DECL,
-         INTERNAL_ERROR_EXCEPTION_DECL, INVALID_STATE_EXCEPTION_DECL,
-         NOT_SCHEDULABLE_EXCEPTION_DECL, NO_ROOM_EXCEPTION_DECL,
-         NO_TOKEN_EXCEPTION_DECL
-        };
+            COMPLEX_DECL, FIX_POINT_DECL,
+                TYPED_ATOMIC_ACTOR_DECL,
+                TOKEN_DECL, BOOLEAN_TOKEN_DECL, SCALAR_TOKEN_DECL,
+                INT_TOKEN_DECL, DOUBLE_TOKEN_DECL, LONG_TOKEN_DECL,
+                COMPLEX_TOKEN_DECL, FIX_TOKEN_DECL, OBJECT_TOKEN_DECL,
+                STRING_TOKEN_DECL, MATRIX_TOKEN_DECL,
+                BOOLEAN_MATRIX_TOKEN_DECL, INT_MATRIX_TOKEN_DECL,
+                DOUBLE_MATRIX_TOKEN_DECL, LONG_MATRIX_TOKEN_DECL,
+                COMPLEX_MATRIX_TOKEN_DECL, FIX_MATRIX_TOKEN_DECL,
+                DUMMY_LOWER_BOUND,
+                PARAMETER_DECL,
+                TYPED_IO_PORT_DECL,
+                CHANGE_FAILED_EXCEPTION_DECL, ILLEGAL_ACTION_EXCEPTION_DECL,
+                KERNEL_EXCEPTION_DECL, NAME_DUPLICATION_EXCEPTION_DECL,
+                NO_SUCH_ITEM_EXCEPTION_DECL, TYPE_CONFLICT_EXCEPTION_DECL,
+                INTERNAL_ERROR_EXCEPTION_DECL, INVALID_STATE_EXCEPTION_DECL,
+                NOT_SCHEDULABLE_EXCEPTION_DECL, NO_ROOM_EXCEPTION_DECL,
+                NO_TOKEN_EXCEPTION_DECL
+                };
 
         _KNOWN_TYPENAMENODES = new TypeNameNode[] {
-         COMPLEX_TYPE, FIX_POINT_TYPE,
-         TYPED_ATOMIC_ACTOR_TYPE,
-         TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, SCALAR_TOKEN_TYPE,
-         INT_TOKEN_TYPE, DOUBLE_TOKEN_TYPE, LONG_TOKEN_TYPE,
-         COMPLEX_TOKEN_TYPE, FIX_TOKEN_TYPE, OBJECT_TOKEN_TYPE,
-         STRING_TOKEN_TYPE, MATRIX_TOKEN_TYPE,
-         BOOLEAN_MATRIX_TOKEN_TYPE, INT_MATRIX_TOKEN_TYPE,
-         DOUBLE_MATRIX_TOKEN_TYPE, LONG_MATRIX_TOKEN_TYPE,
-         COMPLEX_MATRIX_TOKEN_TYPE, FIX_MATRIX_TOKEN_TYPE,
-         DUMMY_LOWER_BOUND_TYPE,
-         PARAMETER_TYPE,
-         TYPED_IO_PORT_TYPE,
-         CHANGE_FAILED_EXCEPTION_TYPE, ILLEGAL_ACTION_EXCEPTION_TYPE,
-         KERNEL_EXCEPTION_TYPE, NAME_DUPLICATION_EXCEPTION_TYPE,
-         NO_SUCH_ITEM_EXCEPTION_TYPE, TYPE_CONFLICT_EXCEPTION_TYPE,
-         INTERNAL_ERROR_EXCEPTION_TYPE, INVALID_STATE_EXCEPTION_TYPE,
-         NOT_SCHEDULABLE_EXCEPTION_TYPE, NO_ROOM_EXCEPTION_TYPE,
-         NO_TOKEN_EXCEPTION_TYPE
-        };
+            COMPLEX_TYPE, FIX_POINT_TYPE,
+                TYPED_ATOMIC_ACTOR_TYPE,
+                TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, SCALAR_TOKEN_TYPE,
+                INT_TOKEN_TYPE, DOUBLE_TOKEN_TYPE, LONG_TOKEN_TYPE,
+                COMPLEX_TOKEN_TYPE, FIX_TOKEN_TYPE, OBJECT_TOKEN_TYPE,
+                STRING_TOKEN_TYPE, MATRIX_TOKEN_TYPE,
+                BOOLEAN_MATRIX_TOKEN_TYPE, INT_MATRIX_TOKEN_TYPE,
+                DOUBLE_MATRIX_TOKEN_TYPE, LONG_MATRIX_TOKEN_TYPE,
+                COMPLEX_MATRIX_TOKEN_TYPE, FIX_MATRIX_TOKEN_TYPE,
+                DUMMY_LOWER_BOUND_TYPE,
+                PARAMETER_TYPE,
+                TYPED_IO_PORT_TYPE,
+                CHANGE_FAILED_EXCEPTION_TYPE, ILLEGAL_ACTION_EXCEPTION_TYPE,
+                KERNEL_EXCEPTION_TYPE, NAME_DUPLICATION_EXCEPTION_TYPE,
+                NO_SUCH_ITEM_EXCEPTION_TYPE, TYPE_CONFLICT_EXCEPTION_TYPE,
+                INTERNAL_ERROR_EXCEPTION_TYPE, INVALID_STATE_EXCEPTION_TYPE,
+                NOT_SCHEDULABLE_EXCEPTION_TYPE, NO_ROOM_EXCEPTION_TYPE,
+                NO_TOKEN_EXCEPTION_TYPE
+                };
 
         _TOKEN_CONTAINED_TYPES = new TypeNode[] {
-         // the first and third entries are hacks to allow for unresolved token types
-         IntTypeNode.instance, BoolTypeNode.instance, IntTypeNode.instance,
-         IntTypeNode.instance, DoubleTypeNode.instance, LongTypeNode.instance,
-         COMPLEX_TYPE, FIX_POINT_TYPE, StaticResolution.OBJECT_TYPE,
-         StaticResolution.STRING_TYPE,
-         TypeUtility.makeArrayType(IntTypeNode.instance, 2), // hack for MatrixToken
-         TypeUtility.makeArrayType(BoolTypeNode.instance, 2),
-         TypeUtility.makeArrayType(IntTypeNode.instance, 2),
-         TypeUtility.makeArrayType(DoubleTypeNode.instance, 2),
-         TypeUtility.makeArrayType(LongTypeNode.instance, 2),
-         TypeUtility.makeArrayType(COMPLEX_TYPE, 2),
-         TypeUtility.makeArrayType(FIX_POINT_TYPE, 2),
-         IntTypeNode.instance // hack for DummyToken
-        };
+            // the first and third entries are hacks to allow for unresolved token types
+            IntTypeNode.instance, BoolTypeNode.instance, IntTypeNode.instance,
+                IntTypeNode.instance, DoubleTypeNode.instance, LongTypeNode.instance,
+                COMPLEX_TYPE, FIX_POINT_TYPE, StaticResolution.OBJECT_TYPE,
+                StaticResolution.STRING_TYPE,
+                TypeUtility.makeArrayType(IntTypeNode.instance, 2), // hack for MatrixToken
+                TypeUtility.makeArrayType(BoolTypeNode.instance, 2),
+                TypeUtility.makeArrayType(IntTypeNode.instance, 2),
+                TypeUtility.makeArrayType(DoubleTypeNode.instance, 2),
+                TypeUtility.makeArrayType(LongTypeNode.instance, 2),
+                TypeUtility.makeArrayType(COMPLEX_TYPE, 2),
+                TypeUtility.makeArrayType(FIX_POINT_TYPE, 2),
+                IntTypeNode.instance // hack for DummyToken
+                };
     }
 }
 
