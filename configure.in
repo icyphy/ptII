@@ -1224,10 +1224,12 @@ else
 	    if test -f "$JMF_JAR" ; then
 	       JMF_JARS_DIR=`dirname "$JMF_JAR"`
 	       AC_MSG_RESULT($JMF_JARS_DIR)
+	       # Here, we should not be adding JMF_JAR to Eclipse
+	       # if jmf.jar was in the jre
 	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	           <classpathentry kind=\"lib\" path=\"$JMF_JAR\"/> \
 	           <classpathentry kind=\"lib\" path=\"$JMF_JARS_DIR/sound.jar\"/>"
-		   JMF_JARS="$JMF_JAR$CLASSPATHSEPARATOR$JMF_JARS_DIR/sound.jar"
+	       JMF_JARS="$JMF_JAR$CLASSPATHSEPARATOR$JMF_JARS_DIR/sound.jar"
 	    else 
        	       AC_MSG_WARN([Could not find javax.media.CaptureDeviceInfo
     class: $JMF_JAR
@@ -1418,7 +1420,7 @@ else
     fi
 fi
 
-if test -z "$PTJYTHON_DIR"; then
+if test -z "$PTJXTA_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|vendors/sun/jxta/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
