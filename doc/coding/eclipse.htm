@@ -31,24 +31,47 @@
 <hr>
 <h1><a name="Installing">Downloading, and installing Eclipse</a></h1>
 <ol>
-<li>Download version 2.1 from <a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>. For Windows it will be the file eclipse-SDK-2.1-win32.zip and for Linux it will be either eclipse-SDK-2.1-linux-motif.zip, or eclipse-SDK-2.1-linux-gtk.zip.
-<li>The download file is a zip file that contains the eclipse directory. Unzip the download file into an appropriate place (such as c:\Program Files, or c:\InstalledStuff).
-<li>Finish the installation by running eclipse/eclipse.exe. The first time this is run it will complete the installation process. After the first run, normal start-up will occur whenever it is started.
-<li>As an option, You may want to make a shortcut to eclipse.exe.
+
+<li>Download the latest <b>Release</b> version of Eclipse from
+<a href="http://www.eclipse.org" target="_top"><CODE>http://www.eclipse.org</CODE></a>.
+
+<br>In June 2002, the Release version of Eclipse was 2.1, so for Windows
+download the the file eclipse-SDK-2.1-win32.zip and for Linux download
+be either eclipse-SDK-2.1-linux-motif.zip, or
+eclipse-SDK-2.1-linux-gtk.zip.
+
+<li>The download file is a zip file that contains the eclipse
+directory. Unzip the download file into an appropriate place (such as
+<code>c:\Program Files</code>, or <code>c:\InstalledStuff</code>).
+
+<li>Finish the installation by running
+<code>eclipse/eclipse.exe</code>. The first time this is run it will
+complete the installation process. After the first run, normal
+start-up will occur whenever it is started.
+
+<li>As an option, you may want to make a shortcut to <code>eclipse.exe</code>.
 </ol>
 
 <hr>
 <h1><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h1>
-Eclipse will manage your ptII code tree as a <em>project</em> called the ptII project.
-There are two ways to set up the ptII project, either aware of the CVS aspects, on unaware of the CVS aspects..
-Without CVS, you'll need to manage the CVS aspects in the usual way, i.e. with CVS commands being submitted to a bash shell.
-With CVS, Eclipse will do all sorts of things to "help" you. Most of these things are good, but there is a learning curve.
+
+Eclipse will manage your ptII code tree as a <em>project</em> called
+the ptII project.  There are two ways to set up the ptII project,
+either aware of the CVS aspects, on unaware of the CVS aspects..
+Without CVS, you'll need to manage the CVS aspects in the usual way,
+i.e. with CVS commands being submitted to a bash shell.  With CVS,
+Eclipse will do all sorts of things to "help" you. Most of these
+things are good, but there is a learning curve.
+
 <p>
-Once the ptII project has been set up there seems to be no way to switch between using CVS and not using CVS.
-I.E., the only way to switch is to re-create the ptII project.
-(Actually, this isn't too hard after you,ve done it a couple of times :-)).
-Therefore, you'll need to decide if you want Eclipse to be aware of, and manage the CVS aspects of the ptII project.
-<h3><a name="NoCVS">If you <em>don't</em> want CVS</a></h3>
+Once the ptII project has been set up there seems to be no way to
+switch between using CVS and not using CVS.  I.E., the only way to
+switch is to re-create the ptII project.  (Actually, this isn't too
+hard after you,ve done it a couple of times :-)).  Therefore, you'll
+need to decide if you want Eclipse to be aware of, and manage the CVS
+aspects of the ptII project.
+
+<h3><a name="NoCVS">If you <em>don't</em> want to use CVS with Eclipse</a></h3>
 You must already have a ptII development tree. All you want to do is
 <ol>
 <li>Configure the .classpath and .project files. See <a href="#dotFileSetup">Creating the .classpath and .project files</a>.
@@ -59,17 +82,22 @@ Deselect 'Use default' and browse to the PTII directory. Finish.
 <li>When asked if you want to shift to the Java perspective, click on Yes.
 </ul>
 </ol>
-<h3><a name ="YesCVS">If you <em>do</em> want CVS</a></h3>
+<h3><a name ="YesCVS">If you <em>do</em> want to use CVS with Eclipse</a></h3>
 You must start fresh and allow Eclipse to perform the CVS checkout.
-<p>
-Eclipse assumes that
-an Eclipse project (including the .classpath, and .project) are under CVS control.
-Therefore, creating the ptII project in Eclipse under CVS control requires an unusual procedure.
-In brief, the CVS ptII module must be checked out of CVS into an Eclipse project that doesn't work "correctly" until
-the .classpath is created by manually running configure.
+
+<p>Eclipse assumes that an Eclipse project (including the .classpath, and
+.project) are under CVS control.  Therefore, creating the ptII project
+in Eclipse under CVS control requires an unusual procedure.
+In brief, the CVS ptII module must be checked out of CVS into an
+Eclipse project that doesn't work "correctly" until the .classpath is
+created by manually running configure.
+
 <ol>
-<li>Determine where the ptII tree will be put. If you currently have a ptII tree at that location, it must be removed.
-<li>Start Eclipse
+
+<li> Determine where the ptII tree will be put. If you currently have a
+ptII tree at that location, it must be removed.
+
+<li> Start Eclipse
 <li> Set up the CVS connection:
 
 <ol>
@@ -97,23 +125,39 @@ a login for cvs access
 
 
 
-<li> click Finish
+<li> Click Finish.
 </ol>
 
 <li> If you are connecting via a DSL connection, you may
 want to use compression to transfer files:
 In Window -&gt; Preferences -&gt; Team -&gt; CVS, change Compression Level
 to 9.
+<br>If you receive a message "Terminated with fatal signal 10", then
+try using a different compression level, see the
+<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3">The Eclipse CVS FAQ</a>
+for details
 
 <li> In the CVS Repositories View window, click on the repository and then on
 HEAD until you see the ptII Head and right click on this
 <li> Select the "Check Out As...." option
-<li> Go through the various menus to create a Java Project named ptII. Don't use the "Default Location". Instead specify the location where you want ptII to go (e.g. <CODE>c:\ptII</CODE>)
+
+<li> Go through the various menus to create a Java Project named
+ptII. Don't use the "Default Location". Instead specify the location
+where you want ptII to go (e.g. <CODE>c:\ptII</CODE>)
 
 <li> Click OK. And, wait for the checkout to finish
-<li> The result should be the ptII project. There will probably be several errors reported that are due to the .classpath that was just created as part of the checkout/project creation process.
-<li> Now run configure in the ptII directory outside of Eclipse. This will create the "correct" .classpath. See <a href="#dotFileSetup">Creating the .classpath and .project files</a>.
-<li> In Eclipse, perform a Refresh on the ptII project. This will cause Eclipse to see the new .classpath
+
+<li> The result should be the ptII project. There will probably be
+several errors reported that are due to the .classpath that was just
+created as part of the checkout/project creation process.
+
+<li> Now run configure in the ptII directory outside of Eclipse. This
+will create the "correct" .classpath. See <a
+href="#dotFileSetup">Creating the .classpath and .project files</a>.
+
+<li> In Eclipse, perform a Refresh on the ptII project. This will
+cause Eclipse to see the new .classpath
+
 </ol>
 
 <h2><a name="dotFileSetup">Creating the .classpath and .project files</a></h2>
@@ -123,7 +167,8 @@ compiled, or are meant to be compiled only in certain situations.
 However, without specific instructions to exclude parts of the ptII tree, 
 Eclipse will attempt to compile every .java in the project
 which typically leads to many, many error messages.
-These exclusion instructions are generated by running <code>$PTII/configure</code>.
+These exclusion instructions are generated by running
+<code>$PTII/configure</code>.
 When <code>$PTII/configure</code> is run, it 
 reads in <code>$PTII/.classpath.in</code> substitutes in variables
 that are surrounded with <code>@</code> and generates
@@ -291,16 +336,24 @@ to create a shortcut using the following steps:
 
 
 <ol>
-<li>  Navigate to eclipse.exe in the Windows Explorer and using a right button drag, create a shortcut to eclipse.exe.
 
-<li>  Edit the properties of the shortcut such that the "Start in:" box identifies the location of your workspace (e.g., c:\myworkspace).
+<li> Navigate to eclipse.exe in the Windows Explorer and using a right
+button drag, create a shortcut to eclipse.exe.
+
+<li> Edit the properties of the shortcut such that the "Start in:" box
+identifies the location of your workspace (e.g., c:\myworkspace).
 
 <li>  Close the properties dialog and double-click on the shortcut.
 </ol>
 
- <p>Of course you can get the same effect using a command prompt by changing directory to your workspace directory and then running eclipse.exe.
+ <p>Of course you can get the same effect using a command prompt by
+ changing directory to your workspace directory and then running
+ eclipse.exe.
 
- <p>To use the -data command line argument, simply add -data &lt;your workspace location&gt; (e.g., -data c:\myworkspace) to the "Target:" line in the shortcut or include it explicitly on your command prompt command line. 
+ <p>To use the -data command line argument, simply add -data &lt;your
+ workspace location&gt; (e.g., -data c:\myworkspace) to the "Target:"
+ line in the shortcut or include it explicitly on your command prompt
+ command line.
 
 <h2><a name="simpleDebug">Simple Debugging Session</a></h2>
 Before editing any files, follow the steps in
@@ -320,14 +373,20 @@ as above. Open the Lorenz CT demo from the Quick Tour and run it.
 
 <h2><a name="UsingCVS">Using CVS</a></h2>
 <h3>Syncronizing with the repository</h3>
-In the Navigator view scroll/open until you see the resource (directory or file) to be synchronized.
-Right click that resource and select Team->Synchronize With Repository...
-The Synchronize view should then be visible.
-Select the Incoming, Outgoing, or Incoming/Outgoing menu bar icon as appropriate
-<h3>Restoring a file from the repository</h3>
-In the Navigator view scroll/open until you see the resource (directory or file) to be restored.
-Right click that resource and select Replace With->Latest From Head.
 
+<ol>
+<li>In the Navigator view scroll/open until you see the resource
+(directory or file) to be synchronized.
+<li>Right click that resource and select Team->Synchronize With Repository...
+<li>The Synchronize view should then be visible.
+<li>Select the Incoming, Outgoing, or Incoming/Outgoing menu bar icon as appropriate
+</ol>
+
+<h3>Restoring a file from the repository</h3>
+<ol>
+<li>In the Navigator view scroll/open until you see the resource (directory or file) to be restored.
+<li>Right click that resource and select Replace With->Latest From Head.
+</ol>
 
 <h2><a name="troubleshooting">Troubleshooting</a></h2>
 
