@@ -217,7 +217,15 @@ if "$JAVAC" confTest.java ; then
     AC_MSG_RESULT($JVERSION)
 
 else
-   AC_MSG_WARN(['"$JAVAC" confTest.java' failed'])
+   AC_MSG_ERROR(['"$JAVAC" confTest.java failed.
+If javac fails, then you will not be able to compile Ptolemy II.
+This could be because your PTII variable is set incorrectly.
+Under Cygwin, try setting it with backslashes:
+PTII=c:\\users\\yourname\\ptII
+export PTII
+and then rerun configure.
+See $PTII/doc/install.htm for details'])
+
 fi
 cd "$startdir"
 
