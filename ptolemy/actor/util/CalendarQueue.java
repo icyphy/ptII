@@ -192,7 +192,8 @@ public class CalendarQueue {
         // smallest key) then update.
         if (_minKey == null || _cqComparator.compare(key, _minKey) < 0) {
             _minKey = key;
-            _minVirtualBucket = _cqComparator.getBinIndex(_minKey, _zeroRef, _width);
+            _minVirtualBucket = _cqComparator.getBinIndex(_minKey,
+                    _zeroRef, _width);
             _minBucket = (int)(_minVirtualBucket % _nBuckets);
             if (_minBucket < 0) _minBucket += _nBuckets;
         }
@@ -251,7 +252,8 @@ public class CalendarQueue {
 
                 if (    !_bucket[i].isEmpty()
                         &&
-                        _cqComparator.getBinIndex(_bucket[i].peekKey(), _zeroRef, _width)
+                        _cqComparator.getBinIndex(_bucket[i].peekKey(),
+                                _zeroRef, _width)
                         == _minVirtualBucket + j
                         ) {
 
@@ -262,7 +264,8 @@ public class CalendarQueue {
                     // Update position on calendar
                     _minBucket = i;
                     _minKey = linkFound.key();
-                    _minVirtualBucket = _cqComparator.getBinIndex(_minKey, _zeroRef, _width);
+                    _minVirtualBucket = _cqComparator.getBinIndex(_minKey,
+                            _zeroRef, _width);
                     --_qSize;
 
                     // Halve calendar size if needed.
@@ -278,7 +281,8 @@ public class CalendarQueue {
                     return linkFound.value();
                 }
                 else {
-                    // Prepare to check next bucket or else go to a direct search.
+                    // Prepare to check next bucket or 
+                    // else go to a direct search.
                     ++i; ++j;
                     if (i == _nBuckets) i = 0;
                     // If one round of search already elapsed,
@@ -307,13 +311,15 @@ public class CalendarQueue {
                 if (!startComparing) {
                     minBucket = i;
                     minKey = _bucket[i].peekKey();
-                    minVirtualBucket = _cqComparator.getBinIndex(minKey, _zeroRef, _width);
+                    minVirtualBucket = _cqComparator.getBinIndex(minKey,
+                            _zeroRef, _width);
                     startComparing = true;
                 } else {
                     Object maybeMinKey = _bucket[i].peekKey();
                     if (_cqComparator.compare(maybeMinKey, minKey) < 0) {
                         minKey = maybeMinKey;
-                        minVirtualBucket = _cqComparator.getBinIndex(minKey, _zeroRef, _width);
+                        minVirtualBucket = _cqComparator.getBinIndex(minKey,
+                                _zeroRef, _width);
                         minBucket = i;
                     }
                 }
@@ -344,7 +350,7 @@ public class CalendarQueue {
      * @exception IllegalAccessException If invoked when the queue is empty.
      */
     public Object getPreviousKey() throws IllegalAccessException {
-        // First check if _takenKey==null which means either the last take()
+        // First check if _takenKey == null which means either the last take()
         // threw an exception or take() has never been called. If it is then
         // thrown an exception.
         if (_takenKey == null) {
@@ -394,7 +400,8 @@ public class CalendarQueue {
 
                 if (    !_bucket[i].isEmpty()
                         &&
-                        _cqComparator.getBinIndex(_bucket[i].peekKey(), _zeroRef, _width)
+                        _cqComparator.getBinIndex(_bucket[i].peekKey(),
+                                _zeroRef, _width)
                         == _minVirtualBucket + j
                         ) {
 
@@ -406,7 +413,8 @@ public class CalendarQueue {
                     return linkFound.key();
                 }
                 else {
-                    // Prepare to check next bucket or else go to a direct search.
+                    // Prepare to check next bucket or 
+                    // else go to a direct search.
                     ++i; ++j;
                     if (i == _nBuckets) i = 0;
                     // If one round of search already elapsed,
@@ -436,13 +444,15 @@ public class CalendarQueue {
                 if (!startComparing) {
                     minBucket = i;
                     minKey = _bucket[i].peekKey();
-                    minVirtualBucket = _cqComparator.getBinIndex(minKey, _zeroRef, _width);
+                    minVirtualBucket = _cqComparator.getBinIndex(minKey,
+                            _zeroRef, _width);
                     startComparing = true;
                 } else {
                     Object maybeMinKey = _bucket[i].peekKey();
                     if (_cqComparator.compare(maybeMinKey, minKey) < 0) {
                         minKey = maybeMinKey;
-                        minVirtualBucket = _cqComparator.getBinIndex(minKey, _zeroRef, _width);
+                        minVirtualBucket = _cqComparator.getBinIndex(minKey,
+                                _zeroRef, _width);
                         minBucket = i;
                     }
                 }
@@ -565,7 +575,8 @@ public class CalendarQueue {
 
         // Set up initial position in queue
         _minKey = startkey;
-        _minVirtualBucket = _cqComparator.getBinIndex(startkey, _zeroRef, _width);
+        _minVirtualBucket = _cqComparator.getBinIndex(startkey,
+                _zeroRef, _width);
         _minBucket = (int)(_minVirtualBucket % _nBuckets);
         if (_minBucket < 0) _minBucket += _nBuckets;
 
