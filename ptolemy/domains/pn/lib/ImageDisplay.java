@@ -29,7 +29,7 @@ package ptolemy.domains.pn.lib;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.*;
+import ptolemy.data.expr.Parameter;
 import java.io.*;
 import ptolemy.actor.*;
 import java.text.MessageFormat;
@@ -90,6 +90,7 @@ public final class ImageDisplay extends AtomicActor {
                     _frame.dispose();
                 }
                 _frame = new _PictureFrame(_framename, xsize, ysize);
+		_frame.addWindowListener(new _PictureFrameListener(_frame));
                 _frame._picture.setImage(_RGBbuffer);
                 
                 System.out.println("new buffer with rows = "+
@@ -127,6 +128,28 @@ public final class ImageDisplay extends AtomicActor {
         }
         private Picture _picture;        
      
+    }
+
+    private class _PictureFrameListener implements WindowListener {
+
+	public _PictureFrameListener(Window window) {
+	    _window = window;
+	}
+
+	public void windowActivated(WindowEvent e) {}
+	public void windowClosed(WindowEvent e) {}
+
+	public void windowClosing(WindowEvent e) {
+	    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+		_window.dispose();
+	    }
+	}
+	
+	public void windowDeactivated(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {}
+	public void windowOpened(WindowEvent e) {}
+	private Window _window;
     }
 
     private Picture _panel;
