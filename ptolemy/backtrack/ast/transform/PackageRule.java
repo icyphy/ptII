@@ -35,11 +35,13 @@ import java.util.Set;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.SimpleName;
 
+import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzer;
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,16 +71,9 @@ public class PackageRule extends TransformRule {
     public void afterTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
         PackageDeclaration declaration = root.getPackage();
         AST ast = root.getAST();
-        if (_prefix != null && _prefix.length() > 0) {
-            // Add the prefix to the package declaration.
-            Name name = declaration.getName();
-            Name newName = _addPrefix(ast, name, _prefix);
-            if (newName != null)
-                declaration.setName(newName);
-            
+        if (_prefix != null && _prefix.length() > 0)
             // Add a prefix to each name node, if necessary.
             root.accept(new Renamer(analyzer.getState().getCrossAnalyzedTypes()));
-        }
     }
 
     /**
@@ -127,11 +122,12 @@ public class PackageRule extends TransformRule {
     private class Renamer extends ASTVisitor {
         
         Renamer(Set crossAnalysis) {
-            _crossAnalysis = new HashSet();
+            _crossAnalysisTypes = crossAnalysis;
+            _crossAnalysisNames = new HashSet();
             Iterator crossAnalysisIter = crossAnalysis.iterator();
             while (crossAnalysisIter.hasNext()) {
                 String className = (String)crossAnalysisIter.next();
-                _crossAnalysis.add(className.replace('$', '.'));
+                _crossAnalysisNames.add(className.replace('$', '.'));
             }
         }
         
@@ -144,8 +140,23 @@ public class PackageRule extends TransformRule {
         }
         
         private void _handleName(Name node) {
-            if (node.getParent() != null) {
-                if (_crossAnalysis.contains(node.toString())) {
+            if (node.getParent() != null &&
+                    !(node.getParent() instanceof Name)) {
+                String id = node.toString();
+                boolean convert = false;
+                Type type = Type.getType(node);
+
+                if (type != null &&
+                        _crossAnalysisTypes.contains(type.getName()) &&
+                        _crossAnalysisNames.contains(id))
+                    convert = true;
+                else if (node.getParent() instanceof ImportDeclaration &&
+                        _crossAnalysisNames.contains(id))
+                    convert = true;
+                else if (node.getParent() instanceof PackageDeclaration)
+                    convert = true;
+                    
+                if (convert) {
                     Name newName = _addPrefix(node.getAST(), node, _prefix);
                     if (newName != null)
                         AbstractTransformer.replaceNode(node, newName);
@@ -153,7 +164,9 @@ public class PackageRule extends TransformRule {
             }
         }
         
-        private Set _crossAnalysis;
+        private Set _crossAnalysisTypes;
+        
+        private Set _crossAnalysisNames;
     }
 
     private String _prefix;
