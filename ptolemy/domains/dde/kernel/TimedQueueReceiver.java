@@ -52,7 +52,8 @@ be equivalent to the time stamp of the token that was most recently placed
 in the queue. The receiver time flag is defined as the time stamp of the
 oldest token in the queue or the last token to be removed from the queue if
 the queue is empty. Both of these flags must have monotonically,
-non-decreasing values. At the conclusion of a simulation run the receiver
+non-decreasing values (with the exception of the IGNORE, INACTIVE and
+ETERNITY values). At the conclusion of a simulation run the receiver
 time is set to INACTIVE.
 <P>
 A TimeKeeper object is assigned to each actor that operates according to
@@ -60,6 +61,21 @@ a DDE model of computation. The TimeKeeper manages each of the receivers
 that are contained by an actor by keeping track of the receiver times of
 each receiver. As information flows through a TimedQueueReceiver, the
 TimeKeeper must be kept up to date with respect to the receiver times.
+The TimeKeeper orders the TimedQueueReceivers according to their receiver
+times and priorities. TimedQueueReceivers with smaller receiver times are
+ordered first. 
+<P>
+TimedQueueReceivers with identical receivers times are sorted according 
+to their respective priorities. TimedQueueReceivers are assigned 
+priorities (a nonnegative integer) by a TimeKeeper when the TimeKeeper 
+is instantiated. Receivers with higher receiver priorities are ordered 
+before receivers with lower priorities. A receiver's priority can be
+explicitly specified or it can be implicitly determined based on the
+topology. In the latter case, a receiver's priority is set according
+to the inverse order in which it was connected to the model topology. 
+I.e., if two input receivers (receiver A and receiver B) are added to 
+an actor such that receiver A is connected in the model topology before 
+receiver B, then receiver B will have a higher priority than receiver A. 
 <P>
 If the oldest token in the queue has a time stamp of IGNORE, then the
 next oldest token from the other receivers contained by the actor in
@@ -70,6 +86,18 @@ execution is just beginning. FBDelay actors output a single IGNORE token
 during their initialize() methods for just this reason. In general,
 IGNORE tokens should not be handled unless fundamental changes to the
 DDE kernel are intended.
+<P>
+The values of the variables IGNORE, INACTIVE and ETERNITY are arbitrary
+as long as they have unique, negative values. ETERNITY is used in
+conjunction with the completionTime to indicate that an actor should
+continue executing indefinitely.
+<P>
+Note that a TimedQueueReceiver is intended for use within a 
+multi-threaded environment. TimedQueueReceiver does not 
+require the synchronization facilities provided by 
+ptolemy.kernel.util.Workspace. TimedQueueReceiver is subclassed 
+by DDEReceiver which add significant synchronization facilities
+and where appropriate employs workspace.
 
 @author John S. Davis II
 @version $Id$
@@ -82,14 +110,12 @@ public class TimedQueueReceiver {
     /** Construct an empty queue with no container.
      */
     public TimedQueueReceiver() {
-        super();
     }
 
     /** Construct an empty queue with the specified IOPort container.
      * @param container The IOPort that contains this receiver.
      */
     public TimedQueueReceiver(IOPort container) {
-        super();
 	_container = container;
     }
 
@@ -99,7 +125,6 @@ public class TimedQueueReceiver {
      * @param priority The priority of this receiver.
      */
     public TimedQueueReceiver(IOPort container, int priority) {
-        super();
 	_container = container;
 	_priority = priority;
     }
@@ -110,8 +135,8 @@ public class TimedQueueReceiver {
     // This time value indicates that the receiver is no longer active.
     public static final double INACTIVE = -2.0;
 
-    // This time value indicates that the receiver has not begun
-    // activity.
+    // This time value is used in conjunction with completionTime to
+    // indicate that a receiver will continue operating indefinitely.
     public static final double ETERNITY = -5.0;
 
     ///////////////////////////////////////////////////////////////////
@@ -125,6 +150,7 @@ public class TimedQueueReceiver {
      *  TimedQueueReceiver. If there are any receivers in the
      *  TimeKeeper with receiver times of TimedQueueReceiver.IGNORE,
      *  remove the first token from these receivers.
+     * @return The oldest token off of the queue.
      * @exception NoTokenException If the queue is empty.
      */
     public Token get() {
@@ -164,9 +190,6 @@ public class TimedQueueReceiver {
                 ((DDEThread)thread).getTimeKeeper();
 
 	    timeKeeper.removeAllIgnoreTokens();
-	    /* FIXME
-	    timeKeeper.updateRcvrList(this);
-	    */
         }
 
         return token;
@@ -180,7 +203,7 @@ public class TimedQueueReceiver {
     }
 
     /** Return the IOPort container of this receiver.
-     * @return IOPort The containing IOPort.
+     * @return The containing IOPort.
      */
     public IOPort getContainer() {
         return _container;
@@ -188,7 +211,7 @@ public class TimedQueueReceiver {
 
     /** Return the last time of this receiver. This method
      *  is not synchronized so the caller should be.
-     * @return double The last time.
+     * @return The last time.
      * @deprecated Only used for testing purposes
      */
     public double getLastTime() {
@@ -199,15 +222,15 @@ public class TimedQueueReceiver {
      *  time is the time stamp associated with the oldest token that
      *  is currently on the queue. If the queue is empty, then the
      *  receiver time value is equal to the "last time."
-     * @return double The receiver time of this TimedQueueReceiver.
+     * @return The receiver time of this TimedQueueReceiver.
      */
-    public double getRcvrTime() {
+    public synchronized double getRcvrTime() {
         return _rcvrTime;
     }
 
     /** Return true if the number of tokens stored in the queue is
      *  less than the capacity of the queue. Return false otherwise.
-     * @return boolean Return true if the queue is not full; return
+     * @return True if the queue is not full; return
      *  false otherwise.
      */
     public boolean hasRoom() {
@@ -216,7 +239,7 @@ public class TimedQueueReceiver {
 
     /** Return true if there are tokens stored on the queue. Return
      *  false if the queue is empty.
-     * @return boolean Return true if the queue is not empty; return
+     * @return True if the queue is not empty; return
      *  false otherwise.
      */
     public boolean hasToken() {
@@ -237,36 +260,34 @@ public class TimedQueueReceiver {
      */
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE && time != IGNORE ) {
-	    /* FIXME
-	    if( token instanceof NullToken ) {
-		return;
-	    }
-	    */
-	    IOPort port = (IOPort)getContainer();
-	    NamedObj actor = (NamedObj)port.getContainer();
-	    // NOTE: Maintain the following IllegalArgumentException
-	    // message as it is used by DDEIOPort.send().
+	    NamedObj actor = (NamedObj)getContainer().getContainer();
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time in the past.");
 	} else if( time < 0.0 && time != INACTIVE && time != IGNORE ) {
-	    IOPort port = (IOPort)getContainer();
-	    NamedObj actor = (NamedObj)port.getContainer();
+	    NamedObj actor = (NamedObj)getContainer().getContainer();
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time to a" +
 		    " a negative value.");
 	}
-        Event event;
-        _lastTime = time;
-        event = new Event(token, _lastTime);
 
+	double _lastTimeCache = _lastTime;
+	double _rcvrTimeCache = _rcvrTime;
+	_lastTime = time;
+	Event event = new Event(token, time);
         if( _queue.size() == 0 ) {
             _rcvrTime = _lastTime;
         }
 
-        if (!_queue.put(event)) {
-            throw new NoRoomException (getContainer(),
+	try {
+	    if (!_queue.put(event)) {
+		throw new NoRoomException (getContainer(),
                     "Queue is at capacity. Cannot insert token.");
-        }
+	    }
+	} catch( NoRoomException e ) {
+	    _lastTime = _lastTimeCache;
+	    _rcvrTime = _rcvrTimeCache;
+	    throw e;
+	}
     }
 
     /** Remove the oldest token off of this queue if it has a
@@ -274,7 +295,7 @@ public class TimedQueueReceiver {
      *  time and update the time keeper's receiver list.
      * @exception NoTokenException If the queue is empty.
      */
-    public void removeIgnoredToken() {
+    public synchronized void removeIgnoredToken() {
 	/*
 	String name = ((Nameable)getContainer().getContainer()).getName();
 	System.out.println("*****removeIgnoredToken() called on "+name);
@@ -344,6 +365,7 @@ public class TimedQueueReceiver {
 
     /** Set the queue capacity of this receiver.
      * @param capacity The capacity of this receiver's queue.
+     * @exception IllegalActionException If the superclass throws it.
      */
     public void setCapacity(int capacity) throws IllegalActionException {
         _queue.setCapacity(capacity);
@@ -374,15 +396,15 @@ public class TimedQueueReceiver {
 
     /** Return the completion time of this receiver. This method
      *  is not synchronized so the caller should be.
-     * @return double The completion time.
+     * @return The completion time.
      */
     double getCompletionTime() {
         return _completionTime;
     }
 
     /** Return true if this receiver has a NullToken at the front
-     *  of the queue; return false otherwise. This method is not
-     *  synchronized so the caller should be.
+     *  of the queue; return false otherwise. 
+     *  This method is not synchronized so the caller should be.
      * @return True if this receiver contains a NullToken in the
      *  oldest queue position; return false otherwise.
      */
@@ -399,6 +421,7 @@ public class TimedQueueReceiver {
     /** Reset local flags. The local flags of this receiver impact
      *  the local notion of time of the actor that contains this
      *  receiver.
+     *  This method is not synchronized so the caller should be.
      */
     void reset() {
         DDEDirector director = (DDEDirector)
@@ -406,13 +429,14 @@ public class TimedQueueReceiver {
 	double time = director.getCurrentTime();
 	_rcvrTime = time;
 	_lastTime = time;
-	_queue = new FIFOQueue();
+	_queue.clear();
     }
 
     /** Set the completion time of this receiver. If the
      *  completion time argument is negative but is not
      *  equal to TimedQueueReceiver.ETERNITY, then throw
      *  an IllegalArgumentException.
+     *  This method is not synchronized so the caller should be.
      * @param time The completion time of this receiver.
      */
     void setCompletionTime(double time) {
@@ -429,7 +453,7 @@ public class TimedQueueReceiver {
      *  is not synchronized so the caller should be.
      * @param time The new rcvr time.
      */
-    void setRcvrTime(double time) {
+    synchronized void setRcvrTime(double time) {
 	if( !(_queue.size() > 0) ) {
             _rcvrTime = time;
 	}
@@ -439,6 +463,8 @@ public class TimedQueueReceiver {
     ////                         private variables                 ////
 
     // The time after which execution of this receiver will cease.
+    // Initially the value is set so that execution will continue
+    // indefinitely.
     private double _completionTime = ETERNITY;
 
     // The IOPort which contains this receiver.
@@ -460,8 +486,7 @@ public class TimedQueueReceiver {
     // values. This is particularly useful in situations
     // where the specification of the destination receiver
     // may be considered redundant.
-    // FIXME
-    public class Event {
+    private class Event {
 
 	// Construct an Event with a token and time stamp.
 	public Event(Token token, double time) {
