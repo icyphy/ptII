@@ -719,8 +719,9 @@ remote1ChangeLog:
 	@echo "# Now generating ChangeLog file in $(REMOTE1PTIIDIST)"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) \
-		$(MAKE) -k ChangeLog; ln -s ChangeLog ChangeLog.txt)
+	(cd $(REMOTE1PTIIDIST);	rm -f ChangeLog; \
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k ChangeLog; \
+		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
 
 # Build jnlp installers
 remote1jnlp:
