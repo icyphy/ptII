@@ -1637,7 +1637,7 @@ if test -z "$PTCOLT_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/colt/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"$PTCOLT_DIR/colt.jar\"/> "
+	<classpathentry kind=\"lib\" path=\"$COLT_DIR/colt.jar\"/> "
 fi 
 
 
