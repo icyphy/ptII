@@ -117,8 +117,10 @@ public class ASTReflect {
         } else {
             // FIXME: If this is java.lang.Object, should we
             // use AbsentTreeNode?
-            superClass =
-                (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
+	    if (myClass.getSuperclass() != null) {
+		superClass =
+		    (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
+	    }
         }
 
 	ClassDeclNode classDeclNode =
@@ -275,6 +277,39 @@ public class ASTReflect {
 	return methodList;
     }
 
+    /** Lookup a ClassDeclNode by name
+     *  @param name The possibly unqualified name of the class.
+     */
+    public static ClassDeclNode lookupClassDeclNode(String name) {
+	try {
+	    // The classname was something like java.lang.Object
+	    return ASTClassDeclNode(Class.forName(name));
+	} catch (ClassNotFoundException e) {
+	    // The classname was something like Object, so
+	    // we search the loaded packages.
+	    
+	    // FIXME: we could try optimizing this so we
+	    // look in java.lang first, which is where
+	    // vast majority of things will be found.
+	    Package packages[] = Package.getPackages();
+	    for(int i = 0; i < packages.length; i++) {
+		String qualifiedName =
+		    new String(packages[i].getName() + "." + name);
+		try {
+		    return ASTClassDeclNode(Class.forName(qualifiedName));
+		} catch (ClassNotFoundException ee) {
+		    // Keep searching the packages.
+		}
+	    }
+	    // FIXME: We need to do this part
+	    throw new RuntimeException("ASTReflect.lookupClassDeclNode(): " +
+				       "Could not find class '" + name + 
+				       "'. The package of this class has " +
+				       "not yet been loaded, so we need to " +
+				       "look in the searchPath");
+	}
+	// return null;
+    }
 
     /** Print the AST for ptolemy.lang.java.Skeleton for testing purposes. */
     public static void main(String[] args) {
