@@ -47,8 +47,7 @@ PTPACKAGE = 	event
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS =	DefaultPNListener.java \
-	PNProcessEvent.java \
+JSRCS =	PNProcessEvent.java \
         PNProcessListener.java \
 	PNProcessMulticaster.java \
 	ReceiverActionEvent.java \
