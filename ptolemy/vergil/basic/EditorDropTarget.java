@@ -225,7 +225,7 @@ public class EditorDropTarget extends DropTarget {
 
                 // NOTE: Have to know whether this is an entity,
                 // port, etc. This seems awkward.
-                ChangeRequest request = null;
+                MoMLChangeRequest request = null;
                 if (dropObj instanceof ComponentEntity) {
 
                     // Dropped object is an entity.
@@ -280,6 +280,7 @@ public class EditorDropTarget extends DropTarget {
                 // NOTE: If the drop object is not recognized, nothing
                 // happens.  Is this the right behavior?
                 if (request != null) {
+                    request.setUndoable(true);
                     container.requestChange(request);
                 }
 	    }
