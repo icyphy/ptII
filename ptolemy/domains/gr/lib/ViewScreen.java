@@ -49,7 +49,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.gr.kernel.GRActor;
-import ptolemy.domains.gr.kernel.GRDebug;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -586,5 +585,4 @@ public class ViewScreen extends GRActor implements Placeable {
     private Container _container;
     private JFrame _frame;
     private BoundingSphere _bounds;
-    GRDebug debug = new GRDebug(false);
 }

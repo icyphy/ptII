@@ -165,7 +165,8 @@ public class GRScheduler extends Scheduler {
             while (outports.hasNext()) {
                 IOPort outPort = (IOPort) outports.next();
                 int referenceDepth = outPort.depthInHierarchy();
-                Iterator inPorts = outPort.deepConnectedInPortList().iterator();
+                Iterator inPorts = 
+                    outPort.deepConnectedInPortList().iterator();
                 while (inPorts.hasNext()) {
                     IOPort inPort = (IOPort)inPorts.next();
                     if (inPort.depthInHierarchy() < referenceDepth) {
@@ -187,9 +188,8 @@ public class GRScheduler extends Scheduler {
             }
         }
 
-
         // NOTE: The following may be a very costly test, which is why
-        // it it done at the end.  However, this means that we cannot
+        // it is done at the end.  However, this means that we cannot
         // report an actor in the directed cycle.  Probably DirectedGraph
         // should be modified to enable such reporting.
         if (!dag.isAcyclic()) {
@@ -208,7 +208,6 @@ public class GRScheduler extends Scheduler {
         if (dag.top() == null) {
             // FIXME: throw exception here
         }
-
 
         Schedule schedule = new Schedule();
         Object[] sorted = dag.topologicalSort();

@@ -51,8 +51,7 @@ JSRCS = \
 	GRDirector.java \
 	GRReceiver.java \
 	GRScheduler.java \
-	GRActor.java \
-	GRDebug.java
+	GRActor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
