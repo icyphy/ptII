@@ -54,7 +54,7 @@ container to subclasses of TypedComponentEntity.  To do this, they should
 override the setContainer() method.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 */
 public class TypedIORelation extends IORelation {
 
