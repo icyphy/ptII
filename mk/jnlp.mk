@@ -327,6 +327,14 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+	if [ ! -f $(SIGNED_DIR)/$(DSP_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)$(DSP_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
+		cp -p $(DSP_MAIN_JAR) `dirname $(SIGNED_DIR)/$(DSP_MAIN_JAR)`;\
+	fi
+
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
@@ -356,6 +364,14 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+	if [ ! -f $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)$(HYBRID_SYSTEMS_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so we copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(HYBRID_SYSTEMS_MAIN_JAR)`; \
+		cp -p $(HYBRID_SYSTEMS_MAIN_JAR) \
+			`dirname $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)`; \
+	fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
@@ -382,6 +398,13 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+	if [ ! -f $(SIGNED_DIR)/$(PTINY_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)$(PTINY_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so we copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
+		cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
+	fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
@@ -409,6 +432,13 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+	if [ ! -f $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)$(PTINY_SANDBOX_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so we copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
+		cp -p $(PTINY_SANDBOX_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)`; \
+	fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
@@ -436,6 +466,13 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+	if [ ! -f $(SIGNED_DIR)/$(FULL_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)$(FULL_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so we copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
+		cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`; \
+	fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
