@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.gui;
@@ -36,7 +36,15 @@ import java.awt.Window;
 /**
 This is an interface for listeners that need to be informed when a
 window closes.  Note that this is a very small subset of what Java's
-WindowListener interface does.
+WindowListener interface does.  This class is a workaround for a bug
+in Java's AWT, where components are not informed in any way when the
+window that contains them is closed, even though they can have
+registered listeners.  The listeners are never called, unless the
+component is a top-level window. A listener that implements this
+interface, by contrast, is informed regardless of whether it is
+at the top level. This is used, for example, by the ComponentDialog
+class.
+@see ComponentDialog
 
 @author Edward A. Lee
 @version $Id$

@@ -37,7 +37,8 @@ An interface for events that can be used for debugging.  These events will
 generally be subclassed to create events with more meaning (such as
 a FiringEvent).  Debug events should always have a useful string
 representation, so that the generic listeners (such as StreamListener)
-can display them reasonably.
+can display them reasonably.  This string representation should be
+provided by the toString() method.
 
 @author  Steve Neuendorffer
 @version $Id$

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.gui;
@@ -75,7 +75,7 @@ public class ComponentDialog extends JDialog {
      *  The dialog is placed relative to the owner.
      *  @param owner The object that, per the user, appears to be
      *   generating the dialog.
-     *  @param title The title to put on the window.
+     *  @param title The title of the dialog.
      *  @param component The component to insert in the dialog.
      */
     public ComponentDialog(Frame owner, String title, Component component) {
@@ -90,7 +90,7 @@ public class ComponentDialog extends JDialog {
      *  The dialog is placed relative to the owner.
      *  @param owner The object that, per the user, appears to be
      *   generating the dialog.
-     *  @param title The title to put on the window.
+     *  @param title The title of the dialog.
      *  @param component The component to insert in the dialog.
      *  @param buttons An array of labels for buttons at the bottom
      *   of the dialog.
@@ -107,12 +107,12 @@ public class ComponentDialog extends JDialog {
      *  buttons, and message.  The message is placed above the component.
      *  The first button is the "default" in that
      *  it is the one activated by "Enter" or "Return" keys.
-     *  If the last argument is null, then an "OK"
+     *  If the <i>buttons</i> argument is null, then an "OK"
      *  and a "Cancel" button will be created.
      *  The dialog is placed relative to the owner.
      *  @param owner The object that, per the user, appears to be
      *   generating the dialog.
-     *  @param title The title to put on the window.
+     *  @param title The title of the dialog.
      *  @param component The component to insert in the dialog.
      *  @param buttons An array of labels for buttons at the bottom
      *   of the dialog.
@@ -256,6 +256,7 @@ public class ComponentDialog extends JDialog {
 
     /** Return the label of the button that triggered closing the
      *  dialog, or an empty string if none.
+     *  @return The label of the button pressed.
      */
     public String buttonPressed() {
         return _buttonPressed;

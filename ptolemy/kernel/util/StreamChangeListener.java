@@ -1,4 +1,4 @@
-/* A change listener that describes the changes on the standard output.
+/* A change listener that describes changes on the standard output.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;

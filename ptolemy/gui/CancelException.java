@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.gui;
@@ -33,7 +33,13 @@ package ptolemy.gui;
 //// CancelException
 /**
 An exception that is not reported to the user.  This exception can be used
-to cancel an ongoing operation.
+to cancel an ongoing operation.  It works together with MessageHandler,
+where it might be thrown when the user clicks "cancel" in a dialog box.
+Throwing an exception allows the execution environment to unwind the stack,
+cancelling operations that may only lead to an endless stream of warnings
+or errors.  This class is really just a marker, and is intended to not be
+reported to the user.
+@see MessageHandler
 
 @author Edward A. Lee
 @version $Id$

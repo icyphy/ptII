@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.gui;
@@ -113,10 +113,12 @@ is first packed.
 @version $Id$
 */
 public abstract class Top extends JFrame {
+
     /** Construct an empty top-level frame.  After constructing this,
      *  it is necessary to call pack() to have the menus added, and
      *  then setVisible(true) to make the frame appear.  It may also
-     *  be desirable to call centerOnScreen().
+     *  be desirable to call centerOnScreen().  This can be done after
+     *  pack() and before setVisible().
      */
     public Top() {
         super();
@@ -155,9 +157,11 @@ public abstract class Top extends JFrame {
         return _modified;
     }
 
-    /** Report an exception.  This displays a message in a dialog and
-     *  prints the stack trace to the standard error stream.
+    /** Report an exception.  This displays a message in a dialog by
+     *  calling the two-argument version with an empty string as the
+     *  first argument.
      *  @param ex The exception to report.
+     *  @see report(String, Exception)
      */
     public void report(Exception ex) {
 	report("", ex);
@@ -202,8 +206,8 @@ public abstract class Top extends JFrame {
     }
 
     /** Size this window to its preferred size and make it
-     *  displayable.  overrides the base class to populate the menu
-     *  bar if the argument is true and they have not already been
+     *  displayable, and override the base class to populate the menu
+     *  bar if they have not already been
      *  populated.  This is done here rather than in the constructor
      *  so that derived classes are assured that their constructors
      *  have been fully executed when _addMenus() is called.
@@ -425,12 +429,6 @@ public abstract class Top extends JFrame {
         _about();
     }
 
-    /** Read the specified URL.
-     *  @param url The URL to read.
-     *  @exception Exception If the URL cannot be read.
-     */
-    protected abstract void _read(URL url) throws Exception;
-
     /** Open a file dialog to identify a file to be opened, and then call
      *  _read() to open the file.x
      */
@@ -486,8 +484,14 @@ public abstract class Top extends JFrame {
 	}
     }
 
-    /** Save the model to the current file, determined by the
-     *  and _file protected variable.  This calls _writeFile().
+    /** Read the specified URL.
+     *  @param url The URL to read.
+     *  @exception Exception If the URL cannot be read.
+     */
+    protected abstract void _read(URL url) throws Exception;
+
+    /** Save the model to the current file, if there is one, and otherwise
+     *  invoke _saveAs().  This calls _writeFile().
      *  @return True if the save succeeds.
      */
     protected boolean _save() {

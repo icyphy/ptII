@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.gui;
@@ -44,12 +44,17 @@ import javax.swing.JTextArea;
 This is a class that is used to report errors.  It provides a 
 set of static methods that are called to report errors.  However, the 
 actual reporting of the errors is deferred to an instance of this class
-that is set using the setMessageHandler() method.  This base class
-implementation simply write the errors to System.err.
+that is set using the setMessageHandler() method.  Normally there
+is only one instance, set up by the application, so the class is
+a singleton.  But this is not enforced.
+<p>
+This base class simply writes the errors to System.err.
 When an applet or application starts up, it may wish to set a subclass
 of this class as the message handler, to allow a nicer way of 
 reporting errors.  For example, a swing application will probably
-want to report errors in a dialog box.
+want to report errors in a dialog box, using for example
+the derived class GraphicalMessageHandler.
+@see GraphicalMessageHandler
 
 @author  Edward A. Lee, Steve Neuendorffer
 @version $Id$

@@ -30,8 +30,6 @@
 
 package ptolemy.kernel.util;
 
-import ptolemy.kernel.CompositeEntity;		/* Needed by javadoc */
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -86,11 +84,17 @@ as its own workspace by default.
 <p>
 Instances of Attribute can be attached by calling their setContainer()
 method and passing this object as an argument. These instances will then
-be reported by the getAttribute() and getAttributes() methods.
+be reported by the getAttribute() and attributeList() methods.
 Classes derived from NamedObj may constrain attributes to be a subclass
 of Attribute.  To do that, they should override the protected
 _addAttribute() method to throw an exception if the
 object provided is not of the right class.
+<p>
+This class supports <i>mutations</i>, which are changes to a model
+that are performed in a disciplined fashion.  In particular, a
+mutation can be requested via the requestChange() method.
+Derived classes will ensure that the mutation is executed
+at a time when it is safe to execute mutations.
 <p>
 Derived classes should override the _description() method to append
 new fields if there is new information that should be included in the
@@ -419,7 +423,6 @@ public class NamedObj implements Nameable, Debuggable,
      *  atomic (see CompositeEntity), and always returns false if the entities
      *  are not in the same workspace.
      *  This method is read-synchronized on the workspace.
-     *  @see ptolemy.kernel.CompositeEntity#isAtomic()
      *  @return True if this contains the argument, directly or indirectly.
      */
     public boolean deepContains(NamedObj inside) {
@@ -587,8 +590,8 @@ public class NamedObj implements Nameable, Debuggable,
      *  The text that is written is indented according to the specified
      *  depth, with each line (including the last one)
      *  terminated with a newline.
-     *  Derived classes should override this method to change the MoML
-     *  description of an object.  They should override the protected
+     *  Derived classes can override this method to change the MoML
+     *  description of an object.  They can override the protected
      *  method _exportMoMLContents() if they need to only change which
      *  contents are described.
      *  @param output The output stream to write to.
@@ -861,6 +864,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  request to the container.  If the specified listener is not
      *  on the list of listeners, do nothing.
      *  @param listener The listener to remove.
+     *  @see #addChangeListener(ChangeListener)
      */
     public synchronized void removeChangeListener(ChangeListener listener) {
 	NamedObj container = (NamedObj) getContainer();
@@ -893,7 +897,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  In other words, the request will get passed up to the top level
      *  of the hierarchy and then executed.  Subclasses can override
      *  this to queue the change request and execute it at an appropriate time.
-     *  Change listeners will be notified of success (or failure) or the
+     *  Change listeners will be notified of success (or failure) of the
      *  request.
      *  @param change The requested change.
      */
@@ -1356,7 +1360,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  defining this object.  This method is called when this object
      *  is constructed by cloning another object that identifies itself
      *  as a MoML "class".  In addition, calling this method
-     *  suppresses description of the contents of the contents
+     *  suppresses description of the contents
      *  of this named object (_exportMoMLContents() is not called).
      *  Only the attributes are described in the body of the element.
      *  To re-enabled detailed descriptions, call this method with
@@ -1379,6 +1383,7 @@ public class NamedObj implements Nameable, Debuggable,
             }
             _MoMLInfo.deferTo = deferTo;
             if (deferTo != null) {
+                // FIXME: These should be weak references.
                 deferTo._MoMLInfo.getDeferredFrom().add(this);
             }
         } finally {

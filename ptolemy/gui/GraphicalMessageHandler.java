@@ -59,7 +59,7 @@ public class GraphicalMessageHandler extends MessageHandler {
 
     /** Set the component with respect to which the display window
      *  should be created.  This ensures that if the application is
-     *  iconfied or deiconified, that the display window goes with it.
+     *  iconified or deiconified, that the display window goes with it.
      *  @param context The component context.
      */
     public static void setContext(Component context) {
@@ -211,7 +211,7 @@ public class GraphicalMessageHandler extends MessageHandler {
     ////                        private methods                    ////
 
     /** Return a string that contains the original string, limited to the
-     *  given number of characters.  If the string is truncated, elipses
+     *  given number of characters.  If the string is truncated, an ellipsis
      *  will be appended to the end of the string.
      *  @param string The string to truncate.
      *  @param length The length to which to truncate the string.
@@ -223,14 +223,15 @@ public class GraphicalMessageHandler extends MessageHandler {
 	return string;
     }
 
-    /** Display a stack trace dialog. Eventually, the dialog should
-     *  be able to email us a bug report. The "info" argument is a
+    /** Display a stack trace dialog. The "info" argument is a
      *  string printed at the top of the dialog instead of the Exception
      *  message.
      *  @param exception The exception.
      *  @param info A message.
      */
     private void _showStackTrace(Exception exception, String info) {
+        // FIXME: Eventually, the dialog should
+        // be able to email us a bug report.
         // Show the stack trace in a scrollable text area.
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

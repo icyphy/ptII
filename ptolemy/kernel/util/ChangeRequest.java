@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 
 */
 
@@ -45,8 +45,10 @@ which it is safe to make the modification.  Such changes are called
 <p>
 A typical use of this class is to define an anonymous inner class that
 implements the _execute() method to bring about the desired change.
-The instance of that anonymous inner class is then queued with a
-a an instance of NamedObj using its requestChange() method.
+The instance of that anonymous inner class is then queued with
+an instance of NamedObj using its requestChange() method.
+The execute() method must be called only once; attempting to call
+it multiple times will trigger an exception.
 <p>
 Concrete derived classes can be defined to implement
 mutations of a certain kind or in a certain way. Instances of these
@@ -91,7 +93,9 @@ public abstract class ChangeRequest {
 	if(_localListeners == null) {
 	    _localListeners = new LinkedList();
 	}
-	_localListeners.add(0, listener);
+        if (!_localListeners.contains(listener)) {
+            _localListeners.add(0, listener);
+        }
     }
 
     /** Execute the change.  This method invokes the protected method
@@ -302,6 +306,6 @@ public abstract class ChangeRequest {
     // The source of the change request.
     private Object _source;
 
-    // A flag indicating that a request is pending.
+    // A flag indicating that this request has not been executed yet.
     private boolean _pending = true;
 }
