@@ -103,7 +103,7 @@ public class TimedQueueReceiver {
 
     // This time value indicates that the receiver has not begun
     // activity.
-    public static final double NOTSTARTED = -5.0;
+    public static final double ETERNITY = -5.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -293,10 +293,17 @@ public class TimedQueueReceiver {
         return false;
     }
 
-    /** Set the completion time of this receiver.
+    /** Set the completion time of this receiver. If the 
+     *  completion time argument is negative but is not 
+     *  equal to TimedQueueReceiver.ETERNITY, then throw 
+     *  an IllegalArgumentException.
      * @param time The completion time of this receiver.
      */
     void setCompletionTime(double time) {
+	if( time < 0.0 && time != TimedQueueReceiver.ETERNITY ) {
+	    throw new IllegalArgumentException("Attempt to set "
+            	    + "completion time to a negative value.");
+	}
         _completionTime = time;
     }
 
@@ -328,7 +335,7 @@ public class TimedQueueReceiver {
     private double _rcvrTime = 0.0;
 
     // The time after which execution of this receiver will cease.
-    private double _completionTime = NOTSTARTED;
+    private double _completionTime = ETERNITY;
 
     // The priority of this receiver.
     private int _priority = 0;
