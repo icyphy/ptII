@@ -218,7 +218,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 //             Variable variable = (Variable)variables.next();
 //             variable.removeValueListener(this);
 //         }
-        System.out.println("rate value changed: " + settable.getFullName());
+//        System.out.println("rate value changed: " + settable.getFullName());
         _rateVariables.clear();
         setValid(false);
     }
