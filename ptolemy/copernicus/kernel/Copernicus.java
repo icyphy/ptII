@@ -492,7 +492,7 @@ public class Copernicus {
 	    // IOException does not have a constructor that takes a 
 	    // cause argument.
 	    IOException exception = new IOException("Problem generating a "
-						    "substitution map for "
+						    + "substitution map for "
 						    + namedObj.getName());
 	    exception.initCause(ex);
 	    throw exception;
