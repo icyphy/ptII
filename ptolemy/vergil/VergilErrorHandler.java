@@ -127,9 +127,11 @@ public class VergilErrorHandler implements ErrorHandler {
                     options[0]);
 
 	   if (selected == 0) {
-	       GraphicalMessageHandler.showStackTrace(parentWindow,
-						      exception,
-						      message);
+		  return _showStackTrace(parentWindow,
+					 false,
+					 false,
+					 exception,
+					 message);
 	   }
            return CANCEL;
        } else {
@@ -154,15 +156,11 @@ public class VergilErrorHandler implements ErrorHandler {
 	       if (selected == 3) {
                    return CANCEL;
                } else if (selected == 2) {
-		  selected = _showStackTrace(parentWindow,
-					     _skippingEnabled,
-					     exception,
-					     message);
-		  if (selected == 2) {
-		      return CANCEL;
-		  } else if (selected == 1) {
-		      _skipping = true;
-		  }
+		   return _showStackTrace(parentWindow,
+					  true,
+					  _skippingEnabled,
+					  exception,
+					  message);
                } else if (selected == 1) {
                    _skipping = true;
                }
@@ -184,15 +182,13 @@ public class VergilErrorHandler implements ErrorHandler {
                         options,
                         options[0]);
 
-               if (selected == 2) {
-		  selected = _showStackTrace(parentWindow,
+               if (selected == 1) {
+		  return _showStackTrace(parentWindow,
+					     false,
 					     _skippingEnabled,
 					     exception,
 					     message);
-		  if (selected == 1) {
-		      return CANCEL;
-		  }
-	       } else if (selected == 1) {
+	       } else if (selected == 2) {
                    return CANCEL;
                }
                return CONTINUE;
@@ -207,18 +203,25 @@ public class VergilErrorHandler implements ErrorHandler {
      *  string printed at the top of the dialog instead of the Exception
      *  message.
      *  @param context The context.
+     *  @param skipElement True if one of the buttons should be
+     *  'Skip element'.    If skippingEnabled is true,
+     *  then the value of skipElement is ignored.
      *  @param skippingEnabled True if one of the buttons should be
-     *  @param exception The exception.
      *  'Skip remaining messages'.
+     *  @param exception The exception.
      *  @param info A message.
+     *  @return CONTINUE to skip this element, CANCEL to abort processing
+     *   of the XML.
      */
     private int _showStackTrace(Component context,
+				boolean skipElement,
 				boolean skippingEnabled,
 				Exception exception, 
 				String info) {
         // FIXME: Eventually, the dialog should
-        // be able to email us a bug report.  Having hyperlinks
-	// that work would be nice.
+        // be able to email us a bug report.
+	// FIXME: The user should be able to click on the links and
+	// jump to the line in the offending text.
 
         // Show the stack trace in a scrollable text area.
 
@@ -249,18 +252,29 @@ public class VergilErrorHandler implements ErrorHandler {
 	    options = new Object [] {"Skip element",
 				     "Skip remaining errors", "Cancel"};
 	} else {
-	    options = new Object [] {"Skip element", "Cancel"};
-
+	    if (skipElement) {
+		options = new Object [] {"Skip element", "Cancel"};
+	    } else {
+		options = new Object [] {"Cancel"};
+	    }
 	}
         // Show the MODAL dialog
-	return JOptionPane.showOptionDialog(context,
-					    message,
-					    "Stack trace",
-					    JOptionPane.YES_NO_OPTION,
-					    JOptionPane.ERROR_MESSAGE,
-					    null,
-					    options,
-					    options[0]);
+	int selected = JOptionPane.showOptionDialog(context,
+						    message,
+						    "Stack trace",
+						    JOptionPane.YES_NO_OPTION,
+						    JOptionPane.ERROR_MESSAGE,
+						    null,
+						    options,
+						    options[0]);
+	if (selected == options.length - 1 ) {
+	    // The last button is the Cancel button.
+	    return CANCEL;
+	}
+	if (skippingEnabled && selected == 1) {
+	    _skipping = true;
+	}
+	return CONTINUE;
     }
 
     ///////////////////////////////////////////////////////////////////
