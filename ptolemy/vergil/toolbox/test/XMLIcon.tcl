@@ -156,4 +156,3 @@ test XMLIcon-3.3 {test graphics list} {
     set elementList [$icon graphicElementList]
     list [$icon containsGraphicElement $el1] [$icon containsGraphicElement $el2] [$elementList size] [[$elementList get 0] equals $el2]
 } {0 1 1 1}
-    
