@@ -252,7 +252,16 @@ public class HTMLViewerTableau extends Tableau {
             // "file:/c:/ptII"
             // URL.sameFile() will not work here, so we use URI.relativize()
             URI uri = new URI(urlName);
-            URI ptIIDirAsURI = new URI(ptIIDirAsURLName);
+            URI ptIIDirAsURI;
+            try {
+                ptIIDirAsURI = new URI(ptIIDirAsURLName);
+            } catch (java.net.URISyntaxException ex) {
+                // If the ptIIDirAsURLName has a space in it, then it is 
+                // not a legitimate URI, so we substitute in %20
+                ptIIDirAsURI =
+                    new URI(StringUtilities.substitute(ptIIDirAsURLName,
+                                    " ", "%20")); 
+            }
             URI relativeURI = uri.relativize(ptIIDirAsURI);
             
             if (relativeURI.toURL().sameFile(ptIIDirAsURI.toURL())) {
@@ -277,10 +286,10 @@ public class HTMLViewerTableau extends Tableau {
                 String relativePathBase = 
                     relativePath.substring(0,
                             relativePath.lastIndexOf("#"));
-                
                 anotherURL = Thread.currentThread()
                     .getContextClassLoader()
                     .getResource(relativePathBase);
+
                 if (anotherURL != null) {
                     anotherURL = new URL(anotherURL.toString()
                         + relativePath.substring(
