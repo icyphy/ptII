@@ -135,20 +135,24 @@ public abstract class ODESolver extends NamedObj {
         _round ++ ;
     }
 
-    /** Return the number of auxiliary variable number
-     *  needed by the
-     *  integrators when solving the ODE.
-     *  @return The number of auxiliary variables
+    /** Return the number of auxiliary variables that an integrator should
+     *  provide when solving the ODE. Auxiliary variables are variables
+     *  in integrators to store integrator-dependent intermediate results
+     *  when solving an ODE.
+     *  @return The number of auxiliary variables.
      */
     public abstract int getIntegratorAuxVariableCount();
 
-    /** Return the number of history information needed
-     *  by this solver.
+    /** Return the number of history information needed by this solver.
+     *  Some solvers need history information from each integrator.
+     *  The derived class should implement this method to return the 
+     *  number of history information needed so that the integrator can
+     *  prepare for that in advance.
      *  @return The number of history information needed.
      */
     public abstract int getHistoryCapacityRequirement();
 
-    /** The fire method of integrators is delegated to this method.
+    /** The fire() method of integrators is delegated to this method.
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException Not thrown in this base class.
