@@ -1254,8 +1254,17 @@ public class IOPort extends ComponentPort {
                     result += " ";
                 }
                 result += "receivers {\n";
-                try {
-                    Receiver[][] recvrs = getReceivers();
+                ///try {
+                    /// FIXME FIXME FIXME
+                    // This is here because of a null pointer bug in
+                    // getReceivers. See the ptdesign log 11/29/98.
+                    Receiver[][] recvrs = null;
+                    try {
+                        recvrs = getReceivers();
+                    }
+                    catch (Exception e) {
+                        result += "ERROR: getReceivers() failed";
+                    }
                     if (recvrs != null) {
                         for (int i = 0; i < recvrs.length; i++) {
                             // One list item per group
@@ -1274,10 +1283,10 @@ public class IOPort extends ComponentPort {
                             result += _getIndentPrefix(indent+1) + "}\n";
                         }
                     }
-                } catch (IllegalActionException ex) {
-                    result += _getIndentPrefix(indent+1) +
-                        ex.getMessage() + "\n";
-                }
+                    ///} catch (IllegalActionException ex) {
+                    ///result += _getIndentPrefix(indent+1) +
+                    ///   ex.getMessage() + "\n";
+                    ///}
                 result += _getIndentPrefix(indent) + "}";
             }
             if ((detail & REMOTERECEIVERS) != 0) {
@@ -1285,7 +1294,16 @@ public class IOPort extends ComponentPort {
                     result += " ";
                 }
                 result += "remotereceivers {\n";
-                Receiver[][] recvrs = getRemoteReceivers();;
+                // FIXME FIXME FIXME
+                // This is here because of a null pointer bug in
+                // getReceivers. See the ptdesign log 11/29/98.
+                Receiver[][] recvrs = null;
+                try {
+                    recvrs = getRemoteReceivers();;
+                }
+                catch (Exception e) {
+                    result += "ERROR: getRemoteReceivers() failed";
+                }
                 if (recvrs != null) {
                     for (int i = 0; i<recvrs.length; i++) {
                         // One list item per group
