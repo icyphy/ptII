@@ -122,7 +122,14 @@ public class UndoStackAttribute extends SingletonAttribute {
             UndoAction newAction = new UndoAction() {
                     public void execute() throws Exception {
                         actionFirst.execute();
-                        actionLast.execute();
+                        // Need to ensure that any redo that is generated
+                        // this execute is merged with the previous.
+                        try {
+                            _inExecuteSecondOfMerged = true;
+                            actionLast.execute();
+                        } finally {
+                            _inExecuteSecondOfMerged = false;
+                        }
                     }
                 };
             _undoEntries.push(newAction);
@@ -141,6 +148,9 @@ public class UndoStackAttribute extends SingletonAttribute {
             if (!_inRedo) {
                 _redoEntries.clear();
             }
+        }
+        if (_inExecuteSecondOfMerged) {
+            mergeTopTwo();
         }
     }
 
@@ -176,6 +186,13 @@ public class UndoStackAttribute extends SingletonAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // Flag indicating that we are executing the second of
+    // two merged actions.  Anything pushed onto the stack
+    // when this is true will be merged with the previous
+    // item on the stack.  Thus, if you undo merged
+    // actions, then the corresponding redos will be merged.
+    private boolean _inExecuteSecondOfMerged = false;
 
     // Flag to indicate that we are in a redo.
     private boolean _inRedo = false;
