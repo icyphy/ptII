@@ -30,13 +30,12 @@
 
 package ptolemy.kernel;
 
+import java.util.Iterator;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
-
-import java.lang.ref.WeakReference;
-import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -121,7 +120,18 @@ public class ComponentEntity extends Entity {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        return _clone(workspace, null);
+        ComponentEntity newObject = (ComponentEntity)super.clone(workspace);
+        newObject._container = null;
+        
+        // If this is the top level of a clone, then duplicate the
+        // deferTo relationship in the cloned object.
+        if (!_beingClonedByContainer) {
+            MoMLInfo info = getMoMLInfo();
+            if (info.deferTo != null) {
+                newObject.setDeferMoMLDefinitionTo(info.deferTo);
+            }
+        }
+        return newObject;
     }
 
     /** Get the container entity.
@@ -328,34 +338,33 @@ public class ComponentEntity extends Entity {
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {}
 
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a new entity with the same ports as the original, but
-     *  no connections.
+    /** Clone the object into the specified workspace, but with
+     *  an indication that the clone is being requested by the clone()
+     *  method of a container.
      *  @param workspace The workspace for the cloned object.
-     *  @param toplevel The top level entity being cloned (or null
-     *   if this is not inside an entity being cloned)
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur), or
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
-    protected Object _clone(Workspace workspace, CompositeEntity toplevel)
+    protected Object _cloneFromContainer(Workspace workspace)
             throws CloneNotSupportedException {
-        ComponentEntity newObject = (ComponentEntity)super.clone(workspace);
-        newObject._container = null;
-        
-        // If this is the top level of a clone, then duplicate the
-        // deferTo relationship in the cloned object.
-        if (toplevel == null) {
-            MoMLInfo info = getMoMLInfo();
-            if (info.deferTo != null) {
-                newObject.setDeferMoMLDefinitionTo(info.deferTo);
-            }
+        try {
+            _beingClonedByContainer = true;
+            return clone(workspace);
+        } finally {
+            _beingClonedByContainer = false;
         }
-        return newObject;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    
+    /** Indicator that this object is being cloned by a container.
+     *  This is so that only the top-level of a cloned tree defers
+     *  its MoML definition to another actor.
+     */
+    protected boolean _beingClonedByContainer = false;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
