@@ -32,17 +32,21 @@ package ptolemy.vergil.basic;
 
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
+import ptolemy.vergil.kernel.AnimationRenderer;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -82,9 +86,9 @@ public class IconController extends ParameterizedNodeController {
     /** An icon renderer. */
     public class IconRenderer implements NodeRenderer {
         public Figure render(Object n) {
-            Locatable location = (Locatable)n;
+            Locatable location = (Locatable) n;
             final NamedObj object = (NamedObj) location.getContainer();
-            
+
             // NOTE: this code is similar to that in PtolemyTreeCellRenderer
             Figure result = null;
             try {
@@ -92,7 +96,8 @@ public class IconController extends ParameterizedNodeController {
                 // Check to see whether there is an icon that has been created,
                 // but not inserted.
                 if (iconList.size() == 0) {
-                    XMLIcon alreadyCreated = (XMLIcon)_iconsPendingContainer.get(object);
+                    XMLIcon alreadyCreated =
+                        (XMLIcon) _iconsPendingContainer.get(object);
                     if (alreadyCreated != null) {
                         iconList.add(alreadyCreated);
                     }
@@ -112,59 +117,86 @@ public class IconController extends ParameterizedNodeController {
                     // executed before this gets around to setting the
                     // container.  Otherwise, that second change request
                     // will result in the creation of a second figure.
-                    final EditorIcon icon = new XMLIcon(object.workspace(), "_icon");
+                    final EditorIcon icon =
+                        new XMLIcon(object.workspace(), "_icon");
                     icon.setContainerToBe(object);
                     icon.setPersistent(false);
                     result = icon.createFigure();
 
-                    // NOTE: Make sure this is done before the change request below
-                    // is executed, which may be as early as when it is requested.
+                    // NOTE: Make sure this is done before the change request
+                    // below is executed, which may be as early as when it is
+                    // requested.
                     _iconsPendingContainer.put(object, icon);
 
                     // NOTE: Make sure the source of this change request is
-                    // the graph model. Otherwise, this change request will trigger
-                    // a redraw of the entire graph, which will result in another
-                    // call to this very same method, which will result in
-                    // creation of yet another figure before this method
-                    // even returns!
-                    GraphController controller = IconController.this.getController();
+                    // the graph model. Otherwise, this change request will
+                    // trigger a redraw of the entire graph, which will result
+                    // in another call to this very same method, which will
+                    // result in creation of yet another figure before this
+                    // method even returns!
+                    GraphController controller =
+                        IconController.this.getController();
                     GraphModel graphModel = controller.getGraphModel();
-                    ChangeRequest request = new ChangeRequest(graphModel,
+                    ChangeRequest request =
+                        new ChangeRequest(
+                            graphModel,
                             "Set the container of a new XMLIcon.") {
-                         // NOTE: The KernelException should not be thrown, but
-                         // if it is, it will be handled properly.
+                            // NOTE: The KernelException should not be thrown,
+                           // but if it is, it will be handled properly.
                          protected void _execute() throws KernelException {
-                             _iconsPendingContainer.remove(object);
-                             // If the icon already has a container, do nothing.
-                             if (icon.getContainer() != null) return;
-                             // If the container already has an icon, do nothing.
-                             if (object.getAttribute("_icon") != null) return;
-                             icon.setContainer(object);
-                         }
+                            _iconsPendingContainer.remove(object);
+                            // If the icon already has a container, do nothing.
+                            if (icon.getContainer() != null)
+                                return;
+                            // If the container already has an icon, do nothing.
+                            if (object.getAttribute("_icon") != null)
+                                return;
+                            icon.setContainer(object);
+                        }
                     };
                     request.setPersistent(false);
                     object.requestChange(request);
                 } else if (iconList.size() == 1) {
-                    EditorIcon icon = (EditorIcon)iconList.iterator().next();
+                    EditorIcon icon = (EditorIcon) iconList.iterator().next();
                     result = icon.createFigure();
                 } else {
                     // There are multiple figures.
                     Iterator icons = iconList.iterator();
                     result = new CompositeFigure();
                     while (icons.hasNext()) {
-                        EditorIcon icon = (EditorIcon)icons.next();
-                        ((CompositeFigure)result).add(icon.createFigure());
+                        EditorIcon icon = (EditorIcon) icons.next();
+                        ((CompositeFigure) result).add(icon.createFigure());
                     }
                 }
             } catch (KernelException ex) {
-                throw new InternalErrorException(null, ex,
-                        "Could not create icon " +
-                        "in " + object + " even " +
-                        "though one did not previously exist.");
+                throw new InternalErrorException(
+                    null,
+                    ex,
+                    "Could not create icon "
+                        + "in "
+                        + object
+                        + " even "
+                        + "though one did not previously exist.");
             }
             // FIXME: This text should not be hardwired here, but rather
             // should be provided by a method of the enclosing class.
             result.setToolTipText(object.getClass().getName());
+            if (object instanceof ComponentEntity) {
+                ComponentEntity ce = (ComponentEntity) object;
+                StringAttribute _colorAttr =
+                    (StringAttribute) (ce.getAttribute("_color"));
+                if (_colorAttr != null) {
+                    String _color = _colorAttr.getExpression();
+                    AnimationRenderer _animationRenderer =
+                        new AnimationRenderer(SVGUtilities.getColor(_color));
+                    _animationRenderer.renderSelected(result);
+                    StringAttribute _descAttr =
+                        (StringAttribute) (ce.getAttribute("_description"));
+                    if (_descAttr != null) {
+                        result.setToolTipText(_descAttr.getExpression());
+                    }
+                }
+            }
             return result;
         }
     }
