@@ -338,7 +338,8 @@ public class NamedObj implements Nameable, Debuggable,
      *  @see #getMoMLInfo()
      *  @see #exportMoML(Writer, int, String)
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
         // NOTE: It is safe to clone an object into a different
         // workspace. It is not safe to move an object to a new
         // workspace, by contrast. The reason this is safe is that
@@ -349,60 +350,60 @@ public class NamedObj implements Nameable, Debuggable,
         // created it and have not returned the reference.
         try {
             _workspace.getReadAccess();
-            NamedObj newobj = (NamedObj)super.clone();
+            NamedObj newObject = (NamedObj)super.clone();
             // NOTE: It is not necessary to write-synchronize on the other
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
-            newobj._attributes = null;
-            newobj._workspace = ws;
-            newobj._fullNameVersion = -1;
+            newObject._attributes = null;
+            newObject._workspace = workspace;
+            newObject._fullNameVersion = -1;
 
-            Iterator params = attributeList().iterator();
-            while (params.hasNext()) {
-                Attribute p = (Attribute)params.next();
-                Attribute np = (Attribute)p.clone(ws);
+            Iterator parameters = attributeList().iterator();
+            while (parameters.hasNext()) {
+                Attribute parameter = (Attribute)parameters.next();
+                Attribute newParameter = (Attribute)parameter.clone(workspace);
                 try {
-                    np.setContainer(newobj);
-                } catch (KernelException ex) {
+                    newParameter.setContainer(newObject);
+                } catch (KernelException exception) {
                     throw new CloneNotSupportedException(
                             "Failed to clone an Attribute of " +
-                            getFullName() + ": " + ex.getMessage());
+                            getFullName() + ": " + exception.getMessage());
                 }
             }
             if (_debugging) {
-                if (ws == null) {
+                if (workspace == null) {
                     _debug("Cloned", getFullName(), "into default workspace.");
                 } else {
                     _debug("Cloned", getFullName(), "into workspace:",
-                            ws.getFullName());
+                            workspace.getFullName());
                 }
             }
             if (_MoMLInfo != null) {
-                newobj._MoMLInfo = new MoMLInfo(newobj);
-                newobj._MoMLInfo.elementName = _MoMLInfo.elementName;
-                newobj._MoMLInfo.source = _MoMLInfo.source;
+                newObject._MoMLInfo = new MoMLInfo(newObject);
+                newObject._MoMLInfo.elementName = _MoMLInfo.elementName;
+                newObject._MoMLInfo.source = _MoMLInfo.source;
                 // The new object does not have any other objects deferring
                 // their MoML definitions to it, so we have to reset this.
-                newobj._MoMLInfo.deferredFrom = null;
+                newObject._MoMLInfo.deferredFrom = null;
 
                 // If the master defers its MoML definition to
                 // another object, then so will the clone.
                 // So we have to add the clone to the list of objects
                 // in the object deferred to.
                 if (_MoMLInfo.deferTo != null) {
-                    _MoMLInfo.deferTo._MoMLInfo.getDeferredFrom().add(newobj);
+                    _MoMLInfo.deferTo._MoMLInfo.getDeferredFrom().add(newObject);
                 }
 
                 // If the master is a class, then its full name
                 // becomes the class name of the clone.
                 if (getMoMLInfo().elementName.equals("class")) {
-                    newobj._setDeferMoMLDefinitionTo(this);
-                    newobj._MoMLInfo.className = getFullName();
+                    newObject._setDeferMoMLDefinitionTo(this);
+                    newObject._MoMLInfo.className = getFullName();
                 } else {
-                    newobj._MoMLInfo.className = _MoMLInfo.className;
+                    newObject._MoMLInfo.className = _MoMLInfo.className;
                 }
             }
-            return newobj;
+            return newObject;
         } finally {
             _workspace.doneReading();
         }
@@ -767,7 +768,7 @@ public class NamedObj implements Nameable, Debuggable,
         return _name;
     }
 
-    /** Get the name of this object relative to the specified container. 
+    /** Get the name of this object relative to the specified container.
      *  A recursive structure, where this object is directly or indirectly
      *  contained by itself, may result in a runtime exception of class
      *  InvalidStateException if it is detected.  Note that it is
@@ -797,7 +798,7 @@ public class NamedObj implements Nameable, Debuggable,
                 if (visited.contains(container)) {
                     // Cannot use "this" as a constructor argument to the
                     // exception or we'll get stuck infinitely
-                    // calling getFullName(), 
+                    // calling getFullName(),
 		    // since that method is used to report
                     // exceptions.  InvalidStateException is a runtime
                     // exception, so it need not be declared.
@@ -1143,10 +1144,11 @@ public class NamedObj implements Nameable, Debuggable,
                 if ((detail & DEEP) == 0) {
                     detail &= ~ATTRIBUTES;
                 }
-                Iterator params = attributeList().iterator();
-                while (params.hasNext()) {
-                    Attribute p = (Attribute)params.next();
-                    result += p._description(detail, indent+1, 2) + "\n";
+                Iterator parameters = attributeList().iterator();
+                while (parameters.hasNext()) {
+                    Attribute parameter = (Attribute)parameters.next();
+                    result += parameter._description(detail, indent+1, 2) +
+                        "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
             }
