@@ -28,6 +28,8 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.*;
+import ptolemy.actor.lib.TimedActor;
+import ptolemy.actor.lib.SequenceActor;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
