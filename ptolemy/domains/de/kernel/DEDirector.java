@@ -287,6 +287,7 @@ public class DEDirector extends Director {
      *  @param actor The actor to disable.
      */
     public void disableActor(Actor actor) {
+        if(_debugging) _debug("Actor ", ((Nameable)actor).getName(), "dead.");
         if (_deadActors == null) {
             _deadActors = new HashSet();
         }
@@ -298,6 +299,15 @@ public class DEDirector extends Director {
      */
     public DEEventQueue getEventQueue() {
         return _eventQueue;
+    }
+
+    /** Return the real start time. Actors may use this time to set up
+     *  local time bombs.
+     *  @return The real start time in terms of milliseconds counting 
+     *       from 1/1/1970 
+     */
+    public long getRealStartTime() {
+        return _realStartTime;
     }
 
     /** Advance current time to the next event in the event queue,
@@ -328,7 +338,7 @@ public class DEDirector extends Director {
             }
             if (_debugging) {
                 _debug("Found actor to fire: "
-                + ((NamedObj)actorToFire).getFullName());
+                        + ((NamedObj)actorToFire).getFullName());
             }
             // It is possible that the next event to be processed is on
             // an inside receiver of an output port of an opaque composite
