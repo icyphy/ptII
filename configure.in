@@ -1032,6 +1032,16 @@ else
 	*) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
     esac
     AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
+
+    AC_MSG_CHECKING([for the proper shared library flag])
+    case "`uname -s`" in
+        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+	SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
+	*) PTJNI_SHAREDLIBRARY_CFLAG=n;;
+    esac
+    AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_CFLAG'])
 fi
 
 #--------------------------------------------------------------------
@@ -1623,6 +1633,9 @@ AC_SUBST(PTJNI_ARCHITECTURE)
 # Set to jni and used in 
 # $PTII/makefile if gcc or cc was found
 AC_SUBST(PTJNI_DIR)
+
+# JNI shared library suffix, under Solaris this would be -fPIC
+AC_SUBST(PTJNI_SHAREDLIBRARY_CFLAG)
 
 # JNI shared library suffix
 AC_SUBST(PTJNI_SHAREDLIBRARY_SUFFIX)
