@@ -38,16 +38,16 @@ An object that hold information on a buffer used in the
 generated code.
 
 @author Jeff Tsay
-@version $Id$   
+@version $Id$
  */
 public class BufferInfo implements Cloneable {
 
     /** Construct a new instance of BufferInfo, without initializing the fields
      *  of the class.
-     */    
+     */
     public BufferInfo() {}
-    
-    /** Make a clone of this instance. */    
+
+    /** Make a clone of this instance. */
     public Object clone() {
         Object obj;
         try {
@@ -57,25 +57,25 @@ public class BufferInfo implements Cloneable {
         }
         return obj;
     }
-    
+
     public String toString() {
-        return "name = " + name + ", cg name = " + codeGenName + 
-               " width x length = " + width + " x " + length + 
+        return "name = " + name + ", cg name = " + codeGenName +
+               " width x length = " + width + " x " + length +
                ", type = " + type;
-    } 
-            
+    }
+
     public String name;
-    
+
     /** The unique name of the buffer used in the generated code. */
     public String codeGenName;
-    
-    /** The number of channels of this port. */    
+
+    /** The number of channels of this port. */
     public int width;
-    
+
     /** The length of the buffer required. */
     public int length;
-    
+
     /** The resolved type of the port. */
     public Type type;
 }
-    
+

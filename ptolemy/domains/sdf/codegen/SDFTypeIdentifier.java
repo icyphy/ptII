@@ -50,40 +50,40 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
     public SDFTypeIdentifier() {
         super();
     }
-    
+
     /** Return true iff the kind is a class kind. In derived classes, the
      *  kind() may return a different number for special classes, so this
      *  method checks if the kind is any class kind.
      */
     public boolean isClassKind(int kind) {
         return ((kind == TYPE_KIND_SDF_ATOMIC_ACTOR) ||
-                (kind == TYPE_KIND_SDF_IO_PORT) ||           
-                super.isClassKind(kind));               
+                (kind == TYPE_KIND_SDF_IO_PORT) ||
+                super.isClassKind(kind));
     }
-        
+
     public boolean isSupportedActorKind(int kind) {
-        return  ((kind == TYPE_KIND_SDF_ATOMIC_ACTOR) || 
+        return  ((kind == TYPE_KIND_SDF_ATOMIC_ACTOR) ||
                  super.isSupportedActorKind(kind));
     }
-    
+
     public boolean isSupportedPortKind(int kind) {
-        return  ((kind == TYPE_KIND_SDF_IO_PORT) || 
+        return  ((kind == TYPE_KIND_SDF_IO_PORT) ||
                  super.isSupportedPortKind(kind));
     }
-    
-    /** Return an integer representing the user type that has the specified ClassDecl, 
-     *  which may be a special type in Ptolemy. If the type is not a special type, 
+
+    /** Return an integer representing the user type that has the specified ClassDecl,
+     *  which may be a special type in Ptolemy. If the type is not a special type,
      *  return the integer given by super.kindOfTypeNameNode(classDecl.getDefType()).
-     */     
-    public int kindOfClassDecl(ClassDecl classDecl) {    
+     */
+    public int kindOfClassDecl(ClassDecl classDecl) {
         if (classDecl == SDF_ATOMIC_ACTOR_DECL) {
            return TYPE_KIND_SDF_ATOMIC_ACTOR;
         } if (classDecl == SDF_IO_PORT_DECL) {
            return TYPE_KIND_SDF_IO_PORT;
-        } 
+        }
         return super.kindOfClassDecl(classDecl);
     }
-                                
+
     /** Return a new TypeNameNode that corresponds to the type indicated by
      *  the kind. The TypeNameNode must be reallocated so that later operations
      *  on the node do not affect TypeNameNode stored in this class.
@@ -93,41 +93,40 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
            return (TypeNameNode) SDF_ATOMIC_ACTOR_TYPE.clone();
         } else if (kind == TYPE_KIND_SDF_IO_PORT) {
            return (TypeNameNode) SDF_IO_PORT_TYPE.clone();
-        } 
+        }
         return super.typeNodeForKind(kind);
     }
 
-    // additional actor kind    
+    // additional actor kind
     public static final int TYPE_KIND_SDF_ATOMIC_ACTOR = TYPE_KIND_TYPED_IO_PORT + 1;
 
-    // additional port kind        
+    // additional port kind
     public static final int TYPE_KIND_SDF_IO_PORT = TYPE_KIND_SDF_ATOMIC_ACTOR + 1;
-                        
-    // additional actor type    
-    public static final ClassDecl SDF_ATOMIC_ACTOR_DECL;        
-    public static final TypeNameNode SDF_ATOMIC_ACTOR_TYPE;        
-                
-    // additional port type            
-    public static final ClassDecl SDF_IO_PORT_DECL;                      
-    public static final TypeNameNode SDF_IO_PORT_TYPE;                          
-                                                                                                                           
+
+    // additional actor type
+    public static final ClassDecl SDF_ATOMIC_ACTOR_DECL;
+    public static final TypeNameNode SDF_ATOMIC_ACTOR_TYPE;
+
+    // additional port type
+    public static final ClassDecl SDF_IO_PORT_DECL;
+    public static final TypeNameNode SDF_IO_PORT_TYPE;
+
     static {
-                           
+
         CompileUnitNode sdfAtomicActorUnit = StaticResolution.load(
          SearchPath.NAMED_PATH.openSource(
           "ptolemy.domains.sdf.kernel.SDFAtomicActor", true), 1);
 
         SDF_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
          sdfAtomicActorUnit, "SDFAtomicActor", CG_CLASS);
-         
-        SDF_ATOMIC_ACTOR_TYPE = SDF_ATOMIC_ACTOR_DECL.getDefType();         
-                                                                              
+
+        SDF_ATOMIC_ACTOR_TYPE = SDF_ATOMIC_ACTOR_DECL.getDefType();
+
         CompileUnitNode sdfIOPortUnit = StaticResolution.load(
          SearchPath.NAMED_PATH.openSource("ptolemy.domains.sdf.kernel.SDFIOPort", true), 1);
-         
+
         SDF_IO_PORT_DECL = (ClassDecl) StaticResolution.findDecl(
-         sdfIOPortUnit,  "SDFIOPort", CG_CLASS);          
-         
-        SDF_IO_PORT_TYPE = SDF_IO_PORT_DECL.getDefType();                                                
-    }    
-}
+         sdfIOPortUnit,  "SDFIOPort", CG_CLASS);
+
+        SDF_IO_PORT_TYPE = SDF_IO_PORT_DECL.getDefType();
+    }

@@ -33,12 +33,12 @@ package ptolemy.domains.sdf.codegen;
 import ptolemy.codegen.*;
 import ptolemy.lang.java.*;
 
-/** A factory for making instances of classes for code generation in SDF. 
+/** A factory for making instances of classes for code generation in SDF.
  *
  *  @author Jeff Tsay
  */
 public class SDFCodeGeneratorClassFactory extends CodeGeneratorClassFactory {
-    
+
     private SDFCodeGeneratorClassFactory() {}
 
     public ActorCodeGeneratorInfo createActorCodeGeneratorInfo() {
@@ -47,18 +47,17 @@ public class SDFCodeGeneratorClassFactory extends CodeGeneratorClassFactory {
 
     public ActorTransformerVisitor createActorTransformerVisitor(
      ActorCodeGeneratorInfo actorInfo) {
-       return new SDFActorTransformerVisitor(actorInfo, 
-        createPtolemyTypeVisitor(actorInfo));    
+       return new SDFActorTransformerVisitor(actorInfo,
+        createPtolemyTypeVisitor(actorInfo));
     }
 
     public PtolemyTypeIdentifier createPtolemyTypeIdentifier() {
        return new SDFTypeIdentifier();
     }
-    
+
     public static CodeGeneratorClassFactory getInstance() {
         if (_instance == null) {
            _instance = new SDFCodeGeneratorClassFactory();
         }
         return _instance;
-    }        
-}
+    }

@@ -1,4 +1,4 @@
-/* An object that hold information used as an argument to a 
+/* An object that hold information used as an argument to a
    code generator that operates on the actor level, for SDF.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
@@ -36,7 +36,7 @@ import java.util.Map;
 
 import ptolemy.codegen.ActorCodeGeneratorInfo;
 
-/** An object that hold information used as an argument to a 
+/** An object that hold information used as an argument to a
  *  code generator that operates on the actor level, for SDF.
  *
  *  @author Jeff Tsay
@@ -49,32 +49,31 @@ public class SDFActorCodeGeneratorInfo extends ActorCodeGeneratorInfo {
 
     /** The number of times the actor appears disjointly in the schedule
      *  for one iteration. By "disjointly" we mean that each disjoint
-     *  appearance contains the maximum number of ordinary consecutive 
+     *  appearance contains the maximum number of ordinary consecutive
      *  appearances. If disjointAppearances = 1, certain optimizations
      *  are possible.
      */
     public int disjointAppearances = 1;
-    
+
     /** The number of times that the actor is fired in one iteration. */
     public int totalFirings = 0;
 
     /** A map containing arrays of Strings indexed by channel, using
      *  the corresponding input ports as keys. The Strings
-     *  in the array are the names of the buffers from which to read 
+     *  in the array are the names of the buffers from which to read
      *  a specified channel of a specified port.
      */
     public final Map inputBufferNameMap = new HashMap();
 
     /** A map containing arrays of integers indexed by channel, using
      *  the corresponding input ports as keys. The integers
-     *  in the array are the sizes of the buffers from which to read 
+     *  in the array are the sizes of the buffers from which to read
      *  a specified channel of a specified port.
      */
     public final Map inputBufferLengthMap = new HashMap();
 
-         
-    /** A map containing BufferInfos which uses the corresponding output 
+
+    /** A map containing BufferInfos which uses the corresponding output
      *  ports as keys.
      */
     public final Map outputInfoMap = new HashMap();
-}
