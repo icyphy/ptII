@@ -1576,11 +1576,11 @@ public class PlotBox extends Panel {
         if (_numberFormat == null) {
             // Cache the number format so that we don't have to get
             // info about local language etc. from the OS each time.
-            NumberFormat _numberFormat = NumberFormat.getInstance();
+            _numberFormat = NumberFormat.getInstance();
         }
-        nf.setMinimumFractionDigits(numfracdigits);
-        nf.setMaximumFractionDigits(numfracdigits);
-        return nf.format(num);
+        _numberFormat.setMinimumFractionDigits(numfracdigits);
+        _numberFormat.setMaximumFractionDigits(numfracdigits);
+        return _numberFormat.format(num);
     }
 
     /*

@@ -38,25 +38,9 @@ include $(CONFIG)
 
 CLASSPATH =	../..
 
-# Note that this package has the the name 'ptolemy.plot', not
-# tycho.java.ptolemy.plot.  The Itcl and java package have different root
-# directories.
-
-TYPACKAGE = 	ptolemy.plot
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/plot
-# If you change JVERSION, modify the version numbers in:
-#    Pxgraph.java, index.html, doc/internals/changes.html
-TYVERSION =	2.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
-# Classes that are included in the jar file as Java Bean.
-JBEANCLASSES =	ptolemy/plot/Plot.class ptolemy/plot/PlotLive.class
-
 SRCDIRS = 	demo
-DIRS = 		$(SRCDIRS) doc test
 
+DIRS = 		$(SRCDIRS) doc test
 
 # Java Sources
 JSRCS = \
@@ -116,7 +100,7 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources jclass $(TYZIP) $(JARFILE) ptolemy.plotapplet.jar
+all: sources jclass $(PTZIP) $(JARFILE) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
@@ -129,22 +113,22 @@ install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) ptolemy.plotappl
 # everything but Message and Pxgraph.
 ptolemy.plotapplet.jar: $(JSRCS) $(JCLASS)
 	rm -f ptolemy.plotapplet.jar
-	(cd $(CLASSPATH); $(JAR) cf $(TYPACKAGE_DIR)/ptolemy.plotapplet.jar \
-		$(TYPACKAGE_DIR)/CmdLineArgException.class \
-		$(TYPACKAGE_DIR)/Plot.class \
-		$(TYPACKAGE_DIR)/PlotApplet.class \
-		$(TYPACKAGE_DIR)/PlotBox.class \
-		$(TYPACKAGE_DIR)/PlotDataException.class \
-		$(TYPACKAGE_DIR)/PlotLive.class \
-		$(TYPACKAGE_DIR)/PlotLiveApplet.class \
-		$(TYPACKAGE_DIR)/PlotPoint.class \
-		$(TYPACKAGE_DIR)/Plot$$Format.class \
-		$(TYPACKAGE_DIR)/Plot$$Format.class \
-		$(TYPACKAGE_DIR)/PlotBox$$DragListener.class \
-		$(TYPACKAGE_DIR)/PlotBox$$FillButtonListener.class \
-		$(TYPACKAGE_DIR)/PlotBox$$ZoomListener.class \
-		$(TYPACKAGE_DIR)/PlotLive$$StartButtonListener.class \
-		$(TYPACKAGE_DIR)/PlotLive$$StopButtonListener.class \
+	(cd $(CLASSPATH); $(JAR) cf $(PTPACKAGE_DIR)/ptolemy.plotapplet.jar \
+		$(PTPACKAGE_DIR)/CmdLineArgException.class \
+		$(PTPACKAGE_DIR)/Plot.class \
+		$(PTPACKAGE_DIR)/PlotApplet.class \
+		$(PTPACKAGE_DIR)/PlotBox.class \
+		$(PTPACKAGE_DIR)/PlotDataException.class \
+		$(PTPACKAGE_DIR)/PlotLive.class \
+		$(PTPACKAGE_DIR)/PlotLiveApplet.class \
+		$(PTPACKAGE_DIR)/PlotPoint.class \
+		'$(PTPACKAGE_DIR)/Plot$$Format.class' \
+		'$(PTPACKAGE_DIR)/Plot$$Format.class' \
+		'$(PTPACKAGE_DIR)/PlotBox$$DragListener.class' \
+		'$(PTPACKAGE_DIR)/PlotBox$$FillButtonListener.class' \
+		'$(PTPACKAGE_DIR)/PlotBox$$ZoomListener.class' \
+		'$(PTPACKAGE_DIR)/PlotLive$$StartButtonListener.class' \
+		'$(PTPACKAGE_DIR)/PlotLive$$StopButtonListener.class' \
 		)
 
 docs: javadocs
@@ -154,3 +138,32 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+# Variables and rules used to create source file distributions
+PTPACKAGE = 	ptolemy.plot
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/plot
+# If you change PTVERSION, modify the version numbers in:
+#    Pxgraph.java, index.html, doc/internals/changes.html
+PTVERSION =	2.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
+JARFILE = 	$(PTPACKAGE).jar
+
+# Include rules necessary to build a distribution
+include $(ROOT)/mk/ptdist.mk
+
+# Fix the temporary directory
+fixtmpdist:
+	@echo "Fixing $(PTTMPDIR)/$(PTDIST)
+	echo "all:" > $(PTTMPDIR)/$(PTDIST)/makefile
+	echo "	cd ptolemy/plot; $(MAKE) all" >> $(PTTMPDIR)/$(PTDIST)/makefile
+	echo "install:" >> $(PTTMPDIR)/$(PTDIST)/makefile
+	echo "	cd ptolemy/plot; $(MAKE) install" >> \
+		$(PTTMPDIR)/$(PTDIST)/makefile
+	echo "clean:" >> $(PTTMPDIR)/$(PTDIST)/makefile
+	echo "	cd ptolemy/plot; $(MAKE) clean" >> $(PTTMPDIR)/$(PTDIST)/makefile
+	echo "$(PTDIST) - A Java plotting package" > \
+		 $(PTTMPDIR)/$(PTDIST)/README
+	echo "See ptolemy/plot/index.html" >> $(PTTMPDIR)/$(PTDIST)/README
+
