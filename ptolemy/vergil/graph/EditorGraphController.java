@@ -181,7 +181,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    final CompositeEntity toplevel = graphModel.getToplevel();
 	    final String portName = toplevel.uniqueName("port");
 	    final String locationName = "location1";
-	    // Create the relation.
+	    // Create the port.
 	    StringBuffer moml = new StringBuffer();
 	    moml.append("<port name=\"" + portName + "\">\n");
 	    moml.append("<property name=\"" + locationName + 
