@@ -54,6 +54,7 @@ SCRIPTS = \
 	chkextra \
 	chkjava \
 	html2ps \
+	jindent \
 	mkreview \
 	ptIIbuildfast \
 	ptIIbuildtest \
@@ -63,6 +64,8 @@ SCRIPTS = \
 	rmtrailingspace
 
 EXTRA_SRCS =	$(TCL_SRCS) $(SCRIPTS) \
+	jindent.el \
+	ptjavastyle.el \
 	ptlocaldict \
 
 # Sources that may or may not be present, but if they are present, we don't
