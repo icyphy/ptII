@@ -1,0 +1,482 @@
+<!-- $Id$-->
+<html>
+<head>
+<title>Testing Ptolemy II</title>
+</head>
+<body bgcolor="#faf0e6">
+<h1><A NAME="Testing Ptolemy II">Testing Ptolemy II</A></h1>
+<HR>
+This page is primarily for Ptolemy II Developers.  Some of the commands
+mentioned below are not included in the Ptolemy II distribution.
+
+ <P>Contents:
+<MENU>
+<LI> <A HREF="#test suite">Test Suite</A>
+<LI> <A HREF="#testing java">Testing Java</A>
+<LI> <A HREF="#testing documentation">Testing Documentation</A>
+</MENU>
+
+<H2><A NAME="test suite">Test Suite</A></H2>
+
+We have included regression tests for most of the Ptolemy IIcode.  Usually, 
+wherever there is Java file, the tests are in the <CODE>test</CODE>
+directory.
+
+<H3>Running the tests</H3>
+The tests themselves are written in Tcl, and use
+<a href="http://ptolemy.eecs.berkeley.edu/~cxh/java/tclblend">Tcl Blend</a>,
+which is an interface between Tcl and Java.
+
+ <p>To run the tests, you must have Tcl Blend installed.
+ <p><CODE>make tests</CODE> will run the tests in the current directory
+and any subdirectories.
+
+<H3>Writing your own tests</H3>
+
+The test suite infrastructure is based on the Tcl test suite code.  The 
+
+ <P>The file <A HREF="../../util/testsuite/testDefs.tcl"><CODE>$PTII/util/testsuite/testDefs.tcl</CODE></A> defines the Tcl proc <CODE>test</CODE>.
+
+ <P><CODE>test</CODE> takes four arguments:
+<OL>
+<LI> The name of the test, for example: <CODE>foo-1.0</CODE>
+  <br> The name of the test should strictly follow the format below.
+	The Tcl tests that come with the Tcl distribution follow a similar
+	format, so unless there is a strong need to not follow the format,
+	please stick with what works.
+	<MENU>
+	<LI> The first part of
+	name of the test should reflect the command that is
+	being tested.  
+
+	<LI> The test number should be separated by a dash '<CODE>-</CODE>'
+
+	<LI> Each test number consists of a major value and a minor value,
+	separated by a dot.  Usually the major value changes as different
+	parts of the command are being tested.  The minor value changes
+	for different tests for the particular part of the command under test.
+
+	<LI> Test numbers usually start with <CODE>1</CODE>, though if
+	you are
+	doing setup, you can start with <CODE>0</CODE>.
+
+	<LI> If you go back later and want to stick a test in between
+	<CODE>foo-1</CODE> and <CODE>foo-2</CODE>, you can always call
+	your new test <CODE>foo-1.1</CODE>
+	</MENU>
+
+
+<LI> The test description, usually a single sentence.
+
+<LI> The contents of the test, usually Tcl code that does the action to
+be tested.  The last line of the contents should return a value.
+
+<LI> The results to be compared against.
+</OL>
+
+Below is a sample piece of code that sources the
+<CODE>testDefs.tcl</CODE> file and then runs one test.  The code below
+has the incorrect value return results to be compared against, so the
+test suite properly indicates that the test failed.
+
+<tcl><pre>
+if {[string compare test [info procs test]] == 1} then { 
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}
+test testExample-1.1 {This is the first test example, it does very little} {
+	catch {this is an error} errMsg1
+	set a "this is the value of a"
+	list $errMsg1 $a
+} {{invalid command name "this"} {this is NOT the value of a}}
+</pre></tcl>
+
+<H3>Parts of a test file</H3>
+Test files should be located in the <CODE>test</CODE> directory.
+
+ <P>It is better to have many small test files as opposed to a few
+large test files so that other developers can quickly find the tests
+for the class they are working with.  Usually tests for the class
+<CODE>Foo</CODE> are found in the file <CODE>test/testFoo.itcl</CODE>
+
+ <P>Each test file should have the following parts:
+<OL>
+
+<LI> The name of the test file should begin with the word <CODE>test</CODE>.
+For example, if we were testing the Tcl <CODE>foo</CODE> command, then
+the file would be named <CODE>testFoo.itcl</CODE>.  The extension of the file
+is either <CODE>.tcl</CODE> or <CODE>.itcl</CODE>:
+<MENU>
+<LI> <CODE>.tcl</CODE> if the file can be sourced in a <CODE>tclsh</CODE>
+	that does not contain Itcl.
+	<CODE>$TYCHO/kernel/gui/test/testPath.tcl</CODE> is an example.
+
+<LI> <CODE>.itcl</CODE> if the file contains Itcl constructs or tests
+	Itcl classes. 
+</MENU>
+Most of the tests are <CODE>.itcl</CODE> files.
+
+<LI> The Copyright
+
+<LI> The code that loads the test system package
+<PRE>
+package require tycho.util.tytest
+</PRE>
+
+
+<LI> A line that the user can uncomment if they want the test system to
+produce verbose messages:
+<PRE>
+#set VERBOSE 1
+</PRE>
+
+
+<LI> The individual tests, which should loosely follow the Tycho 
+file format standard:
+<PRE>
+############################################################################
+#### Foo
+test Foo-1.1 {Test out Foo} {
+
+} {}
+</PRE>
+
+</OL>
+
+<H3><A NAME="test styles">Test Styles</A></H3>
+There are two types of tests:
+<OL>
+<LI> Tests that handle all necessary setup in each individual test.
+
+<LI> Tests that rely on the earlier tests to do setup.
+</OL>
+
+In general, each test file should be able to be run over and over again
+in a binary without exiting the binary (it should be idempotent).  
+
+ <P>It is up to the author of the tests as to whether each individual
+test does all the set up necessary.  If each test is atomic, then it
+makes it easy to highlight the text of an individual test and run it.
+If lots of tests are sharing common setup, then using a separate
+procedure to do setup might help.  On the negative side, atomic tests
+usually are longer and have more complicated return results.
+
+<HR>
+<H2><A NAME="testing java">Testing Java</A></H2>
+
+Tcl Blend is Sun's Tcl/Java interface.  We use Tcl Blend to test Java
+by writing Tcl code that exercises the Java classes.
+
+<H3>Running the tests</H3>
+If you run <CODE>make</CODE> in a test directory that contains 
+tests written in Tcl for testing Java classes, then the 'right thing'
+should just happen.  The Java testbed does have a few differences:
+<DL>
+<DT> The <CODE>make test_jsimple</CODE> rule
+<DD> This rule will run only the Java tests in a <CODE>tclsh</CODE> binary
+that can load the Tcl Blend extension
+
+<DT> The <CODE>alljtests.tcl</CODE> file
+<DD> This file will run all the Java tests that require Tcl Blend.
+The reason we have yet another file is that Tcl Blend will not necessarily
+work on all platforms, and we want to be able to run the non-Tcl Blend
+tests on those platforms.
+
+</DL>
+
+
+<H3>Writing Tests for Java </H3>
+Below we discuss some of the details of writing tests in Tcl that test
+Java classes.
+<H4>Simple Example</H4>
+<p>Tcl Blend allows us to instantiate objects in a class and call public
+methods.  We use Tcl Blend and the standard Tcl test bed to create tests.
+In the example below, we call <CODE>java::new</CODE> to create an
+instance of the Java <CODE>NamedObj</CODE> class.  We can then
+call public methods of <CODE>NamedObj</CODE> by referring to the 
+Java object handle <CODE>$n</CODE>:
+<PRE>
+test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
+    set n [java::new pt.kernel.NamedObj]
+    set result1 [$n getName]
+    $n setName "A Named Obj"
+    set result2 [$n getName]
+    list $result1 $result2
+} {{} {A Named Obj}}
+</PRE>
+
+<H4>Java Tcl Test Files</H4>
+It is best if each Java class has a separate Tcl file that contains tests.
+The base of the name of the Tcl test file should be the same of the Java
+class being tested.  The Tcl test file should be located in the
+<CODE>test</CODE> subdirectory of the directory where the Java class
+is defined.
+ <P>For example, if we are testing <CODE>NamedObj.java</CODE>, then
+the Tcl test file should be at <CODE>test/NamedObj.tcl</CODE>.
+
+<H4><A NAME="getJavaInfo testing proc">getJavaInfo Testing Proc</A></H4>
+ <P>Tcl Blend provides a Tcl procedure called <CODE>java::info</CODE>
+which returns information about an instance of a Java class.  
+<A HREF="../../kernel/gui/test/testDefs.tcl"><CODE>$TYCHO/kernel/gui/test/testDefs.tcl</CODE></A>
+defines the <CODE>getJavaInfo</CODE> Tcl proc, which takes a Java object
+handle and returns a string that describes the object's fields, methods
+constructors, and superclass.
+ <P>Each Java class should have a Tcl test that calls <CODE>getJavaInfo</CODE>
+so that if the Java class definition changes, then the test will fail.
+This will hopefully prompt the developer to write a test for the
+changed feature.
+ <P>If a test fails because of changes in the values returned by
+<CODE>getJavaInfo</CODE>, then the way to fix the test is to run 
+the test and grab the strings actually returned and substitute it back
+into the test file.  Of course, you should write tests that cover any 
+changes reported by <CODE>getJavaInfo</CODE>.
+
+
+<H3><A NAME="JavaScope">JavaScope</A></H3>
+<A HREF="http://www.suntest.com/JavaScope">JavaScope</A> is Sun's
+Java code coverage tool.  
+ <P>Here's how to review the test suite code coverage:
+<OL>
+
+<LI> Run:
+<PRE>
+cd $TYCHO/java/pt/kernel
+make jsall
+</PRE>
+The <CODE>jsall</CODE> makefile rule does the following:
+<MENU>
+<LI> JavaScope uses a program called <CODE>jsinstr</CODE>
+to instrument the Java files.  <CODE>jsinstr</CODE> copies the
+original files to the <CODE>jsoriginal</CODE> directory and then
+adds Java function calls to copies of the files.  These function calls
+increment counters in a database at runtime.
+
+<LI> To compile the instrumented classes the <CODE>JavaScope.zip</CODE> file
+is added to the CLASSPATH and then the classes are recompiled.
+
+<LI> The test suite is run.
+</MENU>
+
+<LI> To views the code coverage run either <CODE>jsreport</CODE>
+or <CODE>javascope</CODE>
+<PRE>
+jsreport -dbsummary
+</PRE>
+
+<LI> To restore the files
+back to the original state, run <CODE>make jsrestore</CODE>.
+<PRE>
+make jsrestore
+</PRE>
+
+</OL>
+<H4>JavaScope Details</H4>
+<MENU>
+<LI> <CODE>jsinstr</CODE> saves the original Java files to the 
+<CODE>jsoriginal</CODE> directory.  The <CODE>jsall</CODE> makefile
+rule checks to see if this directory is present, and if it is not, runs 
+<CODE>jsinstr</CODE>.  The <CODE>jsrestore</CODE> rule runs
+<CODE>jsrestore</CODE> and then attempts to remove the <CODE>jsoriginal</CODE>
+directory so that the next run of the <CODE>jsall</CODE> rule will
+recreate it.  If you are running <CODE>jsinstr</CODE> by hand on files
+that are not in the makefile, then you may find it necessary clean out the
+<CODE>jsoriginal</CODE> directory with:
+<PRE>
+jsrestore *.java
+rm jsoriginal/README
+rmdir jsoriginal
+</PRE>
+
+
+<LI> Javascript writes the code coverage information to
+<CODE>~/jsdatabase</CODE>.  You might find it helpful to remove
+this directory periodically.
+
+</MENU>
+
+
+<H4>Flushing the JavaScope database</H4>
+The JavaScope database must be flushed by hand at the end of a run, or the
+code coverage data of the run will not be dumped out to disk.
+ <P>There are two ways to do this.
+<OL>
+
+<LI> The <CODE>IFLUSHCLASS</CODE> option will flush out the coverage
+information for the current class at the end of each method.
+
+<LI> The <CODE>IFLUSH</CODE> option will flush out all the coverage
+information at the end of each method.
+
+</OL>
+Obviously, using <CODE>IFLUSH</CODE> will take more time than using 
+<CODE>IFLUSHCLASS</CODE>.
+
+ <P>The <CODE>jsintr</CODE> options are set by consulting the following
+resources in order.
+<OL>
+<LI> system properties - environment variables 
+
+<LI> <CODE>$HOME/javascope.properties</CODE>
+
+<LI> <CODE>./javascope.properties</CODE> in the current directory.
+
+<LI> Options can be embedded in files as comments:
+<PRE>
+/*jsoptions: ...*/
+</PRE>
+Embedded comment options can be set more than once in a file.  Embedded
+comment options are in effect until is the option is changed by another
+embedded comment option.
+
+<LI>  Command line arguments to <CODE>jsinstr</CODE>.
+
+</OL>
+
+See the <A HREF="http://www.suntest.com/JavaScope/jsinstr.html"><CODE>jsinstr</CODE></A> documentation for details.
+
+I tried to use Tcl Blend to call a dummy Java method that flushes the
+database using an embedded comment, and then call that method before
+exiting.
+
+ <P>Here's how I attempted to flush the database using a dummy Java method.
+ <P>I created the <CODE>JavaScopeFlush</CODE> class:
+<PRE>
+public class JavaScopeFlush {
+    /*jsoptions:IFLUSH=true*/
+    public static void flush() {
+    }
+    /*jsoptions:IFLUSH=false*/
+}
+</PRE>
+ <P>Ran <CODE>jsinstr</CODE> on <CODE>JavaScopeFlush.java</CODE>
+
+ <P>I then tried to call this method with:
+<PRE>
+java::call JavaScopeFlush flush
+</PRE>
+Unfortunately, it looks like embedded comments are broken.
+ <P>For more information, see the 
+<A HREF="http://www.suntest.com/NewJavaScope/faq.html#Q5">JavaScope FAQ</A>.
+
+
+<HR>
+<H2><A NAME="testing documentation">Testing Documentation</A></H2>
+
+The Ptolemy II documentation is written in HTML.  There are several tools
+that can be used.
+<H3>weblint</H3>
+
+Weblint tells the user about html errors.  Weblint can be obtained
+from <A
+HREF="ftp://ftp.cre.canon.co.uk/pub/weblint/weblint.tar.gz"><CODE>ftp://ftp.cre.canon.co.uk/pub/weblint/weblint.tar.gz</CODE></A>
+To run <CODE>weblint</CODE>:
+<PRE>
+cd $PTII
+make weblint
+</PRE>
+
+<H3>htmlchek</H3>
+
+Htmlchek is another tool that tells the user about html errors.
+<CODE>htmlchek</CODE> also checks for bad links.  The
+<CODE>htmlchek</CODE> output is a little hard to read, so we tend to
+use <CODE>weblint</CODE> for checking individual files.
+<CODE>htmlchek</CODE> can be obtained from
+<A HREF="ftp://ftp.cs.buffalo.edu/pub/htmlchek/"><CODE>ftp://ftp.cs.buffalo.edu/pub/htmlchek/</CODE></A>
+
+<P> The best way to run <CODE>htmlchek</CODE> is to create a sample
+distribution, create the files in the <CODE>codeDoc</CODE> directory
+and then run <CODE>htmlchek</CODE>
+
+<OL>
+<LI> Create the test distribution:
+<PRE>
+cd /users/ptdesign/adm/gen-latest; make htmlchek
+</PRE>
+
+<LI> Reset <CODE>TYCHO</CODE> to point to the test distribution:
+<PRE>
+setenv TYCHO /users/ptdesign/adm/dists/tycho-latest
+cd $TYCHO
+</PRE>
+
+<LI> Run <CODE>make install</CODE>.  This will make the Itcl HTML docs
+twice, which will populate the <CODE>doc/codeDoc</CODE> directories.
+You need to make the Itcl HTML docs twice so that the cross references are
+correct.
+
+<LI> Run <CODE>make htmlchek</CODE>
+
+</OL>
+
+
+
+The output ends up in five files
+<MENU>
+<LI> <CODE>htmlchekout.ERR</CODE> - HTML usage errors
+<LI> <CODE>htmlchekout.NAME</CODE> - Locations in the specified files
+that ware not referenced by any of those files
+<LI> <CODE>htmlchekout.HREF</CODE> - References from the specified files
+that are not found in the files.  This file is by far the most important
+file to look at.
+<LI> <CODE>htmlchekout.SRC</CODE> - References to online images.
+<LI> <CODE>htmlchekout.MAP</CODE> - Cross dependency information.
+</MENU>
+
+<P> All of the references in <CODE>htmlchekout.HREF</CODE> that point
+to <CODE>.html</CODE> files should be checked.  References to non-HTML
+files appear in <CODE>htmlchekout.HREF</CODE> because the non-HTML
+files were not included in the list of files that
+<CODE>htmlchek</CODE> ran on.  One quick way to search all the the <CODE>*.html</CODE> files is
+<PRE>
+cd $TYCHO
+grep mystring `find . -name "*.html" -print`
+</PRE>
+
+<H3>Spellchecking</H3>
+Checking the spelling in all the HTML files can be done with:
+<PRE>
+cd $TYCHO
+spell `find . -name "*.html" -print`
+</PRE>
+You can spell check an individual HTML file by using the HTML
+editor built-in spell checker under the <CODE>Edit</CODE> menu.
+
+<H3>Checking for bogus copyright SCCS keywords</H3>
+
+Run <CODE>~ptdesign/adm/copyright/chkq $TYCHO</CODE> to print out
+the names of files that might have bogus <CODE>&#37;Q&#37;</CODE> values.
+ <P>
+Then run <CODE>~ptdesign/adm/bin/sccsadmin</CODE> on each file that
+has no value for <CODE>&#37;Q&#37;</CODE>
+substituted in.
+
+<H3>Check the distribution for bogus files</H3>
+Run the following makefile rules and commands:
+<DL>
+<DT> <CODE>make realclean</CODE>
+
+<DD> This will remove the <CODE>tclIndex</CODE> files and the files in
+<CODE>doc/codeDoc</CODE>.  The reason to remove the
+<CODE>codeDoc</CODE> files is so that we don't ship HTML files for any
+classes that have been removed.
+
+<DT> <CODE>make install</CODE>
+<DD> This will recreate the <CODE>tclIndex</CODE> files and the
+<CODE>doc/codeDoc</CODE> files.
+
+<DT> <CODE>make checkjunk</CODE>
+<DD> Look for files in the distribution that should not be there.
+
+<DT> <CODE>adm/bin/chkgifs</CODE>
+<DD> This file looks for gif files that are not used by HTML files
+in the distribution.
+
+</DL> 
+
+<p>
+<a href="../../doc/index.html">Tycho Home Page</a><br>
+<HR>
+Copyright &#169 1996-, The Regents of the University of California.
+All rights reserved. 
+<br> Last updated: $Date$, comments to:
+<author>ptII@eecs.berkeley.edu</author> </body> </html>
