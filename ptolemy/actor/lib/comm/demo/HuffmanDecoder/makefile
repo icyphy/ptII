@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Comm HuffmanCoder
+# Makefile for Ptolemy II Comm HuffmanDecoder
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/comm/demo/HuffmanCoder
+ME =		ptolemy/actor/lib/comm/demo/HuffmanDecoder
 
 DIRS =
 
@@ -43,14 +43,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	HuffmanCoder
+PTPACKAGE =	HuffmanDecoder
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	HuffmanCoder.xml
+	HuffmanDecoder.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -73,7 +73,7 @@ all: jclass
 install: jclass jars
 
 demo:
-	vergil HuffmanCoder.xml
+	vergil HuffmanDecoder.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
