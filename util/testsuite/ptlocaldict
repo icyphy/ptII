@@ -74,6 +74,7 @@ Cloneable
 Codesign
 Commapi
 Conexant
+Copernicus
 Cory
 Cygwin
 DATABITS
@@ -409,6 +410,7 @@ combobox
 commapi
 containees
 controlpanel
+copernicus
 csh
 cshrc
 csp
@@ -489,6 +491,8 @@ http
 i
 img
 index.html
+inline
+inlining
 innerclass
 innerclasses
 instanceof
@@ -508,6 +512,8 @@ javasoft
 javasound
 javax
 jdk
+jhdl
+jimple
 jindent
 johnli
 johnr
