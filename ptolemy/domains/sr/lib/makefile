@@ -59,8 +59,9 @@ JSRCS = \
 	NonStrictLogicFunction.java \
 	NonStrictThreeBitAdder.java \
 	SingleTokenDistributor.java \
-	Undefined.java
-
+	SingleTokenCommutator.java \
+        Undefined.java\
+        TokenMultiplexor.java
 OTHER_FILES_TO_BE_JARED = \
 	srentities.xml
 

@@ -64,7 +64,8 @@
 
 <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
 </entity>
-
+<entity name="SingleTokenCommutator" class="ptolemy.domains.sr.lib.SingleTokenCommutator">
+</entity>
 <entity name="Undefined" class="ptolemy.domains.sr.lib.Undefined">
     <property name="outputType">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
