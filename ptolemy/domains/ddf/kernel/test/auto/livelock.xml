@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {279, 221, 815, 535}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 147, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -52,14 +52,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 125.0]">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 125.0]">
-        </property>
-        <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="ThrowException" class="ptolemy.actor.lib.ThrowException">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{545, 165}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -68,11 +62,11 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[130.0, 125.0]">
         </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Const.output" relation="relation3"/>
     <link port="Const.trigger" relation="relation4"/>
@@ -82,6 +76,6 @@
     <link port="AddSubtract.output" relation="relation2"/>
     <link port="Equals.input" relation="relation2"/>
     <link port="Equals.input" relation="relation4"/>
-    <link port="Equals.output" relation="relation7"/>
-    <link port="Test.input" relation="relation7"/>
+    <link port="Equals.output" relation="relation"/>
+    <link port="ThrowException.input" relation="relation"/>
 </entity>
