@@ -50,6 +50,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
@@ -1075,8 +1076,52 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-	return getCurrentTime() + _minTimeStep;
+	return getCurrentTime() + _unitTimeIncrement;
     }
+
+    /** Return true if the current time of the outside domain is greater than
+     *  or equal to the current time.
+     *  @return True if the director is ready to run for one iteration.
+     */
+
+    public boolean prefire () throws IllegalActionException{
+        if (_debugging) {
+            _debug("Giotto director prefiring!");
+            _debug("_expectedNextIterationTime " + _expectedNextIterationTime);
+        }
+
+	if (_isEmbedded()) {
+
+	    // whatever, the currentTime should be updated by the director of upper container.
+	    setCurrentTime ((((CompositeActor) getContainer()).getExecutiveDirector()).getCurrentTime());
+	}
+
+	Director upperDirector = ((CompositeActor) getContainer()).getExecutiveDirector();
+	if (upperDirector instanceof CTDirector) {
+	    if (Math.abs(getCurrentTime() - _expectedNextIterationTime) < ((CTDirector) upperDirector).getTimeResolution()) {
+		if (_debugging) {
+		    _debug("*** Prefire returned true.");
+		}
+		return true;
+	    }
+	    if (_debugging) {
+		_debug("*** Prefire returned false.");
+	    }
+	    return false;
+	} else {
+	    if (getCurrentTime() < _expectedNextIterationTime) {
+		if (_debugging) {
+		    _debug("*** Prefire returned false.");
+		}
+		return false;
+	    }
+	    if (_debugging) {
+		_debug("*** Prefire returned true.");
+	    }
+	    return true;
+	}
+    }
+
 
     /** Iterate the actors in the next minor cycle of the schedule.
      *  After iterating the actors, increment time by the minor cycle time.
@@ -1138,7 +1183,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 for (int i = 0; i < channelArray.length; i++) {
                     Receiver[] receiverArray = channelArray[i];
                     for (int j = 0; j < receiverArray.length; j++) {
-                        GiottoReceiver receiver = 
+                        GiottoReceiver receiver =
                                 (GiottoReceiver) receiverArray[j];
                         receiver.update();
                     }
@@ -1158,19 +1203,16 @@ public class GiottoDirector extends StaticSchedulingDirector {
             }
 	}
 
-	// Update time.
-        // FIXME: This isn't the right thing to do if we are inside another
-        // actor.
-        double currentTime = getCurrentTime();
-	setCurrentTime(currentTime + _minTimeStep);
+	// We only do synchronization to real time here
+	// and leave time update to upper level directors or the postfile process.
 
 	if (_synchronizeToRealTime) {
 	    long elapsedTime = System.currentTimeMillis() - _realStartTime;
 	    double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
 
-	    if (currentTime > elapsedTimeInSeconds) {
+	    if (_unitTimeIncrement > elapsedTimeInSeconds) {
 		long timeToWait = (long)
-                        ((currentTime - elapsedTimeInSeconds) * 1000.0);
+                        ((_unitTimeIncrement - elapsedTimeInSeconds) * 1000.0);
 		if (timeToWait > 0) {
 		    if (_debugging) {
 			_debug("Waiting for real time to pass: " + timeToWait);
@@ -1197,6 +1239,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
     public void initialize() throws IllegalActionException {
 	_iterationCount = 0;
         _unitIndex = 0;
+	_expectedNextIterationTime = 0.0;
+
+	// The receivers should be resetted before their initialization.
 	Iterator receivers = _receivers.iterator();
 	while(receivers.hasNext()) {
 	    GiottoReceiver receiver = (GiottoReceiver) receivers.next();
@@ -1206,7 +1251,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	super.initialize();
 
         // Iterate through all output ports to see if any have initialValue
-        // parameters.
+        // parameters or init values from initialization.
         CompositeActor compositeActor = (CompositeActor) (getContainer());
         List actorList = compositeActor.deepEntityList();
         ListIterator actors = actorList.listIterator();
@@ -1229,7 +1274,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         // schedule is constructed only once.
         GiottoScheduler scheduler = (GiottoScheduler) getScheduler();
         _schedule = scheduler.getSchedule();
-        _minTimeStep = scheduler.getMinTimeStep(_periodValue);
+        _unitTimeIncrement = scheduler.getMinTimeStep(_periodValue);
 
         _realStartTime = System.currentTimeMillis();
     }
@@ -1257,9 +1302,27 @@ public class GiottoDirector extends StaticSchedulingDirector {
             _debug("===== Director completing unit of iteration: "
                     + _iterationCount);
         }
+
+	_expectedNextIterationTime += _unitTimeIncrement;
+
+	if (_debugging) {
+	    _debug("next Iteration time" + _expectedNextIterationTime);
+	}
+
 	if((numberOfIterations > 0)
                 && (_iterationCount >= numberOfIterations)) {
+	    _iterationCount = 0;
 	    return false;
+	} else {
+
+	    if (_isEmbedded()) {
+
+		_requestFiring();
+
+	    } else {
+		setCurrentTime (_expectedNextIterationTime);
+	    }
+
 	}
 	return true;
     }
@@ -1299,6 +1362,47 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    }
 	}
 	return transfer;
+    }
+
+    /** Transfer data from this port to the ports it is connected to on
+     *  the outside.
+     *  This port must be an opaque output port.  If any
+     *  channel of this port has no data, then that channel is
+     *  ignored. This method will transfer exactly one token on
+     *  each output channel that has at least one token available.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     *  @return True if at least one data token is transferred.
+     */
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(port,
+                    "transferOutputs: this port is not " +
+                    "an opaque output port.");
+        }
+        boolean wasTransferred = false;
+        Receiver[][] insideReceivers = port.getInsideReceivers();
+        if (insideReceivers != null) {
+            for (int i = 0; i < insideReceivers.length; i++) {
+                if (insideReceivers[i] != null) {
+                    for (int j = 0; j < insideReceivers[i].length; j++) {
+                        try {
+                            if (insideReceivers[i][j].isKnown()) {
+                                if (insideReceivers[i][j].hasToken()) {
+                                    Token t = ((GiottoReceiver) insideReceivers[i][j]).remove();
+                                    port.send(i, t);
+                                    wasTransferred = true;
+                                }
+                            }
+                        } catch (NoTokenException ex) {
+                            throw new InternalErrorException(port, ex, null);
+                        }
+                    }
+                }
+            }
+        }
+        return wasTransferred;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1346,6 +1450,24 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	}
     }
 
+    // Request that the container of this director be refired in the future.
+    // This method is used when the director is embedded inside an opaque
+    // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
+    // If the queue is empty, then throw an InvalidStateException
+    private void _requestFiring() throws IllegalActionException {
+
+        if (_debugging) _debug("Request refiring of opaque composite actor at " + _expectedNextIterationTime);
+        // Enqueue a refire for the container of this director.
+        ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
+                (Actor)getContainer(), _expectedNextIterationTime);
+    }
+
+    // Return true if this director is embedded inside an opaque composite
+    // actor contained by another composite actor.
+    private boolean _isEmbedded() {
+        return (getContainer() != null &&
+                getContainer().getContainer() != null);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -1354,7 +1476,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
     private int _iterationCount = 0;
 
     // Minimum time step size (a Giotto "unit").
-    private double _minTimeStep = 0.0;
+    private double _unitTimeIncrement = 0.0;
+
+    // The time for next iteration.
+    private double _expectedNextIterationTime = 0.0;
 
     // Period of the director.
     private double _periodValue = 0.0;
