@@ -73,14 +73,10 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 # Run the demo in all its different formats
-demo: demo_ptolemy demo_vergil
-
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Thermostat.xml
+demo: demo_vergil
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Thermostat.xml
+	"$(PTII)/bin/vergil" -hyvisual Thermostat.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
