@@ -308,7 +308,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
     
     
-    private boolean _debugOn = true;
+    private boolean _debugOn = false;
     private void println(Object obj) {
         if (_debugOn) {
             System.out.println(obj.toString());
