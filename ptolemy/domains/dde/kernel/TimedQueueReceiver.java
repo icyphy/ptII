@@ -127,8 +127,8 @@ public class TimedQueueReceiver {
      * @exception NoTokenException If the queue is empty.
      */
     public Token get() {
-        double currentTime = 0;
-	Thread thread = Thread.currentThread();
+        // Get the a token and set all relevant 
+        // local time parameters
 	Token token = null;
         Event event = (Event)_queue.take();
         if (event == null) {
@@ -142,25 +142,31 @@ public class TimedQueueReceiver {
             _rcvrTime = nextEvent.getTime();
         }
         
-        if( thread instanceof DDEThread ) {
-            TimeKeeper timeKeeper =
-                ((DDEThread)thread).getTimeKeeper();
-            currentTime = timeKeeper.getCurrentTime();
-            if( isInsideBoundary() ) {
-                try {
-                    timeKeeper.setOutputTime( getRcvrTime() );
-                } catch(IllegalActionException e) {
-                    // FIXME: Do Something
-                }
-                return token;
-            } else {
-                timeKeeper.setCurrentTime( event.getTime() );
-                try {
-                    timeKeeper.setOutputTime(timeKeeper.getCurrentTime() );
-                } catch(IllegalActionException e) {
-                    // FIXME: Do Something
+        // Set relevant TimeKeeper time parameters
+        // based on whether this receiver is contained
+        // in a boundary port or not.
+	Thread thread = Thread.currentThread();
+        try {
+            if( thread instanceof DDEThread ) {
+                TimeKeeper timeKeeper =
+                        ((DDEThread)thread).getTimeKeeper();
+            
+                if( isInsideBoundary() ) {
+                    timeKeeper.setOutputTime( event.getTime() );
+                    return token;
+                } 
+                
+                else if( isOutsideBoundary() ) {
+                    timeKeeper.setCurrentTime( event.getTime() );
+                } 
+                
+                else {
+                    timeKeeper.setCurrentTime( event.getTime() );
+                    timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
                 }
             }
+        } catch( IllegalActionException e ) {
+            // FIXME: Do Something
         }
 
         // Call updateRcvrList() even if _queue.size() == 0,
