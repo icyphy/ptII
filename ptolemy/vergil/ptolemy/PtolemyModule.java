@@ -426,6 +426,7 @@ public class PtolemyModule implements Module {
 		// to code in MoMLApplet and MoMLApplication.  I think
 		// this should all be in ModelPane.
 				
+
 		// Create a manager.
 		// Attaching these listeners is a nasty business...
 		// All Managers are not created equal, since some have
@@ -950,8 +951,8 @@ public class PtolemyModule implements Module {
 	new RelativeBundle("ptolemy.vergil.ptolemy.Ptolemy", getClass(), null);
     
     // A listener for setting the status line.
-    final private ExecutionListener _statusListener;
+    private ExecutionListener _statusListener = null;
 	
     // A listener for getting debug information.
-    final private ExecutionListener _streamListener;
+    private ExecutionListener _streamListener = null;
 }
