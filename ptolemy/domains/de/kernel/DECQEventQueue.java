@@ -242,6 +242,9 @@ public class DECQEventQueue implements DEEventQueue {
                 .getDoubleValue() / (entryArray.length-1);
             double effectiveAverage = 0.0;
             int effectiveSamples = 0;
+            if (average == Double.POSITIVE_INFINITY) {
+                return;
+            }
             for (int i = 0; i < entryArray.length - 1; ++i) {
                 diff[i] = ((DEEvent)entryArray[i+1]).timeStamp().subtract(
                         ((DEEvent)entryArray[i]).timeStamp()).getDoubleValue();
