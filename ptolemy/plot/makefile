@@ -54,6 +54,7 @@ JSRCS1_0 = \
 	Plot.java \
 	PlotDataException.java \
 	PlotDemo.java \
+	PlotFourierSeries.java \
 	PlotLive.java \
 	PlotLiveDemo.java \
 	PlotPoint.java \
@@ -76,6 +77,7 @@ JCLASS1_0 = \
 	Plot.class \
 	PlotDataException.class \
 	PlotDemo.class \
+	PlotFourierSeries.class \
 	PlotLive.class \
 	PlotLiveDemo.class \
 	PlotPoint.class
