@@ -995,7 +995,7 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** Indicate that the description(int) method should include everything.
      */
-    public static final int COMPLETE = 0;
+    public static final int COMPLETE = -1;
 
     /** Indicate that the description(int) method should include the class name.
      */
