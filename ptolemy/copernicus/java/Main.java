@@ -256,7 +256,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", ClassWriter.v()));
-        /*
+        
         
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
@@ -393,7 +393,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
-         */
+         
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
          
         // This snapshot should be last...
