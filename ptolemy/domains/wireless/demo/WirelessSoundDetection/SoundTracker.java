@@ -76,16 +76,18 @@ public class SoundTracker extends TypedAtomicActor {
         outputY = new TypedIOPort (this, "outputY", false, true);
         outputY.setTypeEquals(BaseType.DOUBLE);
 
-        // create signal propatation speed parameter, set it to 340.0
+        // Create parameters.
         signalPropagationSpeed = new Parameter(this, "signalPropagationSpeed");
-        signalPropagationSpeed.setToken("340.0");
+        signalPropagationSpeed.setToken("344.0");
         signalPropagationSpeed.setTypeEquals(BaseType.DOUBLE);
+
+        timeWindow = new Parameter(this, "timeWindow");
+        timeWindow.setToken("0.5");
+        timeWindow.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    public Parameter signalPropagationSpeed;
 
     /** TODO: Describe port and its type constraints.
      */
@@ -101,49 +103,120 @@ public class SoundTracker extends TypedAtomicActor {
      */
     public TypedIOPort outputY;
 
+    /** Speed of propagation of the signal to be used for triangulation.
+     *  This is a double that defaults to 344.0 (the speed of sound in
+     *  air at room temperature, in meters per second).
+     */
+    public Parameter signalPropagationSpeed;
+
+    /** Time window within which observations are assumed to come from
+     *  the same sound event.
+     *  This is a double that defaults to 0.5 (in seconds).
+     */
+    public Parameter timeWindow;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** TODO: Describe what the fire method does.
+    /** Read an input token and attempt to use it to triangulate
+     *  the signal source. If the attempt is successful, then output
+     *  the location of the signal source. Otherwise, output nothing.
+     *  This method keeps a buffer of the three most recently seen
+     *  inputs If the new input token has a location field that matches
+     *  a location already in the buffer, then the new input simply
+     *  replaces that previous observation.  Otherwise, it replaces
+     *  the oldest observation in the buffer.  If there are three
+     *  observations in the buffer with time stamps within the
+     *  <i>timeWindow</i> parameter value, then triangulation is
+     *  performed, and if the the three observations are consistent,
+     *  then an output is produced.
      *  @exception IllegalActionException TODO: Describe when this is thrown.
      */
     public void fire() throws IllegalActionException {
         super.fire();
 
-        RecordToken recordToken;
         while (input.hasToken(0)) {
-            recordToken = (RecordToken)input.get(0);
-            _sensorReadings[_counter] = recordToken;
-            ++_counter;
-
-            // If enough inputs have been received, locate the source.
-            if (_counter == 3) {
-                _counter = 0;
-                double[] locationsX = new double[3];
-                double[] locationsY = new double[3];
-                double[] times = new double[3];
-
-                // Loop through the sensor reading array, extract x, y, and t, and
-                // put them in the arrays above.
-                for (int i = 0; i < 3; i++) {
-                    RecordToken recordTokenTemp;
-                    recordTokenTemp = _sensorReadings[i];
-                    DoubleMatrixToken locationMatrix = (DoubleMatrixToken)recordTokenTemp.get("location");
-                    times[i] = ((DoubleToken)recordTokenTemp.get("time")).doubleValue();
-
-                    locationsX[i] = locationMatrix.getElementAt(0,0);
-                    locationsY[i] = locationMatrix.getElementAt(0,1);
+            RecordToken recordToken = (RecordToken)input.get(0);
+            
+            DoubleMatrixToken locationMatrix = (DoubleMatrixToken)recordToken.get("location");
+            double time = ((DoubleToken)recordToken.get("time")).doubleValue();
+            double locationX = locationMatrix.getElementAt(0,0);
+            double locationY = locationMatrix.getElementAt(0,1);
+            
+            // First check whether the location matches one already in the
+            // buffer.  At the same time, identify the entry with the
+            // oldest time and the newest time.
+            boolean foundMatch = false;
+            int oldestTimeIndex = 0;
+            double oldestTime = Double.POSITIVE_INFINITY;
+            double newestTime = Double.NEGATIVE_INFINITY;
+            for (int i = 0; i < 3; i++) {
+                if (_locationsX[i] == locationX && _locationsY[i] == locationY) {
+                    _times[i] = time;
+                    foundMatch = true;
                 }
-                // Get signal speed, from the signalPropagationSpeed parameter.
-                double speed = ((DoubleToken)(signalPropagationSpeed.getToken())).doubleValue();
-                double [] result = _locate(locationsX[0], locationsY[0], times[0], locationsX[1], locationsY[1]
-                    , times[1], locationsX[2], locationsY[2], times[2], speed);
-                System.out.println("source at " + result[0] + ", " + result[1] + ", at time " + result[2]);
-                if (Double.isInfinite(result[2]) || Double.isNaN(result[2])) return;
-        
-                outputX.send(0, new DoubleToken(result[0]));
-                outputY.send(0, new DoubleToken(result[1]));
+                if (_times[i] < oldestTime) {
+                    oldestTime = _times[i];
+                    oldestTimeIndex = i;
+                }
+                if (_times[i] > newestTime) {
+                    newestTime = _times[i];
+                }
             }
+            if (!foundMatch) {
+                _locationsX[oldestTimeIndex] = locationX;
+                _locationsY[oldestTimeIndex] = locationY;
+                _times[oldestTimeIndex] = time;
+
+                // Have to recalculate the oldest time now
+                // since it has changed.
+                oldestTime = Double.POSITIVE_INFINITY;
+                for (int i = 0; i < 3; i++) {
+                    if (_times[i] < oldestTime) {
+                        oldestTime = _times[i];
+                    }                    
+                }                
+            }
+            
+            // Next check whether we have three observations within
+            // the specified time window.  Since the time entries are
+            // all initialized to negative infinity, the time span
+            // will be infinity if we have not seen three obsersations
+            // from three distinct locations.
+            double timeSpan = newestTime - oldestTime;
+            double timeWindowValue
+                    = ((DoubleToken)timeWindow.getToken()).doubleValue();
+            if (timeSpan > timeWindowValue) {
+                // We do not have enough data.
+                return;
+            }
+
+            // Get signal speed, from the signalPropagationSpeed parameter.
+            double speed = ((DoubleToken)(signalPropagationSpeed.getToken())).doubleValue();
+            // FIXME: Pass in the arrays for scalability.
+            // FIXME: Replace naked 3 everywhere.
+            double[] result = _locate(
+                    _locationsX[0], 
+                    _locationsY[0], 
+                    _times[0], 
+                    _locationsX[1], 
+                    _locationsY[1],
+                    _times[1],
+                    _locationsX[2], 
+                    _locationsY[2], 
+                    _times[2], 
+                    speed);
+                    
+            // FIXME
+            System.out.println("source at " + result[0] + ", " + result[1] + ", at time " + result[2]);
+                
+            if (Double.isInfinite(result[2]) || Double.isNaN(result[2])) {
+                // Result is not valid (inconsistent data).
+                return;
+            } 
+        
+            outputX.send(0, new DoubleToken(result[0]));
+            outputY.send(0, new DoubleToken(result[1]));
         }
     }
 
@@ -152,7 +225,12 @@ public class SoundTracker extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _counter = 0;
+        
+        for (int i = 0; i < 3; i++) {
+            _locationsX[i] = Double.NEGATIVE_INFINITY;
+            _locationsY[i] = Double.NEGATIVE_INFINITY;
+            _times[i] = Double.NEGATIVE_INFINITY;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -311,9 +389,9 @@ public class SoundTracker extends TypedAtomicActor {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** Counter that counts incoming signals. */
-    private int _counter = 0;
-
-    private RecordToken[] _sensorReadings = new RecordToken[3];
+    
+    // Buffer of three readings.
+    private double[] _locationsX = new double[3];
+    private double[] _locationsY = new double[3];
+    private double[] _times = new double[3];
 }

@@ -61,7 +61,7 @@ the sound and their current location.</text></svg></configure>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This example shows a SoundSource
 (concentric circles icon) moving through
-a field of sensors (GraphicalLocator
+a field of sensors (SoundSensor
 actors, with transluscent circle icons)
 that detect the sound and communicate with
 a SoundTracker actor (overlapping ellipses
@@ -112,7 +112,9 @@ the implementation.</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:black">GraphicalLocator actors</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:black">SoundSensor actors
+(instances of
+GraphicalLocator)</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -125,7 +127,7 @@ the implementation.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 100.0">
         </property>
     </property>
     <property name="annotation5" class="ptolemy.kernel.util.Attribute">
@@ -145,7 +147,7 @@ the implementation.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 395.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 370.0">
         </property>
     </property>
     <property name="annotation6" class="ptolemy.kernel.util.Attribute">
@@ -747,7 +749,7 @@ the implementation.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="signalRadius" class="ptolemy.data.expr.Parameter" value="300">
+        <property name="soundPropagationSpeed" class="ptolemy.data.expr.Parameter" value="344.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -761,7 +763,7 @@ the implementation.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 85.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 45.0">
             </property>
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -779,7 +781,7 @@ the implementation.</text></svg></configure>
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 55.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -812,6 +814,25 @@ has Y increasing upwards.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 365.0">
         </property>
+        <property name="timeWindow" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 65.0">
+            </property>
+        </property>
         <port name="input" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
@@ -830,7 +851,9 @@ has Y increasing upwards.</text></svg></configure>
             </property>
         </port>
         <entity name="SoundTracker" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundTracker">
-            <property name="signalPropagationSpeed" class="ptolemy.data.expr.Parameter" value="340.0">
+            <property name="signalPropagationSpeed" class="ptolemy.data.expr.Parameter" value="soundPropagationSpeed">
+            </property>
+            <property name="timeWindow" class="ptolemy.data.expr.Parameter" value="timeWindow">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 190.0">
             </property>
