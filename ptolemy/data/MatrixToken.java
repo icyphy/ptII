@@ -31,6 +31,7 @@
 
 package ptolemy.data;
 
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.UnsizedMatrixType;
@@ -1090,6 +1091,21 @@ public abstract class MatrixToken extends Token {
                     + "construct ArrayToken. " + illegalAction.getMessage());
         }
         return result;
+    }
+
+    /** Return the (exact) return type of the toArray function above.  If the
+     *  argument is a matrix type, then return an array type of its
+     *  element type, otherwise return BaseType.UNKNOWN.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+     public static Type toArrayReturnType(Type type) {
+        if(type instanceof UnsizedMatrixType) {
+            Type elementType = ((UnsizedMatrixType)type).getElementType();
+            return new ArrayType(elementType);
+        } else {
+            return BaseType.UNKNOWN;
+        }
     }
 
     /** Return the value of this token as a string that can be parsed

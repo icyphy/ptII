@@ -358,19 +358,6 @@ public class UtilityFunctions {
         }
     }
     
-    /** Infer the return type of the max function below.
-     *  If the argument is an array type, then return its element type, 
-     *  otherwise return BaseType.UNKNOWN.
-     */
-    public static Type _typeof_max(Type type) {
-        if(type instanceof ArrayType) {
-            ArrayType arrayType = (ArrayType) type;
-            return arrayType.getElementType();
-        } else {
-            return BaseType.UNKNOWN;
-        }
-    }
-     
     /** Return the maximum of the contents of the array.
      *  @param array An array of scalar tokens.
      *  @return The largest element of the array.
@@ -394,6 +381,21 @@ public class UtilityFunctions {
         return result;
     }
 
+    /** Return the (exact) return type of the max function above.
+     *  If the argument is an array type, then return its element type, 
+     *  otherwise return BaseType.UNKNOWN.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type maxReturnType(Type type) {
+        if(type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType) type;
+            return arrayType.getElementType();
+        } else {
+            return BaseType.UNKNOWN;
+        }
+    }
+     
     /** Return the minimum of two unsigned bytes.
      *  @param x An unsigned byte.
      *  @param y An unsigned byte.
@@ -431,6 +433,21 @@ public class UtilityFunctions {
         return result;
     }
 
+    /** Return the (exact) return type of the min function above.
+     *  If the argument is an array type, then return its element type, 
+     *  otherwise return BaseType.UNKNOWN.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type minReturnType(Type type) {
+        if(type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType) type;
+            return arrayType.getElementType();
+        } else {
+            return BaseType.UNKNOWN;
+        }
+    }
+     
     /** FIXME. Placeholder for a function that will return a model.
      */
     public static ObjectToken model(String classname)
@@ -483,6 +500,20 @@ public class UtilityFunctions {
         }
     }
 
+    /** Return the (exact) return type of the random function above.
+     *  If the argument is BaseType.INT, then return and ArrayType of
+     *  BaseType.DOUBLE, otherwise return BaseType.UNKNOWN.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type randomReturnType(Type type) {
+        if(type.equals(BaseType.INT)) {
+            return new ArrayType(BaseType.DOUBLE);
+        } else {
+            return BaseType.UNKNOWN;
+        }
+    }
+     
     /** Return a matrix of IID random numbers with value greater than
      *  or equal to 0.0 and less than 1.0.
      *  @param rows The number of rows.

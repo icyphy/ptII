@@ -33,6 +33,7 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -234,6 +235,24 @@ public class RecordToken extends AbstractNotConvertibleToken {
             return new RecordToken(labels, values);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
+        }
+    }
+
+    /** Return the (exact) return type of the merge function above.
+     *  If the arguments are both record type, then return a record
+     *  type that contains all of the fields (and types) of the first
+     *  record, and all of the fields of the second record that are
+     *  not in the first record,  otherwise return BaseType.UNKNOWN.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type mergeReturnTypeFAKE(Type type1, Type type2) {
+        if(type1 instanceof RecordType &&
+           type2 instanceof RecordType) {
+         
+            return BaseType.UNKNOWN;
+        } else {
+            return BaseType.UNKNOWN;
         }
     }
 

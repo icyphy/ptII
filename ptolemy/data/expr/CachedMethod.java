@@ -185,7 +185,17 @@ public class CachedMethod {
         _type = type;
         
         _returnType = null;
+
+        // Compute the hashcode, based on the method name and argument
+        // types.
+        _hashcode = methodName.hashCode();
+        for (int i = 0; i < argumentTypes.length; i++) {
+            _hashcode += argumentTypes[i].hashCode();
+        }
+
         // Determine the return type of the method, given our argument types.
+        // Do this LAST, since invoking the type constraint method might throw
+        // IllegalActionException, which we throw out of the constructor.
         if(_method != null) {
             // The default is to look at the return type of the method.
             Class returnClass = _method.getReturnType();
@@ -201,7 +211,7 @@ public class CachedMethod {
                 java.util.Arrays.fill(typeArray, typeClass);
 
                 Method typeFunction = _method.getDeclaringClass().getMethod(
-                        "_typeof_" + _methodName, typeArray);
+                        _methodName + "ReturnType", typeArray);
                 // Invoke the function, and save the return type.
                 try {
                     _returnType = (Type)typeFunction.invoke(
@@ -215,14 +225,6 @@ public class CachedMethod {
             catch (NoSuchMethodException ex) {
                 // Ignore.  Just use the default return type above.
             }
-        }
-        
-
-        // Compute the hashcode, based on the method name and argument
-        // types.
-        _hashcode = methodName.hashCode();
-        for (int i = 0; i < argumentTypes.length; i++) {
-            _hashcode += argumentTypes[i].hashCode();
         }
     }
 
