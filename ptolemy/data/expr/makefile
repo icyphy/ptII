@@ -99,7 +99,6 @@ JSRCS = \
         ParserScope.java \
         ScopeExtender.java \
         ScopeExtendingAttribute.java \
-	SimpleCharStream.java \
 	TokenMgrError.java \
 	UnknownResultException.java \
 	UtilityFunctions.java \
@@ -114,8 +113,8 @@ MISC_FILES =	$(DIRS)
 
 # OPTIONAL_JSRCS files are created by javacc.
 # javadoc generates html for files in $(OPTIONAL_JSRCS)
+#	ASCII_CharStream.java \
 OPTIONAL_JSRCS = \
-	ASCII_CharStream.java \
 	JJTPtParserState.java \
 	ParseException.java \
 	Node.java \
@@ -127,6 +126,7 @@ OPTIONAL_JSRCS = \
 	MatrixParserTokenManager.java \
 	MatrixParserTreeConstants.java \
 	SimpleNode.java \
+	SimpleCharStream.java \
 	Token.java \
 	TokenMgrError.java
 

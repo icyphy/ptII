@@ -3,7 +3,7 @@
 
 options {
     LOOKAHEAD=1;
-    STATIC = true;                             
+    STATIC = true;                              
 }
 
 

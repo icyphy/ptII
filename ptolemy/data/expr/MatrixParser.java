@@ -205,7 +205,13 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
   static private int jj_ntk;
   static private int jj_gen;
   static final private int[] jj_la1 = new int[4];
-  static final private int[] jj_la1_0 = {0x820,0x4000,0x10000,0x800,};
+  static private int[] jj_la1_0;
+  static {
+      jj_la1_0();
+   }
+   private static void jj_la1_0() {
+      jj_la1_0 = new int[] {0x820,0x4000,0x10000,0x800,};
+   }
 
   public MatrixParser(java.io.InputStream stream) {
     if (jj_initialized_once) {
@@ -325,7 +331,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
   static private int[] jj_expentry;
   static private int jj_kind = -1;
 
-  static final public ParseException generateParseException() {
+  static public ParseException generateParseException() {
     jj_expentries.removeAllElements();
     boolean[] la1tokens = new boolean[17];
     for (int i = 0; i < 17; i++) {
