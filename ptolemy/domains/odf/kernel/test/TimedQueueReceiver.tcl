@@ -178,7 +178,7 @@ test TimedQueueReceiver-5.1 {get(), put(), check _rcvrTime and _lastTime} {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-5.2 {get(), put(), check _rcvrTime and _lastTime} {
+test TimedQueueReceiver-5.2 {get(), single arg put(),  check _rcvrTime and _lastTime} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
@@ -192,6 +192,7 @@ test TimedQueueReceiver-5.2 {get(), put(), check _rcvrTime and _lastTime} {
     set token0 [java::new ptolemy.data.Token]
     set token1 [java::new ptolemy.data.Token]
     set token2 [java::new ptolemy.data.Token]
+    $actorA setOneArgPut true
     $actorA setToken $token0 5.5 0
     $actorA setToken $token1 15.2 1
     $actorA setToken $token2 37.2 2
@@ -200,8 +201,14 @@ test TimedQueueReceiver-5.2 {get(), put(), check _rcvrTime and _lastTime} {
     set rel [$topLevel connect $portB $portA "rel"]
 
     $manager run
+    
+    set rcvrTime0 [$actorB getRcvrTime 0] 
+    set rcvrTime1 [$actorB getRcvrTime 1] 
+    set rcvrTime2 [$actorB getRcvrTime 2] 
+    
+    list $rcvrTime0 $rcvrTime1 $rcvrTime2
 
-} {}
+} {0.0 0.0 0.0}
 
 ######################################################################
 ####
