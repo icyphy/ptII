@@ -35,7 +35,7 @@ ME =		ptolemy/domains
 # PTCLASSALLJARS below
 # FIXME: Temporarily
 # DIRS =		csp ct dde de fsm pn sdf
-DIRS =		ct dde de fsm sdf
+DIRS =		ct dde de fsm pn sdf
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -64,6 +64,7 @@ PTCLASSALLJARS = \
 		fsm/fsm.jar \
 		dde/dde.jar \
 		de/de.jar \
+		pn/pn.jar \
 		sdf/sdf.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
