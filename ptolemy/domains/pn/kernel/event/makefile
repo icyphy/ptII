@@ -43,7 +43,7 @@ include $(CONFIG)
 DIRS = 		test #doc
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	event
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
