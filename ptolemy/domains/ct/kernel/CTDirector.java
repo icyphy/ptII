@@ -118,8 +118,15 @@ predictable breakpoints that are greater than the current time.
 The breakpoints are sorted in their chronological order in the table.
 Breakpoints at the same time (controlled by the time resolution parameter)
 are considered to be one. A breakpoint can be inserted into the table by
-calling the fireAt() method. How to deal with these breakpoints
-dependents on individual directors.
+calling the fireAt() method. In this class, if the fireAt() method is
+called with a specified time in the future, then <i>two</i> firings
+are scheduled, one at the specified time, and one at the specified
+time minus the <i>timeResolution</i>.  The reason for this is that
+many actors use fireAt() to produce a discontinuity on their outputs.
+The earlier firing ensures that this appears as a discontinuity on
+the output.  How breakpoints are actually handled
+dependends on individual directors, but typically, all actors
+will be fired at each such breakpoint.
 
 @author Jie Liu
 @version $Id$
@@ -344,32 +351,45 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public abstract boolean canBeTopLevelDirector();
 
-    /** Register a (predictable) breakpoint at a future time. Actors
-     *  that want to register a predictable breakpoint should call
-     *  this method with itself and the breakpoint time as arguments.
-     *  The director will fire exactly at each registered time point.
+    /** Register a (predictable) breakpoint at a specified time.
+     *  If the specified time is the current time (within the
+     *  <i>timeResolution</i> of this director), then the actor will
+     *  be fired as part of the current execution phase.  If the
+     *  specified time is in the future, then this
+     *  director will fire the actor <i>twice</i> in response.  First,
+     *  it will fire the actor at the registered time point minus the
+     *  time resolution, and then it will fire the actor again at
+     *  exactly at each registered time point.  This ensures that if
+     *  the actor outputs a discontinuity at the resitered time point,
+     *  then the output will indeed appear as a discontinuity.
+     *  <p>
      *  From this director's point of view, it is irrelevant
      *  which actor requests the breakpoint. All actors will be
-     *  executed at every breakpoint.
-     *  The first argument is used only for reporting
-     *  exceptions in this method.
-     *  @param actor The actor that requested the fire.
-     *  @param time The fire time.
+     *  executed at every breakpoint.  However, only if the first
+     *  argument is non-null will the double firing described above
+     *  be scheduled.  To request only a single firing, exactly at
+     *  a specified time, then specify null for the first argument.
+     *  The first argument is also used for reporting exceptions.
+     *  @param actor The actor that requested the firing.
+     *  @param time The requested firing time.
      *  @exception IllegalActionException If the time is earlier than
-     *  the current time.
+     *   the current time.
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException{
-        if (time < getCurrentTime() - getTimeResolution()) {
+        double resolution = getTimeResolution();
+        double currentTime = getCurrentTime();
+        if (time < currentTime - resolution) {
             throw new IllegalActionException((Nameable)actor,
                     "Requested fire time: " + time + " is earlier than" +
-                    " the current time." + getCurrentTime() );
+                    " the current time." + currentTime );
         }
-        if (Math.abs(time - getCurrentTime()) < getTimeResolution()
+        if (Math.abs(time - currentTime) < resolution
                 && actor != null
                 && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
+            // Requesting firing at the current time.
             if (_debugging) _debug(((Nameable)actor).getName(),
-                    "requests refire at current time" + getCurrentTime());
+                    "requests refire at current time: " + currentTime);
             // These actors will be fired in the discrete phase
             // at the current time.
             if (_refireActors == null) {
@@ -378,12 +398,27 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             _refireActors.add(actor);
         } else {
             // Otherwise, the fireAt request is in the future. So we
-            // insert it to the breakpoint table.
+            // insert future firings into the breakpoint table.
             // Note that the _breakPoints may be null if an actor calls
             // fireAt() in its constructor.
+            if (_debugging) {
+                String name = "Director";
+                if (actor != null) {
+                    name = ((Nameable)actor).getName();
+                }
+                _debug(name
+                    + " requests refire at future time. Firing will occur at "
+                    + (currentTime - resolution)
+                    + " and "
+                    + currentTime);
+            }
             if (_breakPoints == null) {
                 _breakPoints = new TotallyOrderedSet(
-                        new FuzzyDoubleComparator(_timeResolution));
+                        new FuzzyDoubleComparator(resolution));
+            }
+            if (actor != null 
+                    && time - resolution > currentTime - resolution) {
+                _breakPoints.insert(new Double(time - resolution));
             }
             _breakPoints.insert(new Double(time));
         }

@@ -44,7 +44,7 @@ Actors can affect the integration step size in two ways. The first one
 is by introducing predictable breakpoints. When the fireAt() method of
 the CTDirector is called with an argument <i>t</i>,
 the CTDirector will treat <i>t</i> as a breakpoint. Actors that only
-introduce predictable breakpoints need not to implement this interface.
+introduce predictable breakpoints need not implement this interface.
 <P>
 The second way of controlling step size is through the accuracy checking
 after each integration step. Accuracy, in this context, means that
@@ -59,15 +59,17 @@ will then be asked to suggest a refined step size. If there are more
 than one actors find that this step is not accurate, then the
 smallest of the suggested step size will be
 used by the director to restart the integration step.
-
-If all step size control actors find the integration step is accurate,
-they will be asked for a (predicted) next step size.
+<p>
+If all step size control actors find the integration step accurate,
+then they will be asked for a (predicted) next step size.
 The smallest predicted next step size will be used for the next
 integration step.
 <P>
-If there are no step size control actors in a model, the step sizes
-are solely controlled by the director based on the initial
-step size parameter, ODE solvers, and predictable breakpoints.
+If there are no step size control actors in a model, the step size
+is controlled by the director.  Most (or possibly all) CT directors
+will leave default the step size at its initial value, and only deviate
+from these steps when there is a predictable breakpoint that does not
+coincide with one of these steps.
 @author  Jie Liu
 @version $Id$
 @since Ptolemy II 0.2
