@@ -66,7 +66,6 @@ M. Vishwanath and P. Chou, "An Efficient Algorithm for Hierarchical
 Compression of Video," <i>International Conference on Image Processing</i>,
 vol. 3, pp. 275-279, Nov. 1994. <br>
 
-@see VQEncode
 @see VQDecode
 
 @author Steve Neuendorffer
