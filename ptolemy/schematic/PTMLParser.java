@@ -200,9 +200,12 @@ public class PTMLParser extends HandlerBase{
      * Implement com.microstar.xml.XMLHandler.resolveEntity
      * If a public specifier is given, then append XMLLocation to it.
      */
-    public String resolveEntity(String pubID, String sysID) 
+    public Object resolveEntity(String pubID, String sysID) 
             throws Exception {
         if(pubID == null) return sysID;
+
+        System.out.println(java.lang.System.getProperty("PTII"));
+
         return XMLLOCATION+pubID;
     }
 
@@ -293,7 +296,7 @@ public class PTMLParser extends HandlerBase{
     private XMLElement root;
     private XmlParser parser = new XmlParser();
     private static final boolean DEBUG = false;
-    private static final String XMLLOCATION = "file:/users/neuendor/"
+    private static final String XMLLOCATION = "file:/users/neuendor/";
 
 }
 
