@@ -52,7 +52,7 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test DirectedAcyclicGraph-2.1 {Create an empty instance} {
     set p [java::new ptolemy.graph.DirectedAcyclicGraph]
-    $p contains null
+    $p containsNodeWeight null
 } {0}
 
 ######################################################################
@@ -78,9 +78,9 @@ test DirectedAcyclicGraph-2.3 {a 3 point CPO forming a triangle} {
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
-    $p add $n1
-    $p add $n2
-    $p add $n3
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
     $p addEdge $n1 $n2
     $p addEdge $n1 $n3
     set downN2 [$p downSet $n2]
@@ -101,9 +101,9 @@ test DirectedAcyclicGraph-2.4 {a 3 point CPO forming a triangle} {
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
-    $p add $n1
-    $p add $n2
-    $p add $n3
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
     $p addEdge $n1 $n2
     $p addEdge $n1 $n3
     set subset [java::new {Object[]} {2} {node2 node3}]
@@ -146,11 +146,11 @@ test DirectedAcyclicGraph-2.7 {a 5 point CPO that's not a lattice} {
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
     set n5 [java::new {java.lang.String String} node5]
-    $p add $n1
-    $p add $n2
-    $p add $n3
-    $p add $n4
-    $p add $n5
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
+    $p addNodeWeight $n5
     $p addEdge $n2 $n1
     $p addEdge $n3 $n1
     $p addEdge $n4 $n2
@@ -172,7 +172,7 @@ test DirectedAcyclicGraph-2.7 {a 5 point CPO that's not a lattice} {
 test DirectedAcyclicGraph-2.8 {a 6 point CPO that's not a lattice} {
     # add a bottom to the above lattice
     set n6 [java::new {java.lang.String String} node6]
-    $p add $n6
+    $p addNodeWeight $n6
     $p addEdge $n6 $n4
     $p addEdge $n6 $n5
     $p isLattice
@@ -188,10 +188,10 @@ test DirectedAcyclicGraph-2.9 {test least element } {
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
-    $p add $n1
-    $p add $n2
-    $p add $n3
-    $p add $n4
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
     $p addEdge $n2 $n1
     $p addEdge $n3 $n2
 
@@ -211,10 +211,10 @@ test DirectedAcyclicGraph-3.1 {a DAG with 4 nodes forming a diamond} {
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
-    $p add $n1
-    $p add $n2
-    $p add $n3
-    $p add $n4
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
     $p addEdge $n1 $n2
     $p addEdge $n1 $n3
     $p addEdge $n2 $n4
@@ -235,12 +235,12 @@ test DirectedAcyclicGraph-3.2 { topologicalSort part of the graph } {
     set n4 [java::new {java.lang.String String} node4]
     set n5 [java::new {java.lang.String String} node5]
     set n6 [java::new {java.lang.String String} node6]
-    $p add $n1
-    $p add $n2
-    $p add $n3
-    $p add $n4
-    $p add $n5
-    $p add $n6
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
+    $p addNodeWeight $n5
+    $p addNodeWeight $n6
     $p addEdge $n1 $n2
     $p addEdge $n1 $n3
     $p addEdge $n2 $n4
@@ -261,9 +261,9 @@ test DirectedAcyclicGraph-3.3 { top. sort cyclic graph, catch exceptin } {
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
-    $p add $n1
-    $p add $n2
-    $p add $n3
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
     $p addEdge $n1 $n2
     $p addEdge $n2 $n3
     $p addEdge $n3 $n1

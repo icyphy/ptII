@@ -133,30 +133,6 @@ public class Graph implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a weighted node to this graph given the node weight.
-     *
-     *  @param weight The node weight.
-     *  @return The node.
-     *  @exception IllegalArgumentException If the specified weight is null.
-     *  @deprecated Use addNodeWeight(Object)
-     */
-    public Node add(Object weight) {
-        return addNodeWeight(weight);
-    }
-
-    /** Add a collection of nodes to the graph.
-     *  Each element of the collection is interpreted
-     *  as a weight of a new node to add in the graph.
-     *  @param weightCollection The collection of node weights; each element
-     *  is an instance of {@link Object}.
-     *  @return The set of nodes that that were added; each element
-     *  is an instance of {@link Node}.
-     *  @deprecated Use addNodeWeights(Collection).
-     */
-    public Collection addAll(Collection weightCollection) {
-        return addNodeWeights(weightCollection);
-    }
-
     /** Add a weighted edge between two nodes.  If the edge is subsequently
      *  operated on as a directed edge, its orientation will be taken
      *  to be directed <i>from</i> the first (<code>node1</code>) node
@@ -409,20 +385,6 @@ public class Graph implements Cloneable {
             result.add(((Node)connectedComponents.next()).weight());
         }
         return result;
-    }
-
-    /** Test if the specified object is a node weight in this
-     *  graph. The object is a node weight if it is equal to an Object
-     *  specified in a successful <code>add</code> call. Equality is
-     *  determined by the <code>equals</code> method. If the specified
-     *  weight is null, return false.
-     *
-     *  @param weight The node weight to be tested.
-     *  @return True if the specified object is a node weight in this graph.
-     *  @deprecated Use containsNodeWeight(Object).
-     */
-    public boolean contains(Object weight) {
-        return containsNodeWeight(weight);
     }
 
     /** Return true if the specified edge exists in the
@@ -1032,19 +994,6 @@ public class Graph implements Cloneable {
         return subgraph;
     }
 
-    /** Return the subgraph induced by an array of nodes.
-     *  Node and edge weights are preserved.
-     *  In derived classes, this
-     *  method returns the same type of graph as is returned by
-     *  {@link ptolemy.graph.Graph#_emptyGraph()}.
-     *  @param nodes The array of nodes.
-     *  @return The induced subgraph.
-     *  @deprecated Use {@link #subgraph(Collection)} instead.
-     */
-    public Graph subgraph(Node[] nodes) {
-        return subgraph(Arrays.asList(nodes));
-    }
-
     /** Return the subgraph formed by a subset of nodes and a subset of
      *  edges. Node and edge weights are preserved.
      *  In derived classes, this
@@ -1160,8 +1109,7 @@ public class Graph implements Cloneable {
         else if (weighted && (weight == null)) {
             throw new IllegalArgumentException("Attempt to assign a null "
                     + "weight to an edge. The first node:\n" + node1
-                    + "\nThe second node:\n" + node2 + "The graph: \n"
-                    + this.description());
+                    + "\nThe second node:\n" + node2 + "The graph: \n" + this);
         } else {
             Edge edge = null;
             if (weighted) {

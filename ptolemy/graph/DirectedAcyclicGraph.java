@@ -586,7 +586,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // compute the least element in a subset.
     private Object _leastElementShared(Object[] subset) {
         if (subset.length == 1) {
-            if (contains(subset[0])) {
+            if (containsNodeWeight(subset[0])) {
                 return subset[0];
             } else {
                 throw new IllegalArgumentException("Object not in CPO.");

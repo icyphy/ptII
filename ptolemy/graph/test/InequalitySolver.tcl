@@ -102,10 +102,10 @@ test InequalitySolver-2.1 {construct the 4-point CPO in the design doc.} {
     set x [java::new {java.lang.String String} x]
     set y [java::new {java.lang.String String} y]
     set z [java::new {java.lang.String String} z]
-    $cpo add $w
-    $cpo add $x
-    $cpo add $y
-    $cpo add $z
+    $cpo addNodeWeight $w
+    $cpo addNodeWeight $x
+    $cpo addNodeWeight $y
+    $cpo addNodeWeight $z
     $cpo addEdge $x $w
     $cpo addEdge $y $w
     $cpo addEdge $z $x

@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test Graph-2.1 {Create an empty instance} {
     set p [java::new ptolemy.graph.Graph]
-    $p contains null
+    $p containsNodeWeight null
 } {0}
 
 ######################################################################
@@ -63,12 +63,12 @@ test Graph-2.2 {Create a graph with 2 nodes} {
     set p [java::new ptolemy.graph.Graph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
-    $p add $n1
-    $p add $n2
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
     set newEdges [$p addEdge $n1 $n2]
     $p addEdge $n2 $n1
     set newEdge [[$newEdges iterator] next]
-    list [$p contains $n1] [$p edgeCount] [$p nodeCount]
+    list [$p containsNodeWeight $n1] [$p edgeCount] [$p nodeCount]
 } {1 2 2}
 
 ######################################################################
@@ -76,7 +76,7 @@ test Graph-2.2 {Create a graph with 2 nodes} {
 # 
 test Graph-2.3 {try to add duplicate nodes} {
     # use the graph above
-    set z [$p add $n1]
+    set z [$p addNodeWeight $n1]
     catch {$p {addNode ptolemy.graph.Node} $z} msg
     list $msg
 } {{java.lang.IllegalArgumentException: Attempt to add a node that is already contained in the graph.
@@ -119,10 +119,10 @@ test Graph-2.4 {Create a graph with 4 nodes forming a diamond} {
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
-    set node1 [$p add $n1]
-    set node2 [$p add $n2]
-    set node3 [$p add $n3]
-    set node4 [$p add $n4]
+    set node1 [$p addNodeWeight $n1]
+    set node2 [$p addNodeWeight $n2]
+    set node3 [$p addNodeWeight $n3]
+    set node4 [$p addNodeWeight $n4]
     set e1 [java::new {java.lang.String String} edge1]
     set e2 [java::new {java.lang.String String} edge2]
     set e3 [java::new {java.lang.String String} edge3]
@@ -394,11 +394,11 @@ test Graph-5.6 { neighbors } {
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
     set n5 [java::new {java.lang.String String} node5]
-    set z [$p add $n1]
-    $p add $n2
-    $p add $n3
-    $p add $n4
-    $p add $n5
+    set z [$p addNodeWeight $n1]
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
+    $p addNodeWeight $n5
     $p addEdge $n1 $n2
     $p addEdge $n1 $n2
     $p addEdge $n1 $n4
@@ -424,11 +424,11 @@ test Graph-5.7 { neighbors with duplicate node weights} {
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
     set n5 [java::new {java.lang.String String} node4]
-    set z [$p add $n1]
-    $p add $n2
-    $p add $n3
-    $p add $n4
-    $p add $n5
+    set z [$p addNodeWeight $n1]
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
+    $p addNodeWeight $n5
     $p addEdge $n1 $n2
     $p addEdge $n1 $n2
 # The following addEdge adds two edges (to the two nodes that have weight 

@@ -62,7 +62,7 @@ test GraphListener-1.2 {Test registering of computations} {
 
 test GraphListener-1.3 {Test invalidation from graph changes} {
     set n1 [java::new {java.lang.String String} node1]
-    $gr add $n1
+    $gr addNodeWeight $n1
     list [$listener obsolete]
 } {1}
 

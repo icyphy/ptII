@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test DirectedGraph-2.1 {Create an empty instance} {
     set p [java::new ptolemy.graph.DirectedGraph]
-    list [$p contains null] [$p isAcyclic]
+    list [$p containsNodeWeight null] [$p isAcyclic]
 } {0 1}
 
 ######################################################################
@@ -79,8 +79,8 @@ test DirectedGraph-3.1 {Create a cyclic graph with 2 nodes} {
     set p [java::new ptolemy.graph.DirectedGraph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
-    $p add $n1
-    $p add $n2
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
     $p addEdge $n1 $n2
     $p addEdge $n2 $n1
     set reach [$p {reachableNodes Object} $n1]
@@ -96,10 +96,10 @@ test DirectedGraph-3.2 {an acyclic graph with 4 nodes forming a diamond} {
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
-    $p add $n1
-    $p add $n2
-    $p add $n3
-    $p add $n4
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
     $p addEdge $n1 $n2
     $p addEdge $n1 $n3
     $p addEdge $n2 $n4
@@ -129,12 +129,12 @@ test DirectedGraph-4.2 { backwardReachableNodes for a set of nodes } {
     set n4 [java::new {java.lang.String String} node4]
     set n5 [java::new {java.lang.String String} node5]
     set n6 [java::new {java.lang.String String} node6]
-    $p add $n1
-    $p add $n2
-    $p add $n3
-    $p add $n4
-    $p add $n5
-    $p add $n6
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
+    $p addNodeWeight $n5
+    $p addNodeWeight $n6
     $p addEdge $n1 $n2
     $p addEdge $n1 $n3
     $p addEdge $n2 $n4
@@ -163,9 +163,9 @@ test DirectedGraph-5.1 { cycleNodes } {
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
-    $p add $n1
-    $p add $n2
-    $p add $n3
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
     $p addEdge $n1 $n2
     $p addEdge $n1 $n3
 
@@ -181,9 +181,9 @@ test DirectedGraph-5.2 { cycleNodes } {
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
-    $p add $n1
-    $p add $n2
-    $p add $n3
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
     $p addEdge $n1 $n2
     $p addEdge $n2 $n1
     $p addEdge $n2 $n3
@@ -203,12 +203,12 @@ test DirectedGraph-5.3 { cycleNodes } {
     set n4 [java::new {java.lang.String String} node4]
     set n5 [java::new {java.lang.String String} node5]
     set n6 [java::new {java.lang.String String} node6]
-    $p add $n1
-    $p add $n2
-    $p add $n3
-    $p add $n4
-    $p add $n5
-    $p add $n6
+    $p addNodeWeight $n1
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
+    $p addNodeWeight $n5
+    $p addNodeWeight $n6
     $p addEdge $n1 $n2
     $p addEdge $n2 $n3
     $p addEdge $n3 $n1
@@ -230,10 +230,10 @@ test DirectedGraph-5.4 { successors } {
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
-    set z [$p add $n1]
-    $p add $n2
-    $p add $n3
-    $p add $n4
+    set z [$p addNodeWeight $n1]
+    $p addNodeWeight $n2
+    $p addNodeWeight $n3
+    $p addNodeWeight $n4
     $p addEdge $n1 $n2
     $p addEdge $n1 $n2
     $p addEdge $n1 $n4
@@ -264,10 +264,10 @@ test DirectedGraph-6.1 {Test successor edges} {
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
     set n4 [java::new {java.lang.String String} node4]
-    set node1 [$p add $n1]
-    set node2 [$p add $n2]
-    set node3 [$p add $n3]
-    set node4 [$p add $n4]
+    set node1 [$p addNodeWeight $n1]
+    set node2 [$p addNodeWeight $n2]
+    set node3 [$p addNodeWeight $n3]
+    set node4 [$p addNodeWeight $n4]
     set e1 [java::new {java.lang.String String} edge1]
     set e2 [java::new {java.lang.String String} edge2]
     set e3 [java::new {java.lang.String String} edge3]
