@@ -56,6 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
         AllPairShortestPathAnalysis.java \
+	Analysis.java \
         AnalysisException.java \
         ClusterNodesAnalysis.java \
         CycleExistenceAnalysis.java \
