@@ -3,28 +3,13 @@
 <HEAD>
 <TITLE>Discrete Event Simulation Demo</TITLE>
 </HEAD>
-<BODY BGCOLOR="#FAF0E6">
+<BODY>
+<H1>Logic Circuit</H1>
 
-<CENTER>
-<H1>
-Demo of DE simulation applet</H1></CENTER>
-
-<H3>
-DE Simulation:</H3>
-The following applet uses the Ptolemy II Discrete Event (DE) domain
+This applet uses the Ptolemy II Discrete Event (DE) domain
 to simulate a simple arbitrary-bit adder circuit.
-<P>
 The plot represents the logic levels at various points in the 
 circuit.
-<P>
-You can interact with the applet by choosing the stop time of the simulation
-and choosing the two binary numbers to be added. If the two numbers are not
-of the same length, then the shorter one will be padded on the right
-with zeros. Note that this might not be the right thing to do in real-life
-application. However, for the purpose of this demo, it should be fine.
-<P>
-<BR>&nbsp;
-<BR>&nbsp;
 <CENTER>
 <P><APPLET name="AdderApplet"
    bgcolor=#FAF0E6
@@ -33,13 +18,20 @@ application. However, for the purpose of this demo, it should be fine.
 	ptolemy/ptsupport.jar"
    code=ptolemy.domains.de.demo.AdderApplet.class
    codebase=../../../..
-   width=700 height=500>
+   width=700 height=400>
 <param name="background" value="#faf0e6">
-<BR><I>If you were able to run applets, you would have a waveform demo
+<BR><I>If you were able to run applets, you would have a Logic circuit demo
 here.</I>
 <BR></APPLET></CENTER>
 
+<P>
+You can interact with the applet by choosing the stop time of the simulation
+and choosing the two binary numbers to be added. If the two numbers are not
+of the same length, then the shorter one will be padded on the right
+with zeros. Note that this might not be the right thing to do in real-life
+application. However, for the purpose of this demo, it should be fine.
 <P>This applet is implemented by
+
 <TT><A HREF="HistogramApplet.java">AdderApplet.java</A></TT>.
 <P>The simulation consists of a <A HREF="../lib/DEClock.java">Clock</A>
 Actor, a
@@ -83,9 +75,7 @@ Actor connected to a <A HREF="../lib/DELogicAnalyzer.java">LogicAnalyzer</A> Act
 <IMG SRC="img/AdderCircuit.gif"
 Alt="Imagemap" Usemap="#ActorsMap" Ismap>
 </CENTER>
-<BR>
-<HR>Copyright &copy; 1998-1999 The Regents of the University of California.
-All rights reserved.
-<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </BODY>
 </HTML>
