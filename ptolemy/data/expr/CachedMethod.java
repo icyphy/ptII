@@ -980,7 +980,7 @@ public class CachedMethod {
      *  It is provided for code, such as the code generator that need
      *  more than the usual amount of information about methods that
      *  have been found.
-     *  @param preference An index given an order to the preference of
+     *  <p>The preference is n index given an order to the preference of
      *  conversions.  Lower preferences represent less desirable
      *  conversions than higher preferences.
      */
