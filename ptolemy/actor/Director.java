@@ -96,6 +96,7 @@ public class Director extends Attribute implements Executable {
      */
     public Director() {
         super();
+        _addIcon();
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -105,6 +106,7 @@ public class Director extends Attribute implements Executable {
      */
     public Director(Workspace workspace) {
         super(workspace);
+        _addIcon();
     }
 
     /** Construct a director in the given container with the given name.
@@ -123,6 +125,7 @@ public class Director extends Attribute implements Executable {
     public Director(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _addIcon();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -788,10 +791,27 @@ public class Director extends Attribute implements Executable {
         return true;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
     /** The current time of the model. */
     protected double _currentTime = 0.0;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Add an XML graphic as a hint to UIs for rendering the director.
+    private void _addIcon() {
+	ProcessedString icon;
+	try {
+	    icon = new NonpersistentProcessedString(this, "iconDescription");
+	} catch (KernelException ex) {
+	    throw new InternalErrorException(
+                    "Error creating icon for " + getFullName());
+	}
+	icon.setInstruction("graphml");
+	icon.setString("<xmlgraphic>\n" + 
+		"<rectangle coords=\"10 10 100 30\" fill=\"green\"/>\n" +
+		"</xmlgraphic>\n");
+    }
 }
