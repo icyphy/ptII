@@ -345,6 +345,10 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(Block node) {
         boolean newLineAfterBlock = _newLineAfterBlock;
+        
+        // Indent if it is in a list of statements.
+        if (node.getLocationInParent().isChildListProperty())
+            _output(_indent);
 
         _openBrace();
         for (Iterator it = node.statements().iterator(); it.hasNext(); ) {
