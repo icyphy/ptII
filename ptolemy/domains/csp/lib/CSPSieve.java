@@ -51,7 +51,7 @@ illustration of how to perform changes to the topology.
 */
 public class CSPSieve extends CSPActor {
 
-    /** Calls the super class constructor and creates the neccessary ports.
+    /** Calls the super class constructor and creates the necessary ports.
      *  @exception NameDuplicationException If more than one port
      *   with the same name is added to this actor, or if the entity
      *   containing this actor already contains an actor with the name
