@@ -83,7 +83,7 @@ public class BaseType implements Type {
 	return _convertOp.convert(t);
     }
 
-    /** Return the class object for the token whose type is represented
+    /*  Return the class object for the token whose type is represented
      *  by this object.
      *  @return An instance of Class.
      */
