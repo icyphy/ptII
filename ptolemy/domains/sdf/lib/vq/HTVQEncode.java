@@ -75,19 +75,19 @@ The lookup table consists of 64K entries (one for each pair of codewords from
 the previous stage).  Each entry in the lookup table is an 8-bit codeword.
 <p>
 <pre>
-Stage 0: 2x1 blocksize
+Stage 0: 2x1 block size
 codebook = 256 blocks x 2 bytes = 512 bytes
 lookup tables = 65536 entries x 1 byte = 65536 bytes
-Stage 1: 2x2 blocksize
+Stage 1: 2x2 block size
 codebook = 256 blocks x 4 bytes = 1024 bytes
 lookup tables = 65536 entries x 1 byte = 65536 bytes
-Stage 2: 4x2 blocksize
+Stage 2: 4x2 block size
 codebook = 256 blocks x 8 bytes = 2048 bytes
 lookup tables = 65536 entries x 1 byte = 65536 bytes
-Stage 3: 4x4 blocksize
+Stage 3: 4x4 block size
 codebook = 256 blocks x 16 bytes = 4096 bytes
 lookup tables = 65536 entries x 1 byte = 65536 bytes
-Stage 4: 8x4 blocksize
+Stage 4: 8x4 block size
 codebook = 256 blocks x 32 bytes = 8192 bytes
 lookup tables = 65536 entries x 1 byte = 65536 bytes
 </pre>
@@ -251,7 +251,7 @@ public class HTVQEncode extends Transformer {
                 temp = new byte[size];
                 for(j = 0; j < 256; j++) {
                     _codeBook[i][j] = new int[size];
-                    if(_fullread(source, temp) != size)
+                    if(_fullRead(source, temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
                     for(x = 0; x < size; x++)
@@ -260,7 +260,7 @@ public class HTVQEncode extends Transformer {
 
                 temp = new byte[65536];
                 // read in the lookup table.
-                if(_fullread(source, temp) != 65536)
+                if(_fullRead(source, temp) != 65536)
                     throw new IllegalActionException("Error reading " +
                             "codebook file!");
                 for(x = 0; x < 65536; x++)
@@ -276,7 +276,7 @@ public class HTVQEncode extends Transformer {
                     source.close();
                 }
                 catch (IOException e) {
-                    // ARgh...  can't we do anything right?
+                    // Argh...  can't we do anything right?
                 }
             }
         }
@@ -285,18 +285,19 @@ public class HTVQEncode extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
-    private int _encode(int p[], int len) {
+    private int _encode(int p[], int length) {
         int[][] p5, p4, p3, p2, p1, p0;
-        int numstages;
+        int numberOfStages;
 	int stage = 0;
         int ip;
-        int dest_index;
 
-        numstages = _stages(len);
+        numberOfStages = _stages(length);
 
-	if(numstages>4)
+	if(numberOfStages > 4) {
             throw new RuntimeException(
-                    "imagepart too large... exiting");
+                    "Number of stages = " + numberOfStages + ", which is "
+                    + "greater than 4");
+        }
         p5 = ipbuf_encodep1;
         p4 = ipbuf_encodep2;
         p3 = ipbuf_encodep1;
@@ -304,7 +305,7 @@ public class HTVQEncode extends Transformer {
         p1 = ipbuf_encodep1;
         p0 = ipbuf_encodep2;
 
-	switch(numstages) {
+	switch(numberOfStages) {
         case 4:
             // System.arraycopy is faster for large vectors
             System.arraycopy(p, 0, p5[0], 0, 8);
@@ -339,7 +340,7 @@ public class HTVQEncode extends Transformer {
             p1[0][1] = p[1];
             break;
 	}
-	switch(numstages) {
+	switch(numberOfStages) {
         case 4:
             //XSIZE = 8, YSIZE = 4
             ip = ((p5[0][0] & 255) << 8) + (p5[0][1] & 255);
@@ -430,30 +431,34 @@ public class HTVQEncode extends Transformer {
         return p0[0][0];
     }
 
-    private int _fullread(InputStream s, byte b[]) throws IOException {
-        int len = 0;
+    private int _fullRead(InputStream s, byte b[]) throws IOException {
+        int length = 0;
         int remaining = b.length;
-        int bytesread = 0;
+        int bytesRead = 0;
         while(remaining > 0) {
-            bytesread = s.read(b, len, remaining);
-            if(bytesread == -1) throw new IOException(
-                    "Unexpected EOF");
-            remaining -= bytesread;
-            len += bytesread;
+            bytesRead = s.read(b, length, remaining);
+            if(bytesRead == -1)  {
+                throw new IOException("Unexpected EOF");
+            }
+            remaining -= bytesRead;
+            length += bytesRead;
         }
-        return len;
+        return length;
     }
 
     /** Given a vector of the given length, compute the codebook stage
-     *  appropriate.  Basically, compute log base 2 of len, assuming
-     *  len is a power of 2.
+     *  appropriate.  Basically, compute log base 2 of length, assuming
+     *  length is a power of 2.
      */
-    private int _stages(int len) {
+    private int _stages(int length) {
         int x = 0;
-        if(len < 2) throw new RuntimeException(
-                "Vector length of " + len +
+        if(length < 2) throw new RuntimeException(
+                "Vector length of " + length +
                 "must be greater than 1");
-        while(len > 2) { len = len >> 1; x++;}
+        while(length > 2) {
+            length = length >> 1;
+            x++;
+        }
         return x;
     }
 

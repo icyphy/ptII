@@ -132,7 +132,7 @@ public class ImageSequence extends Source {
         super.initialize();
         InputStream source = null;
 
-        String fileroot =
+        String fileRoot =
             ((StringToken)imageURLTemplate.getToken()).stringValue();
         _startFrame = ((IntToken)startFrame.getToken()).intValue();
         _endFrame = ((IntToken)endFrame.getToken()).intValue();
@@ -155,27 +155,27 @@ public class ImageSequence extends Source {
 
             try {
                 // Assemble the file name, replacing '*'
-                byte arr[] = fileroot.getBytes();
+                byte arr[] = fileRoot.getBytes();
                 int i, j, n;
                 i = _frameNumber + _startFrame;
-                String tfilename = new String(fileroot);
-                int loc = tfilename.lastIndexOf('*');
-                while(loc >= 0) {
-                    arr[loc] = (byte)('0' + i % 10);
+                String temporaryFileName = new String(fileRoot);
+                int location = temporaryFileName.lastIndexOf('*');
+                while(location >= 0) {
+                    arr[location] = (byte)('0' + i % 10);
                     i = i / 10;
-                    tfilename = new String(arr);
-                    loc = tfilename.lastIndexOf('*');
+                    temporaryFileName = new String(arr);
+                    location = temporaryFileName.lastIndexOf('*');
                 }
-                String filename = new String(arr);
-                _debug("file = " + filename + "\n");
+                String fileName = new String(arr);
+                _debug("file = " + fileName + "\n");
 
-                if (filename != null) {
-                    URL dataurl = getClass().getResource(filename);
+                if (fileName != null) {
+                    URL dataurl = getClass().getResource(fileName);
                     source = dataurl.openStream();
                 }
 
                 // Load the frame from the file.
-                if(_fullread(source, _frameBytes)
+                if(_fullRead(source, _frameBytes)
                         != _imageRows*_imageColumns)
                     throw new IllegalActionException("Error reading " +
                             "image file!");
@@ -193,9 +193,8 @@ public class ImageSequence extends Source {
                 throw ex;
             }
             catch (Exception ex) {
-                ex.printStackTrace();
                 _images = null;
-                throw new IllegalActionException(ex.getMessage());
+                throw new IllegalActionException(this, ex, null);
             }
             finally {
                 if(source != null) {
@@ -203,9 +202,9 @@ public class ImageSequence extends Source {
                         source.close();
                     }
                     catch (IOException ex) {
-                        ex.printStackTrace();
                         _images = null;
-                        throw new IllegalActionException(ex.getMessage());
+                        throw new IllegalActionException(this, ex,
+                                "Failed to close source");
                     }
                 }
             }
@@ -230,18 +229,19 @@ public class ImageSequence extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
-    private int _fullread(InputStream s, byte b[]) throws IOException {
-        int len = 0;
+    private int _fullRead(InputStream s, byte b[]) throws IOException {
+        int length = 0;
         int remaining = b.length;
-        int bytesread = 0;
+        int bytesRead = 0;
         while(remaining > 0) {
-            bytesread = s.read(b, len, remaining);
-            if(bytesread == -1) throw new IOException(
-                    "Unexpected EOF:" + s);
-            remaining -= bytesread;
-            len += bytesread;
+            bytesRead = s.read(b, length, remaining);
+            if(bytesRead == -1) {
+                throw new IOException("Unexpected EOF:" + s);
+            }
+            remaining -= bytesRead;
+            length += bytesRead;
         }
-        return len;
+        return length;
     }
 
     ///////////////////////////////////////////////////////////////////

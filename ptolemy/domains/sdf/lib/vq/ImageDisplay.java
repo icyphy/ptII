@@ -84,8 +84,8 @@ public class ImageDisplay extends Sink implements Placeable {
 
         input.setTypeEquals(BaseType.INT_MATRIX);
 
-        _oldxsize = 0;
-        _oldysize = 0;
+        _oldXSize = 0;
+        _oldYSize = 0;
         _frame = null;
         _container = null;
     }
@@ -102,8 +102,8 @@ public class ImageDisplay extends Sink implements Placeable {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        _oldxsize = 0;
-        _oldysize = 0;
+        _oldXSize = 0;
+        _oldYSize = 0;
         if(_container == null) {
             _frame = new _PictureFrame("ImageDisplay");
             _container = _frame.getContentPane();
@@ -129,20 +129,20 @@ public class ImageDisplay extends Sink implements Placeable {
         IntMatrixToken message = (IntMatrixToken)
             input.get(0);
         int frame[][] = message.intMatrix();
-        int xsize = message.getColumnCount();
-        int ysize = message.getRowCount();
+        int xSize = message.getColumnCount();
+        int ySize = message.getRowCount();
 
         // If the image changes size, then we have to go through some
         // trouble to resize the window.
-        if((_oldxsize != xsize) || (_oldysize != ysize)) {
-            _oldxsize = xsize;
-            _oldysize = ysize;
-            _RGBbuffer = new int[xsize * ysize];
+        if((_oldXSize != xSize) || (_oldYSize != ySize)) {
+            _oldXSize = xSize;
+            _oldYSize = ySize;
+            _RGBbuffer = new int[xSize * ySize];
 
 	    if(_picture != null)
                 _container.remove(_picture);
 
-            _picture = new Picture(xsize, ysize);
+            _picture = new Picture(xSize, ySize);
             _picture.setImage(_RGBbuffer);
             _picture.setBackground(null);
             _container.add("Center", _picture);
@@ -165,8 +165,8 @@ public class ImageDisplay extends Sink implements Placeable {
         // flipping the image upside down.  (When it is drawn, it gets
         // drawn from bottom up).
         int i, j, index = 0;
-        for(j = ysize - 1; j >= 0; j--) {
-            for(i = 0; i < xsize; i++, index++)
+        for(j = ySize - 1; j >= 0; j--) {
+            for(i = 0; i < xSize; i++, index++)
                 _RGBbuffer[index] = (255 << 24) |
                     ((frame[j][i] & 255) << 16) |
                     ((frame[j][i] & 255) << 8) |
@@ -232,6 +232,6 @@ public class ImageDisplay extends Sink implements Placeable {
     private Picture _picture;
     private JFrame _frame;
     private Container _container;
-    private int _oldxsize, _oldysize;
+    private int _oldXSize, _oldYSize;
     private int _RGBbuffer[] = null;
 }

@@ -81,7 +81,7 @@ public class ImagePartition extends Transformer {
             new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression(
-                "imageColums * imageRows / partitionColumns / partitionRows");
+                "imageColumns * imageRows / partitionColumns / partitionRows");
 
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);

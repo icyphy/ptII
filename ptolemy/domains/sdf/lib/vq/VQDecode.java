@@ -205,7 +205,7 @@ public class VQDecode extends Transformer {
                 temp = new byte[size];
                 intTemp = new int[size];
                 for(j = 0; j < 256; j++) {
-                    if(_fullread(source, temp) != size)
+                    if(_fullRead(source, temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
                     for(x = 0; x < size; x++)
@@ -218,7 +218,7 @@ public class VQDecode extends Transformer {
 
                 temp = new byte[65536];
                 // read in the lookup table.
-                if(_fullread(source, temp) != 65536)
+                if(_fullRead(source, temp) != 65536)
                     throw new IllegalActionException("Error reading " +
                             "codebook file!");
             }
@@ -240,30 +240,36 @@ public class VQDecode extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
-    private int _fullread(InputStream s, byte b[]) throws IOException {
-        int len = 0;
+    private int _fullRead(InputStream s, byte b[]) throws IOException {
+        int length = 0;
         int remaining = b.length;
-        int bytesread = 0;
+        int bytesRead = 0;
         while(remaining > 0) {
-            bytesread = s.read(b, len, remaining);
-            if(bytesread == -1) throw new IOException(
-                    "Unexpected EOF");
-            remaining -= bytesread;
-            len += bytesread;
-        }
-        return len;
-    }
+            bytesRead = s.read(b, length, remaining);
+            if(bytesRead == -1) {
+                throw new IOException("Unexpected EOF");
+            }
+            remaining -= bytesRead;
+            length += bytesRead;
+         }
+         return length;
+     }
 
-    /** Given a vector of the given length, compute the codebook stage
-     *  appropriate.  Basically, compute log base 2 of len, assuming
-     *  len is a power of 2.
-     */
-    private int _stages(int len) {
-        int x = 0;
-        if(len < 2) throw new RuntimeException(
-                "Vector length of " + len +
-                "must be greater than 1");
-        while(len > 2) { len = len >> 1; x++;}
+     /** Given a vector of the given length, compute the codebook stage
+      *  appropriate.  Basically, compute log base 2 of length, assuming
+      *  length is a power of 2.
+      */
+     private int _stages(int length) {
+         int x = 0;
+         if(length < 2) {
+             throw new RuntimeException(
+                     "Vector length of " + length +
+                     "must be greater than 1");
+         }
+         while(length > 2) {
+             length = length >> 1;
+             x++;
+         }
         return x;
     }
 
