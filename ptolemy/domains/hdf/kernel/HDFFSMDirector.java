@@ -39,7 +39,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -52,7 +51,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.Action;
 import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.FSMDirector;
+import ptolemy.domains.fsm.kernel.MultirateFSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
@@ -145,7 +144,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
    @see HDFDirector
 */
-public class HDFFSMDirector extends FSMDirector {
+public class HDFFSMDirector extends MultirateFSMDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -580,113 +579,6 @@ public class HDFFSMDirector extends FSMDirector {
             }
         }
     }
-
-    /** Return true if data are transferred from the input port of
-     *  the container to the connected ports of the controller and
-     *  of the current refinement actor.
-     *  <p>
-     *  This method will transfer all of the available tokens on each
-     *  input channel. The port argument must be an opaque input port.
-     *  If any channel of the input port has no data, then that
-     *  channel is ignored. Any token left not consumed in the ports
-     *  to which data are transferred is discarded.
-     *  @param port The input port to transfer tokens from.
-     *  @return True if data are transferred.
-     *  @exception IllegalActionException If the port is not an opaque
-     *  input port.
-     */
-    public boolean transferInputs(IOPort port)
-            throws IllegalActionException {
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" +
-                    "input port.");
-        }
-        boolean transferred = false;
-        // The receivers of the current refinement that receive data
-        // from "port."
-        Receiver[][] insideReceivers = _currentLocalReceivers(port);
-        
-        int rate = DFUtilities.getTokenConsumptionRate(port);
-        for (int i = 0; i < port.getWidth(); i++) {
-            // For each channel
-            try {
-                if (insideReceivers != null
-                        && insideReceivers[i] != null) {
-                    for (int j = 0; j < insideReceivers[i].length; j++) {
-                        while (insideReceivers[i][j].hasToken()) {
-                            // clear tokens.
-                            insideReceivers[i][j].get();
-                        }
-                    }
-                    for (int k = 0; k < rate; k++) {
-                        if (port.hasToken(i)) {
-                            ptolemy.data.Token t = port.get(i);
-                            for (int j = 0; j < insideReceivers[i].length; j++) {
-                                insideReceivers[i][j].put(t);
-                            } 
-                        }
-                    }
-                    // Successfully transferred data, so return true.
-                    transferred = true;
-                }
-            } catch (NoTokenException ex) {
-                // this shouldn't happen.
-                throw new InternalErrorException(
-                        "Director.transferInputs: Internal error: " + ex);
-            }
-        }
-        return transferred;
-    }
-
-    /** Transfer data from an output port of the current refinement actor
-     *  to the ports it is connected to on the outside. This method differs
-     *  from the base class method in that this method will transfer <i>k</i> 
-     *  tokens in the receivers, where <i>k</i> is the port rate if it is
-     *  declared by the port. If the port rate is not declared, this method
-     *  behaves like the base class method and will transfer at most one token.
-     *  This behavior is required to handle the case of multi-rate actors.
-     *  The port argument must be an opaque output port.
-     *  @exception IllegalActionException If the port is not an opaque
-     *  output port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
-     */
-
-    public boolean transferOutputs(IOPort port)
-            throws IllegalActionException {
-
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "HDFFSMDirector: transferOutputs():" +
-                    "  port argument is not an opaque output port.");
-        }
-        boolean transferred = false;
-        int rate = DFUtilities.getRate(port);
-        Receiver[][] insideReceivers = port.getInsideReceivers();
-        for (int i = 0; i < port.getWidth(); i ++) {
-            if (insideReceivers != null && insideReceivers[i] != null) {
-                for (int j = 0; j < insideReceivers[i].length; j++) {
-                    for (int k = 0; k < rate; k ++) {
-                        // Only transfer number of tokens declared 
-                        // by the port rate.
-                        try {
-                            ptolemy.data.Token t =
-                                insideReceivers[i][j].get();
-                            port.send(i, t);
-                        } catch (NoTokenException ex) {
-                            throw new InternalErrorException(
-                                    "Director.transferOutputs: " +
-                                    "Not enough tokens for port " 
-                                    + port.getName() + " " + ex);
-                        }
-                    }
-                }
-            }
-            transferred = true;
-        }
-        return transferred;
-    }
     
     /** Get the current state. If it does not have any refinement,
      *  consider it as a transient state and make a state transition
@@ -853,15 +745,6 @@ public class HDFFSMDirector extends FSMDirector {
             (CompositeActor) actor.getContainer();
         Transition lastChosenTr = _getLastChosenTransition();
 
-        // Get all of the input ports of the container of this director.
-        List containerPortList = refineInPortContainer.inputPortList();
-        // Set all of the port rates to zero.
-        Iterator containerPorts = containerPortList.iterator();
-        while (containerPorts.hasNext()) {
-            IOPort containerPort = (IOPort)containerPorts.next();
-            DFUtilities.setTokenConsumptionRate(
-                    containerPort, 0);
-        }
         // Get all of its input ports of the current refinement actor.
         Iterator refineInPorts = actor.inputPortList().iterator();
         while (refineInPorts.hasNext()) {
@@ -964,15 +847,6 @@ public class HDFFSMDirector extends FSMDirector {
         // Get the current refinement's container.
         CompositeActor refineOutPortContainer =
             (CompositeActor) actor.getContainer();
-        // Get all of the output ports of the container of this director.
-        List containerPortList = refineOutPortContainer.outputPortList();
-        // Set all of the external port rates to zero.
-        Iterator containerPorts = containerPortList.iterator();
-        while (containerPorts.hasNext()) {
-            IOPort containerPort = (IOPort)containerPorts.next();
-            DFUtilities.setTokenProductionRate(
-                    containerPort, 0);
-        }
         // Get all of the current refinement's output ports.
         Iterator refineOutPorts = actor.outputPortList().iterator();
         while (refineOutPorts.hasNext()) {
