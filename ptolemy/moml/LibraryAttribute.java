@@ -130,6 +130,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
         MoMLParser parser;
         if (parserAttribute != null) {
             parser = parserAttribute.getParser();
+            parser.reset();
         } else {
             parser = new MoMLParser();
         }
