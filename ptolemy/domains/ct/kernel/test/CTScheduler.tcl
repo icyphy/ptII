@@ -201,7 +201,7 @@ test CTScheduler-2.6 {event generators and event interpreters} {
     #Note: use above setup.
     set eg [java::new ptolemy.domains.ct.kernel.test.CTDummyEventGenerator \
 	    $ca EG]
-    set ei [java::new ptolemy.domains.ct.kernel.test.CTDummyEventInterpreter \
+    set ei [java::new ptolemy.domains.ct.kernel.test.CTDummyWaveformGenerator \
 	    $ca EI]
     set sc [java::new ptolemy.domains.ct.kernel.test.CTDummySSControlActor \
 	    $ca SSC] 

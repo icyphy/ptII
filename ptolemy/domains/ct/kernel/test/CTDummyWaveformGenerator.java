@@ -1,4 +1,4 @@
-/* CT dummy event interpreter.
+/* CT dummy waveform generator.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -38,16 +38,16 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyEventInterpreter
 /**
-Dummy actor that implements CTEventInterpreter interface.
+Dummy actor that implements CTWaveformGenerator interface.
 @author   Jie Liu
 @version $Id$
 
 */
-public class CTDummyEventInterpreter extends CTActor
-    implements CTEventInterpreter{
+public class CTDummyWaveformGenerator extends CTActor
+    implements CTWaveformGenerator{
     /** Constructor
      */
-    public CTDummyEventInterpreter(TypedCompositeActor container, String name)
+    public CTDummyWaveformGenerator(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");

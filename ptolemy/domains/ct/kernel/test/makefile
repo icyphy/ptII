@@ -48,13 +48,13 @@ TCL_SRCS = \
 JSRCS = \
 	CTDummyDynamicActor.java \
 	CTDummyEventGenerator.java \
-	CTDummyEventInterpreter.java \
 	CTDummyMISOActor.java \
 	CTDummySISOActor.java \
 	CTDummySSControlActor.java \
 	CTDummySink.java \
 	CTDummySource.java \
-	CTDummyStatefulActor.java
+	CTDummyStatefulActor.java \
+	CTDummyWaveformGenerator.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
