@@ -48,7 +48,7 @@ Decode a (<i>n</i>, <i>k</i>) Hamming code, where <i>n</i> is specified by
 parameter <i>codeBlockSize</i> nad <i>k</i> is specified by parameter
 <i>uncodeBlockSize</i>.
 <p>
-The Hamming code can correct one-bit error. 
+The Hamming code can correct one-bit error.
 To encode a Hamming code, the HammingCoder consumes <i>k</i> information bits
 during each firing and consider them as a row vector <i><u>X</u></i>. Its
 Hamming code is <i><u>Y</u></i> = <i><u>X</u></i> * G.
@@ -61,7 +61,7 @@ declares there is an error at the i-th element of <i><u>Y</i></u>.
 <p>
 For more information on Hamming codes, see HammingCoder and Proakis, Digital
 Communications, Fourth Edition, McGraw-Hill, 2001, pp. 448-450.
-<p> 
+<p>
 @author Rachel Zhou
 @version $Id$
 @since Ptolemy II 3.0
@@ -102,14 +102,14 @@ public class HammingDecoder extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
-    /** Integer defining the uncode block size. It should be a positive 
+
+    /** Integer defining the uncode block size. It should be a positive
      *  integer. Its default value is the integer 4.
      */
     public Parameter uncodeBlockSize;
-    
+
     /** Integer defining the Hamming code block size.
-     *  This parameter should be a non-negative integer. 
+     *  This parameter should be a non-negative integer.
      *  Its default value is the integer 7.
      */
     public Parameter codeBlockSize;
@@ -142,12 +142,12 @@ public class HammingDecoder extends Transformer {
                         "uncodeBlockSize must be non-negative.");
             }
             // Set a flag indicating the private variables
-            // _uncodeSizeValue and/or _codeSizeValue is invalid, 
-            // but do not compute the value until all parameters 
+            // _uncodeSizeValue and/or _codeSizeValue is invalid,
+            // but do not compute the value until all parameters
             // have been set.
             _parameterInvalid = true;
             // Set the output production rate.
-            _outputRate.setToken(new IntToken(_uncodeSizeValue)); 
+            _outputRate.setToken(new IntToken(_uncodeSizeValue));
         } else {
             super.attributeChanged(attribute);
         }
@@ -173,7 +173,7 @@ public class HammingDecoder extends Transformer {
             }
 
             _parityMatrix = new int[_uncodeSizeValue][_order];
-            
+
             // Look-up table for correcting one-bit error in Hamming code.
             // The syndrome is expressed by an integer value "i".
             // _index[i] is the position that the one-bit error occurs.
@@ -183,7 +183,7 @@ public class HammingDecoder extends Transformer {
             _index[0] = _codeSizeValue;
             int flag = 0;
             int pos = 0;
-            
+
             // Generate the parity matrix and look-up table.
             for (int i = 1; i <= _codeSizeValue; i ++) {
                 if (i == 1 << flag) {
@@ -209,25 +209,25 @@ public class HammingDecoder extends Transformer {
         for (int i = 0; i < _codeSizeValue; i++) {
             input[i] = ((BooleanToken)inputToken[i]);
         }
-         
+
         // Compute syndrome.
         int[] syndrome = new int[_order];
         // Initialize.
         for (int i = 0; i < _order; i++) {
             syndrome[i] = 0;
         }
-        
+
         int eValue = 0;
         for (int i = 0; i < _order; i++) {
             for (int j = 0; j < _uncodeSizeValue; j++) {
-                syndrome[i] = syndrome[i] ^ 
+                syndrome[i] = syndrome[i] ^
                     ((input[j].booleanValue() ? 1:0) & _parityMatrix[j][i]);
             }
-            syndrome[i] = syndrome[i] ^ 
+            syndrome[i] = syndrome[i] ^
                 (input[i + _uncodeSizeValue].booleanValue() ? 1:0);
             eValue = (eValue << 1) | syndrome[i];
         }
-         
+
         int eIndex = _index[eValue];
         if (eIndex < _uncodeSizeValue) {
             input[eIndex] = new BooleanToken( !input[eIndex].booleanValue());
@@ -235,8 +235,8 @@ public class HammingDecoder extends Transformer {
 
         output.broadcast(input, _uncodeSizeValue);
     }
-    
-    
+
+
     //////////////////////////////////////////////////////////////
     ////           private variables                          ////
 
@@ -248,7 +248,7 @@ public class HammingDecoder extends Transformer {
 
     // Uncode block length.
     private int _uncodeSizeValue;
-    
+
     // Codeword length of the Hamming code.
     private int _codeSizeValue;
 
@@ -257,10 +257,10 @@ public class HammingDecoder extends Transformer {
 
     // Matrix "P".
      private int[][] _parityMatrix;
-    
+
     // Look-up table for correcting one-bit error.
     private int[] _index;
- 
+
     // A flag indicating that the private variable
     // _inputNumber is invalid.
     private transient boolean _parameterInvalid = true;
