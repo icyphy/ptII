@@ -41,6 +41,9 @@
 <entity name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
 </entity>
 
+<entity name="Translate2D" class="ptolemy.domains.gr.lib.Translate2D">
+</entity>
+
 <entity name="KeyInput3D" class="ptolemy.domains.gr.lib.KeyInput3D">
 </entity>
 
@@ -49,6 +52,10 @@
 
 <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
 </entity>
+
+<entity name="ViewScreen2D" class="ptolemy.domains.gr.lib.ViewScreen2D">
+</entity>
+
 
       </group>
     ?>

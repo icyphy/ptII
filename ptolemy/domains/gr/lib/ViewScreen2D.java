@@ -52,6 +52,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 
@@ -65,6 +68,7 @@ A sink actor that renders a two-dimensional scene into a display screen.
 @version $Id$
 @since Ptolemy II 1.0
 */
+//Modified by Ismael M. Sarmiento to center origin.
 public class ViewScreen2D extends GRActor2D
     implements Placeable, ViewScreenInterface {
 
@@ -171,6 +175,8 @@ public class ViewScreen2D extends GRActor2D
         // Repaint the entire canvas.  This ensures that drawing is
         // done correctly, despite the fact that all of the transform
         // calls on figures are happening outside of the swing thread.
+        
+        //updateFigures();
         _canvas.repaint();
     }
 
@@ -252,7 +258,33 @@ public class ViewScreen2D extends GRActor2D
      *  @exception IllegalActionException Always thrown for this base class.
      */
     protected void _addChild(Figure figure) throws IllegalActionException {
+        centerFigure(figure);
         _layer.add(figure);
+    }
+    
+    /** Return a bounding rectangle which centers the figure.
+     * @param figure The figure to be centered.
+     * @return
+     */
+    protected void centerFigure(Figure figure){
+        /*Rectangle2D boundingRectangle = figure.getBounds();
+            
+        ((RectangularShape)(figure).getShape()).setFrame(
+            new Rectangle2D.Double(
+                boundingRectangle.getWidth()/-2.0 + boundingRectangle.getX(),
+                boundingRectangle.getHeight()/-2.0 - boundingRectangle.getY(),
+                boundingRectangle.getWidth(),
+                boundingRectangle.getHeight()));*/
+    }
+    
+    protected void updateFigures()
+    {
+        Figure figure;
+        Iterator figures = _layer.figures();
+        while(figures.hasNext())
+        {
+           centerFigure((Figure)figures.next());
+        }
     }
 
     /** Create the view screen component.  If place() was called with
@@ -295,6 +327,8 @@ public class ViewScreen2D extends GRActor2D
         _container.add("Center", _canvas);
         _canvas.setSize(new Dimension(horizontalDimension,
                                 verticalDimension));
+                                
+        pane.translate(_container.getWidth()/2, _container.getHeight()/2);
     }
 
     /** Setup the scene graph connections of this actor.  
