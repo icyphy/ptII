@@ -1053,7 +1053,7 @@ else
        AC_MSG_RESULT(ok)
        PTJAI_DIR=jai
        # PTJAI_PACKAGES is used in ptII/doc/makefile
-       PTJAI_PACKAGES=ptolemy.actor.lib/jai
+       PTJAI_PACKAGES=ptolemy.actor.lib.jai
     else
        AC_MSG_WARN(['"$JAVAC" JAITest.java' failed.
     perhaps the Java Advanced Imaging API is not installed?
