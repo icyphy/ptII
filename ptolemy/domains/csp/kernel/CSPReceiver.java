@@ -83,6 +83,15 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Reset local flags.
+     *  FIXME
+     */
+    public void clear() {
+        reset();
+        //notifyAll();
+    }
+
+
     /** Get a token from the mailbox receiver and specify a null
      *  Branch to control the execution of this method.
      * @return The token contained by this receiver.
