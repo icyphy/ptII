@@ -38,6 +38,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IODependence;
+import ptolemy.actor.IODependenceOfCompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.data.BooleanToken;
@@ -725,10 +726,6 @@ public class DEDirector extends Director {
      */
     public void invalidateSchedule() {
         _sortValid = -1;
-        IODependence ioDependence = ((Actor)getContainer()).getIODependence();
-        if (ioDependence != null) {
-            ioDependence.invalidate();
-        }
     }
 
     /** Return a new receiver of a type DEReceiver.
@@ -1372,27 +1369,32 @@ public class DEDirector extends Director {
         // director. If there is no such attribute, construct one.
         // The NameDuplicationException shouldn't happen, and is 
         // discarded.
-        IODependence ioDependence = castContainer.getIODependence();
+        IODependence ioDependence = (IODependence) castContainer.getAttribute(
+            "_IODependence", IODependence.class);
         try {
             // When this method _constructDirectedGraph is called, 
             // the ioDependence is either created or updated.
             if (ioDependence == null) {
                 ioDependence = 
-                    new IODependence(castContainer, "_IODependence");
-            } else {
-                ioDependence.inferDependence();
+                    new IODependenceOfCompositeActor(
+                        castContainer, "_IODependence");
             } 
         }catch (NameDuplicationException e) {
             // do nothing.
         }
+         
+        // The IODependence attribute is used to construct
+        // the schedule. If the schedule needs recalculation,
+        // the IODependence also needs recalculation.
+        ioDependence.inValidate();
         
         // FIXME: The following may be a very costly test. 
         // -- from the comments of former implementation. 
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
-        if (ioDependence.containsCyclicLoops()) {
-            Object[] cycleNodes = ioDependence.getCycleNodes();
+        Object[] cycleNodes = ioDependence.getCycleNodes();
+        if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
                 if (cycleNodes[i] instanceof Nameable) {
@@ -1421,7 +1423,8 @@ public class DEDirector extends Director {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // Get the IODependence attribute of current actor.
-            ioDependence = actor.getIODependence();
+            ioDependence = (IODependence) ((NamedObj)actor).getAttribute(
+                "_IODependence", IODependence.class);
             // The following check may not be necessary since the IODependence
             // attribute is constructed before. However, we check
             // it anyway. 
