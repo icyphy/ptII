@@ -30,9 +30,6 @@
 
 package ptolemy.domains.ct.kernel;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
@@ -56,6 +53,12 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
@@ -371,7 +374,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  be scheduled.  To request only a single firing, exactly at
      *  a specified time, then specify null for the first argument.
      *  The first argument is also used for reporting exceptions.
-     *  @param actor The actor that requested the firing.
+     *  @param actor The actor that requested the firing, or null
+     *   to prevent the double firing.
      *  @param time The requested firing time.
      *  @exception IllegalActionException If the time is earlier than
      *   the current time.
@@ -399,27 +403,18 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             }
             _refireActors.add(actor);
         } else {
-            // Otherwise, the fireAt request is in the future. So we
-            // insert future firings into the breakpoint table.
+            // Otherwise, the fireAt request is in the future, or the
+            // actor is null, or the actor is not discrete. So we
+            // insert the time into the breakpoint table.
             // Note that the _breakPoints may be null if an actor calls
             // fireAt() in its constructor.
-            if (_debugging) {
-                String name = "Director";
-                if (actor != null) {
-                    name = ((Nameable)actor).getName();
-                }
-                _debug(name
-                    + " requests refire at future time. Firing will occur at "
-                    + (currentTime - minStep)
-                    + " and "
-                    + currentTime);
-            }
             if (_breakPoints == null) {
                 _breakPoints = new TotallyOrderedSet(
                         new FuzzyDoubleComparator(resolution));
             }
             if (actor != null
-                    && time - minStep > currentTime - resolution) {
+                    && time - minStep > currentTime - resolution
+                    && time < Double.POSITIVE_INFINITY) {
                 // NOTE: The extra firings introduced here will cause all
                 // actors to be fired at the specified times, except discrete
                 // actors whose firing times don't match. This is not
@@ -431,6 +426,25 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 // fire anyway. Another example is Test.  Such actors become
                 // more difficult to use in CT.
                 _breakPoints.insert(new Double(time - minStep));
+                if (_debugging) {
+                    String name = "Director";
+                    if (actor != null) {
+                        name = ((Nameable)actor).getName();
+                    }
+                    _debug(name
+                           + " requests refire at "
+                           + (time - minStep)
+                           + " and "
+                           + time);
+                }
+            } else if (_debugging) {
+                String name = "Director";
+                if (actor != null) {
+                    name = ((Nameable)actor).getName();
+                }
+                _debug(name
+                        + " requests refire at "
+                        + time);
             }
             _breakPoints.insert(new Double(time));
         }
@@ -582,8 +596,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
+        // Record the real time in case we are synchronized to it.
         _timeBase = System.currentTimeMillis();
-        if (_debugging) _debug(getName(), "real starting time = " +  _timeBase);
     }
 
     /** Return true if this is the first iteration after a breakpoint.
@@ -601,6 +616,15 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public final boolean isDiscretePhase() {
         return _discretePhase;
+    }
+
+    /** Return true if the actor has been prefired in the current iteration.
+     *  @param actor The actor about which we are asking.
+     *  @see #setPrefireComplete(Actor)
+     *  @return True if the actor has been prefired.
+     */
+    public boolean isPrefireComplete(Actor actor) {
+        return _prefiredActors.contains(actor);
     }
 
     /** Return a new CTReceiver.
@@ -664,27 +688,54 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         super.preinitialize();
     }
 
-    /** Fire all the actors in the output schedule.
+    /** Clear the set of actors that have been prefired.
+     */
+    public void prefireClear() {
+        _prefiredActors.clear();
+    }
+
+    /** Fire all the actors in the output schedule.  If they have not
+     *  had prefire() called in the current simulation cycle, then first
+     *  call prefire().  The abstract semantics of Ptolemy II require that
+     *  prefire() be called exactly once in an iteration.  This is important
+     *  because, for example, time can only be tested reliably in prefire().
+     *  It indicates the starting point of an integration step.
+     *  During the multiple iterations of fires, time may progress
+     *  in micro steps, depending on the ODE solver used. Hierarchies
+     *  in CT and hybrid systems cases actually rely on this fact to
+     *  control internal step sizes.
      *  @exception IllegalActionException If an actor in the output
      *   schedule throws it.
      */
     public void produceOutput() throws IllegalActionException {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         // Integrators emit output.
-        Iterator integrators =
-                schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while (integrators.hasNext() && !_stopRequested) {
-            CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
-            if (_debugging) _debug("Emit tentative state: "
-                    + ((Nameable)dynamic).getName());
-            dynamic.emitTentativeOutputs();
-        }
         Iterator actors =
                 schedule.get(CTSchedule.OUTPUT_ACTORS).actorIterator();
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor)actors.next();
-            if (_debugging) _debug("Fire output actor: "
-                    + ((Nameable)actor).getName());
+            if (!isPrefireComplete(actor)) {
+                setPrefireComplete(actor);
+                if (_debugging) {
+                    _debug("Prefire output actor: "
+                            + ((Nameable)actor).getName()
+                            + " at time "
+                            + getCurrentTime());
+                }
+                if (!actor.prefire()) {
+                    throw new IllegalActionException((Nameable)actor,
+                    "Actor is not ready to fire. In the CT domain, all "
+                    + "continuous actors should be ready to fire at all "
+                    + " times.\nDoes the actor only operate on sequence "
+                    + "of tokens?");
+                }
+            }
+            if (_debugging) {
+                _debug("Fire output actor: "
+                        + ((Nameable)actor).getName()
+                        + " at time "
+                        + getCurrentTime());
+            }
             actor.fire();
         }
     }
@@ -708,7 +759,19 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) {
+        if (_debugging) {
+            _debug("----- Setting current time to " + newTime);
+        }
         _currentTime = newTime;
+    }
+
+    /** Mark the specified actor as having been prefired in the current
+     *  iteration.
+     *  @see #isPrefireComplete(Actor)
+     *  @param actor The actor about which we are asking.
+     */
+    public void setPrefireComplete(Actor actor) {
+        _prefiredActors.add(actor);
     }
 
     /** Set the suggested next step size. If the argument is
@@ -762,8 +825,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 CTSchedule.CONTINUOUS_ACTORS).actorIterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
+            if (_debugging) _debug("Postfire " + (Nameable)actor);
             actor.postfire();
-            if (_debugging) _debug("postfire " + (Nameable)actor);
         }
     }
 
@@ -907,9 +970,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    // A list of actors that requested to refire at the current time.
+    /** A list of actors that requested to refire at the current time. */
     protected LinkedList _refireActors;
 
     ///////////////////////////////////////////////////////////////////
@@ -917,6 +980,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     // Current ODE solver.
     private ODESolver _currentSolver = null;
+
+    /** Collection of actors that have been prefired(). */
+    private Set _prefiredActors = new HashSet();
 
     // Local copies of parameters.
     private double _startTime;

@@ -73,9 +73,9 @@ A CT (sub)system can be mathematically represented as:<Br>
 where x is the state of the system, u is the input, y is the output,
 f() is the state transition map and g() is the output map.
 <P>
-The system is built by actors. That is, all the functions, f() and g(),
-are built up by chains of actors.  For high order systems,
-x is a vector, which is built up by more than one integrators.
+The system is built using actors. That is, all the functions, f() and g(),
+are built up by chains of actors.  For higher order systems,
+x is a vector, built using more than one integrator.
 In general, actors that have the functionality of integration
 from their inputs to their outputs are called <I>dynamic actors</I>.
 Other actors are called <I>arithmetic actors</I>.
@@ -95,16 +95,15 @@ to remember and restore their states. These actors are called
 <I>stateful actors</I>.
 <P>
 In the continuous time simulation, time progresses in a discrete way.
-The distance between consecutive simulation time points are called
-<I>integration step size</I> or step size, in short. Some actors
-require specific step sizes of the simulation. These actors are
-called <I>step size control actors</I>. Examples of step size
+The distance between consecutive simulation time points is called the
+<I>integration step size</I> or step size, for short. Some actors
+need to be able to control the step sizes in the simulation. These actors
+are called <I>step size control actors</I>. Examples of step size
 control actors include integrators, which control the
 accuracy and speed of numerical ODE solutions, and some event
 generators, which detect events.
 <P>
-To help the scheduling, a system topology is partitioned into
-several clusters:
+To help with scheduling, the actors are partitioned into several clusters:
 the <I>arithmetic actors</I>, the <I>dynamic actors</I>,
 the <I>step size control actors</I>, the <I>sink actors</I>,
 the <I>stateful actors</I>, the <I> event generators</I>,
@@ -114,24 +113,24 @@ to provide the firing sequences for evaluating f() and g().
 It also provides a firing order for all the dynamic actors.
 The firing sequence for evaluating f() is
 called the <I> state transition schedule</I>; the firing
-sequence for evaluating g() is called the <I> output schedule</I>;
+sequence for evaluating g() is called the <I>output schedule</I>;
 and the firing sequence for dynamic actors is called the
 <I>dynamic actor schedule</I>.
 <P>
-The state transition schedule is the actors in f() function sorted
+The state transition schedule is the actors in the f() function sorted
 in the topological order, such that, after the integrators emit their
 state x, a chain of firings according to the schedule evaluates the
 f() function and returns tokens corresponding to dx/dt to the
 integrators.
 <P>
-The output schedule is the actors in g() function sorted in the topological
-order.
+The output schedule is the actors in the g() function sorted in
+their topological order.
 <P>
 The dynamic actor schedule is a list of dynamic actors in their reverse
 topological order.
 <P>
 If there are loops of arithmetic actors or loops of integrators,
-then the (sub)system is not schedulable, and a NotSchedulableException
+then the (sub)system are not schedulable, and a NotSchedulableException
 will be thrown if schedules are requested.
 
 @author Jie Liu
@@ -600,8 +599,8 @@ public class CTScheduler extends Scheduler {
             }
         }
         // Output the signal type resolution result to the debugger.
-        if (_debugging) _debug("Signal Type Resulution Result: {\n",
-            _signalTypeMap.toString(), "}");
+        if (_debugging) _debug("Resolved signal types: {\n"
+                + _signalTypeMap.toString() + "}");
 
         // Now all ports are in the SignalTypes table. We classify
         // continuous and discrete actors.
@@ -1043,16 +1042,20 @@ public class CTScheduler extends Scheduler {
          *   string.
          */
         public String toString() {
-            String string = new String();
+            StringBuffer buffer = new StringBuffer();
             if (_map != null) {
                 Iterator ports = _map.keySet().iterator();
                 while(ports.hasNext()) {
                     IOPort port = (IOPort)ports.next();
                     String type = signalTypeToString(getType(port));
-                    string += port.getFullName() + "::" + type + "\n";
+                    buffer.append("  "
+                           + port.getFullName()
+                           + " :: "
+                           + type
+                           + "\n");
                 }
             }
-            return string;
+            return buffer.toString();
         }
 
         /////////////////////////////////////////////////////////////////

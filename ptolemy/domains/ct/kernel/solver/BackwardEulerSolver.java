@@ -186,6 +186,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
                     CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
             while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
+                _prefireIfNecessary(next);
                 _debug(getFullName() + " Firing..."+
                         ((Nameable)next).getName());
                 next.fire();

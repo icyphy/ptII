@@ -297,8 +297,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
                     " no ODE solver available");
         }
         super.initialize();
-        _tentativeState =
-            ((DoubleToken)initialState.getToken()).doubleValue();
+        _tentativeState = ((DoubleToken)initialState.getToken()).doubleValue();
         _tentativeDerivative = 0.0;
         _state = _tentativeState;
         _derivative = _tentativeDerivative;
@@ -355,8 +354,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Setup the integrator to operate with the current ODE solver.
-     *  This method checks
-     *  if there are enough auxiliary variables in the integrator for the
+     *  This method checks whether
+     *  there are enough auxiliary variables in the integrator for the
      *  current ODE solver. If not, create more auxiliary variables.
      *  This method also adjusts the history information w.r.t. the
      *  current ODE solver and the current step size.

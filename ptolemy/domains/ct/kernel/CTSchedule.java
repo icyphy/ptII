@@ -45,8 +45,8 @@ import ptolemy.kernel.util.NamedObj;
 A schedule for CT models. This class overrides the base class and uses
 an ArrayList implementation for the first level of the schedule, so
 that accessing subschedules takes constant time. A CT schedule is an
-array of LinkedList. The array always have length X, consisting of the
-following entries in that order, (in a type-safe enumeration),
+array of LinkedList. The array always has length X, consisting of the
+following entries in that order (in a type-safe enumeration),
 <pre>
 DISCRETE_ACTORS
 DYNAMIC_ACTORS
@@ -59,7 +59,7 @@ STATE_STEP_SIZE_CONTROL_ACTORS
 WAVEFORM_GENERATORS
 </pre>
 Each entry is a Schedule. Actors
-in the schedules are ordered according to the order they should be
+in the schedule are ordered according to the order they should be
 executed.
 <P>
 A typical use of the schedule is to get one of the subschedules.

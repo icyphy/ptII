@@ -140,16 +140,15 @@ public class CTReceiver extends Mailbox {
                 return super.get();
             } else {
                 throw new InvalidStateException( getContainer(),
-                        "get() is called before the signal type of this port has"
-                        + " been set. This may indicate an error in CTScheduler.");
+                        "get() is called before the signal type of this port"
+                        + " has been set. Bug in CTScheduler?");
             }
         } else {
             throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty discrete CTReceiver.\n"
+                    "Attempt to get data from an empty CTReceiver.\n"
                     + "Are you trying to use a discrete signal "
                     + "to drive a continuous port?");
         }
-
     }
 
     /** Return the signal type of this receiver.
@@ -167,33 +166,6 @@ public class CTReceiver extends Mailbox {
         return true;
     }
 
-    /** FIXME: This is a test implementation that makes hasToken()
-     *  to return true for all continuous port, since the scheduler
-     *  will make them available at the fire() time. However,
-     *  this does not work since trigger ports <i>really</i> have
-     *  no tokens even at the fire() time. So, this method is commented
-     *  out.
-     *  If the receiver is continuous, then always return true; if
-     *  the receiver is discrete, then return true if there is actually
-     *  a token inside the receiver.
-     *  @return True, if the receiver is continuous or if the receiver
-     *  if discrete and there is a token. False, if the receiver is
-     *  discrete, and there is no token.
-
-    public boolean hasToken() {
-        if (_type == CONTINUOUS) {
-            return true;
-        } else if (_type == DISCRETE) {
-            return super.hasToken();
-        } else {
-          throw new InvalidStateException( getContainer(),
-                  "hasToken() is called before the signal type of "
-                  + "this port has been set. "
-                  + "This may indicate an error in CTScheduler.");
-        }
-    }
-     */
-
     /** Put a token into this receiver. If the argument is null,
      *  then this receiver will not contain any token after this method
      *  returns. If the receiver already has a token, then the new token
@@ -204,14 +176,9 @@ public class CTReceiver extends Mailbox {
      *  @exception NoRoomException Not thrown in this base class.
      */
     public void put(Token token) throws NoRoomException{
-        if (hasToken()) {
-            // Remove the token.
-            _token = null;
-        }
+        // Remove any previous token.
+        _token = null;
         super.put(token);
-        // Uncomment the following lines when debugging the receiver.
-        // System.out.println(getContainer().getFullName() +
-        //        " received " + token);
     }
 
     /** Set the signal type of this receiver. This method must be called

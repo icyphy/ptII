@@ -217,8 +217,26 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         while (waveGenerators.hasNext() && !_stopRequested) {
             CTWaveformGenerator generator =
                     (CTWaveformGenerator) waveGenerators.next();
+            if (_debugging) {
+                _debug("Prefire generator actor: "
+                       + ((Nameable)generator).getName()
+                       + " at time "
+                       + getCurrentTime());
+            }
             if (generator.prefire()) {
+                if (_debugging) {
+                    _debug("Fire generator actor: "
+                            + ((Nameable)generator).getName()
+                            + " at time "
+                            + getCurrentTime());
+                }
                 generator.fire();
+                if (_debugging) {
+                    _debug("Postfire generator actor: "
+                            + ((Nameable)generator).getName()
+                            + " at time "
+                            + getCurrentTime());
+                }
                 generator.postfire();
             }
         }
@@ -243,10 +261,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _fireOneIteration();
             if (_isStoppedByEvent()) {
                 if (_debugging) {
-                    _debug(getFullName() + " fire stopped by event.",
-                            "at " + getCurrentTime(),
-                            "request refire at " + getCurrentTime(),
-                            "set Event phase to TRUE");
+                    _debug("Fire stopped by event."
+                            + " at " + getCurrentTime()
+                            + "; request refire at "
+                            + getCurrentTime()
+                            + "; set Event phase to TRUE");
                 }
                 _hasDiscreteEvents = true;
                 //hold Outputs;
@@ -255,10 +274,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             } else if (Math.abs(getCurrentTime()- getIterationEndTime())
                     < getTimeResolution()) {
                 if (_debugging) {
-                    _debug(getFullName() + " fire stopped regularly.",
-                            "at " + getCurrentTime(),
-                            "request refire at " + getIterationEndTime(),
-                            "set Event phase to FALSE");
+                    _debug("Fire stopped normally."
+                            + " at " + getCurrentTime()
+                            + "; request refire at "
+                            + getIterationEndTime()
+                            + "; set Event phase to FALSE");
                 }
                 _hasDiscreteEvents = false;
                 exe.fireAt(container, getIterationEndTime());

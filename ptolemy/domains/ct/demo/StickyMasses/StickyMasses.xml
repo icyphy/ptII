@@ -87,10 +87,16 @@ the modal behavior.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 255.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 299, 819, 459}}">
+    </property>
     <entity name="Plot Positions vs Time" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={435, -10, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -107,18 +113,26 @@ the modal behavior.</text></svg></configure>
 <title>Displacement of Masses</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
-<xRange min="0.010624999999999999" max="50.0"/>
-<yRange min="-0.13549033016777562" max="2.9999997395833335"/>
+<xRange min="0.01" max="50.0"/>
+<yRange min="-0.13549033016777562" max="3.0"/>
 <noGrid/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Sticky Mass model" class="ptolemy.vergil.fsm.modal.ModalModel">
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        </property>
+        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 265.0">
         </property>
@@ -216,6 +230,8 @@ model (double click on that transition to see its actions).</text></svg></config
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 10.0">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 104, 815, 559}}">
+            </property>
             <port name="V1" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
@@ -303,7 +319,7 @@ model (double click on that transition to see its actions).</text></svg></config
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="P1 = p1; P2 = p2">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
@@ -316,6 +332,8 @@ model (double click on that transition to see its actions).</text></svg></config
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = p1; Separate.p2 = p2; Separate.v1 = v1; Separate.v2 = v2">
                 </property>
@@ -337,6 +355,8 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(Force) &gt; Stickiness">
@@ -354,6 +374,8 @@ model (double click on that transition to see its actions).</text></svg></config
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="init.outgoingPort" relation="relation"/>
@@ -631,27 +653,27 @@ of the two masses.</text></svg></configure>
                 </port>
             </entity>
             <relation name="1:_R3" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="20.0, 200.0">
+                <vertex name="vertex0" value="20.0, 200.0">
                 </vertex>
             </relation>
             <relation name="1:_R5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="1:_R8" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="135.0, 365.0">
+                <vertex name="vertex0" value="135.0, 365.0">
                 </vertex>
             </relation>
             <relation name="1:_R6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="310.0, 245.0">
+                <vertex name="vertex0" value="310.0, 245.0">
                 </vertex>
             </relation>
             <relation name="1:_R1" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="1:_R7" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="30.0, 285.0">
+                <vertex name="vertex0" value="30.0, 285.0">
                 </vertex>
             </relation>
             <relation name="1:_R2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="270.0, 140.0">
+                <vertex name="vertex0" value="270.0, 140.0">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -912,23 +934,23 @@ stickiness.</text></svg></configure>
                 </port>
             </entity>
             <relation name="1:_R3" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="100.0, 160.0">
+                <vertex name="vertex0" value="100.0, 160.0">
                 </vertex>
             </relation>
             <relation name="1:relation0" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="32.0, 356.0">
+                <vertex name="vertex1" value="32.0, 356.0">
                 </vertex>
             </relation>
             <relation name="1:_R1" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="160.0, 415.0">
+                <vertex name="vertex0" value="160.0, 415.0">
                 </vertex>
             </relation>
             <relation name="1:_R4" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="230.0, 160.0">
+                <vertex name="vertex0" value="230.0, 160.0">
                 </vertex>
             </relation>
             <relation name="1:relation1" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="31.0, 108.0">
+                <vertex name="vertex1" value="31.0, 108.0">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">

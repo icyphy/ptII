@@ -30,6 +30,7 @@
 
 package ptolemy.domains.ct.kernel;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
@@ -190,7 +191,9 @@ public abstract class ODESolver extends NamedObj {
     }
 
     /** Return true if the state of the system is resolved successfully.
-     *  Different solvers may implement it differently.
+     *  Different solvers may implement it differently. Implementations
+     *  of this method will fire STATE_TRANSITION_ACTORS and
+     *  DYNAMIC actors.
      *
      * @exception IllegalActionException Thrown in derived classes if
      * the exception is thrown by * one of the execution methods of some
@@ -211,6 +214,28 @@ public abstract class ODESolver extends NamedObj {
         _container = dir;
         if (dir != null) {
             workspace().remove(this);
+        }
+    }
+
+    /** If the specified actor has not be prefired() in the current
+     *  iteration, then prefire() it.
+     *  @param actor The actor to prefire().
+     *  @throws IllegalActionException If the actor returns false.
+     */
+    protected void _prefireIfNecessary(Actor actor)
+            throws IllegalActionException {
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir.isPrefireComplete(actor)) {
+            _debug(getFullName()
+                    + " is prefiring: "
+                    + ((Nameable)actor).getName());
+            dir.setPrefireComplete(actor);
+            if (!actor.prefire()) {
+                    throw new IllegalActionException((Nameable)actor,
+                    "Expected prefire() to return true!\n"
+                    + "Perhaps a continuous input is being driven by a "
+                    + "discrete output?");
+            }
         }
     }
 

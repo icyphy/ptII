@@ -265,6 +265,7 @@ public class ExplicitRK23Solver extends ODESolver {
                     CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
             while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
+                _prefireIfNecessary(next);
                 _debug(getFullName() + ": Build integrator history..."
                         +((Nameable)next).getName());
                 next.fire();
@@ -284,6 +285,7 @@ public class ExplicitRK23Solver extends ODESolver {
                 actorIterator();
             while (actors.hasNext()) {
                 Actor next = (Actor)actors.next();
+                _prefireIfNecessary(next);
                 _debug(getFullName(), " firing... ",
                         ((Nameable)next).getName());
                 next.fire();

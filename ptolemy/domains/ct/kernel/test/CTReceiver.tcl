@@ -133,7 +133,7 @@ test CTReceiver-2.4 {take a token twice} {
     $re1 get
     catch {$re1 get} errMsg
     list $errMsg
-} {{ptolemy.actor.NoTokenException: Attempt to get data from an empty discrete CTReceiver.
+} {{ptolemy.actor.NoTokenException: Attempt to get data from an empty CTReceiver.
 Are you trying to use a discrete signal to drive a continuous port?
   in .<Unnamed Object>}}
 

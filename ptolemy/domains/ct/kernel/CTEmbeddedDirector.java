@@ -30,6 +30,7 @@
 package ptolemy.domains.ct.kernel;
 
 import java.util.Iterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -37,10 +38,7 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTEmbeddedDirector
@@ -132,21 +130,20 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  it during one iteration.
      */
     public void fire() throws IllegalActionException {
-        // FIXME: Do we consider the first iteration?
         // Get the inputs if there are any
         CompositeActor container = (CompositeActor)getContainer();
         Director exe = container.getExecutiveDirector();
         _outsideTime = exe.getCurrentTime();
-        if (_debugging) _debug(getName(), "Outside Time = "+ _outsideTime);
+        if (_debugging) _debug("Outside Time: "+ _outsideTime);
         double nextIterationTime = exe.getNextIterationTime();
-        if (_debugging) _debug(getName(), "Next Iteration Time = "
-                + nextIterationTime);
+        if (_debugging) _debug("Next Iteration Time: " + nextIterationTime);
         setCurrentTime(getIterationBeginTime());
         _outsideStepSize = nextIterationTime - getIterationBeginTime();
 
         if (_outsideStepSize == 0) {
-            if (_debugging) _debug(
-                    "Outside step size is 0 so treat this as a breakpoint.");
+            if (_debugging) {
+                _debug("Outside step size is 0 so treat this as a breakpoint.");
+            }
             // it must be a breakpoint now.
             _setCurrentODESolver(getBreakpointSolver());
             _setBreakpointIteration(true);
@@ -176,34 +173,65 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             }
         }
 
-        if (_debugging) _debug(getName(), " at " + getCurrentTime(),
-                " step size is " + getCurrentStepSize(),
-                " breakpoint table contains " + getBreakPoints().toString());
+        if (_debugging) {
+            _debug("Step size is "
+                    + getCurrentStepSize()
+                    + " at "
+                    + getCurrentTime()
+                    + "; breakpoint table contains: "
+                    + getBreakPoints().toString());
+        }
 
         _setDiscretePhase(true);
         Iterator waveGenerators = getScheduler().getSchedule().get(
                 CTSchedule.WAVEFORM_GENERATORS).actorIterator();
         while (waveGenerators.hasNext() && !_stopRequested) {
             CTWaveformGenerator generator =
-                (CTWaveformGenerator) waveGenerators.next();
+                    (CTWaveformGenerator) waveGenerators.next();
+            if (!isPrefireComplete(generator)) {
+                setPrefireComplete(generator);
+                if (_debugging) {
+                    _debug("Prefire generator actor: "
+                            + ((Nameable)generator).getName()
+                            + " at time "
+                            + getCurrentTime());
+                }
+                if (!generator.prefire()) {
+                    throw new IllegalActionException((Nameable)generator,
+                    "Actor is not ready to fire. In the CT domain, all "
+                    + "generator actors should be ready to fire at all "
+                    + " times.\nDoes the actor only operate on sequence "
+                    + "of tokens?");
+                }
+            }
+            if (_debugging) {
+                _debug("Fire generator actor: "
+                        + ((Nameable)generator).getName()
+                        + " at time "
+                        + getCurrentTime());
+            }
             generator.fire();
         }
         _setDiscretePhase(false);
         // continuous phase;
-        if (_debugging) _debug("execute the system from "+
+        if (_debugging) _debug("Execute the system from "+
                 getCurrentTime() + " with step size " + getCurrentStepSize()
                 + " using solver " + getCurrentODESolver().getName());
-        if (_prefireContinuousActors()) {
-            ODESolver solver = getCurrentODESolver();
-            if (!solver.resolveStates()) {
-                _stateAcceptable = false;
-                if (_debugging) _debug(getFullName() + "resolve state failed.");
-            }
-
-            if (_debugging) _debug(getFullName() + " current time after" +
-                    " solver.resolveStates() is " + getCurrentTime());
-            produceOutput();
+        // NOTE: Used to prefire() all actors before any firing.
+        prefireClear();
+        _prefireDynamicActors();
+        ODESolver solver = getCurrentODESolver();
+        if (!solver.resolveStates()) {
+            _stateAcceptable = false;
+            if (_debugging) _debug("Resolve states failed.");
         }
+
+        if (_debugging) {
+            _debug("Current time after" 
+                    + " solver.resolveStates() is "
+                    + getCurrentTime());
+        }
+        produceOutput();
     }
 
     /** Register the break point to this director and to the executive
@@ -324,7 +352,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return True always.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_debugging) _debug(this.getFullName() + "prefire.");
+        if (_debugging) _debug("Director prefire.");
         CompositeActor ca = (CompositeActor) getContainer();
 
         if (!isScheduleValid()) {
