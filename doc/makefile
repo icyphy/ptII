@@ -227,6 +227,7 @@ HYVISUALPACKAGES = \
 			ptolemy.domains.sdf.lib.vq \
 			ptolemy.hsif \
 			ptolemy.media.javasound \
+			ptolemy.util \
 			ptolemy.vergil.fsm.modal
 
 
