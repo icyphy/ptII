@@ -116,12 +116,6 @@ public class DDEGetNToken extends DDEGet {
 		            cnt++;
 			    j = rcvrs[i].length + 1;
 			    finished = true;
-			    /*
-			} else if( rcvr._ignoreNotSeen ) {
-			    System.out.println("_ignoreNotSeen is true");
-			} else if( !rcvr._ignoreNotSeen ) {
-			    System.out.println("_ignoreNotSeen is false");
-			    */
 			}
 		    }
 		    if( finished ) {

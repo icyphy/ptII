@@ -181,7 +181,6 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
 
     set tok1 [java::new ptolemy.data.Token]
     
-    #$actorSend1 setToken $tok1 3.0 0 
     $actorSend1 setToken $tok1 $globalIgnoreTime 0 
     $actorSend1 setToken $tok1 5.0 1 
     $actorSend1 setToken $tok1 7.0 2 

@@ -76,13 +76,25 @@ public class FlowThru extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 	Token token = null;
 	Receiver[][] inRcvrs = input.getReceivers();
+	if( inRcvrs.length == 0 ) {
+	    _continueIterations = false;
+	}
 	for( int i = 0; i < inRcvrs.length; i++ ) {
 	    for( int j = 0; j < inRcvrs[i].length; j++ ) {
 		DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
+		/*
 		System.out.println("\n");
 		System.out.println("\n");
-		System.out.println("#####");
-		System.out.println("DDEPutToken receiver["+i+"]["+j+"];");
+		System.out.println("*****");
+		System.out.println(getName() + ":   receiver["+i+"]["+j+"];");
+		*/
+		/*
+		Thread aThread = Thread.currentThread();
+		if( aThread instanceof DDEThread ) {
+		    Actor actor = ((DDEThread)aThread).getActor();
+		    String name = ((Nameable)actor).getName();
+		}
+		*/
 		if( inRcvr.hasToken() ) {
 		    token = inRcvr.get();
 		    Receiver[][] outRcvrs = output.getRemoteReceivers();
@@ -97,6 +109,7 @@ public class FlowThru extends TypedAtomicActor {
 			}
 		    }
 		} else {
+		    /*
 		    System.out.println("actorThru: Weird error; hasToken=false"); 
 		    Thread thr = Thread.currentThread();
 		    if( thr instanceof DDEThread ) {
@@ -105,9 +118,16 @@ public class FlowThru extends TypedAtomicActor {
                             System.out.println("IGNORE Token not at front");
                         }
 		    }
+		    */
 		}
 	    }
 	}
+    }
+
+    /**
+     */
+    public boolean postfire() throws IllegalActionException {
+	return _continueIterations;
     }
 
     /**
@@ -122,5 +142,6 @@ public class FlowThru extends TypedAtomicActor {
     public TypedIOPort output;
     public TypedIOPort input;
     private int _outChannel = -1;
+    private boolean _continueIterations = true;
 
 }

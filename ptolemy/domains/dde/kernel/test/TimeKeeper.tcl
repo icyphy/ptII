@@ -337,7 +337,39 @@ test TimeKeeper-6.2 {getHighestPriorityTriple - No Simultaneous Events} {
 ######################################################################
 ####
 #
-test TimeKeeper-6.3 {Check resortList} {
+test TimeKeeper-6.3 {getHighestPriorityTriple - Simultaneous Events w/NullToken} {
+    
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
+    set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
+
+    set tok [java::new ptolemy.data.Token]
+    set nullTok [java::new ptolemy.domains.dde.kernel.NullToken]
+
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    $rcvr1 put $tok 5.0
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
+    $rcvr2 put $nullTok 5.0
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
+    $rcvr3 put $tok 6.0
+
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
+
+    $keeper updateRcvrList $rcvr1 
+    $keeper updateRcvrList $rcvr2 
+    $keeper updateRcvrList $rcvr3
+    set newrcvr [$keeper getHighestPriorityReal]
+
+    list [$keeper getCurrentTime] [expr {$rcvr2 == $newrcvr} ]
+
+} {0.0 0}
+
+######################################################################
+####
+#
+test TimeKeeper-7.1 {Check resortList} {
     set actor [java::new ptolemy.actor.TypedAtomicActor] 
     set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
 
@@ -377,7 +409,7 @@ test TimeKeeper-6.3 {Check resortList} {
 ######################################################################
 ####
 #
-test TimeKeeper-7.1 {Check sendOutNullTokens} {
+test TimeKeeper-8.1 {Check sendOutNullTokens} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]

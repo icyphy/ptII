@@ -54,11 +54,12 @@ set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
 set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
 set globalIgnoreTimeRcvr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
 set globalIgnoreTime [java::field $globalIgnoreTimeRcvr IGNORE]
+set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 
 ######################################################################
 ####
 #
-test DDEReceiver-2.3 {Send a NullTokens through FlowThru.} {
+test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
@@ -66,34 +67,41 @@ test DDEReceiver-2.3 {Send a NullTokens through FlowThru.} {
     $toplevel setDirector $dir
     $toplevel setManager $mgr
     
-    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
-    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
+    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 5]
+    set actorSend1 [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend1" 3]
+    set actorSend2 [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend2" 3]
     set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "actorThru"]
 
     set tok1 [java::new ptolemy.data.Token]
-    set nullTok [java::new ptolemy.domains.dde.kernel.NullToken]
-
-    $actorSend setToken $nullTok 5.0 0 
-    $actorSend setToken $tok1 7.0 1
-    $actorSend setToken $tok1 9.5 2
-
+    
+    $actorSend1 setToken $tok1 $globalIgnoreTime 0 
+    $actorSend1 setToken $tok1 5.0 1 
+    $actorSend1 setToken $tok1 7.0 2 
+    
+    $actorSend2 setToken $tok1 4.0 0 
+    $actorSend2 setToken $tok1 6.0 1 
+    $actorSend2 setToken $tok1 8.0 2 
+    
     set rcvrInPort [$actorRcvr getPort "input"]
-    set sendOutPort [$actorSend getPort "output"]
+    set sendOutPort1 [$actorSend1 getPort "output"]
+    set sendOutPort2 [$actorSend2 getPort "output"]
     set thruInPort [$actorThru getPort "input"]
     set thruOutPort [$actorThru getPort "output"]
-
-    $toplevel connect $sendOutPort $thruInPort "rel1"
-    $toplevel connect $thruOutPort $rcvrInPort "rel2"
+    
+    $toplevel connect $sendOutPort2 $thruInPort
+    $toplevel connect $sendOutPort1 $thruInPort
+    $toplevel connect $thruOutPort $rcvrInPort
 
     $mgr run
-
+    
     set time0 [$actorRcvr getAfterTime 0]
     set time1 [$actorRcvr getAfterTime 1]
     set time2 [$actorRcvr getAfterTime 2]
-
-    list $time0 $time1 $time2
-
-} {7.0 9.5 -1.0}
+    set time3 [$actorRcvr getAfterTime 3]
+    set time4 [$actorRcvr getAfterTime 4]
+    
+    list $time0 $time1 $time2 $time3 $time4 
+} {4.0 5.0 6.0 7.0 8.0}    
 
 
 
