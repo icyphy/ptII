@@ -51,6 +51,7 @@ JSRCS =
 JSIMPLE_TESTS = \
 	Event.tcl \
 	ODActor.tcl \
+	ODDirector.tcl \
 	ODIOPort.tcl \
 	ODReceiver.tcl \
 	RcvrTimeTriple.tcl \
