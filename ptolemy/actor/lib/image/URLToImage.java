@@ -35,8 +35,8 @@ import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
+import ptolemy.data.AWTImageToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
@@ -98,7 +98,7 @@ public class URLToImage extends Transformer {
         try {
             URL url = new URL(urlToken.stringValue());
             Image image = new ImageIcon(url).getImage();
-            output.send(0, new ObjectToken(image));
+            output.send(0, new AWTImageToken(image));
         } catch (MalformedURLException ex) {
             throw new IllegalActionException("'" + urlToken.stringValue()
                     + "' is malformed: " + ex);
