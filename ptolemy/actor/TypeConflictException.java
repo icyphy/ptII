@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
+@ProposedRating Green (yuhong@eecs.berkeley.edu)
+@AcceptedRating Green (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -89,7 +89,7 @@ public class TypeConflictException extends KernelException {
     ////                         public methods                    ////
 
     /** Return a list of Inequality instances where type conflicts occurred.
-     *  @return A List.
+     *  @return A List of Inequality instances where type conflicts occurred.
      */
     public List inequalityList() {
 	return _inequalities;

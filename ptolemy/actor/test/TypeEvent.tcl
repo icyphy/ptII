@@ -59,7 +59,7 @@ test TypeEvent-1.0 {Test constructor and toString} {
 
     set event [java::new ptolemy.actor.TypeEvent $port $ti $td]
     $event toString
-} {The type on ..port is changed from int to double}
+} {The type on ..port has changed from int to double}
 
 ######################################################################
 ####

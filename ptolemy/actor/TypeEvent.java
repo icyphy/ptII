@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Green (yuhong@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -89,14 +89,14 @@ public class TypeEvent implements DebugEvent {
     }
 
     /** Return a string description for this type change. The string is
-     *  "The type on <typeable> has been changed from <old type> to <new type>",
+     *  "The type on <typeable> has changed from <old type> to <new type>",
      *  where <typeable> is the name of the Typeable, and <old type> and
      *  <new type> are the string representation of the types.
      *  @return A string description for this type change.
      */
     public String toString() {
-        return "The type on " + getSource().getFullName() + " is changed from "
-	       + _oldType.toString() + " to " + _newType.toString();
+        return "The type on " + getSource().getFullName() + " has changed "
+                + "from " + _oldType.toString() + " to " + _newType.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
