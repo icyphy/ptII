@@ -41,7 +41,7 @@ called Vergil, as shown below:
                    VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "@codeBase@" > \
 	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/fsm/fsm.jar,@domainJar@" > \
+                   VALUE = "@modelJarFiles@" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;jpi-version=1.4.1_02" > \
             <PARAM NAME = "scriptable" VALUE = "false" > \
@@ -60,7 +60,7 @@ called Vergil, as shown below:
             type = "application/x-java-applet;jpi-version=1.4.1_02" \
             code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "@codeBase@" \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/fsm/fsm.jar,@domainJar@" \
+            archive = "@modelJarFiles" \
             width = "600" \
             height = "800" \
             NAME = "@sanitizedModelName@Viewer" background = "#faf0e6" modelURL = "@sanitizedModelName@.xml" controls = "buttons" includeRunPanel = "true"  \
@@ -76,7 +76,7 @@ called Vergil, as shown below:
         <APPLET \
             code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "@codeBase@" \
-            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/vergil/vergilApplet.jar,ptolemy/domains/fsm/fsm.jar,@domainJar@" \
+            archive = "@modelJarFiles@" \
             width = "600" \
             height = "800" \
             > \
