@@ -26,6 +26,26 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">FIXME: This test should use the Test actor</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 50.0">
+        </property>
+    </property>
     <entity name="StringToXml" class="ptolemy.actor.lib.conversions.StringToXml">
         <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 255.0">
         </property>
@@ -56,22 +76,6 @@
             <property name="output"/>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 255.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
@@ -110,12 +114,40 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="ExpressionWriter" class="ptolemy.actor.lib.io.ExpressionWriter">
+        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="System.out">
+        </property>
+        <property name="append" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Write one token per line to a text file as an expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 160.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="ExpressionWriter2" class="ptolemy.actor.lib.io.ExpressionWriter">
+        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="System.out">
+        </property>
+        <property name="append" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Write one token per line to a text file as an expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 315.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="265.0, 255.0">
+        <vertex name="vertex1" value="275.0, 260.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -124,9 +156,9 @@
     <link port="StringToXml.output" relation="relation5"/>
     <link port="Const.output" relation="relation"/>
     <link port="Const.trigger" relation="relation3"/>
-    <link port="Display.input" relation="relation5"/>
-    <link port="Display.input" relation="relation2"/>
     <link port="Clock.output" relation="relation3"/>
     <link port="XSLTransformer.input" relation="relation5"/>
     <link port="XSLTransformer.output" relation="relation2"/>
+    <link port="ExpressionWriter.input" relation="relation5"/>
+    <link port="ExpressionWriter2.input" relation="relation2"/>
 </entity>
