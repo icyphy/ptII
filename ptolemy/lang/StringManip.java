@@ -58,15 +58,15 @@ public class StringManip {
      *  argument character in the argument string. If the
      *  character does not occur, return the whole string.
      */
-    public static final String partAfterLast(String str, char c) {
-        return str.substring(str.lastIndexOf(c) + 1);
+    public static final String partAfterLast(String string, char c) {
+        return string.substring(string.lastIndexOf(c) + 1);
     }
 
     /** Return the substring that precedes the last occurrence of the
      *  argument character in the argument string. If the
      *  character does not occur, return the whole string.
      */
-    public static final String partBeforeLast(String str, char c) {
-        return str.substring(0, str.lastIndexOf(c));
+    public static final String partBeforeLast(String string, char c) {
+        return string.substring(0, string.lastIndexOf(c));
     }
 }

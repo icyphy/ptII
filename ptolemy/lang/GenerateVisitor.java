@@ -119,7 +119,7 @@ public class GenerateVisitor {
 
         if (!visitorOutFile.createNewFile()) {
             visitorOutFile.delete();
-            visitorOutFile = new File(visitorOutFile);
+            visitorOutFile = new File(visitorOutFileName);
             visitorOutFile.createNewFile();
         }
 
@@ -386,8 +386,8 @@ public class GenerateVisitor {
             methodList.addLast(cf);
 
             // add the constructor of the singleton
-            MethodSignature ms = new MethodSignature(typeName);
-            methodList.addLast(ms);
+            MethodSignature methodSignature = new MethodSignature(typeName);
+            methodList.addLast(methodSignature);
 
             // add a isSingleton() method
             methodList.add(new MethodSignature("public final", "boolean",
@@ -534,23 +534,23 @@ public class GenerateVisitor {
                     case 'c':
                     case 'm':
                         {
-                            MethodSignature ms =
+                            MethodSignature methodSignature =
                                 new MethodSignature(markChar, stringTokenizer,
                                         className, _defaultPlacement,
                                         isInterface, isConcrete);
-                            methodList.addLast(ms);
+                            methodList.addLast(methodSignature);
                         }
                         break;
 
                     case 'k':
                         {
-                            MethodSignature ms =
+                            MethodSignature methodSignature =
                                 new MethodSignature(markChar, stringTokenizer,
                                         className, _defaultPlacement,
                                         isInterface, isConcrete);
 
-                            methodList.addLast(ms);
-                            methodList.addAll(ms.accessors());
+                            methodList.addLast(methodSignature);
+                            methodList.addAll(methodSignature.accessors());
                         }
                         break;
 
@@ -654,10 +654,10 @@ public class GenerateVisitor {
                 _name = className;
                 _returnType = "";
 
-                _superParams = Integer.parseInt(stringToken.nextToken());
+                _superParameters = Integer.parseInt(stringToken.nextToken());
 
             } else if (signatureType == 'm') { // method
-                _superParams = 0;
+                _superParameters = 0;
 
                 if (!isInterface) _modifiers += " final";
 
@@ -814,17 +814,17 @@ public class GenerateVisitor {
 
                 StringBuffer stringBuffer = new StringBuffer();
 
-                if (_superParams > 0) {
+                if (_superParameters > 0) {
 
                     Iterator argsIterator = _superArgs.listIterator();
 
                     stringBuffer.append(_IDENT + _IDENT);
                     stringBuffer.append("super(");
 
-                    for (int i = 0; i < _superParams; i++) {
+                    for (int i = 0; i < _superParameters; i++) {
                         stringBuffer.append((String) argsIterator.next());
 
-                        if (i < (_superParams - 1)) {
+                        if (i < (_superParameters - 1)) {
                             stringBuffer.append(", ");
                         }
                     }
@@ -846,7 +846,7 @@ public class GenerateVisitor {
                         char placement =
                             ((Character) variablePlaceIterator.next()).charValue();
 
-                        if (variableCount >= _superParams) {
+                        if (variableCount >= _superParameters) {
 
                             stringBuffer.append(_IDENT);
                             stringBuffer.append(_IDENT);
@@ -990,7 +990,7 @@ public class GenerateVisitor {
                 String nameStr = (String) nameIterator.next();
                 char placement = ((Character) variablePlaceIterator.next()).charValue();
 
-                if (variableCount >= _superParams) {
+                if (variableCount >= _superParameters) {
 
                     switch (placement) {
 
@@ -1089,7 +1089,7 @@ public class GenerateVisitor {
 
         protected int _childListSize = 0; // not currently used
 
-        protected int _superParams = 0;
+        protected int _superParameters = 0;
 
         protected String _methodBody = null;
 

@@ -65,8 +65,8 @@ public abstract class TreeNode extends TrackedPropertyMap
     /** Construct a TreeNode with the specified number of children to be
      *  added to the child list later.
      */
-    public TreeNode(int numChildren) {
-        _childList = new ArrayList(numChildren);
+    public TreeNode(int numberOfChildren) {
+        _childList = new ArrayList(numberOfChildren);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -148,7 +148,6 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  @return The most recent result of visiting the specified child.
      */
     public Object childReturnValueFor(Object child) {
-        Iterator itr = _childList.iterator();
         int index = _childList.indexOf(child);
         if (index >= 0) {
             return childReturnValueAt(index);
@@ -359,14 +358,14 @@ public abstract class TreeNode extends TrackedPropertyMap
 
         try {
             return method.invoke(visitor, _visitArgs);
-        } catch (IllegalAccessException iae) {
+        } catch (IllegalAccessException illegalAccessException) {
             throw new RuntimeException("Illegal access exception " +
                     "invoking method " + _visitMethodName);
-        } catch (InvocationTargetException ite) {
+        } catch (InvocationTargetException invocationTargetException) {
             throw new RuntimeException(
                     "Invocation target exception invoking method "
                     + _visitMethodName + " : target = " +
-                    ite.getTargetException().toString());
+                    invocationTargetException.getTargetException().toString());
         }
         // return null;
     }

@@ -51,27 +51,27 @@ public class TNLManip {
 
     /** Create a new LinkedList with the specified object in it.
      *  If the object is null, then NullValue.instance is inserted instead.
-     *  @param obj The object to prepend.
+     *  @param object The object to prepend.
      *  @return The new list.
      */
-    public static final LinkedList addFirst(Object obj) {
-        return addFirst(obj, new LinkedList());
+    public static final LinkedList addFirst(Object object) {
+        return addFirst(object, new LinkedList());
     }
 
     /** Prepend the specified object to the front of the specified list.
      *  If the object to prepend is null, then NullValue.instance is
      *  prepended instead.
-     *  @param obj The object to prepend.
+     *  @param object The object to prepend.
      *  @param list The list to modify.
      *  @return The modified list.
      */
-    public static final LinkedList addFirst(Object obj, LinkedList list) {
+    public static final LinkedList addFirst(Object object, LinkedList list) {
         // This used to be called cons, but it is not like the Lisp cons,
         // it is destructive.
-        if (obj == null) {
+        if (object == null) {
             list.addFirst(NullValue.instance);
         } else {
-            list.addFirst(obj);
+            list.addFirst(object);
         }
         return list;
     }
@@ -81,17 +81,17 @@ public class TNLManip {
      *  then the corresponding element in the LinkedList will be
      *  NullValue.instance. This method may be used for lists of
      *  any objects, not just nodes of an AST.
-     *  @param objArray The array of objects to convert to a list.
+     *  @param objectArray The array of objects to convert to a list.
      *  @return A new list with the same elements as the array.
      */
-    public static final LinkedList arrayToList(Object[] objArray) {
+    public static final LinkedList arrayToList(Object[] objectArray) {
         LinkedList returnValue = new LinkedList();
-        for (int i = 0; i < objArray.length; i++) {
-            Object obj = objArray[i];
-            if (obj == null) {
+        for (int i = 0; i < objectArray.length; i++) {
+            Object object = objectArray[i];
+            if (object == null) {
                 returnValue.addLast(NullValue.instance);
             } else {
-                returnValue.addLast(objArray[i]);
+                returnValue.addLast(objectArray[i]);
             }
         }
         return returnValue;
@@ -103,19 +103,19 @@ public class TNLManip {
      *  @return A new list.
      */
     public static final List cloneList(List list) {
-        Iterator itr = list.iterator();
+        Iterator iterator = list.iterator();
         ArrayList returnValue = new ArrayList(list.size());
 
-        while (itr.hasNext()) {
-            Object obj = itr.next();
+        while (iterator.hasNext()) {
+            Object object = iterator.next();
 
-            if (obj instanceof TreeNode) {
-                returnValue.add(((TreeNode) obj).clone());
-            } else if (obj instanceof List) {
-                returnValue.add(cloneList((List) obj));
+            if (object instanceof TreeNode) {
+                returnValue.add(((TreeNode) object).clone());
+            } else if (object instanceof List) {
+                returnValue.add(cloneList((List) object));
             } else {
                 throw new RuntimeException("unknown object in list: " +
-                        obj.getClass());
+                        object.getClass());
             }
         }
         return returnValue;
@@ -132,15 +132,15 @@ public class TNLManip {
         System.out.println(prefix + node.getClass().getName());
         if (node instanceof TreeNode) {
             List children = ((TreeNode)node).children();
-            Iterator itr = children.iterator();
-            while (itr.hasNext()) {
-                Object inside = itr.next();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object inside = iterator.next();
                 showTree(inside, prefix + "  ");
             }
         } else if (node instanceof List) {
-            Iterator itr = ((List)node).iterator();
-            while (itr.hasNext()) {
-                Object inside = itr.next();
+            Iterator iterator = ((List)node).iterator();
+            while (iterator.hasNext()) {
+                Object inside = iterator.next();
                 showTree(inside, prefix + "  ");
             }
         }
@@ -168,10 +168,10 @@ public class TNLManip {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("{ \n");
 
-        Iterator itr = list.iterator();
-        while (itr.hasNext()) {
+        Iterator iterator = list.iterator();
+        while (iterator.hasNext()) {
             stringBuffer.append(nextPrefix);
-            Object child = itr.next();
+            Object child = iterator.next();
 
             if (child instanceof TreeNode) {
                 TreeNode childNode = (TreeNode) child;
@@ -209,12 +209,12 @@ public class TNLManip {
         Object returnValue;
         ArrayList retList = new ArrayList(list.size());
 
-        Iterator itr = list.iterator();
-        while (itr.hasNext()) {
-            Object obj = itr.next();
+        Iterator iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Object object = iterator.next();
 
-            if (obj instanceof TreeNode) {
-                TreeNode node = (TreeNode) obj;
+            if (object instanceof TreeNode) {
+                TreeNode node = (TreeNode) object;
 
                 returnValue = node.accept(visitor, args);
 
@@ -224,13 +224,13 @@ public class TNLManip {
                     retList.add(returnValue);
                 }
 
-            } else if (obj instanceof List) {
-                returnValue = traverseList(visitor, args, (List)obj);
+            } else if (object instanceof List) {
+                returnValue = traverseList(visitor, args, (List)object);
 
                 retList.add(returnValue);
             } else {
                 throw new RuntimeException("TNLManip.traverseList(): " +
-                        "unknown object in list: " + obj.getClass());
+                        "unknown object in list: " + object.getClass());
             }
         }
         return retList;

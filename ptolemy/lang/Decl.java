@@ -90,7 +90,7 @@ public abstract class Decl extends TrackedPropertyMap {
     public final String getName() { return _name; }
 
     /** Returns a hash code value for the object. This method is
-     * supported for the benefit of hashtables such as those provided by
+     * supported for the benefit of hash tables such as those provided by
      * java.util.Hashtable.
      */
     public int hashCode() {

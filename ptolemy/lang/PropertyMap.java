@@ -57,25 +57,25 @@ public class PropertyMap implements Cloneable {
      *  @return The new PropertyMap.
      */
     public Object clone() {
-        PropertyMap pm = null;
+        PropertyMap propertyMap = null;
         // There's no reason that clone() should fail, so just catch the
         // theoretical exception.
         try {
-            pm = (PropertyMap) super.clone();
+            propertyMap = (PropertyMap) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("clone not supported on PropertyNode");
         }
 
         // make a shallow copy of keys and values
-        pm._propertyMap = (HashMap) _propertyMap.clone();
-        return pm;
+        propertyMap._propertyMap = (HashMap) _propertyMap.clone();
+        return propertyMap;
     }
 
 
     /** Define a property. Return false if the property is already defined. */
     public boolean defineProperty(Integer property) {
-        Object obj = setProperty(property, NullValue.instance);
-        return (obj == null);
+        Object object = setProperty(property, NullValue.instance);
+        return (object == null);
     }
 
     /** Get a property.
@@ -98,12 +98,12 @@ public class PropertyMap implements Cloneable {
     /** Set a property.
      *  Throw a RuntimeException if the property in not defined.
      */
-    public Object setDefinedProperty(Integer property, Object obj) {
-        if (obj == null) {
-            obj = NullValue.instance;
+    public Object setDefinedProperty(Integer property, Object object) {
+        if (object == null) {
+            object = NullValue.instance;
         }
 
-        Object returnValue = _propertyMap.put(property, obj);
+        Object returnValue = _propertyMap.put(property, object);
 
         if (returnValue == null) {
             throw new RuntimeException("Property " + property +
@@ -120,11 +120,11 @@ public class PropertyMap implements Cloneable {
     /** Set a property.
      *  The property may or may not have been defined already.
      */
-    public Object setProperty(Integer property, Object obj) {
-        if (obj == null) {
-            obj = NullValue.instance;
+    public Object setProperty(Integer property, Object object) {
+        if (object == null) {
+            object = NullValue.instance;
         }
-        return _propertyMap.put(property, obj);
+        return _propertyMap.put(property, object);
     }
 
     /** Remove a property,

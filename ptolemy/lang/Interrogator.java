@@ -50,16 +50,17 @@ public class Interrogator {
      *  the method return value or property value. Use the standard input
      *  stream as the source for property keys to use.
      */
-    public static void interrogate(Object obj) {
-        interrogate(obj, new BufferedReader(new InputStreamReader(System.in)));
+    public static void interrogate(Object object) {
+        interrogate(object,
+                new BufferedReader(new InputStreamReader(System.in)));
     }
 
     /** Allow the user to query methods properties from the object. Then query
      *  the method return value or property value. The user input
      *  BufferedReader is taken from the argument.
      */
-    public static void interrogate(Object obj, BufferedReader reader) {
-        if (obj == null) {
+    public static void interrogate(Object object, BufferedReader reader) {
+        if (object == null) {
             System.out.println("null");
             return;
         }
@@ -68,11 +69,11 @@ public class Interrogator {
         String lineString;
 
         PropertyMap propertyMap =
-            (obj instanceof PropertyMap) ? (PropertyMap) obj : null;
-        Class myClass = obj.getClass();
+            (object instanceof PropertyMap) ? (PropertyMap) object : null;
+        Class myClass = object.getClass();
         String className = myClass.getName();
 
-        System.out.println(obj);
+        System.out.println(object);
 
         do {
 
@@ -93,11 +94,11 @@ public class Interrogator {
                 if (propertyNumber != 0) {
                     // user input was a property number
                     if (propertyMap != null) {
-                        Object childObj = propertyMap.getProperty(
+                        Object childObject = propertyMap.getProperty(
                                 new Integer(propertyNumber));
 
-                        if (childObj != null) {
-                            interrogate(childObj, reader);
+                        if (childObject != null) {
+                            interrogate(childObject, reader);
                         }
                     } else {
                         System.err.println("Cannot retrieve a property of " +
@@ -105,7 +106,7 @@ public class Interrogator {
                     }
                 }
 
-            } catch (NumberFormatException nfe) {
+            } catch (NumberFormatException numberFormatException) {
 
                 // user input was a method or field name
 
@@ -115,27 +116,28 @@ public class Interrogator {
                     // can we use null instead of new Object[0] here?
                     // It doesn't say in the spec for Method.invoke()
                     try {
-                        Object childObj = method.invoke(obj, new Object[0]);
-                        interrogate(childObj, reader);
-                    } catch (IllegalAccessException iae) {
+                        Object childObject = method.invoke(object, new Object[0]);
+                        interrogate(childObject, reader);
+                    } catch (IllegalAccessException illegalAccessException) {
                         System.err.println("Illegal access exception " +
                                 "invoking method " +
                                 lineString);
-                    } catch (InvocationTargetException ite) {
+                    } catch (InvocationTargetException
+                            invocationTargetException) {
                         System.err.println("Invocation target exception " +
                                 " invoking method " + lineString +
                                 " : target = " +
-                                ite.getTargetException().toString());
+                                invocationTargetException.getTargetException().toString());
                     }
-                } catch (NoSuchMethodException nsme) {
+                } catch (NoSuchMethodException noSuchMethodException) {
                     try {
                         Field field = myClass.getField(lineString);
-                        Object childObj = field.get(obj);
-                        interrogate(childObj, reader);
-                    } catch (IllegalAccessException iae) {
+                        Object childObject = field.get(object);
+                        interrogate(childObject, reader);
+                    } catch (IllegalAccessException illegalAccessException) {
                         System.err.println("Illegal access exception " +
                                 "getting field " + lineString);
-                    } catch (NoSuchFieldException nsfe) {
+                    } catch (NoSuchFieldException noSuchFieldException) {
                         System.err.println("no such method or field " +
                                 lineString);
                     }
