@@ -265,7 +265,12 @@ public final class Manager extends NamedObj implements Runnable {
                 "Attempted to call finish on an executing manager with no" +
                 " associated model");
         container.stopFire();
-        resume();
+        if(_state == PAUSED) {
+            _pauseRequested = false;
+	    synchronized(this) {
+		this.notifyAll();
+	    }
+        }
     }
 
     /** Return the top-level composite actor for which this manager
