@@ -44,9 +44,9 @@ $sys setDirector $dedir
 
 set ctsub [java::new ptolemy.actor.TypedCompositeActor $sys CTSubsystem]
 set subout [java::new ptolemy.actor.TypedIOPort $ctsub P1]
-set ptype [java::call Class forName ptolemy.data.DoubleToken]
+#set ptype [java::call Class forName ptolemy.data.DoubleToken]
 $subout makeOutput 1
-$subout setDeclaredType $ptype
+#$subout setDeclaredType $ptype
 set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector CTEmbDIR]
 $ctsub setDirector $ctdir
 
