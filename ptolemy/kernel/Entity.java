@@ -391,7 +391,7 @@ public class Entity extends NamedObj {
      *  @return A unique name.
      */
     public String uniqueName(String prefix) {
-        String candidate = prefix + _uniqueNameIndex++;
+        String candidate = prefix;
         while(getAttribute(candidate) != null
                 || getPort(candidate) != null) {
             candidate = prefix + _uniqueNameIndex++;

@@ -1023,10 +1023,11 @@ public class NamedObj implements Nameable, Debuggable,
      *  so that the returned name is guaranteed to not conflict with
      *  any contained object.
      *  @param prefix A prefix for the name.
-     *  @return A unique name.
+     *  @return A unique name, which will be exactly the prefix if possible,
+     *   or the prefix extended by a number.
      */
     public String uniqueName(String prefix) {
-        String candidate = prefix + _uniqueNameIndex++;
+        String candidate = prefix;
         while(getAttribute(candidate) != null) {
             candidate = prefix + _uniqueNameIndex++;
         }
