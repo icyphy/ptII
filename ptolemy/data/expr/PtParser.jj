@@ -522,7 +522,7 @@ TOKEN : /* function definition */
 
 TOKEN : /* Function names */
 {
-	< ID: ( <LETTER> )+ (["0"-"9", "$", "@"] | <LETTER> )* >
+  	< ID: ( <LETTER> )+ (["0"-"9", "$", "@"] | <LETTER> )* >
   | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
 } 
 
@@ -572,10 +572,9 @@ Map startAssignmentList()             :
     try {
 /*@egen*/
     assignment() {
-        Object node = 
-            (Object) jjtree.popNode();
-        System.out.println("node = " + node);
-        //   map.put(node.getIdentifier(), node);
+        ASTPtAssignmentNode node = 
+            (ASTPtAssignmentNode) jjtree.popNode();
+        map.put(node.getIdentifier(), node);
     } 
     ( <SEPARATOR> assignment() {
         ASTPtAssignmentNode node2 = 
@@ -619,7 +618,7 @@ void assignment()                   :
 {/*@bgen(jjtree) PtAssignmentNode */
     try {
 /*@egen*/
-    identifier() <SETEQUALS> expression()/*@bgen(jjtree)*/
+    assignmentIdentifier() <SETEQUALS> expression()/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -639,7 +638,7 @@ void assignment()                   :
         jjtree.closeNodeScope(jjtn000, true);
       }
     }
-/*@egen*/ 
+/*@egen*/
 }
 
 ASTPtRootNode start()             :
@@ -1773,6 +1772,47 @@ void function()                 :
 /*@egen*/
 }
 
+void assignmentIdentifier()             :
+{/*@bgen(jjtree) PtLeafNode */
+ ASTPtLeafNode jjtn000 = new ASTPtLeafNode(JJTPTLEAFNODE);
+ boolean jjtc000 = true;
+ jjtree.openNodeScope(jjtn000);
+/*@egen*/StringBuffer name;}
+{/*@bgen(jjtree) PtLeafNode */
+    try {
+/*@egen*/
+    <ID> { 
+        // Store the name of this identifier...  This will be the
+        // name of a variable, a constant, or an undefined identifier.
+        // Note that this name is not actually resolved into a value
+        // until the parse tree is evaluated.
+        name = new StringBuffer(token.image);
+    }
+    ("." <ID> {
+        name.append(".");
+        name.append(token.image);
+    })*
+    ("(" <INTEGER> {
+        name.append("(");
+        name.append(token.image);
+        name.append(")");
+    } ")")?/*@bgen(jjtree)*/
+    {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+    }
+/*@egen*/ 
+    { 
+        jjtn000._name = name.toString();
+    }/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+} 
+  
 void identifier()             :
 {/*@bgen(jjtree) PtLeafNode */
   ASTPtLeafNode jjtn000 = new ASTPtLeafNode(JJTPTLEAFNODE);

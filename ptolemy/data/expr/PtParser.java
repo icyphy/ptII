@@ -385,11 +385,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     jjtree.openNodeScope(jjtn000);Map map = new LinkedHashMap();
     try {
       assignment();
-        Object node =
-            (Object) jjtree.popNode();
-        System.out.println("node = " + node);
-        //   map.put(node.getIdentifier(), node);
-
+        ASTPtAssignmentNode node =
+            (ASTPtAssignmentNode) jjtree.popNode();
+        map.put(node.getIdentifier(), node);
       label_1:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -438,7 +436,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      identifier();
+      assignmentIdentifier();
       jj_consume_token(SETEQUALS);
       expression();
     } catch (Throwable jjte000) {
@@ -1731,6 +1729,56 @@ String tidied, x;
     }
   }
 
+  final public void assignmentIdentifier() throws ParseException {
+ /*@bgen(jjtree) PtLeafNode */
+ ASTPtLeafNode jjtn000 = new ASTPtLeafNode(JJTPTLEAFNODE);
+ boolean jjtc000 = true;
+ jjtree.openNodeScope(jjtn000);StringBuffer name;
+    try {
+      jj_consume_token(ID);
+        // Store the name of this identifier...  This will be the
+        // name of a variable, a constant, or an undefined identifier.
+        // Note that this name is not actually resolved into a value
+        // until the parse tree is evaluated.
+        name = new StringBuffer(token.image);
+      label_13:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case 50:
+          ;
+          break;
+        default:
+          jj_la1[32] = jj_gen;
+          break label_13;
+        }
+        jj_consume_token(50);
+        jj_consume_token(ID);
+        name.append(".");
+        name.append(token.image);
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 47:
+        jj_consume_token(47);
+        jj_consume_token(INTEGER);
+        name.append("(");
+        name.append(token.image);
+        name.append(")");
+        jj_consume_token(52);
+        break;
+      default:
+        jj_la1[33] = jj_gen;
+        ;
+      }
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+        jjtn000._name = name.toString();
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+  }
+
   final public void identifier() throws ParseException {
  /*@bgen(jjtree) PtLeafNode */
   ASTPtLeafNode jjtn000 = new ASTPtLeafNode(JJTPTLEAFNODE);
@@ -1773,43 +1821,43 @@ String tidied, x;
       case SEPARATOR:
       case 51:
       case 55:
-        label_13:
+        label_14:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case 51:
             ;
             break;
           default:
-            jj_la1[32] = jj_gen;
-            break label_13;
+            jj_la1[34] = jj_gen;
+            break label_14;
           }
           jj_consume_token(51);
             ++jjtn000._nColumns;
           funcIf();
         }
-        label_14:
+        label_15:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case SEPARATOR:
             ;
             break;
           default:
-            jj_la1[33] = jj_gen;
-            break label_14;
+            jj_la1[35] = jj_gen;
+            break label_15;
           }
           jj_consume_token(SEPARATOR);
             ++nRows; i = 0;
           funcIf();
                                          ++i;
-          label_15:
+          label_16:
           while (true) {
             switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
             case 51:
               ;
               break;
             default:
-              jj_la1[34] = jj_gen;
-              break label_15;
+              jj_la1[36] = jj_gen;
+              break label_16;
             }
             jj_consume_token(51);
             funcIf();
@@ -1834,15 +1882,15 @@ String tidied, x;
         funcIf();
         jj_consume_token(49);
         funcIf();
-        label_16:
+        label_17:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case SEPARATOR:
             ;
             break;
           default:
-            jj_la1[35] = jj_gen;
-            break label_16;
+            jj_la1[37] = jj_gen;
+            break label_17;
           }
           jj_consume_token(SEPARATOR);
             ++nRows;
@@ -1858,7 +1906,7 @@ String tidied, x;
           jjtn000._form = 2; jjtn000._nRows = nRows;
         break;
       default:
-        jj_la1[36] = jj_gen;
+        jj_la1[38] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1894,15 +1942,15 @@ String tidied, x;
         jjtn000._fieldNames.add(x.image);
       jj_consume_token(SETEQUALS);
       funcIf();
-      label_17:
+      label_18:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case 51:
           ;
           break;
         default:
-          jj_la1[37] = jj_gen;
-          break label_17;
+          jj_la1[39] = jj_gen;
+          break label_18;
         }
         jj_consume_token(51);
         x = jj_consume_token(ID);
@@ -1940,15 +1988,15 @@ String tidied, x;
     try {
       jj_consume_token(54);
       funcIf();
-      label_18:
+      label_19:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case 51:
           ;
           break;
         default:
-          jj_la1[38] = jj_gen;
-          break label_18;
+          jj_la1[40] = jj_gen;
+          break label_19;
         }
         jj_consume_token(51);
         funcIf();
@@ -2024,6 +2072,16 @@ String tidied, x;
     return retval;
   }
 
+  final private boolean jj_3_2() {
+    if (jj_scan_token(47)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(FUNCTION)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(47)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
   final private boolean jj_3_7() {
     if (jj_scan_token(FUNCTION)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -2070,16 +2128,6 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3_2() {
-    if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(FUNCTION)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
   public PtParserTokenManager token_source;
   SimpleCharStream jj_input_stream;
   public Token token, jj_nt;
@@ -2089,9 +2137,9 @@ String tidied, x;
   public boolean lookingAhead = false;
   private boolean jj_semLA;
   private int jj_gen;
-  final private int[] jj_la1 = new int[39];
-  final private int[] jj_la1_0 = {0x0,0x3000800,0x0,0x800000,0x400000,0x8000000,0x10000000,0x4000000,0x300000,0x300000,0x8000,0xf0000,0xf0000,0xe0000000,0xe0000000,0xc00,0xc00,0x7000,0x7000,0x3000800,0x0,0x0,0x3000800,0x0,0x0,0x0,0x0,0x0,0x0,0x3000800,0x0,0x3000800,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
-  final private int[] jj_la1_1 = {0x4000,0x6095c1,0x10000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x6095c1,0x40000,0x80000,0x6095c1,0x8000,0x11c1,0x8000,0x400,0x80000,0x400,0x6095c1,0x80000,0x6095c1,0x80000,0x4000,0x80000,0x4000,0x8a4000,0x80000,0x80000,};
+  final private int[] jj_la1 = new int[41];
+  final private int[] jj_la1_0 = {0x0,0x3000800,0x0,0x800000,0x400000,0x8000000,0x10000000,0x4000000,0x300000,0x300000,0x8000,0xf0000,0xf0000,0xe0000000,0xe0000000,0xc00,0xc00,0x7000,0x7000,0x3000800,0x0,0x0,0x3000800,0x0,0x0,0x0,0x0,0x0,0x0,0x3000800,0x0,0x3000800,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+  final private int[] jj_la1_1 = {0x4000,0x6095c1,0x10000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x6095c1,0x40000,0x80000,0x6095c1,0x8000,0x11c1,0x8000,0x400,0x80000,0x400,0x6095c1,0x80000,0x6095c1,0x40000,0x8000,0x80000,0x4000,0x80000,0x4000,0x8a4000,0x80000,0x80000,};
   final private JJCalls[] jj_2_rtns = new JJCalls[7];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
@@ -2102,7 +2150,7 @@ String tidied, x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 39; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 41; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2113,7 +2161,7 @@ String tidied, x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 39; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 41; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2123,7 +2171,7 @@ String tidied, x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 39; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 41; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2134,7 +2182,7 @@ String tidied, x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 39; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 41; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2143,7 +2191,7 @@ String tidied, x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 39; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 41; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2153,7 +2201,7 @@ String tidied, x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 39; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 41; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2268,7 +2316,7 @@ String tidied, x;
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 39; i++) {
+    for (int i = 0; i < 41; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

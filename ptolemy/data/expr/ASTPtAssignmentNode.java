@@ -71,6 +71,12 @@ public class ASTPtAssignmentNode extends ASTPtRootNode {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    public String getAssignment() {
+        ParseTreeWriter writer = new ParseTreeWriter();
+        return getIdentifier() + "=" + 
+            writer.printParseTree(getExpressionTree());
+    }
+
     public String getIdentifier() {
         Node n = jjtGetChild(0);
         if (!(n instanceof ASTPtLeafNode))

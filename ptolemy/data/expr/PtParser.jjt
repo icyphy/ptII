@@ -522,7 +522,7 @@ TOKEN : /* function definition */
 
 TOKEN : /* Function names */
 {
-	< ID: ( <LETTER> )+ (["0"-"9", "$", "@"] | <LETTER> )* >
+  	< ID: ( <LETTER> )+ (["0"-"9", "$", "@"] | <LETTER> )* >
   | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
 } 
 
@@ -566,10 +566,9 @@ Map startAssignmentList() #PtRootNode :
 }
 {
     assignment() {
-        Object node = 
-            (Object) jjtree.popNode();
-        System.out.println("node = " + node);
-        //   map.put(node.getIdentifier(), node);
+        ASTPtAssignmentNode node = 
+            (ASTPtAssignmentNode) jjtree.popNode();
+        map.put(node.getIdentifier(), node);
     } 
     ( <SEPARATOR> assignment() {
         ASTPtAssignmentNode node2 = 
@@ -582,7 +581,7 @@ Map startAssignmentList() #PtRootNode :
 void assignment() #PtAssignmentNode :
 {}
 {
-    identifier() <SETEQUALS> expression() 
+    assignmentIdentifier() <SETEQUALS> expression()
 }
 
 ASTPtRootNode start() #PtRootNode :
@@ -1064,6 +1063,30 @@ void function() #PtFunctionNode :
     "(" [ funcIf() ( "," funcIf() )* ] ")"
 }
 
+void assignmentIdentifier() #PtLeafNode :
+{StringBuffer name;}
+{
+    <ID> { 
+        // Store the name of this identifier...  This will be the
+        // name of a variable, a constant, or an undefined identifier.
+        // Note that this name is not actually resolved into a value
+        // until the parse tree is evaluated.
+        name = new StringBuffer(token.image);
+    }
+    ("." <ID> {
+        name.append(".");
+        name.append(token.image);
+    })*
+    ("(" <INTEGER> {
+        name.append("(");
+        name.append(token.image);
+        name.append(")");
+    } ")")? 
+    { 
+        jjtThis._name = name.toString();
+    }
+} 
+  
 void identifier() #PtLeafNode :
 {}
 {
