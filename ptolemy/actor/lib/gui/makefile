@@ -54,6 +54,7 @@ JSRCS = \
 	Display.java \
 	HistogramPlotter.java \
 	MatrixViewer.java \
+	MatrixVisualizer.java \
 	Plotter.java \
 	SequencePlotter.java \
 	SequenceScope.java \
