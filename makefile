@@ -30,7 +30,8 @@
 ##########################################################################
 
 # Order matters here, tycho depends on pn and tcl.
-DIRS = collections tcl pn pt tycho doc
+# Don't go down into collections, it does not have a makefile
+DIRS = tcl pn pt tycho doc #collections
 
 # Root of Tycho directory
 ROOT =		..
