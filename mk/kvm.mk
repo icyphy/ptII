@@ -66,14 +66,14 @@
 #		If OUTPKG is cg.ramp, then OUTPKG_DIR would be cg/ramp
 # OUTPKG_ROOT   The relative path from OUTPKG to $PTII.
 #		If OUTPKG is cg.ramp, then OUTPKG_ROOT would be ../..
-#
-#
+# OUTPKG_MAIN_CLASS The class that contains the main() method
+#		For example CG_Main
 
-# Comment these out to turn off verbosity, or run
-# make JAVAC_VERBOSE= JAVA_VERBOSE= MAKEPALMAPP_VERBOSE= codegen
-JAVAC_VERBOSE =	-verbose
-JAVA_VERBOSE =	-verbose:class
-MAKEPALMAPP_VERBOSE = -v -v
+# Uncomment these to turn on verbosity, or run
+# make JAVAC_VERBOSE= -verbose JAVA_VERBOSE= -verbose:class MAKEPALMAPP_VERBOSE=" -v -v" codegen
+#JAVAC_VERBOSE =	-verbose
+#JAVA_VERBOSE =	-verbose:class
+#MAKEPALMAPP_VERBOSE = -v -v
 
 # Run the demo via the usual method without any codegen.
 demo_interpreted: $(PTCLASSJAR)
@@ -82,42 +82,57 @@ demo_interpreted: $(PTCLASSJAR)
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS)
 
-codegen: generate_sdf_code compile_codegen preverify build_prc kvm
+codegen: generate_sdf_code compile_codegen preverify build_prc run_codegen kvm
 
-# FIXME: JAVASRC_SKEL_DIR needs to go away.
+# FIXME: JAVASRC_SKELETON_DIR needs to go away.
 # It is the location of the java sources and the .skel files
 # If you don't have these, copy them from /users/ptII/vendors/sun/src/
-JAVASRC_SKEL_DIR=$(PTII)/vendors/sun/src
+# See $PTII/ptolemy/java/lang/makefile
+JAVASRC_SKELETON_DIR=$(PTII)/vendors/sun/src
 
 # Read in SOURCE_SYSTEM_CLASS and generate .java files in $PTII/$(OUTPKG)
-generate_sdf_code: $(JCLASS) $(ROOT)/$(OUTPKG_DIR)/CG_Main.java
-$(ROOT)/$(OUTPKG_DIR)/CG_Main.java:
+generate_sdf_code: $(JCLASS) $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java
+$(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java:
 	@echo "###################################"
 	@echo "# Generating code for $(SOURCE_SYSTEM_CLASS) in $PTII/$(OUTPKG)"
 	@echo "###################################"
-	@if [ ! -d "$(JAVASRC_SKEL_DIR)" ]; then \
-		echo "Warning $(JAVASRC_SKEL_DIR) does not exist"; \
+	@if [ ! -d "$(JAVASRC_SKELETON_DIR)" ]; then \
+		echo "Warning $(JAVASRC_SKELETON_DIR) does not exist"; \
 		echo "Copy the zip file from /users/ptII/vendors/sun/src/"; \
-		echo "See $(PTII)/mk/kvm.mk for details"; \
+		echo "See $PTII/ptolemy/java/lang/makefile for details"; \
 	fi
-	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(JAVASRC_SKEL_DIR)" \
+	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)$(CLASSPATHSEPARATOR)$(KVM_CLASSES)" \
 	$(JAVA) $(JAVA_VERBOSE) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS) \
 		-outdir $(ROOT) -outpkg $(OUTPKG)
 
-# Compile the code in $(PTII)/$(OUTPKG)
+# Compile the codegen kvm code in $(PTII)/$(OUTPKG)
 # Note that we compile without debug as the default
-compile_codegen: $(ROOT)/$(OUTPKG_DIR)/CG_Main.class
-$(ROOT)/$(OUTPKG_DIR)/CG_Main.class: $(ROOT)/$(OUTPKG_DIR)/CG_Main.java
+compile_codegen: $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class
+$(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: \
+			$(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java
 	@echo "###################################"
-	@echo "# Compiling *.java files in $PTII/$(OUTPKG)"
+	@echo "# Compiling codegen kvm *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	$(JAVAC) -g:none $(JAVAC_VERBOSE) \
 		-bootclasspath $(KVM_CLASSES)  \
 		-classpath $(OUTPKG_ROOT) \
-		CG_Main.java)
+		$(OUTPKG_MAIN_CLASS).java)
+
+# Compile the non-codegen kvm code in $(PTII)/$(OUTPKG)
+# Note that we compile without debug as the default
+compile_kvm: 
+	@echo "###################################"
+	@echo "# Compiling non-codegen kvm *.java files in $(PTII)/$(OUTPKG)"
+	@echo "###################################"
+	(cd $(ROOT)/$(OUTPKG_DIR); \
+	$(JAVAC) -g:none $(JAVAC_VERBOSE) \
+		-bootclasspath $(KVM_CLASSES)  \
+		-classpath $(OUTPKG_ROOT) \
+		$(OUTPKG_MAIN_CLASS).java)
+
 
 # Run the kvm preverify tool in $(PTII)/$(OUTPKG)
 # and generate .class files in $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
@@ -153,7 +168,7 @@ build_prc: $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class
 		-version "1.0" \
 		-bootclasspath $(KVM_CLASSES)  \
 		-classpath output \
-		$(OUTPKG).CG_Main)
+		$(OUTPKG).$(OUTPKG_MAIN_CLASS))
 
 # Build the MakePalmApp tool if necessary
 $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class: \
@@ -174,6 +189,11 @@ fix:
 		cp tmp $$files; \
 	done)
 
+run_codegen: 	
+	(cd $(ROOT)/$(OUTPKG_DIR); \
+		$(JAVA) -classpath $(OUTPKG_ROOT) \
+			$(OUTPKG).$(OUTPKG_MAIN_CLASS))
+
 # FIXME: what about Solaris?
 KVM_BINARY = $(KVM_DIR)/kvm/VmWin/build/kvm.exe
 # Run a Java simulator of the Palm
@@ -188,7 +208,7 @@ kvm:
 		(cd $(ROOT)/$(OUTPKG_DIR); \
 			$(KVM_BINARY) -classpath \
 			"$(KVM_CLASSES)$(CLASSPATHSEPARATOR)output" \
-			$(OUTPKG).CG_Main); \
+			$(OUTPKG).$(OUTPKG_MAIN_CLASS)); \
 	fi
 
 clean_codegen: clean
