@@ -42,7 +42,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	wireless
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
