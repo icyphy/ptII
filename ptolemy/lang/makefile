@@ -70,8 +70,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-        GenerateVisitor$ClassField.class \
-        GenerateVisitor$MethodSignature.class \
+        'GenerateVisitor$$ClassField.class' \
+        'GenerateVisitor$$MethodSignature.class' \
 	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)
