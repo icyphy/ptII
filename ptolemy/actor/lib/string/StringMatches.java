@@ -119,6 +119,8 @@ public class StringMatches extends TypedAtomicActor {
     /** Override the base class to compile the regular expression if
      *  it has changed.
      *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the pattern cannot be compiled
+     *  into a regular expression.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

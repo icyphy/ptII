@@ -452,7 +452,9 @@ public class KeyStoreActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return descriptive information about fileOrURL */
+    /** Return descriptive information about fileOrURL.
+     *  @return The description.
+     */
     protected String fileOrURLDescription() {
         if (fileOrURL == null) {
             return "Keystore URL is null";

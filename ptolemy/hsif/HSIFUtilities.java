@@ -73,30 +73,6 @@ public class HSIFUtilities {
         // ensure that the FileWriter exists and is writable before going
         // through the trouble of doing the conversion.
 
-        Document inputDocument = null;
-        try {
-            inputDocument = XSLTUtilities.parse(input);
-        } catch (Exception ex) {
-            // net.sf.saxon.om.DocumentBuilderImpl.parse()
-            // can throw a javax.xml.transform.TransformerException
-            // which extends Exception, but has  IOException as a cause,
-            // so we must catch Exception here, not IOException. 
-
-            // Try it as a jar url
-            try {
-                URL jarURL =
-                    JNLPUtilities.jarURLEntryResource(input);
-                if (jarURL == null) {
-                    throw new Exception("'" + input + "' was not a jar "
-                            + "URL, or was not found");
-                }
-                inputDocument = XSLTUtilities.parse(jarURL.toString());
-            } catch (Exception ex2) {
-                // FIXME: IOException does not take a cause argument
-                throw ex;
-            }
-        }
-
         List transforms = new LinkedList();
 
         // The transform() method will look in the classpath.
@@ -107,10 +83,7 @@ public class HSIFUtilities {
         transforms.add("ptolemy/hsif/xsl/HSIF.xsl");
         transforms.add("ptolemy/hsif/xsl/SlimPreprocessorForLinks.xsl");
 
-        Document outputDocument =
-            XSLTUtilities.transform(inputDocument, transforms);
-
-        fileWriter.write(XSLTUtilities.toString(outputDocument));
+        XSLTUtilities.transform(input, transforms, fileWriter);
 
         // Let the caller close the fileWriter.
         //fileWriter.close();
@@ -139,6 +112,10 @@ public class HSIFUtilities {
      *       /tmp/SwimmingPool_moml.xml
      *  </pre>
      *  will read in SwimmingPool.xml and create SwimmingPool_moml.xml
+     *  @param args An array of Strings.  The first element should
+     *  name a HSIF file to read in, the second should name the MoML
+     *  file to be generated.
+     *  @throws Exception If the conversion fails.
      */
     public static void main(String [] args) throws Exception {
         if (args.length != 2) {

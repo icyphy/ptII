@@ -110,13 +110,14 @@ public class StringToXML extends Transformer{
           catch (Exception e) {
           e.printStackTrace();
           System.out.println("exception is " + e.getClass());
-          System.out.println("### can't construct an XmlToken from: " + in + "\n");
+          System.out.println("### can't construct an XmlToken from: "
+          + in + "\n");
           throw new IllegalActionException(this, e.getMessage());
           }
           output.broadcast(_outToken); */
     }
 
-    /** Return true if there is token at the <i>input<i> input.
+    /** Return true if there is token at the <i>input</i> input.
      *  Otherwise, return false.
      *  @exception IllegalActionException if the superclass throws it.
      */

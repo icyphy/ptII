@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
    It is possible to return the modified transmission properties with
    different record types from the previous transmit property, i.e. some
    record fields may be removed or added. The channel should merge the
-   returned transmission properties with its <i>defaultProperties<i> to
+   returned transmission properties with its <i>defaultProperties</i> to
    make sure that the transmission properties contains at least all the
    fields of the <i>defaultProperties</i>.
    <p>
