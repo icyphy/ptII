@@ -93,7 +93,6 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.actor.util \
 			ptolemy.domains.csp.kernel \
 			ptolemy.domains.csp.lib \
-			ptolemy.domains.ct.gui \
 			ptolemy.domains.ct.kernel \
 			ptolemy.domains.ct.kernel.solver \
 			ptolemy.domains.ct.kernel.util \
@@ -154,7 +153,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/util/*.java \
 			../ptolemy/domains/csp/kernel/*.java \
 			../ptolemy/domains/csp/lib/*.java \
-			../ptolemy/domains/ct/gui/*.java \
 			../ptolemy/domains/ct/kernel/*.java \
 			../ptolemy/domains/ct/kernel/solver/*.java \
 			../ptolemy/domains/ct/kernel/util/*.java \
