@@ -325,7 +325,7 @@ public class CalendarQueue {
         // when the queue is created, we don't know what kind of
         // sort-key implementation we'll get, so can't
         // initialize the zeroRef.
-        // The zero refererence is chosen to be the first entry, while
+        // The zero reference is chosen to be the first entry, while
         // initial bin width is obtained by passing null argument to
         // the getBinWidth() method.
         if (_zeroRef == null) {
@@ -710,7 +710,7 @@ public class CalendarQueue {
             // at each iteration, pick the smallest element among all elements
             // that the old buckets 'head pointer' pointed to.
 
-            // initialize the mininum cell and minimum index.
+            // initialize the minimum cell and minimum index.
             LLCell minCell = null;
             int minIndex = -1;
 
@@ -1019,7 +1019,7 @@ public class CalendarQueue {
                 return null;
         }
 
-        // remove a specific element from the queeu.
+        // remove a specific element from the queue.
         // NOTE: it only removed the first element found from the linked list.
         // More specifically, this element would be the one closest to the
         // head of the linked list.

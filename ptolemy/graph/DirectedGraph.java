@@ -135,7 +135,7 @@ public class DirectedGraph extends Graph {
 
 	int id = _getNodeId(o);
 	Vector nodes = new Vector(_transitiveClosure.length);
-        // Look at the correspoding column.
+        // Look at the corresponding column.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
 	    if (_transitiveClosure[i][id]) {
 		nodes.addElement(_getNodeObject(i));
@@ -177,7 +177,7 @@ public class DirectedGraph extends Graph {
             ids[i] = _getNodeId(objs[i]);
         }
 	Vector nodes = new Vector(_transitiveClosure.length);
-        // Or the correspoding rows.
+        // Or the corresponding rows.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
             boolean orthem = false;
             for (int j = 0;  j < N; j++) {
@@ -273,7 +273,7 @@ public class DirectedGraph extends Graph {
             ids[i] = _getNodeId(objs[i]);
         }
 	Vector nodes = new Vector(_transitiveClosure.length);
-        // Or the correspoding rows.
+        // Or the corresponding rows.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
             boolean orthem = false;
             for (int j = 0;  j < N; j++) {

@@ -56,7 +56,7 @@ nodes of the graph are CPO elements. The CPO does not require the bottom
 element to exist. The call to <code>bottom</code> returns
 <code>null</code> if the bottom element does not exist.
 <p>
-NOTE: This class is a starting point for implementing graph algortihms,
+NOTE: This class is a starting point for implementing graph algorithms,
 more methods will be added.
 
 @author Yuhong Xiong
