@@ -49,12 +49,18 @@ here.</I>
 
 <P>This applet is implemented by
 <TT><A HREF="SigmaDeltaApplet.java">SigmaDeltaApplet.java</A></TT>.
-<P>The simulation consists of a <A HREF="../lib/DEClock.java">Clock</A>
+<P>The simulation consists of a <A HREF="../../ct/lib/CTSin.java">Clock</A>
 Actor, a
-<A HREF="../lib/DERamp.java">Ramp</A> Actor,
+<A HREF="../../ct/lib/CTGain.java">Ramp</A> Actor,
+<A HREF="../../ct/lib/CTAdd.java">Ramp</A> Actor,
+<A HREF="../../ct/lib/CTIntegrator.java">Ramp</A> Actor,
+<A HREF="../../ct/lib/CTZeroOrderHold.java">Ramp</A> Actor,
+<A HREF="../../ct/lib/CTPeriodicalSampler.java">Ramp</A> Actor,
+<A HREF="../../ct/lib/CTPlot.java">Ramp</A> Actor,
 <A HREF="../lib/DEProcessor.java">DEProcessor</A> Actor,
-<A HREF="../lib/InterruptibleServer.java">InterruptibleServer</A> Actor,
+<A HREF="../lib/DEInterruptibleServer.java">DEInterruptibleServer</A> Actor,
 <A HREF="../lib/DESampler.java">DESampler</A> Actor,
+<A HREF="../lib/DESampler.java">DETestLevel</A> Actor,
 and a <A HREF="../lib/DEPoisson.java">DEPoisson</A>
 Actor connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
 <BR>
