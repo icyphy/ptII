@@ -35,6 +35,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.lib.Assertion;
 import ptolemy.actor.lib.Expression;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
@@ -195,6 +196,13 @@ public class CharonCodeGenerator extends Attribute {
 	return agentList;
     }
 
+    // Topology analysis to get the list of assertions.
+    private LinkedList _assertions(CompositeActor actor) throws IllegalActionException {
+	LinkedList assertionList = new LinkedList();
+	assertionList =  (LinkedList) actor.entityList(Assertion.class);
+	return assertionList;
+    }
+
     /** Return a list of source ports connected to this port on the
      *  same layer that can send data to this port.  This includes
      *  output ports that are connected on the outside to this port,
@@ -238,6 +246,7 @@ public class CharonCodeGenerator extends Attribute {
     private String _compositeAgentCode(CompositeActor actor) throws IllegalActionException {
 
 	if (FSMDirector.class.isInstance(actor.getDirector())) {
+//	    System.out.println("in FSM");
 	    return _agentCode(actor);
 	}
 
@@ -499,6 +508,7 @@ public class CharonCodeGenerator extends Attribute {
      */
      private String _agentCode(CompositeActor actor) throws IllegalActionException {
 
+//    System.out.println("dealing with " + actor.getFullName());
 	String codeString = "agent";
 	String parameterString = "";
 	String inputString = "";
@@ -512,7 +522,7 @@ public class CharonCodeGenerator extends Attribute {
 
 	LinkedList parameterList = (LinkedList)actor.attributeList(Parameter.class);
 
-	Parameter invariantPara = (Parameter) actor.getAttribute("_invariant");
+/*	Parameter invariantPara = (Parameter) actor.getAttribute("_invariant");
 	if (invariantPara  != null) {
 	    invariantString = "inv { "
 			    + ((StringToken)invariantPara.getToken()).stringValue()
@@ -521,6 +531,21 @@ public class CharonCodeGenerator extends Attribute {
 	    parameterList.remove(invariantPara);;
 	    //FIXME: it seems that after getAttribute,
 	    //the attribute does not exist?
+	}
+*/
+
+	ListIterator assertions = _assertions(actor).listIterator();
+
+	while (assertions.hasNext()) {
+	  Assertion assertion = (Assertion) assertions.next();
+	  if (invariantString.length() == 0) {
+	    invariantString = "inv { "
+			    + assertion.assertion.getExpression();
+	  } else {
+	    invariantString += " ; "
+			     + assertion.assertion.getExpression();
+	  }
+	  invariantString += " } ";
 	}
 
 	int parameterNumber = parameterList.size();
@@ -627,7 +652,9 @@ public class CharonCodeGenerator extends Attribute {
 
 
 	if (FSMDirector.class.isInstance(actor.getDirector())) {
-	    // mode code generation goes here.
+
+
+    	    // mode code generation goes here.
 	    _modeCode += "mode "
 		       + actor.getName()
 		       + "TopMode"
@@ -660,6 +687,7 @@ public class CharonCodeGenerator extends Attribute {
 		       + "}" + _endLine;
 	}
 
+
         return codeString;
     }
 
@@ -683,9 +711,14 @@ public class CharonCodeGenerator extends Attribute {
         ListIterator stateIterator = fsm.entityList().listIterator();
 
 	while (stateIterator.hasNext()) {
-	    State st = (State) stateIterator.next();
-	    String stParameters = _agentParameters(st, false);
-	    String typedStParameters = _agentParameters(st, true);
+	  State st = (State) stateIterator.next();
+
+
+	  if (st.getRefinement() != null) {
+	    Actor[] refinements = st.getRefinement();
+	    CompositeActor refinement = (CompositeActor) refinements[0];
+	    String stParameters = _agentParameters(refinement, false);
+	    String typedStParameters = _agentParameters(refinement, true);
 	    String flowString = "";
 	    String invariantString = "";
 
@@ -697,16 +730,22 @@ public class CharonCodeGenerator extends Attribute {
 		       + " );"
 		       + _endLine;
 
-	    Actor[] refinements = st.getRefinement();
-	    CompositeActor refinement = (CompositeActor) refinements[0];
+
 
 	    flowString = _graphToText(refinement);
 
-	    Parameter invariantPara = (Parameter) refinement.getAttribute("_invariant");
-	    if (invariantPara  != null) {
+
+	    ListIterator assertions = _assertions(refinement).listIterator();
+	    while (assertions.hasNext()) {
+	      Assertion assertion = (Assertion) assertions.next();
+	      if (invariantString.length() == 0) {
 		invariantString = "inv { "
-				+ ((StringToken)invariantPara.getToken()).stringValue()
-				+ " } ";
+				+ assertion.assertion.getExpression();
+	      } else {
+		invariantString += " ; "
+				 + assertion.assertion.getExpression();
+	      }
+	      invariantString += " } ";
 	    }
 
 	    subModeCode += "mode "
@@ -735,6 +774,7 @@ public class CharonCodeGenerator extends Attribute {
 				+ "  when ( " + guardString + ") " + _endLine
 				+ "  do {}" + _endLine;
 	    }
+	  }
 	}
 
 	_modeCode += transitionString + _endLine;

@@ -714,9 +714,9 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
 	      while (parameters.hasNext()) {
 		String parameter = (String) parameters.next();
 		String referPara = (String) referParas.next();
-		Parameter para = new Parameter(state, parameter);
+		//Parameter para = new Parameter(state, parameter);
 		Parameter refinementPara = new Parameter(stateRefinement, parameter);
-		para.setExpression(referPara);
+		//para.setExpression(referPara);
 		refinementPara.setExpression(referPara);
 	      }
 
@@ -732,7 +732,7 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
 	    fsmTransition.reset.setExpression("true");
 
 	    if (modeState != null) {
-	    System.out.println("what are you doing? " + transition.getState());
+//	    System.out.println("what are you doing? " + transition.getState());
 	      fsmTransition.setActions.setExpression(transition.getNextState() + ".integrator.initialState = " + getOutputs().get(0));
 	    }
 
