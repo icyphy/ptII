@@ -269,6 +269,16 @@ public class Plot extends PlotBox {
 	}
 
         super.init();
+	if (_dataurls != null ) {
+	    // If the pxgraphargs parameter was set, then we might have more
+	    // than one file to plot.
+	    Enumeration urls = _dataurls.elements();
+	    while (urls.hasMoreElements()) {
+		String url = (String) urls.nextElement();
+		if (_debug > 3) System.out.println("Plot: getting "+url);
+		parseFile(url);
+	    }
+	}
     }
 
 	/**
@@ -286,6 +296,9 @@ public class Plot extends PlotBox {
 	throws CmdLineArgException
 	{
         int i = 0, j, argsread;
+	int width = 400;      // Default width of the graph
+	int height = 400;     // Default height of the graph
+
         String arg;
 	String unsupportedOptions[] = {
 	    "-bd", "-bg", "-brb", "-bw", "-fg", "-gw", "-lf", "-lw",
@@ -429,10 +442,30 @@ public class Plot extends PlotBox {
 		    } catch (NumberFormatException e) {
 		    }
 		}
-	    } else if (arg.startsWith("=")) {
- 		// Process =WxH+X+Y
-		// FIXME: need to handle 
-            }
+	    } else {
+		if (arg.startsWith("=")) {
+		    // Process =WxH+X+Y
+		    // Process =WxH+X+Y
+		    int endofheight;
+		    width = (int)Integer.valueOf(arg.substring(1,
+					       arg.indexOf('x'))).intValue();
+		    if (arg.indexOf('+') != -1) {
+			height = 
+			    (int)Integer.valueOf(arg.substring(
+					       arg.indexOf('x')+1,
+					       arg.indexOf('+'))).intValue();
+		    } else {
+			if (arg.length() > arg.indexOf('x')) {
+			    height =
+				Integer.valueOf(arg.substring(
+					       arg.indexOf('x')+1,
+					       arg.length())).intValue();
+			}
+		    }
+		    // FIXME: need to handle X and Y in =WxH+X+Y
+		    continue;
+		}
+	    }
 	    // If we got to here, then we failed to parse the arg 
 	    throw new 
 		CmdLineArgException("Failed to parse `" + arg + "'");
@@ -445,11 +478,20 @@ public class Plot extends PlotBox {
 	// according to the defaults and the values that over rode them
 	setDataurl(dataurl); // Set the dataurl in PlotBox
 	setTitle(title);
+	resize(width,height);
 
-        if (_debug>0) {
+        if (_debug > 0) {
 	    System.err.println("Plot: dataurl = " + dataurl);
 	    System.err.println("Plot: title= " + title);
 	}
+	if (_debug > 3) System.out.println("Plot: argsread = "+ argsread +
+					    " args.length = "+args.length);
+	 // Copy the file names into the _dataurls Vector for use later.
+	 _dataurls = new Vector();
+	 for(i = argsread+1; i < args.length; i++) {
+            if (_debug > 3) System.out.println("Plot: saving "+args[i]);
+	    _dataurls.addElement(args[i]);
+         }
         return argsread;
     }
 
@@ -898,7 +940,6 @@ public class Plot extends PlotBox {
 		}
 	    } 
 	} catch (EOFException e) {}	    
-	setConnected(false);
     }
 
     /**
@@ -1086,7 +1127,6 @@ public class Plot extends PlotBox {
 
 	Vector argvector = new Vector();
 	boolean prependdash = false; // true if we need to add a -
-
 	
 	StringBufferInputStream inp = new StringBufferInputStream(pxgraphargs); // StringBufferInput is deprecated, but StringReader is not in 1.0.2
 
@@ -1167,6 +1207,8 @@ public class Plot extends PlotBox {
     private int _radius = 3;
     private int _diameter = 6;
     
+    private Vector _dataurls = null;
+
     // Information about the previously plotted point.
     private int _prevx[], _prevy[];
     // Maximum number of _datasets.
