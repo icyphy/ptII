@@ -7,21 +7,43 @@
 </HEAD>
 <BODY LINK="#0000ff" VLINK="#800080" BGCOLOR="#faf0e6">
 
-<P><!---@version $Id$--><!---@author--></P>
+<P>
+<!---@version $Id$-->
+<!---@author-->
+</P>
 <H1>Process Network Demo</H1>
 <P><!-- All of the controls of the applet should be visible when the
-applet is displayed on a XGA screen--><!-- The HTML below is for the Java Plugin.  The first 
-=======
-<html>
-<head>
-<title>Compiling NLPs written in Matlab into a Process Network Model</title>
-</head>
+applet is displayed on a XGA screen-->
 <body bgcolor="#FAF0E6" link="#0000FF" vlink="#800080">
-<!-- The HTML below is for the Java Plugin.  The first 
->>>>>>> 1.8
+<!-- 
+     The HTML below is for the Java Plugin.  The first  
      section is for IE, the second is for Netscape
-<<<<<<< QRCompileApplet.htm
- --><OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" width=600 height=600 name="QRCompileApplet" codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0"><PARAM NAME=CODE VALUE=ptolemy.domains.pn.demo.QR.QRCompileApplet.class><PARAM NAME=CODEBASE VALUE=../../../../..><PARAM NAME=ARCHIVE VALUE=" ptolemy/ptsupport.jar, ptolemy/domains/pn/pn.jar, ptolemy/domains/pn/demo/QR/QR.jar"><PARAM NAME="type" VALUE="application/x-java-applet;version=1.2"><PARAM NAME="name" VALUE="QRCompileApplet"><PARAM NAME="background" VALUE="#faf0e6"><PARAM NAME="defaultStopTime" VALUE="100"><EMBED type="application/x-java-applet;version=1.2" code=ptolemy.domains.pn.demo.QR.QRCompileApplet codebase=../../../../.. archive=" ptolemy/ptsupport.jar, ptolemy/domains/pn/pn.jar, ptolemy/domains/pn/demo/QR/QR.jar" name="QRCompileApplet" width=600 height=600 background="#faf0e6" defaultStopTime="100" pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html"><NOEMBED><I>If you were able to run applets, you would have a demo here.</I> </NOEMBED></EMBED></OBJECT>
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" 
+ width=600 height=600 name="QRCompileApplet" 
+ codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME=CODE VALUE=ptolemy.domains.pn.demo.QR.QRCompileApplet.class>
+<PARAM NAME=CODEBASE VALUE=../../../../..>
+<PARAM NAME=ARCHIVE VALUE=" ptolemy/ptsupport.jar, ptolemy/domains/pn/pn.jar, ptolemy/domains/pn/demo/QR/QR.jar">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2"><PARAM NAME="name" VALUE="QRCompileApplet">
+<PARAM NAME="background" VALUE="#faf0e6">
+<PARAM NAME="defaultStopTime" VALUE="100">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2" 
+  code=ptolemy.domains.pn.demo.QR.QRCompileApplet 
+  codebase=../../../../.. 
+  archive="ptolemy/ptsupport.jar, 
+           ptolemy/domains/pn/pn.jar, 
+           ptolemy/domains/pn/demo/QR/QR.jar" 
+  name="QRCompileApplet" 
+  width=600 height=600 background="#faf0e6" 
+  defaultStopTime="100" 
+  pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I> 
+</NOEMBED>
+</EMBED>
+</OBJECT>
 
 <P>
 The above applet shows the result of a Process Network (PN) executing
@@ -111,25 +133,23 @@ Matlab description executes sequentially. </P>
 </P> 
 
 <P>
-In process <A HREF="ND_2.java"><FONT SIZE=2>ND_2</FONT></A>, a large
-matrix is stored that contains 500 real data samples taken from 16
-antennas. From this matrix, the process reads a number of samples (the
-number of antenna's) and sends these samples to either node <A
-HREF="ND_3.java"><FONT SIZE=2>ND_3</FONT></A> or <A
-HREF="ND_4.java"><FONT SIZE=2>ND_4</FONT></A>. This process is
-repeated a number of times, as many times as there will be a
-QR-update. In parallel with process ND_2, process ND_3, and process
+In process <A HREF="ND_2.java">ND_2</A>, a large matrix is stored that
+contains 500 real data samples taken from 16 antennas. From this
+matrix, the process reads a number of samples (the number of
+antenna's) and sends these samples to either node <A
+HREF="ND_3.java">ND_3</A> or <A HREF="ND_4.java">ND_4</A>. This
+process is repeated a number of times, as many times as there will be
+a QR-update. In parallel with process ND_2, process ND_3, and process
 ND_4 execute by reading data from incoming edges and producing data on
 outgoing edges. After the numbers of QR-updates are done, the final
-matrix R is sent to process <A HREF="ND_5.java"><FONT
-SIZE=2>ND_5</FONT></A>, which sends the matrix <I>R</I> to the Plotter
-and the StreamToMatrix actor. The latter one reconstructs from the
-incoming stream a matrix, which is sent to the MatrixViewer to be
-visualized. Process <A HREF="ND_1.java"><FONT SIZE=2>ND_1</FONT></A>
-is used to properly initialize the process network by sending a
-specific number of zeros to either process ND_3 or process ND_4.
+matrix R is sent to process <A HREF="ND_5.java">ND_5</A>, which sends
+the matrix <I>R</I> to the Plotter and the StreamToMatrix actor. The
+latter one reconstructs from the incoming stream a matrix, which is
+sent to the MatrixViewer to be visualized. Process <A
+HREF="ND_1.java">ND_1</A> is used to properly initialize the process
+network by sending a specific number of zeros to either process ND_3
+or process ND_4.
 </P>
-
 
 <P>
 Process networks have the characteristic that they execute in a
