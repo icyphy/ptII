@@ -1,4 +1,4 @@
-/* A TerminalStyle represents a collection of terminals
+/* An Icon is the graphical representation of a schematic entity.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -30,96 +30,115 @@
 
 package ptolemy.schematic.util;
 
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import collections.*;
 import ptolemy.schematic.xml.XMLElement;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// TerminalStyle
+//// XMLIcon
 /**
 
-An TerminalStyle is the graphical representation of a schematic entity.
-TerminalStyles are stored hierarchically in TerminalStyle libraries.  
-Every TerminalStyle has a 
+An icon is the graphical representation of a schematic entity.
+Icons are stored hierarchically in icon libraries.   Every icon has a 
 name, along with a graphical representation.
+
+This icon is for those based on XML.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class TerminalStyle extends PTMLObject {
+public class XMLIcon extends Icon {
 
     /**
-     * Create a new TerminalStyle with the name "TerminalStyle". 
-     * By default, the TerminalStyle contains no graphic
+     * Create a new icon with the name "Icon" in the default workspace.
+     * By default, the icon contains no graphic
      * representations.
      */
-    public TerminalStyle () {
-        this("TerminalStyle");
+    public XMLIcon () 
+        throws NameDuplicationException, IllegalActionException {
+        super();
+        _graphics = (CircularList) new CircularList();
     }
 
-    /**
-     * Create a new TerminalStyle with the given name.
-     * By default, the TerminalStyle contains no graphic
+     /**
+     * Create a new icon with the name "Icon" in the given container.
+     * By default, the icon contains no graphic
      * representations.
      */
-    public TerminalStyle (String name) {
-        super(name);
-        _terminals = (NamedList) new NamedList();
+    public XMLIcon (Entity container) 
+        throws NameDuplicationException, IllegalActionException {
+        super(container);
+        _graphics = (CircularList) new CircularList();
     }
 
-    /**
-     * Add a new Terminal to the TerminalStyle.  The Terminal will be 
-     * added at the end of the current terminals.
-     * @exception NameDuplicationException If an object with the same name as
-     * terminal already exists in the terminal style.
+   /**
+     * Add a new graphic element to the icon. 
      */
-    public void addTerminal (SchematicTerminal t) 
-            throws NameDuplicationException, IllegalActionException {
-        _terminals.append(t);
+    public void addGraphicElement (GraphicElement g) 
+            throws IllegalActionException {
+        _graphics.insertLast(g);
     }
 
     /**
-     * Test if this TerminalStyle contains the given Terminal.
+     * Test if this icon contains a graphic in the
+     * given format.
      */
-    public boolean containsTerminal (SchematicTerminal t) {
-        return _terminals.includes(t);
+    public boolean containsGraphicElement (GraphicElement g) {
+        return _graphics.includes(g);
     }
 
     /**
-     * Return an enumeration over the terminals in this TerminalStyle.
+     * Create a figure based on this icon.
+     */
+    public Figure createFigure() {
+        Enumeration graphics = graphicElements();
+        PaintedFigure figure = new PaintedFigure();
+        while(graphics.hasMoreElements()) {
+            GraphicElement element = (GraphicElement) graphics.nextElement();
+            figure.add(element.getPaintedObject());
+        }
+        return figure;
+    }
+
+    /**
+     * Return an enumeration over the names of the graphics formats
+     * supported by this icon.
      *
-     * @return Enumeration of SchematicTerminals.
+     * @return Enumeration of String.
      */
-    public Enumeration terminals() {
-        return _terminals.elements();
+    public Enumeration graphicElements() {
+        return _graphics.elements();
     }
 
     /**
-     * Remove a graphic element from the TerminalStyle. Throw an exception if
-     * the Terminal is not contained in this TerminalStyle.
+     * Remove a graphic element from the icon. Throw an exception if
+     * the graphic element is not contained in this icon
      */
-    public void removeTerminal (SchematicTerminal t)
+    public void removeGraphicElement (GraphicElement g)
             throws IllegalActionException {
         try {
-            _terminals.remove(t);
+            _graphics.removeOneOf(g);
         }
         catch (NoSuchElementException e) {
-            throw new IllegalActionException("removeTerminal:" +
-                    "Terminal not found in TerminalStyle.");
+            throw new IllegalActionException("removeGraphicElement:" +
+                    "GraphicElement not found in icon.");
         }
     }
-
+    
     /**
-     * Return a string representing this TerminalStyle.
+     * Return a string this representing Icon.
      */
     public String toString() {
-        Enumeration terms = terminals();
+        Enumeration els = graphicElements();
         String str = super.toString() + "(";
-        while(terms.hasMoreElements()) {
-            SchematicTerminal term = (SchematicTerminal) terms.nextElement();
-            str += term.toString();
+        while(els.hasMoreElements()) {
+            GraphicElement g = (GraphicElement) els.nextElement();
+            str += "\n...." + g.toString();
         }
         return str + ")";
     }
@@ -136,28 +155,25 @@ public class TerminalStyle extends PTMLObject {
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int indent, int bracket) {
+    protected String _description(int detail, int indent, int bracket) {
         String result = "";
         if(bracket == 0) 
-            result += super._description(indent, 0);
+            result += super._description(detail, indent, 0);
         else 
-            result += super._description(indent, 1);
-	result += " terminals {\n";
-	Enumeration terminals = terminals();
-        while (terminals.hasMoreElements()) {
-            SchematicTerminal p = (SchematicTerminal) terminals.nextElement();
-            result += p._description(indent + 1, 2) + "\n";
+            result += super._description(detail, indent, 1);
+	result += " graphics {\n";
+	Enumeration graphicElements = graphicElements();
+        while (graphicElements.hasMoreElements()) { 
+            GraphicElement p = (GraphicElement) graphicElements.nextElement();
+            result +=  _getIndentPrefix(indent + 1) + p.toString() + "\n";
         }
 	
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
-        //        result += _getIndentPrefix(indent);
 
         return result;
     }
 
-*/
-    private NamedList _terminals;
-
+    private CircularList _graphics;
 }
 

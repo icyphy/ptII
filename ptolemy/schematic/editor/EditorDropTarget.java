@@ -1,6 +1,5 @@
 package ptolemy.schematic.editor;
 
-import ptolemy.schematic.util.*;
 import diva.graph.*;
 import diva.graph.model.*;
 import java.awt.dnd.*;
@@ -12,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import ptolemy.kernel.util.*;
 
 /**
  * This class provides drag-and-drop support for the
@@ -80,18 +80,19 @@ public class EditorDropTarget extends DropTarget {
          * graph editor.
          */
         public void drop(DropTargetDropEvent dtde) {
-            SchematicEntity data = null;
+            CompositeNode data = null;
 
             if(dtde.isDataFlavorSupported(SchematicPalette.nodeFlavor)) {
                 try {
 		    System.out.println(SchematicPalette.nodeFlavor);
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-		    data = (SchematicEntity)dtde.getTransferable().
+		    data = (CompositeNode)dtde.getTransferable().
 			getTransferData(SchematicPalette.nodeFlavor);
                     System.out.println("Data is [" + data + "]");//DEBUG
                 }
                 catch(Exception e) {
                     System.out.println(e);//DEBUG
+                    e.printStackTrace();
                 }
             }
             else {
@@ -107,9 +108,23 @@ public class EditorDropTarget extends DropTarget {
                 System.out.println("Dropping at " + p); //DEBUG
                 GraphController gc = 
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
-                SchematicEntity entity = new SchematicEntity(data);
-                ((EditorGraphController) gc).addEntity(entity, p.x, p.y);
-                dtde.dropComplete(true); //success!
+                NamedObj semanticObject = (NamedObj) data.getSemanticObject();
+                GraphImpl impl = gc.getGraphImpl();
+                CompositeNode newNode;
+
+                try {
+                    newNode = impl.createCompositeNode(semanticObject.clone());
+                    NamedObj newObject = (NamedObj)newNode.getSemanticObject();
+		    newObject.setName(semanticObject.getName() + 
+				      ((EditorGraphController)gc).createUniqueID());
+		    ((EditorGraphController) gc).addNode(newNode, p.x, p.y);
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw new RuntimeException(ex.getMessage());
+                }
+
+		dtde.dropComplete(true); //success!
             }
         }
 

@@ -30,9 +30,13 @@
 
 package ptolemy.schematic.editor;
 
+import ptolemy.actor.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 import ptolemy.schematic.util.*;
 import ptolemy.schematic.xml.*;
 import ptolemy.gui.*;
+import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*; 
@@ -77,6 +81,10 @@ public class EditorGraphController extends GraphController {
     private SelectionDragger _selectionDragger;
 
     /** The interactor for creating new terminals
+     */
+    private RelationCreator _relationCreator;
+
+     /** The interactor for creating new terminals
      */
     private TerminalCreator _terminalCreator;
 
@@ -124,8 +132,8 @@ public class EditorGraphController extends GraphController {
         ConnectorTarget ct = new PerimeterTarget() {
 	    public boolean accept (Figure f) {
     //		System.out.println(f.getUserObject().toString());
-                return (f.getUserObject() instanceof SchematicTerminal);
-		// FIXME Used needs something like: ||
+                return (f.getUserObject() instanceof Node);
+		                // FIXME Used needs something like: ||
 		// (f instanceof FigureWrapper &&
                 //             ((FigureWrapper)f).getChild().instanceof Node);
             }
@@ -147,8 +155,8 @@ public class EditorGraphController extends GraphController {
     /** Add an entity to this graph editor and render it
      * at the given location.
      */
-    public void addEntity(SchematicEntity entity, double x, double y) {
-	addNode(entity, x, y);
+    //    public void addEntity(SchematicEntity entity, double x, double y) {
+    //	addNode(entity, x, y);
 	
 	/*
 	Enumeration terminals = entity.terminals();
@@ -158,7 +166,7 @@ public class EditorGraphController extends GraphController {
 	    drawNode(terminal, x + terminal.getX(), y + terminal.getY());
 	} 
 	*/       
-    }
+    //    }
 
     /** Add an edge to this graph editor and render it
      * from the given tail node to an autonomous site at the
@@ -190,8 +198,9 @@ public class EditorGraphController extends GraphController {
 
 	ef.route();
         // Add to the graph
-        SchematicGraphImpl impl = (SchematicGraphImpl) getGraphImpl();
-        impl.addEdge(edge, getGraph());
+        // FIXME
+        // SchematicGraphImpl impl = (SchematicGraphImpl) getGraphImpl();
+        // impl.addEdge(edge, getGraph());
     }
 
     /** Add a node to this graph editor and render it
@@ -200,7 +209,7 @@ public class EditorGraphController extends GraphController {
     public void addNode(Node node, double x, double y) {
         // Create a figure for it
         drawNode(node, x, y);
- 
+
         // Add to the graph
         getGraphImpl().addNode(node, getGraph());
     }
@@ -230,7 +239,7 @@ public class EditorGraphController extends GraphController {
         ef.setUserObject(edge);
         ef.setInteractor(getEdgeInteractor());
         layer.add(ef);
-ef.route();
+        ef.route();
     }
 
     /** Draw a node at the given location.
@@ -240,25 +249,27 @@ ef.route();
         Figure nf = getNodeRenderer().render(n);
         nf.setInteractor(getNodeInteractor());
 	getGraphPane().getForegroundLayer().add(nf);
+	
+        if(n instanceof CompositeNode) {
+	    Iterator nodes = ((CompositeNode) n).nodes();
+	    while(nodes.hasNext()) {
+		Node node = (Node) nodes.next();
+		Figure nodeFigure = getNodeRenderer().render(node);
+		nodeFigure.setInteractor(getNodeInteractor());
 
-	if(n instanceof SchematicEntity) {
-	    Enumeration terminals = ((SchematicEntity) n).terminals();
-	    while(terminals.hasMoreElements()) {
-		SchematicTerminal terminal = 
-		    (SchematicTerminal) terminals.nextElement();
-		Figure terminalFigure = getNodeRenderer().render(terminal);
-		terminalFigure.setInteractor(getNodeInteractor());
+                // Assume that CompositeNode -> CompositeFigure
+		((CompositeFigure)nf).add(nodeFigure);
 
-		((CompositeFigure)nf).add(terminalFigure);
-		CanvasUtilities.translateTo(terminalFigure, 
-					  terminal.getX(), 
-					  terminal.getY());
+                //FIXME Where to put the damned things?
+                //		CanvasUtilities.translateTo(nodeFigure, 
+		//			  terminal.getX(), 
+		//			  terminal.getY());
 
-		terminalFigure.setUserObject(terminal);
-		terminal.setVisualObject(terminalFigure);
+		nodeFigure.setUserObject(node);
+		node.setVisualObject(nodeFigure);
 	    }
-	}
-
+        }
+	
         CanvasUtilities.translateTo(nf, x, y);
  
         // Add to the view and model
@@ -269,9 +280,9 @@ ef.route();
     /**
      * Return the graph being viewed.
      */
-    public Graph getGraph() {
-        return _graph;
-    }
+    //    public Graph getGraph() {
+    //    return _graph;
+    //}
 
     /**
      * Initialize all interaction on the graph pane. This method
@@ -288,13 +299,18 @@ ef.route();
         _selectionDragger.addSelectionInteractor(getEdgeInteractor());
         _selectionDragger.addSelectionInteractor(getNodeInteractor());
 
+        // Create a listener that creates new relations
+        _relationCreator = new RelationCreator();
+        _relationCreator.setMouseFilter(_shiftFilter);
+        pane.getBackgroundEventLayer().addInteractor(_relationCreator);
+
         // Create a listener that creates new terminals
         _terminalCreator = new TerminalCreator();
         _terminalCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_terminalCreator);
 
         // Create the interactor that drags new edges.
-        _edgeCreator = new EdgeCreator();
+	_edgeCreator = new EdgeCreator();
         _edgeCreator.setMouseFilter(_controlFilter);
         getNodeInteractor().addInteractor(_edgeCreator);
 
@@ -312,8 +328,8 @@ ef.route();
      * and it contains data, delete the figures of that graph's
      * nodes and edges (but don't modify the graph itself).
      */
-    public void setGraph(Graph graph) {
-        Schematic g = (Schematic) graph;
+    /*    public void setGraph(Graph graph) {
+        //        Schematic g = (Schematic) graph;
         Figure f;
         Node n;
         Edge e;
@@ -374,6 +390,7 @@ ef.route();
         // Set the graph
         _graph = g;
     }
+    */
 
     ///////////////////////////////////////////////////////////////
     //// TerminalCreator
@@ -384,7 +401,52 @@ ef.route();
      */
     protected class TerminalCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
-            Node n = getGraphImpl().createNode(null);
+	    Graph graph = getGraph();
+	    CompositeEntity toplevel = 
+		(CompositeEntity)graph.getSemanticObject();
+	    Port port;
+	    if(toplevel == null) 
+		port = new Port();
+	    else { 
+		try {
+		    port = toplevel.newPort(createUniqueName("port"));
+		}
+		catch (Exception ex) {
+		    ex.printStackTrace();
+		    throw new RuntimeException(ex.getMessage());
+		}
+	    }
+            Node n = getGraphImpl().createNode(port);
+            addNode(n, e.getLayerX(), e.getLayerY());
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////
+    //// RelationCreator
+
+    /** An inner class that places a relation at the clicked-on point
+     * on the screen, if shift-clicked with mouse button 1. This
+     * needs to be made more customizable.
+     */
+    protected class RelationCreator extends AbstractInteractor {
+        public void mousePressed(LayerEvent e) {
+	    Graph graph = getGraph();
+	    CompositeEntity toplevel = 
+		(CompositeEntity)graph.getSemanticObject();
+	    Relation relation = null;
+            VertexAttribute vertex = null;
+            try {                
+                relation = 
+                    toplevel.newRelation(createUniqueName("relation"));
+                vertex = new VertexAttribute(relation, 
+                        createUniqueName("vertex"), 
+                        e.getX(), e.getY());
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex.getMessage());
+            }
+            Node n = getGraphImpl().createNode(vertex);
             addNode(n, e.getLayerX(), e.getLayerY());
         }
     }
@@ -429,14 +491,27 @@ ef.route();
         public void mousePressed(LayerEvent e) {
             Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
-	    // System.out.println(((PTMLObject)sourcenode).description());
-	    if(!(sourcenode instanceof SchematicTerminal)) return;
+	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
+
+            if(!(sourceObject instanceof VertexAttribute)) return;
+	    System.out.println(sourceObject.description());
 
             FigureLayer layer = (FigureLayer) e.getLayerSource();
-
+            
             // Create a new edge
-            Edge edge = getGraphImpl().createEdge(null);
-
+            CompositeEntity container = 
+                (CompositeEntity)getGraph().getSemanticObject();
+            /*            LinkAttribute link;
+            try {
+                link = new LinkAttribute(container, 
+                        createUniqueName("Relation"));
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex.getMessage());
+                }*/
+            Edge edge = getGraphImpl().createEdge(null);	    
+            
             // Add it to the editor
             addEdge(edge,
                     sourcenode,
@@ -453,35 +528,29 @@ ef.route();
             layer.grabPointer(e, gh);
         }
     }
-
+    
     /** An interactor that creates context-sensitive menus.
      */
     protected class MenuCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
             Figure source = e.getFigureSource();
             if(source == null) {
-                Schematic schematic = (Schematic) getGraph();
+                Graph graph = getGraph();
+                NamedObj object = (NamedObj) graph.getSemanticObject();
                 JPopupMenu menu = 
-                    new SchematicContextMenu(schematic);
+                    new ObjectContextMenu(object);
                 menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
             }
             else {
                 Node sourcenode = (Node) source.getUserObject();
-                if(sourcenode instanceof SchematicEntity) {
-                    JPopupMenu menu = 
-                        new ObjectContextMenu((PTMLObject)sourcenode);
-                    menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
-                }
-                if(sourcenode instanceof SchematicTerminal) {
-                    // FIXME find the right port to set parameters on.
-                    JPopupMenu menu = 
-                        new ObjectContextMenu((PTMLObject)sourcenode);
-                    menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
-                }
+                NamedObj object = (NamedObj) sourcenode.getSemanticObject();
+                JPopupMenu menu = 
+                    new ObjectContextMenu(object);
+                menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
             }
         }
     }
-
+    
     /**
      * This is a base class for popup menus used to manipulate various
      * PTMLObjects within the editor.  It contains an entry for parameter
@@ -490,9 +559,9 @@ ef.route();
      * of an object.  
      */
     public class ObjectContextMenu extends JPopupMenu {
-        protected PTMLObject _target;
+        protected NamedObj _target;
         
-        public ObjectContextMenu(PTMLObject target) {
+        public ObjectContextMenu(NamedObj target) {
             super(target.getName());
             _target = target;
             
@@ -501,13 +570,18 @@ ef.route();
                 public void actionPerformed(ActionEvent e) {
                     // Create a dialog and attach the dialog values 
                     // to the parameters of the object                    
-                    PTMLObject object = (PTMLObject) getValue("target");
+                    NamedObj object = (NamedObj) getValue("target");
                     System.out.println(object);
                     JFrame frame = new JFrame("Parameters for " + object.getName());
                     JPanel pane = (JPanel) frame.getContentPane();
-                    
-                    Query query = new ParameterQuery(object);
-                    
+                    Query query;
+                    try {
+                        query = new ParameterQuery(object);
+                    } catch (IllegalActionException ex) {
+                        ex.printStackTrace();
+                        throw new RuntimeException(ex.getMessage());
+                    }
+
                     pane.add(query);
                     frame.setVisible(true);
                     frame.pack();
@@ -521,7 +595,7 @@ ef.route();
         }
     }
 
-    public class SchematicContextMenu extends ObjectContextMenu {
+    /*    public class SchematicContextMenu extends ObjectContextMenu {
         public SchematicContextMenu(Schematic target) {
             super(target);
 
@@ -550,5 +624,17 @@ ef.route();
             action.putValue("menuItem", item);           
         }
     }
+    */
+    
+    public String createUniqueName(String root) {
+	String name = root + _uniqueID++;
+	return name;
+    }
+
+    public int createUniqueID() {
+	return _uniqueID++;
+    }
+    
+    private int _uniqueID = 1;
 }
 

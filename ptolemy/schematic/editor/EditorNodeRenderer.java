@@ -40,6 +40,9 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 import javax.swing.SwingConstants;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.moml.*;
 import ptolemy.schematic.util.*;
 
 /**
@@ -72,28 +75,26 @@ public class EditorNodeRenderer implements NodeRenderer {
      */
     public Figure render(Node n) {
         Figure figure;
-	if(n instanceof SchematicEntity) {
-	    SchematicEntity entity = (SchematicEntity) n;
-	    Icon icon = entity.getIcon();	    
-            Figure background = icon.createFigure();
+	NamedObj object = (NamedObj)n.getSemanticObject();
+	
+	if(object == null) {
+	    figure = new BasicRectangle(-2, -2, 4, 4, Color.red);
+	} else if(object instanceof Entity) {
+	    BasicCompositeNode node = (BasicCompositeNode) n;
+	    Entity entity = (Entity)object;
+            Icon icon = (Icon)entity.getAttribute("Icon");
+            //           Figure background = new BasicRectangle(-10, -10, 20, 20, Color.red);
+            //icon.createFigure();
+	    Figure background = icon.createFigure(); 
 	    figure = new CompositeFigure(background);
             LabelFigure label = new LabelFigure(entity.getName());
             label.setSize(10);
             ((CompositeFigure)figure).add(label);
-	    //Enumeration terminals = entity.terminals();
-	    //while(terminals.hasMoreElements()) {
-	    //	SchematicTerminal terminal = 
-	    // 	    (SchematicTerminal) terminals.nextElement();
-	    //	Figure terminalFigure = render(terminal);
-	    //	terminalFigure.setUserObject(terminal);
-	    //	((IconFigure)figure).addTerminal(
-	    //	    terminalFigure, SwingConstants.NORTH, 50);
-	    //}
-	    //	    double scale = getCompositeScale();
-	    //figure.getTransformContext().getTransform().scale(scale, scale);
-	}
-	else if(n instanceof SchematicTerminal) {
+	    
+	} else if(object instanceof Port) {
 	    figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
+	} else if(object instanceof VertexAttribute) {
+	    figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
 	} else {
 	    figure = new BasicRectangle(-2, -2, 4, 4, Color.red);
 	}

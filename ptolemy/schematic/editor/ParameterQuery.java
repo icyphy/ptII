@@ -30,6 +30,8 @@
 
 package ptolemy.schematic.editor;
 
+import ptolemy.kernel.util.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.schematic.util.*;
 import ptolemy.schematic.xml.*;
 import ptolemy.gui.*;
@@ -63,15 +65,19 @@ import javax.swing.event.*;
  */
 
 public class ParameterQuery extends Query implements QueryListener {
-    public ParameterQuery(PTMLObject target) {
+    public ParameterQuery(NamedObj target) 
+        throws IllegalActionException {
         _target = target;
-        Enumeration parameters = target.deepParameters();
+        Enumeration parameters = target.getAttributes();
         setTextWidth(20);
         while(parameters.hasMoreElements()) {
-            SchematicParameter param = 
-                (SchematicParameter) parameters.nextElement();
-            addLine(param.getName(), param.getName(), 
-                    param.getValue());
+            Attribute attribute = (Attribute)parameters.nextElement();
+            if(attribute instanceof Parameter) {
+                Parameter param = 
+                    (Parameter) parameters.nextElement();
+                addLine(param.getName(), param.getName(), 
+                        param.getToken().stringValue());
+            }
         }
         addQueryListener(this);
     }
@@ -81,14 +87,13 @@ public class ParameterQuery extends Query implements QueryListener {
      *  @param name The name of the entry.
      */
     public void changed(String name) {
-        try {
-            String value = stringValue(name);
-            _target.setParameter(name, value);
-        } 
-        catch (ptolemy.kernel.util.IllegalActionException e) {
-            e.printStackTrace();
+        String value = stringValue(name);
+        Attribute attribute = _target.getAttribute("name");
+        if(attribute instanceof Parameter) {
+            Parameter param = (Parameter) attribute;
+            param.setExpression(value);
         }
     }
     Query _query;
-    PTMLObject _target;
+    NamedObj _target;
 }

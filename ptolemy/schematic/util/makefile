@@ -48,26 +48,29 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	EntityLibrary.java \
 	EnumerationIterator.java \
 	GraphicElement.java \
 	Icon.java \
 	IconLibrary.java \
-	PTMLObject.java \
-	PTMLObjectFactory.java \
-	PTMLTemplateObject.java \
-	PtolemyModelFactory.java \
-	Schematic.java \
-	SchematicDirector.java \
-	SchematicEntity.java \
-	SchematicGraphImpl.java \
-	SchematicLink.java \
-	SchematicParameter.java \
-	SchematicPort.java \
-	SchematicRelation.java \
-	SchematicTerminal.java \
-	TerminalMap.java \
-	TerminalStyle.java	
+	IconLibraryFactory.java \
+	XMLIcon.java	
+
+#	EntityLibrary.java \
+#	IconLibrary.java \
+#	PTMLObject.java \
+#	PTMLObjectFactory.java \
+#	PTMLTemplateObject.java \
+#	PtolemyModelFactory.java \
+#	Schematic.java \
+#	SchematicDirector.java \
+#	SchematicEntity.java \
+#	SchematicGraphImpl.java \
+#	SchematicLink.java \
+#	SchematicParameter.java \
+#	SchematicPort.java \
+#	SchematicRelation.java \
+#	SchematicTerminal.java \
+
 
 EXTRA_SRCS =	$(JSRCS)
 

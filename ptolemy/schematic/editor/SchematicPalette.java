@@ -30,6 +30,7 @@
 
 package ptolemy.schematic.editor;
 
+import ptolemy.kernel.*;
 import ptolemy.schematic.util.*;
 import java.io.*;
 import java.awt.*;
@@ -67,7 +68,7 @@ public class SchematicPalette extends JGraph {
     public SchematicPalette() {
         super();
 	_controller = new PaletteController(this);
-	GraphPane pane = new GraphPane(_controller, new SchematicGraphImpl());
+	GraphPane pane = new GraphPane(_controller, new BasicGraphImpl());
 	setGraphPane(pane);
 	makeDraggable(this);
 
@@ -75,6 +76,12 @@ public class SchematicPalette extends JGraph {
 
     public void addNode(Node n, double x, double y) {
 	_controller.addNode(n, x, y);
+    }
+
+    public void addEntity(Entity e, double x, double y) {
+        Node node = new BasicCompositeNode();
+	node.setSemanticObject(e);
+        _controller.addNode(node, x, y);
     }
 
     public Node getDraggedNode() {
@@ -285,7 +292,8 @@ public class SchematicPalette extends JGraph {
 		NodeTransferable transferable = 
 		    new NodeTransferable(_palette.getDraggedNode()); 
 
-                System.out.println(((SchematicEntity) _palette.getDraggedNode()).description());
+                Node node = _palette.getDraggedNode();
+                //System.out.println(((Entity)node.getSemanticObject()).description());
 
 		//initial cursor, transferable, dsource listener 
 		e.startDrag(DragSource.DefaultCopyNoDrop, 
@@ -312,7 +320,7 @@ public class SchematicPalette extends JGraph {
     //                      Data Members                         //
     public static final DataFlavor nodeFlavor = 
 	new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + 
-		       "ptolemy.diva.graph.Node", "divanode");
+		       "diva.graph.Node", "divanode");
 
     private Node _draggedNode;
     private PaletteController _controller;

@@ -52,23 +52,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = 
-# \
-	Domain.java \
-	DomainLibrary.java \
-	EntityType.java \
-	Icon.java \
-	IconLibrary.java \
-	PtolemySystem.java \
-	PTMLParser.java \
-	PTMLPrinter.java \
-	Schematic.java \
-	SchematicElement.java \
-	SchematicEntity.java \
-	SchematicLayout.java \
-	SchematicParameter.java \
-	SchematicPort.java \
-	SchematicRelation.java \
-	XMLElement.java
 
 EXTRA_SRCS =	$(JSRCS)
 

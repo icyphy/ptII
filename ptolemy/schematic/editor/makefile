@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	EditorDropTarget.java \
 	EditorGraphController.java \
+	EditorGraphImpl.java \
 	EditorNodeRenderer.java \
 	GraphDocument.java \
 	GraphEditor.java \
@@ -73,9 +74,9 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 
 editor:
-	$(JAVA) -classpath $(CLASSPATH) ptolemy.schematic.editor.Editor
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.schematic.editor.Editor
 grapheditor:
-	$(JAVA) -classpath $(CLASSPATH) -DPTII=$(PTII) ptolemy.schematic.editor.GraphEditor
+	$(JAVA) -classpath "$(CLASSPATH)" -Djava.compiler=NONE -DPTII=$(PTII) ptolemy.schematic.editor.GraphEditor
 
 
 depend:

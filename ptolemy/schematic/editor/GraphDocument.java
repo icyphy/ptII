@@ -30,9 +30,10 @@
 
 package ptolemy.schematic.editor;
 
+import ptolemy.kernel.*;
 import ptolemy.schematic.util.*;
 
-import diva.graph.model.GraphModel;
+import diva.graph.model.*;
 import diva.graph.toolbox.GraphParser;
 import diva.graph.toolbox.GraphWriter;
 
@@ -94,12 +95,15 @@ public class GraphDocument extends AbstractDocument {
 	URL schematicURL = new URL(urlbase,  filename);
 	    
         System.out.println("Parsing " + schematicURL);
-        Schematic schematic = 
-	    PTMLObjectFactory.parseSchematic(schematicURL,
-		((GraphEditor)getApplication()).getIconLibrary(),
-		((GraphEditor)getApplication()).getEntityLibrary());
+        //        Schematic schematic = 
+	//    PTMLObjectFactory.parseSchematic(schematicURL,
+	//	((GraphEditor)getApplication()).getIconLibrary(),
+        //	((GraphEditor)getApplication()).getEntityLibrary());
 
-        Sheet s = new BasicSheet(this, "main", schematic);
+        CompositeEntity toplevel = new CompositeEntity();
+        // FIXME populate
+
+        Sheet s = new BasicSheet(this, "main", new BasicGraph(toplevel));
         addSheet(s);
     }
 
@@ -147,7 +151,7 @@ public class GraphDocument extends AbstractDocument {
             + "title = " + getTitle()
             + ", file = " + getFile()
             + ", url = " + getURL()
-            + "]\n" + ((Schematic)getCurrentSheet().getModel()).description();
+            + "]\n" + ((CompositeEntity)((BasicGraph)getCurrentSheet().getModel()).getSemanticObject()).description();
     }
  
     /** GraphDocument.Factory is a factory for graph documents.  We
@@ -159,7 +163,10 @@ public class GraphDocument extends AbstractDocument {
          */
         public Document createDocument (Application app) {
             GraphDocument d = new GraphDocument(app);
-            d.addSheet(new BasicSheet(d, "New graph", new Schematic()));
+            CompositeEntity toplevel = new CompositeEntity();
+
+            d.addSheet(new BasicSheet(d, "New graph", 
+                    new BasicGraph(toplevel)));
             return d;
         }
 

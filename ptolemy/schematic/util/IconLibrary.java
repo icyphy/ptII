@@ -30,6 +30,7 @@
 
 package ptolemy.schematic.util;
 
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
@@ -46,7 +47,7 @@ called suiblibraries.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class IconLibrary extends PTMLObject {
+public class IconLibrary extends Entity {
 
     /** 
      * Create an IconLibrary object with the name "iconlibrary".
@@ -97,10 +98,10 @@ public class IconLibrary extends PTMLObject {
      *  coincides with the name of another terminal style
      *  contained in this library.
       */
-    public void addTerminalStyle(TerminalStyle style)
-        throws IllegalActionException, NameDuplicationException {
-        _terminalstyles.append(style);
-    }
+    // public void addTerminalStyle(TerminalStyle style)
+    //    throws IllegalActionException, NameDuplicationException {
+    //    _terminalstyles.append(style);
+    // }
 
     /**
      * Test if the library contains the given icon.
@@ -119,9 +120,9 @@ public class IconLibrary extends PTMLObject {
     /**
      * Test if the library contains the terminal style
      */
-    public boolean containsTerminalStyle(TerminalStyle style) {
-        return _terminalstyles.includes(style);
-    }
+    //    public boolean containsTerminalStyle(TerminalStyle style) {
+    //    return _terminalstyles.includes(style);
+    // }
 
     /** 
      * Search for an icon with the given hierarchical name in 
@@ -152,7 +153,7 @@ public class IconLibrary extends PTMLObject {
      * @return The found terminal style, or null if the terminal style was
      * not found.
      */
-    public TerminalStyle findTerminalStyle(String dottedName)
+    /*public TerminalStyle findTerminalStyle(String dottedName)
             throws IllegalActionException {
         StringTokenizer tokens = new StringTokenizer(dottedName, ".");
         IconLibrary temp = this;
@@ -169,7 +170,7 @@ public class IconLibrary extends PTMLObject {
 
 	String name = (String) tokens.nextElement();
 	return temp.getTerminalStyle(name);
-    }
+	}*/
 
     /**
      * Get the icon that is stored in this icon library with the given name
@@ -188,9 +189,9 @@ public class IconLibrary extends PTMLObject {
     /**
      * Get the terminal style in this IconLibrary with the given name.
      */
-    public TerminalStyle getTerminalStyle(String name) {
-	return (TerminalStyle) _terminalstyles.get(name);
-    }
+    //    public TerminalStyle getTerminalStyle(String name) {
+    //	return (TerminalStyle) _terminalstyles.get(name);
+    //}
 
     /** Return the version of this library.
      */
@@ -224,9 +225,9 @@ public class IconLibrary extends PTMLObject {
     /**
      * Remove a terminal style from this IconLibrary
      */
-    public void removeTerminalStyle(TerminalStyle style) {
-        _terminalstyles.remove(style);
-    }
+    //    public void removeTerminalStyle(TerminalStyle style) {
+     //   _terminalstyles.remove(style);
+    //}
 
     /** Set the string that represents the version of this library.
      */
@@ -250,9 +251,9 @@ public class IconLibrary extends PTMLObject {
      * for parsing.
      * @return an Enumeration of Strings
      */
-    public Enumeration terminalStyles() {
-        return _terminalstyles.elements();
-    }
+    //    public Enumeration terminalStyles() {
+    //   return _terminalstyles.elements();
+    //}
 
     /**
      * Return a string this representing Icon.
@@ -285,13 +286,13 @@ public class IconLibrary extends PTMLObject {
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int indent, int bracket) {
+    protected String _description(int detail, int indent, int bracket) {
         String result = "";
         if(bracket == 0) 
-            result += super._description(indent, 0);
+            result += super._description(detail, indent, 0);
         else 
-            result += super._description(indent, 1);
-
+            result += super._description(detail, indent, 1);
+        /*
 	result += _getIndentPrefix(indent) + " sublibraries {\n";
         result += _enumerationDescription(subLibraries(), indent);
 
@@ -300,7 +301,7 @@ public class IconLibrary extends PTMLObject {
 
 	result += _getIndentPrefix(indent) + "} terminalstyles{\n";
         result += _enumerationDescription(terminalStyles(), indent);
-	
+	*/
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 
