@@ -35,6 +35,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.toolbox.EditorIcon;
@@ -79,7 +80,16 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 	    } else {
 		component.setOpaque(false);
 	    }
-	    component.setText(object.getName());
+
+            if(object instanceof Settable) {
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(object.getName());
+                buffer.append("=");
+                buffer.append(((Settable)object).getExpression());
+                component.setText(buffer.toString().replace('\n',' '));
+            } else {
+                component.setText(object.getName());
+            }
 
             // Render an icon, if one has been defined.
             // NOTE: Avoid asking for attributes if the entity is a library
