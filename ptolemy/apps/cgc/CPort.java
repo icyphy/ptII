@@ -35,11 +35,24 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedIOPort
 /**
+  This port class is used with actors that are instances of CActor.
+  It features additional parameters specific to the
+  Giotto domain. If the port is specified as an output port, then
+  it has two parameters specified by default.
+  <ul>
+  <li> The parameter <i>initialOutputValue</i> which specifies
+     the value of the port
+     until the container has fired and assigned it a value. The
+     default value of this parameter is 0. It is constrained to
+     have the same type as this port.
+  <ul> The parameter <i>arrayLength</i>, which is used only if the type is
+     an array. This specifies the length of the array. The default
+     value of this parameter is 1.
+  </ul>
 
    @author N.Vinay Krishnan, Edward A. Lee
    @version $Id$
@@ -50,124 +63,81 @@ import ptolemy.kernel.util.Workspace;
 
 public class CPort extends TypedIOPort {
 
-    // all the constructors are wrappers of the super class constructors.
-
-    /** Construct a CPort with no container and no name that is
-     *  neither an input nor an output.
-     */
-    public CPort() {
-        super();
-    }
-
-    /** Construct a port in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument
-     *  is null, then use the default workspace.
-     *  The object is added to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the port.
-     */
-    public CPort(Workspace workspace) {
-        super(workspace);
-    }
-
     /** Construct a CPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
-     *  must implement the CActor interface, or an exception will be
-     *  thrown.
-     *
+     *  must be an instance of CActor, or an exception will be thrown.
      *  @param container The container actor.
      *  @param name The name of the port.
      *  @exception IllegalActionException If the port is not of an acceptable
-     *   class for the container, or if the container does not implement the
-     *   TypedActor interface.
+     *   class for the container, or if the container is not an instance
+     *   of CActor.
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
     public CPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        initialOutputValue = new Parameter(this, "initialOutputValue");
+        initialOutputValue.setExpression("0");
+    
+        arrayLength = new Parameter(this, "arrayLength");
+        arrayLength.setExpression("1");
+
+        // FIXME: The type of the initialOutputValue parameter
+        // should be constrained to be the same as the type
+        // of this port, but only if the port is an output
+        // port.  How to do that?
     }
 
     /** Construct a CPort with a container and a name that is
      *  either an input, an output, or both, depending on the third
-     *  and fourth arguments. The specified container must implement
-     *  the CActor interface or an exception will be thrown.
-     *  This port class features additional parameters specific to the
-     *  Giotto domain. If the port is specified as an output port, then
-     *  it shall have two parameters specified by default. 
-     *  a) The parameter "_init" which specifies the value of the port
-     *     until the container has fired and assigned it a value. The
-     *     default value of this parameter is 0.
-     *  b) The parameter "_length", which is used only if the type is
-     *     an array. This specifies the length of the array. The default
-     *     value of this parameter is 1.
-     *
+     *  and fourth arguments. The specified container
+     *  must be an instance of CActor, or an exception will be thrown.
      *  @param container The container actor.
      *  @param name The name of the port.
      *  @param isInput True if this is to be an input port.
      *  @param isOutput True if this is to be an output port.
      *  @exception IllegalActionException If the port is not of an acceptable
-     *   class for the container, or if the container does not implement the
-     *   TypedActor interface.
+     *   class for the container, or if the container is not an instance
+     *   of CActro.
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
     public CPort(ComponentEntity container, String name,
             boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name, isInput, isOutput);
-
-        if (isOutput) {
-            _init = new Parameter(this, "_init");
-            _init.setExpression("0");
-
-            _length = new Parameter(this, "_length");
-            _length.setExpression("1");
-        }
+        this(container, name);
+        setInput(isInput);
+        setOutput(isOutput);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The initial value of the port */
+    public Parameter initialOutputValue = null;
+    
+    /** The length of the array if the type is an array */
+    public Parameter arrayLength = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Overrides the base class to add the functionality that if the
-     *  port if made an output port, then we create two parameters 
-     *  _init and _length
+    /** Override the base class to add the functionality that if the
+     *  port if made an output port, then make visible the two parameters 
+     *  <i>initialOutputValue</i> and <i>arrayLength</i>. 
      *  @param isOutput True to make the port an output.
      *  @exception IllegalActionException If changing the port status is
      *   not permitted (not thrown in this base class).
      */
     public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
-
-        try {
-            if (isOutput) {
-                _init = new Parameter(this, "_init");
-                _init.setExpression("0");
-    
-                _length = new Parameter(this, "_length");
-                _length.setExpression("1");
-            }
-            else {
-                if(_init != null) { // Since both_init and _length are being made null together
-                    _init.setVisibility(Settable.NONE);
-                    _length.setVisibility(Settable.NONE);
-                    _init = null;
-                    _length = null;
-                }
-            }
-        } catch (NameDuplicationException ex) {
-            throw new IllegalActionException(this, ex, null);
+        if (isOutput) {
+            initialOutputValue.setVisibility(Settable.FULL);
+            arrayLength.setVisibility(Settable.FULL);
+        } else {
+            initialOutputValue.setVisibility(Settable.NONE);
+            arrayLength.setVisibility(Settable.NONE);
         }
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The initial value of the port */
-    public Parameter _init = null;
-    
-    /** The length of the array if the type is an array */
-    public Parameter _length = null;
-    
+    }    
 }
