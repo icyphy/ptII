@@ -60,6 +60,9 @@ public class TokenTypeAnalysis extends ForwardFlowAnalysis {
         _localDefs = new SimpleLocalDefs(g);
         _localUses = new SimpleLocalUses(g, _localDefs);
         doAnalysis();
+        // Ensure that the analysis can get collected.
+        _localDefs = null;
+        _localUses = null;
     }
     
     /** Return the set of other fields and locals that must reference
