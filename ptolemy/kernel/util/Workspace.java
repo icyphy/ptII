@@ -558,8 +558,8 @@ public final class Workspace implements Nameable, Serializable {
         _version++;
     }
 
-    /** Return whether the workspace is read-only.
-     *  @return true if the workspace is read-only, false otherwise.
+    /** Return true if the workspace is read only, and false otherwise.
+     *  @return True if the workspace is read-only, false otherwise.
      */
     public synchronized boolean isReadOnly() {
         return _readOnly;
@@ -599,15 +599,16 @@ public final class Workspace implements Nameable, Serializable {
         incrVersion();
     }
 
-    /** Set whether this workspace is read-only. When the workspace is 
-     *  read-only, calling getWriteAcess() or doneWriting() will result in
+    /** Specify whether this workspace is read only. When the workspace is 
+     *  read only, calling getWriteAcess() or doneWriting() will result in
      *  a runtime exception, and calling getReadAccess() and doneReading()
-     *  will return immediately.
+     *  will return immediately. Accesses to topology information are
+     *  considerably more efficient if the workspace is read only.
      *  
-     *  @param flagValue True to make the workspace read-only, and false
-     *  otherwise.
-     *  @exception IllegalActionException If this method is called when
-     *  there's a writer on the workspace.
+     *  @param flagValue True to make the workspace read only, and false
+     *   otherwise.
+     *  @exception IllegalActionException If a thread has write
+     *   access on the workspace.
      */
     public synchronized void setReadOnly(boolean flagValue) 
             throws IllegalActionException {
@@ -628,10 +629,12 @@ public final class Workspace implements Nameable, Serializable {
         return getClass().getName() + " {" + getFullName()+ "}";
     }
 
-    /** This releases all the read accesses by the current thread and waits on
-     *  the object. After waking up, it reacquires all the read accesses held
-     *  earlier by the thread, and returns. This is the method that should be 
-     *  used by any thread that wants to wait.
+    /** Release all the read accesses held by the current thread and call
+     *  wait() on the specified object. When wait() returns, re-acquire
+     *  all the read accesses held earlier by the thread and return.
+     *  This method helps prevent deadlocks caused when a thread that
+     *  waiting for another thread to do something prevents it from doing 
+     *  that something by holding read access on the workspace.
      *  @param obj The object that the thread wants to wait on.
      */
     public void wait(Object obj) {
