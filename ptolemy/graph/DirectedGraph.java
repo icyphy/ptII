@@ -171,17 +171,17 @@ public class DirectedGraph extends Graph {
      *  not a node in this graph.
      */
     public Collection backwardReachableNodes(Node node) {
-	    _computeTransitiveClosure();
+        _computeTransitiveClosure();
 
-	    int nodeLabel = nodeLabel(node);
-	    ArrayList nodes = new ArrayList(_transitiveClosure.length);
+        int nodeLabel = nodeLabel(node);
+        ArrayList nodes = new ArrayList(_transitiveClosure.length);
         // Look at the corresponding column.
         Iterator graphNodes = nodes().iterator();
         while (graphNodes.hasNext()) {
             Node next = (Node)(graphNodes.next());
-	        if (_transitiveClosure[nodeLabel(next)][nodeLabel]) {
-		        nodes.add(next);
-	        }
+            if (_transitiveClosure[nodeLabel(next)][nodeLabel]) {
+                nodes.add(next);
+            }
         }
         return nodes;
     }
@@ -210,8 +210,8 @@ public class DirectedGraph extends Graph {
      *  the specified nodes; each element is a {@link Node}.
      */
     public Collection backwardReachableNodes(Collection nodeCollection) {
-	    _computeTransitiveClosure();
-	    ArrayList reachableNodes = new ArrayList(_transitiveClosure.length);
+        _computeTransitiveClosure();
+        ArrayList reachableNodes = new ArrayList(_transitiveClosure.length);
         // Compute the OR of the corresponding rows.
         Iterator graphNodes = nodes().iterator();
         while (graphNodes.hasNext()) {
@@ -222,14 +222,14 @@ public class DirectedGraph extends Graph {
             while (nodes.hasNext()) {
                 Node nextNode = (Node)nodes.next();
                 if (_transitiveClosure[nextLabel][nodeLabel(nextNode)]) {
-		            reachable = true;
-		            break;
-		        }
+                    reachable = true;
+                    break;
+                }
             }
-	        if (reachable) {
-		        reachableNodes.add(nextGraphNode);
-	        }
-	    }
+            if (reachable) {
+                reachableNodes.add(nextGraphNode);
+            }
+        }
         return reachableNodes;
     }
 
@@ -256,16 +256,16 @@ public class DirectedGraph extends Graph {
      *  is a {@link Node}.
      */
     public Collection cycleNodeCollection() {
-	    _computeTransitiveClosure();
+        _computeTransitiveClosure();
 
-	    ArrayList result = new ArrayList(_transitiveClosure.length);
+        ArrayList result = new ArrayList(_transitiveClosure.length);
         Iterator nodes = nodes().iterator();
         while (nodes.hasNext()) {
             Node next = (Node)nodes.next();
             int label = nodeLabel(next);
-	        if (_transitiveClosure[label][label]) {
-		        result.add(next);
-	        }
+            if (_transitiveClosure[label][label]) {
+                result.add(next);
+            }
         }
         return result;
     }
@@ -423,16 +423,16 @@ public class DirectedGraph extends Graph {
      *  not a node in this graph.
      */
     public Collection reachableNodes(Node node) {
-	    _computeTransitiveClosure();
-	    int label = nodeLabel(node);
-	    ArrayList result = new ArrayList(_transitiveClosure.length);
+        _computeTransitiveClosure();
+        int label = nodeLabel(node);
+        ArrayList result = new ArrayList(_transitiveClosure.length);
         Iterator nodes = nodes().iterator();
         while (nodes.hasNext()) {
             Node next = (Node)nodes.next();
-	        if (_transitiveClosure[label][nodeLabel(next)]) {
-		        result.add(next);
-	        }
-	    }
+            if (_transitiveClosure[label][nodeLabel(next)]) {
+                result.add(next);
+            }
+        }
         return result;
     }
 
@@ -471,15 +471,15 @@ public class DirectedGraph extends Graph {
      *  the specified one; each element is a {@link Node}.
      */
     public Collection reachableNodes(Collection nodeCollection) {
-	    _computeTransitiveClosure();
+        _computeTransitiveClosure();
 
-	    int N = nodeCollection.size();
+        int N = nodeCollection.size();
         int labels[] = new int[N];
         Iterator nodes = nodeCollection.iterator();
         for (int i = 0; i < N; i++) {
             labels[i] = nodeLabel((Node)nodes.next());
         }
-	    ArrayList reachableNodes = new ArrayList(_transitiveClosure.length);
+        ArrayList reachableNodes = new ArrayList(_transitiveClosure.length);
         // Compute the OR of the corresponding rows.
         Iterator graphNodes = nodes().iterator();
         while (graphNodes.hasNext()) {
@@ -487,14 +487,14 @@ public class DirectedGraph extends Graph {
             int nextGraphLabel = nodeLabel(nextGraphNode);
             boolean reachable = false;
             for (int i = 0; i < N; i++) {
-		        if (_transitiveClosure[labels[i]][nextGraphLabel]) {
-		            reachable = true;
-		            break;
-		        }
+                if (_transitiveClosure[labels[i]][nextGraphLabel]) {
+                    reachable = true;
+                    break;
+                }
             }
-	        if (reachable) {
-		        reachableNodes.add(nextGraphNode);
-	        }
+            if (reachable) {
+                reachableNodes.add(nextGraphNode);
+            }
         }
         return reachableNodes;
     }
@@ -504,7 +504,7 @@ public class DirectedGraph extends Graph {
      *  the SCCs of the graph in topological order.
      */
     public DirectedGraph[] sccDecomposition() {
-	    _computeTransitiveClosure();
+        _computeTransitiveClosure();
 
         int N = nodeCount();
         if (_transitiveClosure.length != N) {
@@ -591,7 +591,7 @@ public class DirectedGraph extends Graph {
         // of input and output edges minus the number of edges that
         // are connected to this node.
         return inputEdgeCount(node) + outputEdgeCount(node) -
-                incidentEdgeCount(node);
+            incidentEdgeCount(node);
     }
 
     /** Return the number of sink nodes in this graph.
