@@ -989,32 +989,77 @@ public class MoMLParser extends HandlerBase {
             } else if (elementName.equals("link")) {
                 String portName = (String)_attributes.get("port");
                 _checkForNull(portName, "No port for element \"link\"");
+                // Relation attribute now optional
                 String relationName = (String)_attributes.get("relation");
-                _checkForNull(relationName,
-                        "No relation for element \"link\"");
+                String insertAtSpec = (String)_attributes.get("insertAt");
+                String insertInsideAtSpec =
+                        (String)_attributes.get("insertInsideAt");
 
                 _checkClass(_current, CompositeEntity.class,
                         "Element \"link\" found inside an element that "
-                        + "is not a CompositeEntity. It is: "
-                        + _current);
+                         + "is not a CompositeEntity. It is: "
+                         + _current);
+
+                int countArgs = 0;
+                // Check that one of the required arguments is given
+                if (insertAtSpec != null) {
+                    countArgs++;
+                }
+                if (insertInsideAtSpec != null) {
+                    countArgs++;
+                }
+                if (relationName != null) {
+                    countArgs++;
+                }
+                if (countArgs == 0) {
+                    throw new XmlException(
+                            "Element link requires at least one of "
+                             + "an insertAt, an insertInsideAt, or a relation.",
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
+                }
+                if (insertAtSpec != null && insertInsideAtSpec != null) {
+                    throw new XmlException(
+                            "Element link requires at most one of "
+                             + "insertAt and insertInsideAt, not both.",
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
+                }
 
                 CompositeEntity context = (CompositeEntity)_current;
 
                 // Parse port
                 ComponentPort port = _getPort(portName, context);
 
-                // Get relation
-                Relation tmpRelation = context.getRelation(relationName);
-                _checkForNull(tmpRelation, "No relation named \"" +
-                        relationName + "\" in " + context.getFullName());
-                ComponentRelation relation = (ComponentRelation)tmpRelation;
+                // Get relation if given
+                ComponentRelation relation = null;
+                if (relationName != null) {
+                    Relation tmpRelation = context.getRelation(relationName);
+                    _checkForNull(tmpRelation, "No relation named \"" +
+                            relationName + "\" in " + context.getFullName());
+                    relation = (ComponentRelation)tmpRelation;
+                }
+                // Get the index if given
+                int insertAt = -1;
+                if (insertAtSpec != null) {
+                    insertAt = Integer.parseInt(insertAtSpec);
+                }
+                // Get the inside index if given
+                int insertInsideAt = -1;
+                if (insertInsideAtSpec != null) {
+                    insertInsideAt = Integer.parseInt(insertInsideAtSpec);
+                }
 
-                String insertAtSpec = (String)_attributes.get("insertAt");
-                if (insertAtSpec == null) {
-                    port.link(relation);
-                } else {
-                    int insertAt = Integer.parseInt(insertAtSpec);
+                if (insertAtSpec != null) {
                     port.insertLink(insertAt, relation);
+                }
+                else if (insertInsideAtSpec != null) {
+                    port.insertInsideLink(insertInsideAt, relation);
+                }
+                else {
+                    port.link(relation);
                 }
 
                 // If the container is cloned from something, then
