@@ -62,8 +62,8 @@ test UtilityFunctions-1.0 {Check readFile method} {
     set value [$res toString]
 
     list $value
-} {Greetings...
-}
+} {{Greetings...
+}}
 
 ######################################################################
 ####
