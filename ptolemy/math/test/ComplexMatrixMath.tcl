@@ -47,6 +47,7 @@ set PI [java::field java.lang.Math PI]
 
 
 # Complex numbers to be used
+set c0 [java::new ptolemy.math.Complex 0.0 0.0]
 set c1 [java::new ptolemy.math.Complex 1.0 2.0]
 set c2 [java::new ptolemy.math.Complex 3.0 -4.0]
 set c3 [java::new ptolemy.math.Complex -4.9 -6.0]
@@ -61,8 +62,12 @@ set m3 [java::new {ptolemy.math.Complex[][]} 3 [list [list $c1 $c2 $c3] \
                                        [list $c4 $c5 $c3] \
                                        [list $c2 $c1 $c5]]]
 
+# Complex matrices
 set m23 [java::new {ptolemy.math.Complex[][]} 2 [list [list $c3 $c1 $c2] \
                                        [list $c5 $c4 $c2]]]
+
+set m23_0 [java::new {ptolemy.math.Complex[][]} 2 [list [list $c0 $c0 $c0] \
+                                       [list $c0 $c0 $c0]]]
 
 
 set m32 [java::new {ptolemy.math.Complex[][]} 3 [list [list $c3 $c1] \
@@ -252,4 +257,11 @@ test ComplexMatrixMath-5.9.2 {conjugate } {
     epsilonDiff $stmp {{{-4.9 + 6.0i 1.0 - 2.0i} {-0.25 - 0.4i -7.0 - 8.0i} {3.0 + 4.0i -0.25 - 0.4i}}}
 } {}
 
-
+####################################################################
+test ComplexMatrixMath-5.1.1 {zero} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    zero 2 3]
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{0.0 + 0.0i 0.0 + 0.0i 0.0 + 0.0i} {0.0 + 0.0i 0.0 + 0.0i 0.0 + 0.0i}}}
+} {}
