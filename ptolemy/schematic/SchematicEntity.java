@@ -43,9 +43,9 @@ import collections.LinkedList;
 public class SchematicEntity extends SchematicElement { 
 
     /** 
-     * Create a new SchematicRelation object.
+     * Create a new SchematicEntity object.
      */
-    public SchematicRelation () {
+    public SchematicEntity () {
         ;
     }
 
@@ -56,7 +56,7 @@ public class SchematicEntity extends SchematicElement {
      * icons in an icon library.
      */
     public EntityType getEntityType () {
-        ;
+        return null;
     }
 }
 
