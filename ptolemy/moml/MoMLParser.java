@@ -421,12 +421,19 @@ public class MoMLParser extends HandlerBase {
      *  guaranteed that this will be the last method called in the XML
      *  parsing process. As a consequence, it is guaranteed that all
      *  dependencies between parameters used in the XML description
-     *  are resolved.
+     *  are resolved. This method executes any change requests that
+     *  may have been made during the parsing process.
      *  @exception CancelException If an error occurs parsing one of the
      *   parameter values, and the user clicks on "cancel" to cancel the
      *   parse.
      */
     public void endDocument() throws Exception {
+        if (_toplevel != null) {
+            // Set the top level back to the default
+            // found in startDocument.
+            _toplevel.setDeferChangeRequests(_previousDeferStatus);
+            _toplevel.executeChangeRequests();
+        }
         if (_handler != null) {
             _handler.enableErrorSkipping(false);
         }
@@ -1146,7 +1153,12 @@ public class MoMLParser extends HandlerBase {
     /** Start a document.  This method is called just before the parser
      *  attempts to read the first entity (the root of the document).
      *  It is guaranteed that this will be the first method called.
-     *  In this implementation, this method resets some private variables.
+     *  In this implementation, this method resets some private variables,
+     *  and if there is a top level model associated with this parser,
+     *  sets it so that change requests are deferred rather than
+     *  executed.  The change requests will be executed as a batch
+     *  in endDocument().
+     *  @see #endDocument()
      */
     public void startDocument() {
         _paramsToParse.clear();
@@ -1158,6 +1170,13 @@ public class MoMLParser extends HandlerBase {
         // of skipping error reporting.
         if (_handler != null) {
             _handler.enableErrorSkipping(true);
+        }
+        if (_toplevel != null) {
+            _previousDeferStatus = _toplevel.isDeferChangeRequests();
+            _toplevel.setDeferChangeRequests(true);
+        } else {
+            // Make sure a default is provided.
+            _previousDeferStatus = false;
         }
     }
 
@@ -1262,6 +1281,12 @@ public class MoMLParser extends HandlerBase {
                     // this isn't quite right because the entity may have a
                     // composite name.
                     _toplevel = newEntity.toplevel();
+                    
+                    // Ensure that if any change requests occur as a
+                    // consequence of adding items to this top level,
+                    // that execution of those change requests is deferred
+                    // until endDocument().
+                    _toplevel.setDeferChangeRequests(true); 
 
                     // As early as possible, set URL attribute.
                     // This is needed in case any of the parameters
@@ -1457,6 +1482,12 @@ public class MoMLParser extends HandlerBase {
                     // this isn't quite right because the entity may have a
                     // composite name.
                     _toplevel = newEntity.toplevel();
+                    
+                    // Ensure that if any change requests occur as a
+                    // consequence of adding items to this top level,
+                    // that execution of those change requests is deferred
+                    // until endDocument().
+                    _toplevel.setDeferChangeRequests(true); 
 
                     // As early as possible, set URL attribute.
                     // This is needed in case any of the parameters
@@ -3773,6 +3804,9 @@ public class MoMLParser extends HandlerBase {
 
     // The parser.
     private XmlParser _parser = new XmlParser();
+    
+    // Status of the deferral of the top-level.
+    private boolean _previousDeferStatus = false;
 
     // If greater than zero, skipping an element.
     private int _skipElement = 0;

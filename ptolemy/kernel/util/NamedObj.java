@@ -25,18 +25,22 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (hyzheng@eecs.berkeley.edu)
+FIXME: Need review of:
+     isDeferChangeRequests()
+     requestChange()
+     executeChangeRequests()
+     setDeferChangeRequests()
+@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 
 */
 
 package ptolemy.kernel.util;
 
-import ptolemy.util.StringUtilities;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -46,7 +50,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
+
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
@@ -231,22 +238,26 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  hierarchy executes changes, which is why this method delegates
      *  to the container if there is one.
      *  <p>
-     *  If the listener is already in the list, do not add it again.
+     *  If the listener is already in the list, remove the previous
+     *  instance and add it again in the first position.
      *  This listener is also notified before
      *  other listeners that have been previously registered with the
      *  top-level object.
      *  @param listener The listener to add.
      */
-    public synchronized void addChangeListener(ChangeListener listener) {
+    public void addChangeListener(ChangeListener listener) {
         NamedObj container = (NamedObj) getContainer();
         if (container != null) {
             container.addChangeListener(listener);
         } else {
-            if (_changeListeners == null) {
-                _changeListeners = new LinkedList();
-                _changeListeners.add(0, listener);
-            } else if (!_changeListeners.contains(listener)) {
-                _changeListeners.add(0, listener);
+            synchronized(_changeLock) {
+                if (_changeListeners == null) {
+                    _changeListeners = new LinkedList();
+                } else {
+                    // In case there is a previous instance, remove it.
+                    removeChangeListener(listener);
+                }
+                _changeListeners.add(0, new WeakReference(listener));
             }
         }
     }
@@ -549,6 +560,67 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
 
+    /** Execute requested changes. If there is a container, then
+     *  delegate the request to the container.  Otherwise,
+     *  this method will execute the
+     *  pending changes even if setDeferChangeRequests() has been
+     *  called with a true argument.  Listeners will be notified
+     *  of success or failure.
+     *  @see #addChangeListener(ChangeListener)
+     *  @see #requestChange(ChangeRequest)
+     *  @see #setDeferChangeRequests(boolean)
+     */
+    public void executeChangeRequests() {
+        NamedObj container = (NamedObj) getContainer();
+        if (container != null) {
+            container.executeChangeRequests();
+            return;
+        }
+        synchronized(_changeLock) {
+            if (_changeRequests != null && _changeRequests.size() > 0) {
+                // Copy the change requests lists because it may
+                // be modified during execution.
+                LinkedList copy = new LinkedList(_changeRequests);
+
+                // Remove the changes to be executed.
+                // We remove them even if there is a failure because
+                // otherwise we could get stuck making changes that
+                // will continue to fail.
+                _changeRequests.clear();
+
+                Iterator requests = copy.iterator();
+                boolean previousDeferStatus = _deferChangeRequests;
+                try {
+                    // Get write access once on the outside, to make
+                    // getting write access on each individual
+                    // modification faster.
+                    _workspace.getWriteAccess();
+
+                    // Defer change requests so that if changes are
+                    // requested during execution, they get queued.                    
+                    setDeferChangeRequests(true);
+                    while (requests.hasNext()) {
+                        ChangeRequest change = (ChangeRequest)requests.next();
+                        change.setListeners(_changeListeners);
+                        if (_debugging) {
+                            _debug("-- Executing change request "
+                                    + "with description: "
+                                    + change.getDescription());
+                        }
+                        change.execute();
+                    }
+                } finally {
+                    _workspace.doneWriting();
+                    setDeferChangeRequests(previousDeferStatus);
+                }
+                
+                // Change requests may have been queued during the execute.
+                // Execute those by a recursive call.
+                executeChangeRequests();
+            }
+        }
+    }
+    
     /** Get a MoML description of this object.  This might be an empty string
      *  if there is no MoML description of this object or if this object is
      *  not persistent.  This uses the
@@ -989,6 +1061,15 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             _workspace.doneReading();
         }
     }
+    
+    /** Return true if setDeferChangeRequests() has been called
+     *  to specify that change requests should be deferred.
+     *  @return True if change requests are being deferred.
+     *  @see #setDeferChangeRequests(boolean)
+     */
+    public boolean isDeferChangeRequests() {
+        return _deferChangeRequests;
+    }
 
     /** Handle a model error. If a model error handler has been registered
      *  with setModelErrorHandler(), then handling is delegated to that
@@ -1063,8 +1144,20 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         NamedObj container = (NamedObj) getContainer();
         if (container != null) {
             container.removeChangeListener(listener);
-        } else if (_changeListeners != null) {
-            _changeListeners.remove(listener);
+        } else {
+            synchronized(_changeLock) {
+                if (_changeListeners != null) {
+                    ListIterator listeners = _changeListeners.listIterator();
+                    while(listeners.hasNext()) {
+                        WeakReference reference = (WeakReference)listeners.next();
+                        if (reference.get() == listener) {
+                            listeners.remove();
+                        } else if (reference.get() == null) {
+                            listeners.remove();
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1088,49 +1181,73 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
 
-    /** Request that given change request be executed.   In this base
-     *  class, defer the change request to the container, if there is one.
-     *  If there is no container, then execute the request immediately.
+    /** Request that given change be executed.   In this base class,
+     *  delegate the change request to the container, if there is one.
+     *  If there is no container, then execute the request immediately,
+     *  unless setDeferChangeRequests() has been called. If
+     *  setDeferChangeRequests() has been called with a true argument,
+     *  then simply queue the request until either setDeferChangeRequests()
+     *  is called with a false argument or executeChangeRequests() is called.
      *  If this object is already in the middle of executing a change
-     *  request, then that execution is finished before this one is performed. 
-     *  Subclasses can override  this to queue the change request and
-     *  execute it at an appropriate time.
+     *  request, then that execution is finished before this one is performed.
      *  Change listeners will be notified of success (or failure) of the
-     *  request.
+     *  request when it is executed.
      *  @param change The requested change.
+     *  @see #executeChangeRequests()
+     *  @see #setDeferChangeRequests(boolean)
      */
     public void requestChange(ChangeRequest change) {
         NamedObj container = (NamedObj) getContainer();
         if (container != null) {
             container.requestChange(change);
         } else {
-            if (_inChangeRequest) {
-                // We are in the middle of a change request.
+            // Have to ensure that the _deferChangeRequests status and
+            // the collection of change listeners doesn't change during
+            // this execution.  But we don't want to hold a lock on the
+            // this NamedObj during execution of the change because this
+            // could lead to deadlock.  So we synchronize to _changeLock.
+            synchronized(_changeLock) {
                 // Queue the request.
                 // Create the list of requests if it doesn't already exist
                 if (_changeRequests == null) {
                     _changeRequests = new LinkedList();
                 }
                 _changeRequests.add(change);
-            } else {
-                try {
-                    // Make sure the list of listeners is not being concurrently
-                    // modified by making this synchronized.
-                    synchronized(this) {
-                        change.setListeners(_changeListeners);
-                    }
-                    _inChangeRequest = true;
-                    change.execute();
-                } finally {
-                    _inChangeRequest = false;
+                if (!_deferChangeRequests) {
+                    executeChangeRequests();
                 }
-                // Change requests may have been queued during the execute.
-                // Execute those by a recursive call.
-                if (_changeRequests != null && _changeRequests.size() > 0) {
-                    ChangeRequest pending
-                            = (ChangeRequest)_changeRequests.remove(0);
-                    requestChange(pending);
-                }
+            }
+        }
+    }
+    
+    /** Specify whether change requests made by calls to requestChange()
+     *  should be executed immediately. If there is a container, then
+     *  this request is delegated to the container. Otherwise,
+     *  if the argument is true, then requests
+     *  are simply queued until either this method is called again
+     *  with argument false, or until executeChangeRequests() is called.
+     *  If the argument is false, the execute any pending change requests
+     *  and set a flag requesting that future requests be executed
+     *  immediately.
+     *  @param defer If true, defer change requests.
+     *  @see #addChangeListener(ChangeListener)
+     *  @see #executeChangeRequests()
+     *  @see #isDeferChangeRequests()
+     *  @see #requestChange(ChangeRequest)
+     */
+    public void setDeferChangeRequests(boolean defer) {
+        NamedObj container = (NamedObj) getContainer();
+        if (container != null) {
+            container.setDeferChangeRequests(defer);
+            return;
+        }
+
+        // Make sure to avoid modification of this flag in the middle
+        // of a change request or change execution.
+        synchronized(_changeLock) {
+            _deferChangeRequests = defer;
+            if (defer == false) {
+                executeChangeRequests();
             }
         }
     }
@@ -1714,13 +1831,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /** A list of change listeners. */
-    protected List _changeListeners;
     
-    /** A list of pending change requests. */
-    protected List _changeRequests;
-
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
 
@@ -1730,9 +1841,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     protected LinkedList _debugListeners = null;
     
-    /** Flag indicating that we are in the middle of a change request. */
-    protected transient boolean _inChangeRequest = false;
-
     /** @serial The workspace for this object.
      * This should be set by the constructor and never changed.
      */
@@ -1741,13 +1849,32 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** @serial The Attributes attached to this object. */
+    /** The Attributes attached to this object. */
     private NamedList _attributes;
+    
+    /** A list of weak references to change listeners. */
+    private List _changeListeners;
+    
+    /** Object for locking accesses to change request list and status.
+     *  NOTE: We could have used _changeRequests or _changeListeners,
+     *  but those lists are only created when needed.  A simple
+     *  Object here is presumably cheaper than a list, but it is
+     *  truly unfortunate to have to carry this in every NamedObj.
+     */
+    private Object _changeLock = new Object();
+    
+    /** A list of pending change requests. */
+    private List _changeRequests;
 
     /** @serial Instance of a workspace that can be used if no other
      *  is specified.
      */
     private static Workspace _DEFAULT_WORKSPACE = new Workspace();
+
+    /** Flag indicating that we should not immedidately
+     *  execute a change request.
+     */
+    private transient boolean _deferChangeRequests = false;
 
     // Cached value of the full name.
     private String _fullNameCache;

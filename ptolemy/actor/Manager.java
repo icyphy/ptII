@@ -32,13 +32,14 @@ requestInitialization is pickier about what actors are initialized
 
 package ptolemy.actor;
 
+import java.lang.ref.WeakReference;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -188,10 +189,6 @@ public class Manager extends NamedObj implements Runnable {
      */
     public final static State ITERATING = new State("executing");
 
-    /** Indicator that the execution is in the mutations phase.
-     */
-    public final static State MUTATING = new State("processing mutations");
-
     /** Indicator that the execution is paused.
      */
     public final static State PAUSED = new State("pausing execution");
@@ -233,7 +230,7 @@ public class Manager extends NamedObj implements Runnable {
         if (_executionListeners == null) {
             _executionListeners = new LinkedList();
         }
-        _executionListeners.add(listener);
+        _executionListeners.add(new WeakReference(listener));
     }
 
     /** Execute the model.  Begin with the initialization phase, followed
@@ -266,6 +263,7 @@ public class Manager extends NamedObj implements Runnable {
         _finishRequested = false;
 
         boolean completedSuccessfully = false;
+        
         try {
             initialize();
             // Call iterate() until finish() is called or postfire()
@@ -285,21 +283,14 @@ public class Manager extends NamedObj implements Runnable {
                     }
                 }
             }
-
             completedSuccessfully = true;
-
-            //   } catch (Exception e) {
-            //       throw new InternalErrorException(this, e, "Manager");
-
-            //   } catch (Exception e) {
-            //       System.err.println("Error caught by manager.");
-            //       e.printStackTrace();
-            //       throw new RuntimeException("Manager: " + e.getMessage());
-
         } finally {
             try {
                 wrapup();
             } finally {
+                // Indicate that it is now safe to execute
+                // change requests when they are requested.
+                setDeferChangeRequests(false);
                 // Wrapup may also throw an exception,
                 // So be sure to reset the state to idle!
                 if (_state != IDLE) {
@@ -411,6 +402,10 @@ public class Manager extends NamedObj implements Runnable {
             throws KernelException, IllegalActionException {
         try {
             _workspace.getReadAccess();
+            
+            // Make sure that change requests are not executed when requested,
+            // but rather only executed when executeChangeRequests() is called.
+            setDeferChangeRequests(true);
 
             preinitializeAndResolveTypes();
 
@@ -421,7 +416,7 @@ public class Manager extends NamedObj implements Runnable {
             // list of actors pending initialization.
             _actorsToInitialize.clear();
 
-            _processChangeRequests();
+            executeChangeRequests();
         } finally {
             _workspace.doneReading();
         }
@@ -459,7 +454,7 @@ public class Manager extends NamedObj implements Runnable {
         boolean result = true;
         try {
             _workspace.getReadAccess();
-            _processChangeRequests();
+            executeChangeRequests();
 
             // Pre-initialize actors that have been added.
             if (_actorsToInitialize.size() > 0) {
@@ -534,11 +529,16 @@ public class Manager extends NamedObj implements Runnable {
             System.err.println(errorMessage);
             throwable.printStackTrace();
         } else {
-            Iterator listeners = _executionListeners.iterator();
+            ListIterator listeners = _executionListeners.listIterator();
             while (listeners.hasNext()) {
+                WeakReference reference = (WeakReference)listeners.next();
                 ExecutionListener listener =
-                    (ExecutionListener) listeners.next();
-                listener.executionError(this, throwable);
+                        (ExecutionListener)reference.get();
+                if (listener != null) {
+                    listener.executionError(this, throwable);
+                } else {
+                    listeners.remove();
+                }
             }
         }
     }
@@ -682,7 +682,7 @@ public class Manager extends NamedObj implements Runnable {
                 _nameToAnalysis = null;
             }
 
-            _processChangeRequests();
+            executeChangeRequests();
 
             resolveTypes();
             _typesResolved = true;
@@ -698,56 +698,12 @@ public class Manager extends NamedObj implements Runnable {
      */
     public void removeExecutionListener(ExecutionListener listener) {
         if (listener == null || _executionListeners == null) return;
-        _executionListeners.remove(listener);
-    }
-
-    /** Queue a change request, or if the model is idle, execute it
-     *  immediately.  If the request is queued, then it will be executed
-     *  at the next opportunity, between top-level iterations of the model.
-     *  If we are in the middle of already executing a change request,
-     *  then complete that change request before executing the new one,
-     *  even if the model is IDLE.
-     *  Notify any change listeners when the change is executed.
-     *  <p>
-     *  For the benefit of process-oriented domains, which may not have finite
-     *  iterations, if the request is queued, then
-     *  this method calls stopFire() on the top-level
-     *  composite actor, requesting that directors in such domains
-     *  return from their fire() method (concluding the current
-     *  iteration) as soon as practical, at which time the specified
-     *  change will be executed.
-     *  @param change The requested change.
-     */
-    public void requestChange(ChangeRequest change) {
-        if (_debugging) {
-            _debug("Requesting change: " + change.getDescription());
-        }
-        // If the model is idle (i.e., initialize() has not yet been
-        // invoked), then process the change request right now.
-        if (_state == IDLE && !_inChangeRequest) {
-            try {
-                _inChangeRequest = true;
-                change.execute();
-            } finally {
-                _inChangeRequest = false;
+        ListIterator listeners = _executionListeners.listIterator();
+        while (listeners.hasNext()) {
+            WeakReference reference = (WeakReference)listeners.next();
+            if (reference.get() == listener) {
+                _executionListeners.remove(listener);
             }
-            // Change requests may have been queued during the execute.
-            // Execute those by a recursive call.
-            if (_changeRequests != null && _changeRequests.size() > 0) {
-                ChangeRequest pending = (ChangeRequest)_changeRequests.remove(0);
-                requestChange(pending);
-            }
-        } else {
-            // Otherwise, we must be executing, so queue the request
-            // to happen later.
-            // Create the list of requests if it doesn't already exist
-            if (_changeRequests == null) {
-                _changeRequests = new LinkedList();
-            }
-            _changeRequests.add(change);
-            // Now call stopFire so we can be sure the model will give us
-            // back control.
-            _container.stopFire();
         }
     }
 
@@ -1080,7 +1036,9 @@ public class Manager extends NamedObj implements Runnable {
         // some change requests may be pending. If these requests
         // are not processed, they will be left to the next execution.
         // Also, wrapping up execution may cause change requests to be queued.
-        _processChangeRequests();
+        // Also, at the same time, re-enable immediate execution of
+        // change requests.
+        setDeferChangeRequests(false);
 
         _workspace.incrVersion();
         // Wrapup completed successfully
@@ -1130,11 +1088,16 @@ public class Manager extends NamedObj implements Runnable {
                     + " iterations");
         }
         if (_executionListeners != null) {
-            Iterator listeners = _executionListeners.iterator();
+            ListIterator listeners = _executionListeners.listIterator();
             while (listeners.hasNext()) {
+                WeakReference reference = (WeakReference)listeners.next();
                 ExecutionListener listener =
-                    (ExecutionListener) listeners.next();
-                listener.executionFinished(this);
+                       (ExecutionListener)reference.get();
+                if (listener != null) {
+                    listener.executionFinished(this);
+                } else {
+                    listeners.remove();
+                }
             }
         }
     }
@@ -1146,59 +1109,17 @@ public class Manager extends NamedObj implements Runnable {
             _debug("-- Manager state is now: " + _state.getDescription());
         }
         if (_executionListeners != null) {
-            Iterator listeners = _executionListeners.iterator();
+            ListIterator listeners = _executionListeners.listIterator();
             while (listeners.hasNext()) {
+                WeakReference reference = (WeakReference)listeners.next();
                 ExecutionListener listener =
-                    (ExecutionListener) listeners.next();
-                listener.managerStateChanged(this);
-            }
-        }
-    }
-
-    /** Process the queued change requests that have been added with
-     *  requestChange(). If any queued request itself makes requests
-     *  using requestChange(), then those requests are processed in
-     *  the same way after the first batch is completed.  If any
-     *  request fails with an exception, then the change list is cleared,
-     *  and no further requests are processed.
-     *  Note that change requests processed successfully
-     *  prior to the failed request are not undone.
-     */
-    protected void _processChangeRequests() {
-        _debug("-- Manager checking for change requests");
-        while (_changeRequests != null) {
-            try {
-                // Get write access once on the outside, to make
-                // getting write access on each individual
-                // modification faster.
-                _workspace.getWriteAccess();
-                
-                _setState(MUTATING);
-                
-                // Clone the change request list before iterating through it
-                // in case any of the changes themselves post change requests.
-                LinkedList clonedList = new LinkedList(_changeRequests);
-                
-                // Clear the request queue.  We want to discard the queue even
-                // if the changes fail.
-                // Otherwise, we could get stuck not being able to do anything
-                // further with the model.
-                _changeRequests = null;
-                
-                Iterator changeRequests = clonedList.iterator();
-                while (changeRequests.hasNext()) {
-                    ChangeRequest request = 
-                        (ChangeRequest)changeRequests.next();
-                    request.execute();
-                    if (_debugging) {
-                        _debug("-- Manager executed change request "
-                                + "with description: "
-                                + request.getDescription());
-                    }
+                       (ExecutionListener)reference.get();
+                if (listener != null) {
+                    listener.managerStateChanged(this);
+                } else {
+                    listeners.remove();
                 }
-            } finally {
-                _workspace.doneWriting();
-            }   
+            }
         }
     }
 
@@ -1223,7 +1144,7 @@ public class Manager extends NamedObj implements Runnable {
     // The top-level CompositeActor that contains this Manager
     private CompositeActor _container = null;
 
-    // Listeners for execution events.
+    // Listeners for execution events. This list has weak references.
     private List _executionListeners;
 
     // Flag indicating that finish() has been called.

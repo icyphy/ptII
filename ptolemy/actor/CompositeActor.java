@@ -715,27 +715,17 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Queue a change request.  Delegate the change request to the container
-     *  of this actor, if there is one.  If there is none, then delegate
-     *  to the Manager.  If the actor has no manager then execute the request
-     *  immediately.  Any listeners that have been registered using
-     *  addChangeListener() will be notified of success (or failure) of
-     *  the request.
+    /** Queue a change request.  If there is a manager, then first call
+     *  stopFire() before deferring to the base class.
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
         Manager manager = getManager();
-        if (manager == null) {
-            super.requestChange(change);
-        } else {
-            // Make sure the list of listeners is not being concurrently
-            // modified by making this synchronized.
-            synchronized(this) {
-                change.setListeners(_changeListeners);
-            }
-            manager.requestChange(change);
+        if (manager != null) {
+            stopFire();
         }
-   }
+        super.requestChange(change);
+    }
 
     /** Override the base class to invalidate the schedule and
      *  resolved types of the director.
@@ -868,7 +858,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Request that execution of the current iteration complete.
      *  If this actor is opaque, then invoke the stopFire()
-     *  method of the local director. Otherwise, do nothing.
+     *  method of the local director, if there is one.
+     *  Otherwise, do nothing.
      *  This method is read-synchronized on the workspace.
      */
     public void stopFire() {
@@ -880,7 +871,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
             if (!isOpaque()) {
                 return;
             }
-            getDirector().stopFire();
+            Director director = getDirector();
+            if (director != null) {
+                director.stopFire();
+            }
         } finally {
             _workspace.doneReading();
         }

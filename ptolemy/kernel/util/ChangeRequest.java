@@ -30,6 +30,7 @@
 
 package ptolemy.kernel.util;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,6 +95,9 @@ public abstract class ChangeRequest {
         if (_localListeners == null) {
             _localListeners = new LinkedList();
         }
+        // NOTE: We do not use weak references for these
+        // listeners because an instance of ChangeRequest
+        // is typically a transitory object.
         if (!_localListeners.contains(listener)) {
             _localListeners.add(0, listener);
         }
@@ -149,12 +153,18 @@ public abstract class ChangeRequest {
         if (_listeners != null) {
             Iterator listeners = _listeners.iterator();
             while (listeners.hasNext()) {
-                ChangeListener listener = (ChangeListener)listeners.next();
-                if (_exception == null) {
-                    listener.changeExecuted(this);
-                } else {
-                    needToReport = false;
-                    listener.changeFailed(this, _exception);
+                Object listener = listeners.next();
+                if (listener instanceof WeakReference) {
+                    listener = ((WeakReference)listener).get();
+                }
+                if (listener instanceof ChangeListener) {
+                    if (_exception == null) {
+                        ((ChangeListener)listener).changeExecuted(this);
+                    } else {
+                        needToReport = false;
+                        ((ChangeListener)listener).changeFailed(
+                                this, _exception);
+                    }
                 }
             }
         }
@@ -169,7 +179,7 @@ public abstract class ChangeRequest {
                     object = (Nameable)_source;
                 }
                 throw new InternalErrorException(object, _exception,
-                        "There was no ChangeListener associated with"
+                        "There was no ChangeListener associated with "
                         + "this ChangeRequest:\n" + _description
                         + "\n The above ChangeRequest failed.");
             }
@@ -278,7 +288,9 @@ public abstract class ChangeRequest {
      *  waitForCompletion(), although this may cause undesirable
      *  synchronization between the different threads.
      *
-     *  @param listeners A list of instances of ChangeListener.
+     *  @param listeners A list of instances of ChangeListener or
+     *   instances of WeakReference referring to instances of
+     *   ChangeListener.
      *  @see ChangeListener
      *  @see NamedObj
      */
@@ -357,7 +369,8 @@ public abstract class ChangeRequest {
     // The exception thrown by the most recent call to execute(), if any.
     private Exception _exception;
 
-    // A list of listeners that are given in setListeners
+    // A list of listeners or weak references to listeners
+    // that are given in setListeners().
     private List _listeners;
 
     // A list of listeners that are maintained locally.

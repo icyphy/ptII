@@ -111,7 +111,7 @@ public class ChangeRequestTest implements ChangeListener {
         // In JDK1.4, we can construct exceptions from exceptions, but
         // not in JDK1.3.1
         //throw new RuntimeException(exception);
-
+        
         throw new RuntimeException(exception.toString());
     }
 
