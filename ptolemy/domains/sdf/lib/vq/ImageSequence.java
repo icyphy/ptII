@@ -57,7 +57,7 @@ public final class ImageSequence extends SDFAtomicActor {
         setTokenProductionRate(outputport, 1);
         outputport.setTypeEquals(IntMatrixToken.class);
 
-        Parameter p = new Parameter(this, "imageUrlTemplate",
+        Parameter p = new Parameter(this, "imageURLTemplate",
                 new StringToken("ptolemy/domains/sdf/lib/vq" +
                         "/data/seq/missa/missa***.qcf"));
         new Parameter(this, "XImageSize", new IntToken("176"));
@@ -69,7 +69,7 @@ public final class ImageSequence extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         InputStream source = null;
-        Parameter p = (Parameter) getAttribute("imageUrlTemplate");
+        Parameter p = (Parameter) getAttribute("imageURLTemplate");
         String fileroot = ((StringToken)p.getToken()).stringValue();
         p = (Parameter) getAttribute("Start Frame");
         int startframe = ((IntToken)p.getToken()).intValue();
