@@ -9,6 +9,8 @@
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
+        <property name="iterationTimeLowerBound" class="ptolemy.data.expr.Parameter" value="33">
+        </property>
         <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
@@ -102,6 +104,8 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -352,17 +356,17 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </port>
         </entity>
         <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="275.0, 60.0">
+            <vertex name="vertex0" value="275.0, 60.0">
             </vertex>
         </relation>
         <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="440.0, 170.0">
+            <vertex name="vertex1" value="440.0, 170.0">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="165.0, 140.0">
+            <vertex name="vertex1" value="165.0, 140.0">
             </vertex>
         </relation>
         <link port="output" relation="relation2"/>
