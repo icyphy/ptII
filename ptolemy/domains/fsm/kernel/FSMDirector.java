@@ -218,8 +218,22 @@ public class FSMDirector extends Director
 
         _enabledTransition = tr;
 
+        // Note, I modified the firing order of transitions and 
+        // refinements of preemptive transitions. See comments inserted
+        // below. Hyzheng 01/25/2004.
+        
+        // FIXME: I added several 
+        //  ctrl._readOutputsFromRefinement();
+        //  statements in the following code. There is a semantics issue.
+        //  For state semantics, it does not matter how many times we 
+        //  read output from refinements, because only the last one counts. 
+        //  For event semantics, things are complicated if several events
+        //  are generated at different phases. I think the right solution 
+        //  is to record all the tokens. Hyzheng 01/25/2004.
+
         if (tr != null) {
-            Actor[] actors = tr.destinationState().getRefinement();
+            // First execute the refinemtns of transition
+            Actor[] actors = tr.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) break;
@@ -230,7 +244,23 @@ public class FSMDirector extends Director
                 }
             }
 
-            actors = tr.getRefinement();
+            ctrl._readOutputsFromRefinement();
+
+            // Second, execute the output actions.
+            Iterator actions = tr.choiceActionList().iterator();
+            while (actions.hasNext()) {
+                Action action = (Action)actions.next();
+                action.execute();
+            }
+
+            ctrl._readOutputsFromRefinement();
+
+            // Finally, execute the refinements of the destination state.
+            // FIXME: do we need to execute those? Maybe we should only
+            // execute the transitions and set the current state into the
+            // destination state. The refinements will be executed at next
+            // iteration.
+            actors = tr.destinationState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) break;
@@ -240,9 +270,17 @@ public class FSMDirector extends Director
                     }
                 }
             }
+
+            ctrl._readOutputsFromRefinement();
+
             return;
         }
 
+        // For nonpreemptive transitions, we execute the model
+        // in the following order. First, the state refinements,
+        // then, the transition refinements, finally, the actions 
+        // associated with the transition.
+        
         Actor[] actors = st.getRefinement();
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
@@ -280,13 +318,17 @@ public class FSMDirector extends Director
                         actors[i].postfire();
                     }
                 }
+
                 ctrl._readOutputsFromRefinement();
+
                 //execute the output actions
                 Iterator actions = tr.choiceActionList().iterator();
                 while (actions.hasNext()) {
                     Action action = (Action)actions.next();
                     action.execute();
                 }
+
+                ctrl._readOutputsFromRefinement();
             }
         }
         return;
@@ -583,13 +625,21 @@ public class FSMDirector extends Director
         }
         FSMActor controller = getController();
         boolean result = controller.postfire();
+        
+        // FIXME: the method comments say the refinement will postfired.
+        // However, that is not true.
+        // Note: we differ the usage of FSMDirector and HSDirector.
+        // I will try to come up with an abstract director and three 
+        // concrete directors for hybrid systems, events semantics domain,
+        // and HDF domain. Hyzheng 01/25/2004.
         _currentLocalReceiverMap =
             (Map)_localReceiverMaps.get(controller.currentState());
             
-        // FIXME:    
-        // if there is an enabled transition, invalidate ioDependency.
-        // we may cache the IODependeny and invalidate the schedule
-        // only if the ioDependency (abstract one) changes.
+        // Note, we increment the workspace version such that the 
+        // io dependency will be reconstructed. This design is based
+        // on that each time one transition happens, the new refinement
+        // takes place of the modal model for execution, consequently,
+        // the model structure changes.
         if (_enabledTransition != null) {
             ((NamedObj) getContainer()).workspace().incrVersion();
         }

@@ -124,6 +124,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *   choice action.
      */
     public void fire() throws IllegalActionException {
+        // FIXME: this basically copies the fire method of FSMDirector.
+        // It will be cleaned by introducing an abstract modal model director.
         if (_debugging) _debug(getName(), " fire.");
         if (_firstFire) {
             Actor[] actors = _st.getRefinement();
@@ -143,17 +145,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             _ctrl._chooseTransition(_st.preemptiveTransitionList());
         if (tr != null) {
 
-            Actor[] actors = tr.destinationState().getRefinement();
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (actors[i].prefire()) {
-                        actors[i].fire();
-                        actors[i].postfire();
-                    }
-                }
-            }
-
-            actors = tr.getRefinement();
+            Actor[] actors = tr.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) break;
@@ -163,6 +155,21 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     }
                 }
             }
+            _ctrl._readOutputsFromRefinement();
+
+            // FIXME: I think the refinements of destination state
+            // should be executed in the next iteration.
+            actors = tr.destinationState().getRefinement();
+            if (actors != null) {
+                for (int i = 0; i < actors.length; ++i) {
+                    if (actors[i].prefire()) {
+                        actors[i].fire();
+                        actors[i].postfire();
+                    }
+                }
+            }
+
+            _ctrl._readOutputsFromRefinement();
             return;
         }
         Iterator actors = _enabledRefinements.iterator();
@@ -198,15 +205,17 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     }
                 }
                 _ctrl._readOutputsFromRefinement();
-                // execute the output actions, since these are normally
-                // executed in chooseTransition, but the outputs may
-                // have been changed by the transition refinemenets
-                Iterator actions = tr.choiceActionList().iterator();
-                while (actions.hasNext()) {
-                    Action action = (Action)actions.next();
-                    action.execute();
-                }
             }
+
+            // execute the output actions, since these are normally
+            // executed in chooseTransition, but the outputs may
+            // have been changed by the transition refinemenets
+            Iterator actions = tr.choiceActionList().iterator();
+            while (actions.hasNext()) {
+                Action action = (Action)actions.next();
+                action.execute();
+            }
+            _ctrl._readOutputsFromRefinement();
         }
         return;
     }
