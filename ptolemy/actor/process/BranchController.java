@@ -354,7 +354,7 @@ public class BranchController implements Runnable {
      *  controller are stopped and at least one branch is
      *  blocked or if there are no branches; return false otherwise.
      */
-    public boolean isBlocked() {
+    public synchronized  boolean isBlocked() {
         if( !hasBranches() ) {
             return true;
         }
