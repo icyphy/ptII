@@ -69,9 +69,13 @@ import javax.swing.table.TableColumn;
 
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.unit.ParseException;
 import ptolemy.data.unit.UnitAttribute;
+import ptolemy.data.unit.UnitExpr;
+import ptolemy.data.unit.UnitLibrary;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.undo.UndoChangeRequest;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
@@ -306,7 +310,7 @@ public class PortConfigurerDialog
          * @param row
          * @param col
          * @return value
-         * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
+         * @see javax.swing.table.TableModel#setValueAt(Object, int, int)
          */
         public void setValueAt(Object value, int row, int col) {
             Object portInfo[] = (Object[]) (_ports.elementAt(row));
@@ -495,22 +499,19 @@ public class PortConfigurerDialog
     ////                         public methods                    ////
 
     /** Notify the listener that a change has been successfully executed.
-    *  @param change The change that has been executed.
-    */
+     *  @param change The change that has been executed.
+     */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is the originator or if this is a change
         // from above that is anything other than an undo. Detecting that it
         // is an undo from above seems awkward. A better way would be to extend
         // the ChangeRequest system to include ChangeRequest types so that
         // an undo would be explicitly represented.
-        if (change == null
-            || change.getSource() == this
-            || !change.getDescription().equals(
-                "Request to undo/redo most recent MoML change"))
+        if (change == null || change.getSource() == this
+                || !(change instanceof UndoChangeRequest))
             return;
         // The ports of the _target may have changed.
         _setupTableModel();
-
     }
 
     /** Notify the listener that a change has resulted in an exception.
@@ -964,7 +965,7 @@ public class PortConfigurerDialog
         if (_units && updates[PortTableModel.COL_UNITS]) {
             momlUpdate.append(
                 "<property name=\"_units\" "
-                    + "class = \"ptolemy.data.unit.UnitsAttribute\" "
+                    + "class = \"ptolemy.data.unit.UnitAttribute\" "
                     + "value = \""
                     + ((String) (portInfo[PortTableModel.COL_UNITS]))
                     + "\"/>");
@@ -1102,30 +1103,26 @@ public class PortConfigurerDialog
             }
         });
 
-        //        TableColumn _portUnitColumn =
-        //            ((TableColumn) (_portTable
-        //                .getColumnModel()
-        //                .getColumn(PortTableModel.COL_UNITS)));
-        //        final PortStringCellEditor portUnitEditor = new PortStringCellEditor();
-        //        _portUnitColumn.setCellEditor(portUnitEditor);
-        //        portUnitEditor.addCellEditorListener(new CellEditorListener() {
-        //            public void editingStopped(ChangeEvent arg0) {
-        //                String expression = portUnitEditor._getText();
-        //                UnitExpr uExpr;
-        //                try {
-        //                    uExpr = Unit.getParser().parseUnitExpr(expression);
-        //                } catch (ParseException e) {
-        //                    JOptionPane.showMessageDialog(
-        //                        null,
-        //                        e.getMessage(),
-        //                        "alert",
-        //                        JOptionPane.ERROR_MESSAGE);
-        //                }
-        //            }
-        //
-        //            public void editingCanceled(ChangeEvent arg0) {
-        //            }
-        //        });
+        TableColumn _portUnitColumn = ((TableColumn) (_portTable
+                .getColumnModel().getColumn(PortTableModel.COL_UNITS)));
+        final PortStringCellEditor portUnitEditor = new PortStringCellEditor();
+        _portUnitColumn.setCellEditor(portUnitEditor);
+        portUnitEditor.addCellEditorListener(new CellEditorListener() {
+
+            public void editingStopped(ChangeEvent arg0) {
+                String expression = portUnitEditor._getText();
+                UnitExpr uExpr;
+                try {
+                    uExpr = UnitLibrary.getParser().parseUnitExpr(expression);
+                } catch (ParseException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),
+                            "alert", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            public void editingCanceled(ChangeEvent arg0) {
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1133,7 +1130,7 @@ public class PortConfigurerDialog
 
     private boolean _hideAllPorts = false;
     // Following is true if we have full units capability.
-    private boolean _units = false;
+    private boolean _units = true;
 
     // The combination box used to select the location of a port.
     private JComboBox _portLocationComboBox;
