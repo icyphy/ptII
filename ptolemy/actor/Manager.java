@@ -513,6 +513,17 @@ public class Manager extends NamedObj implements Runnable {
         container.stopFire();
     }
 
+    /** Remove a change listener. If the specified listener is not
+     *  on the list, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeChangeListener(ChangeListener listener) {
+        if (_changeListeners == null) {
+            return;
+        }
+        _changeListeners.remove(listener);
+    }
+
     /** Remove a listener from the list of listeners that are notified
      *  of execution events.  If the specified listener is not on the list,
      *  do nothing.
@@ -521,17 +532,6 @@ public class Manager extends NamedObj implements Runnable {
     public void removeExecutionListener(ExecutionListener listener) {
         if(listener == null || _executionListeners == null) return;
         _executionListeners.remove(listener);
-    }
-
-    /** Remove a change listener. If the specified listener is not
-     *  on the list, do nothing.
-     *  @param listener The listener to remove.
-     */
-    public void removeChangeListener(ChangeListener change) {
-        if (_changeListeners == null) {
-            return;
-        }
-        _changeListeners.remove(change);
     }
 
     /** Queue a change request.
@@ -882,11 +882,11 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Set the state of execution and notify listeners if the state
      *  actually changes.
-     *  @param newstate The new state.
+     *  @param newState The new state.
      */
-    protected void _setState(State newstate) {
-        if (_state != newstate) {
-            _state = newstate;
+    protected void _setState(State newState) {
+        if (_state != newState) {
+            _state = newState;
             _notifyListenersOfStateChange();
         }
     }
