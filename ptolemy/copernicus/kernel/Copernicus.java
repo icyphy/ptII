@@ -155,7 +155,7 @@ public class Copernicus {
          
             // Parse the file named by the modelPath Parameter and update
             // parameters.  FIXME: Is this necessary?
-            _generatorAttribute.sanityCheckAndUpdateParameters(_modelPath);
+            // _generatorAttribute.sanityCheckAndUpdateParameters(_modelPath);
         }
 
         // Remove the generatorAttribute from the model so we don't
@@ -164,6 +164,15 @@ public class Copernicus {
 
         // Save command-line parameters in the generator attribute.
         _saveParsedArgs();
+
+        // Sanity check the parameters and update any parameters that
+        // were changed by the command-line parameters.
+        // For example, if the user changes ptIIUserDirectory, then
+        // we need to change ptIIUserDirectoryAsURL.
+        _generatorAttribute.sanityCheckAndUpdateParameters(_modelPath);
+
+
+        System.out.println("_generatorAttribute = " + _generatorAttribute);
         
         if (_verbose) {
             System.out.println(_generatorAttribute.toString());
