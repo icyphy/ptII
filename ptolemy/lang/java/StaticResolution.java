@@ -563,7 +563,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	System.out.println("Each call to _loadCanonicalFile() parses a file and prints a .");
         OBJECT_DECL = _requireClass(env, "Object");
 
-        System.out.println("StaticResolution<static>: --- done require class on Object ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("\nStaticResolution<static>: --- done require class on Object ---" + (System.currentTimeMillis() - startTime));
 
         OBJECT_TYPE = OBJECT_DECL.getDefType();
 
