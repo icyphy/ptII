@@ -754,7 +754,7 @@ public class NamedObj implements Nameable, Debuggable,
                     // NullPointerException, we do the check here and
                     // include 'this' so that we know where the problem
                     // is occurring.
-                    throw new InternalErrorException(this, null, 
+                    throw new InternalErrorException(this, null,
                             "This should not be happening: getAttribute() "
                             + "was called with a null name");
                 }
