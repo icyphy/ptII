@@ -29,11 +29,15 @@
 
 package ptolemy.domains.csp.demo.DiningPhilosophers.systemLevelType;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.moml.MoMLParser;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 
 import java.net.URL;
+import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// Check
@@ -56,27 +60,12 @@ java ptolemy.domains.csp.demo.DiningPhilosophers.systemLevelType.Check <numberOf
 */
 
 public class Check {
-
-    /** Compose the interface automata model for the dining philosopher
-     *  model and check for deadlock.
+    /** Load the base automata.
      *  @param numberOfPhilosophers The number of philosophers.
-     *  @exception Exception If the model cannot be constructored or checked.
+     *  @exception Exception If the automata cannot be loaded.
      */
     public Check(int numberOfPhilosophers) throws Exception {
-        // Composition strategy:
-        // (1) Compose Philosopher and two CSPReceiver to form the philosopher
-        //     model template;
-        // (2) Compose Chopstick, ConditionalBranchController, two
-        //     ConditionalSend, and two CSPReceiver to form the chopstick
-        //     model template;
-        // (3) Compose the philosopher and chopstick model templates to form
-        //     philosopher-chopstick pair template;
-        // (4) Compose the specified number of the above pair to form the
-        //     complete model.
-        // In each step, the transition labels in the templates need to be
-        // renamed before composition.
-
-        // load all automata.
+        _numberOfPhilosophers = numberOfPhilosophers;
 
         // path to the automata MoML files. Set to current directory for now,
         // should set it to
@@ -90,32 +79,66 @@ public class Check {
         // called.
         URL url = MoMLApplication.specToURL(base + "CSPReceiver.xml");
         MoMLParser parser = new MoMLParser();
-        InterfaceAutomaton receiver =
-                               (InterfaceAutomaton)parser.parse(url, url);
+        _receiver = (InterfaceAutomaton)parser.parse(url, url);
 
         url = MoMLApplication.specToURL(base + "ConditionalSend.xml");
         parser = new MoMLParser();
-        InterfaceAutomaton send = (InterfaceAutomaton)parser.parse(url, url);
+        _send = (InterfaceAutomaton)parser.parse(url, url);
 
         url = MoMLApplication.specToURL(base
                                       + "ConditionalBranchController.xml");
         parser = new MoMLParser();
-        InterfaceAutomaton controller =
-                                 (InterfaceAutomaton)parser.parse(url, url);
+        _controller = (InterfaceAutomaton)parser.parse(url, url);
 
         url = MoMLApplication.specToURL(base + "Philosopher.xml");
         parser = new MoMLParser();
-        InterfaceAutomaton philosopher =
-                                 (InterfaceAutomaton)parser.parse(url, url);
+        _philosopher = (InterfaceAutomaton)parser.parse(url, url);
 
         url = MoMLApplication.specToURL(base + "Chopstick.xml");
         parser = new MoMLParser();
-        InterfaceAutomaton chopstick =
-                                 (InterfaceAutomaton)parser.parse(url, url);
+        _chopstick = (InterfaceAutomaton)parser.parse(url, url);
+    }
 
-        //
-        // Compose the philosopher model template
-        //
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Compose the automata and check for deadlock.
+     *  @exception IllegalActionException If the automata cannot be composed.
+     *  @exception NameDuplicationException If name clashes during composition.
+     */
+    public void go() throws IllegalActionException, NameDuplicationException {
+        // Composition strategy:
+        // (1) Compose Philosopher and two CSPReceiver;
+        // (2) Compose Chopstick, ConditionalBranchController, two
+        //     ConditionalSend, and two CSPReceiver;
+        // (3) Compose the philosopher and chopstick model to form
+        //     philosopher/chopstick pair;
+        // (4) Compose all the pairs to form the complete model.
+      //
+        // Compose numberOfPhilosophers instances of philosopher/chopstick
+      // pairs. Each instance is composed from scratch from clones of the
+      // basic automata loaded above. This is for make the state names
+      // of all the instances correct. If cloning the philosopher/chopstick
+      // pairs from one instance, the state names in all the clones will
+      // be the same as that in the master instance.
+      InterfaceAutomaton[] phiCho =
+                         new InterfaceAutomaton[_numberOfPhilosophers];
+        for (int i=0; i<_numberOfPhilosophers; i++) {
+          InterfaceAutomaton phiAndReceiver = _composePhiAndReceiver(i);
+          InterfaceAutomaton choAndReceiver = _composeChoAndReceiver(i);
+          phiCho[i] = phiAndReceiver.compose(choAndReceiver);
+      }
+
+      // compose all philosopher/chopstick pairs.
+        InterfaceAutomaton all = phiCho[0];
+      for (int i=1; i<_numberOfPhilosophers; i++) {
+          all = all.compose(phiCho[i]);
+      }
+
+        // check for deadlock
     }
 
     /** Get the number of philosopher parameter from the command line
@@ -125,19 +148,14 @@ public class Check {
     public static void main (String[] args) {
         try {
             int number = (Integer.valueOf(args[0])).intValue();
-            new Check(number);
+            Check check = new Check(number);
+          check.go();
         } catch (Exception ex) {
             System.out.println(ex.getClass().getName() + ": "
                              + ex.getMessage());
             ex.printStackTrace();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
@@ -148,7 +166,73 @@ public class Check {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // compose a chopstick and its left and right receivers, conditional
+    // send, and the controller. The argument specifies the index of this
+    // chopstick.
+    private InterfaceAutomaton _composeChoAndReceiver(int index)
+            throws IllegalActionException, NameDuplicationException {
+        try {
+            // general a chopstick with the correct name
+            InterfaceAutomaton cho = (InterfaceAutomaton)_chopstick.clone();
+
+
+
+
+            return null;
+        } catch (CloneNotSupportedException cnse) {
+            throw new InternalErrorException("Check._composeChoAndReceiver: "
+              + "clone not supported: " + cnse.getMessage());
+        }
+    }
+
+    // compose a philosopher and its left and right receivers. The
+    // argument specify the index of this philosopher.
+    private InterfaceAutomaton _composePhiAndReceiver(int index)
+            throws IllegalActionException, NameDuplicationException {
+        try {
+            // generate a philosopher with the correct name
+            InterfaceAutomaton phi = (InterfaceAutomaton)_philosopher.clone();
+            phi.setName("p" + index);
+
+            HashMap nameMap = new HashMap();
+            nameMap.put("g1", "p" + index + "gl");
+            nameMap.put("g1R", "p" + index + "glR");
+            nameMap.put("g2", "p" + index + "gr");
+            nameMap.put("g2R", "p" + index + "grR");
+
+            nameMap.put("p1", "p" + index + "pl");
+            nameMap.put("p1R", "p" + index + "plR");
+            nameMap.put("p2", "p" + index + "pr");
+            nameMap.put("p2R", "p" + index + "prR");
+
+            nameMap.put("iGW1", "p" + index + "iGWl");
+            nameMap.put("iGW1T", "p" + index + "iGWlT");
+            nameMap.put("iGW1F", "p" + index + "iGWlF");
+
+            nameMap.put("iGW2", "p" + index + "iGWr");
+            nameMap.put("iGW2T", "p" + index + "iGWrT");
+            nameMap.put("iGW2F", "p" + index + "iGWrF");
+
+            phi.renameTransitionLabels(nameMap);
+
+System.out.println(phi.exportMoML());
+
+
+
+            return null;
+        } catch (CloneNotSupportedException cnse) {
+            throw new InternalErrorException("Check._composePhiAndReceiver: "
+              + "clone not supported: " + cnse.getMessage());
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    private InterfaceAutomaton _receiver;
+    private InterfaceAutomaton _send;
+    private InterfaceAutomaton _controller;
+    private InterfaceAutomaton _philosopher;
+    private InterfaceAutomaton _chopstick;
 
+    private int _numberOfPhilosophers;
 }
