@@ -64,9 +64,6 @@ PTAUXALLJARS = \
 # All the .class files necessary to run a Ptolemy II domain applet
 PTAUXALLJAR =	ptsupport.jar
 
-../collections/ptcollections.jar:
-	(cd ../collections; $(MAKE) ptcollections.jar)
-
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
@@ -83,6 +80,9 @@ MISC_FILES = $(DIRS) filter system
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
+
+../collections/ptcollections.jar:
+	(cd ../collections; $(MAKE) ptcollections.jar)
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
