@@ -6,16 +6,27 @@
 <body bgcolor="#faf0e6">
 <h1>Plot using Logarithmic Axes</h1>
 <hr>
-The plot below uses logarithmic axes.
-
-
+The two plots below show the same 
+<A HREF="logaxes.plt">data</A>, plotted with and without logarithmic
+axes.
 <p>
-<applet name="LogAxes" code="ptplot.PlotApplet" width=500 height=400
+<applet name="LogAxes" code="ptplot.PlotApplet" width=300 height=400
     codebase="../.."	
     archive="ptplot/ptplot.jar"
     alt="If you had a java-enabled browser, you would see an applet here."
 >
-<param name="pxgraphargs" value="logaxes.plt">
+<param name="pxgraphargs" value="-t 'X and Y Logarithmic Axes' -lnx -lny logaxes.plt">
+<param name="background" value="faf0e6">
+   <hr>If your browser recognized the applet tag,
+    you would see an applet here.<hr>
+</applet>
+
+<applet name="LogAxes" code="ptplot.PlotApplet" width=300 height=400
+    codebase="../.."	
+    archive="ptplot/ptplot.jar"
+    alt="If you had a java-enabled browser, you would see an applet here."
+>
+<param name="pxgraphargs" value="-t 'X and Y Linear Axes' logaxes.plt">
 <param name="background" value="faf0e6">
    <hr>If your browser recognized the applet tag,
     you would see an applet here.<hr>
