@@ -342,7 +342,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         // not a top-level director, the parameter should already be
         // processed by the code above. So the updateParameters() in
         // _initialize() will do nothing.
-        _initialize();
+        //_initialize();
     }
 
     /** If this is a top-level director, returns true if the current time
@@ -553,22 +553,22 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         boolean result = false;
         _refineStepSize = getCurrentStepSize();
         CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration edators = scheduler.eventGenerateActors();
+        Enumeration edators = scheduler.eventGenerators();
         while(edators.hasMoreElements()) {
-            CTEventGenerateActor ed=
-                (CTEventGenerateActor)edators.nextElement();
+            CTEventGenerator ed=
+                (CTEventGenerator)edators.nextElement();
             if(DEBUG) {
                 System.out.println("Ask for missed event from..."+
                     ((Nameable)ed).getName());
             }
-            boolean answer = ed.hasMissedEvent();
+            boolean answer = true; //ed.hasMissedEvent();
             if(DEBUG) {
                 System.out.println("Answer is: " + answer);
             }
             if(answer == true) {
                 result = true;
-               _refineStepSize = Math.min(_refineStepSize, 
-                       ed.refineStepSize()); 
+                //   _refineStepSize = Math.min(_refineStepSize, 
+                //       ed.refineStepSize()); 
             }
         }
         return result;
@@ -605,32 +605,32 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
      */
     protected void _rollback() throws IllegalActionException{
         CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration memactors = scheduler.memarisActors();
+        Enumeration memactors = scheduler.statefulActors();
         while(memactors.hasMoreElements()) {
-            CTMemarisActor mem =(CTMemarisActor)memactors.nextElement();
+            CTStatefulActor mem =(CTStatefulActor)memactors.nextElement();
             if(VERBOSE) {
                 System.out.println("Restore State..."+
                     ((Nameable)mem).getName());
             }
-            mem.restoreStates();
+            mem.goToMarkedState();
         }
         setCurrentTime(_knownGoodTime);
     }
 
     /** Save the current state as the known good state. Call the
-     *  saveStates() method on all CTMemarisActors. Save the current time
+     *  saveStates() method on all CTStatefulActors. Save the current time
      *  as the "known good" time.
      */
     protected void _saveStates() {
         CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration memactors = scheduler.memarisActors();
+        Enumeration memactors = scheduler.statefulActors();
         while(memactors.hasMoreElements()) {
-            CTMemarisActor mem =(CTMemarisActor)memactors.nextElement();
+            CTStatefulActor mem =(CTStatefulActor)memactors.nextElement();
             if(VERBOSE) {
                 System.out.println("Save State..."+
                     ((Nameable)mem).getName());
             }
-            mem.saveStates();
+            mem.markState();
         }
         _knownGoodTime = getCurrentTime();
     }

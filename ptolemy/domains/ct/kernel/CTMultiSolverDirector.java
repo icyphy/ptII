@@ -51,10 +51,10 @@ with minimum step size to rebuild the history points. For input signals
 that contains Dirac impulses, it is also essential to switch to the 
 impulse backward Euler solver to deal with them.
 <P>
-This class has two additional parameters than the CTDirector base class,
-which are "defaultODESolver" and "breakpointODESolver". The values of the 
-parameters are Strings that specifies the full class name of ODE solvers.
-The default "defaultODESolver" is ExplicitRK23Solver. The default
+This class has one additional parameters than the CTSingleSolverDirector,
+which is "breakpointODESolver". The value of the 
+parameter is a String that specifies the full class name of ODE solvers.
+The default "ODESolver" is ExplicitRK23Solver. The default
 "breakpointODESolver" is the BackwardEulerSolver.
 All other parameters are maintained by the CTDirector base class. And the
 two solvers share them.
@@ -63,7 +63,7 @@ two solvers share them.
 @version $Id$
 @see ptolemy.domains.ct.kernel.CTDirector
 */
-public class CTMultiSolverDirector extends CTDirector {
+public class CTMultiSolverDirector extends CTSingleSolverDirector {
     /** Construct a CTMultiSolverDirector with no name and no container.
      *  All parameters take their default values.
      */
@@ -104,6 +104,16 @@ public class CTMultiSolverDirector extends CTDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true if this is a breakpoint iteration. A breakpoint
+     *  iteration is the iteration just after a breakpoint. In a 
+     *  breakpoint iteration, the ODE solver is the breakpoint 
+     *  ODE solver, and the step size is the minimum step size.
+     *  @return True if this is a breakpoint iteration.
+     */
+    public boolean isBPIteration() {
+        return _bpIteration;
+    }
+
     /**  Fire the system for one iteration. One iteration is defined as
      *   simulating the system at one time point, which includes
      *   resolving states and producing outputs. For the first iteration
@@ -129,7 +139,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *//**  Fire the system for one iteration.
      *
      *  @exception IllegalActionException If thrown by the ODE solver.
-     */
+     
     public void fire() throws IllegalActionException {
         if (_first) {
             _first = false;
@@ -141,27 +151,7 @@ public class CTMultiSolverDirector extends CTDirector {
         //Refine step size and set ODE Solvers.
         setCurrentODESolver(_defaultSolver);
         setCurrentStepSize(getSuggestedNextStepSize());
-        double bp;
-        TotallyOrderedSet breakPoints = getBreakPoints();
-        //choose ODE solver
-        // If now is a break point, remove the break point from table;
-        if((breakPoints != null) && !breakPoints.isEmpty()) {
-            bp = ((Double)breakPoints.first()).doubleValue();
-            if(Math.abs(bp-getCurrentTime()) < getTimeResolution()) {
-                // break point now!
-                breakPoints.removeFirst();
-                setCurrentODESolver(_breakpointSolver);
-                setCurrentStepSize(getMinStepSize());
-            }
-            //adjust step size;
-            if(!breakPoints.isEmpty()) {
-                bp = ((Double)breakPoints.first()).doubleValue();
-                double iterEndTime = getCurrentTime()+getCurrentStepSize();
-                if (iterEndTime > bp) {
-                    setCurrentStepSize(bp-getCurrentTime());
-                }
-            }
-        }
+
         // prefire all the actors.
         boolean ready = true;
         CompositeActor ca = (CompositeActor) getContainer();
@@ -177,6 +167,7 @@ public class CTMultiSolverDirector extends CTDirector {
             produceOutput();
         }
     }
+    */
 
     /** Return the default ODE solver.
      *  @return The default ODE solver
@@ -202,7 +193,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *       thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
-        if (VERBOSE||DEBUG) {
+        /*if (VERBOSE||DEBUG) {
             System.out.println("MultiSolverDirector initialize.");
         }
         CompositeActor ca = (CompositeActor) getContainer();
@@ -228,13 +219,16 @@ public class CTMultiSolverDirector extends CTDirector {
             "does not have a scheduler.");
         }
         _initialize();
+        */
+        super.initialize();
+        fireAt(null, getCurrentTime());
     }
 
     /** Return false if the current time reaches the step time. 
      *  @return false If the simulation stop time expires.
      *  @exception IllegalActionException If there is no ODE solver, or
      *        thrown by the solver.
-     */
+     
     public boolean postfire() throws IllegalActionException {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
             fireAt(null, getStopTime());
@@ -249,6 +243,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
         return true;
     }
+    */
 
     /** Return true always, indicating that the system is always ready
      *  for one iteration. The schedule
@@ -257,7 +252,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *
      *  @return True Always
      *  @exception IllegalActionException Never thrown in this method.
-     */
+     
     public boolean prefire() throws IllegalActionException {
         if (VERBOSE) {
             System.out.println("Director prefire.");
@@ -278,11 +273,12 @@ public class CTMultiSolverDirector extends CTDirector {
         updateParameters();
         return true;
     }
-    
+    */
+
     /** produce outputs. Fire all the actors in the output schedule.
      *  @exception IllegalActionException If the actor on the output
      *      schedule throws it.
-     */
+     
     public void produceOutput() throws IllegalActionException {
         CTScheduler scheduler = (CTScheduler) getScheduler();
         // Integrators emit output.
@@ -309,6 +305,7 @@ public class CTMultiSolverDirector extends CTDirector {
             nextoutputactor.fire();
         }
     }
+    */
 
     /** Update given parameter. If the parameter does not exist, 
      *  throws an exception.
@@ -342,7 +339,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  iteration.
      *  @exception IllegalActionException If any of the actors 
      *      throws it.
-     */
+     
     public void updateStates() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
         Enumeration allactors = container.deepGetEntities();
@@ -354,7 +351,7 @@ public class CTMultiSolverDirector extends CTDirector {
             nextactor.postfire();
         }
     }
-
+    */
     /** Wrapup the simulation. Show the statistics if needed. The statistics
      *  includes the number of step simulated, the number of function
      *  evaluations (firing all actors in the state transition schedule),
@@ -362,7 +359,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  
      *  @exception IllegalActionException Never thrown.
      *  
-     */
+     
     public void wrapup() throws IllegalActionException{
         if(STAT) {
             System.out.println("**************STATISTICS***************");
@@ -372,10 +369,80 @@ public class CTMultiSolverDirector extends CTDirector {
         }
         super.wrapup();
     }
+    */
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
+    /** clear obsolete breakpoints, switch to breakpointODESolver if this
+     *  is the first fire after a breakpoint, and adjust step sizes
+     *  accordingly.
+     *  @exception IllgalActionException If breakpoint solver is not 
+     *     illegal.
+     */
+    protected void _processBreakpoints() throws IllegalActionException  {
+        double bp;
+        TotallyOrderedSet breakPoints = getBreakPoints();
+        double tnow = getCurrentTime();
+        _setIsBPIteration(false);
+        //choose ODE solver
+        // If now is a break point, remove the break point from table;
+        if(breakPoints != null) {
+            while (!breakPoints.isEmpty()) {
+                bp = ((Double)breakPoints.first()).doubleValue();
+                if(bp < (tnow-getTimeResolution())) {
+                    // break point in the past or at now.
+                    breakPoints.removeFirst();
+                } else if(Math.abs(bp-tnow) < getTimeResolution()){
+                    // break point now!
+                    breakPoints.removeFirst();
+                    setCurrentODESolver(_breakpointSolver);
+                    setCurrentStepSize(getMinStepSize());
+                    _setIsBPIteration(true);
+                    break;
+                } else {
+                    double iterEndTime = getCurrentTime()+getCurrentStepSize();
+                    if (iterEndTime > bp) {
+                        setCurrentStepSize(bp-getCurrentTime());
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    /** Predict the next step size. This method should be called if the
+     *  current integration step is acceptable. The predicted step size
+     *  is the minimum of all predictions from step size control actors.
+     *  @exception IllegalActionException If the scheduler throws it.
+     */
+    protected double _predictNextStepSize() throws IllegalActionException {
+        if(!isBPIteration()) {
+            double predictedstep = getCurrentStepSize();
+            CTScheduler sched = (CTScheduler)getScheduler();
+            Enumeration sscs = sched.stateTransitionSSCActors();
+            while (sscs.hasMoreElements()) {
+                CTStepSizeControlActor a = 
+                    (CTStepSizeControlActor) sscs.nextElement();
+                predictedstep = Math.min(predictedstep, a.predictedStepSize());
+            }
+            sscs = sched.outputSSCActors();
+            while (sscs.hasMoreElements()) {
+                CTStepSizeControlActor a = 
+                    (CTStepSizeControlActor) sscs.nextElement();
+                predictedstep = Math.min(predictedstep, a.predictedStepSize());
+            }
+            return predictedstep;
+        }
+        return getInitialStepSize();
+    }
+    
+    /** Set whether this is a breakpoint processing iteration.
+     *  @param bp True if this is a breakpoint iteration.
+     */
+    protected void _setIsBPIteration(boolean bp) {
+        _bpIteration = bp;
+    }
     /** Set the current time to the start time and the suggested
      *  next step
      *  size to the initial step size. The start time is
@@ -389,7 +456,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  check the container and the scheduler, so the 
      *  caller should check.
      *  @exception IllegalActionException If thrown by director actors.
-     */
+     
     protected void _initialize() throws IllegalActionException{
         if(STAT) {
             NSTEP=0;
@@ -431,6 +498,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
         super.initialize();
     }
+    */
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                      ////
@@ -438,8 +506,9 @@ public class CTMultiSolverDirector extends CTDirector {
         try {
             _defaultsolverclass=
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
-            _paramDefaultODESolver = new CTParameter(
-                this, "DefaultODESolver", new StringToken(_defaultsolverclass));
+            _paramDefaultODESolver = (CTParameter)getAttribute("ODESolver");
+            _paramDefaultODESolver.setToken(
+                    new StringToken(_defaultsolverclass));
             _breakpointsolverclass=
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
             _paramBreakpointODESolver = new CTParameter(
@@ -449,10 +518,10 @@ public class CTMultiSolverDirector extends CTDirector {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
         } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,"Parameter name duplication.");
+            throw new InvalidStateException(this,
+                    "Parameter name duplication.");
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -471,6 +540,8 @@ public class CTMultiSolverDirector extends CTDirector {
     // The default solver.
     private ODESolver _breakpointSolver = null;
     //indicate the first round of execution.
-
     private boolean _first;
+    //indicate whether this is a breakpoint iteration.
+    private boolean _bpIteration = false;
+    
 }

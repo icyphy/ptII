@@ -150,46 +150,44 @@ public class CTSingleSolverDirector extends CTDirector {
         _setFireBeginTime(getCurrentTime());
         //Refine step size
         setCurrentStepSize(getSuggestedNextStepSize());
-        double bp;
-        TotallyOrderedSet breakPoints = getBreakPoints();
-        // If now is a break point, remove the break point from table;
-        if(breakPoints != null) {
-            while (!breakPoints.isEmpty()) {
-                bp = ((Double)breakPoints.first()).doubleValue();
-                if(bp <= getCurrentTime()) {
-                    // break point in the past or at now.
-                    breakPoints.removeFirst();
-                } else {
-                    double iterEndTime = getCurrentTime()+getCurrentStepSize();
-                    if (iterEndTime > bp) {
-                        setCurrentStepSize(bp-getCurrentTime());
-                    }
-                    break;
-                }
-            }
+        _processBreakpoints();
+        if(VERBOSE) {
+            System.out.println("execute the system from "+
+                    getCurrentTime() +" step size" + getCurrentStepSize());
         }
-        //choose ODE solver
-        //setCurrentODESolver(_defaultSolver);
         // prefire all the actors.       
         if(_prefireSystem()) {
             ODESolver solver = getCurrentODESolver();
-            while (true) { 
-                if (solver.resolveStates()) {
-                    // ask if this step is acceptable
-                    if (!_isStateAcceptable()) {
+            while (true) {
+                while (true) { 
+                    if (solver.resolveStates()) {
+                        if(VERBOSE) {
+                            System.out.println("state resolved.");
+                        }
+                        // ask if this step is acceptable
+                        if (!_isStateAcceptable()) {
+                            setCurrentTime(_getFireBeginTime());
+                            _refineStepWRTState();
+                        } else {
+                            break;
+                        }
+                    } else { // resolve state failed, e.g. in implicit methods.
+                        if(getCurrentStepSize() < 0.5*getMinStepSize()) {
+                            throw new IllegalActionException(this,
+                                    "Cannot resolve new states even using "+
+                                    "the minimum step size, at time "+
+                                    getCurrentTime());
+                        }
                         setCurrentTime(_getFireBeginTime());
-                        _refineStepWRTState();
-                    } else {
-                        break;
+                        setCurrentStepSize(0.5*getCurrentStepSize());
                     }
-                } else { // resolve state failed, e.g. in implicit methods.
-                    setCurrentTime(_getFireBeginTime());
-                    setCurrentStepSize(0.5*getCurrentStepSize());
                 }
                 produceOutput();
                 if (!_isOutputAcceptable()) {
                     setCurrentTime(_getFireBeginTime());
                     _refineStepWRTOutput();
+                }else {
+                    break;
                 }
             }
             setSuggestedNextStepSize(_predictNextStepSize());
@@ -258,6 +256,11 @@ public class CTSingleSolverDirector extends CTDirector {
         // set time
         setCurrentTime(getStartTime());
         setSuggestedNextStepSize(getInitialStepSize());
+        setCurrentODESolver(_defaultSolver);
+        TotallyOrderedSet bps = getBreakPoints();
+        if(bps != null) {
+            bps.clear();
+        }
         fireAt(null, getStopTime());
         sch.setValid(false);
         _first = true;
@@ -281,6 +284,10 @@ public class CTSingleSolverDirector extends CTDirector {
         if(Math.abs(getCurrentTime() - getStopTime()) < getTimeResolution()) {
             updateStates(); // call postfire on all actors
             return false;
+        }
+        if(getStopTime() < getCurrentTime()) {
+            throw new InvalidStateException(this,
+            " stop time is less than the current time.");
         }
         return true;
     }
@@ -399,7 +406,9 @@ public class CTSingleSolverDirector extends CTDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Prefire all the actors in the system.
+    /** Return true if the prefire() methods of all the actors in the system
+     *  return true.
+     *  @return True if the prefire() methods of all actors returns true.
      */
     protected boolean _prefireSystem() throws IllegalActionException {
         boolean ready = true;
@@ -408,9 +417,39 @@ public class CTSingleSolverDirector extends CTDirector {
         while(actors.hasMoreElements()) {
             Actor a = (Actor) actors.nextElement();
             ready = ready && a.prefire();
+            if(DEBUG) {
+                System.out.println("Prefire "+((Nameable)a).getName() +
+                        " returns" + ready);
+            }
         }
         return ready;
     }        
+    
+    /** Clean old breakpoints in the breakpoint table, and adjust 
+     *  the the current step size according to it.
+     *  @exception IllgalActionException Not thrown in this class,
+     *      may be thrown by derived classes.
+     */
+    protected void _processBreakpoints() throws IllegalActionException {
+        double bp;
+        TotallyOrderedSet breakPoints = getBreakPoints();
+        // If now is a break point, remove the break point from table;
+        if(breakPoints != null) {
+            while (!breakPoints.isEmpty()) {
+                bp = ((Double)breakPoints.first()).doubleValue();
+                if(bp <= getCurrentTime()) {
+                    // break point in the past or at now.
+                    breakPoints.removeFirst();
+                } else {
+                    double iterEndTime = getCurrentTime()+getCurrentStepSize();
+                    if (iterEndTime > bp) {
+                        setCurrentStepSize(bp-getCurrentTime());
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
     /** Return the fire begin time, which is the value set by 
      *  setFireBeginTime().
@@ -425,6 +464,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  state transition and dynamic schedule.
      *  If one of them returns false, then the method returns
      *  false.
+     *  @exception IllegalActionException If the scheduler throws it.
      */
     protected boolean _isStateAcceptable() throws IllegalActionException {
         boolean successful = true;
@@ -443,6 +483,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  state transition and dynamic schedule.
      *  If one of them returns false, then the method returns
      *  false.
+     *  @exception IllegalActionException If the scheduler throws it.
      */
     protected boolean _isOutputAcceptable() throws IllegalActionException {
         boolean successful = true;
@@ -459,14 +500,17 @@ public class CTSingleSolverDirector extends CTDirector {
     /** Predict the next step size. This method should be called if the
      *  current integration step is acceptable. The predicted step size
      *  is the minimum of all predictions from step size control actors.
+     *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _predictNextStepSize() throws IllegalActionException {
-        double predictedstep = getCurrentStepSize();
+        double predictedstep = 2.0*getCurrentStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();
+        System.out.println("Predicting step sizes.");
         while (sscs.hasMoreElements()) {
             CTStepSizeControlActor a = 
                 (CTStepSizeControlActor) sscs.nextElement();
+            System.out.println("a predicted step" +  a.predictedStepSize());
             predictedstep = Math.min(predictedstep, a.predictedStepSize());
         }
         sscs = sched.outputSSCActors();
@@ -483,6 +527,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  and dynamic schedule for the refined step size, and take the
      *  minimum of them.
      *  @return the refined step size.
+     *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refineStepWRTState() throws IllegalActionException {
         double refinedstep = getCurrentStepSize();
@@ -501,6 +546,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  and dynamic schedule for the refined step size, and take the
      *  minimum of them.
      *  @return the refined step size.
+     *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refineStepWRTOutput() throws IllegalActionException {
         double refinedstep = getCurrentStepSize();
