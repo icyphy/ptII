@@ -75,13 +75,9 @@ test composition-1.0 {DE model contained within SDF} {
     $toplevel connect \
 	    $p2 \
 	    [java::field [java::cast ptolemy.actor.lib.Sink $a3] input] R4
-
-    set l1 [java::new ptolemy.kernel.util.StreamListener]
-    $director addDebugListener $l1
-
     set iterations [$director getAttribute iterations]
     _testSetToken $iterations [java::new {ptolemy.data.IntToken int} 6]
 
-    $manager run
-    list [enumToTokenValues [$a3 getRecord 0]] [enumToStrings [$a3 getTimeRecord]]
+    catch {$manager run} s1
+    list $s1 [enumToTokenValues [$a3 getRecord 0]] [enumToStrings [$a3 getTimeRecord]]
 } {{0 1 2 3 4 5} {0.0 0.0 0.0 0.0 0.0 0.0}}

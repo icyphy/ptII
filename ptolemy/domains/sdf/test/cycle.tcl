@@ -76,7 +76,6 @@ test cycle-1.0 {Cycle Scheduling tests} {
 #    $scheduler addDebugListener $l1
 
     $toplevel preinitialize
-    $toplevel initialize
     set sched1 [_testEnums schedule $scheduler]
     list $sched1
 } {{{Actor1 Actor2 Delay}}}
@@ -89,4 +88,4 @@ test cycle-1.1 {Cycle execution tests} {
     $director addDebugListener $l1
     catch {set r1 [$manager run]} s1
     list $s1 $r1
-} {} {This doesn't work...}
+} {{} {}}
