@@ -59,7 +59,11 @@ proc autoDeepCG {autoDirectory} {
 	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
 	    global PTII
-	    set elapsedTime [time {sootCodeGeneration $PTII $file "Deep" 1000}]
+	    # defaultIterations 1000
+	    # statsOnly 0
+	    # speedComparison 1
+	    set elapsedTime [time {sootCodeGeneration $PTII $file "Deep" \
+		1000 0 1}]
 	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
 	    list {}
 	} {{}}
@@ -71,8 +75,6 @@ proc autoDeepCG {autoDirectory} {
 ######################################################################
 ####
 #
-
-# First, do an SDF test just to be sure things are working
 
 autoDeepCG [file join $relativePathToPTII ptolemy actor lib test auto]
 autoDeepCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
