@@ -36,10 +36,10 @@ create refinements for the states. Each refinement needs a director.</text></svg
         <input source="ptolemy/configs/fsmLibrary.xml"/>
       </entity>
     </entity>
-    <!-- Web Browser should be before HTML Viewer,
-     see HTMLEffigyFactory.java. -->    
-    <entity name="Web Browser" class="ptolemy.actor.gui.BrowserEffigy$Factory"/>
     <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
+    <!-- Web Browser should be after HTML Viewer, or it will intercept
+         HTML pages. -->
+    <entity name="Web Browser" class="ptolemy.actor.gui.BrowserEffigy$Factory"/>
     <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
   </entity>
 </group>
