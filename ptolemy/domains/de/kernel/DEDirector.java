@@ -1251,8 +1251,10 @@ public class DEDirector extends Director {
 
         if (_eventQueue == null) return;
 
-        // Adjust time according time resolution
-        time = Utilities.round(time, getTimeResolution());
+        if (time != Double.NEGATIVE_INFINITY) {
+            // Adjust time according time resolution
+            time = Utilities.round(time, getTimeResolution());
+        }
 
         int microstep = 0;
         if (time == getCurrentTime()) {
@@ -1292,8 +1294,10 @@ public class DEDirector extends Director {
 
         if (_eventQueue == null) return;
 
-        // Adjust time according time resolution
-        time = Utilities.round(time, getTimeResolution());
+        if (time != Double.NEGATIVE_INFINITY) {
+            // Adjust time according time resolution
+            time = Utilities.round(time, getTimeResolution());
+        }
 
         int microstep = 0;
 
