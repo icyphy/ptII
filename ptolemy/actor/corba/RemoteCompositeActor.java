@@ -271,7 +271,8 @@ public class RemoteCompositeActor extends CompositeActor {
      *  may also be thrown in derived classes if the director is not
      *  compatible.
      */
-    public void setDirector(Director director) throws IllegalActionException {
+    public void setDirector(Director director)
+            throws IllegalActionException, NameDuplicationException {
     	super.setDirector(director);
         _hasLocalDirector = true;
     }
