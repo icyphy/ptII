@@ -52,7 +52,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.Documentation;
+import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplet
@@ -182,6 +184,8 @@ public class MoMLApplet extends PtolemyApplet {
         }
 
         MoMLParser parser = new MoMLParser();
+        // Filter out non-graphical classes.
+        parser.setMoMLFilter(new FilterGraphicalClasses()); 
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);
         _manager = null;
@@ -208,5 +212,20 @@ public class MoMLApplet extends PtolemyApplet {
             _manager.addExecutionListener(this);
         }
         return toplevel;
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** A MoMLFilter that removes certain graphical classes.
+     */
+    public static class FilterGraphicalClasses implements MoMLFilter {
+        
+        public String filterAttributeValue(NamedObj container,
+                String attributeName, String attributeValue) {
+            System.out.println("MoMLApplet.FilterGraphicalClasses" 
+                    + container + "\n\t" + attributeName
+                    + "\n\t" + attributeValue);
+            return attributeValue;
+        }
     }
 }

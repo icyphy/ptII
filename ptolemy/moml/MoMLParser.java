@@ -234,6 +234,18 @@ public class MoMLParser extends HandlerBase {
                         || name.equals("pathTo"))) {
             value = _namespace + ":" + value;
         }
+
+        // Apply a MoMLFilter here.
+        // Filters can filter out graphical classes, or change
+        // the names of ports to handle backward compatibility.
+        if (_filter != null) {
+            value = _filter.filterAttributeValue(_current, name, value);
+            if (value == null) {
+                _skipElementName = name;
+                _skipElement = 1;
+            }
+        }
+
         // NOTE: value may be null if attribute default is #IMPLIED.
         _attributes.put(name, value);
         _attributeNameList.add(name);
@@ -470,6 +482,14 @@ public class MoMLParser extends HandlerBase {
      */
     public static ErrorHandler getErrorHandler() {
         return _handler;
+    }
+
+    /** Get the MoMLFilter used to translate names.
+     *  FIXME: should this be static?
+     *  @return The MoMLFilter currently filtering. 
+     */
+    public MoMLFilter getMoMLFilter() {
+        return _filter;
     }
 
     /** Get the top-level entity associated with this parser, or null if none.
@@ -710,6 +730,14 @@ public class MoMLParser extends HandlerBase {
      */
     public static void setErrorHandler(ErrorHandler handler) {
         _handler = handler;
+    }
+
+    /** Set the MoMLFilter to translate names.
+     *  FIXME: should this be static?   
+     *  @param filter  The MoMLFilter to call.  
+     */   
+    public void setMoMLFilter(MoMLFilter filter) {
+        _filter = filter;
     }
 
     /** Set the top-level entity.  This can be used to associate this
@@ -2543,6 +2571,10 @@ public class MoMLParser extends HandlerBase {
 
     // ErrorHandler that handles parse errors.
     private static ErrorHandler _handler = null;
+
+    // MoMLFilter to apply if non-null.  MoMLFilters translate MoML
+    // elements.
+    private MoMLFilter _filter = null;
 
     // List of top-level entities imported via import element.
     private List _imports;
