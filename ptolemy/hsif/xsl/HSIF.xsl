@@ -440,10 +440,8 @@ For more help, choose Help from the upper menu bar.</text>
     <xsl:variable name="nextState" select="key('nodeID',$nextStateID)/@name"/>
     <xsl:element name="relation">
         <!-- attributes of relation -->
-        <xsl:variable name="transitionID" select="@_id"/>
         <xsl:attribute name="name">
-             <xsl:if test="$transitionID!=''"><xsl:value-of select="$transitionID"/></xsl:if>
-             <xsl:if test="$transitionID=''"><xsl:value-of select="concat($stateID, $nextStateID)"/></xsl:if>
+            <xsl:value-of select="concat(@_id, $stateID, $nextStateID)"/>
         </xsl:attribute>
         <xsl:attribute name="class">ptolemy.domains.fsm.kernel.Transition</xsl:attribute>
         <!-- attributes of guard Expression -->
@@ -506,8 +504,11 @@ For more help, choose Help from the upper menu bar.</text>
 
 <!-- Transitions link states -->
 <xsl:template match="Transition" mode="link">
-    <xsl:variable name="relationName"><xsl:value-of select="@_id"/></xsl:variable>
+    <xsl:variable name="src"><xsl:value-of select="@src_end_"/></xsl:variable>
     <xsl:variable name="dst"><xsl:value-of select="@dst_end_"/></xsl:variable>
+    <xsl:variable name="relationName">
+        <xsl:value-of select="concat(@_id, $src, $dst)"/>
+    </xsl:variable>
     <xsl:for-each select="../Location[@_id=$dst]">
         <xsl:element name="link">
             <xsl:variable name="stateName"><xsl:value-of select="@name"/></xsl:variable>
@@ -515,7 +516,6 @@ For more help, choose Help from the upper menu bar.</text>
             <xsl:attribute name="relation"><xsl:value-of select="$relationName"/></xsl:attribute>
         </xsl:element>
     </xsl:for-each>
-    <xsl:variable name="src"><xsl:value-of select="@src_end_"/></xsl:variable>
     <xsl:for-each select="../Location[@_id=$src]">
         <xsl:element name="link">
             <xsl:variable name="stateName"><xsl:value-of select="@name"/></xsl:variable>
