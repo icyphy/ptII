@@ -62,7 +62,7 @@ public class Eratosthenes {
     public static void main(String args[]) throws
             IllegalStateException, IllegalActionException,
             NameDuplicationException {
-        CompositeActor univ = new CompositeActor();
+        TypedCompositeActor univ = new TypedCompositeActor();
         univ.setName("Prime_example");
 	Manager manager = new Manager("Manager");
 
@@ -73,13 +73,13 @@ public class Eratosthenes {
         CSPSource source = new CSPSource(univ, "source", 50, 2);
         CSPSieve sieve = new CSPSieve(univ, "2_sieve", 2);
 
-        IOPort portin = (IOPort)sieve.getPort("input");
-        IOPort portout = (IOPort)source.getPort("output");
+        TypedIOPort portin = (TypedIOPort)sieve.getPort("input");
+        TypedIOPort portout = (TypedIOPort)source.getPort("output");
         univ.connect(portin, portout, "2_queue");
 
 	//CSPSink sink = new CSPSink(univ, "sink");
-	//portout = (IOPort)sieve.getPort("output");
-        //portin = (IOPort)sink.getPort("input");
+	//portout = (TypedIOPort)sieve.getPort("output");
+        //portin = (TypedIOPort)sink.getPort("input");
 	//univ.connect(portin, portout, "plot_queue");
 
 

@@ -59,12 +59,15 @@ public class CSPSieve extends CSPActor {
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      */
-    public CSPSieve(CompositeActor container, String name, int prime)
+    public CSPSieve(TypedCompositeActor container, String name, int prime)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _prime = prime;
-        _input = new IOPort(this, "input", true, false);
-        _output = new IOPort(this, "output", false, true);
+        _input = new TypedIOPort(this, "input", true, false);
+        _output = new TypedIOPort(this, "output", false, true);
+
+	_input.setDeclaredType(Token.class);
+	_output.setDeclaredType(Token.class);
     }
 
 
@@ -117,7 +120,8 @@ public class CSPSieve extends CSPActor {
 
             public void constructEventQueue() {
                 System.out.println("TopologyRequest event q being constructed!");
-                CompositeActor container =  (CompositeActor)getContainer();
+                TypedCompositeActor container =  
+		        (TypedCompositeActor)getContainer();
                 CSPSieve newSieve = null;
                 ComponentRelation newRel = null;
                 try {
@@ -146,10 +150,10 @@ public class CSPSieve extends CSPActor {
     ////                         private variables                 ////
 
     // The input port
-    private IOPort _input;
+    private TypedIOPort _input;
 
     // The output port
-    private IOPort _output;
+    private TypedIOPort _output;
 
     // The prime this sieve is filtering out.
     private int _prime;

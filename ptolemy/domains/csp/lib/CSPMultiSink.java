@@ -42,7 +42,7 @@ import ptolemy.data.Token;
 /**
 Accepts a Token from any channel connected to its port. It uses a
 CDO construct to always be ready to accept a new Token.
-The channels it can accept from is set at the start of each firing.
+The channels it can accept from are set at the start of each firing.
 <p>
 @author Neil Smyth
 @version $Id$
@@ -53,11 +53,12 @@ public class CSPMultiSink extends CSPActor {
         super();
     }
 
-    public CSPMultiSink  (CompositeActor cont, String name)
+    public CSPMultiSink  (TypedCompositeActor cont, String name)
        throws IllegalActionException, NameDuplicationException {
 	 super(cont, name);
-	 input = new IOPort(this, "input", true, false);
+	 input = new TypedIOPort(this, "input", true, false);
 	 input.setMultiport(true);
+	 input.setDeclaredType(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -123,7 +124,7 @@ public class CSPMultiSink extends CSPActor {
         }
     }
 
-    public IOPort input;
+    public TypedIOPort input;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////

@@ -55,11 +55,12 @@ public class CSPMultiSource extends CSPActor {
         super();
     }
 
-    public CSPMultiSource  (CompositeActor cont, String name)
+    public CSPMultiSource  (TypedCompositeActor cont, String name)
        throws IllegalActionException, NameDuplicationException {
 	 super(cont, name);
-	 output = new IOPort(this, "output", false, true);
+	 output = new TypedIOPort(this, "output", false, true);
 	 output.setMultiport(true);
+	 output.setDeclaredType(IntToken.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -126,7 +127,7 @@ public class CSPMultiSource extends CSPActor {
         }
     }
 
-    public IOPort output;
+    public TypedIOPort output;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////

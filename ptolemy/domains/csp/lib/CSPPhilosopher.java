@@ -82,20 +82,25 @@ public class CSPPhilosopher extends CSPActor {
      *  The default values of the eatingRate and thinkingRate
      *  parameters are 1.0.
      *  <p>
-     *  @param container The CompositeActor that contains this actor.
+     *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public CSPPhilosopher(CompositeActor cont, String name)
+    public CSPPhilosopher(TypedCompositeActor cont, String name)
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
-        leftIn = new IOPort(this, "leftIn", true, false);
-        leftOut = new IOPort(this, "leftOut", false, true);
-        rightIn = new IOPort(this, "rightIn", true, false);
-        rightOut = new IOPort(this, "rightOut", false, true);
+        leftIn = new TypedIOPort(this, "leftIn", true, false);
+        leftOut = new TypedIOPort(this, "leftOut", false, true);
+        rightIn = new TypedIOPort(this, "rightIn", true, false);
+        rightOut = new TypedIOPort(this, "rightOut", false, true);
+
+	leftIn.setDeclaredType(Token.class);
+	rightIn.setDeclaredType(Token.class);
+	leftOut.setDeclaredType(IntToken.class);
+	rightOut.setDeclaredType(IntToken.class);
 
         _eating = new Parameter(this, "eatingRate");
         _eating.setExpression("1.0");
@@ -217,10 +222,10 @@ public class CSPPhilosopher extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    private IOPort leftIn;
-    private IOPort leftOut;
-    private IOPort rightIn;
-    private IOPort rightOut;
+    private TypedIOPort leftIn;
+    private TypedIOPort leftOut;
+    private TypedIOPort rightIn;
+    private TypedIOPort rightOut;
 
     private LinkedList _listeners;
     private Parameter _eating;

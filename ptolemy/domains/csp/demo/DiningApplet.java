@@ -81,7 +81,7 @@ public class DiningApplet extends Applet
 
 
     try {
-        univ = new CompositeActor();
+        univ = new TypedCompositeActor();
         univ.setName("Top");
 
         // Set up the directors
@@ -131,70 +131,70 @@ public class DiningApplet extends Applet
         CSPChopstick f5 = new CSPChopstick(univ, "Chopstick5");
 
         // Now connect up the Actors
-        IORelation r1 =
-            (IORelation)univ.connect((IOPort)p1.getPort("leftIn"),
-                    (IOPort)f5.getPort("rightOut"));
-        IORelation r2 =
-            (IORelation)univ.connect((IOPort)p1.getPort("leftOut"),
-                    (IOPort)f5.getPort("rightIn"));
-        IORelation r3 =
-            (IORelation)univ.connect((IOPort)p1.getPort("rightIn"),
-                    (IOPort)f1.getPort("leftOut"));
-        IORelation r4 =
-            (IORelation)univ.connect((IOPort)p1.getPort("rightOut"),
-                    (IOPort)f1.getPort("leftIn"));
+        TypedIORelation r1 =
+            (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("leftIn"),
+                    (TypedIOPort)f5.getPort("rightOut"));
+        TypedIORelation r2 =
+            (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("leftOut"),
+                    (TypedIOPort)f5.getPort("rightIn"));
+        TypedIORelation r3 =
+            (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("rightIn"),
+                    (TypedIOPort)f1.getPort("leftOut"));
+        TypedIORelation r4 =
+            (TypedIORelation)univ.connect((TypedIOPort)p1.getPort("rightOut"),
+                    (TypedIOPort)f1.getPort("leftIn"));
 
-        IORelation r5 =
-            (IORelation)univ.connect((IOPort)p2.getPort("leftIn"),
-                    (IOPort)f1.getPort("rightOut"));
-        IORelation r6 =
-            (IORelation)univ.connect((IOPort)p2.getPort("leftOut"),
-                    (IOPort)f1.getPort("rightIn"));
-        IORelation r7 =
-            (IORelation)univ.connect((IOPort)p2.getPort("rightIn"),
-                    (IOPort)f2.getPort("leftOut"));
-        IORelation r8 =
-            (IORelation)univ.connect((IOPort)p2.getPort("rightOut"),
-                    (IOPort)f2.getPort("leftIn"));
+        TypedIORelation r5 =
+            (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("leftIn"),
+                    (TypedIOPort)f1.getPort("rightOut"));
+        TypedIORelation r6 =
+            (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("leftOut"),
+                    (TypedIOPort)f1.getPort("rightIn"));
+        TypedIORelation r7 =
+            (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("rightIn"),
+                    (TypedIOPort)f2.getPort("leftOut"));
+        TypedIORelation r8 =
+            (TypedIORelation)univ.connect((TypedIOPort)p2.getPort("rightOut"),
+                    (TypedIOPort)f2.getPort("leftIn"));
 
-        IORelation r9  =
-            (IORelation)univ.connect((IOPort)p3.getPort("leftIn"),
-                    (IOPort)f2.getPort("rightOut"));
-        IORelation r10 =
-            (IORelation)univ.connect((IOPort)p3.getPort("leftOut"),
-                    (IOPort)f2.getPort("rightIn"));
-        IORelation r11 =
-            (IORelation)univ.connect((IOPort)p3.getPort("rightIn"),
-                    (IOPort)f3.getPort("leftOut"));
-        IORelation r12 =
-            (IORelation)univ.connect((IOPort)p3.getPort("rightOut"),
-                    (IOPort)f3.getPort("leftIn"));
+        TypedIORelation r9  =
+            (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("leftIn"),
+                    (TypedIOPort)f2.getPort("rightOut"));
+        TypedIORelation r10 =
+            (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("leftOut"),
+                    (TypedIOPort)f2.getPort("rightIn"));
+        TypedIORelation r11 =
+            (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("rightIn"),
+                    (TypedIOPort)f3.getPort("leftOut"));
+        TypedIORelation r12 =
+            (TypedIORelation)univ.connect((TypedIOPort)p3.getPort("rightOut"),
+                    (TypedIOPort)f3.getPort("leftIn"));
 
-        IORelation r13 =
-            (IORelation)univ.connect((IOPort)p4.getPort("leftIn"),
-                    (IOPort)f3.getPort("rightOut"));
-        IORelation r14 =
-            (IORelation)univ.connect((IOPort)p4.getPort("leftOut"),
-                    (IOPort)f3.getPort("rightIn"));
-        IORelation r15 =
-            (IORelation)univ.connect((IOPort)p4.getPort("rightIn"),
-                    (IOPort)f4.getPort("leftOut"));
-        IORelation r16 =
-            (IORelation)univ.connect((IOPort)p4.getPort("rightOut"),
-                    (IOPort)f4.getPort("leftIn"));
+        TypedIORelation r13 =
+            (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("leftIn"),
+                    (TypedIOPort)f3.getPort("rightOut"));
+        TypedIORelation r14 =
+            (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("leftOut"),
+                    (TypedIOPort)f3.getPort("rightIn"));
+        TypedIORelation r15 =
+            (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("rightIn"),
+                    (TypedIOPort)f4.getPort("leftOut"));
+        TypedIORelation r16 =
+            (TypedIORelation)univ.connect((TypedIOPort)p4.getPort("rightOut"),
+                    (TypedIOPort)f4.getPort("leftIn"));
 
-        IORelation r17 =
-            (IORelation)univ.connect((IOPort)p5.getPort("leftIn"),
-                    (IOPort)f4.getPort("rightOut"));
-        IORelation r18 =
-            (IORelation)univ.connect((IOPort)p5.getPort("leftOut"),
-                    (IOPort)f4.getPort("rightIn"));
-        IORelation r19 =
-            (IORelation)univ.connect((IOPort)p5.getPort("rightIn"),
-                    (IOPort)f5.getPort("leftOut"));
-        IORelation r20 =
-            (IORelation)univ.connect((IOPort)p5.getPort("rightOut"),
-                    (IOPort)f5.getPort("leftIn"));
+        TypedIORelation r17 =
+            (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("leftIn"),
+                    (TypedIOPort)f4.getPort("rightOut"));
+        TypedIORelation r18 =
+            (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("leftOut"),
+                    (TypedIOPort)f4.getPort("rightIn"));
+        TypedIORelation r19 =
+            (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("rightIn"),
+                    (TypedIOPort)f5.getPort("leftOut"));
+        TypedIORelation r20 =
+            (TypedIORelation)univ.connect((TypedIOPort)p5.getPort("rightOut"),
+                    (TypedIOPort)f5.getPort("leftIn"));
 
     } catch (Exception ex) {
         System.err.println("Setup failed: " + ex.getMessage());
@@ -281,7 +281,7 @@ public class DiningApplet extends Applet
 
     public CSPPhilosopher[] _philosophers = new CSPPhilosopher[5];
 
-    public CompositeActor univ;
+    public TypedCompositeActor univ;
     public CSPDirector _localDirector;
     public Manager _manager;
 

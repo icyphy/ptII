@@ -76,10 +76,15 @@ public class CSPChopstick extends CSPActor {
     public CSPChopstick()
             throws IllegalActionException, NameDuplicationException{
         super();
-        leftOut = new IOPort(this, "leftOut", false, true);
-        leftIn = new IOPort(this, "leftIn", true, false);
-        rightOut = new IOPort(this, "rightOut", false, true);
-        rightIn = new IOPort(this, "rightIn", true, false);
+        leftOut = new TypedIOPort(this, "leftOut", false, true);
+        leftIn = new TypedIOPort(this, "leftIn", true, false);
+        rightOut = new TypedIOPort(this, "rightOut", false, true);
+        rightIn = new TypedIOPort(this, "rightIn", true, false);
+
+	leftIn.setDeclaredType(Token.class);
+	rightIn.setDeclaredType(Token.class);
+	leftOut.setDeclaredType(IntToken.class);
+	rightOut.setDeclaredType(IntToken.class);
     }
 
     /** Construct a CSPChopstick in the specified container with the specified
@@ -91,20 +96,25 @@ public class CSPChopstick extends CSPActor {
      *  and "rightIn", and similarly, the output ports are called "leftOut"
      *  and "rightOut".
      *  <p>
-     *  @param container The CompositeActor that contains this actor.
+     *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public CSPChopstick(CompositeActor cont, String name)
+    public CSPChopstick(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
-         leftOut = new IOPort(this, "leftOut", false, true);
-         leftIn = new IOPort(this, "leftIn", true, false);
-         rightOut = new IOPort(this, "rightOut", false, true);
-         rightIn = new IOPort(this, "rightIn", true, false);
+         leftOut = new TypedIOPort(this, "leftOut", false, true);
+         leftIn = new TypedIOPort(this, "leftIn", true, false);
+         rightOut = new TypedIOPort(this, "rightOut", false, true);
+         rightIn = new TypedIOPort(this, "rightIn", true, false);
+
+	leftIn.setDeclaredType(Token.class);
+	rightIn.setDeclaredType(Token.class);
+	leftOut.setDeclaredType(IntToken.class);
+	rightOut.setDeclaredType(IntToken.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -159,8 +169,8 @@ public class CSPChopstick extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    private IOPort leftIn;
-    private IOPort leftOut;
-    private IOPort rightIn;
-    private IOPort rightOut;
+    private TypedIOPort leftIn;
+    private TypedIOPort leftOut;
+    private TypedIOPort rightIn;
+    private TypedIOPort rightOut;
 }

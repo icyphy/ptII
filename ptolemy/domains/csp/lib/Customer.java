@@ -76,7 +76,7 @@ public class Customer extends CSPActor {
     public Customer() throws IllegalActionException, NameDuplicationException {
         super();
         _rate = new Parameter(this, "arrivalRate", (new DoubleToken(1)) );
-        _output = new IOPort(this, "output", false, true);
+        _output = new TypedIOPort(this, "output", false, true);
     }
 
     /** Construct a Customer in the specified container with the specified
@@ -87,14 +87,14 @@ public class Customer extends CSPActor {
      *  rate of arrival is 1.0. The actor is created with a single output
      *  port, of width one, called "output".
      *  <p>
-     *  @param container The CompositeActor that contains this actor.
+     *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public Customer(CompositeActor cont, String name)
+    public Customer(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          this(cont, name, 1);
     }
@@ -108,7 +108,7 @@ public class Customer extends CSPActor {
      *  The actor is created with a single output port, of width one,
      *  called "output".
      *  <p>
-     *  @param container The CompositeActor that contains this actor.
+     *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -116,11 +116,13 @@ public class Customer extends CSPActor {
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public Customer(CompositeActor cont, String name, double rate)
+    public Customer(TypedCompositeActor cont, String name, double rate)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          _rate = new Parameter(this, "arrivalRate", (new DoubleToken(rate)) );
-         _output = new IOPort(this, "output", false, true);
+         _output = new TypedIOPort(this, "output", false, true);
+
+	 _output.setDeclaredType(IntToken.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -172,5 +174,5 @@ public class Customer extends CSPActor {
     private Parameter _rate;
 
     // The output port for this actor.
-    private IOPort _output;
+    private TypedIOPort _output;
 }

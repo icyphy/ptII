@@ -72,8 +72,11 @@ public class CSPBuffer extends CSPActor {
     public CSPBuffer() throws IllegalActionException, NameDuplicationException{
         super();
         _depth = new Parameter(this, "depth", (new IntToken(1)) );
-        _output = new IOPort(this, "output", false, true);
-        _input = new IOPort(this, "input", true, false);
+        _output = new TypedIOPort(this, "output", false, true);
+        _input = new TypedIOPort(this, "input", true, false);
+
+	_output.setDeclaredType(Token.class);
+        _input.setDeclaredType(Token.class);
     }
 
     /** Construct a CSPBuffer in the specified container with the specified
@@ -85,14 +88,14 @@ public class CSPBuffer extends CSPActor {
      *  port and a single output port, both of width one.Tthe input port
      *  is called "input", and similarly, the output port is called "output".
      *  <p>
-     *  @param container The CompositeActor that contains this actor.
+     *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public CSPBuffer(CompositeActor cont, String name)
+    public CSPBuffer(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          this(cont, name, 1);
     }
@@ -107,7 +110,7 @@ public class CSPBuffer extends CSPActor {
      *  input port is called "input", and similarly, the output port is
      *  called "output".
      *  <p>
-     *  @param container The CompositeActor that contains this actor.
+     *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -115,12 +118,15 @@ public class CSPBuffer extends CSPActor {
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public CSPBuffer(CompositeActor cont, String name, int depth)
+    public CSPBuffer(TypedCompositeActor cont, String name, int depth)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
-         _depth = new Parameter(this, "depth", (new IntToken(depth)) );
-         _output = new IOPort(this, "output", false, true);
-         _input = new IOPort(this, "input", true, false);
+        super(cont, name); 
+	_depth = new Parameter(this, "depth", (new IntToken(depth)) ); 
+	_output = new TypedIOPort(this, "output", false, true); 
+	_input = new TypedIOPort(this, "input", true, false);
+
+        _output.setDeclaredType(Token.class);
+        _input.setDeclaredType(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -195,10 +201,10 @@ public class CSPBuffer extends CSPActor {
     private Parameter _depth;
 
     // The input port for this actor.
-    private IOPort _input;
+    private TypedIOPort _input;
 
     // the output port for this actor.
-    private IOPort _output;
+    private TypedIOPort _output;
 
     // The number of Tokens currently stored in the buffer.
     private int _size = 0;

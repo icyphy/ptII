@@ -52,9 +52,9 @@ public class BusContentionDemo {
     public BusContentionDemo()
             throws IllegalActionException, NameDuplicationException {
 
-        // Set up Manager, Director and top level CompositeActor
+        // Set up Manager, Director and top level TypedCompositeActor
         _workSpc = new Workspace();
-        _topLevelActor = new CompositeActor(_workSpc);
+        _topLevelActor = new TypedCompositeActor(_workSpc);
         _topLevelActor.setName("universe");
         _manager = new Manager(_workSpc, "manager");
         _director = new CSPDirector(_workSpc, "director");
@@ -103,56 +103,56 @@ public class BusContentionDemo {
      */
     public void makeConnections() throws IllegalActionException {
         // Set up ports, relation
-        IOPort reqOut = (IOPort)_controller.getPort("requestOut");
-        IOPort reqIn = (IOPort)_controller.getPort("requestIn");
-        IOPort contendOut = (IOPort)_controller.getPort("contendOut");
-        IOPort contendIn = (IOPort)_controller.getPort("contendIn");
+        TypedIOPort reqOut = (TypedIOPort)_controller.getPort("requestOut");
+        TypedIOPort reqIn = (TypedIOPort)_controller.getPort("requestIn");
+        TypedIOPort contendOut = (TypedIOPort)_controller.getPort("contendOut");
+        TypedIOPort contendIn = (TypedIOPort)_controller.getPort("contendIn");
 
-        IOPort _alarmOut = (IOPort)_alarm.getPort("output");
-        IOPort _alarmIn = (IOPort)_alarm.getPort("input");
+        TypedIOPort _alarmOut = (TypedIOPort)_alarm.getPort("output");
+        TypedIOPort _alarmIn = (TypedIOPort)_alarm.getPort("input");
 
-        IOPort memOut = (IOPort)_memory.getPort("output");
-        IOPort memIn = (IOPort)_memory.getPort("input");
+        TypedIOPort memOut = (TypedIOPort)_memory.getPort("output");
+        TypedIOPort memIn = (TypedIOPort)_memory.getPort("input");
 
-        IOPort p1_ReqOut = (IOPort)_proc1.getPort("requestOut");
-        IOPort p2_ReqOut = (IOPort)_proc2.getPort("requestOut");
-        IOPort p3_ReqOut = (IOPort)_proc3.getPort("requestOut");
-        IOPort p1_ReqIn = (IOPort)_proc1.getPort("requestIn");
-        IOPort p2_ReqIn = (IOPort)_proc2.getPort("requestIn");
-        IOPort p3_ReqIn = (IOPort)_proc3.getPort("requestIn");
+        TypedIOPort p1_ReqOut = (TypedIOPort)_proc1.getPort("requestOut");
+        TypedIOPort p2_ReqOut = (TypedIOPort)_proc2.getPort("requestOut");
+        TypedIOPort p3_ReqOut = (TypedIOPort)_proc3.getPort("requestOut");
+        TypedIOPort p1_ReqIn = (TypedIOPort)_proc1.getPort("requestIn");
+        TypedIOPort p2_ReqIn = (TypedIOPort)_proc2.getPort("requestIn");
+        TypedIOPort p3_ReqIn = (TypedIOPort)_proc3.getPort("requestIn");
 
-        IOPort p1_MemOut = (IOPort)_proc1.getPort("memoryOut");
-        IOPort p2_MemOut = (IOPort)_proc2.getPort("memoryOut");
-        IOPort p3_MemOut = (IOPort)_proc3.getPort("memoryOut");
-        IOPort p1_MemIn = (IOPort)_proc1.getPort("memoryIn");
-        IOPort p2_MemIn = (IOPort)_proc2.getPort("memoryIn");
-        IOPort p3_MemIn = (IOPort)_proc3.getPort("memoryIn");
+        TypedIOPort p1_MemOut = (TypedIOPort)_proc1.getPort("memoryOut");
+        TypedIOPort p2_MemOut = (TypedIOPort)_proc2.getPort("memoryOut");
+        TypedIOPort p3_MemOut = (TypedIOPort)_proc3.getPort("memoryOut");
+        TypedIOPort p1_MemIn = (TypedIOPort)_proc1.getPort("memoryIn");
+        TypedIOPort p2_MemIn = (TypedIOPort)_proc2.getPort("memoryIn");
+        TypedIOPort p3_MemIn = (TypedIOPort)_proc3.getPort("memoryIn");
 
-        IORelation inReqs, outReqs, reads, writes, outContends, inContends;
+        TypedIORelation inReqs, outReqs, reads, writes, outContends, inContends;
         // System.out.println("Ports and relations are finished.");
 
 
         // Set up connections
-        inReqs = (IORelation)_topLevelActor.connect(reqIn, p1_ReqOut );
-        inReqs = (IORelation)_topLevelActor.connect(reqIn, p2_ReqOut );
-        inReqs = (IORelation)_topLevelActor.connect(reqIn, p3_ReqOut );
+        inReqs = (TypedIORelation)_topLevelActor.connect(reqIn, p1_ReqOut );
+        inReqs = (TypedIORelation)_topLevelActor.connect(reqIn, p2_ReqOut );
+        inReqs = (TypedIORelation)_topLevelActor.connect(reqIn, p3_ReqOut );
 
-        outContends = (IORelation)_topLevelActor.connect(contendOut,
+        outContends = (TypedIORelation)_topLevelActor.connect(contendOut,
                 _alarmIn );
-        inContends = (IORelation)_topLevelActor.connect(contendIn,
+        inContends = (TypedIORelation)_topLevelActor.connect(contendIn,
                 _alarmOut );
 
-        outReqs = (IORelation)_topLevelActor.connect( reqOut, p1_ReqIn );
-        outReqs = (IORelation)_topLevelActor.connect( reqOut, p2_ReqIn );
-        outReqs = (IORelation)_topLevelActor.connect( reqOut, p3_ReqIn );
+        outReqs = (TypedIORelation)_topLevelActor.connect( reqOut, p1_ReqIn );
+        outReqs = (TypedIORelation)_topLevelActor.connect( reqOut, p2_ReqIn );
+        outReqs = (TypedIORelation)_topLevelActor.connect( reqOut, p3_ReqIn );
 
-        reads = (IORelation)_topLevelActor.connect( memOut, p1_MemIn );
-        reads = (IORelation)_topLevelActor.connect( memOut, p2_MemIn );
-        reads = (IORelation)_topLevelActor.connect( memOut, p3_MemIn );
+        reads = (TypedIORelation)_topLevelActor.connect( memOut, p1_MemIn );
+        reads = (TypedIORelation)_topLevelActor.connect( memOut, p2_MemIn );
+        reads = (TypedIORelation)_topLevelActor.connect( memOut, p3_MemIn );
 
-        writes = (IORelation)_topLevelActor.connect( memIn, p1_MemOut );
-        writes = (IORelation)_topLevelActor.connect( memIn, p2_MemOut );
-        writes = (IORelation)_topLevelActor.connect( memIn, p3_MemOut );
+        writes = (TypedIORelation)_topLevelActor.connect( memIn, p1_MemOut );
+        writes = (TypedIORelation)_topLevelActor.connect( memIn, p2_MemOut );
+        writes = (TypedIORelation)_topLevelActor.connect( memIn, p3_MemOut );
 
 
         // System.out.println("Connections are complete.");
@@ -186,7 +186,7 @@ public class BusContentionDemo {
     ////                        private variables                  ////
 
     private Workspace _workSpc;
-    private CompositeActor _topLevelActor;
+    private TypedCompositeActor _topLevelActor;
     private Manager _manager;
     private CSPDirector _director;
     private CSPController _controller;
