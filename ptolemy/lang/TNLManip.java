@@ -202,10 +202,13 @@ public class TNLManip {
      *  @param visitor The visitor to apply to the elements of the list.
      *  @param args The arguments to pass to the accept() method.
      *  @param list The list of objects to visit.
+     *  @param setChildReturnValues Indicates whether or not the
+     *  list of returned values should be placed in the CHILD_RETURN_VALUES_KEY
+     *  property of the node.
      *  @return A list of the results of the visits.
      */
     public static final ArrayList traverseList(IVisitor visitor,
-            LinkedList args, List list) {
+            LinkedList args, List list, boolean setChildReturnValues) {
         Object returnValue;
         ArrayList retList = new ArrayList(list.size());
 
@@ -216,7 +219,7 @@ public class TNLManip {
             if (object instanceof TreeNode) {
                 TreeNode node = (TreeNode) object;
 
-                returnValue = node.accept(visitor, args);
+                returnValue = node.accept(visitor, args, setChildReturnValues);
 
                 if (returnValue == null) {
                     retList.add(NullValue.instance);
@@ -229,7 +232,8 @@ public class TNLManip {
                 node.setProperty(node.RETURN_VALUE_AS_ELEMENT_KEY, returnValue);
 
             } else if (object instanceof List) {
-                returnValue = traverseList(visitor, args, (List)object);
+                returnValue = traverseList(visitor, args, (List)object,
+                        setChildReturnValues);
 
                 retList.add(returnValue);
             } else {
@@ -238,5 +242,19 @@ public class TNLManip {
             }
         }
         return retList;
+    }
+
+    /** Have each member of the specified <i>list</i> accept the
+     *  specified visitor, and set child return value properties
+     *  throughout visitation. Equivalent to:
+     *          traverseList(visitor, args, list, true).
+     *  @param visitor The visitor to apply to the elements of the list.
+     *  @param args The arguments to pass to the accept() method.
+     *  @param list The list of objects to visit.
+     *  @return A list of the results of the visits.
+     */    
+    public static final ArrayList traverseList(IVisitor visitor,
+            LinkedList args, List list) {
+        return traverseList(visitor, args, list, true);
     }
 }

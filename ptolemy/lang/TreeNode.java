@@ -47,6 +47,7 @@ The base type for nodes in an abstract syntax tree.  Note that the
 AST can have as nodes just about anything.  If a node is a List, then
 it will be interpreted as a hierarchical object.  An instance of this
 class is also a hierarchical object.
+@author Jeff Tsay and Shuvra S. Bhattacharyya 
 @version $Id$
 */
 public abstract class TreeNode extends TrackedPropertyMap
@@ -72,6 +73,8 @@ public abstract class TreeNode extends TrackedPropertyMap
     ////                          public methods                   ////
 
     /** Accept a visitor, giving the visitor an empty list as arguments.
+     *  Child return values of visited nodes will be updated based on
+     *  the resulting traversal.
      *  @param visitor The visitor.
      *  @return The result of the visit, which depends on the visitor.
      */
@@ -85,22 +88,29 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  or not at all.
      *  @param visitor The visitor.
      *  @param visitorArgs The arguments to pass to the visitor.
+     *  @param setChildReturnValues Indicates whether or not the
+     *  list of returned values for each visited node should be 
+     *  placed in the CHILD_RETURN_VALUES_KEY property of the node.
+     *  If this indicator is 'false,' then the current values of the
+     *  CHILD_RETURN_VALUES_KEY property are left unchanged.
      *  @return The result of the visit, which depends on the visitor.
      */
-    public Object accept(IVisitor visitor, LinkedList visitorArgs) {
+    public Object accept(IVisitor visitor, LinkedList visitorArgs,
+            boolean setChildReturnValues) {
         Object returnValue;
         switch (visitor.traversalMethod()) {
         case IVisitor.TM_CHILDREN_FIRST:
             {
                 // Traverse the children first.
-                traverseChildren(visitor, visitorArgs);
+                traverseChildren(visitor, visitorArgs, setChildReturnValues);
                 returnValue = _acceptHere(visitor, visitorArgs);
 
                 // Remove the children return values to prevent
                 // exponential usage of memory.
                 // FIXME: a similar, appropriately-placed call for the 
                 // new RETURN_VALUE_AS_ELEMENT_KEY key may be appropriate.
-                removeProperty(CHILD_RETURN_VALUES_KEY);
+                if (setChildReturnValues) 
+                    removeProperty(CHILD_RETURN_VALUES_KEY);
             }
             break;
 
@@ -108,7 +118,7 @@ public abstract class TreeNode extends TrackedPropertyMap
             {
                 // Visit myself first.
                 returnValue = _acceptHere(visitor, visitorArgs);
-                traverseChildren(visitor, visitorArgs);
+                traverseChildren(visitor, visitorArgs, setChildReturnValues);
             }
             break;
 
@@ -126,6 +136,20 @@ public abstract class TreeNode extends TrackedPropertyMap
         return returnValue;
     }
 
+    
+    /** Accept a visitor, giving the visitor a list of arguments.
+     *  Depending on the traversal method, the children of the
+     *  node may be visited before or after this node is visited,
+     *  or not at all. The  CHILD_RETURN_VALUES_KEY property of
+     *  each visited node is updated during traversal.
+     *  @param visitor The visitor.
+     *  @param visitorArgs The arguments to pass to the visitor.
+     *  @return The result of the visit, which depends on the visitor.
+     */
+    public Object accept(IVisitor visitor, LinkedList visitorArgs) {
+        return accept(visitor, visitorArgs, true);
+    }
+
     /** Return the list of children of this node.
      *  @return A list of children.
      */
@@ -134,9 +158,11 @@ public abstract class TreeNode extends TrackedPropertyMap
     }
 
     /** Get the return value of the most recent
-     *  visitor to the <i>index</i>-th child node.
+     *  visitor (that was configured to set child return values)
+     *  to the <i>index</i>-th child node.
      *  @param index The index of the child whose visit result is returned.
-     *  @return The most recent result of visiting the specified child.
+     *  @return The most recent result of visiting the specified child
+     *  with a visitation that was configured to set child return values.
      */
     public Object childReturnValueAt(int index) {
         List retList = (List) getDefinedProperty(CHILD_RETURN_VALUES_KEY);
@@ -319,15 +345,35 @@ public abstract class TreeNode extends TrackedPropertyMap
         return stringBuffer.toString();
     }
 
-    /** Visit all nodes or lists in in the argument list, and place
-     *  the list of returned values in the CHILD_RETURN_VALUES_KEY
+    /** Recursively visit all nodes or lists in in the argument list, and 
+     *  optionally place the corresponding list of returned values 
+     *  in the CHILD_RETURN_VALUES_KEY property of each visited node.
+     *  @param visitor The visitor to apply to the children.
+     *  @param args The arguments to pass to the visitor.
+     *  @param setChildReturnValues Indicates whether or not the
+     *  list of returned values should be placed in the CHILD_RETURN_VALUES_KEY
      *  property of the node.
+     */
+    public void traverseChildren(IVisitor visitor, LinkedList args,
+                                 boolean setChildReturnValues) {
+        ArrayList childReturnValues =
+                TNLManip.traverseList(visitor, args, _childList, 
+                        setChildReturnValues);
+
+        if (setChildReturnValues) {
+            setProperty(CHILD_RETURN_VALUES_KEY, childReturnValues);
+        }
+                
+    }
+    
+    /** Recursively visit all nodes or lists in in the argument list, and 
+     *  place the corresponding list of returned values in the 
+     *  CHILD_RETURN_VALUES_KEY property of each visited node.
      *  @param visitor The visitor to apply to the children.
      *  @param args The arguments to pass to the visitor.
      */
     public void traverseChildren(IVisitor visitor, LinkedList args) {
-        setProperty(CHILD_RETURN_VALUES_KEY,
-                TNLManip.traverseList(visitor, args, _childList));
+        traverseChildren(visitor, args, true);
     }
 
     /** Return the parent of a tree node. If the tree node is part of
