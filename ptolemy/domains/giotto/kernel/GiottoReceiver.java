@@ -84,6 +84,22 @@ public class GiottoReceiver extends AbstractReceiver {
         return _token;
     }
 
+    /** Get the contained and available token, i.e., get the last
+     *  token that has been put into the receiver before the last
+     *  update and reset the _token only.
+     *  @return A token.
+     *  @exception NoTokenException If no token is available.
+     */
+    public Token remove() throws NoTokenException {
+        if(_token == null) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get data from an empty receiver.");
+        }
+        Token buffer =  _token;
+	_token = null;
+	return buffer;
+    }
+
     /** Return true, since writing to this receiver is always allowed.
      *  @return True.
      */
@@ -118,10 +134,10 @@ public class GiottoReceiver extends AbstractReceiver {
     /** Put a token into this receiver. Any token which has been put
      *  into the receiver before without calling update will be lost.
      *  The token becomes available to the get() method only after
-     *  update() is called. 
+     *  update() is called.
      *  <p>
-     *  Note that putting a null into this receiver will leave the 
-     *  receiver empty after update. The receiver does not check 
+     *  Note that putting a null into this receiver will leave the
+     *  receiver empty after update. The receiver does not check
      *  against this but expects that IOPort will always put
      *  non-null tokens into receivers.
      *  @param token The token to be put into this receiver.
