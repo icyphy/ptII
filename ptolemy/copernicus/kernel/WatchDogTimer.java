@@ -152,8 +152,7 @@ public class WatchDogTimer extends SceneTransformer {
                 } catch (Exception e) {
                     System.err.println(e);
                 } finally {
-                    System.out.println("WatchDogTime went off, "
-                            + "time and memory: " 
+                    System.out.println("WatchDogTime went off, stats: "
                             + Manager.timeAndMemory(startTime));
                     // Do not pass go, do not collect $200
                     System.exit(4);
