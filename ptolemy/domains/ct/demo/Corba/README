@@ -92,8 +92,8 @@ To execute the model in an application:
    (a NT box running bash) start the client:
    
    lie> CLASSPATH=$PTII
-   lie> java ptolemy.domains.ct.demo.Corba.NonlinearClient -ORBInitialHost 
-   denon.eecs.berkeley.edu -ORBInitialPort 1050
+   lie> java ptolemy.domains.ct.demo.Corba.NonlinearClientApplication \
+	 -ORBInitialHost denon.eecs.berkeley.edu -ORBInitialPort 1050
    
 To compare the result and the performance of CORBA, you may
 run the demo in ptolemy/domains/ct/demo/SquareWave (with the 
