@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (cm@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -211,16 +211,19 @@ public class GiottoScheduler extends Scheduler {
 		// Makes sure that current actor will be read again.
 		Actor dummy = (Actor) (iterator.previous());
 
-		// Recursive call where 'lastFrequency' becomes current 'frequency'
+		// Recursive call where 'lastFrequency' becomes current 
+                // 'frequency'
 		// and 'frequency' becomes the frequency of the current actor.
-		higherFrequencyList = _treeSchedule(iterator, frequency, actorFrequency);
+		higherFrequencyList = 
+                    _treeSchedule(iterator, frequency, actorFrequency);
 
 		// Redundant break because recursive call
 		// completely iterates iterator.
 
 		break;
 	    } else
-		throw new NotSchedulableException("Sorting frequencies failed!");
+		throw new NotSchedulableException(
+                        "Sorting frequencies failed!");
 	}
 
 	// This is actually a tree.

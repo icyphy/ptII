@@ -23,7 +23,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (cm@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
@@ -136,6 +136,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
         GiottoDirector newObject = (GiottoDirector)(super.clone(workspace));
         newObject.iterations = (Parameter)newObject.getAttribute("iterations");
         return newObject;
+    }
+
+    /** Return the next time of interest in the Giotto model.
+     *  @return The time of the next iteration.
+     */
+    public double getNextIterationTime() {
+	return _nextIterationTime;
     }
 
     /** Return the real start time.
@@ -276,13 +283,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
         return transfer;
     }
 
-    /** Return the next time of interest in the Giotto model.
-     *  @return The time of the next iteration.
-     */
-    public double getNextIterationTime() {
-	return _nextIterationTime;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -320,7 +320,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         iterations = new Parameter(this, "iterations", new IntToken(0));
 
         // FIXME: Remove this after debugging, or when GUI supports it.
-        addDebugListener(new StreamListener());
+        // addDebugListener(new StreamListener());
     }
 
     private boolean _fire(Enumeration schedule)
@@ -340,22 +340,27 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 		    double currentTime = getCurrentTime();
 
-		    int actorFrequency = GiottoActorComparator.getFrequency(actor);
+		    int actorFrequency = 
+                        GiottoActorComparator.getFrequency(actor);
 
-		    _nextIterationTime = currentTime + (_period / actorFrequency);
+		    _nextIterationTime = 
+                        currentTime + (_period / actorFrequency);
 
 		    if (_debugging)
-			_debug("Prefiring " + ((NamedObj)actor).getFullName());
+			_debug("Prefiring " + 
+                                ((NamedObj)actor).getFullName());
 
 		    if (actor.prefire()) {
 			if (_debugging)
-			    _debug("Firing " + ((NamedObj)actor).getFullName());
+			    _debug("Firing " + 
+                                    ((NamedObj)actor).getFullName());
 
 			actor.fire();
 		    }
 
 		    if (_debugging)
-			_debug("Postfiring " + ((NamedObj)actor).getFullName());
+			_debug("Postfiring " + 
+                                ((NamedObj)actor).getFullName());
 
 		    if (!actor.postfire())
 			postfire = false;
@@ -372,8 +377,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    // Recursive call.
 		    postfire = _fire(higherFrequency) && postfire;
 		} else {
-		    // Update time for every invocation of the most frequent tasks
-		    // which are stored at the bottom of the tree.
+		    // Update time for every invocation of the most frequent
+                    // tasks which are stored at the bottom of the tree.
 		    double currentTime;
 
 		    currentTime = getCurrentTime();
@@ -383,21 +388,26 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    // Assumption: sameFrequencyList is non-empty.
 		    Actor actor = (Actor) sameFrequencyList.get(0);
 
-		    int maxFrequency = GiottoActorComparator.getFrequency(actor);
+		    int maxFrequency = 
+                        GiottoActorComparator.getFrequency(actor);
 
 		    setCurrentTime(currentTime + (_period / maxFrequency));
 
 		    if (_synchronizeToRealTime) {
-			long elapsedTime = System.currentTimeMillis() - _realStartTime;
+			long elapsedTime = System.currentTimeMillis() 
+                            - _realStartTime;
 
-			double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+			double elapsedTimeInSeconds = 
+                            ((double) elapsedTime) / 1000.0;
 
 			if (currentTime > elapsedTimeInSeconds) {
-			    long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+			    long timeToWait = (long) ((currentTime - 
+                                    elapsedTimeInSeconds) * 1000.0);
 
 			    if (timeToWait > 0) {
 				if (_debugging) {
-				    _debug("Waiting for real time to pass: " + timeToWait);
+				    _debug("Waiting for real time to pass: " +
+                                            timeToWait);
 				}
 
 				// FIXME: Do I need to synchronize on anything?
@@ -425,7 +435,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 		    List outputPortList = actor.outputPortList();
 
-		    Enumeration outputPorts = Collections.enumeration(outputPortList);
+		    Enumeration outputPorts = 
+                        Collections.enumeration(outputPortList);
 
 		    while (outputPorts.hasMoreElements()) {
 			IOPort port = (IOPort) outputPorts.nextElement();
@@ -436,7 +447,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			    Receiver[] receiverArray = channelArray[i];
 
 			    for (int j = 0; j < receiverArray.length; j++) {
-				GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
+				GiottoReceiver receiver = 
+                                    (GiottoReceiver) receiverArray[j];
 
 				receiver.update();
 			    }
