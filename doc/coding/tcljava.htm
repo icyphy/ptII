@@ -159,7 +159,7 @@ See SIGNATURE below for a full description of how to specify the
 signature of non-array constructors.  Additional parameters to the
 <B>java::new</B> command are converted to Java objects or primitive values
 and passed to the constructor.
-See the CLASS LOADING section in the <B><A HREF="javaload.htm">java::load</A></B> man page for a
+See the CLASS LOADING section in the <B><A HREF="http://dev.scriptics.com/man/java1.1/TclJava/javaload.htm">java::load</A></B> man page for a
 description on how classes are resolved and loaded into the VM.  Any
 of the java commands that reference a java class also use the
 mechanism described in CLASS LOADING. 
@@ -352,7 +352,7 @@ null object, otherwise it will return a handle to the Java Class
 object.  A class is not valid if; the TclClassLoader cannot decifer a
 class from <I>classData</I>, the class has already been loaded into the
 VM, or if the class is in the reserved java package.  See the CLASS
-LOADING section in the <B><A HREF="javaload.htm">java::load</A></B> man page for information on
+LOADING section in the <B><A HREF="http://dev.scriptics.com/man/java1.1/TclJava/javaload.htm">java::load</A></B> man page for information on
 the TclClassLoader.
 <P>
 The TclClassLoader maintains a cache of the Java Class objects loaded
@@ -631,10 +631,14 @@ java::unlock $o
 llength $o
 puts [$o toString]</PRE>
 <H3><A NAME="M38">SEE ALSO</A></H3>
-<B><A HREF="javaload.htm">java::load</A></B>, <B><A HREF="javabind.htm">java::bind</A></B>
+<B><A HREF="http://dev.scriptics.com/man/java1.1/TclJava/javaload.htm">java::load</A></B>, <B><A HREF="http://dev.scriptics.com/man/java1.1/TclJava/javabind.htm">java::bind</A></B>
 <H3><A NAME="M39">KEYWORDS</A></H3>
-<A href="../Keywords/J.htm#java">java</A>, <A href="../Keywords/T.htm#tcl">tcl</A>
+<A href="http://dev.scriptics.com/man/java1.1/Keywords/J.htm#java">java</A>, <A href="http://dev.scriptics.com/man/java1.1/Keywords/T.htm#tcl">tcl</A>
+
 <HR><PRE>
-<A HREF="../copyright.htm">Copyright</A> &#169; 1998 by Sun Microsystems, Inc.
-<A HREF="../copyright.htm">Copyright</A> &#169; 1995-1997 Roger E. Critchlow Jr.</PRE>
+<A HREF="sunlicense.htm">Copyright</A> &#169; 1998 by Sun Microsystems, Inc.
+<A HREF="sunlicense.htm">Copyright</A> &#169; 1995-1997 Roger E. Critchlow Jr.</PRE>
+This file is based on a file similar to
+<a href="http://dev.scriptics.com/man/java1.1/TclJava/java.htm"><code>http://dev.scriptics.com/man/java1.1/TclJava/java.htm</code>
+
 </BODY></HTML>
