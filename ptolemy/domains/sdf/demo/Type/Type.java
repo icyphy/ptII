@@ -124,7 +124,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
                      */
                     protected void _execute() throws Exception {
                         _display.setContainer(null);
-                        _plotter.setContainer(_toplevel);
+                        _plotter.setContainer(_toplevelCopy);
                         _plotter.input.link(_displayRelation);
                     }
                 };
@@ -137,7 +137,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
                      */
                     protected void _execute() throws Exception {
                         _plotter.setContainer(null);
-                        _display.setContainer(_toplevel);
+                        _display.setContainer(_toplevelCopy);
                         _display.input.link(_displayRelation);
                     }
                 };
@@ -420,6 +420,12 @@ public class Type extends MoMLViewerApplet implements ValueListener {
     // Ports of expression actor.
     private TypedIOPort _exprInput1, _exprInput2;
 
+    // FIXME: This is a copy of the _toplevel defined in the super class.
+    // The copy is needed for this class to compile under jdk1.2. For some
+    // reason, jdk1.2 does not allow inner class to access _toplevel, but
+    // jdk1.3 does.
+    private CompositeActor _toplevelCopy = _toplevel;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -545,9 +551,9 @@ public class Type extends MoMLViewerApplet implements ValueListener {
             
             // Construct the name of the type label from the name
             // of the port relative to the top level.
-            String portName = port.getName(_toplevel);
+            String portName = port.getName(_toplevelCopy);
             String labelName = portName.replace('.', '_');
-            Attribute label = _toplevel.getAttribute(labelName);
+            Attribute label = _toplevelCopy.getAttribute(labelName);
             if (label != null) {
                 Configurable config = (Configurable)
                         label.getAttribute("_iconDescription");
