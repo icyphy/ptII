@@ -62,7 +62,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	jmf.xml \
-	jmf-copyright.htm
+	jmf-copyright.htm \
+	package.html
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
