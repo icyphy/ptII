@@ -33,7 +33,7 @@
 
 ME =		ptolemy/backtrack
 
-DIRS =		ast util xmlparser
+DIRS =		ast manual util xmlparser
 
 # Root of the Java directory
 ROOT =		../..
