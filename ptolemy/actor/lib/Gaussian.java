@@ -91,7 +91,7 @@ public class Gaussian extends TypedAtomicActor {
      *  A seed of zero is interpreted to mean that no seed is specified,
      *  which means that each execution of the system could result in
      *  distinct data.
-     *  This parameter contains a Longoken, initially with value 0.
+     *  This parameter contains a LongToken, initially with value 0.
      */
     public Parameter seed;
 
