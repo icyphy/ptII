@@ -172,6 +172,8 @@ public class StateController extends AttributeController {
             try {
                 icon = (EditorIcon)object.getAttribute("_icon");
                 if (icon == null) {
+                    // FIXME: This should not be done in this thread!
+                    // Need to queue a change request.
                     icon = new XMLIcon(object, "_icon");
                 }
             } catch (KernelException ex) {
