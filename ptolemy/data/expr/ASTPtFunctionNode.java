@@ -199,7 +199,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         Object result = null;
         while (allClasses.hasNext()) {
             Class nextClass = (Class)allClasses.next();
-            System.out.println("ASTPtFunctionNode: " + nextClass);
+            //System.out.println("ASTPtFunctionNode: " + nextClass);
             // First we look for the method, and if we get an exception,
             // we ignore it and keep looking.
             try {
