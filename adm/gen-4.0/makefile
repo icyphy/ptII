@@ -341,6 +341,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 
 	(cd src_jar/hyvisual$(VERSION); \
 		rm -rf jni \
+		doc/usingVergil \
 		lib/hsif \
 		lib/jni.jar \
 		lib/chic.jar \
@@ -393,7 +394,10 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		thales; \
 	   touch configure; \
 	)
-
+	grep -v "copernicus|decompile|emachine|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/hyvisual$(VERSION)/bin/makefile \
+		> src_jar/hyvisual$(VERSION)/bin/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/bin/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/bin/makefile
 	(cd src_jar/hyvisual$(VERSION); $(FINDCLEAN))
 	(cd src_jar/hyvisual$(VERSION); rm -rf `cat ../../src.ex`)
 
