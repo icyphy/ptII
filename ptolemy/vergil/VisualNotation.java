@@ -1,4 +1,4 @@
-/* A document for Vergil that contains a visual notation.
+/* A Visual Notation for Vergil Documents.  
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -29,42 +29,18 @@
 */
 
 package ptolemy.vergil;
-
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-
-import diva.graph.model.*;
-import diva.graph.toolbox.GraphParser;
-import diva.graph.toolbox.GraphWriter;
-
-import diva.gui.AbstractDocument;
-import diva.gui.Application;
-import diva.gui.BasicPage;
-import diva.gui.Document;
-import diva.gui.DocumentFactory;
-import diva.gui.Page;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileWriter;
-import java.net.URL;
+import diva.gui.*;
+import diva.graph.*;
 
 /**
- * A document for Vergil that contains a visual notation.
+ * A visual notation creates views for a document in Vergil. 
  *
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public interface VergilDocument extends Document {
-    /** Return a visual notation that can create a view on this document.
+public interface VisualNotation {
+    /** Construct a graph document that is owned by the given
+     *  application
      */
-    public VisualNotation getVisualNotation();
-
-    // FIXME should this interface include the document factory?
+    public GraphPane createView(Document d);
 }

@@ -1,4 +1,4 @@
-/* A document for Vergil that contains a visual notation.
+/* A generic visual notation for all Ptolemy models.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -29,42 +29,39 @@
 */
 
 package ptolemy.vergil;
-
 import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-
+import ptolemy.kernel.util.*;
+import diva.gui.*;
+import diva.graph.*;
 import diva.graph.model.*;
-import diva.graph.toolbox.GraphParser;
-import diva.graph.toolbox.GraphWriter;
+import ptolemy.vergil.graph.*;
 
-import diva.gui.AbstractDocument;
-import diva.gui.Application;
-import diva.gui.BasicPage;
-import diva.gui.Document;
-import diva.gui.DocumentFactory;
-import diva.gui.Page;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileWriter;
-import java.net.URL;
 
 /**
- * A document for Vergil that contains a visual notation.
+ * A visual notation creates views for a ptolemy document in Vergil. 
  *
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public interface VergilDocument extends Document {
-    /** Return a visual notation that can create a view on this document.
+public class PtolemyNotation extends Attribute implements VisualNotation {
+    /** Construct a graph document that is owned by the given
+     *  application
      */
-    public VisualNotation getVisualNotation();
+    public GraphPane createView(Document d) {
+	if(!(d instanceof PtolemyDocument)) {
+	    throw new InternalErrorException("Ptolemy Notation is only " + 
+		"compatible with Ptolemy documents.");
+	}
 
-    // FIXME should this interface include the document factory?
+	// These two things control the view of a ptolemy model.
+	GraphController controller = new EditorGraphController();
+	GraphImpl impl = new VergilGraphImpl();
+
+	GraphPane pane = new GraphPane(controller, impl);
+	CompositeEntity entity =
+	    (CompositeEntity) ((PtolemyDocument)d).getGraph();
+	Graph graph = impl.createGraph(entity);
+	controller.setGraph(graph);
+	return pane;
+    }
 }

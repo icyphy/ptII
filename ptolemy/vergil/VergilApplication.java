@@ -114,7 +114,7 @@ public class VergilApplication extends MDIApplication {
         fc.addChoosableFileFilter(ff);
         fc.setFileFilter(ff);
 
-        setDocumentFactory(new VergilDocument.Factory());
+        setDocumentFactory(new PtolemyDocument.Factory());
         // _incrementalLayout = new LevelLayout();
 
         // Initialize the menubar, toolbar, and palettes
@@ -148,6 +148,29 @@ public class VergilApplication extends MDIApplication {
      * document. This class creates a JGraph.
      */
     public JComponent createView(Document d) {
+	if(!(d instanceof VergilDocument)) {
+	    throw new RuntimeException("Can only create views " +
+				       "on Vergil documents.");
+	}
+	VisualNotation notation = ((VergilDocument)d).getVisualNotation();
+	GraphPane pane = notation.createView(d);
+
+	// CRAP.. This stuff is registered on the JGraph.  
+	// Can we figure out how to register it on the graph pane?
+	JGraph jgraph = new JGraph(pane);
+	new EditorDropTarget(jgraph);
+        GraphController controller =
+	    jgraph.getGraphPane().getGraphController();
+
+	ActionListener deletionListener = new DeletionListener();
+        jgraph.registerKeyboardAction(deletionListener, "Delete",
+                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+        jgraph.setRequestFocusEnabled(true);
+        jgraph.addMouseListener(new MouseFocusMover());
+        return jgraph;
+
+	/*
         //FIXME
 	GraphPane pane = new GraphPane(new EditorGraphController(),
                 new VergilGraphImpl());
@@ -166,14 +189,7 @@ public class VergilApplication extends MDIApplication {
         // Set and draw the new graph
         controller.setGraph(graph);
 
-	ActionListener deletionListener = new DeletionListener();
-        jgraph.registerKeyboardAction(deletionListener, "Delete",
-                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
-        jgraph.setRequestFocusEnabled(true);
-        jgraph.addMouseListener(new MouseFocusMover());
-        return jgraph;
-
+	*/
     }
 
     /** Delete any selected nodes and all attached edges in the current graph.
@@ -379,7 +395,7 @@ public class VergilApplication extends MDIApplication {
 
         action = new AbstractAction("Execute System") {
             public void actionPerformed(ActionEvent e) {
-                VergilDocument d = (VergilDocument)getCurrentDocument();
+                PtolemyDocument d = (PtolemyDocument)getCurrentDocument();
                 if (d == null) {
                     return;
                 }

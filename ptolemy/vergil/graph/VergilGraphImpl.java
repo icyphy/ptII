@@ -201,46 +201,53 @@ public class VergilGraphImpl extends BasicGraphImpl {
 			addNode(n, g);
 		    }
 		}
-		// If there are no verticies, then give the relation a vertex
-		if(rootVertex == null) {
-		    try {
-			Vertex v = new Vertex(relation,
-                                relation.uniqueName("Vertex"));
-			rootVertex = createNode(v);
-		    }
-		    catch (Exception e) {
-			throw new InternalErrorException("Failed to create " +
-                                "new vertex, even though one does not " +
-                                "already exist:" + e.getMessage());
-		    }
-		    addNode(rootVertex, g);
-		}
-
-		// FIXME connect everything to the root for now.
+		// Count the linked ports.
+		int count = 0;
 		Enumeration links = relation.linkedPorts();
 		while(links.hasMoreElements()) {
-                    Port port = (Port)links.nextElement();
-                    // Figure out which node to put the edge to.
-		    // this is a little ugly.
-		    Node foundNode = null;
-		    Iterator nodes = g.nodes();
-		    while(nodes.hasNext() && foundNode == null) {
-			Node node = (Node)nodes.next();
-                        if(node.getSemanticObject().equals(port)) {
-			    foundNode = node;
-			}
-                        if(node instanceof CompositeNode) {
-                            Iterator portNodes = ((CompositeNode)node).nodes();
-                            while(portNodes.hasNext() && foundNode == null) {
-                                Node portNode = (Node)portNodes.next();
-                                if(portNode.getSemanticObject().equals(port))
-                                    foundNode = portNode;
-                            }
-                        }
-		    }
+		    links.nextElement();
+		    count++;
+		}
+		   		
+		System.out.println("count = " + count);
+		// If there are no verticies, and the relation has
+		// two connections, then create a direct link.
+		if(rootVertex == null && count == 2) {
+		    links = relation.linkedPorts();
+		    Port port1 = (Port)links.nextElement();
+		    Port port2 = (Port)links.nextElement();
+		    Node node1 = _findNode(g, port1);
+		    Node node2 = _findNode(g, port2);
 		    Edge newEdge = createEdge(null);
-		    setEdgeHead(newEdge, foundNode);
-                    setEdgeTail(newEdge, rootVertex);
+		    super.setEdgeHead(newEdge, node1);
+                    super.setEdgeTail(newEdge, node2);
+		} else {		  
+		    // A regular relation with a diamond.
+		    // Create a vertex if one is not found
+		    if(rootVertex == null) {
+			try {
+			    Vertex v = new Vertex(relation,
+				relation.uniqueName("Vertex"));
+			    rootVertex = createNode(v);
+			}
+			catch (Exception e) {
+			    throw new InternalErrorException(
+				"Failed to create " +
+			        "new vertex, even though one does not " +
+			        "already exist:" + e.getMessage());
+			}
+			addNode(rootVertex, g);
+		    }
+		    
+		    // Connect all the links for that relation.
+		    links = relation.linkedPorts();
+		    while(links.hasMoreElements()) {
+			Port port = (Port)links.nextElement();
+			Node foundNode = _findNode(g, port);
+			Edge newEdge = createEdge(null);
+			super.setEdgeHead(newEdge, foundNode);
+			super.setEdgeTail(newEdge, rootVertex);
+		    }
 		}
 	    }
 	}
@@ -367,5 +374,28 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    ex.printStackTrace();
 	    throw new GraphException(ex.getMessage());
 	}
+    }
+
+    /** Return the node in the graph whose semantic object is the given port
+     */
+    private Node _findNode(Graph graph, Port port) {
+	// This is a bit ugly.
+	Node foundNode = null;
+	Iterator nodes = graph.nodes();
+	while(nodes.hasNext() && foundNode == null) {
+	    Node node = (Node)nodes.next();
+	    if(node.getSemanticObject().equals(port)) {
+		foundNode = node;
+	    }
+	    if(node instanceof CompositeNode) {
+		Iterator portNodes = ((CompositeNode)node).nodes();
+		while(portNodes.hasNext() && foundNode == null) {
+		    Node portNode = (Node)portNodes.next();
+		    if(portNode.getSemanticObject().equals(port))
+			foundNode = portNode;
+		}
+	    }
+	}
+	return foundNode;
     }
 }

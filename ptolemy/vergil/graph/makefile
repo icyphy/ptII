@@ -52,6 +52,7 @@ JSRCS = \
 	EditorGraphController.java \
 	EntityController.java \
 	EntityPortController.java \
+	FSMGraphController.java \
 	LinkController.java \
 	LocatableNodeController.java \
 	LocatableNodeDragInteractor.java \
