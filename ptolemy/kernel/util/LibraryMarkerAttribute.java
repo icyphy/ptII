@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (yourname@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 // NOTE: It is not clear that this is the right package for this,
