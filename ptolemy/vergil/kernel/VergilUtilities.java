@@ -82,10 +82,24 @@ public class VergilUtilities {
         // However, calling getProperty will likely fail in applets
         // or within the sandbox, so we use this method instead.
 
-        if (StringUtilities.getProperty("ptolemy.ptII.MacOS").equals("true")) {
-            System.out.println("ptolemy.ptII.MacOS = true property detected");
-            return true;
+        try {
+            if (StringUtilities.getProperty("ptolemy.ptII.MacOS")
+                    .equals("true")) {
+                System.out.println("ptolemy.ptII.MacOS = "
+                        + "true property detected");
+                return true;
+            }
+        } catch (SecurityException ex) {
+            if (!_printedSecurityExceptionMessage) {
+                _printedSecurityExceptionMessage = true;
+                System.out.println("Warning: Failed to get the "
+                        + "ptolemy.ptII.MacOS property "
+                        + "(-sandbox always causes this)");
+            }
         }
         return UIManager.getLookAndFeel().getName().startsWith("Mac OS");
     }
+
+    // True if we have printed the securityExceptionMessage;
+    private static boolean _printedSecurityExceptionMessage = false;
 }
