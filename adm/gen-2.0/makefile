@@ -739,10 +739,10 @@ remote2distjdk1.1test: $(REMOTE2PTJACL_JAR)
 # Build on a remote host by doing a cvs checkout
 
 # Host to run on
-REMOTE3HOST = gauss
+REMOTE3HOST = carson
 
 # Directory to build in
-REMOTE3HOME = /vol/$(REMOTE3HOST)/$(REMOTE3HOST)2/ptII
+REMOTE3HOME = /vol/$(REMOTE3HOST)/$(REMOTE3HOST)1/ptII
 
 # Actual ptII tree.  Note that there is no version number because
 # we are checking it out from CVS
@@ -863,17 +863,16 @@ $(REMOTE4DONEFILE):
 # If the remote done files are present, concatenate the logs and send email
 # Note that currently we are not running remote 1 and remote2
 remotealldone:
-	if [ -f $(REMOTE3DONEFILE) \
-			-a -f $(REMOTE4DONEFILE) ]; then \
+	if [ -f $(REMOTE4DONEFILE) ]; then \
 		date; \
 		echo "Remote processes finished"; \
-		cat $(REMOTE3LOG) $(REMOTE4LOG) \
+		cat $(REMOTE4LOG) \
 			>> $(PTIINIGHTLY_TXT); \
 		/bin/sh $(PTIIADM)/bin/ptIInightly-mail $(EMAILTO) ; \
 	else \
 		date; \
 		echo "Still waiting"; \
-		ls -l $(REMOTE3DONEFILE) $(REMOTE4DONEFILE); \
+		ls -l $(REMOTE4DONEFILE); \
 	fi
 
 ##########################################################################
