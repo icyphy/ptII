@@ -770,6 +770,7 @@ ptolemy.vergil.icon.BoxedValueIcon will be removed
 ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory will be replaced by ptolemy.kernel.util.Attribute
 ptolemy.vergil.basic.NodeControllerFactory will be removed
 ptolemy.vergil.toolbox.AnnotationEditorFactory will be removed
+ptolemy.vergil.icon.XMLIcon will be removed
 }}
 
 test BackwardCompatiblity-11.2 {Call BackwardCompatibility.toString} {
