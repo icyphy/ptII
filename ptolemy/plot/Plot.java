@@ -586,7 +586,7 @@ public class Plot extends PlotBox {
      *  the event thread.
      *  @param on If true, draw lines between points.
      *  @param dataset The dataset to which this should apply.
-     *  @see #setConnected()
+     *  @see #setConnected(boolean)
      */
     public synchronized void setConnected(boolean on, int dataset) {
         _checkDatasetIndex(dataset);
