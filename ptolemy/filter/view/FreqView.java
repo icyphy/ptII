@@ -224,6 +224,7 @@ System.out.println("updating the frequency response value");
                InteractComponent edgeic = (InteractComponent) edgeenum.nextElement();
                Double edge = (Double) _crossref[0].get(edgeic);
                edgefreq[edgeic.getDataIndex()] = edge.doubleValue();
+System.out.println("edge freq: "+edge.doubleValue());
           }
 
           // get gain at edge frequencies 
@@ -333,21 +334,34 @@ System.out.println("updating the frequency response value");
             for (int i=0;i<edgefreq.length;i++){
                 
                 InteractComponent ic;
-
+                
                
                 if (i<edgegain.length){
                     // edge frequencies
                     ic = new InteractComponent("Edge Frequency", 
                                             InteractComponent.LINE, edgefreq[i],
                                             edgegain[i]);
-               
                 } else {
                     // Band width 
                     ic = new InteractComponent("Band Width", 
                                             InteractComponent.LINE, edgefreq[i],
                                             edgegain[i-1]);
-
                 }
+                
+                double minX, maxX;
+ 
+                if (i == 0) {
+                    minX = _minGap;  
+                    maxX = edgefreq[1]-_minGap;  
+                } else if (i == edgefreq.length-1){
+                    minX = edgefreq[i-1]+_minGap;
+                    maxX = Math.PI-_minGap;
+                } else {
+                    minX = edgefreq[i-1]+_minGap;
+                    maxX = edgefreq[i+1]-_minGap;  
+                }
+  
+                ic.setBoundary(minX, maxX, Double.MIN_VALUE, Double.MAX_VALUE); 
 
                 ic.setDrawingParam(Color.green, 50, false,
                                    InteractComponent.VERTICALORI);
@@ -370,6 +384,29 @@ System.out.println("updating the frequency response value");
                 ic = new InteractComponent("Band Gain", 
                                            InteractComponent.LINE, edgefreq[i],
                                            edgegain[i]);
+
+                double minY, maxY;
+
+                    
+                if (i == 0) {
+                    if (edgegain[0] < edgegain[1]){  
+                        minY = 0.0;
+                        maxY = edgegain[1]-_minGap;
+                    } else {
+                        minY = edgegain[1]+_minGap;
+                        maxY = 1.0;
+                    }
+                } else {
+                    if (edgegain[0] < edgegain[1]){  
+                        minY = edgegain[0]+_minGap;
+                        maxY = 1.0;
+                    } else {
+                        minY = 0.0;
+                        maxY = edgegain[1]-_minGap;
+                    }
+                }
+  
+                ic.setBoundary(Double.MIN_VALUE, Double.MAX_VALUE, minY, maxY); 
 
                 ic.setDrawingParam(Color.green, 50, false,
                                    InteractComponent.HORIZONTALORI);
@@ -474,4 +511,5 @@ System.out.println("updating the frequency response value");
 
    private static final double _log10scale = 1/Math.log(10);
 
+   private final double _minGap = 0.02;
 }

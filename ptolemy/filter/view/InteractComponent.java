@@ -43,7 +43,7 @@ import java.awt.*;
    etc.  Since this class can not get these data values,  it is upto the
    the plot object to keep (x,y) and (xv, yv) in synch.  A bounding
    box is used to determine if the cursor is on the component for selecting.  
-   The movement of the component is limited variables <i> degFreedom </i>, 
+   The movement of the component is limited by variables <i> degFreedom </i>, 
    Orientation of the component is specify by <i> orientation </i>. i
    <p>
    FIXME: <p>
@@ -80,7 +80,8 @@ public class InteractComponent {
 
     /**
      * Change the value of this interact component.  The degree of freedom
-     * is checked before the value is assigned.
+     * is checked before the value is assigned.  If the new value exceeds
+     * the preset boundary, then boundary value is assigned to the current value. 
      * <p> 
      * @param newxv new x-axis value
      * @param newyv new y-axis value
@@ -88,12 +89,36 @@ public class InteractComponent {
     public void changeValue(double newxv, double newyv){
         // check degree of freedom
         if (getDegFreedom() == InteractComponent.XAXISDEGFREE){
-            _xv = newxv;
+            if (newxv > _upx){
+                _xv = _upx;
+            } else if (newxv < _lowx){ 
+                _xv = _lowx;
+            } else {
+               _xv = newxv;
+            }
         } else if (getDegFreedom() == InteractComponent.YAXISDEGFREE){
-            _yv = newyv;
+            if (newyv > _upy){
+                _yv = _upy;
+            } else if (newyv < _lowy){ 
+                _yv = _lowy;
+            } else {
+               _yv = newyv;
+            }
         } else if (getDegFreedom() == InteractComponent.ALLDEGFREE){
-            _xv = newxv;
-            _yv = newyv;
+            if (newxv > _upx){
+                _xv = _upx;
+            } else if (newxv < _lowx){ 
+                _xv = _lowx;
+            } else {
+               _xv = newxv;
+            }
+            if (newyv > _upy){
+                _yv = _upy;
+            } else if (newyv < _lowy){ 
+                _yv = _lowy;
+            } else {
+               _yv = newyv;
+            }
         }
     }
 
@@ -182,6 +207,14 @@ public class InteractComponent {
         }
     }
 
+
+    public void setBoundary(double lowx, double upx, double lowy, double upy){
+        _lowx = lowx;
+        _upx = upx;
+        _lowy = lowy;
+        _upy = upy;
+
+    }
 
     /**
      * Get the name of the component.
@@ -523,4 +556,8 @@ public class InteractComponent {
     private int _degFreedom = ALLDEGFREE; 
 
     private int _boundingwidth, _boundingheight;
+    private double _lowx = Double.MIN_VALUE;
+    private double _lowy = Double.MIN_VALUE;
+    private double _upx = Double.MAX_VALUE;
+    private double _upy = Double.MAX_VALUE;
 }
