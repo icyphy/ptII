@@ -123,10 +123,10 @@ public class PortConfigurerDialog extends ComponentDialog
                         String moml = "<deletePort name=\""
                             + port.getName(container) + "\"/>\n";
 
-                            ChangeRequest request =
-                                new MoMLChangeRequest(this, container, moml);
-                            container.addChangeListener(this);
-                            container.requestChange(request);
+                        ChangeRequest request =
+                            new MoMLChangeRequest(this, container, moml);
+                        container.addChangeListener(this);
+                        container.requestChange(request);
                     }
                 }
             }
@@ -208,10 +208,10 @@ public class PortConfigurerDialog extends ComponentDialog
             String moml = "<port name=\""
                 + newName
                 + "\" class=\""
-                    + _query.stringValue("class")
-                        + "\"/>";
-                    _target.addChangeListener(this);
-                    _target.requestChange(new MoMLChangeRequest(this, _target, moml));
+                + _query.stringValue("class")
+                + "\"/>";
+            _target.addChangeListener(this);
+            _target.requestChange(new MoMLChangeRequest(this, _target, moml));
         }
         return dialog;
     }
@@ -221,7 +221,7 @@ public class PortConfigurerDialog extends ComponentDialog
 
     // Button labels.
     private static String[] _moreButtons
-            = {"Commit", "Add", "Remove", "Cancel"};
+    = {"Commit", "Add", "Remove", "Cancel"};
 
     // The owner window.
     private Frame _owner;
