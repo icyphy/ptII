@@ -32,6 +32,7 @@ package ptolemy.actor.corba;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
 
 import java.util.Enumeration;
 
