@@ -98,6 +98,8 @@
         </property>
     </entity>
     <entity name="MovieWriter" class="ptolemy.actor.lib.jmf.MovieWriter">
+        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="fileType" class="ptolemy.kernel.util.StringAttribute" value="QUICKTIME">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="AVI" class="ptolemy.kernel.util.StringAttribute" value="AVI">
