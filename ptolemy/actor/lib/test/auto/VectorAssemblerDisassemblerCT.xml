@@ -51,25 +51,31 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 40.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There are three links between the output &#10;of the sampler and the input of the assembler.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 100.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: the first sample from the periodic sampler&#10;is 0, which is the default value of the continuous clock.&#10;When a sampler samples a discontinuity of a continuous &#10;signal, the value of the moment just before the discontinuity&#10;happens is the sampled value.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 280.0]">
+        </property>
+    </property>
     <entity name="VectorAssembler" class="ptolemy.actor.lib.VectorAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 175.0]">
         </property>
     </entity>
     <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 175.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -79,7 +85,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 85.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 70.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -89,7 +95,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 195.0]">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
@@ -99,7 +105,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 300.0]">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
@@ -109,33 +115,33 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 255.0]">
         </property>
     </entity>
     <entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 115}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
         </property>
     </entity>
     <entity name="ContinuousClock2" class="ptolemy.domains.ct.lib.ContinuousClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2.1, 2.9}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
         </property>
     </entity>
     <entity name="ContinuousClock3" class="ptolemy.domains.ct.lib.ContinuousClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{3.1, 3.9}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 245.0]">
         </property>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 195.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="300.0, 210.0">
+        <vertex name="vertex1" value="[300.0, 195.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
