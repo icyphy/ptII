@@ -273,7 +273,7 @@ public class TimeKeeper {
      * @exception IllegalArgumentException If there is an attempt to
      *  decrease the value of current time to a nonnegative number.
      */
-    synchronized void setCurrentTime(double time) {
+    public synchronized void setCurrentTime(double time) {
 	if( time < _currentTime && 
 		time != TimedQueueReceiver.INACTIVE ) {
 	    throw new IllegalArgumentException(
