@@ -91,7 +91,7 @@ echo "$PTII" | egrep 'cygdrive|cygwin' > /dev/null
 status=$?
 if test "$status" -eq 1 ; then
     AC_MSG_RESULT([ok
-	'$PTII' does not contain cygdrive or cygwin, which is right.])
+    '$PTII' does not contain cygdrive or cygwin, which is right.])
 else
     AC_MSG_WARN(['\$PTII == $PTII,
 which contains 'cygdrive' or 'cygwin'.
@@ -204,7 +204,7 @@ PTII_LOCALURL=`echo "file:///$PTII_DIR" | sed 's/ /%20/g'`
 #       if it is not, look for javac on the path.
 #       NOTE: If your javac compiler is in /usr/bin, then PTJAVA_DIR is
 #       likely to be set to /usr.  Consider using PTJAVA_HOME if
-#       you are looking for Java jar files
+#       you are looking for Java jar files.
 #--------------------------------------------------------------------
 
 AC_ARG_WITH(java, [  --with-java=DIR         use Java binaries from DIR,
@@ -329,7 +329,7 @@ if test -f "$PTJAVA_DIR/bin/javac"; then
     if test "$PTJAVA_DIR/bin/javac" = "$JAVAC"; then
         AC_MSG_RESULT([    You have the right javac in your path,
     "$PTJAVA_DIR/bin/javac"
-     = "$JAVAC"])
+      = "$JAVAC"])
     else
         AC_MSG_WARN(['$PTJAVA_DIR/bin/javac' is not
 	 the same as '$JAVAC'.
@@ -537,7 +537,7 @@ MESCAL_USER_DIR=$PTII/mescal/views/simulation/model/UINT.H
 
 if test ! -f "$MESCAL_USER_DIR"; then
     AC_MSG_RESULT([$MESCAL_USER_DIR is not present,
-	so we need not find Boost.])
+    so we need not find Boost.])
 else
     case "`uname -s`" in
 	Linux) ARCH=linux;;
@@ -606,7 +606,7 @@ PTCM_DIR=
 # We only need to look for cm if $PTII/ptolemy/copernicus/c exists
 if test ! -d "$PTII/ptolemy/copernicus/c"; then
     AC_MSG_RESULT([$PTII/ptolemy/copernicus/c is not present,
-	so we need not find the CaffeineMark Kit.])
+    so we need not find the CaffeineMark Kit.])
 else
     AC_MSG_CHECKING([for CaffeineMarkEmbeddedApp.class])
     AC_ARG_WITH(cmkit, [  --with-cmkit=DIR       use CaffeineMark from DIR,
@@ -646,7 +646,7 @@ CALTROP_DIR='${PTII}/lib'
 CAL_USER_DIR="$PTII/ptolemy/caltrop"
 if test ! -d "$CAL_USER_DIR"; then
     AC_MSG_RESULT([$CAL_USER_DIR is not present,
-	so we need not find the Cal, the actor language.])
+    so we need not find the Cal, the actor language.])
 else
     AC_MSG_CHECKING([for Cal, the actor language])
     AC_ARG_WITH(CALTROP_DIR, [  --with-cal=DIR       use ptCal.jar from DIR,
@@ -829,7 +829,7 @@ PTLEGO_DIR=
 PTCOMM_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
     AC_MSG_RESULT([$COMMAPI_USER_DIR is not present,
-	so we need not find commapi.])
+    so we need not find commapi.])
     # Use curly brackets around PTII so that if commapi is not present
     # then ${PTII} will appear in ptinvoke.
     COMMAPI_DIR='${PTII}/vendors/sun/commapi'
@@ -919,7 +919,7 @@ JDOCTAGLET=
 
 if test ! -d "$DOCLETS_USER_DIR"; then
     AC_MSG_RESULT([$DOCLETS_USER_DIR is not present,
-	so we need not find tools.jar in the JRE.])
+    so we need not find tools.jar in the JRE.])
     # Use curly brackets around PTII so that if tools.jar is not present
 
     TOOLS_JAR='${PTJAVA_HOME}/../lib/tools.jar'
@@ -967,7 +967,7 @@ GC_DIR=
 
 if test ! -d "$PTII/ptolemy/copernicus/c"; then
     AC_MSG_RESULT([$PTII/ptolemy/copernicus/c is not present,
-        so we need not find the Boehm GC])
+    so we need not find the Boehm GC.])
 else
     AC_PATH_PROG(PTCC, gcc)
     if test "${PTCC:-none}" = "none"; then
@@ -992,25 +992,16 @@ else
 	      GC_LD_DIRECTIVE='"-L${PTII}/lib" -lgc'
 	      AC_MSG_RESULT(use $GC_LD_DIRECTIVE)
            else 
-	      if test -d "$PTII/vendors/gc/gc6.4"; then
-                  AC_MSG_WARN([Failed to find GC_malloc(), but 
-    \$PTII/vendors/gc/gc6.4 exists.  See the \$PTII/vendors/gc/README.txt
-    that directory if you would like to use the Garbage Collector
-    with the C code generator])
-              else 
-	          if test -d "$PTII/vendors/gc/gc"; then
+	      # FIXME: This will not work if $PTII has spaces
+	      dirs="$PTII/vendors/gc/gc6.4 $PTII/vendors/gc/gc6.1 $PTII/vendors/gc/gc"
+	      for dir in $dirs
+	      do
+	          if test -d "$dir"; then
                       AC_MSG_WARN([Failed to find GC_malloc(), but 
-    \$PTII/vendors/gc/gc exists.  See the \$PTII/vendors/gc/README.txt
-    that directory if you would like to use the Garbage Collector
-    with the C code generator])
-		  else      
-		      AC_MSG_WARN([Failed to find GC_malloc(), and
-    \$PTII/vendors/gc/gc6.4 does not exist.  The Boehm Garbage Collector
-    can be downloaded from
-    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
-    if you wish to use it with the C code generator])
+    \$dir exists.  See \$PTII/vendors/gc/README.txt
+    if you would like to use the Garbage Collector with the C code generator])
                   fi
-	      fi
+	      done
            fi 
        fi
     fi
@@ -1023,13 +1014,20 @@ else
    if test -f "$GC_INCLUDE_DIR/gc.h"; then
        AC_MSG_RESULT([$GC_INCLUDE_DIR/gc.h])
    else 
-       if test -f "$PTII/vendors/gc/gc6.4/include/gc.h"; then
-           GC_INCLUDE_DIR=$PTII/vendors/gc/gc6.4/include
-	   AC_MSG_RESULT([$GC_INCLUDE_DIR/gc.h])
-       else	   	   
-           AC_MSG_WARN([Failed to gc.h
-    \$PTII/vendors/gc/gc6.4 does not exist.  The Boehm Garbage Collector
-    can be downloaded from
+       # FIXME: This will not work if $PTII has spaces
+       dirs="$PTII/vendors/gc/gc6.4 $PTII/vendors/gc/gc6.1 $PTII/vendors/gc/gc"
+       for dir in $dirs
+       do
+           if test -f "$dir/include/gc.h"; then
+               GC_INCLUDE_DIR=$PTII/vendors/gc/gc6.4/include
+	       AC_MSG_RESULT([$GC_INCLUDE_DIR/gc.h])
+           fi
+       done
+       if test -f "$GC_INCLUDE_DIR/gc.h"; then
+           AC_MSG_WARN([Failed to find gc.h.
+    Checked the following directories:
+    $dirs
+    The Boehm Garbage Collector can be downloaded from
     http://www.hpl.hp.com/personal/Hans_Boehm/gc/
     if you wish to use it with the C code generator])
        fi
@@ -1047,7 +1045,7 @@ MESCAL_RELSAT_USER_DIR="$PTII/mescal/relsat"
 PTGMP=no
 if test ! -d "$MESCAL_RELSAT_USER_DIR"; then
     AC_MSG_RESULT([$MESCAL_RELSAT_USER_DIR is not present,
-	so we need not find GMP.])
+    so we need not find GMP.])
 else
     case "`uname -s`" in
 	Linux) ARCH=linux;;
@@ -1162,7 +1160,7 @@ JAI_USER_DIR="$PTII/ptolemy/actor/lib/jai"
 
 if test ! -d "$JAI_USER_DIR"; then
     AC_MSG_RESULT([$JAI_USER_DIR is not present,
-	so we need not find JAI - The Java Advanced Imaging API.])
+    so we need not find JAI - The Java Advanced Imaging API.])
 else
     AC_MSG_CHECKING([for Java Advanced Imaging (JAI) API])
     # We need to run javac in the config directory so that javac from jdk1.1.6
@@ -1236,7 +1234,7 @@ JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
 # We only need to look for jhdl if $PTII/ptolemy/copernicus/jhdl exists
 if test ! -d "$PTII/ptolemy/copernicus/jhdl"; then
     AC_MSG_RESULT([$PTII/ptolemy/copernicus/jhdl is not present,
-	so we need not find the JHDL - a Java Optimization Framework.])
+    so we need not find the JHDL - a Java Optimization Framework.])
     JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
 else
     AC_MSG_CHECKING([for jhdl jar file])
@@ -1295,7 +1293,7 @@ JMF_JARS=
 JMF_USER_DIR="$PTII/ptolemy/actor/lib/jmf"
 if test ! -d "$JMF_USER_DIR"; then
     AC_MSG_RESULT([$JMF_USER_DIR is not present,
-	so we need not find the JMF - The Java Media Framework.])
+    so we need not find the JMF - The Java Media Framework.])
 else
     AC_MSG_CHECKING([for Java Media Framework (JMF)])
     # We need to run javac in the config directory so that javac
@@ -1376,7 +1374,7 @@ JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
 # We only need to look for joystick if $PTII/ptolemy/actor/lib/joystick exists
 if test ! -d "$PTII/ptolemy/actor/lib/joystick"; then
     AC_MSG_RESULT([$PTII/ptolemy/actor/lib/joystick is not present,
-	so we need not find the Joystick interface.])
+    so we need not find the Joystick interface.])
 else
     AC_MSG_CHECKING([for joystick jar file])
     AC_ARG_WITH(joystick_jar, [  --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
@@ -1431,7 +1429,7 @@ JYTHON_DIR='${PTII}/lib'
 JYTHON_USER_DIR="$PTII/ptolemy/actor/lib/python"
 if test ! -d "$JYTHON_USER_DIR"; then
     AC_MSG_RESULT([$JYTHON_USER_DIR is not present,
-	so we need not find the Jython, the java implementation of Python.])
+    so we need not find the Jython, the java implementation of Python.])
 else
     AC_MSG_CHECKING([for Jython, the Java implementation of Jython])
     AC_ARG_WITH(jython_dir, [  --with-jython=DIR       use jython.jar from DIR,
@@ -1495,7 +1493,7 @@ JXTA_DIR='${PTII}/vendors/sun/jxta'
 
 if test ! -d "$JXTA_USER_DIR"; then
     AC_MSG_RESULT([$JXTA_USER_DIR is not present,
-	so we need not find JXTA])
+    so we need not find JXTA.])
 else
     AC_MSG_CHECKING([for jxta directory that contains jxta.jar])
     AC_ARG_WITH(jxta_dir, [  --with-jxta=DIR       use jxta.jar from DIR,
@@ -1550,7 +1548,7 @@ LEJOS_PRESENT=no
 PTLEJOS_DIR=
 if test ! -d "$LEJOS_USER_DIR"; then
     AC_MSG_RESULT([$LEJOS_USER_DIR is not present,
-	so we need not find lejos.])
+    so we need not find lejos.])
     # Use curly brackets around PTII so that if lejos is not present
     # then ${PTII} will appear in ptinvoke.
     LEJOS_DIR='${PTII}/vendors/lejos/lejosBeta3'
@@ -1593,7 +1591,7 @@ fi
 # We only need to look for JavaCC if $PTII/ptolemy/data/expr exists
 if test ! -d "$PTII/ptolemy/data/expr"; then
     AC_MSG_RESULT([$PTII/ptolemy/data/expr is not present,
-	so we need not find JavaCC.])
+    so we need not find JavaCC.])
     JAVACC_DIR=$PTII/vendors/sun/javacc-3.2
     JAVACC=javacc
     JJTREE=jjtree
@@ -1612,8 +1610,8 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
     else
 	if test ! -d "$JAVACC_DIR"; then
 	    AC_MSG_WARN([Could not find directory
-	'${JAVACC_DIR}'
-	so we search for the jjtree command.])
+    '${JAVACC_DIR}'
+    so we search for the jjtree command.])
 	    AC_PATH_PROG(JJTREE, jjtree)
 	    if test -x "$JJTREE"; then
 		AC_MSG_RESULT([$JJTREE]);
@@ -1654,9 +1652,9 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
     Note that the zip file that gets downloaded is actually an installer
     that must be run to install the JavaCC.zip file that contains the classes.
 
-    Configure looks for JavaCC in $PTII/vendors/sun/javacc-3.2, so either
-    install JavaCC in that location or use the --with-javacc= flag
-    and then rerun configure'])
+    Configure looks for JavaCC in $PTII/vendors/sun/javacc-3.2,
+    so either install JavaCC in that location or use the --with-javacc= flag
+    and then rerun configure.'])
 	JJTREE=touch
 	JAVACC=touch
     fi
@@ -1683,7 +1681,7 @@ PTJACL_DIR=
 
 if test ! -d "$PTII/util/testsuite"; then
     AC_MSG_RESULT([$PTII/util/testsuite is not present,
-	so we need not find Jacl.])
+    so we need not find Jacl.])
 else
     AC_MSG_CHECKING([for ptjacl.jar])
     AC_ARG_WITH(ptjacl_jar, [  --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -1741,7 +1739,7 @@ JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
 if test ! -d "$JAVA3D_USER_DIR"; then
     AC_MSG_RESULT([$JAVA3D_USER_DIR is not present,
-	so we need not find Java 3D.])
+    so we need not find Java 3D.])
 else
     AC_MSG_CHECKING([for Java 3D])
     # We need to run javac in the config directory so that javac from jdk1.1.6
@@ -1757,10 +1755,10 @@ else
        PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
        AC_MSG_WARN(['"$JAVAC" java3dTest.java' failed.
-	http://java.sun.com/products/java-media/3D/download.html
-	Java 3D is only needed if you want to build in
-	$JAVA3D_USER_DIR,
-	otherwise the build will proceed fine without Java 3D.])
+    http://java.sun.com/products/java-media/3D/download.html
+    Java 3D is only needed if you want to build in
+    $JAVA3D_USER_DIR,
+    otherwise the build will proceed fine without Java 3D.])
     fi
     cd "$startdir"
 fi
@@ -1784,7 +1782,7 @@ JINI_PRESENT=no
 PTJSPACES_DIR=
 if test ! -d "$JINI_USER_DIR"; then
     AC_MSG_RESULT([$JINI_USER_DIR is not present,
-	so we need not find Jini.])
+    so we need not find Jini.])
     # We don't use JINI_VERSION here so that we don't expand PTII
     # in the makefile
     JINI_DIR='\$PTII/vendors/sun/jini/jini1_0_1'
@@ -1826,7 +1824,7 @@ PTJNI_DIR=
 
 if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" -a ! -d "$PTII/mescal/kirika" ; then
     AC_MSG_RESULT([$PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
-        so we need not find gcc or cc])
+    so we need not find gcc or cc.])
 else
     AC_PATH_PROG(PTCC, gcc)
     if test "${PTCC:-none}" != "none"; then
@@ -1856,11 +1854,11 @@ else
     AC_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
 
     AC_MSG_CHECKING([for the proper JNI architecture include directory])
-    if test ! -d "$PTJAVA_DIR/include/$PTJNI_ARCHITECTURE"; then 
-	AC_MSG_WARN(["$PTJAVA_DIR/include/$PTJNI_ARCHITECTURE" was not found.
+    if test ! -d "$PTJAVA_HOME/include/$PTJNI_ARCHITECTURE"; then 
+	AC_MSG_WARN(["$PTJAVA_HOME/include/$PTJNI_ARCHITECTURE" was not found.
     As a result, compilation of JNI actors will fail.])
     else 
-	AC_MSG_RESULT([$PTJAVA_DIR/include/$PTJNI_ARCHITECTURE])
+	AC_MSG_RESULT([$PTJAVA_HOME/include/$PTJNI_ARCHITECTURE])
     fi
 
     AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
@@ -1936,7 +1934,7 @@ JODE_CLASSES='${JODE_DIR}/jode.jar'
 # We only need to look for jode if $PTII/ptolemy/apps/jode exists
 if test ! -d "$PTII/vendors/jode"; then
     AC_MSG_RESULT([$PTII/vendors/jode is not present,
-	so we need not find Jode, which is a java disassembler.])
+    so we need not find Jode, which is a java disassembler.])
 else
     AC_MSG_CHECKING([for jode directory])
     AC_ARG_WITH(jode, [  --with-jode=DIR       use JODE from DIR,
@@ -1986,7 +1984,7 @@ PTKVM_DIR=
 # We only need to look for kvm if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/kvm is not present,
-	so we need not find the PalmOS kvm.])
+    so we need not find the PalmOS kvm.])
     KVM_DIR='${PTII}/vendors/sun/j2me_cldc'
     # Unfortunately, j2me_cldc does not ship with a jar of zip file
     # It needs to be built
@@ -2072,7 +2070,7 @@ else
     # We only need to look for matlab if $PTII/ptolemy/matlab exists
     if test ! -d "$PTII/ptolemy/matlab"; then
 	AC_MSG_RESULT([$PTII/ptolemy/matlab is not present,
-	    so we need not find matlab and gcc.])
+    so we need not find matlab and gcc.])
 	MATLAB_DIR=/matlab
 	PTCC=gcc
     else
@@ -2191,7 +2189,7 @@ PSDF_DIR='${PTII}/lib'
 PSDF_USER_DIR="$PTII/ptolemy/domains/psdf"
 if test ! -d "$PSDF_USER_DIR"; then
     AC_MSG_RESULT([$PSDF_USER_DIR is not present,
-	so we need not find the mapss.jar.])
+    so we need not find the mapss.jar.])
 else
     AC_MSG_CHECKING([for mapss.jar, used by the PSDF domain])
     AC_ARG_WITH(PSDF_DIR, [  --with-mapss=DIR       use mapss.jar from DIR,
@@ -2233,7 +2231,7 @@ QUICKTIME_USER_DIR="$PTII/ptolemy/domains/gr/lib/quicktime"
 
 if test ! -d "$QUICKTIME_USER_DIR"; then
     AC_MSG_RESULT([$QUICKTIME_USER_DIR is not present,
-	so we need not find Quicktime for Java.])
+    so we need not find Quicktime for Java.])
 else
     AC_MSG_CHECKING([for Quicktime for Java])
     # We need to run javac in the config directory so that javac from jdk1.1.6
@@ -2328,7 +2326,7 @@ SOOT_DIR='${PTII}/lib'
 # Soot needs to find java.lang.Object	
 # Use {} here instead of () because bin/ptinvoke uses JAVA_SYSTEM_JAR
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
-JAVA_SYSTEM_JAR='${PTJAVA_DIR}jre/lib/rt.jar'
+JAVA_SYSTEM_JAR='${PTJAVA_HOME}jre/lib/rt.jar'
 
 # We don't bother overriding this below so that something close
 # to the right default is in ptII.mk and the user can just change
@@ -2339,7 +2337,7 @@ SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasmin
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
     AC_MSG_RESULT([$PTII/ptolemy/copernicus is not present,
-	so we need not find the Soot - a Java Optimization Framework.])
+    so we need not find the Soot - a Java Optimization Framework.])
     SOOT_DIR='${PTII}/lib'
 else
     AC_MSG_CHECKING([for soot directory])
@@ -2382,7 +2380,7 @@ else
     AC_ARG_WITH(javasystemjar, [  --with-javasystemjar=DIR       use rt.lib from DIR,
                           defaults to JRE java.home property with lib/rt.jar appended ],
 	JAVA_SYSTEM_JAR=$withval,
-	JAVA_SYSTEM_JAR='$(PTJAVA_DIR)/jre/lib/rt.jar')
+	JAVA_SYSTEM_JAR='$(PTJAVA_HOME)/jre/lib/rt.jar')
 
     startdir=`pwd`
     cd "$srcdir/config"
@@ -2428,7 +2426,7 @@ PTTINI_DIR=
 # We only need to look for tini if $PTII/ptolemy/apps/tini exists
 if test ! -d "$PTII/ptolemy/apps/tini"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/tini is not present,
-	so we need not find the Dallas Semiconductor tini.])
+    so we need not find the Dallas Semiconductor tini.])
     TINI_DIR='${PTII}/vendors/dalsemi/tini'
     TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
 else
@@ -2473,7 +2471,7 @@ fi
 # does not understand /cygdrive/c syntax, so we hack
 if test -z "$TOSROOT" ; then 
     AC_MSG_RESULT([The TOSROOT environment variable is not present,
-	so we need not set up for TinyOS.])
+    so we need not set up for TinyOS.])
 
     # Nothing to exclude
     # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
@@ -2509,7 +2507,7 @@ PTGIOTTO_DIR=
 #
 if test ! -d "$PTII/ptolemy/domains/giotto"; then
     AC_MSG_RESULT([$PTII/ptolemy/domains/giotto is not present,
-	so we need not find the Giotto SDK.])
+    so we need not find the Giotto SDK.])
     GIOTTO_DIR='${PTII}/vendors/giotto'
     GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
 else
@@ -2565,7 +2563,7 @@ PTWABA_DIR=
 # We only need to look for waba if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/kvm is not present,
-	so we need not find the PalmOS waba.])
+    so we need not find the PalmOS waba.])
     WABA_DIR='${PTII}/vendors/misc/waba/wabasdk'
     # Unfortunately, j2me_cldc does not ship with a jar of zip file
     # It needs to be built
@@ -2641,7 +2639,7 @@ X10_CLASSES=
 X10_USER_DIR="$PTII/ptolemy/actor/lib/x10"
 if test ! -d "$X10_USER_DIR"; then
     AC_MSG_RESULT([$X10_USER_DIR is not present,
-	so we need not find the X10 SDK. X10 is the power line comm interface.])
+    so we need not find the X10 SDK. X10 is the power line comm interface.])
 else
     AC_MSG_CHECKING([for X10 directory])
     AC_ARG_WITH(x10, [  --with-X10=DIR       use X10 from DIR,
@@ -2675,8 +2673,8 @@ else
     fi
 
     if test -z "$PTX10_DIR"; then
-        AC_MSG_WARN([Failed to find tjx10p-11/lib/x10.jar
-    perhaps X10 is not installed?
+        AC_MSG_WARN([Failed to find tjx10p-12/lib/x10.jar
+    or tjx10p-11/lib/x10.jar, perhaps X10 is not installed?
     You need not download X10 unless you plan on building applications
     using the X10 interface.
     The X10 SDK can be downloaded from http://x10.homelinux.org.
@@ -2753,7 +2751,7 @@ AC_SUBST(JAI_JARS)
 # Usually it looks like '"$(JAR)" -i $@'
 AC_SUBST(JAR_INDEX)
 
-# Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
+# Location of rt.jar, usually $(PTJAVA_HOME)/jre/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin
 # Soot uses this variable to find java.lang.Object
 AC_SUBST(JAVA_SYSTEM_JAR)
