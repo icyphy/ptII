@@ -68,22 +68,19 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all:
-	# First, compile all the sources in the test subdirectories.
-	for subdir in $(DIRS); do \
-	  $(MAKE) -C $$subdir; \
-	done
-	
-	# Transform the source and add prefix "ptolemy.backtrack.test" to the package name.
+all: suball
+	# Transform the source and add prefix "ptolemy.backtrack.test"
+	# to the package name.
 	# The output root dir is $(ROOT).
-	# The transformed code is in package ptolemy.backtrack.test.ptolemy.backtrack.test.test1.
-	for subdir in $(DIRS); do \
-	  java \
+	# The transformed code is in 
+	# package ptolemy.backtrack.test.ptolemy.backtrack.test.test1.
+	for x in $(DIRS); do \
+	  "$(JAVA)" \
 	    -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)" \
 	    ptolemy.backtrack.ast.Transformer \
 	    -prefix ptolemy.backtrack.test \
-	    -output $(ROOT) \
-	    $$subdir/*.java; \
+	    -output "$(ROOT)" \
+	    $$x/*.java; \
 	done
 
 	# Compile all the tests in the current directory.
@@ -91,7 +88,7 @@ all:
 
 	# Finally, run the test program.
 	for test in $(JSRCS); do \
-	  java \
+	  "$(JAVA)" \
 	    -classpath "$(CLASSPATH)" \
 	    ptolemy.backtrack.test.`basename $$test .java`; \
 	done
@@ -99,8 +96,8 @@ all:
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
-# Is this the right way to remove subdirectory ptolemy?
+# Remove the ptolemy directory 
 # It is generated during the testing, and should not be preserved.
-CRUD := $(CRUD) -r ptolemy
+KRUFT = ptolemy
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
