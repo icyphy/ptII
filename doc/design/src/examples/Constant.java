@@ -38,7 +38,7 @@ class Constant implements InequalityTerm {
 
     // Check whether the current value of this term is acceptable.
     public boolean isValueAcceptable() {
-        return true;  // Any string value is acceptable.
+        return _value != null;  // Any non-null string value is acceptable.
     }
 
 	// Throw an Exception on an attempt to change this constant.
