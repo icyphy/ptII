@@ -196,7 +196,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
      *  @param integrator The integrator of that calls this method.
      *  @return True if the intergrator report a success on the last step.
      */
-    public boolean integratorIsSuccessful(CTBaseIntegrator integrator){
+    public boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
         try {
             CTDirector dir = (CTDirector)getContainer();
             double errtol = dir.getErrorTolerance();
