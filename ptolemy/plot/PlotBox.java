@@ -291,15 +291,19 @@ public class PlotBox extends Panel {
         // Draw scaling annotation for x axis.
         // NOTE: 5 pixel padding on bottom.
         int ySPos = drawRect.height - 5;
+        int xSPos = drawRect.width - _rightPadding;
+        if (_xlog) 
+            _xExp = (int)Math.floor(_xtickMin);
         if (_xExp != 0 && _xticks == null) {
-            int xSPos = drawRect.width - _rightPadding;
             String superscript = Integer.toString(_xExp);
             xSPos -= _superscriptFontMetrics.stringWidth(superscript);
             graphics.setFont(_superscriptfont);
-            graphics.drawString(superscript, xSPos, ySPos - halflabelheight);
-            xSPos -= _labelFontMetrics.stringWidth("x10");
-            graphics.setFont(_labelfont);
-            graphics.drawString("x10", xSPos, ySPos);
+            if (!_xlog) {
+                graphics.drawString(superscript,xSPos,ySPos - halflabelheight);
+                xSPos -= _labelFontMetrics.stringWidth("x10");
+                graphics.setFont(_labelfont);
+                graphics.drawString("x10", xSPos, ySPos);
+            }
             // NOTE: 5 pixel padding on bottom
             _bottomPadding = (3 * labelheight)/2 + 5;
         }
@@ -445,7 +449,6 @@ public class PlotBox extends Panel {
         
         if (_yticks == null) {
             // auto-ticks
-            ind = 0;
             Vector ygrid = null;
             double yTmpStart = yStart;
             if (_ylog) {
@@ -453,9 +456,14 @@ public class PlotBox extends Panel {
                 yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
                 if (_debug == 5) 
                     System.out.println("PlotBox: drawPlot: YAXIS ind="+ind+
-                            " yStart="+yStart+" yStep="+yStep+
+                            " ny="+ny+" yStart="+yStart+" yStep="+yStep+
                             " yTmpStart="+yTmpStart);
+                ny = ind;
             }
+            // FIXME: What does ind do here?  It is never set in the loop?
+            ind = 0;
+            // Set to false if we don't need the exponent  
+            boolean needExponent = _ylog;
             for (double ypos=yTmpStart; ypos <= _ytickMax;
                  ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
@@ -472,15 +480,29 @@ public class PlotBox extends Panel {
                     graphics.drawLine(xCoord1,yCoord1,xCoord2,yCoord1);
                     graphics.setColor(_foreground);
                 }
+                // Check to see if any of the labels printed contain
+                // the exponent.  If we don't see an exponent, then print it.
+                if (_ylog && ylabels[ind].indexOf('e') != -1 )
+                    needExponent = false;
+
                 if (_debug == 5) 
                     System.out.println("PlotBox: drawPlot: ypos = "+ypos+
-                            " _ytickMax="+_ytickMax+
+                            " _ytickMax="+_ytickMax+" ny="+ny+
                             " ylabels["+ind+"] ="+ylabels[ind] );
                 // NOTE: 4 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind],
                         _ulx-ylabwidth[ind++]-4, yCoord1+offset);
             }
-        
+
+            if (_ylog) {
+                if (needExponent) {
+                    // We zoomed in, so we need the exponent
+                    _yExp = (int)Math.floor(yTmpStart);
+                } else {
+                    _yExp = 0;
+                }
+            }
+
             // Draw scaling annotation for y axis.
             if (_yExp != 0) {
                 graphics.drawString("x10", 2, titley);
@@ -568,12 +590,16 @@ public class PlotBox extends Panel {
             double xTmpStart = xStart;
             if (_xlog) {
                 xgrid = _gridInit(xStart, xStep);
-                xTmpStart = _gridStep(xgrid, xStart, xStep, _xlog);
+                //xTmpStart = _gridStep(xgrid, xStart, xStep, _xlog);
                 if (_debug == 5) 
                     System.out.println("PlotBox: drawPlot: XAXIS "+
                             " xStart="+xStart+" nx="+nx+" xStep="+xStep+
                             " xTmpStart="+xTmpStart);
             }
+
+            // Set to false if we don't need the exponent  
+            boolean needExponent = _xlog;
+
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
             for (double xpos=xTmpStart; xpos <= _xtickMax;
@@ -581,6 +607,8 @@ public class PlotBox extends Panel {
                 String xticklabel;
                 if (_xlog) {
                     xticklabel = _formatLogNum(xpos, numfracdigits);
+                    if (xticklabel.indexOf('e') != -1 )
+                        needExponent = false;
                 } else {
                     xticklabel = _formatNum(xpos, numfracdigits);
                 }
@@ -602,6 +630,21 @@ public class PlotBox extends Panel {
                 graphics.drawString(xticklabel, labxpos,
                         _lry + 3 + labelheight);
             }
+            if (_xlog) {
+                if (needExponent) {
+                    _xExp = (int)Math.floor(xTmpStart);
+                    graphics.setFont(_superscriptfont);
+                    graphics.drawString(Integer.toString(_xExp), xSPos,
+                            ySPos - halflabelheight);
+                    xSPos -= _labelFontMetrics.stringWidth("x10");
+                    graphics.setFont(_labelfont);
+                    graphics.drawString("x10", xSPos, ySPos);
+                } else {
+                    _xExp = 0;
+                }
+            }
+
+
         } else {
             // ticks have been explicitly specified
             Enumeration nt = _xticks.elements();
@@ -1691,9 +1734,6 @@ public class PlotBox extends Panel {
         // To turn on debugging messages for the log axes, set _debug to 5.
         //
         // Bugs in log axes:
-        // * Zooming in to a region that does not have a power of 10
-        // as grid line means that the numbers displayed will not have
-        // an exponent, so they will be less than useful
         // * Sometimes not enough grid lines are displayed because the
         // region is small.  This bug is present in the original xgraph
         // binary, which is the basis of this code.  The problem is that
