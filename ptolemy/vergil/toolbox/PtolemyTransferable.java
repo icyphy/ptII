@@ -101,8 +101,10 @@ public class PtolemyTransferable implements Transferable {
 	throws UnsupportedFlavorException, IOException {
 	System.out.println("requested dataflavor = " + flavor);
 	if (flavor.equals(DataFlavor.plainTextFlavor)) {
-	    return new ByteArrayInputStream(_getMoML().
-					    getBytes("Unicode"));
+	    // plain text flavor is deprecated, but everybody still
+	    // implements it.  The problem is that all the implementations
+	    // differ from the docs.  *sigh*
+	    return new StringReader(_getMoML());
 	} else if(flavor.equals(namedObjFlavor)) {
 	    return _objectList.iterator();
 	} else if(flavor.equals(DataFlavor.stringFlavor)) {
@@ -121,11 +123,11 @@ public class PtolemyTransferable implements Transferable {
     public static final DataFlavor namedObjFlavor =
 	new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
 		       "ptolemy.kernel.util.NamedObj", "Named Object");
-
+    
     // Return a string with a moml description of all the objects in the list.
     public String _getMoML() throws IOException {
         StringWriter buffer = new StringWriter();
-	buffer.write("<group>");
+	buffer.write("<group>\n");
         Iterator elements = 
             Collections.unmodifiableList(_objectList).iterator();
         while(elements.hasNext()) {
@@ -133,7 +135,7 @@ public class PtolemyTransferable implements Transferable {
 	    // first level to avoid obnoxiousness with toplevel translations.
 	    element.exportMoML(buffer, 1);
         }
-	buffer.write("</group>");
+	buffer.write("</group>\n");
         return buffer.toString();
     }
     
