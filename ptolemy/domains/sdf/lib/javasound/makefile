@@ -45,7 +45,8 @@ include $(CONFIG)
 JSRCS = \
 	AudioSource.java \
 	AudioSink.java \
-	SDFPitchDetector.java
+	SDFPitchDetector.java \
+	SilentAudioSink.java
 
 EXTRA_SRCS =	$(JSRCS) \
 
