@@ -36,6 +36,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MatrixPane;
 import ptolemy.actor.gui.MatrixTokenTableau;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TokenEffigy;
@@ -52,7 +53,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.LinkedList;
@@ -90,8 +93,6 @@ public class MatrixViewer extends Sink implements Placeable {
         input.setMultiport(false);
         input.setTypeEquals(BaseType.MATRIX);
 
-        // set the parameters.
-        // FIXME: needed?
         width = new Parameter(this, "width", new IntToken(500));
         width.setTypeEquals(BaseType.INT);
         height = new Parameter(this, "height", new IntToken(300));
@@ -99,6 +100,8 @@ public class MatrixViewer extends Sink implements Placeable {
 
         _windowProperties = new WindowPropertiesAttribute(
                 this, "_windowProperties");
+
+        _paneSize = new SizeAttribute(this, "_paneSize");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,7 +109,8 @@ public class MatrixViewer extends Sink implements Placeable {
 
     /** The width of the table in pixels. This must contain an
      *  integer.  If the table is larger than this specified width,
-     *  then scrollbars will appear. The default value is 500.
+     *  then scrollbars will appear, or the column width is adjusted.
+     *  The default value is 500.
      */
     public Parameter width;
 
@@ -158,21 +162,6 @@ public class MatrixViewer extends Sink implements Placeable {
         return newObject;
     }
 
-    /** Get the preferred size of this component.  This is simply the
-     *  dimensions specified by the parameters <i>height</i> and
-     *  <i>width</i> that represent respectively the height and width
-     *  of the table representing the matrix. The default value for
-     *  preferred size is a height of 300 pixels and a width of 500
-     *  pixels.
-     *
-     *  @return The preferred size.
-     */
-/* FIXME: What if we leave this off?
-    public Dimension getPreferredSize() {
-        return new Dimension( _width, _height );
-    }
-*/
-
     /** Initialize this matrix viewer. If place() has not been called
      *  with a container into which to place the display, then create a
      *  new frame into which to put it.
@@ -205,6 +194,16 @@ public class MatrixViewer extends Sink implements Placeable {
                             _effigy, "tokenTableau", _frame);
                     _frame.setTableau(_tableau);
                     _windowProperties.setProperties(_frame);
+
+                    // Regrettably, since setSize() in swing doesn't actually
+                    // set the size of the frame, we have to also set the
+                    // size of the internal component.
+                    Component[] components
+                            = _frame.getContentPane().getComponents();
+                    if (components.length > 0) {
+                        _paneSize.setSize(components[0]);
+                    }
+
                     _tableau.show();
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, null, ex,
@@ -263,9 +262,10 @@ public class MatrixViewer extends Sink implements Placeable {
         if (_pane == null) {
             // Create the pane.
             _pane = new MatrixPane();
-
-            // FIXME: What size will we get?
-            // _pane.setPreferredSize(getPreferredSize());
+            // FIXME: The following, as usual with Swing, doesn't work.
+            Dimension size = new Dimension( _width, _height);
+            _pane.setPreferredSize(size);
+            _pane.setSize(size);
         }
         // Place the pane in supplied container.
         _container.add(_pane, BorderLayout.CENTER);
@@ -321,6 +321,13 @@ public class MatrixViewer extends Sink implements Placeable {
         // is up to date.
         if (_frame != null) {
             _windowProperties.recordProperties(_frame);
+            // Regrettably, have to also record the size of the contents
+            // because in Swing, setSize() methods do not set the size.
+            // Only the first component size is recorded.
+            Component[] components = _frame.getContentPane().getComponents();
+            if (components.length > 0) {
+                _paneSize.recordSize(components[0]);
+            }
         }
         super._exportMoMLContents(output, depth);
     }
@@ -360,10 +367,11 @@ public class MatrixViewer extends Sink implements Placeable {
     /** Pane with the matrix display. */
     private MatrixPane _pane = null;
 
+    /** A specification of the size of the pane if it's in its own window. */
+    protected SizeAttribute _paneSize;
+
     /** The tableau with the display, if any. */
     private TokenTableau _tableau;
-
-// FIXME: Are the following needed?
 
     /** Width of the matrix viewer in pixels. */
     private int _width;
@@ -399,7 +407,14 @@ public class MatrixViewer extends Sink implements Placeable {
          */
         protected boolean _close() {
             // Record the window properties before closing.
-            _windowProperties.setProperties(this);
+            _windowProperties.recordProperties(this);
+            // Regrettably, have to also record the size of the contents
+            // because in Swing, setSize() methods do not set the size.
+            // Only the first component size is recorded.
+            Component[] components = getContentPane().getComponents();
+            if (components.length > 0) {
+                _paneSize.recordSize(components[0]);
+            }
             super._close();
             place(null);
             return true;

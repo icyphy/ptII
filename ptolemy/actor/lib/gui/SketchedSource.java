@@ -1,4 +1,4 @@
-/* A source of sketched signals.
+/* A plotter that is also a source of sketched signals.
 
 @Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
@@ -24,35 +24,32 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (vogel@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.gui;
 
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.SequenceActor;
-import ptolemy.actor.lib.Source;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.EditablePlot;
 import ptolemy.plot.Plot;
-import ptolemy.plot.PlotFrame;
+import ptolemy.plot.PlotBox;
 
-import javax.swing.SwingUtilities;
 import java.awt.Container;
 
 //////////////////////////////////////////////////////////////////////////
 //// SketchedSource
 /**
-This actor produces as its output a signal that has been sketched by
-the user on the screen.  The <i>length</i> parameter specifies the
+This actor is a plotter that also produces as its output a
+signal that has been sketched by the user on the screen.
+The <i>length</i> parameter specifies the
 number of samples in the sketched signal.  The <i>period</i>
 parameter, if greater than zero, specifies the period with which the
 signal should be repeated (in samples).  If the period is longer than
@@ -64,30 +61,16 @@ period is greater than zero, and the sketch is modified during
 execution of the model, then the modification appears in the next
 cycle of the period after the modification has been completed.  In
 other words, the change does not appear mid-cycle.
-
 <p>
-This actor can be used with its own plot widget, which is the default
-behavior, or more interestingly, it can share a plot widget with
-another plot object.  This way, the sketch can be be made right on a
-plot that also displays the results of processing the sketched signal.
-
-<p>
-When this actor has its own plot widget, you can specify where that
-widget appears by calling place().  If you do not, then the plot
-widget will be created in its own window.  You can also call place()
-with an argument that is an instance of EditablePlot.  This is how you
-create a shared plot.  That same instance of EditablePlot can be used
-by another actor, such as SequencePlotter, to display data.  Be sure
-to set the <i>dataset</i> parameter of this actor or the
-<i>startingDataset</i> parameter of the other actor so that they do
-not use the same dataset numbers.
+This actor is also a plotter, and will plot the input signals
+on the same plot as the sketched signal.  It can be used in a
+feedback loop where the output affects the input.
 
 @author  Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class SketchedSource extends Source
-    implements Placeable, SequenceActor {
+public class SketchedSource extends SequencePlotter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -101,13 +84,22 @@ public class SketchedSource extends Source
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Set the type of the output port.
+    	output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
         // Create the parameters.
         length = new Parameter(this, "length", new IntToken(100));
         period = new Parameter(this, "period", new IntToken(0));
-        dataset = new Parameter(this, "dataset", new IntToken(0));
+        yBottom = new Parameter(this, "yBottom", new DoubleToken(-1.0));
+        yTop = new Parameter(this, "yTop", new DoubleToken(1.0));
+
+        // Fill on wrapup no longer makes sense.
+        fillOnWrapup.setToken(BooleanToken.FALSE);
+        fillOnWrapup.setVisibility(Settable.NONE);
+
+        // Starting data set for producing plots is now always 1.
+        startingDataset.setToken(_one);
+        startingDataset.setVisibility(Settable.NONE);    
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -119,6 +111,10 @@ public class SketchedSource extends Source
      */
     public Parameter length;
 
+    /** The output port.  The type of this port is double.
+     */
+    public TypedIOPort output = null;
+
     /** An indicator of whether the signal should be periodically
      *  repeated, and if so, at what period.  If the value is negative
      *  or zero, it is not repeated.  Otherwise, it is repeated with
@@ -127,36 +123,38 @@ public class SketchedSource extends Source
      */
     public Parameter period;
 
-    /** The starting dataset number to which data is plotted.
-     *  This parameter has type IntToken, with default value 0.
-     *  Its value must be non-negative.
+    /** The bottom of the Y range. This is a double, with default value -1.0.
      */
-    public Parameter dataset;
+    public Parameter yBottom;
+
+    /** The top of the Y range. This is a double, with default value 1.0.
+     */
+    public Parameter yTop;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the specified attribute is <i>length</i> or <i>dataset</i>,
-     *  then set the trace to its initial value;  if it is
-     *  <i>dataset</i>, then check that it is not negative.
+    /** If the specified attribute is <i>length</i>,
+     *  then set the trace to its initial value.
      *  @exception IllegalActionException If the specified attribute
-     *   is <i>dataset</i> and its value is negative.
+     *   is <i>length</i> and its value is not positive.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == dataset) {
-            if (((IntToken)dataset.getToken()).intValue() < 0) {
+        if (attribute == length) {
+            if (((IntToken)length.getToken()).intValue() < 0) {
                 throw new IllegalActionException(this,
-                        "dataset: negative value is not allowed.");
+                        "length: value is required to be positive.");
             }
             _setInitialTrace();
-        } else if (attribute == length) {
-            _setInitialTrace();
+        } else if (attribute == yBottom || attribute == yTop) {
+            _setRanges();
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+    /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has an
@@ -165,8 +163,8 @@ public class SketchedSource extends Source
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         SketchedSource newObject = (SketchedSource)super.clone(workspace);
-        newObject.plot = null;
-        newObject._frame = null;
+        // FIXME: Anything needed here?
+        _count = 0;
         return newObject;
     }
 
@@ -192,67 +190,27 @@ public class SketchedSource extends Source
         if (periodValue > 0 && _count >= periodValue) {
             // Reread the data in case it has changed.
             _count = 0;
-            int set = ((IntToken)dataset.getToken()).intValue();
-            _data = ((EditablePlot)plot).getData(set);
+            _data = ((EditablePlot)plot).getData(0);
         }
     }
 
-    /** Override the base class to reset the X axis counter, ensuring
-     *  that the next output produced by fire() is the first value of the
-     *  sketch.  Also, read the sketched data.
+    /** Override the base class to read data from the plot.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (plot == null || !_placeCalled) {
-            place(_container);
+        if (!_initialTraceSet) {
+            _setInitialTrace();
         }
-        if (_frame != null) {
-	    _frame.setVisible(true);
-        }
-        // NOTE: Do not clear the plot here, as that will erase
-        // user-entered data!
+        _data = ((EditablePlot)plot).getData(0);
         _count = 0;
-        int set = ((IntToken)dataset.getToken()).intValue();
-        _data = ((EditablePlot)plot).getData(set);
     }
 
-    /** Specify the container into which this editable plot should be placed.
-     *  This method needs to be called before the first call to initialize().
-     *  Otherwise, the plot will be placed in its own frame.
-     *  The plot is also placed in its own frame if this method
-     *  is called with a null argument.
-     *  This method can be called with an instance of EditablePlot
-     *  as an argument, in which case, it will use that instance.
-     *  This way, the same plot object can be shared by a SequencePlotter
-     *  actor and this actor.
-     *
+    /** Override the base class to create an initial trace.
      *  @param container The container into which to place the plot.
      */
     public void place(Container container) {
-        _container = container;
-        _placeCalled = true;
-        if (_container == null) {
-            // place the plot in its own frame.
-            plot = new EditablePlot();
-            _frame = new PlotFrame(getFullName(), plot);
-	    _frame.setVisible(true);
-        } else {
-            if (_container instanceof EditablePlot) {
-                plot = (EditablePlot)_container;
-            } else {
-                if (plot == null) {
-                    plot = new EditablePlot();
-                }
-                _container.add(plot);
-                plot.setButtons(true);
-		// java.awt.Component.setBackground(color) says that
-		// if the color "parameter is null then this component
-		// will inherit the  background color of its parent."
-                //plot.setBackground(_container.getBackground());
-                plot.setBackground(null);
-            }
-        }
+        super.place(container);
         // Set the default signal value in the plot.
         try {
             _setInitialTrace();
@@ -261,75 +219,52 @@ public class SketchedSource extends Source
         }
     }
 
-    /** Override the base class to remove the plot from its graphical
-     *  container if the argument is null.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @exception NameDuplicationException If the base class throws it.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Create a new plot. In this class, it is an instance of EditablePlot.
+     *  @return A new editable plot object.
      */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        super.setContainer(container);
-        if (container == null) {
-            _remove();
-        }
+    protected PlotBox _newPlot() {
+        return new EditablePlot();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
-
-    /** The editable plot object. */
-    public EditablePlot plot;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-    /** Graphical container into which this plot should be placed */
-    protected Container _container;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Remove the plot from the current container, if there is one.
-     */
-    private void _remove() {
-        SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (plot != null) {
-                        if (_container != null) {
-                            _container.remove(plot);
-                            _container.invalidate();
-                            _container.repaint();
-                        } else if (_frame != null) {
-                            _frame.dispose();
-                        }
-                    }
-                }
-            });
-    }
 
     // Set the initial value of the plot and fill the plot.
     // If the plot is null, return without doing anything.
     private void _setInitialTrace() throws IllegalActionException {
         if (plot == null) return;
-        int datasetValue = ((IntToken)dataset.getToken()).intValue();
+        _initialTraceSet = true;
         int lengthValue = ((IntToken)length.getToken()).intValue();
         // If the values haven't changed, return.
-        if (datasetValue == _previousDatasetValue
-                && lengthValue == _previousLengthValue) {
+        if (lengthValue == _previousLengthValue) {
             return;
         }
-        _previousDatasetValue = datasetValue;
         _previousLengthValue = lengthValue;
-        plot.clear(datasetValue);
+        ((Plot)plot).clear(0);
         boolean connected = false;
         for (int i = 0; i < lengthValue; i++) {
-            plot.addPoint(datasetValue, (double)i, 0.0, connected);
+            ((Plot)plot).addPoint(0, (double)i, 0.0, connected);
             connected = true;
         }
+        _setRanges();
         plot.repaint();
-        plot.fillPlot();
     }
+
+    // Set the X and Y ranges of the plot.
+    private void _setRanges() throws IllegalActionException {
+        if (plot == null) return;
+        double xInitValue = ((DoubleToken)xInit.getToken()).doubleValue();
+        double xUnitValue = ((DoubleToken)xUnit.getToken()).doubleValue();
+        int lengthValue = ((IntToken)length.getToken()).intValue();
+        plot.setXRange(xInitValue, xUnitValue * lengthValue);
+
+        double yBottomValue = ((DoubleToken)yBottom.getToken()).doubleValue();
+        double yTopValue = ((DoubleToken)yTop.getToken()).doubleValue();
+        plot.setYRange(yBottomValue, yTopValue);
+    }        
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
@@ -340,18 +275,15 @@ public class SketchedSource extends Source
     /** Sketched data. */
     private double[][] _data;
 
-    // Frame into which plot is placed, if any.
-    private transient PlotFrame _frame;
+    /** Indicator that initial trace has been supplied. */
+    private boolean _initialTraceSet = false;
 
-    // Flag indicating that the place() method has been called at least once.
-    private boolean _placeCalled = false;
-
-    // Previous value of dataset parameter.
-    private int _previousDatasetValue;
+    // Constant one.
+    private static IntToken _one = new IntToken(1);
 
     // Previous value of length parameter.
     private int _previousLengthValue;
 
     /** Zero token. */
-    private DoubleToken _zero = new DoubleToken(0.0);
+    private static DoubleToken _zero = new DoubleToken(0.0);
 }

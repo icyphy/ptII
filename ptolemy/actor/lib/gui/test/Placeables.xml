@@ -4,12 +4,6 @@
 <entity name="Placeables" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
-    <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000">
-    </property>
-    <property name="signalFrequency" class="ptolemy.data.expr.Parameter" value="500">
-    </property>
-    <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
-    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[423, 425]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[2, 13]">
@@ -161,11 +155,13 @@ these tests.</text></svg></configure>
         </port>
     </entity>
     <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="500">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="400">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="300">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="250">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 528, 462, 454}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={227, 529, 397, 214}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[389, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 400.0">
         </property>

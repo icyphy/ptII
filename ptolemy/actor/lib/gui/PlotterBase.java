@@ -312,7 +312,10 @@ public class PlotterBase extends TypedAtomicActor
             // NOTE: _remove() doesn't work here.  Why?
             if (_frame != null) _frame.dispose();
             _frame = null;
-            plot = null;
+            // If we forget the plot, then its properties get lost.
+            // Also, if the window is deleted during a run, the data
+            // will be lost. So do not forget the plot.
+            // plot = null;
             return;
         }
         if (_container instanceof PlotBox) {
@@ -320,7 +323,7 @@ public class PlotterBase extends TypedAtomicActor
             plot.setButtons(true);
         } else {
             if (plot == null) {
-                plot = new Plot();
+                plot = _newPlot();
                 plot.setTitle(getName());
             }
             plot.setButtons(true);
@@ -475,6 +478,14 @@ public class PlotterBase extends TypedAtomicActor
         }
     }
 
+    /** Create a new plot. In this base class, it is an instance of Plot.
+     *  In derived classes, it can be classes derived from Plot.
+     *  @return A new plot object.
+     */
+    protected PlotBox _newPlot() {
+        return new Plot();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
@@ -547,7 +558,7 @@ public class PlotterBase extends TypedAtomicActor
         protected boolean _close() {
             // Record the window properties before closing.
             if (_frame != null) {
-                _windowProperties.setProperties(_frame);
+                _windowProperties.recordProperties(_frame);
             }
             if (PlotterBase.this.plot != null) {
                 _plotSize.recordSize(PlotterBase.this.plot);

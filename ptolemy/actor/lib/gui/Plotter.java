@@ -157,10 +157,11 @@ public class Plotter extends PlotterBase {
         super.initialize();
         if (plot == null) {
             // Create a new plot.
-            plot = new Plot();
+            plot = _newPlot();
             plot.setTitle(getName());
             plot.setButtons(true);
-
+        }
+        if (_frame == null && _container == null) {
             // Need an effigy and a tableau so that menu ops work properly.
             Effigy containerEffigy = Configuration.findEffigy(toplevel());
             if (containerEffigy == null) {
@@ -182,7 +183,6 @@ public class Plotter extends PlotterBase {
                 throw new IllegalActionException(this, null, ex,
                         "Error creating effigy and tableau");
             }
-
             _windowProperties.setProperties(_frame);
             _implementDeferredConfigurations();
 

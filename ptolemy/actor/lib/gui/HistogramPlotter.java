@@ -245,10 +245,11 @@ public class HistogramPlotter extends PlotterBase
         super.initialize();
         if (plot == null) {
             // Place the histogram in its own frame.
-            plot = new Histogram();
+            plot = _newPlot();
             plot.setTitle(getName());
             plot.setButtons(true);
-
+        }
+        if (_frame == null && _container == null) {
             // Need an effigy and a tableau so that menu ops work properly.
             Effigy containerEffigy = Configuration.findEffigy(toplevel());
             if (containerEffigy == null) {
@@ -294,43 +295,6 @@ public class HistogramPlotter extends PlotterBase
         }
     }
 
-    /** Specify the graphical container into which this histogram should be
-     *  placed. This method needs to be called before the first call to
-     *  initialize(). Otherwise, the histogram will be placed in its own frame.
-     *  The histogram is also placed in its own frame if this method
-     *  is called with the argument null. If the argument is an instance
-     *  of Histogram, then plot data to that instance.  If a container has been
-     *  specified but it is not an instance of Histogram, then create a new
-     *  instance of Histogram and place it in that container
-     *  using its add() method.
-     *  <p>
-     *  If configure() has been called (prior to the plot getting created),
-     *  then the configurations that it specified have been deferred. Those
-     *  configurations are performed at this time.
-     *
-     *  @param container The container into which to place the histogram.
-     */
-    public void place(Container container) {
-        if (container == null || container instanceof PlotBox) {
-            super.place(container);
-            return;
-        }
-        _container = container;
-        if (plot == null) {
-            plot = new Histogram();
-            plot.setTitle(getName());
-            plot.setButtons(true);
-        }
-        _container.add(plot);
-        // java.awt.Component.setBackground(color) says that
-        // if the color "parameter is null then this component
-        // will inherit the  background color of its parent."
-        plot.setBackground(null);
-
-        // If configurations have been deferred, implement them now.
-        _implementDeferredConfigurations();
-    }
-
     /** Read at most one input token from each input channel
      *  and update the histogram.
      *  This is done in postfire to ensure that data has settled.
@@ -366,5 +330,12 @@ public class HistogramPlotter extends PlotterBase
             // Safe to ignore because user would
             // have already been alerted.
         }
+    }
+
+    /** Create a new Histogram plot.
+     *  @return A new plot object.
+     */
+    protected PlotBox _newPlot() {
+        return new Histogram();
     }
 }
