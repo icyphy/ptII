@@ -312,20 +312,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         while (refinements.hasNext()) {
             Actor refinement = (Actor)refinements.next();
 	    refinement.postfire();
-            /*
-	    try {
-	            refinement.postfire();
-            } catch (IllegalActionException e) {
-		        if (_debugging) {
-		            _debug("ModelError is thrown: " + e.getMessage());
-		        }
-            	handleModelError(ctrl, e);
-		        if (_debugging && handleModelError(ctrl, e)) {
-		            _debug("ModelError is processed: " + e.getMessage());
-		        }
-            }
-	    */
-
 	    // take out event outputs generated in ref.postfire()
             Iterator outports = refinement.outputPortList().iterator();
             while (outports.hasNext()) {
