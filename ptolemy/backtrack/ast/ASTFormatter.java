@@ -838,6 +838,7 @@ public class ASTFormatter extends ASTVisitor {
      * @see ASTVisitor#visit(Initializer)
      */
     public boolean visit(Initializer node) {
+        _output("\n");
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
@@ -847,6 +848,7 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() >= AST.JLS3) {
             _outputModifiers(node.modifiers());
         }
+        _output(_indent);
         node.getBody().accept(this);
         return false;
     }
