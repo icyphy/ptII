@@ -41,7 +41,7 @@ JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE).zip
 
-DIRS = 	demo #doc test
+DIRS = 	demo #test
 
 CLASSPATH =	..
 # Order matters here.
@@ -51,9 +51,10 @@ JSRCS = \
 	PlotDemo.java \
 	PlotLive.java \
 	PlotLiveDemo.java \
-	PlotPoint.java
+	PlotPoint.java \
+	Pxgraph.java
 
-EXTRA_SRCS = $(JSRCS)
+EXTRA_SRCS = $(JSRCS) pxgraph
 
 MISC_FILES = demo doc #test 
 
@@ -63,11 +64,12 @@ JCLASS = \
 	PlotDemo.class \
 	PlotLive.class \
 	PlotLiveDemo.class \
-	PlotPoint.class
-
+	PlotPoint.class \
+	Pxgraph.class
 all: jclass
-
+	chmod a+x pxgraph
 install: jclass javadocs $(JZIP)
+	chmod a+x pxgraph
 docs: javadocs
 
 depend:
