@@ -479,7 +479,7 @@ test FixToken-8.0 {Test equals} {
 ######################################################################
 ####
 # 
-test ByteToken-5.0 {Test hashCode} {
+test UnsignedByteToken-5.0 {Test hashCode} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
     set c1 [java::call ptolemy.math.Quantizer \
 	    {round double ptolemy.math.Precision } \

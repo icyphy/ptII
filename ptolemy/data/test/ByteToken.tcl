@@ -1,4 +1,4 @@
-# Tests for the ByteToken class
+# Tests for the UnsignedByteToken class
 #
 # @Author: Yuhong Xiong
 #
@@ -50,41 +50,41 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test ByteToken-1.0 {Create an empty instance} {
-    set p [java::new ptolemy.data.ByteToken]
+test UnsignedByteToken-1.0 {Create an empty instance} {
+    set p [java::new ptolemy.data.UnsignedByteToken]
     $p toString
 } {0}
 
 ######################################################################
 ####
 # 
-test ByteToken-1.1 {Create an instance with a value} {
-    set token [java::new {ptolemy.data.ByteToken byte} 3]
+test UnsignedByteToken-1.1 {Create an instance with a value} {
+    set token [java::new {ptolemy.data.UnsignedByteToken byte} 3]
     $token toString
 } {3}
 
 ######################################################################
 ####
 # 
-test ByteToken-1.2 {Create an instance from a string value} {
-    set token [java::new {ptolemy.data.ByteToken String} "5"]
+test UnsignedByteToken-1.2 {Create an instance from a string value} {
+    set token [java::new {ptolemy.data.UnsignedByteToken String} "5"]
     $token toString
 } {5}
 
 ######################################################################
 ####
 # 
-test ByteToken-2.0 {Create a non-empty instance and query its value} {
-    set token [java::new {ptolemy.data.ByteToken byte} 4]
+test UnsignedByteToken-2.0 {Create a non-empty instance and query its value} {
+    set token [java::new {ptolemy.data.UnsignedByteToken byte} 4]
     $token byteValue
 } {4}
 
 ######################################################################
 ####
 # 
-test ByteToken-3.0 {Create an non-empty instance and add it to Strings} {
+test UnsignedByteToken-3.0 {Create an non-empty instance and add it to Strings} {
     set token1 [java::new ptolemy.data.StringToken "value is " ]
-    set token2 [java::new {ptolemy.data.ByteToken byte} 6]
+    set token2 [java::new {ptolemy.data.UnsignedByteToken byte} 6]
     set token3 [java::new ptolemy.data.StringToken "....." ]
 
     set token4 [$token1 add $token2]
@@ -98,20 +98,20 @@ test ByteToken-3.0 {Create an non-empty instance and add it to Strings} {
 ######################################################################
 ####
 # 
-test ByteToken-4.0 {Test equals} {
-    set t1 [java::new {ptolemy.data.ByteToken byte} 1]
-    set t2 [java::new {ptolemy.data.ByteToken byte} 1]
-    set t3 [java::new {ptolemy.data.ByteToken byte} 2]
+test UnsignedByteToken-4.0 {Test equals} {
+    set t1 [java::new {ptolemy.data.UnsignedByteToken byte} 1]
+    set t2 [java::new {ptolemy.data.UnsignedByteToken byte} 1]
+    set t3 [java::new {ptolemy.data.UnsignedByteToken byte} 2]
     list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
 } {1 1 0}
 
 ######################################################################
 ####
 # 
-test ByteToken-5.0 {Test hashCode} {
-    set t1 [java::new {ptolemy.data.ByteToken byte} 1]
-    set t2 [java::new {ptolemy.data.ByteToken byte} 1]
-    set f [java::new {ptolemy.data.ByteToken byte} 2]
+test UnsignedByteToken-5.0 {Test hashCode} {
+    set t1 [java::new {ptolemy.data.UnsignedByteToken byte} 1]
+    set t2 [java::new {ptolemy.data.UnsignedByteToken byte} 1]
+    set f [java::new {ptolemy.data.UnsignedByteToken byte} 2]
     list [$t1 hashCode] [$t2 hashCode] [$f hashCode]
 } {1 1 2}
 
