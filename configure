@@ -1863,8 +1863,19 @@ echo "configure:1859: checking for the proper JNI architecture include directory
 	echo "$ac_t""$PTJAVA_DIR/include/$PTJNI_ARCHITECTURE" 1>&6
     fi
 
+    echo $ac_n "checking for the proper shared library prefix""... $ac_c" 1>&6
+echo "configure:1868: checking for the proper shared library prefix" >&5
+    case "`uname -s`" in
+        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+	*) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+    esac
+    echo "$ac_t""'$PTJNI_SHAREDLIBRARY_PREFIX'" 1>&6
+
     echo $ac_n "checking for the proper shared library suffix""... $ac_c" 1>&6
-echo "configure:1868: checking for the proper shared library suffix" >&5
+echo "configure:1879: checking for the proper shared library suffix" >&5
     case "`uname -s`" in
         CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
 	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
@@ -1875,13 +1886,13 @@ echo "configure:1868: checking for the proper shared library suffix" >&5
     echo "$ac_t""'$PTJNI_SHAREDLIBRARY_SUFFIX'" 1>&6
 
     echo $ac_n "checking for the proper shared library flag""... $ac_c" 1>&6
-echo "configure:1879: checking for the proper shared library flag" >&5
+echo "configure:1890: checking for the proper shared library flag" >&5
     case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=-Wl,--add-stdcall-alias;;
+	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=-Wl,--add-stdcall-alias;;
+	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=-Wl,--add-stdcall-alias;;
 	SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
-	*) PTJNI_SHAREDLIBRARY_CFLAG=n;;
+	*) PTJNI_SHAREDLIBRARY_CFLAG=;;
     esac
     echo "$ac_t""'$PTJNI_SHAREDLIBRARY_CFLAG'" 1>&6
 fi
@@ -1911,7 +1922,7 @@ if test ! -d "$PTII/vendors/jode"; then
 	so we need not find Jode, which is a java disassembler." 1>&6
 else
     echo $ac_n "checking for jode directory""... $ac_c" 1>&6
-echo "configure:1915: checking for jode directory" >&5
+echo "configure:1926: checking for jode directory" >&5
     # Check whether --with-jode or --without-jode was given.
 if test "${with_jode+set}" = set; then
   withval="$with_jode"
@@ -1924,7 +1935,7 @@ fi
     if test -d "$JODE_DIR"; then
 	echo "$ac_t""$JODE_DIR" 1>&6
         echo $ac_n "checking for \$JODE_DIR/jode.jar""... $ac_c" 1>&6
-echo "configure:1928: checking for \$JODE_DIR/jode.jar" >&5
+echo "configure:1939: checking for \$JODE_DIR/jode.jar" >&5
 	if test -f "$JODE_DIR/jode.jar"; then
 	    echo "$ac_t""$JODE_DIR/jode.jar" 1>&6
 	    JODE_CLASSES=$JODE_DIR/jode.jar
@@ -1972,7 +1983,7 @@ if test ! -d "$PTII/ptolemy/apps/kvm"; then
     KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 else
     echo $ac_n "checking for kvm directory""... $ac_c" 1>&6
-echo "configure:1976: checking for kvm directory" >&5
+echo "configure:1987: checking for kvm directory" >&5
     # Check whether --with-kvm or --without-kvm was given.
 if test "${with_kvm+set}" = set; then
   withval="$with_kvm"
@@ -1985,7 +1996,7 @@ fi
     if test -d "$KVM_DIR"; then
 	echo "$ac_t""$KVM_DIR" 1>&6
         echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
-echo "configure:1989: checking for \$KVM_DIR/bin/api/classes" >&5
+echo "configure:2000: checking for \$KVM_DIR/bin/api/classes" >&5
 	if test -d "$KVM_DIR/bin/api/classes"; then
 	    KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 	    echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1995,13 +2006,13 @@ echo "configure:1989: checking for \$KVM_DIR/bin/api/classes" >&5
     else
 	echo "$ac_t""Not found in $KVM_DIR" 1>&6
 	echo $ac_n "checking for kvm directory in /j2me_cldc""... $ac_c" 1>&6
-echo "configure:1999: checking for kvm directory in /j2me_cldc" >&5
+echo "configure:2010: checking for kvm directory in /j2me_cldc" >&5
 	# Likely place for kvm under windows
 	KVM_DIR=/j2me_cldc
         if test -d "$KVM_DIR"; then
 	    echo "$ac_t""$KVM_DIR" 1>&6
             echo $ac_n "checking for \$KVM_DIR/bin/api/classes""... $ac_c" 1>&6
-echo "configure:2005: checking for \$KVM_DIR/bin/api/classes" >&5
+echo "configure:2016: checking for \$KVM_DIR/bin/api/classes" >&5
 	    if test -d "$KVM_DIR/bin/api/classes"; then
 	        KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 	        echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -2058,11 +2069,11 @@ else
 	PTDLLTOOL=dlltool
     else
 	echo $ac_n "checking for matlab""... $ac_c" 1>&6
-echo "configure:2062: checking for matlab" >&5
+echo "configure:2073: checking for matlab" >&5
 	# Extract the first word of "matlab", so it can be a program name with args.
 set dummy matlab; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2066: checking for $ac_word" >&5
+echo "configure:2077: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_MATLAB'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2105,7 +2116,7 @@ fi
 	    if "$JAVAC" MatlabRootDirectory.java ; then
 		echo "$ac_t""ok" 1>&6
 		echo $ac_n "checking the value of the Matlab root directory ""... $ac_c" 1>&6
-echo "configure:2109: checking the value of the Matlab root directory " >&5
+echo "configure:2120: checking the value of the Matlab root directory " >&5
 		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
 		    # Run it again and get the results
 		    MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
@@ -2128,11 +2139,11 @@ echo "configure:2109: checking the value of the Matlab root directory " >&5
 		if test -f "${MATLAB_DIR}/extern/include/libeng.def"; then
 		    echo "$ac_t""$MATLAB_DIR" 1>&6
 		    echo $ac_n "checking for gcc""... $ac_c" 1>&6
-echo "configure:2132: checking for gcc" >&5
+echo "configure:2143: checking for gcc" >&5
 		    # Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2136: checking for $ac_word" >&5
+echo "configure:2147: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_PTCC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2170,11 +2181,11 @@ fi
 		    else    
 			echo "configure: warning: Failed to find gcc" 1>&2
 			echo $ac_n "checking for cc""... $ac_c" 1>&6
-echo "configure:2174: checking for cc" >&5
+echo "configure:2185: checking for cc" >&5
 			# Extract the first word of "cc", so it can be a program name with args.
 set dummy cc; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2178: checking for $ac_word" >&5
+echo "configure:2189: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_PTCC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2215,11 +2226,11 @@ fi
 			fi
 		    fi
 		    echo $ac_n "checking for dlltool""... $ac_c" 1>&6
-echo "configure:2219: checking for dlltool" >&5
+echo "configure:2230: checking for dlltool" >&5
 		    # Extract the first word of "dlltool", so it can be a program name with args.
 set dummy dlltool; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2223: checking for $ac_word" >&5
+echo "configure:2234: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_PTDLLTOOL'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2299,7 +2310,7 @@ if test ! -d "$PTII/ptolemy/copernicus"; then
     SOOT_DIR='${PTII}/lib'
 else
     echo $ac_n "checking for soot directory""... $ac_c" 1>&6
-echo "configure:2303: checking for soot directory" >&5
+echo "configure:2314: checking for soot directory" >&5
     # Check whether --with-soot or --without-soot was given.
 if test "${with_soot+set}" = set; then
   withval="$with_soot"
@@ -2312,11 +2323,11 @@ fi
     if test -d "$SOOT_DIR"; then
 	echo "$ac_t""$SOOT_DIR" 1>&6
         echo $ac_n "checking for \$SOOT_DIR/sootclasses.jar""... $ac_c" 1>&6
-echo "configure:2316: checking for \$SOOT_DIR/sootclasses.jar" >&5
+echo "configure:2327: checking for \$SOOT_DIR/sootclasses.jar" >&5
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
 	    echo "$ac_t""$SOOT_DIR/sootclasses.jar" 1>&6
 	    echo $ac_n "checking for \$SOOT_DIR/jasminclasses.jar""... $ac_c" 1>&6
-echo "configure:2320: checking for \$SOOT_DIR/jasminclasses.jar" >&5
+echo "configure:2331: checking for \$SOOT_DIR/jasminclasses.jar" >&5
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
                 echo "$ac_t""$SOOT_DIR/jasminclasses.jar" 1>&6
             fi
@@ -2342,7 +2353,7 @@ echo "configure:2320: checking for \$SOOT_DIR/jasminclasses.jar" >&5
     fi
 
     echo $ac_n "checking for rt.jar by compiling config/SystemJar.java""... $ac_c" 1>&6
-echo "configure:2346: checking for rt.jar by compiling config/SystemJar.java" >&5
+echo "configure:2357: checking for rt.jar by compiling config/SystemJar.java" >&5
     # Check whether --with-javasystemjar or --without-javasystemjar was given.
 if test "${with_javasystemjar+set}" = set; then
   withval="$with_javasystemjar"
@@ -2357,7 +2368,7 @@ fi
     if "$JAVAC" SystemJar.java ; then
 	echo "$ac_t""ok" 1>&6
 	echo $ac_n "checking the value of the java.home property ""... $ac_c" 1>&6
-echo "configure:2361: checking the value of the java.home property " >&5
+echo "configure:2372: checking the value of the java.home property " >&5
 	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
 	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
@@ -2394,7 +2405,7 @@ if test ! -d "$PTII/ptolemy/apps/tini"; then
     TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
     echo $ac_n "checking for tini directory""... $ac_c" 1>&6
-echo "configure:2398: checking for tini directory" >&5
+echo "configure:2409: checking for tini directory" >&5
     # Check whether --with-tini or --without-tini was given.
 if test "${with_tini+set}" = set; then
   withval="$with_tini"
@@ -2407,11 +2418,11 @@ fi
     if test -d "$TINI_DIR"; then
 	echo "$ac_t""$TINI_DIR" 1>&6
         echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:2411: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:2422: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	    echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	    echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:2415: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:2426: checking for \$TINI_DIR/bin/tini.jar" >&5
   	    if test -f "$TINI_DIR/bin/tini.jar"; then
                 echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -2425,17 +2436,17 @@ echo "configure:2415: checking for \$TINI_DIR/bin/tini.jar" >&5
     else
 	echo "$ac_t""Not found in $TINI_DIR" 1>&6
 	echo $ac_n "checking for tini directory in /tini""... $ac_c" 1>&6
-echo "configure:2429: checking for tini directory in /tini" >&5
+echo "configure:2440: checking for tini directory in /tini" >&5
 	# Likely place for tini under windows
 	TINI_DIR=/tini
         if test -d "$TINI_DIR"; then
 	    echo "$ac_t""$TINI_DIR" 1>&6
             echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:2435: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:2446: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	        echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	        echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:2439: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:2450: checking for \$TINI_DIR/bin/tini.jar" >&5
 	        if test -f "$TINI_DIR/bin/tini.jar"; then
 	            echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -2487,7 +2498,7 @@ if test ! -d "$PTII/ptolemy/apps/kvm"; then
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
     echo $ac_n "checking for waba directory""... $ac_c" 1>&6
-echo "configure:2491: checking for waba directory" >&5
+echo "configure:2502: checking for waba directory" >&5
     # Check whether --with-waba or --without-waba was given.
 if test "${with_waba+set}" = set; then
   withval="$with_waba"
@@ -2500,7 +2511,7 @@ fi
     if test -d "$WABA_DIR"; then
 	echo "$ac_t""$WABA_DIR" 1>&6
         echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:2504: checking for \$WABA_DIR/classes" >&5
+echo "configure:2515: checking for \$WABA_DIR/classes" >&5
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
 	    echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -2510,13 +2521,13 @@ echo "configure:2504: checking for \$WABA_DIR/classes" >&5
     else
 	echo "$ac_t""Not found in $WABA_DIR" 1>&6
 	echo $ac_n "checking for waba directory in /waba""... $ac_c" 1>&6
-echo "configure:2514: checking for waba directory in /waba" >&5
+echo "configure:2525: checking for waba directory in /waba" >&5
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
 	    echo "$ac_t""$WABA_DIR" 1>&6
             echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:2520: checking for \$WABA_DIR/classes" >&5
+echo "configure:2531: checking for \$WABA_DIR/classes" >&5
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
 	        echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -2662,10 +2673,13 @@ fi
 # $PTII/makefile if gcc or cc was found
 
 
-# JNI shared library suffix, under Solaris this would be -fPIC
+# JNI shared library suffix, under Solaris this would be -fPIC.
 
 
-# JNI shared library suffix
+# JNI shared library prefix, under Solaris this would be lib.
+
+
+# JNI shared library suffix, under Windows this would be dll.
 
 
 # Set to joystick if Joystick.jar was found
@@ -2912,6 +2926,7 @@ s%@PTJMF_DIR@%$PTJMF_DIR%g
 s%@PTJNI_ARCHITECTURE@%$PTJNI_ARCHITECTURE%g
 s%@PTJNI_DIR@%$PTJNI_DIR%g
 s%@PTJNI_SHAREDLIBRARY_CFLAG@%$PTJNI_SHAREDLIBRARY_CFLAG%g
+s%@PTJNI_SHAREDLIBRARY_PREFIX@%$PTJNI_SHAREDLIBRARY_PREFIX%g
 s%@PTJNI_SHAREDLIBRARY_SUFFIX@%$PTJNI_SHAREDLIBRARY_SUFFIX%g
 s%@PTJOYSTICK_DIR@%$PTJOYSTICK_DIR%g
 s%@PTJSPACES_DIR@%$PTJSPACES_DIR%g
