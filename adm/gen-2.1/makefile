@@ -1026,6 +1026,9 @@ $(REMOTE4PTIIDIST): $(PTII_FULL)
 	@echo "#"
 	@echo "$@ `date`"
 	(cd $(REMOTE4HOME); $(TAR) -zxf $(PTII_FULL))
+	@echo "Creating  ptolemy/vendors/jode"
+	(cd $(PTIIHOME); $(TAR) -cf - ptolemy/vendors/jode) | \
+		(cd $(REMOTE4HOME); $(TAR) -xf -)
 
 remote4configure:
 	@echo "#"
