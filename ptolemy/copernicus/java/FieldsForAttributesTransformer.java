@@ -106,6 +106,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         _options = options;
+        _debug = Options.getBoolean(_options, "debug");
         _attributeToFieldMap = new HashMap();
         _classToObjectMap = new HashMap();
 
@@ -204,13 +205,20 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     private void _replaceGetAttributeMethod(
             JimpleBody body, ValueBox box, Local baseLocal,
             String name, Unit unit, LocalDefs localDefs) {
-          
+        if(_debug) {
+            System.out.println("replacing getAttribute in " + unit);
+        }
+        
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         NamedObj baseObject = (NamedObj)_classToObjectMap.get(type.getSootClass());
         if (baseObject != null) {
             // Then we are dealing with a getAttribute call on one of the
             // classes we are generating.
+            if(_debug) {
+                System.out.println("baseObject = " + baseObject);
+                System.out.println("attribute name = " + name);
+            }
             Attribute attribute = baseObject.getAttribute(name);
             Entity entityContainer =
                 FieldsForEntitiesTransformer.getEntityContainerOfObject(
@@ -375,6 +383,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
     private CompositeActor _model;
     private Map _options;
+    private boolean _debug;
     private Map _attributeToFieldMap;
     private Map _classToObjectMap;
     private String _getDirectorSig;

@@ -172,7 +172,7 @@ public class NamedObjEliminator extends SceneTransformer {
                     }
                 }
 
-                // Remove all the interfaces that it implements.
+                // Remove all the interfaces that it implements??
                 //                theClass.getInterfaces().clear();
             }
         }
@@ -195,10 +195,29 @@ public class NamedObjEliminator extends SceneTransformer {
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
-                    if (unit.containsInvokeExpr()) {
+                    if (unit.containsFieldRef()) {
+                        ValueBox box = unit.getFieldRefBox();
+                        Value value = box.getValue();
+                        if(value instanceof InstanceFieldRef) {
+                            InstanceFieldRef fieldRef = (InstanceFieldRef)value;
+                            SootField field = fieldRef.getField();
+                            // Turn off debugging..
+                            if(field.getSubSignature().equals(
+                                       PtolemyUtilities.debuggingField.getSubSignature())) {
+                                if(unit instanceof AssignStmt) {
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    ((AssignStmt)unit).getLeftOp(),
+                                                    IntConstant.v(0)),
+                                            unit);
+                                }
+                                body.getUnits().remove(unit);
+                            }
+                        }
+                    } else if (unit.containsInvokeExpr()) {
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
-    
+                        
                         if (value instanceof SpecialInvokeExpr) {
                             // If we're constructing one of our actor classes,
                             // then switch to the object constructor.

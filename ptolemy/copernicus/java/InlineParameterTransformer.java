@@ -131,8 +131,36 @@ public class InlineParameterTransformer extends SceneTransformer {
                 ModelTransformer.getModelClass(), _model, _model,
                 attributeToValueFieldMap, constantAnalysis, debug);
 
-        _replaceGetTokenCalls(ModelTransformer.getModelClass(), 
-                _model, attributeToValueFieldMap, debug);
+        // Replace the token calls... on ALL the classes.
+        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+            classes.hasNext();) {
+            SootClass theClass = (SootClass)classes.next();
+            // inline calls to parameter.getToken and getExpression
+            for (Iterator methods = theClass.getMethods().iterator();
+                 methods.hasNext();) {
+                SootMethod method = (SootMethod)methods.next();
+                
+                // What about static methods?  They don't have a this
+                // local
+                if (method.isStatic()) {
+                    continue;
+                }
+                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                
+                if (debug) System.out.println("method = " + method);
+                
+                boolean moreToDo = true;
+                while (moreToDo) {
+                    moreToDo = _inlineMethodCalls(theClass, method, body,
+                            attributeToValueFieldMap, debug);
+                    LocalNameStandardizer.v().transform(body,
+                            _phaseName + ".lns");
+                }
+            }        
+        }
+
+        //        _replaceGetTokenCalls(ModelTransformer.getModelClass(), 
+        //        _model, attributeToValueFieldMap, debug);
     }
 
     private void _replaceGetTokenCalls(SootClass actorClass, 
@@ -193,64 +221,66 @@ public class InlineParameterTransformer extends SceneTransformer {
             if (!stmt.containsInvokeExpr()) {
                 continue;
             }
-                ValueBox box = stmt.getInvokeExprBox();
-                Value value = stmt.getInvokeExpr();
-                if (value instanceof InstanceInvokeExpr) {
-                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                    if (debug) System.out.println("invoking = " + r.getMethod());
-                    if (r.getBase().getType() instanceof RefType) {
-                        RefType type = (RefType)r.getBase().getType();
-                        // Remove calls to validate().
-                        if (r.getMethod().equals(PtolemyUtilities.validateMethod)) {
-                            body.getUnits().remove(stmt);
-                        }
-                        // Inline calls to attribute changed.
-                        if (r.getMethod().equals(PtolemyUtilities.attributeChangedMethod)) {
-                            // If we are calling attribute changed on one of the classes
-                            // we are generating code for, then inline it.
-                            if (type.getSootClass().isApplicationClass()) {
-                                SootMethod inlinee = null;
-                                if (r instanceof VirtualInvokeExpr) {
-                                    // Now inline the resulting call.
-                                    List methodList =
-                                        Scene.v().getActiveHierarchy().resolveAbstractDispatch(
-                                                type.getSootClass(), PtolemyUtilities.attributeChangedMethod);
-                                    if (methodList.size() == 1) {
-                                        // inline the method.
-                                        inlinee = (SootMethod)methodList.get(0);
-                                    } else {
-                                        String string = "Can't inline " + stmt +
-                                            " in method " + method + "\n";
-                                        for (int i = 0; i < methodList.size(); i++) {
-                                            string += "target = " + methodList.get(i) + "\n";
-                                        }
-                                        System.out.println(string);
+            ValueBox box = stmt.getInvokeExprBox();
+            Value value = stmt.getInvokeExpr();
+            if (value instanceof InstanceInvokeExpr) {
+                InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                if (debug) System.out.println("invoking = " + r.getMethod());
+                if (r.getBase().getType() instanceof RefType) {
+                    RefType type = (RefType)r.getBase().getType();
+                    // Remove calls to validate().
+                    if (r.getMethod().equals(PtolemyUtilities.validateMethod)) {
+                        body.getUnits().remove(stmt);
+                    }
+                    // Inline calls to attribute changed.
+                    if (r.getMethod().equals(PtolemyUtilities.attributeChangedMethod)) {
+                        // If we are calling attribute changed on
+                        // one of the classes we are generating
+                        // code for, then inline it.
+                        if (type.getSootClass().isApplicationClass()) {
+                            SootMethod inlinee = null;
+                            if (r instanceof VirtualInvokeExpr) {
+                                System.out.println("Looking for " + PtolemyUtilities.attributeChangedMethod + " in " + type.getSootClass());
+                                // Now inline the resulting call.
+                                List methodList =
+                                    Scene.v().getActiveHierarchy().resolveAbstractDispatch(
+                                            type.getSootClass(), PtolemyUtilities.attributeChangedMethod);
+                                if (methodList.size() == 1) {
+                                    // inline the method.
+                                    inlinee = (SootMethod)methodList.get(0);
+                                } else {
+                                    String string = "Can't inline " + stmt +
+                                        " in method " + method + "\n";
+                                    for (int i = 0; i < methodList.size(); i++) {
+                                        string += "target = " + methodList.get(i) + "\n";
                                     }
-                                } else if (r instanceof SpecialInvokeExpr) {
-                                    inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
-                                            (SpecialInvokeExpr)r, method);
+                                    System.out.println(string);
                                 }
-                                if (!inlinee.getDeclaringClass().isApplicationClass()) {
-                                    inlinee.getDeclaringClass().setLibraryClass();
-                                }
-                                inlinee.retrieveActiveBody();
-                                if (debug) System.out.println("Inlining method call: " + r);
-                                SiteInliner.inlineSite(inlinee, stmt, method);
-
-                                doneSomething = true;
-                            } else {
-                                // FIXME: this is a bit of a hack, but
-                                // for right now it seems to work.
-                                // How many things that aren't
-                                // the actors we are generating
-                                // code for do we really care about here?
-                                // Can we do this without having to create
-                                // a class for the attribute too????
-                                body.getUnits().remove(stmt);
-                                doneSomething = true;
+                            } else if (r instanceof SpecialInvokeExpr) {
+                                inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
+                                        (SpecialInvokeExpr)r, method);
                             }
+                            if (!inlinee.getDeclaringClass().isApplicationClass()) {
+                                inlinee.getDeclaringClass().setLibraryClass();
+                            }
+                            inlinee.retrieveActiveBody();
+                            if (debug) System.out.println("Inlining method call: " + r);
+                            SiteInliner.inlineSite(inlinee, stmt, method);
+                            
+                            doneSomething = true;
+                        } else {
+                            // FIXME: this is a bit of a hack, but
+                            // for right now it seems to work.
+                            // How many things that aren't
+                            // the actors we are generating
+                            // code for do we really care about here?
+                            // Can we do this without having to create
+                            // a class for the attribute too????
+                            body.getUnits().remove(stmt);
+                            doneSomething = true;
                         }
-
+                    }
+                    
                         // Statically evaluate constant arguments.
                         Value argValues[] = new Value[r.getArgCount()];
                         int argCount = 0;
@@ -420,11 +450,23 @@ public class InlineParameterTransformer extends SceneTransformer {
                                                     Jimple.v().newStaticFieldRef(tokenField),
                                                     tokenLocal),
                                             stmt);
-
+                                    Entity container = (Entity) FieldsForEntitiesTransformer.
+                                        getEntityContainerOfObject(attribute);
+                                    StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
+                                        getFieldRefForEntity(container);
+                                    
+                                    Local containerLocal = Jimple.v().newLocal("container",
+                                            RefType.v(PtolemyUtilities.entityClass));
+                                    body.getLocals().add(containerLocal);
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    containerLocal,
+                                                    containerFieldRef),
+                                            stmt);
                                     // Call attribute changed AFTER we set the token.
                                     PtolemyUtilities.callAttributeChanged(
-                                            (Local)r.getBase(), theClass, method, body,
-                                            stmt);
+                                            containerLocal, (Local)r.getBase(),
+                                            theClass, method, body, stmt);
 
                                     // remove the old call.
                                     body.getUnits().remove(stmt);
@@ -455,9 +497,23 @@ public class InlineParameterTransformer extends SceneTransformer {
                                 } else if (r.getMethod().getSubSignature().equals(
                                         PtolemyUtilities.setExpressionMethod.getSubSignature())) {
                                     if (debug) System.out.println("Replacing setExpression on Variable");
+                                    Entity container = (Entity) FieldsForEntitiesTransformer.
+                                        getEntityContainerOfObject(attribute);
+                                    StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
+                                        getFieldRefForEntity(container);
+                                    
+                                    Local containerLocal = Jimple.v().newLocal("container",
+                                            RefType.v(PtolemyUtilities.entityClass));
+                                    body.getLocals().add(containerLocal);
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    containerLocal,
+                                                    containerFieldRef),
+                                            stmt);
                                     // Call attribute changed AFTER we set the token.
                                     PtolemyUtilities.callAttributeChanged(
-                                            (Local)r.getBase(), theClass, method, body,
+                                            containerLocal, (Local)r.getBase(),
+                                            theClass, method, body,
                                             body.getUnits().getSuccOf(stmt));
 
                                     Token token;
@@ -498,9 +554,23 @@ public class InlineParameterTransformer extends SceneTransformer {
                                 } else if (r.getMethod().getSubSignature().equals(
                                         PtolemyUtilities.setExpressionMethod.getSubSignature())) {
                                     if (debug) System.out.println("Replacing setExpression on Settable");
+                                    Entity container = (Entity) FieldsForEntitiesTransformer.
+                                        getEntityContainerOfObject(attribute);
+                                    StaticFieldRef containerFieldRef = FieldsForEntitiesTransformer.
+                                        getFieldRefForEntity(container);
+                                    
+                                    Local containerLocal = Jimple.v().newLocal("container",
+                                            RefType.v(PtolemyUtilities.entityClass));
+                                    body.getLocals().add(containerLocal);
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    containerLocal,
+                                                    containerFieldRef),
+                                            stmt);
                                     // Call attribute changed AFTER we set the token.
                                     PtolemyUtilities.callAttributeChanged(
-                                            (Local)r.getBase(), theClass, method, body,
+                                            containerLocal, (Local)r.getBase(),
+                                            theClass, method, body,
                                             body.getUnits().getSuccOf(stmt));
                                     // replace the entire statement (which must be an invokeStmt anyway)
                                     // with an assignment to the field of the first argument.

@@ -104,6 +104,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         _options = options;
+        _debug = Options.getBoolean(_options, "debug");
         _portToFieldMap = new HashMap();
         _classToObjectMap = new HashMap();
 
@@ -142,7 +143,11 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 if (value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                     // FIXME: string matching is probably not good enough.
-                    if (r.getMethod().getName().equals("getPort")) {
+                    if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getPortMethod.getSubSignature())) {
+                        if(_debug) {
+                            System.out.println("replacing getPort in " + unit);
+                        }   
                         // Inline calls to getPort(arg) when
                         // arg is a string that can be
                         // statically evaluated.
@@ -335,6 +340,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
 
     private CompositeActor _model;
     private Map _options;
+    private boolean _debug;
     private Map _portToFieldMap;
     private Map _classToObjectMap;
 }

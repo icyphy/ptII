@@ -465,6 +465,20 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
             Local local = (Local)r.getBase();
             Type baseType = local.getType();
+
+            if(baseType instanceof NullType) {
+                // replace with NullPointerException..
+                if(debug) {
+                    System.out.println("Invoke base is null, replacing with " +
+                            "NullPointerException");
+                }
+                Local exception = SootUtilities.createRuntimeException(
+                        body, unit, "NullPointerException");
+                body.getUnits().insertBefore(
+                        Jimple.v().newThrowStmt(exception),
+                        unit);
+                body.getUnits().remove(unit);
+            }
                              
             boolean isInlineableTokenMethod = false;
             isInlineableTokenMethod = _isInlineableTokenType(
@@ -473,22 +487,24 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
             // Try to make sure we get methods like Scale._scaleOnRight
             // inlined.
-            if(Scene.v().getApplicationClasses().contains(
-                       ((RefType)baseType).getSootClass()))
-            for(Iterator args = r.getArgs().iterator();
-                args.hasNext() && !isInlineableTokenMethod;) {
-                Object arg = args.next();
-                if(arg instanceof Local) {
-                    Local argLocal = (Local)arg;
-                    System.out.println("argtype = " + argLocal.getType());
-                    isInlineableTokenMethod = _isInlineableTokenType(
-                            argLocal, typeAnalysis, unsafeLocalSet, 
-                            depth, debug);
-                    System.out.println("isInlineableTokenMethod = " + 
-                            isInlineableTokenMethod);
+            if(baseType instanceof RefType &&
+                    Scene.v().getApplicationClasses().contains(
+                            ((RefType)baseType).getSootClass())) {
+                for(Iterator args = r.getArgs().iterator();
+                    args.hasNext() && !isInlineableTokenMethod;) {
+                    Object arg = args.next();
+                    if(arg instanceof Local) {
+                        Local argLocal = (Local)arg;
+                        System.out.println("argtype = " + argLocal.getType());
+                        isInlineableTokenMethod = _isInlineableTokenType(
+                                argLocal, typeAnalysis, unsafeLocalSet, 
+                                depth, debug);
+                        System.out.println("isInlineableTokenMethod = " + 
+                                isInlineableTokenMethod);
+                    }
                 }
             }
-            
+
             if(!isInlineableTokenMethod) {
                 return false;
             }

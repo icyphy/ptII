@@ -39,12 +39,14 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.LocationAttribute;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.copernicus.gui.GeneratorTableauAttribute;
 import ptolemy.data.Token;
 import ptolemy.data.expr.*;
 import ptolemy.kernel.*;
@@ -1784,6 +1786,8 @@ public class ActorTransformer extends SceneTransformer {
                 variableType);
 	body.getLocals().add(variableLocal);
  
+        // A list of locals that we will validate.
+        List validateLocalsList = new LinkedList();
         /*    NamedObj classObject = _findDeferredInstance(namedObj);
               System.out.println("Class object for " + namedObj.getFullName());
               System.out.println(classObject.exportMoML());
@@ -1851,14 +1855,11 @@ public class ActorTransformer extends SceneTransformer {
                                         PtolemyUtilities.variableSetTokenMethod,
                                         tokenLocal)),
                         insertPoint);
-                // call validate to ensure that attributeChanged is called.
-                body.getUnits().insertBefore(
-                        Jimple.v().newInvokeStmt(
-                                Jimple.v().newInterfaceInvokeExpr(
-                                        variableLocal,
-                                        PtolemyUtilities.validateMethod)),
-                        insertPoint);
                 
+                // Store that we will call validate to ensure that
+                // attributeChanged is called.
+                validateLocalsList.add(variableLocal);
+                        
             } else if (attribute instanceof Settable) {
                 // If the attribute is settable, then set its
                 // expression.
@@ -1894,6 +1895,18 @@ public class ActorTransformer extends SceneTransformer {
             _initializeAttributesBefore(body, insertPoint,
                     context, contextLocal,
                     attribute, local, theClass);
+        }
+        
+        for(Iterator validateLocals = validateLocalsList.iterator();
+            validateLocals.hasNext();) {
+            Local validateLocal = (Local)validateLocals.next();
+            // Validate local params
+            body.getUnits().insertBefore(
+                    Jimple.v().newInvokeStmt(
+                            Jimple.v().newInterfaceInvokeExpr(
+                                    validateLocal,
+                                    PtolemyUtilities.validateMethod)),
+                    insertPoint);
 	}
     }
 
@@ -2131,8 +2144,10 @@ public class ActorTransformer extends SceneTransformer {
                 attribute instanceof LocationAttribute ||
                 attribute instanceof LibraryAttribute ||
                 attribute instanceof TableauFactory ||
+                attribute instanceof EditorFactory ||
                 attribute instanceof Location ||
-                attribute instanceof WindowPropertiesAttribute) {
+                attribute instanceof WindowPropertiesAttribute ||
+                attribute instanceof GeneratorTableauAttribute) {
             return true;
         }
         return false;
