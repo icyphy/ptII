@@ -246,8 +246,13 @@ public class MoMLChangeRequest extends ChangeRequest {
             if (!_reportToHandler) {
                 MoMLParser.setErrorHandler(null);
             }
-            _parser.parse(_base, getDescription());
-            MoMLParser.setErrorHandler(handler);
+            try {
+                _parser.parse(_base, getDescription());
+            } finally {
+                if (!_reportToHandler) {
+                    MoMLParser.setErrorHandler(handler);
+                }
+            }
         } finally {
             _parser._propagating = false;
         }
