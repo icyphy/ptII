@@ -16,8 +16,10 @@
 	     contains this file. -->
 
             <input source="ptolemy/apps/charon/charon.xml"/>
+            <input source="ptolemy/apps/softwalls/actors.xml"/>
 
       </group>
     ?>
   </configure>
 </entity>
+
