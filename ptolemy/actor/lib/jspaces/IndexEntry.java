@@ -90,7 +90,7 @@ public class IndexEntry implements Entry {
 
     /** Return the position of this index. If the position
      *  is null, return 0.
-     *  @return The postion.
+     *  @return The position.
      */
     public long getPosition() {
 	if (position == null) {

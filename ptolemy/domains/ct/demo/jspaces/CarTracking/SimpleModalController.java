@@ -239,7 +239,7 @@ public class SimpleModalController extends CTCompositeActor {
      */
     public TypedIOPort incomingForce;
 
-    /** correctness of the leading car postion.
+    /** correctness of the leading car position.
      */
     public TypedIOPort correctness;
 
