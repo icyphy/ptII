@@ -32,11 +32,14 @@ package ptolemy.vergil.toolbox;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.moml.*;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import diva.canvas.*;
 import diva.canvas.toolbox.*;
+import diva.gui.toolbox.*;
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.SwingConstants;
@@ -48,8 +51,14 @@ import javax.swing.SwingConstants;
 An icon is the graphical representation of a schematic entity.
 EditorIcons are stored hierarchically in icon libraries.   Every icon has a
 name, along with a graphical representation.
-EditorIcons are also capable of creating a visual representation representing
+EditorIcons are capable of creating a visual representation representing
 the icon as either a swing icon, or as a diva figure.
+In general, one or the other will form the basis of the visual representation, 
+and the other will be created from the first, using either a SwingWrapper
+or a FigureIcon.  This class assumes that the figure forms the basis, 
+so it is only necessary to override createBackgroundFigure.  If the reverse
+is true, then you should override createBackgroundFigure and createIcon to
+avoid unnecessarily converting to a figure and back again.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -96,20 +105,54 @@ public class EditorIcon extends Icon {
     }
 
     /**
-     * Create the background figure based on this icon.
+     * Create the background figure based on this icon.  This should
+     * manufacture a new figure each time, since figures are cheap and contain
+     * their own location.
      */
     public Figure createBackgroundFigure() {
 	return _createDefaultBackgroundFigure();
     }
 
     /** 
-     * Create a new graphical icon that represents this class visually.
-     * @exception UnsupportedOperationException If this class does not support
-     * a visual rendition.  In practice, just about any subclass should not
-     * throw this exception.
+     * Create a new graphical icon that represents this class visually.  This
+     * method will generally want to cache the swing icon that is created,
+     * since swing icons are expensive and don't contain state.
+     * The default implementation in this base class creates the Icon
+     * from the background figure, so it is not necessary to override this 
+     * method in most cases.
+     * @exception UnsupportedOperationException If a swing icon cannot be
+     * created.
      */
     public javax.swing.Icon createIcon() {
-        throw new UnsupportedOperationException();
+        // First check to see if the icon has a rendering cached.
+        NamedObj renderedObject=
+            getAttribute("renderedIcon");
+        if(renderedObject != null &&
+                renderedObject instanceof Variable) {
+            Variable renderedVariable = (Variable)renderedObject;
+            try {
+                ObjectToken token =
+                    (ObjectToken)renderedVariable.getToken();
+                return (javax.swing.Icon)token.getValue();
+            } 
+            catch (Exception ex) {
+                // Ignore... we'll fall through to the next if
+                // statement and rerender.
+            }
+        }
+        
+        // No cached object, so render the icon.
+        try {
+            Figure figure = createBackgroundFigure();
+            javax.swing.Icon newIcon = new FigureIcon(figure, 20, 15);
+            Variable renderedVariable = 
+                new Variable(this, "renderedIcon");
+            renderedVariable.setToken(new ObjectToken(newIcon));
+            return newIcon;
+        } catch (Exception ex) {
+            throw new UnsupportedOperationException("Icon could not create " +
+                    "Swing Icon:" + ex.getMessage());
+        }
     }
 
     /**

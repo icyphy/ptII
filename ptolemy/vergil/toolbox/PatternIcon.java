@@ -62,7 +62,7 @@ public class PatternIcon extends EditorIcon {
     }
 
     /**
-     * Create a new icon with the name "EditorIcon" in the given container.
+     * Create a new icon with the given name in the given container.
      */
     public PatternIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -72,7 +72,8 @@ public class PatternIcon extends EditorIcon {
     /**
      * Create a background figure based on this icon.  The background figure
      * will be painted with each graphic element that this icon contains.
-     * In this class, return the
+     * In this class, return the background figure of the pattern, if a 
+     * pattern has been set.
      */
     public Figure createBackgroundFigure() {
 	if(_pattern == null)
@@ -81,10 +82,33 @@ public class PatternIcon extends EditorIcon {
 	    return _pattern.createBackgroundFigure();
     }
 
+
+    /** 
+     * Create a new graphical icon that represents this class visually.  This
+     * method will generally want to cache the swing icon that is created,
+     * since swing icons are expensive and don't contain state.
+     * In this class, defer to the pattern if one is present.
+     * @exception UnsupportedOperationException If a swing icon cannot be
+     * created.
+     */
+    public javax.swing.Icon createIcon() {
+        if(_pattern != null) {
+            return _pattern.createIcon();
+        } else {
+            return super.createIcon();
+        }
+    }
+
+    /**
+     * Return the current pattern icon, or null if no pattern has been set.
+     */
     public Icon getPattern() {
 	return _pattern;
     }
 
+    /**
+     * Set the pattern to the given icon.
+     */
     public void setPattern(EditorIcon icon) {
 	_pattern = icon;
     }
@@ -127,5 +151,6 @@ public class PatternIcon extends EditorIcon {
         return result;
     }
 
+    // The pattern
     private EditorIcon _pattern;
 }

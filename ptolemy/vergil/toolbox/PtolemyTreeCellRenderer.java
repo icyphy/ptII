@@ -67,50 +67,18 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 	if(value instanceof NamedObj) {
 	    NamedObj object = (NamedObj) value;
 	    component.setText(object.getName());
-	    
-	    // FIXME: This code is in a poor place...  should be in moml.icon?
-	    // Now we get to create its icon:
+	   
+            // Now we get to create its icon:
 	    NamedObj iconObject = object.getAttribute("_icon");
 	    if(iconObject != null && 
 	       iconObject instanceof ptolemy.moml.Icon) {
 		ptolemy.vergil.toolbox.EditorIcon icon = 
 		    (ptolemy.vergil.toolbox.EditorIcon) iconObject;
 
-		// First check to see if the icon has a rendering cached.
-		NamedObj renderedObject=
-		icon.getAttribute("treeRenderedIcon");
-		if(renderedObject != null &&
-		   renderedObject instanceof Variable) {
-		    Variable renderedVariable = (Variable)renderedObject;
-		    try {
-			ObjectToken token =
-			    (ObjectToken)renderedVariable.getToken();
-			component.setIcon((Icon)token.getValue());
-			return component;
-		    } 
-		    catch (Exception ex) {
-			// Ignore... we'll fall through to the next if
-			// statement and rerender.
-			ex.printStackTrace();
-		    }
-		}
-		
-		// No cached object, so render the icon.
-		try {
-		    Figure figure = icon.createBackgroundFigure();
-		    Icon newIcon = new FigureIcon(figure, 
-						  component.getBackground(), 
-						  20, 15);
-		    component.setIcon(newIcon);
-		    Variable renderedVariable = 
-			new Variable(icon, "treeRenderedIcon");
-		    renderedVariable.setToken(new ObjectToken(newIcon));
-		} catch (Exception ex) {
-		    // Ignore..  we will either not render the component
-		    // with an icon, or lose the optimization.
-		}
-	    }
-	}
+                // Wow.. this is a confusing line of code.. :)
+                component.setIcon(icon.createIcon());
+            }
+        }
 	return component;
     }
 }

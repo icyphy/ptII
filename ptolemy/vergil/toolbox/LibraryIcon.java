@@ -103,7 +103,7 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 	    setPattern(icon);
 	    _iconName = name;
 	}
-    }
+    }        
 
     /** Return the name of this icon's name in the icon library.
      */
