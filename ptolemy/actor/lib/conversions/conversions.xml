@@ -42,6 +42,10 @@
      </property>
   </entity>
 
+  <entity name="ExpressionToToken"
+          class="ptolemy.actor.lib.conversions.ExpressionToToken">
+  </entity>
+
   <entity name="FixToDouble"
           class="ptolemy.actor.lib.conversions.FixToDouble">
   </entity>
@@ -67,8 +71,8 @@
 
   </entity>
 
-  <entity name="IntArrayToString"
-          class="ptolemy.actor.lib.conversions.IntArrayToString">
+  <entity name="UnsignedByteArrayToString"
+          class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
   </entity>
 
   <entity name="IntToBits"
@@ -110,8 +114,12 @@
      </property>
   </entity>
 
-  <entity name="StringToIntArray"
-          class="ptolemy.actor.lib.conversions.StringToIntArray">
+  <entity name="StringToUnsignedByteArray"
+          class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
+  </entity>
+
+  <entity name="TokenToExpression"
+          class="ptolemy.actor.lib.conversions.TokenToExpression">
   </entity>
 
       </group>

@@ -1,4 +1,4 @@
-/* An actor that converts an array of integers into a string.
+/* An actor that converts an array of unsigned bytes into a string.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
+import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
@@ -48,22 +48,19 @@ import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
-/// IntArrayToString
+/// UnsignedByteArrayToString
 
 /**
-Convert an integer-array into a string.  Uses only the low order byte from
-each integer.  NOTE: Assumes an 8-bit character set.  The output is a string
-assembled from these bytes.  This actor is designed to facilitate use of the
-SerialComm serial communication actor which uses the same kind of integer
-array format as this actor.  Datagram actors can use this format as well.
-<p>
+Convert an array of bytes into a string.  The conversion is performed
+using the default character set, returned by the system property
+"file.encoding".  The output is a string assembled from these bytes.
 
 @author Winthrop Williams, Steve Neuenodorffer
 @version $Id$
 @since Ptolemy II 2.0
 */
 
-public class IntArrayToString extends TypedAtomicActor {
+public class UnsignedByteArrayToString extends Converter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -73,30 +70,14 @@ public class IntArrayToString extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public IntArrayToString(CompositeEntity container, String name)
+    public UnsignedByteArrayToString(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(new ArrayType(BaseType.INT));
+        input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
-
-        _attachText("_iconDescription", "<svg>\n" +
-                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" +
-                "</svg>\n");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The port for the input, which has type <i>{int}</i>. */
-    public TypedIOPort input;
-
-    /** The output port, which has type <i>string</i>. */
-    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -115,16 +96,17 @@ public class IntArrayToString extends TypedAtomicActor {
      *  conversion actor(s) as well.
      */
     public void fire() throws IllegalActionException {
-        ArrayToken dataIntArrayToken = (ArrayToken) input.get(0);
-        byte[] dataBytes = new byte[dataIntArrayToken.length()];
-        for (int j = 0; j < dataIntArrayToken.length(); j++) {
-            IntToken dataIntOneToken =
-                (IntToken)dataIntArrayToken.getElement(j);
-            dataBytes[j] = (byte)dataIntOneToken.intValue(); //Keep low 8 bits
+        ArrayToken dataArrayToken = (ArrayToken) input.get(0);
+        byte[] dataBytes = new byte[dataArrayToken.length()];
+        for (int j = 0; j < dataArrayToken.length(); j++) {
+            UnsignedByteToken dataToken =
+                (UnsignedByteToken)dataArrayToken.getElement(j);
+            dataBytes[j] = (byte)dataToken.byteValue();
         }
-        // Note:  Following line may assume 1 byte per character, not sure.
-        String outputValue = new String(dataBytes);
-        output.send(0, new StringToken(outputValue));
+
+        // Convert using the default character encoding.
+        String outputString = new String(dataBytes);
+        output.send(0, new StringToken(outputString));
     }
 
     /** Return false if the input port has no token, otherwise return
