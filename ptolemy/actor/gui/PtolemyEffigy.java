@@ -296,7 +296,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			    // might have a URL that refers to another
 			    // jar file.
 			    URL anotherURL =
-				MoMLApplication
+				JNLPUtilities
 				.jarURLEntryResource(input.toString());
 			    if (anotherURL != null) {
 				toplevel = parser.parse(base,

@@ -86,13 +86,25 @@ public class BrowserTableau extends Tableau {
      *  so this is the best we can do.
      */
     public void show() {
-	Effigy effigy = (Effigy)getContainer();
+	String url = ((Effigy)getContainer()).url.getURL().toExternalForm();
 	try {
-	    BrowserLauncher.openURL(effigy.url.getURL().toExternalForm());
+
+	    if (url.startsWith("jar:")) {
+		// If the URL begins with jar: then we are inside Web Start
+		// and we should get the resource, write it to a temporary
+		// file and pass that value to the browser 
+
+		// Save the jar file as a temporary file in the default
+		// platform dependent directory with the same suffix
+		// as that of the jar URL
+		url = JNLPUtilities.saveJarURLAsTempFile(url, "tmp",
+							 null, null);
+	    }
+	    BrowserLauncher.openURL(url);
 	} catch (IOException ex) {
 	    throw new InvalidStateException((Nameable)null, ex,
 					    "Failed to handle '"
-					     + effigy.url.getURL() + "': ");
+					     + url + "': ");
 	}
     }
 
