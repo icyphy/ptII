@@ -74,7 +74,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	CorbaActorClient.java \
 	PushConsumer.java \
-	PushSupplier.java
+	PushSupplier.java \
+	PullConsumer.java \
+	PullSupplier.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	CorbaActor.idl \
