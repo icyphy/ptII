@@ -80,23 +80,27 @@ test CTSingleSolverDirector-2.1 {Ramp with ForwardEulerSolver} {
     $sys setManager $man
     set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector DIR]
     $sys setDirector $dir
-    #$dir setVERBOSE 1
-    #$dir setDEBUG 1
+    $dir setVERBOSE 1
+    $dir setDEBUG 1
     set const [java::new ptolemy.domains.ct.lib.CTConst $sys Const]
     set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $sys Integ]
     set print [java::new ptolemy.domains.ct.kernel.test.CTTestValueSink\
 	    $sys Sink]
-    #set sink [java::new ptolemy.domains.ct.lib.CTPrintln\
+    set sink [java::new ptolemy.domains.ct.lib.CTPrintln\
 	    $sys pl]
     set constout [$const getPort output]
     set intglin [$integral getPort input]
     set intglout [$integral getPort output]
     set printin [$print getPort input]
-    #set sinkin [$sink getPort input]
+    set sinkin [$sink getPort input]
 
     set r1 [$sys connect $constout $intglin R1]
     set r2 [$sys connect $intglout $printin R2]
-    #$sinkin link $r2
+    $sinkin link $r2
+    
+    set initstate [$integral getAttribute InitialState]
+    $initstate setExpression 0.0
+    $initstate parameterChanged [java::null]
 
     set starttime [$dir getAttribute StartTime]
     $starttime setExpression 0.0
@@ -113,7 +117,6 @@ test CTSingleSolverDirector-2.1 {Ramp with ForwardEulerSolver} {
     set constval [$const getAttribute Value]
     $constval setExpression 1.0
     $constval parameterChanged [java::null]
-    set sch [$dir getScheduler]
     
     $man run
     list [$print isSuccessful]
@@ -127,6 +130,10 @@ test CTSingleSolverDirector-2.2 {Ramp with BackwardEulerSolver} {
     $solver setToken $token
     $solver parameterChanged [java::null]
 
+    set initstate [$integral getAttribute InitialState]
+    $initstate setExpression 0.0
+    $initstate parameterChanged [java::null]
+
     set starttime [$dir getAttribute StartTime]
     $starttime setExpression 0.0
     $starttime parameterChanged [java::null]
@@ -142,7 +149,6 @@ test CTSingleSolverDirector-2.2 {Ramp with BackwardEulerSolver} {
     set constval [$const getAttribute Value]
     $constval setExpression 1.0
     $constval parameterChanged [java::null]
-    set sch [$dir getScheduler]
     
     $man run
     list [$print isSuccessful]
@@ -156,6 +162,10 @@ test CTSingleSolverDirector-2.3 {Ramp with ExplicitRK23Solver} {
     $solver setToken $token
     $solver parameterChanged [java::null]
 
+    set initstate [$integral getAttribute InitialState]
+    $initstate setExpression 0.0
+    $initstate parameterChanged [java::null]
+
     set starttime [$dir getAttribute StartTime]
     $starttime setExpression 0.0
     $starttime parameterChanged [java::null]
@@ -171,13 +181,8 @@ test CTSingleSolverDirector-2.3 {Ramp with ExplicitRK23Solver} {
     set constval [$const getAttribute Value]
     $constval setExpression 1.0
     $constval parameterChanged [java::null]
-    set sch [$dir getScheduler]
     
     $man run
     list [$print isSuccessful] 
 } {1}
-
-######################################################################
-####   Test for CTMultiSolverDirectors
-#    
 
