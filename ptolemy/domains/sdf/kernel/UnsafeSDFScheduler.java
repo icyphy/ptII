@@ -71,9 +71,28 @@ import ptolemy.moml.MoMLChangeRequest;
 /**
 
 This is a newer version of the SDF scheduler that attempts to fix a
-significant shortcoming in the existing implementation.  In the SDFScheduler class, scheduling constraints are traversed and solved one channel at a time.  However, since it is possible to have a relatively small number of relations that have large numbers of channels, by connecting to multiports and setting the width of the relation.  In fact, when using certain SDF-oriented actors (multiplexor and Demulatiplexor) this is common and necessary thing to do.  However, the scheduling implementation didn't scale very nicely.  The solution is to recognize that the scheduling constraint for every channel in such a relation is the same...  Hence, we would really like to traverse the hierarchy on a relation by relation basis.  
+significant shortcoming in the existing implementation.  In the
+SDFScheduler class, scheduling constraints are traversed and solved
+one channel at a time.  However, since it is possible to have a
+relatively small number of relations that have large numbers of
+channels, by connecting to multiports and setting the width of the
+relation.  In fact, when using certain SDF-oriented actors
+(multiplexor and Demulatiplexor) this is common and necessary thing to
+do.  However, the scheduling implementation didn't scale very nicely.
+The solution is to recognize that the scheduling constraint for every
+channel in such a relation is the same...  Hence, we would really like
+to traverse the hierarchy on a relation by relation basis.
 
-HOWEVER, the current ptolemy base classes provide incomplete support for traversing the hierarchy this way.  In particular, it is difficult to ensure that we have properly included all of the scheduling constraints without traversing channel-by channel, using receivers.  The result is that this implementation can be significantly faster than the original implementation, but has imcomplete error checking.  I.e., it will return a valid schedule when, in fact, no valid schedule exists.  
+HOWEVER, the current ptolemy base classes provide incomplete support
+for traversing the hierarchy this way.  In particular, it is difficult
+to ensure that we have properly included all of the scheduling
+constraints without traversing channel-by channel, using receivers.
+The result is that this implementation can be significantly faster
+than the original implementation, but has imcomplete error checking.
+I.e., it will return a valid schedule when, in fact, no valid schedule
+exists.  The simplest example is if you have a relation connected to
+an input port and not connected to any output port.  It will never
+receive a token, but this class will return a valid schedule.
 
 
 
