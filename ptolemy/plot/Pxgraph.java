@@ -763,21 +763,34 @@ public class Pxgraph extends Frame {
 		}
 	    } else if (arg.startsWith("=")) {
 		// Process =WxH+X+Y
-                int endofheight;
-                width = (int)Integer.valueOf(arg.substring(1,
-					   arg.indexOf('x'))).intValue();
-                if (arg.indexOf('+') != -1) {
-                   height = 
-		       (int)Integer.valueOf(arg.substring(arg.indexOf('x')+1,
-					  arg.indexOf('+'))).intValue();
-                } else {
-                    if (arg.length() > arg.indexOf('x')) {
-                        height =
-			    Integer.valueOf(arg.substring(arg.indexOf('x')+1,
-					  arg.length())).intValue();
-                    }
-                }
-		// FIXME: need to handle X and Y in =WxH+X+Y
+		int xscreen = 1, yscreen = 1;
+		boolean screenlocationgiven = false;
+		StringTokenizer stoken =
+		    new StringTokenizer(arg.substring(1,arg.length()),
+					"x-+");
+		if (stoken.hasMoreTokens()) {
+		    width = (int)Integer.valueOf(stoken.nextToken()).
+			intValue();
+		} 
+		if (stoken.hasMoreTokens()) {
+		    height = (int)Integer.valueOf(stoken.nextToken()).
+			intValue();
+		} 
+		if (stoken.hasMoreTokens()) {
+		    xscreen = (int)Integer.valueOf(stoken.nextToken()).
+			intValue();
+		    screenlocationgiven = true;
+		} 
+		if (stoken.hasMoreTokens()) {
+		    yscreen = (int)Integer.valueOf(stoken.nextToken()).
+			intValue();
+		    screenlocationgiven = true;
+		} 
+		if (screenlocationgiven) { 
+		    // Note: we add one so that =800x200+0+0 will show up
+		    // in the proper location.
+		    setLocation(new Point(xscreen+1, yscreen+1));
+		}
 		continue;
 
             }
