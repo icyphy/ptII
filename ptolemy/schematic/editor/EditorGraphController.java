@@ -141,7 +141,7 @@ public class EditorGraphController extends GraphController {
 		    Node node = (Node) object;
 		    object = node.getSemanticObject();
 		    if(object instanceof Port) return true;
-		    if(object instanceof VertexAttribute) return true;
+		    if(object instanceof Vertex) return true;
 		}
 		return false;
             }
@@ -475,13 +475,16 @@ public class EditorGraphController extends GraphController {
 	    CompositeEntity toplevel = 
 		(CompositeEntity)graph.getSemanticObject();
 	    Relation relation = null;
-            VertexAttribute vertex = null;
+            Vertex vertex = null;
             try {                
                 relation = 
                     toplevel.newRelation(createUniqueName("relation"));
-                vertex = new VertexAttribute(relation, 
-                        createUniqueName("vertex"), 
-                        e.getX(), e.getY());
+                vertex = new Vertex(relation, 
+                        createUniqueName("vertex"));
+                int[] coords = new int[2];
+                coords[0] = e.getX();
+                coords[1] = e.getY();
+                vertex.setLocation(coords);
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -534,7 +537,7 @@ public class EditorGraphController extends GraphController {
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
 
-            if((sourceObject instanceof VertexAttribute)||
+            if((sourceObject instanceof Vertex)||
 	       (sourceObject instanceof Port)) {
 		System.out.println(sourceObject.description());
 		
@@ -573,15 +576,18 @@ public class EditorGraphController extends GraphController {
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
 
-            if((sourceObject instanceof VertexAttribute)) {
+            if((sourceObject instanceof Vertex)) {
 		System.out.println(sourceObject.description());
 		
 		Relation relation = (Relation)sourceObject.getContainer();
-		VertexAttribute vertex = null;
+		Vertex vertex = null;
 		try {
-		    vertex = new VertexAttribute(relation, 
-						 createUniqueName("vertex"), 
-						 e.getX(), e.getY());
+		    vertex = new Vertex(relation, 
+                            createUniqueName("vertex"));
+                    int[] coords = new int[2];
+                    coords[0] = e.getX();
+                    coords[1] = e.getY();
+                    vertex.setLocation(coords);
 		}
 		catch (Exception ex) {
 		    ex.printStackTrace();
@@ -590,7 +596,7 @@ public class EditorGraphController extends GraphController {
 		Node node = getGraphImpl().createNode(vertex);
 		addNode(node, e.getLayerX(), e.getLayerY());
 
-		Edge edge = getGraphImpl().createEdge(null);	    		
+		Edge edge = getGraphImpl().createEdge(null);
 		addEdge(edge,
 			sourcenode,
 			ConnectorEvent.TAIL_END,

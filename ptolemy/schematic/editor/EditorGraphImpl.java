@@ -86,7 +86,7 @@ public class EditorGraphImpl extends BasicGraphImpl {
                 System.out.println("destroying link");        
                 if(link != null) {
                     Port port = link.getPort(); 
-                    VertexAttribute vertex = link.getVertex();
+                    Vertex vertex = link.getVertex();
                     if(port != null && vertex != null) {
                         port.unlink((Relation)vertex.getContainer());
                     } else {
@@ -109,39 +109,39 @@ public class EditorGraphImpl extends BasicGraphImpl {
                     // HMM.. there is already a link...  make sure it's
                     // connected right.
                     Port port = link.getPort(); 
-                    VertexAttribute vertex = link.getVertex();
+                    Vertex vertex = link.getVertex();
                     // Fix the head.  This may involve relinking to the same port
                     // if the connector didn't move.  This is OK.
                     port.unlink((Relation)vertex.getContainer());
-                    if(tailObject instanceof VertexAttribute &&
+                    if(tailObject instanceof Vertex &&
                             headObject instanceof Port) {
                         port = (Port)headObject;
                         link.setPort(port);
                     } else if(tailObject instanceof Port &&
-                            headObject instanceof VertexAttribute) {
-                        vertex = (VertexAttribute)headObject;
+                            headObject instanceof Vertex) {
+                        vertex = (Vertex)headObject;
                         link.setVertex(vertex);
                     } else {
                         throw new InternalErrorException("Edge must be between " + 
-                                "Port and VertexAttribute");
+                                "Port and Vertex");
                     }                
                     port.link((Relation)vertex.getContainer());
                 } else {
                     // There was no link, so create it from scratch
                     System.out.println("Creating link");
                     Port port;
-                    VertexAttribute vertex;
-                    if(tailObject instanceof VertexAttribute &&
+                    Vertex vertex;
+                    if(tailObject instanceof Vertex &&
                             headObject instanceof Port) {
                         port = (Port)headObject;
-                        vertex = (VertexAttribute)tailObject;
+                        vertex = (Vertex)tailObject;
                     } else if(tailObject instanceof Port &&
-                            headObject instanceof VertexAttribute) {
-                        vertex = (VertexAttribute)headObject;
+                            headObject instanceof Vertex) {
+                        vertex = (Vertex)headObject;
                         port = (Port)tailObject;
                     } else {
                         throw new InternalErrorException("Edge must be between " + 
-                                "Port and VertexAttribute");
+                                "Port and Vertex");
                     }   
                     Relation relation = (Relation)vertex.getContainer();
                     link = new LinkAttribute(relation, 
@@ -178,7 +178,7 @@ public class EditorGraphImpl extends BasicGraphImpl {
                 if(link != null) {
                     System.out.println("destroying link");        
                     Port port = link.getPort(); 
-                    VertexAttribute vertex = link.getVertex();
+                    Vertex vertex = link.getVertex();
                     if(port != null && vertex != null) {
                         port.unlink((Relation)vertex.getContainer());
                     } else {
@@ -201,39 +201,39 @@ public class EditorGraphImpl extends BasicGraphImpl {
                     // connected right.
                     System.out.println("Moving link");
                     Port port = link.getPort(); 
-                    VertexAttribute vertex = link.getVertex();
+                    Vertex vertex = link.getVertex();
                     // Fix the head.  This may involve relinking to the same port
                     // if the connector didn't move.  This is OK.
                     port.unlink((Relation)vertex.getContainer());
-                    if(tailObject instanceof VertexAttribute &&
+                    if(tailObject instanceof Vertex &&
                             headObject instanceof Port) {
-                        vertex = (VertexAttribute)tailObject;
+                        vertex = (Vertex)tailObject;
                         link.setVertex(vertex);
                     } else if(tailObject instanceof Port &&
-                            headObject instanceof VertexAttribute) {
+                            headObject instanceof Vertex) {
                         port = (Port)tailObject;
                         link.setPort(port);
                     } else {
                         throw new InternalErrorException("Edge must be between " + 
-                                "Port and VertexAttribute");
+                                "Port and Vertex");
                     }                
                     port.link((Relation)vertex.getContainer());
                 } else {
                     // There was no link, so create it from scratch
                     System.out.println("Creating link");
                     Port port;
-                    VertexAttribute vertex;
-                    if(tailObject instanceof VertexAttribute &&
+                    Vertex vertex;
+                    if(tailObject instanceof Vertex &&
                             headObject instanceof Port) {
                         port = (Port)headObject;
-                        vertex = (VertexAttribute)tailObject;
+                        vertex = (Vertex)tailObject;
                     } else if(tailObject instanceof Port &&
-                            headObject instanceof VertexAttribute) {
-                        vertex = (VertexAttribute)headObject;
+                            headObject instanceof Vertex) {
+                        vertex = (Vertex)headObject;
                         port = (Port)tailObject;
                     } else {
                         throw new InternalErrorException("Edge must be between " + 
-                                "Port and VertexAttribute");
+                                "Port and Vertex");
                     }   
                     Relation relation = (Relation)vertex.getContainer();
                     link = new LinkAttribute(relation, 

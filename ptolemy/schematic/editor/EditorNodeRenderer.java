@@ -82,7 +82,7 @@ public class EditorNodeRenderer implements NodeRenderer {
 	} else if(object instanceof Entity) {
 	    BasicCompositeNode node = (BasicCompositeNode) n;
 	    Entity entity = (Entity)object;
-            Icon icon = (Icon)entity.getAttribute("Icon");
+            EditorIcon icon = (EditorIcon)entity.getAttribute("_icon");
             //           Figure background = new BasicRectangle(-10, -10, 20, 20, Color.red);
             //icon.createFigure();
 	    Figure background = icon.createFigure(); 
@@ -93,7 +93,7 @@ public class EditorNodeRenderer implements NodeRenderer {
 	    
 	} else if(object instanceof Port) {
 	    figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
-	} else if(object instanceof VertexAttribute) {
+	} else if(object instanceof Vertex) {
 	    figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
 	} else {
 	    figure = new BasicRectangle(-2, -2, 4, 4, Color.red);
