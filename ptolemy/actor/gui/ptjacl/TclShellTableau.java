@@ -1,6 +1,6 @@
-/* A tableau for interacting with Ptjacl, the 100% Java implementation of Tcl.
+/* A tableau for evaluating Tcl expression interactively.
 
- Copyright (c) 2001-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,20 +31,17 @@ package ptolemy.actor.gui.ptjacl;
 
 import tcl.lang.*;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.actor.gui.TableauFrame;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
-import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,13 +59,13 @@ import java.util.Enumeration;
 A tableau that provides a Tcl Shell for interacting with Ptjacl,
 a 100% Java implementation of Tcl
 
-@author Christopher Hylands
+@author Christopher Hylands and Edward A. Lee
 @version $Id$
-@since Ptolemy II 2.0
 */
-public class TclShellTableau extends Tableau implements ShellInterpreter {
+public class TclShellTableau extends Tableau
+        implements ShellInterpreter {
 
-    /** Create a new Tcl Shell Tableau for use with Tcl commands.
+    /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
      *  and having the specified name.  The frame is not made visible
      *  automatically.  You must call show() to make it visible.
@@ -79,26 +76,31 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public TclShellTableau(PtolemyEffigy container, String name)
+    public TclShellTableau(TclShellEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
-        NamedObj model = container.getModel();
-
-	TclShellFrame frame = new TclShellFrame((CompositeEntity)model, this);
+	TclShellFrame frame = new TclShellFrame(this);
 	setFrame(frame);
 
 	try {
-	    // FIXME: Perhaps the interpreter should be in its own thread?
+
+	    //
 	    _tclInterp.setVar("panelShell",
                     ReflectObject.newInstance(_tclInterp,
                     ShellTextArea.class,
-                    this), 0);
+                    frame._shellTextArea), 0);
 	    _tclInterp.eval("proc puts {s} {"
                     + "global panelShell; "
                     + "$panelShell appendJTextArea $s\\n}");
-	} catch (TclException e) {
-            // FIXME: Should perhaps throw an exception here?
-	    System.out.println(_tclInterp.getResult());
+	    // FIXME: what about user initializations in ~/.tclrc?
+
+	    // Source Ptolemy specific initializations.
+	    _tclInterp.eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
+	} catch (TclException ex) {
+	    throw new IllegalActionException(this, ex,
+					     "Could not initialize the "
+					     + "tcl interpreter:\n"
+					     + _tclInterp.getResult().toString());
 	}
     }
 
@@ -112,7 +114,8 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
      */
     public String evaluateCommand(String command) throws Exception {
         _tclInterp.eval(command);
-        return _tclInterp.getResult().toString();
+	String results = _tclInterp.getResult().toString();
+        return results;
     }
 
     /** Return true if the specified command is complete (ready
@@ -121,21 +124,23 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
      *  @return True if the command is complete.
      */
     public boolean isCommandComplete(String command) {
-        return _tclInterp.commandComplete(command);
+	return _tclInterp.commandComplete(command);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The Tcl interpreter
+    // FIXME: Perhaps the interpreter should be in its own thread?
     private Interp _tclInterp = new Interp();
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** The frame that is created by an instance of TclShellTableau.
      */
-    public class TclShellFrame extends PtolemyFrame {
+    public class TclShellFrame extends TableauFrame {
 
 	/** Construct a frame to display the TclShell window.
 	 *  After constructing this, it is necessary
@@ -148,16 +153,17 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
 	 */
-	public TclShellFrame(final CompositeEntity model, Tableau tableau)
+	public TclShellFrame(Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
-	    super(model, tableau);
+	    super(tableau);
 
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
-	    ShellTextArea tclShellPanel = new ShellTextArea();
-            tclShellPanel.setInterpreter(TclShellTableau.this);
-	    component.add(tclShellPanel);
+	    _shellTextArea = new ShellTextArea();
+            _shellTextArea.setInterpreter(TclShellTableau.this);
+	    _shellTextArea.mainPrompt = "% "; 
+	    component.add(_shellTextArea);
             getContentPane().add(component, BorderLayout.CENTER);
 	}
 
@@ -167,13 +173,14 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
 	protected void _help() {
 	    try {
 		URL doc = getClass().getClassLoader().getResource(
-                        "doc/coding/tcljava.htm");
+                        "ptolemy/actor/gui/ptjacl/help.htm");
 		getConfiguration().openModel(null, doc, doc.toExternalForm());
 	    } catch (Exception ex) {
 		System.out.println("TclShellTableau._help(): " + ex);
 		_about();
 	    }
 	}
+	public ShellTextArea _shellTextArea;
     }
 
     /** A factory that creates a control panel to display a Tcl Shell
@@ -197,11 +204,8 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
         ////                         public methods                    ////
 
 	/** Create a new instance of TclShellTableau in the specified
-         *  effigy. If the specified effigy is not an
-         *  instance of PtolemyEffigy, then do not create a tableau
-         *  and return null. It is the responsibility of callers of
+         *  effigy. It is the responsibility of callers of
          *  this method to check the return value and call show().
-         *
 	 *  @param effigy The model effigy.
 	 *  @return A new control panel tableau if the effigy is
          *    a PtolemyEffigy, or null otherwise.
@@ -209,31 +213,12 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
          *   tableau for the effigy, but something goes wrong.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (effigy instanceof PtolemyEffigy) {
-                // First see whether the effigy already contains a tableau
-                TclShellTableau tableau =
-                    (TclShellTableau)effigy.getEntity("TclShellTableau");
-                if (tableau == null) {
-		    try {
-			tableau = new TclShellTableau(
-				      (PtolemyEffigy)effigy,
-				      "TclShellTableau");
-		    } catch (NoClassDefFoundError noClassDefFoundError) {
-			// Catch the error here.
-			KernelRuntimeException kernelRuntimeException =
-			    new KernelRuntimeException(this, null,
-                                    noClassDefFoundError, null);
-			// MessageHandler.error() does not take an Error
-			// argument as the second argument, so we create
-			// a KernelRuntimeException.
-                        MessageHandler.error("Cannot create TclShellTableau. "
-					     + "Perhaps $PTII/lib/ptjacl.jar "
-					     + "is not in your path?: ",
-					     kernelRuntimeException);
-
-		    }
-                }
-                return tableau;
+            // NOTE: Can create any number of tableaux within the same
+            // effigy.  Is this what we want?
+            if (effigy instanceof TclShellEffigy) {
+                return new TclShellTableau(
+                        (TclShellEffigy)effigy,
+                        "TclShellTableau");
 	    } else {
 		return null;
 	    }

@@ -48,13 +48,14 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-# Except: NOTE: HTMLEffigy has to come before Configuration
-# because its inner class, HTMLEffigy$Factory, is referenced.
 JSRCS = \
+	TclShellEffigy.java \
 	TclShellTableau.java
 
 # Files to be included in the jar file
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	help.htm \
+	init.tcl
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
