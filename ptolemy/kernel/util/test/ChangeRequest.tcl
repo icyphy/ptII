@@ -106,10 +106,10 @@ test ChangeRequest-4.0 {StreamChangeListener} {
 	puts "[[java::call Thread currentThread] getName] \
 		Before call to waitForCompletionTask"
 	$t waitForCompletionTask
-	puts "[[java::call Thread currentThread] getName] \
-		After call to waitForCompletionTask"
-	puts "[[java::call Thread currentThread] getName] \
-		Before call to \$t finish"
+	#puts "[[java::call Thread currentThread] getName] \
+	#	After call to waitForCompletionTask"
+	#puts "[[java::call Thread currentThread] getName] \
+	#	Before call to \$t finish"
 	enumToTokenValues [$t finish]
 	puts "[[java::call Thread currentThread] getName] \
 		After call to \$t finish"
@@ -124,8 +124,6 @@ test ChangeRequest-4.0 {StreamChangeListener} {
 } {0 {StreamChangeRequest.changeExecuted(): Changing Const to 2.0 succeeded
 } {main  Before call to waitForCompletionTask
 waitForCompletionThread About to wait for completion
-main  After call to waitForCompletionTask
-main  Before call to $t finish
 waitForCompletionThread Done waiting for completion
 main  After call to $t finish
 }}
