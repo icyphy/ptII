@@ -276,7 +276,10 @@ but adding the directory to your path is likely to work best.])
 fi
 
 # PTJAVA_DIR without /cygdrive
-PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+# Use changequote here to preserve square brackets
+changequote(<<, >>)dnl
+PTJAVA_DIR_NO_CYGWIN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+changequote([, ])dnl
 
 #
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
@@ -2872,7 +2875,7 @@ AC_SUBST(PTJAI_PACKAGES)
 AC_SUBST(PTJAVA_DIR)
 
 # Location of the JDK
-AC_SUBST(PTJAVA_DIR_CLEAN)
+AC_SUBST(PTJAVA_DIR_NO_CYGWIN)
 
 # Value of java.home property, location of the JDK with /cygdrive/c/ converted to c:/
 AC_SUBST(PTJAVA_HOME)
