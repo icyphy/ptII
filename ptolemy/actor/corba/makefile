@@ -82,7 +82,11 @@ JSRCS = \
 	TaskReceiver.java \
 	TaskReporter.java
 
+OTHER_FILES_TO_BE_JARED = \
+	corba.xml
+
 EXTRA_SRCS =	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 	Coordinator.idl \
 	CorbaActor.idl \
 	CorbaIO.idl \
@@ -94,7 +98,12 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'PullConsumer$$DataReadingThread.class' \
+	'PullSupplier$$pullSupplier.class' \
+	'PushConsumer$$pushConsumer.class' \
+	'TaskCoordinator$$Coordinator.class' \
+	'TaskReceiver$$Client.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -245,14 +245,18 @@ OPTIONAL_FILES = \
 	jspaces \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
+	'Exec$$_StreamReaderThread.class' \
 	'Expression$$1.class' \
 	'Expression$$OutputTypeFunction.class' \
 	'Expression$$VariableScope.class' \
+	'RecordDisassembler$$1.class' \
+	'RecordDisassembler$$PortFunction.class' \
 	'RecordUpdater$$1.class' \
 	'RecordUpdater$$FunctionTerm.class' \
 	'Scale$$1.class' \
 	'Scale$$PortParamFunction.class' \
-	'Scale$$PortParameterFunction.class'
+	'Scale$$PortParameterFunction.class' \
+	'SetVariable$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

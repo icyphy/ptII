@@ -80,6 +80,7 @@ MISC_FILES =	test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	'KeyToken$$1.class' \
 	'KeyToken$$KeyType.class'
 
 all: jclass $(ROOT)/ptKeystore

@@ -78,9 +78,17 @@ MISC_FILES =	doc test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	'AbstractCase$$CaseDirector.class'
+	'AbstractCase$$CaseDirector.class' \
+	'IterateOverArray$$1.class' \
+	'IterateOverArray$$2.class' \
+	'IterateOverArray$$3.class' \
+	'IterateOverArray$$IterateComposite.class' \
+	'IterateOverArray$$IterateDirector.class' \
+	'IterateOverArray$$IteratePort.class' \
+	'ModelReference$$1.class'
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS = $$(JSRCS:%.java=%.class' \
+
 
 all: jclass
 install: jclass jars

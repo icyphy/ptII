@@ -168,7 +168,11 @@ OPTIONAL_FILES = \
 	'DebugListenerTableau$$DebugListenerFrame.class' \
 	'EditParametersDialog$$1.class' \
 	'EditParametersDialog$$2.class' \
+	'ExpressionShellEffigy$$ShellFactory.class' \
+	'ExpressionShellTableau$$1.class' \
+	'ExpressionShellTableau$$Factory.class' \
 	'HTMLEffigy$$Factory.class' \
+	'HTMLViewer$$1.class' \
 	'HTMLViewerTableau$$Factory.class' \
 	'JVMTableau$$1.class' \
 	'JVMTableau$$Factory.class' \
@@ -185,11 +189,23 @@ OPTIONAL_FILES = \
 	'ModelPane$$4.class' \
 	'ModelPane$$ClickListener.class' \
 	'ModelPane$$CommandListener.class' \
+	'MoMLApplication$$ConfigurationFilenameFilter.class' \
 	'PlotEffigy$$Factory.class' \
 	'PlotTableau$$Factory.class' \
 	'PlotTableauFrame$$EPSFileFilter.class' \
 	'PlotTableauFrame$$FormatAction.class' \
 	'PlotTableauFrame$$SpecialMenuListener.class' \
+	'PortConfigurerDialog$$1.class' \
+	'PortConfigurerDialog$$2.class' \
+	'PortConfigurerDialog$$3.class' \
+	'PortConfigurerDialog$$4.class' \
+	'PortConfigurerDialog$$5.class' \
+	'PortConfigurerDialog$$6.class' \
+	'PortConfigurerDialog$$CellValidator.class' \
+	'PortConfigurerDialog$$PortBooleanCellRenderer.class' \
+	'PortConfigurerDialog$$PortTableModel.class' \
+	'PortConfigurerDialog$$StringCellEditor.class' \
+	'PortConfigurerDialog$$StringCellRenderer.class' \
 	'PtolemyApplet$$1.class' \
 	'PtolemyApplet$$ExportButtonListener.class' \
 	'PtolemyApplet$$GoButtonListener.class' \
@@ -199,25 +215,28 @@ OPTIONAL_FILES = \
 	'PtolemyDialog$$2.class' \
 	'PtolemyEffigy$$Factory.class' \
 	'PtolemyEffigy$$FactoryWithoutNew.class' \
-	'PtolemyFrame$$XMLOrMoMLFileFilter.class' \
 	'PtolemyFrame$$1.class' \
+	'PtolemyFrame$$XMLOrMoMLFileFilter.class' \
 	'PtolemyQuery$$1.class' \
 	'PtolemyQuery$$2.class' \
 	'PtolemyQuery$$3.class' \
 	'PtolemyQuery$$4.class' \
 	'PtolemyTop$$ViewMenuListener.class' \
 	'RunTableau$$Factory.class' \
-	'RunTableau$$RunFrame$$DebugMenuListener.class' \
 	'RunTableau$$RunFrame.class' \
+	'RunTableau$$RunFrame$$DebugMenuListener.class' \
 	'RunTableau$$TopFactory.class' \
 	'Tableau$$1.class' \
 	'TableauFrame$$1.class' \
 	'TableauFrame$$ExtensionFileFilter.class' \
 	'TableauFrame$$ViewMenuListener.class' \
+	'TextEditorTableau$$Factory.class' \
+	'TextEffigy$$Factory.class' \
 	'TokenEffigy$$Factory.class' \
 	'TokenTableau$$Factory.class' \
-	'TextEditorTableau$$Factory.class' \
-	'TextEffigy$$Factory.class'
+	'UnitConstraintsDialog$$1.class' \
+	'UnitConstraintsDialog$$UnitsTableModel.class' \
+	'UnitSolverDialog$$SolutionListModel.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
