@@ -62,6 +62,8 @@ import ptolemy.moml.FilterAddIcons;
 import ptolemy.moml.FilterBackwardCompatibility;
 import ptolemy.moml.MoMLParser;
 
+import java.util.Date;			// For timing measurements
+
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplication
 /**
@@ -406,8 +408,12 @@ public class MoMLApplication {
 
                         String key = inURL.toExternalForm();
 
+			long startTime = (new Date()).getTime();
                         // Now defer to the model reader.
                         _config.openModel(base, inURL, key);
+			System.out.println("Model open done: " +
+					   Manager.timeAndMemory(startTime));
+
                     } else {
                         // No configuration has been encountered.
                         // Assume this is a MoML file, and open it.
