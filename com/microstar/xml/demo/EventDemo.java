@@ -1,8 +1,10 @@
 // EventDemo.java: demonstration application showing Ælfred's event stream.
 // NO WARRANTY! See README, and copyright below.
+// Modified 11/8/98 to add package statement.
+
+package com.microstar.xml.demo;
 
 import com.microstar.xml.XmlParser;
-
 
 /**
   * Demonstration application showing Ælfred's event stream.
