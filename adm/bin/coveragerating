@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Tue Nov 25 09:18:17 2003 by cxh]-
+# -[Fri Jan 23 16:18:56 2004 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -23,47 +23,96 @@ complexityfile=/tmp/coveragerating.complexity
 #find /tmp -name "$ratingfile" -mtime +1 -exec rm {} \;
 
 
+testing=no
+# Uncomment next line if testing
+testing=yes
 
-# Create a file that has two records on each line, one line
-# being the file name, the other being the rating
-rm -f $ratingfile
-#if [ ! -f $ratingfile ]; then
+# Create a file that has three records on each line:
+#  1. The filename    
+#  2. The AcceptedRating
+#  3. The ProposedRating
+
+if [ "$testing" = "no" ]; then 
+    rm -f $ratingfile
+fi
+
+if [ ! -f $ratingfile ]; then
 	echo "Regenerating $javafiles"
 	find $tree -xdev \( -name adm -o -name "*.tmp" \) -prune -o -name '*.java' -print > $javafiles
 
 	echo "Regenerating $ratingfile"
-	cat $javafiles | xargs grep AcceptedRating | 
+	cat $javafiles | xargs egrep '@(Proposed|Accepted)Rating' | 
 	        # Remove leading spaces
 	        sed 's/^ *//' |
-		awk '{split($1,f,":"); print f[1], $2 }' |
+		awk '$0 ~/ProposedRating/ {
+					     # The rating is the word after
+					     # the @ProposedRating tag
+					     proposedRating = ""
+					     for (i=1; i<=NF; i++) {
+						if ( $i ~ /ProposedRating/) {
+						    proposedRating = $(i+1)
+						    proposedRatingFile=$1
+						}
+					     }
+
+					  }
+		     $0 ~/AcceptedRating/ {  split($1,f,":");
+					     for (i=1; i<=NF; i++) {
+						if ( $i ~ /AcceptedRating/) {
+						    acceptedRating = $(i+1)
+						}
+					     }
+					     if ( proposedRatingFile != $1) {
+						# Error, file did not contain
+						# a proposed rating
+					        #proposedRating = acceptedRating
+					     }
+
+					     print f[1], acceptedRating, proposedRating
+					  }' |
 		# Remove the leading part of the tree name
+                # Convert / to .
+                # Remove the leading .					  
 		sed -e "s=$tree==" \
-			-e 's=/=.=g'> $ratingfile
-#fi
+			-e 's=/=.=g' \
+			-e 's=^\.==g' \
+			> $ratingfile
+fi
 
 # Create a file that has three fields on each line:
 # 1) The string "complexity"
 # 2) The file name
 # 3) The cyclometric complexity
-#if [ ! -f $complexityfile ]; then
+
+if [ "$testing" = "no" ]; then 
+    rm -f $complexityfile
+fi
+
+if [ ! -f $complexityfile ]; then
 	echo "Regenerating $complexityfile"
 	complexityfile_tmp=/tmp/coveragerating.complexity_tmp
 	if [ ! -f $complexityfile_tmp ]; then
-	    rm -f $complexityfile_tmp
+	    if [ "$testing" = "no" ]; then 
+		rm -f $complexityfile_tmp
+	    fi	
 	    for javafile in `cat $javafiles`
 	    do
 		jv-scan --complexity $javafile >> $complexityfile_tmp
 	    done    
         fi	    
 	# Look for all the lines with two fields, add a complexity tag
-	# convert the / to . and sort by complexity
+	# Remove the leading part of the tree name
+        # Convert / to .
+        # Remove the leading .					  
+	# Sort by complexity
 	awk ' NF == 2 {print "complexity", $0}' < $complexityfile_tmp |
-	    sed "s@$tree/@\.@" |
-	    sed 's@/@.@g' |
+	    sed -e "s@$tree/@\.@" \
+		-e 's@/@.@g' \
+		-e 's=^complexity \.=complexity =g' |
 	    sort +2n -3n > $complexityfile
 
 	#rm -f $complexityfile_tmp
-#fi
+fi
 
 
 # Read in the rating file, then the coverage file
@@ -83,17 +132,27 @@ awk '{
 	    # Reading in the rating file, which has no < chars
 	    print $1,$2
 	    color = $2
+	    
 	    # If the color is yellow, then substitute in gold
 	    if (color ~ /ellow/) {
 		color = "#ffaa00"
 	    }
 	    rating[$1] = color
+
+	    color = $3
+
+	    # If the color is yellow, then substitute in gold
+	    if (color ~ /ellow/) {
+		color = "#ffaa00"
+	    }
+	    proposedRating[$1] = color
 	}
      } else {
 	# Reading in the coverage html file
 	if ($0 ~ />Package /) {
 	    split($3,p,"<")
-	    package=p[1]
+	    # Remove the leading .
+	    package=substr(p[1], 2, length(p[1])) 
 	    printf("%s %s <a name=%c%s%c>%s</a></th></TR>\n", $1, $2, 34, package, 34, package)
 	} else {
 	    if ( $0 ~ /<TR><th align="center">/) {
@@ -114,8 +173,17 @@ awk '{
 
 		    printf("%s>",ff[1]);
 		    
+		    # If the rating does not match the proposed rating,
+		    # we italicize the filename
+		    if (rating[file] != proposedRating[file]) {
+			needsReviewOpen="<i>"
+			needsReviewClose="</i>"
+		    } else {
+			needsReviewOpen=""
+			needsReviewClose=""
+		    }  
 		    # 34 is double quote
-		    printf("<a href=%c%s.html%c><font color=%s>%s</font></a></th>", 34, filename, 34, rating[file], ff[nff]);
+		    printf("<a href=%c%s.html%c>%s<font color=%s>%s</font>%s</a></th>", 34, filename, 34, needsReviewOpen, rating[file], ff[nff], needsReviewClose);
 
 		    #for(i=3;i<nnf;i++) {
 		    #	printf("%s>",ff[i]);
@@ -128,7 +196,11 @@ awk '{
 		    if (complexityValue == "") {
 			complexityValue = "&nbsp;"
  		    }
-		    percentComplexityRank = int(complexityRank[file]/maxComplexityRank * 100.0)
+		    if (maxComplexityRank != 0) {
+			percentComplexityRank = int(complexityRank[file]/maxComplexityRank * 100.0)
+		    } else {
+			percentComplexityRank = 0
+		    }
 	    if (complexityValue > 500) {
 		complexityValue="<font color=#ff0000>" complexityValue"</font>"
 	    }
@@ -201,6 +273,10 @@ awk ' BEGIN {
 	print "<title> @tree@ Coverage Summary</title>"
 	print "</head><body>"
 	print "<h1>&nbsp;&nbsp;Package Coverage</h1>"
+	print "File names in <i>italic</i> are files that are ready for"
+	print "<href=\"http://chess.eecs.berkeley.edu/ptolemy/reviews/index.htm\" target=\"_top\">review</a>"
+	print "because the <code>@AcceptedRating</code> and the"
+	print "<code>@ProposedRating</code> are different."
 	print "<menu>"
     }
     { if (printedDate == 0) {
