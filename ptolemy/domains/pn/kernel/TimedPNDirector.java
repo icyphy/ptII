@@ -469,13 +469,13 @@ public class TimedPNDirector extends BasePNDirector {
 	    // Artificial deadlock due to delayed processes.
 	    // Advance time to next possible time.
 	    synchronized(this) {
-		try {
+		if (!_eventQueue.isEmpty()) {
 		    //Take the first time-blocked process from the queue.
 		    TimedEvent event = (TimedEvent)_eventQueue.take();
 		    //Advance time to the resumption time of this process.
 		    setCurrentTime(event.timeStamp);
 		    _informOfDelayUnblock();
-		} catch (IllegalActionException e) {
+		} else {
 		    throw new InternalErrorException("Inconsistency"+
 			    " in number of actors blocked on delays count"+
 			    " and the entries in the CalendarQueue");
@@ -488,8 +488,7 @@ public class TimedPNDirector extends BasePNDirector {
 		    //If queue is not empty, then determine the resumption
 		    //time of the next process.
 		    if (!_eventQueue.isEmpty()) {
-			try {
-			    //Remove the first process from the queue.
+                        //Remove the first process from the queue.
                             TimedEvent event = (TimedEvent)_eventQueue.take();
 			    Actor actor = (Actor)event.contents;
 			    //Get the resumption time of the newly removed
@@ -505,9 +504,6 @@ public class TimedPNDirector extends BasePNDirector {
 				_eventQueue.put(new TimedEvent(newtime, actor));
 				sameTime = false;
 			    }
-			} catch (IllegalActionException e) {
-			    throw new InternalErrorException(e.toString());
-			}
 		    } else {
 			sameTime = false;
 		    }
