@@ -88,11 +88,11 @@ public class StringUtilities {
      *  with their corresponding XML entities.  This is necessary to
      *  allow arbitrary strings to be encoded within XML.  This method
      *  <pre>
-     *  & becomes &amp;amp;
+     *  &amp; becomes &amp;amp;
      *  " becomes &amp;quot;
      *  < becomes &amp;lt;
      *  > becomes &amp;gt;
-     *  newline becomes &#10;
+     *  newline becomes &amp;#10;
      *  </pre>
      *
      *  @param string The string to escape.
