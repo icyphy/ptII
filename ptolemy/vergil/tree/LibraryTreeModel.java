@@ -104,15 +104,12 @@ public class LibraryTreeModel extends EntityTreeModel {
         // If this fails, we don't really want to throw an exception
         // so that users can manually open libraries.
         try {
-            if (entitylibURL == null) {
-                throw new Exception(
-                        "Cannot open master library: "
-                        + entitylibURL);
-            }
-            MoMLParser parser = new MoMLParser();
-            instance._masterLibrary = (CompositeEntity) parser.parse(
-                    entitylibURL, entitylibURL.openStream());
-            instance._directory.add(instance._masterLibrary);
+            if (entitylibURL != null) {
+		MoMLParser parser = new MoMLParser();
+		instance._masterLibrary = (CompositeEntity) parser.parse(
+		    entitylibURL, entitylibURL.openStream());
+		instance._directory.add(instance._masterLibrary);
+	    }
         } catch (Exception ex) {
             MessageHandler.error("Failed to open the master library: ", ex);
         }
