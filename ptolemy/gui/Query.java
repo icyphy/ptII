@@ -126,6 +126,39 @@ public class Query extends JPanel {
         _listeners.insertLast(listener);
     }
 
+    /** FIXME: Create a slider with the specified name, label, and default 
+     *  value.  To set the label alignment use setAlignment().
+     *  @param name The name used to identify the slider.
+     *  @param label The label to attach to the slider.
+     *  @param defaultValue Default value of slider.
+     */
+    public void addSlider(String name, String label, int defaultValue) {
+        JLabel lbl = new JLabel(label, _alignment);
+        Slider slider = new Slider();
+        slider.setValue(defaultValue);
+        _addPair(lbl, slider);
+    }
+
+    /** FIXME: Create a slider with the specified name, label, default 
+     *  value, maximum, and minimum.  To set the minimum or maximum value 
+     *  of the slider, or the label alignment, use setNewMin(), 
+     *  setNewMax(), and setAlignment().
+     *  @param name The name used to identify the slider.
+     *  @param label The label to attach to the slider.     
+     *  @param defaultValue Default value of slider.
+     *  @param max Maximum value of slider.
+     *  @param min Minimum value of slider.
+     */
+    public void addSlider(String name, String label, int defaultValue,
+            double max, double min) {
+        JLabel lbl = new JLabel(label, _alignment);
+        Slider slider = new Slider();
+        slider.setNewMax(max);
+        slider.setNewMin(min);
+        slider.setNewValue(defaultValue);
+        _addPair(lbl, slider);
+    }
+
     /** Get the current value in the entry with the given name
      *  and return as a boolean.  If the entry is not a checkbox,
      *  then throw an exception.
@@ -217,6 +250,13 @@ public class Query extends JPanel {
         }
     }
 
+    /** FIXME: Specify the preferred alignment of the slider's label.
+     *  @param max The preferred alignment.
+     */
+    public void setAlignment(int num) {
+        _alignment = num;
+    }
+
     /** Set the background color for all the widgets.
      *  @param color The background color.
      */
@@ -278,6 +318,7 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the entry type does not
      *   have a string representation (this should not be thrown).
      */
+
     public String stringValue(String name) throws NoSuchElementException {
         Object result = _entries.get(name);
         if(result == null) {
@@ -310,6 +351,9 @@ public class Query extends JPanel {
     ////                         public variables                  ////
 
     public static final int DEFAULT_ENTRY_WIDTH = 12;
+
+    // FIXME
+    public static final int DEFAULT_ALIGNMENT = JLabel.CENTER;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -370,6 +414,9 @@ public class Query extends JPanel {
 
     // The width of the text boxes.
     private int _width = DEFAULT_ENTRY_WIDTH;
+
+    // FIXME: The alignment of the slider's label.
+    private int _alignment = DEFAULT_ALIGNMENT;  
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

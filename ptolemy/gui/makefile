@@ -50,7 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Message.java \
 	Query.java \
-	QueryListener.java
+	QueryListener.java \
+	Slider.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
