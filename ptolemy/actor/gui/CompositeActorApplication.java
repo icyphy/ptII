@@ -80,12 +80,24 @@ public class CompositeActorApplication implements ExecutionListener {
      *  @exception Exception If command line arguments have problems.
      */
     public CompositeActorApplication(String args[]) throws Exception {
+        this(args, true);
+    }
+
+    /** Parse the command-line arguments, creating models as specified.
+     *  Then, if start is true, execute each model that contains a manager.
+     *  @param args The command-line arguments.
+     *  @exception Exception If command line arguments have problems.
+     */
+    public CompositeActorApplication(String args[], boolean start) throws Exception {
         if (args != null) {
             _parseArgs(args);
-            Iterator models = _models.iterator();
-            while(models.hasNext()) {
-                CompositeActor model = (CompositeActor)models.next();
-                startRun(model);
+            
+            if (start) {
+               Iterator models = _models.iterator();
+               while(models.hasNext()) {
+                    CompositeActor model = (CompositeActor)models.next();
+                    startRun(model);
+               }
             }
         }
     }

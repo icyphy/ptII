@@ -529,9 +529,9 @@ public class IOPort extends ComponentPort {
      *  from all linked relations. For an input
      *  port, the returned value is an array of arrays.  The first index
      *  (the group) specifies the group of receivers that receive from
-     *  from the same channel.  The second index (the
-     *  column) specifies the receiver number within the group of
-     *  receivers that get copies from the same channel.
+     *  the same channel.  The second index (the column) specifies the 
+     *  receiver number within the group of receivers that get copies from 
+     *  the same channel.
      *  <p>
      *  For a transparent port (a port of a non-opaque entity), this method
      *  returns receivers in ports connected to this port on the inside.
