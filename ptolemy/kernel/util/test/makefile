@@ -45,6 +45,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	PtestWorkspace.java \
+	TestInvalidStateException.java \
 	TestNullNamedObj.java \
 	TestWorkspace.java
 
