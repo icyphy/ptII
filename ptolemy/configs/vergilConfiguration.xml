@@ -151,7 +151,6 @@
             <input source="../actor/lib/logic/logic.xml"/>
             <input source="../actor/lib/conversions/conversions.xml"/>
             <input source="../actor/lib/signalprocessing.xml"/>
-            <input source="../domains/sdf/lib/sdfentities.xml"/>
             <input source="../domains/ct/lib/ctentities.xml"/>
             <input source="../domains/de/lib/deentities.xml"/>
           </group>
