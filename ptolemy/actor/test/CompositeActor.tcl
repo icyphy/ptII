@@ -188,8 +188,6 @@ test CompositeActor-7.1 {Test clone and description} {
 } {ptolemy.actor.CompositeActor {.E3} attributes {
     {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.E3._iconDescription} attributes {
     }}
-    {ptolemy.actor.IODependence {.E3.IODependence} attributes {
-    }}
 } ports {
     {ptolemy.actor.IOPort {.E3.P1} attributes {
     } links {
@@ -224,8 +222,6 @@ test CompositeActor-7.1 {Test clone and description} {
 } entities {
     {ptolemy.actor.CompositeActor {.E3.E5} attributes {
         {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.E3.E5._iconDescription} attributes {
-        }}
-        {ptolemy.actor.IODependence {.E3.E5.IODependence} attributes {
         }}
         {ptolemy.actor.Director {.E3.E5.WORMDIR} attributes {
             {ptolemy.kernel.util.TransientSingletonConfigurableAttribute {.E3.E5.WORMDIR._iconDescription} attributes {
