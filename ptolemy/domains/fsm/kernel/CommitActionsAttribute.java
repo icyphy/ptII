@@ -211,7 +211,7 @@ public class CommitActionsAttribute
                                 .getEntity(refinementName);
                         if (refinement != null) {
                             Attribute entry
-                                    = refinement.getAttribute(refinementName);
+                                    = refinement.getAttribute(entryName);
                             if (entry instanceof Variable) {
                                 return entry;
                             }
