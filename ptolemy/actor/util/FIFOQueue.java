@@ -58,7 +58,7 @@ public class FIFOQueue implements Cloneable {
     /** Construct an empty queue with no container.
      */
     public FIFOQueue() {
-        _queuelist = new CircularList();
+        _queueList = new CircularList();
         _historyList = new CircularList();
     }
 
@@ -80,7 +80,7 @@ public class FIFOQueue implements Cloneable {
     public FIFOQueue(FIFOQueue model) {
         this();
         synchronized(model) {
-            _queuelist.appendElements(model.elements());
+            _queueList.appendElements(model.elements());
             _historyList.appendElements(model.historyElements());
         }
     }
@@ -101,7 +101,7 @@ public class FIFOQueue implements Cloneable {
      *  @see collections.CircularList#elements()
      */
     public CollectionEnumeration elements() {
-        return _queuelist.elements();
+        return _queueList.elements();
     }
 
     /** Return true if the number of objects in the queue equals the
@@ -109,7 +109,7 @@ public class FIFOQueue implements Cloneable {
      *  @return A boolean indicating whether the queue is full.
      */
     public boolean isFull() {
-        return _queuelist.size() == _queuecapacity;
+        return _queueList.size() == _queueCapacity;
     }
 
     /** Return an object in the queue or history. The object is not
@@ -133,7 +133,7 @@ public class FIFOQueue implements Cloneable {
         Object obj = null;
         try {
             if (offset >= 0) {
-                obj = _queuelist.at(offset);
+                obj = _queueList.at(offset);
             } else {
                 obj = _historyList.at(historySize()+offset);
             }
@@ -152,7 +152,7 @@ public class FIFOQueue implements Cloneable {
      *  @return The capacity of the queue.
      */
     public int getCapacity() {
-        return _queuecapacity;
+        return _queueCapacity;
     }
 
     /** Return the container of the queue, or null if there is none.
@@ -198,9 +198,9 @@ public class FIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean put(Object element) {
-        if (_queuecapacity == INFINITE_CAPACITY ||
-                _queuecapacity > _queuelist.size()) {
-            _queuelist.insertLast(element);
+        if (_queueCapacity == INFINITE_CAPACITY ||
+                _queueCapacity > _queueList.size()) {
+            _queueList.insertLast(element);
             return true;
         } else {
             return false;
@@ -225,7 +225,7 @@ public class FIFOQueue implements Cloneable {
             throw new IllegalActionException(_container,
                     "Queue contains more elements than the proposed capacity.");
         }
-        _queuecapacity = capacity;
+        _queueCapacity = capacity;
     }
 
     /** Set the container of the queue. The container is only used
@@ -266,7 +266,7 @@ public class FIFOQueue implements Cloneable {
      *  @return The number of objects in the queue.
      */
     public int size() {
-        return _queuelist.size();
+        return _queueList.size();
     }
 
     /** Remove the oldest object from the queue and return it.
@@ -281,7 +281,7 @@ public class FIFOQueue implements Cloneable {
     public Object take() throws NoSuchElementException {
         Object obj = null;
         try {
-            obj = _queuelist.take();
+            obj = _queueList.take();
         } catch (NoSuchElementException ex) {
             String str = "";
             if (_container != null) {
@@ -314,10 +314,10 @@ public class FIFOQueue implements Cloneable {
     private Nameable _container = null;
 
     // The capacity of the queue, defaulting to infinite.
-    private int _queuecapacity = INFINITE_CAPACITY;
+    private int _queueCapacity = INFINITE_CAPACITY;
 
     // The list of objects currently in the queue.
-    private CircularList _queuelist;
+    private CircularList _queueList;
 
     // The capacity of the history queue, defaulting to zero.
     private int _historyCapacity = 0;
