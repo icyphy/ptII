@@ -39,6 +39,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
+import ptolemy.data.expr.Variable;
 
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -182,10 +183,15 @@ public class ActorTransformer extends SceneTransformer {
             // FIXME: This needs to look at all code that is reachable
             // from a constructor.
             _removeAttributeInitialization(theClass);
-   
-            Entity classEntity = (Entity)
-                ModelTransformer._findDeferredInstance(entity);
-         
+
+            Entity classEntity;
+            try {
+                classEntity = (Entity)
+                    ModelTransformer._findDeferredInstance(entity).clone();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex.getMessage());
+            }
             // Loop over all the constructors and add code to each one to 
             // populate the actor with parameter values, etc...
             /*     for(Iterator methods = theClass.getMethods().iterator();
@@ -226,13 +232,37 @@ public class ActorTransformer extends SceneTransformer {
                     _model.getFullName() + "." + entity.getName(),
                     classEntity, classEntity, createdSet);
             
-            // insert code to initialize the settable
+            // Insert code to initialize the settable
             // parameters of this instance and
             // create fields for attributes.
             ModelTransformer.createFieldsForAttributes(
                     body, entity, thisLocal, 
                     entity, thisLocal, entityInstanceClass, createdSet);
-
+            
+            // Initialize the parameters of the class entity.
+            for(Iterator attributes = 
+                    entity.attributeList(Settable.class).iterator();
+                attributes.hasNext();) {
+                Settable settable = (Settable)attributes.next();
+                Settable classSettable = (Settable)classEntity.getAttribute(
+                        settable.getName());
+                if(classSettable != null) {
+                    System.out.println("classSettable = " + classSettable);
+                    try {
+                        if(settable instanceof Variable) {
+                            
+                            ((Variable)classSettable).setToken(
+                                    ((Variable)settable).getToken());
+                        } else {
+                            classSettable.setExpression(settable.getExpression());
+                            classSettable.validate();
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+    
             // FIXME: this is very similar to other code in the 
             // ModelTransformer.
             // Set the types of all the ports.
@@ -258,10 +288,11 @@ public class ActorTransformer extends SceneTransformer {
                                     StringConstant.v(port.getName()))));
                 } else {
                     System.out.println("creating port for " + port.getName());
+                    String portClassName = port.getClass().getName();
                     // If the class does not create the port,
                     // then create a new port with the right name.
                     Local local = PtolemyUtilities.createNamedObjAndLocal(
-                            body, className,
+                            body, portClassName,
                             thisLocal, port.getName());
                     // and then cast to portLocal
                     body.getUnits().add(Jimple.v().newAssignStmt(ioportLocal,

@@ -202,8 +202,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
     private void _getPortFields(SootClass theClass, Entity container,
             Entity object, Map portToFieldMap) {
       
-        for(Iterator ports =
-                object.portList().iterator();
+        for(Iterator ports = object.portList().iterator();
             ports.hasNext();) {
             Port port = (Port)ports.next();
                     
@@ -222,8 +221,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 field.setModifiers((field.getModifiers() & Modifier.STATIC) | 
                         Modifier.FINAL | Modifier.PRIVATE);
             }
-            field.addTag(new ValueTag(
-                    port));
+            field.addTag(new ValueTag(port));
             portToFieldMap.put(port, field);
             // FIXME: call recursively
             // _getAttributeFields(theClass, container, 
