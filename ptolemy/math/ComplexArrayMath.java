@@ -109,16 +109,16 @@ public class ComplexArrayMath {
 
     /** Return a new array that is formed by applying an instance of a
      *  ComplexBinaryOperation to each element in the input array,
-     *  using <i>z</i> as the right operand in all cases and the array elements
-     *  as the left operands (op.operate(array[i], z)).
+     *  using <i>z</i> as the left argument to <i>op</i> in all cases and
+     *  the array elements as the right arguments (op.operate(z, array[i])).
      *  If the length of the array is 0, return a new array of length 0.
      *  <p>
      *  @param op The complex binary operation to be applied to the given
      *  complex number and complex array.
-     *  @param z The complex number that is the second argument to <i>op</i>.
-     *  @param array The array of complex numbers that is the first argument
+     *  @param z The complex number that is the first argument to <i>op</i>.
+     *  @param array The array of complex numbers that is the second argument
      *  to <i>op</i>.
-     *  @return A new array containing elements equal to (op.operate(array[i], z)).
+     *  @return A new array containing elements equal to (op.operate(z, array[i])).
      *  </p>
      */
     public static final Complex[] applyBinaryOperation(
@@ -127,11 +127,11 @@ public class ComplexArrayMath {
         int length = array.length;
         Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
-            returnValue[i] = op.operate(array[i], z);
+            returnValue[i] = op.operate(z, array[i]);
         }
         return returnValue;
     }
-
+ 
     /** Return a new array that is formed by applying an instance of a
      *  ComplexBinaryOperation to each element in the input array,
      *  using <i>z</i> as the right operand in all cases and the array elements

@@ -112,13 +112,13 @@ public class ComplexMatrixMath {
 
     /** Return a new matrix that is formed by applying an instance of a
      *  ComplexBinaryOperation to each element in the input matrix,
-     *  using z as the left operand in all cases and the matrix elements
-     *  as the right operands (op.operate(matrix[i][j], z)).
+     *  using <i>z</i> as the left argument in all cases and the matrix elements
+     *  as the right arguments (z, op.operate(matrix[i][j])).
      *  <p>
      *  @param op A complex binary operation.
      *  @param z A complex number.
      *  @param matrix A matrix of complex numbers.
-     *  @return A new matrix formed by applying (op.operate(matrix[i][j], z))
+     *  @return A new matrix formed by applying (z, op.operate(matrix[i][j]))
      *  to each element of <i>matrix</i>.
      *  </p>
      */
@@ -131,7 +131,7 @@ public class ComplexMatrixMath {
         Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = op.operate(matrix[i][j], z);
+                returnValue[i][j] = op.operate(z, matrix[i][j]);
             }
         }
         return returnValue;
@@ -139,8 +139,8 @@ public class ComplexMatrixMath {
 
     /** Return a new matrix that is formed by applying an instance of a
      *  ComplexBinaryOperation to each element in the input matrix,
-     *  using z as the left operand in all cases and the matrix elements
-     *  as the right operands (op.operate(matrix[i][j], z)).
+     *  using <i>z</i> as the right argument in all cases and the matrix elements
+     *  as the left arguments (op.operate(matrix[i][j], z)).
      *  <p>
      *  @param op A complex binary operation.
      *  @param z A complex number.

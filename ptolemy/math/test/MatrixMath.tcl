@@ -594,7 +594,7 @@ testMatrixMath applyBinaryOperation $types 2_2 \
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
-	{{0.0 + 0.0i -1.0 + 3.0i}}] \
+	{{0.0 + 0.0i 1.0 - 3.0i}}] \
 	[list Double double double {{0.0 -3.0}}] \
 	[list Float float float {{0.0 -3.0}}] \
 	[list Integer int int {{0 -3}}] \
