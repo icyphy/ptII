@@ -26,7 +26,7 @@ adm
 alljsimpletests.tcl
 alljtests.tcl
 ant
-bin/comm.policy
+ptII4.0.1/bin/comm.policy
 bin/makebat
 bin/makebat.lnk
 bin/ptinvoke
