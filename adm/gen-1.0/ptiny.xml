@@ -232,7 +232,7 @@ Berkeley, CA 94706</property>
                         <property name="iconFile">ptolemy\plot\doc\img\ptplot.ico</property>
                         <property name="platformSpecificTarget">ptplot.exe</property>
                         <property name="iconFileType">1</property>
-                        <property name="folderContext">$UserPrograms$</property>
+                        <property name="folderContext">$AllUsersPrograms$</property>
                     </extendedProperty>
                     <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
                     <property name="name">Ptplot</property>
