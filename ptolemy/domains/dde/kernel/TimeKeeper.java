@@ -113,15 +113,6 @@ public class TimeKeeper {
         return _currentTime;
     }
 
-    /** Return the delay time associated with this time keeper.
-     *  The delay time value is expected to be updated possibly
-     * @return double The delay time of this time keeper.
-     *  once per every token consumption of a given actor.
-     */
-    public synchronized double getDelayTime() {
-	return _delayTime;
-    }
-
     /** Return the active TimedQueueReceiver with the oldest receiver time
      *  of all receivers contained in the actor that this TimeKeeper
      *  controls. A TimedQueueReceiver is considered active if its receiver
@@ -308,6 +299,7 @@ public class TimeKeeper {
 	    return null;
 	}
     }
+    
     /** Return the earliest possible time stamp of the next token to be
      *  consumed by the actor managed by this time keeper. Consider
      *  this returned time value as a greatest lower bound. The next
@@ -322,6 +314,20 @@ public class TimeKeeper {
         }
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
         return triple.getTime();
+    }
+
+    /** Return the current value of the output time associated with 
+     *  this time keeper and, after so doing, set the output time to 
+     *  a new value that is equivalent to this time keeper's current time.
+     * @return double The output time of this time keeper.
+     */
+    public synchronized double getOutputTime() {
+        double time = _currentTime;
+        if( _outputTime > _currentTime ) {
+            time = _outputTime;
+        }
+        _outputTime = _currentTime;
+        return time;
     }
 
     /** Return true if the minimum receiver time is unique to a single
@@ -371,10 +377,10 @@ public class TimeKeeper {
      *  to all output channels that have a receiver time less than or
      *  equal to the current time of this time keeper. Associate a time i
      *  stamp with each NullToken that is equal to the current time of
-     *  this thread.
-     * FIXME: Should this be synchronized???
+     *  this thread. This method is not synchronized so the calling
+     *  method should be.
      */
-    public synchronized void sendOutNullTokens() {
+    public void sendOutNullTokens() {
 	String calleeName = 
 		((Nameable)_actor).getName();
 	Enumeration ports = _actor.outputPorts();
@@ -469,19 +475,20 @@ public class TimeKeeper {
         }
     }
 
-    /** Set the delay time associated with this time keeper.
-     *  Throw an IllegalActionException if the delay time is
-     *  negative.
-     * @param delay The delay time of this time keeper.
+    /** Set the output time associated with this time keeper.
+     *  Throw an IllegalActionException if the output time is
+     *  less than the current time.
+     * @param outputTime The output time of this time keeper.
      */
-    public synchronized void setDelayTime(double delay)
+    public synchronized void setOutputTime(double outputTime)
 	     throws IllegalActionException {
-	if( delay < 0.0 ) {
+	if( outputTime < _currentTime ) {
 	    throw new IllegalActionException(
 		    ((NamedObj)_actor).getName() + " - Attempt to "
-		    + "set negative delay time.");
+		    + "set the output time to be less than the " 
+                    + "current time.");
 	}
-	_delayTime = delay;
+	_outputTime = outputTime;
     }
 
     /** Return true if a search for receivers with a receiver
@@ -703,8 +710,8 @@ public class TimeKeeper {
     // each input receiver.
     private double _currentTime = 0.0;
 
-    // The delay time associated with this actor.
-    private double _delayTime = 0.0;
+    // The output time associated with this actor.
+    private double _outputTime = 0.0;
 
     // Flag set to true if any of the receivers have time of
     // TimedQueueReceiver.IGNORE
