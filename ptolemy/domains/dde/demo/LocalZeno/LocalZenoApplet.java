@@ -80,14 +80,16 @@ public class LocalZenoApplet extends DDEApplet {
     public void init() {
 	super.init();
 
-	setLayout( new BorderLayout(5, 5) );
+	getContentPane().setLayout( new BorderLayout(5, 5) );
 
 	// Panel for controls and plotter
 	JPanel topPanel = new JPanel();
 	topPanel.setSize( new Dimension(600, 200) );
 
-	// The '3' argument specifies a 'go', 'stop' and 'layout' buttons.
-	topPanel.add( _createRunControls(3), BorderLayout.NORTH );
+	// The '3' argument specifies a 'go', 'stop' and 
+        // 'layout' buttons.
+	topPanel.add( _createRunControls(3), 
+        	BorderLayout.NORTH );
 
 	_plotPanel = new JPanel();
 	_plotPanel.setSize( new Dimension(600, 200) );
@@ -100,7 +102,7 @@ public class LocalZenoApplet extends DDEApplet {
 	_divaPanel = new JPanel( new BorderLayout() );
 	_divaPanel.setSize( new Dimension(600, 400) );
 	_divaPanel.setBackground( getBackground() );
-	add( _divaPanel, BorderLayout.CENTER );
+	getContentPane().add( _divaPanel, BorderLayout.CENTER );
 
         _graph = constructDivaGraph();
 	final Graph finalGraph = _graph;
