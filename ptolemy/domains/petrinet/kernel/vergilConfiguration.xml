@@ -1,0 +1,126 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+  <doc>Configuration to edit and run Ptolemy II Petri net models</doc>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
+  </entity>
+
+  <!-- Factories for effigies. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
+    </entity>
+    <entity name="FSM Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+          <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
+            </entity>
+          </configure>
+        </property>
+      </entity>
+    </entity>
+    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
+    <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
+  </entity>
+
+  <!-- Factories for tableaux. -->
+  <entity name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <!-- Factories for tableaux that offer views of Ptolemy II fsms. -->
+    <entity name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
+      <!-- These will appear in the View menu of an fsm tableau. -->
+      <entity name="FSM Editor" class="ptolemy.vergil.ptolemy.fsm.FSMGraphTableau$Factory"/>
+      <entity name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+      <entity name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+    </entity>
+    <!-- Factories for tableaux that offer views of Ptolemy II entities. -->
+    <entity name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
+      <!-- These will appear in the View menu of an entity tableau. -->
+      <entity name="Graph Editor" class="ptolemy.vergil.ptolemy.kernel.KernelGraphTableau$Factory"/>
+      <entity name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory"/>
+      <entity name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+      <entity name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+      <entity name="JVM Properties" class="ptolemy.actor.gui.JVMTableau$Factory"/>
+    </entity>
+    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
+      <!-- This will appear in the View menu of an entity tableau. -->
+      <entity name="Source" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+    </entity>
+    <entity name="Text Editor" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+    <!-- FIXME: text editor, plot data tableau, etc. -->
+  </entity>
+
+  <!-- Main default library -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker" class="ptolemy.kernel.util.SingletonAttribute"/>
+
+    <!-- Default utilities library. -->
+    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">Double click to edit text.</text>
+           </svg>
+           </configure>
+        </property>
+	<!-- The following attribute makes the right editor open -->
+	<property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory"/>
+	<property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+    </property>
+
+    <!-- Blank composite actor. -->
+    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/>
+    <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
+    <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+          <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
+            </entity>
+          </configure>
+        </property>
+    </entity>
+    <entity name="interface automaton" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+          <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
+            </entity>
+          </configure>
+        </property>
+    </entity>
+          </group>
+        ?>
+      </configure>
+    </class>
+
+    <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place"/>
+    <entity name="Transition" class="ptolemy.domains.petrinet.kernel.Transition"/>
+  <entity name="Weight" class="ptolemy.domains.petrinet.kernel.Weight"/>
+
+    <!-- Default director library. -->
+    <class name="director library" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+
+      <doc>default director library</doc>
+      <property name="PetriNet" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
+
+          </group>
+        ?>
+      </configure>
+    </class>
+  </entity>
+</entity>
