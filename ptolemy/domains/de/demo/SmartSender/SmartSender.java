@@ -31,10 +31,8 @@
 
 package ptolemy.domains.de.demo.SmartSender;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -137,9 +135,6 @@ public class SmartSender extends TypedAtomicActor {
 
         if (output.getWidth() > 0) {
             output.send(0, new IntToken(_count++));
-            if (_reservedPort != null) {
-                _reservedPorts.remove(_reservedPort);
-            }
         } else {
             ChangeRequest request = new ChangeRequest(this, "Find a destination") {
                 protected void _execute() throws IllegalActionException {
@@ -175,17 +170,12 @@ public class SmartSender extends TypedAtomicActor {
         Director director = getDirector();
         director.fireAtCurrentTime(this);
 
-        _reservedPorts.clear();
-
         _count = 1;
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    /** Count of the number of firings. */
     private int _count = 1;
-
-    private static Set _reservedPorts = new HashSet();
-
-    private Port _reservedPort = null;
 }
