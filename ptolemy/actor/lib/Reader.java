@@ -58,14 +58,29 @@ one column in the data file.
 The file format at the URL is assumed as the following.
 A newline character separates the rows, and a tab or a space character
 separates the columns.
-<P>
-If the "URL" parameter is an empty string, then the System.in
-is used for input.
 
-FIXME: The type of the output ports is set to Double for now.
+<p>
+The <i>sourceURL</i> parameter should be set to the name of the file,
+specified as a fully qualified URL. 
+If the <i>sourceURL</i> parameter is an empty string, then the System.in
+is used for input.
+It is possible to load a file
+from the local file system by using the prefix "file://" instead of
+"http://". Relative file paths are allowed. To specify a file
+relative to the current directory, use "../" or "./". For example,
+if the current directory contains a file called "test.txt", then
+<i>sourceURL</i> should be set to "file:./test.txt". If the parent
+directory contains a file called "test.txt", then <i>sourceURL</i>
+should be set to "file:../test.txt". To reference the file
+test.txt, located at "/tmp/test.txt", <i>sourceURL</i>
+should be set to "file:///tmp/test.txt" The default value is
+"file:///tmp/test.txt".
+
+<p>FIXME: The type of the output ports is set to Double for now.
        It should read a line in the prefire() and refer the type
        from there.
 
+@see ptolemy.actor.lib.javasound.AudioReader.java
 @author  Jie Liu
 @version $Id$
  */
