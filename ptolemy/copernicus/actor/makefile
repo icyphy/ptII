@@ -71,11 +71,66 @@ all: jclass
 
 install: jclass $(PTCLASSJAR)
 
+# Sinewave
+MODEL =			Sinewave
+MODELPATH =		$(ROOT)/ptolemy/actor/lib/$(MODEL).xml
+
+# Location where we create code that we are generating
+TARGETPACKAGE = 	ptolemy.copernicus.actor.cg.$(MODEL)
+TARGETPATH =		ptolemy/copernicus/actor/cg/$(MODEL)
+
+TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
+
+JVMSIZE = -Xmx256m
+
+# Soot command line arguments for the user.  To list all the arguments, use
+# make COMPILEOPTIONS=-h
+COMPILEOPTIONS=
+
+# Time that we should let code generation run before exiting in ms.
+WATCHDOGTIMEOUT =     600000
+# Number of Iterations to run the generated code for.
+ITERATIONS =		1000
+ITERATIONSPARAMETER =	,iterations:$(ITERATIONS)
+
 demo:
+	@echo "Run 'make demo1' to generate the Sinewave actor in ./cg/"
+	@echo "Run 'make demo2' to generate the Sinewave actor in \$$PTII/ptolemy/actor"
+	@echo "
+demo1:
+	@echo "generate actor code for $(MODELPATH) in $(TARGETPATH)"
+	$(ROOT)/bin/copernicus -codeGenerator actor \
+		-verbose \
+		-codeGenerator   "actor" \
+		-compile	 true \
+		-iterations      "$(ITERATIONS)" \
+		-iterationsParameter "$(ITERATIONSPARAMETER)" \
+		-java            "`echo "$(JAVA)" | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
+		-jvmSize         "$(JVMSIZE)" \
+		-run		 true \
+		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
+		-targetPackage   "$(TARGETPACKAGE)" \
+		-targetPath      "$(TARGETPATH)" \
+		-watchDogTimeout "$(WATCHDOGTIMEOUT)" \
+		$(MODELPATH)
+
+demo2:
+	@echo "Generate a .class file version of the Sinewave composite"
+	@echo "actor in $(PTII)/ptolemy/actor/lib"
 	$(ROOT)/bin/copernicus -codeGenerator actor \
 		-targetPackage ptolemy.actor.lib \
-		-targetPath "cg/Sinewave" \
-		$(PTII)/ptolemy/actor/lib/Sinewave.xml
+		-targetPath "." $(PTII)/ptolemy/actor/lib/Sinewave.xml
+	@echo "##################################################"
+	@echo "Now, because of the way the MoMLParser is designed, "
+	@echo "Sinewave.class is loaded before Sinewave.xml..."
+	@echo "This automatically generated class behaves almost exactly"
+	@echo "the same as the moml loaded class.."
+	@echo "You can, for instance open actor/lib/test/auto/Sinewave.xml"
+	@echo "and run the model.."
+	@echo "If you look inside, then you get the Sinewave model,"
+	@echo "but the icons and locations are screwed up, "
+	@echo "because the code generator removes the graphical annotations."
+	$(ROOT)/bin/vergil $(ROOT)/ptolemy/actor/lib/test/auto/Sinewave.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
