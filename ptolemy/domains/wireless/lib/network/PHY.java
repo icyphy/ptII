@@ -476,8 +476,8 @@ public class PHY extends NetworkActorBase {
                          if (_interference< 0.0) _interference= 0.0;
                       }
 
-                    if (timer.power > _sensitivity && ((timer.kind 
-                        == InterferenceDone)||(timer.kind == RxDone)) )
+                    if ( ((timer.kind == InterferenceDone)||(
+                        timer.kind == RxDone)) && timer.power > _sensitivity )
                          _numBusyTimers--;
 
                     // remove it from the set no matter that
@@ -583,8 +583,6 @@ public class PHY extends NetworkActorBase {
     // time that a packet uses the channel
     protected Attribute _duration = null;
 
-    // The set for the timers to be processed when they are expried.
-    protected HashSet _timersSet;
 
 
     ///////////////////////////////////////////////////////////////////

@@ -65,6 +65,11 @@
         </entity>
 
     </entity>
+   <entity name="PHY" class="ptolemy.moml.EntityLibrary">
+        <entity name="IEEE80211PHY" class="ptolemy.domains.wireless.lib.network.PHY">
+        </entity>
+    </entity>
+
 </entity>  
       </group>
     ?>
