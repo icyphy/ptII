@@ -46,13 +46,16 @@ A transformer that writes C source code.
 @since Ptolemy II 2.0
 */
 public class CWriter extends SceneTransformer {
-    private static CWriter instance = new CWriter();
-    private CWriter() {}
-
+    /** Return a new CWriter.
+     *  @return The new CWriter.
+     */
     public static CWriter v() {
         return instance;
     }
 
+    /** Get the options associated with the C Writer. 
+     *  @return The options. 
+     */
     public String getDeclaredOptions() {
         return super.getDeclaredOptions() + " debug outDir";
     }
@@ -116,6 +119,9 @@ public class CWriter extends SceneTransformer {
             System.out.println("Done generating C code files for " + fileName);
         }
     }
+
+    private static CWriter instance = new CWriter();
+    private CWriter() {}
 
 }
 
