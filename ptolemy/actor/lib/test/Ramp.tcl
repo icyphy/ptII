@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test Ramp-1.1 {test clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
-    $ramp initialize
+    $ramp typeConstraints
 
     set newobj [$ramp clone]
     set initVal [[[$newobj getAttribute init] getToken] doubleValue]
