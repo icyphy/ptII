@@ -59,6 +59,8 @@ import java.util.Enumeration;
 import ptolemy.vergil.toolbox.XMLIcon;
 import ptolemy.vergil.toolbox.GraphicElement;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  * IconEditor.java
@@ -79,16 +81,19 @@ import ptolemy.kernel.util.NamedObj;
 public class IconEditor extends JCanvas {
 
     // Control begins here.
-    public static void main(String argv[]) {
+    public static void main(String argv[]) 
+        throws NameDuplicationException, IllegalActionException {
 	// Make a new instance of the IconEditor class.
 	new IconEditor();
     }
   
-  //   public IconEditor () {
-        //this (new XMLIcon (new NamedObj () ));
-  // }
+    public IconEditor () 
+        throws NameDuplicationException, IllegalActionException {
+        this (new XMLIcon (new NamedObj (), null));
+    }
 
-    public IconEditor () {
+    public IconEditor (XMLIcon icon) 
+        throws NameDuplicationException, IllegalActionException {
         // Setup the window for the icon editor application.  This 
         // window will include a toolbar of different shapes, a toolbar 
         // of different thicknesses, a button to choose the color, 
