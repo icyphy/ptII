@@ -72,27 +72,23 @@ public class HelicopterApplet extends CTApplet {
         super.init();
         JPanel controlpanel = new JPanel();
         controlpanel.setBackground(getBackground());
+        controlpanel.setLayout(new GridLayout(1, 3));
         getContentPane().add(controlpanel, BorderLayout.NORTH);
-
-        // JPanel progresspanel = new JPanel();
-        // progresspanel.setOpaque(false);
-        // getContentPane().add(progresspanel);
-        // _currentTimeCanvas = new ProgressBar();
-        // controlpanel.add(_currentTimeCanvas);
 
         _query = new Query();
         _query.setBackground(getBackground());
         //_query.addQueryListener(new ParameterListener());
         controlpanel.add(_query, BorderLayout.WEST);
         _query.addLine("stopT", "Stop Time", "70.0");
+
         JPanel runcontrols = new JPanel();
         runcontrols.setBackground(getBackground());
-        runcontrols.setLayout(new GridLayout(1, 3));
+        runcontrols.setLayout(new GridLayout(1, 1));
         controlpanel.add(runcontrols, BorderLayout.EAST);
         runcontrols.add(_createRunControls(1));
-        _actionButton = new JButton("Climb");
-        _actionButton.addActionListener(new ActionButtonListener());
-        runcontrols.add(_actionButton);
+
+        //_currentTimeCanvas = new ProgressBar();
+        //controlpanel.add(_currentTimeCanvas, BorderLayout.EAST);
 
         JPanel plotPanel = new JPanel();
         plotPanel.setLayout(new GridLayout(2, 2));
@@ -305,8 +301,16 @@ public class HelicopterApplet extends CTApplet {
             }
             // CTActors
 
-            _button = new CTButtonEvent(_toplevel, "Button");
-            _toplevel.connect(_button.output, subinAction);
+            _clock = new Clock(_toplevel, "Clock");
+            _clock.period.setToken(new DoubleToken(1e308));
+            double offsets[][] = {{0.0, 20.0}};
+            _clock.offsets.setToken(new DoubleMatrixToken(offsets));
+            BooleanToken[] defaultValues = new BooleanToken[2];
+            defaultValues[0] = new BooleanToken(false);
+            defaultValues[1] = new BooleanToken(true);
+            ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+            _clock.values.setToken(defaultValueToken);
+            _toplevel.connect(_clock.output, subinAction);
 
             HelicopterActor heli = new HelicopterActor(_toplevel, "Helicopter");
             ControllerActor ctrl = new ControllerActor(_toplevel, "Controller");
@@ -731,9 +735,6 @@ public class HelicopterApplet extends CTApplet {
             _dir.stopTime.setToken(new DoubleToken(
                     _query.doubleValue("stopT")));
             super._go();
-            // Start the CurrentTimeThread.
-            //Thread ctt = new CurrentTimeThread();
-            //ctt.start();
         } catch (Exception ex) {
             report(ex);
         }
@@ -751,162 +752,8 @@ public class HelicopterApplet extends CTApplet {
 
     private Manager _thisManager;
     private Query _query;
-    private ProgressBar _currentTimeCanvas;
+    //private ProgressBar _currentTimeCanvas;
     private double _stopTime = 70.0;
     private JButton _actionButton;
-    private CTButtonEvent _button;
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                              ////
-    /* Show simulation progress.
-     */
-    public class CurrentTimeThread extends Thread {
-        public void run() {
-            _switchTime[0] = 0;
-            while (_thisManager.getState() != _thisManager.IDLE ) {
-                _switched = false;
-                // get current FSM state.
-                State st = null;
-                try {
-                    st = _hsdir.getController().currentState();
-                } catch (IllegalActionException ex) {
-                    report("Error getting state of mode controller:", ex);
-                }
-                if( st == null) {
-                    continue;
-                }
-                String stateName = st.getName();
-                if (stateName.equals("HoverState")){
-                    _currentState = 0;
-                } else if(stateName.equals("AccelState")) {
-                    if(_currentState == 0) {
-                        _switched = true;
-                    }
-                    _currentState = 1;
-                } else if(stateName.equals("Cruise1State")) {
-                    if(_currentState == 1) {
-                        _switched = true;
-                    }
-                    _currentState = 2;
-                } else if(stateName.equals("ClimbState")) {
-                    if (_currentState == 1) {  // state2 is skipped
-                        _switchTime[2] = _switchTime[1]+1;
-                        _switched = true;
-                    }
-                    if(_currentState == 2) {
-                        _switched = true;
-                    }
-                    _currentState = 3;
-                } else {
-                    if(_currentState == 3) {
-                        _switched = true;
-                    }
-                    _currentState = 4;
-                }
-
-                // get the current time from director.
-                double currenttime = _dir.getCurrentTime();
-                double ratio = (currenttime/_stopTime)*140.0;
-                int width = (new Double(ratio)).intValue();
-                if((ratio - (double)width) > 0.5) {
-                    width += 1 ;
-                }
-                if(_switched) {
-                    _switchTime[_currentState] = width-1;
-                }
-                int incwidth = width - _switchTime[_currentState];
-                _currentTimeCanvas.setWidth(incwidth);
-                _currentTimeCanvas.repaint();
-                try {
-                    sleep(100);
-                } catch (InterruptedException e) {}
-            }
-        }
-    }
-
-    public class ActionButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            try {
-                _button.paramButtonClicked.setToken(new BooleanToken(true));
-            }catch (IllegalActionException ex) {
-                report ("Button click failed:", ex);
-            }
-
-        }
-    }
-
-    /** Draw the progress bar.
-     */
-    public class ProgressBar extends JPanel {
-
-        /** draw the progress bar.
-         */
-        public void paint(Graphics g) {
-            g.setColor(new Color(128, 128, 128));
-            g.draw3DRect(8, 8, 144, 24, false);
-
-            switch(_currentState) {
-            case 0:
-                g.setColor(new Color(255, 0, 0));
-                g.fill3DRect(10, 10, _width, 20, true);
-                break;
-            case 1:
-                g.setColor(new Color(255, 0, 0));
-                g.fill3DRect(10, 10, _switchTime[1], 20, true);
-                g.setColor(new Color(0, 255, 0));
-                g.fill3DRect(10+_switchTime[1], 10, _width, 20, true);
-                break;
-            case 2:
-                g.setColor(new Color(255, 0, 0));
-                g.fill3DRect(10, 10, _switchTime[1], 20, true);
-                g.setColor(new Color(0, 255, 0));
-                g.fill3DRect(10+_switchTime[1], 10,
-                        _switchTime[2]-_switchTime[1], 20, true);
-                g.setColor(new Color(0, 0, 255));
-                g.fill3DRect(10+_switchTime[2], 10, _width, 20, true);
-                break;
-            case 3:
-                //System.err.println(_switchTime[2] + " " +_switchTime[3]);
-                g.setColor(new Color(255, 0, 0));
-                g.fill3DRect(10, 10, _switchTime[1], 20, true);
-                g.setColor(new Color(0, 255, 0));
-                g.fill3DRect(10+_switchTime[1], 10,
-                        _switchTime[2]-_switchTime[1], 20, true);
-                g.setColor(new Color(0, 0, 255));
-                g.fill3DRect(10+_switchTime[2], 10,
-                        _switchTime[3]-_switchTime[2], 20, true);
-                g.setColor(new Color(255, 0, 255));
-                g.fill3DRect(10+_switchTime[3], 10, _width, 20, true);
-                break;
-            case 4:
-                g.setColor(new Color(255, 0, 0));
-                g.fill3DRect(10, 10, _switchTime[1], 20, true);
-                g.setColor(new Color(0, 255, 0));
-                g.fill3DRect(10+_switchTime[1], 10,
-                        _switchTime[2]-_switchTime[1], 20, true);
-                g.setColor(new Color(0, 0, 255));
-                g.fill3DRect(10+_switchTime[2], 10,
-                        _switchTime[3]-_switchTime[2], 20, true);
-                g.setColor(new Color(255, 0, 255));
-                g.fill3DRect(10+_switchTime[3], 10,
-                        _switchTime[4]-_switchTime[3], 20, true);
-                g.setColor(new Color(0, 0, 255));
-                g.fill3DRect(10+_switchTime[4], 10, _width, 20, true);
-                break;
-            default:
-                break;
-            }
-        }
-
-        /** set the width of the rectangle.
-         */
-        public void setWidth(int width) {
-            _width = width;
-
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                    private variables                      ////
-        private int _width = 0;
-    }
+    private Clock _clock;
 }
