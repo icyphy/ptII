@@ -54,7 +54,7 @@ public class Sequence extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
-    public String _codeBlock = 
+    protected String _codeBlock = 
     "	if ($ref(pos) >= $size(values)){\n"
     + "		break;\n"              
     + "	} else if ($ref(enable)) {\n"
