@@ -52,7 +52,7 @@ JSRCS = \
 	PetriNetReceiver.java \
 	PetriNetDirector.java \
 	Place.java \
-	Transition.java\
+	Transition.java \
         Weight.java
 
 EXTRA_SRCS =	$(JSRCS)
