@@ -223,8 +223,9 @@ public class PythonScript extends TypedAtomicActor {
      *  @param message The debug message.
      */
     public void debug(String message) {
-        if (_debugging)
+        if (_debugging) {
             _debug("From script: ", message);
+        }
     }
 
     /** Invoke the fire() method if defined in the script.
@@ -622,7 +623,7 @@ public class PythonScript extends TypedAtomicActor {
         String classResource =
                     ptolemy.copernicus.kernel.GeneratorAttribute.lookupClassAsResource(className);
         if (classResource != null) {
-            System.out.println("PythonScript: className: " + classResource);
+            //System.out.println("PythonScript: className: " + classResource);
             File classFile = new File(classResource);
             if (classFile.isDirectory()) {
                 PySystemState.add_extdir(classResource);
