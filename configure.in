@@ -298,7 +298,7 @@ PTJACL_JAR=$PTII/ptjacl.jar
 # The reference version of JDK 1.2 has a -native flag
 # If we don't use -native, then some of the threading tests fail
 PTJACL_JFLAG=-native
-JTCLSH='[$(JAVA) $PTJACL_JFLAG tcl.lang.Shell]'
+JTCLSH='[$(JAVA) $(PTJACL_JFLAG) tcl.lang.Shell]'
 
 if test ! -d "$PTII/util/testsuite"; then
     AC_MSG_RESULT([$PTII/util/testsuite is not a directory, so we need not
