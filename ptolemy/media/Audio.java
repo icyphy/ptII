@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  
 */
 
-package ptolemy.audio;
+package ptolemy.media;
 
 import java.lang.*;
 import java.util.*;

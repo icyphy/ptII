@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II audio classes
+# Makefile for Ptolemy II media classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -57,6 +57,7 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	Audio.java \
 	AudioViewer.java
 
 EXTRA_SRCS =	$(JSRCS)

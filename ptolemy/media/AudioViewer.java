@@ -25,10 +25,9 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.audio;
+package ptolemy.media;
 
 import ptolemy.plot.*;
-import ptolemy.plot.apps.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -37,7 +36,7 @@ import sun.audio.AudioPlayer;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
-//// Sound
+//// AudioViewer
 /**
 Display sound files.
 
@@ -46,7 +45,7 @@ Display sound files.
 @author Edward A. Lee
 @version $Id$
 */
-public class AudioViewer extends PtolemyPlot {
+public class AudioViewer extends PlotApplication {
 
     public AudioViewer(String args[]) {
         super(args);
@@ -67,7 +66,7 @@ public class AudioViewer extends PtolemyPlot {
      */
     protected void _about() {
         Message message = new Message(
-                "Ptolemy AudioViewer Plotter\n" +
+                "Ptolemy AudioViewer\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "Version 2.0, Build: $Id$\n\n"+
                 "For more information, see\n" +
@@ -79,7 +78,7 @@ public class AudioViewer extends PtolemyPlot {
     /** Display some help.
      */
     protected void _help() {
-        // NOTE:  This is a pretty lame excuse for help...
+        // FIXME:  This is a pretty lame excuse for help...
         Message message = new Message("Use Control-P to play the sound");
         message.setTitle("Usage of Ptolemy AudioViewer");
     }
@@ -99,7 +98,7 @@ public class AudioViewer extends PtolemyPlot {
         File file = new File(_directory, filename);
         _filename = null;
         try {
-            _sound = new ptolemy.math.SignalProcessing.AudioData(
+            _sound = new Audio(
                     new DataInputStream( new FileInputStream(file)));
         } catch (FileNotFoundException ex) {
             Message msg = new Message("File not found: " + ex);
@@ -109,20 +108,20 @@ public class AudioViewer extends PtolemyPlot {
         _filename = filename;
 
         // Configure the plot.
-        _plot.clear(true);
-        _plot.setTitle(new String(_sound.info));
+        plot.clear(true);
+        plot.setTitle(new String(_sound.info));
         setTitle(filename);
-        _plot.setXRange(0, (_sound.size - 1)/8000.0);
-        _plot.setXLabel("Time in seconds");
-        _plot.setYRange(-1.0, 1.0);
+        plot.setXRange(0, (_sound.size - 1)/8000.0);
+        plot.setXLabel("Time in seconds");
+        plot.setYRange(-1.0, 1.0);
         double[] plotdata = _sound.toDouble(0);
         if (plotdata != null) {
-            _plot.addPoint(0, 0, plotdata[0], false);
+            plot.addPoint(0, 0, plotdata[0], false);
             for (int i = 1; i < plotdata.length; i++) {
-                _plot.addPoint(0, i/8000.0, plotdata[i], true);
+                plot.addPoint(0, i/8000.0, plotdata[i], true);
             }
         }
-        _plot.repaint();
+        plot.repaint();
     }
 
     /** Parse the command-line
@@ -200,7 +199,7 @@ public class AudioViewer extends PtolemyPlot {
 
         argsread = i++;
 
-        _plot.parseArgs(args);
+        plot.parseArgs(args);
         return argsread;
     }
 
@@ -233,7 +232,7 @@ public class AudioViewer extends PtolemyPlot {
             File file = new File(_directory, _filename);
             try {
                 FileOutputStream fout = new FileOutputStream(file);
-                _plot.write(fout);
+                plot.write(fout);
             } catch (IOException ex) {
                 Message msg = new Message("Error writing file: " + ex);
             }
@@ -324,7 +323,7 @@ public class AudioViewer extends PtolemyPlot {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private ptolemy.math.SignalProcessing.AudioData _sound;
+    private Audio _sound;
     private ByteArrayInputStream _instream;
 
     ///////////////////////////////////////////////////////////////////
