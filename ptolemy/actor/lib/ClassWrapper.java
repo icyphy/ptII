@@ -62,7 +62,7 @@ takes no argument, the token received from port <i>foo</i> is
 treated as the trigger for invoking the method, and its content
 is ignored. If method foo takes arguments, the input token
 should be a record token whose field values are used as the
-arguments. The field lables of the record token should be "arg1",
+arguments. The field labels of the record token should be "arg1",
 "arg2", etc. For example, if method foo takes two double arguments,
 the record token "{arg1 = 0.0, arg2 = 1.0}" can be the input.
 
@@ -176,7 +176,7 @@ public class ClassWrapper extends TypedAtomicActor {
 	_instance = null;
 	if (needInstance) {
 	    try {
-		// FIXME: here only try to use a constuctor with no argument
+		// FIXME: here only try to use a constructor with no argument
 		Constructor constructor = _class.getConstructor(new Class[0]);
 		_instance = constructor.newInstance(new Object[0]);
 	    } catch (Exception ex) {
@@ -266,7 +266,7 @@ public class ClassWrapper extends TypedAtomicActor {
 
 	Token resultToken = null;
 	if (result == null) {
-	    // the mothod does not return value
+	    // the method does not return value
 	    return;
 	} else if (result instanceof Token) {
 	    resultToken = (Token)result;
