@@ -120,7 +120,7 @@ public class Bindings {
             Unit unit = (Unit) (_VarLabel2Unit.get(varLabel));
             String unitExpr = "null";
             if (unit != null) {
-                unitExpr = unit.commonDesc();
+                unitExpr = unit.commonExpression();
             }
             retv.append("   " + varLabel + " = " + unitExpr + "\n");
         }

@@ -152,7 +152,7 @@ public class Solver {
             constraintNum < _numConstraints;
             constraintNum++) {
             NamedObj source = _source[constraintNum];
-			String expression = _vectorA[constraintNum].commonDesc();
+            String expression = _vectorA[constraintNum].commonExpression();
 
             if (_constraintConsistent[constraintNum]) {
                 color = "green";
@@ -215,7 +215,7 @@ public class Solver {
      * done the state of the solver will be in one of three states - SOLVED,
      * NONUNIQUESOLUTION, and NOSOLUTION.
      */
-    public Vector completeSolve() {
+    public Solver completeSolve() {
         if (_debug) {
             System.out.println(
                 "Solver.solve " + header() + " initial\n" + state());
@@ -236,9 +236,7 @@ public class Solver {
             _done[k] = true;
         }
         _analyzeState();
-        Vector retv = new Vector();
-        retv.add(this);
-        return retv;
+        return this;
     }
 
     public Solver copy() {
@@ -269,6 +267,31 @@ public class Solver {
      */
     public String getShortDescription() {
         return _stateDescription;
+    }
+
+    /**
+     * @return The state of the solution.
+     */
+    public String getStateDesc() {
+        switch (_solveState) {
+            case NOTRUN :
+                {
+                    return "NotRun";
+                }
+            case NONUNIQUESOLUTION :
+                {
+                    return "No Unique Solution";
+                }
+            case NOSOLUTION :
+                {
+                    return "No Solution";
+                }
+            case SOLVED :
+                {
+                    return "Unique Solution";
+                }
+        }
+        return null;
     }
 
     /**
@@ -395,7 +418,7 @@ public class Solver {
                 retv.append("" + _pFormat.format(_arrayP[i][j]) + " ");
             }
             retv.append(
-                "" + _vectorA[i] + " " + _vectorA[i].commonDesc() + "\n");
+                "" + _vectorA[i] + " " + _vectorA[i].commonExpression() + "\n");
         }
         if (_branchPoint == null) {
             retv.append("BranchPoint = null\n");
@@ -449,7 +472,7 @@ public class Solver {
                     && !_vectorA[i].equals(UnitLibrary.Identity)) {
                     _solveState = NOSOLUTION;
                     Unit factor = _vectorA[i].invert();
-                    String uString = factor.commonDesc();
+                    String uString = factor.commonExpression();
                     NamedObj source = _source[i];
                     String sourceName = "NoSource";
                     if (source instanceof IORelation) {
@@ -521,7 +544,7 @@ public class Solver {
             if (numNonZeroP == 0
                 && !_vectorA[i].equals(UnitLibrary.Identity)) {
                 Unit factor = _vectorA[i].invert();
-                String uString = factor.commonDesc();
+                String uString = factor.commonExpression();
                 _constraintConsistent[i] = false;
                 _constraintExplanations[i] += uString;
             } else if (
@@ -538,7 +561,7 @@ public class Solver {
                     if (numNonZeroP > 0) {
                         _varBindings[j] += ";";
                     }
-                    _varBindings[j] += U.commonDesc();
+                    _varBindings[j] += U.commonExpression();
                     numNonZeroP++;
                 }
             }

@@ -68,7 +68,7 @@ contained in the new instance of UnitConstraints.
 */
 public class UnitConstraints implements UnitPresentation {
 
-    /**
+    /** Construct an empty set of Unit constraints.
      *
      */
     public UnitConstraints() {
@@ -85,10 +85,16 @@ public class UnitConstraints implements UnitPresentation {
      * specification is used to create a corresponding Unit constraint that gets
      * added to the set.
      * <p>
-     * The relations are then considered. XXX
-     * @param model
-     * @param componentEntities
-     * @param relations
+     * A component entity itself may have Unit constraint(s) that then get added
+     * to the set. For example, the AddSubtract actor would likely have a
+     * constraint that requires that the plus, and minus ports be equal.
+     * <p>
+     * The relations are then considered. Any relation that connects two ports
+     * seen on a component entity in the first step is used to create a Unit
+     * equation that gets added to the set.
+     * @param model The model containing the component entities.
+     * @param componentEntities The component entities.
+     * @param relations The relations.
      */
     public UnitConstraints(
         TypedCompositeActor model,
@@ -113,11 +119,10 @@ public class UnitConstraints implements UnitPresentation {
             Iterator iter = componentEntity.portList().iterator();
             while (iter.hasNext()) {
                 IOPort actorPort = (IOPort) iter.next();
-                //debug("Initialize Port " + actorPort);
                 UnitExpr rhsExpr = getUnitExpr(actorPort);
                 if (rhsExpr != null) {
-                    UnitExpr lhsExpr = UnitExpr.createFromPort(actorPort);
-                    UnitEquation uC = new UnitEquation(lhsExpr, "=", rhsExpr);
+                    UnitExpr lhsExpr = new UnitExpr(actorPort);
+                    UnitEquation uC = new UnitEquation(lhsExpr, rhsExpr);
                     uC.setSource(actorPort);
                     addConstraint(uC);
                 }
@@ -141,10 +146,9 @@ public class UnitConstraints implements UnitPresentation {
                     IOPort outPort = (IOPort) (portsIterator.next());
                     if ((outPort != inputPort)
                         && (_bindings.bindingExists(outPort.getFullName()))) {
-                        UnitExpr lhsUExpr = UnitExpr.createFromPort(outPort);
-                        UnitExpr rhsUExpr = UnitExpr.createFromPort(inputPort);
-                        UnitEquation uC =
-                            new UnitEquation(lhsUExpr, "=", rhsUExpr);
+                        UnitExpr lhsUExpr = new UnitExpr(outPort);
+                        UnitExpr rhsUExpr = new UnitExpr(inputPort);
+                        UnitEquation uC = new UnitEquation(lhsUExpr, rhsUExpr);
                         uC.setSource(relation);
                         this.addConstraint(uC);
                     }
@@ -156,32 +160,34 @@ public class UnitConstraints implements UnitPresentation {
     ///////////////////////////////////////////////////////////////////
     ////                          public methods                   ////
 
-    /**
-     * @param uC
+    /** Add a Unit constraint in the form of a Unit equation to the set.
+     * @param unitEquation The Unit equation to be added to the set.
      */
-    public void addConstraint(UnitEquation uC) {
-        _constraints.add(uC);
+    public void addConstraint(UnitEquation unitEquation) {
+        _constraints.add(unitEquation);
     }
 
     /* (non-Javadoc)
      * @see ptolemy.data.unit.UnitPresentation#commonDesc()
      */
-    public String commonDesc() {
+    public String commonExpression() {
         if (_constraints == null) {
             return null;
         }
         String retv = null;
         if (!_constraints.isEmpty()) {
-            retv = ((UnitEquation) (_constraints.elementAt(0))).commonDesc();
+            retv =
+                ((UnitEquation) (_constraints.elementAt(0))).commonExpression();
         }
         for (int i = 1; i < _constraints.size(); i++) {
-            retv += ";" + ((UnitEquation) (_constraints.get(i))).commonDesc();
+            retv += ";"
+                + ((UnitEquation) (_constraints.get(i))).commonExpression();
         }
         return retv;
     }
 
-    public Vector completeSolve() {
-        Vector solutions = null;
+    public Solver completeSolve() {
+        Solver solution = null;
         try {
             if (_debug) {
                 System.out.println(humanReadableForm(_bindings));
@@ -192,12 +198,12 @@ public class UnitConstraints implements UnitPresentation {
                     _bindings.variableLabels(),
                     getConstraints());
             G.setDebug(_debug);
-            solutions = G.completeSolve();
+            solution = G.completeSolve();
             //G.annotateGraph();
         } catch (IllegalActionException e) {
             KernelException.stackTraceToString(e);
         }
-        return solutions;
+        return solution;
     }
 
     /**
@@ -231,7 +237,7 @@ public class UnitConstraints implements UnitPresentation {
         return null;
     }
 
-    /**
+    /** Get the number of Unit constraints currently in the set.
      * @return The number of constraints.
      */
     public int getNumConstraints() {
@@ -268,7 +274,7 @@ public class UnitConstraints implements UnitPresentation {
     /**
      *
      */
-    public Vector partialSolve() {
+    public Vector minimalSpanSolution() {
         Vector solutions = null;
         try {
             if (_debug) {
@@ -310,7 +316,7 @@ public class UnitConstraints implements UnitPresentation {
             nodes.add(target);
             uConstraints = new UnitConstraints(model, nodes, new Vector());
         }
-        return uConstraints.partialSolve();
+        return uConstraints.minimalSpanSolution();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -321,7 +327,7 @@ public class UnitConstraints implements UnitPresentation {
             System.out.println(msg);
     }
 
-    /** Create a Vector of selected odes in a Tableau. This method really
+    /** Create a Vector of selected nodes in a Tableau. This method really
      *  belongs elsewhere and will be moved there at some point.
      * @param tableau
      * @return Vector of selected Nodes.
@@ -398,7 +404,7 @@ public class UnitConstraints implements UnitPresentation {
     ////                     private variables                     ////
     private Bindings _bindings = null;
     private Vector _constraints = null;
-    private boolean _debug = true;
+    private boolean _debug = false;
     private static ExpandPortNames _equationVisitor = new ExpandPortNames();
     private TypedCompositeActor _model = null;
 

@@ -258,7 +258,7 @@ public class UParser implements UParserConstants {
       throw new ParseException();
     }
     rhs = uExpr();
-            uEquation = new UnitEquation(lhs, r.image, rhs);
+            uEquation = new UnitEquation(lhs, rhs);
             {if (true) return uEquation;}
     throw new Error("Missing return statement in function");
   }

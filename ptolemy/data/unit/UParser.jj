@@ -52,7 +52,7 @@ This file implements a Unit parser for Ptolemy II using the
 JavaCC parser generator.
 
 @author Rowland R Johnson
-@version $Id: UParser.jj,v 1.3 2004-03-29 23:12:27 rowland Exp $
+@version $Id: UParser.jj,v 1.4 2004-04-01 16:56:03 rowland Exp $
 @since Ptolemy II 3.1
 */
 
@@ -283,7 +283,7 @@ UnitEquation Equation() :
 {
      lhs = uExpr() (r = <EQUALS> | r = <LT> ) rhs = uExpr()
 	{
-	    uEquation = new UnitEquation(lhs, r.image, rhs);
+	    uEquation = new UnitEquation(lhs, rhs);
 	    return uEquation;
 	}
 }

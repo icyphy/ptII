@@ -42,23 +42,21 @@ import ptolemy.kernel.util.NamedObj;
 @since Ptolemy II 3.1
 */
 
-public class UnitEquation implements UnitPresentation {
+public class UnitEquation extends UnitConstraint implements UnitPresentation {
 
-    /**
-     * @param lhs
-     * @param op
-     * @param rhs
+    /** Construct a UnitEquation from the left and right hand sides.
+     * @param lhs The left hand side.
+     * @param rhs The right hand side.
      */
-    public UnitEquation(UnitExpr lhs, String op, UnitExpr rhs) {
-        _lhs = lhs;
-        _rhs = rhs;
-        _operator = op;
+    public UnitEquation(UnitExpr lhs, UnitExpr rhs) {
+        super(lhs, "=", rhs);
     }
 
     /**
      *
      */
     public UnitEquation() {
+        super("=");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,8 +77,13 @@ public class UnitEquation implements UnitPresentation {
         return true;
     }
 
-    /**
-     *
+    /** Transform to the canonical form of the equation.
+     * The canonical form of an equation is
+     * <b>
+     * Ex1, Ex2, ..., Exn = A
+     * <b>
+     * where each Exi is a Unit term containing only one variable, and A is a
+     * Unit term containing one Unit and no variables.
      */
     public void canonicalize() {
         UnitExpr lhsUExpr = getLhs();
@@ -117,60 +120,9 @@ public class UnitEquation implements UnitPresentation {
         setRhs(newRightUExpr);
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.data.unit.UnitPresentation#commonDesc()
-     */
-    public String commonDesc() {
-        return _lhs.commonDesc() + _operator + _rhs.commonDesc();
-    }
-
-    /** Make a shallow copy of this Unit.
-     * @return A new Unit.
-     */
     public UnitEquation copy() {
-        UnitEquation uC = new UnitEquation();
-        uC.setLhs(getLhs().copy());
-        uC.setOperator(getOperator());
-        uC.setRhs(getRhs().copy());
-        return uC;
-    }
-
-    /**
-     * @param bindings
-     * @return The evaluated expression.
-     */
-    public String getEvaledExpression(Bindings bindings) {
-        return _lhs.getEvaledExpression(bindings)
-            + _operator
-            + _rhs.getEvaledExpression(bindings);
-    }
-
-    /** Get the left hand side.
-     * @return The left hand side.
-     */
-    public UnitExpr getLhs() {
-        return _lhs;
-    }
-
-    /**
-     * @return The operator.
-     */
-    public String getOperator() {
-        return _operator;
-    }
-
-    /**
-     * @return The right hand side.
-     */
-    public UnitExpr getRhs() {
-        return _rhs;
-    }
-
-    /**
-     * @return The source of this equation.
-     */
-    public NamedObj getSource() {
-        return _source;
+        UnitEquation uE = new UnitEquation(getLhs().copy(), getRhs().copy());
+        return uE;
     }
 
     /**
@@ -179,7 +131,7 @@ public class UnitEquation implements UnitPresentation {
      */
     public String humanReadableForm(Bindings modelBindings) {
         String retv =
-            commonDesc() + " satisfied = " + isSatisfied(modelBindings);
+            commonExpression() + " satisfied = " + isSatisfied(modelBindings);
         return retv;
     }
 
@@ -202,26 +154,6 @@ public class UnitEquation implements UnitPresentation {
         }
     }
 
-    public void setLhs(UnitExpr expr) {
-        _lhs = expr;
-    }
-
-    public void setOperator(String string) {
-        _operator = string;
-    }
-
-    public void setRhs(UnitExpr expr) {
-        _rhs = expr;
-    }
-
-    public void setSource(NamedObj source) {
-        _source = source;
-    }
-
-    public String toString() {
-        return _lhs.toString() + _operator + _rhs.toString();
-    }
-
     public Object visit(EquationVisitor visitor)
         throws IllegalActionException {
         return visitor._visitUnitEquation(this);
@@ -230,7 +162,4 @@ public class UnitEquation implements UnitPresentation {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    UnitExpr _lhs, _rhs;
-    String _operator;
-    NamedObj _source = null;
 }

@@ -27,7 +27,8 @@
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
 package ptolemy.data.unit;
-
+//////////////////////////////////////////////////////////////////////////
+//// UnitLibrary
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Vector;
@@ -38,6 +39,11 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
 /** A Library containing definitions of commonly used units.
+Currently, the Unit library is static in the sense that it is loaded when the
+system starts and is hard-wired to a particular Unit System (the System
+International Unit System). However, it should be easy to change the
+architecture so that multiple Unit Systems can be accomodated, and loaded
+on-the-fly.
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1
@@ -56,14 +62,14 @@ public class UnitLibrary {
     ////                         public methods                    ////
 
     /** Add a unit to the Library.
-     * @param unit
+     * @param unit Unit to add to the library.
      */
     public static void addToLibrary(Unit unit) {
         _unitsLibrary.add(unit);
     }
 
-    /** Find the Unit in the library that is basic (scale equal to 1)
-     * singular (all but one dimensions equal to 0)
+    /** Find the Unit in the library that is basic (scale equal to 1),
+     * singular (all but one dimensions equal to 0),  XXXXX
      * @param catNum
      * @return The basic, singular unit.
      */
@@ -152,7 +158,7 @@ public class UnitLibrary {
         Vector library = getLibrary();
         for (int i = 0; i < library.size(); i++) {
             Unit lUnit = (Unit) (library.elementAt(i));
-            Vector names = lUnit.getNames();
+            Vector names = lUnit.getLabels();
             for (int j = 0; j < names.size(); j++) {
                 if (((String) (names.elementAt(j))).equals(name)) {
                     return lUnit;
@@ -242,7 +248,7 @@ public class UnitLibrary {
                     uExpr.reduce();
                     Unit unit = uExpr.eval(null);
                     if (unit != null) {
-                        unit.setName(pair.getName());
+                        unit.setPrimaryLabel(pair.getName());
                         iter.remove();
                         madeChange = true;
                         addToLibrary(unit);

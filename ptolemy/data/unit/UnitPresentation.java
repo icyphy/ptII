@@ -31,13 +31,18 @@ package ptolemy.data.unit;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitPresentation
-/**
+/** The methods necessary to present Units, UnitConstraints, UnitExprs, etc.
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1
 */
 
 public interface UnitPresentation {
-    public String commonDesc();
+    /** Units, UnitConstraints, UnitExprs, etc. have an expression that is in
+     * common usage. This method generates that expression so that humans can
+     * easily understand the Unit, UnitConstraint, UnitExpr, etc.
+     * @return The common expression.
+     */
+    public String commonExpression();
     public String toString();
 }

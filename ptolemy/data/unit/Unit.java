@@ -50,7 +50,7 @@ public class Unit implements UnitPresentation {
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             _type[i] = 0;
         }
-        _names.add("noName" + noNameCounter++);
+        _labels.add("noName" + _noLabelCounter++);
     }
 
     /** Create a Unit from a BaseUnit.
@@ -59,34 +59,39 @@ public class Unit implements UnitPresentation {
     public Unit(BaseUnit bu) {
         this();
         String name = bu.getName();
-        setName(name);
+        setPrimaryLabel(name);
         String spec = bu.getExpression();
         int index = UnitUtilities.getUnitCategoryIndex(name);
         _type[index] = 1;
     }
 
-    /** Create a Unit with a specified name, and a unitless type.
+    /** Create a Unit with a specified name, and the unitless type.
      * @param name Name of the Unit.
      */
     public Unit(String name) {
         this();
-        setName(name);
+        setPrimaryLabel(name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public String commonDesc() {
+    /** The expression of the Unit that is commonly used by humans.
+     * For example, the unit 4.1868E7&lt2, 1, -3, 0, 0&gt will produce the
+     * common expression "calorie second^-1".
+     * @see ptolemy.data.unit.UnitPresentation#commonExpression()
+     */
+    public String commonExpression() {
         String retv = null;
         Unit unit = UnitLibrary.getUnit(this);
         if (unit != null) {
-            return unit.getName();
+            return unit.getPrimaryLabel();
         }
         // Try some alternates of the form xx/yy
         // First see if it is simply an invert
         Unit invert = UnitLibrary.getUnit(invert());
         if (invert != null)
-            return invert.getName() + "^-1";
+            return invert.getPrimaryLabel() + "^-1";
         // Second see if this is of the form numerator/denominator
         Vector libraryUnits = UnitLibrary.getLibrary();
         for (int i = 0; i < libraryUnits.size(); i++) {
@@ -95,9 +100,12 @@ public class Unit implements UnitPresentation {
             Unit xx = UnitLibrary.getUnit(numerator);
             if (xx != null) {
                 if (xx != UnitLibrary.Identity)
-                    return xx.getName() + " " + factor.getName() + "^-1";
+                    return xx.getPrimaryLabel()
+                        + " "
+                        + factor.getPrimaryLabel()
+                        + "^-1";
                 else
-                    return factor.getName() + "^-1";
+                    return factor.getPrimaryLabel() + "^-1";
             }
         }
         for (int i = 0; i < libraryUnits.size(); i++) {
@@ -105,7 +113,7 @@ public class Unit implements UnitPresentation {
             Unit remainder = this.divideBy(factor);
             Unit xx = UnitLibrary.getUnit(remainder);
             if (xx != null && xx != UnitLibrary.Identity)
-                return factor.getName() + " " + xx.getName();
+                return factor.getPrimaryLabel() + " " + xx.getPrimaryLabel();
         }
         if (_scaleToBaseUnit == 1.0) {
             int numCats = _type.length;
@@ -114,9 +122,12 @@ public class Unit implements UnitPresentation {
                 if (_type[i] != 0) {
                     Unit baseUnit = UnitLibrary.getBaseUnit(i);
                     if (_type[i] == 1) {
-                        desc += " " + baseUnit.getName();
+                        desc += " " + baseUnit.getPrimaryLabel();
                     } else {
-                        desc += " " + baseUnit.getName() + "^" + _type[i];
+                        desc += " "
+                            + baseUnit.getPrimaryLabel()
+                            + "^"
+                            + _type[i];
                     }
                 }
             }
@@ -132,7 +143,7 @@ public class Unit implements UnitPresentation {
      */
     public Unit copy() {
         Unit retv = new Unit();
-        retv.setNames(getNames());
+        retv.setLabels(getLabels());
         int newExponents[] = retv.getType();
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
             newExponents[i] = _type[i];
@@ -174,34 +185,37 @@ public class Unit implements UnitPresentation {
         return true;
     }
 
-    /**
-     * @return The primary name.
+    /** Get the labels for a Unit.
+     * @see ptolemy.data.unit.Unit#getPrimaryLabel()
+     * @return The labels.
      */
-    public String getName() {
-        return (String) (_names.elementAt(0));
+    public Vector getLabels() {
+        return _labels;
     }
 
-    /**
-     * @return The names.
+    /** Create a String that is the concatenation of all the labels.
+     * @return The cancatenation of the labels.
      */
-    public Vector getNames() {
-        return _names;
-    }
-
-    /**
-     * @return The cancatenation of the names.
-     */
-    public String getNamesString() {
+    public String getLabelsString() {
         String retv = null;
-        if (_names.size() > 0) {
-            retv = (String) (_names.elementAt(0));
+        if (_labels.size() > 0) {
+            retv = (String) (_labels.elementAt(0));
         } else {
             return "";
         }
-        for (int i = 1; i < _names.size(); i++) {
-            retv += (String) (_names.elementAt(i)) + ",";
+        for (int i = 1; i < _labels.size(); i++) {
+            retv += (String) (_labels.elementAt(i)) + ",";
         }
         return retv;
+    }
+
+    /** Get the primary label of a Unit.
+     * A Unit can have more than one label. For example, cm, and centimeter are
+     * labels for the same Unit. There always exists a label that is primary.
+     * @return The primary label.
+     */
+    public String getPrimaryLabel() {
+        return (String) (_labels.elementAt(0));
     }
 
     /** Get the scale.
@@ -280,15 +294,15 @@ public class Unit implements UnitPresentation {
         return unit;
     }
 
-    /** Set the name.
-     * @param name
+    /** Set the primary label.
+     * @param label The primary label.
      */
-    public void setName(String name) {
-        _names.setElementAt(name, 0);
+    public void setPrimaryLabel(String label) {
+        _labels.setElementAt(label, 0);
     }
 
     /** Set the scale.
-     * @param d
+     * @param d The scale.
      */
     public void setScale(double d) {
         _scaleToBaseUnit = d;
@@ -306,7 +320,7 @@ public class Unit implements UnitPresentation {
      */
     public String toString() {
         String retv =
-            "Unit:(" + getNamesString() + ") " + _scaleToBaseUnit + "*<";
+            "Unit:(" + getLabelsString() + ") " + _scaleToBaseUnit + "*<";
         retv += _type[0];
         for (int i = 1; i < UnitLibrary.getNumCategories(); i++) {
             retv += ", " + _type[i];
@@ -317,14 +331,14 @@ public class Unit implements UnitPresentation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private void setNames(Vector names) {
-        _names = names;
+    private void setLabels(Vector labels) {
+        _labels = labels;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private static int noNameCounter = 0;
-    Vector _names = new Vector();
+    Vector _labels = new Vector();
+    private static int _noLabelCounter = 0;
     private double _scaleToBaseUnit = 1.0;
     int _type[];
 }

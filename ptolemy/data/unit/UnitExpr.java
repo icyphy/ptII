@@ -49,6 +49,13 @@ public class UnitExpr {
     public UnitExpr() {
     }
 
+    public UnitExpr(IOPort actorPort) {
+        UnitTerm uTerm = new UnitTerm();
+        uTerm.setVariable(actorPort.getFullName());
+        Vector uTerms = new Vector();
+        uTerms.add(uTerm);
+        setUTerms(uTerms);
+    }
     ///////////////////////////////////////////////////////////////////
     //// public methods ////
 
@@ -61,9 +68,9 @@ public class UnitExpr {
 
     public String commonDesc() {
         Iterator iter = _uTerms.iterator();
-        String retv = ((UnitTerm) (iter.next())).commonDesc();
+        String retv = ((UnitTerm) (iter.next())).commonExpression();
         while (iter.hasNext()) {
-            retv += " " + ((UnitTerm) (iter.next())).commonDesc();
+            retv += " " + ((UnitTerm) (iter.next())).commonExpression();
         }
         return retv;
     }
@@ -82,15 +89,6 @@ public class UnitExpr {
         return retv;
     }
 
-    public static UnitExpr createFromPort(IOPort actorPort) {
-        UnitTerm uTerm = new UnitTerm();
-        uTerm.setVariable(actorPort.getFullName());
-        Vector uTerms = new Vector();
-        uTerms.add(uTerm);
-        UnitExpr uExpr = new UnitExpr();
-        uExpr.setUTerms(uTerms);
-        return uExpr;
-    }
     public Unit eval(Bindings bindings) {
         Iterator iter = _uTerms.iterator();
         Unit retv = new Unit();

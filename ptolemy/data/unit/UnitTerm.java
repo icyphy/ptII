@@ -55,9 +55,9 @@ public class UnitTerm implements UnitPresentation {
      * Create a String that is readable by a human. Said String can also be to
      * yield a UnitExpr that contains a UnitExpr equal to this one.
      *
-     * @see ptolemy.data.unit.UnitPresentation#commonDesc()
+     * @see ptolemy.data.unit.UnitPresentation#commonExpression()
      */
-    public String commonDesc() {
+    public String commonExpression() {
         String retv = null;
         switch (getType()) {
             case VARIABLE :
@@ -67,7 +67,7 @@ public class UnitTerm implements UnitPresentation {
                 }
             case UNIT :
                 {
-                    retv = _unit.commonDesc();
+                    retv = _unit.commonExpression();
                     break;
                 }
             case UNITEXPR :
@@ -219,7 +219,8 @@ public class UnitTerm implements UnitPresentation {
     public UnitTerm multiplyBy(UnitTerm multiplicand)
         throws IllegalActionException {
         if (!isUnit() || !multiplicand.isUnit()) {
-            throw new IllegalActionException("Attempt to multiply non-Unit UnitTerm");
+            throw new IllegalActionException(
+                         "Attempt to multiply non-Unit UnitTerm");
         }
         UnitTerm retv = new UnitTerm();
         retv.setUnit(getUnit().multiplyBy(multiplicand.getUnit()));

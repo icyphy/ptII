@@ -103,7 +103,7 @@ public class UnitAttribute extends Attribute implements Settable {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
-     *  @see ptolemy.kernel.util.NamedObj#exportMoML(java.io.Writer, int, java.lang.String)
+     *  @see ptolemy.kernel.util.NamedObj#exportMoML(Writer, int, String)
      */
     public void exportMoML(Writer output, int depth, String name)
         throws IOException {
@@ -134,11 +134,13 @@ public class UnitAttribute extends Attribute implements Settable {
     public String getCommonDescOfUnitEquations() {
         String retv = "";
         if (_unitEquations.size() > 0) {
-            retv = ((UnitEquation) (_unitEquations.elementAt(0))).commonDesc();
+            retv = ((UnitEquation) (_unitEquations.elementAt(0)))
+                        .commonExpression();
         }
         for (int i = 1; i < _unitEquations.size(); i++) {
             retv += ";"
-                + ((UnitEquation) (_unitEquations.elementAt(i))).commonDesc();
+                + ((UnitEquation) (_unitEquations.elementAt(i)))
+                       .commonExpression();
         }
         return retv;
     }
@@ -238,7 +240,7 @@ public class UnitAttribute extends Attribute implements Settable {
     /** Set the visibility of this attribute.  The argument should be one
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this attribute.
-     *  @see ptolemy.kernel.util.Settable#setVisibility(ptolemy.kernel.util.Settable.Visibility)
+     *  @see ptolemy.kernel.util.Settable#setVisibility(Settable.Visibility)
      */
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
