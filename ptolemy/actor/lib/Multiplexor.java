@@ -29,7 +29,6 @@
 */
 
 package ptolemy.actor.lib;
-
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;

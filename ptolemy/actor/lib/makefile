@@ -145,6 +145,7 @@ JSRCS = \
 	TimedActor.java \
 	TimedSource.java \
 	Transformer.java \
+        TokenMultiplexor.java\
 	TrigFunction.java \
         TriggeredClock.java\
 	Uniform.java \
