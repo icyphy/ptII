@@ -54,6 +54,7 @@ PTCLASSALLJARS = \
 	HierarchicalModel/HierarchicalModel.jar \
 	Inspection/Inspection.jar \
 	ModalModel/ModalModel.jar \
+	LongRuns/LongRuns.jar \
 	SmartSender/SmartSender.jar \
 	TimingParadox/TimingParadox.jar \
 	VariableDelay/VariableDelay.jar
