@@ -184,8 +184,8 @@ public class GiottoScheduler extends Scheduler {
 	    i++;
 	}
 
-	_lcm = lcm(frequencyArray);
-	_gcd = gcd(frequencyArray);
+	_lcm = _lcm(frequencyArray);
+	_gcd = _gcd(frequencyArray);
         if (_debugging) {
             _debug("LCM of frequencies is " + _lcm);
             _debug("GCD of frequencies is " + _gcd);
@@ -234,7 +234,7 @@ public class GiottoScheduler extends Scheduler {
     ////                         private methods                   ////
 
     // if they are correct, they should go the ptolemy.math package...
-    private int gcd(int[] array) {
+    private int _gcd(int[] array) {
         int count = array.length;
         int HighestNumber = array[0];
         int HoldX = 1;
@@ -278,7 +278,7 @@ public class GiottoScheduler extends Scheduler {
     }
 
 
-    private int lcm(int[] array) {
+    private int _lcm(int[] array) {
 
         int count = array.length;
         int X = array[0];
