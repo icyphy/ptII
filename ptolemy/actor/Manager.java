@@ -203,7 +203,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Add a listener to be notified when the model execution changes state.
      *  @param listener The listener.
      */
-    public void addExecutionListener(ExecutionListener listener) {
+    public synchronized void addExecutionListener(ExecutionListener listener) {
         if (listener == null) return;
         if (_executionListeners == null) {
             _executionListeners = new LinkedList();
@@ -487,7 +487,7 @@ public class Manager extends NamedObj implements Runnable {
      *  should catch all exceptions and report them using this method.
      *  @param throwable The throwable
      */
-    public void notifyListenersOfThrowable(Throwable throwable) {
+    public synchronized void notifyListenersOfThrowable(Throwable throwable) {
         // We use Throwables instead of Exceptions so that we can catch
         // Errors like java.lang.UnsatisfiedLink.
         String errorMessage = shortDescription(throwable)
@@ -652,7 +652,7 @@ public class Manager extends NamedObj implements Runnable {
      *  do nothing.
      *  @param listener The listener to remove.
      */
-    public void removeExecutionListener(ExecutionListener listener) {
+    public synchronized void removeExecutionListener(ExecutionListener listener) {
         if (listener == null || _executionListeners == null) return;
         _executionListeners.remove(listener);
     }
@@ -840,7 +840,13 @@ public class Manager extends NamedObj implements Runnable {
         // where finish() might be called before the spawned thread
         // actually starts up.
         _finishRequested = false;
-        _thread = new PtolemyThread(this);
+        _thread = new PtolemyThread(this) {
+            public void run() {
+                // The run() method will set _thread to null
+                // upon completion of the run.
+                Manager.this.run();
+            }
+        };
         // Priority set to the minimum to get responsive UI during execution.
         _thread.setPriority(Thread.MIN_PRIORITY);
         _thread.start();
@@ -946,6 +952,33 @@ public class Manager extends NamedObj implements Runnable {
                     * 100.0)
             + "%)";
     }
+    
+    /** If there is an active thread created by startRun(), then wait
+     *  for it to complete and return. The wait is accomplished by
+     *  calling the join() method on the thread.  If there is no
+     *  active thread, then wait until the manager state is idle
+     *  by calling wait().
+     *  @see #startRun()
+     */
+    public void waitForCompletion() {
+        if (_thread != null) {
+            try {
+                _thread.join();
+            } catch (InterruptedException ex) {
+                // Ignore this and return.
+            }
+        } else {
+            synchronized(this) {
+                while (getState() != IDLE && getState() != CORRUPTED) {
+                    try {
+                        workspace().wait(this);
+                    } catch (InterruptedException ex) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     /** Wrap up the model by invoking the wrapup method of the toplevel
      *  composite actor.  The state of the manager will be set to
@@ -1018,7 +1051,7 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Notify listeners that execution has completed successfully.
      */
-    protected void _notifyListenersOfCompletion() {
+    protected synchronized void _notifyListenersOfCompletion() {
         if (_debugging) {
             _debug("-- Manager completed execution with "
                     + _iterationCount
@@ -1090,10 +1123,11 @@ public class Manager extends NamedObj implements Runnable {
      *  actually changes.
      *  @param newState The new state.
      */
-    protected void _setState(State newState) {
+    protected synchronized void _setState(State newState) {
         if (_state != newState) {
             _state = newState;
             _notifyListenersOfStateChange();
+            notifyAll();
         }
     }
 
