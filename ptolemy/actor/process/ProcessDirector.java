@@ -199,7 +199,7 @@ public class ProcessDirector extends Director {
 	    }
 
             Enumeration allActors = container.deepGetEntities();
-            //Creating receivers and threads for all actors;
+            //Creating threads for all actors;
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
                 actor.initialize();
@@ -208,7 +208,7 @@ public class ProcessDirector extends Director {
     }
 
     /** Perform domain-specific initialization on the specified actor, if any.
-     *  In this base class, start a ProcessThread for each actor.
+     *  In this base class, initialize a ProcessThread for each actor.
      *  This is called by the initialize() method of the actor, and may be
      *  called after the initialization phase of an execution.  In particular,
      *  in the event of mutations during an execution that introduce new
