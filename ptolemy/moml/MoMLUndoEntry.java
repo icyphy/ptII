@@ -48,7 +48,7 @@ the single argument constructor, and to override execute() to directly
 perform the undo.
 
 @see MoMLParser
-@see ptolemy.kernel.util.UndoStackAttribute
+@see ptolemy.kernel.undo.UndoStackAttribute
 @see MoMLChangeRequest
 @author  Neil Smyth and Edward A. Lee
 @version $Id$
