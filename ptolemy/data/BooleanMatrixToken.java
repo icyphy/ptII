@@ -337,7 +337,8 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public Token zero() {
         try {
-            return new BooleanMatrixToken(new boolean [_rowCount][_columnCount]);
+            return new BooleanMatrixToken(
+                    new boolean [_rowCount][_columnCount]);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("BooleanMatrixToken.zero: "

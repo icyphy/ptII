@@ -282,18 +282,21 @@ public class ComplexToken extends ScalarToken {
         return new ComplexToken(result);
     }
 
-    /** Test that the value of this rightArgument is close to the first argument,
-     *  where "close" means that the distance between their values is less than
-     *  or equal to the second argument. It is assumed that the type of
-     *  the argument is ComplexToken.
-     *  @param rightArgument The rightArgument to compare to this rightArgument.
-     *  @return A true-valued rightArgument if the first argument is close in value
-     *          to this rightArgument.
+    /** Test that the value of this rightArgument is close to the
+     *  first argument, where "close" means that the distance between
+     *  their values is less than or equal to the second argument. It
+     *  is assumed that the type of the argument is ComplexToken.
+     *
+     *  @param rightArgument The rightArgument to compare to this
+     *  rightArgument.
+     *  @return A true-valued rightArgument if the first argument is
+     *  close in value to this rightArgument.
      */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
         return BooleanToken.getInstance(
-                complexValue().isCloseTo(((ComplexToken)rightArgument).complexValue(),
+                complexValue().isCloseTo(((ComplexToken)rightArgument)
+                        .complexValue(),
                         epsilon));
     }
 
