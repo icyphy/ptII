@@ -119,6 +119,23 @@ awk ' {
        print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
        print indent "    </property>"
 
+       # Get the value of the Worst Case Execution Time field, if any
+       if ($0 ~ /WCET=/) {
+           wcet=0 
+           nf = split($0, f, "\"")   
+           for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /WCET=$/) {
+                   wcet = f[i+1]
+                   break;
+               }
+           } # wcet for
+           if (wcet != 0) {
+               print indent "    <property name=\"frequency\" class=\"ptolemy.data.expr.Parameter\" value=\"" wcet "\">"
+               print indent "    </property>"
+
+           } # wcet if
+       } # contains wcet
+
        useCTDirector = 0
        if (sawFirstEntity == 0 && useCTDirector == 1) {
            sawFirstEntity = 1
