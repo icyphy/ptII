@@ -52,7 +52,7 @@ if the actor is used in a domain that supports vectorized actors.
 */
 public interface Vectorizable {
 
-    /** Set the vector length. The vector length of an acotor is
+    /** Set the vector length. The vector length of an actor is
      *  defined as the number of tokens that are consumed and/or
      *  produced when the actor is fired. If a vectorizable actor
      *  is used in a domain that supports vectorized actors, then
