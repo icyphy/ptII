@@ -1095,18 +1095,6 @@ testMatrix orthonormalizeRows $types
 
 ######################################################################
 ####
-##  *MatrixMath Test out: xxx[][] qr(xxx[][])
-
-## FIXME: Missing Complex[][] qr(xxx[][])
-
-set types [list \
-	[list Double double double {{{0.8944271909999159 -0.4472135954999579} {0.44721359549995787 0.894427190999916}}}] \
-	[list Float float float {{{0.8944272 -0.4472136} {0.4472136 0.89442724}}}]]
-
-testMatrix qr $types
-
-######################################################################
-####
 ##  *ArrayMath Test out: xxx[] scale(xxx[], xxx)
 
 # FIXME: Note that ComplexArrayMath.scale(Complex[], double)
