@@ -31,6 +31,7 @@ package ptolemy.domains.sdf.kernel.test;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
@@ -51,13 +52,15 @@ public class SDFTestConsumer extends TypedAtomicActor {
     public SDFTestConsumer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new SDFIOPort(this, "input", true, false);
-        input.setTokenConsumptionRate(1);
+        input = new TypedIOPort(this, "input", true, false);
+        input_tokenConsumptionRate =
+            new Parameter(input, "tokenConsumptionRate", new IntToken("1"));
         _history = new StringBuffer("");
     }
-
-    public SDFIOPort input;
-
+    
+    public TypedIOPort input;
+    public Parameter input_tokenConsumptionRate;
+            
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
@@ -79,7 +82,8 @@ public class SDFTestConsumer extends TypedAtomicActor {
      * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        int tokens = input.getTokenConsumptionRate();
+        int tokens = 
+            ((IntToken)input_tokenConsumptionRate.getToken()).intValue();
         int i;
         for(i = 0; i < tokens; i++) {
             Token t = input.get(0);

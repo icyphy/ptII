@@ -31,6 +31,7 @@ package ptolemy.domains.sdf.kernel.test;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import java.util.Enumeration;
@@ -48,8 +49,9 @@ public class SDFTestRamp extends TypedAtomicActor {
     public SDFTestRamp(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        output = new SDFIOPort(this, "output", false, true);
-        output.setTokenProductionRate(1);
+        output = new TypedIOPort(this, "output", false, true);
+        output_tokenProductionRate = 
+            new Parameter(output, "tokenProductionRate", new IntToken(1));
         output.setTypeEquals(BaseType.INT);
         _value = 0;
 
@@ -58,8 +60,9 @@ public class SDFTestRamp extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public SDFIOPort output;
-
+    public TypedIOPort output;
+    public Parameter output_tokenProductionRate;
+    
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
@@ -71,7 +74,7 @@ public class SDFTestRamp extends TypedAtomicActor {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         SDFTestRamp newObject = (SDFTestRamp)(super.clone(workspace));
-        newObject.output = (SDFIOPort)newObject.getPort("output");
+        newObject.output = (TypedIOPort)newObject.getPort("output");
         return newObject;
     }
 
@@ -85,7 +88,8 @@ public class SDFTestRamp extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         int i;
 
-        int tokens = output.getTokenProductionRate();
+        int tokens =
+            ((IntToken)output_tokenProductionRate.getToken()).intValue();
         for(i = 0; i < tokens; i++) {
             Token message = new IntToken(_value);
             _value = _value + 1;

@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.kernel.test;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import java.util.Enumeration;
@@ -50,25 +51,33 @@ public class SDFTestJoin extends TypedAtomicActor {
     public SDFTestJoin(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input1 = new SDFIOPort(this,"input1", true, false);
-        input1.setTokenConsumptionRate(1);
+        input1 = new TypedIOPort(this,"input1", true, false);
+        input1_tokenConsumptionRate =
+            new Parameter(input1, "tokenConsumptionRate", new IntToken(1));
         input1.setTypeEquals(BaseType.GENERAL);
 
-        input2 = new SDFIOPort(this,"input2", true, false);
-        input2.setTokenConsumptionRate(1);
+        input2 = new TypedIOPort(this,"input2", true, false);
+        input2_tokenConsumptionRate =
+            new Parameter(input2, "tokenConsumptionRate", new IntToken(1));
         input2.setTypeEquals(BaseType.GENERAL);
 
-        output = new SDFIOPort(this,"output", false, true);
-        output.setTokenProductionRate(2);
+        output = new TypedIOPort(this,"output", false, true);
+        output_tokenProductionRate = 
+            new Parameter(output, "tokenProductionRate", new IntToken(2));
+      
         output.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public SDFIOPort input1;
-    public SDFIOPort input2;
-    public SDFIOPort output;
+    public TypedIOPort input1;
+    public TypedIOPort input2;
+    public TypedIOPort output;
+
+    public Parameter input1_tokenConsumptionRate;
+    public Parameter input2_tokenConsumptionRate;
+    public Parameter output_tokenProductionRate;
 
     /** Fire the actor.
      * Copy one token from input1 to the output and then copy one token

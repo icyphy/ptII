@@ -23,7 +23,7 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="291.0, 142.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -32,7 +32,7 @@
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -90,7 +90,7 @@
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
         <property name="_location" class="ptolemy.moml.Location" value="492.0, 148.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -99,7 +99,7 @@
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>

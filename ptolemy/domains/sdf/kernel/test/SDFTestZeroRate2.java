@@ -31,12 +31,12 @@
 package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.sched.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
@@ -58,7 +58,7 @@ the <i>value</i> parameter.
 @version $Id$
 */
 
-public class SDFTestZeroRate2 extends SDFTransformer {
+public class SDFTestZeroRate2 extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -71,21 +71,34 @@ public class SDFTestZeroRate2 extends SDFTransformer {
     public SDFTestZeroRate2(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+	input2 = new TypedIOPort(this, "input2", true, false);
+	output2 = new TypedIOPort(this, "output2", false, true);
+
 	value = new Parameter(this, "value", new IntToken(1));
 	input_rate = new Parameter(this, "input_rate", new IntToken(1));
 	output_rate = new Parameter(this, "output_rate", new IntToken(1));
+	input2_rate = new Parameter(this, "input2_rate", new IntToken(1));
+	output2_rate = new Parameter(this, "output2_rate", new IntToken(1));
+
+	input_tokenConsumptionRate = 
+            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate.setExpression("input_rate");
+
+	input2_tokenConsumptionRate = 
+            new Parameter(input2, "tokenConsumptionRate");
+        input2_tokenConsumptionRate.setExpression("input2_rate");
+
+        output_tokenProductionRate =
+            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate.setExpression("output_rate");
+
+        output2_tokenProductionRate =
+            new Parameter(output2, "tokenProductionRate");
+        output2_tokenProductionRate.setExpression("output2_rate");
+
 	// Set the type constraint.
 	output.setTypeAtLeast(value);
-
-	input2 = new SDFIOPort(this, "input2", true, false);
-	input2_rate = new Parameter(this, "input2_rate", new IntToken(1));
-
-	output2 = new SDFIOPort(this, "output2", false, true);
-	output2_rate = new Parameter(this, "output2_rate", new IntToken(1));
-	// Set the type constraint.
 	output2.setTypeAtLeast(value);
-
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,41 +118,35 @@ public class SDFTestZeroRate2 extends SDFTransformer {
     public Parameter output_rate;
 
     public Parameter output2_rate;
+    
+    public Parameter input_tokenConsumptionRate;
 
-    public SDFIOPort input2;
+    public Parameter input2_tokenConsumptionRate;
 
-    public SDFIOPort output2;
+    public Parameter output_tokenProductionRate;
+
+    public Parameter output2_tokenProductionRate;
+
+    public TypedIOPort input2;
+
+    public TypedIOPort output2;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
-    /** 
-     *  @param attribute The attribute that has changed.
-     *  @exception IllegalActionException If the parameters are out of range.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if ((attribute == value) || (attribute == input_rate) || (attribute == output_rate) || (attribute == input2_rate) || (attribute == output2_rate)) {
-	//if (attribute == value) {
-	    int inrate1 = ((IntToken)input_rate.getToken()).intValue();
-            input.setTokenConsumptionRate(inrate1);
-	    int outrate1 = ((IntToken)output_rate.getToken()).intValue();
-            output.setTokenProductionRate(outrate1);
-	    int inrate2 = ((IntToken)input2_rate.getToken()).intValue();
-            input2.setTokenConsumptionRate(inrate2);
-	    int outrate2 = ((IntToken)output2_rate.getToken()).intValue();
-            output2.setTokenProductionRate(outrate2);
-	    SDFDirector dir = (SDFDirector)getDirector();
-
-            if (dir != null) {
-                dir.invalidateSchedule();
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
  
+     /**
+      *  @param attribute The attribute that has changed.
+      *  @exception IllegalActionException If the parameters are out of range.
+      */
+     public void attributeChanged(Attribute attribute)
+             throws IllegalActionException {
+         SDFDirector dir = (SDFDirector)getDirector();
+         
+         if (dir != null) {
+             dir.invalidateSchedule();
+         }
+         super.attributeChanged(attribute);
+     }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the type constraints.
@@ -153,28 +160,29 @@ public class SDFTestZeroRate2 extends SDFTransformer {
         SDFTestZeroRate2 newObject = (SDFTestZeroRate2)super.clone(workspace);
 	// Set the type constraint.
 	newObject.output.setTypeAtLeast(newObject.value);
+       	newObject.output2.setTypeAtLeast(newObject.value);
         return newObject;
     }
-
-
-
-
 
 
     /** Discard tokens recieved. Send the token in the value parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	for (int i = 0; i < input.getTokenConsumptionRate(); i++) {
+	for (int i = 0; i < ((IntToken)input_rate.getToken()).intValue(); 
+             i++) {
             input.get(0);
 	}
-	for (int i = 0; i < input2.getTokenConsumptionRate(); i++) {
+	for (int i = 0; i < ((IntToken)input2_rate.getToken()).intValue(); 
+             i++) {
             input2.get(0);
 	}
-	for (int i = 0; i < output.getTokenProductionRate(); i++) {
+	for (int i = 0; i < ((IntToken)output_rate.getToken()).intValue(); 
+             i++) {
             output.send(0, value.getToken());
 	}
-	for (int i = 0; i < output2.getTokenProductionRate(); i++) {
+	for (int i = 0; i < ((IntToken)output_rate.getToken()).intValue();
+             i++) {
             output2.send(0, value.getToken());
 	}
     }

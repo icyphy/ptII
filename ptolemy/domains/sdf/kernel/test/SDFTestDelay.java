@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.kernel.test;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import java.util.Enumeration;
@@ -74,17 +75,18 @@ public class SDFTestDelay extends TypedAtomicActor {
          * java
          */
         /* Create a new input port */
-        input = new SDFIOPort(this,"input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         /* Set the Consumption rate on the port.  A good way to think of
          * this is that you are making a contract with the Ptolemy system.
          * If you always consume one token from this port when fired,
          * then Ptolemy will always guarantee that there will be a token
          * ready when you are fired.
          */
-        input.setTokenConsumptionRate(1);
-        /* The getPort method (in ptolemy.kernel.Entity) finds a port by
+        input_tokenConsumptionRate = 
+            new Parameter(input, "tokenConsumptionRate", new IntToken(1));
+       /* The getPort method (in ptolemy.kernel.Entity) finds a port by
          * name.  It returns a Port object, but all the ports in the
-         * actor package are of type SDFIOPort,
+         * actor package are of type TypedIOPort,
          * which extends Port.   So, we
          * have to upcast the return value to the appropriate type.
          * The setDeclaredType calls use the type system to define what
@@ -93,13 +95,18 @@ public class SDFTestDelay extends TypedAtomicActor {
         input.setTypeEquals(BaseType.INT);
 
         /* Similarly for the output port */
-        output = new SDFIOPort(this,"output", false, true);
-        output.setTokenProductionRate(1);
+        output = new TypedIOPort(this,"output", false, true);
+        output_tokenProductionRate = 
+            new Parameter(output, "tokenProductionRate", new IntToken(1));
+        
         output.setTypeEquals(BaseType.INT);
     }
 
-    public SDFIOPort input;
-    public SDFIOPort output;
+    public TypedIOPort input;
+    public TypedIOPort output;
+
+    public Parameter input_tokenConsumptionRate;
+    public Parameter output_tokenProductionRate;
 
     /* Notice that constructors start the file.  Public methods should follow,
      * in alphabetical order, followed by protected and private methods.
@@ -127,8 +134,9 @@ public class SDFTestDelay extends TypedAtomicActor {
         /* Figure out how many tokens should be copied from the input to the
          * output.
          */
-        int tokens = input.getTokenConsumptionRate();
-        if(output.getTokenProductionRate() != tokens)
+        int tokens = 
+            ((IntToken)input_tokenConsumptionRate.getToken()).intValue();
+        if(((IntToken)output_tokenProductionRate.getToken()).intValue() != tokens)
             throw new IllegalActionException(
                     "SDFTestDelay: Rates on input port and output port " +
                     "must match!");

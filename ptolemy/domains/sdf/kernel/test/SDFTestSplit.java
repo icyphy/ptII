@@ -31,6 +31,7 @@ package ptolemy.domains.sdf.kernel.test;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import java.util.Enumeration;import ptolemy.domains.sdf.kernel.*;
@@ -45,16 +46,20 @@ public class SDFTestSplit extends TypedAtomicActor {
     public SDFTestSplit(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new SDFIOPort(this, "input", true, false);
-        input.setTokenConsumptionRate(2);
+        input = new TypedIOPort(this, "input", true, false);
+        input_tokenConsumptionRate =
+            new Parameter(input, "tokenConsumptionRate", new IntToken(2));
         input.setTypeEquals(BaseType.INT);
 
-        output1 = new SDFIOPort(this, "output1", false, true);
-        output1.setTokenProductionRate(1);
+        output1 = new TypedIOPort(this, "output1", false, true);
+        output1_tokenProductionRate = 
+            new Parameter(output1, "tokenProductionRate", new IntToken(1));
         output1.setTypeEquals(BaseType.INT);
 
-        output2 = new SDFIOPort(this, "output2", false, true);
-        output2.setTokenProductionRate(1);
+        output2 = new TypedIOPort(this, "output2", false, true);
+        output2_tokenProductionRate = 
+            new Parameter(output2, "tokenProductionRate", new IntToken(1));
+                
         output2.setTypeEquals(BaseType.INT);
     }
 
@@ -62,9 +67,13 @@ public class SDFTestSplit extends TypedAtomicActor {
     ////                         public methods                    ////
 
 
-    public SDFIOPort input;
-    public SDFIOPort output1;
-    public SDFIOPort output2;
+    public TypedIOPort input;
+    public TypedIOPort output1;
+    public TypedIOPort output2;
+
+    public Parameter input_tokenConsumptionRate;
+    public Parameter output1_tokenProductionRate;
+    public Parameter output2_tokenProductionRate;
 
     /**
      * Consume two tokens from the input.  Copy the first one to the port

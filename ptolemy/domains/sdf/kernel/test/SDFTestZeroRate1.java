@@ -31,12 +31,12 @@
 package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.sched.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
@@ -58,7 +58,7 @@ the <i>value</i> parameter.
 @version $Id$
 */
 
-public class SDFTestZeroRate1 extends SDFTransformer {
+public class SDFTestZeroRate1 extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -72,8 +72,16 @@ public class SDFTestZeroRate1 extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 	value = new Parameter(this, "value", new IntToken(1));
+
 	input_rate1 = new Parameter(this, "input_rate1", new IntToken(1));
+	input_tokenConsumptionRate = 
+            new Parameter(this, "input_tokenConsumptionRate");
+        input_tokenConsumptionRate.setExpression("input_rate1");
+
 	output_rate1 = new Parameter(this, "output_rate1", new IntToken(1));
+	output_tokenProductionRate = 
+            new Parameter(this, "output_tokenProductionRate");
+        output_tokenProductionRate.setExpression("output_rate1");
 	// Set the type constraint.
 	output.setTypeAtLeast(value);
 	
@@ -94,32 +102,26 @@ public class SDFTestZeroRate1 extends SDFTransformer {
 
     public Parameter output_rate1;
 
+    public Parameter input_tokenConsumptionRate;
+
+    public Parameter output_tokenProductionRate;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    /** 
-     *  @param attribute The attribute that has changed.
-     *  @exception IllegalActionException If the parameters are out of range.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if ((attribute == value) || (attribute == input_rate1) || (attribute == output_rate1)) {
-	//if (attribute == value) {
-	    int inrate1 = ((IntToken)input_rate1.getToken()).intValue();
-            input.setTokenConsumptionRate(inrate1);
-	    int outrate1 = ((IntToken)output_rate1.getToken()).intValue();
-            output.setTokenProductionRate(outrate1);
-	    SDFDirector dir = (SDFDirector)getDirector();
-
-            if (dir != null) {
-                dir.invalidateSchedule();
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
- 
+     /**
+      *  @param attribute The attribute that has changed.
+      *  @exception IllegalActionException If the parameters are out of range.
+      */
+     public void attributeChanged(Attribute attribute)
+             throws IllegalActionException {
+         SDFDirector dir = (SDFDirector)getDirector();
+         
+         if (dir != null) {
+             dir.invalidateSchedule();
+         }
+         super.attributeChanged(attribute);
+     }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the type constraints.
@@ -136,19 +138,16 @@ public class SDFTestZeroRate1 extends SDFTransformer {
         return newObject;
     }
 
-
-
-
-
-
     /** Discard tokens recieved. Send the token in the value parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	for (int i = 0; i < input.getTokenConsumptionRate(); i++) {
+	for (int i = 0; i < ((IntToken)input_rate1.getToken()).intValue(); 
+             i++) {
             input.get(0);
 	}
-	for (int i = 0; i < output.getTokenProductionRate(); i++) {
+	for (int i = 0; i < ((IntToken)output_rate1.getToken()).intValue();
+             i++) {
             output.send(0, value.getToken());
 	}
     }

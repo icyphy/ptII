@@ -23,7 +23,7 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="335.0, 149.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -32,7 +32,7 @@
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
