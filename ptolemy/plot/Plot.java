@@ -220,6 +220,7 @@ public class Plot extends PlotBox {
      *  fit better than long strings.
      *  @param dataset The dataset index.
      *  @param legend The label for the dataset.
+     *  @see #renameLegend(int, String)
      */
     public synchronized void addLegend(int dataset, String legend) {
         _checkDatasetIndex(dataset);
@@ -491,6 +492,19 @@ public class Plot extends PlotBox {
         _firstInSet = true;
         _sawFirstDataSet = false;
     }
+
+    /** Rename a legend.  
+     *  @param dataset The dataset of the legend to be renamed.
+     *  If there is no dataset with this value, then nothing happens.
+     *  @param newName  The new name of legend.
+     *  @see #addLegend(int, String)
+     */
+    public synchronized void renameLegend (int dataset, String newName) {
+     int index = _legendDatasets.indexOf (new Integer (dataset), 0);
+     if (index != -1) {
+       _legendStrings.setElementAt(newName, index);
+     }
+   }
 
     /** Create a sample plot.  This is not actually done immediately
      *  unless the calling thread is the event dispatch thread.
@@ -1956,11 +1970,13 @@ public class Plot extends PlotBox {
         _plotImage = null;
         _checkDatasetIndex(dataset);
         _xyInvalid = true;
-        // Vector points = (Vector)_points.elementAt(dataset);
+        Vector points = (Vector)_points.elementAt(dataset);
         // Vector.clear() is new in JDK1.2, so we use just
         // create a new Vector here so that we can compile
         // this with JDK1.1 for use in JDK1.1 browsers
-        _points.setElementAt(new Vector(), dataset);
+        points.clear();
+        //_points.setElementAt(new Vector(), dataset);
+        _points.setElementAt(points, dataset);
         repaint();
     }
 
