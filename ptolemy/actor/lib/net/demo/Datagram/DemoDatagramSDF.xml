@@ -32,7 +32,7 @@ been sent by DatagramSender.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
