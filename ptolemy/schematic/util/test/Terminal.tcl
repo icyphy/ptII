@@ -1,0 +1,139 @@
+# Tests for the Terminal class
+#
+# @Author: Stephen Neuendorffer
+#
+# @Version: $Id$
+#
+# @Copyright (c) 1997-1999 The Regents of the University of California.
+# All rights reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the
+# above copyright notice and the following two paragraphs appear in all
+# copies of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+# PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+#
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
+#######################################################################
+
+# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
+
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then {
+    source testDefs.tcl
+} {}
+
+# Uncomment this to get a full report, or set in your Tcl shell window.
+# set VERBOSE 1
+
+# If a file contains non-graphical tests, then it should be named .tcl
+# If a file contains graphical tests, then it should be called .itcl
+#
+# It would be nice if the tests would work in a vanilla itkwish binary.
+# Check for necessary classes and adjust the auto_path accordingly.
+#
+
+######################################################################
+####
+#
+test Terminal-2.1 {Constructor tests} {
+    set e0 [java::new ptolemy.schematic.util.Terminal]
+    set e1 [java::new ptolemy.schematic.util.Terminal "TestTerminal"]
+    list [$e0 toString] [$e1 toString]
+} {{Terminal((0.0, 0.0))} {TestTerminal((0.0, 0.0))}}
+
+test Terminal-2.2 {setDescription, isDescription tests} {
+    # NOTE: Uses the setup above
+    set r0 [$e0 getDescription]
+    $e0 setDescription {Oh what a tangled web we weave,}
+    set r1 [$e0 getDescription]
+    $e0 setDescription {when we practice to deceive.}
+    set r2 [$e0 getDescription]
+    list $r0 $r1 $r2
+} {{} {Oh what a tangled web we weave,} {when we practice to deceive.}}
+
+######################################################################
+####
+#
+test Terminal-3.1 {setX, getX tests} {
+    # NOTE: Uses the setup above
+    set r0 [$e0 getX]
+    $e0 setX 1.0
+    set r1 [$e0 getX]
+    $e0 setX 0.2
+    set r2 [$e0 getX]
+    list $r0 $r1 $r2
+} {0.0 1.0 0.2}
+
+test Terminal-3.2 {setY, getY tests} {
+    # NOTE: Uses the setup above
+    set r0 [$e0 getY]
+    $e0 setY 1.0
+    set r1 [$e0 getY]
+    $e0 setY 0.2
+    set r2 [$e0 getY]
+    list $r0 $r1 $r2
+} {0.0 1.0 0.2}
+
+test Terminal-3.3 {setInput, isInput tests} {
+    # NOTE: Uses the setup above
+    set r0 [$e0 isInput]
+    $e0 setInput 1
+    set r1 [$e0 isInput]
+    $e0 setInput 0
+    set r2 [$e0 isInput]
+    list $r0 $r1 $r2
+} {0 1 0}
+
+test Terminal-3.4 {setOutput, isOutput tests} {
+    # NOTE: Uses the setup above
+    set r0 [$e0 isOutput]
+    $e0 setOutput 1
+    set r1 [$e0 isOutput]
+    $e0 setOutput 0
+    set r2 [$e0 isOutput]
+    list $r0 $r1 $r2
+} {0 1 0}
+
+test Terminal-3.5 {setMulti, isMulti tests} {
+    # NOTE: Uses the setup above
+    set r0 [$e0 isMulti]
+    $e0 setMulti 1
+    set r1 [$e0 isMulti]
+    $e0 setMulti 0
+    set r2 [$e0 isMulti]
+    list $r0 $r1 $r2
+} {0 1 0}
+
+test Terminal-3.6 {setMulti, isMulti tests} {
+    # NOTE: Uses the setup above
+    set r0 [$e0 isMulti]
+    $e0 setMulti 1
+    set r1 [$e0 isMulti]
+    $e0 setMulti 0
+    set r2 [$e0 isMulti]
+    list $r0 $r1 $r2
+} {0 1 0}
+
+test Terminal-3.7 {toString} {
+    $e1 setX 1.1
+    $e1 setY 2.4
+    $e1 setInput 1
+    $e1 setOutput 1
+    $e1 setMulti 1
+    $e1 toString
+} {TestTerminal((1.1, 2.4), Input, Output, Multi)}
