@@ -1,0 +1,108 @@
+/* A M/M/1 queue simulation that tests time.
+
+ Copyright (c) 1998 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+*/
+
+
+import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
+import ptolemy.domains.csp.kernel.*;
+import ptolemy.domains.csp.lib.*;
+import ptolemy.data.expr.Parameter;
+
+//////////////////////////////////////////////////////////////////////////
+//// A M/M/1 queue simulation to test time.
+/** 
+Customer - Buffer - Server
+<p>
+Customers arrive with a Poisson distribution, i.e. the inter-arrival
+times are exponentially distributed. The buffer stores customers who 
+have arrived but ahve not yet been served. The server process also 
+serves customers with an exponential distribution.
+<p>
+By varying the rate of customer arrivals, the buffer size and rate 
+at which the server deals with customers, various trade offs can 
+be observed. For example, if the rate of customer arrivals is 
+greater than the service rate, then the buffer will nearly always 
+be full and customers may be refused.
+<p>
+This demo illustrates both the use of time and conditional 
+communication, the buffer uses a CDO, in the CSP domain.
+<p>
+@author Neil Smyth
+@version $Id$
+*/
+public class MM1 {
+    /** Create an instance for excuoing the M/M/1 demo.
+     * */	
+    public MM1() {}
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** The application code.
+     */	
+    public static void main(String[] args) {
+        try {
+            CompositeActor univ = new CompositeActor();
+            univ.setName( "M/M/1 demo");
+            Manager manager = new Manager("Manager");
+            CSPDirector localdir = new CSPDirector("Local Director");
+            univ.setManager(manager);
+            univ.setDirector(localdir);
+
+            Parameter custRate = new Parameter(univ, "customerArrivalRate");
+            custRate.setExpression("1.0");
+            custRate.evaluate();
+
+            Parameter bufferSize = new Parameter(univ, "bufferDepth");
+            bufferSize.setExpression("5");
+            bufferSize.evaluate();
+
+            Parameter servRate = new Parameter(univ, "customerServiceRate");
+            servRate.setExpression("1.0");
+            servRate.evaluate();
+
+            
+	    Customer source = new Customer(univ, "Customer");
+	    CSPBuffer middle = new CSPBuffer(univ, "Buffer", 5);
+            Server sink = new Server(univ, "Server");
+            
+            IOPort out1 = source.output;
+	    IOPort in1 = middle.input;
+	    IOPort out2 = middle.output;
+            IOPort in2 = sink.input;
+
+            IORelation rel1 = (IORelation)univ.connect(out1, in1, "R1");
+            IORelation rel2 = (IORelation)univ.connect(out2, in2, "R2");
+            //System.out.println(univ.description(1023));
+            System.out.println(univ.getFullName() + " starting!");
+            univ.getManager().startRun();
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + ": " + e.getClass().getName());
+            throw new InvalidStateException(e.getMessage());
+        }
+    }
+}
