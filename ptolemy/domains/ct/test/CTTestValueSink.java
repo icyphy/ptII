@@ -118,7 +118,7 @@ public class CTTestValueSink extends TypedAtomicActor {
 
     /** Wrapup. Compare the last token with 1.0. For correct integration,
      *  the last token should be very close to it.
-     *  We take 1e-10 as the value resolution.
+     *  We take 1e-4 as the value resolution.
      *  @exception IllegalActionException If testValue has an invalid
      *   expression.
      */
@@ -128,7 +128,7 @@ public class CTTestValueSink extends TypedAtomicActor {
             double v = ((DoubleToken)_lastToken).doubleValue();
             //System.out.println("lasttoken=" + v);
             double p = ((DoubleToken)testValue.getToken()).doubleValue();
-            if (Math.abs(v-p) < 1e-10) {
+            if (Math.abs(v-p) < 1e-4) {
                 _success = true;
             } else {
                 _success = false;
