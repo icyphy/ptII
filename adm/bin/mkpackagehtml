@@ -5,30 +5,33 @@
 # Where each package name is a dot separated package name
 #
 
-args=$@
-for package $packages
+packages=$@
+for package in $packages
 do 
-	echo $package
-	directory=`echo $package | sed 's@\.@/@g'`
-	if [ ! -d $directory ]; then
-		echo "$0: $directory does not exist, skipping"
-	else
-		packagefile=$directory/package.html
-		if [ -f $packagefile ]; then
-			echo "$0: $packagefile exists, skipping"
-		else 
-cat << EoF
+  #echo $package
+  directory=`echo $package | sed 's@\.@/@g'`
+  if [ ! -d $directory ]; then
+      echo "$0: $directory does not exist, skipping"
+  else
+      packagefile=$directory/package.html
+      if [ -f $packagefile ]; then
+	  echo "$0: $packagefile exists, skipping"
+      else 
+cat > $packagefile << EoF
 <!-- \$Id\$ -->
 <html>
 <head>
 <title>$package</title>
 </head>
 <body>
-<h1>$package</h1>
+The $package package.
+<p>
 </body>
 </html>
 EoF
-			echo "created $packagefile"
-		fi 
-	fi
+
+
+         echo "$packagefile"
+      fi 
+  fi
 done
