@@ -209,25 +209,26 @@ test CTExpoSystem-4.4 {Expo system with accuracy 1e-6} {
     list [$testV isSuccessful]  
 } {1}
 
-test CTExpoSystem-4.6 {Expo System with Multi-Solver ImpulseBE RK23} {
-    #Note: Use above setup.
-    set bps [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute breakpointODESolver]]
-    $bps setToken [java::new ptolemy.data.StringToken \
-	    "ptolemy.domains.ct.kernel.solver.ImpulseBESolver"]
-
-    set accu [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute errorTolerance]]
-    $accu setToken [java::new ptolemy.data.DoubleToken 1e-5]
-
-
-    set testvalue [java::cast ptolemy.data.expr.Parameter \
-	    [$testV getAttribute "Value"]]
-    $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7182651863389447]
-
-    $man run
-    list [$testV isSuccessful]  
-} {1}
+# ImpulseBESolver is deprecated since Ptolemy II 4.1.
+#test CTExpoSystem-4.6 {Expo System with Multi-Solver ImpulseBE RK23} {
+#    #Note: Use above setup.
+#    set bps [java::cast ptolemy.data.expr.Parameter \
+#	    [$dir getAttribute breakpointODESolver]]
+#    $bps setToken [java::new ptolemy.data.StringToken \
+#	    "ptolemy.domains.ct.kernel.solver.ImpulseBESolver"]
+#
+#    set accu [java::cast ptolemy.data.expr.Parameter \
+#	    [$dir getAttribute errorTolerance]]
+#    $accu setToken [java::new ptolemy.data.DoubleToken 1e-5]
+#
+#
+#    set testvalue [java::cast ptolemy.data.expr.Parameter \
+#	    [$testV getAttribute "Value"]]
+#    $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7182651863389447]
+#
+#    $man run
+#    list [$testV isSuccessful]  
+#} {1}
 
 test CTExpoSystem-4.7 {Expo System with CTMixsignalSolver as toplevel} {
     #Note: Use above setup.
