@@ -31,6 +31,86 @@
 #######################################################################
 
 
+
+
+proc speedComparison  {xmlFile \
+	{modelName "" } \
+	{targetPackage ptolemy.copernicus.shallow.cg} \
+	{repeat 3} } { 
+
+    global relativePathToPTII
+    if { $modelName == "" } {
+	set parser [java::new ptolemy.moml.MoMLParser]
+	set toplevel [$parser parseFile $xmlFile]
+	set modelName [string range [$toplevel getFullName] 1 end]
+    }
+    set args [java::new {String[]} 2 \
+	    [list \
+	    "-class" "$targetPackage.CG$modelName"]]
+
+    puts "Running builtin shallow $repeat times"
+    set shallowElapsed [time {java::call \
+    	    ptolemy.actor.gui.CompositeActorApplication \
+    	    main $args} $repeat]
+
+    puts "Running exec shallow $repeat times"
+    set shallowExecElapsed \
+	    [time {exec java -classpath $relativePathToPTII \
+	    ptolemy.actor.gui.CompositeActorApplication \
+	    -class $targetPackage.CG$modelName} $repeat]
+
+    set args [java::new {String[]} 1 \
+	    [list $xmlFile]]
+
+    puts "Running builtin interpreted $repeat times"
+    set interpretedElapsed [time {java::call \
+    	    ptolemy.actor.gui.MoMLSimpleApplication \
+    	    main $args} $repeat]
+
+    puts "Running exec interpreted $repeat times"
+    set interpretedExecElapsed \
+	    [time {exec java -classpath $relativePathToPTII \
+	    ptolemy.actor.gui.MoMLSimpleApplication \
+	    $xmlFile} $repeat]
+
+    # Convert from Tcl time's microseconds to milliseconds
+    set shallowElapsedTime [expr {int([lindex $shallowElapsed 0] /1000.0)}]
+    set interpretedElapsedTime [expr {int([lindex $interpretedElapsed 0] /1000.0)}]
+
+    set elapsedRatio [expr { \
+	    int(
+	    (([lindex $shallowElapsed 0] + 0.0) \
+	    / \
+	    ([lindex $interpretedElapsed 0] + 0.0)) * 100)}]
+
+
+    set shallowExecElapsedTime \
+	    [expr {int([lindex $shallowExecElapsed 0] /1000.0)}]
+    set interpretedExecElapsedTime \
+	    [expr {int([lindex $interpretedExecElapsed 0] /1000.0)}]
+
+    set execElapsedRatio [expr { \
+	    int(
+	    (([lindex $shallowExecElapsed 0] + 0.0) \
+	    / \
+	    ([lindex $interpretedExecElapsed 0] + 0.0)) * 100)}]
+
+    puts "$modelName $repeat builtin runs: Interp/Shallow: \
+	    $interpretedElapsedTime/$shallowElapsedTime \
+	    ($elapsedRatio%)"
+
+    puts "$modelName $repeat exec runs: Interp/Shallow: \
+	    $interpretedExecElapsedTime/$shallowExecElapsedTime \
+	    ($execElapsedRatio%)"
+
+    # The percentage is separated by spaces to make this more machine readable
+    return "Times Interp/Shallow ms $modelName $repeat \
+	    builtin: $interpretedElapsedTime/$shallowElapsedTime \
+	    $elapsedRatio % \
+	    exec: $interpretedExecElapsedTime/$shallowExecElapsedTime \
+	    $execElapsedRatio %"
+}
+
 # Generate java code for a model.  The model argument names a .xml
 # file which will be interpreted as a relative pathname
 # (MoMLParser.parse() forces this)
@@ -75,6 +155,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 
     if {[string range $modelPath 0 2] == "../"} {
 	# Ugh.  Strip off the first ../ because we are cd'ing up one level.
+	set realModelPath $modelPath
 	set modelPath [string range $modelPath 3 end]
     }
 
@@ -101,8 +182,8 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 	    SOURCECLASS=$modelPath $command]
     puts $results
 
+    return [speedComparison $realModelPath $modelName]
 } 
-
 
 
 # Read in a model, generate code and run it in the current jvm
