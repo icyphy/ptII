@@ -237,11 +237,11 @@ public class TrapezoidalRuleSolver extends ODESolver {
             next.fire();
         }
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
-        _setConverge(false);
+        _setConvergence(false);
         int iterations = 0;
         while (!_isConverged()) {
             incrementRound();
-            _setConverge(true);
+            _setConvergence(true);
             actors = schedule.get(
                     CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
             while (actors.hasNext()) {
@@ -273,7 +273,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
                 }
                 dir.setCurrentTime(dir.getCurrentTime()+
                         dir.getCurrentStepSize());
-                _setConverge(false);
+                _setConvergence(false);
                 iterations = 0;
             }
         }
@@ -295,7 +295,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  at the beginning of an integration step.
      *  @param converge The flag setting.
      */
-    protected void _setConverge(boolean converge) {
+    protected void _setConvergence(boolean converge) {
         _converge = converge;
     }
 
