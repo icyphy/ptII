@@ -69,6 +69,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'VideoCamera$$PreAccessCodec.class' \
+	 demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
