@@ -776,7 +776,8 @@ public class SignalProcessing {
     }
 
     /** Return a new array that is filled with samples of a waveform of a
-     *  specified length. The waveform is sampled
+     *  specified length. The waveform is sampled with starting at startTime,
+     *  at a sampling period of interval.
      *  @param length The number of samples to generate.
      *  @param startTime The corresponding time for the first sample.
      *  @param interval The time between successive samples. This may
