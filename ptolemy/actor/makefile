@@ -52,15 +52,16 @@ include $(CONFIG)
 
 DIRS = 		test #doc
 
-# Used to build zip files
-JPACKAGE = 	pt.actors
-JPACKAGE_DIR = 	pt/actors
-JVERSION =	1.0
-JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		pt/kernel/pt.actors.zip
-JARFILE = 	$(JPACKAGE).jar
-
 CLASSPATH = ../..
+
+# Used to build zip files
+TYPACKAGE = 	pt.actors
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
+TYPACKAGE_DIR = pt/actors
+TYVERSION =	1.0
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
+TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
+JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	Actor.java \
