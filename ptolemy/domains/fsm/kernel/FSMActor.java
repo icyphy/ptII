@@ -380,8 +380,13 @@ public class FSMActor extends CompositeEntity
     /** Return a list of variables that this entity modifies.  The
      * variables are assumed to have a change context of the given
      * entity.  This method returns the destinations of all choice and
-     * commit identifiers.
+     * commit identifiers that are deeply contained by this actor.
+     * Note that this actor is also used as the controller of modal
+     * models and FSMDirector reports destinations of all choice and
+     * commit identifiers, even those not contained by the finite
+     * state machine.
      * @return A list of variables.
+     * @see ptolemy.domains.fsm.FSMDirector#getModifiedVariables
      */
     public List getModifiedVariables() throws IllegalActionException {
         List list = new LinkedList();
