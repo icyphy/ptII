@@ -1,4 +1,6 @@
-/* A class that determines names of various entities to use for C code generation.
+/*
+A class that determines names of various entities to use for
+C code generation.
 
 Copyright (c) 2001 The University of Maryland.
 All rights reserved.
@@ -33,15 +35,31 @@ package ptolemy.copernicus.c;
 
 import java.util.HashMap;
 
-import soot.*;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Local;
 
-/** A class that determines names of various entities to use for C code 
- *  generation. 
- *
- *  @author Shuvra S. Bhattacharyya
- *  @version $Id$
- *
- */
+import soot.Type;
+import soot.RefType;
+import soot.ArrayType;
+import soot.BooleanType;
+import soot.ByteType;
+import soot.CharType;
+import soot.DoubleType;
+import soot.FloatType;
+import soot.IntType;
+import soot.LongType;
+import soot.NullType;
+import soot.ShortType;
+import soot.VoidType;
+
+/* A class that determines names of various entities to use for C code
+   generation.
+
+   @author Shuvra S. Bhattacharyya
+   @version $Id$
+*/
 
 public class CNames {
 
@@ -56,20 +74,20 @@ public class CNames {
      *  implements a Soot class. The class-specific structure has
      *  type "struct {@link #classNameOf(SootClass)}". Additionally,
      *  the identifier {@link #classNameOf(SootClass)} (i.e., without
-     *  the struct qualifier) is defined in the generated code to be a 
-     *  pointer type that points to the class-specific structure. 
+     *  the struct qualifier) is defined in the generated code to be a
+     *  pointer type that points to the class-specific structure.
      *  @param source The class.
-     *  @return The C name for the class-specific structure type. 
+     *  @return The C name for the class-specific structure type.
      */
     public static String classNameOf(SootClass source) {
         return ("C" + instanceNameOf(source));
     }
 
     /** Determine the C name for the class-specific structure variable that
-     *  implements a Soot class. The type of this structure is 
+     *  implements a Soot class. The type of this structure is
      *  the type pointed to by the pointer type {@link #classNameOf(SootClass)}.
      *  @param source The class.
-     *  @return The C name for the class-specific structure variable. 
+     *  @return The C name for the class-specific structure variable.
      */
     public static String classStructureNameOf(SootClass source) {
         return ("V" + instanceNameOf(source));
@@ -91,7 +109,8 @@ public class CNames {
             // Hash the type signature to avoid naming conflicts associated
             // with names that are longer than the number of significant
             // characters in a C identifier.
-            Integer prefixCode = new Integer(field.getSubSignature().hashCode());
+            Integer prefixCode = new Integer(
+                                field.getSubSignature().hashCode());
             name = _sanitize("f" + prefixCode + "_" + field.getName());
             _nameMap.put(field, name);
         }
@@ -109,9 +128,9 @@ public class CNames {
                name = ((method.getDeclaringClass().getName()) + "_" +
                        method.getName()).replace('.', '_');
             } else {
-                // Hash the class name + type signature combination to avoid naming 
-                // conflicts. 
-                String prefixBase = method.getDeclaringClass().getName() 
+                // Hash the class name + type signature combination to
+                // avoid naming conflicts.
+                String prefixBase = method.getDeclaringClass().getName()
                         + method.getSubSignature();
                 Integer prefixCode = new Integer(prefixBase.hashCode());
                 name = _sanitize("f" + prefixCode + "_" + method.getName());
@@ -121,7 +140,7 @@ public class CNames {
         return name;
     }
 
-    /** Return the include file name for a given class. 
+    /** Return the include file name for a given class.
      *  @param source the class.
      *  @return the include file name.
      */
@@ -134,7 +153,7 @@ public class CNames {
      *  static initializer for the class (if it exists), and all
      *  class-level initialization required on the C data structures that
      *  implement the class.
-     *  When called, this function must be passed the address of the 
+     *  When called, this function must be passed the address of the
      *  variable given by {@link #classStructureNameOf}.
      *  @param source the class.
      *  @return the function name.
@@ -145,7 +164,7 @@ public class CNames {
             final String suffix = "_init";
             String base = instanceNameOf(source) + suffix;
             Integer prefixCode = new Integer(base.hashCode());
-            name = _sanitize("f" + prefixCode + suffix); 
+            name = _sanitize("f" + prefixCode + suffix);
             _initializerMap.put(source, name);
         }
         return name;
@@ -155,10 +174,10 @@ public class CNames {
      *  implements a Soot class. The instance-specific structure has
      *  type "struct {@link #instanceNameOf(SootClass)}". Additionally,
      *  the identifier {@link #instanceNameOf(SootClass)} (i.e., without
-     *  the struct qualifier) is defined in the generated code to be a pointer type 
-     *  that points to the class-specific structure. 
+     *  the struct qualifier) is defined in the generated code to be a pointer
+     *  type that points to the class-specific structure.
      *  @param source The Soot class.
-     *  @return The C name for the instance-specific structure type. 
+     *  @return The C name for the instance-specific structure type.
      */
     public static String instanceNameOf(SootClass source) {
         if (_nameMap.containsKey(source)) return (String)(_nameMap.get(source));
@@ -178,7 +197,7 @@ public class CNames {
         return name;
     }
 
-    /** Return the name of the C structure member that represents 
+    /** Return the name of the C structure member that represents
      *  a given Soot method. The identifier returned by this method
      *  is a member of the structure that implements the associated class
      *  (see {@link #classNameOf(SootClass)}).
@@ -190,7 +209,8 @@ public class CNames {
         if ((name = (String)(_nameMap.get(method))) == null) {
             // Hash the type signature to avoid naming conflicts for overloaded
             // methods.
-            Integer prefixCode = new Integer(method.getSubSignature().hashCode());
+            Integer prefixCode = new Integer(
+                                        method.getSubSignature().hashCode());
             name = _sanitize("m" + prefixCode + "_" + method.getName());
             _nameMap.put(method, name);
         }
@@ -199,7 +219,7 @@ public class CNames {
 
     /** Initialize C name generation. This method must be called once before any
      *  other method in this class is called.
-     */ 
+     */
     public static void setup() {
         _functionMap = new HashMap();
         _initializerMap = new HashMap();
@@ -207,9 +227,11 @@ public class CNames {
         _nameMap = new HashMap();
     }
 
-    /** Return the name of the class structure member that points to the superclass
-     *  structure. Each structure that implements a class has as a member a pointer to
-     *  the superclass. This method returns the name of this pointer member.
+    /** Return the name of the class structure member that points to the
+     *  superclass structure.
+     *  Each structure that implements a class has as a member a pointer
+     *  to the superclass. This method returns the name of this pointer
+     *  member.
      *  @return the name of the pointer member.
      */
     public static String superclassPointerName() {
@@ -221,28 +243,28 @@ public class CNames {
      *  To obtain the name of the class-specific data strucuture associated with
      *  a RefType, see {@link #instanceNameOf(SootClass)}.
      *  @param type The type.
-     *  @return The C name. 
+     *  @return The C name.
      */
     public static String typeNameOf(Type type) {
         // FIXME: do this more efficiently.
         String name = null;
-        if (type instanceof RefType) 
+        if (type instanceof RefType)
             name = instanceNameOf(((RefType)type).getSootClass());
         else if (type instanceof ArrayType) {
             // FIXME: remove commented old code:
             // typeNameOf(((ArrayType)type).baseType) + "[]";
             name = arrayInstanceTypeName;
         }
-        if (type instanceof BooleanType) name = "int"; 
-        else if (type instanceof ByteType) name = "char"; 
-        else if (type instanceof CharType) name = "char"; 
-        else if (type instanceof DoubleType) name = "double"; 
-        else if (type instanceof FloatType) name = "float"; 
-        else if (type instanceof IntType) name = "int"; 
-        else if (type instanceof LongType) name = "long"; 
-        else if (type instanceof NullType) name = "void*"; 
-        else if (type instanceof ShortType) name = "short"; 
-        else if (type instanceof VoidType) name = "void"; 
+        if (type instanceof BooleanType) name = "int";
+        else if (type instanceof ByteType) name = "char";
+        else if (type instanceof CharType) name = "char";
+        else if (type instanceof DoubleType) name = "double";
+        else if (type instanceof FloatType) name = "float";
+        else if (type instanceof IntType) name = "int";
+        else if (type instanceof LongType) name = "long";
+        else if (type instanceof NullType) name = "void*";
+        else if (type instanceof ShortType) name = "short";
+        else if (type instanceof VoidType) name = "void";
         else new RuntimeException("Unsupported Soot type '"
                 + type.getClass().getName() + "'");
         return name;
@@ -253,14 +275,14 @@ public class CNames {
 
     /** The name of the runtime function or macro to be used for
      *  allocating an array.
-     */    
+     */
     public static final String arrayAllocateFunction = "pccg_array_allocate";
 
     /** The prefix of array class descriptors that correspond
      *  to primitive types. For example, if we concatenate "int"
      *  to this prefix, we get the run-time struct that represents
      *  the class of arrays of integers.
-     */    
+     */
     public static final String arrayClassPrefix = "PCCG_ARRAY_";
 
     /** The name of the type in the run-time code that represents
@@ -270,33 +292,33 @@ public class CNames {
 
     /** The name of the runtime function or macro to be used for
      *  determining the length of an array.
-     */    
+     */
     public static final String arrayLengthFunction = "PCCG_ARRAY_LENGTH";
 
     /** The name of the runtime function or macro to be used for
      *  computing array references.
-     */    
+     */
     public static final String arrayReferenceFunction = "PCCG_ARRAY_ACCESS";
 
     /** The name of the runtime function or macro to be used for
      *  implementing the Java instanceof operator.
-     */    
+     */
     public static final String instanceOfFunction = "PCCG_instanceof";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     // Derive a unique name for a class that is to be used as the
-    //  name of the user-defined C type that implements instances of 
+    //  name of the user-defined C type that implements instances of
     //  the class.
     private static String _instanceNameOf(SootClass source) {
         String name = source.getName();
 
         // The choice of 'i' as the first letter stands for "instance."
-        String className = (name.indexOf(".") < 0) ? name : 
+        String className = (name.indexOf(".") < 0) ? name :
                 name.substring(name.lastIndexOf(".") + 1);
         Integer prefixCode = new Integer(name.hashCode());
-        String CClassName = _sanitize("i" + prefixCode.toString() 
+        String CClassName = _sanitize("i" + prefixCode.toString()
                 + "_" + className);
         _nameMap.put(source, CClassName);
         return CClassName;
@@ -319,7 +341,8 @@ public class CNames {
     private static HashMap _functionMap;
 
     //  Map from a class to the name of the function that implements
-    //  instance-specific initialization for the class. Keys are of type SootClass.
+    //  instance-specific initialization for the class.
+    //  Keys are of type SootClass.
     //  Values are of type String.
     private static HashMap _initializerMap;
 
@@ -328,9 +351,10 @@ public class CNames {
     private static HashMap _localMap;
 
     //  Map for names associated with the C structures that implement classes
-    //  and class instances. Specifically, this map provides the names in the generated
-    //  C code that correspond to class instances, instance fields, and
-    //  class methods. Keys are of type SootClass, SootField, or SootMethod.
+    //  and class instances. Specifically, this map provides the names in the
+    //  generated C code that correspond to class instances, instance fields,
+    //  and class methods.
+    //  Keys are of type SootClass, SootField, or SootMethod.
     //  Values are of type String.
     private static HashMap _nameMap;
 }

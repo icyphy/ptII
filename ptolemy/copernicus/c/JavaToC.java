@@ -1,6 +1,6 @@
 /*
 An application that converts a Java class into  C
-source files (a .h file and a .c file) that implement
+source files (a .i.h file, a .h file and a .c file) that implement
 the class.
 
 Copyright (c) 2001 The University of Maryland.
@@ -34,8 +34,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import java.io.PrintWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import soot.Scene;
@@ -43,23 +41,16 @@ import soot.SootClass;
 
 //////////////////////////////////////////////////////////////////////////
 //// JavaToC
-/** An application that converts a Java class (from a class file) into  C
- *  source files (a .h file and a .c file) that implement the class.
- *  The application takes two arguments, and an optional third argument.
- *  The first argument specifies the classpath to use during the Java to C
- *  translation; the second argument specifies the name of the class to translate;
- *  and the optional third argument can be used to turn on "single class
- *  mode" translation (see {@link Context#getSingleClassMode()} for details
- *  on this translation mode). To turn on single class mode, the third
- *  argument should be set to "-singleClass."
- *  <p>
- *  The C conversion capability is highly experimental and rudimentary
- *  at this point, with only a limited set of Java language features
- *  supported. We are actively extending the set of supported features.
- *
- *  @author Shuvra S. Bhattacharyya
- *  @version $Id$
- */
+/* An application that converts a Java class (from a class file) into  C
+   source files (a .h file and a .c file) that implement the class.
+   The C conversion capability is highly experimental and rudimentary
+   at this point, with only a limited set of Java language features
+   supported. We are actively extending the set of supported features.
+
+   @author Shuvra S. Bhattacharyya, Ankush Varma
+   @version $Id$
+*/
+
 public class JavaToC {
 
     // Private constructor to prevent instantiation of the class.
@@ -74,90 +65,114 @@ public class JavaToC {
      *  @param classPath the classpath to use during the conversion.
      *  @param className the name of the class to translate.
      *  @param generateSingleClass indicates whether (true) or not (false)
-     *  "single class mode" should be used during the conversion 
+     *  "single class mode" should be used during the conversion
      *  (see {@link Context#getSingleClassMode()} for details).
      */
-    public static void convert(String classPath, String className, 
-            boolean generateSingleClass) throws IOException {
+    public static void convert(String classPath, String className,
+            String compileMode, boolean verbose) throws IOException {
+
+        boolean generateSingleClass = compileMode.equals("singleClass");
 
         // Initialize code generation
         Scene.v().setSootClassPath(classPath);
         HeaderFileGenerator hGenerator = new HeaderFileGenerator();
         CodeFileGenerator cGenerator = new CodeFileGenerator();
         InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
-        
+
         if (generateSingleClass) {
             cGenerator.setSingleClassMode();
             hGenerator.setSingleClassMode();
         }
-        
+
         Scene.v().loadClassAndSupport(className);
         SootClass sootClass = Scene.v().getSootClass(className);
         CNames.setup();
 
-        //generate the .i file
+        //generate the .i.h file
         String code = iGenerator.generate(sootClass);
-        PrintWriter out;
-       
-        try { 
-            out = new PrintWriter(new FileOutputStream(className + ".i.h"));
-        } catch (Exception exception) {
-            throw new IOException("Could not create .i.h file.\n"
-                    + exception.getMessage());
-        }
-        out.println(code.toString());
-        out.close();
+        FileHandler.write(className+".i.h", code);
 
-        
         // Generate the .h file.
         code = hGenerator.generate(sootClass);
-            
-        try { 
-            out = new PrintWriter(new FileOutputStream(className + ".h"));
-        } catch (Exception exception) {
-            throw new IOException("Could not create .h file.\n"
-                    + exception.getMessage());
-        }
-        out.println(code.toString());
-        out.close();
-        
+        FileHandler.write(className+".h", code);
+
         // Generate the .c file.
         code = cGenerator.generate(sootClass);
-        if ((out = new PrintWriter(new FileOutputStream(className + ".c"))) == null) 
-            throw new IOException("Could not create .c file.\n");
-        out.println(code.toString());
-        out.close();
+        FileHandler.write(className+".c", code);
 
-        //generate other required .c and .h files
-        if (!generateSingleClass)
-        {
-            RequiredFileGenerator.generateTransitiveClosureOf(classPath,className);
-        }
+        // generate other required files
+        RequiredFileGenerator.generateTransitiveClosureOf(classPath,
+                        className, compileMode, verbose);
+
+        // Generate the makefile
+        MakeFileGenerator.generateMakeFile(classPath, className);
+
+
+    }
+
+    public static void showHelp()
+    {
+        System.out.println( "USAGE: java [-Dj2c_lib=<system library path>]"
+            +" javatoc classPath [flags] className1"
+            +" [flags][className2]...\n");
+        System.out.println( "Compile mode flags: "+
+            "[-singleClass], [-headersOnly], [-full]");
+        System.out.println( "Verbose mode flags: "+
+            "[-v] for verbose, [-q] for quiet.");
+        System.out.println( "help flags        : [-h] to see this message");
+        System.out.println( "\nLater flags are given precedence over "+
+            "earlier ones.");
     }
 
     /** Entry point for the JavaToC application. See {@link JavaToC} for
      *  instructions on usage.
      *  @param args application arguments.
      */
-    public static void main(String[] args) throws IOException {
-        String usage = 
+    public static void main(String[] args) throws IOException
+    {
+        /*
+        String usage =
                 "Usage: java ptolemy.lang.copernicus.c.JavaToC classpath "
-                + " classname [-singleClass]";
+                + " classname [-singleClass][-headersOnly]";
         if ((args.length < 2) || (args.length > 3)) {
             throw new RuntimeException(usage);
         }
-     
-        // Determine whether or not single class mode translation should
-        // be used.
-        boolean generateSingleClass = false;
-        if (args.length == 3) {      
-            if (args[2].equals("-singleClass")) {
-                generateSingleClass = true;
-            } else {
-                throw new RuntimeException(usage);
+        */
+
+        String classPath = new String(args[0]);
+        String className = new String();
+
+        // default flags
+        String compileMode = new String("full");
+        boolean verbose = false;
+
+        // actual flags
+        for(int i = 1;i<args.length; i++)
+        {
+            if (args[i].startsWith("-")) //its a flag
+            {
+                if     (args[i].equals("-v")) verbose = true;
+                else if(args[i].equals("-q")) verbose = false;
+                else if(args[i].equals("-singleClass"))
+                    compileMode = new String("singleClass");
+                else if(args[i].equals("-headersOnly"))
+                    compileMode = new String("headersOnly");
+                else if(args[i].equals("-full"))
+                    compileMode = new String ("full");
+                else if(args[i].equals("-h"))
+                {
+                    showHelp();
+                    System.exit(0);
+                }
+            }
+            else //its the name of a class to convert
+            {
+                className=args[i];
+                convert(classPath, className, compileMode, verbose);
             }
         }
-    
-        convert(args[0], args[1], generateSingleClass);
+
+        if(className.equals("")) showHelp(); //if no className specified
+
     }
 }

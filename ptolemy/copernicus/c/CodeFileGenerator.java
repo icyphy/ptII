@@ -36,24 +36,31 @@ package ptolemy.copernicus.c;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import soot.*;
+
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Scene;
+import soot.Type;
+import soot.Local;
+import soot.Unit;
+import soot.Trap;
+
 import soot.jimple.GotoStmt;
 import soot.jimple.IfStmt;
 import soot.jimple.JimpleBody;
-import soot.jimple.internal.*;
 
-/** A C code generator for generating "code files" (.c files) that implement
- *  Java classes.
- *
- *  @author Shuvra S. Bhattacharyya
- *  @version $Id$
- *
- */
+/* A C code generator for generating "code files" (.c files) that implement
+   Java classes.
+
+   @author Shuvra S. Bhattacharyya, Ankush Varma
+   @version $Id$
+
+*/
 
 // FIXME: Handle (ignore?) phantom methods and fields.
 
 public class CodeFileGenerator extends CodeGenerator {
-    
+
     /** Construct a code file generator.
      */
     public CodeFileGenerator() {
@@ -66,7 +73,7 @@ public class CodeFileGenerator extends CodeGenerator {
     /** Generate C code for a class, including code (function declarations)
      *  for all of its methods, and for its initialization function.
      *  @param source the class.
-     *  @return the code. 
+     *  @return the code.
      */
     public String generate(SootClass source) {
         StringBuffer bodyCode = new StringBuffer();
@@ -74,7 +81,13 @@ public class CodeFileGenerator extends CodeGenerator {
         _context.clear();
 
         source.setApplicationClass();
-        _updateRequiredTypes(source.getType()); 
+        _updateRequiredTypes(source.getType());
+
+        //add runtime include files
+        _context.addIncludeFile("<setjmp.h>");
+        //_context.addIncludeFile("\"array.h\"");
+        //moved to HeaderFileGenerator
+        _context.addIncludeFile("\"runtime.h\"");
 
         // Generate function prototypes for all private methods.
         int count = 0;
@@ -93,8 +106,8 @@ public class CodeFileGenerator extends CodeGenerator {
             }
         }
         bodyCode.append("\n");
-       
-        // Generate the code for all of the methods. 
+
+        // Generate the code for all of the methods.
         methods = source.getMethods().iterator();
         while (methods.hasNext()) {
             String methodCode = _generateMethod((SootMethod)(methods.next()));
@@ -104,7 +117,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
         // Declare the run-time structure that is to contain class information.
         bodyCode.append(_comment("Structure that contains class information"));
-        bodyCode.append("struct " + CNames.classNameOf(source) + " " 
+        bodyCode.append("struct " + CNames.classNameOf(source) + " "
                 + CNames.classStructureNameOf(source) + ";\n\n");
 
         // Generate code for the function that initializes the class.
@@ -113,7 +126,7 @@ public class CodeFileGenerator extends CodeGenerator {
         headerCode.append(_generateIncludeDirectives() + "\n");
 
         headerCode.append(_declareConstants() + "\n");
-        
+
         return (headerCode.append(bodyCode)).toString();
     }
 
@@ -131,9 +144,9 @@ public class CodeFileGenerator extends CodeGenerator {
         if (stringConstants.hasNext()) {
             code.append(_comment("Pointers to string constants"));
             while (stringConstants.hasNext()) {
-                code.append("static " + typeName + " " + 
-                        _context.getIdentifier((String)(stringConstants.next())) 
-                        + ";\n"); 
+                code.append("static " + typeName + " " +
+                        _context.getIdentifier((String)(stringConstants.next()))
+                        + ";\n");
             }
         }
         return code;
@@ -144,7 +157,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
     /** Generate initialization code for structures that implement classes.
      *  Code for a C function is returned. This function implements
-     *  initialization required for the class-specific structure 
+     *  initialization required for the class-specific structure
      *  that is pointed to by its argument.
      *  @param source the class.
      *  @return initialization code for the class.
@@ -155,8 +168,8 @@ public class CodeFileGenerator extends CodeGenerator {
         final String argumentReference = argumentName + "->";
         code.append(_comment("Function that initializes structure for Class "
                 + source.getName()));
-        code.append("void " + CNames.initializerNameOf(source) + "(" 
-                + CNames.classNameOf(source) + " " + argumentName 
+        code.append("void " + CNames.initializerNameOf(source) + "("
+                + CNames.classNameOf(source) + " " + argumentName
                 + ") {\n");
         if (!_context.getSingleClassMode()) {
             code.append(_generateMethodPointerInitialization(
@@ -175,35 +188,36 @@ public class CodeFileGenerator extends CodeGenerator {
 
         Iterator stringConstants = _context.getStringConstants();
         if (stringConstants.hasNext()) {
-            SootClass stringClass =  Scene.v().getSootClass("java.lang.String");
+            SootClass stringClass = Scene.v().getSootClass("java.lang.String");
             String stringType = CNames.instanceNameOf(stringClass);
             String stringStructure = CNames.classStructureNameOf(stringClass);
             String stringInitializer = CNames.methodNameOf(
                     stringClass.getMethod("void <init>(char[])"));
-            code.append("\n" + _indent(1) + 
+            code.append("\n" + _indent(1) +
                     _comment("Initialization of string constants"));
             while (stringConstants.hasNext()) {
                 String value = (String)(stringConstants.next());
                 String identifier = _context.getIdentifier(value);
-                code.append(_indent(1) + identifier + " = (" + stringType + 
+                code.append(_indent(1) + identifier + " = (" + stringType +
                         ")(malloc(sizeof struct " + stringType + "));\n");
-                code.append(_indent(1) + stringStructure + "->"  
-                        + stringInitializer 
+                code.append(_indent(1) + stringStructure + "->"
+                        + stringInitializer
                         + "(" + identifier + ", \"" + value + "\");\n");
             }
-        } 
+        }
 
         // Invoke the static initializer method for the class if it exists.
-        SootMethod initializer; 
-        if ((initializer = MethodListGenerator.getClassInitializer(source)) 
+        SootMethod initializer;
+        if ((initializer = MethodListGenerator.getClassInitializer(source))
                 != null) {
             code.append("\n" + _indent(1)
                     + _comment("Static initializer method"));
-            code.append(_indent(1) + CNames.functionNameOf(initializer) + "();\n");
+            code.append(_indent(1) +
+                            CNames.functionNameOf(initializer) + "();\n");
         }
 
         // Set up the superclass pointer.
-        code.append("\n" + _indent(1) + argumentReference + 
+        code.append("\n" + _indent(1) + argumentReference +
                 CNames.superclassPointerName() + " = ");
         if (!_context.getSingleClassMode() && source.hasSuperclass()) {
             code.append("&" + CNames.classStructureNameOf(
@@ -218,7 +232,7 @@ public class CodeFileGenerator extends CodeGenerator {
         code.append("}\n");
         return code.toString();
     }
-       
+
     /** Generate code for a method.
      *  @param method the method.
      *  @return the code.
@@ -226,8 +240,8 @@ public class CodeFileGenerator extends CodeGenerator {
     private String _generateMethod(SootMethod method) {
         if (method.isConcrete() && !(method.isNative())) {
             StringBuffer code = new StringBuffer();
-            String description = "Function that implements Method " + 
-                    method.getSubSignature(); 
+            String description = "Function that implements Method " +
+                    method.getSubSignature();
             code.append(_comment(description));
             JimpleBody body = (JimpleBody)(method.retrieveActiveBody());
             CSwitch visitor = new CSwitch(_context);
@@ -250,19 +264,21 @@ public class CodeFileGenerator extends CodeGenerator {
                         " " + thisLocalName);
                 parameterCount++;
             }
-            for (parameterIndex = 0; parameterIndex < method.getParameterCount();
-                    parameterIndex++) {
+
+            for(parameterIndex = 0;parameterIndex < method.getParameterCount();
+                    parameterIndex++)
+            {
                 if (parameterCount > 0) code.append(", ");
                 Local local = body.getParameterLocal(parameterIndex);
                 parameterAndThisLocals.add(local);
                 Type parameterType = local.getType();
-                code.append(CNames.typeNameOf(parameterType) + " " 
+                code.append(CNames.typeNameOf(parameterType) + " "
                         + CNames.localNameOf(local));
                 _updateRequiredTypes(parameterType);
             }
             code.append(")\n{\n");
 
-            // Generate local declarations. 
+            // Generate local declarations.
             Iterator locals = body.getLocals().iterator();
             while (locals.hasNext()) {
                 Local nextLocal = (Local)(locals.next());
@@ -278,107 +294,163 @@ public class CodeFileGenerator extends CodeGenerator {
             //for catching exceptions
             ExceptionTracker tracker = new ExceptionTracker();
             tracker.init(body);
-            
+
             // Construct labels for branch targets
             Iterator units = body.getUnits().iterator();
             while (units.hasNext()) {
                 Unit unit = (Unit)(units.next());
                 Unit target = null;
                 if (unit instanceof GotoStmt) {
-                    target = ((GotoStmt)unit).getTarget();                    
+                    target = ((GotoStmt)unit).getTarget();
                 } else if (unit instanceof IfStmt) {
-                    target = ((IfStmt)unit).getTarget();                    
+                    target = ((IfStmt)unit).getTarget();
                 } else if (tracker.isHandlerUnit(unit)){
                     target = unit;
                 }
                 if (target != null) {
                     visitor.addTarget(target);
                 }
-                
-
-                
-            } 
+            }
 
             // Generate the method body.
             if (thisLocalName != null) visitor.setThisLocalName(thisLocalName);
             units = body.getUnits().iterator();
-            
+
+            //prologue
+            code.append(_indent(1)+"jmp_buf caller_env;\n");
+            code.append(_indent(1)+"int caller_epc = epc;\n");
             
             if (tracker.trapsExist())
-            {   code.append("\n");
-                code.append(_indent(1)+"jump_buf env;\n");
-                code.append(_indent(1)+"int epc;\n");
-                code.append(_indent(1)+"int exception_type;\n");
-                code.append(_indent(1)+"epc = setjump(env);\n");
-                code.append(_indent(1)+"if(epc==0)\n");
+            {
+                code.append(_indent(1)+"i72706427_Exception exception_id;\n");
+                //FIXME: generate this  ixxyywhatever automatically
+            }
+
+
+            code.append("\n"+_indent(1)
+                        +"memcpy(caller_env, env, sizeof(jmp_buf));\n");
+
+            if (tracker.trapsExist())
+            {
+                code.append(_indent(1)+"epc = setjmp(env);\n");
+                code.append(_indent(1)+"if(epc == 0)\n");
                 code.append(_indent(1)+"{\n");
             }
+
+
+            //exception-catching in body
             
             while (units.hasNext()) {
                 Unit unit = (Unit)(units.next());
                 if (visitor.isTarget(unit)) {
                     code.append(visitor.getLabel(unit) + ":\n");
                 }
-                
-                //code for beginUnit in exceptions
+
+                //code for begin Unit in exceptions
                 if (tracker.trapsExist()&&tracker.isBeginUnit(unit))
                 {
                     tracker.beginUnitEncountered(unit);
-                    code.append(_indent(2)+"epc = "+ tracker.getCurrentEpc()+";\n");
-                    code.append(_indent(2)+"/*Trap " +tracker.beginIndexOf(unit) 
+                    code.append(_indent(2)+"epc = "+ tracker.getEpc()+";\n");
+                    code.append(_indent(2)+"/*Trap " +tracker.beginIndexOf(unit)
                                 +" begins. */\n");
                 }
-                
-                                    
+
+
                 //actual unit code
                 unit.apply(visitor);
                 StringBuffer newCode = visitor.getCode();
                 if (newCode.length() > 0) {
                     code.append(_indent(2)).append(newCode).append(";\n");
                 }
-                
+
                 //code for end unit in exceptions
                 if(tracker.trapsExist()&&tracker.isEndUnit(unit))
                 {
                     code.append(_indent(2)+"/* That was end unit for trap "+
                                 tracker.endIndexOf(unit)+" */\n");
-                    tracker.endUnitEncountered();
-                    code.append(_indent(2)+"epc = "+tracker.getCurrentEpc()+";\n");
-                    
+                    tracker.endUnitEncountered(unit);
+                    code.append(_indent(2)+"epc = "+tracker.getEpc()+";\n");
+
                 }
-                
+
                 //code for handler unit in exceptions
                 if(tracker.trapsExist()&&tracker.isHandlerUnit(unit))
                 {
                     code.append(_indent(2)+"/* Handler Unit for Trap "+
                                 tracker.handlerIndexOf(unit)+" */\n");
                 }
-                     
+
             }
-            
-            //code for mapping an exception to its handler    
-            if (tracker.trapsExist())
-            { 
+
+            //epilogue
+            if(tracker.trapsExist())
+            {
                 code.append(_indent(1)+"}\n");
-                
+
                 code.append(_indent(1)+"else\n");
                 code.append(_indent(1)+"{\n");
+
+                //code for mapping a trap name to an exception
+                code.append(_indent(2)+
+                            "/* Map exception_id to exception_type */\n");
+                code.append(_indent(2)+
+                            "strcpy(exception_type, (char *) exception_id);\n");
+                //FIXME: This is not the correct mapping
+
+                //code for mapping an exception type to its handler
+                code.append("\n"+_indent(2)+
+                            "/* Map exception_type to handler */\n");
                 code.append(_indent(2)+"switch (epc)\n");
                 code.append(_indent(2)+"{\n");
-                
-                for(int i=0;i<=(tracker.numberOfTraps()-1);i++)
+                for(int i = 0;i<= (tracker.getEpc()-1); i++)
                 {
-                    code.append(_indent(3)+"case "+(i+1)+":\n");
-                    code.append(_indent(4)+"goto "+
-                                visitor.getLabel(tracker.getHandlerUnit(i)));
-                    code.append(";\n");
+                    code.append(_indent(3)+"case "+(i)+":\n");
+                    if (tracker.getHandlerUnitList(i).size()>0)
+                    {
+                        Iterator j = tracker.getTrapsForEpc(i).listIterator();
+
+                        code.append(_indent(4));
+                        while (j.hasNext())
+                            {
+                                Trap currentTrap = (Trap)j.next();
+                                code.append("if (strcmp(exception_type, \""+
+                                        currentTrap.getException()+"\"))\n");
+                                code.append(_indent(4)+"{\n");
+                                code.append(_indent(5)+"goto " +
+                                  visitor.getLabel(currentTrap.getHandlerUnit())
+                                    +";\n");
+                                code.append(_indent(4)+"}\n");
+                                code.append(_indent(4)+"else ");
+                            }
+
+                        //for the last else
+                        code.append("\n"+_indent(4)+"{\n");
+                        code.append(_indent(5)+
+                            "longjmp(caller_env, caller_epc);\n");
+                        code.append(_indent(5)+
+                                    "/* unhandled exception: "+
+                                    "return control to caller */\n");
+                        code.append(_indent(4)+"}\n");
+                    }
+                    else
+                    {
+                        code.append(_indent(4)+
+                            "/* No active Traps for this epc. */\n");
+
+                    }
+
                 }
-                        
+                code.append(_indent(3)+
+                            "default: longjmp(caller_env, caller_epc);\n");
+
                 code.append(_indent(2)+"}\n");
+
+
                 code.append(_indent(1)+"}\n");
-            }
-    
+
             
+            }
+
             // Trailer code
             code.append("} ");
             code.append(_comment(description));
@@ -389,7 +461,7 @@ public class CodeFileGenerator extends CodeGenerator {
     }
 
     // Generate code to initialize method pointers (in the method table)
-    // in a structure that implements a class. 
+    // in a structure that implements a class.
     private String _generateMethodPointerInitialization(List methodList,
             String argumentReference) {
         StringBuffer code = new StringBuffer();
@@ -404,5 +476,5 @@ public class CodeFileGenerator extends CodeGenerator {
             }
         }
         return code.toString();
-    }  
+    }
 }

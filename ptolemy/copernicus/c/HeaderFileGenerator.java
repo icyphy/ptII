@@ -50,7 +50,7 @@ import java.util.List;
 /* A C code generator for generating "header files" (.h files) that implement
   Java classes.
 
-  @author Shuvra S. Bhattacharyya
+  @author Shuvra S. Bhattacharyya, Ankush Varma
   @version $Id$
 
 */
