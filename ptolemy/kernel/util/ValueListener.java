@@ -45,7 +45,8 @@ public interface ValueListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify the listener that the value of the Settable has changed.
+    /** This is called to notify the listener that the value of the
+     *  specified Settable has changed.
      *  @param settable The object that has changed value.
      */
     public void valueChanged(Settable settable);
