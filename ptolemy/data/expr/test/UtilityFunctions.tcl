@@ -121,34 +121,25 @@ test UtilityFunctions-4.1 {Test property on a parameter that does not exist} {
 
 ######################################################################
 ## MatrixParser tests
-test UtilityFunctions-2.0 {Check readFile method} {
+test UtilityFunctions-2.0 {Check up on matrices } {
     set parser [java::new ptolemy.data.expr.PtParser]   
     set tree [$parser generateParseTree "\[ 0.0, 3.0; 2.0,  0.0 \]"]
     set matrix [$tree evaluateParseTree]
     $matrix toString
 } {[0.0, 3.0; 2.0, 0.0]}
 
-test UtilityFunctions-3.0 {Check readFile method} {
-    # FIXME: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
-    # FIXME: starts at [0,0]. How to handle this?
+test UtilityFunctions-3.0 {Check readmatrix method} {
     set parser [java::new ptolemy.data.expr.PtParser]   
     set tree [$parser generateParseTree "readMatrix('matrix.mat')"]
     set matrix [$tree evaluateParseTree]
     $matrix toString
-} {[0.0, 0.0, 0.0; 0.0, 0.0, 4.0; 0.0, 2.0, 0.0]} \
-{  KNOWN Failure: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
-   starts at [0,0]. How to handle this?
-}
+} {[0.0, 4.0; 2.0, 0.0]}
 
-test UtilityFunctions-3.1 {Check readFile method} {
-    # FIXME: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
-    # FIXME: starts at [0,0]. How to handle this?
+
+test UtilityFunctions-3.1 {Check readMatrix method twice} {
     set parser [java::new ptolemy.data.expr.PtParser]   
     set tree [$parser generateParseTree "readMatrix('matrix.mat')"]
     set tree [$parser generateParseTree "readMatrix('matrix1.mat')"]
     set matrix [$tree evaluateParseTree]
     $matrix toString
-} {[0.0, 0.0, 0.0; 0.0, 1.0, 2.0; 0.0, 3.0, 4.0]} \
-{  KNOWN Failure: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
-   starts at [0,0]. How to handle this?
-}
+} {[1.0, 2.0; 3.0, 4.0]}
