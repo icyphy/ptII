@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -173,18 +174,21 @@ public class FSMGraphTableau extends Tableau {
 	 *  for the given proxy (perhaps because the proxy is not of the
 	 *  appropriate subclass) then return null.
 	 *  @param proxy The model proxy.
-	 *  @return A new RunView, if the proxy is a PtolemyEffigy, or null
-	 *  if the proxy is not a PtolemyEffigy, 
-	 *  or creating the tableau fails.
+	 *  @return A new FSMGraphTableau, if the proxy is a PtolemyEffigy
+	 *  that references an FSMActor or null otherwise.
+	 *  @exception Exception If an exception occurs when creating the
+	 *  tableau.
 	 */
-	public Tableau createTableau(Effigy proxy) {
-	    try {
+	public Tableau createTableau(Effigy proxy) throws Exception {
+	    if(!(proxy instanceof PtolemyEffigy)) 
+		return null;
+	    PtolemyEffigy effigy = (PtolemyEffigy)proxy;
+	    if(effigy.getModel() instanceof FSMActor) {
 		FSMGraphTableau tableau = 
 		    new FSMGraphTableau((PtolemyEffigy)proxy,
-				     proxy.uniqueName("tableau"));
+					proxy.uniqueName("tableau"));
 		return tableau;
-	    } catch (Exception ex) {
-		ex.printStackTrace();
+	    } else {
 		return null;
 	    }
 	}

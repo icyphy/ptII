@@ -169,10 +169,14 @@ public class FSMGraphFrame extends GraphFrame {
      */
     protected void _addMenus() {
 	super._addMenus();
-       	_executeMenu = new JMenu("Execute");
-        _executeMenu.setMnemonic(KeyEvent.VK_X);
-	_menubar.add(_executeMenu);
+	// FIXME: Does executing an FSM make sense?
+	//       	_executeMenu = new JMenu("Execute");
+        //_executeMenu.setMnemonic(KeyEvent.VK_X);
+	//_menubar.add(_executeMenu);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newStateAction);
+	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newStateAction);
     }
+
     /** Create a new graph pane.
      */
     protected GraphPane _createGraphPane() {
@@ -182,6 +186,7 @@ public class FSMGraphFrame extends GraphFrame {
 	FSMGraphModel graphModel = new FSMGraphModel(_model);
 	
 	GraphPane pane = new GraphPane(_controller, graphModel);
+	_newStateAction = _controller.getNewStateAction();
 	return pane;
     }
 
@@ -287,77 +292,17 @@ public class FSMGraphFrame extends GraphFrame {
      * The factory for creating context menus on entities.
      */
     // FIXME this has to move into the visual notation.
-    private class EntityContextMenuFactory extends PtolemyMenuFactory {
-	public EntityContextMenuFactory(GraphController controller) {
+    private class StateContextMenuFactory extends PtolemyMenuFactory {
+	public StateContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	    addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
-	    addMenuItemFactory(new MenuActionFactory(_editIconAction));
+	    //	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
+	    //addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
 	}
     }
 
-    /**
-     * The factory for creating context menus on ports.
-     */
-    // FIXME this has to move into the visual notation.
-    public class PortContextMenuFactory extends PtolemyMenuFactory {
-	public PortContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new PortDescriptionFactory());
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	}
-
-	public class PortDescriptionFactory extends MenuItemFactory {
-	    /**
-	     * Add an item to the given context menu that will configure the
-	     * parameters on the given target.
-	     */
-	    public JMenuItem create(JContextMenu menu, NamedObj target) {
-		target = _getItemTargetFromMenuTarget(target);
-		if(target instanceof IOPort) {
-		    IOPort port = (IOPort)target;
-		    String string = "";
-		    int count = 0;
-		    if(port.isInput()) {
-			string += "Input";
-			count++;
-		    }
-		    if(port.isOutput()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Output";
-			count++;
-		    }
-		    if(port.isMultiport()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Multiport";
-			count++;
-		    }
-		    if(count > 0) {
-			return menu.add(new JMenuItem("   " + string));
-		    }
-		}
-		return null;
-	    }
-	    
-	    /**
-	     * Get the name of the items that will be created. 
-	     * This is provided so
-	     * that factory can be overriden slightly with the name changed.
-	     */
-	    protected String _getName() {
-		return null;
-	    }     
-	}
-    }
-    
     private class ExecuteSystemAction extends AbstractAction {
 	public ExecuteSystemAction() {
 	    super("Go");
@@ -582,13 +527,13 @@ public class FSMGraphFrame extends GraphFrame {
     /**
      * The factory for creating context menus on relations.
      */
-    private class RelationContextMenuFactory 
+    private class TransitionContextMenuFactory 
 	extends PtolemyMenuFactory {
-	public RelationContextMenuFactory(GraphController controller) {
+	public TransitionContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
+	    //    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
     }
   
@@ -599,8 +544,7 @@ public class FSMGraphFrame extends GraphFrame {
     private Action _getDocumentationAction;
     private Action _editIconAction;
     private Action _lookInsideAction;
-    private Action _newPortAction;
-    private Action _newRelationAction;
+    private Action _newStateAction;
     private JMenu _executeMenu;
     private Action _executeSystemAction;
 

@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Arc.java \
+	FSMEffigyFactory.java \
 	FSMGraphController.java \
 	FSMGraphModel.java \
 	FSMGraphFrame.java \

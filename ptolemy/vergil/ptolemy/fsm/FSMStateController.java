@@ -79,7 +79,7 @@ public class FSMStateController extends LocatableNodeController {
      */
     public FSMStateController(GraphController controller) {
 	super(controller);
-	setNodeRenderer(new EntityRenderer());
+	setNodeRenderer(new StateRenderer());
 
 	SelectionModel sm = controller.getSelectionModel();
         SelectionInteractor interactor =
@@ -106,11 +106,14 @@ public class FSMStateController extends LocatableNodeController {
         _menuCreator.setMenuFactory(factory);
     }
 
-    public class EntityRenderer implements NodeRenderer {
+    public static class StateRenderer implements NodeRenderer {
 	public Figure render(Object n) {
 	    Figure figure;
 	    EditorIcon icon = (EditorIcon)n;
-	    return icon.createFigure();
+	    figure = icon.createFigure();
+            NamedObj object = (NamedObj) icon.getContainer();
+            figure.setToolTipText(object.getName());
+	    return figure;
 	}
     }
 
