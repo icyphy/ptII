@@ -255,7 +255,7 @@ test Manager-10.0 {Test execution listener} {
     puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
     $manager removeExecutionListener $listener
     [$manager getState] getDescription
-} {Idle}
+} {idle}
 
 ######################################################################
 ####

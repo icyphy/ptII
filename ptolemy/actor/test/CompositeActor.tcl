@@ -98,7 +98,9 @@ test CompositeActor-3.3 {Test failure mode of setManager} {
     catch {$e5 setManager $m3} msg
     catch {$e0 setManager $m4} msg2
     list $msg $msg2
-} {{ptolemy.kernel.util.IllegalActionException: .E0.E3.E5 and .: Cannot set the Manager of an actor with a container.} {ptolemy.kernel.util.IllegalActionException: .E0 and W.Manager: Cannot set manager because workspaces are different.}}
+} {{ptolemy.kernel.util.IllegalActionException: .E0.E3.E5 and .:
+Cannot set the Manager of an actor with a container.} {ptolemy.kernel.util.IllegalActionException: .E0 and W.Manager:
+Cannot set manager because workspaces are different.}}
 
 test CompositeActor-3.3a {Test failure mode of setDirector} {
     # NOTE: Uses the setup above
@@ -106,7 +108,8 @@ test CompositeActor-3.3a {Test failure mode of setDirector} {
     $d4 setName Director
     catch {$e0 setDirector $d4} msg
     list $msg 
-} {{ptolemy.kernel.util.IllegalActionException: .E0 and W.Director: Cannot set director because workspaces are different.}}
+} {{ptolemy.kernel.util.IllegalActionException: .E0 and W.Director:
+Cannot set director because workspaces are different.}}
 
 test CompositeActor-3.4 {Test isOpaque} {
     # NOTE: Uses the setup above
@@ -231,7 +234,8 @@ test CompositeActor-9.1 {Test setContainer error catching} {
     set entity [java::new ptolemy.kernel.CompositeEntity]
     catch {$e1 setContainer $entity} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: . and .: CompositeActor can only be contained by instances of CompositeActor.}}
+} {{ptolemy.kernel.util.IllegalActionException: . and .:
+CompositeActor can only be contained by instances of CompositeActor.}}
 
 ######################################################################
 ####
@@ -302,6 +306,8 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     set res9 [[$p4 get 0] toString]
     
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
-} {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: .E0.E2.IDEN.output: hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3: hasToken: Tokens can only be retrieved from an input port.} 1 ptolemy.data.StringToken(foo)}
+} {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: .E0.E2.IDEN.output:
+hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3:
+hasToken: Tokens can only be retrieved from an input port.} 1 ptolemy.data.StringToken(foo)}
 
 #FIXME: test _removeEntity (using setContainer null).

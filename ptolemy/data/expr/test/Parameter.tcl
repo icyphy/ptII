@@ -146,7 +146,8 @@ test Parameter-3.5 {Check that we can't convert down} {
     set intClass [$int getClass]
     catch {$param1 setTypeEquals $intClass} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .entity.id1: setTypeEquals(): the currently contained token ptolemy.data.DoubleToken(7.0) cannot be losslessly converted to the desired type int}}
+} {{ptolemy.kernel.util.IllegalActionException: .entity.id1:
+setTypeEquals(): the currently contained token ptolemy.data.DoubleToken(7.0) cannot be losslessly converted to the desired type int}}
 
 test Parameter-3.6 {Check that a new token is converted} {
     $param1 setToken $int

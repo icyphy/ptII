@@ -102,7 +102,8 @@ test SetParameter-3.0 {queue erroneous change with the manager} {
     catch {$m iterate} msg
     $m wrapup
     list [enumToTokenValues [$rec getRecord 0]] $msg
-} {a {ptolemy.kernel.event.ChangeFailedException: .top: Change request failed: Change value of parameter .top.const.value to x
+} {a {ptolemy.kernel.event.ChangeFailedException: .top:
+Change request failed: Change value of parameter .top.const.value to x
 ptolemy.kernel.util.IllegalActionException: Error parsing expression "x":
 The ID x is undefined.}}
 

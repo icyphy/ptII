@@ -183,7 +183,7 @@ test AtomicActor-9.1 {Test setContainer error catching} {
     set entity [java::new ptolemy.kernel.CompositeEntity]
     catch {$e1 setContainer $entity} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: . and .:\
+} {{ptolemy.kernel.util.IllegalActionException: . and .:
 AtomicActor can only be contained by instances of CompositeActor.}}
 
 ######################################################################
