@@ -47,7 +47,7 @@ The first requires you to create an instance without any UnitConstraints and
 then add them with the method addConstraint. The second is to specify a
 TypedCompositeActor as well as specific nodes and relations in the
 TypedCompositeActor, and have the UnitConstraintCollection constructor
-determine which UnitConstraintss belong to the collection.
+determine which UnitConstraints belong to the collection.
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1

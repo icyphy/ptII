@@ -62,7 +62,7 @@ be relaxed in later versions of this actor.
 <p>FIXME: what should the type of the input/output ports be???.
 
 @see ptolemy.actor.lib.javasound.AudioReader
-@author  Yang Zhao, Chrisotpher Hylands Brooks
+@author  Yang Zhao, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */
