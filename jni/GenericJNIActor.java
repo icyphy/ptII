@@ -120,15 +120,15 @@ public class GenericJNIActor extends TypedAtomicActor {
         super(container, name);
         _argumentsList = new NamedList(this);
 
-	// FIXME: these parameters should have names like
-	// nativeFunction, library and libraryDirectory.
-	// The names should be complete words with embedded capitalization.
+        // FIXME: these parameters should have names like
+        // nativeFunction, library and libraryDirectory.
+        // The names should be complete words with embedded capitalization.
 
-	// FIXME: Also, the code might work on platforms other than Windows
-	// so there is no need to mention dlls
+        // FIXME: Also, the code might work on platforms other than Windows
+        // so there is no need to mention dlls
 
-	// FIXME: The Ptolemy standard is to have the second argument should
-	// be the same as the name of the parameter.
+        // FIXME: The Ptolemy standard is to have the second argument should
+        // be the same as the name of the parameter.
 
         nativeFunc = new Parameter(this, "Native Function Name",
                 (Token) new StringToken("unknownFunc"));
@@ -227,7 +227,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             throws IllegalActionException {
         Director director = getDirector();
         if (director != null) {
-	    // FIXME: should this happen every time we call attribute changed?
+            // FIXME: should this happen every time we call attribute changed?
             director.invalidateResolvedTypes();
         }
     }
@@ -267,34 +267,34 @@ public class GenericJNIActor extends TypedAtomicActor {
                     } catch (Exception ex) {
                         MessageHandler.error("Unable to construct port", ex);
                     } 
-		else if (argument.isInput() && argument.isOutput()) {
-		    try {
-			port = (TypedIOPort) this.newPort(argument.getName()
-							  + "in");
-			port.setInput(argument.isInput());
-			port.setTypeEquals(BaseType.GENERAL);
-			port = (TypedIOPort) this.newPort(argument.getName()
-							  + "out");
-			port.setOutput(argument.isOutput());
-			port.setTypeEquals(BaseType.GENERAL);
-		    } catch (Exception ex) {
-			MessageHandler.error("Unable to construct port",
-					     ex);
-		    }
-		} else {
-		    try {
-			port = (TypedIOPort) this.newPort(argument.getName());
-			port.setInput(argument.isInput());
-			port.setOutput(argument.isOutput());
-			port.setTypeEquals(BaseType.GENERAL);
-		    } catch (Exception ex) {
-			MessageHandler.error("Unable to construct port",
-					     ex);
-		    }
-		}
+                else if (argument.isInput() && argument.isOutput()) {
+                    try {
+                        port = (TypedIOPort) this.newPort(argument.getName()
+                                                          + "in");
+                        port.setInput(argument.isInput());
+                        port.setTypeEquals(BaseType.GENERAL);
+                        port = (TypedIOPort) this.newPort(argument.getName()
+                                                          + "out");
+                        port.setOutput(argument.isOutput());
+                        port.setTypeEquals(BaseType.GENERAL);
+                    } catch (Exception ex) {
+                        MessageHandler.error("Unable to construct port",
+                                             ex);
+                    }
+                } else {
+                    try {
+                        port = (TypedIOPort) this.newPort(argument.getName());
+                        port.setInput(argument.isInput());
+                        port.setOutput(argument.isOutput());
+                        port.setTypeEquals(BaseType.GENERAL);
+                    } catch (Exception ex) {
+                        MessageHandler.error("Unable to construct port",
+                                             ex);
+                    }
+                }
             } else {
-		//end if port == nul
-		// synchronized the arguments and the ports
+                //end if port == nul
+                // synchronized the arguments and the ports
                 if (argument.isReturn()) {
                     port.setInput(false);
                     port.setOutput(true);
@@ -336,7 +336,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             while (arguments.hasNext()) {
                 Argument argument = (Argument) arguments.next();
                 if (argument != null && argument.isReturn()) {
-		    return (Argument) argument;
+                    return (Argument) argument;
                 }
             }
             return (Argument) returnValue;
@@ -509,7 +509,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                 // FIXME: Rethrow the error as an exception
                 String libraryPath =
                     StringUtilities.getProperty("java.library.path");
-			
+                        
                 throw new Exception("Class '" + _class
                         + "' cannot be instantiated.\n"
                         + "Be sure that the library "

@@ -142,11 +142,11 @@ public class ArgumentConfigurerDialog
                     if (argument != null) {
                         try {
                             ((GenericJNIActor) _target).
-				_removeArgument(argument);
+                                _removeArgument(argument);
                         } catch (Exception e) {
                             MessageHandler.error(
                                     "Unable to remove argument '" +
-				    argument + "'.", e);
+                                    argument + "'.", e);
                         }
                         // The context for the MoML should be the first
                         // container above this port in the hierarchy
@@ -297,7 +297,7 @@ public class ArgumentConfigurerDialog
                 argument.setName(newName);
             } else {
                 MessageHandler.error("This name is already used !");
-	    }
+            }
             argument.setKind(newKind.trim());
             argument.setCType(newCType.trim());
             argument.setExpression();

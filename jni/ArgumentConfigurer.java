@@ -91,13 +91,13 @@ public class ArgumentConfigurer extends Query implements QueryListener {
                 Set optionsDefault = new HashSet();
                 if (argument.isInput()) {
                     optionsDefault.add("input");
-		}
+                }
                 if (argument.isOutput()) {
                     optionsDefault.add("output");
-		}
+                }
                 if (argument.isReturn()) {
                     optionsDefault.add("return");
-		}
+                }
                 addSelectButtons(
                         argument.getName() + "Kind",
                         argument.getName() + "Kind:",

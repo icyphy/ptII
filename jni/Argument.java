@@ -112,21 +112,21 @@ public class Argument extends Attribute implements Settable {
     }
 
     /** Set to true if the attribute is an input.
-     *	@param input True if this is an input, false if it is not.
+     *        @param input True if this is an input, false if it is not.
      */
     public void setInput(boolean input) {
         _isInput = input;
     }
 
     /** Set to true if the attribute is an output.
-     *	@param output True if this is an output, false if it is not.
+     *        @param output True if this is an output, false if it is not.
      */
     public void setOutput(boolean output) {
         _isOutput = output;
     }
 
     /** Set to true if the attribute is a return
-     *	@param returnFlag True if this is an input, false if it is not.	
+     *        @param returnFlag True if this is an input, false if it is not.        
      */
     public void setReturn(boolean returnFlag) {
         _isReturn = returnFlag;
@@ -143,7 +143,7 @@ public class Argument extends Attribute implements Settable {
         } else {
             this.setInput(false);
         } 
-	if (selectedValues.equals("output")) {
+        if (selectedValues.equals("output")) {
             this.setOutput(true);
         } else {
             this.setOutput(false);
@@ -157,23 +157,23 @@ public class Argument extends Attribute implements Settable {
             this.setInput(true);
             this.setOutput(true);
         }
-	// FIXME: this should throw an exception not call MessageHandler
-	// directly.
+        // FIXME: this should throw an exception not call MessageHandler
+        // directly.
         if (selectedValues.equals("input, return")) {
             MessageHandler.error(
                     "An argument can't be input "
                     + "and return at the same time.");
-	}
+        }
         if (selectedValues.equals("output, return")) {
             MessageHandler.error(
                     "An argument can't be output "
                     + "and return or in at the same time.");
-	}
+        }
         if (selectedValues.equals("input, output, return")) {
             MessageHandler.error(
                     "An argument can't be in-out "
                     + "and return at the same time.");
-	}
+        }
     }
 
     /** Get the kind as a comma separated list
@@ -183,17 +183,17 @@ public class Argument extends Attribute implements Settable {
         String returnValue = "";
         //set Kind
         if (isInput()) {
-	    returnValue = "input";
-	}
+            returnValue = "input";
+        }
         if (isOutput() && !isInput()) {
-	    returnValue = "output";
-	}
+            returnValue = "output";
+        }
         if (isOutput() && isInput()) {
-	    returnValue = "input,output";
-	}
+            returnValue = "input,output";
+        }
         if (isReturn()) {
-	    returnValue = "return";
-	}
+            returnValue = "return";
+        }
         return returnValue;
     }
 
@@ -229,35 +229,35 @@ public class Argument extends Attribute implements Settable {
         String returnJType = "";
         //if it's an array
         if (_cType.endsWith("[]")) {
-	    returnJType = "[]";
-	}
+            returnJType = "[]";
+        }
         // a C char is 8 bits unsigned. a java char is 16 bits,
         // so we use boolean which is 8 bits unsigned
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnJType = "boolean" + returnJType;
-	} else if (_cType.equals("short") || 
-		   _cType.startsWith("short")) {
-	    // a C short is 16 bits unsigned, a java short is 16 bits
-	    // but not unsigned,
-	    // so we use char which is 16bits unsigned.
+        } else if (_cType.equals("short") || 
+                   _cType.startsWith("short")) {
+            // a C short is 16 bits unsigned, a java short is 16 bits
+            // but not unsigned,
+            // so we use char which is 16bits unsigned.
             returnJType = "char" + returnJType;
-	} else if (_cType.equals("long") ||
-		   _cType.startsWith("long")) {
-	    // a C long is 32 bits unsigned. a java long is 64 bits,
-	    // so we use int which is 32 , but not unsigned !! TBF
+        } else if (_cType.equals("long") ||
+                   _cType.startsWith("long")) {
+            // a C long is 32 bits unsigned. a java long is 64 bits,
+            // so we use int which is 32 , but not unsigned !! TBF
             returnJType = "int" + returnJType;
-	} else if (_cType.equals("double") ||
-		   _cType.startsWith("double")) {
-	    // double is 64 bits in C and in Java, so no problem
+        } else if (_cType.equals("double") ||
+                   _cType.startsWith("double")) {
+            // double is 64 bits in C and in Java, so no problem
             returnJType = "double" + returnJType;
-	} else if (_cType.equals("void") ||
-		   _cType.startsWith("void")) {
-	    // for the functions with a void return
+        } else if (_cType.equals("void") ||
+                   _cType.startsWith("void")) {
+            // for the functions with a void return
             returnJType = "void";
         } else {
-	    // FIXME: I guess we are printing a warning using
-	    // the MessageHandler and then returning void here?
-	    try {
+            // FIXME: I guess we are printing a warning using
+            // the MessageHandler and then returning void here?
+            try {
                 MessageHandler.warning("Type = "
                         + _cType + " not convertible in JavaType");
             } catch (Exception e) {}
@@ -274,25 +274,25 @@ public class Argument extends Attribute implements Settable {
         String returnCType = "";
         if (_cType.endsWith("[]")) {
                 returnCType = "[]";
-	}
+        }
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnCType = "Boolean" + returnCType;
-	} else if (_cType.equals("short")
-		   || _cType.startsWith("short")) {
+        } else if (_cType.equals("short")
+                   || _cType.startsWith("short")) {
             returnCType = "Byte" + returnCType;
-	} else if (_cType.equals("long")
-		   || _cType.startsWith("long")) {
+        } else if (_cType.equals("long")
+                   || _cType.startsWith("long")) {
             returnCType = "Integer"+ returnCType;
-	} else if (_cType.equals("double")
-		   || _cType.startsWith("double")) {
+        } else if (_cType.equals("double")
+                   || _cType.startsWith("double")) {
             returnCType = "Double" + returnCType;
         } else if (_cType.equals("void")
-		   || _cType.startsWith("void")) {
+                   || _cType.startsWith("void")) {
             returnCType = "Object" + returnCType;
-	} else {
-	    // FIXME: why is this code not like the code above
+        } else {
+            // FIXME: why is this code not like the code above
             MessageHandler.error("Type = "
-				 + _cType + " not convertible in JavaClass");
+                                 + _cType + " not convertible in JavaClass");
             returnCType = "Object";
         }
         return returnCType;
@@ -306,24 +306,24 @@ public class Argument extends Attribute implements Settable {
         String returnJNIType = "";
         if (_cType.endsWith("[]")) {
                 returnJNIType = "Array";
-	}
+        }
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnJNIType = "jboolean" + returnJNIType;
-	} else if (_cType.equals("short")
-		   || _cType.startsWith("short")) {
-	    // a C char is 8 bits. a java char is 16 bits,
-	    // so we use jbyte
+        } else if (_cType.equals("short")
+                   || _cType.startsWith("short")) {
+            // a C char is 8 bits. a java char is 16 bits,
+            // so we use jbyte
             returnJNIType = "jchar" + returnJNIType;
-	} else if (_cType.equals("long")
-		   || _cType.startsWith("long")) {
-	    // a C long is 32 bits. a java long is 64 bits,
-	    // so we use jint
+        } else if (_cType.equals("long")
+                   || _cType.startsWith("long")) {
+            // a C long is 32 bits. a java long is 64 bits,
+            // so we use jint
             returnJNIType = "jint" + returnJNIType;
         } else if (_cType.equals("double")
-		   || _cType.startsWith("double")) {
+                   || _cType.startsWith("double")) {
             returnJNIType = "jdouble" + returnJNIType;
         } else if (_cType.equals("void")
-		   || _cType.startsWith("void")) {
+                   || _cType.startsWith("void")) {
             returnJNIType = "void" + returnJNIType;
         } else {
             MessageHandler.error(
@@ -442,7 +442,7 @@ public class Argument extends Attribute implements Settable {
      *  @param listener The listener to remove.
      */ 
     public void removeValueListener(ptolemy.kernel.util.ValueListener
-				    listener) {
+                                    listener) {
     }
 
 
@@ -545,7 +545,7 @@ public class Argument extends Attribute implements Settable {
                     "Cannot place arguments on entities "
                     + container.getClass().getName()
                     + ", which are not GenericJNIActor.");
-	}
+        }
     }
 
     /** Check that the specified type is a suitable type for
@@ -555,17 +555,17 @@ public class Argument extends Attribute implements Settable {
      */
     protected void _checkType() {
         if (_cType.startsWith("char")
-	    || _cType.startsWith("long")
-	    || _cType.startsWith("short")
-	    || _cType.startsWith("double")) {
-	    if(isOutput()&&!isInput()&&!_cType.endsWith("[]")) {
-		MessageHandler.error(
-				     "An argument can't be "
-				     + "output with a simple type.");
-		setInput(true);
-	    }
-	    return;
-	} else {
+            || _cType.startsWith("long")
+            || _cType.startsWith("short")
+            || _cType.startsWith("double")) {
+            if(isOutput()&&!isInput()&&!_cType.endsWith("[]")) {
+                MessageHandler.error(
+                                     "An argument can't be "
+                                     + "output with a simple type.");
+                setInput(true);
+            }
+            return;
+        } else {
             MessageHandler.error(
                     "The type : "
                     + _cType
