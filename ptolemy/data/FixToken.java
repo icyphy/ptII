@@ -236,8 +236,11 @@ public class FixToken extends ScalarToken {
      *  more robust testing of FixToken.  
      *  @return String in <i>integerbits . fractionbits</i> format
      */
-    public String toString() {
-	return _value.toString();
+    public String toString() {        
+        Precision precision = _value.getPrecision();
+	return "fix(" + _value.toString() + 
+            "," + precision.getNumberOfBits() + 
+            "," + precision.getIntegerBitLength() + ")";
     }
 
     /** Returns a new token representing the additive identity with a
